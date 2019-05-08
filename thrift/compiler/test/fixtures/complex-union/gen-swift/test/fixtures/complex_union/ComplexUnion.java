@@ -25,37 +25,91 @@ public final class ComplexUnion {
     public ComplexUnion() {
     }
     
+    public static ComplexUnion fromIntValue(final long intValue) {
+        ComplexUnion res = new ComplexUnion();
+        res.value = intValue;
+        res.id = 1;
+        res.name = "intValue";
+        return res;
+    }
+    
+    public static ComplexUnion fromStringValue(final String stringValue) {
+        ComplexUnion res = new ComplexUnion();
+        res.value = stringValue;
+        res.id = 5;
+        res.name = "stringValue";
+        return res;
+    }
+    
+    public static ComplexUnion fromIntListValue(final List<Long> intListValue) {
+        ComplexUnion res = new ComplexUnion();
+        res.value = intListValue;
+        res.id = 2;
+        res.name = "intListValue";
+        return res;
+    }
+    
+    public static ComplexUnion fromStringListValue(final List<String> stringListValue) {
+        ComplexUnion res = new ComplexUnion();
+        res.value = stringListValue;
+        res.id = 3;
+        res.name = "stringListValue";
+        return res;
+    }
+    
+    public static ComplexUnion fromTypedefValue(final Map<Short, String> typedefValue) {
+        ComplexUnion res = new ComplexUnion();
+        res.value = typedefValue;
+        res.id = 9;
+        res.name = "typedefValue";
+        return res;
+    }
+    
+    public static ComplexUnion fromStringRef(final String stringRef) {
+        ComplexUnion res = new ComplexUnion();
+        res.value = stringRef;
+        res.id = 14;
+        res.name = "stringRef";
+        return res;
+    }
+    
     @ThriftField
+    @Deprecated
     public void setIntValue(final long intValue) {
         this.value = intValue;
         this.id = 1;
         this.name = "intValue";
     }
     @ThriftField
+    @Deprecated
     public void setStringValue(final String stringValue) {
         this.value = stringValue;
         this.id = 5;
         this.name = "stringValue";
     }
     @ThriftField
+    @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
         this.name = "intListValue";
     }
     @ThriftField
+    @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
         this.name = "stringListValue";
     }
     @ThriftField
+    @Deprecated
     public void setTypedefValue(final Map<Short, String> typedefValue) {
         this.value = typedefValue;
         this.id = 9;
         this.name = "typedefValue";
     }
     @ThriftField
+    @Deprecated
     public void setStringRef(final String stringRef) {
         this.value = stringRef;
         this.id = 14;

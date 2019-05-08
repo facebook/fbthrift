@@ -25,13 +25,31 @@ public final class VirtualComplexUnion {
     public VirtualComplexUnion() {
     }
     
+    public static VirtualComplexUnion fromThingOne(final String thingOne) {
+        VirtualComplexUnion res = new VirtualComplexUnion();
+        res.value = thingOne;
+        res.id = 1;
+        res.name = "thingOne";
+        return res;
+    }
+    
+    public static VirtualComplexUnion fromThingTwo(final String thingTwo) {
+        VirtualComplexUnion res = new VirtualComplexUnion();
+        res.value = thingTwo;
+        res.id = 2;
+        res.name = "thingTwo";
+        return res;
+    }
+    
     @ThriftField
+    @Deprecated
     public void setThingOne(final String thingOne) {
         this.value = thingOne;
         this.id = 1;
         this.name = "thingOne";
     }
     @ThriftField
+    @Deprecated
     public void setThingTwo(final String thingTwo) {
         this.value = thingTwo;
         this.id = 2;

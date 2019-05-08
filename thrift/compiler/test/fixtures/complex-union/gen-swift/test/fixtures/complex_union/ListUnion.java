@@ -25,13 +25,31 @@ public final class ListUnion {
     public ListUnion() {
     }
     
+    public static ListUnion fromIntListValue(final List<Long> intListValue) {
+        ListUnion res = new ListUnion();
+        res.value = intListValue;
+        res.id = 2;
+        res.name = "intListValue";
+        return res;
+    }
+    
+    public static ListUnion fromStringListValue(final List<String> stringListValue) {
+        ListUnion res = new ListUnion();
+        res.value = stringListValue;
+        res.id = 3;
+        res.name = "stringListValue";
+        return res;
+    }
+    
     @ThriftField
+    @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
         this.name = "intListValue";
     }
     @ThriftField
+    @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;

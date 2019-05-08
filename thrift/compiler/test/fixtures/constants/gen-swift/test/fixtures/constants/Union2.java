@@ -26,6 +26,7 @@ public final class Union2 {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union2(final int i) {
         this.value = i;
         this.id = 1;
@@ -33,6 +34,7 @@ public final class Union2 {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union2(final double d) {
         this.value = d;
         this.id = 2;
@@ -40,6 +42,7 @@ public final class Union2 {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union2(final test.fixtures.constants.Struct1 s) {
         this.value = s;
         this.id = 3;
@@ -47,10 +50,43 @@ public final class Union2 {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union2(final test.fixtures.constants.Union1 u) {
         this.value = u;
         this.id = 4;
         this.name = "u";
+    }
+    
+    public static Union2 fromI(final int i) {
+        Union2 res = new Union2();
+        res.value = i;
+        res.id = 1;
+        res.name = "i";
+        return res;
+    }
+    
+    public static Union2 fromD(final double d) {
+        Union2 res = new Union2();
+        res.value = d;
+        res.id = 2;
+        res.name = "d";
+        return res;
+    }
+    
+    public static Union2 fromS(final test.fixtures.constants.Struct1 s) {
+        Union2 res = new Union2();
+        res.value = s;
+        res.id = 3;
+        res.name = "s";
+        return res;
+    }
+    
+    public static Union2 fromU(final test.fixtures.constants.Union1 u) {
+        Union2 res = new Union2();
+        res.value = u;
+        res.id = 4;
+        res.name = "u";
+        return res;
     }
     
 

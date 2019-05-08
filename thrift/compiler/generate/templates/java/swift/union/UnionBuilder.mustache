@@ -26,6 +26,7 @@ public {{struct:javaCapitalName}}() {
 {{#struct:fields}}
 
 @ThriftConstructor
+@Deprecated
 public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
     this.value = {{field:javaName}};
     this.id = {{field:key}};
@@ -33,3 +34,13 @@ public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
 }
 {{/struct:fields}}
 {{/struct:unionFieldTypeUnique?}}
+{{#struct:fields}}
+
+public static {{struct:javaCapitalName}} from{{field:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
+    {{struct:javaCapitalName}} res = new {{struct:javaCapitalName}}();
+    res.value = {{field:javaName}};
+    res.id = {{field:key}};
+    res.name = "{{field:name}}";
+    return res;
+}
+{{/struct:fields}}

@@ -17,6 +17,7 @@
 }}
     {{#struct:fields}}
     @ThriftField
+    @Deprecated
     public void {{> SetterName}}(final {{> FieldType}} {{field:javaName}}) {
         this.value = {{field:javaName}};
         this.id = {{field:key}};

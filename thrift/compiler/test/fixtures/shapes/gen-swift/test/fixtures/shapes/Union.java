@@ -26,6 +26,7 @@ public final class Union {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union(final long intValue) {
         this.value = intValue;
         this.id = 1;
@@ -33,10 +34,27 @@ public final class Union {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union(final String stringValue) {
         this.value = stringValue;
         this.id = 5;
         this.name = "stringValue";
+    }
+    
+    public static Union fromIntValue(final long intValue) {
+        Union res = new Union();
+        res.value = intValue;
+        res.id = 1;
+        res.name = "intValue";
+        return res;
+    }
+    
+    public static Union fromStringValue(final String stringValue) {
+        Union res = new Union();
+        res.value = stringValue;
+        res.id = 5;
+        res.name = "stringValue";
+        return res;
     }
     
 

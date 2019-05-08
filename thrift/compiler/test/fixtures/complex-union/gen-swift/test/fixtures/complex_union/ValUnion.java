@@ -25,13 +25,31 @@ public final class ValUnion {
     public ValUnion() {
     }
     
+    public static ValUnion fromV1(final test.fixtures.complex_union.Val v1) {
+        ValUnion res = new ValUnion();
+        res.value = v1;
+        res.id = 1;
+        res.name = "v1";
+        return res;
+    }
+    
+    public static ValUnion fromV2(final test.fixtures.complex_union.Val v2) {
+        ValUnion res = new ValUnion();
+        res.value = v2;
+        res.id = 2;
+        res.name = "v2";
+        return res;
+    }
+    
     @ThriftField
+    @Deprecated
     public void setV1(final test.fixtures.complex_union.Val v1) {
         this.value = v1;
         this.id = 1;
         this.name = "v1";
     }
     @ThriftField
+    @Deprecated
     public void setV2(final test.fixtures.complex_union.Val v2) {
         this.value = v2;
         this.id = 2;

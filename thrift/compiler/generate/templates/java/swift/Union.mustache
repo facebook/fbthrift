@@ -29,9 +29,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("{{struct:name}}")
 public final class {{struct:javaCapitalName}} {
-    {{> union/UnionConstructor}}
+    {{> union/UnionBuilder}}
 
     {{^struct:unionFieldTypeUnique?}}{{!
+      TODO: remove unionFieldTypeUnique related check and use builder pattern
       If union fields are not unique, we cannot generate thrift constructors,
       therefore setters are needed.
       }}{{> union/UnionSetter}}{{!

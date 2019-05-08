@@ -26,6 +26,7 @@ public final class MyUnion {
     }
     
     @ThriftConstructor
+    @Deprecated
     public MyUnion(final int anInteger) {
         this.value = anInteger;
         this.id = 1;
@@ -33,10 +34,27 @@ public final class MyUnion {
     }
     
     @ThriftConstructor
+    @Deprecated
     public MyUnion(final String aString) {
         this.value = aString;
         this.id = 2;
         this.name = "aString";
+    }
+    
+    public static MyUnion fromAnInteger(final int anInteger) {
+        MyUnion res = new MyUnion();
+        res.value = anInteger;
+        res.id = 1;
+        res.name = "anInteger";
+        return res;
+    }
+    
+    public static MyUnion fromAString(final String aString) {
+        MyUnion res = new MyUnion();
+        res.value = aString;
+        res.id = 2;
+        res.name = "aString";
+        return res;
     }
     
 

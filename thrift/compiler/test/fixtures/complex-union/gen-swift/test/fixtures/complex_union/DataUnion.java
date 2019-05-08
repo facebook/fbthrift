@@ -26,6 +26,7 @@ public final class DataUnion {
     }
     
     @ThriftConstructor
+    @Deprecated
     public DataUnion(final byte[] binaryData) {
         this.value = binaryData;
         this.id = 1;
@@ -33,10 +34,27 @@ public final class DataUnion {
     }
     
     @ThriftConstructor
+    @Deprecated
     public DataUnion(final String stringData) {
         this.value = stringData;
         this.id = 2;
         this.name = "stringData";
+    }
+    
+    public static DataUnion fromBinaryData(final byte[] binaryData) {
+        DataUnion res = new DataUnion();
+        res.value = binaryData;
+        res.id = 1;
+        res.name = "binaryData";
+        return res;
+    }
+    
+    public static DataUnion fromStringData(final String stringData) {
+        DataUnion res = new DataUnion();
+        res.value = stringData;
+        res.id = 2;
+        res.name = "stringData";
+        return res;
     }
     
 

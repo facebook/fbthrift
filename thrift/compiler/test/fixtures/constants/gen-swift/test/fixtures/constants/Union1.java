@@ -26,6 +26,7 @@ public final class Union1 {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union1(final int i) {
         this.value = i;
         this.id = 1;
@@ -33,10 +34,27 @@ public final class Union1 {
     }
     
     @ThriftConstructor
+    @Deprecated
     public Union1(final double d) {
         this.value = d;
         this.id = 2;
         this.name = "d";
+    }
+    
+    public static Union1 fromI(final int i) {
+        Union1 res = new Union1();
+        res.value = i;
+        res.id = 1;
+        res.name = "i";
+        return res;
+    }
+    
+    public static Union1 fromD(final double d) {
+        Union1 res = new Union1();
+        res.value = d;
+        res.id = 2;
+        res.name = "d";
+        return res;
     }
     
 
