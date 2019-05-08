@@ -28,62 +28,42 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-class swift_generator_context {
- public:
-  swift_generator_context(
-      bool legacy_extend_runtime_exception,
-      bool legacy_generate_beans)
-      : legacy_extend_runtime_exception_(legacy_extend_runtime_exception),
-        legacy_generate_beans_(legacy_generate_beans) {}
+namespace {
+/**
+ * Gets the swift namespace, throws a runtime error if not found.
+ */
+std::string get_namespace_or_default(const t_program& prog) {
+  const auto& prog_namespace = prog.get_namespace("java.swift");
+  if (prog_namespace != "") {
+    return prog_namespace;
+  } else {
+    throw std::runtime_error{"No namespace 'java.swift' in " + prog.get_name()};
+  }
+}
 
-  /**
-   * Gets the swift namespace, throws a runtime error if not found.
-   */
-  std::string get_namespace_or_default(const t_program& prog) {
-    const auto& prog_namespace = prog.get_namespace("java.swift");
-    if (prog_namespace != "") {
-      return prog_namespace;
+std::string get_constants_class_name(const t_program& prog) {
+  const auto& constant_name = prog.get_namespace("java.swift.constants");
+  if (constant_name == "") {
+    return "Constants";
+  } else {
+    auto java_name_space = get_namespace_or_default(prog);
+    std::string java_class_name;
+    if (constant_name.rfind(java_name_space) == 0) {
+      java_class_name = constant_name.substr(java_name_space.length() + 1);
     } else {
-      throw std::runtime_error{"No namespace 'java.swift' in " +
-                               prog.get_name()};
+      java_class_name = constant_name;
     }
-  }
 
-  std::string get_constants_class_name(const t_program& prog) {
-    const auto& constant_name = prog.get_namespace("java.swift.constants");
-    if (constant_name == "") {
-      return "Constants";
-    } else {
-      auto java_name_space = get_namespace_or_default(prog);
-      std::string java_class_name;
-      if (constant_name.rfind(java_name_space) == 0) {
-        java_class_name = constant_name.substr(java_name_space.length() + 1);
-      } else {
-        java_class_name = constant_name;
-      }
-
-      if (java_class_name == "" ||
-          java_class_name.find(".") != std::string::npos) {
-        throw std::runtime_error{"Java Constants Class Name `" +
-                                 java_class_name + "` is not well formatted."};
-      }
-
-      return java_class_name;
+    if (java_class_name == "" ||
+        java_class_name.find(".") != std::string::npos) {
+      throw std::runtime_error{"Java Constants Class Name `" + java_class_name +
+                               "` is not well formatted."};
     }
-  }
 
-  bool is_extend_runtime_exception() {
-    return legacy_extend_runtime_exception_;
+    return java_class_name;
   }
-
-  bool is_mutable_bean() {
-    return legacy_generate_beans_;
-  }
-
- private:
-  const bool legacy_extend_runtime_exception_;
-  const bool legacy_generate_beans_;
-};
+}
+} // namespace
 
 template <typename Node>
 const std::string get_java_swift_name(const Node* node) {
@@ -104,18 +84,13 @@ class t_mstch_swift_generator : public t_mstch_generator {
             program,
             std::move(context),
             "java/swift",
-            parsed_options),
-        swift_context_(std::make_shared<swift_generator_context>(
-            has_option("legacy_extend_runtime_exception"),
-            has_option("legacy_generate_beans"))) {
+            parsed_options) {
     out_dir_base_ = "gen-swift";
   }
 
   void generate_program() override;
 
  private:
-  std::shared_ptr<swift_generator_context> swift_context_;
-
   void set_mstch_generators();
 
   /*
@@ -135,8 +110,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
     }
-    auto package_dir = boost::filesystem::path{java::package_to_path(
-        swift_context_->get_namespace_or_default(*program))};
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
 
     for (const T* item : items) {
       auto filename = java::mangle_java_name(item->get_name(), true) + ".java";
@@ -160,17 +135,16 @@ class t_mstch_swift_generator : public t_mstch_generator {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
     }
-    auto package_dir = boost::filesystem::path{java::package_to_path(
-        swift_context_->get_namespace_or_default(*program))};
-    auto constant_file_name =
-        swift_context_->get_constants_class_name(*program) + ".java";
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
+    auto constant_file_name = get_constants_class_name(*program) + ".java";
     render_to_file(
         cache_->programs_[id], "Constants", package_dir / constant_file_name);
   }
 
   void generate_placeholder(const t_program* program) {
-    auto package_dir = boost::filesystem::path{java::package_to_path(
-        swift_context_->get_namespace_or_default(*program))};
+    auto package_dir = boost::filesystem::path{
+        java::package_to_path(get_namespace_or_default(*program))};
     auto placeholder_file_name = ".generated_" + program->get_name();
     write_output(package_dir / placeholder_file_name, "");
   }
@@ -182,10 +156,8 @@ class mstch_swift_program : public mstch_program {
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      std::shared_ptr<swift_generator_context> swift_context)
-      : mstch_program(program, generators, cache, pos),
-        swift_context_(std::move(swift_context)) {
+      ELEMENT_POSITION const pos)
+      : mstch_program(program, generators, cache, pos) {
     register_methods(
         this,
         {
@@ -195,14 +167,11 @@ class mstch_swift_program : public mstch_program {
         });
   }
   mstch::node java_package() {
-    return swift_context_->get_namespace_or_default(*program_);
+    return get_namespace_or_default(*program_);
   }
   mstch::node constant_class_name() {
-    return swift_context_->get_constants_class_name(*program_);
+    return get_constants_class_name(*program_);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> swift_context_;
 };
 
 class mstch_swift_struct : public mstch_struct {
@@ -211,10 +180,8 @@ class mstch_swift_struct : public mstch_struct {
       t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      std::shared_ptr<swift_generator_context> swift_context)
-      : mstch_struct(strct, generators, cache, pos),
-        swift_context_(std::move(swift_context)) {
+      ELEMENT_POSITION const pos)
+      : mstch_struct(strct, generators, cache, pos) {
     register_methods(
         this,
         {
@@ -228,10 +195,11 @@ class mstch_swift_struct : public mstch_struct {
         });
   }
   mstch::node java_package() {
-    return swift_context_->get_namespace_or_default(*(strct_->get_program()));
+    return get_namespace_or_default(*(strct_->get_program()));
   }
   mstch::node is_extend_runtime_exception() {
-    return swift_context_->is_extend_runtime_exception();
+    return cache_->parsed_options_.count("legacy_extend_runtime_exception") !=
+        0;
   }
   mstch::node is_union_field_type_unique() {
     std::set<std::string> field_types;
@@ -252,16 +220,13 @@ class mstch_swift_struct : public mstch_struct {
     // annotation:
     // - only applies to structs
     // - cannot have consts
-    return swift_context_->is_mutable_bean() ||
+    return cache_->parsed_options_.count("legacy_generate_beans") != 0 ||
         (strct_->annotations_.count("java.swift.mutable") &&
          strct_->annotations_.at("java.swift.mutable") == "true");
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(strct_->get_name(), true);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> swift_context_;
 };
 
 class mstch_swift_service : public mstch_service {
@@ -270,10 +235,8 @@ class mstch_swift_service : public mstch_service {
       t_service const* service,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      std::shared_ptr<swift_generator_context> swift_context)
-      : mstch_service(service, generators, cache, pos),
-        swift_context_(std::move(swift_context)) {
+      ELEMENT_POSITION const pos)
+      : mstch_service(service, generators, cache, pos) {
     register_methods(
         this,
         {
@@ -283,14 +246,11 @@ class mstch_swift_service : public mstch_service {
         });
   }
   mstch::node java_package() {
-    return swift_context_->get_namespace_or_default(*(service_->get_program()));
+    return get_namespace_or_default(*(service_->get_program()));
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(service_->get_name(), true);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> swift_context_;
 };
 
 class mstch_swift_function : public mstch_function {
@@ -380,9 +340,8 @@ class mstch_swift_enum : public mstch_enum {
       t_enum const* enm,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      std::shared_ptr<swift_generator_context> swift_context)
-      : mstch_enum(enm, generators, cache, pos), swift_context_(swift_context) {
+      ELEMENT_POSITION const pos)
+      : mstch_enum(enm, generators, cache, pos) {
     register_methods(
         this,
         {
@@ -391,14 +350,11 @@ class mstch_swift_enum : public mstch_enum {
         });
   }
   mstch::node java_package() {
-    return swift_context_->get_namespace_or_default(*(enm_->get_program()));
+    return get_namespace_or_default(*(enm_->get_program()));
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(enm_->get_name(), true);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> swift_context_;
 };
 
 class mstch_swift_enum_value : public mstch_enum_value {
@@ -520,9 +476,7 @@ class mstch_swift_type : public mstch_type {
 
 class program_swift_generator : public program_generator {
  public:
-  explicit program_swift_generator(
-      std::shared_ptr<swift_generator_context> context)
-      : context_(std::move(context)) {}
+  program_swift_generator() = default;
   ~program_swift_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_program const* program,
@@ -531,18 +485,13 @@ class program_swift_generator : public program_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_swift_program>(
-        program, generators, cache, pos, context_);
+        program, generators, cache, pos);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> context_;
 };
 
 class struct_swift_generator : public struct_generator {
  public:
-  explicit struct_swift_generator(
-      std::shared_ptr<swift_generator_context> context)
-      : context_(std::move(context)) {}
+  explicit struct_swift_generator() = default;
   ~struct_swift_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_struct const* strct,
@@ -550,19 +499,13 @@ class struct_swift_generator : public struct_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_swift_struct>(
-        strct, generators, cache, pos, context_);
+    return std::make_shared<mstch_swift_struct>(strct, generators, cache, pos);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> context_;
 };
 
 class service_swift_generator : public service_generator {
  public:
-  explicit service_swift_generator(
-      std::shared_ptr<swift_generator_context> context)
-      : context_(std::move(context)) {}
+  explicit service_swift_generator() = default;
   ~service_swift_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_service const* service,
@@ -571,11 +514,8 @@ class service_swift_generator : public service_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_swift_service>(
-        service, generators, cache, pos, context_);
+        service, generators, cache, pos);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> context_;
 };
 
 class function_swift_generator : public function_generator {
@@ -610,9 +550,7 @@ class field_swift_generator : public field_generator {
 
 class enum_swift_generator : public enum_generator {
  public:
-  explicit enum_swift_generator(
-      std::shared_ptr<swift_generator_context> context)
-      : context_(std::move(context)) {}
+  explicit enum_swift_generator() = default;
   ~enum_swift_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_enum const* enm,
@@ -620,12 +558,8 @@ class enum_swift_generator : public enum_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_swift_enum>(
-        enm, generators, cache, pos, context_);
+    return std::make_shared<mstch_swift_enum>(enm, generators, cache, pos);
   }
-
- private:
-  std::shared_ptr<swift_generator_context> context_;
 };
 
 class enum_value_swift_generator : public enum_value_generator {
@@ -742,16 +676,14 @@ void t_mstch_swift_generator::generate_program() {
 
 void t_mstch_swift_generator::set_mstch_generators() {
   generators_->set_program_generator(
-      std::make_unique<program_swift_generator>(swift_context_));
-  generators_->set_struct_generator(
-      std::make_unique<struct_swift_generator>(swift_context_));
+      std::make_unique<program_swift_generator>());
+  generators_->set_struct_generator(std::make_unique<struct_swift_generator>());
   generators_->set_service_generator(
-      std::make_unique<service_swift_generator>(swift_context_));
+      std::make_unique<service_swift_generator>());
   generators_->set_function_generator(
       std::make_unique<function_swift_generator>());
   generators_->set_field_generator(std::make_unique<field_swift_generator>());
-  generators_->set_enum_generator(
-      std::make_unique<enum_swift_generator>(swift_context_));
+  generators_->set_enum_generator(std::make_unique<enum_swift_generator>());
   generators_->set_enum_value_generator(
       std::make_unique<enum_value_swift_generator>());
   generators_->set_type_generator(std::make_unique<type_swift_generator>());
