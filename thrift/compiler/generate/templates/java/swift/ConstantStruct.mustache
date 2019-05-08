@@ -15,14 +15,14 @@
   limitations under the License.
 
 }}
-{{! TODO: It is technically impossible to have constants if structs are created
-          in mutable bean style.
+{{! NOTE: It is impossible to have constants if structs are created in mutable
+          bean style. If customer specify a constant of mutable struct type.
+          Build will fail.
 }}
-new {{> BoxedType}}{{^struct:asBean?}}.Builder(){{/struct:asBean?}}{{!
+new {{> BoxedType}}.Builder(){{!
 }}{{#value:const_struct}}{{!
   }}{{#constant:type}}{{!
     }}{{#constant:value}}.set{{constant:javaFieldName}}({{> ConstantValue}}){{!
     }}{{/constant:value}}{{!
   }}{{/constant:type}}{{!
-}}{{/value:const_struct}}{{!
-}}{{^struct:asBean?}}.build(){{/struct:asBean?}}
+}}{{/value:const_struct}}.build()

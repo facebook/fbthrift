@@ -31,17 +31,11 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class {{struct:javaCapitalName}} {
     {{> union/UnionConstructor}}
 
-    {{#struct:asBean?}}{{!
-      If union is generating in mutable bean style, we need to provide setters.
+    {{^struct:unionFieldTypeUnique?}}{{!
+      If union fields are not unique, we cannot generate thrift constructors,
+      therefore setters are needed.
       }}{{> union/UnionSetter}}{{!
-    }}{{/struct:asBean?}}
-    {{^struct:asBean?}}{{!
-      }}{{^struct:unionFieldTypeUnique?}}{{!
-        If union fields are not unique, we cannot generate thrift constructors,
-        therefore setters are needed.
-        }}{{> union/UnionSetter}}{{!
-      }}{{/struct:unionFieldTypeUnique?}}{{!
-    }}{{/struct:asBean?}}
+    }}{{/struct:unionFieldTypeUnique?}}
     {{#struct:fields}}
 
     {{> ThriftFieldAnnotation}}
