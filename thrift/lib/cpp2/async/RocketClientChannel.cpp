@@ -228,7 +228,6 @@ void RocketClientChannel::sendThriftRequest(
       getPersistentWriteHeaders());
 
   if (!EnvelopeUtil::stripEnvelope(&metadata, buf)) {
-    folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::CORRUPTED_DATA,
@@ -240,7 +239,6 @@ void RocketClientChannel::sendThriftRequest(
   DCHECK(metadata.kind_ref().has_value());
 
   if (!rclient_ || !rclient_->isAlive()) {
-    folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::NOT_OPEN, "Connection is not open"),
@@ -252,11 +250,8 @@ void RocketClientChannel::sendThriftRequest(
     TTransportException ex(
         TTransportException::NETWORK_ERROR,
         "Too many active requests on connection");
-
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-
-    folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(std::move(ex), std::move(ctx)));
     return;
   }
@@ -414,7 +409,6 @@ void RocketClientChannel::sendSingleRequestStreamResponse(
     flowable = rclient_->createStream(rocket::Payload::makeFromMetadataAndData(
         serializeMetadata(metadata), std::move(buf)));
   } catch (const std::exception& e) {
-    folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(
         folly::exception_wrapper(std::current_exception(), e), std::move(ctx)));
     return;
@@ -423,10 +417,7 @@ void RocketClientChannel::sendSingleRequestStreamResponse(
   // Note that at this point, no RPC has been sent or has even been
   // scheduled to be sent. This is similar to how requestSent() behaves in
   // RSocketClientChannel.
-  {
-    folly::RequestContextScopeGuard rctx(cb->context_);
-    cb->requestSent();
-  }
+  cb->requestSent();
 
   auto callback = std::make_unique<ThriftClientCallback>(
       evb_, std::move(cb), std::move(ctx), protocolId_, chunkTimeout);
