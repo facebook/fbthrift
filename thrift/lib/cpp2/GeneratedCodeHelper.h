@@ -39,6 +39,9 @@ namespace thrift {
 
 namespace detail {
 
+// For streaming, the default 16KB Protocol growth can be memory aggressive.
+constexpr size_t kStreamingQueueAppenderGrowth = 4096;
+
 template <int N, int Size, class F, class Tuple>
 struct ForEachImpl {
   static uint32_t forEach(Tuple&& tuple, F&& f) {
@@ -769,7 +772,7 @@ apache::thrift::Stream<folly::IOBufQueue> encode_stream(
 
         folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
         Protocol prot;
-        prot.setOutput(&queue);
+        prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
 
         res.write(&prot);
         return queue;
@@ -777,7 +780,7 @@ apache::thrift::Stream<folly::IOBufQueue> encode_stream(
       [map = std::move(exceptionMap)](folly::exception_wrapper&& ew) mutable {
         Protocol prot;
         folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-        prot.setOutput(&queue);
+        prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
         PResult res;
         if (map(res, ew)) {
           res.write(&prot);
