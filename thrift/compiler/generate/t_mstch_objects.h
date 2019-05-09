@@ -18,7 +18,7 @@
 #include <iomanip>
 #include <unordered_map>
 
-#include <mstch/mstch.hpp>
+#include <thrift/compiler/mustache/mstch.h>
 
 #include <thrift/compiler/generate/t_generator.h>
 

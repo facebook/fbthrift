@@ -75,6 +75,20 @@ target_link_libraries(
   ${Boost_LIBRARIES}
 )
 
+#build compiler/mustache
+add_library(
+  mustache_lib
+
+  mustache/mstch.cpp
+  mustache/render_context.cpp
+  mustache/state/in_section.cpp
+  mustache/state/outside_section.cpp
+  mustache/template_type.cpp
+  mustache/token.cpp
+  mustache/utils.cpp
+)
+target_link_libraries(mustache_lib ${Boost_LIBRARIES})
+
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)
 aux_source_directory(./generate/templates MSTCH_TEMPLATES)
@@ -89,8 +103,8 @@ target_link_libraries(
 
   compiler_base
   compiler_lib
+  mustache_lib
   ${Boost_LIBRARIES}
-  ${MSTCH_LIBRARIES}
   ${OPENSSL_LIBRARIES}
 )
 # Force compiler_generators linking (compiler will optimize it out otherwise)
@@ -142,6 +156,7 @@ install(
     compiler_ast
     compiler_base
     compiler_lib
+    mustache_lib
     compiler_generators
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}

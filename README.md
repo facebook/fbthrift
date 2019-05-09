@@ -69,7 +69,6 @@ Please install the following dependencies before building Facebook Thrift:
 [Double Conversion](https://github.com/google/double-conversion),
 [GFlags](https://github.com/gflags/gflags),
 [GLog](https://github.com/google/glog),
-[Mstch](https://github.com/no1msd/mstch)
 
 **Facebook**:
 [Fizz](https://github.com/facebookincubator/fizz),

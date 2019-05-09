@@ -65,20 +65,6 @@ brew install \
  [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\local\win_flex_bison", [System.EnvironmentVariableTarget]::Machine)
  ```
 
-### Non-packed Dependencies
-- [Mustache](https://mustache.github.io/) (Logic-less templates)
-```
-mkdir -p ~/tmp/mstch
-git clone https://github.com/no1msd/mstch ~/tmp/mstch
-cd ~/tmp/mstch
-cmake .
-make
-```
-Global Install:
-```
-make install
-``` 
-
 ## Building
 ```
 mkdir fbthrift/build
@@ -88,7 +74,6 @@ Locally installed dependencies:
 ```
 cmake \
   -Dcompiler_only=ON \
-  -DMSTCH_ROOT="~/tmp/mstch" \
   ..
 ```
 Globally installed dependencies:
@@ -130,7 +115,6 @@ Locally installed dependencies:
 cmake \
   -Denable_tests=ON \
   -Dcompiler_only=ON \
-  -DMSTCH_ROOT="~/tmp/mstch" \
   -DGTEST_ROOT="~/tmp/googletest" \
   -DGMOCK_ROOT="~/tmp/googlemock" \
   ..
