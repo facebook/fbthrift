@@ -15,6 +15,8 @@
  */
 
 #pragma once
+#include <type_traits>
+
 #include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/async/Stream.h>
@@ -23,65 +25,82 @@
 #include <folly/experimental/coro/AsyncGenerator.h>
 #endif
 
+namespace folly {
+class CancellationToken;
+}
+
 namespace apache {
 namespace thrift {
 
 namespace detail {
-template <typename Generator, typename Element>
-struct StreamGeneratorImpl {
-  static Stream<Element> create(
-      folly::Executor::KeepAlive<folly::SequencedExecutor>,
-      Generator&&,
-      int64_t) {
-    LOG(FATAL) << "Returned value should either be folly::Optional<T>, "
-                  "folly::SemiFuture<folly::Optional<T>> or"
-                  " folly::coro::AsyncGenerator<T?(&|&&)>";
-  }
-};
 
-template <typename Generator, typename Element>
-struct StreamGeneratorImpl<Generator, folly::Optional<Element>> {
-  static Stream<Element> create(
-      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator,
-      int64_t maxBatchSize);
-};
+template <typename>
+struct is_optional : std::false_type {};
+template <typename T>
+struct is_optional<folly::Optional<T>> : std::true_type {};
 
-template <typename Generator, typename Element>
-struct StreamGeneratorImpl<
-    Generator,
-    folly::SemiFuture<folly::Optional<Element>>> {
-  static Stream<Element> create(
-      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator,
-      int64_t maxBatchSize);
-};
-
-#if FOLLY_HAS_COROUTINES
-template <typename Generator, typename Element>
-struct StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>> {
-  static Stream<typename folly::coro::AsyncGenerator<Element>::value_type>
-  create(
-      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-      Generator&& generator,
-      int64_t maxBatchSize);
-};
-#endif
+template <typename>
+struct is_future_optional : std::false_type {};
+template <typename T>
+struct is_future_optional<folly::SemiFuture<folly::Optional<T>>>
+    : std::true_type {};
 } // namespace detail
 
 class StreamGenerator {
  public:
   template <
       typename Generator,
-      typename Element =
-          typename folly::invoke_result_t<std::decay_t<Generator>&>>
+      std::enable_if_t<
+          detail::is_optional<
+              typename folly::invoke_result_t<std::decay_t<Generator>&>>::value,
+          int> = 0>
+  static auto create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+      Generator&& generator)
+      -> Stream<typename folly::invoke_result_t<
+          std::decay_t<Generator>&>::value_type>;
+
+  template <
+      typename Generator,
+      std::enable_if_t<
+          detail::is_future_optional<
+              typename folly::invoke_result_t<std::decay_t<Generator>&>>::value,
+          int> = 0>
   static auto create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
       Generator&& generator,
-      int64_t maxBatchSize = StreamGenerator::kDefaultBatchSize) {
-    return detail::StreamGeneratorImpl<Generator, Element>::create(
-        executor, std::forward<Generator>(generator), maxBatchSize);
-  }
+      int maxBatchSize = StreamGenerator::kDefaultBatchSize)
+      -> Stream<typename folly::invoke_result_t<
+          std::decay_t<Generator>&>::value_type::value_type>;
+#ifdef FOLLY_HAS_COROUTINES
+  template <
+      typename Generator,
+      std::enable_if_t<
+          folly::coro::detail::is_async_generator_v<
+              typename folly::invoke_result_t<std::decay_t<Generator>&>>,
+          int> = 0>
+  static auto create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+      Generator&& generator)
+      -> Stream<typename folly::invoke_result_t<
+          std::decay_t<Generator>&>::value_type>;
+
+  template <
+      typename Generator,
+      std::enable_if_t<
+          folly::coro::detail::is_async_generator_v<
+              typename folly::invoke_result_t<
+                  std::decay_t<Generator>&,
+                  folly::CancellationToken>>,
+          int> = 0>
+  static auto create(
+      folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+      Generator&& generator)
+      -> Stream<typename folly::invoke_result_t<
+          std::decay_t<Generator>&,
+          folly::CancellationToken>::value_type>;
+#endif
+
   static constexpr auto kDefaultBatchSize = 100;
 
  private:

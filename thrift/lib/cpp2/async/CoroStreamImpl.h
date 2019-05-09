@@ -15,6 +15,7 @@
  */
 #pragma once
 
+#include <folly/CancellationToken.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
@@ -33,6 +34,11 @@ class CoroStreamImpl : public StreamImplIf {
       : generator_(std::move(generator)),
         sharedState_(std::make_shared<SharedState>()) {}
 
+  CoroStreamImpl(
+      folly::coro::AsyncGenerator<T>&& generator,
+      folly::CancellationSource source)
+      : generator_(std::move(generator)),
+        sharedState_(std::make_shared<SharedState>(std::move(source))) {}
   std::unique_ptr<StreamImplIf> map(
       folly::Function<Value(Value)> mapFunc,
       folly::Function<folly::exception_wrapper(folly::exception_wrapper&&)>
@@ -68,7 +74,12 @@ class CoroStreamImpl : public StreamImplIf {
         if (auto state = state_.lock()) {
           state->subscribeExecutor_->add(
               [n, state = std::move(state)]() mutable {
-                state->requested_ += n;
+                if (state->requested_ == Stream<T>::kNoFlowControl ||
+                    n == Stream<T>::kNoFlowControl) {
+                  state->requested_ = Stream<T>::kNoFlowControl;
+                } else {
+                  state->requested_ += n;
+                }
                 state->baton_.post();
               });
         }
@@ -76,10 +87,9 @@ class CoroStreamImpl : public StreamImplIf {
 
       void cancel() override {
         if (auto state = state_.lock()) {
-          state->subscribeExecutor_->add([state = std::move(state)]() mutable {
-            state->canceled_ = true;
-            state->baton_.post();
-          });
+          // both are thread safe operation
+          state->cancelSource_.requestCancellation();
+          state->baton_.post();
         }
       }
 
@@ -103,13 +113,14 @@ class CoroStreamImpl : public StreamImplIf {
           typename folly::coro::AsyncGenerator<T>::async_iterator iter;
           bool started = false;
           while (true) {
-            while (self.sharedState_->requested_ == 0 &&
-                   !self.sharedState_->canceled_) {
+            while (
+                self.sharedState_->requested_ == 0 &&
+                !self.sharedState_->cancelSource_.isCancellationRequested()) {
               co_await self.sharedState_->baton_;
               self.sharedState_->baton_.reset();
             }
 
-            if (self.sharedState_->canceled_) {
+            if (self.sharedState_->cancelSource_.isCancellationRequested()) {
               co_return;
             }
 
@@ -187,11 +198,14 @@ class CoroStreamImpl : public StreamImplIf {
 
  private:
   struct SharedState {
+    SharedState() = default;
+    explicit SharedState(folly::CancellationSource source)
+        : cancelSource_(std::move(source)) {}
     folly::Executor::KeepAlive<folly::SequencedExecutor> subscribeExecutor_;
     folly::Executor::KeepAlive<folly::SequencedExecutor> observeExecutor_;
-    bool canceled_{false};
     int64_t requested_{0};
     folly::coro::Baton baton_{0};
+    folly::CancellationSource cancelSource_;
   };
 
   folly::coro::AsyncGenerator<T> generator_;
@@ -206,11 +220,22 @@ class CoroStreamImpl : public StreamImplIf {
 } // namespace detail
 
 template <typename T, typename U>
-Stream<typename folly::coro::AsyncGenerator<T, U>::value_type> toStream(
+Stream<typename folly::coro::AsyncGenerator<T, U>::value_type> toCoroStream(
     folly::coro::AsyncGenerator<T, U>&& generator,
     folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
   return Stream<std::decay_t<T>>::create(
       std::make_unique<detail::CoroStreamImpl<T>>(std::move(generator)),
+      std::move(executor));
+}
+
+template <typename T, typename U>
+Stream<typename folly::coro::AsyncGenerator<T, U>::value_type> toCoroStream(
+    folly::coro::AsyncGenerator<T, U>&& generator,
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+    folly::CancellationSource source) {
+  return Stream<std::decay_t<T>>::create(
+      std::make_unique<detail::CoroStreamImpl<T>>(
+          std::move(generator), std::move(source)),
       std::move(executor));
 }
 

@@ -173,12 +173,21 @@ class FutureEmitterWrapper : public yarpl::flowable::details::EmitterBase<T>,
   const int64_t maxBatchSize_;
 };
 
-template <typename Generator, typename Element>
-Stream<Element>
-StreamGeneratorImpl<Generator, folly::Optional<Element>>::create(
+} // namespace detail
+
+template <
+    typename Generator,
+    std::enable_if_t<
+        detail::is_optional<
+            typename folly::invoke_result_t<std::decay_t<Generator>&>>::value,
+        int>>
+auto StreamGenerator::create(
     folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-    Generator&& generator,
-    int64_t) {
+    Generator&& generator)
+    -> Stream<
+        typename folly::invoke_result_t<std::decay_t<Generator>&>::value_type> {
+  using Element =
+      typename folly::invoke_result_t<std::decay_t<Generator>&>::value_type;
   auto flowable = yarpl::flowable::Flowable<Element>::create(
       [generator = std::forward<Generator>(generator)](
           yarpl::flowable::Subscriber<Element>& subscriber,
@@ -203,16 +212,24 @@ StreamGeneratorImpl<Generator, folly::Optional<Element>>::create(
   return toStream(std::move(flowable), std::move(executor));
 }
 
-template <typename Generator, typename Element>
-Stream<Element>
-StreamGeneratorImpl<Generator, folly::SemiFuture<folly::Optional<Element>>>::
-    create(
-        folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-        Generator&& generator,
-        int64_t maxBatchSize) {
+template <
+    typename Generator,
+    std::enable_if_t<
+        detail::is_future_optional<
+            typename folly::invoke_result_t<std::decay_t<Generator>&>>::value,
+        int>>
+auto StreamGenerator::create(
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+    Generator&& generator,
+    int maxBatchSize)
+    -> Stream<typename folly::invoke_result_t<
+        std::decay_t<Generator>&>::value_type::value_type> {
+  using Element = typename folly::invoke_result_t<
+      std::decay_t<Generator>&>::value_type::value_type;
+
   DCHECK(maxBatchSize > 0) << "maxBatchSize must > 0";
   std::shared_ptr<yarpl::flowable::Flowable<Element>> flowable =
-      std::make_shared<FutureEmitterWrapper<Element>>(
+      std::make_shared<detail::FutureEmitterWrapper<Element>>(
           [generator = std::forward<Generator>(generator),
            executor = executor.copy()]() mutable
           -> folly::Future<folly::Optional<Element>> {
@@ -223,20 +240,46 @@ StreamGeneratorImpl<Generator, folly::SemiFuture<folly::Optional<Element>>>::
   return toStream(std::move(flowable), std::move(executor));
 }
 
-#if FOLLY_HAS_COROUTINES
-template <typename Generator, typename Element>
-Stream<typename folly::coro::AsyncGenerator<Element>::value_type>
-StreamGeneratorImpl<Generator, folly::coro::AsyncGenerator<Element>>::create(
+#ifdef FOLLY_HAS_COROUTINES
+template <
+    typename Generator,
+    std::enable_if_t<
+        folly::coro::detail::is_async_generator_v<
+            typename folly::invoke_result_t<std::decay_t<Generator>&>>,
+        int>>
+auto StreamGenerator::create(
     folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-    Generator&& generator,
-    int64_t) {
-  return toStream(
+    Generator&& generator)
+    -> Stream<
+        typename folly::invoke_result_t<std::decay_t<Generator>&>::value_type> {
+  return toCoroStream(
       folly::coro::co_invoke(std::forward<Generator>(generator)),
       std::move(executor));
 }
-#endif
 
-} // namespace detail
+template <
+    typename Generator,
+    std::enable_if_t<
+        folly::coro::detail::is_async_generator_v<
+            typename folly::invoke_result_t<
+                std::decay_t<Generator>&,
+                folly::CancellationToken>>,
+        int>>
+auto StreamGenerator::create(
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+    Generator&& generator)
+    -> Stream<typename folly::invoke_result_t<
+        std::decay_t<Generator>&,
+        folly::CancellationToken>::value_type> {
+  folly::CancellationSource source;
+  auto token = source.getToken();
+  return toCoroStream(
+      folly::coro::co_invoke(
+          std::forward<Generator>(generator), std::move(token)),
+      std::move(executor),
+      std::move(source));
+}
+#endif
 
 } // namespace thrift
 } // namespace apache

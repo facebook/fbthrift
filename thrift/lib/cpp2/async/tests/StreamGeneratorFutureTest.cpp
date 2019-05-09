@@ -20,6 +20,7 @@
 
 #include <folly/Conv.h>
 #if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #endif
 #include <folly/io/async/ScopedEventBaseThread.h>
@@ -639,6 +640,42 @@ TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorError) {
       .futureJoin()
       .get();
   EXPECT_TRUE(getException);
+}
+
+TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorPreemptiveCancel) {
+  folly::ScopedEventBaseThread th;
+  folly::coro::Baton b;
+  bool canceled = false;
+  Stream<std::string> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&](folly::CancellationToken token)
+          -> folly::coro::AsyncGenerator<std::string&&> {
+        // cancelCallback will be execute in the same event loop
+        // as async generator
+        folly::CancellationCallback cancelCallback(token, [&]() {
+          canceled = true;
+          b.post();
+        });
+        co_yield "first";
+        co_await b;
+        if (!canceled) {
+          co_yield "never_reach";
+        }
+      });
+
+  folly::Baton<> b1;
+  auto subscription = std::move(stream).subscribe(
+      [&](const std::string& value) {
+        EXPECT_EQ("first", value);
+        b1.post();
+      },
+      [&](folly::exception_wrapper) {},
+      [&] {},
+      2);
+  b1.wait();
+  subscription.cancel();
+  std::move(subscription).join();
+  EXPECT_TRUE(canceled);
 }
 
 #endif
