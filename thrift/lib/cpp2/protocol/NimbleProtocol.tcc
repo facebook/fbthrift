@@ -35,10 +35,19 @@ inline uint32_t NimbleProtocolWriter::writeMessageEnd() {
 }
 
 inline uint32_t NimbleProtocolWriter::writeStructBegin(const char* /*name*/) {
+  // The lowest two bits of this fieldChunk is a fieldChunkHint (00) indicating
+  // that this is a complex type. The third lowest bit (0) denotes that this is
+  // a structy type rather than a stringy type. The next 4 bits encode the
+  // specific type of the structy field, in this case a struct.
+  encoder_.encodeFieldChunk(
+      StructyType::STRUCT << kComplexMetadataBits |
+      ComplexType::STRUCTY << kFieldChunkHintBits |
+      NimbleFieldChunkHint::COMPLEX_METADATA);
   return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeStructEnd() {
+  // field chunk 0 marks the end of a struct
   encoder_.encodeFieldChunk(0);
   return 0;
 }
@@ -75,7 +84,7 @@ inline uint32_t NimbleProtocolWriter::writeMapBegin(
 
   StructyType structyType = getStructyTypeFromMap(keyType, valType);
 
-  // The lowest two bits of this fieldChunk is a fieldChunkHint (11) meaning
+  // The lowest two bits of this fieldChunk is a fieldChunkHint (00) meaning
   // that this is a complex type. The third lowest bit (0) denotes that this is
   // a structy type rather than a stringy type. The next 4 bits encode the
   // specific type of the structy field, e.g. map from 1-chunk items to 1-chunk
@@ -84,7 +93,7 @@ inline uint32_t NimbleProtocolWriter::writeMapBegin(
       (size << kStructyTypeMetadataBits) |
       (structyType << kComplexMetadataBits) |
       (ComplexType::STRUCTY << kFieldChunkHintBits) |
-      NimbleFieldChunkHint::COMPLEX_TYPE);
+      NimbleFieldChunkHint::COMPLEX_METADATA);
   return 0;
 }
 
@@ -105,13 +114,13 @@ inline uint32_t NimbleProtocolWriter::writeCollectionBegin(
     throw std::runtime_error("Not implemented yet");
   }
   StructyType structyType = getStructyTypeFromListOrSet(elemType);
-  // The lowest two bits of the fieldChunk is a fieldChunkHint (11) indicating
+  // The lowest two bits of the fieldChunk is a fieldChunkHint (00) indicating
   // that this is a complex type. The thrid lowest bit (0) denotes a structy
   // type. The next 4 bits encode the specific type of the structy field.
   encoder_.encodeFieldChunk(
       size << kStructyTypeMetadataBits | structyType << kComplexMetadataBits |
       ComplexType::STRUCTY << kFieldChunkHintBits |
-      NimbleFieldChunkHint::COMPLEX_TYPE);
+      NimbleFieldChunkHint::COMPLEX_METADATA);
   return 0;
 }
 
@@ -301,8 +310,15 @@ inline void NimbleProtocolReader::readMessageBegin(
     int32_t& /*seqid*/) {}
 
 inline void NimbleProtocolReader::readMessageEnd() {}
-inline void NimbleProtocolReader::readStructBegin(std::string& /*name*/) {}
+
+inline void NimbleProtocolReader::readStructBegin(const std::string& /*name*/) {
+  uint32_t nextFieldChunk = decoder_.nextFieldChunk();
+  // sanity check
+  checkComplexFieldData(nextFieldChunk, ComplexType::STRUCTY);
+}
+
 inline void NimbleProtocolReader::readStructEnd() {}
+
 inline void NimbleProtocolReader::readFieldBegin(
     std::string& /*name*/,
     TType& /*fieldType*/,
@@ -315,13 +331,7 @@ inline void NimbleProtocolReader::readMapBegin(
     uint32_t& size) {
   uint32_t nextFieldChunk = decoder_.nextFieldChunk();
   // sanity check
-  if (UNLIKELY(
-          (nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
-          (nextFieldChunk >> kFieldChunkHintBits & 1) !=
-              ComplexType::STRUCTY)) {
-    // TODO: handle (skip) malformed data
-    throw std::runtime_error("Not implemented yet. Skip malformed data");
-  }
+  checkComplexFieldData(nextFieldChunk, ComplexType::STRUCTY);
 
   // TODO: the structy type is encoded in the 4-7th lowest bits
   // StructyType structyType =
@@ -348,13 +358,7 @@ inline void NimbleProtocolReader::readListBegin(
     uint32_t& size) {
   uint32_t nextFieldChunk = decoder_.nextFieldChunk();
   // sanity check
-  if (UNLIKELY(
-          (nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
-          (nextFieldChunk >> kFieldChunkHintBits & 1) !=
-              ComplexType::STRUCTY)) {
-    // TODO: handle (skip) malformated data
-    return;
-  }
+  checkComplexFieldData(nextFieldChunk, ComplexType::STRUCTY);
 
   // TODO: handle map size greater than 2**24
   if (nextFieldChunk & (1U << 31)) {
@@ -413,13 +417,7 @@ template <typename StrType>
 inline void NimbleProtocolReader::readString(StrType& str) {
   uint32_t nextFieldChunk = decoder_.nextFieldChunk();
   // sanity check
-  if (UNLIKELY(
-          (nextFieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_TYPE ||
-          (nextFieldChunk >> kFieldChunkHintBits & 1) !=
-              ComplexType::STRINGY)) {
-    // TODO: skip bad content field
-    throw std::runtime_error("Not implemented yet (data is malformed)");
-  }
+  checkComplexFieldData(nextFieldChunk, ComplexType::STRINGY);
 
   // TODO: handle string length greater than 2**28
   if (nextFieldChunk & 1U << 31) {
@@ -454,12 +452,22 @@ inline void NimbleProtocolReader::skip(TType type) {
         decoder_.nextContentChunk();
       }
       break;
-    case COMPLEX_METADATA:
+    case COMPLEX_TYPE:
       // TODO: handle these cases
       throw std::runtime_error("Not implemented yet");
       break;
     default:
       folly::assume_unreachable();
+  }
+}
+
+inline void NimbleProtocolReader::checkComplexFieldData(
+    uint32_t fieldChunk,
+    ComplexType complexType) {
+  if (UNLIKELY(
+          ((fieldChunk >> kFieldChunkHintBits) & 1) != complexType ||
+          (fieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_METADATA)) {
+    throw std::runtime_error("Not implemented yet (skip bad data)");
   }
 }
 
@@ -476,7 +484,7 @@ bool NimbleProtocolReader::advanceToNextField(
 
   auto fieldChunkHint = static_cast<NimbleFieldChunkHint>(fieldChunk & 3);
   // sanity check
-  if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_TYPE)) {
+  if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_METADATA)) {
     // TODO: data is malformed, handle this case
     throw std::runtime_error("Bad data encountered while deserializing");
   }

@@ -100,7 +100,7 @@ void NimbleProtocolWriter::encode(folly::ByteRange input) {
   encoder_.encodeFieldChunk(
       input.size() << kComplexMetadataBits |
       ComplexType::STRINGY << kFieldChunkHintBits |
-      NimbleFieldChunkHint::COMPLEX_TYPE);
+      NimbleFieldChunkHint::COMPLEX_METADATA);
   encoder_.encodeBinary(input.data(), input.size());
 }
 

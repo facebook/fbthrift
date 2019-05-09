@@ -152,7 +152,7 @@ class NimbleProtocolReader {
   void
   readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
   void readMessageEnd();
-  void readStructBegin(std::string& name);
+  void readStructBegin(const std::string& name);
   void readStructEnd();
   void readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
   void readFieldEnd();
@@ -207,13 +207,18 @@ class NimbleProtocolReader {
   void decode(uint64_t& value);
   void decode(double& value);
   void decode(float& value);
+  void checkComplexFieldData(
+      uint32_t fieldChunk,
+      detail::nimble::ComplexType complexType);
 
   struct StructReadState {
     int16_t fieldId;
     apache::thrift::protocol::TType fieldType;
     detail::nimble::NimbleFieldChunkHint fieldChunkHint;
 
-    void readStructBegin(NimbleProtocolReader* /*iprot*/) {}
+    void readStructBegin(NimbleProtocolReader* iprot) {
+      iprot->readStructBegin("");
+    }
 
     void readStructEnd(NimbleProtocolReader* /*iprot*/) {}
 
