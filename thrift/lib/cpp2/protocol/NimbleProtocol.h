@@ -17,12 +17,16 @@
 #pragma once
 
 #include <folly/io/Cursor.h>
+#include <folly/portability/GFlags.h>
 #include <thrift/facebook/nimble/Decoder.h>
 #include <thrift/facebook/nimble/Encoder.h>
 #include <thrift/facebook/nimble/NimbleTypes.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
+DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
 
 namespace apache {
 namespace thrift {
@@ -123,16 +127,31 @@ class NimbleProtocolWriter {
   void encode(uint64_t input);
   void encode(double input);
   void encode(float input);
-  void encode(folly::StringPiece input);
-  void encode(folly::ByteRange input);
+  void encodeComplexTypeMetadata(
+      uint32_t size,
+      detail::nimble::StructyType structyType =
+          detail::nimble::StructyType::UNUSED);
 };
 
 class NimbleProtocolReader {
  public:
   using ProtocolWriter = NimbleProtocolWriter;
 
-  explicit NimbleProtocolReader(std::unique_ptr<folly::IOBuf> buf)
-      : decoder_(std::move(buf)) {}
+  explicit NimbleProtocolReader(
+      std::unique_ptr<folly::IOBuf> buf,
+      int32_t string_limit = FLAGS_thrift_cpp2_protocol_reader_string_limit,
+      int32_t container_limit =
+          FLAGS_thrift_cpp2_protocol_reader_container_limit)
+      : decoder_(std::move(buf)),
+        string_limit_(string_limit),
+        container_limit_(container_limit) {
+    if (string_limit_ <= 0) {
+      string_limit_ = INT32_MAX;
+    }
+    if (container_limit_ <= 0) {
+      container_limit_ = INT32_MAX;
+    }
+  }
 
   static constexpr bool kUsesFieldNames() {
     return false;
@@ -176,6 +195,7 @@ class NimbleProtocolReader {
   void readBinary(StrType& str);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinary(folly::IOBuf& str);
+  uint32_t readComplexTypeSize(detail::nimble::ComplexType complexType);
   void skip(TType type);
   bool peekMap() {
     return false;
@@ -263,6 +283,8 @@ class NimbleProtocolReader {
 
  private:
   detail::Decoder decoder_;
+  int32_t string_limit_;
+  int32_t container_limit_;
 };
 
 namespace detail {

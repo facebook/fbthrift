@@ -111,6 +111,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
       folly::StringPiece type);
   [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);
   [[noreturn]] static void throwInvalidSkipType(TType type);
+  [[noreturn]] static void throwInvalidFieldData();
 
  protected:
   /**

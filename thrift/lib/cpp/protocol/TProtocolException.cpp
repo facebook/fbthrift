@@ -69,6 +69,12 @@ namespace protocol {
           "Encountered invalid field/element type ({}) during skipping",
           static_cast<uint8_t>(type)));
 }
+
+[[noreturn]] void TProtocolException::throwInvalidFieldData() {
+  throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      "The field stream contains corrupted data");
+}
 } // namespace protocol
 } // namespace thrift
 } // namespace apache

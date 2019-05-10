@@ -84,26 +84,6 @@ void NimbleProtocolWriter::encode(float input) {
   encode(bits);
 }
 
-void NimbleProtocolWriter::encode(folly::StringPiece input) {
-  encode(folly::ByteRange(input));
-}
-
-void NimbleProtocolWriter::encode(folly::ByteRange input) {
-  // TODO: handle string longer than 2**28
-  // TODO: caller set string_limit
-  // To use the short size encoding, we need the high bit of the resulting
-  // chunk to be 0, and so must fit in 31 bits, including the shift for the
-  // metadata.
-  if (input.size() >= (1U << (31 - kComplexMetadataBits))) {
-    throw std::runtime_error("Not implemented yet");
-  }
-  encoder_.encodeFieldChunk(
-      input.size() << kComplexMetadataBits |
-      ComplexType::STRINGY << kFieldChunkHintBits |
-      NimbleFieldChunkHint::COMPLEX_METADATA);
-  encoder_.encodeBinary(input.data(), input.size());
-}
-
 void NimbleProtocolReader::decode(bool& value) {
   value = static_cast<bool>(decoder_.nextContentChunk());
 }
