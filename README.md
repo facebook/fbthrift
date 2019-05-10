@@ -67,6 +67,7 @@ Please install the following dependencies before building Facebook Thrift:
 
 **External**:
 [Double Conversion](https://github.com/google/double-conversion),
+[{fmt}](https://github.com/fmtlib/fmt),
 [GFlags](https://github.com/gflags/gflags),
 [GLog](https://github.com/google/glog),
 
