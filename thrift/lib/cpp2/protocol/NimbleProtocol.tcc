@@ -68,7 +68,7 @@ inline uint32_t NimbleProtocolWriter::writeStructBegin(const char* /*name*/) {
   // The lowest two bits of this fieldChunk is a fieldChunkHint (00) indicating
   // that this is a complex type. The third lowest bit (0) denotes that this is
   // a structy type rather than a stringy type. The next 4 bits encode the
-  // specific type of the structy field, in this case a struct.
+  // specific type of the structy field, in this case a struct or a union.
   encoder_.encodeFieldChunk(
       StructyType::STRUCT << kComplexMetadataBits |
       ComplexType::STRUCTY << kFieldChunkHintBits |
@@ -481,7 +481,7 @@ bool NimbleProtocolReader::advanceToNextField(
   // sanity check
   if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_METADATA)) {
     // TODO: data is malformed, handle this case
-    throw std::runtime_error("Bad data encountered while deserializing");
+    TProtocolException::throwInvalidFieldData();
   }
   state.fieldChunkHint = fieldChunkHint;
   state.fieldId = fieldChunk >> kFieldChunkHintBits;

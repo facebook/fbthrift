@@ -242,7 +242,10 @@ class NimbleProtocolReader {
 
     void readStructEnd(NimbleProtocolReader* /*iprot*/) {}
 
-    void readFieldBegin(NimbleProtocolReader* /*iprot*/) {}
+    void readFieldBegin(NimbleProtocolReader* iprot) {
+      // the first three params are dummy
+      iprot->advanceToNextField(0, 0, TType::T_STOP, *this);
+    }
 
     FOLLY_NOINLINE void readFieldBeginNoInline(
         NimbleProtocolReader* /*iprot*/) {}

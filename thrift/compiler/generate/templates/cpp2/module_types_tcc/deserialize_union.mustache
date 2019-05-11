@@ -32,7 +32,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   <%#struct:fields%><%#field:type%>
       case <%field:key%>:
       {
-        if (_readState.fieldType == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::<% > module_types_tcc/struct_type%>)) {
           this->set_<%field:cpp_name%>();
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>

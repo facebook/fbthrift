@@ -213,7 +213,7 @@ void union1::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ui();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ui());
         } else {
@@ -223,7 +223,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_DOUBLE) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_ud();
           iprot->readDouble(this->mutable_ud());
         } else {
@@ -233,7 +233,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       }
       case 3:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_us();
           iprot->readString(this->mutable_us());
         } else {
@@ -243,7 +243,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       }
       case 4:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ue();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_ue());
         } else {
@@ -405,7 +405,7 @@ void union2::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ui_2();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ui_2());
         } else {
@@ -415,7 +415,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_DOUBLE) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_ud_2();
           iprot->readDouble(this->mutable_ud_2());
         } else {
@@ -425,7 +425,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       }
       case 3:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_us_2();
           iprot->readString(this->mutable_us_2());
         } else {
@@ -435,7 +435,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       }
       case 4:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ue_2();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_ue_2());
         } else {
@@ -597,7 +597,7 @@ void union3::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ui_3();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ui_3());
         } else {
@@ -607,7 +607,7 @@ void union3::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_DOUBLE) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_ud_3();
           iprot->readDouble(this->mutable_ud_3());
         } else {
@@ -617,7 +617,7 @@ void union3::readNoXfer(Protocol_* iprot) {
       }
       case 3:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_us_3();
           iprot->readString(this->mutable_us_3());
         } else {
@@ -627,7 +627,7 @@ void union3::readNoXfer(Protocol_* iprot) {
       }
       case 4:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ue_3();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_ue_3());
         } else {
@@ -924,7 +924,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_i());
         } else {
@@ -934,7 +934,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_DOUBLE) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_d();
           iprot->readDouble(this->mutable_d());
         } else {
@@ -944,7 +944,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
       }
       case 3:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRING) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_s();
           iprot->readString(this->mutable_s());
         } else {
@@ -954,7 +954,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
       }
       case 4:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_e();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_e());
         } else {
@@ -964,7 +964,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
       }
       case 5:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_STRUCT) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_a();
           ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, &this->mutable_a());
         } else {
@@ -4325,7 +4325,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       case 1:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_get();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_get());
         } else {
@@ -4335,7 +4335,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 2:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_getter();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_getter());
         } else {
@@ -4345,7 +4345,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 3:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_lists();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_lists());
         } else {
@@ -4355,7 +4355,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 4:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_maps();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_maps());
         } else {
@@ -4365,7 +4365,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 5:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_name();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_name());
         } else {
@@ -4375,7 +4375,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 6:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_name_to_value();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_name_to_value());
         } else {
@@ -4385,7 +4385,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 7:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_names();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_names());
         } else {
@@ -4395,7 +4395,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 8:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_prefix_tree();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_prefix_tree());
         } else {
@@ -4405,7 +4405,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 9:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_sets();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_sets());
         } else {
@@ -4415,7 +4415,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 10:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_setter();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_setter());
         } else {
@@ -4425,7 +4425,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 11:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_str();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_str());
         } else {
@@ -4435,7 +4435,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 12:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_strings();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_strings());
         } else {
@@ -4445,7 +4445,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 13:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_type();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_type());
         } else {
@@ -4455,7 +4455,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 14:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_value();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_value());
         } else {
@@ -4465,7 +4465,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 15:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_value_to_name();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_value_to_name());
         } else {
@@ -4475,7 +4475,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 16:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_values();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_values());
         } else {
@@ -4485,7 +4485,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 17:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_id();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_id());
         } else {
@@ -4495,7 +4495,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 18:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_ids();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ids());
         } else {
@@ -4505,7 +4505,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 19:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_descriptor();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_descriptor());
         } else {
@@ -4515,7 +4515,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 20:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_descriptors();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_descriptors());
         } else {
@@ -4525,7 +4525,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 21:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_key();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_key());
         } else {
@@ -4535,7 +4535,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 22:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_keys();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_keys());
         } else {
@@ -4545,7 +4545,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 23:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_annotation();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_annotation());
         } else {
@@ -4555,7 +4555,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 24:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_annotations();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_annotations());
         } else {
@@ -4565,7 +4565,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 25:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_member();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_member());
         } else {
@@ -4575,7 +4575,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 26:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_members();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_members());
         } else {
@@ -4585,7 +4585,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 27:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_field();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_field());
         } else {
@@ -4595,7 +4595,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
       }
       case 28:
       {
-        if (_readState.fieldType == apache::thrift::protocol::T_I32) {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_fields();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_fields());
         } else {
