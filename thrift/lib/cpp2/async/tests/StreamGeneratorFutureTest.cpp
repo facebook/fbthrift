@@ -23,6 +23,7 @@
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #endif
+#include <folly/CancellationToken.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 namespace apache {
@@ -676,6 +677,57 @@ TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorPreemptiveCancel) {
   subscription.cancel();
   std::move(subscription).join();
   EXPECT_TRUE(canceled);
+}
+
+TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancellationToken) {
+  folly::ScopedEventBaseThread th;
+  folly::ScopedEventBaseThread pth;
+  int length = 10;
+  std::vector<folly::Promise<folly::Optional<int>>> vp(length);
+
+  int i = 0;
+  Stream<int> stream = StreamGenerator::create(
+      folly::getKeepAliveToken(th.getEventBase()),
+      [&]() -> folly::SemiFuture<folly::Optional<int>> {
+        if (i < length) {
+          return vp[i++].getSemiFuture();
+        }
+
+        return makeSemiFuture(folly::Optional<int>(folly::none));
+      });
+
+  folly::CancellationSource cancelSource;
+
+  // Fulfill the first 5 requests and leave the rest unfulfilled.
+  // Then after some delay trigger a request for cancellation.
+  for (int j = 4; j >= 0; j--) {
+    pth.add([&vp, j]() { vp[j].setValue(j); });
+  }
+  pth.add([&, cancelSource]() mutable {
+    pth.getEventBase()->schedule(
+        [cancelSource = std::move(cancelSource)] {
+          cancelSource.requestCancellation();
+        },
+        std::chrono::milliseconds(50));
+  });
+
+  int expected_i = 0;
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto gen =
+        toAsyncGenerator<int>(std::move(stream), 5, cancelSource.getToken());
+    int val = 0;
+
+    auto it = co_await gen.begin();
+    while (it != gen.end()) {
+      val = *it;
+      EXPECT_EQ(expected_i++, val);
+      co_await(++it);
+    }
+
+    EXPECT_TRUE(cancelSource.isCancellationRequested());
+
+    EXPECT_EQ(5, val + 1);
+  }());
 }
 
 #endif

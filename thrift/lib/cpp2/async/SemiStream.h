@@ -19,10 +19,12 @@
 #include <folly/Portability.h>
 
 #if FOLLY_HAS_COROUTINES
+#include <folly/CancellationToken.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
 #endif
 
 #include <folly/ExceptionWrapper.h>
+
 #include <thrift/lib/cpp2/async/Stream.h>
 
 namespace apache {
@@ -59,7 +61,8 @@ class SemiStream {
 #if FOLLY_HAS_COROUTINES
   static folly::coro::AsyncGenerator<T&&> toAsyncGenerator(
       SemiStream<T> stream,
-      int64_t bufferSize);
+      int64_t bufferSize,
+      folly::CancellationToken cancellationToken = {});
 #endif
 
  private:
@@ -87,8 +90,10 @@ struct ResponseAndSemiStream {
 template <typename T>
 folly::coro::AsyncGenerator<T&&> toAsyncGenerator(
     SemiStream<T> stream,
-    int64_t bufferSize) {
-  return SemiStream<T>::toAsyncGenerator(std::move(stream), bufferSize);
+    int64_t bufferSize,
+    folly::CancellationToken cancellationToken = {}) {
+  return SemiStream<T>::toAsyncGenerator(
+      std::move(stream), bufferSize, std::move(cancellationToken));
 }
 #endif
 } // namespace thrift

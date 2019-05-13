@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <atomic>
 #include <cassert>
 #include <deque>
 #include <memory>
@@ -81,7 +82,8 @@ Stream<T> SemiStream<T>::via(folly::Executor* executor) && {
 template <typename T>
 folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
     SemiStream<T> stream,
-    int64_t bufferSize) {
+    int64_t bufferSize,
+    folly::CancellationToken cancellationToken) {
   struct SharedState {
     explicit SharedState(int64_t size) : size_(size) {}
     folly::Synchronized<
@@ -97,10 +99,16 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
   class Subscriber : public SubscriberIf<std::unique_ptr<detail::ValueIf>> {
    public:
     explicit Subscriber(std::shared_ptr<SharedState> sharedState)
-        : sharedState_(sharedState) {}
+        : sharedState_(std::move(sharedState)) {}
+
     void onSubscribe(std::unique_ptr<SubscriptionIf> subscription) override {
-      sharedState_->subscription_ = std::move(subscription);
-      sharedState_->subscription_->request(sharedState_->size_);
+      if (sharedState_->terminated_) {
+        subscription->cancel();
+      } else {
+        DCHECK(!sharedState_->subscription_);
+        sharedState_->subscription_ = std::move(subscription);
+        sharedState_->subscription_->request(sharedState_->size_);
+      }
     }
 
     void onNext(std::unique_ptr<detail::ValueIf>&& v) override {
@@ -144,25 +152,56 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
 
   std::move(*(stream.impl_))
       .subscribe(std::make_unique<Subscriber>(sharedState));
-  SCOPE_EXIT {
-    // Cancel the stream on exit.
+
+  std::atomic<bool> cancellationRequested{false};
+
+  auto requestStreamCancellation = [&] {
+    if (cancellationRequested.exchange(true, std::memory_order_relaxed)) {
+      // Cancellation already requested
+      return;
+    }
+
     stream.executor_->add(
         [keepAlive = folly::getKeepAliveToken(stream.executor_),
          sharedStateWeak = std::weak_ptr<SharedState>(sharedState)]() {
           if (auto sharedState = sharedStateWeak.lock()) {
-            if (!sharedState->terminated_) {
-              sharedState->terminated_ = true;
-              sharedState->subscription_->cancel();
+            sharedState->terminated_ = true;
+            if (sharedState->subscription_) {
+              auto subscription = std::move(sharedState->subscription_);
+              subscription->cancel();
             }
           }
         });
   };
+
+  SCOPE_EXIT {
+    // Cancel the stream on exit.
+    requestStreamCancellation();
+  };
+
+  // Cancel the stream if cancellation is requested via the CancellationToken
+  // but also wake up the coroutine if it was suspended waiting for the next
+  // item.
+  folly::CancellationCallback cancelCallback{cancellationToken, [&] {
+                                               requestStreamCancellation();
+                                               sharedState->sem_.signal();
+                                             }};
 
   int64_t counter = 0;
   // application buffer
   std::deque<folly::Try<std::unique_ptr<detail::ValueIf>>> appBuffer;
   while (true) {
     co_await sharedState->sem_.co_wait();
+
+    // If cancellation was requested then ignore any buffered results
+    // and just complete immediately with the end-of-sequence.
+    if (cancellationToken.isCancellationRequested()) {
+      // QUESTION: Should we be throwing an OperationCancelled exception here
+      // rather than truncating the stream? How will the consumer know that
+      // the stream was truncated? The consumer will currently have to also
+      // inspect the cancellation token to determine this.
+      co_return;
+    }
 
     if (appBuffer.size() == 0) {
       auto buffer = sharedState->buffer_.lock();
