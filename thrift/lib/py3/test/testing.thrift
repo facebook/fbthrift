@@ -45,13 +45,6 @@ exception SimpleError {
     1: Color color;
 }
 
-enum Shape {
-    SQUARE = 0,
-    ROUND = 1,
-    CIRCLE = 1,
-    TRIANGLE = 2,
-} (thrift.duplicate_values)
-
 enum Perm {
   read = 4,
   write = 2,

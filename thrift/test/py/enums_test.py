@@ -59,8 +59,6 @@ class EnumTest(unittest.TestCase):
         self.assertEquals(MyEnum3.ME3_1, 1)
         self.assertEquals(MyEnum3.ME3_N2, -2)
         self.assertEquals(MyEnum3.ME3_N1, -1)
-        self.assertEquals(MyEnum3.ME3_D0, 0)
-        self.assertEquals(MyEnum3.ME3_D1, 1)
         self.assertEquals(MyEnum3.ME3_9, 9)
         self.assertEquals(MyEnum3.ME3_10, 10)
         self.assertEquals(max(MyEnum3._VALUES_TO_NAMES), 10)
@@ -75,10 +73,8 @@ class EnumTest(unittest.TestCase):
         ms = MyStruct()
         self.assertEquals(ms.me2_2, 2)
         self.assertEquals(ms.me3_n2, -2)
-        self.assertEquals(ms.me3_d1, 1)
 
     def test_enum_names(self):
-        self.assertEquals(MyEnum3._VALUES_TO_NAMES[MyEnum3.ME3_1], "ME3_D1")  # dup
         self.assertEquals(MyEnum2._VALUES_TO_NAMES[MyEnum2.ME2_2], "ME2_2")
 
     def test_names_to_values(self):

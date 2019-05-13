@@ -44,22 +44,9 @@ cdef class __{{enum:name}}Meta(type):
                 value = ~value
         {{/enum:flags?}}
             cvalue = value
-            {{#enum:duplicate_values?}}
-            {{^enum:flags?}}
-            {{! we can't use switch optimization for duplicate values, and a big
-                if chain is probably much slower that a dict lookup.
-            }}
-            try:
-                return __{{enum:name}}EnumUniqueValues[value]
-            except KeyError:
-                pass
-            {{/enum:flags?}}
-            {{/enum:duplicate_values?}}
             {{#enum:values}}
-            {{^enum:duplicate_values?}}
             {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
                 return {{#enum:flags?}}~{{enum:name}}.{{enumValue:enumSafeName}} if invert else {{/enum:flags?}}{{enum:name}}.{{enumValue:enumSafeName}}
-            {{/enum:duplicate_values?}}
             {{#last?}}
             {{#enum:flags?}}
             item = __{{enum:name}}EnumValueMapping.get(value, None)

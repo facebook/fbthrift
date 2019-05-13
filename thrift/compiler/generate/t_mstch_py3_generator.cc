@@ -404,11 +404,8 @@ bool t_mstch_py3_generator::is_always_set(const t_struct& strct) const {
 
 mstch::map t_mstch_py3_generator::extend_enum(const t_enum& enm) {
   const auto is_flags = enm.annotations_.count("py3.flags") != 0;
-  const auto duplicate_values =
-      enm.annotations_.count("thrift.duplicate_values") != 0;
   mstch::map result{
       {"flags?", is_flags},
-      {"duplicate_values?", duplicate_values},
   };
   return result;
 }

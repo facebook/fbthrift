@@ -165,26 +165,6 @@ mstch::node mstch_enum::values() {
       cache_);
 }
 
-mstch::node mstch_enum::deduped_values() {
-  std::map<int32_t, t_enum_value*> enum_value_to_name;
-  for (t_enum_value* enum_value : enm_->get_enum_values()) {
-    if (enum_value_to_name.find(enum_value->get_value()) ==
-        enum_value_to_name.end()) {
-      enum_value_to_name.emplace(enum_value->get_value(), enum_value);
-    }
-  }
-
-  std::vector<t_enum_value*> deduped_enum_values;
-  for (auto val : enum_value_to_name) {
-    deduped_enum_values.push_back(val.second);
-  }
-  return generate_elements(
-      deduped_enum_values,
-      generators_->enum_value_generator_.get(),
-      generators_,
-      cache_);
-}
-
 mstch::node mstch_type::get_struct() {
   if (type_->is_struct() || type_->is_xception()) {
     std::string id = type_->get_program()->get_name() +

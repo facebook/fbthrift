@@ -173,16 +173,10 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
   // An error will be found
   const std::string expected =
       "[FAILURE:/path/to/file.thrift:1] "
-      "Duplicate value foo=1 with value bar in enum foo. "
-      "Add thrift.duplicate_values annotation to enum to suppress this error";
+      "Duplicate value foo=1 with value bar in enum foo.";
   auto errors = run_validator<enum_values_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front());
-
-  // Now check that opt-out mechanism works
-  tenum_ptr->annotations_["thrift.duplicate_values"] = "";
-  errors = run_validator<enum_values_uniqueness_validator>(&program);
-  EXPECT_TRUE(errors.empty());
 }
 
 TEST_F(ValidatorTest, UnsetEnumValues) {

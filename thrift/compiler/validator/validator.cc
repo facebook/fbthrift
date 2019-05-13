@@ -185,9 +185,7 @@ void enum_values_uniqueness_validator::add_validation_error(
   std::ostringstream err;
   err << "Duplicate value " << enum_value.get_name() << "="
       << enum_value.get_value() << " with value " << existing_value_name
-      << " in enum " << enum_name << ". "
-      << "Add thrift.duplicate_values annotation "
-      << "to enum to suppress this error";
+      << " in enum " << enum_name << ".";
   add_error(lineno, err.str());
 }
 
@@ -197,10 +195,6 @@ bool enum_values_uniqueness_validator::visit(t_enum* const tenum) {
 }
 
 void enum_values_uniqueness_validator::validate(t_enum const* const tenum) {
-  if (tenum->annotations_.count("thrift.duplicate_values")) {
-    // opt-out mechanism
-    return;
-  }
   std::unordered_map<int32_t, t_enum_value const*> enum_values;
   for (auto v : tenum->get_enum_values()) {
     auto it = enum_values.find(v->get_value());

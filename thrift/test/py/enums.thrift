@@ -39,11 +39,9 @@ enum MyEnum3 {
   ME3_1 = 1,
   ME3_N2 = -2,
   ME3_N1 = -1,
-  ME3_D0 = 0,
-  ME3_D1 = 1,
   ME3_9 = 9,
   ME3_10 = 10,
-} (thrift.duplicate_values)
+}
 
 enum MyEnum4 {
   ME4_A = 0x7ffffffd,
@@ -63,7 +61,6 @@ enum MyEnum5 {
 struct MyStruct {
   1: MyEnum2 me2_2 = ME2_2
   2: MyEnum3 me3_n2 = ME3_N2
-  3: MyEnum3 me3_d1 = ME3_D1
   4: MyEnum1 me1_t1 = 1
   5: MyEnum1 me1_t2 = ME1_1
   6: MyEnum1 me1_t3 = MyEnum1.ME1_1

@@ -128,9 +128,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "[FAILURE:foo.thrift:3] "
-            "Duplicate value Baz=1 with value Bar in enum Foo. "
-            "Add thrift.duplicate_values annotation to enum to suppress this "
-            "error\n"
+            "Duplicate value Baz=1 with value Bar in enum Foo.\n"
         )
 
     def test_unset_enum_value(self):

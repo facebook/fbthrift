@@ -7,14 +7,6 @@ namespace hack test.regression
 namespace php test.regression
 namespace python test.regression
 
-enum repeated_values_enum {
-  A = 0,
-  B = 0,
-  C = 1,
-  D = 2,
-  E = 3
-} (thrift.duplicate_values)
-
 struct template_arguments_struct {
   1: i32 T
   2: i32 U

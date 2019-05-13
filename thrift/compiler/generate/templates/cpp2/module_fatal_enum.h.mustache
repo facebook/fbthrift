@@ -127,9 +127,9 @@ struct <%enum:name%>_enum_traits {
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
-      <%#enum:dedupedValues%>
+      <%#enum:values%>
       case type::<%enumValue:cpp_name%>: return "<%enumValue:cpp_name%>";
-      <%/enum:dedupedValues%>
+      <%/enum:values%>
       default: return fallback;
     }
   }

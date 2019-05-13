@@ -46,8 +46,6 @@ TEST(EnumTestCpp2, test_enum) {
   EXPECT_EQ(int(MyEnum3::ME3_1), 1);
   EXPECT_EQ(int(MyEnum3::ME3_N2), -2);
   EXPECT_EQ(int(MyEnum3::ME3_N1), -1);
-  EXPECT_EQ(int(MyEnum3::ME3_D0), 0);
-  EXPECT_EQ(int(MyEnum3::ME3_D1), 1);
   EXPECT_EQ(int(MyEnum3::ME3_9), 9);
   EXPECT_EQ(int(MyEnum3::ME3_10), 10);
   EXPECT_TRUE(TEnumTraits<MyEnum3>::max() == MyEnum3::ME3_10);
@@ -63,7 +61,6 @@ TEST(EnumTestCpp2, test_enum_constant) {
   MyStruct ms;
   EXPECT_TRUE(ms.me2_2 == MyEnum2::ME2_2);
   EXPECT_TRUE(ms.me3_n2 == MyEnum3::ME3_N2);
-  EXPECT_TRUE(ms.me3_d1 == MyEnum3::ME3_D1);
 }
 
 TEST(EnumTestCpp2, test_enum_names) {
