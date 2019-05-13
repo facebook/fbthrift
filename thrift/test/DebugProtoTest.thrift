@@ -71,10 +71,10 @@ struct OneOfEach {
   17: float float_precision,
   18: map<i64, float> rank_map,
   19: TwoInts two_ints_uninit,
-  20: TwoInts two_ints_init = {a: 3, b: 4},
+  20: TwoInts two_ints_init = {"a": 3, "b": 4},
   21: list<TwoInts> list_two_ints_uninit,
   22: list<TwoInts> list_two_ints_init_default = [{}, {}],
-  23: list<TwoInts> list_two_ints_init_explicit = [{a: 1, b: 2}, {a: 3, b: 4}],
+  23: list<TwoInts> list_two_ints_init_explicit = [{"a": 1, "b": 2}, {"a": 3, "b": 4}],
   24: set<string> string_set,
   25: set<string> (cpp.template = 'std::unordered_set') string_hash_set,
 }
@@ -90,15 +90,15 @@ struct Constant {
   3: list<i32> c,
   4: list<i32> d = [1, 2],
   5: Constant1 e,
-  6: Constant1 f = {x: 42},
+  6: Constant1 f = {"x": 42},
   7: list<Constant1> g,
-  8: list<Constant1> h = [{x:50, y:"meow"}, {x:60}],
+  8: list<Constant1> h = [{"x": 50, "y": "meow"}, {"x": 60}],
   9: string s = "world",
 }
 
 const Constant const1 = {}
 
-const Constant const2 = { s: "goodbye" },
+const Constant const2 = { "s": "goodbye" },
 
 struct Bonk {
   1: i32 type,
