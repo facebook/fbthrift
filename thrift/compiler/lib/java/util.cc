@@ -21,6 +21,7 @@
 
 #include <thrift/compiler/lib/java/util.h>
 
+#include <cassert>
 #include <cctype>
 
 namespace apache {
