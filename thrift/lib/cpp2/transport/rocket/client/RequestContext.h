@@ -77,16 +77,11 @@ class RequestContext {
   RequestContext& operator=(const RequestContext&) = delete;
   RequestContext& operator=(RequestContext&&) = delete;
 
-  // For REQUEST_RESPONSE contexts, where an immediate matching response is
-  // expected
   Payload waitForResponse(std::chrono::milliseconds timeout);
-
-  // For request types for which an immediate matching response is not
-  // necessarily expected, e.g., REQUEST_FNF and REQUEST_STREAM
   void waitForWriteToComplete();
 
   void scheduleTimeoutForResponse() {
-    DCHECK(isRequestResponse());
+    DCHECK(expectingResponse());
     // In some edge cases, response may arrive before write to socket finishes.
     if (state_ != State::RESPONSE_RECEIVED) {
       awaitResponseTimeoutHandler_.scheduleTimeout(awaitResponseTimeout_);
@@ -106,8 +101,8 @@ class RequestContext {
     return streamId_;
   }
 
-  bool isRequestResponse() const {
-    return frameType_ == FrameType::REQUEST_RESPONSE;
+  bool expectingResponse() const {
+    return expectingResponse_;
   }
 
   void onPayloadFrame(PayloadFrame&& payloadFrame);
@@ -129,6 +124,7 @@ class RequestContext {
   folly::fibers::Baton::TimeoutHandler awaitResponseTimeoutHandler_;
   folly::Try<Payload> responsePayload_;
   RocketClientWriteCallback* const writeCallback_;
+  bool expectingResponse_{false};
 
   template <class Frame>
   void serialize(Frame&& frame, SetupFrame* setupFrame) {

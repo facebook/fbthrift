@@ -121,9 +121,9 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
   }
 
-  if (auto* ctx = queue_.getRequestResponseContext(streamId)) {
-    DCHECK(ctx->isRequestResponse());
-    return handleRequestResponseFrame(*ctx, frameType, std::move(frame));
+  if (auto* ctx = queue_.getTrackedContext(streamId)) {
+    DCHECK(ctx->expectingResponse());
+    return handleResponseFrame(*ctx, frameType, std::move(frame));
   }
 
   if (auto* stream = getStreamById(streamId)) {
@@ -132,7 +132,10 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   }
 }
 
-void RocketClient::handleRequestResponseFrame(
+// Called when response for REQUEST_RESPONSE frame is received, or when the
+// first payload on a stream is received, provided the sender explicitly waited
+// on the first payload via ctx.waitForResponse().
+void RocketClient::handleResponseFrame(
     RequestContext& ctx,
     FrameType frameType,
     std::unique_ptr<folly::IOBuf> frame) {
@@ -335,7 +338,7 @@ void RocketClient::writeSuccess() noexcept {
 
   auto& req = queue_.markNextSendingAsSent();
   req.onWriteSuccess();
-  if (req.isRequestResponse()) {
+  if (req.expectingResponse()) {
     req.scheduleTimeoutForResponse();
   } else {
     queue_.markAsResponded(req);

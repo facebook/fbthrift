@@ -229,7 +229,7 @@ class RocketClient : public folly::DelayedDestruction,
   StreamWrapper* getStreamById(StreamId streamId);
 
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
-  void handleRequestResponseFrame(
+  void handleResponseFrame(
       RequestContext& ctx,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);

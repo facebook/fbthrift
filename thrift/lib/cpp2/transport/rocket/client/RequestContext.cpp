@@ -72,6 +72,7 @@ Payload RequestContext::waitForResponse(std::chrono::milliseconds timeout) {
   // writeSuccess() or writeErr()), a timeout for baton_ will be scheduled via
   // awaitResponseTimeoutHandler_.
   awaitResponseTimeout_ = timeout;
+  queue_.trackAsExpectingResponse(*this);
   baton_.wait(awaitResponseTimeoutHandler_);
 
   switch (state_) {
@@ -108,7 +109,7 @@ Payload RequestContext::waitForResponse(std::chrono::milliseconds timeout) {
 
 void RequestContext::onPayloadFrame(PayloadFrame&& payloadFrame) {
   DCHECK(!responsePayload_.hasException());
-  DCHECK(isRequestResponse());
+  DCHECK(expectingResponse());
 
   // This function is only called on the response payload frame corresponding to
   // a REQUEST_RESPONSE context. Each fragment of the response payload frame
@@ -132,7 +133,7 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
   // frame.
   DCHECK(!responsePayload_.hasValue());
   DCHECK(!responsePayload_.hasException());
-  DCHECK(isRequestResponse());
+  DCHECK(expectingResponse());
 
   responsePayload_ =
       folly::Try<Payload>(folly::make_exception_wrapper<RocketException>(

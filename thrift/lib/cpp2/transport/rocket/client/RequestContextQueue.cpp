@@ -29,7 +29,6 @@ void RequestContextQueue::enqueueScheduledWrite(RequestContext& req) noexcept {
 
   req.state_ = State::WRITE_SCHEDULED;
   writeScheduledQueue_.push_back(req);
-  trackIfRequestResponse(req);
 }
 
 RequestContext&
@@ -61,17 +60,18 @@ RequestContext& RequestContextQueue::markNextSendingAsSent() noexcept {
 
 void RequestContextQueue::abortSentRequest(RequestContext& req) noexcept {
   DCHECK(req.state() == State::WRITE_SENT);
-  untrackIfRequestResponse(req);
+  untrackIfExpectingResponse(req);
   writeSentQueue_.erase(writeSentQueue_.iterator_to(req));
   req.state_ = State::REQUEST_ABORTED;
 }
 
-// For REQUEST_RESPONSE, this is called on the read path once the entire
-// response payload has arrived.
-// For REQUEST_STREAM and REQUEST_FNF, this is called once the write to the
-// socket has completed.
+// If the caller is waiting on a matching response via waitForResponse(), this
+// function is called on the read path once the entire response payload has
+// arrived.
+// If the caller instead only calls waitForWriteToComplete(), this is called
+// once the write to the socket has completed.
 void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
-  untrackIfRequestResponse(req);
+  untrackIfExpectingResponse(req);
 
   if (LIKELY(req.state() == State::WRITE_SENT)) {
     req.state_ = State::RESPONSE_RECEIVED;
@@ -81,7 +81,7 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
     // Response arrived before AsyncSocket WriteCallback fired; we let the write
     // complete. writeSuccess()/writeErr() are therefore responsible for
     // handling this request's final queue transition and posting the baton.
-    DCHECK(req.isRequestResponse());
+    DCHECK(req.expectingResponse());
     DCHECK(req.state() == State::WRITE_SENDING);
     req.state_ = State::RESPONSE_RECEIVED;
   }
@@ -106,29 +106,43 @@ void RequestContextQueue::failQueue(
     DCHECK(!req.responsePayload_.hasValue());
     DCHECK(!req.responsePayload_.hasException());
     req.responsePayload_ = folly::Try<Payload>(ew);
-    untrackIfRequestResponse(req);
+    untrackIfExpectingResponse(req);
     req.state_ = State::REQUEST_ABORTED;
     req.baton_.post();
   }
 }
 
-RequestContext* RequestContextQueue::getRequestResponseContext(
-    StreamId streamId) {
-  const auto it = requestResponseContexts_.find(
+void RequestContextQueue::trackAsExpectingResponse(RequestContext& req) {
+  DCHECK(!req.expectingResponse_);
+  req.expectingResponse_ = true;
+  if (UNLIKELY(trackedContexts_.size() > trackedContextBuckets_.size())) {
+    growBuckets();
+  }
+  trackedContexts_.insert(req);
+}
+
+void RequestContextQueue::untrackIfExpectingResponse(RequestContext& req) {
+  if (req.expectingResponse()) {
+    trackedContexts_.erase(req);
+  }
+}
+
+RequestContext* RequestContextQueue::getTrackedContext(StreamId streamId) {
+  const auto it = trackedContexts_.find(
       streamId,
       std::hash<StreamId>(),
       [](StreamId sid, const RequestContext& ctx) {
         return sid == ctx.streamId();
       });
-  return it != requestResponseContexts_.end() ? &*it : nullptr;
+  return it != trackedContexts_.end() ? &*it : nullptr;
 }
 
 void RequestContextQueue::growBuckets() {
-  std::vector<RequestResponseSet::bucket_type> newBuckets(
-      rrContextBuckets_.size() * 2);
-  requestResponseContexts_.rehash(
-      RequestResponseSet::bucket_traits(newBuckets.data(), newBuckets.size()));
-  rrContextBuckets_.swap(newBuckets);
+  std::vector<ExpectingResponseSet::bucket_type> newBuckets(
+      trackedContextBuckets_.size() * 2);
+  trackedContexts_.rehash(ExpectingResponseSet::bucket_traits(
+      newBuckets.data(), newBuckets.size()));
+  trackedContextBuckets_.swap(newBuckets);
 }
 
 } // namespace rocket

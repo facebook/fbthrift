@@ -54,22 +54,23 @@ class RequestContextQueue {
   void failAllScheduledWrites(folly::exception_wrapper ew);
   void failAllSentWrites(folly::exception_wrapper ew);
 
-  RequestContext* getRequestResponseContext(StreamId streamId);
+  void trackAsExpectingResponse(RequestContext& req);
+  RequestContext* getTrackedContext(StreamId streamId);
 
  private:
-  using RequestResponseSet = RequestContext::UnorderedSet;
+  using ExpectingResponseSet = RequestContext::UnorderedSet;
 
   static constexpr size_t kDefaultNumBuckets = 100;
-  std::vector<RequestResponseSet::bucket_type> rrContextBuckets_{
+  std::vector<ExpectingResponseSet::bucket_type> trackedContextBuckets_{
       kDefaultNumBuckets};
 
-  // Only REQUEST_RESPONSE contexts are ever inserted/looked up in this set.
-  // Allows response payloads to be matched with requests. (Streams have a
-  // different mechanism for doing this, since there are potentially many
-  // response payloads per initiating REQUEST_STREAM context.)
-  RequestResponseSet requestResponseContexts_{
-      RequestResponseSet::bucket_traits{rrContextBuckets_.data(),
-                                        rrContextBuckets_.size()}};
+  // Only contexts for requests expecting a matching response are ever
+  // inserted/looked up in this set. This includes REQUEST_RESPONSE requests as
+  // well as REQUEST_STREAM requests for which a timely first payload is
+  // expected, as dictated by usage of ctx.waitForResponse().
+  ExpectingResponseSet trackedContexts_{
+      ExpectingResponseSet::bucket_traits{trackedContextBuckets_.data(),
+                                          trackedContextBuckets_.size()}};
 
   using State = RequestContext::State;
 
@@ -87,21 +88,7 @@ class RequestContextQueue {
 
   void failQueue(RequestContext::Queue& queue, folly::exception_wrapper ew);
 
-  void trackIfRequestResponse(RequestContext& req) {
-    if (req.isRequestResponse()) {
-      if (UNLIKELY(
-              requestResponseContexts_.size() > rrContextBuckets_.size())) {
-        growBuckets();
-      }
-      requestResponseContexts_.insert(req);
-    }
-  }
-  void untrackIfRequestResponse(RequestContext& req) {
-    if (req.isRequestResponse()) {
-      requestResponseContexts_.erase(req);
-    }
-  }
-
+  void untrackIfExpectingResponse(RequestContext& req);
   void growBuckets();
 };
 
