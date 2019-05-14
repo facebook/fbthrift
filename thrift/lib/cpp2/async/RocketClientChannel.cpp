@@ -119,7 +119,6 @@ RocketClientChannel::RocketClientChannel(
 
 RocketClientChannel::~RocketClientChannel() {
   unsetOnDetachable();
-  inflightState_->unsetOnDetachable();
   closeNow();
 }
 
@@ -246,7 +245,7 @@ void RocketClientChannel::sendThriftRequest(
     return;
   }
 
-  if (!inflightState_->incPendingRequests()) {
+  if (inflightRequestsAndStreams() >= maxInflightRequestsAndStreams_) {
     TTransportException ex(
         TTransportException::NETWORK_ERROR,
         "Too many active requests on connection");
@@ -309,11 +308,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
 
   auto finallyFunc = [cb = std::move(cb),
                       ctx = std::move(ctx),
-                      inflightWeak = folly::to_weak_ptr(inflightState_)](
-                         folly::Try<void>&& result) mutable {
-    if (auto inflightState = inflightWeak.lock()) {
-      inflightState->decPendingRequests();
-    }
+                      g = inflightGuard()](folly::Try<void>&& result) mutable {
     if (result.hasException()) {
       folly::RequestContextScopeGuard rctx(cb->context_);
       cb->requestError(ClientReceiveState(
@@ -351,14 +346,11 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
 
   auto finallyFunc = [ctx = std::move(ctx),
                       cb = std::move(cb),
-                      protocolId = protocolId_,
-                      inflightWeak = folly::to_weak_ptr(inflightState_)](
+                      g = inflightGuard(),
+                      protocolId = protocolId_](
                          folly::Try<rocket::Payload>&& response) mutable {
     folly::RequestContextScopeGuard rctx(cb->context_);
 
-    if (auto inflightState = inflightWeak.lock()) {
-      inflightState->decPendingRequests();
-    }
     if (UNLIKELY(response.hasException())) {
       cb->requestError(
           ClientReceiveState(std::move(response.exception()), std::move(ctx)));
@@ -422,11 +414,8 @@ void RocketClientChannel::sendSingleRequestStreamResponse(
   auto callback = std::make_unique<ThriftClientCallback>(
       evb_, std::move(cb), std::move(ctx), protocolId_, chunkTimeout);
 
-  auto takeFirst = std::make_shared<TakeFirst>(
-      *evb_,
-      std::move(callback),
-      chunkTimeout,
-      folly::to_weak_ptr(inflightState_));
+  auto takeFirst =
+      std::make_shared<TakeFirst>(*evb_, std::move(callback), chunkTimeout);
 
   flowable->subscribe(std::move(takeFirst));
 }
@@ -434,8 +423,7 @@ void RocketClientChannel::sendSingleRequestStreamResponse(
 ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   return ClientChannel::SaturationStatus(
-      inflightState_->inflightRequests(),
-      inflightState_->maxInflightRequests());
+      inflightRequestsAndStreams(), maxInflightRequestsAndStreams_);
 }
 
 void RocketClientChannel::closeNow() {
@@ -474,6 +462,10 @@ bool RocketClientChannel::good() {
   return rclient_ && rclient_->isAlive();
 }
 
+size_t RocketClientChannel::inflightRequestsAndStreams() const {
+  return shared_->inflightRequests + (rclient_ ? rclient_->streams() : 0);
+}
+
 void RocketClientChannel::setTimeout(uint32_t timeoutMs) {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (auto* transport = getTransport()) {
@@ -501,8 +493,7 @@ void RocketClientChannel::detachEventBase() {
 bool RocketClientChannel::isDetachable() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   auto* transport = getTransport();
-  return !evb_ || !transport || !rclient_ ||
-      (inflightState_->inflightRequests() == 0 && rclient_->isDetachable());
+  return !evb_ || !transport || !rclient_ || rclient_->isDetachable();
 }
 
 void RocketClientChannel::setOnDetachable(
@@ -526,12 +517,10 @@ void RocketClientChannel::unsetOnDetachable() {
 RocketClientChannel::TakeFirst::TakeFirst(
     folly::EventBase& evb,
     std::unique_ptr<ThriftClientCallback> clientCallback,
-    std::chrono::milliseconds chunkTimeout,
-    std::weak_ptr<InflightState> inflightState)
+    std::chrono::milliseconds chunkTimeout)
     : evb_(evb),
       clientCallback_(std::move(clientCallback)),
-      chunkTimeout_(chunkTimeout),
-      inflightWeak_(std::move(inflightState)) {}
+      chunkTimeout_(chunkTimeout) {}
 
 RocketClientChannel::TakeFirst::~TakeFirst() {
   if (auto subscription = std::move(subscription_)) {
@@ -618,19 +607,8 @@ void RocketClientChannel::TakeFirst::onNormalFirstResponse(
 
 void RocketClientChannel::TakeFirst::onErrorFirstResponse(
     folly::exception_wrapper ew) {
-  if (auto inflight = inflightWeak_.lock()) {
-    inflight->decPendingRequests();
-  }
-  inflightWeak_.reset();
   auto cb = std::move(clientCallback_);
   cb->onError(std::move(ew));
-}
-
-void RocketClientChannel::TakeFirst::onStreamTerminated() {
-  if (auto inflight = inflightWeak_.lock()) {
-    inflight->decPendingRequests();
-  }
-  inflightWeak_.reset();
 }
 
 void RocketClientChannel::TakeFirst::onError(folly::exception_wrapper ew) {

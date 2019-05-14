@@ -112,6 +112,10 @@ class RocketClient : public folly::DelayedDestruction,
     return state_ == ConnectionState::CONNECTED;
   }
 
+  size_t streams() const {
+    return streams_.size();
+  }
+
   const folly::AsyncTransportWrapper* getTransportWrapper() const {
     return socket_.get();
   }
@@ -127,8 +131,8 @@ class RocketClient : public folly::DelayedDestruction,
     // Client is only detachable if there are no inflight requests, no active
     // streams, and if the underlying transport is detachable, i.e., has no
     // inflight writes of its own.
-    return !writeLoopCallback_.isLoopCallbackScheduled() && streams_.empty() &&
-        (!socket_ || socket_->isDetachable());
+    return !writeLoopCallback_.isLoopCallbackScheduled() && !requests_ &&
+        streams_.empty() && (!socket_ || socket_->isDetachable());
   }
 
   void attachEventBase(folly::EventBase& evb) {
@@ -164,6 +168,7 @@ class RocketClient : public folly::DelayedDestruction,
   folly::fibers::FiberManager* fm_;
   folly::AsyncTransportWrapper::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
+  size_t requests_{0};
   StreamId nextStreamId_{1};
   std::unique_ptr<SetupFrame> setupFrame_;
   enum class ConnectionState : uint8_t {

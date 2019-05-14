@@ -20,6 +20,7 @@
 #include <limits>
 #include <memory>
 
+#include <folly/ScopeGuard.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/async/DelayedDestruction.h>
 
@@ -106,6 +107,8 @@ class RocketClientChannel final : public ClientChannel {
   async::TAsyncTransport* FOLLY_NULLABLE getTransport() override;
   bool good() override;
 
+  size_t inflightRequestsAndStreams() const;
+
   void attachEventBase(folly::EventBase*) override;
   void detachEventBase() override;
   bool isDetachable() override;
@@ -123,7 +126,7 @@ class RocketClientChannel final : public ClientChannel {
   }
 
   void setMaxPendingRequests(uint32_t n) {
-    inflightState_->setMaxInflightRequests(n);
+    maxInflightRequestsAndStreams_ = n;
   }
   SaturationStatus getSaturationStatus() override;
 
@@ -140,51 +143,11 @@ class RocketClientChannel final : public ClientChannel {
   uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
 
-  class InflightState {
-   public:
-    explicit InflightState(folly::Function<void()> onDetachable)
-        : onDetachable_(std::move(onDetachable)) {}
-
-    bool incPendingRequests() {
-      if (inflightRequests_ >= maxInflightRequests_) {
-        return false;
-      }
-      ++inflightRequests_;
-      return true;
-    }
-
-    void decPendingRequests() {
-      if (!--inflightRequests_ && onDetachable_) {
-        onDetachable_();
-      }
-    }
-
-    uint32_t inflightRequests() const {
-      return inflightRequests_;
-    }
-    uint32_t maxInflightRequests() const {
-      return maxInflightRequests_;
-    }
-    void setMaxInflightRequests(uint32_t n) {
-      maxInflightRequests_ = n;
-    }
-    void unsetOnDetachable() {
-      onDetachable_ = nullptr;
-    }
-
-   private:
-    uint32_t inflightRequests_{0};
-    uint32_t maxInflightRequests_{std::numeric_limits<uint32_t>::max()};
-    folly::Function<void()> onDetachable_;
+  uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
+  struct Shared {
+    uint32_t inflightRequests{0};
   };
-
-  const std::shared_ptr<InflightState> inflightState_{
-      std::make_shared<InflightState>([this] {
-        DCHECK(!evb_ || evb_->isInEventBaseThread());
-        if (isDetachable()) {
-          notifyDetachable();
-        }
-      })};
+  const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
 
   RocketClientChannel(
       async::TAsyncTransport::UniquePtr socket,
@@ -232,6 +195,11 @@ class RocketClientChannel final : public ClientChannel {
 
   rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 
+  auto inflightGuard() {
+    ++shared_->inflightRequests;
+    return folly::makeGuard([shared = shared_] { --shared->inflightRequests; });
+  }
+
  public:
   // Helper class that gives special handling to the first payload on the
   // response stream. Public only for testing purposes.
@@ -242,8 +210,7 @@ class RocketClientChannel final : public ClientChannel {
     TakeFirst(
         folly::EventBase& evb,
         std::unique_ptr<ThriftClientCallback> clientCallback,
-        std::chrono::milliseconds chunkTimeout,
-        std::weak_ptr<InflightState> inflightState);
+        std::chrono::milliseconds chunkTimeout);
     ~TakeFirst() override;
     void cancel();
 
@@ -261,7 +228,6 @@ class RocketClientChannel final : public ClientChannel {
     folly::EventBase& evb_;
     std::unique_ptr<ThriftClientCallback> clientCallback_;
     const std::chrono::milliseconds chunkTimeout_;
-    std::weak_ptr<InflightState> inflightWeak_;
 
     void subscribe(std::shared_ptr<yarpl::flowable::Subscriber<U>>) final;
     void onSubscribe(std::shared_ptr<yarpl::flowable::Subscription>) final;
@@ -275,7 +241,7 @@ class RocketClientChannel final : public ClientChannel {
         T&& firstPayload,
         std::shared_ptr<Flowable<U>> tail);
     virtual void onErrorFirstResponse(folly::exception_wrapper ew);
-    virtual void onStreamTerminated();
+    virtual void onStreamTerminated() {}
   };
 };
 

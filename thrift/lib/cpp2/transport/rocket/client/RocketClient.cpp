@@ -180,6 +180,12 @@ Payload RocketClient::sendRequestResponseSync(
     Payload&& request,
     std::chrono::milliseconds timeout,
     RocketClientWriteCallback* writeCallback) {
+  ++requests_;
+  SCOPE_EXIT {
+    if (!--requests_) {
+      notifyIfDetachable();
+    }
+  };
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
       RequestResponseFrame(makeStreamId(), std::move(request)),
@@ -193,6 +199,12 @@ Payload RocketClient::sendRequestResponseSync(
 void RocketClient::sendRequestFnfSync(
     Payload&& request,
     RocketClientWriteCallback* writeCallback) {
+  ++requests_;
+  SCOPE_EXIT {
+    if (!--requests_) {
+      notifyIfDetachable();
+    }
+  };
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
       RequestFnfFrame(makeStreamId(), std::move(request)),

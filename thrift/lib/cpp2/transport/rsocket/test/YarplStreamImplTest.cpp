@@ -200,8 +200,7 @@ class TakeFirstTest<rocket::Payload> : public testing::Test {
         : RocketClientChannel::TakeFirst(
               dummyEvb_,
               nullptr /* callback */,
-              std::chrono::milliseconds{0},
-              {} /* weak_ptr<InflightState> */),
+              std::chrono::milliseconds::zero()),
           onNormalFirstResponse_(std::move(onNormalFirstResponse)),
           onErrorFirstResponse_(std::move(onErrorFirstResponse)),
           onStreamTerminated_(std::move(onStreamTerminated)) {}
