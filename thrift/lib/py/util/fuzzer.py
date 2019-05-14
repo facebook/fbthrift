@@ -439,47 +439,46 @@ class Service(object):
         """Load a service's methods.
 
         If exclude_ifaces is not None, it should be a collection and only
-        the method from thrift interfaces not included in that collection will
+        methods from thrift interfaces not included in that collection will
         be considered."""
 
         exclude_ifaces = exclude_ifaces or []
 
-        # Can only have single inheritance in thrift
-        thrift_inheritance_chain = self.service.Iface.__mro__
+        pred = inspect.isfunction if six.PY3 else inspect.ismethod
 
         methods = {}
-        # We iterate inheritance from parent to base so we can override
-        # parent's methods with the base's one.
-        for klass in thrift_inheritance_chain[::-1]:
-            if klass in exclude_ifaces:
+        exclude_methods = []
+
+        for klass in exclude_ifaces:
+            exclude_methods.extend(inspect.getmembers(klass, predicate=pred))
+
+        klass_methods = inspect.getmembers(self.service.Iface, predicate=pred)
+        module = inspect.getmodule(self.service.Iface)
+
+        for method_name, method in klass_methods:
+            if (method_name, method) in exclude_methods:
                 continue
+            args = getattr(module, method_name + "_args", None)
+            if args is None:
+                continue
+            result = getattr(module, method_name + "_result", None)
 
-            pred = inspect.isfunction if six.PY3 else inspect.ismethod
-            klass_methods = inspect.getmembers(klass, predicate=pred)
-            module = inspect.getmodule(klass)
+            thrift_exceptions = []
+            if result is not None:
+                for res_spec in result.thrift_spec:
+                    if res_spec is None:
+                        continue
+                    if res_spec[2] != "success":
+                        # This is an exception return type
+                        spec_args = res_spec[3]
+                        exception_type = spec_args[0]
+                        thrift_exceptions.append(exception_type)
 
-            for method_name, _ in klass_methods:
-                args = getattr(module, method_name + "_args", None)
-                if args is None:
-                    continue
-                result = getattr(module, method_name + "_result", None)
-
-                thrift_exceptions = []
-                if result is not None:
-                    for res_spec in result.thrift_spec:
-                        if res_spec is None:
-                            continue
-                        if res_spec[2] != "success":
-                            # This is an exception return type
-                            spec_args = res_spec[3]
-                            exception_type = spec_args[0]
-                            thrift_exceptions.append(exception_type)
-
-                methods[method_name] = {
-                    "args_class": args,
-                    "result_spec": result,
-                    "thrift_exceptions": tuple(thrift_exceptions),
-                }
+            methods[method_name] = {
+                "args_class": args,
+                "result_spec": result,
+                "thrift_exceptions": tuple(thrift_exceptions),
+            }
 
         self.methods = methods
 
