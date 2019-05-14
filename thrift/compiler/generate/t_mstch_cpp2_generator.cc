@@ -26,10 +26,8 @@
 
 using namespace std;
 
-namespace apache {
-namespace thrift {
-namespace compiler {
-
+namespace {
+using namespace apache::thrift;
 std::string const& map_find_first(
     std::map<std::string, std::string> const& m,
     std::initializer_list<char const*> keys) {
@@ -187,6 +185,11 @@ std::string render_fatal_string(const std::string& normal_string) {
   res << ">";
   return res.str();
 }
+} // namespace
+
+namespace apache {
+namespace thrift {
+namespace compiler {
 
 class cpp2_generator_context {
  public:
