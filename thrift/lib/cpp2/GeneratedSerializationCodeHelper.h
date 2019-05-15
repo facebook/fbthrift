@@ -75,24 +75,26 @@ namespace detail {
 namespace pm {
 
 template <typename T>
-inline auto reserve_if_possible(T* t, std::uint32_t size)
-    -> decltype(t->reserve(size), void()) {
+auto reserve_if_possible(T* t, std::uint32_t size)
+    -> decltype(t->reserve(size), std::true_type{}) {
   // Workaround for libstdc++ < 7, resize to `size + 1` to avoid an extra
   // rehash: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71181.
   // TODO: Remove once libstdc++ < 7 is not supported any longer.
   std::uint32_t extra = folly::kIsGlibcxx && folly::kGlibcxxVer < 7 ? 1 : 0;
   t->reserve(size + extra);
+  return {};
 }
 
-inline void reserve_if_possible(...) {}
+template <typename... T>
+std::false_type reserve_if_possible(T&&...) {
+  return {};
+}
 
 template <typename Void, typename T>
 struct presorted_constructible_from_vector_value_type_ : std::false_type {};
 template <typename T>
 struct presorted_constructible_from_vector_value_type_<
-    folly::void_t<decltype(
-        T(folly::presorted,
-          typename T::container_type(typename T::size_type())))>,
+    folly::void_t<decltype(T(folly::presorted, typename T::container_type()))>,
     T> : std::true_type {};
 template <typename T>
 struct presorted_constructible_from_vector_value_type
@@ -124,11 +126,13 @@ deserialize_known_length_map(
   }
 
   bool sorted = true;
-  typename Map::container_type tmp(
-      static_cast<typename Map::size_type>(map_size));
+  typename Map::container_type tmp;
+  reserve_if_possible(&tmp, map_size);
+  tmp.emplace_back();
   kr(tmp[0].first);
   mr(tmp[0].second);
   for (size_t i = 1; i < map_size; ++i) {
+    tmp.emplace_back();
     kr(tmp[i].first);
     mr(tmp[i].second);
     sorted = sorted && map.key_comp()(tmp[i - 1].first, tmp[i].first);
@@ -190,10 +194,12 @@ deserialize_known_length_set(
   }
 
   bool sorted = true;
-  typename Set::container_type tmp(
-      static_cast<typename Set::size_type>(set_size));
+  typename Set::container_type tmp;
+  reserve_if_possible(&tmp, set_size);
+  tmp.emplace_back();
   vr(tmp[0]);
   for (size_t i = 1; i < set_size; ++i) {
+    tmp.emplace_back();
     vr(tmp[i]);
     sorted = sorted && set.key_comp()(tmp[i - 1], tmp[i]);
   }
@@ -438,9 +444,16 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
           reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
-        out.resize(list_size);
-        for (auto&& elem : out) {
-          elem_methods::read(protocol, elem);
+        if (reserve_if_possible(&out, list_size)) {
+          for (std::uint32_t i = 0; i < list_size; ++i) {
+            out.emplace_back();
+            elem_methods::read(protocol, out[i]);
+          }
+        } else {
+          out.resize(list_size);
+          for (auto&& elem : out) {
+            elem_methods::read(protocol, elem);
+          }
         }
       }
     }
