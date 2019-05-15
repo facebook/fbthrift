@@ -428,10 +428,9 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
           reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
-        for (std::uint32_t i = 0; protocol.peekList(); ++i) {
-          // TODO: Grow this better (e.g. 1.5x each time)
-          out.resize(i + 1);
-          elem_methods::read(protocol, out[i]);
+        while (protocol.peekList()) {
+          out.emplace_back();
+          elem_methods::read(protocol, out.back());
         }
       }
     } else {
@@ -439,10 +438,14 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
           reported_type != elem_methods::ttype_value) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
-        if (reserve_if_possible(&out, list_size)) {
-          for (std::uint32_t i = 0; i < list_size; ++i) {
+        using traits = std::iterator_traits<typename Type::iterator>;
+        using cat = typename traits::iterator_category;
+        if (reserve_if_possible(&out, list_size) ||
+            std::is_same<cat, std::bidirectional_iterator_tag>::value) {
+          // use bidi as a hint for doubly linked list containers like std::list
+          while (list_size--) {
             out.emplace_back();
-            elem_methods::read(protocol, out[i]);
+            elem_methods::read(protocol, out.back());
           }
         } else {
           out.resize(list_size);
@@ -469,88 +472,6 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
 
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& out) {
-    std::size_t xfer = 0;
-
-    xfer +=
-        protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
-    for (auto const& elem : out) {
-      xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
-    }
-    xfer += protocol.serializedSizeListEnd();
-    return xfer;
-  }
-};
-
-/*
- * std::list Specialization
- */
-template <typename ElemClass, typename Type>
-struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
-  static_assert(
-      !std::is_same<ElemClass, type_class::unknown>(),
-      "Unable to serialize unknown list element");
-
-  constexpr static protocol::TType ttype_value = protocol::T_LIST;
-
-  using elem_methods = protocol_methods<ElemClass, Type>;
-
- private:
-  template <typename Protocol>
-  static void consume_elem(Protocol& protocol, std::list<Type>& out) {
-    Type tmp;
-    elem_methods::read(protocol, tmp);
-    out.push_back(std::move(tmp));
-  }
-
- public:
-  template <typename Protocol>
-  static void read(Protocol& protocol, std::list<Type>& out) {
-    std::uint32_t list_size = -1;
-    protocol::TType reported_type = protocol::T_STOP;
-
-    protocol.readListBegin(reported_type, list_size);
-    if (protocol.kOmitsContainerSizes()) {
-      // list size unknown, SimpleJSON protocol won't know type, either
-      // so let's just hope that it spits out something that makes sense
-      // (if it did set reported_type to something known)
-      if (!protocol.kOmitsContainerElemTypes() &&
-          reported_type != protocol::T_STOP &&
-          reported_type != elem_methods::ttype_value) {
-        apache::thrift::skip_n(protocol, list_size, {reported_type});
-      } else {
-        while (protocol.peekList()) {
-          consume_elem(protocol, out);
-        }
-      }
-    } else {
-      if (!protocol.kOmitsContainerElemTypes() &&
-          reported_type != elem_methods::ttype_value) {
-        apache::thrift::skip_n(protocol, list_size, {reported_type});
-      } else {
-        while (list_size--) {
-          consume_elem(protocol, out);
-        }
-      }
-    }
-    protocol.readListEnd();
-  }
-
-  template <typename Protocol>
-  static std::size_t write(Protocol& protocol, std::list<Type> const& out) {
-    std::size_t xfer = 0;
-
-    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
-    for (auto const& elem : out) {
-      xfer += elem_methods::write(protocol, elem);
-    }
-    xfer += protocol.writeListEnd();
-    return xfer;
-  }
-
-  template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(
-      Protocol& protocol,
-      std::list<Type> const& out) {
     std::size_t xfer = 0;
 
     xfer +=
