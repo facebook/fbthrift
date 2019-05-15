@@ -12,15 +12,7 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_data.h"
 
-namespace some { namespace valid { namespace ns {
 
-const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES = _MyEnumA_EnumMapFactory::makeValuesToNamesMap();
-const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES = _MyEnumA_EnumMapFactory::makeNamesToValuesMap();
-
-}}} // some::valid::ns
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::some::valid::ns::MyEnumA>::size;
@@ -44,15 +36,14 @@ bool TEnumTraits<::some::valid::ns::MyEnumA>::findValue(char const* name, type* 
 }
 
 }} // apache::thrift
+
 namespace some { namespace valid { namespace ns {
 
-const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES = _AnnotatedEnum_EnumMapFactory::makeValuesToNamesMap();
-const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES = _AnnotatedEnum_EnumMapFactory::makeNamesToValuesMap();
+const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES = _MyEnumA_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES = _MyEnumA_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // some::valid::ns
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::some::valid::ns::AnnotatedEnum>::size;
@@ -76,15 +67,14 @@ bool TEnumTraits<::some::valid::ns::AnnotatedEnum>::findValue(char const* name, 
 }
 
 }} // apache::thrift
+
 namespace some { namespace valid { namespace ns {
 
-const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES = _AnnotatedEnum2_EnumMapFactory::makeValuesToNamesMap();
-const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES = _AnnotatedEnum2_EnumMapFactory::makeNamesToValuesMap();
+const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES = _AnnotatedEnum_EnumMapFactory::makeValuesToNamesMap();
+const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES = _AnnotatedEnum_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // some::valid::ns
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::some::valid::ns::AnnotatedEnum2>::size;
@@ -108,15 +98,14 @@ bool TEnumTraits<::some::valid::ns::AnnotatedEnum2>::findValue(char const* name,
 }
 
 }} // apache::thrift
+
 namespace some { namespace valid { namespace ns {
 
-const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES = _MyEnumB_EnumMapFactory::makeValuesToNamesMap();
-const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES = _MyEnumB_EnumMapFactory::makeNamesToValuesMap();
+const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES = _AnnotatedEnum2_EnumMapFactory::makeValuesToNamesMap();
+const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES = _AnnotatedEnum2_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // some::valid::ns
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::some::valid::ns::MyEnumB>::size;
@@ -140,6 +129,13 @@ bool TEnumTraits<::some::valid::ns::MyEnumB>::findValue(char const* name, type* 
 }
 
 }} // apache::thrift
+
+namespace some { namespace valid { namespace ns {
+
+const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES = _MyEnumB_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES = _MyEnumB_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // some::valid::ns
 
 namespace apache {
 namespace thrift {

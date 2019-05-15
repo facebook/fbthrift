@@ -24,9 +24,6 @@ enum class enum1 {
   field2 = 2
 };
 
-using _enum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum1>;
-extern const _enum1_EnumMapFactory::ValuesToNamesMapType _enum1_VALUES_TO_NAMES;
-extern const _enum1_EnumMapFactory::NamesToValuesMapType _enum1_NAMES_TO_VALUES;
 
 
 
@@ -36,9 +33,6 @@ enum class enum2 {
   field2_2 = 2
 };
 
-using _enum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum2>;
-extern const _enum2_EnumMapFactory::ValuesToNamesMapType _enum2_VALUES_TO_NAMES;
-extern const _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
 
 
 
@@ -47,9 +41,6 @@ enum class enum3 {
   field1_3 = 1
 };
 
-using _enum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum3>;
-extern const _enum3_EnumMapFactory::ValuesToNamesMapType _enum3_VALUES_TO_NAMES;
-extern const _enum3_EnumMapFactory::NamesToValuesMapType _enum3_NAMES_TO_VALUES;
 
 
 
@@ -84,9 +75,6 @@ enum class enum_with_special_names {
   fields = 27
 };
 
-using _enum_with_special_names_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum_with_special_names>;
-extern const _enum_with_special_names_EnumMapFactory::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
-extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES;
 
 
 
@@ -185,6 +173,25 @@ template <> struct TEnumTraits<::test_cpp2::cpp_reflection::enum_with_special_na
 
 }} // apache::thrift
 
+namespace test_cpp2 { namespace cpp_reflection {
+
+using _enum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum1>;
+extern const _enum1_EnumMapFactory::ValuesToNamesMapType _enum1_VALUES_TO_NAMES;
+extern const _enum1_EnumMapFactory::NamesToValuesMapType _enum1_NAMES_TO_VALUES;
+
+using _enum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum2>;
+extern const _enum2_EnumMapFactory::ValuesToNamesMapType _enum2_VALUES_TO_NAMES;
+extern const _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
+
+using _enum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum3>;
+extern const _enum3_EnumMapFactory::ValuesToNamesMapType _enum3_VALUES_TO_NAMES;
+extern const _enum3_EnumMapFactory::NamesToValuesMapType _enum3_NAMES_TO_VALUES;
+
+using _enum_with_special_names_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum_with_special_names>;
+extern const _enum_with_special_names_EnumMapFactory::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
+extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES;
+
+}} // test_cpp2::cpp_reflection
 
 // END declare_enums
 // BEGIN struct_indirection

@@ -24,9 +24,6 @@ enum class has_bitwise_ops {
   three = 8
 };
 
-using _has_bitwise_ops_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<has_bitwise_ops>;
-extern const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES;
-extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES;
 
 inline constexpr has_bitwise_ops operator&(has_bitwise_ops a, has_bitwise_ops b) {
   using E = has_bitwise_ops;
@@ -66,9 +63,6 @@ enum is_unscoped : int {
   world = 1
 };
 
-using _is_unscoped_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<is_unscoped>;
-extern const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES;
-extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES;
 
 
 
@@ -77,9 +71,6 @@ enum class MyForwardRefEnum {
   NONZERO = 12
 };
 
-using _MyForwardRefEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyForwardRefEnum>;
-extern const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES;
-extern const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES;
 
 
 
@@ -157,6 +148,21 @@ template <> struct TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEn
 
 }} // apache::thrift
 
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+using _has_bitwise_ops_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<has_bitwise_ops>;
+extern const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES;
+extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES;
+
+using _is_unscoped_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<is_unscoped>;
+extern const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES;
+extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES;
+
+using _MyForwardRefEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyForwardRefEnum>;
+extern const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES;
+extern const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES;
+
+}}}} // apache::thrift::fixtures::types
 
 // END declare_enums
 // BEGIN struct_indirection

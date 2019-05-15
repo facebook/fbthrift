@@ -12,15 +12,7 @@
 
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_data.h"
 
-namespace cpp2 {
 
-const _B_EnumMapFactory::ValuesToNamesMapType _B_VALUES_TO_NAMES = _B_EnumMapFactory::makeValuesToNamesMap();
-const _B_EnumMapFactory::NamesToValuesMapType _B_NAMES_TO_VALUES = _B_EnumMapFactory::makeNamesToValuesMap();
-
-} // cpp2
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::cpp2::B>::size;
@@ -44,6 +36,13 @@ bool TEnumTraits<::cpp2::B>::findValue(char const* name, type* out) {
 }
 
 }} // apache::thrift
+
+namespace cpp2 {
+
+const _B_EnumMapFactory::ValuesToNamesMapType _B_VALUES_TO_NAMES = _B_EnumMapFactory::makeValuesToNamesMap();
+const _B_EnumMapFactory::NamesToValuesMapType _B_NAMES_TO_VALUES = _B_EnumMapFactory::makeNamesToValuesMap();
+
+} // cpp2
 
 namespace apache {
 namespace thrift {

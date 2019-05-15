@@ -21,9 +21,6 @@ enum class MyEnumA {
   fieldC = 4
 };
 
-using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
-extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
-extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 
 
@@ -59,6 +56,13 @@ template <> struct TEnumTraits<::cpp2::MyEnumA> {
 
 }} // apache::thrift
 
+namespace cpp2 {
+
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
+extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
+
+} // cpp2
 
 // END declare_enums
 // BEGIN struct_indirection

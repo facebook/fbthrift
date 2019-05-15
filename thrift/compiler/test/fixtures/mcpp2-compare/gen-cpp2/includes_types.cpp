@@ -12,15 +12,7 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_data.h"
 
-namespace a { namespace different { namespace ns {
 
-const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAMES = _AnEnum_EnumMapFactory::makeValuesToNamesMap();
-const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES = _AnEnum_EnumMapFactory::makeNamesToValuesMap();
-
-}}} // a::different::ns
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::a::different::ns::AnEnum>::size;
@@ -44,6 +36,13 @@ bool TEnumTraits<::a::different::ns::AnEnum>::findValue(char const* name, type* 
 }
 
 }} // apache::thrift
+
+namespace a { namespace different { namespace ns {
+
+const _AnEnum_EnumMapFactory::ValuesToNamesMapType _AnEnum_VALUES_TO_NAMES = _AnEnum_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnum_EnumMapFactory::NamesToValuesMapType _AnEnum_NAMES_TO_VALUES = _AnEnum_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // a::different::ns
 
 namespace apache {
 namespace thrift {

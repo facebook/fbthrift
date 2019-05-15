@@ -15,17 +15,7 @@
   limitations under the License.
 
 %><%#program:enums%>
-<% > common/namespace_cpp2_begin%>
 
-
-const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES = _<%enum:name%>_EnumMapFactory::makeValuesToNamesMap();
-const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES = _<%enum:name%>_EnumMapFactory::makeNamesToValuesMap();
-
-<% > common/namespace_cpp2_end%>
-
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::size;
@@ -61,4 +51,13 @@ bool TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findValue(char cons
 }
 
 }} // apache::thrift
+
+<% > common/namespace_cpp2_begin%>
+
+
+const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES = _<%enum:name%>_EnumMapFactory::makeValuesToNamesMap();
+const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES = _<%enum:name%>_EnumMapFactory::makeNamesToValuesMap();
+
+<% > common/namespace_cpp2_end%>
+
 <%/program:enums%>

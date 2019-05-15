@@ -23,9 +23,6 @@ enum class MyEnumA {
   fieldC = 4
 };
 
-using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
-extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
-extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 
 
@@ -35,9 +32,6 @@ enum class AnnotatedEnum : std::uint32_t {
   FIELDC = 9
 };
 
-using _AnnotatedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum>;
-extern const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES;
-extern const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES;
 
 inline constexpr AnnotatedEnum operator&(AnnotatedEnum a, AnnotatedEnum b) {
   using E = AnnotatedEnum;
@@ -78,9 +72,6 @@ enum class AnnotatedEnum2 : short {
   FIELDC = 9
 };
 
-using _AnnotatedEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum2>;
-extern const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES;
-extern const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES;
 
 inline constexpr AnnotatedEnum2 operator&(AnnotatedEnum2 a, AnnotatedEnum2 b) {
   using E = AnnotatedEnum2;
@@ -119,9 +110,6 @@ enum class MyEnumB {
   AField = 0
 };
 
-using _MyEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumB>;
-extern const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES;
-extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES;
 
 
 
@@ -220,6 +208,25 @@ template <> struct TEnumTraits<::some::valid::ns::MyEnumB> {
 
 }} // apache::thrift
 
+namespace some { namespace valid { namespace ns {
+
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
+extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
+
+using _AnnotatedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum>;
+extern const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES;
+extern const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES;
+
+using _AnnotatedEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum2>;
+extern const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES;
+extern const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES;
+
+using _MyEnumB_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumB>;
+extern const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES;
+extern const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES;
+
+}}} // some::valid::ns
 
 // END declare_enums
 // BEGIN struct_indirection

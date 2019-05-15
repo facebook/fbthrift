@@ -12,15 +12,7 @@
 
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_data.h"
 
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES = _has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap();
-const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES = _has_bitwise_ops_EnumMapFactory::makeNamesToValuesMap();
-
-}}}} // apache::thrift::fixtures::types
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::size;
@@ -44,15 +36,14 @@ bool TEnumTraits<::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(
 }
 
 }} // apache::thrift
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES = _is_unscoped_EnumMapFactory::makeValuesToNamesMap();
-const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES = _is_unscoped_EnumMapFactory::makeNamesToValuesMap();
+const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES = _has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap();
+const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES = _has_bitwise_ops_EnumMapFactory::makeNamesToValuesMap();
 
 }}}} // apache::thrift::fixtures::types
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::size;
@@ -76,15 +67,14 @@ bool TEnumTraits<::apache::thrift::fixtures::types::is_unscoped>::findValue(char
 }
 
 }} // apache::thrift
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES = _MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap();
-const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES = _MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap();
+const _is_unscoped_EnumMapFactory::ValuesToNamesMapType _is_unscoped_VALUES_TO_NAMES = _is_unscoped_EnumMapFactory::makeValuesToNamesMap();
+const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAMES_TO_VALUES = _is_unscoped_EnumMapFactory::makeNamesToValuesMap();
 
 }}}} // apache::thrift::fixtures::types
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::size;
@@ -108,6 +98,13 @@ bool TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEnum>::findValue
 }
 
 }} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES = _MyForwardRefEnum_EnumMapFactory::makeValuesToNamesMap();
+const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES = _MyForwardRefEnum_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // apache::thrift::fixtures::types
 
 namespace apache {
 namespace thrift {

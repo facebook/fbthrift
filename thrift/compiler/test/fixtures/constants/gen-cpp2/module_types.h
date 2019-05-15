@@ -17,9 +17,6 @@ namespace cpp2 {
 
 enum class EmptyEnum {};
 
-using _EmptyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EmptyEnum>;
-extern const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
-extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
 
 
 
@@ -30,9 +27,6 @@ enum class City {
   LON = 3
 };
 
-using _City_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<City>;
-extern const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES;
-extern const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES;
 
 
 
@@ -43,9 +37,6 @@ enum class Company {
   INSTAGRAM = 3
 };
 
-using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company>;
-extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
-extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
 
 
 
@@ -121,6 +112,21 @@ template <> struct TEnumTraits<::cpp2::Company> {
 
 }} // apache::thrift
 
+namespace cpp2 {
+
+using _EmptyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EmptyEnum>;
+extern const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
+extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
+
+using _City_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<City>;
+extern const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES;
+extern const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES;
+
+using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company>;
+extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
+extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
+
+} // cpp2
 
 // END declare_enums
 // BEGIN struct_indirection

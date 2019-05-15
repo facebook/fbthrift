@@ -22,9 +22,6 @@ enum class Animal {
   TARANTULA = 3
 };
 
-using _Animal_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Animal>;
-extern const _Animal_EnumMapFactory::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
-extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
 
 
 
@@ -60,6 +57,13 @@ template <> struct TEnumTraits<::cpp2::Animal> {
 
 }} // apache::thrift
 
+namespace cpp2 {
+
+using _Animal_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Animal>;
+extern const _Animal_EnumMapFactory::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
+extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
+
+} // cpp2
 
 // END declare_enums
 // BEGIN struct_indirection

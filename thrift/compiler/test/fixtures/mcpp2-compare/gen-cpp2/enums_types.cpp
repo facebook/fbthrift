@@ -12,15 +12,7 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_data.h"
 
-namespace facebook { namespace ns { namespace qwerty {
 
-const _AnEnumA_EnumMapFactory::ValuesToNamesMapType _AnEnumA_VALUES_TO_NAMES = _AnEnumA_EnumMapFactory::makeValuesToNamesMap();
-const _AnEnumA_EnumMapFactory::NamesToValuesMapType _AnEnumA_NAMES_TO_VALUES = _AnEnumA_EnumMapFactory::makeNamesToValuesMap();
-
-}}} // facebook::ns::qwerty
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumA>::size;
@@ -44,15 +36,14 @@ bool TEnumTraits<::facebook::ns::qwerty::AnEnumA>::findValue(char const* name, t
 }
 
 }} // apache::thrift
+
 namespace facebook { namespace ns { namespace qwerty {
 
-const _AnEnumB_EnumMapFactory::ValuesToNamesMapType _AnEnumB_VALUES_TO_NAMES = _AnEnumB_EnumMapFactory::makeValuesToNamesMap();
-const _AnEnumB_EnumMapFactory::NamesToValuesMapType _AnEnumB_NAMES_TO_VALUES = _AnEnumB_EnumMapFactory::makeNamesToValuesMap();
+const _AnEnumA_EnumMapFactory::ValuesToNamesMapType _AnEnumA_VALUES_TO_NAMES = _AnEnumA_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnumA_EnumMapFactory::NamesToValuesMapType _AnEnumA_NAMES_TO_VALUES = _AnEnumA_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // facebook::ns::qwerty
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumB>::size;
@@ -76,15 +67,14 @@ bool TEnumTraits<::facebook::ns::qwerty::AnEnumB>::findValue(char const* name, t
 }
 
 }} // apache::thrift
+
 namespace facebook { namespace ns { namespace qwerty {
 
-const _AnEnumC_EnumMapFactory::ValuesToNamesMapType _AnEnumC_VALUES_TO_NAMES = _AnEnumC_EnumMapFactory::makeValuesToNamesMap();
-const _AnEnumC_EnumMapFactory::NamesToValuesMapType _AnEnumC_NAMES_TO_VALUES = _AnEnumC_EnumMapFactory::makeNamesToValuesMap();
+const _AnEnumB_EnumMapFactory::ValuesToNamesMapType _AnEnumB_VALUES_TO_NAMES = _AnEnumB_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnumB_EnumMapFactory::NamesToValuesMapType _AnEnumB_NAMES_TO_VALUES = _AnEnumB_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // facebook::ns::qwerty
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumC>::size;
@@ -108,15 +98,14 @@ bool TEnumTraits<::facebook::ns::qwerty::AnEnumC>::findValue(char const* name, t
 }
 
 }} // apache::thrift
+
 namespace facebook { namespace ns { namespace qwerty {
 
-const _AnEnumD_EnumMapFactory::ValuesToNamesMapType _AnEnumD_VALUES_TO_NAMES = _AnEnumD_EnumMapFactory::makeValuesToNamesMap();
-const _AnEnumD_EnumMapFactory::NamesToValuesMapType _AnEnumD_NAMES_TO_VALUES = _AnEnumD_EnumMapFactory::makeNamesToValuesMap();
+const _AnEnumC_EnumMapFactory::ValuesToNamesMapType _AnEnumC_VALUES_TO_NAMES = _AnEnumC_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnumC_EnumMapFactory::NamesToValuesMapType _AnEnumC_NAMES_TO_VALUES = _AnEnumC_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // facebook::ns::qwerty
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumD>::size;
@@ -140,15 +129,14 @@ bool TEnumTraits<::facebook::ns::qwerty::AnEnumD>::findValue(char const* name, t
 }
 
 }} // apache::thrift
+
 namespace facebook { namespace ns { namespace qwerty {
 
-const _AnEnumE_EnumMapFactory::ValuesToNamesMapType _AnEnumE_VALUES_TO_NAMES = _AnEnumE_EnumMapFactory::makeValuesToNamesMap();
-const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VALUES = _AnEnumE_EnumMapFactory::makeNamesToValuesMap();
+const _AnEnumD_EnumMapFactory::ValuesToNamesMapType _AnEnumD_VALUES_TO_NAMES = _AnEnumD_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnumD_EnumMapFactory::NamesToValuesMapType _AnEnumD_NAMES_TO_VALUES = _AnEnumD_EnumMapFactory::makeNamesToValuesMap();
 
 }}} // facebook::ns::qwerty
-namespace std {
 
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::facebook::ns::qwerty::AnEnumE>::size;
@@ -172,6 +160,13 @@ bool TEnumTraits<::facebook::ns::qwerty::AnEnumE>::findValue(char const* name, t
 }
 
 }} // apache::thrift
+
+namespace facebook { namespace ns { namespace qwerty {
+
+const _AnEnumE_EnumMapFactory::ValuesToNamesMapType _AnEnumE_VALUES_TO_NAMES = _AnEnumE_EnumMapFactory::makeValuesToNamesMap();
+const _AnEnumE_EnumMapFactory::NamesToValuesMapType _AnEnumE_NAMES_TO_VALUES = _AnEnumE_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // facebook::ns::qwerty
 
 namespace apache {
 namespace thrift {

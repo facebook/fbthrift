@@ -12,15 +12,7 @@
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_data.h"
 
-namespace some { namespace ns {
 
-const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES = _EnumB_EnumMapFactory::makeValuesToNamesMap();
-const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES = _EnumB_EnumMapFactory::makeNamesToValuesMap();
-
-}} // some::ns
-namespace std {
-
-} // std
 namespace apache { namespace thrift {
 
 constexpr std::size_t const TEnumTraits<::some::ns::EnumB>::size;
@@ -44,6 +36,13 @@ bool TEnumTraits<::some::ns::EnumB>::findValue(char const* name, type* out) {
 }
 
 }} // apache::thrift
+
+namespace some { namespace ns {
+
+const _EnumB_EnumMapFactory::ValuesToNamesMapType _EnumB_VALUES_TO_NAMES = _EnumB_EnumMapFactory::makeValuesToNamesMap();
+const _EnumB_EnumMapFactory::NamesToValuesMapType _EnumB_NAMES_TO_VALUES = _EnumB_EnumMapFactory::makeNamesToValuesMap();
+
+}} // some::ns
 
 namespace apache {
 namespace thrift {
