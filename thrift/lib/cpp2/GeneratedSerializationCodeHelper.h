@@ -91,14 +91,15 @@ std::false_type reserve_if_possible(T&&...) {
 }
 
 template <typename Void, typename T>
-struct presorted_constructible_from_vector_value_type_ : std::false_type {};
+struct sorted_unique_constructible_ : std::false_type {};
 template <typename T>
-struct presorted_constructible_from_vector_value_type_<
-    folly::void_t<decltype(T(folly::presorted, typename T::container_type()))>,
+struct sorted_unique_constructible_<
+    folly::void_t<
+        decltype(T(folly::sorted_unique, typename T::container_type())),
+        decltype(T(typename T::container_type()))>,
     T> : std::true_type {};
 template <typename T>
-struct presorted_constructible_from_vector_value_type
-    : presorted_constructible_from_vector_value_type_<void, T> {};
+struct sorted_unique_constructible : sorted_unique_constructible_<void, T> {};
 
 FOLLY_CREATE_MEMBER_INVOKE_TRAITS(emplace_hint_traits, emplace_hint);
 
@@ -114,8 +115,7 @@ using set_emplace_hint_is_invocable = emplace_hint_traits::
     is_invocable<T, typename T::iterator, typename T::value_type>;
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
-typename std::enable_if<
-    presorted_constructible_from_vector_value_type<Map>::value>::type
+typename std::enable_if<sorted_unique_constructible<Map>::value>::type
 deserialize_known_length_map(
     Map& map,
     std::uint32_t map_size,
@@ -138,15 +138,13 @@ deserialize_known_length_map(
     sorted = sorted && map.key_comp()(tmp[i - 1].first, tmp[i].first);
   }
 
-  if (!sorted) {
-    std::sort(tmp.begin(), tmp.end(), map.value_comp());
-  }
-  map = Map(folly::presorted, std::move(tmp));
+  using folly::sorted_unique;
+  map = sorted ? Map(sorted_unique, std::move(tmp)) : Map(std::move(tmp));
 }
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    !presorted_constructible_from_vector_value_type<Map>::value &&
+    !sorted_unique_constructible<Map>::value &&
     map_emplace_hint_is_invocable<Map>::value>::type
 deserialize_known_length_map(
     Map& map,
@@ -166,7 +164,7 @@ deserialize_known_length_map(
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<
-    !presorted_constructible_from_vector_value_type<Map>::value &&
+    !sorted_unique_constructible<Map>::value &&
     !map_emplace_hint_is_invocable<Map>::value>::type
 deserialize_known_length_map(
     Map& map,
@@ -183,8 +181,7 @@ deserialize_known_length_map(
 }
 
 template <typename Set, typename ValDeserializer>
-typename std::enable_if<
-    presorted_constructible_from_vector_value_type<Set>::value>::type
+typename std::enable_if<sorted_unique_constructible<Set>::value>::type
 deserialize_known_length_set(
     Set& set,
     std::uint32_t set_size,
@@ -204,15 +201,13 @@ deserialize_known_length_set(
     sorted = sorted && set.key_comp()(tmp[i - 1], tmp[i]);
   }
 
-  if (!sorted) {
-    std::sort(tmp.begin(), tmp.end(), set.value_comp());
-  }
-  set = Set(folly::presorted, std::move(tmp));
+  using folly::sorted_unique;
+  set = sorted ? Set(sorted_unique, std::move(tmp)) : Set(std::move(tmp));
 }
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    !presorted_constructible_from_vector_value_type<Set>::value &&
+    !sorted_unique_constructible<Set>::value &&
     set_emplace_hint_is_invocable<Set>::value>::type
 deserialize_known_length_set(
     Set& set,
@@ -229,7 +224,7 @@ deserialize_known_length_set(
 
 template <typename Set, typename ValDeserializer>
 typename std::enable_if<
-    !presorted_constructible_from_vector_value_type<Set>::value &&
+    !sorted_unique_constructible<Set>::value &&
     !set_emplace_hint_is_invocable<Set>::value>::type
 deserialize_known_length_set(
     Set& set,
