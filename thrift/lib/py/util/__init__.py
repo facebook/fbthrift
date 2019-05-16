@@ -28,7 +28,14 @@ __all__ = ["create_client", "Serializer", "struct_to_dict", "parse_struct_spec"]
 StructField = namedtuple("StructField", "id type name type_args default req_type")
 
 
-def create_client(client_klass, host=None, port=None, client_type=None):
+def create_client(
+    client_klass,
+    host=None,
+    port=None,
+    client_type=None,
+    path=None,
+    timeout=None,
+):
     """
     Given a thrift client class, and a host/port
     return a client using HeaderTransport
@@ -36,7 +43,8 @@ def create_client(client_klass, host=None, port=None, client_type=None):
     from thrift.transport.TSocket import TSocket
     from thrift.protocol.THeaderProtocol import THeaderProtocol
 
-    sock = TSocket(host=host, port=port)
+    sock = TSocket(host=host, port=port, unix_socket=path)
+    sock.setTimeout(timeout)
     protocol = THeaderProtocol(
         sock,
         client_types=[client_type]
