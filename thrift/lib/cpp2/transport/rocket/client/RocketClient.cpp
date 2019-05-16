@@ -37,6 +37,7 @@
 #include <folly/lang/Exception.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
@@ -179,7 +180,7 @@ void RocketClient::handleStreamFrame(
   }
 }
 
-Payload RocketClient::sendRequestResponseSync(
+folly::Try<Payload> RocketClient::sendRequestResponseSync(
     Payload&& request,
     std::chrono::milliseconds timeout,
     RocketClientWriteCallback* writeCallback) {
@@ -195,11 +196,14 @@ Payload RocketClient::sendRequestResponseSync(
       queue_,
       setupFrame.get(),
       writeCallback);
-  scheduleWrite(ctx);
+  auto swr = scheduleWrite(ctx);
+  if (swr.hasException()) {
+    return folly::Try<Payload>(std::move(swr.exception()));
+  }
   return ctx.waitForResponse(timeout);
 }
 
-void RocketClient::sendRequestFnfSync(
+folly::Try<void> RocketClient::sendRequestFnfSync(
     Payload&& request,
     RocketClientWriteCallback* writeCallback) {
   ++requests_;
@@ -214,7 +218,10 @@ void RocketClient::sendRequestFnfSync(
       queue_,
       setupFrame.get(),
       writeCallback);
-  scheduleWrite(ctx);
+  auto swr = scheduleWrite(ctx);
+  if (swr.hasException()) {
+    return folly::Try<void>(std::move(swr.exception()));
+  }
   return ctx.waitForWriteToComplete();
 }
 
@@ -228,14 +235,14 @@ std::shared_ptr<RocketClientFlowable> RocketClient::createStream(
   return flowable;
 }
 
-void RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
+folly::Try<void> RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
   if (UNLIKELY(n <= 0)) {
-    return;
+    return {};
   }
 
   auto* stream = getStreamById(streamId);
   if (!stream) {
-    return;
+    return {};
   }
 
   if (stream->requestStreamPayload) {
@@ -246,49 +253,62 @@ void RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
         queue_,
         setupFrame.get());
     stream->requestStreamPayload.reset();
-    scheduleWrite(ctx);
+    auto swr = scheduleWrite(ctx);
+    if (swr.hasException()) {
+      return folly::Try<void>(std::move(swr.exception()));
+    }
     return ctx.waitForWriteToComplete();
   }
 
   RequestContext ctx(RequestNFrame(streamId, n), queue_);
-  scheduleWrite(ctx);
+  auto swr = scheduleWrite(ctx);
+  if (swr.hasException()) {
+    return folly::Try<void>(std::move(swr.exception()));
+  }
   return ctx.waitForWriteToComplete();
 }
 
-void RocketClient::sendCancelSync(StreamId streamId) {
+folly::Try<void> RocketClient::sendCancelSync(StreamId streamId) {
   RequestContext ctx(CancelFrame(streamId), queue_);
   SCOPE_EXIT {
     freeStream(streamId);
   };
-  scheduleWrite(ctx);
-  ctx.waitForWriteToComplete();
+  auto swr = scheduleWrite(ctx);
+  if (swr.hasException()) {
+    return folly::Try<void>(std::move(swr.exception()));
+  }
+  return ctx.waitForWriteToComplete();
 }
 
 void RocketClient::sendRequestN(StreamId streamId, int32_t n) {
   fm_->addTaskFinally(
-      [this, streamId, n] { sendRequestNSync(streamId, n); },
-      [this, keepAlive = shared_from_this()](folly::Try<void>&& result) {
-        if (result.hasException()) {
+      [this, streamId, n] { return sendRequestNSync(streamId, n); },
+      [this,
+       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
+        auto resc = collapseTry(std::move(result));
+        if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000) << "sendRequestN failed, closing now: "
-                                       << result.exception().what();
-          closeNow(std::move(result.exception()));
+                                       << resc.exception().what();
+          closeNow(std::move(resc.exception()));
         }
       });
 }
 
 void RocketClient::cancelStream(StreamId streamId) {
   fm_->addTaskFinally(
-      [this, streamId] { sendCancelSync(streamId); },
-      [this, keepAlive = shared_from_this()](folly::Try<void>&& result) {
-        if (result.hasException()) {
-          FB_LOG_EVERY_MS(ERROR, 1000) << "cancelStream failed, closing now: "
-                                       << result.exception().what();
-          closeNow(std::move(result.exception()));
+      [this, streamId] { return sendCancelSync(streamId); },
+      [this,
+       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
+        auto resc = collapseTry(std::move(result));
+        if (resc.hasException()) {
+          FB_LOG_EVERY_MS(ERROR, 1000) << "sendRequestN failed, closing now: "
+                                       << resc.exception().what();
+          closeNow(std::move(resc.exception()));
         }
       });
 }
 
-void RocketClient::scheduleWrite(RequestContext& ctx) {
+folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
   if (!evb_) {
     folly::throw_exception(transport::TTransportException(
         transport::TTransportException::TTransportExceptionType::INVALID_STATE,
@@ -296,15 +316,17 @@ void RocketClient::scheduleWrite(RequestContext& ctx) {
   }
 
   if (state_ != ConnectionState::CONNECTED) {
-    folly::throw_exception(transport::TTransportException(
-        transport::TTransportException::TTransportExceptionType::NOT_OPEN,
-        "Write not scheduled on disconnected client"));
+    return folly::Try<void>(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::NOT_OPEN,
+            "Write not scheduled on disconnected client"));
   }
 
   queue_.enqueueScheduledWrite(ctx);
   if (!writeLoopCallback_.isLoopCallbackScheduled()) {
     evb_->runInLoop(&writeLoopCallback_);
   }
+  return {};
 }
 
 void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {

@@ -71,12 +71,12 @@ class RocketClient : public folly::DelayedDestruction,
       std::unique_ptr<SetupFrame> setupFrame);
 
   // Main send*Sync() API. Must be called on the EventBase's FiberManager.
-  Payload sendRequestResponseSync(
+  FOLLY_NODISCARD folly::Try<Payload> sendRequestResponseSync(
       Payload&& request,
       std::chrono::milliseconds timeout,
       RocketClientWriteCallback* writeCallback);
 
-  void sendRequestFnfSync(
+  FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(
       Payload&& request,
       RocketClientWriteCallback* writeCallback);
 
@@ -85,8 +85,6 @@ class RocketClient : public folly::DelayedDestruction,
   void sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
   void freeStream(StreamId streamId);
-
-  void scheduleWrite(RequestContext& ctx);
 
   // AsyncTransportWrapper::WriteCallback implementation
   void writeSuccess() noexcept final;
@@ -216,8 +214,11 @@ class RocketClient : public folly::DelayedDestruction,
       folly::AsyncTransportWrapper::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
-  void sendRequestNSync(StreamId streamId, int32_t n);
-  void sendCancelSync(StreamId streamId);
+  FOLLY_NODISCARD folly::Try<void> sendRequestNSync(
+      StreamId streamId,
+      int32_t n);
+  FOLLY_NODISCARD folly::Try<void> sendCancelSync(StreamId streamId);
+  FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
   StreamId makeStreamId() {
     const StreamId rid = nextStreamId_;

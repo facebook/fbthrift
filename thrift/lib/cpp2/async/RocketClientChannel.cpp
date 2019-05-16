@@ -39,6 +39,7 @@
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
+#include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
@@ -320,7 +321,12 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
     auto& fm = getFiberManager();
-    fm.addTaskFinally(std::move(sendRequestFunc), std::move(finallyFunc));
+    fm.addTaskFinally(
+        std::move(sendRequestFunc),
+        [finallyFunc = std::move(finallyFunc)](
+            folly::Try<folly::Try<void>>&& arg) mutable {
+          finallyFunc(collapseTry(std::move(arg)));
+        });
   }
 }
 
@@ -386,7 +392,12 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
     auto& fm = getFiberManager();
-    fm.addTaskFinally(std::move(sendRequestFunc), std::move(finallyFunc));
+    fm.addTaskFinally(
+        std::move(sendRequestFunc),
+        [finallyFunc = std::move(finallyFunc)](
+            folly::Try<folly::Try<rocket::Payload>>&& arg) mutable {
+          finallyFunc(collapseTry(std::move(arg)));
+        });
   }
 }
 

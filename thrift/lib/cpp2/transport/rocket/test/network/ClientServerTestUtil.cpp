@@ -45,6 +45,7 @@
 
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -281,8 +282,8 @@ folly::Try<Payload> RocketTestClient::sendRequestResponseSync(
           return client_->sendRequestResponseSync(
               std::move(request), timeout, writeCallback);
         },
-        [&](folly::Try<Payload>&& r) {
-          response = std::move(r);
+        [&](folly::Try<folly::Try<Payload>>&& r) {
+          response = collapseTry(std::move(r));
           baton.post();
         });
   });
@@ -302,8 +303,8 @@ folly::Try<void> RocketTestClient::sendRequestFnfSync(
         [&] {
           return client_->sendRequestFnfSync(std::move(request), writeCallback);
         },
-        [&](folly::Try<void>&& r) {
-          response = std::move(r);
+        [&](folly::Try<folly::Try<void>>&& r) {
+          response = collapseTry(std::move(r));
           baton.post();
         });
   });

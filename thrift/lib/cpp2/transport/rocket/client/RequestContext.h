@@ -25,6 +25,7 @@
 
 #include <folly/IntrusiveList.h>
 #include <folly/Likely.h>
+#include <folly/Portability.h>
 #include <folly/fibers/Baton.h>
 
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -77,8 +78,9 @@ class RequestContext {
   RequestContext& operator=(const RequestContext&) = delete;
   RequestContext& operator=(RequestContext&&) = delete;
 
-  Payload waitForResponse(std::chrono::milliseconds timeout);
-  void waitForWriteToComplete();
+  FOLLY_NODISCARD folly::Try<Payload> waitForResponse(
+      std::chrono::milliseconds timeout);
+  FOLLY_NODISCARD folly::Try<void> waitForWriteToComplete();
 
   void scheduleTimeoutForResponse() {
     DCHECK(expectingResponse());

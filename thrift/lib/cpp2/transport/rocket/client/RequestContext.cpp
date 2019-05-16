@@ -39,7 +39,7 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-void RequestContext::waitForWriteToComplete() {
+folly::Try<void> RequestContext::waitForWriteToComplete() {
   baton_.wait();
 
   switch (state_) {
@@ -47,12 +47,13 @@ void RequestContext::waitForWriteToComplete() {
       // Even though this function should only be called for no-response
       // requests, we still use RESPONSE_RECEIVED as the terminal "expected"
       // state for such requests.
-      return;
+      return {};
 
     case State::REQUEST_ABORTED:
-      throw TTransportException(
-          TTransportException::NOT_OPEN,
-          "Request aborted during client shutdown");
+      return folly::Try<void>(
+          folly::make_exception_wrapper<TTransportException>(
+              TTransportException::NOT_OPEN,
+              "Request aborted during client shutdown"));
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
@@ -67,7 +68,8 @@ void RequestContext::waitForWriteToComplete() {
   folly::assume_unreachable();
 }
 
-Payload RequestContext::waitForResponse(std::chrono::milliseconds timeout) {
+folly::Try<Payload> RequestContext::waitForResponse(
+    std::chrono::milliseconds timeout) {
   // Once the eventual write to the socket succeeds or errors out (via
   // writeSuccess() or writeErr()), a timeout for baton_ will be scheduled via
   // awaitResponseTimeoutHandler_.
@@ -81,19 +83,18 @@ Payload RequestContext::waitForResponse(std::chrono::milliseconds timeout) {
       // not received within the request's allotted timeout. Terminate request
       // with timeout.
       queue_.abortSentRequest(*this);
-      throw TTransportException(TTransportException::TIMED_OUT);
+      return folly::Try<Payload>(
+          folly::make_exception_wrapper<TTransportException>(
+              TTransportException::TIMED_OUT));
 
     case State::RESPONSE_RECEIVED:
-      if (UNLIKELY(responsePayload_.hasException())) {
-        responsePayload_.exception().throw_exception();
-      }
-      DCHECK(responsePayload_.hasValue());
-      return std::move(*responsePayload_);
+      return std::move(responsePayload_);
 
     case State::REQUEST_ABORTED:
-      throw TTransportException(
-          TTransportException::NOT_OPEN,
-          "Request aborted during client shutdown");
+      return folly::Try<Payload>(
+          folly::make_exception_wrapper<TTransportException>(
+              TTransportException::NOT_OPEN,
+              "Request aborted during client shutdown"));
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
