@@ -487,3 +487,41 @@ TEST(optional_field_ref_test, move) {
   EXPECT_TRUE(!*s.opt_uptr());
   EXPECT_EQ(p.get(), rawp);
 }
+
+#ifdef THRIFT_HAS_OPTIONAL
+TEST(optional_field_ref_test, copy_from_optional) {
+  auto s = TestStruct();
+  s.opt_name() = "foo";
+  auto empty = std::optional<std::string>();
+  s.opt_name().from_optional(empty);
+  EXPECT_FALSE(s.opt_name().has_value());
+  auto foo = std::optional<std::string>("foo");
+  s.opt_name().from_optional(foo);
+  EXPECT_TRUE(s.opt_name().has_value());
+  EXPECT_EQ(*s.opt_name(), "foo");
+}
+
+TEST(optional_field_ref_test, move_from_optional) {
+  auto s = TestStruct();
+  auto p = std::make_optional(std::make_unique<int>(42));
+  auto rawp = p->get();
+  s.opt_uptr().from_optional(std::move(p));
+  EXPECT_TRUE(p.has_value());
+  EXPECT_EQ(p->get(), nullptr);
+  EXPECT_EQ(s.opt_uptr()->get(), rawp);
+  p.reset();
+  s.opt_uptr().from_optional(std::move(p));
+  EXPECT_FALSE(p.has_value());
+  EXPECT_FALSE(s.opt_uptr().has_value());
+}
+
+TEST(optional_field_ref_test, to_optional) {
+  TestStruct s;
+  std::optional<std::string> opt = s.opt_name().to_optional();
+  EXPECT_FALSE(opt);
+  s.opt_name() = "foo";
+  opt = s.opt_name().to_optional();
+  EXPECT_TRUE(opt);
+  EXPECT_EQ(*opt, "foo");
+}
+#endif

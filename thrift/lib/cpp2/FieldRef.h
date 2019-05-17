@@ -19,6 +19,11 @@
 #include <type_traits>
 #include <utility>
 
+#if __has_include(<optional>)
+#include <optional>
+#define THRIFT_HAS_OPTIONAL
+#endif
+
 #include <folly/CPortability.h>
 #include <folly/Likely.h>
 
@@ -172,9 +177,12 @@ class optional_field_ref {
     return *this;
   }
 
+  // Copies the data (the set flag and the value if available) from another
+  // optional_field_ref object.
+  //
   // Assignment from optional_field_ref is intentionally not provided to prevent
   // potential confusion between two possible behaviors, copying and reference
-  // rebinding. The copy_from method is provided instead.
+  // rebinding. This copy_from method is provided instead.
   template <typename U>
   THRIFT_NOLINK void copy_from(const optional_field_ref<U>& other) noexcept(
       std::is_nothrow_assignable<value_type&, U>::value) {
@@ -189,6 +197,40 @@ class optional_field_ref {
     is_set_ = other.is_set_;
     other.is_set_ = false;
   }
+
+#ifdef THRIFT_HAS_OPTIONAL
+  template <typename U>
+  THRIFT_NOLINK void from_optional(const std::optional<U>& other) noexcept(
+      std::is_nothrow_assignable<value_type&, U>::value) {
+    // Use if instead of a shorter ternary expression to prevent a potential
+    // copy if T and U mismatch.
+    if (other) {
+      value_ = *other;
+    } else {
+      value_ = {};
+    }
+    is_set_ = other.has_value();
+  }
+
+  // Moves the value from std::optional. As std::optional's move constructor,
+  // move_from doesn't make other empty.
+  template <typename U>
+  THRIFT_NOLINK void from_optional(std::optional<U>&& other) noexcept(
+      std::is_nothrow_assignable<value_type&, U>::value) {
+    // Use if instead of a shorter ternary expression to prevent a potential
+    // copy if T and U mismatch.
+    if (other) {
+      value_ = std::move(*other);
+    } else {
+      value_ = {};
+    }
+    is_set_ = other.has_value();
+  }
+
+  THRIFT_NOLINK std::optional<value_type> to_optional() const {
+    return is_set_ ? std::make_optional(value_) : std::nullopt;
+  }
+#endif
 
   THRIFT_NOLINK bool has_value() const noexcept {
     return is_set_;
