@@ -21,7 +21,9 @@
 
 #if __has_include(<optional>)
 #include <optional>
+#if __cpp_lib_optional >= 201606
 #define THRIFT_HAS_OPTIONAL
+#endif
 #endif
 
 #include <folly/CPortability.h>
