@@ -28,8 +28,7 @@ using namespace rsocket;
 
 namespace {
 bool isValidMetadata(const RequestRpcMetadata& metadata) {
-  return metadata.protocol_ref() && metadata.name_ref() &&
-      metadata.kind_ref() && metadata.seqId_ref();
+  return metadata.protocol_ref() && metadata.name_ref() && metadata.kind_ref();
 }
 } // namespace
 

@@ -45,7 +45,6 @@ bool deserializeMetadata(
     reader.setInput(&buffer);
     metadata.read(&reader);
     DCHECK(metadata.kind_ref());
-    DCHECK(metadata.seqId_ref());
     return true;
   } catch (const std::exception& e) {
     LOG(ERROR) << "Exception on deserializing metadata: "
