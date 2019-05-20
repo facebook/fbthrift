@@ -100,10 +100,9 @@ cdef class MyRoot(thrift.py3.client.Client):
     cdef const type_info* _typeid(MyRoot self):
         return &typeid(cMyRootAsyncClient)
 
-    @staticmethod
-    cdef _module_MyRoot_set_client(MyRoot inst, shared_ptr[cMyRootClientWrapper] c_obj):
+    cdef _module_MyRoot_set_client(MyRoot self, shared_ptr[cMyRootClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyRoot_client = c_obj
+        self._module_MyRoot_client = c_obj
 
     cdef _module_MyRoot_reset_client(MyRoot self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -117,8 +116,7 @@ cdef class MyRoot(thrift.py3.client.Client):
         self._module_MyRoot_reset_client()
 
     cdef bind_client(MyRoot self, cRequestChannel_ptr&& channel):
-        MyRoot._module_MyRoot_set_client(
-            self,
+        self._module_MyRoot_set_client(
             makeClientWrapper[cMyRootAsyncClient, cMyRootClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -205,11 +203,10 @@ cdef class MyNode(MyRoot):
     cdef const type_info* _typeid(MyNode self):
         return &typeid(cMyNodeAsyncClient)
 
-    @staticmethod
-    cdef _module_MyNode_set_client(MyNode inst, shared_ptr[cMyNodeClientWrapper] c_obj):
+    cdef _module_MyNode_set_client(MyNode self, shared_ptr[cMyNodeClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyNode_client = c_obj
-        MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
+        self._module_MyNode_client = c_obj
+        self._module_MyRoot_set_client(<shared_ptr[cMyRootClientWrapper]>c_obj)
 
     cdef _module_MyNode_reset_client(MyNode self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -224,8 +221,7 @@ cdef class MyNode(MyRoot):
         self._module_MyNode_reset_client()
 
     cdef bind_client(MyNode self, cRequestChannel_ptr&& channel):
-        MyNode._module_MyNode_set_client(
-            self,
+        self._module_MyNode_set_client(
             makeClientWrapper[cMyNodeAsyncClient, cMyNodeClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -312,11 +308,10 @@ cdef class MyLeaf(MyNode):
     cdef const type_info* _typeid(MyLeaf self):
         return &typeid(cMyLeafAsyncClient)
 
-    @staticmethod
-    cdef _module_MyLeaf_set_client(MyLeaf inst, shared_ptr[cMyLeafClientWrapper] c_obj):
+    cdef _module_MyLeaf_set_client(MyLeaf self, shared_ptr[cMyLeafClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyLeaf_client = c_obj
-        MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
+        self._module_MyLeaf_client = c_obj
+        self._module_MyNode_set_client(<shared_ptr[cMyNodeClientWrapper]>c_obj)
 
     cdef _module_MyLeaf_reset_client(MyLeaf self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -331,8 +326,7 @@ cdef class MyLeaf(MyNode):
         self._module_MyLeaf_reset_client()
 
     cdef bind_client(MyLeaf self, cRequestChannel_ptr&& channel):
-        MyLeaf._module_MyLeaf_set_client(
-            self,
+        self._module_MyLeaf_set_client(
             makeClientWrapper[cMyLeafAsyncClient, cMyLeafClientWrapper](
                 thrift.py3.client.move(channel)
             ),

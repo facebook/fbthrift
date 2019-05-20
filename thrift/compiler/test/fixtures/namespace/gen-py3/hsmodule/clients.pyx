@@ -72,10 +72,9 @@ cdef class HsTestService(thrift.py3.client.Client):
     cdef const type_info* _typeid(HsTestService self):
         return &typeid(cHsTestServiceAsyncClient)
 
-    @staticmethod
-    cdef _hsmodule_HsTestService_set_client(HsTestService inst, shared_ptr[cHsTestServiceClientWrapper] c_obj):
+    cdef _hsmodule_HsTestService_set_client(HsTestService self, shared_ptr[cHsTestServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._hsmodule_HsTestService_client = c_obj
+        self._hsmodule_HsTestService_client = c_obj
 
     cdef _hsmodule_HsTestService_reset_client(HsTestService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -89,8 +88,7 @@ cdef class HsTestService(thrift.py3.client.Client):
         self._hsmodule_HsTestService_reset_client()
 
     cdef bind_client(HsTestService self, cRequestChannel_ptr&& channel):
-        HsTestService._hsmodule_HsTestService_set_client(
-            self,
+        self._hsmodule_HsTestService_set_client(
             makeClientWrapper[cHsTestServiceAsyncClient, cHsTestServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),

@@ -124,10 +124,9 @@ cdef class NestedContainers(thrift.py3.client.Client):
     cdef const type_info* _typeid(NestedContainers self):
         return &typeid(cNestedContainersAsyncClient)
 
-    @staticmethod
-    cdef _module_NestedContainers_set_client(NestedContainers inst, shared_ptr[cNestedContainersClientWrapper] c_obj):
+    cdef _module_NestedContainers_set_client(NestedContainers self, shared_ptr[cNestedContainersClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_NestedContainers_client = c_obj
+        self._module_NestedContainers_client = c_obj
 
     cdef _module_NestedContainers_reset_client(NestedContainers self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -141,8 +140,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         self._module_NestedContainers_reset_client()
 
     cdef bind_client(NestedContainers self, cRequestChannel_ptr&& channel):
-        NestedContainers._module_NestedContainers_set_client(
-            self,
+        self._module_NestedContainers_set_client(
             makeClientWrapper[cNestedContainersAsyncClient, cNestedContainersClientWrapper](
                 thrift.py3.client.move(channel)
             ),

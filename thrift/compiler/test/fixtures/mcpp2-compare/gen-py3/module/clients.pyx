@@ -713,10 +713,9 @@ cdef class EmptyService(thrift.py3.client.Client):
     cdef const type_info* _typeid(EmptyService self):
         return &typeid(cEmptyServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_EmptyService_set_client(EmptyService inst, shared_ptr[cEmptyServiceClientWrapper] c_obj):
+    cdef _module_EmptyService_set_client(EmptyService self, shared_ptr[cEmptyServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_EmptyService_client = c_obj
+        self._module_EmptyService_client = c_obj
 
     cdef _module_EmptyService_reset_client(EmptyService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -730,8 +729,7 @@ cdef class EmptyService(thrift.py3.client.Client):
         self._module_EmptyService_reset_client()
 
     cdef bind_client(EmptyService self, cRequestChannel_ptr&& channel):
-        EmptyService._module_EmptyService_set_client(
-            self,
+        self._module_EmptyService_set_client(
             makeClientWrapper[cEmptyServiceAsyncClient, cEmptyServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -798,10 +796,9 @@ cdef class ReturnService(thrift.py3.client.Client):
     cdef const type_info* _typeid(ReturnService self):
         return &typeid(cReturnServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_ReturnService_set_client(ReturnService inst, shared_ptr[cReturnServiceClientWrapper] c_obj):
+    cdef _module_ReturnService_set_client(ReturnService self, shared_ptr[cReturnServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_ReturnService_client = c_obj
+        self._module_ReturnService_client = c_obj
 
     cdef _module_ReturnService_reset_client(ReturnService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -815,8 +812,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         self._module_ReturnService_reset_client()
 
     cdef bind_client(ReturnService self, cRequestChannel_ptr&& channel):
-        ReturnService._module_ReturnService_set_client(
-            self,
+        self._module_ReturnService_set_client(
             makeClientWrapper[cReturnServiceAsyncClient, cReturnServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -1315,10 +1311,9 @@ cdef class ParamService(thrift.py3.client.Client):
     cdef const type_info* _typeid(ParamService self):
         return &typeid(cParamServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_ParamService_set_client(ParamService inst, shared_ptr[cParamServiceClientWrapper] c_obj):
+    cdef _module_ParamService_set_client(ParamService self, shared_ptr[cParamServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_ParamService_client = c_obj
+        self._module_ParamService_client = c_obj
 
     cdef _module_ParamService_reset_client(ParamService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -1332,8 +1327,7 @@ cdef class ParamService(thrift.py3.client.Client):
         self._module_ParamService_reset_client()
 
     cdef bind_client(ParamService self, cRequestChannel_ptr&& channel):
-        ParamService._module_ParamService_set_client(
-            self,
+        self._module_ParamService_set_client(
             makeClientWrapper[cParamServiceAsyncClient, cParamServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),

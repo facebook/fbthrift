@@ -14,8 +14,7 @@ from my.namespacing.extend.test.extend.clients_wrapper cimport cExtendTestServic
 cdef class ExtendTestService(_hsmodule_clients.HsTestService):
     cdef shared_ptr[cExtendTestServiceClientWrapper] _extend_ExtendTestService_client
 
-    @staticmethod
-    cdef _extend_ExtendTestService_set_client(ExtendTestService inst, shared_ptr[cExtendTestServiceClientWrapper] c_obj)
+    cdef _extend_ExtendTestService_set_client(ExtendTestService self, shared_ptr[cExtendTestServiceClientWrapper] c_obj)
 
     cdef _extend_ExtendTestService_reset_client(ExtendTestService self)
 

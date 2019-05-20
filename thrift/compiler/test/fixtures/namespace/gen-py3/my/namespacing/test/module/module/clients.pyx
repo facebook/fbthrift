@@ -72,10 +72,9 @@ cdef class TestService(thrift.py3.client.Client):
     cdef const type_info* _typeid(TestService self):
         return &typeid(cTestServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_TestService_set_client(TestService inst, shared_ptr[cTestServiceClientWrapper] c_obj):
+    cdef _module_TestService_set_client(TestService self, shared_ptr[cTestServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_TestService_client = c_obj
+        self._module_TestService_client = c_obj
 
     cdef _module_TestService_reset_client(TestService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -89,8 +88,7 @@ cdef class TestService(thrift.py3.client.Client):
         self._module_TestService_reset_client()
 
     cdef bind_client(TestService self, cRequestChannel_ptr&& channel):
-        TestService._module_TestService_set_client(
-            self,
+        self._module_TestService_set_client(
             makeClientWrapper[cTestServiceAsyncClient, cTestServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),

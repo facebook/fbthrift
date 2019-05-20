@@ -59,10 +59,9 @@ cdef class NullService(thrift.py3.client.Client):
     cdef const type_info* _typeid(NullService self):
         return &typeid(cNullServiceAsyncClient)
 
-    @staticmethod
-    cdef _empty_NullService_set_client(NullService inst, shared_ptr[cNullServiceClientWrapper] c_obj):
+    cdef _empty_NullService_set_client(NullService self, shared_ptr[cNullServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._empty_NullService_client = c_obj
+        self._empty_NullService_client = c_obj
 
     cdef _empty_NullService_reset_client(NullService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -76,8 +75,7 @@ cdef class NullService(thrift.py3.client.Client):
         self._empty_NullService_reset_client()
 
     cdef bind_client(NullService self, cRequestChannel_ptr&& channel):
-        NullService._empty_NullService_set_client(
-            self,
+        self._empty_NullService_set_client(
             makeClientWrapper[cNullServiceAsyncClient, cNullServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),

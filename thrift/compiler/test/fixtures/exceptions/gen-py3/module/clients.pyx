@@ -123,10 +123,9 @@ cdef class Raiser(thrift.py3.client.Client):
     cdef const type_info* _typeid(Raiser self):
         return &typeid(cRaiserAsyncClient)
 
-    @staticmethod
-    cdef _module_Raiser_set_client(Raiser inst, shared_ptr[cRaiserClientWrapper] c_obj):
+    cdef _module_Raiser_set_client(Raiser self, shared_ptr[cRaiserClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_Raiser_client = c_obj
+        self._module_Raiser_client = c_obj
 
     cdef _module_Raiser_reset_client(Raiser self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -140,8 +139,7 @@ cdef class Raiser(thrift.py3.client.Client):
         self._module_Raiser_reset_client()
 
     cdef bind_client(Raiser self, cRequestChannel_ptr&& channel):
-        Raiser._module_Raiser_set_client(
-            self,
+        self._module_Raiser_set_client(
             makeClientWrapper[cRaiserAsyncClient, cRaiserClientWrapper](
                 thrift.py3.client.move(channel)
             ),

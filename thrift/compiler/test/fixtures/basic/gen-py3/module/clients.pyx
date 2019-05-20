@@ -271,10 +271,9 @@ cdef class MyService(thrift.py3.client.Client):
     cdef const type_info* _typeid(MyService self):
         return &typeid(cMyServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_MyService_set_client(MyService inst, shared_ptr[cMyServiceClientWrapper] c_obj):
+    cdef _module_MyService_set_client(MyService self, shared_ptr[cMyServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyService_client = c_obj
+        self._module_MyService_client = c_obj
 
     cdef _module_MyService_reset_client(MyService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -288,8 +287,7 @@ cdef class MyService(thrift.py3.client.Client):
         self._module_MyService_reset_client()
 
     cdef bind_client(MyService self, cRequestChannel_ptr&& channel):
-        MyService._module_MyService_set_client(
-            self,
+        self._module_MyService_set_client(
             makeClientWrapper[cMyServiceAsyncClient, cMyServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -524,10 +522,9 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     cdef const type_info* _typeid(MyServiceFast self):
         return &typeid(cMyServiceFastAsyncClient)
 
-    @staticmethod
-    cdef _module_MyServiceFast_set_client(MyServiceFast inst, shared_ptr[cMyServiceFastClientWrapper] c_obj):
+    cdef _module_MyServiceFast_set_client(MyServiceFast self, shared_ptr[cMyServiceFastClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyServiceFast_client = c_obj
+        self._module_MyServiceFast_client = c_obj
 
     cdef _module_MyServiceFast_reset_client(MyServiceFast self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -541,8 +538,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._module_MyServiceFast_reset_client()
 
     cdef bind_client(MyServiceFast self, cRequestChannel_ptr&& channel):
-        MyServiceFast._module_MyServiceFast_set_client(
-            self,
+        self._module_MyServiceFast_set_client(
             makeClientWrapper[cMyServiceFastAsyncClient, cMyServiceFastClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -757,10 +753,9 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
     cdef const type_info* _typeid(MyServiceEmpty self):
         return &typeid(cMyServiceEmptyAsyncClient)
 
-    @staticmethod
-    cdef _module_MyServiceEmpty_set_client(MyServiceEmpty inst, shared_ptr[cMyServiceEmptyClientWrapper] c_obj):
+    cdef _module_MyServiceEmpty_set_client(MyServiceEmpty self, shared_ptr[cMyServiceEmptyClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyServiceEmpty_client = c_obj
+        self._module_MyServiceEmpty_client = c_obj
 
     cdef _module_MyServiceEmpty_reset_client(MyServiceEmpty self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -774,8 +769,7 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
         self._module_MyServiceEmpty_reset_client()
 
     cdef bind_client(MyServiceEmpty self, cRequestChannel_ptr&& channel):
-        MyServiceEmpty._module_MyServiceEmpty_set_client(
-            self,
+        self._module_MyServiceEmpty_set_client(
             makeClientWrapper[cMyServiceEmptyAsyncClient, cMyServiceEmptyClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -843,10 +837,9 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
     cdef const type_info* _typeid(MyServicePrioParent self):
         return &typeid(cMyServicePrioParentAsyncClient)
 
-    @staticmethod
-    cdef _module_MyServicePrioParent_set_client(MyServicePrioParent inst, shared_ptr[cMyServicePrioParentClientWrapper] c_obj):
+    cdef _module_MyServicePrioParent_set_client(MyServicePrioParent self, shared_ptr[cMyServicePrioParentClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyServicePrioParent_client = c_obj
+        self._module_MyServicePrioParent_client = c_obj
 
     cdef _module_MyServicePrioParent_reset_client(MyServicePrioParent self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -860,8 +853,7 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         self._module_MyServicePrioParent_reset_client()
 
     cdef bind_client(MyServicePrioParent self, cRequestChannel_ptr&& channel):
-        MyServicePrioParent._module_MyServicePrioParent_set_client(
-            self,
+        self._module_MyServicePrioParent_set_client(
             makeClientWrapper[cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -968,11 +960,10 @@ cdef class MyServicePrioChild(MyServicePrioParent):
     cdef const type_info* _typeid(MyServicePrioChild self):
         return &typeid(cMyServicePrioChildAsyncClient)
 
-    @staticmethod
-    cdef _module_MyServicePrioChild_set_client(MyServicePrioChild inst, shared_ptr[cMyServicePrioChildClientWrapper] c_obj):
+    cdef _module_MyServicePrioChild_set_client(MyServicePrioChild self, shared_ptr[cMyServicePrioChildClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_MyServicePrioChild_client = c_obj
-        MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
+        self._module_MyServicePrioChild_client = c_obj
+        self._module_MyServicePrioParent_set_client(<shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
 
     cdef _module_MyServicePrioChild_reset_client(MyServicePrioChild self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -987,8 +978,7 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         self._module_MyServicePrioChild_reset_client()
 
     cdef bind_client(MyServicePrioChild self, cRequestChannel_ptr&& channel):
-        MyServicePrioChild._module_MyServicePrioChild_set_client(
-            self,
+        self._module_MyServicePrioChild_set_client(
             makeClientWrapper[cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper](
                 thrift.py3.client.move(channel)
             ),

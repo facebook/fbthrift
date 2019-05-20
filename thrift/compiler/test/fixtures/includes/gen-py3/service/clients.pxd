@@ -13,8 +13,7 @@ from service.clients_wrapper cimport cMyServiceClientWrapper
 cdef class MyService(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceClientWrapper] _service_MyService_client
 
-    @staticmethod
-    cdef _service_MyService_set_client(MyService inst, shared_ptr[cMyServiceClientWrapper] c_obj)
+    cdef _service_MyService_set_client(MyService self, shared_ptr[cMyServiceClientWrapper] c_obj)
 
     cdef _service_MyService_reset_client(MyService self)
 

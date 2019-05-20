@@ -609,10 +609,9 @@ cdef class SimpleService(thrift.py3.client.Client):
     cdef const type_info* _typeid(SimpleService self):
         return &typeid(cSimpleServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_SimpleService_set_client(SimpleService inst, shared_ptr[cSimpleServiceClientWrapper] c_obj):
+    cdef _module_SimpleService_set_client(SimpleService self, shared_ptr[cSimpleServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_SimpleService_client = c_obj
+        self._module_SimpleService_client = c_obj
 
     cdef _module_SimpleService_reset_client(SimpleService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -626,8 +625,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         self._module_SimpleService_reset_client()
 
     cdef bind_client(SimpleService self, cRequestChannel_ptr&& channel):
-        SimpleService._module_SimpleService_set_client(
-            self,
+        self._module_SimpleService_set_client(
             makeClientWrapper[cSimpleServiceAsyncClient, cSimpleServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -1640,11 +1638,10 @@ cdef class DerivedService(SimpleService):
     cdef const type_info* _typeid(DerivedService self):
         return &typeid(cDerivedServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_DerivedService_set_client(DerivedService inst, shared_ptr[cDerivedServiceClientWrapper] c_obj):
+    cdef _module_DerivedService_set_client(DerivedService self, shared_ptr[cDerivedServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_DerivedService_client = c_obj
-        SimpleService._module_SimpleService_set_client(inst, <shared_ptr[cSimpleServiceClientWrapper]>c_obj)
+        self._module_DerivedService_client = c_obj
+        self._module_SimpleService_set_client(<shared_ptr[cSimpleServiceClientWrapper]>c_obj)
 
     cdef _module_DerivedService_reset_client(DerivedService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -1659,8 +1656,7 @@ cdef class DerivedService(SimpleService):
         self._module_DerivedService_reset_client()
 
     cdef bind_client(DerivedService self, cRequestChannel_ptr&& channel):
-        DerivedService._module_DerivedService_set_client(
-            self,
+        self._module_DerivedService_set_client(
             makeClientWrapper[cDerivedServiceAsyncClient, cDerivedServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),
@@ -1747,11 +1743,10 @@ cdef class RederivedService(DerivedService):
     cdef const type_info* _typeid(RederivedService self):
         return &typeid(cRederivedServiceAsyncClient)
 
-    @staticmethod
-    cdef _module_RederivedService_set_client(RederivedService inst, shared_ptr[cRederivedServiceClientWrapper] c_obj):
+    cdef _module_RederivedService_set_client(RederivedService self, shared_ptr[cRederivedServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._module_RederivedService_client = c_obj
-        DerivedService._module_DerivedService_set_client(inst, <shared_ptr[cDerivedServiceClientWrapper]>c_obj)
+        self._module_RederivedService_client = c_obj
+        self._module_DerivedService_set_client(<shared_ptr[cDerivedServiceClientWrapper]>c_obj)
 
     cdef _module_RederivedService_reset_client(RederivedService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -1766,8 +1761,7 @@ cdef class RederivedService(DerivedService):
         self._module_RederivedService_reset_client()
 
     cdef bind_client(RederivedService self, cRequestChannel_ptr&& channel):
-        RederivedService._module_RederivedService_set_client(
-            self,
+        self._module_RederivedService_set_client(
             makeClientWrapper[cRederivedServiceAsyncClient, cRederivedServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),

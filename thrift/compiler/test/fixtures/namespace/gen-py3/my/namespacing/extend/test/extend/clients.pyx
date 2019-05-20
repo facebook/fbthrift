@@ -77,11 +77,10 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
     cdef const type_info* _typeid(ExtendTestService self):
         return &typeid(cExtendTestServiceAsyncClient)
 
-    @staticmethod
-    cdef _extend_ExtendTestService_set_client(ExtendTestService inst, shared_ptr[cExtendTestServiceClientWrapper] c_obj):
+    cdef _extend_ExtendTestService_set_client(ExtendTestService self, shared_ptr[cExtendTestServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
-        inst._extend_ExtendTestService_client = c_obj
-        _hsmodule_clients.HsTestService._hsmodule_HsTestService_set_client(inst, <shared_ptr[cHsTestServiceClientWrapper]>c_obj)
+        self._extend_ExtendTestService_client = c_obj
+        self._hsmodule_HsTestService_set_client(<shared_ptr[cHsTestServiceClientWrapper]>c_obj)
 
     cdef _extend_ExtendTestService_reset_client(ExtendTestService self):
         """So the class hierarchy resets the shared pointer up the chain"""
@@ -96,8 +95,7 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         self._extend_ExtendTestService_reset_client()
 
     cdef bind_client(ExtendTestService self, cRequestChannel_ptr&& channel):
-        ExtendTestService._extend_ExtendTestService_set_client(
-            self,
+        self._extend_ExtendTestService_set_client(
             makeClientWrapper[cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper](
                 thrift.py3.client.move(channel)
             ),

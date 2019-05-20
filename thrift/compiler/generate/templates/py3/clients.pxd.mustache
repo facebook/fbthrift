@@ -46,8 +46,7 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
   }}){{/service:extends}}{{^service:extends?}}(thrift.py3.client.Client){{/service:extends?}}:
     cdef shared_ptr[c{{service:name}}ClientWrapper] _{{program:name}}_{{service:name}}_client
 
-    @staticmethod
-    cdef _{{program:name}}_{{service:name}}_set_client({{service:name}} inst, shared_ptr[c{{service:name}}ClientWrapper] c_obj)
+    cdef _{{program:name}}_{{service:name}}_set_client({{service:name}} self, shared_ptr[c{{service:name}}ClientWrapper] c_obj)
 
     cdef _{{program:name}}_{{service:name}}_reset_client({{service:name}} self)
 
