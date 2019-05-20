@@ -37,11 +37,14 @@ class ContextStack {
       const char* serviceName,
       const char* method,
       TConnectionContext* connectionContext)
-      : handlers_(handlers), serviceName_(serviceName), method_(method) {
-    ctxs_.reserve(handlers->size());
-    for (const auto& handler : *handlers) {
-      ctxs_.push_back(
-          handler->getServiceContext(serviceName_, method_, connectionContext));
+      : serviceName_(serviceName), method_(method) {
+    if (handlers && !handlers->empty()) {
+      handlers_ = handlers;
+      ctxs_.reserve(handlers->size());
+      for (const auto& handler : *handlers) {
+        ctxs_.push_back(handler->getServiceContext(
+            serviceName_, method_, connectionContext));
+      }
     }
   }
 
@@ -50,10 +53,13 @@ class ContextStack {
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
       const char* method,
       TConnectionContext* connectionContext)
-      : handlers_(handlers), serviceName_(""), method_(method) {
-    ctxs_.reserve(handlers->size());
-    for (const auto& handler : *handlers) {
-      ctxs_.push_back(handler->getContext(method_, connectionContext));
+      : serviceName_(""), method_(method) {
+    if (handlers && !handlers->empty()) {
+      handlers_ = handlers;
+      ctxs_.reserve(handlers->size());
+      for (const auto& handler : *handlers) {
+        ctxs_.push_back(handler->getContext(method_, connectionContext));
+      }
     }
   }
 
