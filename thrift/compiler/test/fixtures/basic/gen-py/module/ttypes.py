@@ -326,7 +326,7 @@ MyStruct.thrift_field_annotations = {
     "java.swift.name": """_package""",
   },
   7: {
-    "go.tag": """tag:"somevalue"""",
+    "go.tag": """tag:\"somevalue\"""",
   },
 }
 

@@ -1533,8 +1533,8 @@ void t_py_generator::generate_py_string_dict(
     const map<string, string>& fields) {
   indent_up();
   for (auto a_iter = fields.begin(); a_iter != fields.end(); ++a_iter) {
-    indent(out) << render_string(a_iter->first) << ": \"\"\"" << a_iter->second
-                << "\"\"\"," << endl;
+    indent(out) << render_string(a_iter->first) << ": \"\""
+                << render_string(a_iter->second) << "\"\"," << endl;
   }
   indent_down();
 }
