@@ -28,5 +28,5 @@ bool Inner::operator<(const Inner& r) const {
 }
 
 bool Inner2::operator<(const Inner2& r) const {
-  return i < r.i;
+  return *i_ref() < *r.i_ref();
 }

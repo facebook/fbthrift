@@ -284,13 +284,12 @@ std::pair<Struct3, std::string> test_data_1() {
   pod.fieldF.set_us_2("this is a variant");
   pod.__isset.fieldG = true;
   pod.fieldG.field0 = 98;
-  pod.fieldG.__isset.field1 = true;
-  pod.fieldG.field1 = "hello, world";
+  pod.fieldG.field1_ref() = "hello, world";
   pod.fieldG.__isset.field2 = true;
   pod.fieldG.field2 = Enum1::field2;
   pod.fieldG.field3 = Enum2::field0_2;
-  pod.fieldG.__isset.field4 = true;
-  pod.fieldG.field4.set_ui(19937);
+  pod.fieldG.field4_ref() = {};
+  pod.fieldG.field4_ref()->set_ui(19937);
   pod.fieldG.__isset.field5 = true;
   pod.fieldG.field5.set_ue_2(Enum1::field1);
   // fieldH intentionally left empty
@@ -466,8 +465,7 @@ TEST(fatal_folly_dynamic, optional_string) {
   auto obj = apache::thrift::from_dynamic<global_struct1>(
       folly::dynamic::object("field1", "asdf"),
       apache::thrift::dynamic_format::PORTABLE);
-  EXPECT_TRUE(obj.__isset.field1);
-  EXPECT_EQ("asdf", obj.field1);
+  EXPECT_EQ("asdf", *obj.field1_ref());
 }
 
 TEST(fatal_folly_dynamic, list_from_empty_object) {

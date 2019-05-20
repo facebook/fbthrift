@@ -418,10 +418,11 @@ void RSocketClientChannel::sendThriftRequest(
       *header,
       getPersistentWriteHeaders());
 
+  auto metadataKind = metadata.kind_ref().value_or(0);
   if (!EnvelopeUtil::stripEnvelope(&metadata, buf) ||
-      !(metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
-        metadata.kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
-        metadata.kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
+      !(metadataKind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
+        metadataKind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+        metadataKind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
     folly::RequestContextScopeGuard rctx(cb->context_);
     cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
@@ -457,7 +458,7 @@ void RSocketClientChannel::sendThriftRequest(
     return;
   }
 
-  switch (metadata.kind) {
+  switch (metadataKind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       sendSingleRequestNoResponse(
           metadata, std::move(ctx), std::move(buf), std::move(cb));
@@ -507,7 +508,7 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
       std::move(cb),
       std::move(ctx),
       protocolId_,
-      std::chrono::milliseconds(metadata.clientTimeoutMs));
+      std::chrono::milliseconds(metadata.clientTimeoutMs_ref().value_or(0)));
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
       std::move(callback), folly::to_weak_ptr(channelCounters_));
@@ -531,7 +532,7 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
       std::move(cb),
       std::move(ctx),
       protocolId_,
-      std::chrono::milliseconds(metadata.clientTimeoutMs));
+      std::chrono::milliseconds(metadata.clientTimeoutMs_ref().value_or(0)));
 
   auto takeFirst = std::make_shared<detail::TakeFirst>(
       // onRequestSent

@@ -69,11 +69,11 @@ static struct3 test_data() {
   pod.fieldE.set_ud(5.6);
   pod.fieldF.set_us_2("this is a variant");
   pod.fieldG.field0 = 98;
-  pod.fieldG.field1 = "hello, world";
-  pod.fieldG.__isset.field1 = true;
+  pod.fieldG.field1_ref() = "hello, world";
   pod.fieldG.field2 = enum1::field2;
   pod.fieldG.field3 = enum2::field0_2;
-  pod.fieldG.field4.set_ui(19937);
+  pod.fieldG.field4_ref() = {};
+  pod.fieldG.field4_ref()->set_ui(19937);
   pod.fieldG.field5.set_ue_2(enum1::field1);
   // fieldH intentionally left empty
   pod.fieldI = {3, 5, 7, 9};
@@ -372,13 +372,13 @@ TEST(fatal_diff, fieldG_field0) {
 
 TEST(fatal_diff, fieldG_field1) {
   auto pod = test_data();
-  pod.fieldG.field1 = "should mismatch";
+  pod.fieldG.field1_ref() = "should mismatch";
   TEST_IMPL(pod, test_data(), R"(
     $.fieldG.field1:
     - "should mismatch"
     + "hello, world"
   )");
-  pod.fieldG.field1 = "hello, world";
+  pod.fieldG.field1_ref() = "hello, world";
   TEST_IMPL(pod, test_data(), "");
 }
 
@@ -543,7 +543,8 @@ TEST(fatal_diff, optional_members) {
   field1Set.set_field1("1");
   struct1 field1Unset;
   struct1 field1SetButNotIsset;
-  field1SetButNotIsset.field1 = "2";
+  field1SetButNotIsset.field1_ref() = "2";
+  field1SetButNotIsset.__isset.field1 = false;
   struct1 field1SetDefault;
   field1SetDefault.__isset.field1 = true;
   TEST_IMPL(field1Set, field1Unset, R"(

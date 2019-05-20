@@ -85,24 +85,22 @@ TEST_F(StructTest, equal_to) {
     Basic a;
     Basic b;
 
-    a.opt_field = 3;
-    b.opt_field = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.__isset.opt_field = true;
+    a.opt_field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.opt_field = true;
+    b.opt_field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.opt_field = 4;
+    a.opt_field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.opt_field = 4;
+    b.opt_field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -158,24 +156,22 @@ TEST_F(StructTest, equal_to_binary) {
     BasicBinaries a;
     BasicBinaries b;
 
-    a.opt_field = "hello";
-    b.opt_field = "hello";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.__isset.opt_field = true;
+    a.opt_field_ref() = "hello";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.opt_field = true;
+    b.opt_field_ref() = "hello";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.opt_field = "world";
+    a.opt_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.opt_field = "world";
+    b.opt_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
   }
@@ -292,24 +288,22 @@ TEST_F(StructTest, less) {
     Basic a;
     Basic b;
 
-    b.opt_field = 3;
-    a.opt_field = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.opt_field = true;
+    b.opt_field_ref() = 3;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.__isset.opt_field = true;
+    a.opt_field_ref() = 3;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.opt_field = 4;
+    b.opt_field_ref() = 4;
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.opt_field = 4;
+    a.opt_field_ref() = 4;
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }
@@ -365,24 +359,22 @@ TEST_F(StructTest, less_binary) {
     BasicBinaries a;
     BasicBinaries b;
 
-    b.opt_field = "hello";
-    a.opt_field = "hello";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.opt_field = true;
+    b.opt_field_ref() = "hello";
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.__isset.opt_field = true;
+    a.opt_field_ref() = "hello";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.opt_field = "world";
+    b.opt_field_ref() = "world";
     EXPECT_TRUE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.opt_field = "world";
+    a.opt_field_ref() = "world";
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
   }

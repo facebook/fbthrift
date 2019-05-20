@@ -131,17 +131,15 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
   result += readJSONString(tmpStr);
 
   if (currentType != nullptr) {
-    if (!currentType->__isset.fields) {
+    auto fields = currentType->fields_ref();
+    if (!fields) {
       throw TProtocolException(
           TProtocolException::INVALID_DATA,
-          "Expected a struct type, but "
-          "actually not a struct");
+          "Expected a struct type, but actually not a struct");
     }
 
-    auto& fields = currentType->fields;
-
     // find the corresponding StructField object and field id of the field
-    for (auto ite = fields.begin(); ite != fields.end(); ++ite) {
+    for (auto ite = fields->begin(); ite != fields->end(); ++ite) {
       if (ite->second.name == tmpStr) {
         fieldId = ite->first;
         fieldType = getTypeIdFromTypeNum(ite->second.type);
@@ -198,16 +196,17 @@ uint32_t TSimpleJSONProtocol::readMapBegin(
   // we should never arrive here
   assert(!beingSkipped);
 
-  keyType = getTypeIdFromTypeNum(currentType->mapKeyType);
-  valType = getTypeIdFromTypeNum(currentType->valueType);
+  auto keyTypeNum = currentType->mapKeyType_ref().value_or(0);
+  auto valTypeNum = currentType->valueType_ref().value_or(0);
+  keyType = getTypeIdFromTypeNum(keyTypeNum);
+  valType = getTypeIdFromTypeNum(valTypeNum);
   size = 0;
   sizeUnknown = true;
 
-  if (isCompoundType(currentType->mapKeyType)) {
-    nextType_ = getDataTypeFromTypeNum(currentType->mapKeyType);
-
-  } else if (isCompoundType(currentType->valueType)) {
-    nextType_ = getDataTypeFromTypeNum(currentType->valueType);
+  if (isCompoundType(keyTypeNum)) {
+    nextType_ = getDataTypeFromTypeNum(keyTypeNum);
+  } else if (isCompoundType(valTypeNum)) {
+    nextType_ = getDataTypeFromTypeNum(valTypeNum);
   }
 
   return readJSONObjectStart();
@@ -241,12 +240,13 @@ uint32_t TSimpleJSONProtocol::readListBegin(
     return result + getNumSkippedChars();
 
   } else {
-    elemType = getTypeIdFromTypeNum(currentType->valueType);
+    auto elemTypeNum = currentType->valueType_ref().value_or(0);
+    elemType = getTypeIdFromTypeNum(elemTypeNum);
     size = 0;
     sizeUnknown = true;
 
-    if (isCompoundType(currentType->valueType)) {
-      nextType_ = getDataTypeFromTypeNum(currentType->valueType);
+    if (isCompoundType(elemTypeNum)) {
+      nextType_ = getDataTypeFromTypeNum(elemTypeNum);
     }
 
     return readJSONArrayStart();
@@ -278,12 +278,13 @@ uint32_t TSimpleJSONProtocol::readSetBegin(
   // we should never arrive here
   assert(!beingSkipped);
 
-  elemType = getTypeIdFromTypeNum(currentType->valueType);
+  auto elemTypeNum = currentType->valueType_ref().value_or(0);
+  elemType = getTypeIdFromTypeNum(elemTypeNum);
   size = 0;
   sizeUnknown = true;
 
-  if (isCompoundType(currentType->valueType)) {
-    nextType_ = getDataTypeFromTypeNum(currentType->valueType);
+  if (isCompoundType(elemTypeNum)) {
+    nextType_ = getDataTypeFromTypeNum(elemTypeNum);
   }
 
   return readJSONArrayStart();
@@ -399,23 +400,19 @@ void TSimpleJSONProtocol::exitType() {
   typeStack_.pop();
 
   auto currentType = getCurrentDataType();
-
-  if (currentType == nullptr) {
+  if (!currentType) {
     nextType_ = nullptr;
+    return;
+  }
 
-  } else if (
-      currentType->__isset.mapKeyType &&
-      isCompoundType(currentType->mapKeyType) &&
-      (!currentType->__isset.valueType ||
-       !isCompoundType(currentType->valueType) ||
-       lastType == getDataTypeFromTypeNum(currentType->valueType))) {
-    nextType_ = getDataTypeFromTypeNum(currentType->mapKeyType);
-
-  } else if (
-      currentType->__isset.valueType &&
-      isCompoundType(currentType->valueType)) {
-    nextType_ = getDataTypeFromTypeNum(currentType->valueType);
-
+  auto mapKeyType = currentType->mapKeyType_ref();
+  auto valueType = currentType->valueType_ref();
+  if (mapKeyType && isCompoundType(*mapKeyType) &&
+      (!valueType || !isCompoundType(*valueType) ||
+       lastType == getDataTypeFromTypeNum(*valueType))) {
+    nextType_ = getDataTypeFromTypeNum(*mapKeyType);
+  } else if (valueType && isCompoundType(*valueType)) {
+    nextType_ = getDataTypeFromTypeNum(*valueType);
   } else {
     nextType_ = nullptr;
   }

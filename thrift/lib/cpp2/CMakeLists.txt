@@ -83,7 +83,6 @@ add_library(
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
   async/RocketClientChannel.cpp
-  FieldRef.cpp
   server/BaseThriftServer.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp

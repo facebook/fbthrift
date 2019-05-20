@@ -71,9 +71,8 @@ void check_simple(const apache::thrift::test::Simple &s1,
   // when they don't match.
   EXPECT_EQ(s1.im_default, s2.im_default);
   EXPECT_EQ(s1.im_required, s2.im_required);
-  EXPECT_EQ(s1.im_optional, s2.im_optional);
+  EXPECT_EQ(s1.im_optional_ref(), s2.im_optional_ref());
   EXPECT_EQ(s1.__isset.im_default, s2.__isset.im_default);
-  EXPECT_EQ(s1.__isset.im_optional, s2.__isset.im_optional);
 }
 
 TEST(SwapTest, test_swap_optional) {
@@ -86,76 +85,64 @@ TEST(SwapTest, test_swap_optional) {
   Simple simple1;
   simple1.im_default = 1;
   simple1.im_required = 1;
-  simple1.im_optional = 1;
+  simple1.im_optional_ref() = 1;
   simple1.__isset.im_default = true;
-  simple1.__isset.im_optional = true;
 
   Simple simple2;
   simple2.im_default = 2;
   simple2.im_required = 2;
-  simple2.im_optional = 2;
+  simple2.im_optional_ref() = 2;
   simple2.__isset.im_default = false;
-  simple2.__isset.im_optional = true;
 
   Simple simple3;
   simple3.im_default = 3;
   simple3.im_required = 3;
-  simple3.im_optional = 3;
+  simple3.im_optional_ref() = 3;
   simple3.__isset.im_default = true;
-  simple3.__isset.im_optional = false;
 
   Simple simple4;
   simple4.im_default = 4;
   simple4.im_required = 4;
-  simple4.im_optional = 4;
+  simple4.im_optional_ref() = 4;
   simple4.__isset.im_default = false;
-  simple4.__isset.im_optional = false;
 
   comp1.cp_default = 5;
   comp1.__isset.cp_default = true;
   comp1.cp_required = 0x7fff;
-  comp1.cp_optional = 50;
-  comp1.__isset.cp_optional = true;
+  comp1.cp_optional_ref() = 50;
   comp1.the_map.insert(make_pair(1, simple1));
   comp1.the_map.insert(make_pair(99, simple2));
   comp1.the_map.insert(make_pair(-7, simple3));
   comp1.req_simp = simple4;
-  comp1.opt_simp = simple1;
-  comp1.__isset.opt_simp = false;
+  comp1.opt_simp_ref().reset();
 
   comp2.cp_default = -7;
   comp2.__isset.cp_default = false;
   comp2.cp_required = 0;
-  comp2.cp_optional = 0;
-  comp2.__isset.cp_optional = false;
+  comp2.cp_optional_ref().reset();
   comp2.the_map.insert(make_pair(6, simple2));
   comp2.req_simp = simple1;
-  comp2.opt_simp = simple3;
-  comp2.__isset.opt_simp = true;
+  comp2.opt_simp_ref() = simple3;
 
   swap(comp1, comp2);
 
   EXPECT_EQ(comp1.cp_default, -7);
   EXPECT_EQ(comp1.__isset.cp_default, false);
   EXPECT_EQ(comp1.cp_required, 0);
-  EXPECT_EQ(comp1.cp_optional, 0);
-  EXPECT_EQ(comp1.__isset.cp_optional, false);
+  EXPECT_FALSE(comp1.cp_optional_ref().has_value());
   EXPECT_EQ(comp1.the_map.size(), 1);
   check_simple(comp1.the_map[6], simple2);
   check_simple(comp1.req_simp, simple1);
-  check_simple(comp1.opt_simp, simple3);
-  EXPECT_EQ(comp1.__isset.opt_simp, true);
+  check_simple(*comp1.opt_simp_ref(), simple3);
 
   EXPECT_EQ(comp2.cp_default, 5);
   EXPECT_EQ(comp2.__isset.cp_default, true);
   EXPECT_EQ(comp2.cp_required, 0x7fff);
-  EXPECT_EQ(comp2.cp_optional, 50);
-  EXPECT_EQ(comp2.__isset.cp_optional, true);
+  EXPECT_EQ(*comp2.cp_optional_ref(), 50);
   EXPECT_EQ(comp2.the_map.size(), 3);
   check_simple(comp2.the_map[1], simple1);
   check_simple(comp2.the_map[99], simple2);
   check_simple(comp2.the_map[-7], simple3);
   check_simple(comp2.req_simp, simple4);
-  check_simple(comp2.opt_simp, simple1);
   EXPECT_EQ(comp2.__isset.opt_simp, false);
 }

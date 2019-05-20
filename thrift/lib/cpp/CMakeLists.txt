@@ -4,6 +4,7 @@ add_library(
   thrift-core
 
   Thrift.cpp
+  ../cpp2/FieldRef.cpp
 )
 target_include_directories(
   thrift-core
@@ -53,6 +54,7 @@ target_link_libraries(
     fmt::fmt
     Folly::folly
     ${GLOG_LIBRARIES}
+    thrift-core
 )
 
 add_library(

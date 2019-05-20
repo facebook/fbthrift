@@ -77,21 +77,22 @@ TEST(TestWithoutFollyOptionals, SerDesTests) {
   EXPECT_EQ(json1, json2);
 
   // now set optionals
-  obj1.int64Opt = 42;
-  obj1.stringOpt = "helloOPTIONAL";
-  obj1.setOpt = std::set<int64_t>{10, 20, 30};
-  obj1.listOpt = std::vector<int64_t>{40, 50, 60};
-  obj1.mapOpt = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
-  obj1.enumOpt = cpp2::HasOptionalsTestEnum::FOO;
-  obj1.structOpt = cpp2::HasOptionalsExtra();
-  obj1.structOpt.__clear();
-  obj1.structOpt.extraInt64Opt = 69;
-  obj1.structOpt.extraStringOpt = "world";
-  obj1.structOpt.extraSetOpt = std::set<int64_t>{210, 220, 230};
-  obj1.structOpt.extraListOpt = std::vector<int64_t>{240, 250, 260};
-  obj1.structOpt.extraMapOpt =
+  obj1.int64Opt_ref() = 42;
+  obj1.stringOpt_ref().value_unchecked() = "helloOPTIONAL";
+  obj1.setOpt_ref() = std::set<int64_t>{10, 20, 30};
+  obj1.listOpt_ref() = std::vector<int64_t>{40, 50, 60};
+  obj1.mapOpt_ref() = std::map<int64_t, int64_t>{{100, 101}, {102, 103}};
+  obj1.enumOpt_ref() = cpp2::HasOptionalsTestEnum::FOO;
+  obj1.structOpt_ref() = cpp2::HasOptionalsExtra();
+  obj1.structOpt_ref()->__clear();
+  obj1.structOpt_ref()->extraInt64Opt_ref() = 69;
+  obj1.structOpt_ref()->extraStringOpt_ref() = "world";
+  obj1.structOpt_ref()->extraSetOpt_ref() = std::set<int64_t>{210, 220, 230};
+  obj1.structOpt_ref()->extraListOpt_ref() =
+      std::vector<int64_t>{240, 250, 260};
+  obj1.structOpt_ref()->extraMapOpt_ref() =
       std::map<int64_t, int64_t>{{1000, 1001}, {1002, 1003}};
-  obj1.structOpt.extraEnumOpt = cpp2::HasOptionalsTestEnum::BAR;
+  obj1.structOpt_ref()->extraEnumOpt_ref() = cpp2::HasOptionalsTestEnum::BAR;
 
   // Note: we did NOT set all the __isset's for the above!
   // Verify optionals WITHOUT isset are not serialized.
@@ -99,19 +100,7 @@ TEST(TestWithoutFollyOptionals, SerDesTests) {
   EXPECT_EQ(std::string::npos, json1.find("helloOPTIONAL"));
 
   // ok, set the __isset's properly
-  obj1.__isset.int64Opt = true;
   obj1.__isset.stringOpt = true;
-  obj1.__isset.setOpt = true;
-  obj1.__isset.listOpt = true;
-  obj1.__isset.mapOpt = true;
-  obj1.__isset.enumOpt = true;
-  obj1.__isset.structOpt = true;
-  obj1.structOpt.__isset.extraInt64Opt = true;
-  obj1.structOpt.__isset.extraStringOpt = true;
-  obj1.structOpt.__isset.extraSetOpt = true;
-  obj1.structOpt.__isset.extraListOpt = true;
-  obj1.structOpt.__isset.extraMapOpt = true;
-  obj1.structOpt.__isset.extraEnumOpt = true;
 
   json1 = objToJSON(obj1);
   EXPECT_NE(std::string::npos, json1.find("helloOPTIONAL"));
@@ -138,61 +127,49 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   obj1.int64Req = 1;
   obj2.int64Req = 1;
   EXPECT_EQ(obj1, obj2);
-  obj1.int64Opt = 2;
-  obj1.__isset.int64Opt = true;
+  obj1.int64Opt_ref() = 2;
   EXPECT_NE(obj1, obj2);
-  obj2.int64Opt = 2;
-  obj2.__isset.int64Opt = true;
+  obj2.int64Opt_ref() = 2;
   EXPECT_EQ(obj1, obj2);
 
   obj1.stringReq = "hello";
   obj2.stringReq = "hello";
   EXPECT_EQ(obj1, obj2);
-  obj1.stringOpt = "world";
-  obj1.__isset.stringOpt = true;
+  obj1.stringOpt_ref() = "world";
   EXPECT_NE(obj1, obj2);
-  obj2.stringOpt = "world";
-  obj2.__isset.stringOpt = true;
+  obj2.stringOpt_ref() = "world";
   EXPECT_EQ(obj1, obj2);
 
   obj1.setReq = std::set<int64_t>{1, 2};
   obj2.setReq = std::set<int64_t>{1, 2};
   EXPECT_EQ(obj1, obj2);
-  obj1.setOpt = std::set<int64_t>{3, 4};
-  obj1.__isset.setOpt = true;
+  obj1.setOpt_ref() = std::set<int64_t>{3, 4};
   EXPECT_NE(obj1, obj2);
-  obj2.setOpt = std::set<int64_t>{3, 4};
-  obj2.__isset.setOpt = true;
+  obj2.setOpt_ref() = std::set<int64_t>{3, 4};
   EXPECT_EQ(obj1, obj2);
 
   obj1.listReq = std::vector<int64_t>{5, 6};
   obj2.listReq = std::vector<int64_t>{5, 6};
   EXPECT_EQ(obj1, obj2);
-  obj1.listOpt = std::vector<int64_t>{7, 8};
-  obj1.__isset.listOpt = true;
+  obj1.listOpt_ref() = std::vector<int64_t>{7, 8};
   EXPECT_NE(obj1, obj2);
-  obj2.listOpt = std::vector<int64_t>{7, 8};
-  obj2.__isset.listOpt = true;
+  obj2.listOpt_ref() = std::vector<int64_t>{7, 8};
   EXPECT_EQ(obj1, obj2);
 
   obj1.mapReq = std::map<int64_t, int64_t>{{9, 10}, {11, 12}};
   obj2.mapReq = std::map<int64_t, int64_t>{{9, 10}, {11, 12}};
   EXPECT_EQ(obj1, obj2);
-  obj1.mapOpt = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
-  obj1.__isset.mapOpt = true;
+  obj1.mapOpt_ref() = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
   EXPECT_NE(obj1, obj2);
-  obj2.mapOpt = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
-  obj2.__isset.mapOpt = true;
+  obj2.mapOpt_ref() = std::map<int64_t, int64_t>{{13, 14}, {15, 16}};
   EXPECT_EQ(obj1, obj2);
 
   obj1.enumReq = cpp2::HasOptionalsTestEnum::FOO;
   obj2.enumReq = cpp2::HasOptionalsTestEnum::FOO;
   EXPECT_EQ(obj1, obj2);
-  obj1.enumOpt = cpp2::HasOptionalsTestEnum::BAR;
-  obj1.__isset.enumOpt = true;
+  obj1.enumOpt_ref() = cpp2::HasOptionalsTestEnum::BAR;
   EXPECT_NE(obj1, obj2);
-  obj2.enumOpt = cpp2::HasOptionalsTestEnum::BAR;
-  obj2.__isset.enumOpt = true;
+  obj2.enumOpt_ref() = cpp2::HasOptionalsTestEnum::BAR;
   EXPECT_EQ(obj1, obj2);
 
   obj1.structReq = cpp2::HasOptionalsExtra();
@@ -200,25 +177,23 @@ TEST(TestWithoutFollyOptionals, EqualityTests) {
   obj2.structReq = cpp2::HasOptionalsExtra();
   obj2.structReq.__clear();
   EXPECT_EQ(obj1, obj2);
-  obj1.structOpt = cpp2::HasOptionalsExtra();
-  obj1.structOpt.__clear();
+  obj1.structOpt_ref() = cpp2::HasOptionalsExtra();
+  obj1.structOpt_ref()->__clear();
   obj1.__isset.structOpt = true;
   EXPECT_NE(obj1, obj2);
-  obj2.structOpt = cpp2::HasOptionalsExtra();
-  obj2.structOpt.__clear();
+  obj2.structOpt_ref() = cpp2::HasOptionalsExtra();
+  obj2.structOpt_ref()->__clear();
   obj2.__isset.structOpt = true;
   EXPECT_EQ(obj1, obj2);
 
   // just one more test: try required/optional fields in the optional struct
   // to verify that recursive checking w/ optional fields works.
   // Don't bother testing all the nested struct's fields, this is enough.
-  obj1.structOpt.extraInt64Req = 666;
-  obj2.structOpt.extraInt64Req = 666;
+  obj1.structOpt_ref()->extraInt64Req = 666;
+  obj2.structOpt_ref()->extraInt64Req = 666;
   EXPECT_EQ(obj1, obj2);
-  obj1.structOpt.extraInt64Opt = 13;
-  obj1.structOpt.__isset.extraInt64Opt = true;
+  obj1.structOpt_ref()->extraInt64Opt_ref() = 13;
   EXPECT_NE(obj1, obj2);
-  obj2.structOpt.extraInt64Opt = 13;
-  obj2.structOpt.__isset.extraInt64Opt = true;
+  obj2.structOpt_ref()->extraInt64Opt_ref() = 13;
   EXPECT_EQ(obj1, obj2);
 }

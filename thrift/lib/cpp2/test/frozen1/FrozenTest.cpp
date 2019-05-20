@@ -41,33 +41,36 @@ double randomDouble(double max) {
 
 Team testValue() {
   Team team;
+  team.peopleById_ref() = {};
+  team.peopleByName_ref() = {};
   for (int i = 1; i <= 10; ++i) {
     auto id = hasher(i);
     Person p;
     p.id = id;
     p.nums.insert(i);
     p.nums.insert(-i);
-    p.dob = randomDouble(1e9);
+    p.dob_ref() = randomDouble(1e9);
     folly::toAppend("Person ", i, &p.name);
-    team.peopleById[p.id] = p;
-    auto& peopleByNameEntry = team.peopleByName[p.name];
+    (*team.peopleById_ref())[p.id] = p;
+    auto& peopleByNameEntry = (*team.peopleByName_ref())[p.name];
     peopleByNameEntry = std::move(p);
   }
-  team.projects.insert("alpha");
-  team.projects.insert("beta");
+  team.projects_ref() = {};
+  team.projects_ref()->insert("alpha");
+  team.projects_ref()->insert("beta");
 
   return team;
 }
 
 TEST(Frozen, Basic) {
   Team team = testValue();
-  EXPECT_EQ(team.peopleById.at(hasher(3)).name, "Person 3");
-  EXPECT_EQ(team.peopleById.at(hasher(4)).name, "Person 4");
-  EXPECT_EQ(team.peopleById.at(hasher(5)).name, "Person 5");
-  EXPECT_EQ(team.peopleByName.at("Person 3").id, 3);
-  EXPECT_EQ(team.peopleByName.begin()->second.nums.count(-1), 1);
-  EXPECT_EQ(team.projects.count("alpha"), 1);
-  EXPECT_EQ(team.projects.count("beta"), 1);
+  EXPECT_EQ(team.peopleById_ref()->at(hasher(3)).name, "Person 3");
+  EXPECT_EQ(team.peopleById_ref()->at(hasher(4)).name, "Person 4");
+  EXPECT_EQ(team.peopleById_ref()->at(hasher(5)).name, "Person 5");
+  EXPECT_EQ(team.peopleByName_ref()->at("Person 3").id, 3);
+  EXPECT_EQ(team.peopleByName_ref()->begin()->second.nums.count(-1), 1);
+  EXPECT_EQ(team.projects_ref()->count("alpha"), 1);
+  EXPECT_EQ(team.projects_ref()->count("beta"), 1);
 
   size_t size = frozenSize(team);
   for (int misalign = 0; misalign < 16; ++misalign) {
@@ -94,7 +97,7 @@ TEST(Frozen, Basic) {
         frozen.peopleById.at(static_cast<int64_t>(hasher(5))).name, "Person 5");
     EXPECT_EQ(
         frozen.peopleById.at(static_cast<int64_t>(hasher(3))).dob,
-        team.peopleById.at(hasher(3)).dob);
+        *team.peopleById_ref()->at(hasher(3)).dob_ref());
     EXPECT_EQ(frozen.peopleByName.at("Person 3").id, 3);
     EXPECT_EQ(frozen.peopleByName.at(string("Person 4")).id, 4);
     EXPECT_EQ(frozen.peopleByName.at(fbstring("Person 5")).id, 5);

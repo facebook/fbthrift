@@ -213,15 +213,16 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
   if (header->getCrc32c().hasValue()) {
     metadata->crc32c_ref() = header->getCrc32c().value();
   }
-  metadata->otherMetadata = header->releaseWriteHeaders();
+  auto otherMetadata = metadata->otherMetadata_ref();
+  otherMetadata = header->releaseWriteHeaders();
   auto* eh = header->getExtraWriteHeaders();
   if (eh) {
-    metadata->otherMetadata.insert(eh->begin(), eh->end());
+    otherMetadata->insert(eh->begin(), eh->end());
   }
   auto& pwh = getPersistentWriteHeaders();
-  metadata->otherMetadata.insert(pwh.begin(), pwh.end());
-  if (!metadata->otherMetadata.empty()) {
-    metadata->__isset.otherMetadata = true;
+  otherMetadata->insert(pwh.begin(), pwh.end());
+  if (otherMetadata->empty()) {
+    otherMetadata.reset();
   }
   return metadata;
 }
@@ -246,7 +247,7 @@ uint32_t ThriftClient::sendRequestHelper(
       std::move(cb),
       std::move(ctx),
       protocolId_,
-      std::chrono::milliseconds(metadata->clientTimeoutMs));
+      std::chrono::milliseconds(metadata->clientTimeoutMs_ref().value_or(0)));
   auto conn = connection_;
   connection_->getEventBase()->runInEventBaseThread([conn = std::move(conn),
                                                      metadata =

@@ -42,7 +42,7 @@ TEST_P(CompatibilityTest, Write) {
   auto test = GetParam();
   if (test.__isset.root) {
     freezeToFile(
-        test.root,
+        *test.root_ref(),
         folly::File(
             filePath(test.name).c_str(), O_RDWR | O_TRUNC | O_CREAT | O_EXCL));
   }
@@ -56,7 +56,7 @@ TEST_P(CompatibilityTest, Read) {
   try {
     auto root = mapFrozen<Root>(folly::File(filePath(test.name).c_str()));
     EXPECT_FALSE(test.fails);
-    EXPECT_EQ(test.root, root.thaw());
+    EXPECT_EQ(*test.root_ref(), root.thaw());
   } catch (const std::exception&) {
     EXPECT_TRUE(test.fails);
   }

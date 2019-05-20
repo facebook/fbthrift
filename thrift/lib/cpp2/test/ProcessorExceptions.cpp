@@ -73,16 +73,15 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   Inner2 inner;
   inner.i_ref() = 7;
   MyArgs2 args;
-  args.s = "qwerty";
-  args.l = {1,2,3};
-  args.m = {{"a", 1}, {"b", 2}};
-  args.li = {inner};
-  args.mi = {{11, inner}};
-  args.complex_key = {{inner, 11}};
-  args.__isset.s = args.__isset.i = args.i.__isset.i = args.__isset.l =
-    args.__isset.m = args.__isset.li = args.li[0].__isset.i =
-    args.__isset.mi = args.mi[11].__isset.i =
-    args.__isset.complex_key = true;
+  args.i_ref() = {};
+  args.s_ref() = "qwerty";
+  args.l_ref() = {1, 2, 3};
+  args.m_ref() = {{"a", 1}, {"b", 2}};
+  args.li_ref() = {inner};
+  args.mi_ref() = {{11, inner}};
+  args.complex_key_ref() = {{inner, 11}};
+  args.i_ref()->__isset.i = (*args.li_ref())[0].__isset.i =
+      (*args.mi_ref())[11].__isset.i = true;
   MyArgs2 all_is_set(args);
   isset_cb(args);
 
@@ -113,8 +112,9 @@ TEST(ProcessorExceptionTest, throw_if_inner_required_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_inner_field_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.i.__isset.i = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.i_ref()->__isset.i = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_required_missing) {
@@ -133,8 +133,9 @@ TEST(ProcessorExceptionTest, throw_if_list_of_struct_required_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_inner_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.li[0].__isset.i = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { (*a.li_ref())[0].__isset.i = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_of_struct_required_missing) {
@@ -143,8 +144,9 @@ TEST(ProcessorExceptionTest, throw_if_map_of_struct_required_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_inner_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.mi[11].__isset.i = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { (*a.mi_ref())[11].__isset.i = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_key_required_missing) {
@@ -176,11 +178,12 @@ TEST(ProcessorExceptionTest, throw_if_method_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_key_inner_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {
-      std::pair<Inner2,int> elem = *a.complex_key.cbegin();
-      elem.first.__isset.i = false;
-      a.complex_key.clear();
-      a.complex_key.insert(elem);
-    }),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) {
+        std::pair<Inner2, int> elem = *a.complex_key_ref()->cbegin();
+        elem.first.__isset.i = false;
+        a.complex_key_ref()->clear();
+        a.complex_key_ref()->insert(elem);
+      }),
+      TApplicationException);
 }

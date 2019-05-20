@@ -72,13 +72,13 @@ namespace test_cpp2 { namespace simple_cpp_reflection {
 
 void init_struct_1(struct1& a) {
   a.field0 = 10;
-  a.field1 = "this is a string";
-  a.field2 = enum1::field1;
+  a.field1_ref() = "this is a string";
+  a.field2_ref() = enum1::field1;
   a.field3 = {{1, 2, 3}, {4, 5, 6, 7}};
   a.field4 = {1, 1, 2, 3, 4, 10, 4, 6};
   a.field5 = {{42, "<answer>"}, {55, "schwifty five"}};
-  a.field6.nfield00 = 5.678;
-  a.field6.nfield01 = 0x42;
+  a.field6.nfield00_ref() = 5.678;
+  a.field6.nfield01_ref() = 0x42;
   a.field7 = 0xCAFEBABEA4DAFACE;
   a.field8 = "this field isn't set";
 
@@ -104,14 +104,14 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   serializer_read(b, this->reader);
 
   EXPECT_EQ(a.field0, b.field0);
-  EXPECT_EQ(a.field1, b.field1);
-  EXPECT_EQ(a.field2, b.field2);
+  EXPECT_EQ(a.field1_ref(), b.field1_ref());
+  EXPECT_EQ(a.field2_ref(), b.field2_ref());
   EXPECT_EQ(a.field3, b.field3);
   EXPECT_EQ(a.field4, b.field4);
   EXPECT_EQ(a.field5, b.field5);
 
-  EXPECT_EQ(a.field6.nfield00, b.field6.nfield00);
-  EXPECT_EQ(a.field6.nfield01, b.field6.nfield01);
+  EXPECT_EQ(a.field6.nfield00_ref(), b.field6.nfield00_ref());
+  EXPECT_EQ(a.field6.nfield01_ref(), b.field6.nfield01_ref());
   EXPECT_EQ(a.field6, b.field6);
   EXPECT_EQ(a.field7, b.field7);
   EXPECT_EQ(a.field8, b.field8); // default fields are always written out
@@ -135,14 +135,14 @@ TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
   b.read(&this->reader);
 
   EXPECT_EQ(a.field0, b.field0);
-  EXPECT_EQ(a.field1, b.field1);
-  EXPECT_EQ(a.field2, b.field2);
+  EXPECT_EQ(a.field1_ref(), b.field1_ref());
+  EXPECT_EQ(a.field2_ref(), b.field2_ref());
   EXPECT_EQ(a.field3, b.field3);
   EXPECT_EQ(a.field4, b.field4);
   EXPECT_EQ(a.field5, b.field5);
 
-  EXPECT_EQ(a.field6.nfield00, b.field6.nfield00);
-  EXPECT_EQ(a.field6.nfield01, b.field6.nfield01);
+  EXPECT_EQ(a.field6.nfield00_ref(), b.field6.nfield00_ref());
+  EXPECT_EQ(a.field6.nfield01_ref(), b.field6.nfield01_ref());
   EXPECT_EQ(a.field6, b.field6);
   EXPECT_EQ(a.field7, b.field7);
   EXPECT_EQ(a.field8, b.field8); // default fields are always written out
@@ -529,7 +529,6 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   EXPECT_FALSE(a.__isset.opt_string); // gcc bug?
   EXPECT_FALSE(a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
-  EXPECT_EQ("", a.opt_string);
   EXPECT_EQ("", a.def_string);
 }
 TEST_F(SimpleJsonTest, sets_opt_members) {
@@ -542,7 +541,7 @@ TEST_F(SimpleJsonTest, sets_opt_members) {
   EXPECT_TRUE(a.__isset.opt_string); // gcc bug?
   EXPECT_FALSE(a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
-  EXPECT_EQ("optional", a.opt_string);
+  EXPECT_EQ("optional", *a.opt_string_ref());
   EXPECT_EQ("", a.def_string);
 }
 TEST_F(SimpleJsonTest, sets_def_members) {
@@ -555,7 +554,6 @@ TEST_F(SimpleJsonTest, sets_def_members) {
   EXPECT_FALSE(a.__isset.opt_string);
   EXPECT_TRUE( a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
-  EXPECT_EQ("", a.opt_string);
   EXPECT_EQ("default", a.def_string);
 }
 TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {

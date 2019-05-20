@@ -32,11 +32,9 @@ EveryLayout stressValue2 = [] {
   x.aHashSet = {13, 17};
   x.aMap = {{19, 23}, {29, 31}};
   x.aHashMap = {{37, 41}, {43, 47}};
-  x.optInt = 53;
-  x.__isset.optInt = true;
+  x.optInt_ref() = 53;
   x.aFloat = 59.61;
-  x.optMap = {{2, 4}, {3, 9}};
-  x.__isset.optMap = true;
+  x.optMap_ref() = {{2, 4}, {3, 9}};
   return x;
 }();
 

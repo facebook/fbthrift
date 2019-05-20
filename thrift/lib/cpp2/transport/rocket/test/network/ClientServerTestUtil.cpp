@@ -423,7 +423,7 @@ class RocketTestServerHandler : public RocketServerHandler {
     reader.setInput(cursor);
     auto meta = std::make_unique<RequestSetupMetadata>();
     meta->read(&reader);
-    EXPECT_EQ(meta->opaque["rando_key"], "setup_data");
+    EXPECT_EQ((*meta->opaque_ref())["rando_key"], "setup_data");
   }
 
   void handleRequestResponseFrame(

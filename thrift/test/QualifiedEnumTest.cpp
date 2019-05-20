@@ -39,11 +39,11 @@ TEST(QualifiedEnums, Defaults) {
   MyQualifiedStruct actual;
   Cpp2Ops<MyQualifiedStruct>::read(&protReader, &actual);
 
-  EXPECT_EQ(MyQualifiedEnum::BAR, actual.field1);
-  EXPECT_EQ(MyQualifiedEnum::FOO, actual.field2);
-  EXPECT_EQ(MyEnum1::ME1_1, actual.field3);
-  EXPECT_EQ(MyEnum1::ME1_1, actual.field4);
-  EXPECT_EQ(MyEnum4::ME4_A, actual.field5);
+  EXPECT_EQ(MyQualifiedEnum::BAR, actual.field1_ref().value_unchecked());
+  EXPECT_EQ(MyQualifiedEnum::FOO, actual.field2_ref().value_unchecked());
+  EXPECT_EQ(MyEnum1::ME1_1, actual.field3_ref().value_unchecked());
+  EXPECT_EQ(MyEnum1::ME1_1, actual.field4_ref().value_unchecked());
+  EXPECT_EQ(MyEnum4::ME4_A, actual.field5_ref().value_unchecked());
 }
 
 TEST(QualifiedEnums, BitwiseOps) {

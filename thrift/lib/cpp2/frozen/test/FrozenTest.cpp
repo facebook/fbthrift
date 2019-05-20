@@ -49,11 +49,9 @@ EveryLayout stressValue2 = [] {
   x.aHashSet = {13, 17};
   x.aMap = {{19, 23}, {29, 31}};
   x.aHashMap = {{37, 41}, {43, 47}};
-  x.optInt = 53;
-  x.__isset.optInt = true;
+  x.optInt_ref() = 53;
   x.aFloat = 59.61;
-  x.optMap = {{2, 4}, {3, 9}};
-  x.__isset.optMap = true;
+  x.optMap_ref() = {{2, 4}, {3, 9}};
   return x;
 }();
 
@@ -78,8 +76,7 @@ auto tom1 = [] {
   Person1 tom;
   tom.name = "tom";
   tom.height = 1.82f;
-  tom.age = 30;
-  tom.__isset.age = true;
+  tom.age_ref() = 30;
   tom.pets.push_back(max);
   tom.pets.push_back(ed);
   return tom;
@@ -92,8 +89,7 @@ auto tom2 = [] {
   Person2 tom;
   tom.name = "tom";
   tom.weight = 169;
-  tom.age = 30;
-  tom.__isset.age = true;
+  tom.age_ref() = 30;
   tom.pets.push_back(max);
   tom.pets.push_back(ed);
   return tom;
@@ -103,7 +99,7 @@ TEST(Frozen, EndToEnd) {
   auto view = freeze(tom1);
   EXPECT_EQ(tom1.name, view.name());
   ASSERT_TRUE(view.age().hasValue());
-  EXPECT_EQ(tom1.age, view.age().value());
+  EXPECT_EQ(*tom1.age_ref(), view.age().value());
   EXPECT_EQ(tom1.height, view.height());
   EXPECT_EQ(view.pets()[0].name(), tom1.pets[0].name);
   auto& pets = tom1.pets;
@@ -125,7 +121,7 @@ TEST(Frozen, Comparison) {
   auto view2 = freeze(tom2);
   // name is optional now, and was __isset=true, so we don't write it
   ASSERT_TRUE(view2.age().hasValue());
-  EXPECT_EQ(tom2.age, view2.age().value());
+  EXPECT_EQ(*tom2.age_ref(), view2.age().value());
   EXPECT_EQ(tom2.name, view2.name());
   EXPECT_EQ(tom2.name.size(), view2.name().size());
   auto ttom2 = view2.thaw();
@@ -198,7 +194,9 @@ TEST(Frozen, EmbeddedSchema) {
     auto view = person2.view({bytes.begin(), 0});
     EXPECT_EQ(tom1.name, view.name());
     ASSERT_EQ(tom1.__isset.age, view.age().hasValue());
-    EXPECT_EQ(tom1.age, view.age().value());
+    if (auto age = tom1.age_ref()) {
+      EXPECT_EQ(*age, view.age().value());
+    }
     EXPECT_EQ(tom1.pets[0].name, view.pets()[0].name());
     EXPECT_EQ(tom1.pets[1].name, view.pets()[1].name());
   }

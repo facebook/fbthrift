@@ -107,8 +107,9 @@ void SingleRpcChannel::sendThriftRequest(
   DCHECK(evb_->isInEventBaseThread());
   DCHECK(metadata.kind_ref());
   DCHECK(
-      metadata.kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
-      metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+      metadata.kind_ref().value_or(0) ==
+          RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
+      metadata.kind_ref().value_or(0) == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
   DCHECK(payload);
   DCHECK(callback);
   VLOG(4) << "sendThriftRequest:" << std::endl
@@ -128,7 +129,9 @@ void SingleRpcChannel::sendThriftRequest(
   msg.setMethod(HTTPMethod::POST);
   msg.setURL(metadata.url);
   auto& msgHeaders = msg.getHeaders();
-  msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_HOST, metadata.host);
+  msgHeaders.set(
+      HTTPHeaderCode::HTTP_HEADER_HOST,
+      metadata.host_ref() ? *metadata.host_ref() : std::string());
   msgHeaders.set(HTTPHeaderCode::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
   msgHeaders.set(
       HTTPHeaderCode::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
@@ -138,23 +141,27 @@ void SingleRpcChannel::sendThriftRequest(
         std::chrono::milliseconds(*clientTimeoutMs));
   }
 
+  auto otherMetadata = std::map<std::string, std::string>();
+  if (auto other = metadata.otherMetadata_ref()) {
+    otherMetadata = std::move(*other);
+  }
   if (auto clientTimeoutMs = metadata.clientTimeoutMs_ref()) {
-    metadata.otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
+    otherMetadata[transport::THeader::CLIENT_TIMEOUT_HEADER] =
         folly::to<string>(*clientTimeoutMs);
   }
   if (auto queueTimeoutMs = metadata.queueTimeoutMs_ref()) {
     DCHECK(*queueTimeoutMs > 0);
-    metadata.otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
+    otherMetadata[transport::THeader::QUEUE_TIMEOUT_HEADER] =
         folly::to<string>(*queueTimeoutMs);
   }
   if (auto priority = metadata.priority_ref()) {
-    metadata.otherMetadata[transport::THeader::PRIORITY_HEADER] =
+    otherMetadata[transport::THeader::PRIORITY_HEADER] =
         folly::to<string>(*priority);
   }
   if (auto kind = metadata.kind_ref()) {
-    metadata.otherMetadata[RPC_KIND.str()] = folly::to<string>(*kind);
+    otherMetadata[RPC_KIND.str()] = folly::to<string>(*kind);
   }
-  encodeHeaders(std::move(metadata.otherMetadata), msg);
+  encodeHeaders(std::move(otherMetadata), msg);
   httpTransaction_->sendHeaders(msg);
 
   httpTransaction_->sendBody(std::move(payload));
@@ -165,7 +172,7 @@ void SingleRpcChannel::sendThriftRequest(
   // "onThriftRequestSent()".  This is safe because "callback_" will
   // be eventually moved to this same thread to call either
   // "onThriftResponse()" or "onThriftError()".
-  if (metadata.kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
+  if (metadata.kind_ref().value_or(0) == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
     callbackEvb->runInEventBaseThread(
         [cb = std::move(callback)]() mutable { cb->onThriftRequestSent(); });
   } else {

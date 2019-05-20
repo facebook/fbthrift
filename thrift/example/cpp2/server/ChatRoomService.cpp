@@ -27,8 +27,8 @@ void ChatRoomServiceHandler::getMessages(
     GetMessagesResponse& resp,
     std::unique_ptr<GetMessagesRequest> req) {
   int64_t idx = 0;
-  if (req->__isset.token) {
-    idx = req->token.index;
+  if (auto token = req->token_ref()) {
+    idx = token->index;
   }
 
   int64_t i = idx;

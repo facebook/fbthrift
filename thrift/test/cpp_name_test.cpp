@@ -43,10 +43,9 @@ TEST(cpp_name_test, rename) {
   s.set_unique_name(42);
   s.set_opt_unique_name(4);  // chosen by fair dice roll
   EXPECT_EQ(42, s.unique_name);
-  EXPECT_EQ(4, s.opt_unique_name);
   EXPECT_EQ(42, s.get_unique_name());
-  EXPECT_EQ(4, *(s.get_opt_unique_name()));
-  EXPECT_EQ(4, *(s.opt_unique_name_ref()));
+  EXPECT_EQ(4, *s.get_opt_unique_name());
+  EXPECT_EQ(4, *s.opt_unique_name_ref());
 }
 
 TEST(cpp_name_test, json_serialization) {
@@ -58,8 +57,7 @@ TEST(cpp_name_test, json_serialization) {
   auto out = MyStruct();
   SimpleJSONSerializer::deserialize(json, out);
   EXPECT_EQ(out.unique_name, 42);
-  EXPECT_EQ(out.opt_unique_name, 4);
-  EXPECT_EQ(*(out.opt_unique_name_ref()), 4);
+  EXPECT_EQ(*out.opt_unique_name_ref(), 4);
 }
 
 FATAL_S(unique_name, "unique_name");
