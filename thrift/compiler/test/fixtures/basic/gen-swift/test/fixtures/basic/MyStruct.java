@@ -24,7 +24,8 @@ public final class MyStruct {
         @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE) final test.fixtures.basic.MyDataItem myDataField,
         @ThriftField(value=4, name="major", requiredness=Requiredness.NONE) final long major,
         @ThriftField(value=5, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.basic.MyEnum myEnum,
-        @ThriftField(value=6, name="package", requiredness=Requiredness.NONE) final String _package
+        @ThriftField(value=6, name="package", requiredness=Requiredness.NONE) final String _package,
+        @ThriftField(value=7, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote
     ) {
         this.myIntField = myIntField;
         this.myStringField = myStringField;
@@ -32,6 +33,7 @@ public final class MyStruct {
         this.major = major;
         this.myEnum = myEnum;
         this._package = _package;
+        this.annotationWithQuote = annotationWithQuote;
     }
     
     protected MyStruct() {
@@ -41,6 +43,7 @@ public final class MyStruct {
       this.major = 0L;
       this.myEnum = null;
       this._package = null;
+      this.annotationWithQuote = null;
     }
     
     public static class Builder {
@@ -80,6 +83,12 @@ public final class MyStruct {
             this._package = _package;
             return this;
         }
+        private String annotationWithQuote;
+    
+        public Builder setAnnotationWithQuote(String annotationWithQuote) {
+            this.annotationWithQuote = annotationWithQuote;
+            return this;
+        }
     
         public Builder() { }
         public Builder(MyStruct other) {
@@ -89,6 +98,7 @@ public final class MyStruct {
             this.major = other.major;
             this.myEnum = other.myEnum;
             this._package = other._package;
+            this.annotationWithQuote = other.annotationWithQuote;
         }
     
         public MyStruct build() {
@@ -98,7 +108,8 @@ public final class MyStruct {
                 this.myDataField,
                 this.major,
                 this.myEnum,
-                this._package
+                this._package,
+                this.annotationWithQuote
             );
         }
     }
@@ -109,6 +120,7 @@ public final class MyStruct {
     private final long major;
     private final test.fixtures.basic.MyEnum myEnum;
     private final String _package;
+    private final String annotationWithQuote;
 
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
@@ -128,6 +140,9 @@ public final class MyStruct {
         
     @ThriftField(value=6, name="package", requiredness=Requiredness.NONE)
     public String getPackage() { return _package; }
+        
+    @ThriftField(value=7, name="annotation_with_quote", requiredness=Requiredness.NONE)
+    public String getAnnotationWithQuote() { return annotationWithQuote; }
     
     @Override
     public String toString() {
@@ -138,6 +153,7 @@ public final class MyStruct {
             .add("major", major)
             .add("myEnum", myEnum)
             .add("_package", _package)
+            .add("annotationWithQuote", annotationWithQuote)
             .toString();
     }
     
@@ -159,6 +175,7 @@ public final class MyStruct {
             Objects.equals(major, other.major) &&
             Objects.equals(myEnum, other.myEnum) &&
             Objects.equals(_package, other._package) &&
+            Objects.equals(annotationWithQuote, other.annotationWithQuote) &&
             true;
     }
     
@@ -170,7 +187,8 @@ public final class MyStruct {
             myDataField,
             major,
             myEnum,
-            _package
+            _package,
+            annotationWithQuote
         });
     }
     

@@ -16,6 +16,8 @@ struct MyStruct {
   5: MyEnum myEnum,
   # package is a reserved keyword in Java, Thrift should be able to handle this
   6: string package (java.swift.name = "_package"),
+  # should generate valid code even with double quotes in an annotation
+  7: string annotation_with_quote (go.tag = 'tag:"somevalue"')
 }
 
 struct MyDataItem {}

@@ -87,7 +87,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, std::string package__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, std::string package__arg, std::string annotation_with_quote__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -118,6 +118,11 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     package = arg.extract();
     __isset.package = true;
   }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
+    annotation_with_quote = arg.extract();
+    __isset.annotation_with_quote = true;
+  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -136,6 +141,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   int64_t majorVer;
    ::cpp2::MyEnum myEnum;
   std::string package;
+  std::string annotation_with_quote;
 
   struct __isset {
     bool MyIntField;
@@ -144,6 +150,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     bool majorVer;
     bool myEnum;
     bool package;
+    bool annotation_with_quote;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -215,6 +222,21 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
     __isset.package = true;
     return package;
+  }
+
+  const std::string& get_annotation_with_quote() const& {
+    return annotation_with_quote;
+  }
+
+  std::string get_annotation_with_quote() && {
+    return std::move(annotation_with_quote);
+  }
+
+  template <typename T_MyStruct_annotation_with_quote_struct_setter = std::string>
+  std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
+    annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
+    __isset.annotation_with_quote = true;
+    return annotation_with_quote;
   }
 
   template <class Protocol_>

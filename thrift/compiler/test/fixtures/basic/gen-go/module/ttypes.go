@@ -63,6 +63,7 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 //  - Major
 //  - MyEnum
 //  - Package
+//  - AnnotationWithQuote
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
@@ -70,6 +71,7 @@ type MyStruct struct {
   Major int64 `thrift:"major,4" db:"major" json:"major"`
   MyEnum MyEnum `thrift:"myEnum,5" db:"myEnum" json:"myEnum"`
   Package string `thrift:"package,6" db:"package" json:"package"`
+  AnnotationWithQuote string `thrift:"annotation_with_quote,7" tag:"somevalue"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -102,6 +104,10 @@ func (p *MyStruct) GetMyEnum() MyEnum {
 
 func (p *MyStruct) GetPackage() string {
   return p.Package
+}
+
+func (p *MyStruct) GetAnnotationWithQuote() string {
+  return p.AnnotationWithQuote
 }
 func (p *MyStruct) IsSetMyDataField() bool {
   return p.MyDataField != nil
@@ -142,6 +148,10 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 6:
       if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
         return err
       }
     default:
@@ -213,6 +223,15 @@ func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.AnnotationWithQuote = v
+}
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -222,6 +241,7 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField4(oprot); err != nil { return err }
   if err := p.writeField5(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -287,6 +307,16 @@ func (p *MyStruct) writeField6(oprot thrift.Protocol) (err error) {
   return thrift.PrependError(fmt.Sprintf("%T.package (6) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 6:package: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("annotation_with_quote", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:annotation_with_quote: ", p), err) }
+  if err := oprot.WriteString(string(p.AnnotationWithQuote)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.annotation_with_quote (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:annotation_with_quote: ", p), err) }
   return err
 }
 

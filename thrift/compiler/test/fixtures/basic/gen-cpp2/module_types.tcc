@@ -140,6 +140,19 @@ _readField_package:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           6,
+          7,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_annotation_with_quote:
+  {
+    iprot->readString(this->annotation_with_quote);
+    this->__isset.annotation_with_quote = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          7,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -207,6 +220,14 @@ _loop:
         goto _skip;
       }
     }
+    case 7:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_annotation_with_quote;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -234,6 +255,8 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
   xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 6);
   xfer += prot_->serializedSizeString(this->package);
+  xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->serializedSizeString(this->annotation_with_quote);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -254,6 +277,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
   xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 6);
   xfer += prot_->serializedSizeString(this->package);
+  xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->serializedSizeString(this->annotation_with_quote);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -279,6 +304,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("package", apache::thrift::protocol::T_STRING, 6);
   xfer += prot_->writeString(this->package);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("annotation_with_quote", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->writeString(this->annotation_with_quote);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

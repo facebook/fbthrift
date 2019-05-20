@@ -33,7 +33,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyDataField: _typing.Optional['MyDataItem']=None,
         major: _typing.Optional[int]=None,
         myEnum: _typing.Optional[MyEnum]=None,
-        package: _typing.Optional[str]=None
+        package: _typing.Optional[str]=None,
+        annotation_with_quote: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
@@ -43,7 +44,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         MyDataField: _typing.Union['MyDataItem', NOTSETTYPE, None]=NOTSET,
         major: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         myEnum: _typing.Union[MyEnum, NOTSETTYPE, None]=NOTSET,
-        package: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        package: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        annotation_with_quote: _typing.Union[str, NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -68,6 +70,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def myEnum(self) -> MyEnum: ...
     @__property__
     def package(self) -> str: ...
+    @__property__
+    def annotation_with_quote(self) -> str: ...
 
 
 class MyDataItem(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):

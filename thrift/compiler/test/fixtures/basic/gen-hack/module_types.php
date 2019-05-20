@@ -50,6 +50,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'package',
       'type' => \TType::STRING,
     ],
+    7 => dict[
+      'var' => 'annotation_with_quote',
+      'type' => \TType::STRING,
+    ],
   ];
   public static Map<string, int> $_TFIELDMAP = Map {
     'MyIntField' => 1,
@@ -58,6 +62,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'major' => 4,
     'myEnum' => 5,
     'package' => 6,
+    'annotation_with_quote' => 7,
   };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
@@ -86,6 +91,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'package',
       'type' => \TType::STRING,
     ),
+    7 => shape(
+      'var' => 'annotation_with_quote',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
@@ -94,6 +103,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'major' => 4,
     'myEnum' => 5,
     'package' => 6,
+    'annotation_with_quote' => 7,
   ];
   const type TShape = shape(
     'MyIntField' => int,
@@ -102,9 +112,10 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'major' => int,
     ?'myEnum' => ?MyEnum,
     'package' => string,
+    'annotation_with_quote' => string,
     ...
   );
-  const int STRUCTURAL_ID = 8466070421711649449;
+  const int STRUCTURAL_ID = 5409774042669733538;
   /**
    * Original thrift field:-
    * 1: i64 MyIntField
@@ -135,9 +146,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 6: string package
    */
   public string $package;
+  /**
+   * Original thrift field:-
+   * 7: string annotation_with_quote
+   */
+  public string $annotation_with_quote;
 
   <<__Rx>>
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?int $major = null, ?MyEnum $myEnum = null, ?string $package = null  ) {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?int $major = null, ?MyEnum $myEnum = null, ?string $package = null, ?string $annotation_with_quote = null  ) {
     if ($MyIntField === null) {
       $this->MyIntField = 0;
     } else {
@@ -160,6 +176,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->package = $package;
     }
+    if ($annotation_with_quote === null) {
+      $this->annotation_with_quote = '';
+    } else {
+      $this->annotation_with_quote = $annotation_with_quote;
+    }
   }
 
   public function getName(): string {
@@ -178,6 +199,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $me->myEnum = $shape['myEnum'];
     }
     $me->package = $shape['package'];
+    $me->annotation_with_quote = $shape['annotation_with_quote'];
     return $me;
   }
 
@@ -189,6 +211,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'major' => $this->major,
       'myEnum' => $this->myEnum,
       'package' => $this->package,
+      'annotation_with_quote' => $this->annotation_with_quote,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -217,6 +240,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       $this->myEnum = MyEnum::coerce($parsed['myEnum']);    }    
     if (idx($parsed, 'package') !== null) {
       $this->package = $parsed['package'];
+    }    
+    if (idx($parsed, 'annotation_with_quote') !== null) {
+      $this->annotation_with_quote = $parsed['annotation_with_quote'];
     }    
   }
 

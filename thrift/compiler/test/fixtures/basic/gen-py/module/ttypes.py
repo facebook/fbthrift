@@ -61,6 +61,7 @@ class MyStruct:
    - major
    - myEnum
    - package
+   - annotation_with_quote
   """
 
   thrift_spec = None
@@ -116,6 +117,11 @@ class MyStruct:
           self.package = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
         else:
           iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.STRING:
+          self.annotation_with_quote = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -157,6 +163,10 @@ class MyStruct:
       oprot.writeFieldBegin('package', TType.STRING, 6)
       oprot.writeString(self.package.encode('utf-8')) if UTF8STRINGS and not isinstance(self.package, bytes) else oprot.writeString(self.package)
       oprot.writeFieldEnd()
+    if self.annotation_with_quote != None:
+      oprot.writeFieldBegin('annotation_with_quote', TType.STRING, 7)
+      oprot.writeString(self.annotation_with_quote.encode('utf-8')) if UTF8STRINGS and not isinstance(self.annotation_with_quote, bytes) else oprot.writeString(self.annotation_with_quote)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -179,6 +189,8 @@ class MyStruct:
         raise TProtocolException(TProtocolException.INVALID_DATA, 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.myEnum)
     if 'package' in json_obj and json_obj['package'] is not None:
       self.package = json_obj['package']
+    if 'annotation_with_quote' in json_obj and json_obj['annotation_with_quote'] is not None:
+      self.annotation_with_quote = json_obj['annotation_with_quote']
 
   def __repr__(self):
     L = []
@@ -207,6 +219,10 @@ class MyStruct:
       value = pprint.pformat(self.package, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    package=%s' % (value))
+    if self.annotation_with_quote is not None:
+      value = pprint.pformat(self.annotation_with_quote, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    annotation_with_quote=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -297,6 +313,7 @@ MyStruct.thrift_spec = (
   (4, TType.I64, 'major', None, None, 2, ), # 4
   (5, TType.I32, 'myEnum', MyEnum, None, 2, ), # 5
   (6, TType.STRING, 'package', True, None, 2, ), # 6
+  (7, TType.STRING, 'annotation_with_quote', True, None, 2, ), # 7
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -308,15 +325,19 @@ MyStruct.thrift_field_annotations = {
   6: {
     "java.swift.name": """_package""",
   },
+  7: {
+    "go.tag": """tag:"somevalue"""",
+  },
 }
 
-def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, major=None, myEnum=None, package=None,):
+def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, major=None, myEnum=None, package=None, annotation_with_quote=None,):
   self.MyIntField = MyIntField
   self.MyStringField = MyStringField
   self.MyDataField = MyDataField
   self.major = major
   self.myEnum = myEnum
   self.package = package
+  self.annotation_with_quote = annotation_with_quote
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -327,6 +348,7 @@ def MyStruct__setstate__(self, state):
   state.setdefault('major', None)
   state.setdefault('myEnum', None)
   state.setdefault('package', None)
+  state.setdefault('annotation_with_quote', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

@@ -32,6 +32,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)4);
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)5);
   private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)6);
+  private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)7);
 
   public long MyIntField;
   public String MyStringField;
@@ -43,12 +44,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    */
   public int myEnum;
   public String package;
+  public String annotation_with_quote;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
   public static final int MAJOR = 4;
   public static final int MYENUM = 5;
   public static final int PACKAGE = 6;
+  public static final int ANNOTATION_WITH_QUOTE = 7;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
@@ -72,6 +75,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.I32)));
     tmpMetaDataMap.put(PACKAGE, new FieldMetaData("package", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(ANNOTATION_WITH_QUOTE, new FieldMetaData("annotation_with_quote", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -88,7 +93,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     MyDataItem MyDataField,
     long major,
     int myEnum,
-    String package)
+    String package,
+    String annotation_with_quote)
   {
     this();
     this.MyIntField = MyIntField;
@@ -100,6 +106,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.myEnum = myEnum;
     setMyEnumIsSet(true);
     this.package = package;
+    this.annotation_with_quote = annotation_with_quote;
   }
 
   /**
@@ -119,6 +126,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.myEnum = TBaseHelper.deepCopy(other.myEnum);
     if (other.isSetPackage()) {
       this.package = TBaseHelper.deepCopy(other.package);
+    }
+    if (other.isSetAnnotation_with_quote()) {
+      this.annotation_with_quote = TBaseHelper.deepCopy(other.annotation_with_quote);
     }
   }
 
@@ -280,6 +290,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public String  getAnnotation_with_quote() {
+    return this.annotation_with_quote;
+  }
+
+  public MyStruct setAnnotation_with_quote(String annotation_with_quote) {
+    this.annotation_with_quote = annotation_with_quote;
+    return this;
+  }
+
+  public void unsetAnnotation_with_quote() {
+    this.annotation_with_quote = null;
+  }
+
+  // Returns true if field annotation_with_quote is set (has been assigned a value) and false otherwise
+  public boolean isSetAnnotation_with_quote() {
+    return this.annotation_with_quote != null;
+  }
+
+  public void setAnnotation_with_quoteIsSet(boolean value) {
+    if (!value) {
+      this.annotation_with_quote = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -330,6 +364,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case ANNOTATION_WITH_QUOTE:
+      if (value == null) {
+        unsetAnnotation_with_quote();
+      } else {
+        setAnnotation_with_quote((String)value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -355,6 +397,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     case PACKAGE:
       return getPackage();
 
+    case ANNOTATION_WITH_QUOTE:
+      return getAnnotation_with_quote();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -375,6 +420,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return isSetMyEnum();
     case PACKAGE:
       return isSetPackage();
+    case ANNOTATION_WITH_QUOTE:
+      return isSetAnnotation_with_quote();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -449,6 +496,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         return false;
     }
 
+    boolean this_present_annotation_with_quote = true && this.isSetAnnotation_with_quote();
+    boolean that_present_annotation_with_quote = true && that.isSetAnnotation_with_quote();
+    if (this_present_annotation_with_quote || that_present_annotation_with_quote) {
+      if (!(this_present_annotation_with_quote && that_present_annotation_with_quote))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.annotation_with_quote, that.annotation_with_quote))
+        return false;
+    }
+
     return true;
   }
 
@@ -517,6 +573,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (lastComparison != 0) {
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetAnnotation_with_quote()).compareTo(other.isSetAnnotation_with_quote());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(annotation_with_quote, other.annotation_with_quote);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -577,6 +641,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case ANNOTATION_WITH_QUOTE:
+          if (field.type == TType.STRING) {
+            this.annotation_with_quote = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
           break;
@@ -616,6 +687,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (this.package != null) {
       oprot.writeFieldBegin(PACKAGE_FIELD_DESC);
       oprot.writeString(this.package);
+      oprot.writeFieldEnd();
+    }
+    if (this.annotation_with_quote != null) {
+      oprot.writeFieldBegin(ANNOTATION_WITH_QUOTE_FIELD_DESC);
+      oprot.writeString(this.annotation_with_quote);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -702,6 +778,17 @@ String space = prettyPrint ? " " : "";
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this. getPackage(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("annotation_with_quote");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this. getAnnotation_with_quote() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this. getAnnotation_with_quote(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
