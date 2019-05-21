@@ -21,6 +21,7 @@
 #include <future>
 #include <memory>
 #include <stdexcept>
+#include <string>
 #include <utility>
 
 #include <gtest/gtest.h>
@@ -45,6 +46,7 @@
 
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
@@ -140,15 +142,26 @@ template <class P>
 std::shared_ptr<yarpl::flowable::Flowable<P>> makeTestFlowable(
     folly::StringPiece data) {
   size_t n = 500;
+  const bool serializeMetadata = data.removePrefix("serialize_metadata:");
   if (data.removePrefix("generate:")) {
     n = folly::to<size_t>(data);
   }
 
-  auto gen = [n, i = static_cast<size_t>(0)](
+  auto gen = [n, i = static_cast<size_t>(0), serializeMetadata](
                  auto& subscriber, int64_t requested) mutable {
     while (requested-- > 0 && i < n) {
-      subscriber.onNext(makePayload<P>(
-          folly::to<std::string>("metadata:", i), folly::to<std::string>(i)));
+      // Mimic serialized metadata in first response
+      std::string md;
+      if (!serializeMetadata) {
+        md = folly::to<std::string>("metadata:", i);
+      } else {
+        md = i == 0
+            ? CompactSerializer::serialize<std::string>(ResponseRpcMetadata{})
+            : CompactSerializer::serialize<std::string>(
+                  StreamPayloadMetadata{});
+      }
+      subscriber.onNext(
+          makePayload<P>(std::move(md), folly::to<std::string>(i)));
       ++i;
     }
     if (i == n) {
@@ -205,10 +218,11 @@ RsocketTestServerResponder::handleRequestStream(
 }
 } // namespace
 
-rocket::SetupFrame RocketTestClient::makeTestSetupFrame() {
+rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
+    MetadataOpaqueMap<std::string, std::string> md) {
   RequestSetupMetadata meta;
   meta.opaque_ref() = {};
-  *meta.opaque_ref() = {{"rando_key", "setup_data"}};
+  *meta.opaque_ref() = std::move(md);
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
@@ -405,8 +419,9 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
   size_t connections_{0};
   folly::Optional<size_t> expectedRemainingStreams_ = folly::none;
 };
+} // namespace
 
-class RocketTestServerHandler : public RocketServerHandler {
+class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
  public:
   void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&&) final {
     folly::io::Cursor cursor(frame.payload().metadata().get());
@@ -421,9 +436,9 @@ class RocketTestServerHandler : public RocketServerHandler {
     // Validate RequestSetupMetadata
     CompactProtocolReader reader;
     reader.setInput(cursor);
-    auto meta = std::make_unique<RequestSetupMetadata>();
-    meta->read(&reader);
-    EXPECT_EQ((*meta->opaque_ref())["rando_key"], "setup_data");
+    RequestSetupMetadata meta;
+    meta.read(&reader);
+    EXPECT_EQ(expectedSetupMetadata_, meta.opaque_ref().value_or({}));
   }
 
   void handleRequestResponseFrame(
@@ -465,16 +480,26 @@ class RocketTestServerHandler : public RocketServerHandler {
     makeTestFlowable<rocket::Payload>(dataPiece)->subscribe(
         std::move(subscriber));
   }
+
+  void setExpectedSetupMetadata(
+      MetadataOpaqueMap<std::string, std::string> md) {
+    expectedSetupMetadata_ = std::move(md);
+  }
+
+ private:
+  MetadataOpaqueMap<std::string, std::string> expectedSetupMetadata_{
+      {"rando_key", "setup_data"}};
 };
-} // namespace
 
 RocketTestServer::RocketTestServer()
     : evb_(*ioThread_.getEventBase()),
-      listeningSocket_(new folly::AsyncServerSocket(&evb_)) {
+      listeningSocket_(new folly::AsyncServerSocket(&evb_)),
+      handler_(std::make_shared<RocketTestServerHandler>()) {
   std::promise<void> shutdownPromise;
   shutdownFuture_ = shutdownPromise.get_future();
+
   acceptor_ = std::make_unique<RocketTestServerAcceptor>(
-      std::make_shared<RocketTestServerHandler>(), std::move(shutdownPromise));
+      handler_, std::move(shutdownPromise));
   start();
 }
 
@@ -511,6 +536,11 @@ void RocketTestServer::setExpectedRemainingStreams(size_t n) {
           dynamic_cast<RocketTestServerAcceptor*>(acceptor_.get())) {
     acceptor->setExpectedRemainingStreams(n);
   }
+}
+
+void RocketTestServer::setExpectedSetupMetadata(
+    MetadataOpaqueMap<std::string, std::string> md) {
+  handler_->setExpectedSetupMetadata(std::move(md));
 }
 
 } // namespace test

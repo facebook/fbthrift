@@ -124,6 +124,8 @@ struct ResponseRpcMetadata {
   5: optional i32 (cpp.type = "std::uint32_t") crc32c;
 }
 
+struct StreamPayloadMetadata {}
+
 // Setup metadata sent from the client to the server at the time
 // of initial connection.
 struct RequestSetupMetadata {

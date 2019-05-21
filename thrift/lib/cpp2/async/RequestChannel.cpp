@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+
 #include <folly/fibers/Baton.h>
 #include <folly/fibers/Fiber.h>
+
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
 namespace thrift {
@@ -228,6 +231,16 @@ uint32_t RequestChannel::sendStreamRequest(
           "Current channel doesn't support stream RPC"),
       std::move(ctx)));
   return 0;
+}
+
+void RequestChannel::sendRequestStream(
+    RpcOptions&,
+    std::unique_ptr<folly::IOBuf>,
+    std::shared_ptr<transport::THeader>,
+    StreamClientCallback* clientCallback) {
+  clientCallback->onFirstResponseError(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          "Current channel doesn't support stream RPC"));
 }
 
 } // namespace thrift

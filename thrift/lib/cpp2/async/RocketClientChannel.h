@@ -43,6 +43,7 @@ namespace thrift {
 class ContextStack;
 class RequestCallback;
 class RpcOptions;
+class StreamClientCallback;
 class ThriftClientCallback;
 
 namespace rocket {
@@ -83,6 +84,12 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header) override;
+
+  void sendRequestStream(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      StreamClientCallback* clientCallback) override;
 
   void sendRequestSync(
       RpcOptions& rpcOptions,

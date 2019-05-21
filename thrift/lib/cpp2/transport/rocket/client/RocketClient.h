@@ -25,8 +25,10 @@
 #include <glog/logging.h>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>
+#include <folly/container/F14Map.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -37,6 +39,7 @@
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClientFlowable.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 
@@ -80,8 +83,14 @@ class RocketClient : public folly::DelayedDestruction,
       Payload&& request,
       RocketClientWriteCallback* writeCallback);
 
+  void sendRequestStream(
+      Payload&& request,
+      std::chrono::milliseconds firstResponseTimeout,
+      StreamClientCallback* StreamClientCallback);
+
   // Note that createStream is non-blocking.
   std::shared_ptr<RocketClientFlowable> createStream(Payload&& request);
+
   void sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
   void freeStream(StreamId streamId);
@@ -111,7 +120,7 @@ class RocketClient : public folly::DelayedDestruction,
   }
 
   size_t streams() const {
-    return streams_.size();
+    return streams_.size() + streamsV2_.size();
   }
 
   const folly::AsyncTransportWrapper* getTransportWrapper() const {
@@ -130,7 +139,8 @@ class RocketClient : public folly::DelayedDestruction,
     // streams, and if the underlying transport is detachable, i.e., has no
     // inflight writes of its own.
     return !writeLoopCallback_.isLoopCallbackScheduled() && !requests_ &&
-        streams_.empty() && (!socket_ || socket_->isDetachable());
+        streams_.empty() && streamsV2_.empty() &&
+        (!socket_ || socket_->isDetachable());
   }
 
   void attachEventBase(folly::EventBase& evb) {
@@ -191,6 +201,26 @@ class RocketClient : public folly::DelayedDestruction,
   using StreamMap = std::unordered_map<StreamId, StreamWrapper>;
   StreamMap streams_;
 
+  class FirstResponseTimeout : public folly::HHWheelTimer::Callback {
+   public:
+    FirstResponseTimeout(RocketClient& client, StreamId streamId)
+        : client_(client), streamId_(streamId) {}
+
+    void timeoutExpired() noexcept override;
+
+   private:
+    RocketClient& client_;
+    StreamId streamId_;
+  };
+
+  using StreamV2Map =
+      folly::F14FastMap<StreamId, std::unique_ptr<RocketStreamServerCallback>>;
+  StreamV2Map streamsV2_;
+  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
+  using FirstResponseTimeoutMap =
+      folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
+  FirstResponseTimeoutMap firstResponseTimeouts_;
+
   Parser<RocketClient> parser_;
 
   class WriteLoopCallback : public folly::EventBase::LoopCallback {
@@ -228,6 +258,7 @@ class RocketClient : public folly::DelayedDestruction,
   }
 
   StreamWrapper* getStreamById(StreamId streamId);
+  RocketStreamServerCallback* getStreamV2ById(StreamId streamId);
 
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void handleResponseFrame(
@@ -238,8 +269,26 @@ class RocketClient : public folly::DelayedDestruction,
       RocketClientFlowable& stream,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
+  void handleStreamFrame(
+      RocketStreamServerCallback& serverCallback,
+      FrameType frameType,
+      std::unique_ptr<folly::IOBuf> frame);
 
   void writeScheduledRequestsToSocket() noexcept;
+
+  void scheduleFirstResponseTimeout(
+      StreamId streamId,
+      std::chrono::milliseconds timeout);
+  folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
+
+  FOLLY_NODISCARD auto makeRequestCountGuard() {
+    ++requests_;
+    return folly::makeGuard([this] {
+      if (!--requests_) {
+        notifyIfDetachable();
+      }
+    });
+  }
 
   template <class T>
   friend class Parser;

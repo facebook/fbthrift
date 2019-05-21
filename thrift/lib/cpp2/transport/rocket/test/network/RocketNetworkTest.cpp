@@ -15,21 +15,30 @@
  */
 
 #include <chrono>
+#include <memory>
 #include <string>
+#include <type_traits>
 #include <utility>
 
 #include <folly/portability/GTest.h>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Format.h>
 #include <folly/Range.h>
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>
 #include <folly/executors/ManualExecutor.h>
+#include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
@@ -37,6 +46,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/ClientServerTestUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/test/network/Util.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::rocket;
@@ -44,6 +54,11 @@ using namespace apache::thrift::rocket::test;
 using namespace apache::thrift::transport;
 
 namespace {
+void unsetExpectedSetupMetadata(RsocketTestServer&) {}
+void unsetExpectedSetupMetadata(RocketTestServer& server) {
+  server.setExpectedSetupMetadata({});
+}
+
 // Used for testing RocketClient against rsocket-cpp server and for testing
 // RocketClient against RocketTestServer
 template <class Server>
@@ -67,6 +82,10 @@ class RocketNetworkTest : public testing::Test {
 
   folly::ManualExecutor* getUserExecutor() {
     return &userExecutor_;
+  }
+
+  void unsetExpectedSetupMetadata() {
+    ::unsetExpectedSetupMetadata(*server_);
   }
 
  protected:
@@ -502,4 +521,140 @@ TYPED_TEST(RocketNetworkTest, ClientCreationAndReconnectClientOutlivesStream) {
       client.reconnect();
     }
   });
+}
+
+namespace {
+class TestClientCallback : public StreamClientCallback {
+ public:
+  TestClientCallback(folly::EventBase& evb, uint64_t requested)
+      : evb_(evb), requested_(requested) {}
+
+  void onFirstResponse(
+      FirstResponsePayload&& firstResponsePayload,
+      StreamServerCallback* subscription) override {
+    subscription_ = subscription;
+    EXPECT_EQ(
+        std::to_string(0),
+        folly::StringPiece{firstResponsePayload.payload->coalesce()});
+    ++received_;
+    if (requested_) {
+      request(requested_ - 1);
+    }
+  }
+
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    subscription_ = nullptr;
+    ew_ = std::move(ew);
+    evb_.terminateLoopSoon();
+  }
+
+  void onStreamNext(StreamPayload&& payload) override {
+    EXPECT_EQ(
+        std::to_string(received_),
+        folly::StringPiece{payload.payload->coalesce()});
+    EXPECT_LE(++received_, requested_);
+  }
+  void onStreamError(folly::exception_wrapper ew) override {
+    subscription_ = nullptr;
+    ew_ = std::move(ew);
+    evb_.terminateLoopSoon();
+  }
+  void onStreamComplete() override {
+    EXPECT_EQ(requested_, received_);
+    subscription_ = nullptr;
+    evb_.terminateLoopSoon();
+  }
+
+  void cancel() {
+    if (auto* subscription = std::exchange(subscription_, nullptr)) {
+      subscription->onStreamCancel();
+    }
+  }
+  void request(uint64_t tokens) {
+    if (subscription_) {
+      subscription_->onStreamRequestN(tokens);
+    }
+  }
+
+  uint64_t payloadsReceived() const {
+    return received_;
+  }
+  folly::exception_wrapper getError() const {
+    return ew_;
+  }
+
+ private:
+  folly::EventBase& evb_;
+  StreamServerCallback* subscription_{nullptr};
+  folly::exception_wrapper ew_;
+  const uint64_t requested_;
+  uint64_t received_{0};
+};
+} // namespace
+
+TYPED_TEST(RocketNetworkTest, RequestStreamNewApiBasic) {
+  folly::EventBase evb;
+
+  this->unsetExpectedSetupMetadata();
+
+  auto socket = async::TAsyncSocket::UniquePtr(
+      new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
+  auto channel = RocketClientChannel::newChannel(std::move(socket));
+
+  constexpr uint64_t kNumRequestedPayloads = 200;
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeMessageBegin("dummy", T_CALL, 0);
+
+  auto payload = folly::IOBuf::copyBuffer(folly::sformat(
+      "{}serialize_metadata:generate:{}",
+      folly::StringPiece{queue.move()->coalesce()},
+      kNumRequestedPayloads));
+
+  RpcOptions rpcOptions;
+  TestClientCallback clientCallback(evb, kNumRequestedPayloads);
+
+  channel->sendRequestStream(
+      rpcOptions,
+      std::move(payload),
+      std::make_shared<THeader>(),
+      &clientCallback);
+
+  evb.loop();
+}
+
+TYPED_TEST(RocketNetworkTest, RequestStreamNewApiError) {
+  folly::EventBase evb;
+
+  this->unsetExpectedSetupMetadata();
+
+  auto socket = async::TAsyncSocket::UniquePtr(
+      new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
+  auto channel = RocketClientChannel::newChannel(std::move(socket));
+
+  constexpr uint64_t kNumRequestedPayloads = 200;
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeMessageBegin("dummy", T_CALL, 0);
+
+  auto payload = folly::IOBuf::copyBuffer(folly::sformat(
+      "{}error:application",
+      folly::StringPiece{queue.move()->coalesce()},
+      kNumRequestedPayloads));
+
+  RpcOptions rpcOptions;
+  TestClientCallback clientCallback(evb, kNumRequestedPayloads);
+
+  channel->sendRequestStream(
+      rpcOptions,
+      std::move(payload),
+      std::make_shared<THeader>(),
+      &clientCallback);
+
+  evb.loop();
+
+  EXPECT_TRUE(clientCallback.getError());
+  EXPECT_EQ(0, clientCallback.payloadsReceived());
 }

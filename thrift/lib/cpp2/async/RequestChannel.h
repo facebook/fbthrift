@@ -46,6 +46,8 @@ class IOBuf;
 namespace apache {
 namespace thrift {
 
+class StreamClientCallback;
+
 class ClientReceiveState {
  public:
   ClientReceiveState() : protocolId_(-1), isStreamEnd_(false) {}
@@ -450,6 +452,12 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>);
+
+  virtual void sendRequestStream(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      StreamClientCallback* clientCallback);
 
   virtual void setCloseCallback(CloseCallback*) = 0;
 

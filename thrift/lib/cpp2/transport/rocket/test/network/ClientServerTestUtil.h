@@ -19,6 +19,7 @@
 #include <chrono>
 #include <future>
 #include <memory>
+#include <string>
 
 #include <folly/Try.h>
 #include <folly/io/async/AsyncServerSocket.h>
@@ -28,6 +29,7 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace folly {
 class EventBase;
@@ -85,7 +87,10 @@ class RocketTestClient {
 
   folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
 
-  rocket::SetupFrame makeTestSetupFrame();
+  rocket::SetupFrame makeTestSetupFrame(
+      MetadataOpaqueMap<std::string, std::string> md =
+          MetadataOpaqueMap<std::string, std::string>{
+              {"rando_key", "setup_data"}});
 
   void reconnect();
 
@@ -108,10 +113,15 @@ class RocketTestServer {
   uint16_t getListeningPort() const;
   void setExpectedRemainingStreams(size_t n);
 
+  void setExpectedSetupMetadata(MetadataOpaqueMap<std::string, std::string> md);
+
  private:
+  class RocketTestServerHandler;
+
   folly::ScopedEventBaseThread ioThread_;
   folly::EventBase& evb_;
   folly::AsyncServerSocket::UniquePtr listeningSocket_;
+  const std::shared_ptr<RocketTestServerHandler> handler_;
   std::unique_ptr<wangle::Acceptor> acceptor_;
   std::future<void> shutdownFuture_;
 
