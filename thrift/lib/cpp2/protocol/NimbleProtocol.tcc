@@ -191,6 +191,22 @@ inline uint32_t NimbleProtocolWriter::writeBinary(folly::ByteRange str) {
   return 0;
 }
 
+inline uint32_t NimbleProtocolWriter::writeBinary(
+    const std::unique_ptr<folly::IOBuf>& str) {
+  if (!str) {
+    encodeComplexTypeMetadata(0);
+    return 0;
+  }
+  return writeBinary(*str);
+}
+
+inline uint32_t NimbleProtocolWriter::writeBinary(const folly::IOBuf& str) {
+  size_t size = str.computeChainDataLength();
+  encodeComplexTypeMetadata(size);
+  encoder_.encodeBinary(str.data(), size);
+  return 0;
+}
+
 /**
  * Functions that return the serialized size
  */
@@ -434,6 +450,23 @@ inline void NimbleProtocolReader::readString(StrType& str) {
 template <typename StrType>
 inline void NimbleProtocolReader::readBinary(StrType& str) {
   readString(str);
+}
+
+inline void NimbleProtocolReader::readBinary(
+    std::unique_ptr<folly::IOBuf>& str) {
+  if (!str) {
+    str = std::make_unique<folly::IOBuf>();
+  }
+  readBinary(*str);
+}
+
+inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
+  uint32_t size = readComplexTypeSize(ComplexType::STRINGY);
+
+  if (size > static_cast<uint32_t>(string_limit_)) {
+    TProtocolException::throwExceededSizeLimit();
+  }
+  decoder_.nextBinary(str, size);
 }
 
 inline void NimbleProtocolReader::skip(TType type) {
