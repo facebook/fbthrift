@@ -37,10 +37,10 @@ inline uint32_t NimbleProtocolWriter::writeMessageEnd() {
 inline void NimbleProtocolWriter::encodeComplexTypeMetadata(
     uint32_t size,
     StructyType structyType) {
-  int metadataBits = (structyType == StructyType::UNUSED)
+  int metadataBits = (structyType == StructyType::NONE)
       ? kComplexMetadataBits
       : kStructyTypeMetadataBits;
-  ComplexType complexType = (structyType == StructyType::UNUSED)
+  ComplexType complexType = (structyType == StructyType::NONE)
       ? ComplexType::STRINGY
       : ComplexType::STRUCTY;
   // The lowest two bits of the fieldChunk indicates that this is a complex
@@ -145,33 +145,42 @@ inline uint32_t NimbleProtocolWriter::writeSetEnd() {
 }
 
 inline uint32_t NimbleProtocolWriter::writeBool(bool value) {
-  encode(value);
+  encoder_.encodeContentChunk(value);
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::writeByte(int8_t byte) {
-  encode(byte);
+  encoder_.encodeContentChunk(byte);
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::writeI16(int16_t i16) {
-  encode(i16);
+  encoder_.encodeContentChunk(i16);
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::writeI32(int32_t i32) {
-  encode(i32);
+  encoder_.encodeContentChunk(i32);
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::writeI64(int64_t i64) {
-  encode(i64);
+  auto lower = static_cast<uint32_t>(i64 & 0xffffffff);
+  auto higher = static_cast<uint32_t>(i64 >> 32);
+  encoder_.encodeContentChunk(lower);
+  encoder_.encodeContentChunk(higher);
   return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeDouble(double dub) {
-  encode(dub);
-  return 0;
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
+
+  return writeI64(bitwise_cast<int64_t>(dub));
 }
 
 inline uint32_t NimbleProtocolWriter::writeFloat(float flt) {
-  encode(flt);
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<float>::is_iec559, "");
+
+  uint32_t bits = bitwise_cast<uint32_t>(flt);
+  encoder_.encodeContentChunk(bits);
   return 0;
 }
 
@@ -403,30 +412,41 @@ inline void NimbleProtocolReader::readSetEnd() {
 }
 
 inline void NimbleProtocolReader::readBool(bool& value) {
-  decode(value);
+  value = static_cast<bool>(decoder_.nextContentChunk());
 }
 inline void NimbleProtocolReader::readBool(
     std::vector<bool>::reference /*value*/) {}
 
 inline void NimbleProtocolReader::readByte(int8_t& byte) {
-  decode(byte);
+  byte = static_cast<int8_t>(decoder_.nextContentChunk());
 }
 inline void NimbleProtocolReader::readI16(int16_t& i16) {
-  decode(i16);
+  i16 = static_cast<int16_t>(decoder_.nextContentChunk());
 }
 inline void NimbleProtocolReader::readI32(int32_t& i32) {
-  decode(i32);
+  i32 = static_cast<int32_t>(decoder_.nextContentChunk());
 }
 inline void NimbleProtocolReader::readI64(int64_t& i64) {
-  decode(i64);
+  auto lower = decoder_.nextContentChunk();
+  auto higher = decoder_.nextContentChunk();
+  i64 = static_cast<int64_t>(higher) << 32 | lower;
 }
 
 inline void NimbleProtocolReader::readDouble(double& dub) {
-  decode(dub);
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
+
+  int64_t bits = 0;
+  readI64(bits);
+  dub = bitwise_cast<double>(bits);
 }
 
 inline void NimbleProtocolReader::readFloat(float& flt) {
-  decode(flt);
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<float>::is_iec559, "");
+
+  uint32_t bits = decoder_.nextContentChunk();
+  flt = bitwise_cast<float>(bits);
 }
 
 template <typename StrType>
@@ -436,15 +456,7 @@ inline void NimbleProtocolReader::readString(StrType& str) {
     TProtocolException::throwExceededSizeLimit();
   }
 
-  // TODO: the following is a temporary workaround to keep apache::thrift::skip
-  // working. Need to implement nimble specific skipping logic.
-  str.reserve(size);
-  str.clear();
-  if (size > 0) {
-    auto buf = std::unique_ptr<char[]>(new char[size]);
-    decoder_.nextBinary(buf.get(), size);
-    str.append(buf.get(), size);
-  }
+  decoder_.nextBinary(str, size);
 }
 
 template <typename StrType>

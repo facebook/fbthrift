@@ -111,26 +111,15 @@ class NimbleProtocolWriter {
   }
 
  private:
+  void encodeComplexTypeMetadata(
+      uint32_t size,
+      detail::nimble::StructyType structyType =
+          detail::nimble::StructyType::NONE);
+
   /*
    * The encoder that manipulates the underlying field and content streams.
    */
   detail::Encoder encoder_;
-
-  void encode(bool input);
-  void encode(int8_t input);
-  void encode(int16_t input);
-  void encode(int32_t input);
-  void encode(int64_t input);
-  void encode(uint8_t input);
-  void encode(uint16_t input);
-  void encode(uint32_t input);
-  void encode(uint64_t input);
-  void encode(double input);
-  void encode(float input);
-  void encodeComplexTypeMetadata(
-      uint32_t size,
-      detail::nimble::StructyType structyType =
-          detail::nimble::StructyType::UNUSED);
 };
 
 class NimbleProtocolReader {
@@ -138,13 +127,10 @@ class NimbleProtocolReader {
   using ProtocolWriter = NimbleProtocolWriter;
 
   explicit NimbleProtocolReader(
-      std::unique_ptr<folly::IOBuf> buf,
       int32_t string_limit = FLAGS_thrift_cpp2_protocol_reader_string_limit,
       int32_t container_limit =
           FLAGS_thrift_cpp2_protocol_reader_container_limit)
-      : decoder_(std::move(buf)),
-        string_limit_(string_limit),
-        container_limit_(container_limit) {
+      : string_limit_(string_limit), container_limit_(container_limit) {
     if (string_limit_ <= 0) {
       string_limit_ = INT32_MAX;
     }
@@ -163,6 +149,10 @@ class NimbleProtocolReader {
 
   static constexpr bool kOmitsContainerElemTypes() {
     return true;
+  }
+
+  void setInput(const folly::io::Cursor& cursor) {
+    decoder_.setInput(cursor);
   }
 
   /**
@@ -215,21 +205,6 @@ class NimbleProtocolReader {
   size_t getCursorPosition() const {
     return 0;
   }
-
-  void decode(bool& value);
-  void decode(int8_t& value);
-  void decode(int16_t& value);
-  void decode(int32_t& value);
-  void decode(int64_t& value);
-  void decode(uint8_t& value);
-  void decode(uint16_t& value);
-  void decode(uint32_t& value);
-  void decode(uint64_t& value);
-  void decode(double& value);
-  void decode(float& value);
-  void checkComplexFieldData(
-      uint32_t fieldChunk,
-      detail::nimble::ComplexType complexType);
 
   struct StructReadState {
     int16_t fieldId;
@@ -285,6 +260,10 @@ class NimbleProtocolReader {
       StructReadState& state);
 
  private:
+  void checkComplexFieldData(
+      uint32_t fieldChunk,
+      detail::nimble::ComplexType complexType);
+
   detail::Decoder decoder_;
   int32_t string_limit_;
   int32_t container_limit_;
