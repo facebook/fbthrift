@@ -19,6 +19,7 @@
 #include <folly/fibers/Fiber.h>
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#include <thrift/lib/cpp2/transport/rocket/client/ClientCallbackFlowable.h>
 
 namespace apache {
 namespace thrift {
@@ -221,15 +222,26 @@ void RequestChannel::sendRequestSync(
 }
 
 uint32_t RequestChannel::sendStreamRequest(
-    RpcOptions&,
+    RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf>,
-    std::shared_ptr<apache::thrift::transport::THeader>) {
-  cb->requestError(ClientReceiveState(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          "Current channel doesn't support stream RPC"),
-      std::move(ctx)));
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<apache::thrift::transport::THeader> header) {
+  DestructorGuard dg(this);
+  cb->context_ = folly::RequestContext::saveContext();
+  auto chunkTimeout = rpcOptions.getChunkTimeout();
+  auto callback = std::make_unique<ThriftClientCallback>(
+      getEventBase(),
+      std::move(cb),
+      std::move(ctx),
+      getProtocolId(),
+      chunkTimeout);
+  auto clientCallBackFlowable = std::make_shared<ClientCallbackFlowable>(
+      std::move(callback), chunkTimeout);
+  clientCallBackFlowable->init();
+  StreamClientCallback* clientCallback = clientCallBackFlowable.get();
+  sendRequestStream(
+      rpcOptions, std::move(buf), std::move(header), clientCallback);
   return 0;
 }
 

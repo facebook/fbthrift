@@ -164,23 +164,6 @@ uint32_t RocketClientChannel::sendOnewayRequest(
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
-uint32_t RocketClientChannel::sendStreamRequest(
-    RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
-  sendThriftRequest(
-      rpcOptions,
-      RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
-      std::move(buf),
-      std::move(header),
-      SendRequestCalledFrom::Thread);
-  return 0;
-}
-
 void RocketClientChannel::sendRequestStream(
     RpcOptions& rpcOptions,
     std::unique_ptr<folly::IOBuf> buf,
@@ -326,12 +309,8 @@ void RocketClientChannel::sendThriftRequest(
       break;
 
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-      sendSingleRequestStreamResponse(
-          metadata,
-          std::move(ctx),
-          std::move(buf),
-          std::move(cb),
-          rpcOptions.getChunkTimeout());
+      // should no longer reach here anymore, use sendRequestStream
+      DCHECK(false);
       break;
 
     default:
@@ -449,36 +428,6 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
           finallyFunc(collapseTry(std::move(arg)));
         });
   }
-}
-
-void RocketClientChannel::sendSingleRequestStreamResponse(
-    const RequestRpcMetadata& metadata,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb,
-    std::chrono::milliseconds chunkTimeout) {
-  std::shared_ptr<rocket::RocketClientFlowable> flowable;
-  try {
-    flowable = rclient_->createStream(rocket::Payload::makeFromMetadataAndData(
-        serializeMetadata(metadata), std::move(buf)));
-  } catch (const std::exception& e) {
-    cb->requestError(ClientReceiveState(
-        folly::exception_wrapper(std::current_exception(), e), std::move(ctx)));
-    return;
-  }
-
-  // Note that at this point, no RPC has been sent or has even been
-  // scheduled to be sent. This is similar to how requestSent() behaves in
-  // RSocketClientChannel.
-  cb->requestSent();
-
-  auto callback = std::make_unique<ThriftClientCallback>(
-      evb_, std::move(cb), std::move(ctx), protocolId_, chunkTimeout);
-
-  auto takeFirst =
-      std::make_shared<TakeFirst>(*evb_, std::move(callback), chunkTimeout);
-
-  flowable->subscribe(std::move(takeFirst));
 }
 
 ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {

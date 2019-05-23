@@ -78,13 +78,6 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header) override;
 
-  uint32_t sendStreamRequest(
-      RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header) override;
-
   void sendRequestStream(
       RpcOptions& rpcOptions,
       std::unique_ptr<folly::IOBuf> buf,
@@ -187,13 +180,6 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb,
       SendRequestCalledFrom callingContext);
-
-  void sendSingleRequestStreamResponse(
-      const RequestRpcMetadata& metadata,
-      std::unique_ptr<ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb,
-      std::chrono::milliseconds chunkTimeout);
 
   folly::fibers::FiberManager& getFiberManager() const {
     DCHECK(evb_);
