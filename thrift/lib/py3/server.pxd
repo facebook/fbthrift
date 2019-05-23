@@ -1,5 +1,6 @@
 from libc.stdint cimport uint16_t, int32_t, uint32_t
 from libcpp.string cimport string
+from libcpp cimport bool as cbool
 from libcpp.map cimport map
 from libcpp.memory cimport shared_ptr, unique_ptr
 from folly.iobuf cimport cIOBuf
@@ -84,6 +85,8 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         uint32_t getNumCPUWorkerThreads()
         void setNumSSLHandshakeWorkerThreads(uint32_t nSSLHandshakeThreads)
         uint32_t getNumSSLHandshakeWorkerThreads()
+        void setAllowPlaintextOnLoopback(cbool allow)
+        cbool isPlaintextAllowedOnLoopback()
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs

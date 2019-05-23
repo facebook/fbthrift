@@ -93,7 +93,6 @@ class ServicesTests(unittest.TestCase):
         NUM_SSL_WORKERS = 12
 
         server = ThriftServer(Handler(), port=0)
-
         server.set_max_requests(MAX_REQUESTS)
         server.set_max_connections(MAX_CONNECTIONS)
         server.set_listen_backlog(LISTEN_BACKLOG)
@@ -107,6 +106,10 @@ class ServicesTests(unittest.TestCase):
         self.assertEqual(server.get_cpu_worker_threads(), NUM_CPU_WORKERS)
         self.assertEqual(
             server.get_ssl_handshake_worker_threads(), NUM_SSL_WORKERS)
+
+        self.assertFalse(server.is_plaintext_allowed_on_loopback())
+        server.set_allow_plaintext_on_loopback(True)
+        self.assertTrue(server.is_plaintext_allowed_on_loopback())
 
     def test_server_get_stats(self) -> None:
         server = ThriftServer(Handler(), port=0)

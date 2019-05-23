@@ -187,6 +187,12 @@ cdef class ThriftServer:
             raise RuntimeError("Unknown SSLPolicy defined.")
         self.server.get().setSSLPolicy(cPolicy)
 
+    def set_allow_plaintext_on_loopback(self, enabled):
+        self.server.get().setAllowPlaintextOnLoopback(enabled);
+
+    def is_plaintext_allowed_on_loopback(self):
+        return self.server.get().isPlaintextAllowedOnLoopback();
+
     def stop(self):
         self.server.get().stop()
         self.address_future.cancel()
