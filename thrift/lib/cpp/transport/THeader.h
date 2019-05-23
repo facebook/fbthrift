@@ -30,9 +30,6 @@
 #include <bitset>
 #include <chrono>
 
-// Don't include the unknown client.
-#define CLIENT_TYPES_LEN 7
-
 // These are local to this build and never appear on the wire.
 enum CLIENT_TYPE {
   THRIFT_HEADER_CLIENT_TYPE = 0,
@@ -42,9 +39,12 @@ enum CLIENT_TYPE {
   THRIFT_HTTP_CLIENT_TYPE = 4,
   THRIFT_FRAMED_COMPACT = 5,
   THRIFT_HTTP_GET_CLIENT_TYPE = 7,
-  THRIFT_UNKNOWN_CLIENT_TYPE = 8,
-  THRIFT_UNFRAMED_COMPACT_DEPRECATED = 9,
+  THRIFT_UNFRAMED_COMPACT_DEPRECATED = 8,
+  // This MUST always be last and have the largest value!
+  THRIFT_UNKNOWN_CLIENT_TYPE = 9,
 };
+
+#define CLIENT_TYPES_LEN THRIFT_UNKNOWN_CLIENT_TYPE
 
 // These appear on the wire.
 enum HEADER_FLAGS {
