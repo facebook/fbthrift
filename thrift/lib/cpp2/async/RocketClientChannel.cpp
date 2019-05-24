@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
+#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 using namespace apache::thrift::transport;
