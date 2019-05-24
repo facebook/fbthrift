@@ -255,11 +255,7 @@ class CloseCallback {
 class RpcOptions {
  public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
-  RpcOptions()
-      : timeout_(0),
-        priority_(apache::thrift::concurrency::N_PRIORITIES),
-        chunkTimeout_(0),
-        queueTimeout_(0) {}
+  RpcOptions() {}
 
   /**
    * NOTE: This only sets the receive timeout, and not the send timeout on
@@ -275,12 +271,22 @@ class RpcOptions {
   }
 
   RpcOptions& setPriority(PRIORITY priority) {
-    priority_ = priority;
+    priority_ = static_cast<uint8_t>(priority);
     return *this;
   }
 
   PRIORITY getPriority() const {
-    return priority_;
+    return static_cast<PRIORITY>(priority_);
+  }
+
+  // Do timeouts apply only on the client side?
+  RpcOptions& setClientOnlyTimeouts(bool val) {
+    clientOnlyTimeouts_ = val;
+    return *this;
+  }
+
+  bool getClientOnlyTimeouts() const {
+    return clientOnlyTimeouts_;
   }
 
   RpcOptions& setChunkTimeout(std::chrono::milliseconds chunkTimeout) {
@@ -324,10 +330,11 @@ class RpcOptions {
   }
 
  private:
-  std::chrono::milliseconds timeout_;
-  PRIORITY priority_;
-  std::chrono::milliseconds chunkTimeout_;
-  std::chrono::milliseconds queueTimeout_;
+  std::chrono::milliseconds timeout_{0};
+  std::chrono::milliseconds chunkTimeout_{0};
+  std::chrono::milliseconds queueTimeout_{0};
+  uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
+  bool clientOnlyTimeouts_{false};
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;

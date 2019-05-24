@@ -457,6 +457,12 @@ void RSocketClientChannel::sendThriftRequest(
     cb->requestError(ClientReceiveState(std::move(ex), std::move(ctx)));
     return;
   }
+  const std::chrono::milliseconds timeout{
+      metadata.clientTimeoutMs_ref().value_or(0)};
+  if (rpcOptions.getClientOnlyTimeouts()) {
+    metadata.clientTimeoutMs_ref().reset();
+    metadata.queueTimeoutMs_ref().reset();
+  }
 
   switch (metadataKind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
@@ -465,11 +471,16 @@ void RSocketClientChannel::sendThriftRequest(
       break;
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
-          metadata, std::move(ctx), std::move(buf), std::move(cb));
+          metadata, timeout, std::move(ctx), std::move(buf), std::move(cb));
       break;
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
       sendSingleRequestStreamResponse(
-          rpcOptions, metadata, std::move(ctx), std::move(buf), std::move(cb));
+          rpcOptions,
+          metadata,
+          timeout,
+          std::move(ctx),
+          std::move(buf),
+          std::move(cb));
       break;
     default:
       folly::assume_unreachable();
@@ -500,15 +511,12 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
 
 void RSocketClientChannel::sendSingleRequestSingleResponse(
     const RequestRpcMetadata& metadata,
+    std::chrono::milliseconds timeout,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
   auto callback = std::make_unique<ThriftClientCallback>(
-      evb_,
-      std::move(cb),
-      std::move(ctx),
-      protocolId_,
-      std::chrono::milliseconds(metadata.clientTimeoutMs_ref().value_or(0)));
+      evb_, std::move(cb), std::move(ctx), protocolId_, timeout);
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
       std::move(callback), folly::to_weak_ptr(channelCounters_));
@@ -524,15 +532,12 @@ void RSocketClientChannel::sendSingleRequestSingleResponse(
 void RSocketClientChannel::sendSingleRequestStreamResponse(
     RpcOptions& rpcOptions,
     const RequestRpcMetadata& metadata,
+    std::chrono::milliseconds timeout,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
   auto callback = std::make_shared<ThriftClientCallback>(
-      evb_,
-      std::move(cb),
-      std::move(ctx),
-      protocolId_,
-      std::chrono::milliseconds(metadata.clientTimeoutMs_ref().value_or(0)));
+      evb_, std::move(cb), std::move(ctx), protocolId_, timeout);
 
   auto takeFirst = std::make_shared<detail::TakeFirst>(
       // onRequestSent

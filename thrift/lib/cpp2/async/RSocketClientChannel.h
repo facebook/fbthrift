@@ -186,6 +186,7 @@ class RSocketClientChannel final : public ClientChannel,
 
   void sendSingleRequestSingleResponse(
       const RequestRpcMetadata& metadata,
+      std::chrono::milliseconds timeout,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;
@@ -193,6 +194,7 @@ class RSocketClientChannel final : public ClientChannel,
   void sendSingleRequestStreamResponse(
       RpcOptions& rpcOptions,
       const RequestRpcMetadata& metadata,
+      std::chrono::milliseconds timeout,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<RequestCallback> cb) noexcept;

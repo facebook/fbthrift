@@ -19,6 +19,7 @@
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
+#include <fmt/core.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
@@ -1308,4 +1309,48 @@ TEST(ThriftServer, SSLPermittedAcceptsPlaintextAndSSL) {
     EXPECT_EQ(response, "test64");
     base.loop();
   }
+}
+
+TEST(ThriftServer, ClientOnlyTimeouts) {
+  class SendResponseInterface : public TestServiceSvIf {
+    void sendResponse(std::string& _return, int64_t shouldSleepMs) override {
+      auto header = getConnectionContext()->getHeader();
+      if (shouldSleepMs) {
+        usleep(shouldSleepMs * 1000);
+      }
+      _return = fmt::format(
+          "{}:{}",
+          header->getClientTimeout().count(),
+          header->getClientQueueTimeout().count());
+    }
+  };
+  TestThriftServerFactory<SendResponseInterface> factory;
+  ScopedServerThread st(factory.create());
+
+  folly::EventBase base;
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&base, *st.getAddress()));
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+
+  for (bool clientOnly : {false, true}) {
+    for (bool shouldTimeOut : {true, false}) {
+      std::string response;
+      RpcOptions rpcOpts;
+      rpcOpts.setTimeout(std::chrono::milliseconds(20));
+      rpcOpts.setQueueTimeout(std::chrono::milliseconds(20));
+      rpcOpts.setClientOnlyTimeouts(clientOnly);
+      try {
+        client.sync_sendResponse(rpcOpts, response, shouldTimeOut ? 50 : 0);
+        EXPECT_FALSE(shouldTimeOut);
+        if (clientOnly) {
+          EXPECT_EQ(response, "0:0");
+        } else {
+          EXPECT_EQ(response, "20:20");
+        }
+      } catch (...) {
+        EXPECT_TRUE(shouldTimeOut);
+      }
+    }
+  }
+  base.loop();
 }

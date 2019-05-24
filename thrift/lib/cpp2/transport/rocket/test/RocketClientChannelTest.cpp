@@ -40,13 +40,31 @@ class Handler : public test::TestServiceSvIf {
  public:
   folly::SemiFuture<std::unique_ptr<std::string>> semifuture_sendResponse(
       int64_t size) final {
-    return folly::makeSemiFuture(
-        std::make_unique<std::string>(std::to_string(size)));
+    lastTimeoutMsec_ =
+        getConnectionContext()->getHeader()->getClientTimeout().count();
+    return folly::makeSemiFuture()
+        .delayed(std::chrono::milliseconds(sleepDelayMsec_))
+        .defer([size](auto&&) {
+          return std::make_unique<std::string>(std::to_string(size));
+        });
   }
 
   folly::SemiFuture<folly::Unit> semifuture_noResponse(int64_t) final {
+    lastTimeoutMsec_ =
+        getConnectionContext()->getHeader()->getClientTimeout().count();
     return folly::makeSemiFuture();
   }
+
+  int32_t getLastTimeoutMsec() const {
+    return lastTimeoutMsec_;
+  }
+  void setSleepDelayMs(int32_t delay) {
+    sleepDelayMsec_ = delay;
+  }
+
+ private:
+  int32_t lastTimeoutMsec_{-1};
+  int32_t sleepDelayMsec_{0};
 };
 
 class RocketClientChannelTest : public testing::Test {
@@ -62,8 +80,9 @@ class RocketClientChannelTest : public testing::Test {
             new async::TAsyncSocket(&evb, runner_.getAddress()))));
   }
 
- private:
-  ScopedServerInterfaceThread runner_{std::make_shared<Handler>()};
+ protected:
+  std::shared_ptr<Handler> handler_{std::make_shared<Handler>()};
+  ScopedServerInterfaceThread runner_{handler_};
 };
 } // namespace
 
@@ -121,4 +140,28 @@ TEST_F(RocketClientChannelTest, SyncFiberOneWay) {
     evb.loopOnce();
   }
   EXPECT_EQ(1, sent);
+}
+
+TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
+  folly::EventBase evb;
+  auto client = makeClient(evb);
+
+  RpcOptions opts;
+  std::string response;
+  // Ensure that normally, the timeout value gets propagated.
+  opts.setTimeout(std::chrono::milliseconds(20));
+  client.sync_sendResponse(opts, response, 123);
+  EXPECT_EQ("123", response);
+  EXPECT_EQ(20, handler_->getLastTimeoutMsec());
+  // And when we set client-only, it's not propagated.
+  opts.setClientOnlyTimeouts(true);
+  client.sync_sendResponse(opts, response, 456);
+  EXPECT_EQ("456", response);
+  EXPECT_EQ(0, handler_->getLastTimeoutMsec());
+
+  // Double-check that client enforces the timeouts in both cases.
+  handler_->setSleepDelayMs(50);
+  ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
+  opts.setClientOnlyTimeouts(false);
+  ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
 }

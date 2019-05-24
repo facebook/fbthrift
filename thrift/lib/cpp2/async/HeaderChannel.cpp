@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,16 +35,18 @@ void HeaderChannel::addRpcOptionHeaders(
         folly::to<std::string>(rpcOptions.getPriority()));
   }
 
-  if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(
-        transport::THeader::CLIENT_TIMEOUT_HEADER,
-        folly::to<std::string>(rpcOptions.getTimeout().count()));
-  }
+  if (!rpcOptions.getClientOnlyTimeouts()) {
+    if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
+      header->setHeader(
+          transport::THeader::CLIENT_TIMEOUT_HEADER,
+          folly::to<std::string>(rpcOptions.getTimeout().count()));
+    }
 
-  if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
-    header->setHeader(
-        transport::THeader::QUEUE_TIMEOUT_HEADER,
-        folly::to<std::string>(rpcOptions.getQueueTimeout().count()));
+    if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
+      header->setHeader(
+          transport::THeader::QUEUE_TIMEOUT_HEADER,
+          folly::to<std::string>(rpcOptions.getQueueTimeout().count()));
+    }
   }
 }
 } // namespace thrift

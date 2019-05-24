@@ -203,7 +203,12 @@ void RocketClientChannel::sendRequestStream(
   }
 
   const std::chrono::milliseconds firstResponseTimeout{
-      metadata.clientTimeoutMs_ref().value()};
+      metadata.clientTimeoutMs_ref().value_or(0)};
+  if (rpcOptions.getClientOnlyTimeouts()) {
+    metadata.clientTimeoutMs_ref().reset();
+    metadata.queueTimeoutMs_ref().reset();
+  }
+
   getFiberManager().addTask(
       [rclient = rclient_,
        firstResponseTimeout,
@@ -272,6 +277,13 @@ void RocketClientChannel::sendThriftRequest(
   metadata.seqId_ref() = 0;
   DCHECK(metadata.kind_ref().has_value());
 
+  const std::chrono::milliseconds timeout{
+      metadata.clientTimeoutMs_ref().value_or(0)};
+  if (rpcOptions.getClientOnlyTimeouts()) {
+    metadata.clientTimeoutMs_ref().reset();
+    metadata.queueTimeoutMs_ref().reset();
+  }
+
   if (!rclient_ || !rclient_->isAlive()) {
     cb->requestError(ClientReceiveState(
         folly::make_exception_wrapper<TTransportException>(
@@ -303,6 +315,7 @@ void RocketClientChannel::sendThriftRequest(
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
           metadata,
+          timeout,
           std::move(ctx),
           std::move(buf),
           std::move(cb),
@@ -362,6 +375,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
 
 void RocketClientChannel::sendSingleRequestSingleResponse(
     const RequestRpcMetadata& metadata,
+    std::chrono::milliseconds timeout,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb,
@@ -370,8 +384,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
 
   auto sendRequestFunc =
       [&cbRef,
-       timeout =
-           std::chrono::milliseconds(metadata.clientTimeoutMs_ref().value()),
+       timeout,
        rclient = rclient_,
        requestPayload = rocket::Payload::makeFromMetadataAndData(
            serializeMetadata(metadata), std::move(buf))]() mutable {
