@@ -18,12 +18,12 @@
 
 #include <folly/io/Cursor.h>
 #include <folly/portability/GFlags.h>
-#include <thrift/facebook/nimble/Decoder.h>
-#include <thrift/facebook/nimble/Encoder.h>
-#include <thrift/facebook/nimble/NimbleTypes.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/nimble/Decoder.h>
+#include <thrift/lib/cpp2/protocol/nimble/Encoder.h>
+#include <thrift/lib/cpp2/protocol/nimble/NimbleTypes.h>
 
 DECLARE_int32(thrift_cpp2_protocol_reader_string_limit);
 DECLARE_int32(thrift_cpp2_protocol_reader_container_limit);
