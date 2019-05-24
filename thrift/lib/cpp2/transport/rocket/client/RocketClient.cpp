@@ -43,7 +43,6 @@
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
-#include <thrift/lib/cpp2/transport/rocket/client/RocketClientFlowable.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Util.h>
 
@@ -108,7 +107,6 @@ RocketClient::~RocketClient() {
   // All outstanding request contexts should have been cleaned up in closeNow()
   DCHECK(!queue_.hasInflightRequests());
   DCHECK(streams_.empty());
-  DCHECK(streamsV2_.empty());
 }
 
 std::shared_ptr<RocketClient> RocketClient::create(
@@ -143,10 +141,7 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     return handleResponseFrame(*ctx, frameType, std::move(frame));
   }
 
-  if (auto* stream = getStreamById(streamId)) {
-    DCHECK(!stream->requestStreamPayload);
-    return handleStreamFrame(*stream->flowable, frameType, std::move(frame));
-  } else if (auto* serverCallback = getStreamV2ById(streamId)) {
+  if (auto* serverCallback = getStreamById(streamId)) {
     return handleStreamFrame(*serverCallback, frameType, std::move(frame));
   }
 }
@@ -164,29 +159,6 @@ void RocketClient::handleResponseFrame(
 
     case FrameType::ERROR:
       return ctx.onErrorFrame(ErrorFrame(std::move(frame)));
-
-    default:
-      close(folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              NETWORK_ERROR,
-          folly::to<std::string>(
-              "Client attempting to handle unhandleable frame type: ",
-              static_cast<uint8_t>(frameType))));
-  }
-}
-
-void RocketClient::handleStreamFrame(
-    RocketClientFlowable& stream,
-    FrameType frameType,
-    std::unique_ptr<folly::IOBuf> frame) {
-  switch (frameType) {
-    case FrameType::PAYLOAD:
-      stream.onPayloadFrame(PayloadFrame(std::move(frame)));
-      break;
-
-    case FrameType::ERROR:
-      stream.onErrorFrame(ErrorFrame(std::move(frame)));
-      break;
 
     default:
       close(folly::make_exception_wrapper<transport::TTransportException>(
@@ -318,7 +290,7 @@ void RocketClient::sendRequestStream(
       setupFrame.get(),
       nullptr /* RocketClientWriteCallback */);
 
-  streamsV2_.emplace(
+  streams_.emplace(
       streamId,
       std::make_unique<RocketStreamServerCallback>(
           streamId, *this, *clientCallback));
@@ -337,7 +309,7 @@ void RocketClient::sendRequestStream(
     // e.g., by closeNow() or an error frame that arrived before this fiber had
     // a chance to resume, and we must guarantee that onFirstResponseError() is
     // not called more than once.
-    if (getStreamV2ById(streamId)) {
+    if (getStreamById(streamId)) {
       return clientCallback->onFirstResponseError(
           std::move(writeCompleted.exception()));
     }
@@ -346,40 +318,13 @@ void RocketClient::sendRequestStream(
   g.dismiss();
 }
 
-std::shared_ptr<RocketClientFlowable> RocketClient::createStream(
-    Payload&& request) {
-  const auto streamId = makeStreamId();
-  auto flowable = std::make_shared<RocketClientFlowable>(streamId, *this);
-  streams_.emplace(
-      streamId,
-      StreamWrapper{std::make_unique<Payload>(std::move(request)), flowable});
-  return flowable;
-}
-
 folly::Try<void> RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
   if (UNLIKELY(n <= 0)) {
     return {};
   }
 
-  if (!getStreamById(streamId) && !getStreamV2ById(streamId)) {
+  if (!getStreamById(streamId)) {
     return {};
-  }
-
-  if (auto* stream = getStreamById(streamId)) {
-    if (stream->requestStreamPayload) {
-      auto setupFrame = std::move(setupFrame_);
-      RequestContext ctx(
-          RequestStreamFrame(
-              streamId, std::move(*stream->requestStreamPayload), n),
-          queue_,
-          setupFrame.get());
-      stream->requestStreamPayload.reset();
-      auto swr = scheduleWrite(ctx);
-      if (swr.hasException()) {
-        return folly::Try<void>(std::move(swr.exception()));
-      }
-      return ctx.waitForWriteToComplete();
-    }
   }
 
   RequestContext ctx(RequestNFrame(streamId, n), queue_);
@@ -531,18 +476,10 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
 
   // Move streams_ into a local copy before iterating and erasing. Note that
   // flowable->onError() may itself attempt to erase an element of streams_,
-  // invalidating any outstanding iterators.
+  // invalidating any outstanding iterators. Also, since the client is shutting
+  // down now, we don't bother with notifyIfDetachable().
   auto streams = std::move(streams_);
-  for (auto it = streams.begin(); it != streams.end();) {
-    auto& flowable = it->second.flowable;
-    flowable->onError(ew);
-    // Since the client is shutting down now, we don't bother with
-    // notifyIfDetachable().
-    it = streams.erase(it);
-  }
-
-  auto streamsV2 = std::move(streamsV2_);
-  for (const auto& idAndCallback : streamsV2) {
+  for (const auto& idAndCallback : streams) {
     const auto streamId = idAndCallback.first;
     auto& clientCallback = idAndCallback.second.get()->getClientCallback();
     if (firstResponseTimeouts_.count(streamId)) {
@@ -587,19 +524,13 @@ void RocketClient::close(folly::exception_wrapper ew) noexcept {
   };
 }
 
-RocketClient::StreamWrapper* RocketClient::getStreamById(StreamId streamId) {
+RocketStreamServerCallback* RocketClient::getStreamById(StreamId streamId) {
   auto it = streams_.find(streamId);
-  return it != streams_.end() ? &it->second : nullptr;
-}
-
-RocketStreamServerCallback* RocketClient::getStreamV2ById(StreamId streamId) {
-  auto it = streamsV2_.find(streamId);
-  return it != streamsV2_.end() ? it->second.get() : nullptr;
+  return it != streams_.end() ? it->second.get() : nullptr;
 }
 
 void RocketClient::freeStream(StreamId streamId) {
   streams_.erase(streamId);
-  streamsV2_.erase(streamId);
   bufferedFragments_.erase(streamId);
   firstResponseTimeouts_.erase(streamId);
   notifyIfDetachable();
@@ -647,8 +578,8 @@ void RocketClient::scheduleFirstResponseTimeout(
 }
 
 void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
-  const auto streamIt = client_.streamsV2_.find(streamId_);
-  CHECK(streamIt != client_.streamsV2_.end());
+  const auto streamIt = client_.streams_.find(streamId_);
+  CHECK(streamIt != client_.streams_.end());
 
   auto& clientCallback = streamIt->second->getClientCallback();
   clientCallback.onFirstResponseError(

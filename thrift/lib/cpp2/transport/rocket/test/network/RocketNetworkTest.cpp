@@ -307,7 +307,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamBasic) {
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(received++, x);
+                  EXPECT_EQ(++received, x);
                 },
                 [](auto ew) { FAIL() << ew.what(); });
 
@@ -317,33 +317,14 @@ TYPED_TEST(RocketNetworkTest, RequestStreamBasic) {
 }
 
 TYPED_TEST(RocketNetworkTest, RequestStreamError) {
-  this->withClient([this](RocketTestClient& client) {
+  this->withClient([](RocketTestClient& client) {
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("error:application");
 
     auto stream = client.sendRequestStreamSync(
         Payload::makeFromMetadataAndData(kMetadata, kData));
-    EXPECT_TRUE(stream.hasValue());
-
-    size_t received = 0;
-    bool error = false;
-    auto subscription =
-        std::move(*stream)
-            .via(this->getUserExecutor())
-            .subscribe(
-                [&received](Payload&& payload) {
-                  const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(received++, x);
-                },
-                [&error](auto ew) {
-                  error = true;
-                  expectRocketExceptionType(
-                      ErrorCode::APPLICATION_ERROR, std::move(ew));
-                });
-
-    std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
-    EXPECT_TRUE(error);
-    EXPECT_EQ(0, received);
+    EXPECT_TRUE(stream.hasException());
+    expectRocketExceptionType(ErrorCode::APPLICATION_ERROR, stream.exception());
   });
 }
 
@@ -365,7 +346,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamSmallInitialRequestN) {
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(received++, x);
+                  EXPECT_EQ(++received, x);
                 },
                 [](auto ew) { FAIL() << ew.what(); },
                 5 /* batch size */);
@@ -396,7 +377,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamCancelSubscription) {
             .subscribe(
                 [&received](Payload&& payload) {
                   const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(received++, x);
+                  EXPECT_EQ(++received, x);
                 },
                 [](auto ew) { FAIL() << ew.what(); });
 
@@ -492,7 +473,7 @@ TYPED_TEST(
               .subscribe(
                   [&received](Payload&& payload) {
                     const auto x = folly::to<size_t>(getRange(*payload.data()));
-                    EXPECT_EQ(received++, x);
+                    EXPECT_EQ(++received, x);
                   },
                   [](auto /* ew */) {});
       client.reconnect();
@@ -533,12 +514,12 @@ class TestClientCallback : public StreamClientCallback {
       FirstResponsePayload&& firstResponsePayload,
       StreamServerCallback* subscription) override {
     subscription_ = subscription;
+    // First response does not count towards requested payloads count.
     EXPECT_EQ(
         std::to_string(0),
         folly::StringPiece{firstResponsePayload.payload->coalesce()});
-    ++received_;
-    if (requested_) {
-      request(requested_ - 1);
+    if (requested_ != 0) {
+      request(requested_);
     }
   }
 
@@ -550,9 +531,9 @@ class TestClientCallback : public StreamClientCallback {
 
   void onStreamNext(StreamPayload&& payload) override {
     EXPECT_EQ(
-        std::to_string(received_),
+        std::to_string(++received_),
         folly::StringPiece{payload.payload->coalesce()});
-    EXPECT_LE(++received_, requested_);
+    EXPECT_LE(received_, requested_);
   }
   void onStreamError(folly::exception_wrapper ew) override {
     subscription_ = nullptr;
@@ -608,7 +589,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamNewApiBasic) {
   writer.writeMessageBegin("dummy", T_CALL, 0);
 
   auto payload = folly::IOBuf::copyBuffer(folly::sformat(
-      "{}serialize_metadata:generate:{}",
+      "{}generate:{}",
       folly::StringPiece{queue.move()->coalesce()},
       kNumRequestedPayloads));
 
