@@ -19,15 +19,10 @@ ExtendTestServiceClientWrapper::ExtendTestServiceClientWrapper(
 
 
 folly::Future<folly::Unit> ExtendTestServiceClientWrapper::disconnect() {
-  return folly::via(
+  folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void ExtendTestServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    ::cpp2::HsTestServiceClientWrapper::disconnectInLoop();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  return ::cpp2::HsTestServiceClientWrapper::disconnect();
 }
 
 

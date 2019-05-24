@@ -24,12 +24,7 @@ SomeServiceClientWrapper::~SomeServiceClientWrapper() {}
 folly::Future<folly::Unit> SomeServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void SomeServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void SomeServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

@@ -21,12 +21,7 @@ RaiserClientWrapper::~RaiserClientWrapper() {}
 folly::Future<folly::Unit> RaiserClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void RaiserClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void RaiserClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

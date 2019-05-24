@@ -21,12 +21,7 @@ TestServiceClientWrapper::~TestServiceClientWrapper() {}
 folly::Future<folly::Unit> TestServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void TestServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void TestServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

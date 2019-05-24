@@ -22,12 +22,7 @@ SimpleServiceClientWrapper::~SimpleServiceClientWrapper() {}
 folly::Future<folly::Unit> SimpleServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void SimpleServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void SimpleServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -686,15 +681,10 @@ DerivedServiceClientWrapper::DerivedServiceClientWrapper(
 
 
 folly::Future<folly::Unit> DerivedServiceClientWrapper::disconnect() {
-  return folly::via(
+  folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void DerivedServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    ::py3::simple::SimpleServiceClientWrapper::disconnectInLoop();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  return ::py3::simple::SimpleServiceClientWrapper::disconnect();
 }
 
 
@@ -723,15 +713,10 @@ RederivedServiceClientWrapper::RederivedServiceClientWrapper(
 
 
 folly::Future<folly::Unit> RederivedServiceClientWrapper::disconnect() {
-  return folly::via(
+  folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void RederivedServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    ::py3::simple::DerivedServiceClientWrapper::disconnectInLoop();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  return ::py3::simple::DerivedServiceClientWrapper::disconnect();
 }
 
 

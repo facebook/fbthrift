@@ -21,12 +21,7 @@ NestedContainersClientWrapper::~NestedContainersClientWrapper() {}
 folly::Future<folly::Unit> NestedContainersClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void NestedContainersClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void NestedContainersClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {

@@ -21,12 +21,7 @@ MyRootClientWrapper::~MyRootClientWrapper() {}
 folly::Future<folly::Unit> MyRootClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyRootClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void MyRootClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -61,15 +56,10 @@ MyNodeClientWrapper::MyNodeClientWrapper(
 
 
 folly::Future<folly::Unit> MyNodeClientWrapper::disconnect() {
-  return folly::via(
+  folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyNodeClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    ::cpp2::MyRootClientWrapper::disconnectInLoop();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  return ::cpp2::MyRootClientWrapper::disconnect();
 }
 
 
@@ -98,15 +88,10 @@ MyLeafClientWrapper::MyLeafClientWrapper(
 
 
 folly::Future<folly::Unit> MyLeafClientWrapper::disconnect() {
-  return folly::via(
+  folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyLeafClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    ::cpp2::MyNodeClientWrapper::disconnectInLoop();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  return ::cpp2::MyNodeClientWrapper::disconnect();
 }
 
 

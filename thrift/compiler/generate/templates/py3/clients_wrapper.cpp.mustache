@@ -45,17 +45,12 @@ thread that will pass data to the cython callback.
 
 {{! We need the destructor to run in the correct thread or assert happens }}
 folly::Future<folly::Unit> {{service:name}}ClientWrapper::disconnect() {
-  return folly::via(
+  {{^service:extends?}}return {{/service:extends?}}folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void {{service:name}}ClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    {{#service:extends}}
-    ::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnectInLoop();
-    {{/service:extends}}
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  {{#service:extends}}
+  return ::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnect();
+  {{/service:extends}}
 }
 
 {{^service:extends?}}

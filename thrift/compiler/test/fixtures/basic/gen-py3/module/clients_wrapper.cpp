@@ -21,12 +21,7 @@ MyServiceClientWrapper::~MyServiceClientWrapper() {}
 folly::Future<folly::Unit> MyServiceClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyServiceClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void MyServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -159,12 +154,7 @@ MyServiceFastClientWrapper::~MyServiceFastClientWrapper() {}
 folly::Future<folly::Unit> MyServiceFastClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyServiceFastClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void MyServiceFastClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -283,12 +273,7 @@ MyServiceEmptyClientWrapper::~MyServiceEmptyClientWrapper() {}
 folly::Future<folly::Unit> MyServiceEmptyClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyServiceEmptyClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void MyServiceEmptyClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -311,12 +296,7 @@ MyServicePrioParentClientWrapper::~MyServicePrioParentClientWrapper() {}
 folly::Future<folly::Unit> MyServicePrioParentClientWrapper::disconnect() {
   return folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyServicePrioParentClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
 }
 
 void MyServicePrioParentClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
@@ -365,15 +345,10 @@ MyServicePrioChildClientWrapper::MyServicePrioChildClientWrapper(
 
 
 folly::Future<folly::Unit> MyServicePrioChildClientWrapper::disconnect() {
-  return folly::via(
+  folly::via(
     this->async_client->getChannel()->getEventBase(),
-    [this] { disconnectInLoop(); });
-}
-
-void MyServicePrioChildClientWrapper::disconnectInLoop() {
-    channel_.reset();
-    async_client.reset();
-    ::cpp2::MyServicePrioParentClientWrapper::disconnectInLoop();
+    [cha = std::move(channel_), cli = std::move(async_client)] {});
+  return ::cpp2::MyServicePrioParentClientWrapper::disconnect();
 }
 
 
