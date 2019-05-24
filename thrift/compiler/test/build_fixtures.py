@@ -18,6 +18,7 @@ where $BUILDDIR/thrift/compiler/thrift is the thrift compiler.
 If using Buck to build the thrift compiler, the $BUILDDIR default will work.
 """
 
+
 def ascend_find_exe(path, target):
     if not os.path.isdir(path):
         path = os.path.dirname(path)
@@ -29,6 +30,7 @@ def ascend_find_exe(path, target):
         if os.path.samefile(parent, path):
             return None
         path = parent
+
 
 def ascend_find_dir(path, target):
     if not os.path.isdir(path):
@@ -42,9 +44,11 @@ def ascend_find_dir(path, target):
             return None
         path = parent
 
+
 def read_lines(path):
     with open(path, 'r') as f:
         return f.readlines()
+
 
 exe = os.path.join(os.getcwd(), sys.argv[0])
 buck_out = 'buck-out/gen'
@@ -69,13 +73,14 @@ if thrift is None:
         "(run `buck build thrift/compiler:thrift` to build it yourself)\n")
     sys.exit(1)
 fixture_dir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
-fixture_names = [sys.argv[2]] if len(sys.argv) > 2 else sorted([
+fixture_names = [sys.argv[2]] if len(sys.argv) > 2 else sorted(
     f
     for f in os.listdir(fixture_dir)
     if os.path.isfile(os.path.join(fixture_dir, f, 'cmd'))
-])
+)
 
 has_errors = False
+
 
 async def run_subprocess(cmd, *, cwd):
     p = await asyncio.create_subprocess_exec(
@@ -99,7 +104,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
     msg = msg_format.format(index + 1, len(fixture_names), name)
     print(msg, file=sys.stderr)
     cwd = os.path.join(fixture_dir, name)
-    for fn in set(os.listdir(cwd)) - set(['cmd', 'src']):
+    for fn in set(os.listdir(cwd)) - {'cmd', 'src'}:
         if fn.startswith('.'):
             continue
         shutil.rmtree(os.path.join(cwd, fn))
