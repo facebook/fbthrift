@@ -29,7 +29,6 @@
 #include <folly/Conv.h>
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
-#include <folly/executors/InlineExecutor.h>
 #include <folly/fibers/Baton.h>
 #include <folly/fibers/FiberManager.h>
 #include <folly/fibers/FiberManagerMap.h>
@@ -143,23 +142,29 @@ template <class P>
 std::shared_ptr<yarpl::flowable::Flowable<P>> makeTestFlowable(
     folly::StringPiece data) {
   size_t n = 500;
+  const bool serializeMetadata = data.removePrefix("serialize_metadata:");
   if (data.removePrefix("generate:")) {
     n = folly::to<size_t>(data);
   }
 
-  auto gen = [n, i = static_cast<size_t>(0)](
+  auto gen = [n, i = static_cast<size_t>(0), serializeMetadata](
                  auto& subscriber, int64_t requested) mutable {
-    while (requested-- > 0 && i <= n) {
-      // Note that first payload (i == 0) is not counted against requested
-      // number of payloads to generate.
-      subscriber.onNext(makePayload<P>(
-          !i ? CompactSerializer::serialize<std::string>(ResponseRpcMetadata{})
-             : CompactSerializer::serialize<std::string>(
-                   StreamPayloadMetadata{}),
-          folly::to<std::string>(i)));
+    while (requested-- > 0 && i < n) {
+      // Mimic serialized metadata in first response
+      std::string md;
+      if (!serializeMetadata) {
+        md = folly::to<std::string>("metadata:", i);
+      } else {
+        md = i == 0
+            ? CompactSerializer::serialize<std::string>(ResponseRpcMetadata{})
+            : CompactSerializer::serialize<std::string>(
+                  StreamPayloadMetadata{});
+      }
+      subscriber.onNext(
+          makePayload<P>(std::move(md), folly::to<std::string>(i)));
       ++i;
     }
-    if (i == n + 1) {
+    if (i == n) {
       subscriber.onComplete();
     }
   };
@@ -324,131 +329,16 @@ folly::Try<void> RocketTestClient::sendRequestFnfSync(
 
 folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
     Payload request) {
-  constexpr std::chrono::milliseconds kFirstResponseTimeout{500};
-  constexpr std::chrono::milliseconds kChunkTimeout{500};
+  folly::Try<SemiStream<Payload>> stream;
 
-  class TestStreamClientCallback final
-      : public yarpl::flowable::Flowable<Payload>,
-        public StreamClientCallback {
-   private:
-    class Subscription final : public yarpl::flowable::Subscription {
-     public:
-      explicit Subscription(std::shared_ptr<TestStreamClientCallback> flowable)
-          : flowable_(std::move(flowable)) {}
-
-      void request(int64_t n) override {
-        if (!flowable_) {
-          return;
-        }
-        n = std::min<int64_t>(
-            std::max<int64_t>(0, n), std::numeric_limits<int32_t>::max());
-        flowable_->serverCallback_->onStreamRequestN(n);
-      }
-
-      void cancel() override {
-        flowable_->serverCallback_->onStreamCancel();
-        flowable_.reset();
-      }
-
-     private:
-      std::shared_ptr<TestStreamClientCallback> flowable_;
-    };
-
-   public:
-    TestStreamClientCallback(
-        folly::EventBase& evb,
-        std::chrono::milliseconds chunkTimeout,
-        folly::Promise<SemiStream<Payload>> p)
-        : evb_(evb), chunkTimeout_(chunkTimeout), p_(std::move(p)) {}
-
-    void init() {
-      self_ = this->ref_from_this(this);
-    }
-
-    // Flowable interface
-    void subscribe(std::shared_ptr<yarpl::flowable::Subscriber<Payload>>
-                       subscriber) override {
-      subscriber_ = std::move(subscriber);
-      auto subscription =
-          std::make_shared<Subscription>(this->ref_from_this(this));
-      subscriber_->onSubscribe(std::move(subscription));
-      if (pendingComplete_) {
-        onStreamComplete();
-      }
-      if (pendingError_) {
-        onStreamError(std::move(pendingError_));
-      }
-    }
-
-    // ClientCallback interface
-    void onFirstResponse(
-        FirstResponsePayload&& firstPayload,
-        StreamServerCallback* serverCallback) override {
-      serverCallback_ = serverCallback;
-      auto self = std::move(self_);
-      self = self->timeout(evb_, chunkTimeout_, chunkTimeout_, [] {
-        return transport::TTransportException(
-            transport::TTransportException::TTransportExceptionType::TIMED_OUT);
-      });
-      (void)firstPayload;
-      p_.setValue(toStream(std::move(self), &evb_));
-    }
-
-    void onFirstResponseError(folly::exception_wrapper ew) override {
-      p_.setException(std::move(ew));
-      self_.reset();
-    }
-
-    void onStreamNext(StreamPayload&& payload) override {
-      subscriber_->onNext(Payload::makeFromData(std::move(payload.payload)));
-    }
-
-    void onStreamError(folly::exception_wrapper ew) override {
-      if (!subscriber_) {
-        pendingError_ = std::move(ew);
-        return;
-      }
-      subscriber_->onError(std::move(ew));
-    }
-
-    void onStreamComplete() override {
-      if (subscriber_) {
-        subscriber_->onComplete();
-      } else {
-        pendingComplete_ = true;
-      }
-    }
-
-   private:
-    folly::EventBase& evb_;
-    std::chrono::milliseconds chunkTimeout_;
-    folly::Promise<SemiStream<Payload>> p_;
-
-    std::shared_ptr<yarpl::flowable::Subscriber<Payload>> subscriber_;
-    StreamServerCallback* serverCallback_{nullptr};
-    std::shared_ptr<yarpl::flowable::Flowable<Payload>> self_;
-
-    bool pendingComplete_{false};
-    folly::exception_wrapper pendingError_;
-  };
-
-  folly::Promise<SemiStream<Payload>> p;
-  auto sf = p.getSemiFuture();
-
-  auto clientCallback = std::make_shared<TestStreamClientCallback>(
-      evb_, kChunkTimeout, std::move(p));
-  clientCallback->init();
-
-  evb_.runInEventBaseThread([&] {
-    fm_.addTask([&] {
-      client_->sendRequestStream(
-          std::move(request), kFirstResponseTimeout, clientCallback.get());
+  evb_.runInEventBaseThreadAndWait([&] {
+    stream = folly::makeTryWith([&] {
+      return SemiStream<Payload>(
+          toStream<Payload>(client_->createStream(std::move(request)), &evb_));
     });
   });
 
-  return folly::makeTryWith([&] {
-    return std::move(sf).via(&folly::InlineExecutor::instance()).get();
-  });
+  return stream;
 }
 
 void RocketTestClient::reconnect() {

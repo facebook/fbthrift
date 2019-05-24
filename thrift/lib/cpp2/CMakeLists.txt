@@ -96,6 +96,7 @@ add_library(
   transport/rocket/client/RequestContext.cpp
   transport/rocket/client/RequestContextQueue.cpp
   transport/rocket/client/RocketClient.cpp
+  transport/rocket/client/RocketClientFlowable.cpp
   transport/rocket/client/RocketStreamServerCallback.cpp
   transport/rocket/framing/ErrorCode.cpp
   transport/rocket/framing/Frames.cpp

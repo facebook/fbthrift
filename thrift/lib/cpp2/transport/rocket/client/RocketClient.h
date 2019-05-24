@@ -38,6 +38,7 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClientFlowable.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
@@ -87,6 +88,9 @@ class RocketClient : public folly::DelayedDestruction,
       std::chrono::milliseconds firstResponseTimeout,
       StreamClientCallback* StreamClientCallback);
 
+  // Note that createStream is non-blocking.
+  std::shared_ptr<RocketClientFlowable> createStream(Payload&& request);
+
   void sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
   void freeStream(StreamId streamId);
@@ -116,7 +120,7 @@ class RocketClient : public folly::DelayedDestruction,
   }
 
   size_t streams() const {
-    return streams_.size();
+    return streams_.size() + streamsV2_.size();
   }
 
   const folly::AsyncTransportWrapper* getTransportWrapper() const {
@@ -135,7 +139,8 @@ class RocketClient : public folly::DelayedDestruction,
     // streams, and if the underlying transport is detachable, i.e., has no
     // inflight writes of its own.
     return !writeLoopCallback_.isLoopCallbackScheduled() && !requests_ &&
-        streams_.empty() && (!socket_ || socket_->isDetachable());
+        streams_.empty() && streamsV2_.empty() &&
+        (!socket_ || socket_->isDetachable());
   }
 
   void attachEventBase(folly::EventBase& evb) {
@@ -184,6 +189,18 @@ class RocketClient : public folly::DelayedDestruction,
 
   RequestContextQueue queue_;
 
+  struct StreamWrapper {
+    StreamWrapper(
+        std::unique_ptr<Payload> payload,
+        std::shared_ptr<RocketClientFlowable> f)
+        : requestStreamPayload(std::move(payload)), flowable(std::move(f)) {}
+
+    std::unique_ptr<Payload> requestStreamPayload;
+    std::shared_ptr<RocketClientFlowable> flowable;
+  };
+  using StreamMap = std::unordered_map<StreamId, StreamWrapper>;
+  StreamMap streams_;
+
   class FirstResponseTimeout : public folly::HHWheelTimer::Callback {
    public:
     FirstResponseTimeout(RocketClient& client, StreamId streamId)
@@ -196,9 +213,9 @@ class RocketClient : public folly::DelayedDestruction,
     StreamId streamId_;
   };
 
-  using StreamMap =
+  using StreamV2Map =
       folly::F14FastMap<StreamId, std::unique_ptr<RocketStreamServerCallback>>;
-  StreamMap streams_;
+  StreamV2Map streamsV2_;
   folly::F14FastMap<StreamId, Payload> bufferedFragments_;
   using FirstResponseTimeoutMap =
       folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
@@ -240,11 +257,16 @@ class RocketClient : public folly::DelayedDestruction,
     return rid;
   }
 
-  RocketStreamServerCallback* getStreamById(StreamId streamId);
+  StreamWrapper* getStreamById(StreamId streamId);
+  RocketStreamServerCallback* getStreamV2ById(StreamId streamId);
 
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void handleResponseFrame(
       RequestContext& ctx,
+      FrameType frameType,
+      std::unique_ptr<folly::IOBuf> frame);
+  void handleStreamFrame(
+      RocketClientFlowable& stream,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
   void handleStreamFrame(
