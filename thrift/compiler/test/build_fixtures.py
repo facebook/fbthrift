@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import asyncio
 import re
 import os
@@ -11,12 +12,38 @@ import sys
 """
 Invoke as:
 
-    thrift/compiler/test/build_fixtures [$BUILDDIR]
+    thrift/compiler/test/build_fixtures.py \
+            --build-dir [$BUILDDIR]        \
+            --fixture-names [$FIXTURENAMES]
 
 where $BUILDDIR/thrift/compiler/thrift is the thrift compiler.
 
 If using Buck to build the thrift compiler, the $BUILDDIR default will work.
 """
+BUCK_OUT = "buck-out/gen"
+
+
+def parsed_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--build-dir",
+        dest="build_dir",
+        help=(
+            "$BUILDDIR/thrift/compiler/thrift is where thrift compiler is"
+            " located, default to buck's build dir"
+        ),
+        type=str,
+        default=BUCK_OUT,
+    )
+    parser.add_argument(
+        "--fixture-names",
+        dest="fixture_names",
+        help="Name of the fixture to build, default to build all fixtures",
+        type=str,
+        nargs="*",
+        default=None,
+    )
+    return parser.parse_args()
 
 
 def ascend_find_exe(path, target):
@@ -45,27 +72,32 @@ def ascend_find_dir(path, target):
         path = parent
 
 
+def find_templates_rel(build_dir):
+    if build_dir == BUCK_OUT:
+        return subprocess.check_output([
+            'buck',
+            'targets',
+            '--show-output',
+            '//thrift/compiler/generate/templates:templates',
+        ]).decode().split()[1]
+    else:
+        return os.path.join(
+            build_dir, 'thrift/compiler/generate/templates/templates/templates')
+
+
 def read_lines(path):
     with open(path, 'r') as f:
         return f.readlines()
 
 
+args = parsed_args()
+build_dir = args.build_dir
 exe = os.path.join(os.getcwd(), sys.argv[0])
-buck_out = 'buck-out/gen'
-build_dir = sys.argv[1] if len(sys.argv) > 1 else buck_out
 thrift_rel = os.path.join(build_dir, 'thrift/compiler/thrift')
-if build_dir == buck_out:
-    templates_rel = subprocess.check_output([
-        'buck',
-        'targets',
-        '--show-output',
-        '//thrift/compiler/generate/templates:templates',
-    ]).decode().split()[1]
-else:
-    templates_rel = os.path.join(
-        build_dir, 'thrift/compiler/generate/templates/templates/templates')
+templates_rel = find_templates_rel(build_dir)
 templates = ascend_find_dir(exe, templates_rel)
 thrift = ascend_find_exe(exe, thrift_rel)
+
 if thrift is None:
     sys.stderr.write(
         "error: cannot find the Thrift compiler ({})\n".format(thrift_rel))
@@ -73,7 +105,7 @@ if thrift is None:
         "(run `buck build thrift/compiler:thrift` to build it yourself)\n")
     sys.exit(1)
 fixture_dir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
-fixture_names = [sys.argv[2]] if len(sys.argv) > 2 else sorted(
+fixture_names = args.fixture_names if args.fixture_names is not None else sorted(
     f
     for f in os.listdir(fixture_dir)
     if os.path.isfile(os.path.join(fixture_dir, f, 'cmd'))
