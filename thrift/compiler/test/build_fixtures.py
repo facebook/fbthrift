@@ -125,6 +125,7 @@ async def run_subprocess(cmd, *, cwd):
     out, err = await p.communicate()
     sys.stdout.write(out.decode(sys.stdout.encoding))
     if p.returncode != 0:
+        global has_errors
         has_errors = True
         sys.stderr.write(err.decode(sys.stderr.encoding))
 
