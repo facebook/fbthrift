@@ -33,7 +33,9 @@ class StreamPublisher {
   ~StreamPublisher();
 
   StreamPublisher(const StreamPublisher&) = delete;
+  StreamPublisher& operator=(const StreamPublisher&) = delete;
   StreamPublisher(StreamPublisher&&) = default;
+  StreamPublisher& operator=(StreamPublisher&&) = default;
 
   static std::pair<Stream<T>, StreamPublisher<T>> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
