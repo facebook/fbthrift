@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <thrift/compiler/generate/t_generator.h>
-#include <thrift/compiler/generate/t_mstch_generator.h>
 
 using namespace std;
 
