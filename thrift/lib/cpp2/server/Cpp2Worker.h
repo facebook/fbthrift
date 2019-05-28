@@ -120,7 +120,7 @@ class Cpp2Worker : public wangle::Acceptor,
       const std::shared_ptr<HeaderServerChannel>& serverChannel,
       folly::EventBase* eventBase) {
     auto observer = std::dynamic_pointer_cast<folly::EventBaseObserver>(
-        server_->getObserver());
+        server_->getObserverShared());
     if (serverChannel) {
       eventBase = serverChannel->getEventBase();
     } else if (!eventBase) {

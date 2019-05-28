@@ -67,8 +67,7 @@ Cpp2Connection::Cpp2Connection(
   channel_->setDefaultWriteTransforms(
       worker_->getServer()->getDefaultWriteTransforms());
 
-  auto observer = worker_->getServer()->getObserver();
-  if (observer) {
+  if (auto* observer = worker_->getServer()->getObserver()) {
     channel_->setSampleRate(observer->getSampleRate());
   }
 
@@ -96,8 +95,7 @@ void Cpp2Connection::stop() {
     VLOG(1) << "Task killed due to channel close: "
             << context_.getPeerAddress()->describe();
     req->cancelRequest();
-    auto observer = worker_->getServer()->getObserver();
-    if (observer) {
+    if (auto* observer = worker_->getServer()->getObserver()) {
       observer->taskKilled();
     }
   }
@@ -129,8 +127,7 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
 
   VLOG(1) << "ERROR: Disconnect: " << comment
           << " on channel: " << context_.getPeerAddress()->describe();
-  auto observer = worker_->getServer()->getObserver();
-  if (observer) {
+  if (auto* observer = worker_->getServer()->getObserver()) {
     observer->connDropped();
   }
 }
@@ -159,8 +156,7 @@ void Cpp2Connection::setServerHeaders(
 void Cpp2Connection::requestTimeoutExpired() {
   VLOG(1) << "ERROR: Task expired on channel: "
           << context_.getPeerAddress()->describe();
-  auto observer = worker_->getServer()->getObserver();
-  if (observer) {
+  if (auto* observer = worker_->getServer()->getObserver()) {
     observer->taskTimeout();
   }
 }
@@ -168,8 +164,7 @@ void Cpp2Connection::requestTimeoutExpired() {
 void Cpp2Connection::queueTimeoutExpired() {
   VLOG(1) << "ERROR: Queue timeout on channel: "
           << context_.getPeerAddress()->describe();
-  auto observer = worker_->getServer()->getObserver();
-  if (observer) {
+  if (auto* observer = worker_->getServer()->getObserver()) {
     observer->queueTimeout();
   }
 }
@@ -187,8 +182,7 @@ void Cpp2Connection::killRequest(
           << context_.getPeerAddress()->getAddressStr();
 
   auto server = worker_->getServer();
-  auto observer = server->getObserver();
-  if (observer) {
+  if (auto* observer = server->getObserver()) {
     if (reason ==
         TApplicationException::TApplicationExceptionType::LOADSHEDDING) {
       observer->serverOverloaded();
@@ -228,7 +222,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto server = worker_->getServer();
-  auto& observer = server->getObserver();
+  auto* observer = server->getObserver();
 
   server->touchRequestTimestamp();
 
@@ -443,7 +437,7 @@ void Cpp2Connection::Cpp2Request::sendReply(
   if (req_->isActive()) {
     setServerHeaders();
     markProcessEnd();
-    auto observer = connection_->getWorker()->getServer()->getObserver().get();
+    auto* observer = connection_->getWorker()->getServer()->getObserver();
     auto maxResponseSize =
         connection_->getWorker()->getServer()->getMaxResponseSize();
     if (maxResponseSize != 0 &&
@@ -474,7 +468,7 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
   if (req_->isActive()) {
     setServerHeaders();
     markProcessEnd();
-    auto observer = connection_->getWorker()->getServer()->getObserver().get();
+    auto* observer = connection_->getWorker()->getServer()->getObserver();
     req_->sendErrorWrapped(
         std::move(ew),
         std::move(exCode),
@@ -487,7 +481,7 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
 
 void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
     HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
-  auto observer = connection_->getWorker()->getServer()->getObserver().get();
+  auto* observer = connection_->getWorker()->getServer()->getObserver();
   std::map<std::string, std::string> headers;
   setServerHeaders();
   markProcessEnd(&headers);

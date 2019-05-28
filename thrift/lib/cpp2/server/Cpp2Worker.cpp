@@ -46,7 +46,7 @@ void Cpp2Worker::onNewConnection(
     const std::string& nextProtocolName,
     wangle::SecureTransportType secureTransportType,
     const wangle::TransportInfo& tinfo) {
-  auto observer = server_->getObserver();
+  auto* observer = server_->getObserver();
   uint32_t maxConnection = server_->getMaxConnections();
   if (maxConnection > 0 &&
       (getConnectionManager()->getNumConnections() >=
@@ -69,7 +69,7 @@ void Cpp2Worker::onNewConnection(
           secureTransportType,
           tinfo,
           server_);
-      peekingManager->start(std::move(sock), server_->getObserver());
+      peekingManager->start(std::move(sock), server_->getObserverShared());
       break;
     }
     case wangle::SecureTransportType::TLS:
@@ -171,7 +171,7 @@ void Cpp2Worker::plaintextConnectionReady(
       tinfo,
       server_,
       /* checkTLS */ true);
-  peekingManager->start(std::move(sock), server_->getObserver());
+  peekingManager->start(std::move(sock), server_->getObserverShared());
 }
 
 void Cpp2Worker::useExistingChannel(

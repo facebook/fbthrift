@@ -22,11 +22,14 @@
 #include <map>
 #include <memory>
 #include <mutex>
+#include <stdexcept>
 #include <vector>
 
 #include <folly/Memory.h>
 #include <folly/SocketAddress.h>
+#include <folly/Synchronized.h>
 #include <folly/io/async/EventBase.h>
+
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
@@ -224,8 +227,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
 
-  // Notification of various server events
-  std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
+  // Notification of various server events. Note that once observer_ has been
+  // set, it cannot be set again and will remain alive for (at least) the
+  // lifetime of *this.
+  folly::Synchronized<std::shared_ptr<server::TServerObserver>> observer_;
+  std::atomic<server::TServerObserver*> observerPtr_{nullptr};
 
   std::string overloadedErrorCode_ = kOverloadedErrorCode;
   IsOverloadedFunc isOverloaded_;
@@ -451,15 +457,21 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       const final;
   virtual std::string getLoadInfo(int64_t load) const;
 
-  void setObserver(
-      const std::shared_ptr<apache::thrift::server::TServerObserver>&
-          observer) {
-    observer_ = observer;
+  void setObserver(const std::shared_ptr<server::TServerObserver>& observer) {
+    auto locked = observer_.wlock();
+    if (*locked) {
+      throw std::logic_error("Server already has an observer installed");
+    }
+    *locked = observer;
+    observerPtr_.store(locked->get());
   }
 
-  const std::shared_ptr<apache::thrift::server::TServerObserver>& getObserver()
-      const final {
-    return observer_;
+  server::TServerObserver* getObserver() const final {
+    return observerPtr_.load(std::memory_order_relaxed);
+  }
+
+  std::shared_ptr<server::TServerObserver> getObserverShared() const {
+    return observer_.copy();
   }
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getCpp2Processor() {

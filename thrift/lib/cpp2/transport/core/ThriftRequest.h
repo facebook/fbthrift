@@ -92,7 +92,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     reqContext_.setMethodName(name_);
     reqContext_.setProtoSeqId(seqId_);
 
-    if (auto observer = serverConfigs_.getObserver()) {
+    if (auto* observer = serverConfigs_.getObserver()) {
       observer->receivedRequest();
     }
 
@@ -143,7 +143,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
           metadata.crc32c_ref() = *crc32c;
         }
         sendReplyInternal(std::move(metadata), std::move(buf));
-        if (auto observer = serverConfigs_.getObserver()) {
+        if (auto* observer = serverConfigs_.getObserver()) {
           observer->sentReply();
         }
       }
@@ -167,8 +167,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
           std::move(result.response),
           std::move(result.stream));
 
-      auto observer = serverConfigs_.getObserver();
-      if (observer) {
+      if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
       }
     }
@@ -336,8 +335,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     void timeoutExpired() noexcept override {
       if (!canceled_ && !request_->reqContext_.getStartedProcessing() &&
           request_->active_.exchange(false) && !request_->isOneway()) {
-        const auto& observer = serverConfigs_.getObserver();
-        if (observer) {
+        if (auto* observer = serverConfigs_.getObserver()) {
           observer->queueTimeout();
         }
         request_->sendErrorWrappedInternal(
@@ -358,8 +356,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     void timeoutExpired() noexcept override {
       if (!canceled_ && request_->active_.exchange(false) &&
           !request_->isOneway()) {
-        const auto& observer = serverConfigs_.getObserver();
-        if (observer) {
+        if (auto* observer = serverConfigs_.getObserver()) {
           observer->taskTimeout();
         }
         request_->sendErrorWrappedInternal(

@@ -48,9 +48,8 @@ class ServerConfigsMock : public ServerConfigs {
     return queueTimeout == taskTimeout;
   }
 
-  const std::shared_ptr<apache::thrift::server::TServerObserver>& getObserver()
-      const override {
-    return observer_;
+  server::TServerObserver* getObserver() const override {
+    return observer_.get();
   }
 
   size_t getNumIOWorkerThreads() const override {
@@ -87,7 +86,7 @@ class ServerConfigsMock : public ServerConfigs {
   uint64_t maxResponseSize_{0};
   std::chrono::milliseconds queueTimeout_{std::chrono::milliseconds(500)};
   std::chrono::milliseconds taskTimeout_{std::chrono::milliseconds(500)};
-  std::shared_ptr<apache::thrift::server::TServerObserver> observer_{
+  std::shared_ptr<server::TServerObserver> observer_{
       std::make_shared<FakeServerObserver>()};
   size_t numIOWorkerThreads_{10};
   std::chrono::milliseconds streamExpireTime_{std::chrono::minutes(1)};

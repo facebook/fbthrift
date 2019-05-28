@@ -245,8 +245,8 @@ void ThriftServer::setup() {
     sigaction(SIGPIPE, &sa, nullptr);
 #endif
 
-    if (!observer_ && apache::thrift::server::observerFactory_) {
-      observer_ = apache::thrift::server::observerFactory_->getObserver();
+    if (!getObserver() && server::observerFactory_) {
+      setObserver(server::observerFactory_->getObserver());
     }
 
     // We always need a threadmanager for cpp2.

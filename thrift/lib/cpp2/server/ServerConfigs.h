@@ -54,8 +54,7 @@ class ServerConfigs {
       std::chrono::milliseconds& taskTimeout) const = 0;
 
   // @see BaseThriftServer::getObserver function.
-  virtual const std::shared_ptr<apache::thrift::server::TServerObserver>&
-  getObserver() const = 0;
+  virtual server::TServerObserver* getObserver() const = 0;
 
   // @see BaseThriftServer::getNumIOWorkerThreads function.
   virtual size_t getNumIOWorkerThreads() const = 0;

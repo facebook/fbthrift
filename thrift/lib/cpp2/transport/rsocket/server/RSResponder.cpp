@@ -39,7 +39,6 @@ RSResponder::RSResponder(
     : worker_(std::move(worker)),
       cpp2Processor_(worker_->getServer()->getCpp2Processor()),
       threadManager_(worker_->getServer()->getThreadManager()),
-      observer_(worker_->getServer()->getObserver()),
       serverConfigs_(worker_->getServer()),
       clientAddress_(clientAddress),
       transport_(transport) {

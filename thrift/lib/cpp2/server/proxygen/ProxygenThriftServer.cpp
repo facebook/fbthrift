@@ -324,8 +324,8 @@ uint64_t ProxygenThriftServer::getNumDroppedConnections() const {
 }
 
 void ProxygenThriftServer::serve() {
-  if (!observer_ && apache::thrift::server::observerFactory_) {
-    observer_ = apache::thrift::server::observerFactory_->getObserver();
+  if (!getObserver() && server::observerFactory_) {
+    setObserver(server::observerFactory_->getObserver());
   }
 
   auto nPoolThreads = getNumCPUWorkerThreads();
