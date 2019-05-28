@@ -86,9 +86,9 @@ class ClientCallbackFlowable final
   // ClientCallback interface
   void onFirstResponse(
       FirstResponsePayload&& firstPayload,
+      folly::EventBase* evb,
       StreamServerCallback* serverCallback) override {
     serverCallback_ = serverCallback;
-    auto* evb = clientCallback_->getEventBase();
     auto self = std::move(self_);
     self = self->timeout(*evb, chunkTimeout_, chunkTimeout_, [] {
       return transport::TTransportException(

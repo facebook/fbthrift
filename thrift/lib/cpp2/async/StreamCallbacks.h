@@ -21,7 +21,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
-#include <folly/io/async/Request.h>
+#include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -60,6 +60,7 @@ class StreamClientCallback {
   // onFirstResponseError callback runs.
   virtual void onFirstResponse(
       FirstResponsePayload&&,
+      folly::EventBase*,
       StreamServerCallback*) = 0;
   virtual void onFirstResponseError(folly::exception_wrapper) = 0;
 

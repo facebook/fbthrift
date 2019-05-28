@@ -512,7 +512,9 @@ class TestClientCallback : public StreamClientCallback {
 
   void onFirstResponse(
       FirstResponsePayload&& firstResponsePayload,
+      folly::EventBase* evb,
       StreamServerCallback* subscription) override {
+    EXPECT_EQ(&evb_, evb);
     subscription_ = subscription;
     // First response does not count towards requested payloads count.
     EXPECT_EQ(

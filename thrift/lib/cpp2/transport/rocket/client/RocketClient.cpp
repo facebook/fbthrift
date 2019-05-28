@@ -196,7 +196,7 @@ void RocketClient::handleStreamFrame(
               return;
             }
             clientCallback.onFirstResponse(
-                std::move(*firstResponse), &serverCallback);
+                std::move(*firstResponse), evb_, &serverCallback);
           } else {
             auto streamPayload = unpack<StreamPayload>(std::move(*fullPayload));
             if (streamPayload.hasException()) {

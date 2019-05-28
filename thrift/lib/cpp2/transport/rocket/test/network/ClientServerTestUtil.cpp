@@ -356,10 +356,9 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
 
    public:
     TestStreamClientCallback(
-        folly::EventBase& evb,
         std::chrono::milliseconds chunkTimeout,
         folly::Promise<SemiStream<Payload>> p)
-        : evb_(evb), chunkTimeout_(chunkTimeout), p_(std::move(p)) {}
+        : chunkTimeout_(chunkTimeout), p_(std::move(p)) {}
 
     void init() {
       self_ = this->ref_from_this(this);
@@ -383,15 +382,16 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
     // ClientCallback interface
     void onFirstResponse(
         FirstResponsePayload&& firstPayload,
+        folly::EventBase* evb,
         StreamServerCallback* serverCallback) override {
       serverCallback_ = serverCallback;
       auto self = std::move(self_);
-      self = self->timeout(evb_, chunkTimeout_, chunkTimeout_, [] {
+      self = self->timeout(*evb, chunkTimeout_, chunkTimeout_, [] {
         return transport::TTransportException(
             transport::TTransportException::TTransportExceptionType::TIMED_OUT);
       });
       (void)firstPayload;
-      p_.setValue(toStream(std::move(self), &evb_));
+      p_.setValue(toStream(std::move(self), evb));
     }
 
     void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -420,7 +420,6 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
     }
 
    private:
-    folly::EventBase& evb_;
     std::chrono::milliseconds chunkTimeout_;
     folly::Promise<SemiStream<Payload>> p_;
 
@@ -435,8 +434,8 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
   folly::Promise<SemiStream<Payload>> p;
   auto sf = p.getSemiFuture();
 
-  auto clientCallback = std::make_shared<TestStreamClientCallback>(
-      evb_, kChunkTimeout, std::move(p));
+  auto clientCallback =
+      std::make_shared<TestStreamClientCallback>(kChunkTimeout, std::move(p));
   clientCallback->init();
 
   evb_.runInEventBaseThread([&] {
