@@ -52,7 +52,7 @@ ThriftClientCallback::~ThriftClientCallback() {
 }
 
 void ThriftClientCallback::onThriftRequestSent() {
-  DCHECK(evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (active_) {
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->requestSent();
@@ -66,7 +66,7 @@ void ThriftClientCallback::onThriftRequestSent() {
 void ThriftClientCallback::onThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload) noexcept {
-  DCHECK(evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {
     active_ = false;
@@ -83,7 +83,7 @@ void ThriftClientCallback::onThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<IOBuf> payload,
     Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
-  DCHECK(evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {
     active_ = false;
@@ -104,7 +104,7 @@ void ThriftClientCallback::onThriftResponse(
 }
 
 void ThriftClientCallback::onError(exception_wrapper ex) noexcept {
-  DCHECK(evb_->isInEventBaseThread());
+  DCHECK(!evb_ || evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {
     active_ = false;

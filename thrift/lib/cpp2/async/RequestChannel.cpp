@@ -231,11 +231,11 @@ uint32_t RequestChannel::sendStreamRequest(
   cb->context_ = folly::RequestContext::saveContext();
   auto chunkTimeout = rpcOptions.getChunkTimeout();
   auto callback = std::make_unique<ThriftClientCallback>(
-      getEventBase(),
+      nullptr,
       std::move(cb),
       std::move(ctx),
       getProtocolId(),
-      chunkTimeout);
+      std::chrono::milliseconds::zero());
   auto clientCallBackFlowable = std::make_shared<ClientCallbackFlowable>(
       std::move(callback), chunkTimeout);
   clientCallBackFlowable->init();
