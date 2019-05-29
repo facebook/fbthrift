@@ -542,6 +542,8 @@ public:
             getIntAttr<uint64_t>(cacheOptions, "max_ssl_cache_size"),
         .sslCacheFlushSize =
             getIntAttr<uint64_t>(cacheOptions, "ssl_cache_flush_size"),
+        .handshakeValidity = std::chrono::seconds(getIntAttr<uint32_t>(
+            cacheOptions, "ssl_handshake_validity_seconds")),
     };
     ThriftServer::setSSLCacheOptions(std::move(options));
   }

@@ -215,6 +215,7 @@ class TSSLCacheOptions(object):
         self.ssl_cache_timeout_seconds = 86400
         self.max_ssl_cache_size = 20480
         self.ssl_cache_flush_size = 200
+        self.ssl_handshake_validity_seconds = 259200
 
 
 class TCppServer(CppServerWrapper, TServer):
