@@ -164,7 +164,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * If true, rsocket connections will use RocketServerConnection; otherwise,
    * ManagedRSocketConnection will be used.
    */
-  ServerAttribute<bool> enableRocketServer_{false};
+  ServerAttribute<bool> enableRocketServer_{true};
 
   /**
    * The time we'll allow a task to wait on the queue and still perform it
