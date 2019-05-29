@@ -486,12 +486,19 @@ class mstch_swift_type : public mstch_type {
         this,
         {
             {"type:primitive?", &mstch_swift_type::is_primitive},
+            {"type:javaType", &mstch_swift_type::java_type},
         });
   }
   mstch::node is_primitive() {
     return type_->is_void() || type_->is_bool() || type_->is_byte() ||
         type_->is_i16() || type_->is_i32() || type_->is_i64() ||
         type_->is_double() || type_->is_float();
+  }
+  mstch::node java_type() {
+    if (type_->annotations_.count("java.swift.type")) {
+      return type_->annotations_.at("java.swift.type");
+    }
+    return mstch::node();
   }
 };
 

@@ -19,8 +19,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 public final class MyMapping {
     @ThriftConstructor
     public MyMapping(
-        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final Map<Long, String> lsMap,
-        @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final Map<Integer, Map<Integer, Long>> ioMap
+        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final com.foo.FastLongStringMap lsMap,
+        @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap
     ) {
         this.lsMap = lsMap;
         this.ioMap = ioMap;
@@ -32,15 +32,15 @@ public final class MyMapping {
     }
     
     public static class Builder {
-        private Map<Long, String> lsMap;
+        private com.foo.FastLongStringMap lsMap;
     
-        public Builder setLsMap(Map<Long, String> lsMap) {
+        public Builder setLsMap(com.foo.FastLongStringMap lsMap) {
             this.lsMap = lsMap;
             return this;
         }
-        private Map<Integer, Map<Integer, Long>> ioMap;
+        private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
     
-        public Builder setIoMap(Map<Integer, Map<Integer, Long>> ioMap) {
+        public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;
             return this;
         }
@@ -59,15 +59,15 @@ public final class MyMapping {
         }
     }
     
-    private final Map<Long, String> lsMap;
-    private final Map<Integer, Map<Integer, Long>> ioMap;
+    private final com.foo.FastLongStringMap lsMap;
+    private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
 
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
-    public Map<Long, String> getLsMap() { return lsMap; }
+    public com.foo.FastLongStringMap getLsMap() { return lsMap; }
         
     @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
-    public Map<Integer, Map<Integer, Long>> getIoMap() { return ioMap; }
+    public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
     @Override
     public String toString() {

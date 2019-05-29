@@ -14,10 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:typedef?}}{{!
+}}{{#type:javaType}}{{!
+  }}{{type:javaType}}{{!
+}}{{/type:javaType}}{{!
+}}{{^type:javaType}}{{!
+  }}{{#type:typedef?}}{{!
     }}{{#type:typedefType}}{{> Type}}{{/type:typedefType}}{{!
-}}{{/type:typedef?}}{{!
-}}{{^type:typedef?}}{{!
+  }}{{/type:typedef?}}{{!
+  }}{{^type:typedef?}}{{!
     }}{{#type:void?}}void{{/type:void?}}{{!
     }}{{#type:bool?}}boolean{{/type:bool?}}{{!
     }}{{#type:byte?}}byte{{/type:byte?}}{{!
@@ -29,4 +33,5 @@
     }}{{^type:primitive?}}{{^type:typedef?}}{{!
         }}{{> BoxedType}}{{!
     }}{{/type:typedef?}}{{/type:primitive?}}{{!
-}}{{/type:typedef?}}
+  }}{{/type:typedef?}}{{!
+}}{{/type:javaType}}

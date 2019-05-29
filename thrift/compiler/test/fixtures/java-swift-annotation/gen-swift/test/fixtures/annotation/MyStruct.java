@@ -22,7 +22,7 @@ public final class MyStruct {
         @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
         @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
         @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
-        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final Map<Integer, Long> detailMap
+        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap
     ) {
         this.intField = intField;
         this.stringField = stringField;
@@ -56,9 +56,9 @@ public final class MyStruct {
             this.detailField = detailField;
             return this;
         }
-        private Map<Integer, Long> detailMap;
+        private com.foo.FastIntLongMap detailMap;
     
-        public Builder setDetailMap(Map<Integer, Long> detailMap) {
+        public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
         }
@@ -84,7 +84,7 @@ public final class MyStruct {
     private final long intField;
     private final String stringField;
     private final String detailField;
-    private final Map<Integer, Long> detailMap;
+    private final com.foo.FastIntLongMap detailMap;
 
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -97,7 +97,7 @@ public final class MyStruct {
     public String getDetailField() { return detailField; }
         
     @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) @com.foo.Ignored
-    public Map<Integer, Long> getDetailMap() { return detailMap; }
+    public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
     @Override
     public String toString() {
