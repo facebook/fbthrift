@@ -87,42 +87,49 @@ TEST(ChunkRepr, RawSpotCheck) {
   EXPECT_REPR_RAW(static_cast<std::uint32_t>(-2147483648), {0, 0, 0, 128});
 }
 
+template <typename F>
+void testUInt32(F&& f) {
+  constexpr std::uint64_t kMin = 0;
+  constexpr std::uint64_t kMax = (1ULL << 32);
+  constexpr std::uint64_t kStep = 101;
+
+  for (auto i = kMin; i < kMax; i = i + kStep < kMax ? i + kStep : i + 1) {
+    f(static_cast<std::uint32_t>(i));
+  }
+}
+
 TEST(ChunkRepr, ZigzagInvertible1) {
-  for (std::uint64_t i = 0; i < (1ULL << 32); ++i) {
-    std::uint32_t testVal = static_cast<std::uint32_t>(i);
+  testUInt32([&](auto testVal) {
     EXPECT_EQ(
         testVal,
         chunkFromWireRepr<ChunkRepr::kZigzag>(
-            chunkToWireRepr<ChunkRepr::kZigzag>(i)));
-  }
+            chunkToWireRepr<ChunkRepr::kZigzag>(testVal)));
+  });
 }
 
 TEST(ChunkRepr, ZigzagInvertible2) {
-  for (std::uint64_t i = 0; i < (1ULL << 32); ++i) {
-    std::uint32_t testVal = static_cast<std::uint32_t>(i);
+  testUInt32([&](auto testVal) {
     EXPECT_EQ(
         testVal,
         chunkToWireRepr<ChunkRepr::kZigzag>(
-            chunkFromWireRepr<ChunkRepr::kZigzag>(i)));
-  }
+            chunkFromWireRepr<ChunkRepr::kZigzag>(testVal)));
+  });
 }
 
 TEST(ChunkRepr, RawInvertible1) {
-  for (std::uint64_t i = 0; i < (1ULL << 32); ++i) {
-    std::uint32_t testVal = static_cast<std::uint32_t>(i);
+  testUInt32([&](auto testVal) {
     EXPECT_EQ(
         testVal,
         chunkFromWireRepr<ChunkRepr::kRaw>(
-            chunkToWireRepr<ChunkRepr::kRaw>(i)));
-  }
+            chunkToWireRepr<ChunkRepr::kRaw>(testVal)));
+  });
 }
 
 TEST(ChunkRepr, RawInvertible2) {
-  for (std::uint64_t i = 0; i < (1ULL << 32); ++i) {
-    std::uint32_t testVal = static_cast<std::uint32_t>(i);
+  testUInt32([&](auto testVal) {
     EXPECT_EQ(
         testVal,
         chunkToWireRepr<ChunkRepr::kRaw>(
-            chunkFromWireRepr<ChunkRepr::kRaw>(i)));
-  }
+            chunkFromWireRepr<ChunkRepr::kRaw>(testVal)));
+  });
 }
