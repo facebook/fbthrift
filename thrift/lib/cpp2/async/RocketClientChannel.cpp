@@ -187,6 +187,9 @@ void RocketClientChannel::sendRequestStream(
             "Unexpected problem stripping envelope"));
   }
 
+  // Safe to remove after all servers update.
+  metadata.seqId_ref() = 0;
+
   if (!rclient_ || !rclient_->isAlive()) {
     return clientCallback->onFirstResponseError(
         folly::make_exception_wrapper<TTransportException>(
