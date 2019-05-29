@@ -10,15 +10,26 @@ import subprocess
 import sys
 
 """
-Invoke as:
+* Invoke using `buck run`:
+
+    buck run thrift/compiler/test:build_fixtures
+
+will build all fixtures under `thrift/compiler/test/fixtures`. Or
+
+    buck run thrift/compiler/test:build_fixtures -- --fixture-names [$FIXTURENAMES]
+
+will only build selected fixtures under `thrift/compiler/test/fixtures`.
+
+* Invoke directly (if buck is not available):
 
     thrift/compiler/test/build_fixtures.py \
             --build-dir [$BUILDDIR]        \
             --fixture-names [$FIXTURENAMES]
 
-where $BUILDDIR/thrift/compiler/thrift is the thrift compiler.
-
-If using Buck to build the thrift compiler, the $BUILDDIR default will work.
+where $BUILDDIR/thrift/compiler/thrift is the thrift compiler (If using
+Buck to build the thrift compiler, the $BUILDDIR default will work) and
+$FIXTURENAMES is a list of fixture names to build specifically (default
+is build all fixtures).
 """
 BUCK_OUT = "buck-out/gen"
 
