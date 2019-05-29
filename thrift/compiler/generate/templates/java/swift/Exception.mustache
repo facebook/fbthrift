@@ -25,7 +25,7 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 
 @SwiftGenerated
-@ThriftStruct("{{struct:name}}")
+@ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
 public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}Exception{{/struct:extendRuntimeException?}} {
     private static final long serialVersionUID = 1L;
 

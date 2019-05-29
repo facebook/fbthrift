@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct")
+@ThriftStruct("MyStruct") @com.foo.Enabled 
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -93,10 +93,10 @@ public final class MyStruct {
     @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
         
-    @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
+    @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) @com.foo.Ignored
     public String getDetailField() { return detailField; }
         
-    @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
+    @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) @com.foo.Ignored
     public Map<Integer, Long> getDetailMap() { return detailMap; }
     
     @Override

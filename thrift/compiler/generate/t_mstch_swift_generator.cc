@@ -192,6 +192,9 @@ class mstch_swift_struct : public mstch_struct {
              &mstch_swift_struct::is_union_field_type_unique},
             {"struct:asBean?", &mstch_swift_struct::is_as_bean},
             {"struct:javaCapitalName", &mstch_swift_struct::java_capital_name},
+            {"struct:javaAnnotation?",
+             &mstch_swift_struct::has_java_annotation},
+            {"struct:javaAnnotation", &mstch_swift_struct::java_annotation},
         });
   }
   mstch::node java_package() {
@@ -224,6 +227,15 @@ class mstch_swift_struct : public mstch_struct {
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(strct_->get_name(), true);
+  }
+  mstch::node has_java_annotation() {
+    return strct_->annotations_.count("java.swift.annotation") != 0;
+  }
+  mstch::node java_annotation() {
+    if (strct_->annotations_.count("java.swift.annotation")) {
+      return strct_->annotations_.at("java.swift.annotation");
+    }
+    return mstch::node();
   }
 };
 
@@ -287,6 +299,8 @@ class mstch_swift_field : public mstch_field {
             {"field:javaDefaultValue", &mstch_swift_field::java_default_value},
             {"field:recursive?", &mstch_swift_field::is_recursive_reference},
             {"field:negativeId?", &mstch_swift_field::is_negative_id},
+            {"field:javaAnnotation?", &mstch_swift_field::has_java_annotation},
+            {"field:javaAnnotation", &mstch_swift_field::java_annotation},
         });
   }
   mstch::node java_name() {
@@ -329,6 +343,15 @@ class mstch_swift_field : public mstch_field {
       }
       return "null";
     }
+  }
+  mstch::node has_java_annotation() {
+    return field_->annotations_.count("java.swift.annotation") != 0;
+  }
+  mstch::node java_annotation() {
+    if (field_->annotations_.count("java.swift.annotation")) {
+      return field_->annotations_.at("java.swift.annotation");
+    }
+    return mstch::node();
   }
 };
 

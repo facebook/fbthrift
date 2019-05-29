@@ -14,8 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}
-
-{{> ThriftFieldAnnotation}}{{#field:javaAnnotation?}} @{{field:javaAnnotation}}{{/field:javaAnnotation?}}
-public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
-{{! terminate with newline }}
+}}{{#struct:javaAnnotation?}} @{{struct:javaAnnotation}} {{/struct:javaAnnotation?}}
