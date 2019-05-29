@@ -39,6 +39,7 @@
 #include <folly/experimental/Bits.h>
 #include <folly/hash/Hash.h>
 #include <folly/lang/Bits.h>
+#include <folly/sorted_vector_types.h>
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>

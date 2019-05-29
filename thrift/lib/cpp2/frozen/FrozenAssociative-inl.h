@@ -181,4 +181,6 @@ THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashSet, folly::F14VectorSet)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsHashSet, folly::F14FastSet)
 
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedMap, std::map)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedMap, folly::sorted_vector_map)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedSet, std::set)
+THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedSet, folly::sorted_vector_set)
