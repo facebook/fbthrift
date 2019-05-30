@@ -16,8 +16,9 @@
 #ifndef THRIFT_CONCURRENCY_MUTEX_H_
 #define THRIFT_CONCURRENCY_MUTEX_H_ 1
 
-#include <cstdint>
+#include <folly/Portability.h>
 #include <chrono>
+#include <cstdint>
 #include <memory>
 
 namespace apache { namespace thrift { namespace concurrency {
@@ -118,7 +119,7 @@ private:
   mutable volatile bool writerWaiting_;
 };
 
-class Guard {
+class FOLLY_NODISCARD Guard {
  public:
   explicit Guard(const Mutex& value,
     std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
@@ -179,8 +180,7 @@ enum RWGuardType {
   RW_WRITE = 1,
 };
 
-
-class RWGuard {
+class FOLLY_NODISCARD RWGuard {
  public:
   explicit RWGuard(const ReadWriteMutex& value, bool write = false,
                    std::chrono::milliseconds timeout =
@@ -243,7 +243,6 @@ class RWGuard {
  private:
   const ReadWriteMutex* rw_mutex_ = nullptr;
 };
-
 }}} // apache::thrift::concurrency
 
 #endif // #ifndef THRIFT_CONCURRENCY_MUTEX_H_
