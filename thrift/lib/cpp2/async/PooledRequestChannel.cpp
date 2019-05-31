@@ -123,33 +123,6 @@ class ExecutorRequestCallback final : public RequestCallback {
   folly::Executor::KeepAlive<> executorKeepAlive_;
   std::shared_ptr<RequestCallback> cb_;
 };
-
-class SyncRequestCallback final : public RequestCallback {
- public:
-  SyncRequestCallback(
-      std::unique_ptr<RequestCallback> cb,
-      folly::Promise<folly::Unit> promise)
-      : cb_(std::move(cb)), promise_(std::move(promise)) {}
-
-  void requestSent() override {
-    cb_->requestSent();
-    if (static_cast<ClientSyncCallback*>(cb_.get())->isOneway()) {
-      promise_.setValue();
-    }
-  }
-  void replyReceived(ClientReceiveState&& rs) override {
-    cb_->replyReceived(std::move(rs));
-    promise_.setValue();
-  }
-  void requestError(ClientReceiveState&& rs) override {
-    cb_->requestError(std::move(rs));
-    promise_.setValue();
-  }
-
- private:
-  std::unique_ptr<RequestCallback> cb_;
-  folly::Promise<folly::Unit> promise_;
-};
 } // namespace
 
 uint32_t PooledRequestChannel::sendRequest(
@@ -158,7 +131,7 @@ uint32_t PooledRequestChannel::sendRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  if (!dynamic_cast<SemiFutureCallback*>(cob.get())) {
+  if (!cob->isInlineSafe()) {
     cob = std::make_unique<ExecutorRequestCallback>(
         std::move(cob), getKeepAliveToken(callbackExecutor_));
   }
@@ -178,7 +151,7 @@ uint32_t PooledRequestChannel::sendOnewayRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  if (!dynamic_cast<SemiFutureCallback*>(cob.get())) {
+  if (!cob->isInlineSafe()) {
     cob = std::make_unique<ExecutorRequestCallback>(
         std::move(cob), getKeepAliveToken(callbackExecutor_));
   }
@@ -198,7 +171,7 @@ uint32_t PooledRequestChannel::sendStreamRequest(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header) {
-  if (!dynamic_cast<SemiFutureCallback*>(cob.get())) {
+  if (!cob->isInlineSafe()) {
     cob = std::make_unique<ExecutorRequestCallback>(
         std::move(cob), getKeepAliveToken(callbackExecutor_));
   }
@@ -210,27 +183,6 @@ uint32_t PooledRequestChannel::sendStreamRequest(
       std::move(buf),
       std::move(header));
   return 0;
-}
-
-void PooledRequestChannel::sendRequestSync(
-    RpcOptions& options,
-    std::unique_ptr<RequestCallback> cob,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header,
-    RpcKind kind) {
-  folly::Promise<folly::Unit> promise;
-  auto future = promise.getSemiFuture();
-  cob =
-      std::make_unique<SyncRequestCallback>(std::move(cob), std::move(promise));
-  sendRequestImpl(
-      kind,
-      options,
-      std::move(cob),
-      std::move(ctx),
-      std::move(buf),
-      std::move(header));
-  std::move(future).get();
 }
 
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {

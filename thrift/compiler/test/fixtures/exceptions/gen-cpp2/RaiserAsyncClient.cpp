@@ -127,9 +127,11 @@ void RaiserAsyncClient::sync_doBland() {
 
 void RaiserAsyncClient::sync_doBland(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   doBlandImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -268,9 +270,11 @@ void RaiserAsyncClient::sync_doRaise() {
 
 void RaiserAsyncClient::sync_doRaise(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   doRaiseImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -409,9 +413,11 @@ void RaiserAsyncClient::sync_get200(std::string& _return) {
 
 void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   get200Impl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -550,9 +556,11 @@ void RaiserAsyncClient::sync_get500(std::string& _return) {
 
 void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   get500Impl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

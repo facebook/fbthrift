@@ -76,14 +76,6 @@ class PooledRequestChannel : public RequestChannel {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header) override;
 
-  void sendRequestSync(
-      RpcOptions& options,
-      std::unique_ptr<RequestCallback> cob,
-      std::unique_ptr<ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header,
-      RpcKind kind) override;
-
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
   }

@@ -148,9 +148,11 @@ void MyServiceAsyncClient::sync_ping() {
 
 void MyServiceAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   pingImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -289,9 +291,11 @@ void MyServiceAsyncClient::sync_getRandomData(std::string& _return) {
 
 void MyServiceAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   getRandomDataImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -430,9 +434,11 @@ bool MyServiceAsyncClient::sync_hasDataById(int64_t id) {
 
 bool MyServiceAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   hasDataByIdImpl(true, rpcOptions, std::move(callback), id);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -573,9 +579,11 @@ void MyServiceAsyncClient::sync_getDataById(std::string& _return, int64_t id) {
 
 void MyServiceAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, std::string& _return, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   getDataByIdImpl(true, rpcOptions, std::move(callback), id);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -714,9 +722,11 @@ void MyServiceAsyncClient::sync_putDataById(int64_t id, const std::string& data)
 
 void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   putDataByIdImpl(true, rpcOptions, std::move(callback), id, data);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

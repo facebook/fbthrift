@@ -38,30 +38,32 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(<% > types/type%>& 
 void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   <%#function:takes_stream?%>
   <%#function:returns_stream?%>
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE, waiter);
   <%/function:returns_stream?%>
   <%^function:returns_stream?%>
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE, waiter);
   <%/function:returns_stream?%>
   <%/function:takes_stream?%><%!
 
   %><%^function:takes_stream?%>
   <%#function:returns_stream?%>
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, waiter);
   <%/function:returns_stream?%>
   <%^function:returns_stream?%>
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   <%/function:returns_stream?%>
   <%/function:takes_stream?%><%!
 
   %>
   <%function:cpp_name%>Impl(true, rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

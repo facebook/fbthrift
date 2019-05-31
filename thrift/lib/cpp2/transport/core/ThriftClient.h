@@ -86,15 +86,6 @@ class ThriftClient : public ClientChannel {
   void setHTTPUrl(const std::string& url);
 
   // begin RequestChannel methods
-
-  void sendRequestSync(
-      RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header,
-      RpcKind kind) override;
-
   uint32_t sendRequest(
       RpcOptions& rpcOptions,
       std::unique_ptr<RequestCallback> cb,
@@ -173,8 +164,7 @@ class ThriftClient : public ClientChannel {
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header,
-      folly::EventBase* callbackEvb) noexcept;
+      std::shared_ptr<apache::thrift::transport::THeader> header) noexcept;
 
   // Scheduled by sendRequestHelper in the connection thread.  Both
   // operations getChannel() and sendThriftRequest() can be scheduled

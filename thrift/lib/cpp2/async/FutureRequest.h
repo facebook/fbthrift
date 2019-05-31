@@ -213,6 +213,10 @@ class SemiFutureCallback : public RequestCallback {
     promise_.setException(std::move(state.exception()));
   }
 
+  bool isInlineSafe() const override {
+    return true;
+  }
+
  protected:
   folly::Promise<ClientReceiveState> promise_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
@@ -235,6 +239,10 @@ class OneWaySemiFutureCallback : public RequestCallback {
 
   void requestError(ClientReceiveState&& state) override {
     promise_.setException(std::move(state.exception()));
+  }
+
+  bool isInlineSafe() const override {
+    return true;
   }
 
  protected:

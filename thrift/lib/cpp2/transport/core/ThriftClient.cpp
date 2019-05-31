@@ -38,48 +38,6 @@ using folly::EventBase;
 using folly::IOBuf;
 using folly::RequestContext;
 
-namespace {
-
-/**
- * Used as the callback for sendRequestSync.  It delegates to the
- * wrapped callback and posts on the baton object to allow the
- * synchronous call to continue.
- */
-class WaitableRequestCallback final : public RequestCallback {
- public:
-  WaitableRequestCallback(
-      std::unique_ptr<RequestCallback> cb,
-      folly::Baton<>& baton,
-      bool oneway)
-      : cb_(std::move(cb)), baton_(baton), oneway_(oneway) {}
-
-  void requestSent() override {
-    cb_->requestSent();
-    if (oneway_) {
-      baton_.post();
-    }
-  }
-
-  void replyReceived(ClientReceiveState&& rs) override {
-    DCHECK(!oneway_);
-    cb_->replyReceived(std::move(rs));
-    baton_.post();
-  }
-
-  void requestError(ClientReceiveState&& rs) override {
-    DCHECK(rs.isException());
-    cb_->requestError(std::move(rs));
-    baton_.post();
-  }
-
- private:
-  std::unique_ptr<RequestCallback> cb_;
-  folly::Baton<>& baton_;
-  bool oneway_;
-};
-
-} // namespace
-
 const std::chrono::milliseconds ThriftClient::kDefaultRpcTimeout =
     std::chrono::milliseconds(500);
 
@@ -107,34 +65,6 @@ void ThriftClient::setHTTPUrl(const std::string& url) {
   httpUrl_ = url;
 }
 
-void ThriftClient::sendRequestSync(
-    RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header,
-    RpcKind kind) {
-  // Synchronous calls may be made from any thread except the one used
-  // by the underlying connection.  That thread is used to handle the
-  // callback and to release this thread that will be waiting on
-  // "baton".
-  EventBase* connectionEvb = connection_->getEventBase();
-  DCHECK(!connectionEvb->inRunningEventBaseThread());
-  folly::Baton<> baton;
-  bool oneway = kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  auto scb =
-      std::make_unique<WaitableRequestCallback>(std::move(cb), baton, oneway);
-  sendRequestHelper(
-      rpcOptions,
-      kind,
-      std::move(scb),
-      std::move(ctx),
-      std::move(buf),
-      std::move(header),
-      connectionEvb);
-  baton.wait();
-}
-
 uint32_t ThriftClient::sendRequest(
     RpcOptions& rpcOptions,
     std::unique_ptr<RequestCallback> cb,
@@ -147,8 +77,7 @@ uint32_t ThriftClient::sendRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header),
-      callbackEvb_);
+      std::move(header));
 }
 
 uint32_t ThriftClient::sendOnewayRequest(
@@ -163,8 +92,7 @@ uint32_t ThriftClient::sendOnewayRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header),
-      callbackEvb_);
+      std::move(header));
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
@@ -180,8 +108,7 @@ uint32_t ThriftClient::sendStreamRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header),
-      callbackEvb_);
+      std::move(header));
 }
 
 std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
@@ -233,9 +160,10 @@ uint32_t ThriftClient::sendRequestHelper(
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header,
-    EventBase* callbackEvb) noexcept {
+    std::shared_ptr<THeader> header) noexcept {
   DestructorGuard dg(this);
+  auto callbackEvb =
+      cb->isInlineSafe() ? connection_->getEventBase() : callbackEvb_;
   cb->context_ = RequestContext::saveContext();
   auto metadata = createRequestRpcMetadata(
       rpcOptions,

@@ -214,9 +214,11 @@ apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_retu
 
 apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, waiter);
   returnstreamImpl(true, rpcOptions, std::move(callback), i32_from, i32_to);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -357,9 +359,11 @@ void PubSubStreamingServiceAsyncClient::sync_takesstream(apache::thrift::Stream<
 
 void PubSubStreamingServiceAsyncClient::sync_takesstream(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> instream, int32_t other_param) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE, waiter);
   takesstreamImpl(true, rpcOptions, std::move(callback), std::move(instream), other_param);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -498,9 +502,11 @@ apache::thrift::SemiStream<std::string> PubSubStreamingServiceAsyncClient::sync_
 
 apache::thrift::SemiStream<std::string> PubSubStreamingServiceAsyncClient::sync_different(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo, int64_t firstparam) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE, waiter);
   differentImpl(true, rpcOptions, std::move(callback), std::move(foo), firstparam);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -641,9 +647,11 @@ void PubSubStreamingServiceAsyncClient::sync_normalthrows(apache::thrift::Stream
 
 void PubSubStreamingServiceAsyncClient::sync_normalthrows(apache::thrift::RpcOptions& rpcOptions, apache::thrift::Stream<int32_t> foo) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE, waiter);
   normalthrowsImpl(true, rpcOptions, std::move(callback), std::move(foo));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -782,9 +790,11 @@ apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_stre
 
 apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, waiter);
   streamthrowsImpl(true, rpcOptions, std::move(callback), foo);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -925,9 +935,11 @@ apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_both
 
 apache::thrift::SemiStream<int32_t> PubSubStreamingServiceAsyncClient::sync_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, waiter);
   boththrowsImpl(true, rpcOptions, std::move(callback), foo);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -1068,9 +1080,11 @@ apache::thrift::ResponseAndSemiStream<int32_t,int32_t> PubSubStreamingServiceAsy
 
 apache::thrift::ResponseAndSemiStream<int32_t,int32_t> PubSubStreamingServiceAsyncClient::sync_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, waiter);
   responseandstreamthrowsImpl(true, rpcOptions, std::move(callback), foo);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

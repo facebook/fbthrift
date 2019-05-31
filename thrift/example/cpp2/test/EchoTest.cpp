@@ -66,13 +66,6 @@ class EchoTest : public testing::Test {
   std::shared_ptr<EchoHandler> handler_;
 };
 
-TEST_F(EchoTest, SyncCall) {
-  std::string echo = "Echo Message";
-  std::string response;
-  client_->sync_echo(response, echo);
-  EXPECT_EQ(echo, response);
-}
-
 TEST_F(EchoTest, AsyncCall) {
   ClientReceiveState result;
   folly::Baton<> baton;

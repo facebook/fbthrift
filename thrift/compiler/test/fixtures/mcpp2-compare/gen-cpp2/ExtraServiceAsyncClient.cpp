@@ -219,9 +219,11 @@ bool ExtraServiceAsyncClient::sync_simple_function() {
 
 bool ExtraServiceAsyncClient::sync_simple_function(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   simple_functionImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -362,9 +364,11 @@ void ExtraServiceAsyncClient::sync_throws_function() {
 
 void ExtraServiceAsyncClient::sync_throws_function(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   throws_functionImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -503,9 +507,11 @@ bool ExtraServiceAsyncClient::sync_throws_function2(bool param1) {
 
 bool ExtraServiceAsyncClient::sync_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   throws_function2Impl(true, rpcOptions, std::move(callback), param1);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -646,9 +652,11 @@ void ExtraServiceAsyncClient::sync_throws_function3(std::map<int32_t, std::strin
 
 void ExtraServiceAsyncClient::sync_throws_function3(apache::thrift::RpcOptions& rpcOptions, std::map<int32_t, std::string>& _return, bool param1, const std::string& param2) {
   apache::thrift::ClientReceiveState _returnState;
+  apache::thrift::ClientSyncCallback::Waiter waiter;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
   throws_function3Impl(true, rpcOptions, std::move(callback), param1, param2);
+  waiter.waitUntilDone(channel_->getEventBase());
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -787,8 +795,10 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret() {
 
 void ExtraServiceAsyncClient::sync_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  apache::thrift::ClientSyncCallback::Waiter waiter;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, waiter);
   oneway_void_retImpl(true, rpcOptions, std::move(callback));
+  waiter.waitUntilDone(channel_->getEventBase());
 }
 
 folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret() {
@@ -857,8 +867,10 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret_i32_i32_i32_i32_i32_param(int
 
 void ExtraServiceAsyncClient::sync_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  apache::thrift::ClientSyncCallback::Waiter waiter;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, waiter);
   oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(true, rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+  waiter.waitUntilDone(channel_->getEventBase());
 }
 
 folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
@@ -927,8 +939,10 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(const std::
 
 void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  apache::thrift::ClientSyncCallback::Waiter waiter;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, waiter);
   oneway_void_ret_map_setlist_paramImpl(true, rpcOptions, std::move(callback), param1, param2);
+  waiter.waitUntilDone(channel_->getEventBase());
 }
 
 folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
@@ -997,8 +1011,10 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret_struct_param(const  ::some::v
 
 void ExtraServiceAsyncClient::sync_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& param1) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  apache::thrift::ClientSyncCallback::Waiter waiter;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, waiter);
   oneway_void_ret_struct_paramImpl(true, rpcOptions, std::move(callback), param1);
+  waiter.waitUntilDone(channel_->getEventBase());
 }
 
 folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) {
@@ -1067,8 +1083,10 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(const std::ve
 
 void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
+  apache::thrift::ClientSyncCallback::Waiter waiter;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, waiter);
   oneway_void_ret_listunion_paramImpl(true, rpcOptions, std::move(callback), param1);
+  waiter.waitUntilDone(channel_->getEventBase());
 }
 
 folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {

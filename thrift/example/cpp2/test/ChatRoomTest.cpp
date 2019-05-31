@@ -70,27 +70,6 @@ class ChatRoomTest : public testing::Test {
   std::shared_ptr<ChatRoomServiceHandler> handler_;
 };
 
-TEST_F(ChatRoomTest, SyncCall) {
-  // Send RPC to Server
-  SendMessageRequest sendRequest;
-  sendRequest.message = "This is an example!";
-  sendRequest.sender = "UnitTest";
-  client_->sync_sendMessage(sendRequest);
-
-  // Send RPC to get Results
-  GetMessagesRequest getRequest;
-  GetMessagesResponse response;
-  client_->sync_getMessages(response, getRequest);
-  EXPECT_EQ(response.messages.size(), 1);
-  EXPECT_EQ(response.messages.front().message, sendRequest.message);
-  EXPECT_EQ(response.messages.front().sender, sendRequest.sender);
-
-  // Repeat
-  client_->sync_sendMessage(sendRequest);
-  client_->sync_getMessages(response, getRequest);
-  EXPECT_EQ(response.messages.size(), 2);
-}
-
 TEST_F(ChatRoomTest, AsyncCall) {
   // Send RPC to Server
   ClientReceiveState sendResult;

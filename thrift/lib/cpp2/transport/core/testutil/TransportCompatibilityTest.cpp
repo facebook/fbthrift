@@ -611,12 +611,12 @@ void TransportCompatibilityTest::TestRequestResponse_Saturation() {
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
-    EXPECT_THROW(client->sync_add(5), TTransportException);
+    EXPECT_THROW(client->semifuture_add(5).get(), TTransportException);
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(1u); });
-    EXPECT_EQ(3, client->sync_add(3));
-    EXPECT_EQ(6, client->sync_add(3));
+    EXPECT_EQ(3, client->semifuture_add(3).get());
+    EXPECT_EQ(6, client->semifuture_add(3).get());
   });
 }
 
@@ -801,11 +801,12 @@ void TransportCompatibilityTest::TestOneway_Saturation() {
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(0u); });
-    client->sync_addAfterDelay(0, 5);
+    EXPECT_THROW(
+        client->semifuture_addAfterDelay(0, 5).get(), TTransportException);
 
     connection->getEventBase()->runInEventBaseThreadAndWait(
         [&]() { connection->setMaxPendingRequests(1u); });
-    EXPECT_EQ(3, client->sync_add(3));
+    EXPECT_EQ(3, client->semifuture_add(3).get());
   });
 }
 

@@ -84,14 +84,6 @@ class RocketClientChannel final : public ClientChannel {
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
-  void sendRequestSync(
-      RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header,
-      RpcKind kind) override;
-
   folly::EventBase* getEventBase() const override {
     return evb_;
   }
@@ -134,8 +126,6 @@ class RocketClientChannel final : public ClientChannel {
   void setCloseCallback(CloseCallback* closeCallback) override;
 
  private:
-  enum class SendRequestCalledFrom { Fiber, Thread };
-
   static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};
 
   folly::EventBase* evb_{nullptr};
@@ -164,23 +154,20 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header,
-      SendRequestCalledFrom callingContext);
+      std::shared_ptr<apache::thrift::transport::THeader> header);
 
   void sendSingleRequestNoResponse(
       const RequestRpcMetadata& metadata,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb,
-      SendRequestCalledFrom callingContext);
+      std::unique_ptr<RequestCallback> cb);
 
   void sendSingleRequestSingleResponse(
       const RequestRpcMetadata& metadata,
       std::chrono::milliseconds timeout,
       std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb,
-      SendRequestCalledFrom callingContext);
+      std::unique_ptr<RequestCallback> cb);
 
   folly::fibers::FiberManager& getFiberManager() const {
     DCHECK(evb_);

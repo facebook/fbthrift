@@ -65,14 +65,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * cb must not be null.
    */
-  virtual void sendRequestSync(
-      RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>,
-      RpcKind kind);
-
   void sendRequestAsync(
       apache::thrift::RpcOptions&,
       std::unique_ptr<apache::thrift::RequestCallback>,
@@ -164,31 +156,61 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
 class ClientSyncCallback : public RequestCallback {
  public:
-  explicit ClientSyncCallback(
-      ClientReceiveState* rs,
-      RpcKind kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)
-      : rs_(rs), rpcKind_(kind) {}
+  class Waiter {
+   public:
+    void waitUntilDone(folly::EventBase* evb) {
+      if (evb) {
+        if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {
+          while (!doneBaton_.ready()) {
+            evb->drive();
+          }
+        }
+      }
+      doneBaton_.wait();
+    }
 
-  void requestSent() override {}
+   private:
+    friend class ClientSyncCallback;
+
+    folly::fibers::Baton doneBaton_;
+  };
+
+  ClientSyncCallback(ClientReceiveState* rs, RpcKind kind, Waiter& waiter)
+      : rs_(rs), rpcKind_(kind), waiter_(waiter) {}
+
+  void requestSent() override {
+    if (isOneway()) {
+      waiter_.doneBaton_.post();
+    }
+  }
   void replyReceived(ClientReceiveState&& rs) override {
     assert(rs.buf());
     assert(!isOneway());
     *rs_ = std::move(rs);
+    waiter_.doneBaton_.post();
   }
   void requestError(ClientReceiveState&& rs) override {
     assert(!!rs.exception());
     *rs_ = std::move(rs);
+    waiter_.doneBaton_.post();
   }
-  bool isOneway() const {
-    return rpcKind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
+
+  bool isInlineSafe() const override {
+    return true;
   }
-  RpcKind rpcKind() const {
-    return rpcKind_;
+
+  bool isSync() const override {
+    return true;
   }
 
  private:
+  bool isOneway() const {
+    return rpcKind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
+  }
+
   ClientReceiveState* rs_;
   RpcKind rpcKind_;
+  Waiter& waiter_;
 };
 
 template <typename T>
@@ -224,7 +246,7 @@ void clientSendT(
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
     RpcKind kind,
-    bool sync) {
+    bool /* sync */) {
   size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
@@ -248,17 +270,6 @@ void clientSendT(
     throw;
   }
   header->setCrc32c(apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
-
-  if (sync) {
-    channel->sendRequestSync(
-        rpcOptions,
-        std::move(callback),
-        std::move(ctx),
-        queue.move(),
-        std::move(header),
-        kind);
-    return;
-  }
 
   channel->sendRequestAsync(
       rpcOptions,

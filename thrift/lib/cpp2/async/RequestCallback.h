@@ -136,6 +136,18 @@ class RequestCallback {
   virtual void replyReceived(ClientReceiveState&&) = 0;
   virtual void requestError(ClientReceiveState&&) = 0;
 
+  // If true, the transport can block current thread/fiber until the request is
+  // complete.
+  virtual bool isSync() const {
+    return false;
+  }
+
+  // If true, the transport can safely run this callback on its internal thread.
+  // Should only be used for Thrift internal callbacks.
+  virtual bool isInlineSafe() const {
+    return false;
+  }
+
   std::shared_ptr<folly::RequestContext> context_;
 };
 

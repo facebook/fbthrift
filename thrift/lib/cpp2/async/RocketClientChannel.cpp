@@ -143,8 +143,7 @@ uint32_t RocketClientChannel::sendRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header),
-      SendRequestCalledFrom::Thread);
+      std::move(header));
   return 0;
 }
 
@@ -160,8 +159,7 @@ uint32_t RocketClientChannel::sendOnewayRequest(
       std::move(cb),
       std::move(ctx),
       std::move(buf),
-      std::move(header),
-      SendRequestCalledFrom::Thread);
+      std::move(header));
   return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
@@ -223,41 +221,13 @@ void RocketClientChannel::sendRequestStream(
       });
 }
 
-void RocketClientChannel::sendRequestSync(
-    RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header,
-    RpcKind kind) {
-  if (folly::fibers::onFiber()) {
-    sendThriftRequest(
-        rpcOptions,
-        kind,
-        std::move(cb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header),
-        SendRequestCalledFrom::Fiber);
-  } else {
-    RequestChannel::sendRequestSync(
-        rpcOptions,
-        std::move(cb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header),
-        kind);
-  }
-}
-
 void RocketClientChannel::sendThriftRequest(
     RpcOptions& rpcOptions,
     RpcKind kind,
     std::unique_ptr<RequestCallback> cb,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header,
-    SendRequestCalledFrom callingContext) {
+    std::shared_ptr<transport::THeader> header) {
   DestructorGuard dg(this);
 
   cb->context_ = folly::RequestContext::saveContext();
@@ -308,21 +278,12 @@ void RocketClientChannel::sendThriftRequest(
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       sendSingleRequestNoResponse(
-          metadata,
-          std::move(ctx),
-          std::move(buf),
-          std::move(cb),
-          callingContext);
+          metadata, std::move(ctx), std::move(buf), std::move(cb));
       break;
 
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
-          metadata,
-          timeout,
-          std::move(ctx),
-          std::move(buf),
-          std::move(cb),
-          callingContext);
+          metadata, timeout, std::move(ctx), std::move(buf), std::move(cb));
       break;
 
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
@@ -339,8 +300,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     const RequestRpcMetadata& metadata,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb,
-    SendRequestCalledFrom callingContext) {
+    std::unique_ptr<RequestCallback> cb) {
   auto& cbRef = *cb;
 
   auto sendRequestFunc =
@@ -363,7 +323,7 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     }
   };
 
-  if (callingContext == SendRequestCalledFrom::Fiber) {
+  if (cbRef.isSync() && folly::fibers::onFiber()) {
     finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
     auto& fm = getFiberManager();
@@ -381,8 +341,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     std::chrono::milliseconds timeout,
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb,
-    SendRequestCalledFrom callingContext) {
+    std::unique_ptr<RequestCallback> cb) {
   auto& cbRef = *cb;
 
   auto sendRequestFunc =
@@ -434,7 +393,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
         std::move(ctx)));
   };
 
-  if (callingContext == SendRequestCalledFrom::Fiber) {
+  if (cbRef.isSync() && folly::fibers::onFiber()) {
     finallyFunc(folly::makeTryWith(std::move(sendRequestFunc)));
   } else {
     auto& fm = getFiberManager();
