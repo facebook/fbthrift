@@ -101,6 +101,23 @@ void fillTHeaderFromResponseRpcMetadata(
   header.setReadHeaders(std::move(otherMetadata));
 }
 
+void fillResponseRpcMetadataFromTHeader(
+    transport::THeader& header,
+    ResponseRpcMetadata& responseMetadata) {
+  std::map<std::string, std::string> otherMetadata = header.releaseHeaders();
+  {
+    auto loadIt = otherMetadata.find(transport::THeader::QUERY_LOAD_HEADER);
+    if (loadIt != otherMetadata.end()) {
+      responseMetadata.load_ref() = folly::to<int64_t>(loadIt->second);
+      otherMetadata.erase(loadIt);
+    }
+  }
+  if (auto crc32c = header.getCrc32c()) {
+    responseMetadata.crc32c_ref() = *crc32c;
+  }
+  responseMetadata.otherMetadata_ref() = std::move(otherMetadata);
+}
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache
