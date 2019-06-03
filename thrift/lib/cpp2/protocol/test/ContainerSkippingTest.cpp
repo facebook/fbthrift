@@ -16,21 +16,41 @@
 
 #include <folly/io/Cursor.h>
 #include <folly/portability/GTest.h>
+#include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/protocol/test/gen-cpp2/module_types.h>
 
 namespace apache {
 namespace thrift {
 namespace test {
 
-template <class ProtocolWriter, class ProtocolReader>
-void testSkipMap() {
+OneOfEach makeTestData1() {
   OneOfEach ooe;
   ooe.myBool = false;
   ooe.myMap = std::map<std::string, int64_t>(
       {{"key1", 14}, {"key2", 0}, {"key3", 1000}});
   ooe.myList = std::vector<std::string>{"good1", "good2", "good3"};
+  return ooe;
+}
+
+OneOfEach makeTestData2() {
+  OneOfEach ooe;
+  ooe.myMap = std::map<std::string, int64_t>(
+      {{"key1", 14}, {"key2", 0}, {"key3", 1000}});
+  ooe.myList = std::vector<std::string>{"good1", "good2", "good3"};
+  ooe.mySet = std::set<std::string>{"elem1", "elem2", "elem3"};
+  SubStruct sub;
+  sub.mySubI64 = 123456789;
+  sub.mySubString = "substring";
+  ooe.myStruct = sub;
+  return ooe;
+}
+
+template <class ProtocolWriter, class ProtocolReader>
+void testSkipMap() {
+  OneOfEach ooe = makeTestData1();
 
   ProtocolWriter protocolWriter;
   folly::IOBufQueue q;
@@ -48,15 +68,7 @@ void testSkipMap() {
 
 template <class ProtocolWriter, class ProtocolReader>
 void testSkipListAndSet() {
-  OneOfEach ooe;
-  ooe.myMap = std::map<std::string, int64_t>(
-      {{"key1", 14}, {"key2", 0}, {"key3", 1000}});
-  ooe.myList = std::vector<std::string>{"good1", "good2", "good3"};
-  ooe.mySet = std::set<std::string>{"elem1", "elem2", "elem3"};
-  SubStruct sub;
-  sub.mySubI64 = 123456789;
-  sub.mySubString = "substring";
-  ooe.myStruct = sub;
+  OneOfEach ooe = makeTestData2();
 
   ProtocolWriter protocolWriter;
   folly::IOBufQueue q;
@@ -88,6 +100,36 @@ TEST(ContainerSkippingTest, BinaryProtocolSkipListAndSet) {
 
 TEST(ContainerSkippingTest, CompactProtocolSkipListAndSet) {
   testSkipListAndSet<CompactProtocolWriter, CompactProtocolReader>();
+}
+
+TEST(ContainerSkippingTest, SimpleJSONProtocolSkipMap) {
+  OneOfEach ooe = makeTestData1();
+
+  SimpleJSONProtocolWriter protocolWriter;
+  folly::IOBufQueue q;
+  protocolWriter.setOutput(&q);
+  ooe.write(&protocolWriter);
+
+  SimpleJSONProtocolReader protocolReader;
+  protocolReader.setInput(q.front());
+  // Deserialize into a struct with different map types
+  OneOfEach2 ooe2;
+  EXPECT_THROW(ooe2.read(&protocolReader), TProtocolException);
+}
+
+TEST(ContainerSkippingTest, SimpleJSONProtocolSkipListAndSet) {
+  OneOfEach ooe = makeTestData2();
+
+  SimpleJSONProtocolWriter protocolWriter;
+  folly::IOBufQueue q;
+  protocolWriter.setOutput(&q);
+  ooe.write(&protocolWriter);
+
+  SimpleJSONProtocolReader protocolReader;
+  protocolReader.setInput(q.front());
+  // Deserialize into a struct with different list/set types
+  OneOfEach3 ooe3;
+  EXPECT_THROW(ooe3.read(&protocolReader), TProtocolException);
 }
 } // namespace test
 } // namespace thrift

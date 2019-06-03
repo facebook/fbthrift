@@ -422,16 +422,10 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     if (protocol.kOmitsContainerSizes()) {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
-      // (if it did set reported_type to something known)
-      if (!protocol.kOmitsContainerElemTypes() &&
-          reported_type != protocol::T_STOP &&
-          reported_type != elem_methods::ttype_value) {
-        apache::thrift::skip_n(protocol, list_size, {reported_type});
-      } else {
-        while (protocol.peekList()) {
-          out.emplace_back();
-          elem_methods::read(protocol, out.back());
-        }
+      DCHECK(protocol.kOmitsContainerElemTypes());
+      while (protocol.peekList()) {
+        out.emplace_back();
+        elem_methods::read(protocol, out.back());
       }
     } else {
       if (!protocol.kOmitsContainerElemTypes() &&
