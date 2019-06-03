@@ -342,7 +342,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
             TApplicationException(
                 TApplicationException::TApplicationExceptionType::TIMEOUT,
                 "Queue Timeout"),
-            kTaskExpiredErrorCode);
+            kServerQueueTimeoutErrorCode);
       }
     }
     friend class ThriftRequestCore;
