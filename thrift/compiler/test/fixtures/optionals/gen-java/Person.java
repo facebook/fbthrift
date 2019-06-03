@@ -44,12 +44,12 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   public Color favoriteColor;
   public Set<Long> friends;
   public long bestFriend;
-  public Map<Animal,String> petNames;
+  public Map<Integer,String> petNames;
   /**
    * 
    * @see Animal
    */
-  public Animal afraidOfAnimal;
+  public int afraidOfAnimal;
   public List<Vehicle> vehicles;
   public static final int ID = 1;
   public static final int NAME = 2;
@@ -125,8 +125,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     Color favoriteColor,
     Set<Long> friends,
     long bestFriend,
-    Map<Animal,String> petNames,
-    Animal afraidOfAnimal,
+    Map<Integer,String> petNames,
+    int afraidOfAnimal,
     List<Vehicle> vehicles)
   {
     this();
@@ -350,11 +350,11 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     __isset_bit_vector.set(__BESTFRIEND_ISSET_ID, value);
   }
 
-  public Map<Animal,String>  getPetNames() {
+  public Map<Integer,String>  getPetNames() {
     return this.petNames;
   }
 
-  public Person setPetNames(Map<Animal,String> petNames) {
+  public Person setPetNames(Map<Integer,String> petNames) {
     this.petNames = petNames;
     return this;
   }
@@ -378,7 +378,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
    * 
    * @see Animal
    */
-  public Animal  getAfraidOfAnimal() {
+  public int  getAfraidOfAnimal() {
     return this.afraidOfAnimal;
   }
 
@@ -386,7 +386,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
    * 
    * @see Animal
    */
-  public Person setAfraidOfAnimal(Animal afraidOfAnimal) {
+  public Person setAfraidOfAnimal(int afraidOfAnimal) {
     this.afraidOfAnimal = afraidOfAnimal;
     setAfraidOfAnimalIsSet(true);
     return this;
@@ -492,7 +492,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       if (value == null) {
         unsetPetNames();
       } else {
-        setPetNames((Map<Animal,String>)value);
+        setPetNames((Map<Integer,String>)value);
       }
       break;
 
@@ -500,7 +500,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       if (value == null) {
         unsetAfraidOfAnimal();
       } else {
-        setAfraidOfAnimal((Animal)value);
+        setAfraidOfAnimal((Integer)value);
       }
       break;
 
@@ -870,14 +870,14 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
           if (field.type == TType.MAP) {
             {
               TMap _map3 = iprot.readMapBegin();
-              this.petNames = new HashMap<Animal,String>(Math.max(0, 2*_map3.size));
+              this.petNames = new HashMap<Integer,String>(Math.max(0, 2*_map3.size));
               for (int _i4 = 0; 
                    (_map3.size < 0) ? iprot.peekMap() : (_i4 < _map3.size); 
                    ++_i4)
               {
-                Animal _key5;
+                int _key5;
                 String _val6;
-                _key5 = Animal.findByValue(iprot.readI32());
+                _key5 = iprot.readI32();
                 _val6 = iprot.readString();
                 this.petNames.put(_key5, _val6);
               }
@@ -889,7 +889,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
           break;
         case AFRAIDOFANIMAL:
           if (field.type == TType.I32) {
-            this.afraidOfAnimal = Animal.findByValue(iprot.readI32());
+            this.afraidOfAnimal = iprot.readI32();
             setAfraidOfAnimalIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
@@ -982,9 +982,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
         oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
         {
           oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, this.petNames.size()));
-          for (Map.Entry<Animal, String> _iter11 : this.petNames.entrySet())          {
-            // send 0 when the enum is null for backward compatibility
-            oprot.writeI32(_iter11.getKey() == null ? 0 : _iter11.getKey().getValue());
+          for (Map.Entry<Integer, String> _iter11 : this.petNames.entrySet())          {
+            oprot.writeI32(_iter11.getKey());
             oprot.writeString(_iter11.getValue());
           }
           oprot.writeMapEnd();
@@ -994,8 +993,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
     if (isSetAfraidOfAnimal()) {
       oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
-      // send 0 when the enum is null for backward compatibility
-      oprot.writeI32(this.afraidOfAnimal == null ? 0 : this.afraidOfAnimal.getValue());
+      oprot.writeI32(this.afraidOfAnimal);
       oprot.writeFieldEnd();
     }
     if (this.vehicles != null) {
@@ -1169,7 +1167,7 @@ String space = prettyPrint ? " " : "";
   public void validate() throws TException {
     // check for required fields
     // check that fields of type enum have valid values
-    if (isSetAfraidOfAnimal() && !Animal.VALID_VALUES.contains(afraidOfAnimal.getValue())){
+    if (isSetAfraidOfAnimal() && !Animal.VALID_VALUES.contains(afraidOfAnimal)){
       throw new TProtocolException("The field 'afraidOfAnimal' has been assigned the invalid value " + afraidOfAnimal);
     }
   }
