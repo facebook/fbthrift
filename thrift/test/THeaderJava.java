@@ -290,7 +290,7 @@ public class THeaderJava extends junit.framework.TestCase {
       return thing;
     }
 
-    public int testEnum(int thing) {
+    public Numberz testEnum(Numberz thing) {
       return thing;
     }
 
@@ -314,7 +314,7 @@ public class THeaderJava extends junit.framework.TestCase {
       return mapmap;
     }
 
-    public Map<Long, Map<Integer, Insanity>> testInsanity(Insanity argument) {
+    public Map<Long, Map<Numberz, Insanity>> testInsanity(Insanity argument) {
 
       Xtruct hello = new Xtruct();
       hello.string_thing = "Hello2";
@@ -329,7 +329,7 @@ public class THeaderJava extends junit.framework.TestCase {
       goodbye.i64_thing = (long) 4;
 
       Insanity crazy = new Insanity();
-      crazy.userMap = new HashMap<Integer, Long>();
+      crazy.userMap = new HashMap<Numberz, Long>();
       crazy.xtructs = new ArrayList<Xtruct>();
 
       crazy.userMap.put(Numberz.EIGHT, (long) 8);
@@ -339,8 +339,8 @@ public class THeaderJava extends junit.framework.TestCase {
       crazy.userMap.put(Numberz.FIVE, (long) 5);
       crazy.xtructs.add(hello);
 
-      HashMap<Integer, Insanity> first_map = new HashMap<Integer, Insanity>();
-      HashMap<Integer, Insanity> second_map = new HashMap<Integer, Insanity>();
+      HashMap<Numberz, Insanity> first_map = new HashMap<Numberz, Insanity>();
+      HashMap<Numberz, Insanity> second_map = new HashMap<Numberz, Insanity>();
       ;
 
       first_map.put(Numberz.TWO, crazy);
@@ -348,7 +348,7 @@ public class THeaderJava extends junit.framework.TestCase {
 
       second_map.put(Numberz.SIX, looney);
 
-      Map<Long, Map<Integer, Insanity>> insane = new HashMap<Long, Map<Integer, Insanity>>();
+      Map<Long, Map<Numberz, Insanity>> insane = new HashMap<Long, Map<Numberz, Insanity>>();
       insane.put((long) 1, first_map);
       insane.put((long) 2, second_map);
 
@@ -356,10 +356,9 @@ public class THeaderJava extends junit.framework.TestCase {
     }
 
     public Xtruct testMulti(
-        byte arg0, int arg1, long arg2, Map<Short, String> arg3, int arg4, long arg5) {
+        byte arg0, int arg1, long arg2, Map<Short, String> arg3, Numberz arg4, long arg5) {
 
       Xtruct hello = new Xtruct();
-      ;
       hello.string_thing = "Hello2";
       hello.byte_thing = arg0;
       hello.i32_thing = arg1;
@@ -640,7 +639,7 @@ public class THeaderJava extends junit.framework.TestCase {
     assertEquals(listout, listin);
 
     /** ENUM TEST */
-    int ret = testClient.testEnum(Numberz.ONE);
+    Numberz ret = testClient.testEnum(Numberz.ONE);
 
     ret = testClient.testEnum(Numberz.TWO);
 
@@ -658,7 +657,7 @@ public class THeaderJava extends junit.framework.TestCase {
 
     /** INSANITY TEST */
     insane = new Insanity();
-    insane.userMap = new HashMap<Integer, Long>();
+    insane.userMap = new HashMap<Numberz, Long>();
     insane.userMap.put(Numberz.FIVE, (long) 5000);
     Xtruct truck = new Xtruct();
     truck.string_thing = "Truck";
@@ -667,15 +666,15 @@ public class THeaderJava extends junit.framework.TestCase {
     truck.i64_thing = 8;
     insane.xtructs = new ArrayList<Xtruct>();
     insane.xtructs.add(truck);
-    Map<Long, Map<Integer, Insanity>> whoa = testClient.testInsanity(insane);
+    Map<Long, Map<Numberz, Insanity>> whoa = testClient.testInsanity(insane);
     for (long key : whoa.keySet()) {
-      Map<Integer, Insanity> val = whoa.get(key);
+      Map<Numberz, Insanity> val = whoa.get(key);
 
-      for (int k2 : val.keySet()) {
+      for (Numberz k2 : val.keySet()) {
         Insanity v2 = val.get(k2);
-        Map<Integer, Long> userMap = v2.userMap;
+        Map<Numberz, Long> userMap = v2.userMap;
         if (userMap != null) {
-          for (int k3 : userMap.keySet()) {}
+          for (Numberz k3 : userMap.keySet()) {}
         }
 
         List<Xtruct> xtructs = v2.xtructs;

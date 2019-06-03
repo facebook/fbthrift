@@ -49,6 +49,22 @@ public final class TBaseHelper {
     return a.compareTo(b);
   }
 
+  public static <T extends TEnum> int compareTo(T a, T b) {
+    if (a == null && b == null) {
+      return 0;
+    } else if (a == null) {
+      return -1;
+    } else if (b == null) {
+      return +1;
+    }
+
+    if (a == b) { // performance, not correctness
+      return 0;
+    }
+
+    return compareTo(a.getValue(), b.getValue());
+  }
+
   public static int compareTo(boolean a, boolean b) {
     return a == b ? 0 : (a ? +1 : -1); // Boolean.compareTo
   }
@@ -502,6 +518,11 @@ public final class TBaseHelper {
     return (T) orig.deepCopy();
   }
 
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  public static <T extends TEnum> T deepCopy(T orig) {
+    return orig;
+  }
+
   // Called above and from TUnion
   @SuppressWarnings({"unchecked", "rawtypes"})
   /*package*/ static <T> T deepCopyUnchecked(T orig) {
@@ -532,6 +553,9 @@ public final class TBaseHelper {
     }
     if (orig instanceof TBase) {
       return (T) deepCopy((TBase) orig);
+    }
+    if (orig instanceof TEnum) {
+      return (T) deepCopy((TEnum) orig);
     }
     throw new UnsupportedOperationException(
         "Don't know how to deepCopy something of type "
@@ -741,6 +765,22 @@ public final class TBaseHelper {
   }
 
   /**
+   * Checks two enum for logical equality.
+   *
+   * @param a non-null item
+   * @param b non-null item
+   */
+  public static <T extends TEnum> boolean equalsNobinary(T a, T b) {
+    if (a == b) { // performance, not correctness
+      return true;
+    }
+    if (a == null || b == null) {
+      return false;
+    }
+    return a.getValue() == b.getValue();
+  }
+
+  /**
    * Checks two items for logical equality.
    *
    * @param a non-null item
@@ -879,6 +919,8 @@ public final class TBaseHelper {
             || a instanceof Float)) {
       return a.equals(b);
     } else if (a instanceof TBase) {
+      return a.equals(b);
+    } else if (a instanceof TEnum) {
       return a.equals(b);
     } else if (a instanceof Map && b instanceof Map) {
       return equalsNobinary((Map) a, (Map) b);

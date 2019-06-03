@@ -227,10 +227,10 @@ public class TCompactJSONProtocolTest {
               put(0.2, "0.two");
             }
           },
-          new HashMap<Integer, String>() {
+          new HashMap<Gender, String>() {
             {
-              put(1, "male");
-              put(2, "female");
+              put(Gender.MALE, "male");
+              put(Gender.FEMALE, "female");
             }
           });
 
