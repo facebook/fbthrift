@@ -83,21 +83,28 @@ TEST(FrozenUtil, FreezeToString) {
       {5, {{2, 10}, {3, 15}, {5, 25}}},
   };
   MappedFrozen<TestType> frozen;
+  MappedFrozen<TestType> frozen2;
   {
     std::string store;
     freezeToString(m, store);
+    std::string store2 = freezeToString(m);
     // In this example, the schema is 101 bytes and the data is only 17 bytes!
     // By default, this is stripped out by this overload.
     frozen = mapFrozen<TestType>(std::move(store));
+    frozen2 = mapFrozen<TestType>(std::move(store2));
   }
   EXPECT_EQ(frozen.at(3).at(5), 15);
+  EXPECT_EQ(frozen2.at(3).at(5), 15);
   {
     std::string store;
     freezeToString(m, store);
+    std::string store2 = freezeToString(m);
     // false = don't trim the space for the schema
     frozen = mapFrozen<TestType>(std::move(store), false);
+    frozen2 = mapFrozen<TestType>(std::move(store2), false);
   }
   EXPECT_EQ(frozen.at(3).at(5), 15);
+  EXPECT_EQ(frozen2.at(3).at(5), 15);
   {
     std::string store;
     freezeToString(m, store);

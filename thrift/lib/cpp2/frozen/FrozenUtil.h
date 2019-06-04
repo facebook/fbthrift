@@ -186,6 +186,13 @@ void freezeToString(const T& x, std::string& out) {
 }
 
 template <class T>
+std::string freezeToString(const T& x) {
+  std::string result;
+  freezeToString(x, result);
+  return result;
+}
+
+template <class T>
 std::string freezeDataToString(const T& x, const Layout<T>& layout) {
   std::string out;
   MallocFreezer freezer;
