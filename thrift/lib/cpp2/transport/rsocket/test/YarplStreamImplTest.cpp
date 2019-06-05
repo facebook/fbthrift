@@ -27,10 +27,8 @@
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/async/RSocketClientChannel.h>
-#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
 
@@ -50,27 +48,14 @@ namespace {
 using Pair = std::
     pair<Payload, std::shared_ptr<Flowable<std::unique_ptr<folly::IOBuf>>>>;
 
-template <class T>
-T makePayload(folly::StringPiece data);
-template <>
-rsocket::Payload makePayload<rsocket::Payload>(folly::StringPiece data) {
+rsocket::Payload makePayload(folly::StringPiece data) {
   return rsocket::Payload{data};
 }
-template <>
-rocket::Payload makePayload<rocket::Payload>(folly::StringPiece data) {
-  return rocket::Payload::makeFromData(data);
-}
 
-template <class PayloadT>
-std::string dataToString(PayloadT payload);
-template <>
-std::string dataToString<rsocket::Payload>(rsocket::Payload payload) {
+std::string dataToString(rsocket::Payload payload) {
   return payload.moveDataToString();
 }
-template <>
-std::string dataToString<rocket::Payload>(rocket::Payload payload) {
-  return folly::StringPiece(std::move(payload).data()->coalesce()).toString();
-}
+
 /// Construct a pipeline with a test subscriber against the supplied
 /// flowable.  Return the items that were sent to the subscriber.  If some
 /// exception was sent, the exception is thrown.
@@ -161,13 +146,9 @@ TEST(YarplStreamImplTest, EncodeDecode) {
   ASSERT_EQ(mIn.get_timestamp(), mOut.get_timestamp());
 }
 
-template <class P>
-class TakeFirstTest;
-
-template <>
-class TakeFirstTest<rsocket::Payload> : public testing::Test {
+class TakeFirstTest : public testing::Test {
  public:
-  static std::shared_ptr<detail::TakeFirst> makeTakeFirst(
+  std::shared_ptr<detail::TakeFirst> makeTakeFirst(
       folly::Function<void(
           rsocket::Payload&& first,
           std::shared_ptr<yarpl::flowable::Flowable<
@@ -185,90 +166,15 @@ class TakeFirstTest<rsocket::Payload> : public testing::Test {
   }
 };
 
-template <>
-class TakeFirstTest<rocket::Payload> : public testing::Test {
- public:
-  class RocketTestTakeFirst : public RocketClientChannel::TakeFirst {
-   public:
-    RocketTestTakeFirst(
-        folly::Function<void(
-            rocket::Payload&& first,
-            std::shared_ptr<yarpl::flowable::Flowable<
-                std::unique_ptr<folly::IOBuf>>> tail)> onNormalFirstResponse,
-        folly::Function<void(folly::exception_wrapper ew)> onErrorFirstResponse,
-        folly::Function<void()> onStreamTerminated)
-        : RocketClientChannel::TakeFirst(
-              dummyEvb_,
-              nullptr /* callback */,
-              std::chrono::milliseconds::zero()),
-          onNormalFirstResponse_(std::move(onNormalFirstResponse)),
-          onErrorFirstResponse_(std::move(onErrorFirstResponse)),
-          onStreamTerminated_(std::move(onStreamTerminated)) {}
-
-    ~RocketTestTakeFirst() override = default;
-
-   private:
-    folly::Function<void(
-        rocket::Payload&& first,
-        std::shared_ptr<
-            yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>> tail)>
-        onNormalFirstResponse_;
-    folly::Function<void(folly::exception_wrapper ew)> onErrorFirstResponse_;
-    folly::Function<void()> onStreamTerminated_;
-
-    void onNormalFirstResponse(
-        rocket::Payload&& first,
-        std::shared_ptr<
-            yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>> tail)
-        final {
-      onNormalFirstResponse_(std::move(first), std::move(tail));
-    }
-
-    void onErrorFirstResponse(folly::exception_wrapper ew) final {
-      onErrorFirstResponse_(std::move(ew));
-    }
-
-    void onStreamTerminated() final {
-      onStreamTerminated_();
-    }
-  };
-
-  static std::shared_ptr<RocketTestTakeFirst> makeTakeFirst(
-      folly::Function<void(
-          rocket::Payload&& first,
-          std::shared_ptr<yarpl::flowable::Flowable<
-              std::unique_ptr<folly::IOBuf>>> tail)> onNormalFirstResponse,
-      folly::Function<void(folly::exception_wrapper ew)> onErrorFirstResponse,
-      folly::Function<void()> onStreamTerminated) {
-    return std::make_shared<RocketTestTakeFirst>(
-        std::move(onNormalFirstResponse),
-        std::move(onErrorFirstResponse),
-        std::move(onStreamTerminated));
-  }
-
- private:
-  static folly::EventBase dummyEvb_;
-};
-
-folly::EventBase TakeFirstTest<rocket::Payload>::dummyEvb_;
-
-using PayloadTypes = testing::Types<
-    rsocket::Payload /* to test RSocketClientChannel's TakeFirst */,
-    rocket::Payload /* to test RocketClientChannel's TakeFirst */>;
-
-TYPED_TEST_CASE(TakeFirstTest, PayloadTypes);
-
-TYPED_TEST(TakeFirstTest, TakeFirstNormal) {
-  using PayloadT = TypeParam;
-
-  auto a = Flowable<PayloadT>::justOnce(makePayload<PayloadT>("Hello"));
-  auto b = Flowable<PayloadT>::justOnce(makePayload<PayloadT>("World"));
+TEST_F(TakeFirstTest, TakeFirstNormal) {
+  auto a = Flowable<rsocket::Payload>::justOnce(makePayload("Hello"));
+  auto b = Flowable<rsocket::Payload>::justOnce(makePayload("World"));
   auto combined = a->concatWith(b);
 
   folly::Baton<> baton;
   std::shared_ptr<Flowable<std::string>> flowable;
   bool completed = false;
-  auto takeFirst = this->makeTakeFirst(
+  auto takeFirst = makeTakeFirst(
       [&baton, &flowable](auto&& first, auto tail) {
         EXPECT_STREQ("Hello", dataToString(std::move(first)).c_str());
         flowable = tail->map(
@@ -287,16 +193,14 @@ TYPED_TEST(TakeFirstTest, TakeFirstNormal) {
   EXPECT_TRUE(completed);
 }
 
-TYPED_TEST(TakeFirstTest, TakeFirstDontSubscribe) {
-  using PayloadT = TypeParam;
-
-  auto a = Flowable<PayloadT>::justOnce(makePayload<PayloadT>("Hello"));
-  auto b = Flowable<PayloadT>::justOnce(makePayload<PayloadT>("World"));
+TEST_F(TakeFirstTest, TakeFirstDontSubscribe) {
+  auto a = Flowable<rsocket::Payload>::justOnce(makePayload("Hello"));
+  auto b = Flowable<rsocket::Payload>::justOnce(makePayload("World"));
   auto combined = a->concatWith(b);
 
   folly::Baton<> baton;
   bool completed = false;
-  auto takeFirst = this->makeTakeFirst(
+  auto takeFirst = makeTakeFirst(
       [&baton](auto&& first, auto /* tail */) {
         EXPECT_STREQ("Hello", dataToString(std::move(first)).c_str());
         // Do not subscribe to the `result.second`
@@ -311,13 +215,11 @@ TYPED_TEST(TakeFirstTest, TakeFirstDontSubscribe) {
   EXPECT_TRUE(completed);
 }
 
-TYPED_TEST(TakeFirstTest, TakeFirstNoResponse) {
-  using PayloadT = TypeParam;
-
+TEST_F(TakeFirstTest, TakeFirstNoResponse) {
   folly::ScopedEventBaseThread evbThread;
   folly::Baton<> baton;
   bool timedOut = false;
-  auto takeFirst = this->makeTakeFirst(
+  auto takeFirst = makeTakeFirst(
       [&baton](auto&& /* first */, auto /* tail */) { baton.post(); },
       [&timedOut, &baton](folly::exception_wrapper) {
         timedOut = true;
@@ -325,7 +227,7 @@ TYPED_TEST(TakeFirstTest, TakeFirstNoResponse) {
       },
       []() { FAIL() << "onTerminal should not be called"; });
 
-  Flowable<PayloadT>::never()->subscribe(takeFirst);
+  Flowable<rsocket::Payload>::never()->subscribe(takeFirst);
 
   ASSERT_FALSE(baton.timed_wait(std::chrono::seconds(1)));
 
@@ -337,12 +239,10 @@ TYPED_TEST(TakeFirstTest, TakeFirstNoResponse) {
   EXPECT_TRUE(timedOut);
 }
 
-TYPED_TEST(TakeFirstTest, TakeFirstErrorResponse) {
-  using PayloadT = TypeParam;
-
+TEST_F(TakeFirstTest, TakeFirstErrorResponse) {
   folly::ScopedEventBaseThread evbThread;
   folly::Baton<> baton;
-  auto takeFirst = this->makeTakeFirst(
+  auto takeFirst = makeTakeFirst(
       [](auto&& /* first */, auto /* tail */) { ASSERT_TRUE(false); },
       [&baton](folly::exception_wrapper ew) {
         ASSERT_STREQ(ew.what().c_str(), "std::runtime_error: error");
@@ -350,24 +250,23 @@ TYPED_TEST(TakeFirstTest, TakeFirstErrorResponse) {
       },
       []() { FAIL() << "onTerminal should not be called"; });
 
-  Flowable<PayloadT>::error(std::runtime_error("error"))->subscribe(takeFirst);
+  Flowable<rsocket::Payload>::error(std::runtime_error("error"))
+      ->subscribe(takeFirst);
 
   ASSERT_TRUE(baton.timed_wait(std::chrono::seconds(1)));
 }
 
-TYPED_TEST(TakeFirstTest, TakeFirstStreamError) {
-  using PayloadT = TypeParam;
-
+TEST_F(TakeFirstTest, TakeFirstStreamError) {
   folly::ScopedEventBaseThread evbThread;
   folly::Baton<> baton;
 
-  auto first = Flowable<PayloadT>::justOnce(makePayload<PayloadT>("Hello"));
-  auto error = Flowable<PayloadT>::error(std::runtime_error("error"));
+  auto first = Flowable<rsocket::Payload>::justOnce(makePayload("Hello"));
+  auto error = Flowable<rsocket::Payload>::error(std::runtime_error("error"));
   auto combined = first->concatWith(error);
 
   std::shared_ptr<Flowable<int>> flowable;
   bool completed = false;
-  auto takeFirst = this->makeTakeFirst(
+  auto takeFirst = makeTakeFirst(
       [&baton, &flowable](auto&& /* first */, auto tail) {
         flowable = tail->map([](auto) { return 1; });
         baton.post();
@@ -387,16 +286,14 @@ TYPED_TEST(TakeFirstTest, TakeFirstStreamError) {
   EXPECT_TRUE(completed);
 }
 
-TYPED_TEST(TakeFirstTest, TakeFirstMultiSubscribeInner) {
-  using PayloadT = TypeParam;
-
+TEST_F(TakeFirstTest, TakeFirstMultiSubscribeInner) {
   folly::ScopedEventBaseThread evbThread;
 
-  auto a = Flowable<PayloadT>::fromGenerator(
-               []() { return makePayload<PayloadT>("Hello"); })
+  auto a = Flowable<rsocket::Payload>::fromGenerator(
+               []() { return makePayload("Hello"); })
                ->take(1);
-  auto b = Flowable<PayloadT>::fromGenerator(
-               []() { return makePayload<PayloadT>("World"); })
+  auto b = Flowable<rsocket::Payload>::fromGenerator(
+               []() { return makePayload("World"); })
                ->take(1);
   auto combined = a->concatWith(b);
 
@@ -404,7 +301,7 @@ TYPED_TEST(TakeFirstTest, TakeFirstMultiSubscribeInner) {
   folly::Baton<> baton;
   std::shared_ptr<Flowable<std::unique_ptr<folly::IOBuf>>> flowable;
   bool completed = false;
-  auto takeFirst = this->makeTakeFirst(
+  auto takeFirst = makeTakeFirst(
       [&baton, &flowable](auto&& first, auto tail) {
         EXPECT_STREQ("Hello", dataToString(std::move(first)).c_str());
         flowable = std::move(tail);

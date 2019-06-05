@@ -181,49 +181,6 @@ class RocketClientChannel final : public ClientChannel {
     return folly::makeGuard([shared = shared_] { --shared->inflightRequests; });
   }
 
- public:
-  // Helper class that gives special handling to the first payload on the
-  // response stream. Public only for testing purposes.
-  class TakeFirst
-      : public yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>,
-        public yarpl::flowable::Subscriber<rocket::Payload> {
-   public:
-    TakeFirst(
-        folly::EventBase& evb,
-        std::unique_ptr<ThriftClientCallback> clientCallback,
-        std::chrono::milliseconds chunkTimeout);
-    ~TakeFirst() override;
-    void cancel();
-
-   private:
-    using T = rocket::Payload;
-    using U = std::unique_ptr<folly::IOBuf>;
-
-    bool awaitingFirstResponse_{true};
-    bool completeBeforeSubscribed_{false};
-    folly::exception_wrapper errorBeforeSubscribed_;
-
-    std::shared_ptr<yarpl::flowable::Subscriber<U>> subscriber_;
-    std::shared_ptr<yarpl::flowable::Subscription> subscription_;
-
-    folly::EventBase& evb_;
-    std::unique_ptr<ThriftClientCallback> clientCallback_;
-    const std::chrono::milliseconds chunkTimeout_;
-
-    void subscribe(std::shared_ptr<yarpl::flowable::Subscriber<U>>) final;
-    void onSubscribe(std::shared_ptr<yarpl::flowable::Subscription>) final;
-
-    void onNext(T) final;
-    void onError(folly::exception_wrapper ew) final;
-    void onComplete() final;
-
-   protected:
-    virtual void onNormalFirstResponse(
-        T&& firstPayload,
-        std::shared_ptr<Flowable<U>> tail);
-    virtual void onErrorFirstResponse(folly::exception_wrapper ew);
-    virtual void onStreamTerminated() {}
-  };
 };
 
 } // namespace thrift
