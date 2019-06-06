@@ -143,8 +143,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "HasDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err14 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err14 != nil {
+    argvalue0, err2 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err2 != nil {
       Usage()
       return
     }
@@ -157,8 +157,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "GetDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err15 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err15 != nil {
+    argvalue0, err3 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err3 != nil {
       Usage()
       return
     }
@@ -171,8 +171,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "PutDataById requires 2 args")
       flag.Usage()
     }
-    argvalue0, err16 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err16 != nil {
+    argvalue0, err4 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err4 != nil {
       Usage()
       return
     }
@@ -187,8 +187,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "LobDataById requires 2 args")
       flag.Usage()
     }
-    argvalue0, err18 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err18 != nil {
+    argvalue0, err6 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err6 != nil {
       Usage()
       return
     }

@@ -29,15 +29,15 @@ type MyServicePrioChildClient struct {
   *MyServicePrioParentClient
 }
 
-func (client *MyServicePrioChildClient) Close() error {
-  return client.CC.Close()
-}
-
-func (client *MyServicePrioChildClient) Open() error {
+func(client *MyServicePrioChildClient) Open() error {
   return client.CC.Open()
 }
 
-func (client *MyServicePrioChildClient) IsOpen() bool {
+func(client *MyServicePrioChildClient) Close() error {
+  return client.CC.Close()
+}
+
+func(client *MyServicePrioChildClient) IsOpen() bool {
   return client.CC.IsOpen()
 }
 
@@ -67,87 +67,45 @@ type MyServicePrioChildThreadsafeClient struct {
   *MyServicePrioParentThreadsafeClient
 }
 
+func(client *MyServicePrioChildThreadsafeClient) Open() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Open()
+}
+
+func(client *MyServicePrioChildThreadsafeClient) Close() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Close()
+}
+
+func(client *MyServicePrioChildThreadsafeClient) IsOpen() bool {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.IsOpen()
+}
+
 func NewMyServicePrioChildThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServicePrioChildThreadsafeClient {
-  return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClientFactory(t, f)}}
+  return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClientFactory(t, f)}
+}
 
 func NewMyServicePrioChildThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServicePrioChildThreadsafeClient {
   return &MyServicePrioChildThreadsafeClient{MyServicePrioParentThreadsafeClient: NewMyServicePrioParentThreadsafeClient(t, iprot, oprot)}
 }
 
-func (p *MyServicePrioChildThreadsafeClient) Threadsafe() {}
-
 func (p *MyServicePrioChildThreadsafeClient) Pang() (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendPang(); err != nil { return }
+  var args MyServicePrioChildPangArgs
+  err = p.CC.SendMsg("pang", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvPang()
-}
-
-func (p *MyServicePrioChildThreadsafeClient) sendPang()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("pang", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := MyServicePrioChildPangArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "pang" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "pang failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "pang failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error46 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error47 error
-    error47, err = error46.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error47
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "pang failed: invalid message type")
-    return
-  }
-  result := MyServicePrioChildPangResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  return
+  var result MyServicePrioChildPangResult
+  return p.CC.RecvMsg("pang", &result)
 }
 
 
@@ -156,9 +114,9 @@ type MyServicePrioChildProcessor struct {
 }
 
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
-  self48 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
-  self48.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
-  return self48
+  self20 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
+  self20.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  return self20
 }
 
 type myServicePrioChildProcessorPang struct {

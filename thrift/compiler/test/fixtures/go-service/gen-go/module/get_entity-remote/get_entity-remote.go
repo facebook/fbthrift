@@ -132,19 +132,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "GetEntity requires 1 args")
       flag.Usage()
     }
-    arg30 := flag.Arg(1)
-    mbTrans31 := thrift.NewMemoryBufferLen(len(arg30))
-    defer mbTrans31.Close()
-    _, err32 := mbTrans31.WriteString(arg30)
-    if err32 != nil {
+    arg6 := flag.Arg(1)
+    mbTrans7 := thrift.NewMemoryBufferLen(len(arg6))
+    defer mbTrans7.Close()
+    _, err8 := mbTrans7.WriteString(arg6)
+    if err8 != nil {
       Usage()
       return
     }
-    factory33 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt34 := factory33.GetProtocol(mbTrans31)
+    factory9 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt10 := factory9.GetProtocol(mbTrans7)
     argvalue0 := module.NewGetEntityRequest()
-    err35 := argvalue0.Read(jsProt34)
-    if err35 != nil {
+    err11 := argvalue0.Read(jsProt10)
+    if err11 != nil {
       Usage()
       return
     }

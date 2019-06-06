@@ -29,15 +29,15 @@ type MyNodeClient struct {
   *MyRootClient
 }
 
-func (client *MyNodeClient) Close() error {
-  return client.CC.Close()
-}
-
-func (client *MyNodeClient) Open() error {
+func(client *MyNodeClient) Open() error {
   return client.CC.Open()
 }
 
-func (client *MyNodeClient) IsOpen() bool {
+func(client *MyNodeClient) Close() error {
+  return client.CC.Close()
+}
+
+func(client *MyNodeClient) IsOpen() bool {
   return client.CC.IsOpen()
 }
 
@@ -67,87 +67,45 @@ type MyNodeThreadsafeClient struct {
   *MyRootThreadsafeClient
 }
 
+func(client *MyNodeThreadsafeClient) Open() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Open()
+}
+
+func(client *MyNodeThreadsafeClient) Close() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Close()
+}
+
+func(client *MyNodeThreadsafeClient) IsOpen() bool {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.IsOpen()
+}
+
 func NewMyNodeThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyNodeThreadsafeClient {
-  return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientFactory(t, f)}}
+  return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClientFactory(t, f)}
+}
 
 func NewMyNodeThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyNodeThreadsafeClient {
   return &MyNodeThreadsafeClient{MyRootThreadsafeClient: NewMyRootThreadsafeClient(t, iprot, oprot)}
 }
 
-func (p *MyNodeThreadsafeClient) Threadsafe() {}
-
 func (p *MyNodeThreadsafeClient) DoMid() (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendDoMid(); err != nil { return }
+  var args MyNodeDoMidArgs
+  err = p.CC.SendMsg("do_mid", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvDoMid()
-}
-
-func (p *MyNodeThreadsafeClient) sendDoMid()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("do_mid", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := MyNodeDoMidArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "do_mid" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_mid failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_mid failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error4 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error5 error
-    error5, err = error4.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error5
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_mid failed: invalid message type")
-    return
-  }
-  result := MyNodeDoMidResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  return
+  var result MyNodeDoMidResult
+  return p.CC.RecvMsg("do_mid", &result)
 }
 
 
@@ -156,9 +114,9 @@ type MyNodeProcessor struct {
 }
 
 func NewMyNodeProcessor(handler MyNode) *MyNodeProcessor {
-  self6 := &MyNodeProcessor{NewMyRootProcessor(handler)}
-  self6.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
-  return self6
+  self2 := &MyNodeProcessor{NewMyRootProcessor(handler)}
+  self2.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
+  return self2
 }
 
 type myNodeProcessorDoMid struct {

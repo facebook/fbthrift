@@ -125,19 +125,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "MapList requires 1 args")
       flag.Usage()
     }
-    arg30 := flag.Arg(1)
-    mbTrans31 := thrift.NewMemoryBufferLen(len(arg30))
-    defer mbTrans31.Close()
-    _, err32 := mbTrans31.WriteString(arg30)
-    if err32 != nil { 
+    arg20 := flag.Arg(1)
+    mbTrans21 := thrift.NewMemoryBufferLen(len(arg20))
+    defer mbTrans21.Close()
+    _, err22 := mbTrans21.WriteString(arg20)
+    if err22 != nil { 
       Usage()
       return
     }
-    factory33 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt34 := factory33.GetProtocol(mbTrans31)
+    factory23 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt24 := factory23.GetProtocol(mbTrans21)
     containerStruct0 := module.NewNestedContainersMapListArgs()
-    err35 := containerStruct0.ReadField1(jsProt34)
-    if err35 != nil {
+    err25 := containerStruct0.ReadField1(jsProt24)
+    if err25 != nil {
       Usage()
       return
     }
@@ -151,19 +151,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "MapSet requires 1 args")
       flag.Usage()
     }
-    arg36 := flag.Arg(1)
-    mbTrans37 := thrift.NewMemoryBufferLen(len(arg36))
-    defer mbTrans37.Close()
-    _, err38 := mbTrans37.WriteString(arg36)
-    if err38 != nil { 
+    arg26 := flag.Arg(1)
+    mbTrans27 := thrift.NewMemoryBufferLen(len(arg26))
+    defer mbTrans27.Close()
+    _, err28 := mbTrans27.WriteString(arg26)
+    if err28 != nil { 
       Usage()
       return
     }
-    factory39 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt40 := factory39.GetProtocol(mbTrans37)
+    factory29 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt30 := factory29.GetProtocol(mbTrans27)
     containerStruct0 := module.NewNestedContainersMapSetArgs()
-    err41 := containerStruct0.ReadField1(jsProt40)
-    if err41 != nil {
+    err31 := containerStruct0.ReadField1(jsProt30)
+    if err31 != nil {
       Usage()
       return
     }
@@ -177,19 +177,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "ListMap requires 1 args")
       flag.Usage()
     }
-    arg42 := flag.Arg(1)
-    mbTrans43 := thrift.NewMemoryBufferLen(len(arg42))
-    defer mbTrans43.Close()
-    _, err44 := mbTrans43.WriteString(arg42)
-    if err44 != nil { 
+    arg32 := flag.Arg(1)
+    mbTrans33 := thrift.NewMemoryBufferLen(len(arg32))
+    defer mbTrans33.Close()
+    _, err34 := mbTrans33.WriteString(arg32)
+    if err34 != nil { 
       Usage()
       return
     }
-    factory45 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt46 := factory45.GetProtocol(mbTrans43)
+    factory35 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt36 := factory35.GetProtocol(mbTrans33)
     containerStruct0 := module.NewNestedContainersListMapArgs()
-    err47 := containerStruct0.ReadField1(jsProt46)
-    if err47 != nil {
+    err37 := containerStruct0.ReadField1(jsProt36)
+    if err37 != nil {
       Usage()
       return
     }
@@ -203,19 +203,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "ListSet requires 1 args")
       flag.Usage()
     }
-    arg48 := flag.Arg(1)
-    mbTrans49 := thrift.NewMemoryBufferLen(len(arg48))
-    defer mbTrans49.Close()
-    _, err50 := mbTrans49.WriteString(arg48)
-    if err50 != nil { 
+    arg38 := flag.Arg(1)
+    mbTrans39 := thrift.NewMemoryBufferLen(len(arg38))
+    defer mbTrans39.Close()
+    _, err40 := mbTrans39.WriteString(arg38)
+    if err40 != nil { 
       Usage()
       return
     }
-    factory51 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt52 := factory51.GetProtocol(mbTrans49)
+    factory41 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt42 := factory41.GetProtocol(mbTrans39)
     containerStruct0 := module.NewNestedContainersListSetArgs()
-    err53 := containerStruct0.ReadField1(jsProt52)
-    if err53 != nil {
+    err43 := containerStruct0.ReadField1(jsProt42)
+    if err43 != nil {
       Usage()
       return
     }
@@ -229,19 +229,19 @@ func main() {
       fmt.Fprintln(os.Stderr, "Turtles requires 1 args")
       flag.Usage()
     }
-    arg54 := flag.Arg(1)
-    mbTrans55 := thrift.NewMemoryBufferLen(len(arg54))
-    defer mbTrans55.Close()
-    _, err56 := mbTrans55.WriteString(arg54)
-    if err56 != nil { 
+    arg44 := flag.Arg(1)
+    mbTrans45 := thrift.NewMemoryBufferLen(len(arg44))
+    defer mbTrans45.Close()
+    _, err46 := mbTrans45.WriteString(arg44)
+    if err46 != nil { 
       Usage()
       return
     }
-    factory57 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt58 := factory57.GetProtocol(mbTrans55)
+    factory47 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt48 := factory47.GetProtocol(mbTrans45)
     containerStruct0 := module.NewNestedContainersTurtlesArgs()
-    err59 := containerStruct0.ReadField1(jsProt58)
-    if err59 != nil {
+    err49 := containerStruct0.ReadField1(jsProt48)
+    if err49 != nil {
       Usage()
       return
     }

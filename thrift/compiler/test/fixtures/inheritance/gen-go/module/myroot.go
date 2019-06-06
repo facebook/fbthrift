@@ -27,15 +27,15 @@ type MyRootClient struct {
   CC thrift.ClientConn
 }
 
-func (client *MyRootClient) Close() error {
-  return client.CC.Close()
-}
-
-func (client *MyRootClient) Open() error {
+func(client *MyRootClient) Open() error {
   return client.CC.Open()
 }
 
-func (client *MyRootClient) IsOpen() bool {
+func(client *MyRootClient) Close() error {
+  return client.CC.Close()
+}
+
+func(client *MyRootClient) IsOpen() bool {
   return client.CC.IsOpen()
 }
 
@@ -62,106 +62,49 @@ func (p *MyRootClient) recvDoRoot() (err error) {
 
 
 type MyRootThreadsafeClient struct {
-  Transport thrift.Transport
-  ProtocolFactory thrift.ProtocolFactory
-  InputProtocol thrift.Protocol
-  OutputProtocol thrift.Protocol
-  SeqId int32
+  CC thrift.ClientConn
   Mu sync.Mutex
 }
 
+func(client *MyRootThreadsafeClient) Open() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Open()
+}
+
+func(client *MyRootThreadsafeClient) Close() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Close()
+}
+
+func(client *MyRootThreadsafeClient) IsOpen() bool {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.IsOpen()
+}
+
 func NewMyRootThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyRootThreadsafeClient {
-  return &MyRootThreadsafeClient{Transport: t,
-    ProtocolFactory: f,
-    InputProtocol: f.GetProtocol(t),
-    OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
+  return &MyRootThreadsafeClient{ CC: thrift.NewClientConn(t, f) }
 }
 
 func NewMyRootThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyRootThreadsafeClient {
-  return &MyRootThreadsafeClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
+  return &MyRootThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
-
-func (p *MyRootThreadsafeClient) Threadsafe() {}
 
 func (p *MyRootThreadsafeClient) DoRoot() (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendDoRoot(); err != nil { return }
+  var args MyRootDoRootArgs
+  err = p.CC.SendMsg("do_root", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvDoRoot()
-}
-
-func (p *MyRootThreadsafeClient) sendDoRoot()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("do_root", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := MyRootDoRootArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "do_root" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "do_root failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "do_root failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error0 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error1 error
-    error1, err = error0.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error1
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "do_root failed: invalid message type")
-    return
-  }
-  result := MyRootDoRootResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  return
+  var result MyRootDoRootResult
+  return p.CC.RecvMsg("do_root", &result)
 }
 
 
@@ -186,9 +129,9 @@ func (p *MyRootProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
 }
 
 func NewMyRootProcessor(handler MyRoot) *MyRootProcessor {
-  self2 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self2.processorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
-  return self2
+  self0 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0.processorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
+  return self0
 }
 
 type myRootProcessorDoRoot struct {

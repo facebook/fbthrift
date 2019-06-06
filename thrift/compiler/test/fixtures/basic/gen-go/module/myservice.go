@@ -43,15 +43,15 @@ type MyServiceClient struct {
   CC thrift.ClientConn
 }
 
-func (client *MyServiceClient) Close() error {
-  return client.CC.Close()
-}
-
-func (client *MyServiceClient) Open() error {
+func(client *MyServiceClient) Open() error {
   return client.CC.Open()
 }
 
-func (client *MyServiceClient) IsOpen() bool {
+func(client *MyServiceClient) Close() error {
+  return client.CC.Close()
+}
+
+func(client *MyServiceClient) IsOpen() bool {
   return client.CC.IsOpen()
 }
 
@@ -179,181 +179,67 @@ func (p *MyServiceClient) recvDoNothing() (err error) {
 
 
 type MyServiceThreadsafeClient struct {
-  Transport thrift.Transport
-  ProtocolFactory thrift.ProtocolFactory
-  InputProtocol thrift.Protocol
-  OutputProtocol thrift.Protocol
-  SeqId int32
+  CC thrift.ClientConn
   Mu sync.Mutex
 }
 
+func(client *MyServiceThreadsafeClient) Open() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Open()
+}
+
+func(client *MyServiceThreadsafeClient) Close() error {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.Close()
+}
+
+func(client *MyServiceThreadsafeClient) IsOpen() bool {
+  client.Mu.Lock()
+  defer client.Mu.Unlock()
+  return client.CC.IsOpen()
+}
+
 func NewMyServiceThreadsafeClientFactory(t thrift.Transport, f thrift.ProtocolFactory) *MyServiceThreadsafeClient {
-  return &MyServiceThreadsafeClient{Transport: t,
-    ProtocolFactory: f,
-    InputProtocol: f.GetProtocol(t),
-    OutputProtocol: f.GetProtocol(t),
-    SeqId: 0,
-  }
+  return &MyServiceThreadsafeClient{ CC: thrift.NewClientConn(t, f) }
 }
 
 func NewMyServiceThreadsafeClient(t thrift.Transport, iprot thrift.Protocol, oprot thrift.Protocol) *MyServiceThreadsafeClient {
-  return &MyServiceThreadsafeClient{Transport: t,
-    ProtocolFactory: nil,
-    InputProtocol: iprot,
-    OutputProtocol: oprot,
-    SeqId: 0,
-  }
+  return &MyServiceThreadsafeClient{ CC: thrift.NewClientConnWithProtocols(t, iprot, oprot) }
 }
-
-func (p *MyServiceThreadsafeClient) Threadsafe() {}
 
 func (p *MyServiceThreadsafeClient) Ping() (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendPing(); err != nil { return }
+  var args MyServicePingArgs
+  err = p.CC.SendMsg("ping", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvPing()
-}
-
-func (p *MyServiceThreadsafeClient) sendPing()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("ping", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := MyServicePingArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *MyServiceThreadsafeClient) recvPing() (err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "ping" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "ping failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "ping failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error0 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error1 error
-    error1, err = error0.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error1
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "ping failed: invalid message type")
-    return
-  }
-  result := MyServicePingResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  return
+  var result MyServicePingResult
+  return p.CC.RecvMsg("ping", &result)
 }
 
 func (p *MyServiceThreadsafeClient) GetRandomData() (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendGetRandomData(); err != nil { return }
+  var args MyServiceGetRandomDataArgs
+  err = p.CC.SendMsg("getRandomData", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvGetRandomData()
-}
-
-func (p *MyServiceThreadsafeClient) sendGetRandomData()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getRandomData", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := MyServiceGetRandomDataArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *MyServiceThreadsafeClient) recvGetRandomData() (value string, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getRandomData" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getRandomData failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getRandomData failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error2 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error3 error
-    error3, err = error2.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error3
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getRandomData failed: invalid message type")
-    return
-  }
-  result := MyServiceGetRandomDataResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result MyServiceGetRandomDataResult
+  err = p.CC.RecvMsg("getRandomData", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -361,77 +247,21 @@ func (p *MyServiceThreadsafeClient) recvGetRandomData() (value string, err error
 func (p *MyServiceThreadsafeClient) HasDataById(id int64) (_r bool, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendHasDataById(id); err != nil { return }
-  return p.recvHasDataById()
-}
-
-func (p *MyServiceThreadsafeClient) sendHasDataById(id int64)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("hasDataById", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := MyServiceHasDataByIdArgs{
-  Id : id,
+    Id : id,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("hasDataById", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvHasDataById()
 }
 
 
 func (p *MyServiceThreadsafeClient) recvHasDataById() (value bool, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "hasDataById" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "hasDataById failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "hasDataById failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error4 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error5 error
-    error5, err = error4.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error5
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "hasDataById failed: invalid message type")
-    return
-  }
-  result := MyServiceHasDataByIdResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result MyServiceHasDataByIdResult
+  err = p.CC.RecvMsg("hasDataById", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -439,77 +269,21 @@ func (p *MyServiceThreadsafeClient) recvHasDataById() (value bool, err error) {
 func (p *MyServiceThreadsafeClient) GetDataById(id int64) (_r string, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendGetDataById(id); err != nil { return }
-  return p.recvGetDataById()
-}
-
-func (p *MyServiceThreadsafeClient) sendGetDataById(id int64)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("getDataById", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := MyServiceGetDataByIdArgs{
-  Id : id,
+    Id : id,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("getDataById", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvGetDataById()
 }
 
 
 func (p *MyServiceThreadsafeClient) recvGetDataById() (value string, err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "getDataById" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "getDataById failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "getDataById failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error6 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error7 error
-    error7, err = error6.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error7
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "getDataById failed: invalid message type")
-    return
-  }
-  result := MyServiceGetDataByIdResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  value = result.GetSuccess()
-  return
+  var result MyServiceGetDataByIdResult
+  err = p.CC.RecvMsg("getDataById", &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
 }
 
 // Parameters:
@@ -518,77 +292,19 @@ func (p *MyServiceThreadsafeClient) recvGetDataById() (value string, err error) 
 func (p *MyServiceThreadsafeClient) PutDataById(id int64, data string) (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendPutDataById(id, data); err != nil { return }
-  return p.recvPutDataById()
-}
-
-func (p *MyServiceThreadsafeClient) sendPutDataById(id int64, data string)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("putDataById", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
   args := MyServicePutDataByIdArgs{
-  Id : id,
-  Data : data,
+    Id : id,
+    Data : data,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("putDataById", &args, thrift.CALL)
+  if err != nil { return }
+  return p.recvPutDataById()
 }
 
 
 func (p *MyServiceThreadsafeClient) recvPutDataById() (err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "putDataById" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "putDataById failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "putDataById failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error8 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error9 error
-    error9, err = error8.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error9
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "putDataById failed: invalid message type")
-    return
-  }
-  result := MyServicePutDataByIdResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  return
+  var result MyServicePutDataByIdResult
+  return p.CC.RecvMsg("putDataById", &result)
 }
 
 // Parameters:
@@ -597,105 +313,28 @@ func (p *MyServiceThreadsafeClient) recvPutDataById() (err error) {
 func (p *MyServiceThreadsafeClient) LobDataById(id int64, data string) (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendLobDataById(id, data); err != nil { return }
-  return
-}
-
-func (p *MyServiceThreadsafeClient) sendLobDataById(id int64, data string)(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("lobDataById", thrift.ONEWAY, p.SeqId); err != nil {
-      return
-  }
   args := MyServiceLobDataByIdArgs{
-  Id : id,
-  Data : data,
+    Id : id,
+    Data : data,
   }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
+  err = p.CC.SendMsg("lobDataById", &args, thrift.ONEWAY)
+  if err != nil { return }
+  return
 }
 
 func (p *MyServiceThreadsafeClient) DoNothing() (err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
-  if err = p.sendDoNothing(); err != nil { return }
+  var args MyServiceDoNothingArgs
+  err = p.CC.SendMsg("doNothing", &args, thrift.CALL)
+  if err != nil { return }
   return p.recvDoNothing()
-}
-
-func (p *MyServiceThreadsafeClient) sendDoNothing()(err error) {
-  oprot := p.OutputProtocol
-  if oprot == nil {
-    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.OutputProtocol = oprot
-  }
-  p.SeqId++
-  if err = oprot.WriteMessageBegin("doNothing", thrift.CALL, p.SeqId); err != nil {
-      return
-  }
-  args := MyServiceDoNothingArgs{
-  }
-  if err = args.Write(oprot); err != nil {
-      return
-  }
-  if err = oprot.WriteMessageEnd(); err != nil {
-      return
-  }
-  return oprot.Flush()
 }
 
 
 func (p *MyServiceThreadsafeClient) recvDoNothing() (err error) {
-  iprot := p.InputProtocol
-  if iprot == nil {
-    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
-    p.InputProtocol = iprot
-  }
-  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
-  if err != nil {
-    return
-  }
-  if method != "doNothing" {
-    err = thrift.NewApplicationException(thrift.WRONG_METHOD_NAME, "doNothing failed: wrong method name")
-    return
-  }
-  if p.SeqId != seqId {
-    err = thrift.NewApplicationException(thrift.BAD_SEQUENCE_ID, "doNothing failed: out of sequence response")
-    return
-  }
-  if mTypeId == thrift.EXCEPTION {
-    error10 := thrift.NewApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
-    var error11 error
-    error11, err = error10.Read(iprot)
-    if err != nil {
-      return
-    }
-    if err = iprot.ReadMessageEnd(); err != nil {
-      return
-    }
-    err = error11
-    return
-  }
-  if mTypeId != thrift.REPLY {
-    err = thrift.NewApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "doNothing failed: invalid message type")
-    return
-  }
-  result := MyServiceDoNothingResult{}
-  if err = result.Read(iprot); err != nil {
-    return
-  }
-  if err = iprot.ReadMessageEnd(); err != nil {
-    return
-  }
-  return
+  var result MyServiceDoNothingResult
+  return p.CC.RecvMsg("doNothing", &result)
 }
 
 
@@ -720,15 +359,15 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
 }
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self12 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self12.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
-  self12.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
-  self12.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
-  self12.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
-  self12.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
-  self12.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
-  self12.processorMap["doNothing"] = &myServiceProcessorDoNothing{handler:handler}
-  return self12
+  self0 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0.processorMap["ping"] = &myServiceProcessorPing{handler:handler}
+  self0.processorMap["getRandomData"] = &myServiceProcessorGetRandomData{handler:handler}
+  self0.processorMap["hasDataById"] = &myServiceProcessorHasDataById{handler:handler}
+  self0.processorMap["getDataById"] = &myServiceProcessorGetDataById{handler:handler}
+  self0.processorMap["putDataById"] = &myServiceProcessorPutDataById{handler:handler}
+  self0.processorMap["lobDataById"] = &myServiceProcessorLobDataById{handler:handler}
+  self0.processorMap["doNothing"] = &myServiceProcessorDoNothing{handler:handler}
+  return self0
 }
 
 type myServiceProcessorPing struct {
