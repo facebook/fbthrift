@@ -24,7 +24,6 @@
 #include <folly/fibers/Fiber.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/futures/Future.h>
-#include <folly/futures/helpers.h>
 #include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>

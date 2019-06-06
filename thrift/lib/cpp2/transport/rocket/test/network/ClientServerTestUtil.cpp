@@ -33,7 +33,7 @@
 #include <folly/fibers/Baton.h>
 #include <folly/fibers/FiberManager.h>
 #include <folly/fibers/FiberManagerMap.h>
-#include <folly/futures/helpers.h>
+#include <folly/futures/Future.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>

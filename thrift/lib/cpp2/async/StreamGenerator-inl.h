@@ -22,7 +22,6 @@
 #include <folly/experimental/coro/Task.h>
 #endif
 #include <folly/futures/Future.h>
-#include <folly/futures/helpers.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
 #if FOLLY_HAS_COROUTINES
