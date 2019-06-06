@@ -44,7 +44,7 @@ class SubscriberAdaptor : public SubscriberIf<std::unique_ptr<ValueIf>> {
     impl_->onComplete();
   }
 
-  void onError(folly::exception_wrapper e) {
+  void onError(folly::exception_wrapper e) override {
     impl_->onError(std::move(e));
   }
 
