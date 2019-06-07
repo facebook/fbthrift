@@ -16,10 +16,10 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/test/Structs.h>
 
-#include <folly/Benchmark.h>
-#include <folly/Optional.h>
 #include <folly/portability/GFlags.h>
 #include <glog/logging.h>
+#include <folly/Benchmark.h>
+#include <folly/Optional.h>
 
 #include <vector>
 
@@ -61,14 +61,13 @@ void readBench(size_t iters) {
   susp.rehire();
 }
 
-#define X1(proto, rdwr, bench)                         \
-  BENCHMARK(proto##Protocol_##rdwr##_##bench, iters) { \
-    rdwr##Bench<proto##Serializer, bench>(iters);      \
+#define X1(proto, rdwr, bench) \
+  BENCHMARK(proto ## Protocol_ ## rdwr ## _ ## bench, iters) { \
+    rdwr ## Bench<proto##Serializer, bench>(iters); \
   }
 
-#define X2(proto, bench)  \
-  X1(proto, write, bench) \
-  X1(proto, read, bench)
+#define X2(proto, bench) X1(proto, write, bench) \
+                         X1(proto, read, bench)
 
 #define X(proto)            \
   X2(proto, Empty)          \
@@ -89,7 +88,6 @@ void readBench(size_t iters) {
 
 X(Binary)
 X(Compact)
-X(Nimble)
 
 int main(int argc, char** argv) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
