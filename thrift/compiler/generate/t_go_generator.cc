@@ -2080,9 +2080,9 @@ void t_go_generator::generate_service_client_common_methods(
   };
 
   vector<methodDefinition> methodsToGenerate = {
-      {.name = "Open", .returnType = "error"},
-      {.name = "Close", .returnType = "error"},
-      {.name = "IsOpen", .returnType = "bool"},
+      {"Open", "error"},
+      {"Close", "error"},
+      {"IsOpen", "bool"},
   };
 
   for (auto& method : methodsToGenerate) {
