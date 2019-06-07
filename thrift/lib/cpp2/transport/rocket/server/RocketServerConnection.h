@@ -62,12 +62,12 @@ class RocketServerConnection
   void close(folly::exception_wrapper ew);
 
   void onContextConstructed() {
-    ++inflight_;
+    ++inflightRequests_;
   }
 
   void onContextDestroyed() {
-    DCHECK(inflight_ != 0);
-    --inflight_;
+    DCHECK(inflightRequests_ != 0);
+    --inflightRequests_;
     closeIfNeeded();
   }
 
@@ -97,7 +97,11 @@ class RocketServerConnection
   folly::F14NodeMap<StreamId, RocketServerPartialFrameContext> partialFrames_;
 
   // Total number of active Request* frames ("streams" in protocol parlance)
-  size_t inflight_{0};
+  size_t inflightRequests_{0};
+  // Total number of inflight writes to the underlying transport, i.e., writes
+  // for which the writeSuccess()/writeErr() has not yet been called.
+  size_t inflightWrites_{0};
+
   enum class ConnectionState : uint8_t {
     ALIVE,
     CLOSING,
@@ -141,6 +145,7 @@ class RocketServerConnection
 
   void closeIfNeeded();
   void flushPendingWrites() {
+    ++inflightWrites_;
     auto writes = std::move(bufferedWrites_);
     socket_->writeChain(this, std::move(writes));
   }

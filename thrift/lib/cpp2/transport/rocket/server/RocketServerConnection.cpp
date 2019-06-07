@@ -79,12 +79,14 @@ void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
 }
 
 RocketServerConnection::~RocketServerConnection() {
-  DCHECK(inflight_ == 0);
+  DCHECK(inflightRequests_ == 0);
+  DCHECK(inflightWrites_ == 0);
   DCHECK(batchWriteLoopCallback_.empty());
 }
 
 void RocketServerConnection::closeIfNeeded() {
-  if (state_ != ConnectionState::CLOSING || inflight_ != streams_.size()) {
+  if (state_ != ConnectionState::CLOSING ||
+      inflightRequests_ != streams_.size() || inflightWrites_ != 0) {
     return;
   }
 
@@ -244,7 +246,8 @@ void RocketServerConnection::timeoutExpired() noexcept {
 }
 
 bool RocketServerConnection::isBusy() const {
-  return inflight_ > 0 || batchWriteLoopCallback_.isLoopCallbackScheduled();
+  return inflightRequests_ != 0 || inflightWrites_ != 0 ||
+      batchWriteLoopCallback_.isLoopCallbackScheduled();
 }
 
 // On graceful shutdown, ConnectionManager will first fire the
@@ -267,12 +270,18 @@ void RocketServerConnection::closeWhenIdle() {
       "Closing idle connection"));
 }
 
-void RocketServerConnection::writeSuccess() noexcept {}
+void RocketServerConnection::writeSuccess() noexcept {
+  DCHECK(inflightWrites_ != 0);
+  --inflightWrites_;
+  closeIfNeeded();
+}
 
 void RocketServerConnection::writeErr(
     size_t bytesWritten,
     const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
+  DCHECK(inflightWrites_ != 0);
+  --inflightWrites_;
   close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."
       " AsyncSocketException: {}",
