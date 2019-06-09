@@ -18,8 +18,12 @@
 
 #include <algorithm>
 #include <chrono>
-#include <stdexcept>
+#include <exception>
+#include <memory>
+#include <utility>
 
+#include <folly/ExceptionString.h>
+#include <folly/ExceptionWrapper.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocketException.h>
@@ -58,41 +62,46 @@ template <class T>
 void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
   folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
-  constexpr size_t kBytesForFrameSize = 3;
+  try {
+    readBuffer_.append(nbytes);
 
-  readBuffer_.append(nbytes);
-
-  while (!readBuffer_.empty()) {
-    if (readBuffer_.length() < Serializer::kBytesForFrameOrMetadataLength) {
-      return;
-    }
-
-    folly::io::Cursor cursor(&readBuffer_);
-    const size_t totalFrameSize = Serializer::kBytesForFrameOrMetadataLength +
-        readFrameOrMetadataSize(cursor);
-
-    if (readBuffer_.length() < totalFrameSize) {
-      if (readBuffer_.length() + readBuffer_.tailroom() < totalFrameSize) {
-        DCHECK(!readBuffer_.isChained());
-        readBuffer_.unshareOne();
-        bufferSize_ = std::max<size_t>(bufferSize_, totalFrameSize);
-        readBuffer_.reserve(
-            0 /* minHeadroom */,
-            bufferSize_ - readBuffer_.length() /* minTailroom */);
+    while (!readBuffer_.empty()) {
+      if (readBuffer_.length() < Serializer::kBytesForFrameOrMetadataLength) {
+        return;
       }
-      return;
+
+      folly::io::Cursor cursor(&readBuffer_);
+      const size_t totalFrameSize = Serializer::kBytesForFrameOrMetadataLength +
+          readFrameOrMetadataSize(cursor);
+
+      if (readBuffer_.length() < totalFrameSize) {
+        if (readBuffer_.length() + readBuffer_.tailroom() < totalFrameSize) {
+          DCHECK(!readBuffer_.isChained());
+          readBuffer_.unshareOne();
+          bufferSize_ = std::max<size_t>(bufferSize_, totalFrameSize);
+          readBuffer_.reserve(
+              0 /* minHeadroom */,
+              bufferSize_ - readBuffer_.length() /* minTailroom */);
+        }
+        return;
+      }
+
+      // Otherwise, we have a full frame to handle.
+      const size_t bytesToClone =
+          totalFrameSize - Serializer::kBytesForFrameOrMetadataLength;
+      std::unique_ptr<folly::IOBuf> frame;
+      cursor.clone(frame, bytesToClone);
+      owner_.handleFrame(std::move(frame));
+      readBuffer_.trimStart(totalFrameSize);
     }
-
-    // Otherwise, we have a full frame to handle.
-    const size_t bytesToClone =
-        totalFrameSize - Serializer::kBytesForFrameOrMetadataLength;
-    std::unique_ptr<folly::IOBuf> frame;
-    cursor.clone(frame, bytesToClone);
-    owner_.handleFrame(std::move(frame));
-    readBuffer_.trimStart(totalFrameSize);
+  } catch (const std::exception& ex) {
+    LOG(ERROR) << "Bad frame received, closing connection: "
+               << folly::exceptionStr(ex);
+    owner_.close(folly::exception_wrapper{std::current_exception(), ex});
+  } catch (...) {
+    LOG(ERROR) << "Bad frame received, closing connection";
+    owner_.close(folly::exception_wrapper{std::current_exception()});
   }
-
-  // TODO Periodically shrink the buffer back to kMaxBufferSize
 }
 
 template <class T>
