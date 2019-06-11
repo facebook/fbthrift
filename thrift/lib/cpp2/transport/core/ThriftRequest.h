@@ -55,7 +55,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
       RequestRpcMetadata&& metadata,
       Cpp2ConnContext& connContext)
       : serverConfigs_(serverConfigs),
-        name_(std::move(metadata).name_ref().value_or({})),
         kind_(metadata.kind_ref().value_or(
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
         seqId_(metadata.seqId_ref().value_or(0)),
@@ -86,7 +85,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
 
     reqContext_.setMessageBeginSize(0);
-    reqContext_.setMethodName(name_);
+    if (auto methodName = metadata.name_ref()) {
+      reqContext_.setMethodName(std::move(*methodName));
+    }
     reqContext_.setProtoSeqId(seqId_);
 
     if (auto* observer = serverConfigs_.getObserver()) {
@@ -125,7 +126,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   const std::string& getMethodName() const {
-    return name_;
+    return reqContext_.getMethodName();
   }
 
   void sendReply(
@@ -275,7 +276,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> exbuf;
       auto proto = header_.getProtocolId();
       try {
-        exbuf = serializeError(proto, tae, name_, seqId_);
+        exbuf = serializeError(proto, tae, getMethodName(), seqId_);
       } catch (const protocol::TProtocolException& pe) {
         // Should never happen.  Log an error and return an empty
         // payload.
@@ -373,7 +374,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
   server::ServerConfigs& serverConfigs_;
 
  private:
-  const std::string name_;
   const RpcKind kind_;
   const int32_t seqId_;
   std::atomic<bool> active_;

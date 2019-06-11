@@ -270,7 +270,7 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     methodName_ = std::move(methodName);
   }
 
-  const std::string& getMethodName() {
+  const std::string& getMethodName() const {
     return methodName_;
   }
 
