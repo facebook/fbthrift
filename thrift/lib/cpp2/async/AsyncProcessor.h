@@ -190,6 +190,13 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
     size_t bufSize = detail::serializedResponseBodySizeZC(prot, &result);
     bufSize += prot->serializedMessageSize(method);
+
+    // Preallocate small buffer headroom for transports metadata & framing.
+    constexpr size_t kHeadroomBytes = 128;
+    auto buf = folly::IOBuf::create(kHeadroomBytes + bufSize);
+    buf->advance(kHeadroomBytes);
+    queue.append(std::move(buf));
+
     prot->setOutput(&queue, bufSize);
     ctx->preWrite();
     prot->writeMessageBegin(method, apache::thrift::T_REPLY, protoSeqId);
