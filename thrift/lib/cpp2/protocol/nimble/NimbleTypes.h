@@ -104,6 +104,8 @@ inline NimbleFieldChunkHint ttypeToNimbleFieldChunkHint(TType fieldType) {
     case TType::T_MAP:
     case TType::T_STRUCT:
       return NimbleFieldChunkHint::COMPLEX_TYPE;
+    case TType::T_STOP:
+      return NimbleFieldChunkHint::COMPLEX_METADATA;
     default:
       folly::assume_unreachable();
   }

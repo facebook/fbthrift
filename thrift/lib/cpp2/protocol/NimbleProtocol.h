@@ -218,8 +218,21 @@ class NimbleProtocolReader {
     void readStructEnd(NimbleProtocolReader* /*iprot*/) {}
 
     void readFieldBegin(NimbleProtocolReader* iprot) {
-      // the first three params are dummy
-      iprot->advanceToNextField(0, 0, TType::T_STOP, *this);
+      // Right now, advanceToNextField parses its field chunk on the case where
+      // it fails to match; this is the only place that parsing occurs. So we
+      // call it with dummy data in order to initialize those fields. There's an
+      // edge case where the parsing succeeds; in that case we fill in the data
+      // we care about manually.
+      //
+      // This is probably not the right division of concerns; the match-failure
+      // path should just store the field chunk into the read state, and let its
+      // caller (who is on a slow, non-inlined path) deal with the parsing
+      // logic. That's somewhat tricky to change though; in the short term, this
+      // works.
+      bool hitStop = iprot->advanceToNextField(0, 0, TType::T_STOP, *this);
+      if (hitStop) {
+        this->fieldType = TType::T_STOP;
+      }
     }
 
     FOLLY_NOINLINE void readFieldBeginNoInline(

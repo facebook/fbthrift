@@ -513,10 +513,17 @@ inline void NimbleProtocolReader::checkComplexFieldData(
 
 bool NimbleProtocolReader::advanceToNextField(
     int32_t /*currFieldId*/,
-    int32_t /*nextFieldId*/,
-    TType /*nextFieldType*/,
+    int32_t nextFieldId,
+    TType nextFieldType,
     StructReadState& state) {
-  uint32_t fieldChunk = decoder_.nextFieldChunk();
+  std::uint32_t expectedNextChunk =
+      ((nextFieldId << kFieldChunkHintBits) |
+       ttypeToNimbleFieldChunkHint(nextFieldType));
+  std::uint32_t fieldChunk = decoder_.nextFieldChunk();
+  if (LIKELY(expectedNextChunk == fieldChunk)) {
+    return true;
+  }
+
   if (fieldChunk == 0) {
     state.fieldType = TType::T_STOP;
     return false;
