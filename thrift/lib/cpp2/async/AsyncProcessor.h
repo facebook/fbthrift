@@ -18,6 +18,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/String.h>
+#include <folly/container/F14Map.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -157,7 +158,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProcessFunc>
-  using ProcessMap = std::unordered_map<std::string, ProcessFunc>;
+  using ProcessMap = folly::F14ValueMap<std::string, ProcessFunc>;
 
  protected:
   virtual folly::Optional<std::string> getCacheKey(
