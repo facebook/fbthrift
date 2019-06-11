@@ -5,41 +5,52 @@
  *  @generated
  */
 
-import java.lang.reflect.*;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Collections;
 import com.facebook.thrift.IntRangeSet;
 import java.util.Map;
 import java.util.HashMap;
 
 @SuppressWarnings({ "unused" })
-public class MyEnum {
-  public static final int MyValue1 = 0;
-  public static final int MyValue2 = 1;
-  public static final int DOMAIN = 2;
+public enum MyEnum implements com.facebook.thrift.TEnum {
+  MyValue1(0),
+  MyValue2(1),
+  DOMAIN(2);
 
-  public static final IntRangeSet VALID_VALUES;
+  public static final IntRangeSet VALID_VALUES = new IntRangeSet(0, 1, 2);
   public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
 
   static {
-    try {
-      Class<?> klass = MyEnum.class;
-      for (Field f : klass.getDeclaredFields()) {
-        if (f.getType() == Integer.TYPE) {
-          VALUES_TO_NAMES.put(f.getInt(null), f.getName());
-        }
-      }
-    } catch (ReflectiveOperationException e) {
-      throw new AssertionError(e);
+    for (MyEnum e: values()) {
+      VALUES_TO_NAMES.put(e.getValue(), e.name());
     }
+  }
 
-    int[] values = new int[VALUES_TO_NAMES.size()];
-    int i = 0;
-    for (Integer v : VALUES_TO_NAMES.keySet()) {
-      values[i++] = v;
+  private final int value;
+
+  private MyEnum(int value) {
+    this.value = value;
+  }
+
+  /**
+   * Get the integer value of this enum value, as defined in the Thrift IDL.
+   */
+  public int getValue() {
+    return value;
+  }
+
+  /**
+   * Find a the enum type by its integer value, as defined in the Thrift IDL.
+   * @return null if the value is not found.
+   */
+  public static MyEnum findByValue(int value) { 
+    switch (value) {
+      case 0:
+        return MyValue1;
+      case 1:
+        return MyValue2;
+      case 2:
+        return DOMAIN;
+      default:
+        return null;
     }
-
-    VALID_VALUES = new IntRangeSet(values);
   }
 }
