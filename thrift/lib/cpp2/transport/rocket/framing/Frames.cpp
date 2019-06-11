@@ -43,20 +43,17 @@ namespace {
 // All frame sizes (header size + payload size) are encoded in 3 bytes
 constexpr size_t kMaxFragmentedPayloadSize = 0xffffff - 512;
 
-template <class Frame>
-void readPayloadCommon(
-    Frame& frame,
+Payload readPayload(
     bool expectingMetadata,
-    folly::io::Cursor& cursor) {
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> buffer) {
+  size_t metadataSize = 0;
   if (expectingMetadata) {
-    auto metadataSize = readFrameOrMetadataSize(cursor);
-    if (metadataSize > 0) {
-      cursor.clone(frame.payload().metadata(), metadataSize);
-    }
+    metadataSize = readFrameOrMetadataSize(cursor);
   }
 
-  // Finally, fix up payload data.
-  frame.payload().data()->trimStart(cursor.getCurrentPosition());
+  buffer->trimStart(cursor.getCurrentPosition());
+  return Payload::makeCombined(std::move(buffer), metadataSize);
 }
 
 template <class Frame>
@@ -64,27 +61,19 @@ void serializeInFragmentsSlowCommon(
     Frame&& frame,
     Flags flags,
     Serializer& writer) {
-  folly::IOBufQueue metadataQueue(folly::IOBufQueue::cacheChainLength());
-  folly::IOBufQueue dataQueue(folly::IOBufQueue::cacheChainLength());
-
-  // The nonempty check here is not strictly necessary, since writePayload()
-  // will always check nonemptiness of metadata before serializing.
-  if (frame.payload().hasNonemptyMetadata()) {
-    metadataQueue.append(std::move(frame.payload()).metadata());
-  }
-  dataQueue.append(std::move(frame.payload()).data());
+  auto metadataSize = frame.payload().metadataSize();
+  folly::IOBufQueue bufferQueue(folly::IOBufQueue::cacheChainLength());
+  bufferQueue.append(std::move(frame.payload()).buffer());
 
   bool isFirstFrame = true;
   bool finished = false;
-  while (!finished) {
-    size_t bytesLeft = kMaxFragmentedPayloadSize;
-    auto md = metadataQueue.splitAtMost(bytesLeft);
-    bytesLeft -= md->computeChainDataLength();
-    auto d = dataQueue.splitAtMost(bytesLeft);
+  do {
+    size_t metadataChunk = std::min(metadataSize, kMaxFragmentedPayloadSize);
+    metadataSize -= metadataChunk;
+    auto chunk = bufferQueue.splitAtMost(kMaxFragmentedPayloadSize);
+    finished = bufferQueue.empty();
 
-    finished = metadataQueue.empty() && dataQueue.empty();
-    auto p = Payload::makeFromMetadataAndData(std::move(md), std::move(d));
-    DCHECK_LE(p.metadataAndDataSize(), kMaxFragmentedPayloadSize);
+    auto p = Payload::makeCombined(std::move(chunk), metadataChunk);
     if (std::exchange(isFirstFrame, false)) {
       frame.payload() = std::move(p);
       frame.setHasFollows(!finished);
@@ -93,7 +82,7 @@ void serializeInFragmentsSlowCommon(
       PayloadFrame pf(frame.streamId(), std::move(p), flags.follows(!finished));
       std::move(pf).serialize(writer);
     }
-  }
+  } while (!finished);
 }
 } // namespace
 
@@ -409,7 +398,7 @@ std::unique_ptr<folly::IOBuf> PayloadFrame::serialize() && {
   if (LIKELY(
           payload_.metadataAndDataSize() <= kMaxFragmentedPayloadSize &&
           payload_.hasNonemptyMetadata() &&
-          payload_.metadata()->headroom() >= kRsocketOverheadMax)) {
+          payload_.buffer()->headroom() >= kRsocketOverheadMax)) {
     // Use headroom in the metadata struct for rsocket header.
     return std::move(*this).serializeUsingMetadataHeadroom();
   }
@@ -420,21 +409,18 @@ std::unique_ptr<folly::IOBuf> PayloadFrame::serialize() && {
 
 std::unique_ptr<folly::IOBuf>
 PayloadFrame::serializeUsingMetadataHeadroom() && {
-  // We can assume here that we have non-zero metadata with adequate
+  // We can assume here that we have non-zero buffer with adequate
   // headroom for the rsocket header.
-  std::unique_ptr<folly::IOBuf> data = std::move(payload_).data();
-  std::unique_ptr<folly::IOBuf> metadata = std::move(payload_.metadata());
-  size_t dataLen = data ? data->computeChainDataLength() : 0;
-  DCHECK(metadata.get());
-  size_t metadataLen = metadata->computeChainDataLength();
-  DCHECK(metadataLen > 0);
+  auto dataLen = payload_.dataSize();
+  auto metadataLen = payload_.metadataSize();
+  auto buffer = std::move(payload_).buffer();
 
   constexpr size_t rsocketLen = // 12 bytes
       (2 * Serializer::kBytesForFrameOrMetadataLength) + frameHeaderSize();
-  DCHECK(metadata->headroom() >= rsocketLen);
+  DCHECK(buffer->headroom() >= rsocketLen);
 
-  // Write 12-byte rsocket header directly into the metadata headroom.
-  HeaderSerializer writer(metadata->writableData() - rsocketLen, rsocketLen);
+  // Write 12-byte rsocket header directly into the buffer headroom.
+  HeaderSerializer writer(buffer->writableData() - rsocketLen, rsocketLen);
   const size_t frameSize = frameHeaderSize() + dataLen + metadataLen +
       Serializer::kBytesForFrameOrMetadataLength;
   writer.writeFrameOrMetadataSize(frameSize);
@@ -448,23 +434,9 @@ PayloadFrame::serializeUsingMetadataHeadroom() && {
           .next(hasNext()));
   writer.writeFrameOrMetadataSize(metadataLen);
   DCHECK_EQ(writer.result().size(), rsocketLen);
-  metadata->prepend(rsocketLen);
+  buffer->prepend(rsocketLen);
 
-  // Append data to metadata, packing into the metadata buf
-  // if under threshold (short iovecs better).
-  folly::IOBuf* tail = metadata->prev();
-  if (dataLen <= tail->tailroom() &&
-      dataLen <= folly::IOBufQueue::kMaxPackCopy) {
-    for (; data; data = data->pop()) {
-      size_t n = data->length();
-      DCHECK_GE(tail->tailroom(), n);
-      memcpy(tail->writableTail(), data->data(), n);
-      tail->append(n);
-    }
-  } else {
-    tail->appendChain(std::move(data));
-  }
-  return metadata;
+  return buffer;
 }
 
 void ErrorFrame::serialize(Serializer& writer) && {
@@ -524,15 +496,13 @@ FOLLY_NOINLINE void PayloadFrame::serializeInFragmentsSlow(
       writer);
 }
 
-SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
+SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
   // Trick to avoid the default-constructed IOBuf. See expanded comment in
   // PayloadFrame constructor. Do this optimization in Setup frame for
   // consistency, not performance.
-  auto* frame = payload_.data();
   DCHECK(!frame->isChained());
 
-  folly::io::Cursor cursor(frame);
+  folly::io::Cursor cursor(frame.get());
   const StreamId zero(readStreamId(cursor));
   DCHECK_EQ(StreamId{0}, zero);
 
@@ -566,15 +536,12 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> _frame)
   const auto dataMimeLength = cursor.read<uint8_t>();
   cursor.skip(dataMimeLength);
 
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
-RequestResponseFrame::RequestResponseFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
-  // Trick to avoid the default-constructed IOBuf. See expanded comment in
-  // PayloadFrame constructor.
-  auto* frame = payload_.data();
-  folly::io::Cursor cursor(frame);
+RequestResponseFrame::RequestResponseFrame(
+    std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
@@ -583,7 +550,7 @@ RequestResponseFrame::RequestResponseFrame(std::unique_ptr<folly::IOBuf> _frame)
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
 RequestResponseFrame::RequestResponseFrame(
@@ -591,18 +558,13 @@ RequestResponseFrame::RequestResponseFrame(
     Flags flags,
     folly::io::Cursor& cursor,
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
-    : streamId_(streamId),
-      flags_(flags),
-      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+    : streamId_(streamId), flags_(flags) {
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
-  // Trick to avoid the default-constructed IOBuf. See expanded comment in
-  // PayloadFrame constructor.
-  auto* frame = payload_.data();
-  folly::io::Cursor cursor(frame);
+RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
@@ -611,7 +573,7 @@ RequestFnfFrame::RequestFnfFrame(std::unique_ptr<folly::IOBuf> _frame)
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
 RequestFnfFrame::RequestFnfFrame(
@@ -619,18 +581,13 @@ RequestFnfFrame::RequestFnfFrame(
     Flags flags,
     folly::io::Cursor& cursor,
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
-    : streamId_(streamId),
-      flags_(flags),
-      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+    : streamId_(streamId), flags_(flags) {
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
-  // Trick to avoid the default-constructed IOBuf. See expanded comment in
-  // PayloadFrame constructor.
-  auto* frame = payload_.data();
-  folly::io::Cursor cursor(frame);
+RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
@@ -641,7 +598,7 @@ RequestStreamFrame::RequestStreamFrame(std::unique_ptr<folly::IOBuf> _frame)
 
   initialRequestN_ = cursor.readBE<int32_t>();
 
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
 RequestStreamFrame::RequestStreamFrame(
@@ -649,19 +606,14 @@ RequestStreamFrame::RequestStreamFrame(
     Flags flags,
     folly::io::Cursor& cursor,
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
-    : streamId_(streamId),
-      flags_(flags),
-      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
+    : streamId_(streamId), flags_(flags) {
   initialRequestN_ = cursor.readBE<int32_t>();
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
-RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
-  // Trick to avoid the default-constructed IOBuf. See expanded comment in
-  // PayloadFrame constructor.
-  auto* frame = payload_.data();
-  folly::io::Cursor cursor(frame);
+RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
@@ -672,7 +624,7 @@ RequestChannelFrame::RequestChannelFrame(std::unique_ptr<folly::IOBuf> _frame)
 
   initialRequestN_ = cursor.readBE<int32_t>();
 
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
 RequestChannelFrame::RequestChannelFrame(
@@ -680,11 +632,10 @@ RequestChannelFrame::RequestChannelFrame(
     Flags flags,
     folly::io::Cursor& cursor,
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
-    : streamId_(streamId),
-      flags_(flags),
-      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
+    : streamId_(streamId), flags_(flags) {
   initialRequestN_ = cursor.readBE<int32_t>();
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
 }
 
 RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -726,13 +677,8 @@ CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
   DCHECK(Flags::none() == flags);
 }
 
-PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
-  // Trick to avoid the default-constructed IOBuf. Initially, we stash the
-  // entire frame in payload_.data. Since this IOBuf covers more than the data
-  // range, we need to fix up payload_.data later on.
-  auto* frame = payload_.data();
-  folly::io::Cursor cursor(frame);
+PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
 
   streamId_ = readStreamId(cursor);
@@ -741,7 +687,7 @@ PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> _frame)
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
 
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
 PayloadFrame::PayloadFrame(
@@ -751,14 +697,12 @@ PayloadFrame::PayloadFrame(
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
     : streamId_(streamId),
       flags_(flags),
-      payload_(Payload::makeFromData(std::move(underlyingBuffer))) {
-  readPayloadCommon(*this, flags_.metadata(), cursor);
+      payload_(
+          readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer))) {
 }
 
-ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> _frame)
-    : payload_(Payload::makeFromData(std::move(_frame))) {
-  auto* frame = payload_.data();
-  folly::io::Cursor cursor(frame);
+ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
   DCHECK(!frame->isChained());
   DCHECK_GE(frame->length(), frameHeaderSize());
 
@@ -773,9 +717,9 @@ ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> _frame)
 
   errorCode_ = static_cast<ErrorCode>(cursor.readBE<uint32_t>());
 
-  // Finally, adjust error payload data() pointer as needed, as in PayloadFrame
-  // constructor.
+  // Finally, adjust the data portion of frame.
   frame->trimStart(frameHeaderSize());
+  payload_ = Payload::makeFromData(std::move(frame));
 }
 
 // Static member definition

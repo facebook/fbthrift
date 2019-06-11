@@ -75,12 +75,13 @@ std::unique_ptr<folly::IOBuf> serializeMetadata(
   return queue.move();
 }
 
-void deserializeMetadata(
-    ResponseRpcMetadata& dest,
-    const folly::IOBuf& buffer) {
+void deserializeMetadata(ResponseRpcMetadata& dest, const rocket::Payload& p) {
   CompactProtocolReader reader;
-  reader.setInput(&buffer);
+  reader.setInput(p.buffer());
   dest.read(&reader);
+  if (reader.getCursorPosition() > p.metadataSize()) {
+    folly::throw_exception<std::out_of_range>("underflow");
+  }
 }
 } // namespace
 
@@ -374,7 +375,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     if (response.value().hasNonemptyMetadata()) {
       ResponseRpcMetadata responseMetadata;
       try {
-        deserializeMetadata(responseMetadata, *response.value().metadata());
+        deserializeMetadata(responseMetadata, response.value());
         detail::fillTHeaderFromResponseRpcMetadata(responseMetadata, *tHeader);
       } catch (const std::exception& e) {
         FB_LOG_EVERY_MS(ERROR, 10000) << "Exception on deserializing metadata: "

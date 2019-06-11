@@ -48,14 +48,12 @@ namespace thrift {
 namespace rocket {
 
 namespace {
-bool deserializeMetadata(
-    const folly::IOBuf& buffer,
-    RequestRpcMetadata& metadata) {
+bool deserializeMetadata(const Payload& p, RequestRpcMetadata& metadata) {
   try {
     CompactProtocolReader reader;
-    reader.setInput(&buffer);
+    reader.setInput(p.buffer());
     metadata.read(&reader);
-    return true;
+    return reader.getCursorPosition() <= p.metadataSize();
   } catch (const std::exception& ex) {
     FB_LOG_EVERY_MS(ERROR, 10000)
         << "Exception on deserializing metadata: " << folly::exceptionStr(ex);
@@ -89,13 +87,12 @@ void ThriftRocketServerHandler::handleSetupFrame(
     SetupFrame&& frame,
     RocketServerFrameContext&& context) {
   auto& connection = context.connection();
-  auto* metadata = frame.payload().metadata().get();
-  if (!metadata) {
+  if (!frame.payload().hasNonemptyMetadata()) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP, "Missing required metadata in SETUP frame"));
   }
 
-  folly::io::Cursor cursor(frame.payload().metadata().get());
+  folly::io::Cursor cursor(frame.payload().buffer());
 
   // Validate Thrift major/minor version
   int16_t majorVersion;
@@ -113,6 +110,11 @@ void ThriftRocketServerHandler::handleSetupFrame(
     auto meta = std::make_unique<RequestSetupMetadata>();
     // Throws on read error
     meta->read(&reader);
+    if (reader.getCursorPosition() > frame.payload().metadataSize()) {
+      return connection.close(folly::make_exception_wrapper<RocketException>(
+          ErrorCode::INVALID_SETUP,
+          "Error deserializing SETUP payload: underflow"));
+    }
     serverConfigs_.onConnectionSetup(std::move(meta));
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
@@ -183,7 +185,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
   RequestRpcMetadata metadata;
-  const bool parseOk = deserializeMetadata(*payload.metadata(), metadata);
+  const bool parseOk = deserializeMetadata(payload, metadata);
 
   auto data = std::move(payload).data();
   const bool validMetadata = parseOk && isMetadataValid(metadata);

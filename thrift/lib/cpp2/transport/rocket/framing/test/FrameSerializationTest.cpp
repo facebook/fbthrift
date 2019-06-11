@@ -30,19 +30,15 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Serializer.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/test/Util.h>
 
 using namespace apache::thrift::rocket;
+using namespace apache::thrift::rocket::test;
 
 namespace {
 constexpr StreamId kTestStreamId{178};
 constexpr folly::StringPiece kMetadata{"metadata"};
 constexpr folly::StringPiece kData{"data"};
-
-folly::StringPiece getRange(const folly::IOBuf& buf) {
-  EXPECT_FALSE(buf.isChained());
-  return folly::StringPiece{reinterpret_cast<const char*>(buf.data()),
-                            buf.length()};
-}
 
 template <class Frame>
 Frame serializeAndDeserialize(Frame&& frame) {
@@ -101,6 +97,12 @@ folly::IOBuf makeLargeIOBuf() {
   buf.append(kLargeIOBufSize);
   return buf;
 }
+
+void validateMetadataAndData(const Payload& p) {
+  auto dataAndMetadata = splitMetadataAndData(p);
+  EXPECT_EQ(kMetadata, getRange(*dataAndMetadata.first));
+  EXPECT_EQ(kData, getRange(*dataAndMetadata.second));
+}
 } // namespace
 
 namespace apache {
@@ -114,9 +116,7 @@ TEST(FrameSerialization, SetupSanity) {
     // Resumption and lease flags are not currently supported
     EXPECT_FALSE(f.hasResumeIdentificationToken());
     EXPECT_FALSE(f.hasLease());
-    EXPECT_TRUE(f.payload().metadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    validateMetadataAndData(f.payload());
   };
 
   validate(frame);
@@ -130,9 +130,7 @@ TEST(FrameSerialization, RequestResponseSanity) {
   auto validate = [](const RequestResponseFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_FALSE(f.hasFollows());
-    EXPECT_TRUE(f.payload().metadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    validateMetadataAndData(f.payload());
   };
 
   validate(frame);
@@ -146,9 +144,7 @@ TEST(FrameSerialization, RequestFnfSanity) {
   auto validate = [](const RequestFnfFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_FALSE(f.hasFollows());
-    EXPECT_TRUE(f.payload().metadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    validateMetadataAndData(f.payload());
   };
 
   validate(frame);
@@ -165,9 +161,7 @@ TEST(FrameSerialization, RequestStreamSanity) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_FALSE(f.hasFollows());
     EXPECT_EQ(123456789, f.initialRequestN());
-    EXPECT_TRUE(f.payload().metadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    validateMetadataAndData(f.payload());
   };
 
   validate(frame);
@@ -185,9 +179,7 @@ TEST(FrameSerialization, RequestChannelSanity) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_FALSE(f.hasFollows());
     EXPECT_EQ(123456789, f.initialRequestN());
-    EXPECT_TRUE(f.payload().metadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    validateMetadataAndData(f.payload());
     EXPECT_TRUE(f.hasComplete());
   };
 
@@ -229,9 +221,7 @@ TEST(FrameSerialization, PayloadSanity) {
     EXPECT_TRUE(f.hasFollows());
     EXPECT_TRUE(f.hasComplete());
     EXPECT_TRUE(f.hasNext());
-    EXPECT_TRUE(f.payload().metadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    validateMetadataAndData(f.payload());
   };
 
   validate(frame);
@@ -245,7 +235,8 @@ TEST(FrameSerialization, PayloadEmptyMetadataSanity) {
     EXPECT_TRUE(f.hasComplete());
     EXPECT_TRUE(f.hasNext());
     EXPECT_FALSE(f.payload().hasNonemptyMetadata());
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kData, getRange(*dam.second));
   };
 
   // No metadata
@@ -281,8 +272,8 @@ TEST(FrameSerialization, ErrorSanity) {
   auto validate = [=](const ErrorFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_EQ(ErrorCode::CANCELED, f.errorCode());
-    EXPECT_FALSE(f.payload().metadata());
-    EXPECT_EQ(kErrorMessage, getRange(*f.payload().data()));
+    EXPECT_FALSE(f.payload().hasNonemptyMetadata());
+    EXPECT_EQ(kErrorMessage, getRange(*f.payload().buffer()));
   };
 
   validate(frame);
@@ -299,8 +290,8 @@ TEST(FrameSerialization, ErrorFromException) {
   auto validate = [=](const ErrorFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_EQ(ErrorCode::CANCELED, f.errorCode());
-    EXPECT_FALSE(f.payload().metadata());
-    EXPECT_EQ(kErrorMessage, getRange(*f.payload().data()));
+    EXPECT_FALSE(f.payload().hasNonemptyMetadata());
+    EXPECT_EQ(kErrorMessage, getRange(*f.payload().buffer()));
   };
 
   validate(frame);
@@ -309,7 +300,6 @@ TEST(FrameSerialization, ErrorFromException) {
 
 TEST(FrameSerialization, PayloadLargeMetadata) {
   const auto metadata = makeLargeIOBuf();
-  constexpr folly::StringPiece kData{"data"};
 
   PayloadFrame frame(
       kTestStreamId,
@@ -320,8 +310,9 @@ TEST(FrameSerialization, PayloadLargeMetadata) {
   auto validate = [=](const PayloadFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *dam.first));
+    EXPECT_EQ(kData, getRange(*dam.second));
   };
 
   validate(frame);
@@ -329,7 +320,6 @@ TEST(FrameSerialization, PayloadLargeMetadata) {
 }
 
 TEST(FrameSerialization, PayloadLargeData) {
-  constexpr folly::StringPiece kMetadata{"metadata"};
   const auto data = makeLargeIOBuf();
 
   PayloadFrame frame(
@@ -341,8 +331,9 @@ TEST(FrameSerialization, PayloadLargeData) {
   auto validate = [=](const PayloadFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_TRUE(folly::IOBufEqualTo()(data, *dam.second));
   };
 
   validate(frame);
@@ -350,7 +341,6 @@ TEST(FrameSerialization, PayloadLargeData) {
 }
 
 TEST(FrameSerialization, RequestResponseLargeMetadata) {
-  constexpr folly::StringPiece kData{"data"};
   const auto metadata = makeLargeIOBuf();
 
   RequestResponseFrame frame(
@@ -361,8 +351,9 @@ TEST(FrameSerialization, RequestResponseLargeMetadata) {
   auto validate = [=](const RequestResponseFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *dam.first));
+    EXPECT_EQ(kData, getRange(*dam.second));
   };
 
   validate(frame);
@@ -370,7 +361,6 @@ TEST(FrameSerialization, RequestResponseLargeMetadata) {
 }
 
 TEST(FrameSerialization, RequestResponseLargeData) {
-  constexpr folly::StringPiece kMetadata{"metadata"};
   const auto data = makeLargeIOBuf();
 
   RequestResponseFrame frame(
@@ -381,8 +371,9 @@ TEST(FrameSerialization, RequestResponseLargeData) {
   auto validate = [=](const RequestResponseFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_TRUE(folly::IOBufEqualTo()(data, *dam.second));
   };
 
   validate(frame);
@@ -390,7 +381,6 @@ TEST(FrameSerialization, RequestResponseLargeData) {
 }
 
 TEST(FrameSerialization, RequestFnfLargeMetadata) {
-  constexpr folly::StringPiece kData{"data"};
   const auto metadata = makeLargeIOBuf();
 
   RequestFnfFrame frame(
@@ -401,8 +391,9 @@ TEST(FrameSerialization, RequestFnfLargeMetadata) {
   auto validate = [=](const RequestFnfFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *dam.first));
+    EXPECT_EQ(kData, getRange(*dam.second));
   };
 
   validate(frame);
@@ -410,7 +401,6 @@ TEST(FrameSerialization, RequestFnfLargeMetadata) {
 }
 
 TEST(FrameSerialization, RequestFnfLargeData) {
-  constexpr folly::StringPiece kMetadata{"metadata"};
   const auto data = makeLargeIOBuf();
 
   RequestFnfFrame frame(
@@ -421,8 +411,9 @@ TEST(FrameSerialization, RequestFnfLargeData) {
   auto validate = [=](const RequestFnfFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_TRUE(folly::IOBufEqualTo()(data, *dam.second));
   };
 
   validate(frame);
@@ -430,7 +421,6 @@ TEST(FrameSerialization, RequestFnfLargeData) {
 }
 
 TEST(FrameSerialization, RequestStreamLargeMetadata) {
-  constexpr folly::StringPiece kData{"data"};
   const auto metadata = makeLargeIOBuf();
 
   RequestStreamFrame frame(
@@ -442,8 +432,9 @@ TEST(FrameSerialization, RequestStreamLargeMetadata) {
   auto validate = [=](const RequestStreamFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *dam.first));
+    EXPECT_EQ(kData, getRange(*dam.second));
   };
 
   validate(frame);
@@ -451,7 +442,6 @@ TEST(FrameSerialization, RequestStreamLargeMetadata) {
 }
 
 TEST(FrameSerialization, RequestStreamLargeData) {
-  constexpr folly::StringPiece kMetadata{"metadata"};
   const auto data = makeLargeIOBuf();
 
   RequestStreamFrame frame(
@@ -463,8 +453,9 @@ TEST(FrameSerialization, RequestStreamLargeData) {
   auto validate = [=](const RequestStreamFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_TRUE(folly::IOBufEqualTo()(data, *dam.second));
   };
 
   validate(frame);
@@ -472,7 +463,6 @@ TEST(FrameSerialization, RequestStreamLargeData) {
 }
 
 TEST(FrameSerialization, RequestChannelLargeMetadata) {
-  constexpr folly::StringPiece kData{"data"};
   const auto metadata = makeLargeIOBuf();
 
   RequestChannelFrame frame(
@@ -485,8 +475,9 @@ TEST(FrameSerialization, RequestChannelLargeMetadata) {
   auto validate = [=](const RequestChannelFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *f.payload().metadata()));
-    EXPECT_EQ(kData, getRange(*f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_TRUE(folly::IOBufEqualTo()(metadata, *dam.first));
+    EXPECT_EQ(kData, getRange(*dam.second));
     EXPECT_TRUE(f.hasComplete());
   };
 
@@ -495,7 +486,6 @@ TEST(FrameSerialization, RequestChannelLargeMetadata) {
 }
 
 TEST(FrameSerialization, RequestChannelLargeData) {
-  constexpr folly::StringPiece kMetadata{"metadata"};
   const auto data = makeLargeIOBuf();
 
   RequestChannelFrame frame(
@@ -508,8 +498,9 @@ TEST(FrameSerialization, RequestChannelLargeData) {
   auto validate = [=](const RequestChannelFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
     EXPECT_TRUE(f.payload().hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*f.payload().metadata()));
-    EXPECT_TRUE(folly::IOBufEqualTo()(data, *f.payload().data()));
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_TRUE(folly::IOBufEqualTo()(data, *dam.second));
     EXPECT_TRUE(f.hasComplete());
   };
 

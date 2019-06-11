@@ -51,6 +51,7 @@
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/test/Util.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
@@ -533,7 +534,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
 class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
  public:
   void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&&) final {
-    folly::io::Cursor cursor(frame.payload().metadata().get());
+    folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Thrift major/minor version
     int16_t majorVersion;
     int16_t minorVersion;
@@ -547,23 +548,24 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     reader.setInput(cursor);
     RequestSetupMetadata meta;
     meta.read(&reader);
+    EXPECT_EQ(reader.getCursorPosition(), frame.payload().metadataSize());
     EXPECT_EQ(expectedSetupMetadata_, meta.opaque_ref().value_or({}));
   }
 
   void handleRequestResponseFrame(
       RequestResponseFrame&& frame,
       RocketServerFrameContext&& context) final {
+    auto dam = splitMetadataAndData(frame.payload());
     auto payload = std::move(frame.payload());
-    folly::StringPiece dataPiece(payload.data()->coalesce());
+    auto dataPiece = getRange(*dam.second);
 
     if (dataPiece.removePrefix("error:application")) {
       return context.sendError(RocketException(
           ErrorCode::APPLICATION_ERROR, "Application error occurred"));
     }
 
-    auto md = std::move(payload).metadata();
-    auto data = std::move(payload).data();
-    auto response = makeTestResponse(std::move(md), std::move(data));
+    auto response =
+        makeTestResponse(std::move(dam.first), std::move(dam.second));
     auto responsePayload = Payload::makeFromMetadataAndData(
         std::move(response.first), std::move(response.second));
     return context.sendPayload(
@@ -576,8 +578,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
       std::shared_ptr<RocketServerStreamSubscriber> subscriber) final {
-    auto payload = std::move(frame.payload());
-    folly::StringPiece dataPiece(payload.data()->coalesce());
+    auto dataBuf = std::move(frame.payload()).data();
+    folly::StringPiece dataPiece(dataBuf->coalesce());
 
     if (dataPiece.removePrefix("error:application")) {
       return Flowable<Payload>::error(

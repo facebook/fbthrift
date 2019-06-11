@@ -45,10 +45,6 @@ std::string repeatPattern(folly::StringPiece pattern, size_t nbytes) {
   return rv;
 }
 
-folly::StringPiece getRange(folly::IOBuf& iobuf) {
-  return folly::StringPiece(iobuf.coalesce());
-}
-
 void expectTransportExceptionType(
     transport::TTransportException::TTransportExceptionType expectedType,
     folly::exception_wrapper ew) {

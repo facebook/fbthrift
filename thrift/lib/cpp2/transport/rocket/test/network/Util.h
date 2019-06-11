@@ -23,6 +23,7 @@
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
+#include <thrift/lib/cpp2/transport/rocket/framing/test/Util.h>
 
 namespace folly {
 class IOBuf;
@@ -34,8 +35,6 @@ namespace rocket {
 namespace test {
 
 std::string repeatPattern(folly::StringPiece pattern, size_t nbytes);
-
-folly::StringPiece getRange(folly::IOBuf& iobuf);
 
 void expectTransportExceptionType(
     transport::TTransportException::TTransportExceptionType expectedType,

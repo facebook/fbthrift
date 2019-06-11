@@ -122,9 +122,10 @@ TYPED_TEST(RocketNetworkTest, RequestResponseBasic) {
 
     EXPECT_TRUE(writeCallback.writeSuccess);
     EXPECT_TRUE(reply.hasValue());
-    EXPECT_EQ(kData, getRange(*reply->data()));
-    EXPECT_TRUE(reply->metadata());
-    EXPECT_EQ(kMetadata, getRange(*reply->metadata()));
+    auto dam = splitMetadataAndData(*reply);
+    EXPECT_EQ(kData, getRange(*dam.second));
+    EXPECT_TRUE(reply->hasNonemptyMetadata());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
   });
 }
 
@@ -162,8 +163,9 @@ TYPED_TEST(RocketNetworkTest, RequestResponseLargeMetadata) {
 
     EXPECT_TRUE(reply.hasValue());
     EXPECT_TRUE(reply->hasNonemptyMetadata());
-    EXPECT_EQ(expectedMetadata, getRange(*reply->metadata()));
-    EXPECT_EQ(data, getRange(*reply->data()));
+    auto dam = splitMetadataAndData(*reply);
+    EXPECT_EQ(expectedMetadata, getRange(*dam.first));
+    EXPECT_EQ(data, getRange(*dam.second));
   });
 }
 
@@ -184,8 +186,9 @@ TYPED_TEST(RocketNetworkTest, RequestResponseLargeData) {
 
     EXPECT_TRUE(reply.hasValue());
     EXPECT_TRUE(reply->hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*reply->metadata()));
-    EXPECT_EQ(expectedData, getRange(*reply->data()));
+    auto dam = splitMetadataAndData(*reply);
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_EQ(expectedData, getRange(*dam.second));
   });
 }
 
@@ -200,7 +203,7 @@ TYPED_TEST(RocketNetworkTest, RequestResponseEmptyMetadata) {
     EXPECT_TRUE(reply.hasValue());
     EXPECT_FALSE(reply->hasNonemptyMetadata());
     // Parser should never construct empty metadata
-    EXPECT_FALSE(reply->metadata());
+    EXPECT_FALSE(reply->hasNonemptyMetadata());
   });
 }
 
@@ -214,8 +217,9 @@ TYPED_TEST(RocketNetworkTest, RequestResponseEmptyData) {
 
     EXPECT_TRUE(reply.hasValue());
     EXPECT_TRUE(reply->hasNonemptyMetadata());
-    EXPECT_EQ(kMetadata, getRange(*reply->metadata()));
-    EXPECT_TRUE(reply->data()->empty());
+    auto dam = splitMetadataAndData(*reply);
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+    EXPECT_TRUE(dam.second->empty());
   });
 }
 
@@ -301,15 +305,16 @@ TYPED_TEST(RocketNetworkTest, RequestStreamBasic) {
     EXPECT_TRUE(stream.hasValue());
 
     size_t received = 0;
-    auto subscription =
-        std::move(*stream)
-            .via(this->getUserExecutor())
-            .subscribe(
-                [&received](Payload&& payload) {
-                  const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(++received, x);
-                },
-                [](auto ew) { FAIL() << ew.what(); });
+    auto subscription = std::move(*stream)
+                            .via(this->getUserExecutor())
+                            .subscribe(
+                                [&received](Payload&& payload) {
+                                  auto dam = splitMetadataAndData(payload);
+                                  const auto x =
+                                      folly::to<size_t>(getRange(*dam.second));
+                                  EXPECT_EQ(++received, x);
+                                },
+                                [](auto ew) { FAIL() << ew.what(); });
 
     std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
     EXPECT_EQ(kNumRequestedPayloads, received);
@@ -340,16 +345,17 @@ TYPED_TEST(RocketNetworkTest, RequestStreamSmallInitialRequestN) {
     EXPECT_TRUE(stream.hasValue());
 
     size_t received = 0;
-    auto subscription =
-        std::move(*stream)
-            .via(this->getUserExecutor())
-            .subscribe(
-                [&received](Payload&& payload) {
-                  const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(++received, x);
-                },
-                [](auto ew) { FAIL() << ew.what(); },
-                5 /* batch size */);
+    auto subscription = std::move(*stream)
+                            .via(this->getUserExecutor())
+                            .subscribe(
+                                [&received](Payload&& payload) {
+                                  auto dam = splitMetadataAndData(payload);
+                                  const auto x =
+                                      folly::to<size_t>(getRange(*dam.second));
+                                  EXPECT_EQ(++received, x);
+                                },
+                                [](auto ew) { FAIL() << ew.what(); },
+                                5 /* batch size */);
 
     std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
     EXPECT_EQ(kNumRequestedPayloads, received);
@@ -371,15 +377,16 @@ TYPED_TEST(RocketNetworkTest, RequestStreamCancelSubscription) {
     EXPECT_TRUE(stream.hasValue());
 
     size_t received = 0;
-    auto subscription =
-        std::move(*stream)
-            .via(this->getUserExecutor())
-            .subscribe(
-                [&received](Payload&& payload) {
-                  const auto x = folly::to<size_t>(getRange(*payload.data()));
-                  EXPECT_EQ(++received, x);
-                },
-                [](auto ew) { FAIL() << ew.what(); });
+    auto subscription = std::move(*stream)
+                            .via(this->getUserExecutor())
+                            .subscribe(
+                                [&received](Payload&& payload) {
+                                  auto dam = splitMetadataAndData(payload);
+                                  const auto x =
+                                      folly::to<size_t>(getRange(*dam.second));
+                                  EXPECT_EQ(++received, x);
+                                },
+                                [](auto ew) { FAIL() << ew.what(); });
 
     subscription.cancel();
     std::move(subscription).futureJoin().waitVia(this->getUserExecutor());
@@ -472,7 +479,8 @@ TYPED_TEST(
               .via(this->getUserExecutor())
               .subscribe(
                   [&received](Payload&& payload) {
-                    const auto x = folly::to<size_t>(getRange(*payload.data()));
+                    auto dam = splitMetadataAndData(payload);
+                    const auto x = folly::to<size_t>(getRange(*dam.second));
                     EXPECT_EQ(++received, x);
                   },
                   [](auto /* ew */) {});

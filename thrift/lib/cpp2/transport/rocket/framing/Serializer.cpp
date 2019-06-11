@@ -25,12 +25,10 @@ namespace rocket {
 size_t Serializer::writePayload(Payload&& p) {
   size_t nwritten = 0;
   if (p.hasNonemptyMetadata()) {
-    const size_t metadataSize = p.metadata()->computeChainDataLength();
-    nwritten += writeFrameOrMetadataSize(metadataSize);
-    nwritten += write(std::move(p.metadata()));
+    nwritten += writeFrameOrMetadataSize(p.metadataSize());
   }
-  if (!p.data()->empty()) {
-    nwritten += write(std::move(p).data());
+  if (!p.buffer()->empty()) {
+    nwritten += write(std::move(p).buffer());
   }
   return nwritten;
 }

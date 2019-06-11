@@ -71,12 +71,16 @@ class OnEventBaseDestructionCallback
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {
-    T t{std::move(payload).data(), {}};
+    T t{nullptr, {}};
     if (payload.hasNonemptyMetadata()) {
       CompactProtocolReader reader;
-      reader.setInput(payload.metadata().get());
+      reader.setInput(payload.buffer());
       t.metadata.read(&reader);
+      if (reader.getCursorPosition() > payload.metadataSize()) {
+        folly::throw_exception<std::out_of_range>("underflow");
+      }
     }
+    t.payload = std::move(payload).data();
     return t;
   });
 }

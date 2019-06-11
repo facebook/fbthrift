@@ -14,31 +14,22 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/transport/rocket/Types.h>
+#pragma once
 
-#include <ostream>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
 
 namespace apache {
 namespace thrift {
 namespace rocket {
+namespace test {
 
-void Payload::append(Payload&& other) {
-  // append() reflects how data is received on the wire: all (possibly
-  // fragmented) metadata arrives first, then the actual data.
-  // If we are appending a payload that has metadata, then the current payload
-  // should not have data.
-  DCHECK(
-      !other.hasNonemptyMetadata() ||
-      metadataSize_ == buffer_->computeChainDataLength());
+folly::StringPiece getRange(folly::IOBuf& iobuf);
+folly::StringPiece getRange(const folly::IOBuf& iobuf);
 
-  metadataSize_ += other.metadataSize_;
-  buffer_->prependChain(std::move(other.buffer_));
-}
+std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
+splitMetadataAndData(const Payload& p);
 
-std::ostream& operator<<(std::ostream& os, StreamId streamId) {
-  return os << static_cast<uint32_t>(streamId);
-}
-
+} // namespace test
 } // namespace rocket
 } // namespace thrift
 } // namespace apache
