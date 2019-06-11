@@ -57,7 +57,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
       : serverConfigs_(serverConfigs),
         kind_(metadata.kind_ref().value_or(
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
-        seqId_(metadata.seqId_ref().value_or(0)),
         active_(true),
         requestFlags_(metadata.flags_ref().value_or(0)),
         reqContext_(&connContext, &header_),
@@ -67,7 +66,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
     // outside the ThriftRequestCore constructor.
     header_.setProtocolId(static_cast<int16_t>(
         metadata.protocol_ref().value_or(ProtocolId::BINARY)));
-    header_.setSequenceNumber(seqId_);
 
     if (auto clientTimeoutMs = metadata.clientTimeoutMs_ref()) {
       clientTimeout_ = std::chrono::milliseconds(*clientTimeoutMs);
@@ -88,7 +86,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (auto methodName = metadata.name_ref()) {
       reqContext_.setMethodName(std::move(*methodName));
     }
-    reqContext_.setProtoSeqId(seqId_);
 
     if (auto* observer = serverConfigs_.getObserver()) {
       observer->receivedRequest();
@@ -248,7 +245,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   ResponseRpcMetadata makeResponseRpcMetadata() {
     ResponseRpcMetadata metadata;
-    metadata.seqId_ref() = seqId_;
+    metadata.seqId_ref() = 0;
 
     if (requestFlags_ &
         static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) {
@@ -276,7 +273,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> exbuf;
       auto proto = header_.getProtocolId();
       try {
-        exbuf = serializeError(proto, tae, getMethodName(), seqId_);
+        exbuf = serializeError(proto, tae, getMethodName(), 0);
       } catch (const protocol::TProtocolException& pe) {
         // Should never happen.  Log an error and return an empty
         // payload.
@@ -375,7 +372,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
  private:
   const RpcKind kind_;
-  const int32_t seqId_;
   std::atomic<bool> active_;
   transport::THeader header_;
   const uint64_t requestFlags_{0};
