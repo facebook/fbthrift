@@ -139,11 +139,11 @@ bool NestedContainersAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
 
 std::unordered_set<std::string> NestedContainersAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> NestedContainersAsyncProcessor::cacheKeyMap_ {};
-const NestedContainersAsyncProcessor::BinaryProtocolProcessMap& NestedContainersAsyncProcessor::getBinaryProtocolProcessMap() {
+const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const NestedContainersAsyncProcessor::BinaryProtocolProcessMap NestedContainersAsyncProcessor::binaryProcessMap_ {
+const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor::binaryProcessMap_ {
   {"mapList", &NestedContainersAsyncProcessor::_processInThread_mapList<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"mapSet", &NestedContainersAsyncProcessor::_processInThread_mapSet<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"listMap", &NestedContainersAsyncProcessor::_processInThread_listMap<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -151,11 +151,11 @@ const NestedContainersAsyncProcessor::BinaryProtocolProcessMap NestedContainersA
   {"turtles", &NestedContainersAsyncProcessor::_processInThread_turtles<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const NestedContainersAsyncProcessor::CompactProtocolProcessMap& NestedContainersAsyncProcessor::getCompactProtocolProcessMap() {
+const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const NestedContainersAsyncProcessor::CompactProtocolProcessMap NestedContainersAsyncProcessor::compactProcessMap_ {
+const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor::compactProcessMap_ {
   {"mapList", &NestedContainersAsyncProcessor::_processInThread_mapList<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"mapSet", &NestedContainersAsyncProcessor::_processInThread_mapSet<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"listMap", &NestedContainersAsyncProcessor::_processInThread_listMap<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

@@ -620,11 +620,11 @@ bool ParamServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const a
 
 std::unordered_set<std::string> ParamServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> ParamServiceAsyncProcessor::cacheKeyMap_ {};
-const ParamServiceAsyncProcessor::BinaryProtocolProcessMap& ParamServiceAsyncProcessor::getBinaryProtocolProcessMap() {
+const ParamServiceAsyncProcessor::ProcessMap& ParamServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProcessor::binaryProcessMap_ {
+const ParamServiceAsyncProcessor::ProcessMap ParamServiceAsyncProcessor::binaryProcessMap_ {
   {"void_ret_i16_param", &ParamServiceAsyncProcessor::process_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -656,11 +656,11 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProc
   {"listunion_string_param", &ParamServiceAsyncProcessor::_processInThread_listunion_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const ParamServiceAsyncProcessor::CompactProtocolProcessMap& ParamServiceAsyncProcessor::getCompactProtocolProcessMap() {
+const ParamServiceAsyncProcessor::ProcessMap& ParamServiceAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncProcessor::compactProcessMap_ {
+const ParamServiceAsyncProcessor::ProcessMap ParamServiceAsyncProcessor::compactProcessMap_ {
   {"void_ret_i16_param", &ParamServiceAsyncProcessor::process_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

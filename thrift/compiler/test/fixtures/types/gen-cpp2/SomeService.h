@@ -76,30 +76,26 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;
  public:
-  using BinaryProtocolProcessFunc = ProcessFunc<SomeServiceAsyncProcessor, apache::thrift::BinaryProtocolReader>;
-  using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
-  static const SomeServiceAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
+  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<SomeServiceAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
+  static const SomeServiceAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
+  static const SomeServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
-  static const SomeServiceAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
- public:
-  using CompactProtocolProcessFunc = ProcessFunc<SomeServiceAsyncProcessor, apache::thrift::CompactProtocolReader>;
-  using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
-  static const SomeServiceAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
- private:
-  static const SomeServiceAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const SomeServiceAsyncProcessor::ProcessMap binaryProcessMap_;
+   static const SomeServiceAsyncProcessor::ProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_bounce_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_bounce_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_bounce_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_bounce_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_bounce_map(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::apache::thrift::fixtures::types::SomeMap const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_bounce_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_binary_keyed_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_binary_keyed_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_binary_keyed_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_binary_keyed_map(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_binary_keyed_map(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::map< ::apache::thrift::fixtures::types::TBinary, int64_t> const& _return);
   template <class ProtocolIn_, class ProtocolOut_>

@@ -55,19 +55,19 @@ bool MyNodeAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
 
 std::unordered_set<std::string> MyNodeAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> MyNodeAsyncProcessor::cacheKeyMap_ {};
-const MyNodeAsyncProcessor::BinaryProtocolProcessMap& MyNodeAsyncProcessor::getBinaryProtocolProcessMap() {
+const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const MyNodeAsyncProcessor::BinaryProtocolProcessMap MyNodeAsyncProcessor::binaryProcessMap_ {
+const MyNodeAsyncProcessor::ProcessMap MyNodeAsyncProcessor::binaryProcessMap_ {
   {"do_mid", &MyNodeAsyncProcessor::_processInThread_do_mid<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const MyNodeAsyncProcessor::CompactProtocolProcessMap& MyNodeAsyncProcessor::getCompactProtocolProcessMap() {
+const MyNodeAsyncProcessor::ProcessMap& MyNodeAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const MyNodeAsyncProcessor::CompactProtocolProcessMap MyNodeAsyncProcessor::compactProcessMap_ {
+const MyNodeAsyncProcessor::ProcessMap MyNodeAsyncProcessor::compactProcessMap_ {
   {"do_mid", &MyNodeAsyncProcessor::_processInThread_do_mid<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

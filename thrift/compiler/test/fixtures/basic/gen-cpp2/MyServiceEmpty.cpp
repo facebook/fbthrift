@@ -34,17 +34,17 @@ bool MyServiceEmptyAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const
 
 std::unordered_set<std::string> MyServiceEmptyAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> MyServiceEmptyAsyncProcessor::cacheKeyMap_ {};
-const MyServiceEmptyAsyncProcessor::BinaryProtocolProcessMap& MyServiceEmptyAsyncProcessor::getBinaryProtocolProcessMap() {
+const MyServiceEmptyAsyncProcessor::ProcessMap& MyServiceEmptyAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const MyServiceEmptyAsyncProcessor::BinaryProtocolProcessMap MyServiceEmptyAsyncProcessor::binaryProcessMap_ {};
+const MyServiceEmptyAsyncProcessor::ProcessMap MyServiceEmptyAsyncProcessor::binaryProcessMap_ {};
 
-const MyServiceEmptyAsyncProcessor::CompactProtocolProcessMap& MyServiceEmptyAsyncProcessor::getCompactProtocolProcessMap() {
+const MyServiceEmptyAsyncProcessor::ProcessMap& MyServiceEmptyAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const MyServiceEmptyAsyncProcessor::CompactProtocolProcessMap MyServiceEmptyAsyncProcessor::compactProcessMap_ {};
+const MyServiceEmptyAsyncProcessor::ProcessMap MyServiceEmptyAsyncProcessor::compactProcessMap_ {};
 
 } // cpp2
 namespace apache { namespace thrift {

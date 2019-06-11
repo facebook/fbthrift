@@ -194,11 +194,11 @@ std::unordered_set<std::string> ExtraServiceAsyncProcessor::onewayMethods_ {
   "oneway_void_ret_listunion_param"
 };
 std::unordered_map<std::string, int16_t> ExtraServiceAsyncProcessor::cacheKeyMap_ {};
-const ExtraServiceAsyncProcessor::BinaryProtocolProcessMap& ExtraServiceAsyncProcessor::getBinaryProtocolProcessMap() {
+const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const ExtraServiceAsyncProcessor::BinaryProtocolProcessMap ExtraServiceAsyncProcessor::binaryProcessMap_ {
+const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::binaryProcessMap_ {
   {"simple_function", &ExtraServiceAsyncProcessor::process_simple_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"throws_function", &ExtraServiceAsyncProcessor::process_throws_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"throws_function2", &ExtraServiceAsyncProcessor::process_throws_function2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -210,11 +210,11 @@ const ExtraServiceAsyncProcessor::BinaryProtocolProcessMap ExtraServiceAsyncProc
   {"oneway_void_ret_listunion_param", &ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const ExtraServiceAsyncProcessor::CompactProtocolProcessMap& ExtraServiceAsyncProcessor::getCompactProtocolProcessMap() {
+const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const ExtraServiceAsyncProcessor::CompactProtocolProcessMap ExtraServiceAsyncProcessor::compactProcessMap_ {
+const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::compactProcessMap_ {
   {"simple_function", &ExtraServiceAsyncProcessor::process_simple_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"throws_function", &ExtraServiceAsyncProcessor::process_throws_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"throws_function2", &ExtraServiceAsyncProcessor::process_throws_function2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

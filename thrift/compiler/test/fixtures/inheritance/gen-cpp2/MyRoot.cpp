@@ -55,19 +55,19 @@ bool MyRootAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
 
 std::unordered_set<std::string> MyRootAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> MyRootAsyncProcessor::cacheKeyMap_ {};
-const MyRootAsyncProcessor::BinaryProtocolProcessMap& MyRootAsyncProcessor::getBinaryProtocolProcessMap() {
+const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const MyRootAsyncProcessor::BinaryProtocolProcessMap MyRootAsyncProcessor::binaryProcessMap_ {
+const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::binaryProcessMap_ {
   {"do_root", &MyRootAsyncProcessor::_processInThread_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const MyRootAsyncProcessor::CompactProtocolProcessMap& MyRootAsyncProcessor::getCompactProtocolProcessMap() {
+const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const MyRootAsyncProcessor::CompactProtocolProcessMap MyRootAsyncProcessor::compactProcessMap_ {
+const MyRootAsyncProcessor::ProcessMap MyRootAsyncProcessor::compactProcessMap_ {
   {"do_root", &MyRootAsyncProcessor::_processInThread_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

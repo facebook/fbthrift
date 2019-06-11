@@ -55,19 +55,19 @@ bool CAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thri
 
 std::unordered_set<std::string> CAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> CAsyncProcessor::cacheKeyMap_ {};
-const CAsyncProcessor::BinaryProtocolProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap() {
+const CAsyncProcessor::ProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const CAsyncProcessor::BinaryProtocolProcessMap CAsyncProcessor::binaryProcessMap_ {
+const CAsyncProcessor::ProcessMap CAsyncProcessor::binaryProcessMap_ {
   {"f", &CAsyncProcessor::_processInThread_f<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const CAsyncProcessor::CompactProtocolProcessMap& CAsyncProcessor::getCompactProtocolProcessMap() {
+const CAsyncProcessor::ProcessMap& CAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const CAsyncProcessor::CompactProtocolProcessMap CAsyncProcessor::compactProcessMap_ {
+const CAsyncProcessor::ProcessMap CAsyncProcessor::compactProcessMap_ {
   {"f", &CAsyncProcessor::_processInThread_f<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

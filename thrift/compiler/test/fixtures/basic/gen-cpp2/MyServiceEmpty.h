@@ -59,17 +59,13 @@ class MyServiceEmptyAsyncProcessor : public ::apache::thrift::GeneratedAsyncProc
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;
  public:
-  using BinaryProtocolProcessFunc = ProcessFunc<MyServiceEmptyAsyncProcessor, apache::thrift::BinaryProtocolReader>;
-  using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
-  static const MyServiceEmptyAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
+  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<MyServiceEmptyAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
+  static const MyServiceEmptyAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
+  static const MyServiceEmptyAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
  private:
-  static const MyServiceEmptyAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
- public:
-  using CompactProtocolProcessFunc = ProcessFunc<MyServiceEmptyAsyncProcessor, apache::thrift::CompactProtocolReader>;
-  using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
-  static const MyServiceEmptyAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
- private:
-  static const MyServiceEmptyAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const MyServiceEmptyAsyncProcessor::ProcessMap binaryProcessMap_;
+   static const MyServiceEmptyAsyncProcessor::ProcessMap compactProcessMap_;
  private:
  public:
   MyServiceEmptyAsyncProcessor(MyServiceEmptySvIf* iface) :

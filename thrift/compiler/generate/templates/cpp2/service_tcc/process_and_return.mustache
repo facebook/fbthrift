@@ -17,23 +17,23 @@
 %><%#service:functions%><%#function:returnType%>
 <%^function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
-void <%service:name%>AsyncProcessor::_processInThread_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:name%>AsyncProcessor::_processInThread_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::<%function:priority%>);
 <%^function:oneway?%>
   <%^function:returns_stream?%>
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
   <%/function:returns_stream?%>
   <%#function:returns_stream?%>
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
   <%/function:returns_stream?%>
 <%/function:oneway?%>
 <%#function:oneway?%>
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
 <%/function:oneway?%>
 }
 <%/function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
-void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
 <%#function:oneway?%><%#function:eb%>
   if (!req->isOneway()) {
     if (req->isStream()) {
@@ -75,7 +75,11 @@ void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(std::unique_p
 <%/field:type%><%/function:args_without_streams%>
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));
   try {
-    deserializeRequest(args, buf.get(), iprot.get(), ctxStack.get());
+    folly::io::Cursor cursor(buf.get());
+    cursor.skip(ctx->getMessageBeginSize());
+    ProtocolIn_ iprot;
+    iprot.setInput(cursor);
+    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
   }
   catch (const std::exception& ex) {
 <%#function:oneway?%>

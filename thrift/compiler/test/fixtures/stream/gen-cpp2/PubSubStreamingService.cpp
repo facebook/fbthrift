@@ -184,11 +184,11 @@ bool PubSubStreamingServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* bu
 
 std::unordered_set<std::string> PubSubStreamingServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> PubSubStreamingServiceAsyncProcessor::cacheKeyMap_ {};
-const PubSubStreamingServiceAsyncProcessor::BinaryProtocolProcessMap& PubSubStreamingServiceAsyncProcessor::getBinaryProtocolProcessMap() {
+const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const PubSubStreamingServiceAsyncProcessor::BinaryProtocolProcessMap PubSubStreamingServiceAsyncProcessor::binaryProcessMap_ {
+const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsyncProcessor::binaryProcessMap_ {
   {"returnstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"takesstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_takesstream<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"different", &PubSubStreamingServiceAsyncProcessor::_processInThread_different<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -198,11 +198,11 @@ const PubSubStreamingServiceAsyncProcessor::BinaryProtocolProcessMap PubSubStrea
   {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_responseandstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const PubSubStreamingServiceAsyncProcessor::CompactProtocolProcessMap& PubSubStreamingServiceAsyncProcessor::getCompactProtocolProcessMap() {
+const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const PubSubStreamingServiceAsyncProcessor::CompactProtocolProcessMap PubSubStreamingServiceAsyncProcessor::compactProcessMap_ {
+const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsyncProcessor::compactProcessMap_ {
   {"returnstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"takesstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_takesstream<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"different", &PubSubStreamingServiceAsyncProcessor::_processInThread_different<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

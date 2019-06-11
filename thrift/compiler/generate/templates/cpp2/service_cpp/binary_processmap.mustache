@@ -14,15 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap& <%service:name%>AsyncProcessor::getBinaryProtocolProcessMap() {
+%>const <%service:name%>AsyncProcessor::ProcessMap& <%service:name%>AsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
 <%^service:functions?%>
-const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {};
+const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {};
 <%/service:functions?%>
 <%#service:functions?%>
-const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {
+const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {
 <%#service:functions%><%#function:returnType%>
   {"<%function:name%>", &<%service:name%>AsyncProcessor::<%#function:eb%>process<%/function:eb%><%^function:eb%>_processInThread<%/function:eb%>_<%function:cpp_name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 <%/function:returnType%><%/service:functions%>

@@ -14,15 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& <%service:name%>AsyncProcessor::getCompactProtocolProcessMap() {
+%>const <%service:name%>AsyncProcessor::ProcessMap& <%service:name%>AsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
 <%^service:functions?%>
-const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {};
+const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {};
 <%/service:functions?%>
 <%#service:functions?%>
-const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {
+const <%service:name%>AsyncProcessor::ProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {
 <%#service:functions%><%#function:returnType%>
   {"<%function:name%>", &<%service:name%>AsyncProcessor::<%#function:eb%>process<%/function:eb%><%^function:eb%>_processInThread<%/function:eb%>_<%function:cpp_name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 <%/function:returnType%><%/service:functions%>

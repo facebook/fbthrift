@@ -447,11 +447,11 @@ bool ReturnServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const 
 
 std::unordered_set<std::string> ReturnServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> ReturnServiceAsyncProcessor::cacheKeyMap_ {};
-const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap& ReturnServiceAsyncProcessor::getBinaryProtocolProcessMap() {
+const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap ReturnServiceAsyncProcessor::binaryProcessMap_ {
+const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::binaryProcessMap_ {
   {"noReturn", &ReturnServiceAsyncProcessor::process_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"boolReturn", &ReturnServiceAsyncProcessor::_processInThread_boolReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i16Return", &ReturnServiceAsyncProcessor::_processInThread_i16Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -475,11 +475,11 @@ const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap ReturnServiceAsyncPr
   {"readData", &ReturnServiceAsyncProcessor::_processInThread_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const ReturnServiceAsyncProcessor::CompactProtocolProcessMap& ReturnServiceAsyncProcessor::getCompactProtocolProcessMap() {
+const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const ReturnServiceAsyncProcessor::CompactProtocolProcessMap ReturnServiceAsyncProcessor::compactProcessMap_ {
+const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::compactProcessMap_ {
   {"noReturn", &ReturnServiceAsyncProcessor::process_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"boolReturn", &ReturnServiceAsyncProcessor::_processInThread_boolReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i16Return", &ReturnServiceAsyncProcessor::_processInThread_i16Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

@@ -55,19 +55,19 @@ bool MyLeafAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
 
 std::unordered_set<std::string> MyLeafAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> MyLeafAsyncProcessor::cacheKeyMap_ {};
-const MyLeafAsyncProcessor::BinaryProtocolProcessMap& MyLeafAsyncProcessor::getBinaryProtocolProcessMap() {
+const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const MyLeafAsyncProcessor::BinaryProtocolProcessMap MyLeafAsyncProcessor::binaryProcessMap_ {
+const MyLeafAsyncProcessor::ProcessMap MyLeafAsyncProcessor::binaryProcessMap_ {
   {"do_leaf", &MyLeafAsyncProcessor::_processInThread_do_leaf<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const MyLeafAsyncProcessor::CompactProtocolProcessMap& MyLeafAsyncProcessor::getCompactProtocolProcessMap() {
+const MyLeafAsyncProcessor::ProcessMap& MyLeafAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const MyLeafAsyncProcessor::CompactProtocolProcessMap MyLeafAsyncProcessor::compactProcessMap_ {
+const MyLeafAsyncProcessor::ProcessMap MyLeafAsyncProcessor::compactProcessMap_ {
   {"do_leaf", &MyLeafAsyncProcessor::_processInThread_do_leaf<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

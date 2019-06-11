@@ -74,20 +74,20 @@ bool SomeServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const ap
 
 std::unordered_set<std::string> SomeServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> SomeServiceAsyncProcessor::cacheKeyMap_ {};
-const SomeServiceAsyncProcessor::BinaryProtocolProcessMap& SomeServiceAsyncProcessor::getBinaryProtocolProcessMap() {
+const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const SomeServiceAsyncProcessor::BinaryProtocolProcessMap SomeServiceAsyncProcessor::binaryProcessMap_ {
+const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::binaryProcessMap_ {
   {"bounce_map", &SomeServiceAsyncProcessor::_processInThread_bounce_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"binary_keyed_map", &SomeServiceAsyncProcessor::_processInThread_binary_keyed_map<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const SomeServiceAsyncProcessor::CompactProtocolProcessMap& SomeServiceAsyncProcessor::getCompactProtocolProcessMap() {
+const SomeServiceAsyncProcessor::ProcessMap& SomeServiceAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const SomeServiceAsyncProcessor::CompactProtocolProcessMap SomeServiceAsyncProcessor::compactProcessMap_ {
+const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::compactProcessMap_ {
   {"bounce_map", &SomeServiceAsyncProcessor::_processInThread_bounce_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"binary_keyed_map", &SomeServiceAsyncProcessor::_processInThread_binary_keyed_map<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };

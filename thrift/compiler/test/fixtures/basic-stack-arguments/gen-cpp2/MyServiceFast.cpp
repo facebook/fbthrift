@@ -105,22 +105,22 @@ std::unordered_set<std::string> MyServiceFastAsyncProcessor::onewayMethods_ {
   "lobDataById"
 };
 std::unordered_map<std::string, int16_t> MyServiceFastAsyncProcessor::cacheKeyMap_ {};
-const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap& MyServiceFastAsyncProcessor::getBinaryProtocolProcessMap() {
+const MyServiceFastAsyncProcessor::ProcessMap& MyServiceFastAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
+const MyServiceFastAsyncProcessor::ProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getDataById", &MyServiceFastAsyncProcessor::process_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"lobDataById", &MyServiceFastAsyncProcessor::process_lobDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const MyServiceFastAsyncProcessor::CompactProtocolProcessMap& MyServiceFastAsyncProcessor::getCompactProtocolProcessMap() {
+const MyServiceFastAsyncProcessor::ProcessMap& MyServiceFastAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const MyServiceFastAsyncProcessor::CompactProtocolProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
+const MyServiceFastAsyncProcessor::ProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getDataById", &MyServiceFastAsyncProcessor::process_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

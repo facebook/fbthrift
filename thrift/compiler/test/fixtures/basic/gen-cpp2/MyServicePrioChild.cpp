@@ -55,19 +55,19 @@ bool MyServicePrioChildAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, c
 
 std::unordered_set<std::string> MyServicePrioChildAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> MyServicePrioChildAsyncProcessor::cacheKeyMap_ {};
-const MyServicePrioChildAsyncProcessor::BinaryProtocolProcessMap& MyServicePrioChildAsyncProcessor::getBinaryProtocolProcessMap() {
+const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const MyServicePrioChildAsyncProcessor::BinaryProtocolProcessMap MyServicePrioChildAsyncProcessor::binaryProcessMap_ {
+const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::binaryProcessMap_ {
   {"pang", &MyServicePrioChildAsyncProcessor::_processInThread_pang<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const MyServicePrioChildAsyncProcessor::CompactProtocolProcessMap& MyServicePrioChildAsyncProcessor::getCompactProtocolProcessMap() {
+const MyServicePrioChildAsyncProcessor::ProcessMap& MyServicePrioChildAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const MyServicePrioChildAsyncProcessor::CompactProtocolProcessMap MyServicePrioChildAsyncProcessor::compactProcessMap_ {
+const MyServicePrioChildAsyncProcessor::ProcessMap MyServicePrioChildAsyncProcessor::compactProcessMap_ {
   {"pang", &MyServicePrioChildAsyncProcessor::_processInThread_pang<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

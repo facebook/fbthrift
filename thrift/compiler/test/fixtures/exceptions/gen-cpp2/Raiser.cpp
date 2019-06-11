@@ -116,22 +116,22 @@ bool RaiserAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
 
 std::unordered_set<std::string> RaiserAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> RaiserAsyncProcessor::cacheKeyMap_ {};
-const RaiserAsyncProcessor::BinaryProtocolProcessMap& RaiserAsyncProcessor::getBinaryProtocolProcessMap() {
+const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const RaiserAsyncProcessor::BinaryProtocolProcessMap RaiserAsyncProcessor::binaryProcessMap_ {
+const RaiserAsyncProcessor::ProcessMap RaiserAsyncProcessor::binaryProcessMap_ {
   {"doBland", &RaiserAsyncProcessor::_processInThread_doBland<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"doRaise", &RaiserAsyncProcessor::_processInThread_doRaise<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"get200", &RaiserAsyncProcessor::_processInThread_get200<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"get500", &RaiserAsyncProcessor::_processInThread_get500<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const RaiserAsyncProcessor::CompactProtocolProcessMap& RaiserAsyncProcessor::getCompactProtocolProcessMap() {
+const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const RaiserAsyncProcessor::CompactProtocolProcessMap RaiserAsyncProcessor::compactProcessMap_ {
+const RaiserAsyncProcessor::ProcessMap RaiserAsyncProcessor::compactProcessMap_ {
   {"doBland", &RaiserAsyncProcessor::_processInThread_doBland<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"doRaise", &RaiserAsyncProcessor::_processInThread_doRaise<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"get200", &RaiserAsyncProcessor::_processInThread_get200<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

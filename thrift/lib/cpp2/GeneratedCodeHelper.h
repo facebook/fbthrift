@@ -682,7 +682,7 @@ template <class ProtocolReader, class Processor>
 void process_pmap(
     Processor* proc,
     const typename GeneratedAsyncProcessor::ProcessMap<
-        GeneratedAsyncProcessor::ProcessFunc<Processor, ProtocolReader>>& pmap,
+        GeneratedAsyncProcessor::ProcessFunc<Processor>>& pmap,
     std::unique_ptr<ResponseChannelRequest> req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
@@ -703,14 +703,7 @@ void process_pmap(
     return;
   }
 
-  folly::io::Cursor cursor(buf.get());
-  cursor.skip(ctx->getMessageBeginSize());
-
-  auto iprot = std::make_unique<ProtocolReader>();
-  iprot->setInput(cursor);
-
-  (proc->*(pfn->second))(
-      std::move(req), std::move(buf), std::move(iprot), ctx, eb, tm);
+  (proc->*(pfn->second))(std::move(req), std::move(buf), ctx, eb, tm);
 }
 
 //  Generated AsyncProcessor::process just calls this.
@@ -726,12 +719,12 @@ void process(
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL: {
       const auto& pmap = processor->getBinaryProtocolProcessMap();
-      return process_pmap(
+      return process_pmap<BinaryProtocolReader>(
           processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
     }
     case protocol::T_COMPACT_PROTOCOL: {
       const auto& pmap = processor->getCompactProtocolProcessMap();
-      return process_pmap(
+      return process_pmap<CompactProtocolReader>(
           processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
     }
     default:

@@ -149,11 +149,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   virtual const char* getServiceName() = 0;
 
-  template <typename Derived, typename ProtocolReader>
+  template <typename Derived>
   using ProcessFunc = void (Derived::*)(
       std::unique_ptr<apache::thrift::ResponseChannelRequest>,
       std::unique_ptr<folly::IOBuf>,
-      std::unique_ptr<ProtocolReader> iprot,
       apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm);
@@ -212,7 +211,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   static void processInThread(
       std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<ProtocolIn_> iprot,
       apache::thrift::Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm,
@@ -242,7 +240,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     tm->add(
         std::make_shared<apache::thrift::PriorityEventTask>(
             pri,
-            [=, iprot = std::move(iprot), buf = std::move(buf)](
+            [=, buf = std::move(buf)](
                 std::unique_ptr<apache::thrift::ResponseChannelRequest>
                     rq) mutable {
               if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
@@ -261,7 +259,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                 }
               }
               (childClass->*processFunc)(
-                  std::move(rq), std::move(buf), std::move(iprot), ctx, eb, tm);
+                  std::move(rq), std::move(buf), ctx, eb, tm);
             },
             std::move(req),
             eb,

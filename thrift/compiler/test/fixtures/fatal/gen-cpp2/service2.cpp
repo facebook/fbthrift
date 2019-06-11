@@ -158,11 +158,11 @@ bool service2AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apach
 
 std::unordered_set<std::string> service2AsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> service2AsyncProcessor::cacheKeyMap_ {};
-const service2AsyncProcessor::BinaryProtocolProcessMap& service2AsyncProcessor::getBinaryProtocolProcessMap() {
+const service2AsyncProcessor::ProcessMap& service2AsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }
 
-const service2AsyncProcessor::BinaryProtocolProcessMap service2AsyncProcessor::binaryProcessMap_ {
+const service2AsyncProcessor::ProcessMap service2AsyncProcessor::binaryProcessMap_ {
   {"methodA", &service2AsyncProcessor::_processInThread_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodB", &service2AsyncProcessor::_processInThread_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodC", &service2AsyncProcessor::_processInThread_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -171,11 +171,11 @@ const service2AsyncProcessor::BinaryProtocolProcessMap service2AsyncProcessor::b
   {"methodF", &service2AsyncProcessor::_processInThread_methodF<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
-const service2AsyncProcessor::CompactProtocolProcessMap& service2AsyncProcessor::getCompactProtocolProcessMap() {
+const service2AsyncProcessor::ProcessMap& service2AsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-const service2AsyncProcessor::CompactProtocolProcessMap service2AsyncProcessor::compactProcessMap_ {
+const service2AsyncProcessor::ProcessMap service2AsyncProcessor::compactProcessMap_ {
   {"methodA", &service2AsyncProcessor::_processInThread_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodB", &service2AsyncProcessor::_processInThread_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodC", &service2AsyncProcessor::_processInThread_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
