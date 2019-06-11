@@ -213,12 +213,9 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
-    std::shared_ptr<Cpp2ConnContext> connContext,
+    Cpp2ConnContext& connContext,
     RocketServerFrameContext&& context)
-    : ThriftRequestCore(
-          serverConfigs,
-          std::move(metadata),
-          std::move(connContext)),
+    : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)) {
   scheduleTimeouts();
@@ -244,13 +241,10 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
-    std::shared_ptr<Cpp2ConnContext> connContext,
+    Cpp2ConnContext& connContext,
     RocketServerFrameContext&& context,
     folly::Function<void()> onComplete)
-    : ThriftRequestCore(
-          serverConfigs,
-          std::move(metadata),
-          std::move(connContext)),
+    : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
       onComplete_(std::move(onComplete)) {
@@ -283,12 +277,10 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     std::shared_ptr<Cpp2ConnContext> connContext,
     std::shared_ptr<RocketServerStreamSubscriber> subscriber,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
-    : ThriftRequestCore(
-          serverConfigs,
-          std::move(metadata),
-          std::move(connContext)),
+    : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       subscriber_(std::move(subscriber)),
+      connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)) {
   scheduleTimeouts();
 }

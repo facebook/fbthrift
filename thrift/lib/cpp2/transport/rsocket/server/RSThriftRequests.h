@@ -63,6 +63,7 @@ class RSOneWayRequest final : public ThriftRequestCore {
  private:
   folly::EventBase* evb_;
   folly::Function<void(RSOneWayRequest*)> onDestroy_;
+  std::shared_ptr<Cpp2ConnContext> connContext_;
 };
 
 class RSSingleRequest final : public ThriftRequestCore {
@@ -95,6 +96,7 @@ class RSSingleRequest final : public ThriftRequestCore {
   folly::EventBase* evb_;
   std::shared_ptr<yarpl::single::SingleObserver<rsocket::Payload>>
       singleObserver_;
+  std::shared_ptr<Cpp2ConnContext> connContext_;
 };
 
 class RSStreamRequest final : public ThriftRequestCore {
@@ -130,6 +132,7 @@ class RSStreamRequest final : public ThriftRequestCore {
  protected:
   folly::EventBase* evb_;
   std::shared_ptr<yarpl::flowable::Subscriber<rsocket::Payload>> subscriber_;
+  std::shared_ptr<Cpp2ConnContext> connContext_;
 };
 
 } // namespace thrift

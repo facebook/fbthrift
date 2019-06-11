@@ -55,6 +55,14 @@ bool deserializeMetadata(
     return false;
   }
 }
+
+Cpp2ConnContext& ensureNotNullConnContext(
+    std::shared_ptr<Cpp2ConnContext>& connContext) {
+  if (!connContext) {
+    connContext = std::make_shared<Cpp2ConnContext>();
+  }
+  return *connContext;
+}
 } // namespace detail
 
 namespace {
@@ -217,9 +225,10 @@ RSOneWayRequest::RSOneWayRequest(
     : ThriftRequestCore(
           serverConfigs,
           std::move(metadata),
-          std::move(connContext)),
+          detail::ensureNotNullConnContext(connContext)),
       evb_(evb),
-      onDestroy_(std::move(onDestroy)) {
+      onDestroy_(std::move(onDestroy)),
+      connContext_(std::move(connContext)) {
   scheduleTimeouts();
 }
 
@@ -263,9 +272,10 @@ RSSingleRequest::RSSingleRequest(
     : ThriftRequestCore(
           serverConfigs,
           std::move(metadata),
-          std::move(connContext)),
+          detail::ensureNotNullConnContext(connContext)),
       evb_(evb),
-      singleObserver_(singleObserver) {
+      singleObserver_(singleObserver),
+      connContext_(std::move(connContext)) {
   scheduleTimeouts();
 }
 
@@ -300,9 +310,10 @@ RSStreamRequest::RSStreamRequest(
     : ThriftRequestCore(
           serverConfigs,
           std::move(metadata),
-          std::move(connContext)),
+          detail::ensureNotNullConnContext(connContext)),
       evb_(evb),
-      subscriber_(std::move(subscriber)) {
+      subscriber_(std::move(subscriber)),
+      connContext_(std::move(connContext)) {
   scheduleTimeouts();
 }
 

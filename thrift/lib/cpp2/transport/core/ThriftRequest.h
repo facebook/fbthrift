@@ -53,7 +53,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   ThriftRequestCore(
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
-      std::shared_ptr<Cpp2ConnContext> connContext)
+      Cpp2ConnContext& connContext)
       : serverConfigs_(serverConfigs),
         name_(std::move(metadata).name_ref().value_or({})),
         kind_(metadata.kind_ref().value_or(
@@ -61,10 +61,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         seqId_(metadata.seqId_ref().value_or(0)),
         active_(true),
         requestFlags_(metadata.flags_ref().value_or(0)),
-        connContext_(
-            connContext ? std::move(connContext)
-                        : std::make_shared<Cpp2ConnContext>()),
-        reqContext_(connContext_.get(), &header_),
+        reqContext_(&connContext, &header_),
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_) {
     // Note that method name, RPC kind, and serialization protocol are validated
@@ -382,7 +379,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
   std::atomic<bool> active_;
   transport::THeader header_;
   const uint64_t requestFlags_{0};
-  std::shared_ptr<Cpp2ConnContext> connContext_;
   Cpp2RequestContext reqContext_;
 
   QueueTimeout queueTimeout_;
@@ -401,8 +397,14 @@ class ThriftRequest final : public ThriftRequestCore {
       : ThriftRequestCore(
             serverConfigs,
             std::move(metadata),
-            std::move(connContext)),
-        channel_(std::move(channel)) {
+            [&]() -> Cpp2ConnContext& {
+              if (!connContext) {
+                connContext = std::make_unique<Cpp2ConnContext>();
+              }
+              return *connContext;
+            }()),
+        channel_(std::move(channel)),
+        connContext_(std::move(connContext)) {
     scheduleTimeouts();
   }
 
@@ -428,6 +430,7 @@ class ThriftRequest final : public ThriftRequestCore {
 
  private:
   std::shared_ptr<ThriftChannelIf> channel_;
+  std::unique_ptr<Cpp2ConnContext> connContext_;
 };
 
 } // namespace thrift

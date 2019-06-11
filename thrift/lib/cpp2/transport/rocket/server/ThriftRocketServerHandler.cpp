@@ -127,11 +127,16 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
     RequestResponseFrame&& frame,
     RocketServerFrameContext&& context) {
   auto makeRequestResponse = [&](RequestRpcMetadata&& md) {
+    // Note, we're passing connContext by reference and rely on the next chain
+    // of ownership to keep it alive: ThriftServerRequestResponse stores
+    // RocketServerFrameContext, which keeps refcount on RocketServerConnection,
+    // which in turn keeps ThriftRocketServerHandler alive, which in turn keeps
+    // connContext_ alive.
     return std::make_unique<ThriftServerRequestResponse>(
         *worker_->getEventBase(),
         serverConfigs_,
         std::move(md),
-        connContext_,
+        *connContext_,
         std::move(context));
   };
 
@@ -143,11 +148,13 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
     RequestFnfFrame&& frame,
     RocketServerFrameContext&& context) {
   auto makeRequestFnf = [&](RequestRpcMetadata&& md) {
+    // Note, we're passing connContext by reference and rely on a complex chain
+    // of ownership (see handleRequestResponseFrame for detailed explanation).
     return std::make_unique<ThriftServerRequestFnf>(
         *worker_->getEventBase(),
         serverConfigs_,
         std::move(md),
-        connContext_,
+        *connContext_,
         std::move(context),
         [keepAlive = cpp2Processor_] {});
   };
