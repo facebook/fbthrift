@@ -82,20 +82,46 @@ class ServerConfigs {
   virtual void onConnectionSetup(
       std::unique_ptr<RequestSetupMetadata> setupMetadata) = 0;
 
+  /**
+   * Disables tracking of number of active requests in the server.
+   *
+   * This is useful for applications that do high throughput real-time work,
+   * where the requests processing is done inline.
+   *
+   * Must be called before spinning up the server.
+   *
+   * WARNING: This will also disable maxActiveRequests load-shedding logic.
+   */
+  void disableActiveRequestsTracking() {
+    disableActiveRequestsTracking_ = true;
+  }
+
+  bool isActiveRequestsTrackingDisabled() const {
+    return disableActiveRequestsTracking_;
+  }
   void incActiveRequests() {
-    ++activeRequests_;
+    if (!isActiveRequestsTrackingDisabled()) {
+      ++activeRequests_;
+    }
   }
 
   void decActiveRequests() {
-    --activeRequests_;
+    if (!isActiveRequestsTrackingDisabled()) {
+      --activeRequests_;
+    }
   }
 
   int32_t getActiveRequests() const {
-    return activeRequests_.load(std::memory_order_relaxed);
+    if (!isActiveRequestsTrackingDisabled()) {
+      return activeRequests_.load(std::memory_order_relaxed);
+    } else {
+      return 0;
+    }
   }
 
  private:
   std::atomic<int32_t> activeRequests_{0};
+  bool disableActiveRequestsTracking_{false};
 };
 
 } // namespace server
