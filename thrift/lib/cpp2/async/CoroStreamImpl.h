@@ -87,9 +87,13 @@ class CoroStreamImpl : public StreamImplIf {
 
       void cancel() override {
         if (auto state = state_.lock()) {
-          // both are thread safe operation
-          state->cancelSource_.requestCancellation();
-          state->baton_.post();
+          state->subscribeExecutor_->add([state = std::move(state)]() mutable {
+            // requestCancellation will execute registered CancellationCallback
+            // inline, but CancellationCallback should be run in
+            // subscribeExecutor_ thread
+            state->cancelSource_.requestCancellation();
+            state->baton_.post();
+          });
         }
       }
 
@@ -121,6 +125,10 @@ class CoroStreamImpl : public StreamImplIf {
             }
 
             if (self.sharedState_->cancelSource_.isCancellationRequested()) {
+              self.sharedState_->observeExecutor_->add(
+                  [subscriber = std::move(subscriber)]() {
+                    // destory subscriber on observeExecutor_ thread
+                  });
               co_return;
             }
 
@@ -171,7 +179,7 @@ class CoroStreamImpl : public StreamImplIf {
                 }
               }
               self.sharedState_->observeExecutor_->add(
-                  [subscriber,
+                  [subscriber = std::move(subscriber),
                    keepAlive = self.sharedState_->observeExecutor_.copy(),
                    value = std::move(value)]() mutable {
                     subscriber->onError(std::move(value).exception());
@@ -179,7 +187,7 @@ class CoroStreamImpl : public StreamImplIf {
               co_return;
             } else {
               self.sharedState_->observeExecutor_->add(
-                  [subscriber,
+                  [subscriber = std::move(subscriber),
                    keepAlive =
                        self.sharedState_->observeExecutor_.copy()]() mutable {
                     subscriber->onComplete();
