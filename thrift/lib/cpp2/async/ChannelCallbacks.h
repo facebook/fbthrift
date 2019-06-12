@@ -60,21 +60,17 @@ class ChannelCallbacks {
     TwowayCallback(
         Channel* channel,
         uint32_t sendSeqId,
-        uint16_t protoId,
-        std::unique_ptr<RequestCallback> cb,
-        std::unique_ptr<apache::thrift::ContextStack> ctx,
+        RequestClientCallback::Ptr cb,
         folly::HHWheelTimer* timer,
         std::chrono::milliseconds timeout,
         std::chrono::milliseconds chunkTimeout)
         : channel_(channel),
           sendSeqId_(sendSeqId),
-          protoId_(protoId),
           cb_(std::move(cb)),
-          ctx_(std::move(ctx)),
           sendState_(QState::INIT),
           recvState_(QState::QUEUED),
-          cbCalled_(false),
           chunkTimeoutCallback_(this, timer, chunkTimeout) {
+      CHECK(cb_);
       if (timeout > std::chrono::milliseconds(0)) {
         timer->scheduleTimeout(this, timeout);
       }
@@ -86,10 +82,8 @@ class ChannelCallbacks {
     void messageSent() override {
       DestructorGuard dg(this);
       X_CHECK_STATE_EQ(sendState_, QState::QUEUED);
-      if (!cbCalled_) {
-        CHECK(cb_);
-        folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestSent();
+      if (cb_) {
+        cb_->onRequestSent();
       }
       sendState_ = QState::DONE;
       maybeDeleteThis();
@@ -103,12 +97,8 @@ class ChannelCallbacks {
         channel_->eraseCallback(sendSeqId_, this);
         cancelTimeout();
       }
-      if (!cbCalled_) {
-        CHECK(cb_);
-        cbCalled_ = true;
-        folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(std::move(ex), std::move(ctx_)));
-        cb_.reset();
+      if (cb_) {
+        cb_.release()->onResponseError(std::move(ex));
       }
       destroy();
     }
@@ -121,18 +111,9 @@ class ChannelCallbacks {
       recvState_ = QState::DONE;
       cancelTimeout();
 
-      CHECK(!cbCalled_);
       CHECK(cb_);
-      cbCalled_ = true;
-
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->replyReceived(ClientReceiveState(
-          protoId_,
-          std::move(buf),
-          std::move(header),
-          std::move(ctx_),
-          true));
-      cb_.reset();
+      cb_.release()->onResponse(
+          ClientReceiveState(-1, std::move(buf), std::move(header), nullptr));
 
       maybeDeleteThis();
     }
@@ -145,22 +126,16 @@ class ChannelCallbacks {
       chunkTimeoutCallback_.resetTimeout();
 
       CHECK(cb_);
-
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->replyReceived(ClientReceiveState(
-          protoId_, std::move(buf), std::move(header), ctx_));
+      cb_->onResponse(ClientReceiveState(
+          -1, std::move(buf), std::move(header), nullptr, false));
     }
     void requestError(folly::exception_wrapper ex) {
       DestructorGuard dg(this);
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       recvState_ = QState::DONE;
       cancelTimeout();
-      CHECK(cb_);
-      if (!cbCalled_) {
-        cbCalled_ = true;
-        folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(std::move(ex), std::move(ctx_)));
-        cb_.reset();
+      if (cb_) {
+        cb_.release()->onResponseError(std::move(ex));
       }
 
       maybeDeleteThis();
@@ -171,17 +146,12 @@ class ChannelCallbacks {
       channel_->eraseCallback(sendSeqId_, this);
       recvState_ = QState::DONE;
 
-      if (!cbCalled_) {
+      if (cb_) {
         using apache::thrift::transport::TTransportException;
 
-        cbCalled_ = true;
         TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
         ex.setOptions(TTransportException::CHANNEL_IS_VALID); // framing okay
-        folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(
-            folly::make_exception_wrapper<TTransportException>(std::move(ex)),
-            std::move(ctx_)));
-        cb_.reset();
+        cb_.release()->onResponseError(std::move(ex));
       }
       maybeDeleteThis();
     }
@@ -190,7 +160,6 @@ class ChannelCallbacks {
       X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
       channel_->eraseCallback(sendSeqId_, this);
       recvState_ = QState::DONE;
-      cbCalled_ = true;
       cb_.reset();
 
       maybeDeleteThis();
@@ -206,16 +175,13 @@ class ChannelCallbacks {
     ~TwowayCallback() override {
       X_CHECK_STATE_EQ(sendState_, QState::DONE);
       X_CHECK_STATE_EQ(recvState_, QState::DONE);
-      CHECK(cbCalled_);
+      CHECK(!cb_);
     }
     Channel* channel_;
     uint32_t sendSeqId_;
-    uint16_t protoId_;
-    std::unique_ptr<RequestCallback> cb_;
-    std::shared_ptr<apache::thrift::ContextStack> ctx_;
+    RequestClientCallback::Ptr cb_;
     QState sendState_;
     QState recvState_;
-    bool cbCalled_; // invariant: (cb_ == nullptr) == cbCalled_
     class TimerCallback : public folly::HHWheelTimer::Callback {
      public:
       TimerCallback(
@@ -247,29 +213,24 @@ class ChannelCallbacks {
   class OnewayCallback final : public MessageChannel::SendCallback,
                                public folly::DelayedDestruction {
    public:
-    OnewayCallback(
-        std::unique_ptr<RequestCallback> cb,
-        std::unique_ptr<apache::thrift::ContextStack> ctx)
-        : cb_(std::move(cb)), ctx_(std::move(ctx)) {}
+    explicit OnewayCallback(RequestClientCallback::Ptr cb)
+        : cb_(std::move(cb)) {}
     void sendQueued() override {}
     void messageSent() override {
       DestructorGuard dg(this);
       CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestSent();
+      cb_.release()->onRequestSent();
       destroy();
     }
     void messageSendError(folly::exception_wrapper&& ex) override {
       DestructorGuard dg(this);
       CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestError(ClientReceiveState(ex, std::move(ctx_)));
+      cb_.release()->onResponseError(std::move(ex));
       destroy();
     }
 
    private:
-    std::unique_ptr<RequestCallback> cb_;
-    std::unique_ptr<apache::thrift::ContextStack> ctx_;
+    RequestClientCallback::Ptr cb_;
   };
 };
 } // namespace thrift

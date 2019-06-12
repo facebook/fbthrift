@@ -31,14 +31,14 @@ namespace apache {
 namespace thrift {
 class ClientReceiveState {
  public:
-  ClientReceiveState() : protocolId_(-1), isStreamEnd_(false) {}
+  ClientReceiveState() : protocolId_(-1), isStreamEnd_(true) {}
 
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> _buf,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
       std::shared_ptr<apache::thrift::ContextStack> _ctx,
-      bool _isStreamEnd = false)
+      bool _isStreamEnd = true)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
         buf_(std::move(_buf)),
@@ -51,7 +51,7 @@ class ClientReceiveState {
           std::unique_ptr<folly::IOBuf>> bufAndStream,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
       std::shared_ptr<apache::thrift::ContextStack> _ctx,
-      bool _isStreamEnd = false)
+      bool _isStreamEnd = true)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
         buf_(std::move(bufAndStream.response)),
@@ -65,7 +65,7 @@ class ClientReceiveState {
         ctx_(std::move(_ctx)),
         header_(std::make_unique<apache::thrift::transport::THeader>()),
         excw_(std::move(_excw)),
-        isStreamEnd_(false) {}
+        isStreamEnd_(true) {}
 
   bool isException() const {
     return excw_ ? true : false;
@@ -111,6 +111,10 @@ class ClientReceiveState {
     return ctx_.get();
   }
 
+  void resetProtocolId(uint16_t protocolId) {
+    protocolId_ = protocolId;
+  }
+
   void resetCtx(std::shared_ptr<apache::thrift::ContextStack> _ctx) {
     ctx_ = std::move(_ctx);
   }
@@ -129,12 +133,21 @@ class ClientReceiveState {
   SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
 };
 
-class RequestCallback {
+class RequestClientCallback {
  public:
-  virtual ~RequestCallback() {}
-  virtual void requestSent() = 0;
-  virtual void replyReceived(ClientReceiveState&&) = 0;
-  virtual void requestError(ClientReceiveState&&) = 0;
+  struct RequestClientCallbackDeleter {
+    void operator()(RequestClientCallback* callback) const {
+      callback->onResponseError(folly::exception_wrapper(
+          std::logic_error("Request callback detached")));
+    }
+  };
+  using Ptr =
+      std::unique_ptr<RequestClientCallback, RequestClientCallbackDeleter>;
+
+  virtual ~RequestClientCallback() {}
+  virtual void onRequestSent() noexcept = 0;
+  virtual void onResponse(ClientReceiveState&&) noexcept = 0;
+  virtual void onResponseError(folly::exception_wrapper) noexcept = 0;
 
   // If true, the transport can block current thread/fiber until the request is
   // complete.
@@ -147,9 +160,112 @@ class RequestCallback {
   virtual bool isInlineSafe() const {
     return false;
   }
+};
+
+class RequestCallback : public RequestClientCallback {
+ public:
+  virtual void requestSent() = 0;
+  virtual void replyReceived(ClientReceiveState&&) = 0;
+  virtual void requestError(ClientReceiveState&&) = 0;
+
+  void onRequestSent() noexcept override {
+    CHECK(thriftContext_);
+    {
+      const auto& rctx = thriftContext_->oneWay
+          ? folly::RequestContextScopeGuard(std::move(context_))
+          : folly::RequestContextScopeGuard(context_);
+      (void)rctx;
+      try {
+        requestSent();
+      } catch (...) {
+        LOG(DFATAL)
+            << "Exception thrown while executing requestSent() callback. "
+            << "Exception: " << folly::exceptionStr(std::current_exception());
+      }
+    }
+    if (unmanaged_ && thriftContext_->oneWay) {
+      delete this;
+    }
+  }
+
+  void onResponse(ClientReceiveState&& state) noexcept override {
+    CHECK(thriftContext_);
+    state.resetProtocolId(thriftContext_->protocolId);
+    bool lastResponse = state.isStreamEnd();
+    state.resetCtx(
+        lastResponse ? std::move(thriftContext_->ctx) : thriftContext_->ctx);
+    {
+      const auto& rctx = lastResponse
+          ? folly::RequestContextScopeGuard(std::move(context_))
+          : folly::RequestContextScopeGuard(context_);
+      (void)rctx;
+      try {
+        replyReceived(std::move(state));
+      } catch (...) {
+        LOG(DFATAL)
+            << "Exception thrown while executing replyReceived() callback. "
+            << "Exception: " << folly::exceptionStr(std::current_exception());
+      }
+    }
+    if (unmanaged_ && lastResponse) {
+      delete this;
+    }
+  }
+
+  void onResponseError(folly::exception_wrapper ex) noexcept override {
+    CHECK(thriftContext_);
+    {
+      folly::RequestContextScopeGuard rctx(std::move(context_));
+      try {
+        requestError(
+            ClientReceiveState(std::move(ex), std::move(thriftContext_->ctx)));
+      } catch (...) {
+        LOG(DFATAL)
+            << "Exception thrown while executing requestError() callback. "
+            << "Exception: " << folly::exceptionStr(std::current_exception());
+      }
+    }
+    if (unmanaged_) {
+      delete this;
+    }
+  }
 
   std::shared_ptr<folly::RequestContext> context_;
+
+  struct Context {
+    bool oneWay{false};
+    uint16_t protocolId;
+    std::shared_ptr<apache::thrift::ContextStack> ctx;
+  };
+
+ private:
+  friend RequestClientCallback::Ptr toRequestClientCallbackPtr(
+      std::unique_ptr<RequestCallback>,
+      RequestCallback::Context);
+
+  void setContext(Context context) {
+    context_ = folly::RequestContext::saveContext();
+    thriftContext_ = std::move(context);
+  }
+
+  void setUnmanaged() {
+    unmanaged_ = true;
+  }
+
+  bool unmanaged_{false};
+  folly::Optional<Context> thriftContext_;
 };
+
+inline RequestClientCallback::Ptr toRequestClientCallbackPtr(
+    std::unique_ptr<RequestCallback> cb,
+    RequestCallback::Context context) {
+  if (!cb) {
+    return RequestClientCallback::Ptr();
+  }
+  cb->setContext(std::move(context));
+  cb->setUnmanaged();
+  return RequestClientCallback::Ptr(cb.release());
+}
 
 /***
  *  Like RequestCallback, a base class to be derived, but with a different set

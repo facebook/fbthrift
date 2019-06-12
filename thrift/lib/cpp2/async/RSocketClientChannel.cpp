@@ -496,8 +496,12 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
     std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::unique_ptr<RequestCallback> cb) noexcept {
-  auto callback =
-      new RSocketClientChannel::OnewayCallback(std::move(cb), std::move(ctx));
+  RequestCallback::Context callbackContext;
+  callbackContext.oneWay = true;
+  callbackContext.protocolId = getProtocolId();
+  callbackContext.ctx = std::move(ctx);
+  auto callback = new RSocketClientChannel::OnewayCallback(
+      toRequestClientCallbackPtr(std::move(cb), std::move(callbackContext)));
 
   callback->sendQueued();
 

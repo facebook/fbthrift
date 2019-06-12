@@ -98,14 +98,11 @@ bool HeaderClientChannel::clientSupportHeader() {
 }
 
 // Client Interface
-uint32_t HeaderClientChannel::sendOnewayRequest(
+void HeaderClientChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
-  cb->context_ = RequestContext::saveContext();
-
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) {
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
 
@@ -115,14 +112,11 @@ uint32_t HeaderClientChannel::sendOnewayRequest(
 
   if (cb) {
     sendMessage(
-        new OnewayCallback(std::move(cb), std::move(ctx)),
-        std::move(buf),
-        header.get());
+        new OnewayCallback(std::move(cb)), std::move(buf), header.get());
   } else {
     sendMessage(nullptr, std::move(buf), header.get());
   }
   sendSeqId_ = oldSeqId;
-  return ResponseChannel::ONEWAY_REQUEST_ID;
 }
 
 void HeaderClientChannel::setCloseCallback(CloseCallback* cb) {
@@ -151,16 +145,13 @@ uint16_t HeaderClientChannel::getProtocolId() {
   }
 }
 
-uint32_t HeaderClientChannel::sendRequest(
+void HeaderClientChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) {
   // cb is not allowed to be null.
   DCHECK(cb);
-
-  cb->context_ = RequestContext::saveContext();
 
   DestructorGuard dg(this);
 
@@ -179,9 +170,7 @@ uint32_t HeaderClientChannel::sendRequest(
   auto twcb = new TwowayCallback<HeaderClientChannel>(
       this,
       sendSeqId_,
-      getProtocolId(),
       std::move(cb),
-      std::move(ctx),
       &getEventBase()->timer(),
       timeout,
       rpcOptions.getChunkTimeout());
@@ -196,7 +185,6 @@ uint32_t HeaderClientChannel::sendRequest(
   setBaseReceivedCallback();
 
   sendMessage(twcb, std::move(buf), header.get());
-  return sendSeqId_;
 }
 
 // Header framing

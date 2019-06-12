@@ -90,20 +90,18 @@ class HeaderClientChannel : public ClientChannel,
 
   // Client interface from RequestChannel
   using RequestChannel::sendRequest;
-  uint32_t sendRequest(
+  void sendRequestResponse(
       RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr) override;
 
   using RequestChannel::sendOnewayRequest;
-  uint32_t sendOnewayRequest(
+  void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr) override;
 
   void setCloseCallback(CloseCallback*) override;
 
