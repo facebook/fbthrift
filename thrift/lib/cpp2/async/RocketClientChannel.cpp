@@ -54,16 +54,15 @@ namespace thrift {
 namespace {
 class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
  public:
-  explicit OnWriteSuccess(RequestCallback& requestCallback)
+  explicit OnWriteSuccess(RequestClientCallback& requestCallback)
       : requestCallback_(requestCallback) {}
 
   void onWriteSuccess() noexcept override {
-    folly::RequestContextScopeGuard rctx(requestCallback_.context_);
-    requestCallback_.requestSent();
+    requestCallback_.onRequestSent();
   }
 
  private:
-  RequestCallback& requestCallback_;
+  RequestClientCallback& requestCallback_;
 };
 
 std::unique_ptr<folly::IOBuf> serializeMetadata(
@@ -132,36 +131,30 @@ RocketClientChannel::Ptr RocketClientChannel::newChannel(
       new RocketClientChannel(std::move(socket), std::move(meta)));
 }
 
-uint32_t RocketClientChannel::sendRequest(
+void RocketClientChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return 0;
+      std::move(header),
+      std::move(cb));
 }
 
-uint32_t RocketClientChannel::sendOnewayRequest(
+void RocketClientChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return ResponseChannel::ONEWAY_REQUEST_ID;
+      std::move(header),
+      std::move(cb));
 }
 
 void RocketClientChannel::sendRequestStream(
@@ -225,13 +218,11 @@ void RocketClientChannel::sendRequestStream(
 void RocketClientChannel::sendThriftRequest(
     RpcOptions& rpcOptions,
     RpcKind kind,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cb) {
   DestructorGuard dg(this);
 
-  cb->context_ = folly::RequestContext::saveContext();
   auto metadata = detail::makeRequestRpcMetadata(
       rpcOptions,
       kind,
@@ -241,11 +232,10 @@ void RocketClientChannel::sendThriftRequest(
       getPersistentWriteHeaders());
 
   if (!EnvelopeUtil::stripEnvelope(&metadata, buf)) {
-    cb->requestError(ClientReceiveState(
+    cb.release()->onResponseError(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::CORRUPTED_DATA,
-            "Unexpected problem stripping envelope"),
-        std::move(ctx)));
+            "Unexpected problem stripping envelope"));
     return;
   }
   metadata.seqId_ref() = 0;
@@ -259,10 +249,9 @@ void RocketClientChannel::sendThriftRequest(
   }
 
   if (!rclient_ || !rclient_->isAlive()) {
-    cb->requestError(ClientReceiveState(
+    cb.release()->onResponseError(
         folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NOT_OPEN, "Connection is not open"),
-        std::move(ctx)));
+            TTransportException::NOT_OPEN, "Connection is not open"));
     return;
   }
 
@@ -272,19 +261,18 @@ void RocketClientChannel::sendThriftRequest(
         "Too many active requests on connection");
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    cb->requestError(ClientReceiveState(std::move(ex), std::move(ctx)));
+    cb.release()->onResponseError(std::move(ex));
     return;
   }
 
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-      sendSingleRequestNoResponse(
-          metadata, std::move(ctx), std::move(buf), std::move(cb));
+      sendSingleRequestNoResponse(metadata, std::move(buf), std::move(cb));
       break;
 
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
-          metadata, timeout, std::move(ctx), std::move(buf), std::move(cb));
+          metadata, timeout, std::move(buf), std::move(cb));
       break;
 
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
@@ -299,9 +287,8 @@ void RocketClientChannel::sendThriftRequest(
 
 void RocketClientChannel::sendSingleRequestNoResponse(
     const RequestRpcMetadata& metadata,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) {
+    RequestClientCallback::Ptr cb) {
   auto& cbRef = *cb;
 
   auto sendRequestFunc =
@@ -315,12 +302,12 @@ void RocketClientChannel::sendSingleRequestNoResponse(
       };
 
   auto finallyFunc = [cb = std::move(cb),
-                      ctx = std::move(ctx),
                       g = inflightGuard()](folly::Try<void>&& result) mutable {
     if (result.hasException()) {
-      folly::RequestContextScopeGuard rctx(cb->context_);
-      cb->requestError(ClientReceiveState(
-          std::move(result.exception()), folly::to_shared_ptr(std::move(ctx))));
+      cb.release()->onResponseError(std::move(result.exception()));
+    } else {
+      // onRequestSent is already called by the writeCallback.
+      cb.release();
     }
   };
 
@@ -340,9 +327,8 @@ void RocketClientChannel::sendSingleRequestNoResponse(
 void RocketClientChannel::sendSingleRequestSingleResponse(
     const RequestRpcMetadata& metadata,
     std::chrono::milliseconds timeout,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) {
+    RequestClientCallback::Ptr cb) {
   auto& cbRef = *cb;
 
   auto sendRequestFunc =
@@ -356,16 +342,10 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
             std::move(requestPayload), timeout, &writeCallback);
       };
 
-  auto finallyFunc = [ctx = std::move(ctx),
-                      cb = std::move(cb),
-                      g = inflightGuard(),
-                      protocolId = protocolId_](
+  auto finallyFunc = [cb = std::move(cb), g = inflightGuard()](
                          folly::Try<rocket::Payload>&& response) mutable {
-    folly::RequestContextScopeGuard rctx(cb->context_);
-
     if (UNLIKELY(response.hasException())) {
-      cb->requestError(
-          ClientReceiveState(std::move(response.exception()), std::move(ctx)));
+      cb.release()->onResponseError(std::move(response.exception()));
       return;
     }
 
@@ -380,18 +360,14 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
       } catch (const std::exception& e) {
         FB_LOG_EVERY_MS(ERROR, 10000) << "Exception on deserializing metadata: "
                                       << folly::exceptionStr(e);
-        cb->requestError(ClientReceiveState(
-            folly::exception_wrapper(std::current_exception(), e),
-            std::move(ctx)));
+        cb.release()->onResponseError(
+            folly::exception_wrapper(std::current_exception(), e));
         return;
       }
     }
 
-    cb->replyReceived(ClientReceiveState(
-        protocolId,
-        std::move(response.value()).data(),
-        std::move(tHeader),
-        std::move(ctx)));
+    cb.release()->onResponse(ClientReceiveState(
+        -1, std::move(response.value()).data(), std::move(tHeader), nullptr));
   };
 
   if (cbRef.isSync() && folly::fibers::onFiber()) {
