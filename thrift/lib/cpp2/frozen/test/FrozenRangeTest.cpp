@@ -22,16 +22,20 @@ namespace thrift {
 using namespace frozen;
 using namespace util;
 
-TEST(FrozenRange, ArrayLike) {
-  std::vector<int> v{10, 11, 12, 13};
+template <class T>
+class FrozenRange : public ::testing::Test {};
+TYPED_TEST_CASE_P(FrozenRange);
+
+TYPED_TEST_P(FrozenRange, ArrayLike) {
+  TypeParam v{10, 11, 12, 13};
   auto fv = freeze(v);
   EXPECT_EQ(fv.size(), 4);
   EXPECT_FALSE(fv.empty());
   EXPECT_EQ(fv[2], 12);
 }
 
-TEST(FrozenRange, Iterators) {
-  std::vector<int> v{10, 11, 12, 13};
+TYPED_TEST_P(FrozenRange, Iterators) {
+  TypeParam v{10, 11, 12, 13};
   auto fv = freeze(v);
   auto it = fv.begin();
   EXPECT_EQ(*(it + 2), 12);
@@ -48,8 +52,8 @@ TEST(FrozenRange, Iterators) {
   EXPECT_EQ(*--it, 10);
 }
 
-TEST(FrozenRange, Zeros) {
-  std::vector<int> v(1000, 0);
+TYPED_TEST_P(FrozenRange, Zeros) {
+  TypeParam v(1000, 0);
   // If all the values are zero-sized, we only need space to store the count.
   EXPECT_EQ(frozenSize(v), 2);
   // only a single byte for 200 empty strings
@@ -66,20 +70,38 @@ TEST(FrozenRange, Zeros) {
   EXPECT_EQ(n, 1000);
 }
 
-TEST(FrozenRange, VectorVectorInt) {
-  std::vector<std::vector<int>> vvi{{2, 3, 5, 7}, {11, 13, 17, 19}};
+REGISTER_TYPED_TEST_CASE_P(FrozenRange, ArrayLike, Iterators, Zeros);
+typedef ::testing::Types<std::vector<int>, folly::fbvector<int>> MyTypes;
+INSTANTIATE_TYPED_TEST_CASE_P(Ranges, FrozenRange, MyTypes);
+
+template <class T>
+class FrozenRangeNested : public ::testing::Test {};
+TYPED_TEST_CASE_P(FrozenRangeNested);
+
+TYPED_TEST_P(FrozenRangeNested, VectorVectorInt) {
+  TypeParam vvi{{2, 3, 5, 7}, {11, 13, 17, 19}};
   auto fvvi = freeze(vvi);
   auto tvvi = fvvi.thaw();
   EXPECT_EQ(tvvi, vvi);
 }
 
-TEST(FrozenRange, FrontBack) {
-  std::vector<std::vector<int>> vvi{{2, 3, 5, 7}, {11}};
+TYPED_TEST_P(FrozenRangeNested, FrontBack) {
+  TypeParam vvi{{2, 3, 5, 7}, {11}};
   auto fvvi = freeze(vvi);
   EXPECT_EQ(2, fvvi.front().front());
   EXPECT_EQ(7, fvvi.front().back());
   EXPECT_EQ(11, fvvi.back().front());
   EXPECT_EQ(11, fvvi.back().back());
 }
+
+REGISTER_TYPED_TEST_CASE_P(FrozenRangeNested, VectorVectorInt, FrontBack);
+typedef ::testing::Types<
+    std::vector<std::vector<int>>,
+    std::vector<folly::fbvector<int>>,
+    folly::fbvector<folly::fbvector<int>>,
+    folly::fbvector<std::vector<int>>>
+    MyTypesNested;
+INSTANTIATE_TYPED_TEST_CASE_P(RangesNested, FrozenRangeNested, MyTypesNested);
+
 } // namespace thrift
 } // namespace apache

@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <folly/Demangle.h>
+#include <folly/FBVector.h>
 #include <folly/MapUtil.h>
 #include <folly/Memory.h>
 #include <folly/Optional.h>
