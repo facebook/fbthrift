@@ -352,64 +352,53 @@ void RSocketClientChannel::setProtocolId(uint16_t protocolId) {
   protocolId_ = protocolId;
 }
 
-uint32_t RSocketClientChannel::sendRequest(
+void RSocketClientChannel::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return 0;
+      std::move(header),
+      std::move(cb));
 }
 
-uint32_t RSocketClientChannel::sendOnewayRequest(
+void RSocketClientChannel::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return ResponseChannel::ONEWAY_REQUEST_ID;
+      std::move(header),
+      std::move(cb));
 }
 
-uint32_t RSocketClientChannel::sendStreamRequest(
+void RSocketClientChannel::sendRequestStream(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header) {
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestClientCallback::Ptr cb) {
   sendThriftRequest(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return 0;
+      std::move(header),
+      std::move(cb));
 }
 
 void RSocketClientChannel::sendThriftRequest(
     RpcOptions& rpcOptions,
     RpcKind kind,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<THeader> header) noexcept {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) noexcept {
   DestructorGuard dg(this);
 
-  cb->context_ = folly::RequestContext::saveContext();
   auto metadata = detail::makeRequestRpcMetadata(
       rpcOptions,
       kind,
@@ -423,23 +412,19 @@ void RSocketClientChannel::sendThriftRequest(
       !(metadataKind == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
         metadataKind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE ||
         metadataKind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE)) {
-    folly::RequestContextScopeGuard rctx(cb->context_);
-    cb->requestError(ClientReceiveState(
+    cb.release()->onResponseError(
         folly::make_exception_wrapper<TTransportException>(
             TTransportException::CORRUPTED_DATA,
-            "Unexpected problem stripping envelope"),
-        std::move(ctx)));
+            "Unexpected problem stripping envelope"));
     return;
   }
   metadata.seqId_ref() = 0;
   DCHECK(metadata.kind_ref());
 
   if (!connectionStatus_->isConnected()) {
-    folly::RequestContextScopeGuard rctx(cb->context_);
-    cb->requestError(ClientReceiveState(
+    cb.release()->onResponseError(
         folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NOT_OPEN, "Connection is not open"),
-        std::move(ctx)));
+            TTransportException::NOT_OPEN, "Connection is not open"));
     return;
   }
 
@@ -453,8 +438,7 @@ void RSocketClientChannel::sendThriftRequest(
     // Might be able to create another transaction soon
     ex.setOptions(TTransportException::CHANNEL_IS_VALID);
 
-    folly::RequestContextScopeGuard rctx(cb->context_);
-    cb->requestError(ClientReceiveState(std::move(ex), std::move(ctx)));
+    cb.release()->onResponseError(std::move(ex));
     return;
   }
   const std::chrono::milliseconds timeout{
@@ -466,21 +450,15 @@ void RSocketClientChannel::sendThriftRequest(
 
   switch (metadataKind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-      sendSingleRequestNoResponse(
-          metadata, std::move(ctx), std::move(buf), std::move(cb));
+      sendSingleRequestNoResponse(metadata, std::move(buf), std::move(cb));
       break;
     case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
       sendSingleRequestSingleResponse(
-          metadata, timeout, std::move(ctx), std::move(buf), std::move(cb));
+          metadata, timeout, std::move(buf), std::move(cb));
       break;
     case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
       sendSingleRequestStreamResponse(
-          rpcOptions,
-          metadata,
-          timeout,
-          std::move(ctx),
-          std::move(buf),
-          std::move(cb));
+          rpcOptions, metadata, timeout, std::move(buf), std::move(cb));
       break;
     default:
       folly::assume_unreachable();
@@ -493,15 +471,9 @@ uint16_t RSocketClientChannel::getProtocolId() {
 
 void RSocketClientChannel::sendSingleRequestNoResponse(
     const RequestRpcMetadata& metadata,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) noexcept {
-  RequestCallback::Context callbackContext;
-  callbackContext.oneWay = true;
-  callbackContext.protocolId = getProtocolId();
-  callbackContext.ctx = std::move(ctx);
-  auto callback = new RSocketClientChannel::OnewayCallback(
-      toRequestClientCallbackPtr(std::move(cb), std::move(callbackContext)));
+    RequestClientCallback::Ptr cb) noexcept {
+  auto callback = new RSocketClientChannel::OnewayCallback(std::move(cb));
 
   callback->sendQueued();
 
@@ -516,11 +488,10 @@ void RSocketClientChannel::sendSingleRequestNoResponse(
 void RSocketClientChannel::sendSingleRequestSingleResponse(
     const RequestRpcMetadata& metadata,
     std::chrono::milliseconds timeout,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) noexcept {
+    RequestClientCallback::Ptr cb) noexcept {
   auto callback = std::make_unique<ThriftClientCallback>(
-      evb_, std::move(cb), std::move(ctx), protocolId_, timeout);
+      evb_, false, std::move(cb), timeout);
 
   auto singleObserver = std::make_shared<CountedSingleObserver>(
       std::move(callback), folly::to_weak_ptr(channelCounters_));
@@ -537,11 +508,10 @@ void RSocketClientChannel::sendSingleRequestStreamResponse(
     RpcOptions& rpcOptions,
     const RequestRpcMetadata& metadata,
     std::chrono::milliseconds timeout,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::unique_ptr<RequestCallback> cb) noexcept {
+    RequestClientCallback::Ptr cb) noexcept {
   auto callback = std::make_shared<ThriftClientCallback>(
-      evb_, std::move(cb), std::move(ctx), protocolId_, timeout);
+      evb_, false, std::move(cb), timeout);
 
   auto takeFirst = std::make_shared<detail::TakeFirst>(
       // onRequestSent

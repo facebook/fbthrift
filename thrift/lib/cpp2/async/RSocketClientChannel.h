@@ -119,26 +119,25 @@ class RSocketClientChannel final : public ClientChannel,
 
   void setProtocolId(uint16_t protocolId);
 
-  uint32_t sendRequest(
+  void sendRequestResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cb) override;
 
-  uint32_t sendOnewayRequest(
+  void sendRequestNoResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cb) override;
 
-  uint32_t sendStreamRequest(
+  void sendRequestStream(
       RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr cb) override;
+
+  using RequestChannel::sendRequestStream;
 
   folly::EventBase* getEventBase() const override;
 
@@ -173,31 +172,27 @@ class RSocketClientChannel final : public ClientChannel,
   void sendThriftRequest(
       RpcOptions& rpcOptions,
       RpcKind kind,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) noexcept;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cb) noexcept;
 
   void sendSingleRequestNoResponse(
       const RequestRpcMetadata& metadata,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb) noexcept;
+      RequestClientCallback::Ptr cb) noexcept;
 
   void sendSingleRequestSingleResponse(
       const RequestRpcMetadata& metadata,
       std::chrono::milliseconds timeout,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb) noexcept;
+      RequestClientCallback::Ptr cb) noexcept;
 
   void sendSingleRequestStreamResponse(
       RpcOptions& rpcOptions,
       const RequestRpcMetadata& metadata,
       std::chrono::milliseconds timeout,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::unique_ptr<RequestCallback> cb) noexcept;
+      RequestClientCallback::Ptr cb) noexcept;
 
  public:
   static const uint16_t kMajorVersion;

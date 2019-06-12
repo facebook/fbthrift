@@ -82,6 +82,8 @@ class RocketClientChannel final : public ClientChannel {
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
+  using RequestChannel::sendRequestStream;
+
   folly::EventBase* getEventBase() const override {
     return evb_;
   }

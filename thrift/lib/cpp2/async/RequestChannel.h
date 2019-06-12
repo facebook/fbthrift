@@ -171,12 +171,28 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * cb must not be null.
    */
+  virtual void sendRequestStream(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr);
+
   virtual uint32_t sendStreamRequest(
-      RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
-      std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>);
+      RpcOptions& options,
+      std::unique_ptr<RequestCallback> cb,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<apache::thrift::transport::THeader> header) {
+    RequestCallback::Context callbackContext;
+    callbackContext.protocolId = getProtocolId();
+    callbackContext.ctx = std::move(ctx);
+    sendRequestStream(
+        options,
+        std::move(buf),
+        std::move(header),
+        toRequestClientCallbackPtr(std::move(cb), std::move(callbackContext)));
+    return 0;
+  }
 
   virtual void sendRequestStream(
       RpcOptions& rpcOptions,

@@ -123,28 +123,21 @@ void RequestChannel::sendRequestAsync(
   }
 }
 
-uint32_t RequestChannel::sendStreamRequest(
+void RequestChannel::sendRequestStream(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header) {
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestClientCallback::Ptr cb) {
   DestructorGuard dg(this);
-  cb->context_ = folly::RequestContext::saveContext();
   auto chunkTimeout = rpcOptions.getChunkTimeout();
   auto callback = std::make_unique<ThriftClientCallback>(
-      nullptr,
-      std::move(cb),
-      std::move(ctx),
-      getProtocolId(),
-      std::chrono::milliseconds::zero());
+      nullptr, false, std::move(cb), std::chrono::milliseconds::zero());
   auto clientCallBackFlowable = std::make_shared<ClientCallbackFlowable>(
       std::move(callback), chunkTimeout);
   clientCallBackFlowable->init();
   StreamClientCallback* clientCallback = clientCallBackFlowable.get();
   sendRequestStream(
       rpcOptions, std::move(buf), std::move(header), clientCallback);
-  return 0;
 }
 
 void RequestChannel::sendRequestStream(

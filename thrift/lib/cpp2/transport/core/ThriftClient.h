@@ -86,26 +86,17 @@ class ThriftClient : public ClientChannel {
   void setHTTPUrl(const std::string& url);
 
   // begin RequestChannel methods
-  uint32_t sendRequest(
+  void sendRequestResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cb) override;
 
-  uint32_t sendStreamRequest(
+  void sendRequestNoResponse(
       RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
-
-  uint32_t sendOnewayRequest(
-      RpcOptions& rpcOptions,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cb) override;
 
   folly::EventBase* getEventBase() const override;
 
@@ -158,13 +149,12 @@ class ThriftClient : public ClientChannel {
       apache::thrift::ProtocolId protocolId,
       transport::THeader* header);
 
-  uint32_t sendRequestHelper(
+  void sendRequestHelper(
       RpcOptions& rpcOptions,
       RpcKind kind,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) noexcept;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cb) noexcept;
 
   // Scheduled by sendRequestHelper in the connection thread.  Both
   // operations getChannel() and sendThriftRequest() can be scheduled

@@ -65,50 +65,30 @@ void ThriftClient::setHTTPUrl(const std::string& url) {
   httpUrl_ = url;
 }
 
-uint32_t ThriftClient::sendRequest(
+void ThriftClient::sendRequestResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) {
   return sendRequestHelper(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
+      std::move(header),
+      std::move(cb));
 }
 
-uint32_t ThriftClient::sendOnewayRequest(
+void ThriftClient::sendRequestNoResponse(
     RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) {
   sendRequestHelper(
       rpcOptions,
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return ResponseChannel::ONEWAY_REQUEST_ID;
-}
-
-uint32_t ThriftClient::sendStreamRequest(
-    RpcOptions& rpcOptions,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
-    std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header) {
-  return sendRequestHelper(
-      rpcOptions,
-      RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-      std::move(cb),
-      std::move(ctx),
-      std::move(buf),
-      std::move(header));
+      std::move(header),
+      std::move(cb));
 }
 
 std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
@@ -154,17 +134,15 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
   return metadata;
 }
 
-uint32_t ThriftClient::sendRequestHelper(
+void ThriftClient::sendRequestHelper(
     RpcOptions& rpcOptions,
     RpcKind kind,
-    std::unique_ptr<RequestCallback> cb,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<IOBuf> buf,
-    std::shared_ptr<THeader> header) noexcept {
+    std::shared_ptr<THeader> header,
+    RequestClientCallback::Ptr cb) noexcept {
   DestructorGuard dg(this);
   auto callbackEvb =
       cb->isInlineSafe() ? connection_->getEventBase() : callbackEvb_;
-  cb->context_ = RequestContext::saveContext();
   auto metadata = createRequestRpcMetadata(
       rpcOptions,
       kind,
@@ -172,9 +150,8 @@ uint32_t ThriftClient::sendRequestHelper(
       header.get());
   auto callback = std::make_unique<ThriftClientCallback>(
       callbackEvb,
+      kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       std::move(cb),
-      std::move(ctx),
-      protocolId_,
       std::chrono::milliseconds(metadata->clientTimeoutMs_ref().value_or(0)));
   auto conn = connection_;
   connection_->getEventBase()->runInEventBaseThread([conn = std::move(conn),
@@ -186,7 +163,6 @@ uint32_t ThriftClient::sendRequestHelper(
     getChannelAndSendThriftRequest(
         conn.get(), std::move(*metadata), std::move(buf), std::move(callback));
   });
-  return 0;
 }
 
 void ThriftClient::getChannelAndSendThriftRequest(

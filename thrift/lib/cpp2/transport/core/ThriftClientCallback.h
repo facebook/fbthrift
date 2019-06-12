@@ -35,9 +35,8 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
  public:
   ThriftClientCallback(
       folly::EventBase* evb,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<ContextStack> ctx,
-      uint16_t protoId,
+      bool oneWay,
+      RequestClientCallback::Ptr cb,
       std::chrono::milliseconds timeout);
 
   virtual ~ThriftClientCallback();
@@ -75,10 +74,6 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
   // "onThriftResponse()", and "onError()" must be scheduled.
   folly::EventBase* getEventBase() const;
 
-  RequestCallback* inner() const {
-    return cb_.get();
-  }
-
   void setTimedOut(folly::Function<void()> onTimedout);
 
  protected:
@@ -91,9 +86,8 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
 
  protected:
   folly::EventBase* evb_;
-  std::unique_ptr<RequestCallback> cb_;
-  std::unique_ptr<ContextStack> ctx_;
-  uint16_t protoId_;
+  bool oneWay_;
+  RequestClientCallback::Ptr cb_;
 
   bool active_;
   std::chrono::milliseconds timeout_;

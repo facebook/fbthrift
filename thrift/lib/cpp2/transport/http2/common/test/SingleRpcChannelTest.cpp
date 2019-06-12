@@ -186,11 +186,15 @@ folly::Future<RequestState> sendRequest(
   folly::Promise<RequestState> promise;
   auto f = promise.getFuture();
 
+  apache::thrift::RequestCallback::Context context;
+  context.protocolId = detail::compact::PROTOCOL_ID;
+  context.ctx = std::make_unique<ContextStack>("test");
   auto cb = std::make_unique<ThriftClientCallback>(
       &evb,
-      std::make_unique<TestRequestCallback>(std::move(promise)),
-      std::make_unique<ContextStack>("test"),
-      detail::compact::PROTOCOL_ID,
+      false,
+      toRequestClientCallbackPtr(
+          std::make_unique<TestRequestCallback>(std::move(promise)),
+          std::move(context)),
       std::chrono::milliseconds{10000});
 
   // Send a bad request.
