@@ -19,6 +19,7 @@
 #include <stdexcept>
 
 #include <folly/GLog.h>
+#include <folly/Utility.h>
 #include <folly/lang/Assume.h>
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 
@@ -140,7 +141,9 @@ inline StructyType getStructyTypeFromMap(TType keyType, TType valType) {
   }};
   auto keyHint = ttypeToNimbleFieldChunkHint(keyType);
   auto valHint = ttypeToNimbleFieldChunkHint(valType);
-  DCHECK(keyHint < 4 && valHint < 4);
+  DCHECK(
+      folly::to_underlying_type(keyHint) < 4 &&
+      folly::to_underlying_type(valHint) < 4);
 
   int index = (keyHint << 2) | valHint;
   std::uint32_t result = structyTypeFromShift[index];
@@ -158,7 +161,7 @@ inline StructyType getStructyTypeFromListOrSet(TType elemType) {
       LIST_OR_SET_TWO_CHUNKS,
       LIST_OR_SET_COMPLEX,
   }};
-  DCHECK(elemFieldHint < structyType.size());
+  DCHECK(folly::to_underlying_type(elemFieldHint) < structyType.size());
   std::uint32_t result = structyType[elemFieldHint];
   DCHECK(result != kInvalid);
   return static_cast<StructyType>(result);
