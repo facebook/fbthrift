@@ -112,19 +112,17 @@ class HTTPClientChannel : public ClientChannel,
     return evb_;
   }
 
-  uint32_t sendRequest(
+  void sendRequestResponse(
       RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr) override;
 
-  uint32_t sendOnewayRequest(
+  void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override;
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr) override;
 
   void setCloseCallback(CloseCallback* cb) override {
     closeCallback_ = cb;
@@ -151,13 +149,12 @@ class HTTPClientChannel : public ClientChannel,
       size_t receiveSessionWindowSize);
 
  protected:
-  uint32_t sendRequest_(
+  void sendRequest_(
       RpcOptions&,
       bool oneway,
-      std::unique_ptr<RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>);
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr);
 
  private:
   HTTPClientChannel(
@@ -171,11 +168,7 @@ class HTTPClientChannel : public ClientChannel,
         public proxygen::HTTPTransactionHandler,
         public proxygen::HTTPTransaction::TransportCallback {
    public:
-    HTTPTransactionCallback(
-        bool oneway,
-        std::unique_ptr<RequestCallback> cb,
-        std::unique_ptr<apache::thrift::ContextStack> ctx,
-        uint16_t protoId);
+    HTTPTransactionCallback(bool oneway, RequestClientCallback::Ptr cb);
 
     ~HTTPTransactionCallback() override;
 
@@ -268,9 +261,7 @@ class HTTPClientChannel : public ClientChannel,
    private:
     bool oneway_;
 
-    std::unique_ptr<RequestCallback> cb_;
-    std::unique_ptr<apache::thrift::ContextStack> ctx_;
-    uint16_t protoId_;
+    RequestClientCallback::Ptr cb_;
 
     proxygen::HTTPTransaction* txn_;
     std::unique_ptr<proxygen::HTTPMessage> msg_;
