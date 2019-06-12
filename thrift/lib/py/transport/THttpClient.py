@@ -46,7 +46,7 @@ class THttpClient(TTransportBase):
 
     """Http implementation of TTransport base."""
 
-    def __init__(self, uri_or_host, port=None, path=None):
+    def __init__(self, uri_or_host, port=None, path=None, ssl_context=None):
         """THttpClient supports two different types constructor parameters.
 
         THttpClient(host, port, path) - deprecated
@@ -82,6 +82,7 @@ class THttpClient(TTransportBase):
         self.__http = None
         self.__timeout = None
         self.__custom_headers = None
+        self.ssl_context = ssl_context
 
     def open(self):
         if self.scheme == 'http':
@@ -89,6 +90,7 @@ class THttpClient(TTransportBase):
                                                  timeout=self.__timeout)
         else:
             self.__http = httplib.HTTPSConnection(self.host, self.port,
+                                                  context=self.ssl_context,
                                                   timeout=self.__timeout)
 
     def close(self):
