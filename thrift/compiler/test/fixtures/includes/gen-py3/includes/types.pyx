@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -39,8 +40,6 @@ import builtins as _builtins
 cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 
-
-cdef cIncluded _Included_defaults = cIncluded()
 
 cdef class Included(thrift.py3.types.Struct):
 
@@ -122,12 +121,12 @@ cdef class Included(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = _Included_defaults.MyIntField
+                deref(c_inst).MyIntField = default_inst[cIncluded]().MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[1] and MyTransitiveField is None:
-                deref(c_inst).MyTransitiveField = _Included_defaults.MyTransitiveField
+                deref(c_inst).MyTransitiveField = default_inst[cIncluded]().MyTransitiveField
                 deref(c_inst).__isset.MyTransitiveField = False
                 pass
 

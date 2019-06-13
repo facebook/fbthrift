@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -142,8 +143,6 @@ cdef inline cAnimal Animal_to_cpp(Animal value):
         return Animal__CAT
     elif cvalue == 3:
         return Animal__TARANTULA
-
-cdef cColor _Color_defaults = cColor()
 
 cdef class Color(thrift.py3.types.Struct):
 
@@ -267,22 +266,22 @@ cdef class Color(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and red is None:
-                deref(c_inst).red = _Color_defaults.red
+                deref(c_inst).red = default_inst[cColor]().red
                 deref(c_inst).__isset.red = False
                 pass
 
             if not __isNOTSET[1] and green is None:
-                deref(c_inst).green = _Color_defaults.green
+                deref(c_inst).green = default_inst[cColor]().green
                 deref(c_inst).__isset.green = False
                 pass
 
             if not __isNOTSET[2] and blue is None:
-                deref(c_inst).blue = _Color_defaults.blue
+                deref(c_inst).blue = default_inst[cColor]().blue
                 deref(c_inst).__isset.blue = False
                 pass
 
             if not __isNOTSET[3] and alpha is None:
-                deref(c_inst).alpha = _Color_defaults.alpha
+                deref(c_inst).alpha = default_inst[cColor]().alpha
                 deref(c_inst).__isset.alpha = False
                 pass
 
@@ -424,8 +423,6 @@ cdef class Color(thrift.py3.types.Struct):
         return (deserialize, (Color, serialize(self)))
 
 
-cdef cVehicle _Vehicle_defaults = cVehicle()
-
 cdef class Vehicle(thrift.py3.types.Struct):
 
     def __init__(
@@ -548,7 +545,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and color is None:
-                deref(c_inst).color = _Vehicle_defaults.color
+                deref(c_inst).color = default_inst[cVehicle]().color
                 deref(c_inst).__isset.color = False
                 pass
 
@@ -565,7 +562,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[4] and hasAC is None:
-                deref(c_inst).hasAC = _Vehicle_defaults.hasAC
+                deref(c_inst).hasAC = default_inst[cVehicle]().hasAC
                 deref(c_inst).__isset.hasAC = False
                 pass
 
@@ -724,8 +721,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (Vehicle, serialize(self)))
 
-
-cdef cPerson _Person_defaults = cPerson()
 
 cdef class Person(thrift.py3.types.Struct):
 
@@ -935,12 +930,12 @@ cdef class Person(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and id is None:
-                deref(c_inst).id = _Person_defaults.id
+                deref(c_inst).id = default_inst[cPerson]().id
                 deref(c_inst).__isset.id = False
                 pass
 
             if not __isNOTSET[1] and name is None:
-                deref(c_inst).name = _Person_defaults.name
+                deref(c_inst).name = default_inst[cPerson]().name
                 deref(c_inst).__isset.name = False
                 pass
 

@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -37,8 +38,6 @@ import warnings
 import weakref as __weakref
 import builtins as _builtins
 
-
-cdef cOldStructure _OldStructure_defaults = cOldStructure()
 
 cdef class OldStructure(thrift.py3.types.Struct):
 
@@ -94,7 +93,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and features is None:
-                deref(c_inst).features = _OldStructure_defaults.features
+                deref(c_inst).features = default_inst[cOldStructure]().features
                 deref(c_inst).__isset.features = False
                 pass
 
@@ -208,8 +207,6 @@ cdef class OldStructure(thrift.py3.types.Struct):
         return (deserialize, (OldStructure, serialize(self)))
 
 
-cdef cNewStructure _NewStructure_defaults = cNewStructure()
-
 cdef class NewStructure(thrift.py3.types.Struct):
 
     def __init__(
@@ -264,7 +261,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and features is None:
-                deref(c_inst).features = _NewStructure_defaults.features
+                deref(c_inst).features = default_inst[cNewStructure]().features
                 deref(c_inst).__isset.features = False
                 pass
 
@@ -378,8 +375,6 @@ cdef class NewStructure(thrift.py3.types.Struct):
         return (deserialize, (NewStructure, serialize(self)))
 
 
-cdef cNewStructure2 _NewStructure2_defaults = cNewStructure2()
-
 cdef class NewStructure2(thrift.py3.types.Struct):
 
     def __init__(
@@ -434,7 +429,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and features is None:
-                deref(c_inst).features = _NewStructure2_defaults.features
+                deref(c_inst).features = default_inst[cNewStructure2]().features
                 deref(c_inst).__isset.features = False
                 pass
 
@@ -548,8 +543,6 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         return (deserialize, (NewStructure2, serialize(self)))
 
 
-cdef cNewStructureNested _NewStructureNested_defaults = cNewStructureNested()
-
 cdef class NewStructureNested(thrift.py3.types.Struct):
 
     def __init__(
@@ -628,17 +621,17 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and lst is None:
-                deref(c_inst).lst = _NewStructureNested_defaults.lst
+                deref(c_inst).lst = default_inst[cNewStructureNested]().lst
                 deref(c_inst).__isset.lst = False
                 pass
 
             if not __isNOTSET[1] and mp is None:
-                deref(c_inst).mp = _NewStructureNested_defaults.mp
+                deref(c_inst).mp = default_inst[cNewStructureNested]().mp
                 deref(c_inst).__isset.mp = False
                 pass
 
             if not __isNOTSET[2] and s is None:
-                deref(c_inst).s = _NewStructureNested_defaults.s
+                deref(c_inst).s = default_inst[cNewStructureNested]().s
                 deref(c_inst).__isset.s = False
                 pass
 
@@ -776,8 +769,6 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         return (deserialize, (NewStructureNested, serialize(self)))
 
 
-cdef cNewStructureNestedField _NewStructureNestedField_defaults = cNewStructureNestedField()
-
 cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     def __init__(
@@ -836,7 +827,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and f is None:
-                deref(c_inst).f = _NewStructureNestedField_defaults.f
+                deref(c_inst).f = default_inst[cNewStructureNestedField]().f
                 deref(c_inst).__isset.f = False
                 pass
 

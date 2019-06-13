@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -123,8 +124,6 @@ cdef class __NadaType(thrift.py3.types.CompiledEnum):
 __SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta)
 __Nada_Union_TypeEnumMembers = set(__NadaType)
 
-
-cdef cEmpty _Empty_defaults = cEmpty()
 
 cdef class Empty(thrift.py3.types.Struct):
 

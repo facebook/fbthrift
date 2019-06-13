@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -39,8 +40,6 @@ import builtins as _builtins
 cimport module.types as _module_types
 import module.types as _module_types
 
-
-cdef cMyStruct _MyStruct_defaults = cMyStruct()
 
 cdef class MyStruct(thrift.py3.types.Struct):
 
@@ -100,7 +99,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and field is None:
-                deref(c_inst).field = _MyStruct_defaults.field
+                deref(c_inst).field = default_inst[cMyStruct]().field
                 deref(c_inst).__isset.field = False
                 pass
 
@@ -212,8 +211,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
-cdef cCombo _Combo_defaults = cCombo()
-
 cdef class Combo(thrift.py3.types.Struct):
 
     def __init__(
@@ -304,22 +301,22 @@ cdef class Combo(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and listOfOurMyStructLists is None:
-                deref(c_inst).listOfOurMyStructLists = _Combo_defaults.listOfOurMyStructLists
+                deref(c_inst).listOfOurMyStructLists = default_inst[cCombo]().listOfOurMyStructLists
                 deref(c_inst).__isset.listOfOurMyStructLists = False
                 pass
 
             if not __isNOTSET[1] and theirMyStructList is None:
-                deref(c_inst).theirMyStructList = _Combo_defaults.theirMyStructList
+                deref(c_inst).theirMyStructList = default_inst[cCombo]().theirMyStructList
                 deref(c_inst).__isset.theirMyStructList = False
                 pass
 
             if not __isNOTSET[2] and ourMyStructList is None:
-                deref(c_inst).ourMyStructList = _Combo_defaults.ourMyStructList
+                deref(c_inst).ourMyStructList = default_inst[cCombo]().ourMyStructList
                 deref(c_inst).__isset.ourMyStructList = False
                 pass
 
             if not __isNOTSET[3] and listOfTheirMyStructList is None:
-                deref(c_inst).listOfTheirMyStructList = _Combo_defaults.listOfTheirMyStructList
+                deref(c_inst).listOfTheirMyStructList = default_inst[cCombo]().listOfTheirMyStructList
                 deref(c_inst).__isset.listOfTheirMyStructList = False
                 pass
 

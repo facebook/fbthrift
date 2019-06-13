@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -143,8 +144,6 @@ cdef inline cEnum Enum_to_cpp(Enum value):
     elif cvalue == 3:
         return Enum__THREE
 
-cdef cStruct _Struct_defaults = cStruct()
-
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -225,12 +224,12 @@ cdef class Struct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and first is None:
-                deref(c_inst).first = _Struct_defaults.first
+                deref(c_inst).first = default_inst[cStruct]().first
                 deref(c_inst).__isset.first = False
                 pass
 
             if not __isNOTSET[1] and second is None:
-                deref(c_inst).second = _Struct_defaults.second
+                deref(c_inst).second = default_inst[cStruct]().second
                 deref(c_inst).__isset.second = False
                 pass
 

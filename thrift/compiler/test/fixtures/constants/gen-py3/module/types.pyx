@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -554,8 +555,6 @@ __SetMetaClass(<PyTypeObject*> __union2Type, <PyTypeObject*> __union2_Union_Type
 __union2_Union_TypeEnumMembers = set(__union2Type)
 
 
-cdef cInternship _Internship_defaults = cInternship()
-
 cdef class Internship(thrift.py3.types.Struct):
 
     def __init__(
@@ -657,7 +656,7 @@ cdef class Internship(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and title is None:
-                deref(c_inst).title = _Internship_defaults.title
+                deref(c_inst).title = default_inst[cInternship]().title
                 deref(c_inst).__isset.title = False
                 pass
 
@@ -794,8 +793,6 @@ cdef class Internship(thrift.py3.types.Struct):
         return (deserialize, (Internship, serialize(self)))
 
 
-cdef cUnEnumStruct _UnEnumStruct_defaults = cUnEnumStruct()
-
 cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -854,7 +851,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and city is None:
-                deref(c_inst).city = _UnEnumStruct_defaults.city
+                deref(c_inst).city = default_inst[cUnEnumStruct]().city
                 deref(c_inst).__isset.city = False
                 pass
 
@@ -965,8 +962,6 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (UnEnumStruct, serialize(self)))
 
-
-cdef cRange _Range_defaults = cRange()
 
 cdef class Range(thrift.py3.types.Struct):
 
@@ -1179,8 +1174,6 @@ cdef class Range(thrift.py3.types.Struct):
         return (deserialize, (Range, serialize(self)))
 
 
-cdef cstruct1 _struct1_defaults = cstruct1()
-
 cdef class struct1(thrift.py3.types.Struct):
 
     def __init__(
@@ -1261,12 +1254,12 @@ cdef class struct1(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = _struct1_defaults.a
+                deref(c_inst).a = default_inst[cstruct1]().a
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = _struct1_defaults.b
+                deref(c_inst).b = default_inst[cstruct1]().b
                 deref(c_inst).__isset.b = False
                 pass
 
@@ -1388,8 +1381,6 @@ cdef class struct1(thrift.py3.types.Struct):
         return (deserialize, (struct1, serialize(self)))
 
 
-cdef cstruct2 _struct2_defaults = cstruct2()
-
 cdef class struct2(thrift.py3.types.Struct):
 
     def __init__(
@@ -1498,22 +1489,22 @@ cdef class struct2(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = _struct2_defaults.a
+                deref(c_inst).a = default_inst[cstruct2]().a
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = _struct2_defaults.b
+                deref(c_inst).b = default_inst[cstruct2]().b
                 deref(c_inst).__isset.b = False
                 pass
 
             if not __isNOTSET[2] and c is None:
-                deref(c_inst).c = _struct2_defaults.c
+                deref(c_inst).c = default_inst[cstruct2]().c
                 deref(c_inst).__isset.c = False
                 pass
 
             if not __isNOTSET[3] and d is None:
-                deref(c_inst).d = _struct2_defaults.d
+                deref(c_inst).d = default_inst[cstruct2]().d
                 deref(c_inst).__isset.d = False
                 pass
 
@@ -1659,8 +1650,6 @@ cdef class struct2(thrift.py3.types.Struct):
         return (deserialize, (struct2, serialize(self)))
 
 
-cdef cstruct3 _struct3_defaults = cstruct3()
-
 cdef class struct3(thrift.py3.types.Struct):
 
     def __init__(
@@ -1757,17 +1746,17 @@ cdef class struct3(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = _struct3_defaults.a
+                deref(c_inst).a = default_inst[cstruct3]().a
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = _struct3_defaults.b
+                deref(c_inst).b = default_inst[cstruct3]().b
                 deref(c_inst).__isset.b = False
                 pass
 
             if not __isNOTSET[2] and c is None:
-                deref(c_inst).c = _struct3_defaults.c
+                deref(c_inst).c = default_inst[cstruct3]().c
                 deref(c_inst).__isset.c = False
                 pass
 

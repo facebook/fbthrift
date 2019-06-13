@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -418,8 +419,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         return (deserialize, (MyUnion, serialize(self)))
 
 
-cdef cMyField _MyField_defaults = cMyField()
-
 cdef class MyField(thrift.py3.types.Struct):
 
     def __init__(
@@ -534,7 +533,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and value is None:
-                deref(c_inst).value = _MyField_defaults.value
+                deref(c_inst).value = default_inst[cMyField]().value
                 deref(c_inst).__isset.value = False
                 pass
 
@@ -669,8 +668,6 @@ cdef class MyField(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (MyField, serialize(self)))
 
-
-cdef cMyStruct _MyStruct_defaults = cMyStruct()
 
 cdef class MyStruct(thrift.py3.types.Struct):
 
@@ -912,8 +909,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
-cdef cStructWithUnion _StructWithUnion_defaults = cStructWithUnion()
-
 cdef class StructWithUnion(thrift.py3.types.Struct):
 
     def __init__(
@@ -1012,12 +1007,12 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[1] and aDouble is None:
-                deref(c_inst).aDouble = _StructWithUnion_defaults.aDouble
+                deref(c_inst).aDouble = default_inst[cStructWithUnion]().aDouble
                 deref(c_inst).__isset.aDouble = False
                 pass
 
             if not __isNOTSET[2] and f is None:
-                deref(c_inst).f = _StructWithUnion_defaults.f
+                deref(c_inst).f = default_inst[cStructWithUnion]().f
                 deref(c_inst).__isset.f = False
                 pass
 
@@ -1153,8 +1148,6 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (StructWithUnion, serialize(self)))
 
-
-cdef cRecursiveStruct _RecursiveStruct_defaults = cRecursiveStruct()
 
 cdef class RecursiveStruct(thrift.py3.types.Struct):
 
@@ -1324,8 +1317,6 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (RecursiveStruct, serialize(self)))
 
-
-cdef cStructWithContainers _StructWithContainers_defaults = cStructWithContainers()
 
 cdef class StructWithContainers(thrift.py3.types.Struct):
 
@@ -1640,8 +1631,6 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         return (deserialize, (StructWithContainers, serialize(self)))
 
 
-cdef cStructWithSharedConst _StructWithSharedConst_defaults = cStructWithSharedConst()
-
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
     def __init__(
@@ -1882,8 +1871,6 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         return (deserialize, (StructWithSharedConst, serialize(self)))
 
 
-cdef cEmpty _Empty_defaults = cEmpty()
-
 cdef class Empty(thrift.py3.types.Struct):
 
     def __init__(
@@ -2012,8 +1999,6 @@ cdef class Empty(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (Empty, serialize(self)))
 
-
-cdef cStructWithRef _StructWithRef_defaults = cStructWithRef()
 
 cdef class StructWithRef(thrift.py3.types.Struct):
 
@@ -2255,8 +2240,6 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         return (deserialize, (StructWithRef, serialize(self)))
 
 
-cdef cStructWithRefTypeUnique _StructWithRefTypeUnique_defaults = cStructWithRefTypeUnique()
-
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
     def __init__(
@@ -2496,8 +2479,6 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (StructWithRefTypeUnique, serialize(self)))
 
-
-cdef cStructWithRefTypeShared _StructWithRefTypeShared_defaults = cStructWithRefTypeShared()
 
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
@@ -2739,8 +2720,6 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         return (deserialize, (StructWithRefTypeShared, serialize(self)))
 
 
-cdef cStructWithRefTypeSharedConst _StructWithRefTypeSharedConst_defaults = cStructWithRefTypeSharedConst()
-
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
     def __init__(
@@ -2980,8 +2959,6 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (StructWithRefTypeSharedConst, serialize(self)))
 
-
-cdef cStructWithRefAndAnnotCppNoexceptMoveCtor _StructWithRefAndAnnotCppNoexceptMoveCtor_defaults = cStructWithRefAndAnnotCppNoexceptMoveCtor()
 
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 

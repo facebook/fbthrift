@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -1162,8 +1163,6 @@ cdef class DataUnion(thrift.py3.types.Union):
         return (deserialize, (DataUnion, serialize(self)))
 
 
-cdef cVal _Val_defaults = cVal()
-
 cdef class Val(thrift.py3.types.Struct):
 
     def __init__(
@@ -1256,17 +1255,17 @@ cdef class Val(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and strVal is None:
-                deref(c_inst).strVal = _Val_defaults.strVal
+                deref(c_inst).strVal = default_inst[cVal]().strVal
                 deref(c_inst).__isset.strVal = False
                 pass
 
             if not __isNOTSET[1] and intVal is None:
-                deref(c_inst).intVal = _Val_defaults.intVal
+                deref(c_inst).intVal = default_inst[cVal]().intVal
                 deref(c_inst).__isset.intVal = False
                 pass
 
             if not __isNOTSET[2] and typedefValue is None:
-                deref(c_inst).typedefValue = _Val_defaults.typedefValue
+                deref(c_inst).typedefValue = default_inst[cVal]().typedefValue
                 deref(c_inst).__isset.typedefValue = False
                 pass
 

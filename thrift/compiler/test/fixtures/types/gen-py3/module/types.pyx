@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -355,8 +356,6 @@ cdef inline cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value):
     elif cvalue == 12:
         return MyForwardRefEnum__NONZERO
 
-cdef cdecorated_struct _decorated_struct_defaults = cdecorated_struct()
-
 cdef class decorated_struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -415,7 +414,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and field is None:
-                deref(c_inst).field = _decorated_struct_defaults.field
+                deref(c_inst).field = default_inst[cdecorated_struct]().field
                 deref(c_inst).__isset.field = False
                 pass
 
@@ -526,8 +525,6 @@ cdef class decorated_struct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (decorated_struct, serialize(self)))
 
-
-cdef cContainerStruct _ContainerStruct_defaults = cContainerStruct()
 
 cdef class ContainerStruct(thrift.py3.types.Struct):
 
@@ -667,42 +664,42 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = _ContainerStruct_defaults.fieldA
+                deref(c_inst).fieldA = default_inst[cContainerStruct]().fieldA
                 deref(c_inst).__isset.fieldA = False
                 pass
 
             if not __isNOTSET[1] and fieldB is None:
-                deref(c_inst).fieldB = _ContainerStruct_defaults.fieldB
+                deref(c_inst).fieldB = default_inst[cContainerStruct]().fieldB
                 deref(c_inst).__isset.fieldB = False
                 pass
 
             if not __isNOTSET[2] and fieldC is None:
-                deref(c_inst).fieldC = _ContainerStruct_defaults.fieldC
+                deref(c_inst).fieldC = default_inst[cContainerStruct]().fieldC
                 deref(c_inst).__isset.fieldC = False
                 pass
 
             if not __isNOTSET[3] and fieldD is None:
-                deref(c_inst).fieldD = _ContainerStruct_defaults.fieldD
+                deref(c_inst).fieldD = default_inst[cContainerStruct]().fieldD
                 deref(c_inst).__isset.fieldD = False
                 pass
 
             if not __isNOTSET[4] and fieldE is None:
-                deref(c_inst).fieldE = _ContainerStruct_defaults.fieldE
+                deref(c_inst).fieldE = default_inst[cContainerStruct]().fieldE
                 deref(c_inst).__isset.fieldE = False
                 pass
 
             if not __isNOTSET[5] and fieldF is None:
-                deref(c_inst).fieldF = _ContainerStruct_defaults.fieldF
+                deref(c_inst).fieldF = default_inst[cContainerStruct]().fieldF
                 deref(c_inst).__isset.fieldF = False
                 pass
 
             if not __isNOTSET[6] and fieldG is None:
-                deref(c_inst).fieldG = _ContainerStruct_defaults.fieldG
+                deref(c_inst).fieldG = default_inst[cContainerStruct]().fieldG
                 deref(c_inst).__isset.fieldG = False
                 pass
 
             if not __isNOTSET[7] and fieldH is None:
-                deref(c_inst).fieldH = _ContainerStruct_defaults.fieldH
+                deref(c_inst).fieldH = default_inst[cContainerStruct]().fieldH
                 deref(c_inst).__isset.fieldH = False
                 pass
 
@@ -892,8 +889,6 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         return (deserialize, (ContainerStruct, serialize(self)))
 
 
-cdef cCppTypeStruct _CppTypeStruct_defaults = cCppTypeStruct()
-
 cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -948,7 +943,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = _CppTypeStruct_defaults.fieldA
+                deref(c_inst).fieldA = default_inst[cCppTypeStruct]().fieldA
                 deref(c_inst).__isset.fieldA = False
                 pass
 
@@ -1062,8 +1057,6 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         return (deserialize, (CppTypeStruct, serialize(self)))
 
 
-cdef cVirtualStruct _VirtualStruct_defaults = cVirtualStruct()
-
 cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -1128,7 +1121,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = _VirtualStruct_defaults.MyIntField
+                deref(c_inst).MyIntField = default_inst[cVirtualStruct]().MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
@@ -1240,8 +1233,6 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         return (deserialize, (VirtualStruct, serialize(self)))
 
 
-cdef cMyStructWithForwardRefEnum _MyStructWithForwardRefEnum_defaults = cMyStructWithForwardRefEnum()
-
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     def __init__(
@@ -1316,12 +1307,12 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = _MyStructWithForwardRefEnum_defaults.a
+                deref(c_inst).a = default_inst[cMyStructWithForwardRefEnum]().a
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = _MyStructWithForwardRefEnum_defaults.b
+                deref(c_inst).b = default_inst[cMyStructWithForwardRefEnum]().b
                 deref(c_inst).__isset.b = False
                 pass
 
@@ -1443,8 +1434,6 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         return (deserialize, (MyStructWithForwardRefEnum, serialize(self)))
 
 
-cdef cTrivialNumeric _TrivialNumeric_defaults = cTrivialNumeric()
-
 cdef class TrivialNumeric(thrift.py3.types.Struct):
 
     def __init__(
@@ -1525,12 +1514,12 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = _TrivialNumeric_defaults.a
+                deref(c_inst).a = default_inst[cTrivialNumeric]().a
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = _TrivialNumeric_defaults.b
+                deref(c_inst).b = default_inst[cTrivialNumeric]().b
                 deref(c_inst).__isset.b = False
                 pass
 
@@ -1652,8 +1641,6 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         return (deserialize, (TrivialNumeric, serialize(self)))
 
 
-cdef cTrivialNestedWithDefault _TrivialNestedWithDefault_defaults = cTrivialNestedWithDefault()
-
 cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     def __init__(
@@ -1734,12 +1721,12 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and z is None:
-                deref(c_inst).z = _TrivialNestedWithDefault_defaults.z
+                deref(c_inst).z = default_inst[cTrivialNestedWithDefault]().z
                 deref(c_inst).__isset.z = False
                 pass
 
             if not __isNOTSET[1] and n is None:
-                deref(c_inst).n = _TrivialNestedWithDefault_defaults.n
+                deref(c_inst).n = default_inst[cTrivialNestedWithDefault]().n
                 deref(c_inst).__isset.n = False
                 pass
 
@@ -1863,8 +1850,6 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         return (deserialize, (TrivialNestedWithDefault, serialize(self)))
 
 
-cdef cComplexString _ComplexString_defaults = cComplexString()
-
 cdef class ComplexString(thrift.py3.types.Struct):
 
     def __init__(
@@ -1935,12 +1920,12 @@ cdef class ComplexString(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and a is None:
-                deref(c_inst).a = _ComplexString_defaults.a
+                deref(c_inst).a = default_inst[cComplexString]().a
                 deref(c_inst).__isset.a = False
                 pass
 
             if not __isNOTSET[1] and b is None:
-                deref(c_inst).b = _ComplexString_defaults.b
+                deref(c_inst).b = default_inst[cComplexString]().b
                 deref(c_inst).__isset.b = False
                 pass
 
@@ -2064,8 +2049,6 @@ cdef class ComplexString(thrift.py3.types.Struct):
         return (deserialize, (ComplexString, serialize(self)))
 
 
-cdef cComplexNestedWithDefault _ComplexNestedWithDefault_defaults = cComplexNestedWithDefault()
-
 cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     def __init__(
@@ -2140,12 +2123,12 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and z is None:
-                deref(c_inst).z = _ComplexNestedWithDefault_defaults.z
+                deref(c_inst).z = default_inst[cComplexNestedWithDefault]().z
                 deref(c_inst).__isset.z = False
                 pass
 
             if not __isNOTSET[1] and n is None:
-                deref(c_inst).n = _ComplexNestedWithDefault_defaults.n
+                deref(c_inst).n = default_inst[cComplexNestedWithDefault]().n
                 deref(c_inst).__isset.n = False
                 pass
 
@@ -2268,8 +2251,6 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (ComplexNestedWithDefault, serialize(self)))
 
-
-cdef cMinPadding _MinPadding_defaults = cMinPadding()
 
 cdef class MinPadding(thrift.py3.types.Struct):
 
@@ -2590,8 +2571,6 @@ cdef class MinPadding(thrift.py3.types.Struct):
         return (deserialize, (MinPadding, serialize(self)))
 
 
-cdef cMyStruct _MyStruct_defaults = cMyStruct()
-
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -2710,22 +2689,22 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
+                deref(c_inst).MyIntField = default_inst[cMyStruct]().MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[1] and MyStringField is None:
-                deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
+                deref(c_inst).MyStringField = default_inst[cMyStruct]().MyStringField
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
             if not __isNOTSET[2] and majorVer is None:
-                deref(c_inst).majorVer = _MyStruct_defaults.majorVer
+                deref(c_inst).majorVer = default_inst[cMyStruct]().majorVer
                 deref(c_inst).__isset.majorVer = False
                 pass
 
             if not __isNOTSET[3] and data is None:
-                deref(c_inst).data = _MyStruct_defaults.data
+                deref(c_inst).data = default_inst[cMyStruct]().data
                 deref(c_inst).__isset.data = False
                 pass
 
@@ -2870,8 +2849,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
-cdef cMyDataItem _MyDataItem_defaults = cMyDataItem()
-
 cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __init__(
@@ -2996,8 +2973,6 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         return (deserialize, (MyDataItem, serialize(self)))
 
 
-cdef cRenaming _Renaming_defaults = cRenaming()
-
 cdef class Renaming(thrift.py3.types.Struct):
 
     def __init__(
@@ -3062,7 +3037,7 @@ cdef class Renaming(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and foo is None:
-                deref(c_inst).foo = _Renaming_defaults.foo
+                deref(c_inst).foo = default_inst[cRenaming]().foo
                 deref(c_inst).__isset.foo = False
                 pass
 
@@ -3174,8 +3149,6 @@ cdef class Renaming(thrift.py3.types.Struct):
         return (deserialize, (Renaming, serialize(self)))
 
 
-cdef cAnnotatedTypes _AnnotatedTypes_defaults = cAnnotatedTypes()
-
 cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
     def __init__(
@@ -3246,12 +3219,12 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and binary_field is None:
-                deref(c_inst).binary_field = _AnnotatedTypes_defaults.binary_field
+                deref(c_inst).binary_field = default_inst[cAnnotatedTypes]().binary_field
                 deref(c_inst).__isset.binary_field = False
                 pass
 
             if not __isNOTSET[1] and list_field is None:
-                deref(c_inst).list_field = _AnnotatedTypes_defaults.list_field
+                deref(c_inst).list_field = default_inst[cAnnotatedTypes]().list_field
                 deref(c_inst).__isset.list_field = False
                 pass
 

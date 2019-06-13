@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -415,8 +416,6 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
 
 
 
-cdef cOptionalRefStruct _OptionalRefStruct_defaults = cOptionalRefStruct()
-
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -592,8 +591,6 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (OptionalRefStruct, serialize(self)))
 
-
-cdef cSimpleStruct _SimpleStruct_defaults = cSimpleStruct()
 
 cdef class SimpleStruct(thrift.py3.types.Struct):
 
@@ -781,37 +778,37 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and is_on is None:
-                deref(c_inst).is_on = _SimpleStruct_defaults.is_on
+                deref(c_inst).is_on = default_inst[cSimpleStruct]().is_on
                 deref(c_inst).__isset.is_on = False
                 pass
 
             if not __isNOTSET[1] and tiny_int is None:
-                deref(c_inst).tiny_int = _SimpleStruct_defaults.tiny_int
+                deref(c_inst).tiny_int = default_inst[cSimpleStruct]().tiny_int
                 deref(c_inst).__isset.tiny_int = False
                 pass
 
             if not __isNOTSET[2] and small_int is None:
-                deref(c_inst).small_int = _SimpleStruct_defaults.small_int
+                deref(c_inst).small_int = default_inst[cSimpleStruct]().small_int
                 deref(c_inst).__isset.small_int = False
                 pass
 
             if not __isNOTSET[3] and nice_sized_int is None:
-                deref(c_inst).nice_sized_int = _SimpleStruct_defaults.nice_sized_int
+                deref(c_inst).nice_sized_int = default_inst[cSimpleStruct]().nice_sized_int
                 deref(c_inst).__isset.nice_sized_int = False
                 pass
 
             if not __isNOTSET[4] and big_int is None:
-                deref(c_inst).big_int = _SimpleStruct_defaults.big_int
+                deref(c_inst).big_int = default_inst[cSimpleStruct]().big_int
                 deref(c_inst).__isset.big_int = False
                 pass
 
             if not __isNOTSET[5] and real is None:
-                deref(c_inst).real = _SimpleStruct_defaults.real
+                deref(c_inst).real = default_inst[cSimpleStruct]().real
                 deref(c_inst).__isset.real = False
                 pass
 
             if not __isNOTSET[6] and smaller_real is None:
-                deref(c_inst).smaller_real = _SimpleStruct_defaults.smaller_real
+                deref(c_inst).smaller_real = default_inst[cSimpleStruct]().smaller_real
                 deref(c_inst).__isset.smaller_real = False
                 pass
 
@@ -982,8 +979,6 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (SimpleStruct, serialize(self)))
 
-
-cdef cComplexStruct _ComplexStruct_defaults = cComplexStruct()
 
 cdef class ComplexStruct(thrift.py3.types.Struct):
 
@@ -1177,47 +1172,47 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and structOne is None:
-                deref(c_inst).structOne = _ComplexStruct_defaults.structOne
+                deref(c_inst).structOne = default_inst[cComplexStruct]().structOne
                 deref(c_inst).__isset.structOne = False
                 pass
 
             if not __isNOTSET[1] and structTwo is None:
-                deref(c_inst).structTwo = _ComplexStruct_defaults.structTwo
+                deref(c_inst).structTwo = default_inst[cComplexStruct]().structTwo
                 deref(c_inst).__isset.structTwo = False
                 pass
 
             if not __isNOTSET[2] and an_integer is None:
-                deref(c_inst).an_integer = _ComplexStruct_defaults.an_integer
+                deref(c_inst).an_integer = default_inst[cComplexStruct]().an_integer
                 deref(c_inst).__isset.an_integer = False
                 pass
 
             if not __isNOTSET[3] and name is None:
-                deref(c_inst).name = _ComplexStruct_defaults.name
+                deref(c_inst).name = default_inst[cComplexStruct]().name
                 deref(c_inst).__isset.name = False
                 pass
 
             if not __isNOTSET[4] and an_enum is None:
-                deref(c_inst).an_enum = _ComplexStruct_defaults.an_enum
+                deref(c_inst).an_enum = default_inst[cComplexStruct]().an_enum
                 deref(c_inst).__isset.an_enum = False
                 pass
 
             if not __isNOTSET[5] and some_bytes is None:
-                deref(c_inst).some_bytes = _ComplexStruct_defaults.some_bytes
+                deref(c_inst).some_bytes = default_inst[cComplexStruct]().some_bytes
                 deref(c_inst).__isset.some_bytes = False
                 pass
 
             if not __isNOTSET[6] and sender is None:
-                deref(c_inst).sender = _ComplexStruct_defaults.sender
+                deref(c_inst).sender = default_inst[cComplexStruct]().sender
                 deref(c_inst).__isset.sender = False
                 pass
 
             if not __isNOTSET[7] and cdef_ is None:
-                deref(c_inst).cdef_ = _ComplexStruct_defaults.cdef_
+                deref(c_inst).cdef_ = default_inst[cComplexStruct]().cdef_
                 deref(c_inst).__isset.cdef_ = False
                 pass
 
             if not __isNOTSET[8] and bytes_with_cpp_type is None:
-                deref(c_inst).bytes_with_cpp_type = _ComplexStruct_defaults.bytes_with_cpp_type
+                deref(c_inst).bytes_with_cpp_type = default_inst[cComplexStruct]().bytes_with_cpp_type
                 deref(c_inst).__isset.bytes_with_cpp_type = False
                 pass
 

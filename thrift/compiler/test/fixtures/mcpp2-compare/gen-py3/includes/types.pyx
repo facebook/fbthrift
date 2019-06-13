@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -137,8 +138,6 @@ cdef inline cAnEnum AnEnum_to_cpp(AnEnum value):
     elif cvalue == 4:
         return AnEnum__FIELDB
 
-cdef cAStruct _AStruct_defaults = cAStruct()
-
 cdef class AStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -203,7 +202,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and FieldA is None:
-                deref(c_inst).FieldA = _AStruct_defaults.FieldA
+                deref(c_inst).FieldA = default_inst[cAStruct]().FieldA
                 deref(c_inst).__isset.FieldA = False
                 pass
 
@@ -314,8 +313,6 @@ cdef class AStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (AStruct, serialize(self)))
 
-
-cdef cAStructB _AStructB_defaults = cAStructB()
 
 cdef class AStructB(thrift.py3.types.Struct):
 

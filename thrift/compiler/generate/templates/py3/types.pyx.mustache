@@ -51,6 +51,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -77,10 +78,6 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 
 {{#program:structs}}
 {{^struct:union?}}
-{{#struct:plain?}}
-cdef c{{struct:name}} _{{struct:name}}_defaults = c{{struct:name}}()
-
-{{/struct:plain?}}
 cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     {{^struct:exception?}}
@@ -246,7 +243,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 {{/field:follyOptional?}}
                 {{^field:follyOptional?}}
                 {{#field:hasDefaultValue?}}
-                deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
+                deref(c_inst).{{field:name}} = default_inst[c{{struct:name}}]().{{field:name}}
                 {{/field:hasDefaultValue?}}
                 {{#field:isset?}}
                 deref(c_inst).__isset.{{field:name}} = False

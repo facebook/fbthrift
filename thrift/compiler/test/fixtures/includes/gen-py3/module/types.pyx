@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -39,8 +40,6 @@ import builtins as _builtins
 cimport includes.types as _includes_types
 import includes.types as _includes_types
 
-
-cdef cMyStruct _MyStruct_defaults = cMyStruct()
 
 cdef class MyStruct(thrift.py3.types.Struct):
 
@@ -138,17 +137,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIncludedField is None:
-                deref(c_inst).MyIncludedField = _MyStruct_defaults.MyIncludedField
+                deref(c_inst).MyIncludedField = default_inst[cMyStruct]().MyIncludedField
                 deref(c_inst).__isset.MyIncludedField = False
                 pass
 
             if not __isNOTSET[1] and MyOtherIncludedField is None:
-                deref(c_inst).MyOtherIncludedField = _MyStruct_defaults.MyOtherIncludedField
+                deref(c_inst).MyOtherIncludedField = default_inst[cMyStruct]().MyOtherIncludedField
                 deref(c_inst).__isset.MyOtherIncludedField = False
                 pass
 
             if not __isNOTSET[2] and MyIncludedInt is None:
-                deref(c_inst).MyIncludedInt = _MyStruct_defaults.MyIncludedInt
+                deref(c_inst).MyIncludedInt = default_inst[cMyStruct]().MyIncludedInt
                 deref(c_inst).__isset.MyIncludedInt = False
                 pass
 

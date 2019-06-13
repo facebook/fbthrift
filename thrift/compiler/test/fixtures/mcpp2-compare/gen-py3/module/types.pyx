@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -920,8 +921,6 @@ __SetMetaClass(<PyTypeObject*> __FloatUnionType, <PyTypeObject*> __FloatUnion_Un
 __FloatUnion_Union_TypeEnumMembers = set(__FloatUnionType)
 
 
-cdef cEmpty _Empty_defaults = cEmpty()
-
 cdef class Empty(thrift.py3.types.Struct):
 
     def __init__(
@@ -1051,8 +1050,6 @@ cdef class Empty(thrift.py3.types.Struct):
         return (deserialize, (Empty, serialize(self)))
 
 
-cdef cASimpleStruct _ASimpleStruct_defaults = cASimpleStruct()
-
 cdef class ASimpleStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -1117,7 +1114,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and boolField is None:
-                deref(c_inst).boolField = _ASimpleStruct_defaults.boolField
+                deref(c_inst).boolField = default_inst[cASimpleStruct]().boolField
                 deref(c_inst).__isset.boolField = False
                 pass
 
@@ -1221,8 +1218,6 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         return (deserialize, (ASimpleStruct, serialize(self)))
 
 
-cdef cASimpleStructNoexcept _ASimpleStructNoexcept_defaults = cASimpleStructNoexcept()
-
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
     def __init__(
@@ -1287,7 +1282,7 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and boolField is None:
-                deref(c_inst).boolField = _ASimpleStructNoexcept_defaults.boolField
+                deref(c_inst).boolField = default_inst[cASimpleStructNoexcept]().boolField
                 deref(c_inst).__isset.boolField = False
                 pass
 
@@ -1398,8 +1393,6 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (ASimpleStructNoexcept, serialize(self)))
 
-
-cdef cMyStruct _MyStruct_defaults = cMyStruct()
 
 cdef class MyStruct(thrift.py3.types.Struct):
 
@@ -1587,27 +1580,27 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyBoolField is None:
-                deref(c_inst).MyBoolField = _MyStruct_defaults.MyBoolField
+                deref(c_inst).MyBoolField = default_inst[cMyStruct]().MyBoolField
                 deref(c_inst).__isset.MyBoolField = False
                 pass
 
             if not __isNOTSET[1] and MyIntField is None:
-                deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
+                deref(c_inst).MyIntField = default_inst[cMyStruct]().MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[2] and MyStringField is None:
-                deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
+                deref(c_inst).MyStringField = default_inst[cMyStruct]().MyStringField
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
             if not __isNOTSET[3] and MyStringField2 is None:
-                deref(c_inst).MyStringField2 = _MyStruct_defaults.MyStringField2
+                deref(c_inst).MyStringField2 = default_inst[cMyStruct]().MyStringField2
                 deref(c_inst).__isset.MyStringField2 = False
                 pass
 
             if not __isNOTSET[4] and MyBinaryField is None:
-                deref(c_inst).MyBinaryField = _MyStruct_defaults.MyBinaryField
+                deref(c_inst).MyBinaryField = default_inst[cMyStruct]().MyBinaryField
                 deref(c_inst).__isset.MyBinaryField = False
                 pass
 
@@ -1619,12 +1612,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[7] and MyBinaryListField4 is None:
-                deref(c_inst).MyBinaryListField4 = _MyStruct_defaults.MyBinaryListField4
+                deref(c_inst).MyBinaryListField4 = default_inst[cMyStruct]().MyBinaryListField4
                 deref(c_inst).__isset.MyBinaryListField4 = False
                 pass
 
             if not __isNOTSET[8] and MyMapEnumAndInt is None:
-                deref(c_inst).MyMapEnumAndInt = _MyStruct_defaults.MyMapEnumAndInt
+                deref(c_inst).MyMapEnumAndInt = default_inst[cMyStruct]().MyMapEnumAndInt
                 deref(c_inst).__isset.MyMapEnumAndInt = False
                 pass
 
@@ -3115,8 +3108,6 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
 
 
 
-cdef ccontainerStruct _containerStruct_defaults = ccontainerStruct()
-
 cdef class containerStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -3817,7 +3808,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = _containerStruct_defaults.fieldA
+                deref(c_inst).fieldA = default_inst[ccontainerStruct]().fieldA
                 deref(c_inst).__isset.fieldA = False
                 pass
 
@@ -3829,7 +3820,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[3] and fieldB is None:
-                deref(c_inst).fieldB = _containerStruct_defaults.fieldB
+                deref(c_inst).fieldB = default_inst[ccontainerStruct]().fieldB
                 deref(c_inst).__isset.fieldB = False
                 pass
 
@@ -3841,129 +3832,129 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[6] and fieldC is None:
-                deref(c_inst).fieldC = _containerStruct_defaults.fieldC
+                deref(c_inst).fieldC = default_inst[ccontainerStruct]().fieldC
                 deref(c_inst).__isset.fieldC = False
                 pass
 
             if not __isNOTSET[7] and req_fieldC is None:
-                deref(c_inst).req_fieldC = _containerStruct_defaults.req_fieldC
+                deref(c_inst).req_fieldC = default_inst[ccontainerStruct]().req_fieldC
                 pass
 
             if not __isNOTSET[8] and opt_fieldC is None:
-                deref(c_inst).opt_fieldC = _containerStruct_defaults.opt_fieldC
+                deref(c_inst).opt_fieldC = default_inst[ccontainerStruct]().opt_fieldC
                 deref(c_inst).__isset.opt_fieldC = False
                 pass
 
             if not __isNOTSET[9] and fieldD is None:
-                deref(c_inst).fieldD = _containerStruct_defaults.fieldD
+                deref(c_inst).fieldD = default_inst[ccontainerStruct]().fieldD
                 deref(c_inst).__isset.fieldD = False
                 pass
 
             if not __isNOTSET[10] and fieldE is None:
-                deref(c_inst).fieldE = _containerStruct_defaults.fieldE
+                deref(c_inst).fieldE = default_inst[ccontainerStruct]().fieldE
                 deref(c_inst).__isset.fieldE = False
                 pass
 
             if not __isNOTSET[11] and req_fieldE is None:
-                deref(c_inst).req_fieldE = _containerStruct_defaults.req_fieldE
+                deref(c_inst).req_fieldE = default_inst[ccontainerStruct]().req_fieldE
                 pass
 
             if not __isNOTSET[12] and opt_fieldE is None:
-                deref(c_inst).opt_fieldE = _containerStruct_defaults.opt_fieldE
+                deref(c_inst).opt_fieldE = default_inst[ccontainerStruct]().opt_fieldE
                 deref(c_inst).__isset.opt_fieldE = False
                 pass
 
             if not __isNOTSET[13] and fieldF is None:
-                deref(c_inst).fieldF = _containerStruct_defaults.fieldF
+                deref(c_inst).fieldF = default_inst[ccontainerStruct]().fieldF
                 deref(c_inst).__isset.fieldF = False
                 pass
 
             if not __isNOTSET[14] and fieldG is None:
-                deref(c_inst).fieldG = _containerStruct_defaults.fieldG
+                deref(c_inst).fieldG = default_inst[ccontainerStruct]().fieldG
                 deref(c_inst).__isset.fieldG = False
                 pass
 
             if not __isNOTSET[15] and fieldH is None:
-                deref(c_inst).fieldH = _containerStruct_defaults.fieldH
+                deref(c_inst).fieldH = default_inst[ccontainerStruct]().fieldH
                 deref(c_inst).__isset.fieldH = False
                 pass
 
             if not __isNOTSET[16] and fieldI is None:
-                deref(c_inst).fieldI = _containerStruct_defaults.fieldI
+                deref(c_inst).fieldI = default_inst[ccontainerStruct]().fieldI
                 deref(c_inst).__isset.fieldI = False
                 pass
 
             if not __isNOTSET[17] and fieldJ is None:
-                deref(c_inst).fieldJ = _containerStruct_defaults.fieldJ
+                deref(c_inst).fieldJ = default_inst[ccontainerStruct]().fieldJ
                 deref(c_inst).__isset.fieldJ = False
                 pass
 
             if not __isNOTSET[18] and fieldK is None:
-                deref(c_inst).fieldK = _containerStruct_defaults.fieldK
+                deref(c_inst).fieldK = default_inst[ccontainerStruct]().fieldK
                 deref(c_inst).__isset.fieldK = False
                 pass
 
             if not __isNOTSET[19] and fieldL is None:
-                deref(c_inst).fieldL = _containerStruct_defaults.fieldL
+                deref(c_inst).fieldL = default_inst[ccontainerStruct]().fieldL
                 deref(c_inst).__isset.fieldL = False
                 pass
 
             if not __isNOTSET[20] and fieldM is None:
-                deref(c_inst).fieldM = _containerStruct_defaults.fieldM
+                deref(c_inst).fieldM = default_inst[ccontainerStruct]().fieldM
                 deref(c_inst).__isset.fieldM = False
                 pass
 
             if not __isNOTSET[21] and fieldN is None:
-                deref(c_inst).fieldN = _containerStruct_defaults.fieldN
+                deref(c_inst).fieldN = default_inst[ccontainerStruct]().fieldN
                 deref(c_inst).__isset.fieldN = False
                 pass
 
             if not __isNOTSET[22] and fieldO is None:
-                deref(c_inst).fieldO = _containerStruct_defaults.fieldO
+                deref(c_inst).fieldO = default_inst[ccontainerStruct]().fieldO
                 deref(c_inst).__isset.fieldO = False
                 pass
 
             if not __isNOTSET[23] and fieldP is None:
-                deref(c_inst).fieldP = _containerStruct_defaults.fieldP
+                deref(c_inst).fieldP = default_inst[ccontainerStruct]().fieldP
                 deref(c_inst).__isset.fieldP = False
                 pass
 
             if not __isNOTSET[24] and fieldQ is None:
-                deref(c_inst).fieldQ = _containerStruct_defaults.fieldQ
+                deref(c_inst).fieldQ = default_inst[ccontainerStruct]().fieldQ
                 deref(c_inst).__isset.fieldQ = False
                 pass
 
             if not __isNOTSET[25] and fieldR is None:
-                deref(c_inst).fieldR = _containerStruct_defaults.fieldR
+                deref(c_inst).fieldR = default_inst[ccontainerStruct]().fieldR
                 deref(c_inst).__isset.fieldR = False
                 pass
 
             if not __isNOTSET[26] and req_fieldR is None:
-                deref(c_inst).req_fieldR = _containerStruct_defaults.req_fieldR
+                deref(c_inst).req_fieldR = default_inst[ccontainerStruct]().req_fieldR
                 pass
 
             if not __isNOTSET[27] and opt_fieldR is None:
-                deref(c_inst).opt_fieldR = _containerStruct_defaults.opt_fieldR
+                deref(c_inst).opt_fieldR = default_inst[ccontainerStruct]().opt_fieldR
                 deref(c_inst).__isset.opt_fieldR = False
                 pass
 
             if not __isNOTSET[28] and fieldS is None:
-                deref(c_inst).fieldS = _containerStruct_defaults.fieldS
+                deref(c_inst).fieldS = default_inst[ccontainerStruct]().fieldS
                 deref(c_inst).__isset.fieldS = False
                 pass
 
             if not __isNOTSET[29] and fieldT is None:
-                deref(c_inst).fieldT = _containerStruct_defaults.fieldT
+                deref(c_inst).fieldT = default_inst[ccontainerStruct]().fieldT
                 deref(c_inst).__isset.fieldT = False
                 pass
 
             if not __isNOTSET[30] and fieldU is None:
-                deref(c_inst).fieldU = _containerStruct_defaults.fieldU
+                deref(c_inst).fieldU = default_inst[ccontainerStruct]().fieldU
                 deref(c_inst).__isset.fieldU = False
                 pass
 
             if not __isNOTSET[31] and fieldV is None:
-                deref(c_inst).fieldV = _containerStruct_defaults.fieldV
+                deref(c_inst).fieldV = default_inst[ccontainerStruct]().fieldV
                 deref(c_inst).__isset.fieldV = False
                 pass
 
@@ -3975,12 +3966,12 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[34] and fieldW is None:
-                deref(c_inst).fieldW = _containerStruct_defaults.fieldW
+                deref(c_inst).fieldW = default_inst[ccontainerStruct]().fieldW
                 deref(c_inst).__isset.fieldW = False
                 pass
 
             if not __isNOTSET[35] and fieldX is None:
-                deref(c_inst).fieldX = _containerStruct_defaults.fieldX
+                deref(c_inst).fieldX = default_inst[ccontainerStruct]().fieldX
                 deref(c_inst).__isset.fieldX = False
                 pass
 
@@ -3992,42 +3983,42 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[38] and fieldY is None:
-                deref(c_inst).fieldY = _containerStruct_defaults.fieldY
+                deref(c_inst).fieldY = default_inst[ccontainerStruct]().fieldY
                 deref(c_inst).__isset.fieldY = False
                 pass
 
             if not __isNOTSET[39] and fieldZ is None:
-                deref(c_inst).fieldZ = _containerStruct_defaults.fieldZ
+                deref(c_inst).fieldZ = default_inst[ccontainerStruct]().fieldZ
                 deref(c_inst).__isset.fieldZ = False
                 pass
 
             if not __isNOTSET[40] and fieldAA is None:
-                deref(c_inst).fieldAA = _containerStruct_defaults.fieldAA
+                deref(c_inst).fieldAA = default_inst[ccontainerStruct]().fieldAA
                 deref(c_inst).__isset.fieldAA = False
                 pass
 
             if not __isNOTSET[41] and fieldAB is None:
-                deref(c_inst).fieldAB = _containerStruct_defaults.fieldAB
+                deref(c_inst).fieldAB = default_inst[ccontainerStruct]().fieldAB
                 deref(c_inst).__isset.fieldAB = False
                 pass
 
             if not __isNOTSET[42] and fieldAC is None:
-                deref(c_inst).fieldAC = _containerStruct_defaults.fieldAC
+                deref(c_inst).fieldAC = default_inst[ccontainerStruct]().fieldAC
                 deref(c_inst).__isset.fieldAC = False
                 pass
 
             if not __isNOTSET[43] and fieldAD is None:
-                deref(c_inst).fieldAD = _containerStruct_defaults.fieldAD
+                deref(c_inst).fieldAD = default_inst[ccontainerStruct]().fieldAD
                 deref(c_inst).__isset.fieldAD = False
                 pass
 
             if not __isNOTSET[44] and fieldAE is None:
-                deref(c_inst).fieldAE = _containerStruct_defaults.fieldAE
+                deref(c_inst).fieldAE = default_inst[ccontainerStruct]().fieldAE
                 deref(c_inst).__isset.fieldAE = False
                 pass
 
             if not __isNOTSET[45] and fieldSD is None:
-                deref(c_inst).fieldSD = _containerStruct_defaults.fieldSD
+                deref(c_inst).fieldSD = default_inst[ccontainerStruct]().fieldSD
                 deref(c_inst).__isset.fieldSD = False
                 pass
 
@@ -4648,8 +4639,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
         return (deserialize, (containerStruct, serialize(self)))
 
 
-cdef cMyIncludedStruct _MyIncludedStruct_defaults = cMyIncludedStruct()
-
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -4764,12 +4753,12 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIncludedInt is None:
-                deref(c_inst).MyIncludedInt = _MyIncludedStruct_defaults.MyIncludedInt
+                deref(c_inst).MyIncludedInt = default_inst[cMyIncludedStruct]().MyIncludedInt
                 deref(c_inst).__isset.MyIncludedInt = False
                 pass
 
             if not __isNOTSET[1] and MyIncludedStruct is None:
-                deref(c_inst).MyIncludedStruct = _MyIncludedStruct_defaults.MyIncludedStruct
+                deref(c_inst).MyIncludedStruct = default_inst[cMyIncludedStruct]().MyIncludedStruct
                 deref(c_inst).__isset.MyIncludedStruct = False
                 pass
 
@@ -4923,8 +4912,6 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (MyIncludedStruct, serialize(self)))
 
-
-cdef cAnnotatedStruct _AnnotatedStruct_defaults = cAnnotatedStruct()
 
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
@@ -5552,7 +5539,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and no_annotation is None:
-                deref(c_inst).no_annotation = _AnnotatedStruct_defaults.no_annotation
+                deref(c_inst).no_annotation = default_inst[cAnnotatedStruct]().no_annotation
                 deref(c_inst).__isset.no_annotation = False
                 pass
 
@@ -5629,32 +5616,32 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[19] and base_type is None:
-                deref(c_inst).base_type = _AnnotatedStruct_defaults.base_type
+                deref(c_inst).base_type = default_inst[cAnnotatedStruct]().base_type
                 deref(c_inst).__isset.base_type = False
                 pass
 
             if not __isNOTSET[20] and list_type is None:
-                deref(c_inst).list_type = _AnnotatedStruct_defaults.list_type
+                deref(c_inst).list_type = default_inst[cAnnotatedStruct]().list_type
                 deref(c_inst).__isset.list_type = False
                 pass
 
             if not __isNOTSET[21] and set_type is None:
-                deref(c_inst).set_type = _AnnotatedStruct_defaults.set_type
+                deref(c_inst).set_type = default_inst[cAnnotatedStruct]().set_type
                 deref(c_inst).__isset.set_type = False
                 pass
 
             if not __isNOTSET[22] and map_type is None:
-                deref(c_inst).map_type = _AnnotatedStruct_defaults.map_type
+                deref(c_inst).map_type = default_inst[cAnnotatedStruct]().map_type
                 deref(c_inst).__isset.map_type = False
                 pass
 
             if not __isNOTSET[23] and map_struct_type is None:
-                deref(c_inst).map_struct_type = _AnnotatedStruct_defaults.map_struct_type
+                deref(c_inst).map_struct_type = default_inst[cAnnotatedStruct]().map_struct_type
                 deref(c_inst).__isset.map_struct_type = False
                 pass
 
             if not __isNOTSET[24] and iobuf_type is None:
-                deref(c_inst).iobuf_type = _AnnotatedStruct_defaults.iobuf_type
+                deref(c_inst).iobuf_type = default_inst[cAnnotatedStruct]().iobuf_type
                 deref(c_inst).__isset.iobuf_type = False
                 pass
 
@@ -5664,62 +5651,62 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[26] and list_i32_template is None:
-                deref(c_inst).list_i32_template = _AnnotatedStruct_defaults.list_i32_template
+                deref(c_inst).list_i32_template = default_inst[cAnnotatedStruct]().list_i32_template
                 deref(c_inst).__isset.list_i32_template = False
                 pass
 
             if not __isNOTSET[27] and list_string_template is None:
-                deref(c_inst).list_string_template = _AnnotatedStruct_defaults.list_string_template
+                deref(c_inst).list_string_template = default_inst[cAnnotatedStruct]().list_string_template
                 deref(c_inst).__isset.list_string_template = False
                 pass
 
             if not __isNOTSET[28] and set_template is None:
-                deref(c_inst).set_template = _AnnotatedStruct_defaults.set_template
+                deref(c_inst).set_template = default_inst[cAnnotatedStruct]().set_template
                 deref(c_inst).__isset.set_template = False
                 pass
 
             if not __isNOTSET[29] and map_template is None:
-                deref(c_inst).map_template = _AnnotatedStruct_defaults.map_template
+                deref(c_inst).map_template = default_inst[cAnnotatedStruct]().map_template
                 deref(c_inst).__isset.map_template = False
                 pass
 
             if not __isNOTSET[30] and typedef_list_template is None:
-                deref(c_inst).typedef_list_template = _AnnotatedStruct_defaults.typedef_list_template
+                deref(c_inst).typedef_list_template = default_inst[cAnnotatedStruct]().typedef_list_template
                 deref(c_inst).__isset.typedef_list_template = False
                 pass
 
             if not __isNOTSET[31] and typedef_deque_template is None:
-                deref(c_inst).typedef_deque_template = _AnnotatedStruct_defaults.typedef_deque_template
+                deref(c_inst).typedef_deque_template = default_inst[cAnnotatedStruct]().typedef_deque_template
                 deref(c_inst).__isset.typedef_deque_template = False
                 pass
 
             if not __isNOTSET[32] and typedef_set_template is None:
-                deref(c_inst).typedef_set_template = _AnnotatedStruct_defaults.typedef_set_template
+                deref(c_inst).typedef_set_template = default_inst[cAnnotatedStruct]().typedef_set_template
                 deref(c_inst).__isset.typedef_set_template = False
                 pass
 
             if not __isNOTSET[33] and typedef_map_template is None:
-                deref(c_inst).typedef_map_template = _AnnotatedStruct_defaults.typedef_map_template
+                deref(c_inst).typedef_map_template = default_inst[cAnnotatedStruct]().typedef_map_template
                 deref(c_inst).__isset.typedef_map_template = False
                 pass
 
             if not __isNOTSET[34] and indirection_a is None:
-                deref(c_inst).indirection_a = _AnnotatedStruct_defaults.indirection_a
+                deref(c_inst).indirection_a = default_inst[cAnnotatedStruct]().indirection_a
                 deref(c_inst).__isset.indirection_a = False
                 pass
 
             if not __isNOTSET[35] and indirection_b is None:
-                deref(c_inst).indirection_b = _AnnotatedStruct_defaults.indirection_b
+                deref(c_inst).indirection_b = default_inst[cAnnotatedStruct]().indirection_b
                 deref(c_inst).__isset.indirection_b = False
                 pass
 
             if not __isNOTSET[36] and indirection_c is None:
-                deref(c_inst).indirection_c = _AnnotatedStruct_defaults.indirection_c
+                deref(c_inst).indirection_c = default_inst[cAnnotatedStruct]().indirection_c
                 deref(c_inst).__isset.indirection_c = False
                 pass
 
             if not __isNOTSET[37] and iobuf_type_val is None:
-                deref(c_inst).iobuf_type_val = _AnnotatedStruct_defaults.iobuf_type_val
+                deref(c_inst).iobuf_type_val = default_inst[cAnnotatedStruct]().iobuf_type_val
                 deref(c_inst).__isset.iobuf_type_val = False
                 pass
 
@@ -5729,7 +5716,7 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[39] and struct_struct is None:
-                deref(c_inst).struct_struct = _AnnotatedStruct_defaults.struct_struct
+                deref(c_inst).struct_struct = default_inst[cAnnotatedStruct]().struct_struct
                 deref(c_inst).__isset.struct_struct = False
                 pass
 
@@ -6321,8 +6308,6 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         return (deserialize, (AnnotatedStruct, serialize(self)))
 
 
-cdef cComplexContainerStruct _ComplexContainerStruct_defaults = cComplexContainerStruct()
-
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -6389,12 +6374,12 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and map_of_iobufs is None:
-                deref(c_inst).map_of_iobufs = _ComplexContainerStruct_defaults.map_of_iobufs
+                deref(c_inst).map_of_iobufs = default_inst[cComplexContainerStruct]().map_of_iobufs
                 deref(c_inst).__isset.map_of_iobufs = False
                 pass
 
             if not __isNOTSET[1] and map_of_iobuf_ptrs is None:
-                deref(c_inst).map_of_iobuf_ptrs = _ComplexContainerStruct_defaults.map_of_iobuf_ptrs
+                deref(c_inst).map_of_iobuf_ptrs = default_inst[cComplexContainerStruct]().map_of_iobuf_ptrs
                 deref(c_inst).__isset.map_of_iobuf_ptrs = False
                 pass
 
@@ -6520,8 +6505,6 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         return (deserialize, (ComplexContainerStruct, serialize(self)))
 
 
-cdef cFloatStruct _FloatStruct_defaults = cFloatStruct()
-
 cdef class FloatStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -6604,12 +6587,12 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and floatField is None:
-                deref(c_inst).floatField = _FloatStruct_defaults.floatField
+                deref(c_inst).floatField = default_inst[cFloatStruct]().floatField
                 deref(c_inst).__isset.floatField = False
                 pass
 
             if not __isNOTSET[1] and doubleField is None:
-                deref(c_inst).doubleField = _FloatStruct_defaults.doubleField
+                deref(c_inst).doubleField = default_inst[cFloatStruct]().doubleField
                 deref(c_inst).__isset.doubleField = False
                 pass
 
@@ -6932,8 +6915,6 @@ cdef class FloatUnion(thrift.py3.types.Union):
     def __reduce__(self):
         return (deserialize, (FloatUnion, serialize(self)))
 
-
-cdef cAllRequiredNoExceptMoveCtrStruct _AllRequiredNoExceptMoveCtrStruct_defaults = cAllRequiredNoExceptMoveCtrStruct()
 
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 

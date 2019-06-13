@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -143,8 +144,6 @@ cdef inline cMyEnumA MyEnumA_to_cpp(MyEnumA value):
     elif cvalue == 4:
         return MyEnumA__fieldC
 
-cdef cSmallStruct _SmallStruct_defaults = cSmallStruct()
-
 cdef class SmallStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -225,12 +224,12 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and small_A is None:
-                deref(c_inst).small_A = _SmallStruct_defaults.small_A
+                deref(c_inst).small_A = default_inst[cSmallStruct]().small_A
                 deref(c_inst).__isset.small_A = False
                 pass
 
             if not __isNOTSET[1] and small_B is None:
-                deref(c_inst).small_B = _SmallStruct_defaults.small_B
+                deref(c_inst).small_B = default_inst[cSmallStruct]().small_B
                 deref(c_inst).__isset.small_B = False
                 pass
 
@@ -351,8 +350,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (SmallStruct, serialize(self)))
 
-
-cdef ccontainerStruct _containerStruct_defaults = ccontainerStruct()
 
 cdef class containerStruct(thrift.py3.types.Struct):
 
@@ -696,87 +693,87 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and fieldA is None:
-                deref(c_inst).fieldA = _containerStruct_defaults.fieldA
+                deref(c_inst).fieldA = default_inst[ccontainerStruct]().fieldA
                 deref(c_inst).__isset.fieldA = False
                 pass
 
             if not __isNOTSET[1] and fieldB is None:
-                deref(c_inst).fieldB = _containerStruct_defaults.fieldB
+                deref(c_inst).fieldB = default_inst[ccontainerStruct]().fieldB
                 deref(c_inst).__isset.fieldB = False
                 pass
 
             if not __isNOTSET[2] and fieldC is None:
-                deref(c_inst).fieldC = _containerStruct_defaults.fieldC
+                deref(c_inst).fieldC = default_inst[ccontainerStruct]().fieldC
                 deref(c_inst).__isset.fieldC = False
                 pass
 
             if not __isNOTSET[3] and fieldD is None:
-                deref(c_inst).fieldD = _containerStruct_defaults.fieldD
+                deref(c_inst).fieldD = default_inst[ccontainerStruct]().fieldD
                 deref(c_inst).__isset.fieldD = False
                 pass
 
             if not __isNOTSET[4] and fieldE is None:
-                deref(c_inst).fieldE = _containerStruct_defaults.fieldE
+                deref(c_inst).fieldE = default_inst[ccontainerStruct]().fieldE
                 deref(c_inst).__isset.fieldE = False
                 pass
 
             if not __isNOTSET[5] and fieldF is None:
-                deref(c_inst).fieldF = _containerStruct_defaults.fieldF
+                deref(c_inst).fieldF = default_inst[ccontainerStruct]().fieldF
                 deref(c_inst).__isset.fieldF = False
                 pass
 
             if not __isNOTSET[6] and fieldG is None:
-                deref(c_inst).fieldG = _containerStruct_defaults.fieldG
+                deref(c_inst).fieldG = default_inst[ccontainerStruct]().fieldG
                 deref(c_inst).__isset.fieldG = False
                 pass
 
             if not __isNOTSET[7] and fieldH is None:
-                deref(c_inst).fieldH = _containerStruct_defaults.fieldH
+                deref(c_inst).fieldH = default_inst[ccontainerStruct]().fieldH
                 deref(c_inst).__isset.fieldH = False
                 pass
 
             if not __isNOTSET[8] and fieldI is None:
-                deref(c_inst).fieldI = _containerStruct_defaults.fieldI
+                deref(c_inst).fieldI = default_inst[ccontainerStruct]().fieldI
                 deref(c_inst).__isset.fieldI = False
                 pass
 
             if not __isNOTSET[9] and fieldJ is None:
-                deref(c_inst).fieldJ = _containerStruct_defaults.fieldJ
+                deref(c_inst).fieldJ = default_inst[ccontainerStruct]().fieldJ
                 deref(c_inst).__isset.fieldJ = False
                 pass
 
             if not __isNOTSET[10] and fieldK is None:
-                deref(c_inst).fieldK = _containerStruct_defaults.fieldK
+                deref(c_inst).fieldK = default_inst[ccontainerStruct]().fieldK
                 deref(c_inst).__isset.fieldK = False
                 pass
 
             if not __isNOTSET[11] and fieldL is None:
-                deref(c_inst).fieldL = _containerStruct_defaults.fieldL
+                deref(c_inst).fieldL = default_inst[ccontainerStruct]().fieldL
                 deref(c_inst).__isset.fieldL = False
                 pass
 
             if not __isNOTSET[12] and fieldM is None:
-                deref(c_inst).fieldM = _containerStruct_defaults.fieldM
+                deref(c_inst).fieldM = default_inst[ccontainerStruct]().fieldM
                 deref(c_inst).__isset.fieldM = False
                 pass
 
             if not __isNOTSET[13] and fieldN is None:
-                deref(c_inst).fieldN = _containerStruct_defaults.fieldN
+                deref(c_inst).fieldN = default_inst[ccontainerStruct]().fieldN
                 deref(c_inst).__isset.fieldN = False
                 pass
 
             if not __isNOTSET[14] and fieldO is None:
-                deref(c_inst).fieldO = _containerStruct_defaults.fieldO
+                deref(c_inst).fieldO = default_inst[ccontainerStruct]().fieldO
                 deref(c_inst).__isset.fieldO = False
                 pass
 
             if not __isNOTSET[15] and fieldP is None:
-                deref(c_inst).fieldP = _containerStruct_defaults.fieldP
+                deref(c_inst).fieldP = default_inst[ccontainerStruct]().fieldP
                 deref(c_inst).__isset.fieldP = False
                 pass
 
             if not __isNOTSET[16] and fieldQ is None:
-                deref(c_inst).fieldQ = _containerStruct_defaults.fieldQ
+                deref(c_inst).fieldQ = default_inst[ccontainerStruct]().fieldQ
                 deref(c_inst).__isset.fieldQ = False
                 pass
 

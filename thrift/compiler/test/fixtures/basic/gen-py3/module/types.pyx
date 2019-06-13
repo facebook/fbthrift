@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -142,8 +143,6 @@ cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
         return MyEnum__MyValue2
     elif cvalue == 2:
         return MyEnum__DOMAIN
-
-cdef cMyStruct _MyStruct_defaults = cMyStruct()
 
 cdef class MyStruct(thrift.py3.types.Struct):
 
@@ -311,37 +310,37 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyIntField is None:
-                deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
+                deref(c_inst).MyIntField = default_inst[cMyStruct]().MyIntField
                 deref(c_inst).__isset.MyIntField = False
                 pass
 
             if not __isNOTSET[1] and MyStringField is None:
-                deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
+                deref(c_inst).MyStringField = default_inst[cMyStruct]().MyStringField
                 deref(c_inst).__isset.MyStringField = False
                 pass
 
             if not __isNOTSET[2] and MyDataField is None:
-                deref(c_inst).MyDataField = _MyStruct_defaults.MyDataField
+                deref(c_inst).MyDataField = default_inst[cMyStruct]().MyDataField
                 deref(c_inst).__isset.MyDataField = False
                 pass
 
             if not __isNOTSET[3] and major is None:
-                deref(c_inst).major = _MyStruct_defaults.major
+                deref(c_inst).major = default_inst[cMyStruct]().major
                 deref(c_inst).__isset.major = False
                 pass
 
             if not __isNOTSET[4] and myEnum is None:
-                deref(c_inst).myEnum = _MyStruct_defaults.myEnum
+                deref(c_inst).myEnum = default_inst[cMyStruct]().myEnum
                 deref(c_inst).__isset.myEnum = False
                 pass
 
             if not __isNOTSET[5] and package is None:
-                deref(c_inst).package = _MyStruct_defaults.package
+                deref(c_inst).package = default_inst[cMyStruct]().package
                 deref(c_inst).__isset.package = False
                 pass
 
             if not __isNOTSET[6] and annotation_with_quote is None:
-                deref(c_inst).annotation_with_quote = _MyStruct_defaults.annotation_with_quote
+                deref(c_inst).annotation_with_quote = default_inst[cMyStruct]().annotation_with_quote
                 deref(c_inst).__isset.annotation_with_quote = False
                 pass
 
@@ -514,8 +513,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (MyStruct, serialize(self)))
 
-
-cdef cMyDataItem _MyDataItem_defaults = cMyDataItem()
 
 cdef class MyDataItem(thrift.py3.types.Struct):
 

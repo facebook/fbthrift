@@ -22,6 +22,7 @@ from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
     constant_shared_ptr,
+    default_inst,
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer import Protocol as __Protocol
@@ -37,8 +38,6 @@ import warnings
 import weakref as __weakref
 import builtins as _builtins
 
-
-cdef cFoo _Foo_defaults = cFoo()
 
 cdef class Foo(thrift.py3.types.Struct):
 
@@ -104,7 +103,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value. (or unset)
             if not __isNOTSET[0] and MyInt is None:
-                deref(c_inst).MyInt = _Foo_defaults.MyInt
+                deref(c_inst).MyInt = default_inst[cFoo]().MyInt
                 deref(c_inst).__isset.MyInt = False
                 pass
 
