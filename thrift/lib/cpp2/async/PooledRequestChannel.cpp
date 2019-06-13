@@ -36,13 +36,12 @@ uint16_t PooledRequestChannel::getProtocolId() {
   return protocolId_;
 }
 
-uint32_t PooledRequestChannel::sendRequestImpl(
+void PooledRequestChannel::sendRequestImpl(
     RpcKind rpcKind,
     RpcOptions& options,
-    std::unique_ptr<RequestCallback> cob,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cob) {
   auto executor = executor_.lock();
   if (!executor) {
     throw std::logic_error("IO executor already destroyed.");
@@ -54,135 +53,130 @@ uint32_t PooledRequestChannel::sendRequestImpl(
                              options = std::move(options),
                              rpcKind,
                              cob = std::move(cob),
-                             ctx = std::move(ctx),
                              buf = std::move(buf),
                              header = std::move(header)]() mutable {
     switch (rpcKind) {
       case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
         impl(*keepAlive)
-            .sendOnewayRequest(
-                options,
-                std::move(cob),
-                std::move(ctx),
-                std::move(buf),
-                std::move(header));
+            .sendRequestNoResponse(
+                options, std::move(buf), std::move(header), std::move(cob));
         break;
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
         impl(*keepAlive)
-            .sendRequest(
-                options,
-                std::move(cob),
-                std::move(ctx),
-                std::move(buf),
-                std::move(header));
+            .sendRequestResponse(
+                options, std::move(buf), std::move(header), std::move(cob));
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
         impl(*keepAlive)
-            .sendStreamRequest(
-                options,
-                std::move(cob),
-                std::move(ctx),
-                std::move(buf),
-                std::move(header));
+            .sendRequestStream(
+                options, std::move(buf), std::move(header), std::move(cob));
         break;
       default:
         folly::assume_unreachable();
         break;
     };
   });
-  return 0;
 }
 
 namespace {
-class ExecutorRequestCallback final : public RequestCallback {
+template <bool oneWay>
+class ExecutorRequestCallback final : public RequestClientCallback {
  public:
   ExecutorRequestCallback(
-      std::unique_ptr<RequestCallback> cb,
+      RequestClientCallback::Ptr cb,
       folly::Executor::KeepAlive<> executorKeepAlive)
       : executorKeepAlive_(std::move(executorKeepAlive)), cb_(std::move(cb)) {
     CHECK(executorKeepAlive_);
   }
 
-  void requestSent() override {
-    executorKeepAlive_.get()->add([cb = cb_] { cb->requestSent(); });
+  void onRequestSent() noexcept override {
+    if (oneWay) {
+      executorKeepAlive_.get()->add(
+          [cb = std::move(cb_)]() mutable { cb.release()->onRequestSent(); });
+      delete this;
+    } else {
+      requestSent_ = true;
+    }
   }
-  void replyReceived(ClientReceiveState&& rs) override {
-    executorKeepAlive_.get()->add(
-        [cb = std::move(cb_), rs = std::move(rs)]() mutable {
-          cb->replyReceived(std::move(rs));
-        });
+  void onResponse(ClientReceiveState&& rs) noexcept override {
+    executorKeepAlive_.get()->add([requestSent = requestSent_,
+                                   cb = std::move(cb_),
+                                   rs = std::move(rs)]() mutable {
+      if (requestSent) {
+        cb->onRequestSent();
+      }
+      cb.release()->onResponse(std::move(rs));
+    });
+    delete this;
   }
-  void requestError(ClientReceiveState&& rs) override {
-    executorKeepAlive_.get()->add(
-        [cb = std::move(cb_), rs = std::move(rs)]() mutable {
-          cb->requestError(std::move(rs));
-        });
+  void onResponseError(folly::exception_wrapper ex) noexcept override {
+    executorKeepAlive_.get()->add([requestSent = requestSent_,
+                                   cb = std::move(cb_),
+                                   ex = std::move(ex)]() mutable {
+      if (requestSent) {
+        cb->onRequestSent();
+      }
+      cb.release()->onResponseError(std::move(ex));
+    });
+    delete this;
   }
 
  private:
+  bool requestSent_{false};
   folly::Executor::KeepAlive<> executorKeepAlive_;
-  std::shared_ptr<RequestCallback> cb_;
+  RequestClientCallback::Ptr cb_;
 };
 } // namespace
 
-uint32_t PooledRequestChannel::sendRequest(
+void PooledRequestChannel::sendRequestResponse(
     RpcOptions& options,
-    std::unique_ptr<RequestCallback> cob,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
-    cob = std::make_unique<ExecutorRequestCallback>(
-        std::move(cob), getKeepAliveToken(callbackExecutor_));
+    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
+        std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   sendRequestImpl(
       RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE,
       options,
-      std::move(cob),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return 0;
+      std::move(header),
+      std::move(cob));
 }
 
-uint32_t PooledRequestChannel::sendOnewayRequest(
+void PooledRequestChannel::sendRequestNoResponse(
     RpcOptions& options,
-    std::unique_ptr<RequestCallback> cob,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
-    cob = std::make_unique<ExecutorRequestCallback>(
-        std::move(cob), getKeepAliveToken(callbackExecutor_));
+    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<true>(
+        std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   sendRequestImpl(
       RpcKind::SINGLE_REQUEST_NO_RESPONSE,
       options,
-      std::move(cob),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return 0;
+      std::move(header),
+      std::move(cob));
 }
 
-uint32_t PooledRequestChannel::sendStreamRequest(
+void PooledRequestChannel::sendRequestStream(
     RpcOptions& options,
-    std::unique_ptr<RequestCallback> cob,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cob) {
   if (!cob->isInlineSafe()) {
-    cob = std::make_unique<ExecutorRequestCallback>(
-        std::move(cob), getKeepAliveToken(callbackExecutor_));
+    cob = RequestClientCallback::Ptr(new ExecutorRequestCallback<false>(
+        std::move(cob), getKeepAliveToken(callbackExecutor_)));
   }
   sendRequestImpl(
       RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
       options,
-      std::move(cob),
-      std::move(ctx),
       std::move(buf),
-      std::move(header));
-  return 0;
+      std::move(header),
+      std::move(cob));
 }
 
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {

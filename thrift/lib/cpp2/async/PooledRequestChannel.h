@@ -55,26 +55,25 @@ class PooledRequestChannel : public RequestChannel {
             {}};
   }
 
-  uint32_t sendRequest(
+  void sendRequestResponse(
       RpcOptions& options,
-      std::unique_ptr<RequestCallback> cob,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header) override;
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr cob) override;
 
-  uint32_t sendOnewayRequest(
+  void sendRequestNoResponse(
       RpcOptions& options,
-      std::unique_ptr<RequestCallback> cob,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header) override;
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr cob) override;
 
-  uint32_t sendStreamRequest(
+  void sendRequestStream(
       RpcOptions& options,
-      std::unique_ptr<RequestCallback> cob,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header) override;
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr cob) override;
+
+  using RequestChannel::sendRequestStream;
 
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
@@ -89,13 +88,12 @@ class PooledRequestChannel : public RequestChannel {
  protected:
   ~PooledRequestChannel() override = default;
 
-  uint32_t sendRequestImpl(
+  void sendRequestImpl(
       RpcKind rpcKind,
       RpcOptions& options,
-      std::unique_ptr<RequestCallback> cob,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header);
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr cob);
 
  private:
   PooledRequestChannel(

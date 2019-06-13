@@ -44,19 +44,17 @@ class HibernatingRequestChannel : public RequestChannel {
         {}};
   }
 
-  uint32_t sendRequest(
+  void sendRequestResponse(
       RpcOptions& options,
-      std::unique_ptr<apache::thrift::RequestCallback> cob,
-      std::unique_ptr<ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header) override;
+      std::shared_ptr<transport::THeader> header,
+      RequestClientCallback::Ptr cob) override;
 
-  uint32_t sendOnewayRequest(
+  void sendRequestNoResponse(
       RpcOptions&,
-      std::unique_ptr<apache::thrift::RequestCallback>,
-      std::unique_ptr<ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<transport::THeader>) override {
+      std::shared_ptr<transport::THeader>,
+      RequestClientCallback::Ptr) override {
     LOG(FATAL) << "Not supported";
   }
 

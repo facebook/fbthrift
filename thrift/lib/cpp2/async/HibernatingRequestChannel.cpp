@@ -22,49 +22,41 @@ namespace thrift {
 // RequestCallback will keep owning the connection for inflight requests even
 // after the timeout.
 class HibernatingRequestChannel::RequestCallback
-    : public apache::thrift::RequestCallback {
+    : public apache::thrift::RequestClientCallback {
  public:
-  RequestCallback(
-      std::unique_ptr<apache::thrift::RequestCallback> cob,
-      ImplPtr impl)
+  RequestCallback(apache::thrift::RequestClientCallback::Ptr cob, ImplPtr impl)
       : impl_(std::move(impl)), cob_(std::move(cob)) {}
 
-  void requestSent() override {
-    cob_->requestSent();
+  void onRequestSent() noexcept override {
+    cob_->onRequestSent();
   }
 
-  void replyReceived(ClientReceiveState&& state) override {
-    cob_->replyReceived(std::move(state));
+  void onResponse(ClientReceiveState&& state) noexcept override {
+    cob_.release()->onResponse(std::move(state));
   }
 
-  void requestError(ClientReceiveState&& state) override {
-    cob_->requestError(std::move(state));
+  void onResponseError(folly::exception_wrapper ex) noexcept override {
+    cob_.release()->onResponseError(std::move(ex));
   }
 
  private:
   HibernatingRequestChannel::ImplPtr impl_;
-  std::unique_ptr<apache::thrift::RequestCallback> cob_;
+  apache::thrift::RequestClientCallback::Ptr cob_;
 };
 
-uint32_t HibernatingRequestChannel::sendRequest(
+void HibernatingRequestChannel::sendRequestResponse(
     RpcOptions& options,
-    std::unique_ptr<apache::thrift::RequestCallback> cob,
-    std::unique_ptr<ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<transport::THeader> header) {
+    std::shared_ptr<transport::THeader> header,
+    apache::thrift::RequestClientCallback::Ptr cob) {
   auto implPtr = impl();
   auto& implRef = *implPtr;
-  cob = std::make_unique<RequestCallback>(std::move(cob), std::move(implPtr));
-  auto ret = implRef.sendRequest(
-      options,
-      std::move(cob),
-      std::move(ctx),
-      std::move(buf),
-      std::move(header));
+  cob = apache::thrift::RequestClientCallback::Ptr(
+      new RequestCallback(std::move(cob), std::move(implPtr)));
+  implRef.sendRequestResponse(
+      options, std::move(buf), std::move(header), std::move(cob));
 
   timeout_->scheduleTimeout(waitTime_.count());
-
-  return ret;
 }
 
 HibernatingRequestChannel::ImplPtr& HibernatingRequestChannel::impl() {

@@ -37,19 +37,17 @@ class ReconnectingRequestChannel : public apache::thrift::RequestChannel {
     return {new ReconnectingRequestChannel(evb, std::move(implCreator)), {}};
   }
 
-  uint32_t sendRequest(
+  void sendRequestResponse(
       apache::thrift::RpcOptions& options,
-      std::unique_ptr<apache::thrift::RequestCallback> cob,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) override;
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      RequestClientCallback::Ptr cob) override;
 
-  uint32_t sendOnewayRequest(
+  void sendRequestNoResponse(
       apache::thrift::RpcOptions&,
-      std::unique_ptr<apache::thrift::RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>) override {
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr) override {
     LOG(FATAL) << "Not supported";
   }
 

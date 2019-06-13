@@ -21,22 +21,20 @@ namespace apache {
 namespace thrift {
 
 class RetryingRequestChannel::RequestCallback
-    : public apache::thrift::RequestCallback {
+    : public apache::thrift::RequestClientCallback {
  public:
   RequestCallback(
       folly::Executor::KeepAlive<> ka,
       RetryingRequestChannel::ImplPtr impl,
-      int retriesLeft,
+      int retries,
       apache::thrift::RpcOptions options,
-      std::unique_ptr<apache::thrift::RequestCallback> cob,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      apache::thrift::RequestClientCallback::Ptr cob,
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<apache::thrift::transport::THeader> header)
       : impl_(std::move(impl)),
-        retriesLeft_(retriesLeft),
+        retriesLeft_(retries),
         options_(options),
         cob_(std::move(cob)),
-        ctx_(std::move(ctx)),
         buf_(std::move(buf)),
         header_(std::move(header)) {
     if (retriesLeft_) {
@@ -44,95 +42,67 @@ class RetryingRequestChannel::RequestCallback
     }
   }
 
-  void requestSent() override {
-    cob_->requestSent();
+  void onRequestSent() noexcept override {}
+
+  void onResponse(
+      apache::thrift::ClientReceiveState&& state) noexcept override {
+    cob_->onRequestSent();
+    cob_.release()->onResponse(std::move(state));
+    delete this;
   }
 
-  void replyReceived(apache::thrift::ClientReceiveState&& state) override {
-    if (shouldRetry(state)) {
+  void onResponseError(folly::exception_wrapper ex) noexcept override {
+    if (shouldRetry(ex)) {
       retry();
     } else {
-      cob_->replyReceived(std::move(state));
-    }
-  }
-
-  void requestError(apache::thrift::ClientReceiveState&& state) override {
-    if (shouldRetry(state)) {
-      retry();
-    } else {
-      cob_->requestError(std::move(state));
+      cob_.release()->onResponseError(std::move(ex));
+      delete this;
     }
   }
 
  private:
-  bool shouldRetry(apache::thrift::ClientReceiveState& state) {
-    if (!state.isException()) {
-      return false;
-    }
-    if (!state.exception()
-             .is_compatible_with<
-                 apache::thrift::transport::TTransportException>()) {
+  bool shouldRetry(folly::exception_wrapper& ex) {
+    if (!ex.is_compatible_with<
+            apache::thrift::transport::TTransportException>()) {
       return false;
     }
     return retriesLeft_ > 0;
   }
 
   void retry() {
-    auto& impl = *impl_;
-    auto fakeCtx =
-        std::make_unique<apache::thrift::ContextStack>(ctx_->getMethod());
-    auto cob = std::make_unique<RequestCallback>(
-        std::move(ka_),
-        std::move(impl_),
-        retriesLeft_ - 1,
-        options_,
-        std::move(cob_),
-        std::move(ctx_),
-        buf_->clone(),
-        header_);
+    if (!--retriesLeft_) {
+      ka_.reset();
+    }
 
-    impl.sendRequest(
-        options_,
-        std::move(cob),
-        std::move(fakeCtx),
-        std::move(buf_),
-        std::move(header_));
+    impl_->sendRequestResponse(
+        options_, buf_->clone(), header_, RequestClientCallback::Ptr(this));
   }
 
   folly::Executor::KeepAlive<> ka_;
   RetryingRequestChannel::ImplPtr impl_;
   int retriesLeft_;
   apache::thrift::RpcOptions options_;
-  std::unique_ptr<apache::thrift::RequestCallback> cob_;
-  std::unique_ptr<apache::thrift::ContextStack> ctx_;
+  RequestClientCallback::Ptr cob_;
   std::unique_ptr<folly::IOBuf> buf_;
   std::shared_ptr<apache::thrift::transport::THeader> header_;
 };
 
-uint32_t RetryingRequestChannel::sendRequest(
+void RetryingRequestChannel::sendRequestResponse(
     apache::thrift::RpcOptions& options,
-    std::unique_ptr<apache::thrift::RequestCallback> cob,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
-    std::shared_ptr<apache::thrift::transport::THeader> header) {
-  auto fakeCtx =
-      std::make_unique<apache::thrift::ContextStack>(ctx->getMethod());
-  cob = std::make_unique<RequestCallback>(
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestClientCallback::Ptr cob) {
+  cob = RequestClientCallback::Ptr(new RequestCallback(
       folly::getKeepAliveToken(evb_),
       impl_,
       numRetries_,
       options,
       std::move(cob),
-      std::move(ctx),
       buf->clone(),
-      header);
+      header));
 
-  return impl_->sendRequest(
-      options,
-      std::move(cob),
-      std::move(fakeCtx),
-      std::move(buf),
-      std::move(header));
+  return impl_->sendRequestResponse(
+      options, std::move(buf), std::move(header), std::move(cob));
 }
 } // namespace thrift
 } // namespace apache
