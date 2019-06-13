@@ -171,9 +171,9 @@ class RequestCallback : public RequestClientCallback {
   void onRequestSent() noexcept override {
     CHECK(thriftContext_);
     {
-      const auto& rctx = thriftContext_->oneWay
-          ? folly::RequestContextScopeGuard(std::move(context_))
-          : folly::RequestContextScopeGuard(context_);
+      const auto& rctx = thriftContext_->oneWay // C++14, small codegen
+          ? std::move(folly::RequestContextScopeGuard(std::move(context_)))
+          : std::move(folly::RequestContextScopeGuard(context_));
       (void)rctx;
       try {
         requestSent();
@@ -195,9 +195,9 @@ class RequestCallback : public RequestClientCallback {
     state.resetCtx(
         lastResponse ? std::move(thriftContext_->ctx) : thriftContext_->ctx);
     {
-      const auto& rctx = lastResponse
-          ? folly::RequestContextScopeGuard(std::move(context_))
-          : folly::RequestContextScopeGuard(context_);
+      const auto& rctx = lastResponse // C++14, small codegen
+          ? std::move(folly::RequestContextScopeGuard(std::move(context_)))
+          : std::move(folly::RequestContextScopeGuard(context_));
       (void)rctx;
       try {
         replyReceived(std::move(state));
