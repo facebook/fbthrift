@@ -84,16 +84,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr) {
-    throw std::logic_error("Not implemented");
-  }
+      RequestClientCallback::Ptr) = 0;
 
   virtual uint32_t sendRequest(
       RpcOptions& options,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) {
+      std::shared_ptr<apache::thrift::transport::THeader> header) final {
     RequestCallback::Context callbackContext;
     callbackContext.protocolId = getProtocolId();
     callbackContext.ctx = std::move(ctx);
@@ -127,16 +125,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr) {
-    throw std::logic_error("Not implemented");
-  }
+      RequestClientCallback::Ptr) = 0;
 
   virtual uint32_t sendOnewayRequest(
       RpcOptions& options,
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) {
+      std::shared_ptr<apache::thrift::transport::THeader> header) final {
     RequestCallback::Context callbackContext;
     callbackContext.oneWay = true;
     callbackContext.protocolId = getProtocolId();
@@ -182,7 +178,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<RequestCallback> cb,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) {
+      std::shared_ptr<apache::thrift::transport::THeader> header) final {
     RequestCallback::Context callbackContext;
     callbackContext.protocolId = getProtocolId();
     callbackContext.ctx = std::move(ctx);
