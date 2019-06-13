@@ -71,15 +71,15 @@ void H2Channel::decodeHeaders(
     // original key cannot be recovered.
     if (key.find("encode_") == 0) {
       auto us = val.find("_");
-      if (us == string::npos) {
-        LOG(ERROR) << "Encoded value does not contain underscore";
+      if (us != string::npos) {
+        auto decodedKey = proxygen::Base64::urlDecode(val.substr(0, us));
+        auto decodedVal = proxygen::Base64::urlDecode(val.substr(us + 1));
+        dest[decodedKey] = decodedVal;
+        return;
       }
-      auto decodedKey = proxygen::Base64::urlDecode(val.substr(0, us));
-      auto decodedVal = proxygen::Base64::urlDecode(val.substr(us + 1));
-      dest[decodedKey] = decodedVal;
-    } else {
-      dest[key] = val;
+      LOG(ERROR) << "Encoded value does not contain '_'; preserving original";
     }
+    dest[key] = val;
   };
   source.getHeaders().forEach(decodeAndCopyKeyValue);
 }
