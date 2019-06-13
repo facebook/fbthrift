@@ -17,6 +17,8 @@
 
 #include <memory>
 
+#include <folly/Indestructible.h>
+
 namespace thrift {
 namespace py3 {
 
@@ -28,6 +30,12 @@ std::shared_ptr<T> constant_shared_ptr(const T& x) {
 template <typename T, typename S>
 std::shared_ptr<T> reference_shared_ptr(S& owner, const T& ref) {
   return std::shared_ptr<T>(owner, const_cast<T*>(&ref));
+}
+
+template <typename T>
+const T& default_inst() {
+  static const folly::Indestructible<T> inst{};
+  return *inst;
 }
 
 } // namespace py3
