@@ -812,7 +812,7 @@ struct protocol_methods<type_class::structure, Struct> {
 
       if (ftype == protocol_method::ttype_value) {
         detail::mark_isset<
-            folly::to_underlying_type(member::optional::value),
+            folly::to_underlying(member::optional::value),
             required_fields,
             member>(required_isset, obj);
         protocol_method::read(

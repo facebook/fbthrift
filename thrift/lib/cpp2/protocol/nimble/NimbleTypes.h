@@ -142,8 +142,7 @@ inline StructyType getStructyTypeFromMap(TType keyType, TType valType) {
   auto keyHint = ttypeToNimbleFieldChunkHint(keyType);
   auto valHint = ttypeToNimbleFieldChunkHint(valType);
   DCHECK(
-      folly::to_underlying_type(keyHint) < 4 &&
-      folly::to_underlying_type(valHint) < 4);
+      folly::to_underlying(keyHint) < 4 && folly::to_underlying(valHint) < 4);
 
   int index = (keyHint << 2) | valHint;
   std::uint32_t result = structyTypeFromShift[index];
@@ -161,7 +160,7 @@ inline StructyType getStructyTypeFromListOrSet(TType elemType) {
       LIST_OR_SET_TWO_CHUNKS,
       LIST_OR_SET_COMPLEX,
   }};
-  DCHECK(folly::to_underlying_type(elemFieldHint) < structyType.size());
+  DCHECK(folly::to_underlying(elemFieldHint) < structyType.size());
   std::uint32_t result = structyType[elemFieldHint];
   DCHECK(result != kInvalid);
   return static_cast<StructyType>(result);

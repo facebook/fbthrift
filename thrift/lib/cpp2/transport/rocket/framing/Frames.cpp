@@ -460,7 +460,7 @@ void ErrorFrame::serialize(Serializer& writer) && {
   nwritten += writer.write(streamId());
   nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags::none());
 
-  nwritten += writer.writeBE(folly::to_underlying_type(errorCode()));
+  nwritten += writer.writeBE(folly::to_underlying(errorCode()));
 
   nwritten += writer.writePayload(std::move(payload()));
 
