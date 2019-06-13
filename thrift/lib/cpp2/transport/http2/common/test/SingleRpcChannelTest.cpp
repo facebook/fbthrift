@@ -119,6 +119,31 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoEnvelope) {
   EXPECT_EQ("Invalid envelope: see logs for error", tae.getMessage());
 }
 
+TEST_F(ChannelTestFixture, BadHeaderFields) {
+  apache::thrift::server::ServerConfigsMock server;
+  EchoProcessor processor(
+      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  unordered_map<string, string> inputHeaders;
+  inputHeaders["good header1"] = "good value";
+  inputHeaders["good header2"] = "bad\x01\x02value\r\n";
+  inputHeaders["bad\x01header"] = "good value";
+  inputHeaders["bad\x01header"] = "bad value\r\n\r\n";
+  inputHeaders["asdf:gh"] = "{\"json\":\"data\"}";
+  string inputPayload = "single stream payload";
+  unordered_map<string, string>* outputHeaders;
+  IOBuf* outputPayload;
+  sendAndReceiveStream(
+      &processor, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
+  EXPECT_EQ(5, outputHeaders->size());
+  for (const auto& elem : *outputHeaders) {
+    LOG(INFO) << elem.first << ": " << elem.second;
+    if (elem.first.find("encode_") != 0) {
+      EXPECT_EQ("good value", outputHeaders->at("good header1"));
+    }
+  }
+  EXPECT_EQ("single stream payload<eom>", toString(outputPayload));
+}
+
 struct RequestState {
   bool sent{false};
   bool reply{false};

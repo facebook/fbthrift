@@ -16,6 +16,7 @@
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
 #include <folly/Range.h>
+#include <proxygen/lib/http/codec/CodecUtil.h>
 #include <proxygen/lib/utils/Base64.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
@@ -42,7 +43,11 @@ void H2Channel::encodeHeaders(
     // If it contains a ":", we encode both the key and the value.  We
     // add a prefix tag ("encode_") to the and encode both the key and
     // the value into the value.
-    if (it->first.find(":") != string::npos) {
+    if (!proxygen::CodecUtil::validateHeaderName(
+            folly::ByteRange(folly::StringPiece(it->first))) ||
+        !proxygen::CodecUtil::validateHeaderValue(
+            folly::ByteRange(folly::StringPiece(it->second)),
+            proxygen::CodecUtil::CtlEscapeMode::STRICT)) {
       auto name = proxygen::Base64::urlEncode(folly::StringPiece(it->first));
       auto value = proxygen::Base64::urlEncode(folly::StringPiece(it->second));
       msgHeaders.set(
