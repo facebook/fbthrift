@@ -21,7 +21,8 @@
 
 #if __has_include(<optional>)
 #include <optional>
-#if __cpp_lib_optional >= 201606
+// Technically it should be 201606 but std::optional is present with 201603.
+#if __cpp_lib_optional >= 201603
 #define THRIFT_HAS_OPTIONAL
 #endif
 #endif
