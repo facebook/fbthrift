@@ -20,7 +20,7 @@
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/test/gen-cpp2/module_types.h>
+#include <thrift/lib/cpp2/protocol/test/gen-cpp2/Module_types.h>
 
 namespace apache {
 namespace thrift {
