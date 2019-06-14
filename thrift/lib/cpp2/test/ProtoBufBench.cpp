@@ -19,7 +19,7 @@
 #include <folly/Optional.h>
 #include <folly/portability/GFlags.h>
 #include <glog/logging.h>
-#include <google/protobuf/arena.h>
+#include <google/protobuf/arena.h> // @manual
 
 using namespace std;
 using namespace folly;

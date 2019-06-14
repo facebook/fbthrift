@@ -26,7 +26,7 @@
 #include <folly/portability/GFlags.h>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-#include <google/protobuf/arena.h>
+#include <google/protobuf/arena.h> // @manual
 
 #include <thrift/lib/cpp2/test/Structs.h>
 
