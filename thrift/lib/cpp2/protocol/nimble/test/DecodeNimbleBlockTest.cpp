@@ -29,7 +29,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <ChunkRepr repr>
+template <ChunkRepr repr, bool vectorize>
 void runRoundTripTest(
     const std::array<std::uint32_t, kChunksPerBlock>& unencoded) {
   std::array<unsigned char, kMaxBytesPerBlock> encoded;
@@ -39,7 +39,7 @@ void runRoundTripTest(
   int encodedSize =
       encodeNimbleBlock<repr>(unencoded.data(), &control, encoded.data());
   std::memset(&encoded[encodedSize], 0x99, kMaxBytesPerBlock - encodedSize);
-  int decodedSize = decodeNimbleBlock<repr>(
+  int decodedSize = decodeNimbleBlock<repr, vectorize>(
       control, folly::ByteRange(encoded), decoded.data());
   EXPECT_TRUE(encodedSize == decodedSize && unencoded == decoded)
       << folly::sformat(
@@ -51,7 +51,7 @@ void runRoundTripTest(
              decodedSize);
 }
 
-template <ChunkRepr repr>
+template <ChunkRepr repr, bool vectorize>
 void runHandPickedDecodeTest() {
   std::array<std::uint32_t, kChunksPerBlock> testData[] = {
       {0, 0, 0, 0},
@@ -72,19 +72,33 @@ void runHandPickedDecodeTest() {
        (std::uint32_t)-0x80000000},
   };
   for (const std::array<std::uint32_t, kChunksPerBlock>& unencoded : testData) {
-    runRoundTripTest<repr>(unencoded);
+    runRoundTripTest<repr, vectorize>(unencoded);
   }
 }
 
-TEST(DecodeNimbleBlock, DecodesHandPickedZigzag) {
-  runHandPickedDecodeTest<ChunkRepr::kZigzag>();
+template <typename T>
+class NimbleDecodeTest : public ::testing::Test {};
+
+struct NonvectorizedImpl {
+  constexpr static bool vectorize = false;
+};
+
+struct VectorizedImpl {
+  constexpr static bool vectorize = true;
+};
+
+using DecodeParamTypes = ::testing::Types<NonvectorizedImpl, VectorizedImpl>;
+TYPED_TEST_CASE(NimbleDecodeTest, DecodeParamTypes);
+
+TYPED_TEST(NimbleDecodeTest, DecodesHandPickedZigzag) {
+  runHandPickedDecodeTest<ChunkRepr::kZigzag, TypeParam::vectorize>();
 }
 
-TEST(DecodeNimbleBlock, DecodesHandPickedRaw) {
-  runHandPickedDecodeTest<ChunkRepr::kRaw>();
+TYPED_TEST(NimbleDecodeTest, DecodesHandPickedRaw) {
+  runHandPickedDecodeTest<ChunkRepr::kRaw, TypeParam::vectorize>();
 }
 
-template <ChunkRepr repr>
+template <ChunkRepr repr, bool vectorize>
 void runInterestingRoundTripTest() {
   // clang-format off
   std::vector<std::uint32_t> vec {
@@ -115,22 +129,22 @@ void runInterestingRoundTripTest() {
         for (std::uint32_t i3 : vec) {
           std::array<std::uint32_t, kChunksPerBlock> unencoded = {
               i0, i1, i2, i3};
-          runRoundTripTest<repr>(unencoded);
+          runRoundTripTest<repr, vectorize>(unencoded);
         }
       }
     }
   }
 }
 
-TEST(DecodeNimbleBlock, DecodesInterestingZigzag) {
-  runInterestingRoundTripTest<ChunkRepr::kZigzag>();
+TYPED_TEST(NimbleDecodeTest, DecodesInterestingZigzag) {
+  runInterestingRoundTripTest<ChunkRepr::kZigzag, TypeParam::vectorize>();
 }
 
-TEST(DecodeNimbleBlock, DecodesInterestingRaw) {
-  runInterestingRoundTripTest<ChunkRepr::kRaw>();
+TYPED_TEST(NimbleDecodeTest, DecodesInterestingRaw) {
+  runInterestingRoundTripTest<ChunkRepr::kRaw, TypeParam::vectorize>();
 }
 
-TEST(DecodeNimbleBlock, DecodesExtraZeros) {
+TYPED_TEST(NimbleDecodeTest, DecodesExtraZeros) {
   // Some use cases have people reserve a full chunk up front, even if they
   // won't need it until later on. The current iteration of the encoder won't
   // support these cases, but we should check it.
@@ -148,7 +162,7 @@ TEST(DecodeNimbleBlock, DecodesExtraZeros) {
 
   std::array<std::uint32_t, kChunksPerBlock> decoded;
   std::uint8_t control = 0b11'11'10'01;
-  int bytesDecoded = decodeNimbleBlock<ChunkRepr::kRaw>(
+  int bytesDecoded = decodeNimbleBlock<ChunkRepr::kRaw, TypeParam::vectorize>(
       control, folly::ByteRange(data), decoded.data());
   EXPECT_EQ(11, bytesDecoded);
   EXPECT_EQ(0, decoded[0]);
@@ -156,7 +170,7 @@ TEST(DecodeNimbleBlock, DecodesExtraZeros) {
   EXPECT_EQ(0, decoded[2]);
   EXPECT_EQ(16777218, decoded[3]);
 
-  bytesDecoded = decodeNimbleBlock<ChunkRepr::kZigzag>(
+  bytesDecoded = decodeNimbleBlock<ChunkRepr::kZigzag, TypeParam::vectorize>(
       control, folly::ByteRange(data), decoded.data());
   EXPECT_EQ(11, bytesDecoded);
   EXPECT_EQ(zigzagDecode(0), decoded[0]);

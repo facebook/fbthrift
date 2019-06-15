@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#include <stdexcept>
-#include <utility>
+#include <folly/container/Array.h>
 
 #include <thrift/lib/cpp2/protocol/nimble/ControlBitHelpers.h>
 #include <thrift/lib/cpp2/protocol/nimble/DecodeNimbleBlock.h>
@@ -45,15 +44,39 @@ constexpr NimbleBlockDecodeData decodeDataForControlByte(std::uint8_t byte) {
   return result;
 }
 
-template <std::size_t... Indices>
-constexpr std::array<NimbleBlockDecodeData, 256> decodeDataFromIndices(
-    std::index_sequence<Indices...>) {
-  return {{decodeDataForControlByte(Indices)...}};
+constexpr NimbleBlockVectorDecodeData vectorDecodeDataForControlByte(
+    std::uint8_t byte) {
+  NimbleBlockVectorDecodeData result;
+  int sum = 0;
+  int inIdx = 0;
+  for (int i = 0; i < kChunksPerBlock; ++i) {
+    int chunkSize = controlBitPairToSize(byte, i);
+    // The first chunkSize bytes come from the input, the next 4-chunkSize are
+    // 0.
+    for (int j = 0; j < chunkSize; ++j) {
+      result.shuffleVector[4 * i + j] = inIdx;
+      ++inIdx;
+    }
+    for (int j = chunkSize; j < 4; ++j) {
+      // A high bit of 1 means zero the corresponding byte of the output vec
+      // after shuffling.
+      result.shuffleVector[4 * i + j] = 128;
+    }
+
+    sum += chunkSize;
+  }
+  result.size = sum;
+  return result;
 }
+
 } // namespace
 
 constexpr const std::array<NimbleBlockDecodeData, 256> nimbleBlockDecodeData =
-    decodeDataFromIndices(std::make_index_sequence<256>{});
+    folly::make_array_with<256>(decodeDataForControlByte);
+
+constexpr const std::array<NimbleBlockVectorDecodeData, 256>
+    nimbleBlockVectorDecodeData =
+        folly::make_array_with<256>(vectorDecodeDataForControlByte);
 
 } // namespace detail
 } // namespace thrift
