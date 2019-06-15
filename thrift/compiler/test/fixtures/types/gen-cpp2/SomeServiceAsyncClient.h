@@ -21,6 +21,7 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+  namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}
 
@@ -37,7 +38,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void bounce_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual void bounce_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
  private:
-  virtual void bounce_mapImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
+  void bounce_mapImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
  public:
   virtual void sync_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual void sync_bounce_map(apache::thrift::RpcOptions& rpcOptions,  ::apache::thrift::fixtures::types::SomeMap& _return, const  ::apache::thrift::fixtures::types::SomeMap& m);
@@ -55,12 +56,12 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void bounce_mapT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
+  void bounce_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
  public:
   virtual void binary_keyed_map(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<int64_t>& r);
   virtual void binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<int64_t>& r);
  private:
-  virtual void binary_keyed_mapImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<int64_t>& r);
+  void binary_keyed_mapImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::vector<int64_t>& r);
  public:
   virtual void sync_binary_keyed_map(std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, const std::vector<int64_t>& r);
   virtual void sync_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, const std::vector<int64_t>& r);
@@ -78,7 +79,7 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_binary_keyed_map(std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void binary_keyed_mapT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector<int64_t>& r);
+  void binary_keyed_mapT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::vector<int64_t>& r);
  public:
 };
 

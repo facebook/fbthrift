@@ -26,100 +26,63 @@ namespace thrift {
 
 void RequestChannel::sendRequestAsync(
     apache::thrift::RpcOptions& rpcOptions,
-    std::unique_ptr<apache::thrift::RequestCallback> callback,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestClientCallback::Ptr callback,
     RpcKind kind) {
   auto eb = getEventBase();
   if (!eb || eb->isInEventBaseThread()) {
     switch (kind) {
       case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        // Calling asyncComplete before sending because
-        // sendOnewayRequest moves from ctx and clears it.
-        ctx->asyncComplete();
-        sendOnewayRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            std::move(buf),
-            std::move(header));
+        sendRequestNoResponse(
+            rpcOptions, std::move(buf), std::move(header), std::move(callback));
         break;
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-        sendRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            std::move(buf),
-            std::move(header));
+        sendRequestResponse(
+            rpcOptions, std::move(buf), std::move(header), std::move(callback));
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        sendStreamRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            std::move(buf),
-            std::move(header));
+        sendRequestStream(
+            rpcOptions, std::move(buf), std::move(header), std::move(callback));
         break;
       default:
         folly::assume_unreachable();
         break;
     }
-
   } else {
-    switch (kind) {
-      case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
-        eb->runInEventBaseThread([this,
-                                  rpcOptions,
-                                  callback = std::move(callback),
-                                  ctx = std::move(ctx),
-                                  buf = std::move(buf),
-                                  header = std::move(header)]() mutable {
-          // Calling asyncComplete before sending because
-          // sendOnewayRequest moves from ctx and clears it.
-          ctx->asyncComplete();
-          sendOnewayRequest(
+    eb->runInEventBaseThread([this,
+                              rpcOptions,
+                              buf = std::move(buf),
+                              header = std::move(header),
+                              callback = std::move(callback),
+                              kind]() mutable {
+      switch (kind) {
+        case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
+          sendRequestNoResponse(
               rpcOptions,
-              std::move(callback),
-              std::move(ctx),
               std::move(buf),
-              std::move(header));
-        });
-        break;
-      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-        eb->runInEventBaseThread([this,
-                                  rpcOptions,
-                                  callback = std::move(callback),
-                                  ctx = std::move(ctx),
-                                  buf = std::move(buf),
-                                  header = std::move(header)]() mutable {
-          sendRequest(
+              std::move(header),
+              std::move(callback));
+          break;
+        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+          sendRequestResponse(
               rpcOptions,
-              std::move(callback),
-              std::move(ctx),
               std::move(buf),
-              std::move(header));
-        });
-        break;
-      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        eb->runInEventBaseThread([this,
-                                  rpcOptions,
-                                  callback = std::move(callback),
-                                  ctx = std::move(ctx),
-                                  buf = std::move(buf),
-                                  header = std::move(header)]() mutable {
-          sendStreamRequest(
+              std::move(header),
+              std::move(callback));
+          break;
+        case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+          sendRequestStream(
               rpcOptions,
-              std::move(callback),
-              std::move(ctx),
               std::move(buf),
-              std::move(header));
-        });
-        break;
-      default:
-        folly::assume_unreachable();
-        break;
-    }
+              std::move(header),
+              std::move(callback));
+          break;
+        default:
+          folly::assume_unreachable();
+          break;
+      }
+    });
   }
 }
 

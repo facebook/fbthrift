@@ -20,6 +20,7 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+  namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}
 
@@ -36,7 +37,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void pingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pingImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_ping();
   virtual void sync_ping(apache::thrift::RpcOptions& rpcOptions);
@@ -54,12 +55,12 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual folly::exception_wrapper recv_instance_wrapped_ping(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void pingT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void pong(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void pongImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pongImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_pong();
   virtual void sync_pong(apache::thrift::RpcOptions& rpcOptions);
@@ -77,7 +78,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual folly::exception_wrapper recv_instance_wrapped_pong(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void pongT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pongT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 };
 

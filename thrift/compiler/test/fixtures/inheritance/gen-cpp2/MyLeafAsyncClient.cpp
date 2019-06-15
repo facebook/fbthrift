@@ -23,43 +23,42 @@ typedef apache::thrift::ThriftPresult<false> MyLeaf_do_leaf_pargs;
 typedef apache::thrift::ThriftPresult<true> MyLeaf_do_leaf_presult;
 
 template <typename Protocol_>
-void MyLeafAsyncClient::do_leafT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto headerAndReqContext = std::make_shared<apache::thrift::detail::ac::HeaderAndReqContext>();
-  std::shared_ptr<apache::thrift::transport::THeader> header(headerAndReqContext, &headerAndReqContext->header);
-  header->setProtocolId(getChannel()->getProtocolId());
-  header->setHeaders(rpcOptions.releaseWriteHeaders());
-  headerAndReqContext->reqContext.setRequestHeader(header.get());
-  std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", &headerAndReqContext->reqContext);
+void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
+  std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyLeaf_do_leaf_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), std::move(header), channel_.get(), "do_leaf", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, useSync);
-  headerAndReqContext->reqContext.setRequestHeader(nullptr);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "do_leaf", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+  ctx->reqContext.setRequestHeader(nullptr);
 }
 
 
 
 void MyLeafAsyncClient::do_leaf(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  do_leafImpl(false, rpcOptions, std::move(callback));
+  do_leaf(rpcOptions, std::move(callback));
 }
 
 void MyLeafAsyncClient::do_leaf(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  do_leafImpl(false, rpcOptions, std::move(callback));
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "MyLeaf.do_leaf");
+  apache::thrift::RequestCallback::Context callbackContext;
+  callbackContext.protocolId = getChannel()->getProtocolId();
+  callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
+  do_leafImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)));
 }
 
-void MyLeafAsyncClient::do_leafImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void MyLeafAsyncClient::do_leafImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      do_leafT(&writer, useSync, rpcOptions, std::move(callback));
+      do_leafT(&writer, rpcOptions, std::move(ctx), std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      do_leafT(&writer, useSync, rpcOptions, std::move(callback));
+      do_leafT(&writer, rpcOptions, std::move(ctx), std::move(callback));
       break;
     }
     default:
@@ -76,11 +75,14 @@ void MyLeafAsyncClient::sync_do_leaf() {
 
 void MyLeafAsyncClient::sync_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  apache::thrift::ClientSyncCallback::Waiter waiter;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(
-      &_returnState, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, waiter);
-  do_leafImpl(true, rpcOptions, std::move(callback));
-  waiter.waitUntilDone(channel_->getEventBase());
+  apache::thrift::ClientSyncCallback<false> callback(&_returnState);
+  auto protocolId = getChannel()->getProtocolId();
+  auto evb = getChannel()->getEventBase();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "MyLeaf.do_leaf");
+  do_leafImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
+  callback.waitUntilDone(evb);
+  _returnState.resetProtocolId(protocolId);
+  _returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

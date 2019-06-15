@@ -67,10 +67,9 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    */
   void sendRequestAsync(
       apache::thrift::RpcOptions&,
-      std::unique_ptr<apache::thrift::RequestCallback>,
-      std::unique_ptr<apache::thrift::ContextStack>,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr,
       RpcKind kind);
   /**
    * ReplyCallback will be invoked when the reply to this request is
@@ -203,45 +202,36 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   virtual uint16_t getProtocolId() = 0;
 };
 
-class ClientSyncCallback : public RequestCallback {
+template <bool oneWay>
+class ClientSyncCallback : public RequestClientCallback {
  public:
-  class Waiter {
-   public:
-    void waitUntilDone(folly::EventBase* evb) {
-      if (evb) {
-        if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {
-          while (!doneBaton_.ready()) {
-            evb->drive();
-          }
+  explicit ClientSyncCallback(ClientReceiveState* rs) : rs_(rs) {}
+
+  void waitUntilDone(folly::EventBase* evb) {
+    if (evb) {
+      if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {
+        while (!doneBaton_.ready()) {
+          evb->drive();
         }
       }
-      doneBaton_.wait();
     }
+    doneBaton_.wait();
+  }
 
-   private:
-    friend class ClientSyncCallback;
-
-    folly::fibers::Baton doneBaton_;
-  };
-
-  ClientSyncCallback(ClientReceiveState* rs, RpcKind kind, Waiter& waiter)
-      : rs_(rs), rpcKind_(kind), waiter_(waiter) {}
-
-  void requestSent() override {
-    if (isOneway()) {
-      waiter_.doneBaton_.post();
+  void onRequestSent() noexcept override {
+    if (oneWay) {
+      doneBaton_.post();
     }
   }
-  void replyReceived(ClientReceiveState&& rs) override {
+  void onResponse(ClientReceiveState&& rs) noexcept override {
     assert(rs.buf());
-    assert(!isOneway());
+    assert(!oneWay);
     *rs_ = std::move(rs);
-    waiter_.doneBaton_.post();
+    doneBaton_.post();
   }
-  void requestError(ClientReceiveState&& rs) override {
-    assert(!!rs.exception());
-    *rs_ = std::move(rs);
-    waiter_.doneBaton_.post();
+  void onResponseError(folly::exception_wrapper ex) noexcept override {
+    *rs_ = ClientReceiveState(std::move(ex), nullptr);
+    doneBaton_.post();
   }
 
   bool isInlineSafe() const override {
@@ -253,13 +243,8 @@ class ClientSyncCallback : public RequestCallback {
   }
 
  private:
-  bool isOneway() const {
-    return rpcKind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
-  }
-
   ClientReceiveState* rs_;
-  RpcKind rpcKind_;
-  Waiter& waiter_;
+  folly::fibers::Baton doneBaton_;
 };
 
 template <typename T>
@@ -287,15 +272,14 @@ template <class Protocol>
 void clientSendT(
     Protocol* prot,
     apache::thrift::RpcOptions& rpcOptions,
-    std::unique_ptr<apache::thrift::RequestCallback> callback,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
+    RequestClientCallback::Ptr callback,
+    apache::thrift::ContextStack& ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
-    RpcKind kind,
-    bool /* sync */) {
+    RpcKind kind) {
   size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
@@ -303,7 +287,7 @@ void clientSendT(
   auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
   size_t crcSkip = 0;
   try {
-    ctx->preWrite();
+    ctx.preWrite();
     prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
     crcSkip = queue.chainLength();
     writefunc(prot);
@@ -311,22 +295,17 @@ void clientSendT(
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
     smsg.buffer = queue.front();
-    ctx->onWriteData(smsg);
-    ctx->postWrite(queue.chainLength());
+    ctx.onWriteData(smsg);
+    ctx.postWrite(queue.chainLength());
   } catch (const apache::thrift::TException& ex) {
-    ctx->handlerErrorWrapped(
+    ctx.handlerErrorWrapped(
         folly::exception_wrapper(std::current_exception(), ex));
     throw;
   }
   header->setCrc32c(apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
 
   channel->sendRequestAsync(
-      rpcOptions,
-      std::move(callback),
-      std::move(ctx),
-      queue.move(),
-      std::move(header),
-      kind);
+      rpcOptions, queue.move(), std::move(header), std::move(callback), kind);
 }
 } // namespace thrift
 } // namespace apache

@@ -22,6 +22,7 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+  namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}
 
@@ -38,7 +39,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual void simple_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void simple_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void simple_functionImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void simple_functionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual bool sync_simple_function();
   virtual bool sync_simple_function(apache::thrift::RpcOptions& rpcOptions);
@@ -56,12 +57,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::exception_wrapper recv_instance_wrapped_simple_function(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void simple_functionT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void simple_functionT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void throws_function(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void throws_function(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void throws_functionImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void throws_functionImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_throws_function();
   virtual void sync_throws_function(apache::thrift::RpcOptions& rpcOptions);
@@ -79,12 +80,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::exception_wrapper recv_instance_wrapped_throws_function(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void throws_functionT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void throws_functionT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void throws_function2(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
   virtual void throws_function2(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
  private:
-  virtual void throws_function2Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
+  void throws_function2Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1);
  public:
   virtual bool sync_throws_function2(bool param1);
   virtual bool sync_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1);
@@ -102,12 +103,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::exception_wrapper recv_instance_wrapped_throws_function2(bool& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void throws_function2T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
+  void throws_function2T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1);
  public:
   virtual void throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
   virtual void throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
  private:
-  virtual void throws_function3Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
+  void throws_function3Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const std::string& param2);
  public:
   virtual void sync_throws_function3(std::map<int32_t, std::string>& _return, bool param1, const std::string& param2);
   virtual void sync_throws_function3(apache::thrift::RpcOptions& rpcOptions, std::map<int32_t, std::string>& _return, bool param1, const std::string& param2);
@@ -125,12 +126,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::exception_wrapper recv_instance_wrapped_throws_function3(std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void throws_function3T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2);
+  void throws_function3T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const std::string& param2);
  public:
   virtual void oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void oneway_void_retImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void oneway_void_retImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_oneway_void_ret();
   virtual void sync_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions);
@@ -141,12 +142,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual void oneway_void_ret(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
  private:
   template <typename Protocol_>
-  void oneway_void_retT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void oneway_void_retT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  private:
-  virtual void oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  void oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  public:
   virtual void sync_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
   virtual void sync_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
@@ -157,12 +158,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  private:
   template <typename Protocol_>
-  void oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  void oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
  public:
   virtual void oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
   virtual void oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
  private:
-  virtual void oneway_void_ret_map_setlist_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  void oneway_void_ret_map_setlist_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
  public:
   virtual void sync_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
   virtual void sync_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
@@ -173,12 +174,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual void oneway_void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
  private:
   template <typename Protocol_>
-  void oneway_void_ret_map_setlist_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  void oneway_void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
  public:
   virtual void oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
   virtual void oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
  private:
-  virtual void oneway_void_ret_struct_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
+  void oneway_void_ret_struct_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& param1);
  public:
   virtual void sync_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1);
   virtual void sync_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& param1);
@@ -189,12 +190,12 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual void oneway_void_ret_struct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::MyStruct& param1);
  private:
   template <typename Protocol_>
-  void oneway_void_ret_struct_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
+  void oneway_void_ret_struct_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const  ::some::valid::ns::MyStruct& param1);
  public:
   virtual void oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
   virtual void oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
  private:
-  virtual void oneway_void_ret_listunion_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  void oneway_void_ret_listunion_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
  public:
   virtual void sync_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1);
   virtual void sync_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
@@ -205,7 +206,7 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual void oneway_void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
  private:
   template <typename Protocol_>
-  void oneway_void_ret_listunion_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  void oneway_void_ret_listunion_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
  public:
 };
 

@@ -21,6 +21,7 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+  namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}
 
@@ -37,7 +38,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void pangImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pangImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_pang();
   virtual void sync_pang(apache::thrift::RpcOptions& rpcOptions);
@@ -55,7 +56,7 @@ class MyServicePrioChildAsyncClient : public ::cpp2::MyServicePrioParentAsyncCli
   virtual folly::exception_wrapper recv_instance_wrapped_pang(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void pangT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pangT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 };
 

@@ -21,6 +21,7 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+  namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}
 
@@ -37,7 +38,7 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
   virtual void do_mid(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_mid(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:
-  virtual void do_midImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void do_midImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
   virtual void sync_do_mid();
   virtual void sync_do_mid(apache::thrift::RpcOptions& rpcOptions);
@@ -55,7 +56,7 @@ class MyNodeAsyncClient : public ::cpp2::MyRootAsyncClient {
   virtual folly::exception_wrapper recv_instance_wrapped_do_mid(::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
-  void do_midT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void do_midT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
 };
 

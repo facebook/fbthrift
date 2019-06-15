@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <folly/io/IOBufQueue.h>
+
+#include <thrift/lib/cpp/ContextStack.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
@@ -24,11 +27,38 @@ namespace thrift {
 namespace detail {
 namespace ac {
 
-struct HeaderAndReqContext {
-  HeaderAndReqContext()
-      : header(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES) {}
-  apache::thrift::transport::THeader header;
-  apache::thrift::Cpp2ClientRequestContext reqContext;
+struct ClientRequestContext {
+  ClientRequestContext(
+      uint16_t protocolId,
+      std::map<std::string, std::string> headers,
+      std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
+          handlers,
+      const char* service_name,
+      const char* fn_name)
+      : header(protocolId, std::move(headers)),
+        reqContext(initReqContext(&header)),
+        ctx(std::move(handlers), service_name, fn_name, &reqContext) {}
+
+  struct THeaderWrapper : public transport::THeader {
+    THeaderWrapper(
+        uint16_t protocolId,
+        std::map<std::string, std::string> headers)
+        : transport::THeader(transport::THeader::ALLOW_BIG_FRAMES) {
+      this->setProtocolId(protocolId);
+      this->setHeaders(std::move(headers));
+    }
+  };
+
+  THeaderWrapper header;
+  Cpp2ClientRequestContext reqContext;
+  ContextStack ctx;
+
+ private:
+  static Cpp2ClientRequestContext initReqContext(transport::THeader* header) {
+    Cpp2ClientRequestContext reqContext;
+    reqContext.setRequestHeader(header);
+    return reqContext;
+  }
 };
 
 } // namespace ac
