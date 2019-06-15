@@ -176,6 +176,12 @@ folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THe
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<bool> MyServiceFastAsyncClient::co_hasDataById(int64_t id) {
+  co_return co_await semifuture_hasDataById(id);
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceFastAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   hasDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
@@ -328,6 +334,12 @@ folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<std::string> MyServiceFastAsyncClient::co_getDataById(int64_t id) {
+  co_return co_await semifuture_getDataById(id);
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceFastAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   getDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
@@ -478,6 +490,12 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> MyServiceFastAsyncClient::co_putDataById(int64_t id, const std::string& data) {
+  co_await semifuture_putDataById(id, data);
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceFastAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   putDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
@@ -600,6 +618,12 @@ folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(
   lobDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> MyServiceFastAsyncClient::co_lobDataById(int64_t id, const std::string& data) {
+  co_await semifuture_lobDataById(id, data);
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void MyServiceFastAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   lobDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);

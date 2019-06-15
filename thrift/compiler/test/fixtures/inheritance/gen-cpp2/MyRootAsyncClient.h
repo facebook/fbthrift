@@ -7,6 +7,9 @@
 #pragma once
 
 #include <folly/futures/Future.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/Task.h>
+#endif
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -47,6 +50,9 @@ class MyRootAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_do_root(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_do_root(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_do_root(apache::thrift::RpcOptions& rpcOptions);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_do_root();
+#endif
   virtual void do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_do_root(::apache::thrift::ClientReceiveState& state);
   static void recv_do_root(::apache::thrift::ClientReceiveState& state);

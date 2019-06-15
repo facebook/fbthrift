@@ -7,6 +7,9 @@
 #pragma once
 
 #include <folly/futures/Future.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/Task.h>
+#endif
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -48,6 +51,9 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m);
+#endif
   virtual void bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
   static folly::exception_wrapper recv_wrapped_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state);
@@ -71,6 +77,9 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const std::vector<int64_t>& r);
   virtual folly::Future<std::pair<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const std::vector<int64_t>& r);
   virtual folly::SemiFuture<std::pair<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const std::vector<int64_t>& r);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(const std::vector<int64_t>& r);
+#endif
   virtual void binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<int64_t>& r);
   static folly::exception_wrapper recv_wrapped_binary_keyed_map(std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_binary_keyed_map(std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);

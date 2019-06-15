@@ -459,6 +459,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_get() {
+  co_return co_await semifuture_get();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::get(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -610,6 +616,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   getter(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_getter() {
+  co_return co_await semifuture_getter();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::getter(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getter(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -763,6 +775,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_lists() {
+  co_return co_await semifuture_lists();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::lists(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   lists(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -914,6 +932,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   maps(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_maps() {
+  co_return co_await semifuture_maps();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::maps(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   maps(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1067,6 +1091,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_name() {
+  co_return co_await semifuture_name();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::name(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   name(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1218,6 +1248,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   name_to_value(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_name_to_value() {
+  co_return co_await semifuture_name_to_value();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::name_to_value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   name_to_value(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1371,6 +1407,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_names() {
+  co_return co_await semifuture_names();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::names(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   names(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1522,6 +1564,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   prefix_tree(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_prefix_tree() {
+  co_return co_await semifuture_prefix_tree();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::prefix_tree(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   prefix_tree(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1675,6 +1723,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_sets() {
+  co_return co_await semifuture_sets();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::sets(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   sets(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1826,6 +1880,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   setter(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_setter() {
+  co_return co_await semifuture_setter();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::setter(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   setter(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -1979,6 +2039,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_str() {
+  co_return co_await semifuture_str();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::str(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   str(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2130,6 +2196,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   strings(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_strings() {
+  co_return co_await semifuture_strings();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::strings(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   strings(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -2283,6 +2355,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_type() {
+  co_return co_await semifuture_type();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::type(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   type(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2434,6 +2512,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   value(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_value() {
+  co_return co_await semifuture_value();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::value(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   value(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -2587,6 +2671,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_value_to_name() {
+  co_return co_await semifuture_value_to_name();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::value_to_name(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   value_to_name(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2738,6 +2828,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   values(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_values() {
+  co_return co_await semifuture_values();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::values(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   values(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -2891,6 +2987,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_id() {
+  co_return co_await semifuture_id();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::id(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   id(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -3042,6 +3144,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   ids(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_ids() {
+  co_return co_await semifuture_ids();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::ids(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ids(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -3195,6 +3303,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_descriptor() {
+  co_return co_await semifuture_descriptor();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::descriptor(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   descriptor(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -3346,6 +3460,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   descriptors(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_descriptors() {
+  co_return co_await semifuture_descriptors();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::descriptors(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   descriptors(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -3499,6 +3619,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_key() {
+  co_return co_await semifuture_key();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::key(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   key(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -3650,6 +3776,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   keys(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_keys() {
+  co_return co_await semifuture_keys();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::keys(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   keys(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -3803,6 +3935,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_annotation() {
+  co_return co_await semifuture_annotation();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::annotation(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   annotation(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -3954,6 +4092,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   annotations(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_annotations() {
+  co_return co_await semifuture_annotations();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::annotations(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   annotations(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -4107,6 +4251,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_member() {
+  co_return co_await semifuture_member();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::member(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   member(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -4258,6 +4408,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   members(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_members() {
+  co_return co_await semifuture_members();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::members(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   members(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -4411,6 +4567,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_field() {
+  co_return co_await semifuture_field();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void service_with_special_namesAsyncClient::field(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   field(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -4562,6 +4724,12 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   fields(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<int32_t> service_with_special_namesAsyncClient::co_fields() {
+  co_return co_await semifuture_fields();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void service_with_special_namesAsyncClient::fields(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   fields(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

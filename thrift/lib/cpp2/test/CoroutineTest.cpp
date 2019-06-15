@@ -412,3 +412,146 @@ TEST_F(CoroutineNullTest, Basics) {
 
   client_->sync_noParameters();
 }
+
+#if FOLLY_HAS_COROUTINES
+class CoroutineClientTest : public testing::Test {
+ protected:
+  CoroutineClientTest()
+      : ssit_(std::make_shared<CoroutineServiceHandlerCoro>()),
+        client_(ssit_.newClient<CoroutineAsyncClient>(eventBase_)) {}
+
+  ScopedServerInterfaceThread ssit_;
+  EventBase eventBase_;
+  std::unique_ptr<CoroutineAsyncClient> client_;
+};
+
+TEST_F(CoroutineClientTest, SumCoroClient) {
+  SumRequest request;
+  request.x = 123;
+  request.y = 123;
+
+  client_->co_computeSum(request)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<SumResponse> response) {
+        EXPECT_EQ(246, response->sum);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumPrimitiveCoroClient) {
+  client_->co_computeSumPrimitive(12, 408)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumEbCoroClient) {
+  SumRequest request;
+  request.x = 77;
+  request.y = 941;
+
+  client_->co_computeSumEb(request)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<SumResponse> response) {
+        EXPECT_EQ(1018, response->sum);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumVoidCoroClient) {
+  client_->co_computeSumVoid(11, 22)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<folly::Unit>) { EXPECT_EQ(33, voidReturnValue); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumUnimplementedCoroClient) {
+  SumRequest request;
+  request.x = 43;
+  request.y = 179;
+  client_->co_computeSumUnimplemented(request)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<SumResponse> response) {
+        EXPECT_THROW(
+            response.throwIfFailed(), apache::thrift::TApplicationException);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumUnimplementedPrimitiveCoroClient) {
+  client_->co_computeSumUnimplementedPrimitive(12, 34)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> response) {
+        EXPECT_THROW(
+            response.throwIfFailed(), apache::thrift::TApplicationException);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumThrowsCoroClient) {
+  SumRequest request;
+  request.x = 290;
+  request.y = 321;
+  client_->co_computeSumThrows(request)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<SumResponse> response) {
+        EXPECT_THROW(response.throwIfFailed(), std::exception);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, SumThrowsPrimitiveCoroClient) {
+  client_->co_computeSumThrowsPrimitive(523, 8103)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> response) {
+        EXPECT_THROW(response.throwIfFailed(), std::exception);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, noParametersCoroClient) {
+  client_->co_noParameters()
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) {
+        EXPECT_EQ(kNoParameterReturnValue, *result);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, implementedWithFuturesCoroClient) {
+  client_->co_implementedWithFutures()
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<SumResponse> response) {
+        EXPECT_EQ(kNoParameterReturnValue, response->sum);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, implementedWitFuturesPrimitiveCoroClient) {
+  client_->co_implementedWithFuturesPrimitive()
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) {
+        EXPECT_EQ(kNoParameterReturnValue, *result);
+      })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, takesRequestParamsCoroClient) {
+  client_->co_takesRequestParams()
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(0, *result); })
+      .getVia(&eventBase_);
+}
+#endif

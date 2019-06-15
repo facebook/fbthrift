@@ -171,6 +171,12 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> RaiserAsyncClient::co_doBland() {
+  co_await semifuture_doBland();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void RaiserAsyncClient::doBland(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   doBland(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -320,6 +326,12 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   doRaise(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> RaiserAsyncClient::co_doRaise() {
+  co_await semifuture_doRaise();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void RaiserAsyncClient::doRaise(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   doRaise(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -471,6 +483,12 @@ folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<std::string> RaiserAsyncClient::co_get200() {
+  co_return co_await semifuture_get200();
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void RaiserAsyncClient::get200(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get200(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -620,6 +638,12 @@ folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transpo
   get500(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<std::string> RaiserAsyncClient::co_get500() {
+  co_return co_await semifuture_get500();
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void RaiserAsyncClient::get500(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get500(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

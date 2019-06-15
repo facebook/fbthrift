@@ -151,6 +151,12 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> MyServiceAsyncClient::co_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  co_await semifuture_query(s, i);
+}
+#endif // FOLLY_HAS_COROUTINES
+
 void MyServiceAsyncClient::query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   query(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), s, i);
 }
@@ -300,6 +306,12 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   has_arg_docs(rpcOptions, std::move(callback), s, i);
   return std::move(callbackAndFuture.second);
 }
+
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<void> MyServiceAsyncClient::co_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
+  co_await semifuture_has_arg_docs(s, i);
+}
+#endif // FOLLY_HAS_COROUTINES
 
 void MyServiceAsyncClient::has_arg_docs(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
   has_arg_docs(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), s, i);

@@ -7,6 +7,9 @@
 #pragma once
 
 #include <folly/futures/Future.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/Task.h>
+#endif
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -47,6 +50,9 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_doBland(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_doBland(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doBland(apache::thrift::RpcOptions& rpcOptions);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_doBland();
+#endif
   virtual void doBland(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_doBland(::apache::thrift::ClientReceiveState& state);
   static void recv_doBland(::apache::thrift::ClientReceiveState& state);
@@ -70,6 +76,9 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_doRaise(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_doRaise(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_doRaise(apache::thrift::RpcOptions& rpcOptions);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_doRaise();
+#endif
   virtual void doRaise(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_doRaise(::apache::thrift::ClientReceiveState& state);
   static void recv_doRaise(::apache::thrift::ClientReceiveState& state);
@@ -93,6 +102,9 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::string> semifuture_get200(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_get200(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get200(apache::thrift::RpcOptions& rpcOptions);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<std::string> co_get200();
+#endif
   virtual void get200(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state);
@@ -116,6 +128,9 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<std::string> semifuture_get500(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_get500(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_get500(apache::thrift::RpcOptions& rpcOptions);
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<std::string> co_get500();
+#endif
   virtual void get500(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   static void recv_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state);
