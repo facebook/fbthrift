@@ -22,6 +22,7 @@
 #include <folly/Try.h>
 #include <folly/fibers/Baton.h>
 #include <folly/fibers/Fiber.h>
+#include <folly/fibers/FiberManager.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
@@ -163,4 +164,25 @@ TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
   opts.setClientOnlyTimeouts(false);
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
+}
+
+TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
+  folly::EventBase evb;
+  folly::Optional<test::TestServiceAsyncClient> client = makeClient(evb);
+
+  auto& fm = folly::fibers::getFiberManager(evb);
+  auto future = fm.addTaskFuture([&] {
+    std::string response;
+    client->sync_sendResponse(response, 123);
+    EXPECT_EQ("123", response);
+  });
+
+  // Trigger request sending.
+  evb.loopOnce();
+
+  // Reset the client.
+  client.reset();
+
+  // Wait for the response.
+  future.getVia(&evb);
 }
