@@ -197,6 +197,10 @@ void httpHandler(
     proxygen::ResponseBuilder& builder) {
   if (message.getURL() == "internal_error") {
     builder.status(500, "Internal Server Error").body("internal error");
+  } else if (message.getURL() == "thrift_serialized_internal_error") {
+    builder.status(500, "OOM")
+        .header(proxygen::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift")
+        .body("oom");
   } else if (message.getURL() == "eof") {
     builder.status(200, "OK");
   } else {
@@ -275,6 +279,21 @@ TEST(SingleRpcChannel, ClientExceptions) {
       rstate,
       transport::TTransportException::UNKNOWN,
       "Bad status: 500 Internal Server Error");
+
+  // The connection should be still good!
+  EXPECT_TRUE(conn->good());
+
+  // Follow up with a request that results in a server error that gets thrift
+  // serialized.
+  channel = conn->getChannel();
+  rstate = sendRequest(evb, *channel, "thrift_serialized_internal_error")
+               .getVia(&evb);
+
+  EXPECT_TRUE(rstate.sent);
+  EXPECT_FALSE(rstate.error);
+  EXPECT_TRUE(rstate.reply);
+  ASSERT_FALSE(rstate.receiveState.isException());
+  EXPECT_EQ("oom", folly::StringPiece(rstate.receiveState.buf()->coalesce()));
 
   // The connection should be still good!
   EXPECT_TRUE(conn->good());

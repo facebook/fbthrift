@@ -55,6 +55,7 @@ using std::map;
 using std::string;
 
 static constexpr folly::StringPiece RPC_KIND = "rpckind";
+static constexpr folly::StringPiece kThriftContentType = "application/x-thrift";
 
 SingleRpcChannel::SingleRpcChannel(
     ResponseHandler* toHttp2,
@@ -290,7 +291,10 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   }
 
   auto statusCode = headers_->getStatusCode();
-  if (statusCode != 100 && statusCode != 200) {
+  const auto& contentType = headers_->getHeaders().getSingleOrEmpty(
+      proxygen::HTTP_HEADER_CONTENT_TYPE);
+  if (contentType != kThriftContentType && statusCode != 100 &&
+      statusCode != 200) {
     auto evb = callback_->getEventBase();
     auto exWrapper = folly::make_exception_wrapper<TTransportException>(
         TTransportException::UNKNOWN,
