@@ -78,6 +78,8 @@ FATAL_S(struct_with_special_namess, "struct_with_special_names");
 FATAL_S(service_with_special_namess, "service_with_special_names");
 FATAL_S(constant_with_special_names, "constant_with_special_name");
 
+FATAL_S(variantHasRefUniques, "variantHasRefUnique");
+
 TEST(fatal, tags) {
   EXPECT_SAME<cpp_s, reflection_tags::languages::cpp>();
   EXPECT_SAME<cpp2_s, reflection_tags::languages::cpp2>();
@@ -166,15 +168,14 @@ TEST(fatal, metadata) {
   >();
 
   EXPECT_SAME<
-    fatal::list<
-      fatal::pair<union1, union1s>,
-      fatal::pair<union2, union2s>,
-      fatal::pair<union3, union3s>,
-      fatal::pair<unionA, unionAs>,
-      fatal::pair<union_with_special_names, union_with_special_namess>
-    >,
-    info::unions
-  >();
+      fatal::list<
+          fatal::pair<union1, union1s>,
+          fatal::pair<union2, union2s>,
+          fatal::pair<union3, union3s>,
+          fatal::pair<unionA, unionAs>,
+          fatal::pair<union_with_special_names, union_with_special_namess>,
+          fatal::pair<variantHasRefUnique, variantHasRefUniques>>,
+      info::unions>();
 
   EXPECT_SAME<
     fatal::list<

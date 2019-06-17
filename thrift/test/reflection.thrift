@@ -399,6 +399,11 @@ struct hasRefUnique {
   10: optional unionA anOptionalUnion (cpp2.ref_type = "unique"),
 }
 
+union variantHasRefUnique {
+  1: structA aStruct (cpp2.ref_type = "unique"),
+  2: i32 anInt
+}
+
 struct hasRefShared {
   1: structA aStruct (cpp2.ref_type = "shared"),
   2: list<string> (cpp.template="std::deque") aList

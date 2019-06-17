@@ -124,63 +124,11 @@ struct pretty_print_impl<type_class::set<ValueTypeClass>> {
 };
 
 /**
- * Pretty print specialization for variants (Thrift unions).
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
+ * Thrift structures and unions may contain members that are wrapped in smart
+ * pointers. This class helps decode those.
  */
-template <>
-struct pretty_print_impl<type_class::variant> {
-  template <typename OutputStream, typename T>
-  static void print(OutputStream& out, T const& what) {
-    using namespace fatal;
-    using descriptors = typename variant_traits<T>::descriptors;
-    out << "<variant>{";
-    scalar_search<descriptors, get_type::id>(what.getType(), [&](auto indexed) {
-      using descriptor = decltype(fatal::tag_type(indexed));
-      auto scope = out.start_scope();
-      scope.newline();
-      scope << fatal::enum_to_string(what.getType()) << ": ";
-      pretty_print_impl<typename descriptor::metadata::type_class>::print(
-          scope, typename descriptor::getter()(what));
-      scope.newline();
-    });
-    out << '}';
-  }
-};
-
-/*
- * Pretty print specialization for structures.
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <>
-struct pretty_print_impl<type_class::structure> {
-  template <typename OutputStream, typename T>
-  static void print(OutputStream& out, T const& what) {
-    out << "<struct>{";
-    out.newline();
-    using info = reflect_struct<T>;
-    fatal::foreach<typename info::members>([&](auto indexed) {
-      constexpr auto size = fatal::size<typename info::members>::value;
-      using member = decltype(fatal::tag_type(indexed));
-      if (member::optional::value == optionality::optional &&
-          !member::is_set(what)) {
-        return;
-      }
-      auto const index = fatal::tag_index(indexed);
-      auto scope = out.start_scope();
-      scope << fatal::z_data<typename member::name>() << ": ";
-      recurse_into<typename member::type_class>(
-          scope, member::getter::ref(what));
-      if (index + 1 < size) {
-        scope << ',';
-      }
-      scope.newline();
-    });
-    out << '}';
-  }
-
- private:
+struct pretty_print_structure_with_pointers {
+ protected:
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(OutputStream& out, T const& member) {
     pretty_print_impl<TypeClass>::print(out, member);
@@ -207,6 +155,66 @@ struct pretty_print_impl<type_class::structure> {
       OutputStream& out,
       std::unique_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
+  }
+};
+
+/**
+ * Pretty print specialization for variants (Thrift unions).
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <>
+struct pretty_print_impl<type_class::variant>
+    : pretty_print_structure_with_pointers {
+  template <typename OutputStream, typename T>
+  static void print(OutputStream& out, T const& what) {
+    using namespace fatal;
+    using descriptors = typename variant_traits<T>::descriptors;
+    out << "<variant>{";
+    scalar_search<descriptors, get_type::id>(what.getType(), [&](auto indexed) {
+      using descriptor = decltype(fatal::tag_type(indexed));
+      auto scope = out.start_scope();
+      scope.newline();
+      scope << fatal::enum_to_string(what.getType()) << ": ";
+      recurse_into<typename descriptor::metadata::type_class>(
+          scope, typename descriptor::getter()(what));
+      scope.newline();
+    });
+    out << '}';
+  }
+};
+
+/*
+ * Pretty print specialization for structures.
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <>
+struct pretty_print_impl<type_class::structure>
+    : pretty_print_structure_with_pointers {
+  template <typename OutputStream, typename T>
+  static void print(OutputStream& out, T const& what) {
+    out << "<struct>{";
+    out.newline();
+    using info = reflect_struct<T>;
+    fatal::foreach<typename info::members>([&](auto indexed) {
+      constexpr auto size = fatal::size<typename info::members>::value;
+      using member = decltype(fatal::tag_type(indexed));
+      if (member::optional::value == optionality::optional &&
+          !member::is_set(what)) {
+        return;
+      }
+      auto const index = fatal::tag_index(indexed);
+      auto scope = out.start_scope();
+      scope << fatal::z_data<typename member::name>() << ": ";
+      recurse_into<typename member::type_class>(
+          scope, member::getter::ref(what));
+      if (index + 1 < size) {
+        scope << ',';
+      }
+      scope.newline();
+    });
+    out << '}';
   }
 };
 

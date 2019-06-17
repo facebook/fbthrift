@@ -701,7 +701,7 @@ void ref_test() {
   TEST_IMPL(adjust(expectedStr2), v);
 }
 
-TEST(fatal_pretty_print, ref_unique) {
+TEST(fatal_pretty_print, struct_ref_unique) {
   ref_test<hasRefUnique, UniqueHelper>();
 }
 
@@ -737,6 +737,26 @@ TEST(fatal_pretty_print, escape_strings) {
       b: "foo\nbar"
     })";
   TEST_IMPL(adjust(expectedStr), s);
+}
+
+TEST(fatal_pretty_print, variant_ref_unique) {
+  variantHasRefUnique v;
+  const char* expectedStr1 = R"(
+    <variant>{
+      aStruct: null
+    })";
+  v.set_aStruct() = nullptr;
+  TEST_IMPL(adjust(expectedStr1), v);
+
+  v.set_aStruct();
+  const char* expectedStr2 = R"(
+    <variant>{
+      aStruct: <struct>{
+        a: 0,
+        b: ""
+      }
+    })";
+  TEST_IMPL(adjust(expectedStr2), v);
 }
 
 } // namespace cpp_reflection
