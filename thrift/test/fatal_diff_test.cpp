@@ -526,7 +526,7 @@ void ref_test() {
   )");
 }
 
-TEST(fatal_diff, ref_unique) {
+TEST(fatal_diff, struct_ref_unique) {
   ref_test<hasRefUnique, UniqueHelper>();
 }
 
@@ -590,6 +590,28 @@ TEST(fatal_diff, optional_members) {
   TEST_IMPL(field1SetDefault, field1Unset, R"(
     $.field1:
     - ""
+  )");
+}
+
+TEST(fatal_diff, variant_ref_unique) {
+  variantHasRefUnique allNull;
+  allNull.set_aStruct() = nullptr;
+
+  variantHasRefUnique allDefault;
+  allDefault.set_aStruct();
+  TEST_IMPL(allNull, allDefault, R"(
+    $.aStruct:
+    + <struct>{
+    +   a: 0,
+    +   b: ""
+    + }
+  )");
+  TEST_IMPL(allDefault, allNull, R"(
+    $.aStruct:
+    - <struct>{
+    -   a: 0,
+    -   b: ""
+    - }
   )");
 }
 

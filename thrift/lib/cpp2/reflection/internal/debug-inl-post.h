@@ -300,108 +300,8 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
   }
 };
 
-template <>
-struct debug_equals_impl<type_class::variant> {
-  template <typename T, typename Callback>
-  static bool
-  equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
-    using namespace fatal;
-    using traits = variant_traits<T>;
-    using descriptors = typename traits::descriptors;
-
-    if (traits::get_id(lhs) != traits::get_id(rhs)) {
-      visit_changed<debug_equals_missing>(path, lhs, callback);
-      visit_changed<debug_equals_extra>(path, rhs, callback);
-      return false;
-    }
-
-    bool result = true;
-
-    scalar_search<descriptors, get_type::id>(lhs.getType(), [&](auto indexed) {
-      using descriptor = decltype(fatal::tag_type(indexed));
-
-      assert(descriptor::id::value == traits::get_id(lhs));
-      assert(descriptor::id::value == traits::get_id(rhs));
-
-      using name = typename descriptor::metadata::name;
-      auto guard = scoped_path::member(path, fatal::z_data<name>());
-
-      using type_class = typename descriptor::metadata::type_class;
-      typename descriptor::getter getter;
-      result = debug_equals_impl<type_class>::equals(
-          path, getter(lhs), getter(rhs), callback);
-    });
-
-    return result;
-  }
-
- private:
-  template <typename Change, typename T, typename Callback>
-  static void
-  visit_changed(std::string& path, T const& variant, Callback&& callback) {
-    using namespace fatal;
-    using traits = variant_traits<T>;
-    using descriptors = typename traits::descriptors;
-    scalar_search<descriptors, get_type::id>(
-        variant.getType(), [&](auto indexed) {
-          using descriptor = decltype(fatal::tag_type(indexed));
-
-          assert(descriptor::id::value == traits::get_id(variant));
-
-          using name = typename descriptor::metadata::name;
-          auto guard = scoped_path::member(path, fatal::z_data<name>());
-
-          typename descriptor::getter getter;
-          Change()(callback, &getter(variant), path, "union type changed");
-        });
-  }
-};
-
-template <>
-struct debug_equals_impl<type_class::structure> {
-  template <typename T, typename Callback>
-  static bool
-  equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
-    bool result = true;
-
-    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
-      using member = decltype(fatal::tag_type(indexed));
-      using getter = typename member::getter;
-
-      if (member::optional::value == optionality::optional &&
-          !member::is_set(lhs) && !member::is_set(rhs)) {
-        return;
-      }
-
-      auto guard =
-          scoped_path::member(path, fatal::z_data<typename member::name>());
-
-      if (member::optional::value == optionality::optional) {
-        if (!member::is_set(rhs)) {
-          auto const& lPtr = debug_equals_get_pointer(getter::ref(lhs));
-          debug_equals_missing()(callback, lPtr, path, "missing");
-          result = false;
-          return;
-        }
-
-        if (!member::is_set(lhs)) {
-          auto const& rPtr = debug_equals_get_pointer(getter::ref(rhs));
-          debug_equals_extra()(callback, rPtr, path, "extra");
-          result = false;
-          return;
-        }
-      }
-
-      result =
-          recurse_into<typename member::type_class>(
-              path, getter::ref(lhs), getter::ref(rhs), callback, lhs, rhs) &&
-          result;
-    });
-
-    return result;
-  }
-
- private:
+struct debug_equals_with_pointers {
+ protected:
   template <typename TypeClass, typename T, typename U, typename Callback>
   static bool recurse_into(
       std::string& path,
@@ -459,6 +359,130 @@ struct debug_equals_impl<type_class::structure> {
       U const& rObject) {
     return recurse_into_ptr<TypeClass>(
         path, lMember.get(), rMember.get(), callback, lObject, rObject);
+  }
+};
+
+template <>
+struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
+  template <typename T, typename Callback>
+  static bool
+  equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
+    using namespace fatal;
+    using traits = variant_traits<T>;
+    using descriptors = typename traits::descriptors;
+
+    if (traits::get_id(lhs) != traits::get_id(rhs)) {
+      visit_changed<debug_equals_missing>(path, lhs, callback);
+      visit_changed<debug_equals_extra>(path, rhs, callback);
+      return false;
+    }
+
+    bool result = true;
+
+    scalar_search<descriptors, get_type::id>(lhs.getType(), [&](auto indexed) {
+      using descriptor = decltype(fatal::tag_type(indexed));
+
+      assert(descriptor::id::value == traits::get_id(lhs));
+      assert(descriptor::id::value == traits::get_id(rhs));
+
+      using name = typename descriptor::metadata::name;
+      auto guard = scoped_path::member(path, fatal::z_data<name>());
+
+      using type_class = typename descriptor::metadata::type_class;
+      typename descriptor::getter getter;
+      result = recurse_into<type_class>(
+          path, getter(lhs), getter(rhs), callback, lhs, rhs);
+    });
+
+    return result;
+  }
+
+ private:
+  template <typename Change, typename T, typename Callback>
+  static void
+  visit_changed_field(std::string& path, T const& field, Callback&& callback) {
+    Change()(callback, &field, path, "union type changed");
+  }
+
+  template <typename Change, typename T, typename Callback>
+  static void visit_changed_field(
+      std::string& path,
+      std::unique_ptr<T> const& field,
+      Callback&& callback) {
+    Change()(callback, field.get(), path, "union type changed");
+  }
+
+  template <typename Change, typename T, typename Callback>
+  static void visit_changed_field(
+      std::string& path,
+      std::shared_ptr<T> const& field,
+      Callback&& callback) {
+    Change()(callback, field.get(), path, "union type changed");
+  }
+
+  template <typename Change, typename T, typename Callback>
+  static void
+  visit_changed(std::string& path, T const& variant, Callback&& callback) {
+    using namespace fatal;
+    using traits = variant_traits<T>;
+    using descriptors = typename traits::descriptors;
+    scalar_search<descriptors, get_type::id>(
+        variant.getType(), [&](auto indexed) {
+          using descriptor = decltype(fatal::tag_type(indexed));
+
+          assert(descriptor::id::value == traits::get_id(variant));
+
+          using name = typename descriptor::metadata::name;
+          auto guard = scoped_path::member(path, fatal::z_data<name>());
+
+          typename descriptor::getter getter;
+          visit_changed_field<Change>(path, getter(variant), callback);
+        });
+  }
+};
+
+template <>
+struct debug_equals_impl<type_class::structure> : debug_equals_with_pointers {
+  template <typename T, typename Callback>
+  static bool
+  equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
+    bool result = true;
+
+    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
+      using member = decltype(fatal::tag_type(indexed));
+      using getter = typename member::getter;
+
+      if (member::optional::value == optionality::optional &&
+          !member::is_set(lhs) && !member::is_set(rhs)) {
+        return;
+      }
+
+      auto guard =
+          scoped_path::member(path, fatal::z_data<typename member::name>());
+
+      if (member::optional::value == optionality::optional) {
+        if (!member::is_set(rhs)) {
+          auto const& lPtr = debug_equals_get_pointer(getter::ref(lhs));
+          debug_equals_missing()(callback, lPtr, path, "missing");
+          result = false;
+          return;
+        }
+
+        if (!member::is_set(lhs)) {
+          auto const& rPtr = debug_equals_get_pointer(getter::ref(rhs));
+          debug_equals_extra()(callback, rPtr, path, "extra");
+          result = false;
+          return;
+        }
+      }
+
+      result =
+          recurse_into<typename member::type_class>(
+              path, getter::ref(lhs), getter::ref(rhs), callback, lhs, rhs) &&
+          result;
+    });
+
+    return result;
   }
 };
 

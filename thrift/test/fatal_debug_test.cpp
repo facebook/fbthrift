@@ -406,7 +406,7 @@ void ref_test() {
       "$.anOptionalUnion" /* missing */);
 }
 
-TEST(fatal_debug, ref_unique) {
+TEST(fatal_debug, struct_ref_unique) {
   ref_test<hasRefUnique, UniqueHelper>();
 }
 
@@ -438,6 +438,16 @@ TEST(fatal_debug, optional_members) {
   TEST_IMPL(field1SetButNotIsset, field1SetDefault, "$.field1" /* extra */);
   TEST_IMPL(field1Unset, field1SetDefault, "$.field1" /* extra */);
   TEST_IMPL(field1SetDefault, field1Unset, "$.field1" /* missing */);
+}
+
+TEST(fatal_debug, variant_ref_unique) {
+  variantHasRefUnique allNull;
+  allNull.set_aStruct() = nullptr;
+
+  variantHasRefUnique allDefault;
+  allDefault.set_aStruct();
+  TEST_IMPL(allNull, allDefault, "$.aStruct" /* extra */);
+  TEST_IMPL(allDefault, allNull, "$.aStruct" /* missing */);
 }
 
 #undef TEST_IMPL
