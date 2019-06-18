@@ -55,8 +55,6 @@ class BufferingNimbleDecoder {
 
   std::uint32_t nextChunk() {
     if (UNLIKELY(nextChunkToReturn_ == maxChunkFilled_)) {
-      nextChunkToReturn_ = 0;
-      maxChunkFilled_ = 0;
       fillBuffer();
     }
     std::uint32_t result = chunks_[nextChunkToReturn_];
@@ -66,6 +64,8 @@ class BufferingNimbleDecoder {
 
  private:
   void fillBuffer() {
+    nextChunkToReturn_ = 0;
+    maxChunkFilled_ = 0;
     while (maxChunkFilled_ < kChunksToBuffer && controlCursor_.canAdvance(1)) {
       ssize_t minControlBytes = controlCursor_.length();
       ssize_t minBlocks = dataCursor_.length() / kMaxBytesPerBlock;
