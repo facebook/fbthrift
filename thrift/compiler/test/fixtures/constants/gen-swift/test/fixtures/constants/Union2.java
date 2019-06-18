@@ -169,7 +169,7 @@ public final class Union2 {
         Union2 other = (Union2)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.value, other.value)
+                && Objects.deepEquals(this.value, other.value)
                 && Objects.equals(this.name, other.name);
     }
 

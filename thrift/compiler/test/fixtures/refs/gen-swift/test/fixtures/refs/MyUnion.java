@@ -113,7 +113,7 @@ public final class MyUnion {
         MyUnion other = (MyUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.value, other.value)
+                && Objects.deepEquals(this.value, other.value)
                 && Objects.equals(this.name, other.name);
     }
 

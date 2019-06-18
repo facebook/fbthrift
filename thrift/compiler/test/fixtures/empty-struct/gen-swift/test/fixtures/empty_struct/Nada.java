@@ -57,7 +57,7 @@ public final class Nada {
         Nada other = (Nada)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.value, other.value)
+                && Objects.deepEquals(this.value, other.value)
                 && Objects.equals(this.name, other.name);
     }
 

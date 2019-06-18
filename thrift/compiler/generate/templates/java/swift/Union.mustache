@@ -84,7 +84,7 @@ public final class {{struct:javaCapitalName}} {
         {{struct:javaCapitalName}} other = ({{struct:javaCapitalName}})o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.value, other.value)
+                && Objects.deepEquals(this.value, other.value)
                 && Objects.equals(this.name, other.name);
     }
 

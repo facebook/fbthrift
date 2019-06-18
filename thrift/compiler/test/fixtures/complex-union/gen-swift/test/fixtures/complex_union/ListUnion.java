@@ -111,7 +111,7 @@ public final class ListUnion {
         ListUnion other = (ListUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.value, other.value)
+                && Objects.deepEquals(this.value, other.value)
                 && Objects.equals(this.name, other.name);
     }
 

@@ -113,7 +113,7 @@ public final class DataUnion {
         DataUnion other = (DataUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.equals(this.value, other.value)
+                && Objects.deepEquals(this.value, other.value)
                 && Objects.equals(this.name, other.name);
     }
 
