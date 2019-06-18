@@ -1270,29 +1270,6 @@ class NestedContainersProcessor extends NestedContainersSyncProcessor {}
 class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::LST,
-      'key' => dict[
-        'type' => \TType::I32,
-      ],
-      'val' => dict[
-        'type' => \TType::LST,
-        'etype' => \TType::I32,
-        'elem' => dict[
-          'type' => \TType::I32,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1357,10 +1334,6 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_mapList_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1380,29 +1353,6 @@ class NestedContainers_mapList_result implements \IThriftStruct {
 class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::SET,
-      'key' => dict[
-        'type' => \TType::I32,
-      ],
-      'val' => dict[
-        'type' => \TType::SET,
-        'etype' => \TType::I32,
-        'elem' => dict[
-          'type' => \TType::I32,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1467,10 +1417,6 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
 class NestedContainers_mapSet_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1490,29 +1436,6 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
 class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::LST,
-      'etype' => \TType::MAP,
-      'elem' => dict[
-        'type' => \TType::MAP,
-        'ktype' => \TType::I32,
-        'vtype' => \TType::I32,
-        'key' => dict[
-          'type' => \TType::I32,
-        ],
-        'val' => dict[
-          'type' => \TType::I32,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1577,10 +1500,6 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_listMap_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1600,25 +1519,6 @@ class NestedContainers_listMap_result implements \IThriftStruct {
 class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::LST,
-      'etype' => \TType::SET,
-      'elem' => dict[
-        'type' => \TType::SET,
-        'etype' => \TType::I32,
-        'elem' => dict[
-          'type' => \TType::I32,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1679,10 +1579,6 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_listSet_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1702,48 +1598,6 @@ class NestedContainers_listSet_result implements \IThriftStruct {
 class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::LST,
-      'etype' => \TType::LST,
-      'elem' => dict[
-        'type' => \TType::LST,
-        'etype' => \TType::MAP,
-        'elem' => dict[
-          'type' => \TType::MAP,
-          'ktype' => \TType::I32,
-          'vtype' => \TType::MAP,
-          'key' => dict[
-            'type' => \TType::I32,
-          ],
-          'val' => dict[
-            'type' => \TType::MAP,
-            'ktype' => \TType::I32,
-            'vtype' => \TType::SET,
-            'key' => dict[
-              'type' => \TType::I32,
-            ],
-            'val' => dict[
-              'type' => \TType::SET,
-              'etype' => \TType::I32,
-              'elem' => dict[
-                'type' => \TType::I32,
-              ],
-              'format' => 'collection',
-            ],
-            'format' => 'collection',
-          ],
-          'format' => 'collection',
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1842,10 +1696,6 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
 class NestedContainers_turtles_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[

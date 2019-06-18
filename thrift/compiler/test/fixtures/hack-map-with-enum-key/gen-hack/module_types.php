@@ -22,37 +22,6 @@ enum FooEnum: int {
 class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static darray<int, darray<string, mixed>> $_TSPEC = darray[
-    1 => darray[
-      'var' => 'e',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::I32,
-      'key' => darray[
-        'type' => \TType::I32,
-        'enum' => FooEnum::class,
-      ],
-      'val' => darray[
-        'type' => \TType::I32,
-        'enum' => FooEnum::class,
-      ],
-      'format' => 'collection',
-    ],
-    2 => darray[
-      'var' => 's',
-      'type' => \TType::SET,
-      'etype' => \TType::I32,
-      'elem' => darray[
-        'type' => \TType::I32,
-        'enum' => FooEnum::class,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'e' => 1,
-    's' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'e',

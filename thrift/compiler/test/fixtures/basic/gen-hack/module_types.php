@@ -23,47 +23,6 @@ enum MyEnum: int {
 class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'MyIntField',
-      'type' => \TType::I64,
-    ],
-    2 => dict[
-      'var' => 'MyStringField',
-      'type' => \TType::STRING,
-    ],
-    3 => dict[
-      'var' => 'MyDataField',
-      'type' => \TType::STRUCT,
-      'class' => MyDataItem::class,
-    ],
-    4 => dict[
-      'var' => 'major',
-      'type' => \TType::I64,
-    ],
-    5 => dict[
-      'var' => 'myEnum',
-      'type' => \TType::I32,
-      'enum' => MyEnum::class,
-    ],
-    6 => dict[
-      'var' => 'package',
-      'type' => \TType::STRING,
-    ],
-    7 => dict[
-      'var' => 'annotation_with_quote',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'MyIntField' => 1,
-    'MyStringField' => 2,
-    'MyDataField' => 3,
-    'major' => 4,
-    'myEnum' => 5,
-    'package' => 6,
-    'annotation_with_quote' => 7,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'MyIntField',
@@ -255,10 +214,6 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
 class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[

@@ -241,47 +241,6 @@ class BazClient extends \ThriftClientBase implements BazClientIf {
 class Baz_qux_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::SET,
-      'etype' => \TType::STRUCT,
-      'elem' => dict[
-        'type' => \TType::STRUCT,
-        'class' => Foo::class,
-      ],
-      'format' => 'collection',
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::LST,
-      'etype' => \TType::STRUCT,
-      'elem' => dict[
-        'type' => \TType::STRUCT,
-        'class' => Bar::class,
-      ],
-      'format' => 'collection',
-    ],
-    3 => dict[
-      'var' => 'c',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRUCT,
-      'vtype' => \TType::STRING,
-      'key' => dict[
-        'type' => \TType::STRUCT,
-        'class' => Foo::class,
-      ],
-      'val' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-    'c' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -356,15 +315,6 @@ class Baz_qux_args implements \IThriftStruct {
 class Baz_qux_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',

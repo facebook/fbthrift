@@ -13,10 +13,6 @@
 class Banal extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -41,15 +37,6 @@ class Banal extends \TException implements \IThriftStruct {
 class Fiery extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',
@@ -89,15 +76,6 @@ class Fiery extends \TException implements \IThriftStruct {
 class Serious extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'sonnet',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'sonnet' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'sonnet',

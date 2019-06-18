@@ -363,24 +363,6 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
 class SomeService_bounce_map_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'm',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::STRING,
-      'key' => dict[
-        'type' => \TType::I32,
-      ],
-      'val' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'm' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'm',
@@ -439,24 +421,6 @@ class SomeService_bounce_map_args implements \IThriftStruct {
 class SomeService_bounce_map_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::STRING,
-      'key' => dict[
-        'type' => \TType::I32,
-      ],
-      'val' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
@@ -510,20 +474,6 @@ class SomeService_bounce_map_result implements \IThriftStruct {
 class SomeService_binary_keyed_map_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'r',
-      'type' => \TType::LST,
-      'etype' => \TType::I64,
-      'elem' => dict[
-        'type' => \TType::I64,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'r' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'r',
@@ -578,24 +528,6 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
 class SomeService_binary_keyed_map_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::I64,
-      'key' => dict[
-        'type' => \TType::STRING,
-      ],
-      'val' => dict[
-        'type' => \TType::I64,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',

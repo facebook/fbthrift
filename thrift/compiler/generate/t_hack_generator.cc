@@ -167,12 +167,7 @@ class t_hack_generator : public t_oop_generator {
       t_name_generator& namer);
   void generate_php_struct_shape_methods(std::ofstream& out, t_struct* tstruct);
 
-  void generate_php_type_spec(
-      std::ofstream& out,
-      t_type* t,
-      std::string array_keyword,
-      std::string open_brace,
-      std::string close_brace);
+  void generate_php_type_spec(std::ofstream& out, t_type* t);
   void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
   void generate_php_struct_struct_trait(std::ofstream& out, t_struct* tstruct);
   void generate_php_structural_id(
@@ -1509,12 +1504,7 @@ void t_hack_generator::generate_php_struct(
   generate_php_struct_definition(f_types_, tstruct, is_exception, false);
 }
 
-void t_hack_generator::generate_php_type_spec(
-    ofstream& out,
-    t_type* t,
-    std::string array_keyword,
-    std::string open_brace,
-    std::string close_brace) {
+void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
   t = t->get_true_type();
   indent(out) << "'type' => " << type_to_enum(t) << ",\n";
 
@@ -1530,16 +1520,16 @@ void t_hack_generator::generate_php_type_spec(
     t_type* vtype = ((t_map*)t)->get_val_type()->get_true_type();
     indent(out) << "'ktype' => " << type_to_enum(ktype) << ",\n";
     indent(out) << "'vtype' => " << type_to_enum(vtype) << ",\n";
-    indent(out) << "'key' => " << array_keyword << open_brace << "\n";
+    indent(out) << "'key' => shape(\n";
     indent_up();
-    generate_php_type_spec(out, ktype, array_keyword, open_brace, close_brace);
+    generate_php_type_spec(out, ktype);
     indent_down();
-    indent(out) << close_brace << ",\n";
-    indent(out) << "'val' => " << array_keyword << open_brace << "\n";
+    indent(out) << "),\n";
+    indent(out) << "'val' => shape(\n";
     indent_up();
-    generate_php_type_spec(out, vtype, array_keyword, open_brace, close_brace);
+    generate_php_type_spec(out, vtype);
     indent_down();
-    indent(out) << close_brace << ",\n";
+    indent(out) << "),\n";
     if (arrays_) {
       indent(out) << "'format' => 'harray',\n";
     } else if (no_use_hack_collections_) {
@@ -1550,11 +1540,11 @@ void t_hack_generator::generate_php_type_spec(
   } else if (t->is_list()) {
     t_type* etype = ((t_list*)t)->get_elem_type()->get_true_type();
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
-    indent(out) << "'elem' => " << array_keyword << open_brace << "\n";
+    indent(out) << "'elem' => shape(\n";
     indent_up();
-    generate_php_type_spec(out, etype, array_keyword, open_brace, close_brace);
+    generate_php_type_spec(out, etype);
     indent_down();
-    indent(out) << close_brace << ",\n";
+    indent(out) << "),\n";
     if (arrays_) {
       indent(out) << "'format' => 'harray',\n";
     } else if (no_use_hack_collections_) {
@@ -1565,11 +1555,11 @@ void t_hack_generator::generate_php_type_spec(
   } else if (t->is_set()) {
     t_type* etype = ((t_set*)t)->get_elem_type()->get_true_type();
     indent(out) << "'etype' => " << type_to_enum(etype) << ",\n";
-    indent(out) << "'elem' => " << array_keyword << open_brace << "\n";
+    indent(out) << "'elem' => shape(\n";
     indent_up();
-    generate_php_type_spec(out, etype, array_keyword, open_brace, close_brace);
+    generate_php_type_spec(out, etype);
     indent_down();
-    indent(out) << close_brace << ",\n";
+    indent(out) << "),\n";
     if (arrays_) {
       indent(out) << "'format' => 'harray',\n";
     } else if (arraysets_) {
@@ -1592,60 +1582,35 @@ void t_hack_generator::generate_php_struct_spec(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  auto emit_spec = [&](std::string array_keyword,
-                       std::string open_brace,
-                       std::string close_brace) {
-    indent_up();
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      t_type* t = (*m_iter)->get_type()->get_true_type();
-      indent(out) << (*m_iter)->get_key() << " => " << array_keyword
-                  << open_brace << "\n";
-      indent_up();
-      out << indent() << "'var' => '" << (*m_iter)->get_name() << "',\n";
-      if (tstruct->is_union()) {
-        // Optimally, we shouldn't set this per field but rather per struct.
-        // However, the tspec is a field_id => data array, and if we set it
-        // at the top level people might think the 'union' key is a field
-        // id, which isn't cool. It's safer and more bc to instead set this
-        // key on all fields.
-        out << indent() << "'union' => true,\n";
-      }
-      generate_php_type_spec(out, t, array_keyword, open_brace, close_brace);
-      indent_down();
-      indent(out) << close_brace << ",\n";
-    }
-    indent_down();
-  };
-
-  auto emit_fieldmap = [&]() {
-    indent_up();
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      indent(out) << "'" << (*m_iter)->get_name() << "' => "
-                  << (*m_iter)->get_key() << ",\n";
-    }
-    indent_down();
-  };
-
-  // TODO(T43133648) delete $_TSPEC
-  indent(out) << "public static "
-              << generate_array_typehint(
-                     "int", generate_array_typehint("string", "mixed"))
-              << " $_TSPEC = " << array_keyword_ << "[\n";
-  emit_spec(array_keyword_, "[", "]");
-  indent(out) << "];\n";
-
-  // TODO(T43133648) delete $_TFIELDMAP
-  indent(out) << "public static " << (const_collections_ ? "Const" : "")
-              << "Map<string, int> $_TFIELDMAP = Map {\n";
-  emit_fieldmap();
-  indent(out) << "};\n";
-
   indent(out) << "const dict<int, this::TFieldSpec> SPEC = dict[\n";
-  emit_spec("shape", "(", ")");
+  indent_up();
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_type* t = (*m_iter)->get_type()->get_true_type();
+    indent(out) << (*m_iter)->get_key() << " => shape(\n";
+    indent_up();
+    out << indent() << "'var' => '" << (*m_iter)->get_name() << "',\n";
+    if (tstruct->is_union()) {
+      // Optimally, we shouldn't set this per field but rather per struct.
+      // However, the tspec is a field_id => data array, and if we set it
+      // at the top level people might think the 'union' key is a field
+      // id, which isn't cool. It's safer and more bc to instead set this
+      // key on all fields.
+      out << indent() << "'union' => true,\n";
+    }
+    generate_php_type_spec(out, t);
+    indent_down();
+    indent(out) << "),\n";
+  }
+  indent_down();
   indent(out) << "];\n";
 
   indent(out) << "const dict<string, int> FIELDMAP = dict[\n";
-  emit_fieldmap();
+  indent_up();
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    indent(out) << "'" << (*m_iter)->get_name() << "' => "
+                << (*m_iter)->get_key() << ",\n";
+  }
+  indent_down();
   indent(out) << "];\n";
 }
 

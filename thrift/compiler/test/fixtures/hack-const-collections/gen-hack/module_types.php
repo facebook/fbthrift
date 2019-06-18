@@ -13,54 +13,6 @@
 class Foo implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::LST,
-      'etype' => \TType::STRING,
-      'elem' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'collection',
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::LST,
-      'key' => dict[
-        'type' => \TType::STRING,
-      ],
-      'val' => dict[
-        'type' => \TType::LST,
-        'etype' => \TType::SET,
-        'elem' => dict[
-          'type' => \TType::SET,
-          'etype' => \TType::I32,
-          'elem' => dict[
-            'type' => \TType::I32,
-          ],
-          'format' => 'collection',
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-    3 => dict[
-      'var' => 'c',
-      'type' => \TType::I64,
-    ],
-    4 => dict[
-      'var' => 'd',
-      'type' => \TType::BOOL,
-    ],
-  ];
-  public static ConstMap<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-    'c' => 3,
-    'd' => 4,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -164,15 +116,6 @@ class Foo implements \IThriftStruct {
 class Baz extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static ConstMap<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',

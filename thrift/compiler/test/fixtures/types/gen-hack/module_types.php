@@ -43,15 +43,6 @@ enum MyForwardRefEnum: int {
 class decorated_struct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'field',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'field' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'field',
@@ -102,98 +93,6 @@ class decorated_struct implements \IThriftStruct {
 class ContainerStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    12 => dict[
-      'var' => 'fieldA',
-      'type' => \TType::LST,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    2 => dict[
-      'var' => 'fieldB',
-      'type' => \TType::LST,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    3 => dict[
-      'var' => 'fieldC',
-      'type' => \TType::LST,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    4 => dict[
-      'var' => 'fieldD',
-      'type' => \TType::LST,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    5 => dict[
-      'var' => 'fieldE',
-      'type' => \TType::LST,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    6 => dict[
-      'var' => 'fieldF',
-      'type' => \TType::SET,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    7 => dict[
-      'var' => 'fieldG',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::STRING,
-      'key' => dict[
-        'type' => \TType::I32,
-      ],
-      'val' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'collection',
-    ],
-    8 => dict[
-      'var' => 'fieldH',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I32,
-      'vtype' => \TType::STRING,
-      'key' => dict[
-        'type' => \TType::I32,
-      ],
-      'val' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'fieldA' => 12,
-    'fieldB' => 2,
-    'fieldC' => 3,
-    'fieldD' => 4,
-    'fieldE' => 5,
-    'fieldF' => 6,
-    'fieldG' => 7,
-    'fieldH' => 8,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     12 => shape(
       'var' => 'fieldA',
@@ -504,20 +403,6 @@ class ContainerStruct implements \IThriftStruct {
 class CppTypeStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'fieldA',
-      'type' => \TType::LST,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'fieldA' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'fieldA',
@@ -585,15 +470,6 @@ class CppTypeStruct implements \IThriftStruct {
 class VirtualStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'MyIntField',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'MyIntField' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'MyIntField',
@@ -644,22 +520,6 @@ class VirtualStruct implements \IThriftStruct {
 class MyStructWithForwardRefEnum implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::I32,
-      'enum' => MyForwardRefEnum::class,
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::I32,
-      'enum' => MyForwardRefEnum::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -728,20 +588,6 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
 class TrivialNumeric implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::I32,
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::BOOL,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -815,21 +661,6 @@ class TrivialNumeric implements \IThriftStruct {
 class TrivialNestedWithDefault implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'z',
-      'type' => \TType::I32,
-    ],
-    2 => dict[
-      'var' => 'n',
-      'type' => \TType::STRUCT,
-      'class' => TrivialNumeric::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'z' => 1,
-    'n' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'z',
@@ -903,29 +734,6 @@ class TrivialNestedWithDefault implements \IThriftStruct {
 class ComplexString implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::I32,
-      'key' => dict[
-        'type' => \TType::STRING,
-      ],
-      'val' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -1015,21 +823,6 @@ class ComplexString implements \IThriftStruct {
 class ComplexNestedWithDefault implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'z',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'n',
-      'type' => \TType::STRUCT,
-      'class' => ComplexString::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'z' => 1,
-    'n' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'z',
@@ -1098,35 +891,6 @@ class ComplexNestedWithDefault implements \IThriftStruct {
 class MinPadding implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'small',
-      'type' => \TType::BYTE,
-    ],
-    2 => dict[
-      'var' => 'big',
-      'type' => \TType::I64,
-    ],
-    3 => dict[
-      'var' => 'medium',
-      'type' => \TType::I16,
-    ],
-    4 => dict[
-      'var' => 'biggish',
-      'type' => \TType::I32,
-    ],
-    5 => dict[
-      'var' => 'tiny',
-      'type' => \TType::BYTE,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'small' => 1,
-    'big' => 2,
-    'medium' => 3,
-    'biggish' => 4,
-    'tiny' => 5,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'small',
@@ -1279,31 +1043,6 @@ class MinPadding implements \IThriftStruct {
 class MyStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'MyIntField',
-      'type' => \TType::I64,
-    ],
-    2 => dict[
-      'var' => 'MyStringField',
-      'type' => \TType::STRING,
-    ],
-    3 => dict[
-      'var' => 'majorVer',
-      'type' => \TType::I64,
-    ],
-    4 => dict[
-      'var' => 'data',
-      'type' => \TType::STRUCT,
-      'class' => MyDataItem::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'MyIntField' => 1,
-    'MyStringField' => 2,
-    'majorVer' => 3,
-    'data' => 4,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'MyIntField',
@@ -1408,10 +1147,6 @@ class MyStruct implements \IThriftStruct {
 class MyDataItem implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1444,15 +1179,6 @@ class MyDataItem implements \IThriftStruct {
 class Renaming implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1503,34 +1229,6 @@ class Renaming implements \IThriftStruct {
 class AnnotatedTypes implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'binary_field',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'list_field',
-      'type' => \TType::LST,
-      'etype' => \TType::MAP,
-      'elem' => dict[
-        'type' => \TType::MAP,
-        'ktype' => \TType::I32,
-        'vtype' => \TType::STRING,
-        'key' => dict[
-          'type' => \TType::I32,
-        ],
-        'val' => dict[
-          'type' => \TType::STRING,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'binary_field' => 1,
-    'list_field' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'binary_field',

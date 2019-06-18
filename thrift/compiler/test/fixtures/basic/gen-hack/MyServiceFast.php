@@ -1428,10 +1428,6 @@ class MyServiceFastProcessor extends MyServiceFastSyncProcessor {}
 class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1472,10 +1468,6 @@ class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 class MyServiceFast_ping_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1504,10 +1496,6 @@ class MyServiceFast_ping_result implements \IThriftStruct {
 class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1548,15 +1536,6 @@ class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapis
 class MyServiceFast_getRandomData_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
@@ -1594,15 +1573,6 @@ class MyServiceFast_getRandomData_result implements \IThriftStruct {
 class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'id',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'id' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'id',
@@ -1660,15 +1630,6 @@ class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishS
 class MyServiceFast_hasDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::BOOL,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
@@ -1706,15 +1667,6 @@ class MyServiceFast_hasDataById_result implements \IThriftStruct {
 class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'id',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'id' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'id',
@@ -1772,15 +1724,6 @@ class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishS
 class MyServiceFast_getDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
@@ -1818,20 +1761,6 @@ class MyServiceFast_getDataById_result implements \IThriftStruct {
 class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'id',
-      'type' => \TType::I64,
-    ],
-    2 => dict[
-      'var' => 'data',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'id' => 1,
-    'data' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'id',
@@ -1906,10 +1835,6 @@ class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishS
 class MyServiceFast_putDataById_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -1938,20 +1863,6 @@ class MyServiceFast_putDataById_result implements \IThriftStruct {
 class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'id',
-      'type' => \TType::I64,
-    ],
-    2 => dict[
-      'var' => 'data',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'id' => 1,
-    'data' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'id',

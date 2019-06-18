@@ -11,24 +11,6 @@
  * OldStructure
  */
 class OldStructure implements \IThriftStruct {
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'features',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I16,
-      'vtype' => \TType::DOUBLE,
-      'key' => dict[
-        'type' => \TType::I16,
-      ],
-      'val' => dict[
-        'type' => \TType::DOUBLE,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'features' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'features',
@@ -160,24 +142,6 @@ class OldStructure implements \IThriftStruct {
  * NewStructure
  */
 class NewStructure implements \IThriftStruct {
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'features',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I16,
-      'vtype' => \TType::DOUBLE,
-      'key' => dict[
-        'type' => \TType::I16,
-      ],
-      'val' => dict[
-        'type' => \TType::DOUBLE,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'features' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'features',
@@ -309,24 +273,6 @@ class NewStructure implements \IThriftStruct {
  * NewStructure2
  */
 class NewStructure2 implements \IThriftStruct {
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'features',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I16,
-      'vtype' => \TType::FLOAT,
-      'key' => dict[
-        'type' => \TType::I16,
-      ],
-      'val' => dict[
-        'type' => \TType::FLOAT,
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'features' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'features',
@@ -458,71 +404,6 @@ class NewStructure2 implements \IThriftStruct {
  * NewStructureNested
  */
 class NewStructureNested implements \IThriftStruct {
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'lst',
-      'type' => \TType::LST,
-      'etype' => \TType::MAP,
-      'elem' => dict[
-        'type' => \TType::MAP,
-        'ktype' => \TType::I16,
-        'vtype' => \TType::FLOAT,
-        'key' => dict[
-          'type' => \TType::I16,
-        ],
-        'val' => dict[
-          'type' => \TType::FLOAT,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-    2 => dict[
-      'var' => 'mp',
-      'type' => \TType::MAP,
-      'ktype' => \TType::I16,
-      'vtype' => \TType::MAP,
-      'key' => dict[
-        'type' => \TType::I16,
-      ],
-      'val' => dict[
-        'type' => \TType::MAP,
-        'ktype' => \TType::I16,
-        'vtype' => \TType::FLOAT,
-        'key' => dict[
-          'type' => \TType::I16,
-        ],
-        'val' => dict[
-          'type' => \TType::FLOAT,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-    3 => dict[
-      'var' => 's',
-      'type' => \TType::SET,
-      'etype' => \TType::MAP,
-      'elem' => dict[
-        'type' => \TType::MAP,
-        'ktype' => \TType::I16,
-        'vtype' => \TType::FLOAT,
-        'key' => dict[
-          'type' => \TType::I16,
-        ],
-        'val' => dict[
-          'type' => \TType::FLOAT,
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'lst' => 1,
-    'mp' => 2,
-    's' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'lst',
@@ -894,16 +775,6 @@ class NewStructureNested implements \IThriftStruct {
  * NewStructureNestedField
  */
 class NewStructureNestedField implements \IThriftStruct {
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'f',
-      'type' => \TType::STRUCT,
-      'class' => NewStructureNested::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'f' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'f',

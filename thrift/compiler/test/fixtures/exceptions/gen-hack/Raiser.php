@@ -721,10 +721,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
 class Raiser_doBland_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -744,10 +740,6 @@ class Raiser_doBland_args implements \IThriftStruct {
 class Raiser_doBland_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -767,10 +759,6 @@ class Raiser_doBland_result implements \IThriftStruct {
 class Raiser_doRaise_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -790,28 +778,6 @@ class Raiser_doRaise_args implements \IThriftStruct {
 class Raiser_doRaise_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'b',
-      'type' => \TType::STRUCT,
-      'class' => Banal::class,
-    ],
-    2 => dict[
-      'var' => 'f',
-      'type' => \TType::STRUCT,
-      'class' => Fiery::class,
-    ],
-    3 => dict[
-      'var' => 's',
-      'type' => \TType::STRUCT,
-      'class' => Serious::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'b' => 1,
-    'f' => 2,
-    's' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'b',
@@ -852,10 +818,6 @@ class Raiser_doRaise_result implements \IThriftStruct {
 class Raiser_get200_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -875,15 +837,6 @@ class Raiser_get200_args implements \IThriftStruct {
 class Raiser_get200_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
@@ -909,10 +862,6 @@ class Raiser_get200_result implements \IThriftStruct {
 class Raiser_get500_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
   ];
   const dict<string, int> FIELDMAP = dict[
@@ -932,33 +881,6 @@ class Raiser_get500_args implements \IThriftStruct {
 class Raiser_get500_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::STRING,
-    ],
-    1 => dict[
-      'var' => 'f',
-      'type' => \TType::STRUCT,
-      'class' => Fiery::class,
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::STRUCT,
-      'class' => Banal::class,
-    ],
-    3 => dict[
-      'var' => 's',
-      'type' => \TType::STRUCT,
-      'class' => Serious::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-    'f' => 1,
-    'b' => 2,
-    's' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',

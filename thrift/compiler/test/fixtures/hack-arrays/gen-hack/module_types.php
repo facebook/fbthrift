@@ -13,44 +13,6 @@
 class Foo implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::LST,
-      'etype' => \TType::STRING,
-      'elem' => dict[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'harray',
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::LST,
-      'key' => dict[
-        'type' => \TType::STRING,
-      ],
-      'val' => dict[
-        'type' => \TType::LST,
-        'etype' => \TType::SET,
-        'elem' => dict[
-          'type' => \TType::SET,
-          'etype' => \TType::I32,
-          'elem' => dict[
-            'type' => \TType::I32,
-          ],
-          'format' => 'harray',
-        ],
-        'format' => 'harray',
-      ],
-      'format' => 'harray',
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',

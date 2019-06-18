@@ -13,54 +13,6 @@
 class Foo implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static darray<int, darray<string, mixed>> $_TSPEC = darray[
-    1 => darray[
-      'var' => 'a',
-      'type' => \TType::LST,
-      'etype' => \TType::STRING,
-      'elem' => darray[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'array',
-    ],
-    2 => darray[
-      'var' => 'b',
-      'type' => \TType::MAP,
-      'ktype' => \TType::STRING,
-      'vtype' => \TType::LST,
-      'key' => darray[
-        'type' => \TType::STRING,
-      ],
-      'val' => darray[
-        'type' => \TType::LST,
-        'etype' => \TType::SET,
-        'elem' => darray[
-          'type' => \TType::SET,
-          'etype' => \TType::I32,
-          'elem' => darray[
-            'type' => \TType::I32,
-          ],
-          'format' => 'array',
-        ],
-        'format' => 'array',
-      ],
-      'format' => 'array',
-    ],
-    3 => darray[
-      'var' => 'c',
-      'type' => \TType::I64,
-    ],
-    4 => darray[
-      'var' => 'd',
-      'type' => \TType::BOOL,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-    'c' => 3,
-    'd' => 4,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -158,36 +110,6 @@ class Foo implements \IThriftStruct {
 class Baz extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static darray<int, darray<string, mixed>> $_TSPEC = darray[
-    1 => darray[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-    2 => darray[
-      'var' => 'some_field',
-      'type' => \TType::STRUCT,
-      'class' => Foo::class,
-    ],
-    3 => darray[
-      'var' => 'some_container',
-      'type' => \TType::SET,
-      'etype' => \TType::STRING,
-      'elem' => darray[
-        'type' => \TType::STRING,
-      ],
-      'format' => 'array',
-    ],
-    4 => darray[
-      'var' => 'code',
-      'type' => \TType::I32,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-    'some_field' => 2,
-    'some_container' => 3,
-    'code' => 4,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',
@@ -264,15 +186,6 @@ class Baz extends \TException implements \IThriftStruct {
 class OptBaz extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static darray<int, darray<string, mixed>> $_TSPEC = darray[
-    1 => darray[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',

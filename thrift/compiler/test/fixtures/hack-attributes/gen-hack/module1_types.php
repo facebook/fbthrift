@@ -27,25 +27,6 @@ enum MyThriftEnum: int {
 class MyThriftStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'bar',
-      'type' => \TType::STRING,
-    ],
-    3 => dict[
-      'var' => 'baz',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-    'bar' => 2,
-    'baz' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -123,27 +104,6 @@ class MyThriftStruct implements \IThriftStruct {
 class MySecondThriftStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::I32,
-      'enum' => \test\fixtures\jsenum\MyThriftEnum::class,
-    ],
-    2 => dict[
-      'var' => 'bar',
-      'type' => \TType::STRUCT,
-      'class' => \test\fixtures\jsenum\MyThriftStruct::class,
-    ],
-    3 => dict[
-      'var' => 'baz',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-    'bar' => 2,
-    'baz' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -221,22 +181,6 @@ enum UnionTestingEnum: int {
 class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenum\UnionTestingEnum> {
   use \ThriftUnionSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'union' => true,
-      'type' => \TType::STRING,
-    ],
-    3 => dict[
-      'var' => 'bar',
-      'union' => true,
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-    'bar' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',

@@ -22,21 +22,6 @@ enum MyEnum: int {
 class MyException1 extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'code',
-      'type' => \TType::I32,
-      'enum' => MyEnum::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-    'code' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',
@@ -94,21 +79,6 @@ class MyException1 extends \TException implements \IThriftStruct {
 class MyException2 extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'code',
-      'type' => \TType::I32,
-      'enum' => MyEnum::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-    'code' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',
@@ -166,21 +136,6 @@ class MyException2 extends \TException implements \IThriftStruct {
 class MyException3 extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'code',
-      'type' => \TType::I32,
-      'enum' => MyEnum::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-    'code' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',
@@ -238,21 +193,6 @@ class MyException3 extends \TException implements \IThriftStruct {
 class MyException4 extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'code',
-      'type' => \TType::I32,
-      'enum' => MyEnum::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-    'code' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',
@@ -310,20 +250,6 @@ class MyException4 extends \TException implements \IThriftStruct {
 class MyException5 extends \TException implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'message',
-      'type' => \TType::STRING,
-    ],
-    2 => dict[
-      'var' => 'code',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'message' => 1,
-    'code' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'message',

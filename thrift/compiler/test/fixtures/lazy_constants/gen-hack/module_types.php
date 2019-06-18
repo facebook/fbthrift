@@ -35,26 +35,6 @@ enum Company: int {
 class Internship implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'weeks',
-      'type' => \TType::I32,
-    ],
-    2 => dict[
-      'var' => 'title',
-      'type' => \TType::STRING,
-    ],
-    3 => dict[
-      'var' => 'employer',
-      'type' => \TType::I32,
-      'enum' => Company::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'weeks' => 1,
-    'title' => 2,
-    'employer' => 3,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'weeks',
@@ -120,20 +100,6 @@ class Internship implements \IThriftStruct {
 class Range implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'min',
-      'type' => \TType::I32,
-    ],
-    2 => dict[
-      'var' => 'max',
-      'type' => \TType::I32,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'min' => 1,
-    'max' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'min',

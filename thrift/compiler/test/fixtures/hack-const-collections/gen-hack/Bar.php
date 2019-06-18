@@ -336,60 +336,6 @@ class BarProcessor extends BarSyncProcessor {}
 class Bar_baz_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'a',
-      'type' => \TType::SET,
-      'etype' => \TType::I32,
-      'elem' => dict[
-        'type' => \TType::I32,
-      ],
-      'format' => 'collection',
-    ],
-    2 => dict[
-      'var' => 'b',
-      'type' => \TType::LST,
-      'etype' => \TType::MAP,
-      'elem' => dict[
-        'type' => \TType::MAP,
-        'ktype' => \TType::I32,
-        'vtype' => \TType::SET,
-        'key' => dict[
-          'type' => \TType::I32,
-        ],
-        'val' => dict[
-          'type' => \TType::SET,
-          'etype' => \TType::STRING,
-          'elem' => dict[
-            'type' => \TType::STRING,
-          ],
-          'format' => 'collection',
-        ],
-        'format' => 'collection',
-      ],
-      'format' => 'collection',
-    ],
-    3 => dict[
-      'var' => 'c',
-      'type' => \TType::I64,
-    ],
-    4 => dict[
-      'var' => 'd',
-      'type' => \TType::STRUCT,
-      'class' => Foo::class,
-    ],
-    5 => dict[
-      'var' => 'e',
-      'type' => \TType::I64,
-    ],
-  ];
-  public static ConstMap<string, int> $_TFIELDMAP = Map {
-    'a' => 1,
-    'b' => 2,
-    'c' => 3,
-    'd' => 4,
-    'e' => 5,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'a',
@@ -485,15 +431,6 @@ class Bar_baz_args implements \IThriftStruct {
 class Bar_baz_result implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    0 => dict[
-      'var' => 'success',
-      'type' => \TType::STRING,
-    ],
-  ];
-  public static ConstMap<string, int> $_TFIELDMAP = Map {
-    'success' => 0,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     0 => shape(
       'var' => 'success',
