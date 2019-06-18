@@ -99,20 +99,29 @@ class BufferingNimbleDecoder {
       } else {
         // Otherwise, we iterate through until we hit the end or run out of
         // buffer.
+
+        // We do a little dance where we move values into temporaries, run the
+        // loop, and then move them back. This lets the compiler keep the values
+        // in registers, avoiding having to materialize the memory operations;
+        // this would not be a correct optimization otherwise (what if the
+        // buffers aliased *this?).
+        ssize_t maxChunkFilledTemp = maxChunkFilled_;
+        const std::uint8_t* controlBufTemp = controlCursor_.data();
+        const std::uint8_t* dataBufTemp = dataCursor_.data();
         for (ssize_t i = 0; i < numUnconditionalIters; ++i) {
-          std::uint8_t controlByte = controlCursor_.data()[i];
-          DCHECK_GE(dataCursor_.length(), kMaxBytesPerBlock);
+          std::uint8_t controlByte = controlBufTemp[i];
           dataBytesConsumed += decodeNimbleBlock<repr>(
               controlByte,
               // Note that more obvious thing, of subranging a peekBytes()
               // result, unfortunately has a cost here; it introduces at least
               // an extra branch per block.
               folly::ByteRange(
-                  dataCursor_.data() + dataBytesConsumed,
-                  dataCursor_.data() + dataBytesConsumed + kMaxBytesPerBlock),
-              &chunks_[maxChunkFilled_]);
-          maxChunkFilled_ += kChunksPerBlock;
+                  dataBufTemp + dataBytesConsumed,
+                  dataBufTemp + dataBytesConsumed + kMaxBytesPerBlock),
+              &chunks_[maxChunkFilledTemp]);
+          maxChunkFilledTemp += kChunksPerBlock;
         }
+        maxChunkFilled_ = maxChunkFilledTemp;
         controlCursor_.skip(numUnconditionalIters);
         dataCursor_.skip(dataBytesConsumed);
       }
