@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.h"
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

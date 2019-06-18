@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.h"
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/MyServiceEmpty.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

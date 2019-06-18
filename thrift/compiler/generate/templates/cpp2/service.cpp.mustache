@@ -18,14 +18,11 @@
 #include "<%service:include_prefix%><%service:name%>.h"
 #include "<%service:include_prefix%><%service:name%>.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-<%#service:any_streams?%>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-<%/service:any_streams?%>
 
 <% > common/namespace_cpp2_begin%>
 

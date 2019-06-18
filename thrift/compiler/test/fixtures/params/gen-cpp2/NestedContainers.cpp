@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainers.h"
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainers.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

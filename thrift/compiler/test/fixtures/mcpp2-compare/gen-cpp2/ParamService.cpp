@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

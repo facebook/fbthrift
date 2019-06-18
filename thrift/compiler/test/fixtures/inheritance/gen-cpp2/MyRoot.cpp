@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.h"
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

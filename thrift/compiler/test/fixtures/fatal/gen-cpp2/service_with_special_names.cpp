@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service_with_special_names.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service_with_special_names.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

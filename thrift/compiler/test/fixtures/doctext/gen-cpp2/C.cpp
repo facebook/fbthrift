@@ -7,6 +7,8 @@
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.h"
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>

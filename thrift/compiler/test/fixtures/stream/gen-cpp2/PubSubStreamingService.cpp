@@ -7,12 +7,11 @@
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.h"
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.tcc"
 
+#include <thrift/lib/cpp2/gen/service_cpp.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
-#include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
