@@ -101,3 +101,21 @@ struct AnnotatedTypes {
   1: TBinary (noop_annotation) binary_field,
   2: include.SomeListOfTypeMap (noop_annotation) list_field,
 }
+
+# Validates that C++ codegen performes appropriate topological sorting of
+# structs definitions in the generated code
+struct ForwardUsageRoot {
+  # use the type before it is defined
+  1: optional ForwardUsageStruct ForwardUsageStruct,
+  # use the type before it is defined, but mark it as a ref in C++
+  # (no need for it to be defined before this struct in generated code)
+  2: optional ForwardUsageByRef ForwardUsageByRef (cpp.ref = "true"),
+}
+
+struct ForwardUsageStruct {
+  1: optional ForwardUsageRoot foo
+}
+
+struct ForwardUsageByRef {
+  1: optional ForwardUsageRoot foo
+}

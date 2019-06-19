@@ -2224,3 +2224,318 @@ func (p *AnnotatedTypes) String() string {
   return fmt.Sprintf("AnnotatedTypes(%+v)", *p)
 }
 
+// Attributes:
+//  - ForwardUsageStruct
+//  - ForwardUsageByRef
+type ForwardUsageRoot struct {
+  ForwardUsageStruct *ForwardUsageStruct `thrift:"ForwardUsageStruct,1" db:"ForwardUsageStruct" json:"ForwardUsageStruct,omitempty"`
+  ForwardUsageByRef *ForwardUsageByRef `thrift:"ForwardUsageByRef,2" db:"ForwardUsageByRef" json:"ForwardUsageByRef,omitempty"`
+}
+
+func NewForwardUsageRoot() *ForwardUsageRoot {
+  return &ForwardUsageRoot{}
+}
+
+var ForwardUsageRoot_ForwardUsageStruct_DEFAULT *ForwardUsageStruct
+func (p *ForwardUsageRoot) GetForwardUsageStruct() *ForwardUsageStruct {
+  if !p.IsSetForwardUsageStruct() {
+    return ForwardUsageRoot_ForwardUsageStruct_DEFAULT
+  }
+return p.ForwardUsageStruct
+}
+var ForwardUsageRoot_ForwardUsageByRef_DEFAULT *ForwardUsageByRef
+func (p *ForwardUsageRoot) GetForwardUsageByRef() *ForwardUsageByRef {
+  if !p.IsSetForwardUsageByRef() {
+    return ForwardUsageRoot_ForwardUsageByRef_DEFAULT
+  }
+return p.ForwardUsageByRef
+}
+func (p *ForwardUsageRoot) IsSetForwardUsageStruct() bool {
+  return p.ForwardUsageStruct != nil
+}
+
+func (p *ForwardUsageRoot) IsSetForwardUsageByRef() bool {
+  return p.ForwardUsageByRef != nil
+}
+
+func (p *ForwardUsageRoot) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageRoot)  ReadField1(iprot thrift.Protocol) error {
+  p.ForwardUsageStruct = NewForwardUsageStruct()
+  if err := p.ForwardUsageStruct.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.ForwardUsageStruct), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageRoot)  ReadField2(iprot thrift.Protocol) error {
+  p.ForwardUsageByRef = NewForwardUsageByRef()
+  if err := p.ForwardUsageByRef.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.ForwardUsageByRef), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageRoot) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ForwardUsageRoot"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ForwardUsageRoot) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetForwardUsageStruct() {
+    if err := oprot.WriteFieldBegin("ForwardUsageStruct", thrift.STRUCT, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:ForwardUsageStruct: ", p), err) }
+    if err := p.ForwardUsageStruct.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.ForwardUsageStruct), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:ForwardUsageStruct: ", p), err) }
+  }
+  return err
+}
+
+func (p *ForwardUsageRoot) writeField2(oprot thrift.Protocol) (err error) {
+  if p.IsSetForwardUsageByRef() {
+    if err := oprot.WriteFieldBegin("ForwardUsageByRef", thrift.STRUCT, 2); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:ForwardUsageByRef: ", p), err) }
+    if err := p.ForwardUsageByRef.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.ForwardUsageByRef), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 2:ForwardUsageByRef: ", p), err) }
+  }
+  return err
+}
+
+func (p *ForwardUsageRoot) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("ForwardUsageRoot(%+v)", *p)
+}
+
+// Attributes:
+//  - Foo
+type ForwardUsageStruct struct {
+  Foo *ForwardUsageRoot `thrift:"foo,1" db:"foo" json:"foo,omitempty"`
+}
+
+func NewForwardUsageStruct() *ForwardUsageStruct {
+  return &ForwardUsageStruct{}
+}
+
+var ForwardUsageStruct_Foo_DEFAULT *ForwardUsageRoot
+func (p *ForwardUsageStruct) GetFoo() *ForwardUsageRoot {
+  if !p.IsSetFoo() {
+    return ForwardUsageStruct_Foo_DEFAULT
+  }
+return p.Foo
+}
+func (p *ForwardUsageStruct) IsSetFoo() bool {
+  return p.Foo != nil
+}
+
+func (p *ForwardUsageStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageStruct)  ReadField1(iprot thrift.Protocol) error {
+  p.Foo = NewForwardUsageRoot()
+  if err := p.Foo.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Foo), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ForwardUsageStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ForwardUsageStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetFoo() {
+    if err := oprot.WriteFieldBegin("foo", thrift.STRUCT, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:foo: ", p), err) }
+    if err := p.Foo.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Foo), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:foo: ", p), err) }
+  }
+  return err
+}
+
+func (p *ForwardUsageStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("ForwardUsageStruct(%+v)", *p)
+}
+
+// Attributes:
+//  - Foo
+type ForwardUsageByRef struct {
+  Foo *ForwardUsageRoot `thrift:"foo,1" db:"foo" json:"foo,omitempty"`
+}
+
+func NewForwardUsageByRef() *ForwardUsageByRef {
+  return &ForwardUsageByRef{}
+}
+
+var ForwardUsageByRef_Foo_DEFAULT *ForwardUsageRoot
+func (p *ForwardUsageByRef) GetFoo() *ForwardUsageRoot {
+  if !p.IsSetFoo() {
+    return ForwardUsageByRef_Foo_DEFAULT
+  }
+return p.Foo
+}
+func (p *ForwardUsageByRef) IsSetFoo() bool {
+  return p.Foo != nil
+}
+
+func (p *ForwardUsageByRef) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageByRef)  ReadField1(iprot thrift.Protocol) error {
+  p.Foo = NewForwardUsageRoot()
+  if err := p.Foo.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Foo), err)
+  }
+  return nil
+}
+
+func (p *ForwardUsageByRef) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("ForwardUsageByRef"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *ForwardUsageByRef) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetFoo() {
+    if err := oprot.WriteFieldBegin("foo", thrift.STRUCT, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:foo: ", p), err) }
+    if err := p.Foo.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Foo), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:foo: ", p), err) }
+  }
+  return err
+}
+
+func (p *ForwardUsageByRef) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("ForwardUsageByRef(%+v)", *p)
+}
+

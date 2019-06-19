@@ -23,6 +23,9 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using ComplexString = ::fatal::sequence<char, 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'i', 'n', 'g'>;
   using ContainerStruct = ::fatal::sequence<char, 'C', 'o', 'n', 't', 'a', 'i', 'n', 'e', 'r', 'S', 't', 'r', 'u', 'c', 't'>;
   using CppTypeStruct = ::fatal::sequence<char, 'C', 'p', 'p', 'T', 'y', 'p', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
+  using ForwardUsageByRef = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'B', 'y', 'R', 'e', 'f'>;
+  using ForwardUsageRoot = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'R', 'o', 'o', 't'>;
+  using ForwardUsageStruct = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
   using MinPadding = ::fatal::sequence<char, 'M', 'i', 'n', 'P', 'a', 'd', 'd', 'i', 'n', 'g'>;
   using MyDataItem = ::fatal::sequence<char, 'M', 'y', 'D', 'a', 't', 'a', 'I', 't', 'e', 'm'>;
   using MyForwardRefEnum = ::fatal::sequence<char, 'M', 'y', 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'R', 'e', 'f', 'E', 'n', 'u', 'm'>;
@@ -66,6 +69,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using fieldF = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'F'>;
   using fieldG = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'G'>;
   using fieldH = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'H'>;
+  using foo = ::fatal::sequence<char, 'f', 'o', 'o'>;
   using has_bitwise_ops = ::fatal::sequence<char, 'h', 'a', 's', '_', 'b', 'i', 't', 'w', 'i', 's', 'e', '_', 'o', 'p', 's'>;
   using hello = ::fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>;
   using is_unscoped = ::fatal::sequence<char, 'i', 's', '_', 'u', 'n', 's', 'c', 'o', 'p', 'e', 'd'>;
@@ -118,6 +122,9 @@ class module_tags {
     using MyDataItem = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyDataItem;
     using Renaming = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Renaming;
     using AnnotatedTypes = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes;
+    using ForwardUsageRoot = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageRoot;
+    using ForwardUsageStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageStruct;
+    using ForwardUsageByRef = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageByRef;
   };
 
   struct apache_thrift_fixtures_types_module__unique_constants_list {
@@ -172,7 +179,10 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<MyStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStruct>,
     ::fatal::pair<MyDataItem, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyDataItem>,
     ::fatal::pair<Renaming, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Renaming>,
-    ::fatal::pair<AnnotatedTypes, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes>
+    ::fatal::pair<AnnotatedTypes, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes>,
+    ::fatal::pair<ForwardUsageRoot, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageRoot>,
+    ::fatal::pair<ForwardUsageStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageStruct>,
+    ::fatal::pair<ForwardUsageByRef, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageByRef>
   >,
   // constants
   ::fatal::list<

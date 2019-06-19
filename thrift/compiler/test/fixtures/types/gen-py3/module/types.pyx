@@ -3340,6 +3340,558 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         return (deserialize, (AnnotatedTypes, serialize(self)))
 
 
+cdef class ForwardUsageRoot(thrift.py3.types.Struct):
+
+    def __init__(
+        ForwardUsageRoot self, *,
+        ForwardUsageStruct ForwardUsageStruct=None,
+        ForwardUsageByRef ForwardUsageByRef=None
+    ):
+        self._cpp_obj = move(ForwardUsageRoot._make_instance(
+          NULL,
+          NULL,
+          ForwardUsageStruct,
+          ForwardUsageByRef,
+        ))
+
+    def __call__(
+        ForwardUsageRoot self,
+        ForwardUsageStruct=__NOTSET,
+        ForwardUsageByRef=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[2] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if ForwardUsageStruct is ___NOTSET:
+            __isNOTSET[0] = True
+            ForwardUsageStruct = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+        if ForwardUsageByRef is ___NOTSET:
+            __isNOTSET[1] = True
+            ForwardUsageByRef = None
+        else:
+            __isNOTSET[1] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if ForwardUsageStruct is not None:
+            if not isinstance(ForwardUsageStruct, ForwardUsageStruct):
+                raise TypeError(f'ForwardUsageStruct is not a { ForwardUsageStruct !r}.')
+
+        if ForwardUsageByRef is not None:
+            if not isinstance(ForwardUsageByRef, ForwardUsageByRef):
+                raise TypeError(f'ForwardUsageByRef is not a { ForwardUsageByRef !r}.')
+
+        inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
+        inst._cpp_obj = move(ForwardUsageRoot._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          ForwardUsageStruct,
+          ForwardUsageByRef,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cForwardUsageRoot] _make_instance(
+        cForwardUsageRoot* base_instance,
+        bint* __isNOTSET,
+        ForwardUsageStruct ForwardUsageStruct ,
+        ForwardUsageByRef ForwardUsageByRef 
+    ) except *:
+        cdef unique_ptr[cForwardUsageRoot] c_inst
+        if base_instance:
+            c_inst = make_unique[cForwardUsageRoot](deref(base_instance))
+        else:
+            c_inst = make_unique[cForwardUsageRoot]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and ForwardUsageStruct is None:
+                deref(c_inst).__isset.ForwardUsageStruct = False
+                pass
+
+            if not __isNOTSET[1] and ForwardUsageByRef is None:
+                deref(c_inst).ForwardUsageByRef.reset()
+                pass
+
+        if ForwardUsageStruct is not None:
+            deref(c_inst).ForwardUsageStruct = deref((<ForwardUsageStruct?> ForwardUsageStruct)._cpp_obj)
+            deref(c_inst).__isset.ForwardUsageStruct = True
+        if ForwardUsageByRef is not None:
+            deref(c_inst).ForwardUsageByRef = make_unique[cForwardUsageByRef](deref((<ForwardUsageByRef?>ForwardUsageByRef)._cpp_obj))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'ForwardUsageStruct', self.ForwardUsageStruct
+        yield 'ForwardUsageByRef', self.ForwardUsageByRef
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.ForwardUsageStruct or <bint>(deref(self._cpp_obj).ForwardUsageByRef)
+
+    @staticmethod
+    cdef create(shared_ptr[cForwardUsageRoot] cpp_obj):
+        inst = <ForwardUsageRoot>ForwardUsageRoot.__new__(ForwardUsageRoot)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def ForwardUsageStruct(self):
+        if not deref(self._cpp_obj).__isset.ForwardUsageStruct:
+            return None
+
+        if self.__field_ForwardUsageStruct is None:
+            self.__field_ForwardUsageStruct = ForwardUsageStruct.create(reference_shared_ptr_ForwardUsageStruct(self._cpp_obj, deref(self._cpp_obj).ForwardUsageStruct))
+        return self.__field_ForwardUsageStruct
+
+    @property
+    def ForwardUsageByRef(self):
+
+        if self.__field_ForwardUsageByRef is None:
+            if not deref(self._cpp_obj).ForwardUsageByRef:
+                return None
+            self.__field_ForwardUsageByRef = ForwardUsageByRef.create(reference_shared_ptr_ForwardUsageByRef(self._cpp_obj, deref(deref(self._cpp_obj).ForwardUsageByRef)))
+        return self.__field_ForwardUsageByRef
+
+
+    def __hash__(ForwardUsageRoot self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.ForwardUsageStruct,
+            self.ForwardUsageByRef,
+            ))
+        return self.__hash
+
+    def __repr__(ForwardUsageRoot self):
+        return f'ForwardUsageRoot(ForwardUsageStruct={repr(self.ForwardUsageStruct)}, ForwardUsageByRef={repr(self.ForwardUsageByRef)})'
+    def __copy__(ForwardUsageRoot self):
+        cdef shared_ptr[cForwardUsageRoot] cpp_obj = make_shared[cForwardUsageRoot](
+            deref(self._cpp_obj)
+        )
+        return ForwardUsageRoot.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, ForwardUsageRoot) and
+                isinstance(other, ForwardUsageRoot)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cForwardUsageRoot* cself = (<ForwardUsageRoot>self)._cpp_obj.get()
+        cdef cForwardUsageRoot* cother = (<ForwardUsageRoot>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(ForwardUsageRoot self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cForwardUsageRoot* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cForwardUsageRoot](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cForwardUsageRoot](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cForwardUsageRoot](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cForwardUsageRoot](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(ForwardUsageRoot self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cForwardUsageRoot]()
+        cdef cForwardUsageRoot* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cForwardUsageRoot](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cForwardUsageRoot](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cForwardUsageRoot](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cForwardUsageRoot](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ForwardUsageRoot, serialize(self)))
+
+
+cdef class ForwardUsageStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        ForwardUsageStruct self, *,
+        ForwardUsageRoot foo=None
+    ):
+        self._cpp_obj = move(ForwardUsageStruct._make_instance(
+          NULL,
+          NULL,
+          foo,
+        ))
+
+    def __call__(
+        ForwardUsageStruct self,
+        foo=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if foo is ___NOTSET:
+            __isNOTSET[0] = True
+            foo = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if foo is not None:
+            if not isinstance(foo, ForwardUsageRoot):
+                raise TypeError(f'foo is not a { ForwardUsageRoot !r}.')
+
+        inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
+        inst._cpp_obj = move(ForwardUsageStruct._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          foo,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cForwardUsageStruct] _make_instance(
+        cForwardUsageStruct* base_instance,
+        bint* __isNOTSET,
+        ForwardUsageRoot foo 
+    ) except *:
+        cdef unique_ptr[cForwardUsageStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cForwardUsageStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cForwardUsageStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and foo is None:
+                deref(c_inst).__isset.foo = False
+                pass
+
+        if foo is not None:
+            deref(c_inst).foo = deref((<ForwardUsageRoot?> foo)._cpp_obj)
+            deref(c_inst).__isset.foo = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'foo', self.foo
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.foo
+
+    @staticmethod
+    cdef create(shared_ptr[cForwardUsageStruct] cpp_obj):
+        inst = <ForwardUsageStruct>ForwardUsageStruct.__new__(ForwardUsageStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def foo(self):
+        if not deref(self._cpp_obj).__isset.foo:
+            return None
+
+        if self.__field_foo is None:
+            self.__field_foo = ForwardUsageRoot.create(reference_shared_ptr_foo(self._cpp_obj, deref(self._cpp_obj).foo))
+        return self.__field_foo
+
+
+    def __hash__(ForwardUsageStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.foo,
+            ))
+        return self.__hash
+
+    def __repr__(ForwardUsageStruct self):
+        return f'ForwardUsageStruct(foo={repr(self.foo)})'
+    def __copy__(ForwardUsageStruct self):
+        cdef shared_ptr[cForwardUsageStruct] cpp_obj = make_shared[cForwardUsageStruct](
+            deref(self._cpp_obj)
+        )
+        return ForwardUsageStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, ForwardUsageStruct) and
+                isinstance(other, ForwardUsageStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cForwardUsageStruct* cself = (<ForwardUsageStruct>self)._cpp_obj.get()
+        cdef cForwardUsageStruct* cother = (<ForwardUsageStruct>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(ForwardUsageStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cForwardUsageStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cForwardUsageStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cForwardUsageStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cForwardUsageStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cForwardUsageStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(ForwardUsageStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cForwardUsageStruct]()
+        cdef cForwardUsageStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cForwardUsageStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cForwardUsageStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cForwardUsageStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cForwardUsageStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ForwardUsageStruct, serialize(self)))
+
+
+cdef class ForwardUsageByRef(thrift.py3.types.Struct):
+
+    def __init__(
+        ForwardUsageByRef self, *,
+        ForwardUsageRoot foo=None
+    ):
+        self._cpp_obj = move(ForwardUsageByRef._make_instance(
+          NULL,
+          NULL,
+          foo,
+        ))
+
+    def __call__(
+        ForwardUsageByRef self,
+        foo=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if foo is ___NOTSET:
+            __isNOTSET[0] = True
+            foo = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if foo is not None:
+            if not isinstance(foo, ForwardUsageRoot):
+                raise TypeError(f'foo is not a { ForwardUsageRoot !r}.')
+
+        inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
+        inst._cpp_obj = move(ForwardUsageByRef._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          foo,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cForwardUsageByRef] _make_instance(
+        cForwardUsageByRef* base_instance,
+        bint* __isNOTSET,
+        ForwardUsageRoot foo 
+    ) except *:
+        cdef unique_ptr[cForwardUsageByRef] c_inst
+        if base_instance:
+            c_inst = make_unique[cForwardUsageByRef](deref(base_instance))
+        else:
+            c_inst = make_unique[cForwardUsageByRef]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and foo is None:
+                deref(c_inst).__isset.foo = False
+                pass
+
+        if foo is not None:
+            deref(c_inst).foo = deref((<ForwardUsageRoot?> foo)._cpp_obj)
+            deref(c_inst).__isset.foo = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'foo', self.foo
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.foo
+
+    @staticmethod
+    cdef create(shared_ptr[cForwardUsageByRef] cpp_obj):
+        inst = <ForwardUsageByRef>ForwardUsageByRef.__new__(ForwardUsageByRef)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def foo(self):
+        if not deref(self._cpp_obj).__isset.foo:
+            return None
+
+        if self.__field_foo is None:
+            self.__field_foo = ForwardUsageRoot.create(reference_shared_ptr_foo(self._cpp_obj, deref(self._cpp_obj).foo))
+        return self.__field_foo
+
+
+    def __hash__(ForwardUsageByRef self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.foo,
+            ))
+        return self.__hash
+
+    def __repr__(ForwardUsageByRef self):
+        return f'ForwardUsageByRef(foo={repr(self.foo)})'
+    def __copy__(ForwardUsageByRef self):
+        cdef shared_ptr[cForwardUsageByRef] cpp_obj = make_shared[cForwardUsageByRef](
+            deref(self._cpp_obj)
+        )
+        return ForwardUsageByRef.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, ForwardUsageByRef) and
+                isinstance(other, ForwardUsageByRef)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cForwardUsageByRef* cself = (<ForwardUsageByRef>self)._cpp_obj.get()
+        cdef cForwardUsageByRef* cother = (<ForwardUsageByRef>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(ForwardUsageByRef self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cForwardUsageByRef* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cForwardUsageByRef](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cForwardUsageByRef](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cForwardUsageByRef](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cForwardUsageByRef](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(ForwardUsageByRef self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cForwardUsageByRef]()
+        cdef cForwardUsageByRef* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cForwardUsageByRef](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cForwardUsageByRef](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cForwardUsageByRef](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cForwardUsageByRef](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ForwardUsageByRef, serialize(self)))
+
+
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):

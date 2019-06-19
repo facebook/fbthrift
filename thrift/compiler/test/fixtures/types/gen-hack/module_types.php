@@ -1318,3 +1318,207 @@ class AnnotatedTypes implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * ForwardUsageRoot
+ */
+class ForwardUsageRoot implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'ForwardUsageStruct',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageStruct::class,
+    ],
+    2 => dict[
+      'var' => 'ForwardUsageByRef',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageByRef::class,
+    ],
+  ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'ForwardUsageStruct' => 1,
+    'ForwardUsageByRef' => 2,
+  };
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'ForwardUsageStruct',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageStruct::class,
+    ),
+    2 => shape(
+      'var' => 'ForwardUsageByRef',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageByRef::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'ForwardUsageStruct' => 1,
+    'ForwardUsageByRef' => 2,
+  ];
+  const int STRUCTURAL_ID = 839155360071855827;
+  /**
+   * Original thrift field:-
+   * 1: struct module.ForwardUsageStruct ForwardUsageStruct
+   */
+  public ?ForwardUsageStruct $ForwardUsageStruct;
+  /**
+   * Original thrift field:-
+   * 2: struct module.ForwardUsageByRef ForwardUsageByRef
+   */
+  public ?ForwardUsageByRef $ForwardUsageByRef;
+
+  <<__Rx>>
+  public function __construct(?ForwardUsageStruct $ForwardUsageStruct = null, ?ForwardUsageByRef $ForwardUsageByRef = null  ) {
+    $this->ForwardUsageStruct = $ForwardUsageStruct;
+    $this->ForwardUsageByRef = $ForwardUsageByRef;
+  }
+
+  public function getName(): string {
+    return 'ForwardUsageRoot';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'ForwardUsageStruct') !== null) {
+      $_tmp0 = json_encode($parsed['ForwardUsageStruct']);
+      $_tmp1 = new ForwardUsageStruct();
+      $_tmp1->readFromJson($_tmp0);
+      $this->ForwardUsageStruct = $_tmp1;
+    }    
+    if (idx($parsed, 'ForwardUsageByRef') !== null) {
+      $_tmp2 = json_encode($parsed['ForwardUsageByRef']);
+      $_tmp3 = new ForwardUsageByRef();
+      $_tmp3->readFromJson($_tmp2);
+      $this->ForwardUsageByRef = $_tmp3;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * ForwardUsageStruct
+ */
+class ForwardUsageStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageRoot::class,
+    ],
+  ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'foo' => 1,
+  };
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'foo',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageRoot::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
+  const int STRUCTURAL_ID = 7148256645166217470;
+  /**
+   * Original thrift field:-
+   * 1: struct module.ForwardUsageRoot foo
+   */
+  public ?ForwardUsageRoot $foo;
+
+  <<__Rx>>
+  public function __construct(?ForwardUsageRoot $foo = null  ) {
+    $this->foo = $foo;
+  }
+
+  public function getName(): string {
+    return 'ForwardUsageStruct';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'foo') !== null) {
+      $_tmp0 = json_encode($parsed['foo']);
+      $_tmp1 = new ForwardUsageRoot();
+      $_tmp1->readFromJson($_tmp0);
+      $this->foo = $_tmp1;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * ForwardUsageByRef
+ */
+class ForwardUsageByRef implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
+    1 => dict[
+      'var' => 'foo',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageRoot::class,
+    ],
+  ];
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'foo' => 1,
+  };
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'foo',
+      'type' => \TType::STRUCT,
+      'class' => ForwardUsageRoot::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'foo' => 1,
+  ];
+  const int STRUCTURAL_ID = 7148256645166217470;
+  /**
+   * Original thrift field:-
+   * 1: struct module.ForwardUsageRoot foo
+   */
+  public ?ForwardUsageRoot $foo;
+
+  <<__Rx>>
+  public function __construct(?ForwardUsageRoot $foo = null  ) {
+    $this->foo = $foo;
+  }
+
+  public function getName(): string {
+    return 'ForwardUsageByRef';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'foo') !== null) {
+      $_tmp0 = json_encode($parsed['foo']);
+      $_tmp1 = new ForwardUsageRoot();
+      $_tmp1->readFromJson($_tmp0);
+      $this->foo = $_tmp1;
+    }    
+  }
+
+}
+

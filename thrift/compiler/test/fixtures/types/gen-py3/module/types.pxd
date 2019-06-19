@@ -336,6 +336,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
     cdef cppclass cRenaming "::apache::thrift::fixtures::types::Renaming"
     # Forward Declaration
     cdef cppclass cAnnotatedTypes "::apache::thrift::fixtures::types::AnnotatedTypes"
+    # Forward Declaration
+    cdef cppclass cForwardUsageRoot "::apache::thrift::fixtures::types::ForwardUsageRoot"
+    # Forward Declaration
+    cdef cppclass cForwardUsageStruct "::apache::thrift::fixtures::types::ForwardUsageStruct"
+    # Forward Declaration
+    cdef cppclass cForwardUsageByRef "::apache::thrift::fixtures::types::ForwardUsageByRef"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -567,6 +573,53 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         vector[std_unordered_map[int32_t,string]] list_field
         cAnnotatedTypes__isset __isset
 
+    cdef cppclass cForwardUsageRoot__isset "::apache::thrift::fixtures::types::ForwardUsageRoot::__isset":
+        bint ForwardUsageStruct
+        bint ForwardUsageByRef
+
+    cdef cppclass cForwardUsageRoot "::apache::thrift::fixtures::types::ForwardUsageRoot":
+        cForwardUsageRoot() except +
+        cForwardUsageRoot(const cForwardUsageRoot&) except +
+        bint operator==(cForwardUsageRoot&)
+        bint operator!=(cForwardUsageRoot&)
+        bint operator<(cForwardUsageRoot&)
+        bint operator>(cForwardUsageRoot&)
+        bint operator<=(cForwardUsageRoot&)
+        bint operator>=(cForwardUsageRoot&)
+        cForwardUsageStruct ForwardUsageStruct
+        unique_ptr[cForwardUsageByRef] ForwardUsageByRef
+        cForwardUsageRoot__isset __isset
+
+    cdef cppclass cForwardUsageStruct__isset "::apache::thrift::fixtures::types::ForwardUsageStruct::__isset":
+        bint foo
+
+    cdef cppclass cForwardUsageStruct "::apache::thrift::fixtures::types::ForwardUsageStruct":
+        cForwardUsageStruct() except +
+        cForwardUsageStruct(const cForwardUsageStruct&) except +
+        bint operator==(cForwardUsageStruct&)
+        bint operator!=(cForwardUsageStruct&)
+        bint operator<(cForwardUsageStruct&)
+        bint operator>(cForwardUsageStruct&)
+        bint operator<=(cForwardUsageStruct&)
+        bint operator>=(cForwardUsageStruct&)
+        cForwardUsageRoot foo
+        cForwardUsageStruct__isset __isset
+
+    cdef cppclass cForwardUsageByRef__isset "::apache::thrift::fixtures::types::ForwardUsageByRef::__isset":
+        bint foo
+
+    cdef cppclass cForwardUsageByRef "::apache::thrift::fixtures::types::ForwardUsageByRef":
+        cForwardUsageByRef() except +
+        cForwardUsageByRef(const cForwardUsageByRef&) except +
+        bint operator==(cForwardUsageByRef&)
+        bint operator!=(cForwardUsageByRef&)
+        bint operator<(cForwardUsageByRef&)
+        bint operator>(cForwardUsageByRef&)
+        bint operator<=(cForwardUsageByRef&)
+        bint operator>=(cForwardUsageByRef&)
+        cForwardUsageRoot foo
+        cForwardUsageByRef__isset __isset
+
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[int32_t]&)
     cdef shared_ptr[std_list[int32_t]] reference_shared_ptr_fieldB "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[int32_t]&)
     cdef shared_ptr[std_deque[int32_t]] reference_shared_ptr_fieldC "thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[int32_t]&)
@@ -581,6 +634,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
     cdef shared_ptr[cComplexString] reference_shared_ptr_n "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ComplexString>"(shared_ptr[cComplexNestedWithDefault]&, cComplexString&)
     cdef shared_ptr[cMyDataItem] reference_shared_ptr_data "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] reference_shared_ptr_list_field "thrift::py3::reference_shared_ptr<std::vector<std::unordered_map<int32_t,std::string>>>"(shared_ptr[cAnnotatedTypes]&, vector[std_unordered_map[int32_t,string]]&)
+    cdef shared_ptr[cForwardUsageStruct] reference_shared_ptr_ForwardUsageStruct "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageStruct>"(shared_ptr[cForwardUsageRoot]&, cForwardUsageStruct&)
+    cdef shared_ptr[cForwardUsageByRef] reference_shared_ptr_ForwardUsageByRef "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>"(shared_ptr[cForwardUsageRoot]&, cForwardUsageByRef&)
+    cdef shared_ptr[cForwardUsageRoot] reference_shared_ptr_foo "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageStruct]&, cForwardUsageRoot&)
+    cdef shared_ptr[cForwardUsageRoot] reference_shared_ptr_foo "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageByRef]&, cForwardUsageRoot&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -625,6 +682,15 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cAnnotatedTypes] move(unique_ptr[cAnnotatedTypes])
     cdef shared_ptr[cAnnotatedTypes] move_shared "std::move"(shared_ptr[cAnnotatedTypes])
     cdef unique_ptr[cAnnotatedTypes] move_unique "std::move"(unique_ptr[cAnnotatedTypes])
+    cdef shared_ptr[cForwardUsageRoot] move(unique_ptr[cForwardUsageRoot])
+    cdef shared_ptr[cForwardUsageRoot] move_shared "std::move"(shared_ptr[cForwardUsageRoot])
+    cdef unique_ptr[cForwardUsageRoot] move_unique "std::move"(unique_ptr[cForwardUsageRoot])
+    cdef shared_ptr[cForwardUsageStruct] move(unique_ptr[cForwardUsageStruct])
+    cdef shared_ptr[cForwardUsageStruct] move_shared "std::move"(shared_ptr[cForwardUsageStruct])
+    cdef unique_ptr[cForwardUsageStruct] move_unique "std::move"(unique_ptr[cForwardUsageStruct])
+    cdef shared_ptr[cForwardUsageByRef] move(unique_ptr[cForwardUsageByRef])
+    cdef shared_ptr[cForwardUsageByRef] move_shared "std::move"(shared_ptr[cForwardUsageByRef])
+    cdef unique_ptr[cForwardUsageByRef] move_unique "std::move"(unique_ptr[cForwardUsageByRef])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -641,6 +707,9 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::MyDataItem>"(shared_ptr[cMyDataItem])
     cdef shared_ptr[const cRenaming] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::Renaming>"(shared_ptr[cRenaming])
     cdef shared_ptr[const cAnnotatedTypes] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::AnnotatedTypes>"(shared_ptr[cAnnotatedTypes])
+    cdef shared_ptr[const cForwardUsageRoot] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageRoot])
+    cdef shared_ptr[const cForwardUsageStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ForwardUsageStruct>"(shared_ptr[cForwardUsageStruct])
+    cdef shared_ptr[const cForwardUsageByRef] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ForwardUsageByRef>"(shared_ptr[cForwardUsageByRef])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -942,6 +1011,68 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedTypes])
+
+# Forward Definition of the cython struct
+cdef class ForwardUsageRoot(thrift.py3.types.Struct)
+
+
+cdef class ForwardUsageRoot(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cForwardUsageRoot] _cpp_obj
+    cdef ForwardUsageStruct __field_ForwardUsageStruct
+    cdef ForwardUsageByRef __field_ForwardUsageByRef
+
+    @staticmethod
+    cdef unique_ptr[cForwardUsageRoot] _make_instance(
+        cForwardUsageRoot* base_instance,
+        bint* __isNOTSET,
+        ForwardUsageStruct ForwardUsageStruct,
+        ForwardUsageByRef ForwardUsageByRef
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cForwardUsageRoot])
+
+# Forward Definition of the cython struct
+cdef class ForwardUsageStruct(thrift.py3.types.Struct)
+
+
+cdef class ForwardUsageStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cForwardUsageStruct] _cpp_obj
+    cdef ForwardUsageRoot __field_foo
+
+    @staticmethod
+    cdef unique_ptr[cForwardUsageStruct] _make_instance(
+        cForwardUsageStruct* base_instance,
+        bint* __isNOTSET,
+        ForwardUsageRoot foo
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cForwardUsageStruct])
+
+# Forward Definition of the cython struct
+cdef class ForwardUsageByRef(thrift.py3.types.Struct)
+
+
+cdef class ForwardUsageByRef(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cForwardUsageByRef] _cpp_obj
+    cdef ForwardUsageRoot __field_foo
+
+    @staticmethod
+    cdef unique_ptr[cForwardUsageByRef] _make_instance(
+        cForwardUsageByRef* base_instance,
+        bint* __isNOTSET,
+        ForwardUsageRoot foo
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cForwardUsageByRef])
 
 
 cdef class std_unordered_map__Map__i32_string:
