@@ -180,12 +180,12 @@ class TrivialNestedWithDefault;
 class ComplexString;
 class ComplexNestedWithDefault;
 class MinPadding;
-class MyStruct;
 class MyDataItem;
+class MyStruct;
 class Renaming;
 class AnnotatedTypes;
-class ForwardUsageRoot;
 class ForwardUsageStruct;
+class ForwardUsageRoot;
 class ForwardUsageByRef;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
@@ -1145,6 +1145,50 @@ uint32_t MinPadding::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
+ public:
+
+  MyDataItem() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyDataItem(apache::thrift::FragileConstructor);
+
+  MyDataItem(MyDataItem&&) = default;
+
+  MyDataItem(const MyDataItem&) = default;
+
+  MyDataItem& operator=(MyDataItem&&) = default;
+
+  MyDataItem& operator=(const MyDataItem&) = default;
+  void __clear();
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+};
+
+void swap(MyDataItem& a, MyDataItem& b);
+
+template <class Protocol_>
+uint32_t MyDataItem::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
@@ -1259,50 +1303,6 @@ void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
- public:
-
-  MyDataItem() {}
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyDataItem(apache::thrift::FragileConstructor);
-
-  MyDataItem(MyDataItem&&) = default;
-
-  MyDataItem(const MyDataItem&) = default;
-
-  MyDataItem& operator=(MyDataItem&&) = default;
-
-  MyDataItem& operator=(const MyDataItem&) = default;
-  void __clear();
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
-};
-
-void swap(MyDataItem& a, MyDataItem& b);
-
-template <class Protocol_>
-uint32_t MyDataItem::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
@@ -1464,6 +1464,88 @@ uint32_t AnnotatedTypes::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
+class ForwardUsageStruct final : private apache::thrift::detail::st::ComparisonOperators<ForwardUsageStruct> {
+ public:
+
+  ForwardUsageStruct() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    foo = arg.extract();
+    __isset.foo = true;
+  }
+
+  ForwardUsageStruct(ForwardUsageStruct&&) = default;
+
+  ForwardUsageStruct(const ForwardUsageStruct&) = default;
+
+  ForwardUsageStruct& operator=(ForwardUsageStruct&&) = default;
+
+  ForwardUsageStruct& operator=(const ForwardUsageStruct&) = default;
+  void __clear();
+   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
+
+  struct __isset {
+    bool foo;
+  } __isset = {};
+  bool operator==(const ForwardUsageStruct& rhs) const;
+  bool operator<(const ForwardUsageStruct& rhs) const;
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
+    return {foo, __isset.foo};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
+    return {std::move(foo), __isset.foo};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
+    return {foo, __isset.foo};
+  }
+
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
+    return {std::move(foo), __isset.foo};
+  }
+  const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
+   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
+   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
+
+  template <typename T_ForwardUsageStruct_foo_struct_setter =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
+   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
+    foo = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
+    __isset.foo = true;
+    return foo;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< ForwardUsageStruct >;
+};
+
+void swap(ForwardUsageStruct& a, ForwardUsageStruct& b);
+
+template <class Protocol_>
+uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 class ForwardUsageRoot final : private apache::thrift::detail::st::ComparisonOperators<ForwardUsageRoot> {
  public:
 
@@ -1542,88 +1624,6 @@ void swap(ForwardUsageRoot& a, ForwardUsageRoot& b);
 
 template <class Protocol_>
 uint32_t ForwardUsageRoot::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-}}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-class ForwardUsageStruct final : private apache::thrift::detail::st::ComparisonOperators<ForwardUsageStruct> {
- public:
-
-  ForwardUsageStruct() {}
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    foo = arg.extract();
-    __isset.foo = true;
-  }
-
-  ForwardUsageStruct(ForwardUsageStruct&&) = default;
-
-  ForwardUsageStruct(const ForwardUsageStruct&) = default;
-
-  ForwardUsageStruct& operator=(ForwardUsageStruct&&) = default;
-
-  ForwardUsageStruct& operator=(const ForwardUsageStruct&) = default;
-  void __clear();
-   ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
-
-  struct __isset {
-    bool foo;
-  } __isset = {};
-  bool operator==(const ForwardUsageStruct& rhs) const;
-  bool operator<(const ForwardUsageStruct& rhs) const;
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
-    return {foo, __isset.foo};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
-    return {std::move(foo), __isset.foo};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
-    return {foo, __isset.foo};
-  }
-
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
-    return {std::move(foo), __isset.foo};
-  }
-  const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
-   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() &;
-   ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() && = delete;
-
-  template <typename T_ForwardUsageStruct_foo_struct_setter =  ::apache::thrift::fixtures::types::ForwardUsageRoot>
-   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
-    foo = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
-    __isset.foo = true;
-    return foo;
-  }
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops< ForwardUsageStruct >;
-};
-
-void swap(ForwardUsageStruct& a, ForwardUsageStruct& b);
-
-template <class Protocol_>
-uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

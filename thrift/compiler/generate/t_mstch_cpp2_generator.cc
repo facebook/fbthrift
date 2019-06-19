@@ -23,6 +23,7 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/util.h>
 
 using namespace std;
 
@@ -1713,6 +1714,55 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node enforce_required() {
     return cache_->parsed_options_.count("deprecated_enforce_required") != 0;
+  }
+
+ private:
+  std::unique_ptr<std::vector<t_struct*>> sorted_objects_;
+
+  const std::vector<t_struct*>& get_program_objects() override {
+    if (!sorted_objects_) {
+      init_sorted_objects();
+    }
+    return *sorted_objects_;
+  }
+
+  void init_sorted_objects() {
+    auto edges = [this](t_struct* obj) {
+      std::vector<t_struct*> deps;
+      for (auto* f : obj->get_members()) {
+        // Ignore ref fields.
+        if (f->annotations_.count("cpp.ref") ||
+            f->annotations_.count("cpp2.ref") ||
+            f->annotations_.count("cpp.ref_type") ||
+            f->annotations_.count("cpp2.ref_type")) {
+          continue;
+        }
+
+        auto t = f->get_type()->get_true_type();
+        if (!t->is_struct()) {
+          continue;
+        }
+
+        auto* strct = dynamic_cast<t_struct*>(t);
+        // We're only interested in structs defined in the current program.
+        if (strct->get_program() == program_) {
+          deps.emplace_back(strct);
+        }
+      }
+
+      // Order all deps in the order they are defined in.
+      std::sort(
+          deps.begin(), deps.end(), [](const t_struct* a, const t_struct* b) {
+            return a->get_lineno() < b->get_lineno();
+          });
+
+      return deps;
+    };
+    sorted_objects_ =
+        std::make_unique<std::vector<t_struct*>>(topological_sort<t_struct*>(
+            program_->get_objects().begin(),
+            program_->get_objects().end(),
+            std::move(edges)));
   }
 };
 

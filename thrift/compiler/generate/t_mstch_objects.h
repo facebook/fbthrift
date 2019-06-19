@@ -1090,6 +1090,8 @@ class mstch_program : public mstch_base {
 
  protected:
   t_program const* program_;
+
+  virtual const std::vector<t_struct*>& get_program_objects();
 };
 
 } // namespace compiler

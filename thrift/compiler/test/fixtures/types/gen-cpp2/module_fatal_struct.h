@@ -1007,6 +1007,41 @@ struct MinPadding_apache_thrift_fixtures_types_module__struct_unique_member_info
   >;
 };
 
+class MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    public:
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using cpp2_noncomparable = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp2_noncomparable;
+    };
+
+    struct annotations__unique_annotations_values {
+      using cpp2_noncomparable = ::fatal::sequence<char, '1'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      ::apache::thrift::annotation<
+        keys::cpp2_noncomparable,
+        values::cpp2_noncomparable
+      >
+    >;
+  };
+
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct MyDataItem_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+};
+
 class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
   class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
     class MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyIntField {
@@ -1122,41 +1157,6 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
   >;
 };
 
-class MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations {
-  class MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
-    public:
-  };
-
-  class annotations {
-    struct annotations__unique_annotations_keys {
-      using cpp2_noncomparable = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp2_noncomparable;
-    };
-
-    struct annotations__unique_annotations_values {
-      using cpp2_noncomparable = ::fatal::sequence<char, '1'>;
-    };
-
-    public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
-    using map = ::fatal::list<
-      ::apache::thrift::annotation<
-        keys::cpp2_noncomparable,
-        values::cpp2_noncomparable
-      >
-    >;
-  };
-
-  public:
-  using keys = annotations::keys;
-  using values = annotations::values;
-  using map = annotations::map;
-  using members = MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
-};
-
-struct MyDataItem_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
-};
-
 class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations {
   class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
     class Renaming_apache_thrift_fixtures_types_module__struct_unique_annotations_members_bar {
@@ -1261,6 +1261,48 @@ struct AnnotatedTypes_apache_thrift_fixtures_types_module__struct_unique_member_
   >;
 };
 
+class ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    class ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_foo {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    public:
+    using foo = ::apache::thrift::reflected_annotations<ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_foo>;
+  };
+
+  class annotations {
+    public:
+    using keys = void;
+    using values = void;
+    using map = ::fatal::list<
+    >;
+  };
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+  using foo = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::foo,
+     ::apache::thrift::fixtures::types::ForwardUsageRoot,
+    1,
+    ::apache::thrift::optionality::optional,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::foo,
+    ::apache::thrift::type_class::structure,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_foo,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::foo>,
+    ForwardUsageStruct
+  >;
+};
+
 class ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_annotations {
   class ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
     class ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_annotations_members_ForwardUsageStruct {
@@ -1320,48 +1362,6 @@ struct ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_membe
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_ForwardUsageByRef,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_annotations::members::ForwardUsageByRef>,
     ForwardUsageRoot
-  >;
-};
-
-class ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
-  class ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
-    class ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_foo {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
-
-    public:
-    using foo = ::apache::thrift::reflected_annotations<ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_foo>;
-  };
-
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
-  public:
-  using keys = annotations::keys;
-  using values = annotations::values;
-  using map = annotations::map;
-  using members = ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
-};
-
-struct ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
-  using foo = ::apache::thrift::reflected_struct_data_member<
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::foo,
-     ::apache::thrift::fixtures::types::ForwardUsageRoot,
-    1,
-    ::apache::thrift::optionality::optional,
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::foo,
-    ::apache::thrift::type_class::structure,
-    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_foo,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::foo>,
-    ForwardUsageStruct
   >;
 };
 
@@ -1567,6 +1567,19 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   >
 );
 THRIFT_REGISTER_STRUCT_TRAITS(
+  MyDataItem,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyDataItem,
+  thrift_fatal_impl_detail::MyDataItem_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+  >,
+  thrift_fatal_impl_detail::MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(4790436723586763884ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
   MyStruct,
   thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStruct,
   thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
@@ -1581,19 +1594,6 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::MyStruct_apache_thrift_fixtures_types_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(7958971832214294220ull)
-  >
-);
-THRIFT_REGISTER_STRUCT_TRAITS(
-  MyDataItem,
-  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyDataItem,
-  thrift_fatal_impl_detail::MyDataItem_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
-  ::fatal::list<
-  >,
-  thrift_fatal_impl_detail::MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::MyDataItem_apache_thrift_fixtures_types_module__struct_unique_annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(4790436723586763884ull)
   >
 );
 THRIFT_REGISTER_STRUCT_TRAITS(
@@ -1626,6 +1626,20 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   >
 );
 THRIFT_REGISTER_STRUCT_TRAITS(
+  ForwardUsageStruct,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageStruct,
+  thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+      thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::foo
+  >,
+  thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(17360210329199062572ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
   ForwardUsageRoot,
   thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageRoot,
   thrift_fatal_impl_detail::ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
@@ -1638,20 +1652,6 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageRoot_apache_thrift_fixtures_types_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(15709653741992939980ull)
-  >
-);
-THRIFT_REGISTER_STRUCT_TRAITS(
-  ForwardUsageStruct,
-  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageStruct,
-  thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
-  ::fatal::list<
-      thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::foo
-  >,
-  thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageStruct_apache_thrift_fixtures_types_module__struct_unique_annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(17360210329199062572ull)
   >
 );
 THRIFT_REGISTER_STRUCT_TRAITS(

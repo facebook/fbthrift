@@ -48,6 +48,12 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
 void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
@@ -82,17 +88,50 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
-    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
-    FOLLY_MAYBE_UNUSED int16_t& fid,
-    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
-  if (false) {}
-}
 
 } // namespace detail
 } // namespace thrift
 } // namespace apache
 
+namespace cpp2 {
+
+MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
+
+void MyDataItem::__clear() {
+  // clear all fields
+}
+
+bool MyDataItem::operator==(const MyDataItem& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return true;
+}
+
+bool MyDataItem::operator<(const MyDataItem& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return false;
+}
+
+
+void swap(MyDataItem& a, MyDataItem& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyDataItem::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyDataItem::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
 namespace cpp2 {
 
 MyStruct::MyStruct() :
@@ -216,44 +255,5 @@ template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace cpp2 {
-
-MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
-
-void MyDataItem::__clear() {
-  // clear all fields
-}
-
-bool MyDataItem::operator==(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return true;
-}
-
-bool MyDataItem::operator<(const MyDataItem& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  return false;
-}
-
-
-void swap(MyDataItem& a, MyDataItem& b) {
-  using ::std::swap;
-  (void)a;
-  (void)b;
-}
-
-template void MyDataItem::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyDataItem::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyDataItem::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyDataItem::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyDataItem::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyDataItem::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

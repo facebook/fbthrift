@@ -22,9 +22,12 @@
 #pragma once
 
 #include <iosfwd>
+#include <stack>
 #include <string>
 #include <type_traits>
+#include <unordered_set>
 #include <utility>
+#include <vector>
 
 namespace apache {
 namespace thrift {
@@ -104,6 +107,56 @@ class scope_guard {
 template <typename F>
 auto make_scope_guard(F&& f) {
   return detail::scope_guard<F>(std::forward<F>(f));
+}
+
+//  topological_sort
+//
+//  Given a container of objects and a function to obtain dependencies,
+//  produces a vector of those nodes in a topologicaly sorted order.
+template <typename T, typename ForwardIt, typename Edges>
+std::vector<T> topological_sort(ForwardIt begin, ForwardIt end, Edges edges) {
+  struct IterState {
+    T node;
+    std::vector<T> edges;
+    typename std::vector<T>::const_iterator pos;
+
+    IterState(T n, std::vector<T> e)
+        : node(std::move(n)), edges(std::move(e)), pos(edges.begin()) {}
+
+    // Prevent accidental move/copy, because the iterator needs to be properly
+    // updated.
+    IterState(const IterState&) = delete;
+    IterState(IterState&&) = delete;
+    IterState& operator=(const IterState&) = delete;
+    IterState& operator=(IterState&&) = delete;
+  };
+
+  std::unordered_set<T> visited;
+  std::vector<T> output;
+
+  for (auto it = begin; it != end; ++it) {
+    if (visited.count(*it) != 0) {
+      continue;
+    }
+    std::stack<IterState> st;
+    st.emplace(*it, edges(*it));
+    visited.insert(*it);
+    while (!st.empty()) {
+      IterState& s = st.top();
+      if (s.pos == s.edges.end()) {
+        output.emplace_back(s.node);
+        st.pop();
+        continue;
+      }
+
+      if (visited.find(*s.pos) == visited.end()) {
+        st.emplace(*s.pos, edges(*s.pos));
+        visited.insert(*s.pos);
+      }
+      ++s.pos;
+    }
+  }
+  return output;
 }
 
 } // namespace compiler

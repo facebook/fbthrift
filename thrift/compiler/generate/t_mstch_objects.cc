@@ -604,7 +604,7 @@ mstch::node mstch_const::program() {
 mstch::node mstch_program::structs() {
   std::string id = program_->get_name() + get_program_namespace(program_);
   return generate_elements_cached(
-      program_->get_objects(),
+      get_program_objects(),
       generators_->struct_generator_.get(),
       cache_->structs_,
       id,
@@ -657,6 +657,10 @@ mstch::node mstch_program::constants() {
         container[i]->get_type()));
   }
   return a;
+}
+
+const std::vector<t_struct*>& mstch_program::get_program_objects() {
+  return program_->get_objects();
 }
 
 } // namespace compiler

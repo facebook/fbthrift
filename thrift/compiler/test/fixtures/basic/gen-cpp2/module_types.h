@@ -70,8 +70,8 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 // END struct_indirection
 // BEGIN forward_declare
 namespace cpp2 {
-class MyStruct;
 class MyDataItem;
+class MyStruct;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -79,6 +79,52 @@ class MyDataItem;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+namespace cpp2 {
+class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
+ public:
+
+  MyDataItem() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  MyDataItem(apache::thrift::FragileConstructor);
+
+  MyDataItem(MyDataItem&&) = default;
+
+  MyDataItem(const MyDataItem&) = default;
+
+  MyDataItem& operator=(MyDataItem&&) = default;
+
+  MyDataItem& operator=(const MyDataItem&) = default;
+  void __clear();
+  bool operator==(const MyDataItem& rhs) const;
+  bool operator<(const MyDataItem& rhs) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+};
+
+void swap(MyDataItem& a, MyDataItem& b);
+
+template <class Protocol_>
+uint32_t MyDataItem::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
 namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
@@ -259,52 +305,6 @@ void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-} // cpp2
-namespace cpp2 {
-class MyDataItem final : private apache::thrift::detail::st::ComparisonOperators<MyDataItem> {
- public:
-
-  MyDataItem() {}
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyDataItem(apache::thrift::FragileConstructor);
-
-  MyDataItem(MyDataItem&&) = default;
-
-  MyDataItem(const MyDataItem&) = default;
-
-  MyDataItem& operator=(MyDataItem&&) = default;
-
-  MyDataItem& operator=(const MyDataItem&) = default;
-  void __clear();
-  bool operator==(const MyDataItem& rhs) const;
-  bool operator<(const MyDataItem& rhs) const;
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
-};
-
-void swap(MyDataItem& a, MyDataItem& b);
-
-template <class Protocol_>
-uint32_t MyDataItem::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
