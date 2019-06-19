@@ -759,7 +759,7 @@ String space = prettyPrint ? " " : "";
     sb.append("myEnum");
     sb.append(space);
     sb.append(":").append(space);
-    String myEnum_name = this.getMyEnum().name();
+    String myEnum_name = MyEnum.VALUES_TO_NAMES.get(this.getMyEnum());
     if (myEnum_name != null) {
       sb.append(myEnum_name);
       sb.append(" (");

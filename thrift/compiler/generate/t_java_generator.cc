@@ -164,8 +164,7 @@ void t_java_generator::generate_enum(t_enum* tenum) {
 
   // Add java imports
   f_enum << string() + "import com.facebook.thrift.IntRangeSet;\n" +
-          "import java.util.IdentityHashMap;\n" + "import java.util.Map;\n" +
-          "import java.util.HashMap;\n"
+          "import java.util.Map;\n" + "import java.util.HashMap;\n"
          << endl;
 
   f_enum << java_suppress_warnings_enum() << "public enum " << tenum->get_name()
@@ -184,23 +183,18 @@ void t_java_generator::generate_enum(t_enum* tenum) {
     first = false;
   }
   f_enum << ";" << endl << endl;
-  const uint32_t LARGE_ENUMS_THRESHOLD = 16;
 
-  if (enums.size() > LARGE_ENUMS_THRESHOLD) {
-    f_enum
-        << indent()
-        << "private static final Map<Integer, String> VALUES_TO_NAMES = new IdentityHashMap<Integer, String>();"
-        << endl
-        << endl
-        << indent() << "static {" << endl
-        << indent() << "  for (" << tenum->get_name() << " e: values()) {"
-        << endl
-        << indent() << "    VALUES_TO_NAMES.put(e.getValue(), e.name());"
-        << endl
-        << indent() << "  }" << endl
-        << indent() << "}" << endl
-        << endl;
-  }
+  f_enum
+      << indent()
+      << "public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();"
+      << endl
+      << endl
+      << indent() << "static {" << endl
+      << indent() << "  for (" << tenum->get_name() << " e: values()) {" << endl
+      << indent() << "    VALUES_TO_NAMES.put(e.getValue(), e.name());" << endl
+      << indent() << "  }" << endl
+      << indent() << "}" << endl
+      << endl;
 
   // Field for thriftCode
   indent(f_enum) << "private final int value;" << endl << endl;
@@ -230,23 +224,19 @@ void t_java_generator::generate_enum(t_enum* tenum) {
 
   indent_up();
 
-  if (enums.size() > LARGE_ENUMS_THRESHOLD) {
-    indent(f_enum) << "return VALUES_TO_NAMES.get(value);" << endl;
-  } else {
-    indent(f_enum) << "switch (value) {" << endl;
-    indent_up();
+  indent(f_enum) << "switch (value) {" << endl;
+  indent_up();
 
-    for (auto t_enum_value : enums) {
-      auto value = t_enum_value->get_value();
-      indent(f_enum) << "case " << value << ":" << endl;
-      indent(f_enum) << "  return " << t_enum_value->get_name() << ";" << endl;
-    }
-
-    indent(f_enum) << "default:" << endl;
-    indent(f_enum) << "  return null;" << endl;
-
-    indent_down();
+  for (auto t_enum_value : enums) {
+    auto value = t_enum_value->get_value();
+    indent(f_enum) << "case " << value << ":" << endl;
+    indent(f_enum) << "  return " << t_enum_value->get_name() << ";" << endl;
   }
+
+  indent(f_enum) << "default:" << endl;
+  indent(f_enum) << "  return null;" << endl;
+
+  indent_down();
 
   indent(f_enum) << "}" << endl;
 
@@ -2029,8 +2019,9 @@ void t_java_generator::generate_java_struct_tostring(
       indent(out) << "  if (" << field_getter
                   << ".length > 128) sb.append(\" ...\");" << endl;
     } else if (ftype->is_enum()) {
-      indent(out) << "String " << fname << "_name = " << field_getter
-                  << ".name();" << endl;
+      indent(out) << "String " << fname
+                  << "_name = " << get_enum_class_name(ftype)
+                  << ".VALUES_TO_NAMES.get(" << field_getter << ");" << endl;
       indent(out) << "if (" << fname << "_name != null) {" << endl;
       indent(out) << "  sb.append(" << fname << "_name);" << endl;
       indent(out) << "  sb.append(\" (\");" << endl;

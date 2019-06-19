@@ -6,7 +6,6 @@
  */
 
 import com.facebook.thrift.IntRangeSet;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -14,6 +13,14 @@ import java.util.HashMap;
 public enum TypedEnum implements com.facebook.thrift.TEnum {
   VAL1(0),
   VAL2(1);
+
+  public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
+
+  static {
+    for (TypedEnum e: values()) {
+      VALUES_TO_NAMES.put(e.getValue(), e.name());
+    }
+  }
 
   private final int value;
 

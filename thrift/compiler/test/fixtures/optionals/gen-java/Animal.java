@@ -6,7 +6,6 @@
  */
 
 import com.facebook.thrift.IntRangeSet;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -15,6 +14,14 @@ public enum Animal implements com.facebook.thrift.TEnum {
   DOG(1),
   CAT(2),
   TARANTULA(3);
+
+  public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
+
+  static {
+    for (Animal e: values()) {
+      VALUES_TO_NAMES.put(e.getValue(), e.name());
+    }
+  }
 
   private final int value;
 
