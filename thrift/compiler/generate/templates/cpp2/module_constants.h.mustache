@@ -41,14 +41,8 @@ struct <%program:name%>_constants {
 
     <%/type:string?%>
     <%#type:enum?%>
-      <%#constant:enum_value?%>
-  static constexpr <% > types/type%> const <%constant:name%>_ = <% > common/type_namespace_cpp2%><%type:name%>::<%constant:enum_value%>;
+  static constexpr <% > types/type%> const <%constant:name%>_ = <% > common/const_value%>;
 
-      <%/constant:enum_value?%>
-      <%^constant:enum_value?%>
-  static constexpr <% > types/type%> const <%constant:name%>_ = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<%constant:enum_value%>);
-
-      <%/constant:enum_value?%>
   static constexpr <% > types/type%> <%constant:name%>() {
     return <%constant:name%>_;
   }

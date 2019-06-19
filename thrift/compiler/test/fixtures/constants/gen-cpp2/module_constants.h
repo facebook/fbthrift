@@ -62,7 +62,7 @@ struct module_constants {
     return longDoubleValue_;
   }
 
-  static constexpr  ::cpp2::MyCompany const my_company_ = static_cast< ::cpp2::MyCompany>();
+  static constexpr  ::cpp2::MyCompany const my_company_ =  ::cpp2::Company::FACEBOOK;
 
   static constexpr  ::cpp2::MyCompany my_company() {
     return my_company_;
