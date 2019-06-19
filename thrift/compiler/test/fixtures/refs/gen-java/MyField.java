@@ -457,7 +457,6 @@ String space = prettyPrint ? " " : "";
   public void validate() throws TException {
     // check for required fields
     // alas, we cannot check 'req_value' because it's a primitive and you chose the non-beans generator.
-    // check that fields of type enum have valid values
   }
 
 }

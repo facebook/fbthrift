@@ -15,7 +15,6 @@ public enum Animal implements com.facebook.thrift.TEnum {
   CAT(2),
   TARANTULA(3);
 
-  public static final IntRangeSet VALID_VALUES = new IntRangeSet(1, 2, 3);
   public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
 
   static {

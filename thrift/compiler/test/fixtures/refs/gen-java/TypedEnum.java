@@ -14,7 +14,6 @@ public enum TypedEnum implements com.facebook.thrift.TEnum {
   VAL1(0),
   VAL2(1);
 
-  public static final IntRangeSet VALID_VALUES = new IntRangeSet(0, 1);
   public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
 
   static {

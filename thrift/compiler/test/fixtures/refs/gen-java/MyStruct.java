@@ -471,7 +471,6 @@ String space = prettyPrint ? " " : "";
     if (req_ref == null) {
       throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'req_ref' was not present! Struct: " + toString());
     }
-    // check that fields of type enum have valid values
   }
 
 }

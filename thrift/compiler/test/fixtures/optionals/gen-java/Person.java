@@ -1166,10 +1166,6 @@ String space = prettyPrint ? " " : "";
 
   public void validate() throws TException {
     // check for required fields
-    // check that fields of type enum have valid values
-    if (isSetAfraidOfAnimal() && !Animal.VALID_VALUES.contains(afraidOfAnimal.getValue())){
-      throw new TProtocolException("The field 'afraidOfAnimal' has been assigned the invalid value " + afraidOfAnimal);
-    }
   }
 
 }

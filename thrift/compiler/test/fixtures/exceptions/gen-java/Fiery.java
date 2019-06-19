@@ -250,7 +250,6 @@ String space = prettyPrint ? " " : "";
     if (message == null) {
       throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'message' was not present! Struct: " + toString());
     }
-    // check that fields of type enum have valid values
   }
 
 }

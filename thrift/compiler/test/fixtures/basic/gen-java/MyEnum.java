@@ -15,7 +15,6 @@ public enum MyEnum implements com.facebook.thrift.TEnum {
   MyValue2(1),
   DOMAIN(2);
 
-  public static final IntRangeSet VALID_VALUES = new IntRangeSet(0, 1, 2);
   public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
 
   static {

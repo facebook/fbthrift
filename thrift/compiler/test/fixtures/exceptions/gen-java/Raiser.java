@@ -727,7 +727,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -883,7 +882,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -1040,7 +1038,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -1426,7 +1423,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -1583,7 +1579,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -1833,7 +1828,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -1990,7 +1984,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }
@@ -2454,7 +2447,6 @@ String space = prettyPrint ? " " : "";
 
     public void validate() throws TException {
       // check for required fields
-      // check that fields of type enum have valid values
     }
 
   }

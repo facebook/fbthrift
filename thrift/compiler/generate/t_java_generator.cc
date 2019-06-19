@@ -184,19 +184,6 @@ void t_java_generator::generate_enum(t_enum* tenum) {
   }
   f_enum << ";" << endl << endl;
 
-  f_enum << indent()
-         << "public static final IntRangeSet VALID_VALUES = new IntRangeSet(";
-  first = true;
-  for (auto t_enum_value : enums) {
-    auto value = t_enum_value->get_value();
-    if (!first) {
-      f_enum << ", ";
-    }
-    f_enum << value;
-    first = false;
-  }
-  f_enum << ");" << endl;
-
   f_enum
       << indent()
       << "public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();"
@@ -1574,28 +1561,6 @@ void t_java_generator::generate_java_validator(
               << "generator." << endl;
         }
       }
-    }
-  }
-
-  // check that fields of type enum have valid values
-  out << indent() << "// check that fields of type enum have valid values"
-      << endl;
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    t_field* field = (*f_iter);
-    t_type* type = field->get_type();
-    // if field is an enum, check that its value is valid
-    if (type->is_enum()) {
-      indent(out) << "if (" << generate_isset_check(field) << " && !"
-                  << get_enum_class_name(type) << ".VALID_VALUES.contains("
-                  << field->get_name() << ".getValue())){" << endl;
-
-      indent_up();
-      indent(out) << "throw new TProtocolException(\"The field '"
-                  << field->get_name()
-                  << "' has been assigned the invalid value \" + "
-                  << field->get_name() << ");" << endl;
-      indent_down();
-      indent(out) << "}" << endl;
     }
   }
 
