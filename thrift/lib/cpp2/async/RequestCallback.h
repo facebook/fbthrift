@@ -171,16 +171,21 @@ class RequestCallback : public RequestClientCallback {
   void onRequestSent() noexcept override {
     CHECK(thriftContext_);
     {
-      const auto& rctx = thriftContext_->oneWay // C++14, small codegen
-          ? std::move(folly::RequestContextScopeGuard(std::move(context_)))
-          : std::move(folly::RequestContextScopeGuard(context_));
-      (void)rctx;
-      try {
-        requestSent();
-      } catch (...) {
-        LOG(DFATAL)
-            << "Exception thrown while executing requestSent() callback. "
-            << "Exception: " << folly::exceptionStr(std::current_exception());
+      auto work = [&]() noexcept {
+        try {
+          requestSent();
+        } catch (...) {
+          LOG(DFATAL)
+              << "Exception thrown while executing requestSent() callback. "
+              << "Exception: " << folly::exceptionStr(std::current_exception());
+        }
+      };
+      if (thriftContext_->oneWay) {
+        folly::RequestContextScopeGuard rctx(std::move(context_));
+        work();
+      } else {
+        folly::RequestContextScopeGuard rctx(context_);
+        work();
       }
     }
     if (unmanaged_ && thriftContext_->oneWay) {
@@ -195,16 +200,21 @@ class RequestCallback : public RequestClientCallback {
     state.resetCtx(
         lastResponse ? std::move(thriftContext_->ctx) : thriftContext_->ctx);
     {
-      const auto& rctx = lastResponse // C++14, small codegen
-          ? std::move(folly::RequestContextScopeGuard(std::move(context_)))
-          : std::move(folly::RequestContextScopeGuard(context_));
-      (void)rctx;
-      try {
-        replyReceived(std::move(state));
-      } catch (...) {
-        LOG(DFATAL)
-            << "Exception thrown while executing replyReceived() callback. "
-            << "Exception: " << folly::exceptionStr(std::current_exception());
+      auto work = [&]() noexcept {
+        try {
+          replyReceived(std::move(state));
+        } catch (...) {
+          LOG(DFATAL)
+              << "Exception thrown while executing replyReceived() callback. "
+              << "Exception: " << folly::exceptionStr(std::current_exception());
+        }
+      };
+      if (lastResponse) {
+        folly::RequestContextScopeGuard rctx(std::move(context_));
+        work();
+      } else {
+        folly::RequestContextScopeGuard rctx(context_);
+        work();
       }
     }
     if (unmanaged_ && lastResponse) {
