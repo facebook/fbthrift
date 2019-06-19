@@ -1325,22 +1325,6 @@ class AnnotatedTypes implements \IThriftStruct {
 class ForwardUsageRoot implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'ForwardUsageStruct',
-      'type' => \TType::STRUCT,
-      'class' => ForwardUsageStruct::class,
-    ],
-    2 => dict[
-      'var' => 'ForwardUsageByRef',
-      'type' => \TType::STRUCT,
-      'class' => ForwardUsageByRef::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'ForwardUsageStruct' => 1,
-    'ForwardUsageByRef' => 2,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'ForwardUsageStruct',
@@ -1409,16 +1393,6 @@ class ForwardUsageRoot implements \IThriftStruct {
 class ForwardUsageStruct implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::STRUCT,
-      'class' => ForwardUsageRoot::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
@@ -1469,16 +1443,6 @@ class ForwardUsageStruct implements \IThriftStruct {
 class ForwardUsageByRef implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
-  public static dict<int, dict<string, mixed>> $_TSPEC = dict[
-    1 => dict[
-      'var' => 'foo',
-      'type' => \TType::STRUCT,
-      'class' => ForwardUsageRoot::class,
-    ],
-  ];
-  public static Map<string, int> $_TFIELDMAP = Map {
-    'foo' => 1,
-  };
   const dict<int, this::TFieldSpec> SPEC = dict[
     1 => shape(
       'var' => 'foo',
