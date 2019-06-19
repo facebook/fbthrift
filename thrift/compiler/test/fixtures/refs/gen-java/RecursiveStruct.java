@@ -75,7 +75,7 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
     return new RecursiveStruct(this);
   }
 
-  public List<RecursiveStruct>  getMes() {
+  public List<RecursiveStruct> getMes() {
     return this.mes;
   }
 
@@ -259,10 +259,10 @@ String space = prettyPrint ? " " : "";
       sb.append("mes");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getMes() == null) {
+      if (this.getMes() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getMes(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getMes(), indent + 1, prettyPrint));
       }
       first = false;
     }

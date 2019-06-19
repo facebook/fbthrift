@@ -141,7 +141,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return new MyStruct(this);
   }
 
-  public long  getMyIntField() {
+  public long getMyIntField() {
     return this.MyIntField;
   }
 
@@ -164,7 +164,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__MYINTFIELD_ISSET_ID, value);
   }
 
-  public String  getMyStringField() {
+  public String getMyStringField() {
     return this.MyStringField;
   }
 
@@ -188,7 +188,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
-  public MyDataItem  getMyDataField() {
+  public MyDataItem getMyDataField() {
     return this.MyDataField;
   }
 
@@ -212,7 +212,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
-  public long  getMajor() {
+  public long getMajor() {
     return this.major;
   }
 
@@ -239,7 +239,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * 
    * @see MyEnum
    */
-  public MyEnum  getMyEnum() {
+  public MyEnum getMyEnum() {
     return this.myEnum;
   }
 
@@ -266,7 +266,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     __isset_bit_vector.set(__MYENUM_ISSET_ID, value);
   }
 
-  public String  getPackage() {
+  public String getPackage() {
     return this.package;
   }
 
@@ -290,7 +290,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
-  public String  getAnnotation_with_quote() {
+  public String getAnnotation_with_quote() {
     return this.annotation_with_quote;
   }
 
@@ -723,17 +723,17 @@ String space = prettyPrint ? " " : "";
     sb.append("MyIntField");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getMyIntField(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getMyIntField(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("MyStringField");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getMyStringField() == null) {
+    if (this.getMyStringField() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getMyStringField(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getMyStringField(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -741,10 +741,10 @@ String space = prettyPrint ? " " : "";
     sb.append("MyDataField");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getMyDataField() == null) {
+    if (this.getMyDataField() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getMyDataField(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getMyDataField(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -752,19 +752,19 @@ String space = prettyPrint ? " " : "";
     sb.append("major");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getMajor(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getMajor(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("myEnum");
     sb.append(space);
     sb.append(":").append(space);
-    String myEnum_name = MyEnum.VALUES_TO_NAMES.get(this. getMyEnum());
+    String myEnum_name = MyEnum.VALUES_TO_NAMES.get(this.getMyEnum());
     if (myEnum_name != null) {
       sb.append(myEnum_name);
       sb.append(" (");
     }
-    sb.append(this. getMyEnum());
+    sb.append(this.getMyEnum());
     if (myEnum_name != null) {
       sb.append(")");
     }
@@ -774,10 +774,10 @@ String space = prettyPrint ? " " : "";
     sb.append("package");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getPackage() == null) {
+    if (this.getPackage() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getPackage(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getPackage(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -785,10 +785,10 @@ String space = prettyPrint ? " " : "";
     sb.append("annotation_with_quote");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getAnnotation_with_quote() == null) {
+    if (this.getAnnotation_with_quote() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getAnnotation_with_quote(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getAnnotation_with_quote(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

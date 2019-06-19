@@ -97,7 +97,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     return new StructWithUnion(this);
   }
 
-  public MyUnion  getU() {
+  public MyUnion getU() {
     return this.u;
   }
 
@@ -121,7 +121,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     }
   }
 
-  public double  getADouble() {
+  public double getADouble() {
     return this.aDouble;
   }
 
@@ -144,7 +144,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     __isset_bit_vector.set(__ADOUBLE_ISSET_ID, value);
   }
 
-  public MyField  getF() {
+  public MyField getF() {
     return this.f;
   }
 
@@ -412,10 +412,10 @@ String space = prettyPrint ? " " : "";
     sb.append("u");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getU() == null) {
+    if (this.getU() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getU(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getU(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -423,17 +423,17 @@ String space = prettyPrint ? " " : "";
     sb.append("aDouble");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getADouble(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getADouble(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("f");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getF() == null) {
+    if (this.getF() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getF(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getF(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

@@ -74,7 +74,7 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
     return new Serious(this);
   }
 
-  public String  getSonnet() {
+  public String getSonnet() {
     return this.sonnet;
   }
 
@@ -238,10 +238,10 @@ String space = prettyPrint ? " " : "";
       sb.append("sonnet");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getSonnet() == null) {
+      if (this.getSonnet() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getSonnet(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getSonnet(), indent + 1, prettyPrint));
       }
       first = false;
     }

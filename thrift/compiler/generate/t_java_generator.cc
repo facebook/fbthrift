@@ -1867,9 +1867,9 @@ std::string t_java_generator::get_simple_getter_name(t_field* field) {
 
   if (type->is_base_type() &&
       ((t_base_type*)type)->get_base() == t_base_type::TYPE_BOOL) {
-    return " is" + cap_name;
+    return "is" + cap_name;
   } else {
-    return " get" + cap_name;
+    return "get" + cap_name;
   }
 }
 

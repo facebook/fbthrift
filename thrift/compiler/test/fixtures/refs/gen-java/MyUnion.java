@@ -180,7 +180,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     return STRUCT_DESC;
   }
 
-  public int  getAnInteger() {
+  public int getAnInteger() {
     if (getSetField() == ANINTEGER) {
       return (Integer)getFieldValue();
     } else {
@@ -193,7 +193,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     value_ = value;
   }
 
-  public String  getAString() {
+  public String getAString() {
     if (getSetField() == ASTRING) {
       return (String)getFieldValue();
     } else {
@@ -261,7 +261,7 @@ String space = prettyPrint ? " " : "";
       sb.append("anInteger");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getAnInteger(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getAnInteger(), indent + 1, prettyPrint));
       first = false;
     }
     // Only print this field if it is the set field
@@ -272,10 +272,10 @@ String space = prettyPrint ? " " : "";
       sb.append("aString");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getAString() == null) {
+      if (this.getAString() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getAString(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getAString(), indent + 1, prettyPrint));
       }
       first = false;
     }

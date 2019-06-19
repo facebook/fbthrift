@@ -180,7 +180,7 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     return STRUCT_DESC;
   }
 
-  public String  getThingOne() {
+  public String getThingOne() {
     if (getSetField() == THINGONE) {
       return (String)getFieldValue();
     } else {
@@ -194,7 +194,7 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     value_ = value;
   }
 
-  public String  getThingTwo() {
+  public String getThingTwo() {
     if (getSetField() == THINGTWO) {
       return (String)getFieldValue();
     } else {
@@ -262,10 +262,10 @@ String space = prettyPrint ? " " : "";
       sb.append("thingOne");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getThingOne() == null) {
+      if (this.getThingOne() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getThingOne(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getThingOne(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -277,10 +277,10 @@ String space = prettyPrint ? " " : "";
       sb.append("thingTwo");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getThingTwo() == null) {
+      if (this.getThingTwo() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getThingTwo(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getThingTwo(), indent + 1, prettyPrint));
       }
       first = false;
     }

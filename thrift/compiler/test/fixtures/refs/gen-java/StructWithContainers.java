@@ -131,7 +131,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return new StructWithContainers(this);
   }
 
-  public List<Integer>  getList_ref() {
+  public List<Integer> getList_ref() {
     return this.list_ref;
   }
 
@@ -155,7 +155,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  public Set<Integer>  getSet_ref() {
+  public Set<Integer> getSet_ref() {
     return this.set_ref;
   }
 
@@ -179,7 +179,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  public Map<Integer,Integer>  getMap_ref() {
+  public Map<Integer,Integer> getMap_ref() {
     return this.map_ref;
   }
 
@@ -203,7 +203,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  public List<Integer>  getList_ref_unique() {
+  public List<Integer> getList_ref_unique() {
     return this.list_ref_unique;
   }
 
@@ -227,7 +227,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  public Set<Integer>  getSet_ref_shared() {
+  public Set<Integer> getSet_ref_shared() {
     return this.set_ref_shared;
   }
 
@@ -251,7 +251,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  public List<Integer>  getList_ref_shared_const() {
+  public List<Integer> getList_ref_shared_const() {
     return this.list_ref_shared_const;
   }
 
@@ -756,10 +756,10 @@ String space = prettyPrint ? " " : "";
     sb.append("list_ref");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getList_ref() == null) {
+    if (this.getList_ref() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getList_ref(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getList_ref(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -767,10 +767,10 @@ String space = prettyPrint ? " " : "";
     sb.append("set_ref");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getSet_ref() == null) {
+    if (this.getSet_ref() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getSet_ref(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getSet_ref(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -778,10 +778,10 @@ String space = prettyPrint ? " " : "";
     sb.append("map_ref");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getMap_ref() == null) {
+    if (this.getMap_ref() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getMap_ref(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getMap_ref(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -789,10 +789,10 @@ String space = prettyPrint ? " " : "";
     sb.append("list_ref_unique");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getList_ref_unique() == null) {
+    if (this.getList_ref_unique() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getList_ref_unique(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getList_ref_unique(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -800,10 +800,10 @@ String space = prettyPrint ? " " : "";
     sb.append("set_ref_shared");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getSet_ref_shared() == null) {
+    if (this.getSet_ref_shared() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getSet_ref_shared(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getSet_ref_shared(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -811,10 +811,10 @@ String space = prettyPrint ? " " : "";
     sb.append("list_ref_shared_const");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getList_ref_shared_const() == null) {
+    if (this.getList_ref_shared_const() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getList_ref_shared_const(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getList_ref_shared_const(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

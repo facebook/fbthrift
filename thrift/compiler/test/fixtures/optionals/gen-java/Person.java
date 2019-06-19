@@ -185,7 +185,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return new Person(this);
   }
 
-  public long  getId() {
+  public long getId() {
     return this.id;
   }
 
@@ -208,7 +208,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     __isset_bit_vector.set(__ID_ISSET_ID, value);
   }
 
-  public String  getName() {
+  public String getName() {
     return this.name;
   }
 
@@ -232,7 +232,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
   }
 
-  public short  getAge() {
+  public short getAge() {
     return this.age;
   }
 
@@ -255,7 +255,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     __isset_bit_vector.set(__AGE_ISSET_ID, value);
   }
 
-  public String  getAddress() {
+  public String getAddress() {
     return this.address;
   }
 
@@ -279,7 +279,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
   }
 
-  public Color  getFavoriteColor() {
+  public Color getFavoriteColor() {
     return this.favoriteColor;
   }
 
@@ -303,7 +303,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
   }
 
-  public Set<Long>  getFriends() {
+  public Set<Long> getFriends() {
     return this.friends;
   }
 
@@ -327,7 +327,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
   }
 
-  public long  getBestFriend() {
+  public long getBestFriend() {
     return this.bestFriend;
   }
 
@@ -350,7 +350,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     __isset_bit_vector.set(__BESTFRIEND_ISSET_ID, value);
   }
 
-  public Map<Animal,String>  getPetNames() {
+  public Map<Animal,String> getPetNames() {
     return this.petNames;
   }
 
@@ -378,7 +378,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
    * 
    * @see Animal
    */
-  public Animal  getAfraidOfAnimal() {
+  public Animal getAfraidOfAnimal() {
     return this.afraidOfAnimal;
   }
 
@@ -405,7 +405,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     __isset_bit_vector.set(__AFRAIDOFANIMAL_ISSET_ID, value);
   }
 
-  public List<Vehicle>  getVehicles() {
+  public List<Vehicle> getVehicles() {
     return this.vehicles;
   }
 
@@ -1038,17 +1038,17 @@ String space = prettyPrint ? " " : "";
     sb.append("id");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getId(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("name");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getName() == null) {
+    if (this.getName() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getName(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getName(), indent + 1, prettyPrint));
     }
     first = false;
     if (isSetAge())
@@ -1058,7 +1058,7 @@ String space = prettyPrint ? " " : "";
       sb.append("age");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getAge(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getAge(), indent + 1, prettyPrint));
       first = false;
     }
     if (isSetAddress())
@@ -1068,10 +1068,10 @@ String space = prettyPrint ? " " : "";
       sb.append("address");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getAddress() == null) {
+      if (this.getAddress() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getAddress(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getAddress(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -1082,10 +1082,10 @@ String space = prettyPrint ? " " : "";
       sb.append("favoriteColor");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFavoriteColor() == null) {
+      if (this.getFavoriteColor() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFavoriteColor(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFavoriteColor(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -1096,10 +1096,10 @@ String space = prettyPrint ? " " : "";
       sb.append("friends");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFriends() == null) {
+      if (this.getFriends() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFriends(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFriends(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -1110,7 +1110,7 @@ String space = prettyPrint ? " " : "";
       sb.append("bestFriend");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getBestFriend(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getBestFriend(), indent + 1, prettyPrint));
       first = false;
     }
     if (isSetPetNames())
@@ -1120,10 +1120,10 @@ String space = prettyPrint ? " " : "";
       sb.append("petNames");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getPetNames() == null) {
+      if (this.getPetNames() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getPetNames(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getPetNames(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -1134,12 +1134,12 @@ String space = prettyPrint ? " " : "";
       sb.append("afraidOfAnimal");
       sb.append(space);
       sb.append(":").append(space);
-      String afraidOfAnimal_name = Animal.VALUES_TO_NAMES.get(this. getAfraidOfAnimal());
+      String afraidOfAnimal_name = Animal.VALUES_TO_NAMES.get(this.getAfraidOfAnimal());
       if (afraidOfAnimal_name != null) {
         sb.append(afraidOfAnimal_name);
         sb.append(" (");
       }
-      sb.append(this. getAfraidOfAnimal());
+      sb.append(this.getAfraidOfAnimal());
       if (afraidOfAnimal_name != null) {
         sb.append(")");
       }
@@ -1152,10 +1152,10 @@ String space = prettyPrint ? " " : "";
       sb.append("vehicles");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getVehicles() == null) {
+      if (this.getVehicles() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getVehicles(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getVehicles(), indent + 1, prettyPrint));
       }
       first = false;
     }

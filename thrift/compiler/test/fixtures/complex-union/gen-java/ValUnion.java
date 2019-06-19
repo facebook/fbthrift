@@ -182,7 +182,7 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     return STRUCT_DESC;
   }
 
-  public Val  getV1() {
+  public Val getV1() {
     if (getSetField() == V1) {
       return (Val)getFieldValue();
     } else {
@@ -196,7 +196,7 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     value_ = value;
   }
 
-  public Val  getV2() {
+  public Val getV2() {
     if (getSetField() == V2) {
       return (Val)getFieldValue();
     } else {
@@ -264,10 +264,10 @@ String space = prettyPrint ? " " : "";
       sb.append("v1");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getV1() == null) {
+      if (this.getV1() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getV1(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getV1(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -279,10 +279,10 @@ String space = prettyPrint ? " " : "";
       sb.append("v2");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getV2() == null) {
+      if (this.getV2() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getV2(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getV2(), indent + 1, prettyPrint));
       }
       first = false;
     }

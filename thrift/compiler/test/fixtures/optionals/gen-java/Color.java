@@ -107,7 +107,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     return new Color(this);
   }
 
-  public double  getRed() {
+  public double getRed() {
     return this.red;
   }
 
@@ -130,7 +130,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     __isset_bit_vector.set(__RED_ISSET_ID, value);
   }
 
-  public double  getGreen() {
+  public double getGreen() {
     return this.green;
   }
 
@@ -153,7 +153,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     __isset_bit_vector.set(__GREEN_ISSET_ID, value);
   }
 
-  public double  getBlue() {
+  public double getBlue() {
     return this.blue;
   }
 
@@ -176,7 +176,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     __isset_bit_vector.set(__BLUE_ISSET_ID, value);
   }
 
-  public double  getAlpha() {
+  public double getAlpha() {
     return this.alpha;
   }
 
@@ -480,28 +480,28 @@ String space = prettyPrint ? " " : "";
     sb.append("red");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getRed(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getRed(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("green");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getGreen(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getGreen(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("blue");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getBlue(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getBlue(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("alpha");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getAlpha(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getAlpha(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

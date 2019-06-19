@@ -180,7 +180,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     return STRUCT_DESC;
   }
 
-  public byte[]  getBinaryData() {
+  public byte[] getBinaryData() {
     if (getSetField() == BINARYDATA) {
       return (byte[])getFieldValue();
     } else {
@@ -194,7 +194,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     value_ = value;
   }
 
-  public String  getStringData() {
+  public String getStringData() {
     if (getSetField() == STRINGDATA) {
       return (String)getFieldValue();
     } else {
@@ -262,15 +262,15 @@ String space = prettyPrint ? " " : "";
       sb.append("binaryData");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getBinaryData() == null) {
+      if (this.getBinaryData() == null) {
         sb.append("null");
       } else {
-          int __binaryData_size = Math.min(this. getBinaryData().length, 128);
+          int __binaryData_size = Math.min(this.getBinaryData().length, 128);
           for (int i = 0; i < __binaryData_size; i++) {
             if (i != 0) sb.append(" ");
-            sb.append(Integer.toHexString(this. getBinaryData()[i]).length() > 1 ? Integer.toHexString(this. getBinaryData()[i]).substring(Integer.toHexString(this. getBinaryData()[i]).length() - 2).toUpperCase() : "0" + Integer.toHexString(this. getBinaryData()[i]).toUpperCase());
+            sb.append(Integer.toHexString(this.getBinaryData()[i]).length() > 1 ? Integer.toHexString(this.getBinaryData()[i]).substring(Integer.toHexString(this.getBinaryData()[i]).length() - 2).toUpperCase() : "0" + Integer.toHexString(this.getBinaryData()[i]).toUpperCase());
           }
-          if (this. getBinaryData().length > 128) sb.append(" ...");
+          if (this.getBinaryData().length > 128) sb.append(" ...");
       }
       first = false;
     }
@@ -282,10 +282,10 @@ String space = prettyPrint ? " " : "";
       sb.append("stringData");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getStringData() == null) {
+      if (this.getStringData() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getStringData(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getStringData(), indent + 1, prettyPrint));
       }
       first = false;
     }

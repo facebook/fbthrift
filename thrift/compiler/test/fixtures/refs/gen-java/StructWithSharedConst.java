@@ -110,7 +110,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     return new StructWithSharedConst(this);
   }
 
-  public MyField  getOpt_shared_const() {
+  public MyField getOpt_shared_const() {
     return this.opt_shared_const;
   }
 
@@ -134,7 +134,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     }
   }
 
-  public MyField  getShared_const() {
+  public MyField getShared_const() {
     return this.shared_const;
   }
 
@@ -158,7 +158,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     }
   }
 
-  public MyField  getReq_shared_const() {
+  public MyField getReq_shared_const() {
     return this.req_shared_const;
   }
 
@@ -432,10 +432,10 @@ String space = prettyPrint ? " " : "";
       sb.append("opt_shared_const");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getOpt_shared_const() == null) {
+      if (this.getOpt_shared_const() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getOpt_shared_const(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getOpt_shared_const(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -444,10 +444,10 @@ String space = prettyPrint ? " " : "";
     sb.append("shared_const");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getShared_const() == null) {
+    if (this.getShared_const() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getShared_const(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getShared_const(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -455,10 +455,10 @@ String space = prettyPrint ? " " : "";
     sb.append("req_shared_const");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getReq_shared_const() == null) {
+    if (this.getReq_shared_const() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getReq_shared_const(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getReq_shared_const(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

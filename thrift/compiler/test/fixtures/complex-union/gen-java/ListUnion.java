@@ -218,7 +218,7 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     return STRUCT_DESC;
   }
 
-  public List<Long>  getIntListValue() {
+  public List<Long> getIntListValue() {
     if (getSetField() == INTLISTVALUE) {
       return (List<Long>)getFieldValue();
     } else {
@@ -232,7 +232,7 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     value_ = value;
   }
 
-  public List<String>  getStringListValue() {
+  public List<String> getStringListValue() {
     if (getSetField() == STRINGLISTVALUE) {
       return (List<String>)getFieldValue();
     } else {
@@ -300,10 +300,10 @@ String space = prettyPrint ? " " : "";
       sb.append("intListValue");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getIntListValue() == null) {
+      if (this.getIntListValue() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getIntListValue(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getIntListValue(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -315,10 +315,10 @@ String space = prettyPrint ? " " : "";
       sb.append("stringListValue");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getStringListValue() == null) {
+      if (this.getStringListValue() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getStringListValue(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getStringListValue(), indent + 1, prettyPrint));
       }
       first = false;
     }

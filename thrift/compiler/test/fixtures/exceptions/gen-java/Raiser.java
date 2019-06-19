@@ -1115,7 +1115,7 @@ String space = prettyPrint ? " " : "";
       return new doRaise_result(this);
     }
 
-    public Banal  getB() {
+    public Banal getB() {
       return this.b;
     }
 
@@ -1139,7 +1139,7 @@ String space = prettyPrint ? " " : "";
       }
     }
 
-    public Fiery  getF() {
+    public Fiery getF() {
       return this.f;
     }
 
@@ -1163,7 +1163,7 @@ String space = prettyPrint ? " " : "";
       }
     }
 
-    public Serious  getS() {
+    public Serious getS() {
       return this.s;
     }
 
@@ -1391,10 +1391,10 @@ String space = prettyPrint ? " " : "";
       sb.append("b");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getB() == null) {
+      if (this.getB() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getB(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getB(), indent + 1, prettyPrint));
       }
       first = false;
       if (!first) sb.append("," + newLine);
@@ -1402,10 +1402,10 @@ String space = prettyPrint ? " " : "";
       sb.append("f");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getF() == null) {
+      if (this.getF() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getF(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getF(), indent + 1, prettyPrint));
       }
       first = false;
       if (!first) sb.append("," + newLine);
@@ -1413,10 +1413,10 @@ String space = prettyPrint ? " " : "";
       sb.append("s");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getS() == null) {
+      if (this.getS() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getS(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getS(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -1638,7 +1638,7 @@ String space = prettyPrint ? " " : "";
       return new get200_result(this);
     }
 
-    public String  getSuccess() {
+    public String getSuccess() {
       return this.success;
     }
 
@@ -1820,10 +1820,10 @@ String space = prettyPrint ? " " : "";
       sb.append("success");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getSuccess() == null) {
+      if (this.getSuccess() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getSuccess(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -2075,7 +2075,7 @@ String space = prettyPrint ? " " : "";
       return new get500_result(this);
     }
 
-    public String  getSuccess() {
+    public String getSuccess() {
       return this.success;
     }
 
@@ -2099,7 +2099,7 @@ String space = prettyPrint ? " " : "";
       }
     }
 
-    public Fiery  getF() {
+    public Fiery getF() {
       return this.f;
     }
 
@@ -2123,7 +2123,7 @@ String space = prettyPrint ? " " : "";
       }
     }
 
-    public Banal  getB() {
+    public Banal getB() {
       return this.b;
     }
 
@@ -2147,7 +2147,7 @@ String space = prettyPrint ? " " : "";
       }
     }
 
-    public Serious  getS() {
+    public Serious getS() {
       return this.s;
     }
 
@@ -2408,10 +2408,10 @@ String space = prettyPrint ? " " : "";
       sb.append("success");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getSuccess() == null) {
+      if (this.getSuccess() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getSuccess(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
       }
       first = false;
       if (!first) sb.append("," + newLine);
@@ -2419,10 +2419,10 @@ String space = prettyPrint ? " " : "";
       sb.append("f");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getF() == null) {
+      if (this.getF() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getF(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getF(), indent + 1, prettyPrint));
       }
       first = false;
       if (!first) sb.append("," + newLine);
@@ -2430,10 +2430,10 @@ String space = prettyPrint ? " " : "";
       sb.append("b");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getB() == null) {
+      if (this.getB() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getB(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getB(), indent + 1, prettyPrint));
       }
       first = false;
       if (!first) sb.append("," + newLine);
@@ -2441,10 +2441,10 @@ String space = prettyPrint ? " " : "";
       sb.append("s");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getS() == null) {
+      if (this.getS() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getS(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getS(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

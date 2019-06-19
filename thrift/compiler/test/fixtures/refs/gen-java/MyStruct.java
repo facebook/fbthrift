@@ -110,7 +110,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return new MyStruct(this);
   }
 
-  public MyField  getOpt_ref() {
+  public MyField getOpt_ref() {
     return this.opt_ref;
   }
 
@@ -134,7 +134,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
-  public MyField  getRef() {
+  public MyField getRef() {
     return this.ref;
   }
 
@@ -158,7 +158,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
-  public MyField  getReq_ref() {
+  public MyField getReq_ref() {
     return this.req_ref;
   }
 
@@ -432,10 +432,10 @@ String space = prettyPrint ? " " : "";
       sb.append("opt_ref");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getOpt_ref() == null) {
+      if (this.getOpt_ref() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getOpt_ref(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getOpt_ref(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -444,10 +444,10 @@ String space = prettyPrint ? " " : "";
     sb.append("ref");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getRef() == null) {
+    if (this.getRef() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getRef(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getRef(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -455,10 +455,10 @@ String space = prettyPrint ? " " : "";
     sb.append("req_ref");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getReq_ref() == null) {
+    if (this.getReq_ref() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getReq_ref(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getReq_ref(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

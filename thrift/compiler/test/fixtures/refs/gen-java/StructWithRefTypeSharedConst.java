@@ -110,7 +110,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
     return new StructWithRefTypeSharedConst(this);
   }
 
-  public Empty  getDef_field() {
+  public Empty getDef_field() {
     return this.def_field;
   }
 
@@ -134,7 +134,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
     }
   }
 
-  public Empty  getOpt_field() {
+  public Empty getOpt_field() {
     return this.opt_field;
   }
 
@@ -158,7 +158,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
     }
   }
 
-  public Empty  getReq_field() {
+  public Empty getReq_field() {
     return this.req_field;
   }
 
@@ -430,10 +430,10 @@ String space = prettyPrint ? " " : "";
     sb.append("def_field");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getDef_field() == null) {
+    if (this.getDef_field() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getDef_field(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getDef_field(), indent + 1, prettyPrint));
     }
     first = false;
     if (isSetOpt_field())
@@ -443,10 +443,10 @@ String space = prettyPrint ? " " : "";
       sb.append("opt_field");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getOpt_field() == null) {
+      if (this.getOpt_field() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getOpt_field(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getOpt_field(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -455,10 +455,10 @@ String space = prettyPrint ? " " : "";
     sb.append("req_field");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getReq_field() == null) {
+    if (this.getReq_field() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getReq_field(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getReq_field(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

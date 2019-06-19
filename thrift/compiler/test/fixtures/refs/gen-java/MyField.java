@@ -116,7 +116,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     return new MyField(this);
   }
 
-  public long  getOpt_value() {
+  public long getOpt_value() {
     return this.opt_value;
   }
 
@@ -139,7 +139,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     __isset_bit_vector.set(__OPT_VALUE_ISSET_ID, value);
   }
 
-  public long  getValue() {
+  public long getValue() {
     return this.value;
   }
 
@@ -162,7 +162,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     __isset_bit_vector.set(__VALUE_ISSET_ID, value);
   }
 
-  public long  getReq_value() {
+  public long getReq_value() {
     return this.req_value;
   }
 
@@ -432,7 +432,7 @@ String space = prettyPrint ? " " : "";
       sb.append("opt_value");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getOpt_value(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getOpt_value(), indent + 1, prettyPrint));
       first = false;
     }
     if (!first) sb.append("," + newLine);
@@ -440,14 +440,14 @@ String space = prettyPrint ? " " : "";
     sb.append("value");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getValue(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getValue(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("req_value");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getReq_value(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getReq_value(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

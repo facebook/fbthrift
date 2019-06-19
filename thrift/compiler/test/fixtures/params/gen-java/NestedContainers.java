@@ -676,7 +676,7 @@ public class NestedContainers {
       return new mapList_args(this);
     }
 
-    public Map<Integer,List<Integer>>  getFoo() {
+    public Map<Integer,List<Integer>> getFoo() {
       return this.foo;
     }
 
@@ -899,10 +899,10 @@ String space = prettyPrint ? " " : "";
       sb.append("foo");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFoo() == null) {
+      if (this.getFoo() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFoo(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFoo(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -1126,7 +1126,7 @@ String space = prettyPrint ? " " : "";
       return new mapSet_args(this);
     }
 
-    public Map<Integer,Set<Integer>>  getFoo() {
+    public Map<Integer,Set<Integer>> getFoo() {
       return this.foo;
     }
 
@@ -1349,10 +1349,10 @@ String space = prettyPrint ? " " : "";
       sb.append("foo");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFoo() == null) {
+      if (this.getFoo() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFoo(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFoo(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -1576,7 +1576,7 @@ String space = prettyPrint ? " " : "";
       return new listMap_args(this);
     }
 
-    public List<Map<Integer,Integer>>  getFoo() {
+    public List<Map<Integer,Integer>> getFoo() {
       return this.foo;
     }
 
@@ -1799,10 +1799,10 @@ String space = prettyPrint ? " " : "";
       sb.append("foo");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFoo() == null) {
+      if (this.getFoo() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFoo(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFoo(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -2025,7 +2025,7 @@ String space = prettyPrint ? " " : "";
       return new listSet_args(this);
     }
 
-    public List<Set<Integer>>  getFoo() {
+    public List<Set<Integer>> getFoo() {
       return this.foo;
     }
 
@@ -2245,10 +2245,10 @@ String space = prettyPrint ? " " : "";
       sb.append("foo");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFoo() == null) {
+      if (this.getFoo() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFoo(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFoo(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -2476,7 +2476,7 @@ String space = prettyPrint ? " " : "";
       return new turtles_args(this);
     }
 
-    public List<List<Map<Integer,Map<Integer,Set<Integer>>>>>  getFoo() {
+    public List<List<Map<Integer,Map<Integer,Set<Integer>>>>> getFoo() {
       return this.foo;
     }
 
@@ -2756,10 +2756,10 @@ String space = prettyPrint ? " " : "";
       sb.append("foo");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getFoo() == null) {
+      if (this.getFoo() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getFoo(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getFoo(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

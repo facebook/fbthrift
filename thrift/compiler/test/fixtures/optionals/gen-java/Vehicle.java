@@ -126,7 +126,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return new Vehicle(this);
   }
 
-  public Color  getColor() {
+  public Color getColor() {
     return this.color;
   }
 
@@ -150,7 +150,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
-  public String  getLicensePlate() {
+  public String getLicensePlate() {
     return this.licensePlate;
   }
 
@@ -174,7 +174,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
-  public String  getDescription() {
+  public String getDescription() {
     return this.description;
   }
 
@@ -198,7 +198,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
-  public String  getName() {
+  public String getName() {
     return this.name;
   }
 
@@ -222,7 +222,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
-  public boolean  isHasAC() {
+  public boolean isHasAC() {
     return this.hasAC;
   }
 
@@ -580,10 +580,10 @@ String space = prettyPrint ? " " : "";
     sb.append("color");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getColor() == null) {
+    if (this.getColor() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getColor(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getColor(), indent + 1, prettyPrint));
     }
     first = false;
     if (isSetLicensePlate())
@@ -593,10 +593,10 @@ String space = prettyPrint ? " " : "";
       sb.append("licensePlate");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getLicensePlate() == null) {
+      if (this.getLicensePlate() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getLicensePlate(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getLicensePlate(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -607,10 +607,10 @@ String space = prettyPrint ? " " : "";
       sb.append("description");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getDescription() == null) {
+      if (this.getDescription() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getDescription(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getDescription(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -621,10 +621,10 @@ String space = prettyPrint ? " " : "";
       sb.append("name");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getName() == null) {
+      if (this.getName() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getName(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getName(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -635,7 +635,7 @@ String space = prettyPrint ? " " : "";
       sb.append("hasAC");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. isHasAC(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.isHasAC(), indent + 1, prettyPrint));
       first = false;
     }
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

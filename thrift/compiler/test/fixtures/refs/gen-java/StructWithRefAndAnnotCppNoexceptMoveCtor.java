@@ -74,7 +74,7 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
     return new StructWithRefAndAnnotCppNoexceptMoveCtor(this);
   }
 
-  public Empty  getDef_field() {
+  public Empty getDef_field() {
     return this.def_field;
   }
 
@@ -258,10 +258,10 @@ String space = prettyPrint ? " " : "";
     sb.append("def_field");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getDef_field() == null) {
+    if (this.getDef_field() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getDef_field(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getDef_field(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

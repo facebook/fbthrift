@@ -1224,7 +1224,7 @@ String space = prettyPrint ? " " : "";
       return new getRandomData_result(this);
     }
 
-    public String  getSuccess() {
+    public String getSuccess() {
       return this.success;
     }
 
@@ -1406,10 +1406,10 @@ String space = prettyPrint ? " " : "";
       sb.append("success");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getSuccess() == null) {
+      if (this.getSuccess() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getSuccess(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -1477,7 +1477,7 @@ String space = prettyPrint ? " " : "";
       return new hasDataById_args(this);
     }
 
-    public long  getId() {
+    public long getId() {
       return this.id;
     }
 
@@ -1658,7 +1658,7 @@ String space = prettyPrint ? " " : "";
       sb.append("id");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getId(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");
@@ -1725,7 +1725,7 @@ String space = prettyPrint ? " " : "";
       return new hasDataById_result(this);
     }
 
-    public boolean  isSuccess() {
+    public boolean isSuccess() {
       return this.success;
     }
 
@@ -1907,7 +1907,7 @@ String space = prettyPrint ? " " : "";
       sb.append("success");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. isSuccess(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.isSuccess(), indent + 1, prettyPrint));
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");
@@ -1974,7 +1974,7 @@ String space = prettyPrint ? " " : "";
       return new getDataById_args(this);
     }
 
-    public long  getId() {
+    public long getId() {
       return this.id;
     }
 
@@ -2155,7 +2155,7 @@ String space = prettyPrint ? " " : "";
       sb.append("id");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getId(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
       sb.append(")");
@@ -2219,7 +2219,7 @@ String space = prettyPrint ? " " : "";
       return new getDataById_result(this);
     }
 
-    public String  getSuccess() {
+    public String getSuccess() {
       return this.success;
     }
 
@@ -2401,10 +2401,10 @@ String space = prettyPrint ? " " : "";
       sb.append("success");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getSuccess() == null) {
+      if (this.getSuccess() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getSuccess(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -2482,7 +2482,7 @@ String space = prettyPrint ? " " : "";
       return new putDataById_args(this);
     }
 
-    public long  getId() {
+    public long getId() {
       return this.id;
     }
 
@@ -2505,7 +2505,7 @@ String space = prettyPrint ? " " : "";
       __isset_bit_vector.set(__ID_ISSET_ID, value);
     }
 
-    public String  getData() {
+    public String getData() {
       return this.data;
     }
 
@@ -2729,17 +2729,17 @@ String space = prettyPrint ? " " : "";
       sb.append("id");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getId(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
       first = false;
       if (!first) sb.append("," + newLine);
       sb.append(indentStr);
       sb.append("data");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getData() == null) {
+      if (this.getData() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getData(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getData(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
@@ -2973,7 +2973,7 @@ String space = prettyPrint ? " " : "";
       return new lobDataById_args(this);
     }
 
-    public long  getId() {
+    public long getId() {
       return this.id;
     }
 
@@ -2996,7 +2996,7 @@ String space = prettyPrint ? " " : "";
       __isset_bit_vector.set(__ID_ISSET_ID, value);
     }
 
-    public String  getData() {
+    public String getData() {
       return this.data;
     }
 
@@ -3220,17 +3220,17 @@ String space = prettyPrint ? " " : "";
       sb.append("id");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getId(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
       first = false;
       if (!first) sb.append("," + newLine);
       sb.append(indentStr);
       sb.append("data");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getData() == null) {
+      if (this.getData() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getData(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getData(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

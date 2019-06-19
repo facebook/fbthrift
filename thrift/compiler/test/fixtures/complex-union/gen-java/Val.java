@@ -99,7 +99,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     return new Val(this);
   }
 
-  public String  getStrVal() {
+  public String getStrVal() {
     return this.strVal;
   }
 
@@ -123,7 +123,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     }
   }
 
-  public int  getIntVal() {
+  public int getIntVal() {
     return this.intVal;
   }
 
@@ -146,7 +146,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     __isset_bit_vector.set(__INTVAL_ISSET_ID, value);
   }
 
-  public Map<Short,String>  getTypedefValue() {
+  public Map<Short,String> getTypedefValue() {
     return this.typedefValue;
   }
 
@@ -434,10 +434,10 @@ String space = prettyPrint ? " " : "";
     sb.append("strVal");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getStrVal() == null) {
+    if (this.getStrVal() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getStrVal(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getStrVal(), indent + 1, prettyPrint));
     }
     first = false;
     if (!first) sb.append("," + newLine);
@@ -445,17 +445,17 @@ String space = prettyPrint ? " " : "";
     sb.append("intVal");
     sb.append(space);
     sb.append(":").append(space);
-    sb.append(TBaseHelper.toString(this. getIntVal(), indent + 1, prettyPrint));
+    sb.append(TBaseHelper.toString(this.getIntVal(), indent + 1, prettyPrint));
     first = false;
     if (!first) sb.append("," + newLine);
     sb.append(indentStr);
     sb.append("typedefValue");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getTypedefValue() == null) {
+    if (this.getTypedefValue() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getTypedefValue(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getTypedefValue(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

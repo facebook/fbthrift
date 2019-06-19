@@ -381,7 +381,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     return STRUCT_DESC;
   }
 
-  public long  getIntValue() {
+  public long getIntValue() {
     if (getSetField() == INTVALUE) {
       return (Long)getFieldValue();
     } else {
@@ -394,7 +394,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     value_ = value;
   }
 
-  public String  getStringValue() {
+  public String getStringValue() {
     if (getSetField() == STRINGVALUE) {
       return (String)getFieldValue();
     } else {
@@ -408,7 +408,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     value_ = value;
   }
 
-  public List<Long>  getIntListValue() {
+  public List<Long> getIntListValue() {
     if (getSetField() == INTLISTVALUE) {
       return (List<Long>)getFieldValue();
     } else {
@@ -422,7 +422,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     value_ = value;
   }
 
-  public List<String>  getStringListValue() {
+  public List<String> getStringListValue() {
     if (getSetField() == STRINGLISTVALUE) {
       return (List<String>)getFieldValue();
     } else {
@@ -436,7 +436,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     value_ = value;
   }
 
-  public Map<Short,String>  getTypedefValue() {
+  public Map<Short,String> getTypedefValue() {
     if (getSetField() == TYPEDEFVALUE) {
       return (Map<Short,String>)getFieldValue();
     } else {
@@ -450,7 +450,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     value_ = value;
   }
 
-  public String  getStringRef() {
+  public String getStringRef() {
     if (getSetField() == STRINGREF) {
       return (String)getFieldValue();
     } else {
@@ -518,7 +518,7 @@ String space = prettyPrint ? " " : "";
       sb.append("intValue");
       sb.append(space);
       sb.append(":").append(space);
-      sb.append(TBaseHelper.toString(this. getIntValue(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getIntValue(), indent + 1, prettyPrint));
       first = false;
     }
     // Only print this field if it is the set field
@@ -529,10 +529,10 @@ String space = prettyPrint ? " " : "";
       sb.append("stringValue");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getStringValue() == null) {
+      if (this.getStringValue() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getStringValue(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getStringValue(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -544,10 +544,10 @@ String space = prettyPrint ? " " : "";
       sb.append("intListValue");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getIntListValue() == null) {
+      if (this.getIntListValue() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getIntListValue(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getIntListValue(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -559,10 +559,10 @@ String space = prettyPrint ? " " : "";
       sb.append("stringListValue");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getStringListValue() == null) {
+      if (this.getStringListValue() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getStringListValue(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getStringListValue(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -574,10 +574,10 @@ String space = prettyPrint ? " " : "";
       sb.append("typedefValue");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getTypedefValue() == null) {
+      if (this.getTypedefValue() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getTypedefValue(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getTypedefValue(), indent + 1, prettyPrint));
       }
       first = false;
     }
@@ -589,10 +589,10 @@ String space = prettyPrint ? " " : "";
       sb.append("stringRef");
       sb.append(space);
       sb.append(":").append(space);
-      if (this. getStringRef() == null) {
+      if (this.getStringRef() == null) {
         sb.append("null");
       } else {
-        sb.append(TBaseHelper.toString(this. getStringRef(), indent + 1, prettyPrint));
+        sb.append(TBaseHelper.toString(this.getStringRef(), indent + 1, prettyPrint));
       }
       first = false;
     }

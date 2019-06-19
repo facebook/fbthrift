@@ -74,7 +74,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
     return new Fiery(this);
   }
 
-  public String  getMessage() {
+  public String getMessage() {
     return this.message;
   }
 
@@ -234,10 +234,10 @@ String space = prettyPrint ? " " : "";
     sb.append("message");
     sb.append(space);
     sb.append(":").append(space);
-    if (this. getMessage() == null) {
+    if (this.getMessage() == null) {
       sb.append("null");
     } else {
-      sb.append(TBaseHelper.toString(this. getMessage(), indent + 1, prettyPrint));
+      sb.append(TBaseHelper.toString(this.getMessage(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
