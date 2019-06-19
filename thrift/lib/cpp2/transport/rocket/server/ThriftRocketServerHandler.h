@@ -34,6 +34,7 @@ class AsyncProcessor;
 class Cpp2ConnContext;
 class Cpp2Worker;
 class RequestRpcMetadata;
+class StreamClientCallback;
 class ThriftRequestCore;
 
 namespace concurrency {
@@ -71,7 +72,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       RocketServerFrameContext&& context) final;
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
-      std::shared_ptr<RocketServerStreamSubscriber> subscriber) final;
+      StreamClientCallback* clientCallback) final;
 
  private:
   const std::shared_ptr<Cpp2Worker> worker_;

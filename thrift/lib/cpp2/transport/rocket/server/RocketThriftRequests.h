@@ -32,13 +32,12 @@ namespace apache {
 namespace thrift {
 
 class AsyncProcessor;
+class StreamClientCallback;
 
 namespace rocket {
 
 class Payload;
-
 class RocketServerFrameContext;
-class RocketServerStreamSubscriber;
 
 // Object corresponding to rsocket REQUEST_RESPONSE request (single
 // request-single response) handled by Thrift server
@@ -119,7 +118,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
-      std::shared_ptr<RocketServerStreamSubscriber> subscriber,
+      StreamClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
 
   void sendThriftResponse(
@@ -145,7 +144,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
 
  private:
   folly::EventBase& evb_;
-  std::shared_ptr<RocketServerStreamSubscriber> subscriber_;
+  StreamClientCallback* clientCallback_;
 
   // Used to keep the context alive, since ThriftRequestCore only stores a
   // reference.

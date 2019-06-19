@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
+#include <folly/Utility.h>
+
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -86,27 +88,31 @@ void RSRoutingHandler::handleConnection(
   auto sockPtr = sock.get();
 
   wangle::ManagedConnection* connection = nullptr;
-  if (worker->getServer()->isRocketServerEnabled()) {
+  auto* const server = worker->getServer();
+  if (server->isRocketServerEnabled()) {
     connection = new rocket::RocketServerConnection(
         std::move(sock),
         std::make_shared<rocket::ThriftRocketServerHandler>(
-            worker, *address, sockPtr));
+            std::move(worker), *address, sockPtr),
+        server->getStreamExpireTime());
   } else {
     connection = new ManagedRSocketConnection(
-        std::move(sock), [sockPtr, worker, clientAddress = *address](auto&) {
+        std::move(sock),
+        [sockPtr,
+         worker = std::move(worker),
+         clientAddress = folly::copy(*address)](auto&) mutable {
           DCHECK(worker->getServer());
           DCHECK(worker->getServer()->getCpp2Processor());
           // RSResponder will be created per client connection. It will use
           // the current Observer of the server.
-          return std::make_shared<RSResponder>(worker, clientAddress, sockPtr);
+          return std::make_shared<RSResponder>(
+              std::move(worker), clientAddress, sockPtr);
         });
   }
 
   connectionManager->addConnection(connection);
 
-  auto server = worker->getServer();
-  auto observer = server->getObserver();
-  if (observer) {
+  if (auto* observer = server->getObserver()) {
     observer->connAccepted();
     observer->activeConnections(
         connectionManager->getNumConnections() *

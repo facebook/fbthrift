@@ -29,6 +29,9 @@ class IOBuf;
 
 namespace apache {
 namespace thrift {
+
+class RocketStreamClientCallback;
+
 namespace rocket {
 
 class RocketException;
@@ -59,7 +62,8 @@ class RocketServerFrameContext {
     return streamId_;
   }
 
-  void freeStream();
+  void scheduleStreamTimeout(RocketStreamClientCallback*);
+  void detachStreamFromConnection();
 
   RocketServerConnection& connection() {
     DCHECK(connection_);

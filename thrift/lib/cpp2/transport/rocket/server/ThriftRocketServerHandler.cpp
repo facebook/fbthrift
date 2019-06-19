@@ -166,14 +166,14 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
 
 void ThriftRocketServerHandler::handleRequestStreamFrame(
     RequestStreamFrame&& frame,
-    std::shared_ptr<RocketServerStreamSubscriber> subscriber) {
+    StreamClientCallback* clientCallback) {
   auto makeRequestStream = [&](RequestRpcMetadata&& md) {
     return std::make_unique<ThriftServerRequestStream>(
         *worker_->getEventBase(),
         serverConfigs_,
         std::move(md),
         connContext_,
-        std::move(subscriber),
+        clientCallback,
         cpp2Processor_);
   };
 

@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Serializer.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 
 namespace apache {
 namespace thrift {
@@ -86,10 +87,9 @@ void RocketServerFrameContext::onFullFrame(RequestFnfFrame&& fullFrame) && {
 void RocketServerFrameContext::onFullFrame(RequestStreamFrame&& fullFrame) && {
   auto& connection = *connection_;
   auto& frameHandler = *connection.frameHandler_;
-  auto subscriber = connection.createStreamSubscriber(
+  auto* clientCallback = connection.createStreamClientCallback(
       std::move(*this), fullFrame.initialRequestN());
-  frameHandler.handleRequestStreamFrame(
-      std::move(fullFrame), std::move(subscriber));
+  frameHandler.handleRequestStreamFrame(std::move(fullFrame), clientCallback);
 }
 
 template <class RequestFrame>
@@ -103,16 +103,19 @@ void RocketServerFrameContext::onRequestFrame(RequestFrame&& frame) && {
             std::move(*this), std::forward<RequestFrame>(frame)));
     return;
   }
-
   std::move(*this).onFullFrame(std::forward<RequestFrame>(frame));
 }
 
-void RocketServerFrameContext::freeStream() {
+void RocketServerFrameContext::scheduleStreamTimeout(
+    RocketStreamClientCallback* clientCallback) {
+  connection_->scheduleStreamTimeout(clientCallback);
+}
+
+void RocketServerFrameContext::detachStreamFromConnection() {
   connection_->streams_.erase(streamId_);
 }
 
 namespace detail {
-
 class OnPayloadVisitor : public boost::static_visitor<void> {
  public:
   OnPayloadVisitor(PayloadFrame&& payloadFrame, RocketServerFrameContext& ctx)
@@ -143,7 +146,6 @@ class OnPayloadVisitor : public boost::static_visitor<void> {
     }
   }
 };
-
 } // namespace detail
 
 void RocketServerPartialFrameContext::onPayloadFrame(

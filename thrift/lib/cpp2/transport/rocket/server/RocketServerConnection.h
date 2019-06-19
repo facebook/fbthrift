@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <chrono>
 #include <memory>
 #include <ostream>
 #include <unordered_map>
@@ -37,6 +38,9 @@
 
 namespace apache {
 namespace thrift {
+
+class RocketStreamClientCallback;
+
 namespace rocket {
 
 class RocketServerConnection
@@ -48,12 +52,12 @@ class RocketServerConnection
 
   RocketServerConnection(
       folly::AsyncTransportWrapper::UniquePtr socket,
-      std::shared_ptr<RocketServerHandler> frameHandler);
+      std::shared_ptr<RocketServerHandler> frameHandler,
+      std::chrono::milliseconds streamStarvationTimeout);
 
   void send(std::unique_ptr<folly::IOBuf> data);
 
-  // Create a stream subscriber with initialRequestN credits
-  static std::shared_ptr<RocketServerStreamSubscriber> createStreamSubscriber(
+  static RocketStreamClientCallback* createStreamClientCallback(
       RocketServerFrameContext&& context,
       uint32_t initialRequestN);
 
@@ -109,9 +113,8 @@ class RocketServerConnection
   };
   ConnectionState state_{ConnectionState::ALIVE};
 
-  // streams_ map only maintains entries for REQUEST_STREAM streams
-  std::unordered_map<StreamId, std::shared_ptr<RocketServerStreamSubscriber>>
-      streams_;
+  folly::F14FastMap<StreamId, RocketStreamClientCallback*> streams_;
+  const std::chrono::milliseconds streamStarvationTimeout_;
 
   class BatchWriteLoopCallback : public folly::EventBase::LoopCallback {
    public:
@@ -157,6 +160,8 @@ class RocketServerConnection
   void closeWhenIdle() final;
   void dropConnection() final;
   void dumpConnectionState(uint8_t) final {}
+
+  void scheduleStreamTimeout(RocketStreamClientCallback*);
 
   friend class RocketServerFrameContext;
 };

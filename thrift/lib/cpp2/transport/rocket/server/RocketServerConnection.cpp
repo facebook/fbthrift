@@ -36,7 +36,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Util.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rocket/server/RocketServerStreamSubscriber.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 
 namespace apache {
 namespace thrift {
@@ -44,25 +44,26 @@ namespace rocket {
 
 RocketServerConnection::RocketServerConnection(
     folly::AsyncTransportWrapper::UniquePtr socket,
-    std::shared_ptr<RocketServerHandler> frameHandler)
+    std::shared_ptr<RocketServerHandler> frameHandler,
+    std::chrono::milliseconds streamStarvationTimeout)
     : evb_(*socket->getEventBase()),
       socket_(std::move(socket)),
-      frameHandler_(std::move(frameHandler)) {
+      frameHandler_(std::move(frameHandler)),
+      streamStarvationTimeout_(streamStarvationTimeout) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
 }
 
-std::shared_ptr<RocketServerStreamSubscriber>
-RocketServerConnection::createStreamSubscriber(
+RocketStreamClientCallback* RocketServerConnection::createStreamClientCallback(
     RocketServerFrameContext&& context,
     uint32_t initialRequestN) {
   const auto streamId = context.streamId();
   auto& connection = context.connection();
-  auto subscriber = std::make_shared<RocketServerStreamSubscriber>(
-      std::move(context), initialRequestN);
-  connection.streams_.emplace(streamId, subscriber);
-  return subscriber;
+  auto* clientCallbackPtr =
+      new RocketStreamClientCallback(std::move(context), initialRequestN);
+  connection.streams_.emplace(streamId, clientCallbackPtr);
+  return clientCallbackPtr;
 }
 
 void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
@@ -86,7 +87,7 @@ RocketServerConnection::~RocketServerConnection() {
 
 void RocketServerConnection::closeIfNeeded() {
   if (state_ != ConnectionState::CLOSING ||
-      inflightRequests_ != streams_.size() || inflightWrites_ != 0) {
+      inflightRequests_ != getNumStreams() || inflightWrites_ != 0) {
     return;
   }
 
@@ -100,8 +101,8 @@ void RocketServerConnection::closeIfNeeded() {
   }
 
   for (auto it = streams_.begin(); it != streams_.end();) {
-    auto& subscriber = *it->second;
-    subscriber.cancel();
+    auto& clientCallback = *it->second;
+    clientCallback.cancel();
     it = streams_.erase(it);
   }
 
@@ -179,7 +180,8 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     case FrameType::CANCEL: {
       auto streamIt = streams_.find(streamId);
       if (streamIt != streams_.end()) {
-        streamIt->second->cancel();
+        auto& clientCallback = *streamIt->second;
+        clientCallback.cancel();
         streams_.erase(streamIt);
       }
       return;
@@ -287,6 +289,13 @@ void RocketServerConnection::writeErr(
       " AsyncSocketException: {}",
       bytesWritten,
       ex.what())));
+}
+
+void RocketServerConnection::scheduleStreamTimeout(
+    RocketStreamClientCallback* clientCallback) {
+  if (streamStarvationTimeout_ != std::chrono::milliseconds::zero()) {
+    evb_.timer().scheduleTimeout(clientCallback, streamStarvationTimeout_);
+  }
 }
 
 } // namespace rocket

@@ -46,6 +46,7 @@
 #include <yarpl/Single.h>
 
 #include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
@@ -55,7 +56,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rocket/server/RocketServerStreamSubscriber.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -496,8 +497,8 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
       const std::string&,
       wangle::SecureTransportType,
       const wangle::TransportInfo&) override {
-    auto* connection =
-        new RocketServerConnection(std::move(socket), frameHandler_);
+    auto* connection = new RocketServerConnection(
+        std::move(socket), frameHandler_, std::chrono::milliseconds::zero());
     getConnectionManager()->addConnection(connection);
   }
 
@@ -577,19 +578,50 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
-      std::shared_ptr<RocketServerStreamSubscriber> subscriber) final {
-    auto dataBuf = std::move(frame.payload()).data();
-    folly::StringPiece dataPiece(dataBuf->coalesce());
+      StreamClientCallback* clientCallback) final {
+    class TestRocketStreamServerCallback final : public StreamServerCallback {
+     public:
+      TestRocketStreamServerCallback(
+          StreamClientCallback* clientCallback,
+          size_t n)
+          : clientCallback_(clientCallback), n_(n) {}
 
-    if (dataPiece.removePrefix("error:application")) {
-      return Flowable<Payload>::error(
-                 folly::make_exception_wrapper<RocketException>(
-                     ErrorCode::APPLICATION_ERROR,
-                     "Application error occurred"))
-          ->subscribe(std::move(subscriber));
+      void onStreamRequestN(uint64_t tokens) override {
+        while (tokens-- && i_++ < n_) {
+          clientCallback_->onStreamNext(
+              StreamPayload{folly::IOBuf::copyBuffer(std::to_string(i_)), {}});
+        }
+        if (i_ == n_) {
+          clientCallback_->onStreamComplete();
+          delete this;
+        }
+      }
+
+      void onStreamCancel() override {
+        delete this;
+      }
+
+     private:
+      StreamClientCallback* const clientCallback_;
+      size_t i_{0};
+      const size_t n_;
+    };
+
+    folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
+    if (data.removePrefix("error:application")) {
+      return clientCallback->onStreamError(
+          folly::make_exception_wrapper<RocketException>(
+              ErrorCode::APPLICATION_ERROR, "Application error occurred"));
     }
-    makeTestFlowable<rocket::Payload>(dataPiece)->subscribe(
-        std::move(subscriber));
+
+    const size_t n =
+        data.removePrefix("generate:") ? folly::to<size_t>(data) : 500;
+    auto* serverCallback =
+        new TestRocketStreamServerCallback(clientCallback, n);
+    clientCallback->onFirstResponse(
+        FirstResponsePayload{folly::IOBuf::copyBuffer(std::to_string(0)), {}},
+        nullptr /* evb */,
+        serverCallback);
   }
 
   void setExpectedSetupMetadata(

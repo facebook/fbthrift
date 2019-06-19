@@ -27,7 +27,7 @@ class Cpp2Worker;
 class RSRoutingHandler : public TransportRoutingHandler {
  public:
   RSRoutingHandler() = default;
-  virtual ~RSRoutingHandler();
+  ~RSRoutingHandler() override;
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
 
