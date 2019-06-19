@@ -62,6 +62,12 @@ struct module_constants {
     return longDoubleValue_;
   }
 
+  static constexpr  ::cpp2::MyCompany const my_company_ = static_cast< ::cpp2::MyCompany>();
+
+  static constexpr  ::cpp2::MyCompany my_company() {
+    return my_company_;
+  }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations

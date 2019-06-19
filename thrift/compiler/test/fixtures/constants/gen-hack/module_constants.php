@@ -114,6 +114,18 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * enum module.Company my_company
+   */
+  private static ?Company $__my_company = null;
+  public static function my_company(): Company {
+    if (self::$__my_company === null) {
+      self::$__my_company = Company::FACEBOOK;
+    }
+    return self::$__my_company;
+  }
+
+  /**
+   * Original thrift constant:-
    * string foo
    */
   private static ?string $__foo = null;
@@ -782,6 +794,7 @@ class module_CONSTANTS {
         "z" => 1e+09,
         "zeroDoubleValue" => 0.0,
         "longDoubleValue" => 2.59961e-05,
+        "my_company" => Company::FACEBOOK,
         "foo" => "foo",
         "bar" => 42,
         "instagram" => new Internship(

@@ -29,7 +29,7 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range', 'struct1', 'struct2', 'struct3', 'union1', 'union2', 'MyStringIdentifier', 'MyIntIdentifier']
+__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range', 'struct1', 'struct2', 'struct3', 'union1', 'union2', 'MyCompany', 'MyStringIdentifier', 'MyIntIdentifier']
 
 class EmptyEnum:
 
@@ -989,6 +989,7 @@ class union2(object):
   def __ne__(self, other):
     return not (self == other)
 
+MyCompany = Company
 MyStringIdentifier = UnimplementedTypedef()
 MyIntIdentifier = UnimplementedTypedef()
 all_structs.append(Internship)

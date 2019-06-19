@@ -82,6 +82,14 @@ class module_CONSTANTS {
     return self::$__longDoubleValue;
   }
 
+  private static $__my_company = null;
+  public static function my_company() {
+    if (self::$__my_company == null) {
+      self::$__my_company =       0;
+    }
+    return self::$__my_company;
+  }
+
   private static $__foo = null;
   public static function foo() {
     if (self::$__foo == null) {
@@ -553,6 +561,7 @@ class module_CONSTANTS {
         "z" => 1e+09,
         "zeroDoubleValue" => 0,
         "longDoubleValue" => 2.59961e-05,
+        "my_company" =>         0,
         "foo" => "foo",
         "bar" => 42,
         "instagram" => new Internship(array(

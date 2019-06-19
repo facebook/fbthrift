@@ -29,6 +29,9 @@ enum Company {
   INSTAGRAM = 3,
 }
 
+typedef Company MyCompany
+const MyCompany my_company = FACEBOOK
+
 struct Internship {
   1: required i32 weeks;
   2: string title;

@@ -41,6 +41,8 @@ public class ModuleConstants {
 
   public static final double longDoubleValue = 2.59961e-05;
 
+  public static final ModuleEnum my_company = ModuleEnum.Company_FACEBOOK;
+
   public static final String foo = "foo";
 
   public static final int bar = 42;

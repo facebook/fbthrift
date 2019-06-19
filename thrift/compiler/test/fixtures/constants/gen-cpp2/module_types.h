@@ -146,6 +146,7 @@ class union2;
 // END forward_declare
 // BEGIN typedefs
 namespace cpp2 {
+typedef  ::cpp2::Company MyCompany;
 typedef std::string MyStringIdentifier;
 typedef int32_t MyIntIdentifier;
 

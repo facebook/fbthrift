@@ -41,6 +41,8 @@ public final class ModuleConstants {
 
     public static final double LONG_DOUBLE_VALUE = 2.59961000990301e-05;
 
+    public static final test.fixtures.constants.Company MY_COMPANY = test.fixtures.constants.Company.FACEBOOK;
+
     public static final String FOO = "foo";
 
     public static final int BAR = 42;

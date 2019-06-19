@@ -34,6 +34,8 @@ constexpr double const module_constants::zeroDoubleValue_;
 
 constexpr double const module_constants::longDoubleValue_;
 
+constexpr  ::cpp2::MyCompany const module_constants::my_company_;
+
 constexpr char const * const module_constants::foo_;
 
 constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;

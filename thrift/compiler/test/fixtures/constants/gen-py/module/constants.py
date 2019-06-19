@@ -41,6 +41,8 @@ zeroDoubleValue = 0.00000
 
 longDoubleValue = 2.59961e-05
 
+my_company = 0
+
 foo = "foo"
 
 bar = 42
