@@ -322,6 +322,10 @@ class BinaryProtocolReader {
       return fieldType == expectedFieldType;
     }
 
+    inline void skip(BinaryProtocolReader* iprot) {
+      iprot->skip(fieldType);
+    }
+
     std::string& fieldName() {
       throw std::logic_error("BinaryProtocol doesn't support field names");
     }

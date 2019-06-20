@@ -148,7 +148,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
           this->set_anInteger();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_anInteger());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -158,13 +158,13 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
           this->set_aString();
           iprot->readString(this->mutable_aString());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
@@ -357,7 +357,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -529,7 +529,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -756,7 +756,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -897,7 +897,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1121,7 +1121,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1416,7 +1416,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1578,7 +1578,7 @@ _loop:
   switch (_readState.fieldId) {
     default:
     {
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1723,7 +1723,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1952,7 +1952,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2181,7 +2181,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2410,7 +2410,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2595,7 +2595,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;

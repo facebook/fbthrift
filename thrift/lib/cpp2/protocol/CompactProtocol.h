@@ -399,6 +399,10 @@ class CompactProtocolReader {
       return fieldType == expectedFieldType;
     }
 
+    inline void skip(CompactProtocolReader* iprot) {
+      iprot->skip(fieldType);
+    }
+
     std::string& fieldName() {
       throw std::logic_error("CompactProtocol doesn't support field names");
     }

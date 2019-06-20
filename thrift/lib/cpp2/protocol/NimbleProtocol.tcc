@@ -481,9 +481,8 @@ inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
   decoder_.nextBinary(str, size);
 }
 
-inline void NimbleProtocolReader::skip(TType type) {
-  auto fieldChunkHint = ttypeToNimbleFieldChunkHint(type);
-  switch (fieldChunkHint) {
+inline void NimbleProtocolReader::skip(StructReadState& state) {
+  switch (state.fieldChunkHint) {
     case ONE_CHUNK_TYPE:
       decoder_.nextContentChunk();
       break;
@@ -532,7 +531,6 @@ bool NimbleProtocolReader::advanceToNextField(
   auto fieldChunkHint = static_cast<NimbleFieldChunkHint>(fieldChunk & 3);
   // sanity check
   if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_METADATA)) {
-    // TODO: data is malformed, handle this case
     TProtocolException::throwInvalidFieldData();
   }
   state.fieldChunkHint = fieldChunkHint;

@@ -93,6 +93,10 @@ struct ProtocolReaderStructReadState {
     return fieldType == expectedFieldType;
   }
 
+  inline void skip(Protocol* iprot) {
+    iprot->skip(fieldType);
+  }
+
   std::string& fieldName() {
     return fieldName_;
   }

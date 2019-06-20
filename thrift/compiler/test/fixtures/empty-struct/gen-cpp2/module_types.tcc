@@ -74,7 +74,7 @@ _loop:
   switch (_readState.fieldId) {
     default:
     {
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -136,7 +136,7 @@ void Nada::readNoXfer(Protocol_* iprot) {
     switch (_readState.fieldId) {
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }

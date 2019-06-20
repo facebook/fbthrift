@@ -217,7 +217,7 @@ void union1::readNoXfer(Protocol_* iprot) {
           this->set_ui();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ui());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -227,7 +227,7 @@ void union1::readNoXfer(Protocol_* iprot) {
           this->set_ud();
           iprot->readDouble(this->mutable_ud());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -237,7 +237,7 @@ void union1::readNoXfer(Protocol_* iprot) {
           this->set_us();
           iprot->readString(this->mutable_us());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -247,13 +247,13 @@ void union1::readNoXfer(Protocol_* iprot) {
           this->set_ue();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_ue());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
@@ -409,7 +409,7 @@ void union2::readNoXfer(Protocol_* iprot) {
           this->set_ui_2();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ui_2());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -419,7 +419,7 @@ void union2::readNoXfer(Protocol_* iprot) {
           this->set_ud_2();
           iprot->readDouble(this->mutable_ud_2());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -429,7 +429,7 @@ void union2::readNoXfer(Protocol_* iprot) {
           this->set_us_2();
           iprot->readString(this->mutable_us_2());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -439,13 +439,13 @@ void union2::readNoXfer(Protocol_* iprot) {
           this->set_ue_2();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_ue_2());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
@@ -601,7 +601,7 @@ void union3::readNoXfer(Protocol_* iprot) {
           this->set_ui_3();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ui_3());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -611,7 +611,7 @@ void union3::readNoXfer(Protocol_* iprot) {
           this->set_ud_3();
           iprot->readDouble(this->mutable_ud_3());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -621,7 +621,7 @@ void union3::readNoXfer(Protocol_* iprot) {
           this->set_us_3();
           iprot->readString(this->mutable_us_3());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -631,13 +631,13 @@ void union3::readNoXfer(Protocol_* iprot) {
           this->set_ue_3();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_ue_3());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
@@ -848,7 +848,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -928,7 +928,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
           this->set_i();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_i());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -938,7 +938,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
           this->set_d();
           iprot->readDouble(this->mutable_d());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -948,7 +948,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
           this->set_s();
           iprot->readString(this->mutable_s());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -958,7 +958,7 @@ void unionA::readNoXfer(Protocol_* iprot) {
           this->set_e();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, this->mutable_e());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -968,13 +968,13 @@ void unionA::readNoXfer(Protocol_* iprot) {
           this->set_a();
           ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, &this->mutable_a());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
@@ -1204,7 +1204,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1948,7 +1948,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2361,7 +2361,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2641,7 +2641,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -3157,7 +3157,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -3446,7 +3446,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -3682,7 +3682,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -3823,7 +3823,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -3972,7 +3972,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -4135,7 +4135,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -4256,7 +4256,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -4329,7 +4329,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_get();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_get());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4339,7 +4339,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_getter();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_getter());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4349,7 +4349,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_lists();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_lists());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4359,7 +4359,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_maps();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_maps());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4369,7 +4369,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_name();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_name());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4379,7 +4379,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_name_to_value();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_name_to_value());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4389,7 +4389,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_names();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_names());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4399,7 +4399,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_prefix_tree();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_prefix_tree());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4409,7 +4409,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_sets();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_sets());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4419,7 +4419,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_setter();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_setter());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4429,7 +4429,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_str();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_str());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4439,7 +4439,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_strings();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_strings());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4449,7 +4449,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_type();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_type());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4459,7 +4459,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_value();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_value());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4469,7 +4469,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_value_to_name();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_value_to_name());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4479,7 +4479,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_values();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_values());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4489,7 +4489,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_id();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_id());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4499,7 +4499,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_ids();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_ids());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4509,7 +4509,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_descriptor();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_descriptor());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4519,7 +4519,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_descriptors();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_descriptors());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4529,7 +4529,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_key();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_key());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4539,7 +4539,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_keys();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_keys());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4549,7 +4549,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_annotation();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_annotation());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4559,7 +4559,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_annotations();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_annotations());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4569,7 +4569,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_member();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_member());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4579,7 +4579,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_members();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_members());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4589,7 +4589,7 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_field();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_field());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
@@ -4599,13 +4599,13 @@ void union_with_special_names::readNoXfer(Protocol_* iprot) {
           this->set_fields();
           ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_fields());
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
@@ -5818,7 +5818,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -6198,7 +6198,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;

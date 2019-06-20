@@ -228,7 +228,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -490,7 +490,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -647,7 +647,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -754,7 +754,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -882,7 +882,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1017,7 +1017,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1152,7 +1152,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1288,7 +1288,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1423,7 +1423,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1616,7 +1616,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1729,7 +1729,7 @@ _loop:
   switch (_readState.fieldId) {
     default:
     {
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -1892,7 +1892,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2020,7 +2020,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2149,7 +2149,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2263,7 +2263,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2398,7 +2398,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;
@@ -2543,7 +2543,7 @@ _loop:
     default:
     {
 _skip:
-      iprot->skip(_readState.fieldType);
+      _readState.skip(iprot);
       _readState.readFieldEnd(iprot);
       _readState.readFieldBeginNoInline(iprot);
       goto _loop;

@@ -186,7 +186,7 @@ class NimbleProtocolReader {
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinary(folly::IOBuf& str);
   uint32_t readComplexTypeSize(detail::nimble::ComplexType complexType);
-  void skip(TType type);
+  void skip(TType /*type*/) {}
   bool peekMap() {
     return false;
   }
@@ -210,6 +210,7 @@ class NimbleProtocolReader {
     int16_t fieldId;
     apache::thrift::protocol::TType fieldType;
     detail::nimble::NimbleFieldChunkHint fieldChunkHint;
+    uint32_t fieldChunk;
 
     void readStructBegin(NimbleProtocolReader* iprot) {
       iprot->readStructBegin("");
@@ -255,6 +256,10 @@ class NimbleProtocolReader {
       return iprot->isCompatibleWithType(expectedFieldType, *this);
     }
 
+    inline void skip(NimbleProtocolReader* iprot) {
+      iprot->skip(*this);
+    }
+
     std::string& fieldName() {
       throw std::logic_error(
           "NimbleProtocolReader doesn't support field names");
@@ -271,6 +276,8 @@ class NimbleProtocolReader {
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
       TType expectedFieldType,
       StructReadState& state);
+  /* The actual method that does skip when there is a mismatch */
+  void skip(StructReadState& state);
 
  private:
   void checkComplexFieldData(

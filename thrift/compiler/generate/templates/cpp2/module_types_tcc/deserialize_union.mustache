@@ -68,14 +68,14 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
           isset_<%field:cpp_name%> = true;
 <%/field:required?%>
         } else {
-          iprot->skip(_readState.fieldType);
+          _readState.skip(iprot);
         }
         break;
       }
   <%/field:type%><%/struct:fields%>
       default:
       {
-        iprot->skip(_readState.fieldType);
+        _readState.skip(iprot);
         break;
       }
     }
