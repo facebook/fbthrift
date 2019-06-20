@@ -135,12 +135,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> MyRootAsyncClient::co_do_root() {
-  co_await semifuture_do_root();
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void MyRootAsyncClient::do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_root(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }

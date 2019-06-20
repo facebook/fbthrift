@@ -147,12 +147,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> MyServicePrioParentAsyncClient::co_ping() {
-  co_await semifuture_ping();
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void MyServicePrioParentAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -302,12 +296,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   pong(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> MyServicePrioParentAsyncClient::co_pong() {
-  co_await semifuture_pong();
-}
-#endif // FOLLY_HAS_COROUTINES
 
 void MyServicePrioParentAsyncClient::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pong(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));

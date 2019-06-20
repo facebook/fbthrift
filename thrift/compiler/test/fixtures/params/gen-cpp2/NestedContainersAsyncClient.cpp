@@ -188,12 +188,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> NestedContainersAsyncClient::co_mapList(const std::map<int32_t, std::vector<int32_t>>& foo) {
-  co_await semifuture_mapList(foo);
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void NestedContainersAsyncClient::mapList(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<int32_t, std::vector<int32_t>>& foo) {
   mapList(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
@@ -343,12 +337,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   mapSet(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> NestedContainersAsyncClient::co_mapSet(const std::map<int32_t, std::set<int32_t>>& foo) {
-  co_await semifuture_mapSet(foo);
-}
-#endif // FOLLY_HAS_COROUTINES
 
 void NestedContainersAsyncClient::mapSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<int32_t, std::set<int32_t>>& foo) {
   mapSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
@@ -500,12 +488,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> NestedContainersAsyncClient::co_listMap(const std::vector<std::map<int32_t, int32_t>>& foo) {
-  co_await semifuture_listMap(foo);
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void NestedContainersAsyncClient::listMap(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::map<int32_t, int32_t>>& foo) {
   listMap(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
@@ -656,12 +638,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> NestedContainersAsyncClient::co_listSet(const std::vector<std::set<int32_t>>& foo) {
-  co_await semifuture_listSet(foo);
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void NestedContainersAsyncClient::listSet(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::set<int32_t>>& foo) {
   listSet(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
@@ -811,12 +787,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   turtles(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> NestedContainersAsyncClient::co_turtles(const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo) {
-  co_await semifuture_turtles(foo);
-}
-#endif // FOLLY_HAS_COROUTINES
 
 void NestedContainersAsyncClient::turtles(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo) {
   turtles(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);

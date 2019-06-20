@@ -149,12 +149,6 @@ folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::un
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::co_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  co_return co_await semifuture_bounce_map(m);
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), m);
 }
@@ -304,12 +298,6 @@ folly::SemiFuture<std::pair<std::map< ::apache::thrift::fixtures::types::TBinary
   binary_keyed_map(rpcOptions, std::move(callback), r);
   return std::move(callbackAndFuture.second);
 }
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::co_binary_keyed_map(const std::vector<int64_t>& r) {
-  co_return co_await semifuture_binary_keyed_map(r);
-}
-#endif // FOLLY_HAS_COROUTINES
 
 void SomeServiceAsyncClient::binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<int64_t>& r) {
   binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), r);

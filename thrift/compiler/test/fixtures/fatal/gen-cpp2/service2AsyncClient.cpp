@@ -204,12 +204,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> service2AsyncClient::co_methodA() {
-  co_await semifuture_methodA();
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void service2AsyncClient::methodA(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodA(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -360,12 +354,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<void> service2AsyncClient::co_methodB(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-  co_await semifuture_methodB(x, y, z);
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void service2AsyncClient::methodB(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
   methodB(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), x, y, z);
 }
@@ -515,12 +503,6 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   methodC(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<int32_t> service2AsyncClient::co_methodC() {
-  co_return co_await semifuture_methodC();
-}
-#endif // FOLLY_HAS_COROUTINES
 
 void service2AsyncClient::methodC(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodC(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
@@ -674,12 +656,6 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task<int32_t> service2AsyncClient::co_methodD(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-  co_return co_await semifuture_methodD(i, j, k);
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void service2AsyncClient::methodD(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
   methodD(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), i, j, k);
 }
@@ -832,12 +808,6 @@ folly::SemiFuture<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_p
   return std::move(callbackAndFuture.second);
 }
 
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> service2AsyncClient::co_methodE() {
-  co_return co_await semifuture_methodE();
-}
-#endif // FOLLY_HAS_COROUTINES
-
 void service2AsyncClient::methodE(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodE(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -987,12 +957,6 @@ folly::SemiFuture<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_p
   methodF(rpcOptions, std::move(callback), l, m, n);
   return std::move(callbackAndFuture.second);
 }
-
-#if FOLLY_HAS_COROUTINES
-folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> service2AsyncClient::co_methodF(int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-  co_return co_await semifuture_methodF(l, m, n);
-}
-#endif // FOLLY_HAS_COROUTINES
 
 void service2AsyncClient::methodF(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
   methodF(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), l, m, n);
