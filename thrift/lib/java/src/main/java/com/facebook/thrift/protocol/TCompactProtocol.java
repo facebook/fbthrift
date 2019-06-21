@@ -59,10 +59,18 @@ public class TCompactProtocol extends TProtocol {
   /** TProtocolFactory that produces TCompactProtocols. */
   @SuppressWarnings("serial")
   public static class Factory implements TProtocolFactory {
-    public Factory() {}
+    private final long maxNetworkBytes_;
+
+    public Factory() {
+      maxNetworkBytes_ = -1;
+    }
+
+    public Factory(int maxNetworkBytes) {
+      maxNetworkBytes_ = maxNetworkBytes;
+    }
 
     public TProtocol getProtocol(TTransport trans) {
-      return new TCompactProtocol(trans);
+      return new TCompactProtocol(trans, maxNetworkBytes_);
     }
   }
 
@@ -113,6 +121,12 @@ public class TCompactProtocol extends TProtocol {
    */
   private Boolean boolValue_ = null;
 
+  /**
+   * The maximum number of bytes to read from the network for variable-length fields (such as
+   * strings or binary) or -1 for unlimited.
+   */
+  private final long maxNetworkBytes_;
+
   /** Temporary buffer to avoid allocations */
   private final byte[] buffer = new byte[10];
 
@@ -120,9 +134,20 @@ public class TCompactProtocol extends TProtocol {
    * Create a TCompactProtocol.
    *
    * @param transport the TTransport object to read from or write to.
+   * @param maxNetworkBytes the maximum number of bytes to read for variable-length fields.
+   */
+  public TCompactProtocol(TTransport transport, long maxNetworkBytes) {
+    super(transport);
+    maxNetworkBytes_ = maxNetworkBytes;
+  }
+
+  /**
+   * Create a TCompactProtocol.
+   *
+   * @param transport the TTransport object to read from or write to.
    */
   public TCompactProtocol(TTransport transport) {
-    super(transport);
+    this(transport, -1);
   }
 
   public void reset() {
@@ -582,6 +607,7 @@ public class TCompactProtocol extends TProtocol {
   /** Reads a byte[] (via readBinary), and then UTF-8 decodes it. */
   public String readString() throws TException {
     int length = readVarint32();
+    checkReadLength(length);
 
     if (length == 0) {
       return "";
@@ -601,6 +627,7 @@ public class TCompactProtocol extends TProtocol {
   /** Read a byte[] from the wire. */
   public byte[] readBinary() throws TException {
     int length = readVarint32();
+    checkReadLength(length);
     return readBinary(length);
   }
 
@@ -612,6 +639,15 @@ public class TCompactProtocol extends TProtocol {
     byte[] buf = new byte[length];
     trans_.readAll(buf, 0, length);
     return buf;
+  }
+
+  private void checkReadLength(int length) throws TProtocolException {
+    if (length < 0) {
+      throw new TProtocolException("Negative length: " + length);
+    }
+    if (maxNetworkBytes_ != -1 && length > maxNetworkBytes_) {
+      throw new TProtocolException("Length exceeded max allowed: " + length);
+    }
   }
 
   //
