@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,14 +18,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef T_SCOPE_H
 #define T_SCOPE_H
 
 #include <map>
-#include <string>
+#include <set>
 
 #include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -58,13 +60,22 @@ class t_scope {
     return services_[name];
   }
 
-  void add_constant(std::string name, t_const* constant) {
-    constants_[name] = constant;
-  }
+  void add_constant(std::string name, t_const* constant);
+
+  std::vector<std::string> split_string_by_periods(std::string str);
+
+  std::string join_strings_by_commas(std::set<std::string> strs);
 
   t_const* get_constant(std::string name) {
     return constants_[name];
   }
+
+  bool is_ambiguous_enum_value(std::string enum_value_name) {
+    return redefined_enum_values_.find(enum_value_name) !=
+        redefined_enum_values_.end();
+  }
+
+  std::string get_fully_qualified_enum_value_names(std::string name);
 
   void print() {
     std::map<std::string, t_type*>::iterator iter;
@@ -83,6 +94,13 @@ class t_scope {
 
   // Map of names to services
   std::map<std::string, t_service*> services_;
+
+  // Set of enum_values that are redefined and are ambiguous
+  // if referred to without the enum name
+  std::set<std::string> redefined_enum_values_;
+
+  // Map of enum_values to their definition full names
+  std::map<std::string, std::set<std::string>> enum_values_;
 };
 
 } // namespace compiler

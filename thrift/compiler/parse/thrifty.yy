@@ -754,8 +754,11 @@ ConstValue:
     {
       driver.debug("ConstValue => tok_identifier");
       t_const* constant = driver.scope_cache->get_constant($1);
+      driver.validate_not_ambiguous_enum($1);
       if (!constant) {
-        constant = driver.scope_cache->get_constant(driver.program->get_name() + "." + $1);
+        auto name_with_program_name = driver.program->get_name() + "." + $1;
+        constant = driver.scope_cache->get_constant(name_with_program_name);
+        driver.validate_not_ambiguous_enum(name_with_program_name);
       }
       if (constant != nullptr) {
         // Copy const_value to perform isolated mutations

@@ -394,6 +394,19 @@ void parsing_driver::validate_field_value(t_field* field, t_const_value* cv) {
   validate_const_rec(field->get_name(), field->get_type(), cv);
 }
 
+void parsing_driver::validate_not_ambiguous_enum(const std::string& name) {
+  if (scope_cache->is_ambiguous_enum_value(name)) {
+    std::string possible_enums =
+        scope_cache->get_fully_qualified_enum_value_names(name).c_str();
+    std::string msg = "The ambiguous enum " + name +
+        " is defined in more than one place. " +
+        "Please refer to this enum using ENUM_NAME.ENUM_VALUE.";
+    if (!possible_enums.empty()) {
+      msg += (" Possible options: " + possible_enums);
+    }
+    warning(1, msg.c_str());
+  }
+}
 void parsing_driver::clear_doctext() {
   if (doctext) {
     warning(2, "Uncaptured doctext at on line %d.", doctext_lineno);

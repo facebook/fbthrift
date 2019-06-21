@@ -284,6 +284,13 @@ class parsing_driver {
   void validate_field_value(t_field* field, t_const_value* cv);
 
   /**
+   * Check that the constant name does not refer to an ambiguous enum.
+   * An ambiguous enum is one that is redefined but not referred to by
+   * ENUM_NAME.ENUM_VALUE.
+   */
+  void validate_not_ambiguous_enum(const std::string& name);
+
+  /**
    * Clears any previously stored doctext string.
    * Also prints a warning if we are discarding information.
    */

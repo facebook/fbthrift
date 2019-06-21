@@ -24,6 +24,7 @@ add_library(
   ast/t_type.cc
   ast/t_typedef.cc
   ast/base_types.cc
+  ast/t_scope.cc
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
 
