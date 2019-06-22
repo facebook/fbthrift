@@ -124,7 +124,12 @@ std::unique_ptr<RequestRpcMetadata> ThriftClient::createRequestRpcMetadata(
   otherMetadata = header->releaseWriteHeaders();
   auto* eh = header->getExtraWriteHeaders();
   if (eh) {
-    otherMetadata->insert(eh->begin(), eh->end());
+    // Extra write headers always take precedence over write headers (see
+    // THeader.cpp). We must copy here since we don't own the extra write
+    // headers.
+    for (const auto& entry : *eh) {
+      (*otherMetadata)[entry.first] = entry.second;
+    }
   }
   auto& pwh = getPersistentWriteHeaders();
   otherMetadata->insert(pwh.begin(), pwh.end());

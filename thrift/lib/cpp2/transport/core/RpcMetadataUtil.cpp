@@ -60,7 +60,12 @@ RequestRpcMetadata makeRequestRpcMetadata(
 
   auto writeHeaders = header.releaseWriteHeaders();
   if (auto* eh = header.getExtraWriteHeaders()) {
-    writeHeaders.insert(eh->begin(), eh->end());
+    // Extra write headers always take precedence over write headers (see
+    // THeader.cpp). We must copy here since we don't own the extra write
+    // headers.
+    for (const auto& entry : *eh) {
+      writeHeaders[entry.first] = entry.second;
+    }
   }
   writeHeaders.insert(
       persistentWriteHeaders.begin(), persistentWriteHeaders.end());
