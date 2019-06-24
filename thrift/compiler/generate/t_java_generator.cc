@@ -3047,44 +3047,41 @@ void t_java_generator::generate_deserialize_field(
                 << ".findByValue(iprot.readI32());" << endl;
   } else if (type->is_base_type()) {
     indent(out) << name << " = iprot.";
-
-    if (type->is_base_type()) {
-      t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
-      switch (tbase) {
-        case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
-        case t_base_type::TYPE_STRING:
-          out << "readString();";
-          break;
-        case t_base_type::TYPE_BINARY:
-          out << "readBinary();";
-          break;
-        case t_base_type::TYPE_BOOL:
-          out << "readBool();";
-          break;
-        case t_base_type::TYPE_BYTE:
-          out << "readByte();";
-          break;
-        case t_base_type::TYPE_I16:
-          out << "readI16();";
-          break;
-        case t_base_type::TYPE_I32:
-          out << "readI32();";
-          break;
-        case t_base_type::TYPE_I64:
-          out << "readI64();";
-          break;
-        case t_base_type::TYPE_DOUBLE:
-          out << "readDouble();";
-          break;
-        case t_base_type::TYPE_FLOAT:
-          out << "readFloat();";
-          break;
-        default:
-          throw "compiler error: no Java name for base type " +
-              t_base_type::t_base_name(tbase);
-      }
+    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    switch (tbase) {
+      case t_base_type::TYPE_VOID:
+        throw "compiler error: cannot serialize void field in a struct: " +
+            name;
+      case t_base_type::TYPE_STRING:
+        out << "readString();";
+        break;
+      case t_base_type::TYPE_BINARY:
+        out << "readBinary();";
+        break;
+      case t_base_type::TYPE_BOOL:
+        out << "readBool();";
+        break;
+      case t_base_type::TYPE_BYTE:
+        out << "readByte();";
+        break;
+      case t_base_type::TYPE_I16:
+        out << "readI16();";
+        break;
+      case t_base_type::TYPE_I32:
+        out << "readI32();";
+        break;
+      case t_base_type::TYPE_I64:
+        out << "readI64();";
+        break;
+      case t_base_type::TYPE_DOUBLE:
+        out << "readDouble();";
+        break;
+      case t_base_type::TYPE_FLOAT:
+        out << "readFloat();";
+        break;
+      default:
+        throw "compiler error: no Java name for base type " +
+            t_base_type::t_base_name(tbase);
     }
     out << endl;
   } else {
@@ -3276,43 +3273,41 @@ void t_java_generator::generate_serialize_field(
     string name = prefix + tfield->get_name();
     indent(out) << "oprot.";
 
-    if (type->is_base_type()) {
-      t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
-      switch (tbase) {
-        case t_base_type::TYPE_VOID:
-          throw "compiler error: cannot serialize void field in a struct: " +
-              name;
-        case t_base_type::TYPE_STRING:
-          out << "writeString(" << name << ");";
-          break;
-        case t_base_type::TYPE_BINARY:
-          out << "writeBinary(" << name << ");";
-          break;
-        case t_base_type::TYPE_BOOL:
-          out << "writeBool(" << name << ");";
-          break;
-        case t_base_type::TYPE_BYTE:
-          out << "writeByte(" << name << ");";
-          break;
-        case t_base_type::TYPE_I16:
-          out << "writeI16(" << name << ");";
-          break;
-        case t_base_type::TYPE_I32:
-          out << "writeI32(" << name << ");";
-          break;
-        case t_base_type::TYPE_I64:
-          out << "writeI64(" << name << ");";
-          break;
-        case t_base_type::TYPE_DOUBLE:
-          out << "writeDouble(" << name << ");";
-          break;
-        case t_base_type::TYPE_FLOAT:
-          out << "writeFloat(" << name << ");";
-          break;
-        default:
-          throw "compiler error: no Java name for base type " +
-              t_base_type::t_base_name(tbase);
-      }
+    t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
+    switch (tbase) {
+      case t_base_type::TYPE_VOID:
+        throw "compiler error: cannot serialize void field in a struct: " +
+            name;
+      case t_base_type::TYPE_STRING:
+        out << "writeString(" << name << ");";
+        break;
+      case t_base_type::TYPE_BINARY:
+        out << "writeBinary(" << name << ");";
+        break;
+      case t_base_type::TYPE_BOOL:
+        out << "writeBool(" << name << ");";
+        break;
+      case t_base_type::TYPE_BYTE:
+        out << "writeByte(" << name << ");";
+        break;
+      case t_base_type::TYPE_I16:
+        out << "writeI16(" << name << ");";
+        break;
+      case t_base_type::TYPE_I32:
+        out << "writeI32(" << name << ");";
+        break;
+      case t_base_type::TYPE_I64:
+        out << "writeI64(" << name << ");";
+        break;
+      case t_base_type::TYPE_DOUBLE:
+        out << "writeDouble(" << name << ");";
+        break;
+      case t_base_type::TYPE_FLOAT:
+        out << "writeFloat(" << name << ");";
+        break;
+      default:
+        throw "compiler error: no Java name for base type " +
+            t_base_type::t_base_name(tbase);
     }
     out << endl;
   } else {
