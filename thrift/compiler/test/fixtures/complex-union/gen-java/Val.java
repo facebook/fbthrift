@@ -423,7 +423,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("Val");
     sb.append(space);
     sb.append("(");

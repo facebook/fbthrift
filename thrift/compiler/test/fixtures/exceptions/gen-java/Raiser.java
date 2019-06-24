@@ -713,7 +713,7 @@ public class Raiser {
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("doBland_args");
       sb.append(space);
       sb.append("(");
@@ -868,7 +868,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("doBland_result");
       sb.append(space);
       sb.append("(");
@@ -1024,7 +1024,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("doRaise_args");
       sb.append(space);
       sb.append("(");
@@ -1377,7 +1377,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("doRaise_result");
       sb.append(space);
       sb.append("(");
@@ -1565,7 +1565,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("get200_args");
       sb.append(space);
       sb.append("(");
@@ -1804,7 +1804,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("get200_result");
       sb.append(space);
       sb.append("(");
@@ -1970,7 +1970,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("get500_args");
       sb.append(space);
       sb.append("(");
@@ -2390,7 +2390,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("get500_result");
       sb.append(space);
       sb.append("(");

@@ -453,7 +453,7 @@ public class MyServicePrioParent {
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("ping_args");
       sb.append(space);
       sb.append("(");
@@ -608,7 +608,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("ping_result");
       sb.append(space);
       sb.append("(");
@@ -764,7 +764,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("pong_args");
       sb.append(space);
       sb.append("(");
@@ -919,7 +919,7 @@ String space = prettyPrint ? " " : "";
     public String toString(int indent, boolean prettyPrint) {
       String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
       String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+      String space = prettyPrint ? " " : "";
       StringBuilder sb = new StringBuilder("pong_result");
       sb.append(space);
       sb.append("(");

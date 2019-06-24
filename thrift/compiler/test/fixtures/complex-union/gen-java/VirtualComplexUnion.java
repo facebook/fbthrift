@@ -248,7 +248,7 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("VirtualComplexUnion");
     sb.append(space);
     sb.append("(");

@@ -247,7 +247,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("MyUnion");
     sb.append(space);
     sb.append("(");

@@ -569,7 +569,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("Vehicle");
     sb.append(space);
     sb.append("(");

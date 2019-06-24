@@ -419,7 +419,7 @@ public class StructWithRefTypeUnique implements TBase, java.io.Serializable, Clo
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("StructWithRefTypeUnique");
     sb.append(space);
     sb.append("(");

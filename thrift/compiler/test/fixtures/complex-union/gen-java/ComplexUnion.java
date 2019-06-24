@@ -504,7 +504,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("ComplexUnion");
     sb.append(space);
     sb.append("(");

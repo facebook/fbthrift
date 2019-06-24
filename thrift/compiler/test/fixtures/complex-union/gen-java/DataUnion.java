@@ -248,7 +248,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("DataUnion");
     sb.append(space);
     sb.append("(");

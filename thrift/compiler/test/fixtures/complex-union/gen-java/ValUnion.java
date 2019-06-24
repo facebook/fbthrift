@@ -250,7 +250,7 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
   public String toString(int indent, boolean prettyPrint) {
     String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
-String space = prettyPrint ? " " : "";
+    String space = prettyPrint ? " " : "";
     StringBuilder sb = new StringBuilder("ValUnion");
     sb.append(space);
     sb.append("(");
