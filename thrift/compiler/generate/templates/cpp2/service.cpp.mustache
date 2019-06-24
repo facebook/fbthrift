@@ -48,6 +48,10 @@ bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> <%service:name%>AsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 <% > service_cpp/oneway_methods%>
 <% > service_cpp/cache_key_map%>
 <% > service_cpp/binary_processmap%>

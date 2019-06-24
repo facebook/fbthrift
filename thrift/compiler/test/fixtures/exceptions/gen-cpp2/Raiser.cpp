@@ -116,6 +116,10 @@ bool RaiserAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache:
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> RaiserAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> RaiserAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> RaiserAsyncProcessor::cacheKeyMap_ {};
 const RaiserAsyncProcessor::ProcessMap& RaiserAsyncProcessor::getBinaryProtocolProcessMap() {

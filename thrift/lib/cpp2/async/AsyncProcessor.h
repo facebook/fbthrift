@@ -141,6 +141,10 @@ class AsyncProcessor : public TProcessorBase {
   virtual bool isOnewayMethod(
       const folly::IOBuf* buf,
       const transport::THeader* header) = 0;
+
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
+    return nullptr;
+  }
 };
 
 class GeneratedAsyncProcessor : public AsyncProcessor {
@@ -1057,6 +1061,15 @@ class ServerInterface : public AsyncProcessorFactory {
 
   folly::EventBase* getEventBase() {
     return requestParams_.eventBase_;
+  }
+
+  /**
+   * Override to return a pre-initialized RequestContext.
+   * Its content will be copied in the RequestContext initialized at
+   * the beginning of each thrift request processing.
+   */
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
+    return nullptr;
   }
 
   virtual apache::thrift::concurrency::PRIORITY getRequestPriority(

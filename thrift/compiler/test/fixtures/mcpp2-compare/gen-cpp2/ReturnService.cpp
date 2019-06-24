@@ -447,6 +447,10 @@ bool ReturnServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const 
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> ReturnServiceAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> ReturnServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> ReturnServiceAsyncProcessor::cacheKeyMap_ {};
 const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getBinaryProtocolProcessMap() {

@@ -103,6 +103,10 @@ bool MyServiceFastAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const 
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> MyServiceFastAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> MyServiceFastAsyncProcessor::onewayMethods_ {
   "lobDataById"
 };

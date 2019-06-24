@@ -188,6 +188,10 @@ bool ExtraServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const a
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> ExtraServiceAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> ExtraServiceAsyncProcessor::onewayMethods_ {
   "oneway_void_ret",
   "oneway_void_ret_i32_i32_i32_i32_i32_param",

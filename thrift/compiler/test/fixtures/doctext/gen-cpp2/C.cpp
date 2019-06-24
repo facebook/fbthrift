@@ -55,6 +55,10 @@ bool CAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thri
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> CAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> CAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> CAsyncProcessor::cacheKeyMap_ {};
 const CAsyncProcessor::ProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap() {

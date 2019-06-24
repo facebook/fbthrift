@@ -181,6 +181,10 @@ bool PubSubStreamingServiceAsyncProcessor::isOnewayMethod(const folly::IOBuf* bu
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> PubSubStreamingServiceAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> PubSubStreamingServiceAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> PubSubStreamingServiceAsyncProcessor::cacheKeyMap_ {};
 const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAsyncProcessor::getBinaryProtocolProcessMap() {

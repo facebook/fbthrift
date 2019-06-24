@@ -139,6 +139,10 @@ bool NestedContainersAsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
+std::shared_ptr<folly::RequestContext> NestedContainersAsyncProcessor::getBaseContextForRequest() {
+  return iface_->getBaseContextForRequest();
+}
+
 std::unordered_set<std::string> NestedContainersAsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> NestedContainersAsyncProcessor::cacheKeyMap_ {};
 const NestedContainersAsyncProcessor::ProcessMap& NestedContainersAsyncProcessor::getBinaryProtocolProcessMap() {
