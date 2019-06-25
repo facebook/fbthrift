@@ -100,19 +100,7 @@ void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(std::unique_p
       <%#function:takenStreamType%><%#type:streamElemType%><% > types/type %><%/type:streamElemType%><%/function:takenStreamType%>>(req->extractStream());
   <%/function:takes_stream?%>
 <%^type:resolves_to_complex_return?%>
-  <%^type:deprecated_stream?%>
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/type%>>>(std::move(req), std::move(ctxStack), return_<%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  <%/type:deprecated_stream?%>
-  <%#type:deprecated_stream?%>
-    <%#type:streamElemType%>
-      <%#type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::StreamingHandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-      <%/type:resolves_to_complex_return?%>
-      <%^type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::StreamingHandlerCallback<<% > types/type%>>>(std::move(req), std::move(ctxStack), return_<%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-      <%/type:resolves_to_complex_return?%>
-    <%/type:streamElemType%>
-  <%/type:deprecated_stream?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>>(std::move(req), std::move(ctxStack), return_<%function:cpp_name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
@@ -139,19 +127,12 @@ template <class ProtocolIn_, class ProtocolOut_>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
 <%/type:void?%>
 <%^type:void?%>
-  <%^type:deprecated_stream?%>
     <%^type:stream?%>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
     <%/type:stream?%>
     <%#type:stream?%>
 apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> _return) {
     <%/type:stream?%>
-  <%/type:deprecated_stream?%>
-  <%#type:deprecated_stream?%>
-    <%#type:streamElemType%>
-folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
-    <%/type:streamElemType%>
-  <%/type:deprecated_stream?%>
 <%/type:void?%>
   ProtocolOut_ prot;
   <%#function:returns_stream?%>
@@ -161,7 +142,6 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(i
   <%service:name%>_<%function:cpp_name%>_presult result;
   <%/function:returns_stream?%>
 <%^type:void?%>
-  <%^type:deprecated_stream?%>
     <%^function:returns_stream?%>
   result.get<0>().value = const_cast<<% > types/type%>*>(&_return);
   result.setIsSet(0, true);
@@ -198,14 +178,6 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(i
   auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
   return {serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
     <%/function:returns_stream?%>
-  <%/type:deprecated_stream?%>
-  <%#type:deprecated_stream?%>
-    <%#type:streamElemType%>
-  result.get<0>().value = const_cast<<% > types/type%>*>(&_return);
-  result.setIsSet(0, true);
-  return serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
-    <%/type:streamElemType%>
-  <%/type:deprecated_stream?%>
 <%/type:void?%>
 <%#type:void?%>
   return serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);

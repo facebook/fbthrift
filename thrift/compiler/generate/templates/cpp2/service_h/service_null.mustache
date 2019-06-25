@@ -16,12 +16,12 @@
 
 %>class <%service:name%>SvNull : public <%service:name%>SvIf<%#service:extends%>, virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%> {
  public:
-<%#service:functions%><%#function:returnType%><%^function:eb%><%^type:deprecated_stream?%>
+<%#service:functions%><%#function:returnType%><%^function:eb%>
 <%^type:resolves_to_complex_return?%>
   <% > types/type%> <%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   void <%function:cpp_name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) override;
 <%/type:resolves_to_complex_return?%>
-<%/type:deprecated_stream?%><%/function:eb%><%/function:returnType%><%/service:functions%>
+<%/function:eb%><%/function:returnType%><%/service:functions%>
 };

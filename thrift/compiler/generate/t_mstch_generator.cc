@@ -168,10 +168,6 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
     result.emplace(
         "listElemType",
         dump(*dynamic_cast<const t_list&>(type).get_elem_type()));
-  } else if (type.is_stream()) {
-    result.emplace(
-        "streamElemType",
-        dump(*dynamic_cast<const t_stream&>(type).get_elem_type()));
   } else if (type.is_set()) {
     result.emplace(
         "setElemType", dump(*dynamic_cast<const t_set&>(type).get_elem_type()));

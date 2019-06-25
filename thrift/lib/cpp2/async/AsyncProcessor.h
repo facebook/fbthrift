@@ -34,7 +34,6 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <wangle/deprecated/rx/Observer.h>
 
 namespace apache {
 namespace thrift {
@@ -892,97 +891,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
     auto queue = cp_(this->protoSeqId_, this->ctx_.get());
     this->ctx_.reset();
     sendReply(std::move(queue));
-  }
-
-  cob_ptr cp_;
-};
-
-template <typename T>
-class StreamingHandlerCallback
-    : public HandlerCallbackBase,
-      public wangle::Observer<typename detail::inner_type<T>::type> {
- public:
-  typedef typename detail::inner_type<T>::type ResultType;
-
- private:
-  typedef folly::IOBufQueue (*cob_ptr)(
-      int32_t protoSeqId,
-      apache::thrift::ContextStack*,
-      const ResultType&);
-
- public:
-  StreamingHandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      cob_ptr cp,
-      exnw_ptr ewp,
-      int32_t protoSeqId,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx)
-      : HandlerCallbackBase(
-            std::move(req),
-            std::move(ctx),
-            ewp,
-            eb,
-            tm,
-            reqCtx),
-        cp_(cp) {
-    this->protoSeqId_ = protoSeqId;
-  }
-
-  void write(const ResultType& r) {
-    assert(cp_);
-    auto queue = cp_(this->protoSeqId_, ctx_.get(), r);
-    sendReplyNonDestructive(std::move(queue), "thrift_stream", "chunk");
-  }
-
-  void done() {
-    auto queue = cp_(this->protoSeqId_, ctx_.get(), ResultType());
-    ctx_.reset();
-    sendReply(std::move(queue));
-  }
-
-  void doneAndDelete() {
-    done();
-    delete this;
-  }
-
-  void resultInThread(const ResultType&) {
-    LOG(FATAL) << "resultInThread";
-  }
-
-  // Observer overrides
-  void onNext(const ResultType& r) override {
-    write(r);
-  }
-
-  void onCompleted() override {
-    done();
-  }
-
-  void onError(wangle::Error e) override {
-    exception(e);
-  }
-
- private:
-  void sendReplyNonDestructive(
-      folly::IOBufQueue queue,
-      const std::string& key,
-      const std::string& value) {
-    folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-    transform(queue);
-    if (getEventBase()->isInEventBaseThread()) {
-      reqCtx_->setHeader(key, value);
-      req_->sendReply(queue.move(), nullptr, crc32c);
-    } else {
-      auto req_raw = req_.get();
-      getEventBase()->runInEventBaseThread(
-          [=, queue = std::move(queue)]() mutable {
-            reqCtx_->setHeader(key, value);
-            req_raw->sendReply(queue.move(), nullptr, crc32c);
-          });
-    }
   }
 
   cob_ptr cp_;

@@ -25,38 +25,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-/**
- * A stream is a lightweight object type that just wraps another data type.
- *
- */
-class t_stream : public t_type {
- public:
-  explicit t_stream(t_type* elem_type) : elem_type_(elem_type) {}
-
-  t_type* get_elem_type() const {
-    return elem_type_;
-  }
-
-  bool is_stream() const override {
-    return true;
-  }
-
-  std::string get_full_name() const override {
-    return "stream<" + elem_type_->get_full_name() + ">";
-  }
-
-  std::string get_impl_full_name() const override {
-    return "stream<" + elem_type_->get_impl_full_name() + ">";
-  }
-
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_STREAM;
-  }
-
- private:
-  t_type* elem_type_;
-};
-
 class t_pubsub_stream : public t_type {
  public:
   explicit t_pubsub_stream(t_type* elem_type) : elem_type_(elem_type) {}

@@ -38,7 +38,6 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-#include <wangle/deprecated/rx/Subject.h>
 
 namespace folly {
 class IOBuf;
@@ -246,27 +245,6 @@ class ClientSyncCallback : public RequestClientCallback {
   ClientReceiveState* rs_;
   folly::fibers::Baton doneBaton_;
 };
-
-template <typename T>
-void clientCallbackToObservable(
-    ClientReceiveState& state,
-    folly::exception_wrapper (*recv_wrapped)(T&, ClientReceiveState&),
-    wangle::SubjectPtr<T>& subj) {
-  if (auto const& ew = state.exception()) {
-    subj->onError(ew);
-    return;
-  }
-  T value;
-  if (auto ew = recv_wrapped(value, state)) {
-    subj->onError(ew);
-    return;
-  }
-  if (state.isStreamEnd()) {
-    subj->onCompleted();
-    return;
-  }
-  subj->onNext(value);
-}
 
 template <class Protocol>
 void clientSendT(

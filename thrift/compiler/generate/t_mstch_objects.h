@@ -597,7 +597,6 @@ class mstch_type : public mstch_base {
             {"type:stream?", &mstch_type::is_stream},
             {"type:streamresponse?", &mstch_type::is_streamresponse},
             {"type:extratype?", &mstch_type::has_extratype},
-            {"type:deprecated_stream?", &mstch_type::is_deprecated_stream},
             {"type:service?", &mstch_type::is_service},
             {"type:base?", &mstch_type::is_base},
             {"type:container?", &mstch_type::is_container},
@@ -664,9 +663,6 @@ class mstch_type : public mstch_base {
   }
   mstch::node has_extratype() {
     return resolved_type_->has_extratype();
-  }
-  mstch::node is_deprecated_stream() {
-    return resolved_type_->is_stream();
   }
   mstch::node is_service() {
     return resolved_type_->is_service();

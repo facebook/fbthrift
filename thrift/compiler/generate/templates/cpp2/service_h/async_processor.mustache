@@ -56,19 +56,12 @@
   static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
 <%/type:void?%>
 <%^type:void?%>
-  <%^type:deprecated_stream?%>
-    <%^type:stream?%>
+  <%^type:stream?%>
   static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
-    <%/type:stream?%>
-    <%#type:stream?%>
+  <%/type:stream?%>
+  <%#type:stream?%>
   static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> _return);
-    <%/type:stream?%>
-  <%/type:deprecated_stream?%>
-  <%#type:deprecated_stream?%>
-    <%#type:streamElemType%>
-  static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
-    <%/type:streamElemType%>
-  <%/type:deprecated_stream?%>
+  <%/type:stream?%>
 <%/type:void?%>
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);

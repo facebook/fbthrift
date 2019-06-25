@@ -28,28 +28,6 @@
  private:
   void <%function:cpp_name%>Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback<%function:comma%><% > service_common/function_param_list_const%>);
  public:
-<%#type:deprecated_stream?%>
-  <%#type:streamElemType%>
-  virtual void <%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>);
-  virtual wangle::ObservablePtr<<% > types/type%>> observable_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
-  virtual wangle::ObservablePtr<<% > types/type%>> observable_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
-  static folly::exception_wrapper recv_wrapped_<%function:cpp_name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
-    <%#type:resolves_to_complex_return?%>
-  static void recv_<%function:cpp_name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual void recv_instance_<%function:cpp_name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
-    <%/type:resolves_to_complex_return?%>
-    <%^type:resolves_to_complex_return?%>
-  static <% > types/type%> recv_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);
-  // Mock friendly virtual instance method
-  virtual <% > types/type%> recv_instance_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);
-    <%/type:resolves_to_complex_return?%>
-  virtual folly::exception_wrapper recv_instance_wrapped_<%function:cpp_name%>(<% > types/type%>& _return, ::apache::thrift::ClientReceiveState& state);
-  template <typename Protocol_>
-  void <%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback<%function:comma%><% > service_common/function_param_list_const%>);
-  <%/type:streamElemType%>
-<%/type:deprecated_stream?%>
-<%^type:deprecated_stream?%>
 <%^type:resolves_to_complex_return?%>
   virtual <% > types/semi_type%> sync_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
   virtual <% > types/semi_type%> sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
@@ -102,6 +80,5 @@
  public:
 <%/function:oneway?%>
 <%/type:void?%>
-<%/type:deprecated_stream?%>
 <%/function:returnType%><%/service:functions%>
 };

@@ -123,8 +123,6 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %define api.value.type variant
 %define api.namespace {apache::thrift::yy}
 
-%expect 1
-
 %param {apache::thrift::parsing_driver& driver} {yyscan_t raw_scanner}
 
 /**
@@ -234,7 +232,6 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_type*>          MapType
 %type<t_type*>          SetType
 %type<t_type*>          ListType
-%type<t_type*>          StreamType
 
 %type<t_doc*>           Definition
 %type<t_type*>          TypeDefinition
@@ -1436,11 +1433,6 @@ SimpleContainerType:
       driver.debug("SimpleContainerType -> ListType");
       $$ = $1;
     }
-| StreamType
-    {
-      driver.debug("SimpleContainerType -> StreamType");
-      $$ = $1;
-    }
 
 MapType:
   tok_map "<" FieldType "," FieldType ">"
@@ -1461,13 +1453,6 @@ ListType:
     {
       driver.debug("ListType -> tok_list<FieldType>");
       $$ = new t_list($3);
-    }
-
-StreamType:
-  tok_stream "<" FieldType ">"
-    {
-      driver.debug("StreamType -> tok_stream<FieldType>");
-      $$ = new t_stream($3);
     }
 
 TypeAnnotations:
