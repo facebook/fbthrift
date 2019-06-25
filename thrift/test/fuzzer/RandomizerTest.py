@@ -770,6 +770,14 @@ class TestStructRandomizer(TestRandomizer, unittest.TestCase):
             self.assertIsNotNone(val.c.a)
             self.assertIsNone(val.c.b)
 
+    def testEmptyUnion(self):
+        cls = self.__class__
+        constraints = {}
+        gen = self.struct_randomizer(ttypes.EmptyUnion, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+
 
 class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
     ttype = ttypes.IntUnion

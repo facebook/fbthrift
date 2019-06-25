@@ -810,7 +810,7 @@ class StructRandomizer(BaseRandomizer):
         p_include = self.constraints['p_include']
 
         if self._is_union:
-            if random.random() < p_include:
+            if fields_to_randomize and random.random() < p_include:
                 fields_to_randomize = [random.choice(fields_to_randomize)]
                 p_include = 1.0
             else:
