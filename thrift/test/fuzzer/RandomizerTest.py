@@ -509,6 +509,22 @@ class TestListRandomizer(TestRandomizer, unittest.TestCase):
             val = gen.generate()
             self.assertEquals(len(val), 0)
 
+    def testMaxLength(self):
+        cls = self.__class__
+
+        ttype = Thrift.TType.LIST
+        spec_args = (Thrift.TType.I32, None)  # Elements are i32
+        constraints = {'mean_length': 100, 'max_length': 99}
+
+        gen = self.get_randomizer(ttype, spec_args, constraints)
+
+        # Test to make sure that max length is enforced.
+        #
+        # Generate a lot of lists that should never be over 99 long
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertLessEqual(len(val), 99)
+
     def testElementConstraints(self):
         cls = self.__class__
 

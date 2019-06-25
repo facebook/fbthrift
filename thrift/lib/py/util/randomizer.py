@@ -474,7 +474,11 @@ class CollectionTypeRandomizer(BaseRandomizer):
         if mean == 0:
             return 0
         else:
-            return int(random.expovariate(1 / mean))
+            val = int(random.expovariate(1 / mean))
+            max_len = self.constraints.get('max_length', None)
+            if max_len is not None and val > max_len:
+                val = max_len
+            return val
 
 class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
     name = "string"
