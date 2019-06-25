@@ -113,19 +113,9 @@ class t_function : public t_annotated {
     return oneway_;
   }
 
-  // are any of the {return type/argument types} a pubsub stream?
+  // Does the function return a stream?
   bool any_streams() const {
-    if (returntype_->is_pubsub_stream()) {
-      return true;
-    }
-    return any_stream_params();
-  }
-
-  bool any_stream_params() const {
-    auto& members = arglist_->get_members();
-    return std::any_of(members.cbegin(), members.cend(), [](auto const& arg) {
-      return arg->get_type()->is_pubsub_stream();
-    });
+    return returntype_->is_pubsub_stream();
   }
 
  private:

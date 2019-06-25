@@ -509,17 +509,6 @@ mstch::node mstch_function::stream_exceptions() {
       cache_);
 }
 
-mstch::node mstch_function::arg_list_without_streams() {
-  auto args = function_->get_arglist();
-  auto members = args->get_members();
-  if (function_->any_stream_params()) {
-    members.erase(members.begin());
-  }
-
-  return generate_elements(
-      members, generators_->field_generator_.get(), generators_, cache_);
-}
-
 mstch::node mstch_function::arg_list() {
   return generate_elements(
       function_->get_arglist()->get_members(),
@@ -530,21 +519,6 @@ mstch::node mstch_function::arg_list() {
 
 mstch::node mstch_function::any_streams() {
   return function_->any_streams();
-}
-
-mstch::node mstch_function::takes_stream() {
-  return function_->any_stream_params();
-}
-
-mstch::node mstch_function::taken_stream_type() {
-  if (!function_->any_stream_params()) {
-    return false;
-  }
-  return generators_->type_generator_->generate(
-      function_->get_arglist()->get_members()[0]->get_type(),
-      generators_,
-      cache_,
-      pos_);
 }
 
 mstch::node mstch_function::returns_stream() {

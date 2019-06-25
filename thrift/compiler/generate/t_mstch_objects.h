@@ -849,7 +849,6 @@ class mstch_function : public mstch_base {
             {"function:name", &mstch_function::name},
             {"function:oneway?", &mstch_function::oneway},
             {"function:returnType", &mstch_function::return_type},
-            {"function:takenStreamType", &mstch_function::taken_stream_type},
             {"function:exceptions", &mstch_function::exceptions},
             {"function:stream_exceptions", &mstch_function::stream_exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
@@ -858,14 +857,10 @@ class mstch_function : public mstch_base {
             {"function:args", &mstch_function::arg_list},
             {"function:comma", &mstch_function::has_args},
             {"function:priority", &mstch_function::priority},
-            {"function:args_without_streams",
-             &mstch_function::arg_list_without_streams},
             {"function:any_streams?", &mstch_function::any_streams},
             {"function:returns_stream?", &mstch_function::returns_stream},
-            {"function:takes_stream?", &mstch_function::takes_stream},
         });
   }
-  mstch::node taken_stream_type();
 
   mstch::node name() {
     return function_->get_name();
@@ -896,10 +891,8 @@ class mstch_function : public mstch_base {
   mstch::node exceptions();
   mstch::node stream_exceptions();
   mstch::node arg_list();
-  mstch::node arg_list_without_streams();
   mstch::node any_streams();
   mstch::node returns_stream();
-  mstch::node takes_stream();
 
  protected:
   t_function const* function_;

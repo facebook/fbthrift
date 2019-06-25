@@ -35,57 +35,6 @@ void PubSubStreamingServiceSvIf::async_tm_returnstream(std::unique_ptr<apache::t
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_returnstream(i32_from, i32_to); });
 }
 
-void PubSubStreamingServiceSvIf::takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("takesstream");
-}
-
-folly::SemiFuture<folly::Unit> PubSubStreamingServiceSvIf::semifuture_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) {
-  return apache::thrift::detail::si::semifuture([&] { return takesstream(std::move(instream), other_param); });
-}
-
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_takesstream(apache::thrift::SemiStream<int32_t> instream, int32_t other_param) {
-  return apache::thrift::detail::si::future(semifuture_takesstream(std::move(instream), other_param), getThreadManager());
-}
-
-
-void PubSubStreamingServiceSvIf::async_tm_takesstream(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> instream, int32_t other_param) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_takesstream(std::move(instream), other_param); });
-}
-
-apache::thrift::Stream<std::string> PubSubStreamingServiceSvIf::different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("different");
-}
-
-folly::SemiFuture<apache::thrift::Stream<std::string>> PubSubStreamingServiceSvIf::semifuture_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) {
-  return apache::thrift::detail::si::semifuture([&] { return different(std::move(foo), firstparam); });
-}
-
-folly::Future<apache::thrift::Stream<std::string>> PubSubStreamingServiceSvIf::future_different(apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) {
-  return apache::thrift::detail::si::future(semifuture_different(std::move(foo), firstparam), getThreadManager());
-}
-
-
-void PubSubStreamingServiceSvIf::async_tm_different(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<std::string>>> callback, apache::thrift::SemiStream<int32_t> foo, int64_t firstparam) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_different(std::move(foo), firstparam); });
-}
-
-void PubSubStreamingServiceSvIf::normalthrows(apache::thrift::SemiStream<int32_t> /*foo*/) {
-  apache::thrift::detail::si::throw_app_exn_unimplemented("normalthrows");
-}
-
-folly::SemiFuture<folly::Unit> PubSubStreamingServiceSvIf::semifuture_normalthrows(apache::thrift::SemiStream<int32_t> foo) {
-  return apache::thrift::detail::si::semifuture([&] { return normalthrows(std::move(foo)); });
-}
-
-folly::Future<folly::Unit> PubSubStreamingServiceSvIf::future_normalthrows(apache::thrift::SemiStream<int32_t> foo) {
-  return apache::thrift::detail::si::future(semifuture_normalthrows(std::move(foo)), getThreadManager());
-}
-
-
-void PubSubStreamingServiceSvIf::async_tm_normalthrows(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, apache::thrift::SemiStream<int32_t> foo) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_normalthrows(std::move(foo)); });
-}
-
 apache::thrift::Stream<int32_t> PubSubStreamingServiceSvIf::streamthrows(int32_t /*foo*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("streamthrows");
 }
@@ -141,18 +90,6 @@ apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::returnstream(int32
   return {};
 }
 
-void PubSubStreamingServiceSvNull::takesstream(apache::thrift::SemiStream<int32_t> /*instream*/, int32_t /*other_param*/) {
-  return;
-}
-
-apache::thrift::Stream<std::string> PubSubStreamingServiceSvNull::different(apache::thrift::SemiStream<int32_t> /*foo*/, int64_t /*firstparam*/) {
-  return {};
-}
-
-void PubSubStreamingServiceSvNull::normalthrows(apache::thrift::SemiStream<int32_t> /*foo*/) {
-  return;
-}
-
 apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::streamthrows(int32_t /*foo*/) {
   return {};
 }
@@ -193,9 +130,6 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAs
 
 const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsyncProcessor::binaryProcessMap_ {
   {"returnstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"takesstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_takesstream<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"different", &PubSubStreamingServiceAsyncProcessor::_processInThread_different<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"normalthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_normalthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"streamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_streamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"boththrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_boththrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_responseandstreamthrows<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -207,9 +141,6 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap& PubSubStreamingServiceAs
 
 const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsyncProcessor::compactProcessMap_ {
   {"returnstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_returnstream<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"takesstream", &PubSubStreamingServiceAsyncProcessor::_processInThread_takesstream<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"different", &PubSubStreamingServiceAsyncProcessor::_processInThread_different<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"normalthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_normalthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"streamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_streamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"boththrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_boththrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"responseandstreamthrows", &PubSubStreamingServiceAsyncProcessor::_processInThread_responseandstreamthrows<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

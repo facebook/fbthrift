@@ -441,7 +441,6 @@ class mstch_cpp2_type : public mstch_type {
              &mstch_cpp2_type::resolves_to_container_or_enum},
             {"type:resolves_to_complex_return?",
              &mstch_cpp2_type::resolves_to_complex_return},
-            {"type:resolves_to_stream?", &mstch_cpp2_type::resolves_to_stream},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
@@ -481,9 +480,6 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node resolves_to_container_or_enum() {
     return resolved_type_->is_container() || resolved_type_->is_enum();
-  }
-  mstch::node resolves_to_stream() {
-    return resolved_type_->is_pubsub_stream();
   }
   mstch::node resolves_to_complex_return() {
     if (resolved_type_->is_pubsub_stream()) {

@@ -18,26 +18,15 @@
 template <typename Protocol_>
 void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback<%function:comma%><% > service_common/function_param_list_const%>) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
-<%#function:takes_stream?%>
-  <%service:name%>_<%function:cpp_name%>_pargs::FieldsType args;
-<%/function:takes_stream?%>
-<%^function:takes_stream?%>
   <%service:name%>_<%function:cpp_name%>_pargs args;
-<%/function:takes_stream?%>
-<%#function:args_without_streams%><%#field:type%>
+<%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
   args.get<<%field:index%>>().value = &<%field:cpp_name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   args.get<<%field:index%>>().value = const_cast<<% > types/type%>*>(&<%field:cpp_name%>);
 <%/type:resolves_to_complex_return?%>
-<%/field:type%><%/function:args_without_streams%><%!
-
-%><%#function:args%><%#field:type%><%#first?%>
-<%#type:resolves_to_stream?%>
-  #error Service functions don't allow stream input yet
-<%/type:resolves_to_stream?%>
-<%/first?%><%/field:type%><%/function:args%><%!
+<%/field:type%><%/function:args%><%!
 
 %>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };

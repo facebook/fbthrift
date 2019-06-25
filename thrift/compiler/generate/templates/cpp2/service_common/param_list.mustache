@@ -16,10 +16,5 @@
 
 %><%#function:args%><%#field:type%><%!
   %><%^first?%>, <%/first?%><%!
-%><%#type:resolves_to_stream?%><%!
-  %>std::move(<%field:cpp_name%>)<%!
-%><%/type:resolves_to_stream?%><%!
-%><%^type:resolves_to_stream?%><%!
   %><%field:cpp_name%><%!
-%><%/type:resolves_to_stream?%><%!
 %><%/field:type%><%/function:args%>

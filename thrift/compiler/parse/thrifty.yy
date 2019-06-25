@@ -248,7 +248,6 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_field_id>       FieldIdentifier
 %type<t_field::e_req>   FieldRequiredness
 %type<t_type*>          FieldType
-%type<t_type*>          PubsubStreamType
 %type<t_type*>          PubsubStreamReturnType
 %type<t_const_value*>   FieldValue
 %type<t_struct*>        FieldList
@@ -276,7 +275,6 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 
 %type<t_struct*>        ParamList
 %type<t_struct*>        EmptyParamList
-%type<t_struct*>        MaybeStreamAndParamList
 %type<t_field*>         Param
 
 %type<t_struct*>        Throws
@@ -970,7 +968,7 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText Oneway FunctionType tok_identifier "(" MaybeStreamAndParamList ")" ThrowsThrows FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText Oneway FunctionType tok_identifier "(" ParamList ")" ThrowsThrows FunctionAnnotations CommaOrSemicolonOptional
     {
       $6->set_name(std::string($4) + "_args");
       auto* rettype = $3;
@@ -995,29 +993,6 @@ Function:
       $$->set_lineno(driver.scanner->get_lineno());
       y_field_val = -1;
     }
-
-
-MaybeStreamAndParamList:
-  PubsubStreamType tok_identifier "," ParamList
-  {
-    driver.debug("MaybeStreamAndParamList -> PubsubStreamType tok ParamList");
-    t_struct* paramlist = $4;
-    auto stream_field = std::make_unique<t_field>($1, $2, 0);
-    paramlist->set_stream_field(std::move(stream_field));
-    $$ = paramlist;
-  }
-| PubsubStreamType tok_identifier EmptyParamList
-  {
-    driver.debug("MaybeStreamAndParamList -> PubsubStreamType tok");
-    t_struct* paramlist = $3;
-    auto stream_field = std::make_unique<t_field>($1, $2, 0);
-    paramlist->set_stream_field(std::move(stream_field));
-    $$ = paramlist;
-  }
-| ParamList
-  {
-    $$ = $1;
-  }
 
 ParamList:
   ParamList Param
@@ -1246,20 +1221,6 @@ FunctionType:
       driver.debug("FunctionType -> tok_void");
       $$ = void_type();
     }
-
-PubsubStreamType:
-  tok_stream FieldType
-  {
-    driver.debug("PubsubStreamType -> tok_stream FieldType");
-
-    $$ = new t_pubsub_stream($2);
-
-    if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
-    } else {
-      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
-    }
-  }
 
 PubsubStreamReturnType:
   FieldType "," tok_stream FieldType
