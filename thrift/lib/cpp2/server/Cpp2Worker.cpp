@@ -202,7 +202,8 @@ void Cpp2Worker::stopDuplex(std::shared_ptr<ThriftServer> myServer) {
 void Cpp2Worker::updateSSLStats(
     const folly::AsyncTransportWrapper* sock,
     std::chrono::milliseconds /* acceptLatency */,
-    wangle::SSLErrorEnum error) noexcept {
+    wangle::SSLErrorEnum error,
+    const folly::exception_wrapper& /*ex*/) noexcept {
   if (!sock) {
     return;
   }

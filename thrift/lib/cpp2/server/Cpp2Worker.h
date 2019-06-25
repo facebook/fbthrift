@@ -98,7 +98,8 @@ class Cpp2Worker : public wangle::Acceptor,
   void updateSSLStats(
       const folly::AsyncTransportWrapper* sock,
       std::chrono::milliseconds acceptLatency,
-      wangle::SSLErrorEnum error) noexcept override;
+      wangle::SSLErrorEnum error,
+      const folly::exception_wrapper& ex) noexcept override;
 
   void handleHeader(
       folly::AsyncTransportWrapper::UniquePtr sock,
