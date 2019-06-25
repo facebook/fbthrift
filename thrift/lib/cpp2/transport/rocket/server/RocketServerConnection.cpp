@@ -59,10 +59,10 @@ RocketStreamClientCallback* RocketServerConnection::createStreamClientCallback(
     RocketServerFrameContext&& context,
     uint32_t initialRequestN) {
   const auto streamId = context.streamId();
-  auto& connection = context.connection();
+  // RocketStreamClientCallback get owned by RocketServerConnection
+  // in streams_ map after onFirstResponse() get called.
   auto* clientCallbackPtr =
       new RocketStreamClientCallback(std::move(context), initialRequestN);
-  connection.streams_.emplace(streamId, clientCallbackPtr);
   return clientCallbackPtr;
 }
 
@@ -101,8 +101,8 @@ void RocketServerConnection::closeIfNeeded() {
   }
 
   for (auto it = streams_.begin(); it != streams_.end();) {
-    auto& clientCallback = *it->second;
-    clientCallback.cancel();
+    auto& serverCallback = it->second->getStreamServerCallback();
+    serverCallback.onStreamCancel();
     it = streams_.erase(it);
   }
 
@@ -180,8 +180,8 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     case FrameType::CANCEL: {
       auto streamIt = streams_.find(streamId);
       if (streamIt != streams_.end()) {
-        auto& clientCallback = *streamIt->second;
-        clientCallback.cancel();
+        auto& serverCallback = streamIt->second->getStreamServerCallback();
+        serverCallback.onStreamCancel();
         streams_.erase(streamIt);
       }
       return;

@@ -111,7 +111,13 @@ void RocketServerFrameContext::scheduleStreamTimeout(
   connection_->scheduleStreamTimeout(clientCallback);
 }
 
-void RocketServerFrameContext::detachStreamFromConnection() {
+void RocketServerFrameContext::takeOwnership(
+    RocketStreamClientCallback* callback) {
+  connection_->streams_.emplace(
+      streamId_, std::unique_ptr<RocketStreamClientCallback>(callback));
+}
+
+void RocketServerFrameContext::freeStream() {
   connection_->streams_.erase(streamId_);
 }
 

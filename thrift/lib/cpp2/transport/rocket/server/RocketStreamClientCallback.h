@@ -51,9 +51,10 @@ class RocketStreamClientCallback final : public StreamClientCallback,
   void onStreamComplete() override;
 
   void request(uint32_t n);
-  void cancel();
 
   void timeoutExpired() noexcept override;
+
+  StreamServerCallback& getStreamServerCallback();
 
  private:
   // TODO RocketServerConnection* suffices instead of RocketServerFrameContext

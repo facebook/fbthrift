@@ -63,7 +63,8 @@ class RocketServerFrameContext {
   }
 
   void scheduleStreamTimeout(RocketStreamClientCallback*);
-  void detachStreamFromConnection();
+  void freeStream();
+  void takeOwnership(RocketStreamClientCallback* callback);
 
   RocketServerConnection& connection() {
     DCHECK(connection_);

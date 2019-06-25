@@ -113,7 +113,8 @@ class RocketServerConnection
   };
   ConnectionState state_{ConnectionState::ALIVE};
 
-  folly::F14FastMap<StreamId, RocketStreamClientCallback*> streams_;
+  folly::F14FastMap<StreamId, std::unique_ptr<RocketStreamClientCallback>>
+      streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
 
   class BatchWriteLoopCallback : public folly::EventBase::LoopCallback {

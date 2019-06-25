@@ -65,11 +65,6 @@ void RocketStreamClientCallback::onFirstResponse(
     StreamServerCallback* serverCallback) {
   serverCallback_ = serverCallback;
 
-  if (!context_) {
-    // Canceled before first response
-    return cancel();
-  }
-
   DCHECK(tokens_ != 0);
   if (--tokens_) {
     request(std::exchange(tokens_, 0));
@@ -79,6 +74,9 @@ void RocketStreamClientCallback::onFirstResponse(
 
   context_->sendPayload(
       pack(std::move(firstResponse)), rocket::Flags::none().next(true));
+  // ownership of the RocketStreamClientCallback transfers to connection
+  // after onFirstResponse.
+  context_->takeOwnership(this);
 }
 
 void RocketStreamClientCallback::onFirstResponseError(
@@ -87,16 +85,11 @@ void RocketStreamClientCallback::onFirstResponseError(
     delete this;
   };
 
-  cancelTimeout();
-
-  if (context_) {
-    ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
-      context_->sendPayload(
-          rocket::Payload::makeFromData(std::move(encodedError.encoded)),
-          rocket::Flags::none().next(true).complete(true));
-    });
-    context_->detachStreamFromConnection();
-  }
+  ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
+    context_->sendPayload(
+        rocket::Payload::makeFromData(std::move(encodedError.encoded)),
+        rocket::Flags::none().next(true).complete(true));
+  });
 }
 
 void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
@@ -105,41 +98,19 @@ void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
     scheduleTimeout();
   }
 
-  if (context_) {
-    context_->sendPayload(
-        rocket::Payload::makeFromData(std::move(payload.payload)),
-        rocket::Flags::none().next(true));
-  }
+  context_->sendPayload(
+      rocket::Payload::makeFromData(std::move(payload.payload)),
+      rocket::Flags::none().next(true));
 }
 
 void RocketStreamClientCallback::onStreamComplete() {
-  SCOPE_EXIT {
-    delete this;
-  };
-
-  cancelTimeout();
-  serverCallback_ = nullptr;
-
-  if (context_) {
-    context_->sendPayload(
-        rocket::Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
-        rocket::Flags::none().complete(true));
-    context_->detachStreamFromConnection();
-  }
+  context_->sendPayload(
+      rocket::Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
+      rocket::Flags::none().complete(true));
+  context_->freeStream();
 }
 
 void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
-  SCOPE_EXIT {
-    delete this;
-  };
-
-  cancelTimeout();
-  serverCallback_ = nullptr;
-
-  if (!context_) {
-    return;
-  }
-
   if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
         context_->sendError(rocket::RocketException(
             rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
@@ -147,7 +118,7 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
     context_->sendError(rocket::RocketException(
         rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
   }
-  context_->detachStreamFromConnection();
+  context_->freeStream();
 }
 
 void RocketStreamClientCallback::request(uint32_t tokens) {
@@ -157,35 +128,24 @@ void RocketStreamClientCallback::request(uint32_t tokens) {
 
   cancelTimeout();
   tokens_ += tokens;
-  if (serverCallback_) {
-    serverCallback_->onStreamRequestN(tokens);
-  }
-}
-
-void RocketStreamClientCallback::cancel() {
-  cancelTimeout();
-  context_.reset();
-
-  if (auto* serverCallback = std::exchange(serverCallback_, nullptr)) {
-    serverCallback->onStreamCancel();
-    delete this;
-  }
+  serverCallback_->onStreamRequestN(tokens);
 }
 
 void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0, tokens_);
 
-  if (auto* serverCallback = std::exchange(serverCallback_, nullptr)) {
-    serverCallback->onStreamCancel();
-  }
+  serverCallback_->onStreamCancel();
   onStreamError(folly::make_exception_wrapper<TApplicationException>(
       TApplicationException::TApplicationExceptionType::TIMEOUT));
 }
 
+StreamServerCallback& RocketStreamClientCallback::getStreamServerCallback() {
+  DCHECK(serverCallback_ != nullptr);
+  return *serverCallback_;
+}
+
 void RocketStreamClientCallback::scheduleTimeout() {
-  if (context_) {
-    context_->scheduleStreamTimeout(this);
-  }
+  context_->scheduleStreamTimeout(this);
 }
 
 } // namespace thrift

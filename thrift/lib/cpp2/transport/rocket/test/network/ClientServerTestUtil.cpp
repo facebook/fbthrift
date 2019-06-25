@@ -609,9 +609,11 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
     folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
     if (data.removePrefix("error:application")) {
-      return clientCallback->onStreamError(
+      clientCallback->onStreamError(
           folly::make_exception_wrapper<RocketException>(
               ErrorCode::APPLICATION_ERROR, "Application error occurred"));
+      delete clientCallback;
+      return;
     }
 
     const size_t n =
