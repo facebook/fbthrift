@@ -58,17 +58,17 @@ void ConnectionThread::maybeCreateConnection(
       << "Use RSocketClientChannel::newChannel() or"
          " RocketClientChannel::newChannel()";
 
-  connections_.withWLock([&](auto& connections) {
+  connections_.withWLock([&, this](auto& connections) {
     std::shared_ptr<ClientConnectionIf>& connection = connections[serverKey];
     if (connection == nullptr || !connection->good()) {
       TAsyncSocket::UniquePtr socket(
-          new TAsyncSocket(getEventBase(), addr, port));
+          new TAsyncSocket(this->getEventBase(), addr, port));
       if (FLAGS_use_ssl) {
         auto sslContext = std::make_shared<folly::SSLContext>();
         sslContext->setAdvertisedNextProtocols({"h2", "http"});
         auto sslSocket = new TAsyncSSLSocket(
             sslContext,
-            getEventBase(),
+            this->getEventBase(),
             socket->detachNetworkSocket().toFd(),
             false);
         sslSocket->sslConn(nullptr);
