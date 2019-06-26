@@ -147,7 +147,7 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
       {"floating_point?", type.is_floating_point()},
       {"struct?", type.is_struct() || type.is_xception()},
       {"enum?", type.is_enum()},
-      {"stream?", type.is_stream()},
+      {"stream?", type.is_streamresponse()},
       {"service?", type.is_service()},
       {"base?", type.is_base_type()},
       {"container?", type.is_container()},

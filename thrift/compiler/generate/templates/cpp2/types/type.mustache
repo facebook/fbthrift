@@ -53,20 +53,14 @@
       %><% > common/type_namespace_cpp2%><%enum:name%><%!
     %><%/type:enum%><%/type:enum?%><%!
 
-    %><%#type:stream?%><%!
-      %><%#type:streamresponse?%><%!
-        %><%#type:extratype?%>apache::thrift::ResponseAndStream<<%!
-        %><%#type:streamResponseType%><% >types/type%><%/type:streamResponseType%>,<%!
-        %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-        %><%/type:extratype?%><%!
-        %><%^type:extratype?%>apache::thrift::Stream<<%!
-        %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-        %><%/type:extratype?%><%!
-        %><%/type:streamresponse?%><%!
-
-      %><%^type:streamresponse?%><%!
-        %>apache::thrift::Stream<<%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-      %><%/type:streamresponse?%><%!
-    %><%/type:stream?%><%!
+    %><%#type:streamresponse?%><%!
+      %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndStream<<%!
+      %><%#type:streamFirstResponseType%><% >types/type%><%/type:streamFirstResponseType%>,<%!
+      %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+      %><%/type:streamHasFirstResponse?%><%!
+      %><%^type:streamHasFirstResponse?%>apache::thrift::Stream<<%!
+      %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+      %><%/type:streamHasFirstResponse?%><%!
+    %><%/type:streamresponse?%><%!
   %><%/type:typedef?%><%!
 %><%/type:cpp_type%>

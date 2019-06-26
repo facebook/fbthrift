@@ -14,22 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:stream?%><%!
-  %><%#type:streamresponse?%><%!
-    %><%#type:extratype?%>apache::thrift::ResponseAndSemiStream<<%!
-    %><%#type:streamResponseType%><% >types/type%><%/type:streamResponseType%>,<%!
+%><%#type:streamresponse?%><%!
+    %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndSemiStream<<%!
+    %><%#type:streamFirstResponseType%><% >types/type%><%/type:streamFirstResponseType%>,<%!
     %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-    %><%/type:extratype?%><%!
-    %><%^type:extratype?%>apache::thrift::SemiStream<<%!
+    %><%/type:streamHasFirstResponse?%><%!
+    %><%^type:streamHasFirstResponse?%>apache::thrift::SemiStream<<%!
     %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-    %><%/type:extratype?%><%!
-    %><%/type:streamresponse?%><%!
+    %><%/type:streamHasFirstResponse?%><%!
+%><%/type:streamresponse?%><%!
 
-  %><%^type:streamresponse?%><%!
-    %>apache::thrift::SemiStream<<%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
-  %><%/type:streamresponse?%><%!
-%><%/type:stream?%><%!
-
-%><%^type:stream?%><%!
+%><%^type:streamresponse?%><%!
 %><% > types/type%><%!
-%><%/type:stream?%>
+%><%/type:streamresponse?%>

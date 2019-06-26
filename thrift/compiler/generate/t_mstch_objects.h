@@ -594,9 +594,9 @@ class mstch_type : public mstch_base {
             {"type:float?", &mstch_type::is_float},
             {"type:struct?", &mstch_type::is_struct},
             {"type:enum?", &mstch_type::is_enum},
-            {"type:stream?", &mstch_type::is_stream},
             {"type:streamresponse?", &mstch_type::is_streamresponse},
-            {"type:extratype?", &mstch_type::has_extratype},
+            {"type:streamHasFirstResponse?",
+             &mstch_type::stream_has_first_response},
             {"type:service?", &mstch_type::is_service},
             {"type:base?", &mstch_type::is_base},
             {"type:container?", &mstch_type::is_container},
@@ -609,7 +609,8 @@ class mstch_type : public mstch_base {
             {"type:listElemType", &mstch_type::get_list_type},
             {"type:setElemType", &mstch_type::get_set_type},
             {"type:streamElemType", &mstch_type::get_stream_elem_type},
-            {"type:streamResponseType", &mstch_type::get_stream_response_type},
+            {"type:streamFirstResponseType",
+             &mstch_type::get_stream_first_response_type},
             {"type:keyType", &mstch_type::get_key_type},
             {"type:valueType", &mstch_type::get_value_type},
             {"type:typedefType", &mstch_type::get_typedef_type},
@@ -655,14 +656,13 @@ class mstch_type : public mstch_base {
   mstch::node is_enum() {
     return resolved_type_->is_enum();
   }
-  mstch::node is_stream() {
-    return resolved_type_->is_pubsub_stream();
-  }
   mstch::node is_streamresponse() {
     return resolved_type_->is_streamresponse();
   }
-  mstch::node has_extratype() {
-    return resolved_type_->has_extratype();
+  mstch::node stream_has_first_response() {
+    return resolved_type_->is_streamresponse() &&
+        dynamic_cast<const t_stream_response*>(resolved_type_)
+            ->has_first_response();
   }
   mstch::node is_service() {
     return resolved_type_->is_service();
@@ -696,7 +696,7 @@ class mstch_type : public mstch_base {
   mstch::node get_value_type();
   mstch::node get_typedef_type();
   mstch::node get_stream_elem_type();
-  mstch::node get_stream_response_type();
+  mstch::node get_stream_first_response_type();
 
  protected:
   t_type const* type_;

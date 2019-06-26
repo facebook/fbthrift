@@ -63,7 +63,7 @@ class t_struct : public t_type {
   void set_stream_field(std::unique_ptr<t_field> stream_field) {
     assert(is_paramlist_);
     assert(!stream_field_);
-    assert(stream_field->get_type()->is_pubsub_stream());
+    assert(stream_field->get_type()->is_streamresponse());
 
     stream_field_ = stream_field.get();
     members_raw_.insert(members_raw_.begin(), stream_field_);

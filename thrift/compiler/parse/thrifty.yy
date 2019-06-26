@@ -248,7 +248,7 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_field_id>       FieldIdentifier
 %type<t_field::e_req>   FieldRequiredness
 %type<t_type*>          FieldType
-%type<t_type*>          PubsubStreamReturnType
+%type<t_type*>          StreamReturnType
 %type<t_const_value*>   FieldValue
 %type<t_struct*>        FieldList
 
@@ -1206,9 +1206,9 @@ FieldValue:
     }
 
 FunctionType:
-  PubsubStreamReturnType
+  StreamReturnType
     {
-      driver.debug("FunctionType -> PubsubStreamReturnType");
+      driver.debug("FunctionType -> StreamReturnType");
       $$ = $1;
     }
 | FieldType
@@ -1222,12 +1222,12 @@ FunctionType:
       $$ = void_type();
     }
 
-PubsubStreamReturnType:
-  FieldType "," tok_stream FieldType
+StreamReturnType:
+  FieldType "," tok_stream "<" FieldType ">"
   {
-    driver.debug("PubsubStreamReturnType -> tok_stream FieldType");
+    driver.debug("StreamReturnType -> FieldType , tok_stream < FieldType >");
 
-    $$ = new t_stream_response($4, $1);
+    $$ = new t_stream_response($5, $1);
 
     if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
@@ -1235,11 +1235,11 @@ PubsubStreamReturnType:
       driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
     }
   }
-| tok_stream FieldType
+| tok_stream "<" FieldType ">"
   {
-    driver.debug("PubsubStreamReturnType -> tok_stream FieldType tok_void");
+    driver.debug("StreamReturnType -> tok_stream < FieldType >");
 
-    $$ = new t_stream_response($2);
+    $$ = new t_stream_response($3);
 
     if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);

@@ -112,12 +112,12 @@ template <class ProtocolIn_, class ProtocolOut_>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
 <%/type:void?%>
 <%^type:void?%>
-    <%^type:stream?%>
+    <%^type:streamresponse?%>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
-    <%/type:stream?%>
-    <%#type:stream?%>
+    <%/type:streamresponse?%>
+    <%#type:streamresponse?%>
 apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> _return) {
-    <%/type:stream?%>
+    <%/type:streamresponse?%>
 <%/type:void?%>
   ProtocolOut_ prot;
   <%#function:returns_stream?%>
@@ -134,14 +134,14 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> <%servic
     <%/function:returns_stream?%>
     <%#function:returns_stream?%>
   using StreamPResultType = <%service:name%>_<%function:cpp_name%>_presult::StreamPResultType;
-      <%#type:extratype?%>
+      <%#type:streamHasFirstResponse?%>
   result.get<0>().value = const_cast<<% > types/type%>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
   auto& _returnStream = _return.stream;
-      <%/type:extratype?%>
-      <%^type:extratype?%>
+      <%/type:streamHasFirstResponse?%>
+      <%^type:streamHasFirstResponse?%>
   auto& _returnStream = _return;
-      <%/type:extratype?%>
+      <%/type:streamHasFirstResponse?%>
 
       <%#function:stream_exceptions?%>
   auto exMap = [](StreamPResultType& res, folly::exception_wrapper ew) {
@@ -190,14 +190,14 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:cpp_name%>(std::un
     result.setIsSet(<%field:index_plus_one%>, true);
   <%/function:returns_stream?%>
   <%#function:returns_stream?%>
-  <%#type:extratype?%>
+  <%#type:streamHasFirstResponse?%>
     result.fields.get<<%field:index_plus_one%>>().ref() = e;
     result.fields.setIsSet(<%field:index_plus_one%>, true);
-  <%/type:extratype?%>
-  <%^type:extratype?%>
+  <%/type:streamHasFirstResponse?%>
+  <%^type:streamHasFirstResponse?%>
     result.fields.get<<%field:index%>>().ref() = e;
     result.fields.setIsSet(<%field:index%>, true);
-  <%/type:extratype?%>
+  <%/type:streamHasFirstResponse?%>
   <%/function:returns_stream?%>
 <%/type:void?%>
   }

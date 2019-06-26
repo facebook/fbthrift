@@ -115,7 +115,7 @@ class t_function : public t_annotated {
 
   // Does the function return a stream?
   bool any_streams() const {
-    return returntype_->is_pubsub_stream();
+    return returntype_->is_streamresponse();
   }
 
  private:

@@ -18,74 +18,64 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-#ifndef T_STREAM_H
-#define T_STREAM_H
+#pragma once
+
+#include <string>
+
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-class t_pubsub_stream : public t_type {
+class t_stream_response : public t_type {
  public:
-  explicit t_pubsub_stream(t_type* elem_type) : elem_type_(elem_type) {}
+  explicit t_stream_response(
+      t_type* elem_type,
+      t_type* first_response_type = nullptr)
+      : first_response_type_(first_response_type), elem_type_(elem_type) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
   }
 
-  bool is_pubsub_stream() const override {
-    return true;
-  }
-
-  std::string get_full_name() const override {
-    return "stream " + elem_type_->get_full_name();
-  }
-
-  std::string get_impl_full_name() const override {
-    return "stream " + elem_type_->get_impl_full_name();
-  }
-
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_I32;
-  }
-
- protected:
-  t_type* elem_type_;
-};
-
-class t_stream_response : public t_pubsub_stream {
- public:
-  explicit t_stream_response(t_type* elem_type, t_type* extra_type = nullptr)
-      : t_pubsub_stream(elem_type), extra_type_(extra_type) {}
-
-  t_type* get_extra_type() const {
-    return extra_type_;
+  t_type* get_first_response_type() const {
+    return first_response_type_;
   }
 
   bool is_streamresponse() const override {
     return true;
   }
 
-  bool has_extratype() const override {
-    return (bool)(extra_type_);
+  bool has_first_response() const {
+    return (bool)(first_response_type_);
   }
 
   std::string get_full_name() const override {
-    return "streamresponse " + elem_type_->get_full_name() +
-        (has_extratype() ? (", " + extra_type_->get_full_name()) : "");
+    if (has_first_response()) {
+      return first_response_type_->get_full_name() + ", stream<" +
+          elem_type_->get_full_name() + ">";
+    }
+    return "stream<" + elem_type_->get_full_name() + ">";
   }
 
   std::string get_impl_full_name() const override {
-    return "streamresponse " + elem_type_->get_impl_full_name() +
-        (has_extratype() ? (", " + extra_type_->get_impl_full_name()) : "");
+    if (has_first_response()) {
+      return first_response_type_->get_impl_full_name() + ", stream<" +
+          elem_type_->get_impl_full_name() + ">";
+    }
+    return "stream<" + elem_type_->get_impl_full_name() + ">";
+  }
+
+  TypeValue get_type_value() const override {
+    return TypeValue::TYPE_STREAM;
   }
 
  private:
-  t_type* extra_type_;
+  t_type* first_response_type_;
+  t_type* elem_type_;
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

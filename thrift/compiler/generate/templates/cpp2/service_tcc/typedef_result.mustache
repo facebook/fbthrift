@@ -16,14 +16,14 @@
 
 %><%#function:returnType%>
 <%^function:oneway?%>
-<%^type:stream?%>
+<%^type:streamresponse?%>
 typedef apache::thrift::ThriftPresult<true<% > service_tcc/field_data_return%><% > service_tcc/field_data_throws%>> <%service:name%>_<%function:cpp_name%>_presult;
-<%/type:stream?%><%!
+<%/type:streamresponse?%><%!
 
 %><%#type:streamresponse?%>
 typedef apache::thrift::ThriftPResultStream<
-    <%#type:extratype?%>apache::thrift::ThriftPresult<true<%#type:streamResponseType%><% > service_tcc/field_data_return%><%/type:streamResponseType%><% > service_tcc/field_data_throws%>>, <%/type:extratype?%><%!
-    %><%^type:extratype?%>apache::thrift::ThriftPresult<true<% > service_tcc/field_data_throws%>>, <%/type:extratype?%>
+    <%#type:streamHasFirstResponse?%>apache::thrift::ThriftPresult<true<%#type:streamFirstResponseType%><% > service_tcc/field_data_return%><%/type:streamFirstResponseType%><% > service_tcc/field_data_throws%>>, <%/type:streamHasFirstResponse?%><%!
+    %><%^type:streamHasFirstResponse?%>apache::thrift::ThriftPresult<true<% > service_tcc/field_data_throws%>>, <%/type:streamHasFirstResponse?%>
     apache::thrift::ThriftPresult<true<%#type:streamElemType%><% > service_tcc/field_data_return%><%/type:streamElemType%><% > service_tcc/field_data_stream_throws%>>
     > <%service:name%>_<%function:cpp_name%>_presult;
 <%/type:streamresponse?%>

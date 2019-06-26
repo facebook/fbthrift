@@ -251,9 +251,9 @@ mstch::node mstch_type::get_typedef_type() {
 }
 
 mstch::node mstch_type::get_stream_elem_type() {
-  if (type_->is_pubsub_stream()) {
+  if (type_->is_streamresponse()) {
     return generators_->type_generator_->generate(
-        dynamic_cast<const t_pubsub_stream*>(type_)->get_elem_type(),
+        dynamic_cast<const t_stream_response*>(type_)->get_elem_type(),
         generators_,
         cache_,
         pos_);
@@ -261,11 +261,11 @@ mstch::node mstch_type::get_stream_elem_type() {
   return mstch::node();
 }
 
-mstch::node mstch_type::get_stream_response_type() {
+mstch::node mstch_type::get_stream_first_response_type() {
   if (resolved_type_->is_streamresponse()) {
     return generators_->type_generator_->generate(
         dynamic_cast<const t_stream_response*>(resolved_type_)
-            ->get_extra_type(),
+            ->get_first_response_type(),
         generators_,
         cache_,
         pos_);
@@ -522,7 +522,7 @@ mstch::node mstch_function::any_streams() {
 }
 
 mstch::node mstch_function::returns_stream() {
-  return function_->get_returntype()->is_pubsub_stream();
+  return function_->get_returntype()->is_streamresponse();
 }
 
 mstch::node mstch_service::functions() {

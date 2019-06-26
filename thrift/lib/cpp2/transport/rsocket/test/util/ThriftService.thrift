@@ -1,3 +1,18 @@
+/*
+ * Copyright 2019-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 namespace cpp2 testutil.testservice
 
 struct Message {
@@ -19,41 +34,41 @@ exception SecondEx {
 
 service StreamService {
   // Generate numbers between `from` to `to`.
-  stream i32 range(1: i32 from, 2: i32 to);
+  stream<i32> range(1: i32 from, 2: i32 to);
 
-  stream i32 slowCancellation();
+  stream<i32> slowCancellation();
 
   // As long as the client consumes, the server will send messages
-  stream Message listen(1: string sender);
+  stream<Message> listen(1: string sender);
 
   // These method will not be overiden, so the default implementation will be
   // used. If client calls these methods, it should not cause any crash and it
   // should end gracefully
-  stream Message nonImplementedStream(1: string sender);
+  stream<Message> nonImplementedStream(1: string sender);
 
-  stream Message returnNullptr();
+  stream<Message> returnNullptr();
 
-  i32, stream Message throwError() throws (1: Error ex)
+  i32, stream<Message> throwError() throws (1: Error ex)
 
-  i32, stream i32 leakCheck(1: i32 from, 2: i32 to);
+  i32, stream<i32> leakCheck(1: i32 from, 2: i32 to);
   i32 instanceCount();
 
-  i32, stream i32 sleepWithResponse(1: i32 timeMs);
-  stream i32 sleepWithoutResponse(1: i32 timeMs);
+  i32, stream<i32> sleepWithResponse(1: i32 timeMs);
+  stream<i32> sleepWithoutResponse(1: i32 timeMs);
 
-  i32, stream i32 streamNever();
+  i32, stream<i32> streamNever();
 
   // Simple chat scenario
   void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);
-  stream i32 registerToMessages();
+  stream<i32> registerToMessages();
 
-  stream Message streamThrows(1: i32 whichEx)
+  stream<Message> streamThrows(1: i32 whichEx)
       throws (1: SecondEx e) stream throws (1: FirstEx e);
 
-  i32, stream Message responseAndStreamThrows(1: i32 whichEx)
+  i32, stream<Message> responseAndStreamThrows(1: i32 whichEx)
       throws (1: SecondEx e) stream throws (1: FirstEx e);
 
-  stream i32 requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
+  stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
 }
 
 # OldVersion and NewVersion services will be used to test the behavior
@@ -61,18 +76,18 @@ service StreamService {
 service OldVersion {
   // Unchanged methods
   i32 AddOne(1: i32 number);
-  stream i32 Range(1: i32 from, 2: i32 length);
-  i32, stream i32 RangeAndAddOne(1: i32 from, 2: i32 length, 3: i32 number);
+  stream<i32> Range(1: i32 from, 2: i32 length);
+  i32, stream<i32> RangeAndAddOne(1: i32 from, 2: i32 length, 3: i32 number);
 
   // This method is deleted in the NewVersion
   void DeletedMethod();
-  stream Message DeletedStreamMethod();
-  Message, stream Message DeletedResponseAndStreamMethod();
+  stream<Message> DeletedStreamMethod();
+  Message, stream<Message> DeletedResponseAndStreamMethod();
 
   // This streaming method is going to be changed to a Request&Response method
-  stream Message StreamToRequestResponse();
+  stream<Message> StreamToRequestResponse();
 
-  Message, stream Message ResponseandStreamToRequestResponse();
+  Message, stream<Message> ResponseandStreamToRequestResponse();
 
   // This Request&Response method is going to be changed to a streaming method
   Message RequestResponseToStream();
@@ -82,10 +97,10 @@ service OldVersion {
 
 service NewVersion {
   i32 AddOne(1: i32 number);
-  stream i32 Range(1: i32 from, 2: i32 length);
-  i32, stream i32 RangeAndAddOne(1: i32 from, 2: i32 length, 3: i32 number);
+  stream<i32> Range(1: i32 from, 2: i32 length);
+  i32, stream<i32> RangeAndAddOne(1: i32 from, 2: i32 length, 3: i32 number);
   void StreamToRequestResponse();
   void ResponseandStreamToRequestResponse();
-  stream Message RequestResponseToStream();
-  Message, stream Message RequestResponseToResponseandStream();
+  stream<Message> RequestResponseToStream();
+  Message, stream<Message> RequestResponseToResponseandStream();
 }
