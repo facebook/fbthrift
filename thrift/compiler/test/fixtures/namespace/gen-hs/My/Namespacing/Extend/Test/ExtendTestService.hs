@@ -55,8 +55,10 @@ import qualified My.Namespacing.Extend.Test.Extend_Types
 import qualified My.Namespacing.Extend.Test.ExtendTestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
+-- | Definition of the Check_args struct
 data Check_args = Check_args
   { check_args_struct1 :: Hsmodule_Types.HsFoo
+    -- ^ struct1 field of the Check_args struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Check_args where
   encode = encode_Check_args
@@ -73,30 +75,40 @@ instance Arbitrary.Arbitrary Check_args where
              | otherwise = Maybe.catMaybes
     [ if obj == default_Check_args{check_args_struct1 = check_args_struct1 obj} then Nothing else Just $ default_Check_args{check_args_struct1 = check_args_struct1 obj}
     ]
+-- | Translate a 'Check_args' to a 'Types.ThriftVal'
 from_Check_args :: Check_args -> Types.ThriftVal
 from_Check_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("struct1",Hsmodule_Types.from_HsFoo _v3))) $ check_args_struct1 record
   ]
+-- | Write a 'Check_args' with the given 'Thrift.Protocol'
 write_Check_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Check_args -> IO ()
 write_Check_args oprot record = Thrift.writeVal oprot $ from_Check_args record
+-- | Serialize a 'Check_args' in pure code
 encode_Check_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Check_args -> BS.ByteString
 encode_Check_args oprot record = Thrift.serializeVal oprot $ from_Check_args record
+-- | Translate a 'Types.ThriftVal' to a 'Check_args'
 to_Check_args :: Types.ThriftVal -> Check_args
 to_Check_args (Types.TStruct fields) = Check_args{
   check_args_struct1 = maybe (check_args_struct1 default_Check_args) (\(_,_val5) -> (case _val5 of {Types.TStruct _val6 -> (Hsmodule_Types.to_HsFoo (Types.TStruct _val6)); _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_Check_args _ = error "not a struct"
+-- | Read a 'Check_args' struct with the given 'Thrift.Protocol'
 read_Check_args :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Check_args
 read_Check_args iprot = to_Check_args <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Check_args)
+-- | Deserialize a 'Check_args' in pure code
 decode_Check_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Check_args
 decode_Check_args iprot bs = to_Check_args $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Check_args) bs
+-- | 'TypeMap' for the 'Check_args' struct
 typemap_Check_args :: Types.TypeMap
 typemap_Check_args = Map.fromList [("struct1",(1,(Types.T_STRUCT Hsmodule_Types.typemap_HsFoo)))]
+-- | Default values for the 'Check_args' struct
 default_Check_args :: Check_args
 default_Check_args = Check_args{
   check_args_struct1 = Hsmodule_Types.default_HsFoo}
+-- | Definition of the Check_result struct
 data Check_result = Check_result
   { check_result_success :: Bool
+    -- ^ success field of the Check_result struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Check_result where
   encode = encode_Check_result
@@ -113,25 +125,33 @@ instance Arbitrary.Arbitrary Check_result where
              | otherwise = Maybe.catMaybes
     [ if obj == default_Check_result{check_result_success = check_result_success obj} then Nothing else Just $ default_Check_result{check_result_success = check_result_success obj}
     ]
+-- | Translate a 'Check_result' to a 'Types.ThriftVal'
 from_Check_result :: Check_result -> Types.ThriftVal
 from_Check_result record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v10 -> Just (0, ("success",Types.TBool _v10))) $ check_result_success record
   ]
+-- | Write a 'Check_result' with the given 'Thrift.Protocol'
 write_Check_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Check_result -> IO ()
 write_Check_result oprot record = Thrift.writeVal oprot $ from_Check_result record
+-- | Serialize a 'Check_result' in pure code
 encode_Check_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Check_result -> BS.ByteString
 encode_Check_result oprot record = Thrift.serializeVal oprot $ from_Check_result record
+-- | Translate a 'Types.ThriftVal' to a 'Check_result'
 to_Check_result :: Types.ThriftVal -> Check_result
 to_Check_result (Types.TStruct fields) = Check_result{
   check_result_success = maybe (check_result_success default_Check_result) (\(_,_val12) -> (case _val12 of {Types.TBool _val13 -> _val13; _ -> error "wrong type"})) (Map.lookup (0) fields)
   }
 to_Check_result _ = error "not a struct"
+-- | Read a 'Check_result' struct with the given 'Thrift.Protocol'
 read_Check_result :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Check_result
 read_Check_result iprot = to_Check_result <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Check_result)
+-- | Deserialize a 'Check_result' in pure code
 decode_Check_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Check_result
 decode_Check_result iprot bs = to_Check_result $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Check_result) bs
+-- | 'TypeMap' for the 'Check_result' struct
 typemap_Check_result :: Types.TypeMap
 typemap_Check_result = Map.fromList [("success",(0,Types.T_BOOL))]
+-- | Default values for the 'Check_result' struct
 default_Check_result :: Check_result
 default_Check_result = Check_result{
   check_result_success = False}

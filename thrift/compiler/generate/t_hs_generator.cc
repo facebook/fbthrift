@@ -52,8 +52,6 @@ class t_hs_generator : public t_oop_generator {
     out_dir_base_ = "gen-hs";
 
     // Set option flags based on parsed options
-    gen_haddock_ =
-        parsed_options.find("enable_haddock") != parsed_options.end();
     use_list_ = parsed_options.find("use_list") != parsed_options.end();
     use_string_ = parsed_options.find("use_string") != parsed_options.end();
     use_strict_text_ =
@@ -65,7 +63,6 @@ class t_hs_generator : public t_oop_generator {
    * Option Flags
    */
 
-  bool gen_haddock_;
   bool use_list_;
   bool use_string_;
   bool use_strict_text_;
@@ -681,8 +678,7 @@ void t_hs_generator::generate_hs_struct_definition(
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
-  if (gen_haddock_)
-    indent(out) << "-- | Definition of the " << tname << " struct" << nl;
+  indent(out) << "-- | Definition of the " << tname << " struct" << nl;
   indent(out) << "data " << tname << " = " << tname << nl;
 
   if (members.size() > 0) {
@@ -702,9 +698,8 @@ void t_hs_generator::generate_hs_struct_definition(
         out << "Maybe ";
       }
       out << render_hs_type(m_iter->get_type(), true) << nl;
-      if (gen_haddock_)
-        indent(out) << "  -- ^ " << mname << " field of the " << tname
-                    << " struct" << nl;
+      indent(out) << "  -- ^ " << mname << " field of the " << tname
+                  << " struct" << nl;
     }
     indent(out) << "}";
     indent_down();
@@ -830,10 +825,8 @@ void t_hs_generator::generate_hs_struct_reader(
   string id = tmp("_id");
   string val = tmp("_val");
 
-  if (gen_haddock_) {
-    indent(out) << "-- | Translate a 'Types.ThriftVal' to a '" << sname << "'"
-                << nl;
-  }
+  indent(out) << "-- | Translate a 'Types.ThriftVal' to a '" << sname << "'"
+              << nl;
   indent(out) << "to_" << sname << " :: Types.ThriftVal -> " << sname << nl;
   indent(out) << "to_" << sname << " (Types.TStruct fields) = " << sname << "{"
               << nl;
@@ -888,9 +881,8 @@ void t_hs_generator::generate_hs_struct_reader(
   string tmap = unqualified_type_name(tstruct, "typemap_");
   indent(out) << "to_" << sname << " _ = error \"not a struct\"" << nl;
 
-  if (gen_haddock_)
-    indent(out) << "-- | Read a '" << sname
-                << "' struct with the given 'Thrift.Protocol'" << nl;
+  indent(out) << "-- | Read a '" << sname
+              << "' struct with the given 'Thrift.Protocol'" << nl;
   indent(out) << "read_" << sname
               << " :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO "
               << sname << nl;
@@ -898,8 +890,7 @@ void t_hs_generator::generate_hs_struct_reader(
   out << " <$> Thrift.readVal iprot (Types.T_STRUCT " << tmap << ")" << nl;
 
   // decode
-  if (gen_haddock_)
-    indent(out) << "-- | Deserialize a '" << sname << "' in pure code" << nl;
+  indent(out) << "-- | Deserialize a '" << sname << "' in pure code" << nl;
   indent(out) << "decode_" << sname
               << " :: (Thrift.Protocol p, Thrift.Transport t) => "
               << "p t -> BS.ByteString -> " << sname << nl;
@@ -917,10 +908,8 @@ void t_hs_generator::generate_hs_struct_writer(
   string f = tmp("_f");
   string v = tmp("_v");
 
-  if (gen_haddock_) {
-    indent(out) << "-- | Translate a '" << name << "' to a 'Types.ThriftVal'"
-                << nl;
-  }
+  indent(out) << "-- | Translate a '" << name << "' to a 'Types.ThriftVal'"
+              << nl;
   indent(out) << "from_" << name << " :: " << name << " -> Types.ThriftVal"
               << nl;
   indent(out) << "from_" << name << " record = Types.TStruct $ Map.fromList ";
@@ -1010,9 +999,8 @@ void t_hs_generator::generate_hs_struct_writer(
   indent_down();
 
   // write
-  if (gen_haddock_)
-    indent(out) << "-- | Write a '" << name
-                << "' with the given 'Thrift.Protocol'" << nl;
+  indent(out) << "-- | Write a '" << name
+              << "' with the given 'Thrift.Protocol'" << nl;
   indent(out) << "write_" << name
               << " :: (Thrift.Protocol p, Thrift.Transport t) => p t -> "
               << name << " -> IO ()" << nl;
@@ -1021,8 +1009,7 @@ void t_hs_generator::generate_hs_struct_writer(
   out << name << " record" << nl;
 
   // encode
-  if (gen_haddock_)
-    indent(out) << "-- | Serialize a '" << name << "' in pure code" << nl;
+  indent(out) << "-- | Serialize a '" << name << "' in pure code" << nl;
   indent(out) << "encode_" << name
               << " :: (Thrift.Protocol p, Thrift.Transport t) => p t -> "
               << name << " -> BS.ByteString" << nl;
@@ -1123,8 +1110,7 @@ void t_hs_generator::generate_hs_typemap(ofstream& out, t_struct* tstruct) {
   const auto& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  if (gen_haddock_)
-    indent(out) << "-- | 'TypeMap' for the '" << name << "' struct" << nl;
+  indent(out) << "-- | 'TypeMap' for the '" << name << "' struct" << nl;
   indent(out) << "typemap_" << name << " :: Types.TypeMap" << nl;
   indent(out) << "typemap_" << name << " = Map.fromList [";
   bool first = true;
@@ -1152,8 +1138,7 @@ void t_hs_generator::generate_hs_default(ofstream& out, t_struct* tstruct) {
   const auto& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  if (gen_haddock_)
-    indent(out) << "-- | Default values for the '" << name << "' struct" << nl;
+  indent(out) << "-- | Default values for the '" << name << "' struct" << nl;
   indent(out) << fname << " :: " << name << nl;
   indent(out) << fname << " = " << name << "{" << nl;
   indent_up();

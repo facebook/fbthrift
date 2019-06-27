@@ -81,9 +81,12 @@ instance DeepSeq.NFData Enum where
   rnf x = x `seq` ()
 instance Arbitrary.Arbitrary Enum where
   arbitrary = QuickCheck.elements (enumFromTo minBound maxBound)
+-- | Definition of the Struct struct
 data Struct = Struct
   { struct_first :: Int.Int32
+    -- ^ first field of the Struct struct
   , struct_second :: LT.Text
+    -- ^ second field of the Struct struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Struct where
   encode = encode_Struct
@@ -103,27 +106,35 @@ instance Arbitrary.Arbitrary Struct where
     [ if obj == default_Struct{struct_first = struct_first obj} then Nothing else Just $ default_Struct{struct_first = struct_first obj}
     , if obj == default_Struct{struct_second = struct_second obj} then Nothing else Just $ default_Struct{struct_second = struct_second obj}
     ]
+-- | Translate a 'Struct' to a 'Types.ThriftVal'
 from_Struct :: Struct -> Types.ThriftVal
 from_Struct record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("first",Types.TI32 _v3))) $ struct_first record
   , (\_v3 -> Just (2, ("second",Types.TString $ Encoding.encodeUtf8 _v3))) $ struct_second record
   ]
+-- | Write a 'Struct' with the given 'Thrift.Protocol'
 write_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Struct -> IO ()
 write_Struct oprot record = Thrift.writeVal oprot $ from_Struct record
+-- | Serialize a 'Struct' in pure code
 encode_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Struct -> BS.ByteString
 encode_Struct oprot record = Thrift.serializeVal oprot $ from_Struct record
+-- | Translate a 'Types.ThriftVal' to a 'Struct'
 to_Struct :: Types.ThriftVal -> Struct
 to_Struct (Types.TStruct fields) = Struct{
   struct_first = maybe (struct_first default_Struct) (\(_,_val5) -> (case _val5 of {Types.TI32 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
   struct_second = maybe (struct_second default_Struct) (\(_,_val5) -> (case _val5 of {Types.TString _val7 -> Encoding.decodeUtf8 _val7; _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_Struct _ = error "not a struct"
+-- | Read a 'Struct' struct with the given 'Thrift.Protocol'
 read_Struct :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Struct
 read_Struct iprot = to_Struct <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Struct)
+-- | Deserialize a 'Struct' in pure code
 decode_Struct :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Struct
 decode_Struct iprot bs = to_Struct $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Struct) bs
+-- | 'TypeMap' for the 'Struct' struct
 typemap_Struct :: Types.TypeMap
 typemap_Struct = Map.fromList [("first",(1,Types.T_I32)),("second",(2,Types.T_STRING))]
+-- | Default values for the 'Struct' struct
 default_Struct :: Struct
 default_Struct = Struct{
   struct_first = 0,

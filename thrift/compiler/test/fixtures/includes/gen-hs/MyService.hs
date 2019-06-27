@@ -55,9 +55,12 @@ import qualified Service_Types
 import qualified MyService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
+-- | Definition of the Query_args struct
 data Query_args = Query_args
   { query_args_s :: Module_Types.MyStruct
+    -- ^ s field of the Query_args struct
   , query_args_i :: Includes_Types.Included
+    -- ^ i field of the Query_args struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Query_args where
   encode = encode_Query_args
@@ -77,31 +80,40 @@ instance Arbitrary.Arbitrary Query_args where
     [ if obj == default_Query_args{query_args_s = query_args_s obj} then Nothing else Just $ default_Query_args{query_args_s = query_args_s obj}
     , if obj == default_Query_args{query_args_i = query_args_i obj} then Nothing else Just $ default_Query_args{query_args_i = query_args_i obj}
     ]
+-- | Translate a 'Query_args' to a 'Types.ThriftVal'
 from_Query_args :: Query_args -> Types.ThriftVal
 from_Query_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("s",Module_Types.from_MyStruct _v3))) $ query_args_s record
   , (\_v3 -> Just (2, ("i",Includes_Types.from_Included _v3))) $ query_args_i record
   ]
+-- | Write a 'Query_args' with the given 'Thrift.Protocol'
 write_Query_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Query_args -> IO ()
 write_Query_args oprot record = Thrift.writeVal oprot $ from_Query_args record
+-- | Serialize a 'Query_args' in pure code
 encode_Query_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Query_args -> BS.ByteString
 encode_Query_args oprot record = Thrift.serializeVal oprot $ from_Query_args record
+-- | Translate a 'Types.ThriftVal' to a 'Query_args'
 to_Query_args :: Types.ThriftVal -> Query_args
 to_Query_args (Types.TStruct fields) = Query_args{
   query_args_s = maybe (query_args_s default_Query_args) (\(_,_val5) -> (case _val5 of {Types.TStruct _val6 -> (Module_Types.to_MyStruct (Types.TStruct _val6)); _ -> error "wrong type"})) (Map.lookup (1) fields),
   query_args_i = maybe (query_args_i default_Query_args) (\(_,_val5) -> (case _val5 of {Types.TStruct _val7 -> (Includes_Types.to_Included (Types.TStruct _val7)); _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_Query_args _ = error "not a struct"
+-- | Read a 'Query_args' struct with the given 'Thrift.Protocol'
 read_Query_args :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Query_args
 read_Query_args iprot = to_Query_args <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Query_args)
+-- | Deserialize a 'Query_args' in pure code
 decode_Query_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Query_args
 decode_Query_args iprot bs = to_Query_args $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Query_args) bs
+-- | 'TypeMap' for the 'Query_args' struct
 typemap_Query_args :: Types.TypeMap
 typemap_Query_args = Map.fromList [("s",(1,(Types.T_STRUCT Module_Types.typemap_MyStruct))),("i",(2,(Types.T_STRUCT Includes_Types.typemap_Included)))]
+-- | Default values for the 'Query_args' struct
 default_Query_args :: Query_args
 default_Query_args = Query_args{
   query_args_s = Module_Types.default_MyStruct,
   query_args_i = Includes_Types.default_Included}
+-- | Definition of the Query_result struct
 data Query_result = Query_result
  deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Query_result where
@@ -114,30 +126,41 @@ instance DeepSeq.NFData Query_result where
     ()
 instance Arbitrary.Arbitrary Query_result where 
   arbitrary = QuickCheck.elements [Query_result]
+-- | Translate a 'Query_result' to a 'Types.ThriftVal'
 from_Query_result :: Query_result -> Types.ThriftVal
 from_Query_result record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   []
+-- | Write a 'Query_result' with the given 'Thrift.Protocol'
 write_Query_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Query_result -> IO ()
 write_Query_result oprot record = Thrift.writeVal oprot $ from_Query_result record
+-- | Serialize a 'Query_result' in pure code
 encode_Query_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Query_result -> BS.ByteString
 encode_Query_result oprot record = Thrift.serializeVal oprot $ from_Query_result record
+-- | Translate a 'Types.ThriftVal' to a 'Query_result'
 to_Query_result :: Types.ThriftVal -> Query_result
 to_Query_result (Types.TStruct fields) = Query_result{
 
   }
 to_Query_result _ = error "not a struct"
+-- | Read a 'Query_result' struct with the given 'Thrift.Protocol'
 read_Query_result :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Query_result
 read_Query_result iprot = to_Query_result <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Query_result)
+-- | Deserialize a 'Query_result' in pure code
 decode_Query_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Query_result
 decode_Query_result iprot bs = to_Query_result $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Query_result) bs
+-- | 'TypeMap' for the 'Query_result' struct
 typemap_Query_result :: Types.TypeMap
 typemap_Query_result = Map.fromList []
+-- | Default values for the 'Query_result' struct
 default_Query_result :: Query_result
 default_Query_result = Query_result{
 }
+-- | Definition of the Has_arg_docs_args struct
 data Has_arg_docs_args = Has_arg_docs_args
   { has_arg_docs_args_s :: Module_Types.MyStruct
+    -- ^ s field of the Has_arg_docs_args struct
   , has_arg_docs_args_i :: Includes_Types.Included
+    -- ^ i field of the Has_arg_docs_args struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Has_arg_docs_args where
   encode = encode_Has_arg_docs_args
@@ -157,31 +180,40 @@ instance Arbitrary.Arbitrary Has_arg_docs_args where
     [ if obj == default_Has_arg_docs_args{has_arg_docs_args_s = has_arg_docs_args_s obj} then Nothing else Just $ default_Has_arg_docs_args{has_arg_docs_args_s = has_arg_docs_args_s obj}
     , if obj == default_Has_arg_docs_args{has_arg_docs_args_i = has_arg_docs_args_i obj} then Nothing else Just $ default_Has_arg_docs_args{has_arg_docs_args_i = has_arg_docs_args_i obj}
     ]
+-- | Translate a 'Has_arg_docs_args' to a 'Types.ThriftVal'
 from_Has_arg_docs_args :: Has_arg_docs_args -> Types.ThriftVal
 from_Has_arg_docs_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v17 -> Just (1, ("s",Module_Types.from_MyStruct _v17))) $ has_arg_docs_args_s record
   , (\_v17 -> Just (2, ("i",Includes_Types.from_Included _v17))) $ has_arg_docs_args_i record
   ]
+-- | Write a 'Has_arg_docs_args' with the given 'Thrift.Protocol'
 write_Has_arg_docs_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_args -> IO ()
 write_Has_arg_docs_args oprot record = Thrift.writeVal oprot $ from_Has_arg_docs_args record
+-- | Serialize a 'Has_arg_docs_args' in pure code
 encode_Has_arg_docs_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_args -> BS.ByteString
 encode_Has_arg_docs_args oprot record = Thrift.serializeVal oprot $ from_Has_arg_docs_args record
+-- | Translate a 'Types.ThriftVal' to a 'Has_arg_docs_args'
 to_Has_arg_docs_args :: Types.ThriftVal -> Has_arg_docs_args
 to_Has_arg_docs_args (Types.TStruct fields) = Has_arg_docs_args{
   has_arg_docs_args_s = maybe (has_arg_docs_args_s default_Has_arg_docs_args) (\(_,_val19) -> (case _val19 of {Types.TStruct _val20 -> (Module_Types.to_MyStruct (Types.TStruct _val20)); _ -> error "wrong type"})) (Map.lookup (1) fields),
   has_arg_docs_args_i = maybe (has_arg_docs_args_i default_Has_arg_docs_args) (\(_,_val19) -> (case _val19 of {Types.TStruct _val21 -> (Includes_Types.to_Included (Types.TStruct _val21)); _ -> error "wrong type"})) (Map.lookup (2) fields)
   }
 to_Has_arg_docs_args _ = error "not a struct"
+-- | Read a 'Has_arg_docs_args' struct with the given 'Thrift.Protocol'
 read_Has_arg_docs_args :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Has_arg_docs_args
 read_Has_arg_docs_args iprot = to_Has_arg_docs_args <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Has_arg_docs_args)
+-- | Deserialize a 'Has_arg_docs_args' in pure code
 decode_Has_arg_docs_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Has_arg_docs_args
 decode_Has_arg_docs_args iprot bs = to_Has_arg_docs_args $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Has_arg_docs_args) bs
+-- | 'TypeMap' for the 'Has_arg_docs_args' struct
 typemap_Has_arg_docs_args :: Types.TypeMap
 typemap_Has_arg_docs_args = Map.fromList [("s",(1,(Types.T_STRUCT Module_Types.typemap_MyStruct))),("i",(2,(Types.T_STRUCT Includes_Types.typemap_Included)))]
+-- | Default values for the 'Has_arg_docs_args' struct
 default_Has_arg_docs_args :: Has_arg_docs_args
 default_Has_arg_docs_args = Has_arg_docs_args{
   has_arg_docs_args_s = Module_Types.default_MyStruct,
   has_arg_docs_args_i = Includes_Types.default_Included}
+-- | Definition of the Has_arg_docs_result struct
 data Has_arg_docs_result = Has_arg_docs_result
  deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Has_arg_docs_result where
@@ -194,24 +226,32 @@ instance DeepSeq.NFData Has_arg_docs_result where
     ()
 instance Arbitrary.Arbitrary Has_arg_docs_result where 
   arbitrary = QuickCheck.elements [Has_arg_docs_result]
+-- | Translate a 'Has_arg_docs_result' to a 'Types.ThriftVal'
 from_Has_arg_docs_result :: Has_arg_docs_result -> Types.ThriftVal
 from_Has_arg_docs_result record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   []
+-- | Write a 'Has_arg_docs_result' with the given 'Thrift.Protocol'
 write_Has_arg_docs_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_result -> IO ()
 write_Has_arg_docs_result oprot record = Thrift.writeVal oprot $ from_Has_arg_docs_result record
+-- | Serialize a 'Has_arg_docs_result' in pure code
 encode_Has_arg_docs_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_result -> BS.ByteString
 encode_Has_arg_docs_result oprot record = Thrift.serializeVal oprot $ from_Has_arg_docs_result record
+-- | Translate a 'Types.ThriftVal' to a 'Has_arg_docs_result'
 to_Has_arg_docs_result :: Types.ThriftVal -> Has_arg_docs_result
 to_Has_arg_docs_result (Types.TStruct fields) = Has_arg_docs_result{
 
   }
 to_Has_arg_docs_result _ = error "not a struct"
+-- | Read a 'Has_arg_docs_result' struct with the given 'Thrift.Protocol'
 read_Has_arg_docs_result :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Has_arg_docs_result
 read_Has_arg_docs_result iprot = to_Has_arg_docs_result <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Has_arg_docs_result)
+-- | Deserialize a 'Has_arg_docs_result' in pure code
 decode_Has_arg_docs_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Has_arg_docs_result
 decode_Has_arg_docs_result iprot bs = to_Has_arg_docs_result $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Has_arg_docs_result) bs
+-- | 'TypeMap' for the 'Has_arg_docs_result' struct
 typemap_Has_arg_docs_result :: Types.TypeMap
 typemap_Has_arg_docs_result = Map.fromList []
+-- | Default values for the 'Has_arg_docs_result' struct
 default_Has_arg_docs_result :: Has_arg_docs_result
 default_Has_arg_docs_result = Has_arg_docs_result{
 }
