@@ -62,14 +62,12 @@ class ChannelCallbacks {
         uint32_t sendSeqId,
         RequestClientCallback::Ptr cb,
         folly::HHWheelTimer* timer,
-        std::chrono::milliseconds timeout,
-        std::chrono::milliseconds chunkTimeout)
+        std::chrono::milliseconds timeout)
         : channel_(channel),
           sendSeqId_(sendSeqId),
           cb_(std::move(cb)),
           sendState_(QState::INIT),
-          recvState_(QState::QUEUED),
-          chunkTimeoutCallback_(this, timer, chunkTimeout) {
+          recvState_(QState::QUEUED) {
       CHECK(cb_);
       if (timeout > std::chrono::milliseconds(0)) {
         timer->scheduleTimeout(this, timeout);
@@ -116,18 +114,6 @@ class ChannelCallbacks {
           ClientReceiveState(-1, std::move(buf), std::move(header), nullptr));
 
       maybeDeleteThis();
-    }
-    void partialReplyReceived(
-        std::unique_ptr<folly::IOBuf> buf,
-        std::unique_ptr<apache::thrift::transport::THeader> header) {
-      DestructorGuard dg(this);
-      X_CHECK_STATE_NE(sendState_, QState::INIT);
-      X_CHECK_STATE_EQ(recvState_, QState::QUEUED);
-      chunkTimeoutCallback_.resetTimeout();
-
-      CHECK(cb_);
-      cb_->onResponse(ClientReceiveState(
-          -1, std::move(buf), std::move(header), nullptr, false));
     }
     void requestError(folly::exception_wrapper ex) {
       DestructorGuard dg(this);
@@ -182,30 +168,6 @@ class ChannelCallbacks {
     RequestClientCallback::Ptr cb_;
     QState sendState_;
     QState recvState_;
-    class TimerCallback : public folly::HHWheelTimer::Callback {
-     public:
-      TimerCallback(
-          TwowayCallback* cb,
-          folly::HHWheelTimer* timer,
-          std::chrono::milliseconds chunkTimeout)
-          : cb_(cb), timer_(timer), chunkTimeout_(chunkTimeout) {
-        resetTimeout();
-      }
-      void timeoutExpired() noexcept override {
-        cb_->timeoutExpired();
-      }
-      void resetTimeout() {
-        cancelTimeout();
-        if (chunkTimeout_.count() > 0) {
-          timer_->scheduleTimeout(this, chunkTimeout_);
-        }
-      }
-
-     private:
-      TwowayCallback* cb_;
-      folly::HHWheelTimer* timer_;
-      std::chrono::milliseconds chunkTimeout_;
-    } chunkTimeoutCallback_;
 #undef X_CHECK_STATE_NE
 #undef X_CHECK_STATE_EQ
   };

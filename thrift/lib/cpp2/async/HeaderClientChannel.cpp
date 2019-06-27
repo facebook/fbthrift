@@ -168,12 +168,7 @@ void HeaderClientChannel::sendRequestResponse(
   }
 
   auto twcb = new TwowayCallback<HeaderClientChannel>(
-      this,
-      sendSeqId_,
-      std::move(cb),
-      &getEventBase()->timer(),
-      timeout,
-      rpcOptions.getChunkTimeout());
+      this, sendSeqId_, std::move(cb), &getEventBase()->timer(), timeout);
 
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);
@@ -260,18 +255,10 @@ void HeaderClientChannel::messageReceived(
 
   auto f(cb->second);
 
-  auto it = header->getHeaders().find("thrift_stream");
-  bool isChunk = (it != header->getHeaders().end() && it->second == "chunk");
-
-  if (isChunk) {
-    f->partialReplyReceived(std::move(buf), std::move(header));
-  } else {
-    // non-stream message or end of stream
-    recvCallbacks_.erase(recvSeqId);
-    // we are the last callback?
-    setBaseReceivedCallback();
-    f->replyReceived(std::move(buf), std::move(header));
-  }
+  recvCallbacks_.erase(recvSeqId);
+  // we are the last callback?
+  setBaseReceivedCallback();
+  f->replyReceived(std::move(buf), std::move(header));
 }
 
 void HeaderClientChannel::messageChannelEOF() {
