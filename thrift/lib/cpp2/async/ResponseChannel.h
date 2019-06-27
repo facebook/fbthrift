@@ -70,10 +70,6 @@ class ResponseChannelRequest {
     return std::move(buf_);
   }
 
-  SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
-    return std::move(stream_);
-  }
-
   virtual bool isActive() const = 0;
 
   virtual void cancel() = 0;
@@ -144,7 +140,6 @@ class ResponseChannelRequest {
 
  protected:
   std::unique_ptr<folly::IOBuf> buf_;
-  SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
   std::shared_ptr<apache::thrift::AdmissionController> admissionController_;
   bool startedProcessing_{false};
   std::chrono::steady_clock::time_point creationTimestamps_;
