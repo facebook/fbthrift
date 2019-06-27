@@ -55,9 +55,7 @@ rocket::Payload pack(FirstResponsePayload&& firstResponse) {
 RocketStreamClientCallback::RocketStreamClientCallback(
     rocket::RocketServerFrameContext&& context,
     uint32_t initialRequestN)
-    : context_(std::make_unique<rocket::RocketServerFrameContext>(
-          std::move(context))),
-      tokens_(initialRequestN) {}
+    : context_(std::move(context)), tokens_(initialRequestN) {}
 
 void RocketStreamClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
@@ -72,11 +70,11 @@ void RocketStreamClientCallback::onFirstResponse(
     scheduleTimeout();
   }
 
-  context_->sendPayload(
+  context_.sendPayload(
       pack(std::move(firstResponse)), rocket::Flags::none().next(true));
   // ownership of the RocketStreamClientCallback transfers to connection
   // after onFirstResponse.
-  context_->takeOwnership(this);
+  context_.takeOwnership(this);
 }
 
 void RocketStreamClientCallback::onFirstResponseError(
@@ -86,7 +84,7 @@ void RocketStreamClientCallback::onFirstResponseError(
   };
 
   ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
-    context_->sendPayload(
+    context_.sendPayload(
         rocket::Payload::makeFromData(std::move(encodedError.encoded)),
         rocket::Flags::none().next(true).complete(true));
   });
@@ -98,27 +96,27 @@ void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
     scheduleTimeout();
   }
 
-  context_->sendPayload(
+  context_.sendPayload(
       rocket::Payload::makeFromData(std::move(payload.payload)),
       rocket::Flags::none().next(true));
 }
 
 void RocketStreamClientCallback::onStreamComplete() {
-  context_->sendPayload(
+  context_.sendPayload(
       rocket::Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
       rocket::Flags::none().complete(true));
-  context_->freeStream();
+  context_.freeStream();
 }
 
 void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
   if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
-        context_->sendError(rocket::RocketException(
+        context_.sendError(rocket::RocketException(
             rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
       })) {
-    context_->sendError(rocket::RocketException(
+    context_.sendError(rocket::RocketException(
         rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
   }
-  context_->freeStream();
+  context_.freeStream();
 }
 
 void RocketStreamClientCallback::request(uint32_t tokens) {
@@ -145,7 +143,7 @@ StreamServerCallback& RocketStreamClientCallback::getStreamServerCallback() {
 }
 
 void RocketStreamClientCallback::scheduleTimeout() {
-  context_->scheduleStreamTimeout(this);
+  context_.scheduleStreamTimeout(this);
 }
 
 } // namespace thrift

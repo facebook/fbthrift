@@ -16,20 +16,18 @@
 
 #pragma once
 
-#include <memory>
-
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/async/HHWheelTimer.h>
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
+
+namespace folly {
+class EventBase;
+} // namespace folly
 
 namespace apache {
 namespace thrift {
-
-namespace rocket {
-class RocketServerFrameContext;
-} // namespace rocket
 
 // TODO Optimize memory footprint of per-stream timeouts
 class RocketStreamClientCallback final : public StreamClientCallback,
@@ -57,8 +55,7 @@ class RocketStreamClientCallback final : public StreamClientCallback,
   StreamServerCallback& getStreamServerCallback();
 
  private:
-  // TODO RocketServerConnection* suffices instead of RocketServerFrameContext
-  std::unique_ptr<rocket::RocketServerFrameContext> context_;
+  rocket::RocketServerFrameContext context_;
   StreamServerCallback* serverCallback_{nullptr};
   uint64_t tokens_{0};
 
