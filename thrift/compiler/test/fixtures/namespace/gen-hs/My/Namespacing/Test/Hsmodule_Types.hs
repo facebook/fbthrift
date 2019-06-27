@@ -48,8 +48,10 @@ import qualified Thrift.Serializable as Serializable
 import qualified Thrift.Arbitraries as Arbitraries
 
 
+-- | Definition of the HsFoo struct
 data HsFoo = HsFoo
   { hsFoo_MyInt :: Int.Int64
+    -- ^ MyInt field of the HsFoo struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable HsFoo where
   encode = encode_HsFoo
@@ -66,25 +68,33 @@ instance Arbitrary.Arbitrary HsFoo where
              | otherwise = Maybe.catMaybes
     [ if obj == default_HsFoo{hsFoo_MyInt = hsFoo_MyInt obj} then Nothing else Just $ default_HsFoo{hsFoo_MyInt = hsFoo_MyInt obj}
     ]
+-- | Translate a 'HsFoo' to a 'Types.ThriftVal'
 from_HsFoo :: HsFoo -> Types.ThriftVal
 from_HsFoo record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("MyInt",Types.TI64 _v3))) $ hsFoo_MyInt record
   ]
+-- | Write a 'HsFoo' with the given 'Thrift.Protocol'
 write_HsFoo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> HsFoo -> IO ()
 write_HsFoo oprot record = Thrift.writeVal oprot $ from_HsFoo record
+-- | Serialize a 'HsFoo' in pure code
 encode_HsFoo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> HsFoo -> BS.ByteString
 encode_HsFoo oprot record = Thrift.serializeVal oprot $ from_HsFoo record
+-- | Translate a 'Types.ThriftVal' to a 'HsFoo'
 to_HsFoo :: Types.ThriftVal -> HsFoo
 to_HsFoo (Types.TStruct fields) = HsFoo{
   hsFoo_MyInt = maybe (hsFoo_MyInt default_HsFoo) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_HsFoo _ = error "not a struct"
+-- | Read a 'HsFoo' struct with the given 'Thrift.Protocol'
 read_HsFoo :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO HsFoo
 read_HsFoo iprot = to_HsFoo <$> Thrift.readVal iprot (Types.T_STRUCT typemap_HsFoo)
+-- | Deserialize a 'HsFoo' in pure code
 decode_HsFoo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> HsFoo
 decode_HsFoo iprot bs = to_HsFoo $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_HsFoo) bs
+-- | 'TypeMap' for the 'HsFoo' struct
 typemap_HsFoo :: Types.TypeMap
 typemap_HsFoo = Map.fromList [("MyInt",(1,Types.T_I64))]
+-- | Default values for the 'HsFoo' struct
 default_HsFoo :: HsFoo
 default_HsFoo = HsFoo{
   hsFoo_MyInt = 0}

@@ -48,8 +48,10 @@ import qualified Thrift.Serializable as Serializable
 import qualified Thrift.Arbitraries as Arbitraries
 
 
+-- | Definition of the Foo struct
 data Foo = Foo
   { foo_a :: Int.Int64
+    -- ^ a field of the Foo struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Foo where
   encode = encode_Foo
@@ -66,25 +68,33 @@ instance Arbitrary.Arbitrary Foo where
              | otherwise = Maybe.catMaybes
     [ if obj == default_Foo{foo_a = foo_a obj} then Nothing else Just $ default_Foo{foo_a = foo_a obj}
     ]
+-- | Translate a 'Foo' to a 'Types.ThriftVal'
 from_Foo :: Foo -> Types.ThriftVal
 from_Foo record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("a",Types.TI64 _v3))) $ foo_a record
   ]
+-- | Write a 'Foo' with the given 'Thrift.Protocol'
 write_Foo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Foo -> IO ()
 write_Foo oprot record = Thrift.writeVal oprot $ from_Foo record
+-- | Serialize a 'Foo' in pure code
 encode_Foo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Foo -> BS.ByteString
 encode_Foo oprot record = Thrift.serializeVal oprot $ from_Foo record
+-- | Translate a 'Types.ThriftVal' to a 'Foo'
 to_Foo :: Types.ThriftVal -> Foo
 to_Foo (Types.TStruct fields) = Foo{
   foo_a = maybe (foo_a default_Foo) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields)
   }
 to_Foo _ = error "not a struct"
+-- | Read a 'Foo' struct with the given 'Thrift.Protocol'
 read_Foo :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Foo
 read_Foo iprot = to_Foo <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Foo)
+-- | Deserialize a 'Foo' in pure code
 decode_Foo :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Foo
 decode_Foo iprot bs = to_Foo $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Foo) bs
+-- | 'TypeMap' for the 'Foo' struct
 typemap_Foo :: Types.TypeMap
 typemap_Foo = Map.fromList [("a",(1,Types.T_I64))]
+-- | Default values for the 'Foo' struct
 default_Foo :: Foo
 default_Foo = Foo{
   foo_a = 2}

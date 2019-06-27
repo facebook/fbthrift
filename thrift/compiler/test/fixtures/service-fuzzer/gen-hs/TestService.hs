@@ -52,23 +52,40 @@ import qualified Module_Types
 import qualified TestService_Iface as Iface
 -- HELPER FUNCTIONS AND STRUCTURES --
 
+-- | Definition of the Init_args struct
 data Init_args = Init_args
   { init_args_int1 :: Int.Int64
+    -- ^ int1 field of the Init_args struct
   , init_args_int2 :: Int.Int64
+    -- ^ int2 field of the Init_args struct
   , init_args_int3 :: Int.Int64
+    -- ^ int3 field of the Init_args struct
   , init_args_int4 :: Int.Int64
+    -- ^ int4 field of the Init_args struct
   , init_args_int5 :: Int.Int64
+    -- ^ int5 field of the Init_args struct
   , init_args_int6 :: Int.Int64
+    -- ^ int6 field of the Init_args struct
   , init_args_int7 :: Int.Int64
+    -- ^ int7 field of the Init_args struct
   , init_args_int8 :: Int.Int64
+    -- ^ int8 field of the Init_args struct
   , init_args_int9 :: Int.Int64
+    -- ^ int9 field of the Init_args struct
   , init_args_int10 :: Int.Int64
+    -- ^ int10 field of the Init_args struct
   , init_args_int11 :: Int.Int64
+    -- ^ int11 field of the Init_args struct
   , init_args_int12 :: Int.Int64
+    -- ^ int12 field of the Init_args struct
   , init_args_int13 :: Int.Int64
+    -- ^ int13 field of the Init_args struct
   , init_args_int14 :: Int.Int64
+    -- ^ int14 field of the Init_args struct
   , init_args_int15 :: Int.Int64
+    -- ^ int15 field of the Init_args struct
   , init_args_int16 :: Int.Int64
+    -- ^ int16 field of the Init_args struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Init_args where
   encode = encode_Init_args
@@ -130,6 +147,7 @@ instance Arbitrary.Arbitrary Init_args where
     , if obj == default_Init_args{init_args_int15 = init_args_int15 obj} then Nothing else Just $ default_Init_args{init_args_int15 = init_args_int15 obj}
     , if obj == default_Init_args{init_args_int16 = init_args_int16 obj} then Nothing else Just $ default_Init_args{init_args_int16 = init_args_int16 obj}
     ]
+-- | Translate a 'Init_args' to a 'Types.ThriftVal'
 from_Init_args :: Init_args -> Types.ThriftVal
 from_Init_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v3 -> Just (1, ("int1",Types.TI64 _v3))) $ init_args_int1 record
@@ -149,10 +167,13 @@ from_Init_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   , (\_v3 -> Just (15, ("int15",Types.TI64 _v3))) $ init_args_int15 record
   , (\_v3 -> Just (16, ("int16",Types.TI64 _v3))) $ init_args_int16 record
   ]
+-- | Write a 'Init_args' with the given 'Thrift.Protocol'
 write_Init_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_args -> IO ()
 write_Init_args oprot record = Thrift.writeVal oprot $ from_Init_args record
+-- | Serialize a 'Init_args' in pure code
 encode_Init_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_args -> BS.ByteString
 encode_Init_args oprot record = Thrift.serializeVal oprot $ from_Init_args record
+-- | Translate a 'Types.ThriftVal' to a 'Init_args'
 to_Init_args :: Types.ThriftVal -> Init_args
 to_Init_args (Types.TStruct fields) = Init_args{
   init_args_int1 = maybe (init_args_int1 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val6 -> _val6; _ -> error "wrong type"})) (Map.lookup (1) fields),
@@ -173,12 +194,16 @@ to_Init_args (Types.TStruct fields) = Init_args{
   init_args_int16 = maybe (init_args_int16 default_Init_args) (\(_,_val5) -> (case _val5 of {Types.TI64 _val21 -> _val21; _ -> error "wrong type"})) (Map.lookup (16) fields)
   }
 to_Init_args _ = error "not a struct"
+-- | Read a 'Init_args' struct with the given 'Thrift.Protocol'
 read_Init_args :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Init_args
 read_Init_args iprot = to_Init_args <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Init_args)
+-- | Deserialize a 'Init_args' in pure code
 decode_Init_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Init_args
 decode_Init_args iprot bs = to_Init_args $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Init_args) bs
+-- | 'TypeMap' for the 'Init_args' struct
 typemap_Init_args :: Types.TypeMap
 typemap_Init_args = Map.fromList [("int1",(1,Types.T_I64)),("int2",(2,Types.T_I64)),("int3",(3,Types.T_I64)),("int4",(4,Types.T_I64)),("int5",(5,Types.T_I64)),("int6",(6,Types.T_I64)),("int7",(7,Types.T_I64)),("int8",(8,Types.T_I64)),("int9",(9,Types.T_I64)),("int10",(10,Types.T_I64)),("int11",(11,Types.T_I64)),("int12",(12,Types.T_I64)),("int13",(13,Types.T_I64)),("int14",(14,Types.T_I64)),("int15",(15,Types.T_I64)),("int16",(16,Types.T_I64))]
+-- | Default values for the 'Init_args' struct
 default_Init_args :: Init_args
 default_Init_args = Init_args{
   init_args_int1 = 0,
@@ -197,8 +222,10 @@ default_Init_args = Init_args{
   init_args_int14 = 0,
   init_args_int15 = 0,
   init_args_int16 = 0}
+-- | Definition of the Init_result struct
 data Init_result = Init_result
   { init_result_success :: Int.Int64
+    -- ^ success field of the Init_result struct
   } deriving (Show,Eq,Typeable.Typeable)
 instance Serializable.ThriftSerializable Init_result where
   encode = encode_Init_result
@@ -215,25 +242,33 @@ instance Arbitrary.Arbitrary Init_result where
              | otherwise = Maybe.catMaybes
     [ if obj == default_Init_result{init_result_success = init_result_success obj} then Nothing else Just $ default_Init_result{init_result_success = init_result_success obj}
     ]
+-- | Translate a 'Init_result' to a 'Types.ThriftVal'
 from_Init_result :: Init_result -> Types.ThriftVal
 from_Init_result record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
   [ (\_v25 -> Just (0, ("success",Types.TI64 _v25))) $ init_result_success record
   ]
+-- | Write a 'Init_result' with the given 'Thrift.Protocol'
 write_Init_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_result -> IO ()
 write_Init_result oprot record = Thrift.writeVal oprot $ from_Init_result record
+-- | Serialize a 'Init_result' in pure code
 encode_Init_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Init_result -> BS.ByteString
 encode_Init_result oprot record = Thrift.serializeVal oprot $ from_Init_result record
+-- | Translate a 'Types.ThriftVal' to a 'Init_result'
 to_Init_result :: Types.ThriftVal -> Init_result
 to_Init_result (Types.TStruct fields) = Init_result{
   init_result_success = maybe (init_result_success default_Init_result) (\(_,_val27) -> (case _val27 of {Types.TI64 _val28 -> _val28; _ -> error "wrong type"})) (Map.lookup (0) fields)
   }
 to_Init_result _ = error "not a struct"
+-- | Read a 'Init_result' struct with the given 'Thrift.Protocol'
 read_Init_result :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Init_result
 read_Init_result iprot = to_Init_result <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Init_result)
+-- | Deserialize a 'Init_result' in pure code
 decode_Init_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Init_result
 decode_Init_result iprot bs = to_Init_result $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Init_result) bs
+-- | 'TypeMap' for the 'Init_result' struct
 typemap_Init_result :: Types.TypeMap
 typemap_Init_result = Map.fromList [("success",(0,Types.T_I64))]
+-- | Default values for the 'Init_result' struct
 default_Init_result :: Init_result
 default_Init_result = Init_result{
   init_result_success = 0}
