@@ -83,8 +83,13 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
    */
   void write(const uint8_t* buf, uint32_t len) {
     if (LIKELY(static_cast<ptrdiff_t>(len) <= wBound_ - wBase_)) {
-      std::memcpy(wBase_, buf, len);
-      wBase_ += len;
+      // wBase_ can be null if the buffer is empty and passing null to memcpy is
+      // a UB even if len is zero. Prevent this by skipping memcpy altogether
+      // in this case.
+      if (LIKELY(len != 0)) {
+        std::memcpy(wBase_, buf, len);
+        wBase_ += len;
+      }
       return;
     }
     writeSlow(buf, len);
