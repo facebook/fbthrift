@@ -74,7 +74,6 @@ folly::Try<Payload> RequestContext::waitForResponse(
   // writeSuccess() or writeErr()), a timeout for baton_ will be scheduled via
   // awaitResponseTimeoutHandler_.
   awaitResponseTimeout_ = timeout;
-  queue_.trackAsExpectingResponse(*this);
   baton_.wait(awaitResponseTimeoutHandler_);
 
   switch (state_) {
@@ -110,7 +109,7 @@ folly::Try<Payload> RequestContext::waitForResponse(
 
 void RequestContext::onPayloadFrame(PayloadFrame&& payloadFrame) {
   DCHECK(!responsePayload_.hasException());
-  DCHECK(expectingResponse());
+  DCHECK(isRequestResponse());
 
   // This function is only called on the response payload frame corresponding to
   // a REQUEST_RESPONSE context. Each fragment of the response payload frame
@@ -134,7 +133,7 @@ void RequestContext::onErrorFrame(ErrorFrame&& errorFrame) {
   // frame.
   DCHECK(!responsePayload_.hasValue());
   DCHECK(!responsePayload_.hasException());
-  DCHECK(expectingResponse());
+  DCHECK(isRequestResponse());
 
   responsePayload_ =
       folly::Try<Payload>(folly::make_exception_wrapper<RocketException>(

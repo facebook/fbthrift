@@ -243,7 +243,7 @@ class RocketClient : public folly::DelayedDestruction,
   RocketStreamServerCallback* getStreamById(StreamId streamId);
 
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
-  void handleResponseFrame(
+  void handleRequestResponseFrame(
       RequestContext& ctx,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
