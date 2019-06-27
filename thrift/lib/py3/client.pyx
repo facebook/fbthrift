@@ -2,7 +2,9 @@ cimport cython
 from thrift.py3.exceptions cimport create_py_exception
 from thrift.py3.common import Protocol
 from thrift.py3.common cimport Protocol2PROTOCOL_TYPES
+cimport thrift.py3.ssl as thrift_ssl
 from libcpp.string cimport string
+from libc.stdint cimport uint64_t
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
 from folly cimport cFollyTry, cFollyPromise
@@ -72,20 +74,22 @@ def get_client(
     host='::1',
     int port=-1,
     path=None,
-    float timeout=1,
+    double timeout=1,
     headers=None,
     ClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     protocol = Protocol.COMPACT,
+    thrift_ssl.SSLContext ssl_context=None,
+    double ssl_timeout=1
 ):
     if not isinstance(protocol, Protocol):
         raise TypeError(f'protocol={protocol} is not a valid {Protocol}')
-
     loop = asyncio.get_event_loop()
     # This is to prevent calling get_client at import time at module scope
     assert loop.is_running(), "Eventloop is not running"
     assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
     host = str(host)  # Accept ipaddress objects
-    cdef int _timeout = int(timeout * 1000)
+    cdef uint32_t _timeout_ms = int(timeout * 1000)
+    cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
     cdef PROTOCOL_TYPES proto = Protocol2PROTOCOL_TYPES(protocol)
 
     endpoint = b''
@@ -104,7 +108,21 @@ def get_client(
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelUnix(move_string(fspath), _timeout, client_type, proto),
+            createThriftChannelUnix(move_string(fspath), _timeout_ms, client_type, proto),
+            requestchannel_callback,
+            <PyObject *> client
+        )
+    elif ssl_context:
+        p = _ResolvePromise(host, port)
+        bridgeFutureWith[cRequestChannel_ptr](
+            (<Client>client)._executor,
+            thrift_ssl.createThriftChannelTCP(
+                ssl_context._cpp_obj,
+                p.cPromise.getFuture(),
+                port,
+                _timeout_ms,
+                _ssl_timeout_ms,
+            ),
             requestchannel_callback,
             <PyObject *> client
         )
@@ -112,7 +130,14 @@ def get_client(
         p = _ResolvePromise(host, port)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelTCP(p.cPromise.getFuture(), port, _timeout, client_type, proto, move_string(endpoint)),
+            createThriftChannelTCP(
+                p.cPromise.getFuture(),
+                port,
+                _timeout_ms,
+                client_type,
+                proto,
+                move_string(endpoint)
+            ),
             requestchannel_callback,
             <PyObject *> client
         )

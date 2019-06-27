@@ -16,6 +16,7 @@ import ipaddress
 import os
 from thrift.py3.common import Headers, Priority
 from thrift.py3.serializer import Protocol
+from thrift.py3.ssl import SSLContext
 
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 Path = Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
@@ -53,6 +54,8 @@ def get_client(
     headers: Dict[str, str] = ...,
     client_type: ClientType = ...,
     protocol: Protocol = ...,
+    ssl_context: Optional[SSLContext] = ...,
+    ssl_timeout: float = ...,
 ) -> cT: ...
 def install_proxy_factory(
     factory: Optional[Callable[[Type[Client]], Callable[[cT], Any]]],
