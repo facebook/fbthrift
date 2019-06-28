@@ -844,7 +844,7 @@ class StructRandomizer(BaseRandomizer):
 
         self._decrease_recursion_depth(is_top_level)
 
-        if fields is None:
+        if (fields is None) or (self._is_union and not fields):
             return None
         else:
             return self._ttype(**fields)

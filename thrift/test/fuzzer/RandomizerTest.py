@@ -792,7 +792,10 @@ class TestStructRandomizer(TestRandomizer, unittest.TestCase):
         gen = self.struct_randomizer(ttypes.EmptyUnion, constraints)
         for _ in sm.xrange(cls.iterations):
             val = gen.generate()
-            self.assertIsNotNone(val)
+            # Because the enum has no valid fields it's hard to generate
+            # a reasonable value. So returning None from the
+            # randomizer is reasonable.
+            self.assertIsNone(val)
 
 
 class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
@@ -818,7 +821,13 @@ class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
         for _ in sm.xrange(cls.iterations):
             val = gen.generate()
             # Check that field is zero, indicating no fields are set
-            self.assertEqual(val.field, 0)
+            self.assertIsNone(
+                val,
+                (
+                    "Because there's no way to add fields of a "
+                    "union there should be no way to create the union."
+                ),
+            )
 
     def testSeeded(self):
         cls = self.__class__
