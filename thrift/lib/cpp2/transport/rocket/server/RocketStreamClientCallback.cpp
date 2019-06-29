@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
@@ -40,17 +41,6 @@
 
 namespace apache {
 namespace thrift {
-
-namespace {
-rocket::Payload pack(FirstResponsePayload&& firstResponse) {
-  CompactProtocolWriter writer;
-  folly::IOBufQueue queue;
-  writer.setOutput(&queue);
-  firstResponse.metadata.write(&writer);
-  return rocket::Payload::makeFromMetadataAndData(
-      queue.move(), std::move(firstResponse.payload));
-}
-} // namespace
 
 RocketStreamClientCallback::RocketStreamClientCallback(
     rocket::RocketServerFrameContext&& context,
@@ -71,7 +61,8 @@ void RocketStreamClientCallback::onFirstResponse(
   }
 
   context_.sendPayload(
-      pack(std::move(firstResponse)), rocket::Flags::none().next(true));
+      rocket::pack(std::move(firstResponse)).value(),
+      rocket::Flags::none().next(true));
   // ownership of the RocketStreamClientCallback transfers to connection
   // after onFirstResponse.
   context_.takeOwnership(this);

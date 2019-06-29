@@ -52,6 +52,18 @@ class StreamServerCallback {
   virtual void onStreamCancel() = 0;
 };
 
+class ChannelServerCallback {
+ public:
+  virtual ~ChannelServerCallback() = default;
+
+  virtual void onStreamRequestN(uint64_t) = 0;
+  virtual void onStreamCancel() = 0;
+
+  virtual void onSinkNext(StreamPayload&&) = 0;
+  virtual void onSinkError(folly::exception_wrapper) = 0;
+  virtual void onSinkComplete() = 0;
+};
+
 class StreamClientCallback {
  public:
   virtual ~StreamClientCallback() = default;
@@ -67,6 +79,26 @@ class StreamClientCallback {
   virtual void onStreamNext(StreamPayload&&) = 0;
   virtual void onStreamError(folly::exception_wrapper) = 0;
   virtual void onStreamComplete() = 0;
+};
+
+class ChannelClientCallback {
+ public:
+  virtual ~ChannelClientCallback() = default;
+
+  // ChannelClientCallback must remain alive until onFirstResponse or
+  // onFirstResponseError callback runs.
+  virtual void onFirstResponse(
+      FirstResponsePayload&&,
+      folly::EventBase*,
+      ChannelServerCallback*) = 0;
+  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
+
+  virtual void onStreamNext(StreamPayload&&) = 0;
+  virtual void onStreamError(folly::exception_wrapper) = 0;
+  virtual void onStreamComplete() = 0;
+
+  virtual void onSinkRequestN(uint64_t) = 0;
+  virtual void onSinkCancel() = 0;
 };
 
 } // namespace thrift

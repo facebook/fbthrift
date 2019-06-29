@@ -51,6 +51,9 @@ class Acceptor;
 
 namespace apache {
 namespace thrift {
+class StreamClientCallback;
+class ChannelClientCallback;
+
 namespace rocket {
 
 class RocketClient;
@@ -86,6 +89,7 @@ class RocketTestClient {
       RocketClientWriteCallback* writeCallback = nullptr);
 
   folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
+  void sendRequestChannel(ChannelClientCallback* callback, Payload request);
 
   rocket::SetupFrame makeTestSetupFrame(
       MetadataOpaqueMap<std::string, std::string> md =

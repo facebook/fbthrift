@@ -649,3 +649,105 @@ TYPED_TEST(RocketNetworkTest, RequestStreamNewApiError) {
   EXPECT_TRUE(clientCallback.getError());
   EXPECT_EQ(0, clientCallback.payloadsReceived());
 }
+
+// this is just for temp, as now we don't have channel implementation on rocket
+// server side
+class RocketChannelTest : public RocketNetworkTest<RsocketTestServer> {};
+
+TEST_F(RocketChannelTest, SinkBasic) {
+  this->withClient([](RocketTestClient& client) {
+    constexpr size_t kNumUploadPayloads = 200;
+    constexpr folly::StringPiece kMetadata("metadata");
+    // instruct server to append A on each payload client sents, and
+    // sends the appended payload back to client
+    const auto data = "upload:";
+    constexpr std::chrono::milliseconds kChunkTimeout{500};
+
+    class TestChannelClientCallback final : public ChannelClientCallback {
+     public:
+      TestChannelClientCallback(
+          std::chrono::milliseconds chunkTimeout,
+          int capacity)
+          : chunkTimeout_(chunkTimeout), capacity_(capacity) {}
+
+      void waitForFirstResponse() {
+        p_.getSemiFuture().via(&folly::InlineExecutor::instance()).get();
+      }
+
+      int waitForComplete() {
+        return complete_.getSemiFuture()
+            .via(&folly::InlineExecutor::instance())
+            .get();
+      }
+
+      void onFirstResponse(
+          FirstResponsePayload&& payload,
+          folly::EventBase*,
+          ChannelServerCallback* serverCallback) override {
+        folly::StringPiece data(payload.payload->coalesce());
+        serverCallback_ = serverCallback;
+        p_.setValue();
+        // credit for the final response
+        serverCallback_->onStreamRequestN(1);
+        if (credits_ != 0) {
+          onSinkRequestN(credits_);
+        }
+      }
+
+      void onFirstResponseError(folly::exception_wrapper ew) override {
+        p_.setException(std::move(ew));
+      }
+
+      void onStreamNext(StreamPayload&& payload) override {
+        finalResponse_ =
+            folly::to<int>(folly::StringPiece{payload.payload->coalesce()});
+      }
+      void onStreamError(folly::exception_wrapper) override {}
+      void onStreamComplete() override {
+        complete_.setValue(*finalResponse_);
+      }
+
+      void onSinkRequestN(uint64_t i) override {
+        credits_ += i;
+        if (serverCallback_ == nullptr) {
+          return;
+        }
+        while (credits_ >= 0 && count_ < capacity_) {
+          serverCallback_->onSinkNext(StreamPayload(
+              folly::IOBuf::copyBuffer(
+                  folly::StringPiece{folly::to<std::string>(count_++)}),
+              {}));
+          credits_--;
+        }
+        if (count_ == capacity_) {
+          serverCallback_->onSinkComplete();
+          serverCallback_ = nullptr;
+        }
+      }
+      void onSinkCancel() override {}
+
+     private:
+      std::chrono::milliseconds chunkTimeout_;
+      folly::Promise<folly::Unit> p_;
+      folly::Promise<int> complete_;
+      ChannelServerCallback* serverCallback_{nullptr};
+      uint64_t credits_{0};
+      int count_{0};
+      int capacity_{100};
+      folly::Optional<int> finalResponse_ = folly::none;
+    };
+
+    auto clientCallback = std::make_shared<TestChannelClientCallback>(
+        kChunkTimeout, kNumUploadPayloads);
+
+    client.sendRequestChannel(
+        clientCallback.get(),
+        Payload::makeFromMetadataAndData(
+            kMetadata,
+            folly::StringPiece{
+                folly::to<std::string>(data, kNumUploadPayloads)}));
+    clientCallback->waitForFirstResponse();
+    auto finalResponse = clientCallback->waitForComplete();
+    EXPECT_EQ(kNumUploadPayloads, finalResponse);
+  });
+}

@@ -37,6 +37,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <rsocket/RSocket.h>
 #include <rsocket/transports/tcp/TcpConnectionAcceptor.h>
@@ -47,6 +48,7 @@
 
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
@@ -79,6 +81,16 @@ class RsocketTestServerResponder : public rsocket::RSocketResponder {
   std::shared_ptr<Flowable<rsocket::Payload>> handleRequestStream(
       rsocket::Payload request,
       uint32_t) final;
+
+  std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
+  handleRequestChannel(
+      rsocket::Payload request,
+      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
+          requestStream,
+      uint32_t streamId) final;
+
+ private:
+  folly::ScopedEventBaseThread th_;
 };
 
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
@@ -213,6 +225,40 @@ RsocketTestServerResponder::handleRequestStream(
   }
   return makeTestFlowable<rsocket::Payload>(data);
 }
+
+std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
+RsocketTestServerResponder::handleRequestChannel(
+    rsocket::Payload request,
+    std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> input,
+    uint32_t /* streamId */) {
+  auto data = folly::StringPiece(request.data->coalesce());
+
+  auto streamAndPublisher =
+      apache::thrift::StreamPublisher<rsocket::Payload>::create(
+          th_.getEventBase(), [] {}, 1000);
+  streamAndPublisher.second.next(rsocket::Payload("FirstResponse"));
+  if (data.removePrefix("upload:")) {
+    std::shared_ptr<int> d = std::make_shared<int>(0);
+    input->subscribe(
+        [d](rsocket::Payload p) {
+          std::string data = p.cloneDataToString();
+          if (data.empty()) {
+            return;
+          }
+          EXPECT_EQ(*d, folly::to<int>(data));
+          (*d)++;
+        },
+        [](folly::exception_wrapper) {},
+        [publisher = std::move(streamAndPublisher.second), d]() mutable {
+          publisher.next(rsocket::Payload(folly::to<std::string>(*d)));
+          std::move(publisher).complete();
+        },
+        10);
+  }
+
+  return toFlowable(std::move(streamAndPublisher.first));
+}
+
 } // namespace
 
 rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
@@ -450,6 +496,19 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
   return folly::makeTryWith([&] {
     return std::move(sf).via(&folly::InlineExecutor::instance()).get();
   });
+}
+
+void RocketTestClient::sendRequestChannel(
+    ChannelClientCallback* callback,
+    Payload request) {
+  evb_.runInEventBaseThread(
+      [this, request = std::move(request), callback]() mutable {
+        fm_.addTask([this, request = std::move(request), callback]() mutable {
+          constexpr std::chrono::milliseconds kFirstResponseTimeout{500};
+          client_->sendRequestChannel(
+              std::move(request), kFirstResponseTimeout, callback);
+        });
+      });
 }
 
 void RocketTestClient::reconnect() {

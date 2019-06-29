@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <boost/variant.hpp>
 #include <chrono>
 #include <memory>
 #include <string>
@@ -85,10 +86,19 @@ class RocketClient : public folly::DelayedDestruction,
   void sendRequestStream(
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
-      StreamClientCallback* StreamClientCallback);
+      StreamClientCallback* clientCallback);
+
+  void sendRequestChannel(
+      Payload&& request,
+      std::chrono::milliseconds firstResponseTimeout,
+      ChannelClientCallback* clientCallback);
 
   void sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
+  void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
+  void sendError(StreamId streamId, RocketException&& rex);
+  void sendComplete(StreamId streamId);
+
   void freeStream(StreamId streamId);
 
   // AsyncTransportWrapper::WriteCallback implementation
@@ -196,9 +206,15 @@ class RocketClient : public folly::DelayedDestruction,
     StreamId streamId_;
   };
 
-  using StreamMap =
-      folly::F14FastMap<StreamId, std::unique_ptr<RocketStreamServerCallback>>;
+  using ServerCallbackUniquePtr = boost::variant<
+      std::unique_ptr<RocketStreamServerCallback>,
+      std::unique_ptr<RocketChannelServerCallback>>;
+  using ServerCallbackPtr =
+      boost::variant<RocketStreamServerCallback*, RocketChannelServerCallback*>;
+
+  using StreamMap = folly::F14FastMap<StreamId, ServerCallbackUniquePtr>;
   StreamMap streams_;
+
   folly::F14FastMap<StreamId, Payload> bufferedFragments_;
   using FirstResponseTimeoutMap =
       folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
@@ -231,6 +247,12 @@ class RocketClient : public folly::DelayedDestruction,
       StreamId streamId,
       int32_t n);
   FOLLY_NODISCARD folly::Try<void> sendCancelSync(StreamId streamId);
+  FOLLY_NODISCARD folly::Try<void>
+  sendPayloadSync(StreamId streamId, Payload&& payload, Flags flags);
+  FOLLY_NODISCARD folly::Try<void> sendErrorSync(
+      StreamId streamId,
+      RocketException&& rex);
+
   FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
   StreamId makeStreamId() {
@@ -240,7 +262,14 @@ class RocketClient : public folly::DelayedDestruction,
     return rid;
   }
 
-  RocketStreamServerCallback* getStreamById(StreamId streamId);
+  template <typename CallbackType>
+  void sendRequestStreamChannel(
+      Payload&& request,
+      std::chrono::milliseconds firstResponseTimeout,
+      CallbackType* clientCallback);
+
+  // return false if streamId is not found
+  folly::Optional<ServerCallbackPtr> getStreamById(StreamId streamId);
 
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void handleRequestResponseFrame(
@@ -250,6 +279,20 @@ class RocketClient : public folly::DelayedDestruction,
   void handleStreamFrame(
       RocketStreamServerCallback& serverCallback,
       FrameType frameType,
+      std::unique_ptr<folly::IOBuf> frame);
+  void handleChannelFrame(
+      RocketChannelServerCallback& serverCallback,
+      FrameType frameType,
+      std::unique_ptr<folly::IOBuf> frame);
+
+  template <typename CallbackType>
+  void handlePayloadFrame(
+      CallbackType& serverCallback,
+      std::unique_ptr<folly::IOBuf> frame);
+
+  template <typename CallbackType>
+  void handleErrorFrame(
+      CallbackType& serverCallback,
       std::unique_ptr<folly::IOBuf> frame);
 
   void writeScheduledRequestsToSocket() noexcept;

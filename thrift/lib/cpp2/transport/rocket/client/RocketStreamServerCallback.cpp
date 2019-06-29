@@ -15,6 +15,7 @@
  */
 #include <thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h>
 
+#include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 
 namespace apache {
@@ -25,6 +26,52 @@ void RocketStreamServerCallback::onStreamRequestN(uint64_t tokens) {
 }
 void RocketStreamServerCallback::onStreamCancel() {
   client_.cancelStream(streamId_);
+}
+void RocketStreamServerCallback::onStreamComplete() {
+  clientCallback_.onStreamComplete();
+  client_.freeStream(streamId_);
+}
+
+void RocketChannelServerCallback::onStreamRequestN(uint64_t tokens) {
+  client_.sendRequestN(streamId_, tokens);
+}
+void RocketChannelServerCallback::onStreamCancel() {
+  client_.cancelStream(streamId_);
+}
+
+void RocketChannelServerCallback::onSinkNext(StreamPayload&& payload) {
+  client_.sendPayload(
+      streamId_, std::move(payload), rocket::Flags::none().next(true));
+}
+
+void RocketChannelServerCallback::onSinkError(folly::exception_wrapper ew) {
+  if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
+        client_.sendError(
+            streamId_,
+            rocket::RocketException(
+                rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+      })) {
+    client_.sendError(
+        streamId_,
+        rocket::RocketException(
+            rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
+  }
+}
+
+void RocketChannelServerCallback::onSinkComplete() {
+  client_.sendComplete(streamId_);
+  state_.onSinkComplete();
+  if (state_.isComplete()) {
+    client_.freeStream(streamId_);
+  }
+}
+
+void RocketChannelServerCallback::onStreamComplete() {
+  clientCallback_.onStreamComplete();
+  state_.onStreamComplete();
+  if (state_.isComplete()) {
+    client_.freeStream(streamId_);
+  }
 }
 
 } // namespace thrift

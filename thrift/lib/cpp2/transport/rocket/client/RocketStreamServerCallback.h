@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <boost/variant.hpp>
 #include <memory>
 #include <utility>
 
@@ -32,6 +33,52 @@ namespace thrift {
 
 namespace rocket {
 class RocketClient;
+
+namespace detail {
+
+class ChannelState {
+ public:
+  enum class State { Alive, StreamOpen, SinkOpen, Complete };
+  void onStreamComplete() {
+    switch (state_) {
+      case State::Alive:
+        state_ = State::SinkOpen;
+        break;
+      case State::StreamOpen:
+        state_ = State::Complete;
+        break;
+      case State::SinkOpen:
+        break;
+      case State::Complete:
+        break;
+    }
+  }
+
+  void onSinkComplete() {
+    switch (state_) {
+      case State::Alive:
+        state_ = State::StreamOpen;
+        break;
+      case State::StreamOpen:
+        break;
+      case State::SinkOpen:
+        state_ = State::Complete;
+        break;
+      case State::Complete:
+        break;
+    }
+  }
+
+  bool isComplete() {
+    return state_ == State::Complete;
+  }
+
+ private:
+  State state_ = State::Alive;
+};
+
+} // namespace detail
+
 } // namespace rocket
 
 class RocketStreamServerCallback : public StreamServerCallback {
@@ -49,10 +96,40 @@ class RocketStreamServerCallback : public StreamServerCallback {
     return clientCallback_;
   }
 
+  void onStreamComplete();
+
  private:
   rocket::RocketClient& client_;
   StreamClientCallback& clientCallback_;
   rocket::StreamId streamId_;
+};
+
+class RocketChannelServerCallback : public ChannelServerCallback {
+ public:
+  RocketChannelServerCallback(
+      rocket::StreamId streamId,
+      rocket::RocketClient& client,
+      ChannelClientCallback& clientCallback)
+      : client_(client), clientCallback_(clientCallback), streamId_(streamId) {}
+
+  void onStreamRequestN(uint64_t tokens) override;
+  void onStreamCancel() override;
+
+  void onSinkNext(StreamPayload&&) override;
+  void onSinkError(folly::exception_wrapper) override;
+  void onSinkComplete() override;
+
+  ChannelClientCallback& getClientCallback() const {
+    return clientCallback_;
+  }
+
+  void onStreamComplete();
+
+ private:
+  rocket::RocketClient& client_;
+  ChannelClientCallback& clientCallback_;
+  rocket::StreamId streamId_;
+  rocket::detail::ChannelState state_;
 };
 
 } // namespace thrift
