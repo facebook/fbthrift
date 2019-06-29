@@ -252,18 +252,31 @@ class MessageCallback
   size_t recvBytes_;
 };
 
-class TestRequestCallback : public RequestCallback, public CloseCallback {
+class TestRequestCallback : public RequestClientCallback, public CloseCallback {
  public:
-  void requestSent() override {}
-  void replyReceived(ClientReceiveState&& state) override {
+  explicit TestRequestCallback(bool oneWay = false) : oneWay_(oneWay) {}
+
+  void onRequestSent() noexcept override {
+    if (oneWay_) {
+      delete this;
+    }
+  }
+
+  void onResponse(ClientReceiveState&& state) noexcept override {
     reply_++;
     replyBytes_ += state.buf()->computeChainDataLength();
+    delete this;
   }
-  void requestError(ClientReceiveState&& state) override {
-    EXPECT_TRUE(state.exception());
+
+  void onResponseError(folly::exception_wrapper ex) noexcept override {
+    EXPECT_TRUE(ex);
     replyError_++;
+    delete this;
   }
-  void channelClosed() override { closed_ = true; }
+
+  void channelClosed() override {
+    closed_ = true;
+  }
 
   static void reset() {
     closed_ = false;
@@ -271,11 +284,13 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
     replyBytes_ = 0;
     replyError_ = 0;
   }
-
   static bool closed_;
   static uint32_t reply_;
   static uint32_t replyBytes_;
   static uint32_t replyError_;
+
+ private:
+  const bool oneWay_;
 };
 
 bool TestRequestCallback::closed_ = false;
@@ -429,41 +444,41 @@ TEST(Channel, MessageEOFTest) {
 }
 
 class HeaderChannelTest
-    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
-    , public TestRequestCallback
-    , public ResponseCallback {
-public:
- explicit HeaderChannelTest(size_t len, Config socketConfig = Config())
-     : SocketPairTest(socketConfig), len_(len) {}
+    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>,
+      public TestRequestCallback,
+      public ResponseCallback {
+ public:
+  explicit HeaderChannelTest(size_t len, Config socketConfig = Config())
+      : SocketPairTest(socketConfig), len_(len) {}
 
- class Callback : public TestRequestCallback {
-  public:
-   explicit Callback(HeaderChannelTest* c) : c_(c) {}
-   void replyReceived(ClientReceiveState&& state) override {
-     TestRequestCallback::replyReceived(std::move(state));
-     c_->channel1_->setCallback(nullptr);
-   }
+  class Callback : public TestRequestCallback {
+   public:
+    Callback(HeaderChannelTest* c, bool oneWay)
+        : TestRequestCallback(oneWay), c_(c) {}
+    void onResponse(ClientReceiveState&& state) noexcept override {
+      c_->channel1_->setCallback(nullptr);
+      TestRequestCallback::onResponse(std::move(state));
+    }
 
-  private:
-   HeaderChannelTest* c_;
+   private:
+    HeaderChannelTest* c_;
   };
 
   void preLoop() override {
     TestRequestCallback::reset();
     channel1_->setCallback(this);
     channel0_->setCloseCallback(this);
-    channel0_->sendOnewayRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+    RpcOptions options;
+    channel0_->sendRequestNoResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new Callback(this, true)));
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new Callback(this, false)));
     channel0_->setCloseCallback(nullptr);
   }
 
@@ -504,30 +519,28 @@ class HeaderChannelClosedTest
  public:
   explicit HeaderChannelClosedTest() {}
 
-  class Callback : public RequestCallback {
+  class Callback : public RequestClientCallback {
    public:
-    explicit Callback(HeaderChannelClosedTest* c)
-      : c_(c) {}
+    explicit Callback(HeaderChannelClosedTest* c) : c_(c) {}
 
     ~Callback() override {
       c_->callbackDtor_ = true;
     }
 
-    void replyReceived(ClientReceiveState&&) override {
+    void onResponse(ClientReceiveState&&) noexcept override {
       FAIL() << "should not recv reply from closed channel";
     }
 
-    void requestSent() override {
+    void onRequestSent() noexcept override {
       FAIL() << "should not have sent message on closed channel";
     }
 
-    void requestError(ClientReceiveState&& state) override {
-      EXPECT_TRUE(state.isException());
-      EXPECT_TRUE(state.exception().with_exception(
-          [this](const TTransportException& e) {
-            EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);
-            c_->gotError_ = true;
-          }));
+    void onResponseError(folly::exception_wrapper ew) noexcept override {
+      EXPECT_TRUE(ew.with_exception([this](const TTransportException& e) {
+        EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);
+        c_->gotError_ = true;
+      }));
+      delete this;
     }
 
    private:
@@ -537,17 +550,16 @@ class HeaderChannelClosedTest
   void preLoop() override {
     TestRequestCallback::reset();
     channel1_->getTransport()->shutdownWrite();
-    seqId_ = channel0_->sendRequest(
-      std::make_unique<Callback>(this),
-      // Fake method name for creating a ContextStatck
-      std::make_unique<ContextStack>("{ChannelTest}"),
-      makeTestBuf(42),
-      std::make_unique<THeader>());
+    RpcOptions options;
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(42),
+        std::make_unique<THeader>(),
+        RequestClientCallback::Ptr(new Callback(this)));
   }
 
   void postLoop() override {
     EXPECT_TRUE(gotError_);
-    EXPECT_FALSE(channel0_->expireCallback(seqId_));
     EXPECT_TRUE(callbackDtor_);
   }
 
@@ -562,24 +574,23 @@ TEST(Channel, HeaderChannelClosedTest) {
 }
 
 class InOrderTest
-    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
-    , public TestRequestCallback
-    , public ResponseCallback {
+    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>,
+      public TestRequestCallback,
+      public ResponseCallback {
  public:
   explicit InOrderTest(Config socketConfig = Config())
       : SocketPairTest(socketConfig), len_(1) {}
 
   class Callback : public TestRequestCallback {
    public:
-    explicit Callback(InOrderTest* c)
-    : c_(c) {}
-    void replyReceived(ClientReceiveState&& state) override {
+    explicit Callback(InOrderTest* c) : c_(c) {}
+    void onResponse(ClientReceiveState&& state) noexcept override {
       if (reply_ == 1) {
         c_->channel1_->setCallback(nullptr);
         // Verify that they came back in the same order
         EXPECT_EQ(state.buf()->computeChainDataLength(), c_->len_ + 1);
       }
-      TestRequestCallback::replyReceived(std::move(state));
+      TestRequestCallback::onResponse(std::move(state));
     }
 
     void requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
@@ -601,18 +612,17 @@ class InOrderTest
     TestRequestCallback::reset();
     channel0_->setFlags(0); // turn off out of order
     channel1_->setCallback(this);
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_ + 1),
-      std::unique_ptr<THeader>(new THeader));
+    RpcOptions options;
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new Callback(this)));
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_ + 1),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new Callback(this)));
   }
 
   void postLoop() override {
@@ -642,24 +652,25 @@ TEST(Channel, InOrderTestSSL) {
 }
 
 class BadSeqIdTest
-    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
-    , public TestRequestCallback
-    , public ResponseCallback {
-public:
- explicit BadSeqIdTest(size_t len, Config socketConfig = Config())
-     : SocketPairTest(socketConfig), len_(len) {}
+    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>,
+      public TestRequestCallback,
+      public ResponseCallback {
+ public:
+  explicit BadSeqIdTest(size_t len, Config socketConfig = Config())
+      : SocketPairTest(socketConfig), len_(len) {}
 
- class Callback : public TestRequestCallback {
-  public:
-   explicit Callback(BadSeqIdTest* c) : c_(c) {}
+  class Callback : public TestRequestCallback {
+   public:
+    Callback(BadSeqIdTest* c, bool oneWay)
+        : TestRequestCallback(oneWay), c_(c) {}
 
-   void requestError(ClientReceiveState&& state) override {
-     c_->channel1_->setCallback(nullptr);
-     TestRequestCallback::requestError(std::move(state));
-   }
+    void onResponseError(folly::exception_wrapper ew) noexcept override {
+      c_->channel1_->setCallback(nullptr);
+      TestRequestCallback::onResponseError(std::move(ew));
+    }
 
-  private:
-   BadSeqIdTest* c_;
+   private:
+    BadSeqIdTest* c_;
   };
 
   void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
@@ -672,10 +683,10 @@ public:
     unique_ptr<THeader> header(new THeader);
     header->setSequenceNumber(-1);
     HeaderServerChannel::HeaderRequest r(
-      channel1_.get(),
-      req->extractBuf(),
-      std::move(header),
-      std::unique_ptr<MessageChannel::RecvCallback::sample>(nullptr));
+        channel1_.get(),
+        req->extractBuf(),
+        std::move(header),
+        std::unique_ptr<MessageChannel::RecvCallback::sample>(nullptr));
     r.sendReply(r.extractBuf());
   }
 
@@ -683,18 +694,17 @@ public:
     TestRequestCallback::reset();
     channel0_->setTimeout(1000);
     channel1_->setCallback(this);
-    channel0_->sendOnewayRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
-    channel0_->sendRequest(
-      std::unique_ptr<RequestCallback>(new Callback(this)),
-      // Fake method name for creating a ContextStatck
-      std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-      makeTestBuf(len_),
-      std::unique_ptr<THeader>(new THeader));
+    RpcOptions options;
+    channel0_->sendRequestNoResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new Callback(this, true)));
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new Callback(this, false)));
   }
 
   void postLoop() override {
@@ -726,27 +736,26 @@ class TimeoutTest
     : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
     , public TestRequestCallback
     , public ResponseCallback {
-public:
- explicit TimeoutTest(uint32_t timeout, Config socketConfig = Config())
-     : SocketPairTest(socketConfig), timeout_(timeout), len_(1) {}
+ public:
+  explicit TimeoutTest(uint32_t timeout, Config socketConfig = Config())
+      : SocketPairTest(socketConfig), timeout_(timeout), len_(1) {}
 
- void preLoop() override {
-   TestRequestCallback::reset();
-   channel1_->setCallback(this);
-   channel0_->setTimeout(timeout_);
-   channel0_->setCloseCallback(this);
-   channel0_->sendRequest(
-       std::unique_ptr<RequestCallback>(new TestRequestCallback),
-       // Fake method name for creating a ContextStatck
-       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-       makeTestBuf(len_),
-       std::unique_ptr<THeader>(new THeader));
-   channel0_->sendRequest(
-       std::unique_ptr<RequestCallback>(new TestRequestCallback),
-       // Fake method name for creating a ContextStatck
-       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-       makeTestBuf(len_),
-       std::unique_ptr<THeader>(new THeader));
+  void preLoop() override {
+    TestRequestCallback::reset();
+    channel1_->setCallback(this);
+    channel0_->setTimeout(timeout_);
+    channel0_->setCloseCallback(this);
+    RpcOptions options;
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new TestRequestCallback()));
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new TestRequestCallback()));
   }
 
   void postLoop() override {
@@ -796,40 +805,38 @@ TEST(Channel, TimeoutTestSSL) {
 
 // Test client per-call timeout options
 class OptionsTimeoutTest
-    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>
-    , public TestRequestCallback
-    , public ResponseCallback {
-public:
- explicit OptionsTimeoutTest(Config socketConfig = Config())
-     : SocketPairTest(socketConfig), len_(1) {}
+    : public SocketPairTest<HeaderClientChannel, HeaderServerChannel>,
+      public TestRequestCallback,
+      public ResponseCallback {
+ public:
+  explicit OptionsTimeoutTest(Config socketConfig = Config())
+      : SocketPairTest(socketConfig), len_(1) {}
 
- void preLoop() override {
-   TestRequestCallback::reset();
-   channel1_->setCallback(this);
-   channel0_->setTimeout(1000);
-   RpcOptions options;
-   options.setTimeout(std::chrono::milliseconds(25));
-   channel0_->sendRequest(
-       options,
-       std::unique_ptr<RequestCallback>(new TestRequestCallback),
-       // Fake method name for creating a ContextStatck
-       std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-       makeTestBuf(len_),
-       std::unique_ptr<THeader>(new THeader));
-   // Verify the timeout worked within 10ms
-   channel0_->getEventBase()->tryRunAfterDelay(
-       [&]() { EXPECT_EQ(replyError_, 1); }, 35);
-   // Verify that subsequent successful requests don't delay timeout
-   channel0_->getEventBase()->tryRunAfterDelay(
-       [&]() {
-         channel0_->sendRequest(
-             std::unique_ptr<RequestCallback>(new TestRequestCallback),
-             // Fake method name for creating a ContextStatck
-             std::unique_ptr<ContextStack>(new ContextStack("{ChannelTest}")),
-             makeTestBuf(len_),
-             std::unique_ptr<THeader>(new THeader));
-       },
-       20);
+  void preLoop() override {
+    TestRequestCallback::reset();
+    channel1_->setCallback(this);
+    channel0_->setTimeout(1000);
+    RpcOptions options;
+    options.setTimeout(std::chrono::milliseconds(25));
+    channel0_->sendRequestResponse(
+        options,
+        makeTestBuf(len_),
+        std::unique_ptr<THeader>(new THeader),
+        RequestClientCallback::Ptr(new TestRequestCallback()));
+    // Verify the timeout worked within 10ms
+    channel0_->getEventBase()->tryRunAfterDelay(
+        [&]() { EXPECT_EQ(replyError_, 1); }, 35);
+    // Verify that subsequent successful requests don't delay timeout
+    channel0_->getEventBase()->tryRunAfterDelay(
+        [&]() {
+          RpcOptions options;
+          channel0_->sendRequestResponse(
+              options,
+              makeTestBuf(len_),
+              std::unique_ptr<THeader>(new THeader),
+              RequestClientCallback::Ptr(new TestRequestCallback()));
+        },
+        20);
   }
 
   void postLoop() override {
@@ -1012,10 +1019,10 @@ class ClientCloseOnErrorTest
    public:
     explicit Callback(ClientCloseOnErrorTest* c) : c_(c) {}
 
-    void requestError(ClientReceiveState&& state) override {
-      TestRequestCallback::requestError(std::move(state));
+    void onResponseError(folly::exception_wrapper ew) noexcept override {
       // force closing the channel on error
       c_->channel0_->closeNow();
+      TestRequestCallback::onResponseError(std::move(ew));
     }
 
    private:
@@ -1034,16 +1041,17 @@ class ClientCloseOnErrorTest
     }
 
     channel1_->setCallback(this);
-    channel0_->sendRequest(
-        std::make_unique<Callback>(this),
-        nullptr,
+    RpcOptions options;
+    channel0_->sendRequestResponse(
+        options,
         makeTestBuf(10),
-        std::make_unique<THeader>());
-    channel0_->sendRequest(
-        std::make_unique<Callback>(this),
-        nullptr,
+        std::make_unique<THeader>(),
+        RequestClientCallback::Ptr(new Callback(this)));
+    channel0_->sendRequestResponse(
+        options,
         makeTestBuf(reqSize_),
-        std::make_unique<THeader>());
+        std::make_unique<THeader>(),
+        RequestClientCallback::Ptr(new Callback(this)));
   }
 
   void postLoop() override {

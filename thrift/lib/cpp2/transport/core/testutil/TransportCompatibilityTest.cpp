@@ -921,7 +921,6 @@ void TransportCompatibilityTest::TestRequestContextIsPreserved() {
 
 void TransportCompatibilityTest::TestBadPayload() {
   connectToServer([](std::unique_ptr<TestServiceAsyncClient> client) {
-    auto cb = std::make_unique<MockCallback>(true, false);
     auto channel = static_cast<ClientChannel*>(client->getChannel());
     channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
       RequestRpcMetadata metadata;
@@ -935,14 +934,28 @@ void TransportCompatibilityTest::TestBadPayload() {
       auto payload = std::make_unique<folly::IOBuf>();
 
       RpcOptions rpcOptions;
-      auto ctx = std::make_unique<ContextStack>("temp");
       auto header = std::make_shared<THeader>();
-      channel->sendRequest(
+      class ErrorCallback : public apache::thrift::RequestClientCallback {
+       public:
+        static apache::thrift::RequestClientCallback::Ptr create() {
+          static folly::Indestructible<ErrorCallback> instance;
+          return apache::thrift::RequestClientCallback::Ptr(instance.get());
+        }
+
+        void onRequestSent() noexcept override {
+          ADD_FAILURE();
+        }
+        void onResponse(
+            apache::thrift::ClientReceiveState&&) noexcept override {
+          ADD_FAILURE();
+        }
+        void onResponseError(folly::exception_wrapper) noexcept override {}
+      };
+      channel->sendRequestResponse(
           rpcOptions,
-          std::move(cb),
-          std::move(ctx),
           std::move(payload),
-          std::move(header));
+          std::move(header),
+          ErrorCallback::create());
     });
   });
 }

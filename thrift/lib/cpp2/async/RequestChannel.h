@@ -84,37 +84,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
 
-  virtual uint32_t sendRequest(
-      RpcOptions& options,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) final {
-    RequestCallback::Context callbackContext;
-    callbackContext.protocolId = getProtocolId();
-    callbackContext.ctx = std::move(ctx);
-    sendRequestResponse(
-        options,
-        std::move(buf),
-        std::move(header),
-        toRequestClientCallbackPtr(std::move(cb), std::move(callbackContext)));
-    return 0;
-  }
-
-  uint32_t sendRequest(
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) {
-    RpcOptions options;
-    return sendRequest(
-        options,
-        std::move(cb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header));
-  }
-
   /* Similar to sendRequest, although replyReceived will never be called
    *
    * Null RequestCallback is allowed for oneway requests
@@ -124,38 +93,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) = 0;
-
-  virtual uint32_t sendOnewayRequest(
-      RpcOptions& options,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) final {
-    RequestCallback::Context callbackContext;
-    callbackContext.oneWay = true;
-    callbackContext.protocolId = getProtocolId();
-    callbackContext.ctx = std::move(ctx);
-    sendRequestNoResponse(
-        options,
-        std::move(buf),
-        std::move(header),
-        toRequestClientCallbackPtr(std::move(cb), std::move(callbackContext)));
-    return 0;
-  }
-
-  uint32_t sendOnewayRequest(
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) {
-    RpcOptions options;
-    return sendOnewayRequest(
-        options,
-        std::move(cb),
-        std::move(ctx),
-        std::move(buf),
-        std::move(header));
-  }
 
   /**
    * ReplyCallback will be invoked when the reply to this request is
@@ -170,23 +107,6 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr);
-
-  virtual uint32_t sendStreamRequest(
-      RpcOptions& options,
-      std::unique_ptr<RequestCallback> cb,
-      std::unique_ptr<apache::thrift::ContextStack> ctx,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header) final {
-    RequestCallback::Context callbackContext;
-    callbackContext.protocolId = getProtocolId();
-    callbackContext.ctx = std::move(ctx);
-    sendRequestStream(
-        options,
-        std::move(buf),
-        std::move(header),
-        toRequestClientCallbackPtr(std::move(cb), std::move(callbackContext)));
-    return 0;
-  }
 
   virtual void sendRequestStream(
       RpcOptions& rpcOptions,

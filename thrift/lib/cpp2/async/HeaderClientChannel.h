@@ -89,14 +89,12 @@ class HeaderClientChannel : public ClientChannel,
   }
 
   // Client interface from RequestChannel
-  using RequestChannel::sendRequest;
   void sendRequestResponse(
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
 
-  using RequestChannel::sendOnewayRequest;
   void sendRequestNoResponse(
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
