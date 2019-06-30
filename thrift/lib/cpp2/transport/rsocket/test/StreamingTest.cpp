@@ -14,8 +14,20 @@
  * limitations under the License.
  */
 
+#include <atomic>
+#include <chrono>
+#include <functional>
+#include <memory>
+#include <thread>
+
 #include <gtest/gtest.h>
 
+#include <folly/futures/Future.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
+
+#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
@@ -634,6 +646,74 @@ TEST_P(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
     }
     EXPECT_TRUE(thrown);
   });
+}
+
+TEST_P(StreamingTest, DetachAndAttachEventBase) {
+  folly::EventBase mainEventBase;
+  auto socket =
+      TAsyncSocket::UniquePtr(new TAsyncSocket(&mainEventBase, "::1", port_));
+  auto channel = [&]() -> std::shared_ptr<ClientChannel> {
+    if (GetParam().useRocketClient) {
+      return RocketClientChannel::newChannel(std::move(socket));
+    }
+    return RSocketClientChannel::newChannel(std::move(socket));
+  }();
+
+  folly::Promise<folly::Unit> detachablePromise;
+  auto detachableFuture = detachablePromise.getSemiFuture();
+  channel->setOnDetachable([promise = std::move(detachablePromise),
+                            channelPtr = channel.get()]() mutable {
+    // Only set the promise on the first onDetachable() call
+    if (auto* c = std::exchange(channelPtr, nullptr)) {
+      ASSERT_TRUE(c->isDetachable());
+      c->detachEventBase();
+      promise.setValue(folly::unit);
+    }
+  });
+
+  {
+    // Establish a stream via mainEventBase and consume it until completion
+    StreamServiceAsyncClient client{channel};
+    auto stream = client.sync_range(0, 10);
+    EXPECT_FALSE(detachableFuture.isReady());
+
+    std::move(stream)
+        .via(&executor_)
+        .subscribe(
+            [](auto) {},
+            [](auto ex) { FAIL() << "Unexpected call to onError: " << ex; },
+            [] {})
+        .futureJoin()
+        .waitVia(&mainEventBase);
+  }
+
+  folly::ScopedEventBaseThread anotherEventBase;
+  auto* const evb = anotherEventBase.getEventBase();
+  auto keepAlive = channel;
+  std::move(detachableFuture)
+      .via(evb)
+      .thenValue([evb, channel = std::move(channel)](auto&&) mutable {
+        // Attach channel to a different EventBase and establish a stream
+        EXPECT_TRUE(channel->isDetachable());
+        channel->attachEventBase(evb);
+
+        StreamServiceAsyncClient client{std::move(channel)};
+        return client.semifuture_range(0, 10);
+      })
+      .via(evb)
+      .thenValue([ex = &executor_](auto&& stream) {
+        return std::move(stream)
+            .via(ex)
+            .subscribe(
+                [](auto) {},
+                [](auto ex) { FAIL() << "Unexpected call to onError: " << ex; },
+                [] {})
+            .futureJoin();
+      })
+      .via(evb)
+      .ensure([keepAlive = std::move(keepAlive)] {})
+      .via(&mainEventBase)
+      .waitVia(&mainEventBase);
 }
 
 TEST_P(BlockStreamingTest, StreamBlockTaskQueue) {

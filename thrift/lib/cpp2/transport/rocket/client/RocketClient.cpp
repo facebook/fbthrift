@@ -748,6 +748,26 @@ void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
   client_.freeStream(streamId_);
 }
 
+void RocketClient::attachEventBase(folly::EventBase& evb) {
+  DCHECK(!evb_);
+  evb.dcheckIsInEventBaseThread();
+
+  evb_ = &evb;
+  fm_ = &folly::fibers::getFiberManager(*evb_);
+  socket_->attachEventBase(evb_);
+  evb_->runOnDestruction(*eventBaseDestructionCallback_);
+}
+
+void RocketClient::detachEventBase() {
+  DCHECK(evb_);
+  evb_->dcheckIsInEventBaseThread();
+  DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
+  eventBaseDestructionCallback_->cancel();
+  socket_->detachEventBase();
+  fm_ = nullptr;
+  evb_ = nullptr;
+}
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

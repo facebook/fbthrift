@@ -148,23 +148,8 @@ class RocketClient : public folly::DelayedDestruction,
         streams_.empty() && (!socket_ || socket_->isDetachable());
   }
 
-  void attachEventBase(folly::EventBase& evb) {
-    DCHECK(!evb_);
-    evb.dcheckIsInEventBaseThread();
-
-    evb_ = &evb;
-    socket_->attachEventBase(evb_);
-    evb_->runOnDestruction(*eventBaseDestructionCallback_);
-  }
-
-  void detachEventBase() {
-    DCHECK(evb_);
-    evb_->dcheckIsInEventBaseThread();
-    DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
-    eventBaseDestructionCallback_->cancel();
-    socket_->detachEventBase();
-    evb_ = nullptr;
-  }
+  void attachEventBase(folly::EventBase& evb);
+  void detachEventBase();
 
   void setOnDetachable(folly::Function<void()> onDetachable) {
     onDetachable_ = std::move(onDetachable);
