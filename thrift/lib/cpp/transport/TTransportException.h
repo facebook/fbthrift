@@ -52,11 +52,12 @@ class TTransportException : public apache::thrift::TLibraryException {
     SSL_ERROR = 12,
     COULD_NOT_BIND = 13,
     NETWORK_ERROR = 15,
-    EARLY_DATA_REJECTED = 16
+    EARLY_DATA_REJECTED = 16,
+    STREAMING_CONTRACT_VIOLATION = 17
     // Remember to update TTransportExceptionTypeSize if you add an entry here
   };
 
-  using TTransportExceptionTypeSize = std::integral_constant<std::size_t, 17>;
+  using TTransportExceptionTypeSize = std::integral_constant<std::size_t, 18>;
 
   TTransportException()
       : apache::thrift::TLibraryException(),

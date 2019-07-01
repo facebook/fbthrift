@@ -96,6 +96,8 @@ class RocketStreamServerCallback : public StreamServerCallback {
     return clientCallback_;
   }
 
+  void onStreamNext(StreamPayload&&);
+  void onStreamError(folly::exception_wrapper ew);
   void onStreamComplete();
 
  private:
@@ -123,6 +125,8 @@ class RocketChannelServerCallback : public ChannelServerCallback {
     return clientCallback_;
   }
 
+  void onStreamNext(StreamPayload&&);
+  void onStreamError(folly::exception_wrapper ew);
   void onStreamComplete();
 
  private:
@@ -130,6 +134,33 @@ class RocketChannelServerCallback : public ChannelServerCallback {
   ChannelClientCallback& clientCallback_;
   rocket::StreamId streamId_;
   rocket::detail::ChannelState state_;
+};
+
+class RocketSinkServerCallback : public SinkServerCallback {
+ public:
+  RocketSinkServerCallback(
+      rocket::StreamId streamId,
+      rocket::RocketClient& client,
+      SinkClientCallback& clientCallback)
+      : client_(client), clientCallback_(clientCallback), streamId_(streamId) {}
+
+  void onSinkNext(StreamPayload&&) override;
+  void onSinkError(folly::exception_wrapper) override;
+  void onSinkComplete() override;
+
+  SinkClientCallback& getClientCallback() const {
+    return clientCallback_;
+  }
+
+  void onStreamNext(StreamPayload&&);
+  void onStreamError(folly::exception_wrapper ew);
+  void onStreamComplete();
+
+ private:
+  rocket::RocketClient& client_;
+  SinkClientCallback& clientCallback_;
+  rocket::StreamId streamId_;
+  bool receivedFinalResponse_{false};
 };
 
 } // namespace thrift

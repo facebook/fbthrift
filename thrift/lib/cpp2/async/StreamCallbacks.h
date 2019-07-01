@@ -64,6 +64,15 @@ class ChannelServerCallback {
   virtual void onSinkComplete() = 0;
 };
 
+class SinkServerCallback {
+ public:
+  virtual ~SinkServerCallback() = default;
+
+  virtual void onSinkNext(StreamPayload&&) = 0;
+  virtual void onSinkError(folly::exception_wrapper) = 0;
+  virtual void onSinkComplete() = 0;
+};
+
 class StreamClientCallback {
  public:
   virtual ~StreamClientCallback() = default;
@@ -96,6 +105,22 @@ class ChannelClientCallback {
   virtual void onStreamNext(StreamPayload&&) = 0;
   virtual void onStreamError(folly::exception_wrapper) = 0;
   virtual void onStreamComplete() = 0;
+
+  virtual void onSinkRequestN(uint64_t) = 0;
+  virtual void onSinkCancel() = 0;
+};
+
+class SinkClientCallback {
+ public:
+  virtual ~SinkClientCallback() = default;
+  virtual void onFirstResponse(
+      FirstResponsePayload&&,
+      folly::EventBase*,
+      SinkServerCallback*) = 0;
+  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
+
+  virtual void onFinalResponse(StreamPayload&&) = 0;
+  virtual void onFinalResponseError(folly::exception_wrapper) = 0;
 
   virtual void onSinkRequestN(uint64_t) = 0;
   virtual void onSinkCancel() = 0;

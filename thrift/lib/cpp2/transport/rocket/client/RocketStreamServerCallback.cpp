@@ -21,29 +21,35 @@
 namespace apache {
 namespace thrift {
 
+// RocketStreamServerCallback
 void RocketStreamServerCallback::onStreamRequestN(uint64_t tokens) {
   client_.sendRequestN(streamId_, tokens);
 }
 void RocketStreamServerCallback::onStreamCancel() {
   client_.cancelStream(streamId_);
 }
+void RocketStreamServerCallback::onStreamNext(StreamPayload&& payload) {
+  clientCallback_.onStreamNext(std::move(payload));
+}
+void RocketStreamServerCallback::onStreamError(folly::exception_wrapper ew) {
+  clientCallback_.onStreamError(std::move(ew));
+}
 void RocketStreamServerCallback::onStreamComplete() {
   clientCallback_.onStreamComplete();
   client_.freeStream(streamId_);
 }
 
+// RocketChannelServerCallback
 void RocketChannelServerCallback::onStreamRequestN(uint64_t tokens) {
   client_.sendRequestN(streamId_, tokens);
 }
 void RocketChannelServerCallback::onStreamCancel() {
   client_.cancelStream(streamId_);
 }
-
 void RocketChannelServerCallback::onSinkNext(StreamPayload&& payload) {
   client_.sendPayload(
       streamId_, std::move(payload), rocket::Flags::none().next(true));
 }
-
 void RocketChannelServerCallback::onSinkError(folly::exception_wrapper ew) {
   if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
         client_.sendError(
@@ -57,7 +63,19 @@ void RocketChannelServerCallback::onSinkError(folly::exception_wrapper ew) {
             rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
   }
 }
-
+void RocketChannelServerCallback::onStreamNext(StreamPayload&& payload) {
+  clientCallback_.onStreamNext(std::move(payload));
+}
+void RocketChannelServerCallback::onStreamError(folly::exception_wrapper ew) {
+  clientCallback_.onStreamError(std::move(ew));
+}
+void RocketChannelServerCallback::onStreamComplete() {
+  clientCallback_.onStreamComplete();
+  state_.onStreamComplete();
+  if (state_.isComplete()) {
+    client_.freeStream(streamId_);
+  }
+}
 void RocketChannelServerCallback::onSinkComplete() {
   client_.sendComplete(streamId_);
   state_.onSinkComplete();
@@ -66,12 +84,65 @@ void RocketChannelServerCallback::onSinkComplete() {
   }
 }
 
-void RocketChannelServerCallback::onStreamComplete() {
-  clientCallback_.onStreamComplete();
-  state_.onStreamComplete();
-  if (state_.isComplete()) {
-    client_.freeStream(streamId_);
+// RocketSinkServerCallback
+void RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
+  client_.sendPayload(
+      streamId_, std::move(payload), rocket::Flags::none().next(true));
+}
+void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
+  if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
+        client_.sendError(
+            streamId_,
+            rocket::RocketException(
+                rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+      })) {
+    client_.sendError(
+        streamId_,
+        rocket::RocketException(
+            rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
   }
+}
+void RocketSinkServerCallback::onStreamNext(StreamPayload&& payload) {
+  if (!receivedFinalResponse_) {
+    clientCallback_.onFinalResponse(std::move(payload));
+    receivedFinalResponse_ = true;
+  } else {
+    client_.closeNow(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "Sink client shouldn't receive any further payload frame"
+            " after the first payload frame."));
+  }
+}
+
+void RocketSinkServerCallback::onStreamError(folly::exception_wrapper ew) {
+  if (!receivedFinalResponse_) {
+    clientCallback_.onFinalResponseError(std::move(ew));
+  } else {
+    client_.closeNow(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "Sink client shouldn't receive any further error frame"
+            " after the first payload frame."));
+  }
+}
+
+void RocketSinkServerCallback::onStreamComplete() {
+  if (receivedFinalResponse_) {
+    client_.freeStream(streamId_);
+  } else {
+    client_.closeNow(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "Didn't received final response's payload before compelete"));
+  }
+}
+
+void RocketSinkServerCallback::onSinkComplete() {
+  client_.sendComplete(streamId_);
 }
 
 } // namespace thrift

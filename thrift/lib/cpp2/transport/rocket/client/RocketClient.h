@@ -93,6 +93,11 @@ class RocketClient : public folly::DelayedDestruction,
       std::chrono::milliseconds firstResponseTimeout,
       ChannelClientCallback* clientCallback);
 
+  void sendRequestSink(
+      Payload&& request,
+      std::chrono::milliseconds firstResponseTimeout,
+      SinkClientCallback* clientCallback);
+
   void sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
   void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
@@ -193,10 +198,12 @@ class RocketClient : public folly::DelayedDestruction,
 
   using ServerCallbackUniquePtr = boost::variant<
       std::unique_ptr<RocketStreamServerCallback>,
-      std::unique_ptr<RocketChannelServerCallback>>;
-  using ServerCallbackPtr =
-      boost::variant<RocketStreamServerCallback*, RocketChannelServerCallback*>;
-
+      std::unique_ptr<RocketChannelServerCallback>,
+      std::unique_ptr<RocketSinkServerCallback>>;
+  using ServerCallbackPtr = boost::variant<
+      RocketStreamServerCallback*,
+      RocketChannelServerCallback*,
+      RocketSinkServerCallback*>;
   using StreamMap = folly::F14FastMap<StreamId, ServerCallbackUniquePtr>;
   StreamMap streams_;
 
@@ -269,6 +276,10 @@ class RocketClient : public folly::DelayedDestruction,
       RocketChannelServerCallback& serverCallback,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
+  void handleSinkFrame(
+      RocketSinkServerCallback& serverCallback,
+      FrameType frameType,
+      std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   void handlePayloadFrame(
@@ -277,6 +288,16 @@ class RocketClient : public folly::DelayedDestruction,
 
   template <typename CallbackType>
   void handleErrorFrame(
+      CallbackType& serverCallback,
+      std::unique_ptr<folly::IOBuf> frame);
+
+  template <typename CallbackType>
+  void handleReqestNFrame(
+      CallbackType& serverCallback,
+      std::unique_ptr<folly::IOBuf> frame);
+
+  template <typename CallbackType>
+  void handleCancelFrame(
       CallbackType& serverCallback,
       std::unique_ptr<folly::IOBuf> frame);
 
