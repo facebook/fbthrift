@@ -36,7 +36,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
         pass
 
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
-        cFollyFuture[string]&& fut,
+        string&& host,
         const uint16_t port,
         const uint32_t connect_timeout,
         ClientType,

@@ -2,7 +2,8 @@ from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr
 from libc.stdint cimport uint64_t, uint32_t, uint16_t
 from folly cimport cFollyFuture
-from thrift.py3.client cimport cRequestChannel_ptr
+from thrift.py3.client cimport cRequestChannel_ptr, ClientType
+from thrift.py3.common cimport PROTOCOL_TYPES
 
 
 cdef extern from "folly/ssl/Init.h" namespace "folly::ssl" nogil:
@@ -38,10 +39,13 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "thrift/lib/py3/ssl.h" namespace "thrift::py3":
     cdef cFollyFuture[cRequestChannel_ptr] createThriftChannelTCP(
         shared_ptr[cSSLContext]& ctx,
-        cFollyFuture[string] fut,
+        string&& host,
         const uint16_t port,
         const uint32_t connect_timeout,
         const uint32_t ssl_timeout,
+        ClientType,
+        PROTOCOL_TYPES,
+        string&& endpoint,
     )
 
 

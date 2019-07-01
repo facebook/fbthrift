@@ -39,7 +39,7 @@ class ConnectHandler
       folly::EventBase* evb)
       : socket_{new TAsyncSSLSocket(ctx, evb)} {}
 
-  folly::Future<RequestChannel_ptr> connect(
+  folly::Future<HeaderChannel_ptr> connect(
       const std::string& ip,
       uint16_t port,
       uint32_t timeout = 0,
@@ -70,7 +70,7 @@ class ConnectHandler
   }
 
  private:
-  folly::Promise<RequestChannel_ptr> promise_;
+  folly::Promise<HeaderChannel_ptr> promise_;
   TAsyncSSLSocket::UniquePtr socket_;
 };
 
@@ -79,20 +79,30 @@ class ConnectHandler
  */
 folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     const std::shared_ptr<folly::SSLContext>& ctx,
-    folly::Future<std::string>&& host_fut,
+    std::string&& host,
     const uint16_t port,
     const uint32_t connect_timeout,
-    const uint32_t ssl_timeout) {
-  return std::move(host_fut).thenValue([=](std::string host) {
-    auto eb = folly::getEventBase();
-    return folly::via(eb, [=] {
-      ConnectHandler::UniquePtr handler{new ConnectHandler(ctx, eb)};
-      auto future = handler->connect(host, port, connect_timeout, ssl_timeout);
-      handler.release();
-      return future;
-    });
-  });
+    const uint32_t ssl_timeout,
+    CLIENT_TYPE client_t,
+    apache::thrift::protocol::PROTOCOL_TYPES proto,
+    std::string&& endpoint) {
+  auto eb = folly::getEventBase();
+  return folly::via(
+             eb,
+             [=, host{std::move(host)}] {
+               ConnectHandler::UniquePtr handler{new ConnectHandler(ctx, eb)};
+               auto future =
+                   handler->connect(host, port, connect_timeout, ssl_timeout);
+               handler.release();
+               return future;
+             })
+      .then(eb, [=, endpoint{std::move(endpoint)}](HeaderChannel_ptr&& chan_) {
+        auto chan = configureClientChannel(std::move(chan_), client_t, proto);
+        if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
+          chan->useAsHttpClient(host, endpoint);
+        }
+        return std::move(chan);
+      });
 }
-
 } // namespace py3
 } // namespace thrift

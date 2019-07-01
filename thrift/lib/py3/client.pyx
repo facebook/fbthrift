@@ -12,6 +12,7 @@ from folly.executor cimport get_executor
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
 import asyncio
+import ipaddress
 import os
 from socket import SocketKind
 
@@ -42,30 +43,39 @@ cdef class Client:
         destroyInEventBaseThread(move(channel))
 
 
-cdef extern from "<stdexcept>" namespace "std" nogil:
-    cdef cppclass cruntime_error "std::runtime_error":
-        cruntime_error(string& what)
+async def _no_op():
+    pass
 
 
 @cython.auto_pickle(False)
-cdef class _ResolvePromise:
-    cdef cFollyPromise[string] cPromise
+cdef class _AsyncResolveCtxManager:
+    """This class just handles resolving of hostnames passed to get_client
+       by creating a wrapping async context manager"""
+    cdef object clientKlass
+    cdef object kws
+    cdef object ctx
 
-    def __init__(self, hostname, port):
+    def __init__(self, clientKlass, *, **kws):
+        self.clientKlass = clientKlass
+        self.kws = kws
+
+    async def __aenter__(self):
         loop = asyncio.get_event_loop()
-        asyncio.ensure_future(
-            loop.getaddrinfo(hostname, port, type=SocketKind.SOCK_STREAM)
-        ).add_done_callback(self._callback)
+        result = await loop.getaddrinfo(
+            self.kws['host'],
+            self.kws['port'],
+            type=SocketKind.SOCK_STREAM
+        )
+        self.kws['host'] = result[0][4][0]
+        self.ctx = get_client(self.clientKlass, **self.kws)
+        return await self.ctx.__aenter__()
 
-    def _callback(_ResolvePromise self, fut):
-        ex = fut.exception()
-        cdef string ip
-        if ex:
-            self.cPromise.setException(cruntime_error(repr(ex).encode('utf-8')))
-        else:
-            res = fut.result()
-            ip = res[0][4][0].encode('utf-8')
-            self.cPromise.setValue(ip)
+    def __aexit__(self, *exc_info):
+        if self.ctx:
+            awaitable = self.ctx.__aexit__(*exc_info)
+            self.ctx = None
+            return awaitable
+        return _no_op()
 
 
 def get_client(
@@ -87,10 +97,11 @@ def get_client(
     # This is to prevent calling get_client at import time at module scope
     assert loop.is_running(), "Eventloop is not running"
     assert issubclass(clientKlass, Client), "Must be a py3 thrift client"
-    host = str(host)  # Accept ipaddress objects
+
     cdef uint32_t _timeout_ms = int(timeout * 1000)
     cdef uint32_t _ssl_timeout_ms = int(ssl_timeout * 1000)
     cdef PROTOCOL_TYPES proto = Protocol2PROTOCOL_TYPES(protocol)
+    cdef string cstr
 
     endpoint = b''
     if client_type is ClientType.THRIFT_HTTP_CLIENT_TYPE:
@@ -102,6 +113,25 @@ def get_client(
     if port == -1 and path is None:
         raise ValueError('path or port must be set')
 
+    # See if what we were given is an ip or hostname, if not an ip return a resolver
+    if not path and isinstance(host, str):
+        try:
+            ipaddress.ip_address(host)
+        except ValueError:
+            return _AsyncResolveCtxManager(
+                clientKlass,
+                host=host,
+                port=port,
+                path=endpoint,
+                timeout=timeout,
+                headers=headers,
+                client_type=client_type,
+                protocol=protocol,
+                ssl_context=ssl_context,
+                ssl_timeout=ssl_timeout
+            )
+
+    host = str(host)  # Accept ipaddress objects
     client = clientKlass()
 
     if path:
@@ -113,25 +143,28 @@ def get_client(
             <PyObject *> client
         )
     elif ssl_context:
-        p = _ResolvePromise(host, port)
+        cstr = <bytes> host.encode('utf-8')
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
             thrift_ssl.createThriftChannelTCP(
                 ssl_context._cpp_obj,
-                p.cPromise.getFuture(),
+                move_string(cstr),
                 port,
                 _timeout_ms,
                 _ssl_timeout_ms,
+                client_type,
+                proto,
+                move_string(endpoint)
             ),
             requestchannel_callback,
             <PyObject *> client
         )
     else:
-        p = _ResolvePromise(host, port)
+        cstr = <bytes> host.encode('utf-8')
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
             createThriftChannelTCP(
-                p.cPromise.getFuture(),
+                move_string(cstr),
                 port,
                 _timeout_ms,
                 client_type,

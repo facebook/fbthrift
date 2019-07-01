@@ -79,27 +79,25 @@ HeaderChannel_ptr configureClientChannel(
  * Create a thrift channel by connecting to a host:port over TCP.
  */
 folly::Future<RequestChannel_ptr> createThriftChannelTCP(
-    folly::Future<std::string>&& host_fut,
+    std::string&& host,
     const uint16_t port,
     const uint32_t connect_timeout,
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto,
     std::string&& endpoint) {
-  return std::move(host_fut).thenValue(
-      [=, endpoint{std::move(endpoint)}](std::string host) {
-        auto eb = folly::getEventBase();
-        return folly::via(eb, [=, endpoint{std::move(endpoint)}] {
-          auto chan = configureClientChannel(
-              apache::thrift::HeaderClientChannel::newChannel(
-                  apache::thrift::async::TAsyncSocket::newSocket(
-                      eb, host, port, connect_timeout)),
-              client_t,
-              proto);
-          if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
-            chan->useAsHttpClient(host, endpoint);
-          }
-          return std::move(chan);
-        });
+  auto eb = folly::getEventBase();
+  return folly::via(
+      eb, [=, host{std::move(host)}, endpoint{std::move(endpoint)}] {
+        auto chan = configureClientChannel(
+            apache::thrift::HeaderClientChannel::newChannel(
+                apache::thrift::async::TAsyncSocket::newSocket(
+                    eb, host, port, connect_timeout)),
+            client_t,
+            proto);
+        if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
+          chan->useAsHttpClient(host, endpoint);
+        }
+        return std::move(chan);
       });
 }
 
