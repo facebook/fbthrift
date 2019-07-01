@@ -162,11 +162,6 @@ class ThreadManager : public virtual folly::Executor {
       bool numa = false) noexcept = 0;
 
   /**
-   * Similar to add(), but doesn't block or throw.
-   */
-  virtual bool tryAdd(std::shared_ptr<Runnable> task) = 0;
-
-  /**
    * Implements folly::Executor::add()
    */
   void add(folly::Func f) override = 0;
@@ -305,9 +300,6 @@ class PriorityThreadManager : public ThreadManager {
       bool cancellable = false,
       bool numa = false) noexcept = 0;
 
-  using ThreadManager::tryAdd;
-  virtual bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task) = 0;
-
   uint8_t getNumPriorities() const override {
     return N_PRIORITIES;
   }
@@ -391,10 +383,6 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
       bool /*cancellable*/ = false,
       bool /*numa*/ = false) noexcept override {
     exe_->add([=] { task->run(); });
-  }
-  bool tryAdd(std::shared_ptr<Runnable> task) override {
-    add(std::move(task));
-    return true;
   }
   void add(folly::Func f) override { exe_->add(std::move(f)); }
 

@@ -393,37 +393,6 @@ void ThreadManager::ImplT<SemType>::add(
 }
 
 template <typename SemType>
-bool ThreadManager::ImplT<SemType>::tryAdd(shared_ptr<Runnable> value) {
-  return tryAdd(1, value);
-}
-
-template <typename SemType>
-bool ThreadManager::ImplT<SemType>::tryAdd(
-  size_t priority,
-  shared_ptr<Runnable> value
-) {
-  if (state_ != ThreadManager::STARTED) {
-    return false;
-  }
-
-  auto task = std::make_unique<Task>(std::move(value),
-                                       std::chrono::milliseconds{0});
-
-  auto const qpriority = std::min(tasks_.priorities() - 1, priority);
-  tasks_.at_priority(qpriority).enqueue(std::move(task));
-
-  ++totalTaskCount_;
-
-  if (idleCount_ > 0) {
-    // If an idle thread is available notify it, otherwise all worker threads
-    // are running and will get around to this task in time.
-    waitSem_.post();
-  }
-
-  return true;
-}
-
-template <typename SemType>
 void ThreadManager::ImplT<SemType>::remove(shared_ptr<Runnable> /*task*/) {
   Synchronized s(monitor_);
   if (state_ != ThreadManager::STARTED) {
@@ -671,12 +640,6 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
                                        expiration, cancellable, numa);
   }
 
-  bool tryAdd(std::shared_ptr<Runnable> task) override {
-    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
-    PRIORITY prio = p ? p->getPriority() : NORMAL;
-    return ThreadManager::ImplT<SemType>::tryAdd(prio, std::move(task));
-  }
-
   /**
    * Implements folly::Executor::add()
    */
@@ -898,16 +861,6 @@ class PriorityThreadManager::PriorityImplT
       bool numa = false) noexcept override {
     managers_[priority]->add(
         std::move(task), timeout, expiration, cancellable, numa);
-  }
-
-  bool tryAdd(std::shared_ptr<Runnable> task) override {
-    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
-    PRIORITY prio = p ? p->getPriority() : NORMAL;
-    return tryAdd(prio, std::move(task));
-  }
-
-  bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task) override {
-    return managers_[priority]->tryAdd(std::move(task));
   }
 
   /**

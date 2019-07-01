@@ -219,18 +219,6 @@ void NumaThreadManager::add(
   add(prio, std::move(task), timeout, expiration, cancellable, numa);
 }
 
-bool NumaThreadManager::tryAdd(PRIORITY priority,
-                               std::shared_ptr<Runnable> task) {
-  return managers_[node_++ % managers_.size()]->tryAdd(priority,
-                                                       std::move(task));
-}
-
-bool NumaThreadManager::tryAdd(std::shared_ptr<Runnable> task) {
-  PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
-  PRIORITY prio = p ? p->getPriority() : NORMAL;
-  return tryAdd(prio, std::move(task));
-}
-
 void NumaThreadManager::addWorker(size_t t) {
   for (size_t i = 0; i < t; i++) {
     managers_[workerNode_++ % managers_.size()]->addWorker(1);

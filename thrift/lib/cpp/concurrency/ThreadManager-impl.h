@@ -188,8 +188,6 @@ class ThreadManager::ImplT : public ThreadManager,
       bool cancellable,
       bool numa) noexcept override;
 
-  bool tryAdd(std::shared_ptr<Runnable> task) override;
-
   /**
    * Implements folly::Executor::add()
    */
@@ -227,7 +225,6 @@ class ThreadManager::ImplT : public ThreadManager,
   Codel codel_;
 
  protected:
-  bool tryAdd(size_t priority, std::shared_ptr<Runnable> task);
   void add(
       size_t priority,
       shared_ptr<Runnable> value,

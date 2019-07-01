@@ -110,12 +110,6 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
     return 1;
   }
 
-  bool tryAdd(std::shared_ptr<apache::thrift::concurrency::Runnable> /*task*/)
-      override {
-    LOG(FATAL) << "Method not implemented in this fake object";
-    return true;
-  }
-
   void remove(std::shared_ptr<apache::thrift::concurrency::Runnable> /*task*/)
       override {
     LOG(FATAL) << "Method not implemented in this fake object";
