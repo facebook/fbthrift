@@ -400,7 +400,7 @@ template uint32_t DataUnion::serializedSizeZC<>(apache::thrift::CompactProtocolW
 } // cpp2
 namespace cpp2 {
 
-Val::Val(apache::thrift::FragileConstructor, std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg) :
+Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg) :
     strVal(std::move(strVal__arg)),
     intVal(std::move(intVal__arg)),
     typedefValue(std::move(typedefValue__arg)) {

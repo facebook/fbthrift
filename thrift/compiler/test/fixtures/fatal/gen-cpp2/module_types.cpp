@@ -1196,7 +1196,7 @@ template uint32_t union3::serializedSizeZC<>(apache::thrift::CompactProtocolWrit
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
-structA::structA(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
+structA::structA(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
@@ -1435,7 +1435,7 @@ structC::structC() :
 
 structC::~structC() {}
 
-structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
+structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<int32_t> j__arg, ::std::vector<int32_t> j1__arg, ::std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<int32_t> k__arg, ::std::set<int32_t> k1__arg, ::std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<int32_t, int32_t> l__arg, ::std::map<int32_t, int32_t> l1__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, int32_t> n1__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -1751,171 +1751,171 @@ const  ::test_cpp2::cpp_reflection::unionA& structC::get_i() const& {
   return std::move(i);
 }
 
-const std::vector<int32_t>& structC::get_j() const& {
+const ::std::vector<int32_t>& structC::get_j() const& {
   return j;
 }
 
-std::vector<int32_t> structC::get_j() && {
+::std::vector<int32_t> structC::get_j() && {
   return std::move(j);
 }
 
-const std::vector<int32_t>& structC::get_j1() const& {
+const ::std::vector<int32_t>& structC::get_j1() const& {
   return j1;
 }
 
-std::vector<int32_t> structC::get_j1() && {
+::std::vector<int32_t> structC::get_j1() && {
   return std::move(j1);
 }
 
-const std::vector< ::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
+const ::std::vector< ::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
   return j2;
 }
 
-std::vector< ::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
+::std::vector< ::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
   return std::move(j2);
 }
 
-const std::vector< ::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
+const ::std::vector< ::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
   return j3;
 }
 
-std::vector< ::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
+::std::vector< ::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
   return std::move(j3);
 }
 
-const std::set<int32_t>& structC::get_k() const& {
+const ::std::set<int32_t>& structC::get_k() const& {
   return k;
 }
 
-std::set<int32_t> structC::get_k() && {
+::std::set<int32_t> structC::get_k() && {
   return std::move(k);
 }
 
-const std::set<int32_t>& structC::get_k1() const& {
+const ::std::set<int32_t>& structC::get_k1() const& {
   return k1;
 }
 
-std::set<int32_t> structC::get_k1() && {
+::std::set<int32_t> structC::get_k1() && {
   return std::move(k1);
 }
 
-const std::set< ::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
+const ::std::set< ::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
   return k2;
 }
 
-std::set< ::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
+::std::set< ::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
   return std::move(k2);
 }
 
-const std::set< ::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
+const ::std::set< ::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
   return k3;
 }
 
-std::set< ::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
+::std::set< ::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
   return std::move(k3);
 }
 
-const std::map<int32_t, int32_t>& structC::get_l() const& {
+const ::std::map<int32_t, int32_t>& structC::get_l() const& {
   return l;
 }
 
-std::map<int32_t, int32_t> structC::get_l() && {
+::std::map<int32_t, int32_t> structC::get_l() && {
   return std::move(l);
 }
 
-const std::map<int32_t, int32_t>& structC::get_l1() const& {
+const ::std::map<int32_t, int32_t>& structC::get_l1() const& {
   return l1;
 }
 
-std::map<int32_t, int32_t> structC::get_l1() && {
+::std::map<int32_t, int32_t> structC::get_l1() && {
   return std::move(l1);
 }
 
-const std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
+const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
   return l2;
 }
 
-std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
+::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
   return std::move(l2);
 }
 
-const std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
+const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
   return l3;
 }
 
-std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
+::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
   return std::move(l3);
 }
 
-const std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& structC::get_m1() const& {
+const ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& structC::get_m1() const& {
   return m1;
 }
 
-std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> structC::get_m1() && {
+::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> structC::get_m1() && {
   return std::move(m1);
 }
 
-const std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
+const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
   return m2;
 }
 
-std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
+::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
   return std::move(m2);
 }
 
-const std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
+const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
   return m3;
 }
 
-std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
+::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
   return std::move(m3);
 }
 
-const std::map<std::string, int32_t>& structC::get_n1() const& {
+const ::std::map<::std::string, int32_t>& structC::get_n1() const& {
   return n1;
 }
 
-std::map<std::string, int32_t> structC::get_n1() && {
+::std::map<::std::string, int32_t> structC::get_n1() && {
   return std::move(n1);
 }
 
-const std::map<std::string,  ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
+const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
   return n2;
 }
 
-std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
+::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
   return std::move(n2);
 }
 
-const std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
+const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
   return n3;
 }
 
-std::map<std::string,  ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
+::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
   return std::move(n3);
 }
 
-const std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& structC::get_o1() const& {
+const ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& structC::get_o1() const& {
   return o1;
 }
 
-std::map< ::test_cpp2::cpp_reflection::structA, int32_t> structC::get_o1() && {
+::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> structC::get_o1() && {
   return std::move(o1);
 }
 
-const std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
+const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
   return o2;
 }
 
-std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
+::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
   return std::move(o2);
 }
 
-const std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
+const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
   return o3;
 }
 
-std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
+::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
   return std::move(o3);
 }
 
@@ -1975,7 +1975,7 @@ struct1::struct1() :
 
 struct1::~struct1() {}
 
-struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
+struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2117,7 +2117,7 @@ struct2::struct2() :
 
 struct2::~struct2() {}
 
-struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
+struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -2259,7 +2259,7 @@ struct3::struct3() :
 
 struct3::~struct3() {}
 
-struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
+struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -2475,83 +2475,83 @@ const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldH() const& {
   return std::move(fieldH);
 }
 
-const std::vector<int32_t>& struct3::get_fieldI() const& {
+const ::std::vector<int32_t>& struct3::get_fieldI() const& {
   return fieldI;
 }
 
-std::vector<int32_t> struct3::get_fieldI() && {
+::std::vector<int32_t> struct3::get_fieldI() && {
   return std::move(fieldI);
 }
 
-const std::vector<std::string>& struct3::get_fieldJ() const& {
+const ::std::vector<::std::string>& struct3::get_fieldJ() const& {
   return fieldJ;
 }
 
-std::vector<std::string> struct3::get_fieldJ() && {
+::std::vector<::std::string> struct3::get_fieldJ() && {
   return std::move(fieldJ);
 }
 
-const std::vector<std::string>& struct3::get_fieldK() const& {
+const ::std::vector<::std::string>& struct3::get_fieldK() const& {
   return fieldK;
 }
 
-std::vector<std::string> struct3::get_fieldK() && {
+::std::vector<::std::string> struct3::get_fieldK() && {
   return std::move(fieldK);
 }
 
-const std::vector< ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
+const ::std::vector< ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
   return fieldL;
 }
 
-std::vector< ::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
+::std::vector< ::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
   return std::move(fieldL);
 }
 
-const std::set<int32_t>& struct3::get_fieldM() const& {
+const ::std::set<int32_t>& struct3::get_fieldM() const& {
   return fieldM;
 }
 
-std::set<int32_t> struct3::get_fieldM() && {
+::std::set<int32_t> struct3::get_fieldM() && {
   return std::move(fieldM);
 }
 
-const std::set<std::string>& struct3::get_fieldN() const& {
+const ::std::set<::std::string>& struct3::get_fieldN() const& {
   return fieldN;
 }
 
-std::set<std::string> struct3::get_fieldN() && {
+::std::set<::std::string> struct3::get_fieldN() && {
   return std::move(fieldN);
 }
 
-const std::set<std::string>& struct3::get_fieldO() const& {
+const ::std::set<::std::string>& struct3::get_fieldO() const& {
   return fieldO;
 }
 
-std::set<std::string> struct3::get_fieldO() && {
+::std::set<::std::string> struct3::get_fieldO() && {
   return std::move(fieldO);
 }
 
-const std::set< ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
+const ::std::set< ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
   return fieldP;
 }
 
-std::set< ::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
+::std::set< ::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
   return std::move(fieldP);
 }
 
-const std::map<std::string,  ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
+const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
   return fieldQ;
 }
 
-std::map<std::string,  ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
+::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
   return std::move(fieldQ);
 }
 
-const std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
+const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
   return fieldR;
 }
 
-std::map<std::string,  ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
+::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
   return std::move(fieldR);
 }
 
@@ -2606,7 +2606,7 @@ struct4& struct4::operator=(const struct4& src) {
   return *this;
 }
 
-struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
+struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2711,7 +2711,7 @@ struct5::struct5() :
 
 struct5::~struct5() {}
 
-struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
+struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2826,7 +2826,7 @@ template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 }} // test_cpp2::cpp_reflection
 namespace test_cpp2 { namespace cpp_reflection {
 
-struct_binary::struct_binary(apache::thrift::FragileConstructor, std::string bi__arg) :
+struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string bi__arg) :
     bi(std::move(bi__arg)) {
   __isset.bi = true;
 }

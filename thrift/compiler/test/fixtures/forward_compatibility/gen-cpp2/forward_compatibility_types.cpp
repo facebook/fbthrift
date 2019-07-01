@@ -82,7 +82,7 @@ void TccStructTraits<::cpp2::NewStructureNestedField>::translateFieldName(
 
 namespace cpp2 {
 
-OldStructure::OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
+OldStructure::OldStructure(apache::thrift::FragileConstructor, ::std::map<int16_t, double> features__arg) :
     features(std::move(features__arg)) {
   __isset.features = true;
 }
@@ -113,11 +113,11 @@ bool OldStructure::operator<(const OldStructure& rhs) const {
   return false;
 }
 
-const std::map<int16_t, double>& OldStructure::get_features() const& {
+const ::std::map<int16_t, double>& OldStructure::get_features() const& {
   return features;
 }
 
-std::map<int16_t, double> OldStructure::get_features() && {
+::std::map<int16_t, double> OldStructure::get_features() && {
   return std::move(features);
 }
 
@@ -144,7 +144,7 @@ template uint32_t OldStructure::serializedSizeZC<>(apache::thrift::SimpleJSONPro
 } // cpp2
 namespace cpp2 {
 
-NewStructure::NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg) :
+NewStructure::NewStructure(apache::thrift::FragileConstructor, ::std::map<int16_t, double> features__arg) :
     features(std::move(features__arg)) {
   __isset.features = true;
 }
@@ -175,11 +175,11 @@ bool NewStructure::operator<(const NewStructure& rhs) const {
   return false;
 }
 
-const std::map<int16_t, double>& NewStructure::get_features() const& {
+const ::std::map<int16_t, double>& NewStructure::get_features() const& {
   return features;
 }
 
-std::map<int16_t, double> NewStructure::get_features() && {
+::std::map<int16_t, double> NewStructure::get_features() && {
   return std::move(features);
 }
 
@@ -268,7 +268,7 @@ template uint32_t NewStructure2::serializedSizeZC<>(apache::thrift::SimpleJSONPr
 } // cpp2
 namespace cpp2 {
 
-NewStructureNested::NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg) :
+NewStructureNested::NewStructureNested(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::FloatFeatures> lst__arg, ::std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, ::std::set< ::cpp2::FloatFeatures> s__arg) :
     lst(std::move(lst__arg)),
     mp(std::move(mp__arg)),
     s(std::move(s__arg)) {
@@ -317,27 +317,27 @@ bool NewStructureNested::operator<(const NewStructureNested& rhs) const {
   return false;
 }
 
-const std::vector< ::cpp2::FloatFeatures>& NewStructureNested::get_lst() const& {
+const ::std::vector< ::cpp2::FloatFeatures>& NewStructureNested::get_lst() const& {
   return lst;
 }
 
-std::vector< ::cpp2::FloatFeatures> NewStructureNested::get_lst() && {
+::std::vector< ::cpp2::FloatFeatures> NewStructureNested::get_lst() && {
   return std::move(lst);
 }
 
-const std::map<int16_t,  ::cpp2::FloatFeatures>& NewStructureNested::get_mp() const& {
+const ::std::map<int16_t,  ::cpp2::FloatFeatures>& NewStructureNested::get_mp() const& {
   return mp;
 }
 
-std::map<int16_t,  ::cpp2::FloatFeatures> NewStructureNested::get_mp() && {
+::std::map<int16_t,  ::cpp2::FloatFeatures> NewStructureNested::get_mp() && {
   return std::move(mp);
 }
 
-const std::set< ::cpp2::FloatFeatures>& NewStructureNested::get_s() const& {
+const ::std::set< ::cpp2::FloatFeatures>& NewStructureNested::get_s() const& {
   return s;
 }
 
-std::set< ::cpp2::FloatFeatures> NewStructureNested::get_s() && {
+::std::set< ::cpp2::FloatFeatures> NewStructureNested::get_s() && {
   return std::move(s);
 }
 

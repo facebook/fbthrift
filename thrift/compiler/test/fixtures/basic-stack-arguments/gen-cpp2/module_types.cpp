@@ -69,7 +69,7 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)) {
   __isset.MyIntField = true;

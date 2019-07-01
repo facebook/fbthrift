@@ -289,7 +289,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldB,
-    std::map<std::string, bool>,
+    ::std::map<::std::string, bool>,
     2,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldB,
@@ -300,7 +300,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using req_fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldB,
-    std::map<std::string, bool>,
+    ::std::map<::std::string, bool>,
     102,
     ::apache::thrift::optionality::required,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldB,
@@ -311,7 +311,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using opt_fieldB = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldB,
-    std::map<std::string, bool>,
+    ::std::map<::std::string, bool>,
     202,
     ::apache::thrift::optionality::optional,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldB,
@@ -322,7 +322,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldC,
-    std::set<int32_t>,
+    ::std::set<int32_t>,
     3,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldC,
@@ -333,7 +333,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using req_fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldC,
-    std::set<int32_t>,
+    ::std::set<int32_t>,
     103,
     ::apache::thrift::optionality::required,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldC,
@@ -344,7 +344,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using opt_fieldC = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldC,
-    std::set<int32_t>,
+    ::std::set<int32_t>,
     203,
     ::apache::thrift::optionality::optional,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldC,
@@ -355,7 +355,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using fieldD = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldD,
-    std::string,
+    ::std::string,
     4,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldD,
@@ -366,7 +366,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using fieldE = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::fieldE,
-    std::string,
+    ::std::string,
     5,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldE,
@@ -377,7 +377,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using req_fieldE = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::req_fieldE,
-    std::string,
+    ::std::string,
     105,
     ::apache::thrift::optionality::required,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldE,
@@ -388,7 +388,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
   >;
   using opt_fieldE = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::extra_svc_extra_services__unique_strings_list::opt_fieldE,
-    std::string,
+    ::std::string,
     205,
     ::apache::thrift::optionality::optional,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldE,

@@ -66,19 +66,19 @@ struct module_constants {
     return aString_;
   }
 
-  static std::vector<bool> const& aList();
+  static ::std::vector<bool> const& aList();
 
-  static std::map<std::string, int32_t> const& anEmptyMap();
+  static ::std::map<::std::string, int32_t> const& anEmptyMap();
 
-  static std::map<int32_t, std::string> const& aMap();
+  static ::std::map<int32_t, ::std::string> const& aMap();
 
-  static std::set<std::string> const& aSet();
+  static ::std::set<::std::string> const& aSet();
 
-  static std::vector<std::vector<int32_t>> const& aListOfLists();
+  static ::std::vector<::std::vector<int32_t>> const& aListOfLists();
 
-  static std::vector<std::map<std::string, int32_t>> const& states();
+  static ::std::vector<::std::map<::std::string, int32_t>> const& states();
 
-  static std::vector< ::some::valid::ns::MyEnumA> const& AConstList();
+  static ::std::vector< ::some::valid::ns::MyEnumA> const& AConstList();
 
   static constexpr int32_t const AnIntegerEnum2_ = 2;
 
@@ -86,7 +86,7 @@ struct module_constants {
     return AnIntegerEnum2_;
   }
 
-  static std::vector<int32_t> const& AnIntegerEnum2();
+  static ::std::vector<int32_t> const& AnIntegerEnum2();
 
   static constexpr  ::some::valid::ns::MyEnumA const constEnumA_ =  ::some::valid::ns::MyEnumA::fieldB;
 

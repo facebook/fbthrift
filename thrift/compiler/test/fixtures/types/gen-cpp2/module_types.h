@@ -191,7 +191,7 @@ class ForwardUsageByRef;
 // END forward_declare
 // BEGIN typedefs
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-typedef std::string TBinary;
+typedef ::std::string TBinary;
 
 }}}} // apache::thrift::fixtures::types
 // END typedefs
@@ -213,7 +213,7 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
   decorated_struct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  decorated_struct(apache::thrift::FragileConstructor, std::string field__arg);
+  decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     field = arg.extract();
@@ -228,7 +228,7 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
 
   decorated_struct& operator=(const decorated_struct&) = default;
   void __clear();
-  std::string field;
+  ::std::string field;
 
   struct __isset {
     bool field;
@@ -236,16 +236,16 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
   bool operator==(const decorated_struct& rhs) const;
   bool operator<(const decorated_struct& rhs) const;
 
-  const std::string& get_field() const& {
+  const ::std::string& get_field() const& {
     return field;
   }
 
-  std::string get_field() && {
+  ::std::string get_field() && {
     return std::move(field);
   }
 
-  template <typename T_decorated_struct_field_struct_setter = std::string>
-  std::string& set_field(T_decorated_struct_field_struct_setter&& field_) {
+  template <typename T_decorated_struct_field_struct_setter = ::std::string>
+  ::std::string& set_field(T_decorated_struct_field_struct_setter&& field_) {
     field = std::forward<T_decorated_struct_field_struct_setter>(field_);
     __isset.field = true;
     return field;
@@ -285,7 +285,7 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
+  ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
     fieldA = arg.extract();
@@ -338,13 +338,13 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   ~ContainerStruct();
 
-  std::vector<int32_t> fieldA;
+  ::std::vector<int32_t> fieldA;
   std::list<int32_t> fieldB;
   std::deque<int32_t> fieldC;
   folly::fbvector<int32_t> fieldD;
   folly::small_vector<int32_t> fieldE;
   folly::sorted_vector_set<int32_t> fieldF;
-  folly::sorted_vector_map<int32_t, std::string> fieldG;
+  folly::sorted_vector_map<int32_t, ::std::string> fieldG;
    ::apache::thrift::fixtures::types::SomeMap fieldH;
 
   struct __isset {
@@ -359,11 +359,11 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   } __isset = {};
   bool operator==(const ContainerStruct& rhs) const;
   bool operator<(const ContainerStruct& rhs) const;
-  const std::vector<int32_t>& get_fieldA() const&;
-  std::vector<int32_t> get_fieldA() &&;
+  const ::std::vector<int32_t>& get_fieldA() const&;
+  ::std::vector<int32_t> get_fieldA() &&;
 
-  template <typename T_ContainerStruct_fieldA_struct_setter = std::vector<int32_t>>
-  std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
+  template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<int32_t>>
+  ::std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
     __isset.fieldA = true;
     return fieldA;
@@ -413,11 +413,11 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldF = true;
     return fieldF;
   }
-  const folly::sorted_vector_map<int32_t, std::string>& get_fieldG() const&;
-  folly::sorted_vector_map<int32_t, std::string> get_fieldG() &&;
+  const folly::sorted_vector_map<int32_t, ::std::string>& get_fieldG() const&;
+  folly::sorted_vector_map<int32_t, ::std::string> get_fieldG() &&;
 
-  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<int32_t, std::string>>
-  folly::sorted_vector_map<int32_t, std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<int32_t, ::std::string>>
+  folly::sorted_vector_map<int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
     return fieldG;
@@ -854,7 +854,7 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
   ComplexString() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg);
+  ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, int32_t> b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.extract();
@@ -874,8 +874,8 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
 
   ComplexString& operator=(const ComplexString&) = default;
   void __clear();
-  std::string a;
-  std::map<std::string, int32_t> b;
+  ::std::string a;
+  ::std::map<::std::string, int32_t> b;
 
   struct __isset {
     bool a;
@@ -884,25 +884,25 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
   bool operator==(const ComplexString& rhs) const;
   bool operator<(const ComplexString& rhs) const;
 
-  const std::string& get_a() const& {
+  const ::std::string& get_a() const& {
     return a;
   }
 
-  std::string get_a() && {
+  ::std::string get_a() && {
     return std::move(a);
   }
 
-  template <typename T_ComplexString_a_struct_setter = std::string>
-  std::string& set_a(T_ComplexString_a_struct_setter&& a_) {
+  template <typename T_ComplexString_a_struct_setter = ::std::string>
+  ::std::string& set_a(T_ComplexString_a_struct_setter&& a_) {
     a = std::forward<T_ComplexString_a_struct_setter>(a_);
     __isset.a = true;
     return a;
   }
-  const std::map<std::string, int32_t>& get_b() const&;
-  std::map<std::string, int32_t> get_b() &&;
+  const ::std::map<::std::string, int32_t>& get_b() const&;
+  ::std::map<::std::string, int32_t> get_b() &&;
 
-  template <typename T_ComplexString_b_struct_setter = std::map<std::string, int32_t>>
-  std::map<std::string, int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
+  template <typename T_ComplexString_b_struct_setter = ::std::map<::std::string, int32_t>>
+  ::std::map<::std::string, int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
     b = std::forward<T_ComplexString_b_struct_setter>(b_);
     __isset.b = true;
     return b;
@@ -940,10 +940,10 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
+  ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     z = arg.extract();
@@ -963,7 +963,7 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&) = default;
   void __clear();
-  std::string z;
+  ::std::string z;
    ::apache::thrift::fixtures::types::ComplexString n;
 
   struct __isset {
@@ -973,16 +973,16 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
   bool operator==(const ComplexNestedWithDefault& rhs) const;
   bool operator<(const ComplexNestedWithDefault& rhs) const;
 
-  const std::string& get_z() const& {
+  const ::std::string& get_z() const& {
     return z;
   }
 
-  std::string get_z() && {
+  ::std::string get_z() && {
     return std::move(z);
   }
 
-  template <typename T_ComplexNestedWithDefault_z_struct_setter = std::string>
-  std::string& set_z(T_ComplexNestedWithDefault_z_struct_setter&& z_) {
+  template <typename T_ComplexNestedWithDefault_z_struct_setter = ::std::string>
+  ::std::string& set_z(T_ComplexNestedWithDefault_z_struct_setter&& z_) {
     z = std::forward<T_ComplexNestedWithDefault_z_struct_setter>(z_);
     __isset.z = true;
     return z;
@@ -1197,7 +1197,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       majorVer(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -1228,7 +1228,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
   int64_t MyIntField;
-  std::string MyStringField;
+  ::std::string MyStringField;
   int64_t majorVer;
    ::apache::thrift::fixtures::types::MyDataItem data;
 
@@ -1249,16 +1249,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyIntField;
   }
 
-  const std::string& get_MyStringField() const& {
+  const ::std::string& get_MyStringField() const& {
     return MyStringField;
   }
 
-  std::string get_MyStringField() && {
+  ::std::string get_MyStringField() && {
     return std::move(MyStringField);
   }
 
-  template <typename T_MyStruct_MyStringField_struct_setter = std::string>
-  std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
+  template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
+  ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
     return MyStringField;

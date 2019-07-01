@@ -25,13 +25,13 @@ typedef apache::thrift::ThriftPresult<false> ExtraService_throws_function_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_BOOL, bool*>> ExtraService_throws_function2_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_BOOL, bool*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function2_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_BOOL, bool*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRING, std::string*>> ExtraService_throws_function3_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP, std::map<int32_t, std::string>*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<5, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function3_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_BOOL, bool*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRING, ::std::string*>> ExtraService_throws_function3_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP, ::std::map<int32_t, ::std::string>*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<5, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function3_presult;
 typedef apache::thrift::ThriftPresult<false> ExtraService_oneway_void_ret_pargs;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<4, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<5, apache::thrift::protocol::T_I32, int32_t*>> ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP, std::map<std::string, int64_t>*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_SET, std::set<std::vector<std::string>>*>> ExtraService_oneway_void_ret_map_setlist_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP, ::std::map<::std::string, int64_t>*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_SET, ::std::set<::std::vector<::std::string>>*>> ExtraService_oneway_void_ret_map_setlist_param_pargs;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::MyStruct*>> ExtraService_oneway_void_ret_struct_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
 
 template <typename Protocol_>
 void ExtraServiceAsyncClient::simple_functionT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -65,11 +65,11 @@ void ExtraServiceAsyncClient::throws_function2T(Protocol_* prot, apache::thrift:
 }
 
 template <typename Protocol_>
-void ExtraServiceAsyncClient::throws_function3T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::throws_function3T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const ::std::string& param2) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   ExtraService_throws_function3_pargs args;
   args.get<0>().value = &param1;
-  args.get<1>().value = const_cast<std::string*>(&param2);
+  args.get<1>().value = const_cast<::std::string*>(&param2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "throws_function3", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
@@ -102,11 +102,11 @@ void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protoco
 }
 
 template <typename Protocol_>
-void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   ExtraService_oneway_void_ret_map_setlist_param_pargs args;
-  args.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&param1);
-  args.get<1>().value = const_cast<std::set<std::vector<std::string>>*>(&param2);
+  args.get<0>().value = const_cast<::std::map<::std::string, int64_t>*>(&param1);
+  args.get<1>().value = const_cast<::std::set<::std::vector<::std::string>>*>(&param2);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "oneway_void_ret_map_setlist_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
@@ -125,10 +125,10 @@ void ExtraServiceAsyncClient::oneway_void_ret_struct_paramT(Protocol_* prot, apa
 }
 
 template <typename Protocol_>
-void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   ExtraService_oneway_void_ret_listunion_param_pargs args;
-  args.get<0>().value = const_cast<std::vector< ::some::valid::ns::ComplexUnion>*>(&param1);
+  args.get<0>().value = const_cast<::std::vector< ::some::valid::ns::ComplexUnion>*>(&param1);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "oneway_void_ret_listunion_param", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
@@ -591,12 +591,12 @@ folly::exception_wrapper ExtraServiceAsyncClient::recv_instance_wrapped_throws_f
   return recv_wrapped_throws_function2(_return, state);
 }
 
-void ExtraServiceAsyncClient::throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::throws_function3(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const ::std::string& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   throws_function3(rpcOptions, std::move(callback), param1, param2);
 }
 
-void ExtraServiceAsyncClient::throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::throws_function3(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1, const ::std::string& param2) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "ExtraService.throws_function3");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
@@ -604,7 +604,7 @@ void ExtraServiceAsyncClient::throws_function3(apache::thrift::RpcOptions& rpcOp
   throws_function3Impl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), param1, param2);
 }
 
-void ExtraServiceAsyncClient::throws_function3Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::throws_function3Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, bool param1, const ::std::string& param2) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -625,12 +625,12 @@ void ExtraServiceAsyncClient::throws_function3Impl(apache::thrift::RpcOptions& r
   }
 }
 
-void ExtraServiceAsyncClient::sync_throws_function3(std::map<int32_t, std::string>& _return, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::sync_throws_function3(::std::map<int32_t, ::std::string>& _return, bool param1, const ::std::string& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_throws_function3(rpcOptions, _return, param1, param2);
 }
 
-void ExtraServiceAsyncClient::sync_throws_function3(apache::thrift::RpcOptions& rpcOptions, std::map<int32_t, std::string>& _return, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::sync_throws_function3(apache::thrift::RpcOptions& rpcOptions, ::std::map<int32_t, ::std::string>& _return, bool param1, const ::std::string& param2) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
@@ -652,51 +652,51 @@ void ExtraServiceAsyncClient::sync_throws_function3(apache::thrift::RpcOptions& 
   recv_throws_function3(_return, _returnState);
 }
 
-folly::Future<std::map<int32_t, std::string>> ExtraServiceAsyncClient::future_throws_function3(bool param1, const std::string& param2) {
+folly::Future<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::future_throws_function3(bool param1, const ::std::string& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_throws_function3(rpcOptions, param1, param2);
 }
 
-folly::SemiFuture<std::map<int32_t, std::string>> ExtraServiceAsyncClient::semifuture_throws_function3(bool param1, const std::string& param2) {
+folly::SemiFuture<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::semifuture_throws_function3(bool param1, const ::std::string& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_throws_function3(rpcOptions, param1, param2);
 }
 
-folly::Future<std::map<int32_t, std::string>> ExtraServiceAsyncClient::future_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const std::string& param2) {
-  folly::Promise<std::map<int32_t, std::string>> _promise;
+folly::Future<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::future_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
+  folly::Promise<::std::map<int32_t, ::std::string>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<std::map<int32_t, std::string>>>(std::move(_promise), recv_wrapped_throws_function3, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::map<int32_t, ::std::string>>>(std::move(_promise), recv_wrapped_throws_function3, channel_);
   throws_function3(rpcOptions, std::move(callback), param1, param2);
   return _future;
 }
 
-folly::SemiFuture<std::map<int32_t, std::string>> ExtraServiceAsyncClient::semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const std::string& param2) {
+folly::SemiFuture<::std::map<int32_t, ::std::string>> ExtraServiceAsyncClient::semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_throws_function3, channel_);
   auto callback = std::move(callbackAndFuture.first);
   throws_function3(rpcOptions, std::move(callback), param1, param2);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<std::map<int32_t, std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> ExtraServiceAsyncClient::header_future_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const std::string& param2) {
-  folly::Promise<std::pair<std::map<int32_t, std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<::std::map<int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> ExtraServiceAsyncClient::header_future_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
+  folly::Promise<std::pair<::std::map<int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::map<int32_t, std::string>>>(std::move(_promise), recv_wrapped_throws_function3, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::map<int32_t, ::std::string>>>(std::move(_promise), recv_wrapped_throws_function3, channel_);
   throws_function3(rpcOptions, std::move(callback), param1, param2);
   return _future;
 }
 
-folly::SemiFuture<std::pair<std::map<int32_t, std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> ExtraServiceAsyncClient::header_semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const std::string& param2) {
+folly::SemiFuture<std::pair<::std::map<int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> ExtraServiceAsyncClient::header_semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_throws_function3, channel_);
   auto callback = std::move(callbackAndFuture.first);
   throws_function3(rpcOptions, std::move(callback), param1, param2);
   return std::move(callbackAndFuture.second);
 }
 
-void ExtraServiceAsyncClient::throws_function3(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool param1, const std::string& param2) {
+void ExtraServiceAsyncClient::throws_function3(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool param1, const ::std::string& param2) {
   throws_function3(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
-folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function3(std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function3(::std::map<int32_t, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -726,18 +726,18 @@ folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function3(
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void ExtraServiceAsyncClient::recv_throws_function3(std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void ExtraServiceAsyncClient::recv_throws_function3(::std::map<int32_t, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_throws_function3(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void ExtraServiceAsyncClient::recv_instance_throws_function3(std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+void ExtraServiceAsyncClient::recv_instance_throws_function3(::std::map<int32_t, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_throws_function3(_return, state);
 }
 
-folly::exception_wrapper ExtraServiceAsyncClient::recv_instance_wrapped_throws_function3(std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper ExtraServiceAsyncClient::recv_instance_wrapped_throws_function3(::std::map<int32_t, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_throws_function3(_return, state);
 }
 
@@ -897,12 +897,12 @@ void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_param(folly::F
   oneway_void_ret_i32_i32_i32_i32_i32_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2, param3, param4, param5);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   oneway_void_ret_map_setlist_param(rpcOptions, std::move(callback), param1, param2);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.oneWay = true;
@@ -911,7 +911,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(apache::thrift::
   oneway_void_ret_map_setlist_paramImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), param1, param2);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -932,12 +932,12 @@ void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramImpl(apache::thri
   }
 }
 
-void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_oneway_void_ret_map_setlist_param(rpcOptions, param1, param2);
 }
 
-void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<true> callback(&_returnState);
   auto evb = getChannel()->getEventBase();
@@ -946,17 +946,17 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(apache::thr
   callback.waitUntilDone(evb);
 }
 
-folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_oneway_void_ret_map_setlist_param(rpcOptions, param1, param2);
 }
 
-folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_map_setlist_param(const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_oneway_void_ret_map_setlist_param(rpcOptions, param1, param2);
 }
 
-folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
@@ -964,14 +964,14 @@ folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_s
   return _future;
 }
 
-folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
   auto callback = std::move(callbackAndFuture.first);
   oneway_void_ret_map_setlist_param(rpcOptions, std::move(callback), param1, param2);
   return std::move(callbackAndFuture.second);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::map<::std::string, int64_t>& param1, const ::std::set<::std::vector<::std::string>>& param2) {
   oneway_void_ret_map_setlist_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
 }
 
@@ -1053,12 +1053,12 @@ void ExtraServiceAsyncClient::oneway_void_ret_struct_param(folly::Function<void 
   oneway_void_ret_struct_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   oneway_void_ret_listunion_param(rpcOptions, std::move(callback), param1);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.oneWay = true;
@@ -1067,7 +1067,7 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(apache::thrift::Rp
   oneway_void_ret_listunion_paramImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), param1);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -1088,12 +1088,12 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramImpl(apache::thrift
   }
 }
 
-void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_oneway_void_ret_listunion_param(rpcOptions, param1);
 }
 
-void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<true> callback(&_returnState);
   auto evb = getChannel()->getEventBase();
@@ -1102,17 +1102,17 @@ void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(apache::thrif
   callback.waitUntilDone(evb);
 }
 
-folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_oneway_void_ret_listunion_param(rpcOptions, param1);
 }
 
-folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_listunion_param(const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_oneway_void_ret_listunion_param(rpcOptions, param1);
 }
 
-folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
@@ -1120,14 +1120,14 @@ folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listu
   return _future;
 }
 
-folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+folly::SemiFuture<folly::Unit> ExtraServiceAsyncClient::semifuture_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
   auto callback = std::move(callbackAndFuture.first);
   oneway_void_ret_listunion_param(rpcOptions, std::move(callback), param1);
   return std::move(callbackAndFuture.second);
 }
 
-void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector< ::some::valid::ns::ComplexUnion>& param1) {
   oneway_void_ret_listunion_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
 }
 

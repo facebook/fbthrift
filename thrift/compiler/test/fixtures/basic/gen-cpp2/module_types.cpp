@@ -142,7 +142,7 @@ MyStruct::MyStruct() :
 
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, std::string package__arg, std::string annotation_with_quote__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),

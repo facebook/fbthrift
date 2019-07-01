@@ -272,7 +272,7 @@ class decorated_struct_apache_thrift_fixtures_types_module__struct_unique_annota
 struct decorated_struct_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
   using field = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::field,
-    std::string,
+    ::std::string,
     1,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::field,
@@ -377,7 +377,7 @@ class ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_annotat
 struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
   using fieldA = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::fieldA,
-    std::vector<int32_t>,
+    ::std::vector<int32_t>,
     12,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::fieldA,
@@ -443,7 +443,7 @@ struct ContainerStruct_apache_thrift_fixtures_types_module__struct_unique_member
   >;
   using fieldG = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::fieldG,
-    folly::sorted_vector_map<int32_t, std::string>,
+    folly::sorted_vector_map<int32_t, ::std::string>,
     7,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::fieldG,
@@ -788,7 +788,7 @@ class ComplexString_apache_thrift_fixtures_types_module__struct_unique_annotatio
 struct ComplexString_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
   using a = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::a,
-    std::string,
+    ::std::string,
     1,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::a,
@@ -799,7 +799,7 @@ struct ComplexString_apache_thrift_fixtures_types_module__struct_unique_member_i
   >;
   using b = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::b,
-    std::map<std::string, int32_t>,
+    ::std::map<::std::string, int32_t>,
     2,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::b,
@@ -850,7 +850,7 @@ class ComplexNestedWithDefault_apache_thrift_fixtures_types_module__struct_uniqu
 struct ComplexNestedWithDefault_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
   using z = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::z,
-    std::string,
+    ::std::string,
     1,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::z,
@@ -1124,7 +1124,7 @@ struct MyStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_l
   >;
   using MyStringField = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStringField,
-    std::string,
+    ::std::string,
     2,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyStringField,
