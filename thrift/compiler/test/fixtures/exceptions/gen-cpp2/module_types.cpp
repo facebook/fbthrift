@@ -89,7 +89,7 @@ template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
-Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
+Fiery::Fiery(apache::thrift::FragileConstructor, std::string message__arg) :
     message(std::move(message__arg)) {}
 
 void Fiery::__clear() {
@@ -135,7 +135,7 @@ template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
-Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
+Serious::Serious(apache::thrift::FragileConstructor, std::string sonnet__arg) :
     sonnet(std::move(sonnet__arg)) {
   __isset.sonnet = true;
 }

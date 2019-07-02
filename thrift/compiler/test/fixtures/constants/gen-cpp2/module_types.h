@@ -147,7 +147,7 @@ class union2;
 // BEGIN typedefs
 namespace cpp2 {
 typedef  ::cpp2::Company MyCompany;
-typedef ::std::string MyStringIdentifier;
+typedef std::string MyStringIdentifier;
 typedef int32_t MyIntIdentifier;
 
 } // cpp2
@@ -163,7 +163,7 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
       employer( ::cpp2::Company::FACEBOOK) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg);
+  Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     weeks = arg.extract();
@@ -188,7 +188,7 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
   Internship& operator=(const Internship&) = default;
   void __clear();
   int32_t weeks;
-  ::std::string title;
+  std::string title;
    ::cpp2::Company employer;
 
   struct __isset {
@@ -223,16 +223,16 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
     return weeks;
   }
 
-  const ::std::string& get_title() const& {
+  const std::string& get_title() const& {
     return title;
   }
 
-  ::std::string get_title() && {
+  std::string get_title() && {
     return std::move(title);
   }
 
-  template <typename T_Internship_title_struct_setter = ::std::string>
-  ::std::string& set_title(T_Internship_title_struct_setter&& title_) {
+  template <typename T_Internship_title_struct_setter = std::string>
+  std::string& set_title(T_Internship_title_struct_setter&& title_) {
     title = std::forward<T_Internship_title_struct_setter>(title_);
     __isset.title = true;
     return title;
@@ -431,7 +431,7 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
       b(apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>")) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  struct1(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg);
+  struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.extract();
@@ -452,7 +452,7 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct1& operator=(const struct1&) = default;
   void __clear();
   int32_t a;
-  ::std::string b;
+  std::string b;
 
   struct __isset {
     bool a;
@@ -471,16 +471,16 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
     return a;
   }
 
-  const ::std::string& get_b() const& {
+  const std::string& get_b() const& {
     return b;
   }
 
-  ::std::string get_b() && {
+  std::string get_b() && {
     return std::move(b);
   }
 
-  template <typename T_struct1_b_struct_setter = ::std::string>
-  ::std::string& set_b(T_struct1_b_struct_setter&& b_) {
+  template <typename T_struct1_b_struct_setter = std::string>
+  std::string& set_b(T_struct1_b_struct_setter&& b_) {
     b = std::forward<T_struct1_b_struct_setter>(b_);
     __isset.b = true;
     return b;
@@ -520,7 +520,7 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
       a(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg,  ::cpp2::struct1 c__arg, ::std::vector<int32_t> d__arg);
+  struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.extract();
@@ -551,9 +551,9 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct2& operator=(const struct2&) = default;
   void __clear();
   int32_t a;
-  ::std::string b;
+  std::string b;
    ::cpp2::struct1 c;
-  ::std::vector<int32_t> d;
+  std::vector<int32_t> d;
 
   struct __isset {
     bool a;
@@ -574,16 +574,16 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
     return a;
   }
 
-  const ::std::string& get_b() const& {
+  const std::string& get_b() const& {
     return b;
   }
 
-  ::std::string get_b() && {
+  std::string get_b() && {
     return std::move(b);
   }
 
-  template <typename T_struct2_b_struct_setter = ::std::string>
-  ::std::string& set_b(T_struct2_b_struct_setter&& b_) {
+  template <typename T_struct2_b_struct_setter = std::string>
+  std::string& set_b(T_struct2_b_struct_setter&& b_) {
     b = std::forward<T_struct2_b_struct_setter>(b_);
     __isset.b = true;
     return b;
@@ -597,11 +597,11 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
     __isset.c = true;
     return c;
   }
-  const ::std::vector<int32_t>& get_d() const&;
-  ::std::vector<int32_t> get_d() &&;
+  const std::vector<int32_t>& get_d() const&;
+  std::vector<int32_t> get_d() &&;
 
-  template <typename T_struct2_d_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_d(T_struct2_d_struct_setter&& d_) {
+  template <typename T_struct2_d_struct_setter = std::vector<int32_t>>
+  std::vector<int32_t>& set_d(T_struct2_d_struct_setter&& d_) {
     d = std::forward<T_struct2_d_struct_setter>(d_);
     __isset.d = true;
     return d;
@@ -641,7 +641,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
       b(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg);
+  struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     a = arg.extract();
@@ -666,7 +666,7 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   struct3& operator=(const struct3&) = default;
   void __clear();
-  ::std::string a;
+  std::string a;
   int32_t b;
    ::cpp2::struct2 c;
 
@@ -678,16 +678,16 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct3& rhs) const;
   bool operator<(const struct3& rhs) const;
 
-  const ::std::string& get_a() const& {
+  const std::string& get_a() const& {
     return a;
   }
 
-  ::std::string get_a() && {
+  std::string get_a() && {
     return std::move(a);
   }
 
-  template <typename T_struct3_a_struct_setter = ::std::string>
-  ::std::string& set_a(T_struct3_a_struct_setter&& a_) {
+  template <typename T_struct3_a_struct_setter = std::string>
+  std::string& set_a(T_struct3_a_struct_setter&& a_) {
     a = std::forward<T_struct3_a_struct_setter>(a_);
     __isset.a = true;
     return a;

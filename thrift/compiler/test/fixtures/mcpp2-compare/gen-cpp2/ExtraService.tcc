@@ -24,13 +24,13 @@ typedef apache::thrift::ThriftPresult<false> ExtraService_throws_function_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_BOOL, bool*>> ExtraService_throws_function2_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_BOOL, bool*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function2_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_BOOL, bool*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRING, ::std::string*>> ExtraService_throws_function3_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP, ::std::map<int32_t, ::std::string>*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<5, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function3_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_BOOL, bool*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRING, std::string*>> ExtraService_throws_function3_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP, std::map<int32_t, std::string>*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnException>, apache::thrift::FieldData<5, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::AnotherException>> ExtraService_throws_function3_presult;
 typedef apache::thrift::ThriftPresult<false> ExtraService_oneway_void_ret_pargs;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<4, apache::thrift::protocol::T_I32, int32_t*>, apache::thrift::FieldData<5, apache::thrift::protocol::T_I32, int32_t*>> ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP, ::std::map<::std::string, int64_t>*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_SET, ::std::set<::std::vector<::std::string>>*>> ExtraService_oneway_void_ret_map_setlist_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP, std::map<std::string, int64_t>*>, apache::thrift::FieldData<3, apache::thrift::protocol::T_SET, std::set<std::vector<std::string>>*>> ExtraService_oneway_void_ret_map_setlist_param_pargs;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::MyStruct*>> ExtraService_oneway_void_ret_struct_param_pargs;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_LIST, std::vector< ::some::valid::ns::ComplexUnion>*>> ExtraService_oneway_void_ret_listunion_param_pargs;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ExtraServiceAsyncProcessor::process_simple_function(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
@@ -214,7 +214,7 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
   ExtraService_throws_function3_pargs args;
   bool uarg_param1{0};
   args.get<0>().value = &uarg_param1;
-  ::std::string uarg_param2;
+  std::string uarg_param2;
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.throws_function3", ctx));
   try {
@@ -230,16 +230,16 @@ void ExtraServiceAsyncProcessor::process_throws_function3(std::unique_ptr<apache
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<::std::map<int32_t, ::std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::map<int32_t, std::string>>>(std::move(req), std::move(ctxStack), return_throws_function3<ProtocolIn_,ProtocolOut_>, throw_wrapped_throws_function3<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_throws_function3(std::move(callback), args.get<0>().ref(), args.get<1>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ExtraServiceAsyncProcessor::return_throws_function3(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<int32_t, ::std::string> const& _return) {
+folly::IOBufQueue ExtraServiceAsyncProcessor::return_throws_function3(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::map<int32_t, std::string> const& _return) {
   ProtocolOut_ prot;
   ExtraService_throws_function3_presult result;
-  result.get<0>().value = const_cast<::std::map<int32_t, ::std::string>*>(&_return);
+  result.get<0>().value = const_cast<std::map<int32_t, std::string>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("throws_function3", &prot, protoSeqId, ctx, result);
 }
@@ -357,9 +357,9 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_map_setlist_param(std::
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_map_setlist_param_pargs args;
-  ::std::map<::std::string, int64_t> uarg_param1;
+  std::map<std::string, int64_t> uarg_param1;
   args.get<0>().value = &uarg_param1;
-  ::std::set<::std::vector<::std::string>> uarg_param2;
+  std::set<std::vector<std::string>> uarg_param2;
   args.get<1>().value = &uarg_param2;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_map_setlist_param", ctx));
   try {
@@ -423,7 +423,7 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   ExtraService_oneway_void_ret_listunion_param_pargs args;
-  ::std::vector< ::some::valid::ns::ComplexUnion> uarg_param1;
+  std::vector< ::some::valid::ns::ComplexUnion> uarg_param1;
   args.get<0>().value = &uarg_param1;
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "ExtraService.oneway_void_ret_listunion_param", ctx));
   try {

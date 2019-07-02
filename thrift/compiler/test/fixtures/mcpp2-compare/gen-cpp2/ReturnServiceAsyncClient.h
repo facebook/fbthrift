@@ -202,20 +202,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void stringReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_stringReturn(::std::string& _return);
-  virtual void sync_stringReturn(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return);
-  virtual folly::Future<::std::string> future_stringReturn();
-  virtual folly::SemiFuture<::std::string> semifuture_stringReturn();
-  virtual folly::Future<::std::string> future_stringReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::string> semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_stringReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_stringReturn(std::string& _return);
+  virtual void sync_stringReturn(apache::thrift::RpcOptions& rpcOptions, std::string& _return);
+  virtual folly::Future<std::string> future_stringReturn();
+  virtual folly::SemiFuture<std::string> semifuture_stringReturn();
+  virtual folly::Future<std::string> future_stringReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::string> semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_stringReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_stringReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void stringReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_stringReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_stringReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_stringReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_stringReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_stringReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_stringReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_stringReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_stringReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void stringReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -225,20 +225,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void binaryReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_binaryReturn(::std::string& _return);
-  virtual void sync_binaryReturn(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return);
-  virtual folly::Future<::std::string> future_binaryReturn();
-  virtual folly::SemiFuture<::std::string> semifuture_binaryReturn();
-  virtual folly::Future<::std::string> future_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::string> semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_binaryReturn(std::string& _return);
+  virtual void sync_binaryReturn(apache::thrift::RpcOptions& rpcOptions, std::string& _return);
+  virtual folly::Future<std::string> future_binaryReturn();
+  virtual folly::SemiFuture<std::string> semifuture_binaryReturn();
+  virtual folly::Future<std::string> future_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::string> semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void binaryReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_binaryReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_binaryReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_binaryReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_binaryReturn(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void binaryReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -248,20 +248,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void mapReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_mapReturn(::std::map<::std::string, int64_t>& _return);
-  virtual void sync_mapReturn(apache::thrift::RpcOptions& rpcOptions, ::std::map<::std::string, int64_t>& _return);
-  virtual folly::Future<::std::map<::std::string, int64_t>> future_mapReturn();
-  virtual folly::SemiFuture<::std::map<::std::string, int64_t>> semifuture_mapReturn();
-  virtual folly::Future<::std::map<::std::string, int64_t>> future_mapReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::map<::std::string, int64_t>> semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::map<::std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_mapReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::map<::std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_mapReturn(std::map<std::string, int64_t>& _return);
+  virtual void sync_mapReturn(apache::thrift::RpcOptions& rpcOptions, std::map<std::string, int64_t>& _return);
+  virtual folly::Future<std::map<std::string, int64_t>> future_mapReturn();
+  virtual folly::SemiFuture<std::map<std::string, int64_t>> semifuture_mapReturn();
+  virtual folly::Future<std::map<std::string, int64_t>> future_mapReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::map<std::string, int64_t>> semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::map<std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_mapReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::map<std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_mapReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void mapReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_mapReturn(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_mapReturn(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_mapReturn(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_mapReturn(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_mapReturn(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_mapReturn(::std::map<::std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_mapReturn(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_mapReturn(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void mapReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -317,20 +317,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void list_mostComplexTypedefReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return);
-  virtual void sync_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions, ::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return);
-  virtual folly::Future<::std::vector< ::some::valid::ns::mostComplexTypeDef>> future_list_mostComplexTypedefReturn();
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::mostComplexTypeDef>> semifuture_list_mostComplexTypedefReturn();
-  virtual folly::Future<::std::vector< ::some::valid::ns::mostComplexTypeDef>> future_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::mostComplexTypeDef>> semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& _return);
+  virtual void sync_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions, std::vector< ::some::valid::ns::mostComplexTypeDef>& _return);
+  virtual folly::Future<std::vector< ::some::valid::ns::mostComplexTypeDef>> future_list_mostComplexTypedefReturn();
+  virtual folly::SemiFuture<std::vector< ::some::valid::ns::mostComplexTypeDef>> semifuture_list_mostComplexTypedefReturn();
+  virtual folly::Future<std::vector< ::some::valid::ns::mostComplexTypeDef>> future_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::vector< ::some::valid::ns::mostComplexTypeDef>> semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::vector< ::some::valid::ns::mostComplexTypeDef>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_mostComplexTypedefReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void list_mostComplexTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void list_mostComplexTypedefReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -363,20 +363,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void list_EnumReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& _return);
-  virtual void sync_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions, ::std::vector< ::some::valid::ns::MyEnumA>& _return);
-  virtual folly::Future<::std::vector< ::some::valid::ns::MyEnumA>> future_list_EnumReturn();
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::MyEnumA>> semifuture_list_EnumReturn();
-  virtual folly::Future<::std::vector< ::some::valid::ns::MyEnumA>> future_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::MyEnumA>> semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& _return);
+  virtual void sync_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions, std::vector< ::some::valid::ns::MyEnumA>& _return);
+  virtual folly::Future<std::vector< ::some::valid::ns::MyEnumA>> future_list_EnumReturn();
+  virtual folly::SemiFuture<std::vector< ::some::valid::ns::MyEnumA>> semifuture_list_EnumReturn();
+  virtual folly::Future<std::vector< ::some::valid::ns::MyEnumA>> future_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::vector< ::some::valid::ns::MyEnumA>> semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::vector< ::some::valid::ns::MyEnumA>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_EnumReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void list_EnumReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_list_EnumReturn(::std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void list_EnumReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -409,20 +409,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void set_StructReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& _return);
-  virtual void sync_set_StructReturn(apache::thrift::RpcOptions& rpcOptions, ::std::set< ::some::valid::ns::MyStruct>& _return);
-  virtual folly::Future<::std::set< ::some::valid::ns::MyStruct>> future_set_StructReturn();
-  virtual folly::SemiFuture<::std::set< ::some::valid::ns::MyStruct>> semifuture_set_StructReturn();
-  virtual folly::Future<::std::set< ::some::valid::ns::MyStruct>> future_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::set< ::some::valid::ns::MyStruct>> semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_set_StructReturn(std::set< ::some::valid::ns::MyStruct>& _return);
+  virtual void sync_set_StructReturn(apache::thrift::RpcOptions& rpcOptions, std::set< ::some::valid::ns::MyStruct>& _return);
+  virtual folly::Future<std::set< ::some::valid::ns::MyStruct>> future_set_StructReturn();
+  virtual folly::SemiFuture<std::set< ::some::valid::ns::MyStruct>> semifuture_set_StructReturn();
+  virtual folly::Future<std::set< ::some::valid::ns::MyStruct>> future_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::set< ::some::valid::ns::MyStruct>> semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::set< ::some::valid::ns::MyStruct>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_set_StructReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void set_StructReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_set_StructReturn(std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_set_StructReturn(std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_set_StructReturn(std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_set_StructReturn(std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void set_StructReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
@@ -455,20 +455,20 @@ class ReturnServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
  private:
   void list_UnionReturnImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);
  public:
-  virtual void sync_list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& _return);
-  virtual void sync_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions, ::std::vector< ::some::valid::ns::ComplexUnion>& _return);
-  virtual folly::Future<::std::vector< ::some::valid::ns::ComplexUnion>> future_list_UnionReturn();
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::ComplexUnion>> semifuture_list_UnionReturn();
-  virtual folly::Future<::std::vector< ::some::valid::ns::ComplexUnion>> future_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<::std::vector< ::some::valid::ns::ComplexUnion>> semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<::std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& _return);
+  virtual void sync_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions, std::vector< ::some::valid::ns::ComplexUnion>& _return);
+  virtual folly::Future<std::vector< ::some::valid::ns::ComplexUnion>> future_list_UnionReturn();
+  virtual folly::SemiFuture<std::vector< ::some::valid::ns::ComplexUnion>> semifuture_list_UnionReturn();
+  virtual folly::Future<std::vector< ::some::valid::ns::ComplexUnion>> future_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::vector< ::some::valid::ns::ComplexUnion>> semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::SemiFuture<std::pair<std::vector< ::some::valid::ns::ComplexUnion>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_list_UnionReturn(apache::thrift::RpcOptions& rpcOptions);
   virtual void list_UnionReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
-  static folly::exception_wrapper recv_wrapped_list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
-  static void recv_list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
  private:
   template <typename Protocol_>
   void list_UnionReturnT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback);

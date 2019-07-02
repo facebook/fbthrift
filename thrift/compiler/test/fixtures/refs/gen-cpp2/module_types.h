@@ -211,7 +211,7 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
   }
   union storage_type {
     int32_t anInteger;
-    ::std::string aString;
+    std::string aString;
 
     storage_type() {}
     ~storage_type() {}
@@ -226,24 +226,24 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     return value_.anInteger;
   }
 
-  ::std::string& set_aString(::std::string const &t) {
+  std::string& set_aString(std::string const &t) {
     __clear();
     type_ = Type::aString;
-    ::new (std::addressof(value_.aString)) ::std::string(t);
+    ::new (std::addressof(value_.aString)) std::string(t);
     return value_.aString;
   }
 
-  ::std::string& set_aString(::std::string&& t) {
+  std::string& set_aString(std::string&& t) {
     __clear();
     type_ = Type::aString;
-    ::new (std::addressof(value_.aString)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.aString)) std::string(std::move(t));
     return value_.aString;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_aString(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_aString(T&&... t) {
     __clear();
     type_ = Type::aString;
-    ::new (std::addressof(value_.aString)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.aString)) std::string(std::forward<T>(t)...);
     return value_.aString;
   }
 
@@ -252,7 +252,7 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     return value_.anInteger;
   }
 
-  ::std::string const & get_aString() const {
+  std::string const & get_aString() const {
     assert(type_ == Type::aString);
     return value_.aString;
   }
@@ -262,7 +262,7 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     return value_.anInteger;
   }
 
-  ::std::string & mutable_aString() {
+  std::string & mutable_aString() {
     assert(type_ == Type::aString);
     return value_.aString;
   }
@@ -272,7 +272,7 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     return std::move(value_.anInteger);
   }
 
-  ::std::string move_aString() {
+  std::string move_aString() {
     assert(type_ == Type::aString);
     return std::move(value_.aString);
   }
@@ -589,7 +589,7 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   RecursiveStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::RecursiveStruct> mes__arg);
+  RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     mes = arg.extract();
@@ -604,7 +604,7 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
 
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
   void __clear();
-  ::std::vector< ::cpp2::RecursiveStruct> mes;
+  std::vector< ::cpp2::RecursiveStruct> mes;
 
   struct __isset {
     bool mes;
@@ -612,27 +612,27 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator<(const RecursiveStruct& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
     return {mes, __isset.mes};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() const&& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() const&& {
     return {std::move(mes), __isset.mes};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::vector< ::cpp2::RecursiveStruct>&> mes_ref() & {
     return {mes, __isset.mes};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() && {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() && {
     return {std::move(mes), __isset.mes};
   }
-  const ::std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
-  ::std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
-  ::std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
+  const std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;
+  std::vector< ::cpp2::RecursiveStruct>* get_mes() &;
+  std::vector< ::cpp2::RecursiveStruct>* get_mes() && = delete;
 
-  template <typename T_RecursiveStruct_mes_struct_setter = ::std::vector< ::cpp2::RecursiveStruct>>
-  ::std::vector< ::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
+  template <typename T_RecursiveStruct_mes_struct_setter = std::vector< ::cpp2::RecursiveStruct>>
+  std::vector< ::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
     mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
     __isset.mes = true;
     return mes;
@@ -672,7 +672,7 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<int32_t>> list_ref__arg, std::unique_ptr<::std::set<int32_t>> set_ref__arg, std::unique_ptr<::std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<::std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const__arg);
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     list_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
@@ -707,12 +707,12 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
 
   ~StructWithContainers();
 
-  std::unique_ptr<::std::vector<int32_t>> list_ref;
-  std::unique_ptr<::std::set<int32_t>> set_ref;
-  std::unique_ptr<::std::map<int32_t, int32_t>> map_ref;
-  std::unique_ptr<::std::vector<int32_t>> list_ref_unique;
-  std::shared_ptr<::std::set<int32_t>> set_ref_shared;
-  std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const;
+  std::unique_ptr<std::vector<int32_t>> list_ref;
+  std::unique_ptr<std::set<int32_t>> set_ref;
+  std::unique_ptr<std::map<int32_t, int32_t>> map_ref;
+  std::unique_ptr<std::vector<int32_t>> list_ref_unique;
+  std::shared_ptr<std::set<int32_t>> set_ref_shared;
+  std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
   bool operator==(const StructWithContainers& rhs) const;
   bool operator<(const StructWithContainers& rhs) const;
 

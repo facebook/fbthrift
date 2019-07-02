@@ -93,7 +93,7 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
       message(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Fiery(apache::thrift::FragileConstructor, ::std::string message__arg);
+  Fiery(apache::thrift::FragileConstructor, std::string message__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     message = arg.extract();
@@ -107,20 +107,20 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
 
   Fiery& operator=(const Fiery&) = default;
   void __clear();
-  ::std::string message;
+  std::string message;
   bool operator==(const Fiery& rhs) const;
   bool operator<(const Fiery& rhs) const;
 
-  const ::std::string& get_message() const& {
+  const std::string& get_message() const& {
     return message;
   }
 
-  ::std::string get_message() && {
+  std::string get_message() && {
     return std::move(message);
   }
 
-  template <typename T_Fiery_message_struct_setter = ::std::string>
-  ::std::string& set_message(T_Fiery_message_struct_setter&& message_) {
+  template <typename T_Fiery_message_struct_setter = std::string>
+  std::string& set_message(T_Fiery_message_struct_setter&& message_) {
     message = std::forward<T_Fiery_message_struct_setter>(message_);
     return message;
   }
@@ -168,7 +168,7 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
       sonnet(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg);
+  Serious(apache::thrift::FragileConstructor, std::string sonnet__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     sonnet = arg.extract();
@@ -183,7 +183,7 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
 
   Serious& operator=(const Serious&) = default;
   void __clear();
-  ::std::string sonnet;
+  std::string sonnet;
 
   struct __isset {
     bool sonnet;
@@ -191,33 +191,33 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
   bool operator==(const Serious& rhs) const;
   bool operator<(const Serious& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&> sonnet_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> sonnet_ref() const& {
     return {sonnet, __isset.sonnet};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&&> sonnet_ref() const&& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&&> sonnet_ref() const&& {
     return {std::move(sonnet), __isset.sonnet};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&> sonnet_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> sonnet_ref() & {
     return {sonnet, __isset.sonnet};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&&> sonnet_ref() && {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> sonnet_ref() && {
     return {std::move(sonnet), __isset.sonnet};
   }
 
-  const ::std::string* get_sonnet() const& {
+  const std::string* get_sonnet() const& {
     return __isset.sonnet ? std::addressof(sonnet) : nullptr;
   }
 
-  ::std::string* get_sonnet() & {
+  std::string* get_sonnet() & {
     return __isset.sonnet ? std::addressof(sonnet) : nullptr;
   }
-  ::std::string* get_sonnet() && = delete;
+  std::string* get_sonnet() && = delete;
 
-  template <typename T_Serious_sonnet_struct_setter = ::std::string>
-  ::std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
+  template <typename T_Serious_sonnet_struct_setter = std::string>
+  std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
     sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
     __isset.sonnet = true;
     return sonnet;

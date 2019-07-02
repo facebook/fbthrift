@@ -85,7 +85,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       MyIntField(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -106,7 +106,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
   int64_t MyIntField;
-  ::std::string MyStringField;
+  std::string MyStringField;
 
   struct __isset {
     bool MyIntField;
@@ -125,16 +125,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyIntField;
   }
 
-  const ::std::string& get_MyStringField() const& {
+  const std::string& get_MyStringField() const& {
     return MyStringField;
   }
 
-  ::std::string get_MyStringField() && {
+  std::string get_MyStringField() && {
     return std::move(MyStringField);
   }
 
-  template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
-  ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
+  template <typename T_MyStruct_MyStringField_struct_setter = std::string>
+  std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
     return MyStringField;

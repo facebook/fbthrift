@@ -94,8 +94,8 @@ _readField_strField:
   }
 _readField_listField:
   {
-    this->listField = ::std::vector<int16_t>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::read(*iprot, this->listField);
+    this->listField = std::vector<int16_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int16_t>>::read(*iprot, this->listField);
     this->__isset.listField = true;
   }
 
@@ -108,8 +108,8 @@ _readField_listField:
   }
 _readField_mapField:
   {
-    this->mapField = ::std::map<::std::string, int32_t>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->mapField);
+    this->mapField = std::map<std::string, int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->mapField);
     this->__isset.mapField = true;
   }
 
@@ -229,9 +229,9 @@ uint32_t ModuleA::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->strField);
   xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::serializedSize<false>(*prot_, this->listField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int16_t>>::serializedSize<false>(*prot_, this->listField);
   xfer += prot_->serializedFieldSize("mapField", apache::thrift::protocol::T_MAP, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->mapField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->mapField);
   xfer += prot_->serializedFieldSize("inclAField", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::serializedSize(prot_, &this->inclAField);
   xfer += prot_->serializedFieldSize("inclBField", apache::thrift::protocol::T_STRUCT, 6);
@@ -249,9 +249,9 @@ uint32_t ModuleA::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("strField", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(this->strField);
   xfer += prot_->serializedFieldSize("listField", apache::thrift::protocol::T_LIST, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::serializedSize<false>(*prot_, this->listField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int16_t>>::serializedSize<false>(*prot_, this->listField);
   xfer += prot_->serializedFieldSize("mapField", apache::thrift::protocol::T_MAP, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::serializedSize<false>(*prot_, this->mapField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->mapField);
   xfer += prot_->serializedFieldSize("inclAField", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::serializedSizeZC(prot_, &this->inclAField);
   xfer += prot_->serializedFieldSize("inclBField", apache::thrift::protocol::T_STRUCT, 6);
@@ -271,10 +271,10 @@ uint32_t ModuleA::write(Protocol_* prot_) const {
   xfer += prot_->writeString(this->strField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("listField", apache::thrift::protocol::T_LIST, 3);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::write(*prot_, this->listField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int16_t>>::write(*prot_, this->listField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("mapField", apache::thrift::protocol::T_MAP, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::write(*prot_, this->mapField);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::write(*prot_, this->mapField);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("inclAField", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::write(prot_, &this->inclAField);

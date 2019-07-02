@@ -297,26 +297,26 @@ class AllRequiredNoExceptMoveCtrStruct;
 namespace some { namespace valid { namespace ns {
 typedef  ::a::different::ns::AStruct AStruct;
 typedef int32_t simpleTypeDef;
-typedef ::std::map<int16_t, ::std::string> containerTypeDef;
-typedef ::std::vector<::std::map<int16_t, ::std::string>> complexContainerTypeDef;
-typedef ::std::set< ::some::valid::ns::SimpleUnion> unionTypeDef;
-typedef ::std::vector< ::some::valid::ns::MyStruct> structTypeDef;
-typedef ::std::vector<::std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
-typedef ::std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
+typedef std::map<int16_t, std::string> containerTypeDef;
+typedef std::vector<std::map<int16_t, std::string>> complexContainerTypeDef;
+typedef std::set< ::some::valid::ns::SimpleUnion> unionTypeDef;
+typedef std::vector< ::some::valid::ns::MyStruct> structTypeDef;
+typedef std::vector<std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
+typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
 typedef Foo IndirectionA;
 typedef Baz IndirectionC;
 typedef Bar IndirectionB;
 typedef FooBar IndirectionD;
-typedef ::std::map< ::some::valid::ns::MyEnumA, ::std::string> HashedTypedef;
+typedef std::map< ::some::valid::ns::MyEnumA, std::string> HashedTypedef;
 typedef CppFakeI32 CppFakeI32;
 typedef folly::small_vector<int64_t, 8 /* maxInline */> FollySmallVectorI64;
 typedef folly::sorted_vector_set<std::string> SortedVectorSetString;
 typedef FakeMap FakeMap;
 typedef std::unordered_map<std::string, containerStruct> UnorderedMapStruct;
 typedef std::list<int32_t> std_list;
-typedef std::deque<::std::string> std_deque;
-typedef folly::sorted_vector_set<::std::string> folly_set;
-typedef folly::sorted_vector_map<int64_t, ::std::string> folly_map;
+typedef std::deque<std::string> std_deque;
+typedef folly::sorted_vector_set<std::string> folly_set;
+typedef folly::sorted_vector_map<int64_t, std::string> folly_map;
 typedef folly::IOBuf IOBuf;
 typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
@@ -534,7 +534,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
+  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg, std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyBoolField = arg.extract();
@@ -592,13 +592,13 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   bool MyBoolField;
   int64_t MyIntField;
-  ::std::string MyStringField;
-  ::std::string MyStringField2;
-  ::std::string MyBinaryField;
-  ::std::string MyBinaryField2;
-  ::std::string MyBinaryField3;
-  ::std::vector<::std::string> MyBinaryListField4;
-  ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
+  std::string MyStringField;
+  std::string MyStringField2;
+  std::string MyBinaryField;
+  std::string MyBinaryField2;
+  std::string MyBinaryField3;
+  std::vector<std::string> MyBinaryListField4;
+  std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt;
 
   struct __isset {
     bool MyBoolField;
@@ -613,19 +613,19 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&> MyBinaryField2_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> MyBinaryField2_ref() const& {
     return {MyBinaryField2, __isset.MyBinaryField2};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&&> MyBinaryField2_ref() const&& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&&> MyBinaryField2_ref() const&& {
     return {std::move(MyBinaryField2), __isset.MyBinaryField2};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&> MyBinaryField2_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> MyBinaryField2_ref() & {
     return {MyBinaryField2, __isset.MyBinaryField2};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&&> MyBinaryField2_ref() && {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> MyBinaryField2_ref() && {
     return {std::move(MyBinaryField2), __isset.MyBinaryField2};
   }
 
@@ -649,94 +649,94 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyIntField;
   }
 
-  const ::std::string& get_MyStringField() const& {
+  const std::string& get_MyStringField() const& {
     return MyStringField;
   }
 
-  ::std::string get_MyStringField() && {
+  std::string get_MyStringField() && {
     return std::move(MyStringField);
   }
 
-  template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
-  ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
+  template <typename T_MyStruct_MyStringField_struct_setter = std::string>
+  std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
     return MyStringField;
   }
 
-  const ::std::string& get_MyStringField2() const& {
+  const std::string& get_MyStringField2() const& {
     return MyStringField2;
   }
 
-  ::std::string get_MyStringField2() && {
+  std::string get_MyStringField2() && {
     return std::move(MyStringField2);
   }
 
-  template <typename T_MyStruct_MyStringField2_struct_setter = ::std::string>
-  ::std::string& set_MyStringField2(T_MyStruct_MyStringField2_struct_setter&& MyStringField2_) {
+  template <typename T_MyStruct_MyStringField2_struct_setter = std::string>
+  std::string& set_MyStringField2(T_MyStruct_MyStringField2_struct_setter&& MyStringField2_) {
     MyStringField2 = std::forward<T_MyStruct_MyStringField2_struct_setter>(MyStringField2_);
     __isset.MyStringField2 = true;
     return MyStringField2;
   }
 
-  const ::std::string& get_MyBinaryField() const& {
+  const std::string& get_MyBinaryField() const& {
     return MyBinaryField;
   }
 
-  ::std::string get_MyBinaryField() && {
+  std::string get_MyBinaryField() && {
     return std::move(MyBinaryField);
   }
 
-  template <typename T_MyStruct_MyBinaryField_struct_setter = ::std::string>
-  ::std::string& set_MyBinaryField(T_MyStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
+  template <typename T_MyStruct_MyBinaryField_struct_setter = std::string>
+  std::string& set_MyBinaryField(T_MyStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
     MyBinaryField = std::forward<T_MyStruct_MyBinaryField_struct_setter>(MyBinaryField_);
     __isset.MyBinaryField = true;
     return MyBinaryField;
   }
 
-  const ::std::string* get_MyBinaryField2() const& {
+  const std::string* get_MyBinaryField2() const& {
     return __isset.MyBinaryField2 ? std::addressof(MyBinaryField2) : nullptr;
   }
 
-  ::std::string* get_MyBinaryField2() & {
+  std::string* get_MyBinaryField2() & {
     return __isset.MyBinaryField2 ? std::addressof(MyBinaryField2) : nullptr;
   }
-  ::std::string* get_MyBinaryField2() && = delete;
+  std::string* get_MyBinaryField2() && = delete;
 
-  template <typename T_MyStruct_MyBinaryField2_struct_setter = ::std::string>
-  ::std::string& set_MyBinaryField2(T_MyStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
+  template <typename T_MyStruct_MyBinaryField2_struct_setter = std::string>
+  std::string& set_MyBinaryField2(T_MyStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
     MyBinaryField2 = std::forward<T_MyStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
     __isset.MyBinaryField2 = true;
     return MyBinaryField2;
   }
 
-  const ::std::string& get_MyBinaryField3() const& {
+  const std::string& get_MyBinaryField3() const& {
     return MyBinaryField3;
   }
 
-  ::std::string get_MyBinaryField3() && {
+  std::string get_MyBinaryField3() && {
     return std::move(MyBinaryField3);
   }
 
-  template <typename T_MyStruct_MyBinaryField3_struct_setter = ::std::string>
-  ::std::string& set_MyBinaryField3(T_MyStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
+  template <typename T_MyStruct_MyBinaryField3_struct_setter = std::string>
+  std::string& set_MyBinaryField3(T_MyStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
     MyBinaryField3 = std::forward<T_MyStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
     return MyBinaryField3;
   }
-  const ::std::vector<::std::string>& get_MyBinaryListField4() const&;
-  ::std::vector<::std::string> get_MyBinaryListField4() &&;
+  const std::vector<std::string>& get_MyBinaryListField4() const&;
+  std::vector<std::string> get_MyBinaryListField4() &&;
 
-  template <typename T_MyStruct_MyBinaryListField4_struct_setter = ::std::vector<::std::string>>
-  ::std::vector<::std::string>& set_MyBinaryListField4(T_MyStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
+  template <typename T_MyStruct_MyBinaryListField4_struct_setter = std::vector<std::string>>
+  std::vector<std::string>& set_MyBinaryListField4(T_MyStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
     MyBinaryListField4 = std::forward<T_MyStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
     __isset.MyBinaryListField4 = true;
     return MyBinaryListField4;
   }
-  const ::std::map< ::some::valid::ns::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
-  ::std::map< ::some::valid::ns::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
+  const std::map< ::some::valid::ns::MyEnumA, std::string>& get_MyMapEnumAndInt() const&;
+  std::map< ::some::valid::ns::MyEnumA, std::string> get_MyMapEnumAndInt() &&;
 
-  template <typename T_MyStruct_MyMapEnumAndInt_struct_setter = ::std::map< ::some::valid::ns::MyEnumA, ::std::string>>
-  ::std::map< ::some::valid::ns::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_MyStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
+  template <typename T_MyStruct_MyMapEnumAndInt_struct_setter = std::map< ::some::valid::ns::MyEnumA, std::string>>
+  std::map< ::some::valid::ns::MyEnumA, std::string>& set_MyMapEnumAndInt(T_MyStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
     MyMapEnumAndInt = std::forward<T_MyStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
     __isset.MyMapEnumAndInt = true;
     return MyMapEnumAndInt;
@@ -891,7 +891,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
 
   union storage_type {
     int64_t intValue;
-    ::std::string stringValue;
+    std::string stringValue;
 
     storage_type() {}
     ~storage_type() {}
@@ -906,24 +906,24 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.intValue;
   }
 
-  ::std::string& set_stringValue(::std::string const &t) {
+  std::string& set_stringValue(std::string const &t) {
     __clear();
     type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) ::std::string(t);
+    ::new (std::addressof(value_.stringValue)) std::string(t);
     return value_.stringValue;
   }
 
-  ::std::string& set_stringValue(::std::string&& t) {
+  std::string& set_stringValue(std::string&& t) {
     __clear();
     type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
     return value_.stringValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
     __clear();
     type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
     return value_.stringValue;
   }
 
@@ -932,7 +932,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  std::string const & get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
@@ -942,7 +942,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.intValue;
   }
 
-  ::std::string & mutable_stringValue() {
+  std::string & mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
@@ -952,7 +952,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return std::move(value_.intValue);
   }
 
-  ::std::string move_stringValue() {
+  std::string move_stringValue() {
     assert(type_ == Type::stringValue);
     return std::move(value_.stringValue);
   }
@@ -1741,28 +1741,28 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   union storage_type {
     int64_t intValue;
     int64_t opt_intValue;
-    ::std::string stringValue;
-    ::std::string opt_stringValue;
+    std::string stringValue;
+    std::string opt_stringValue;
     int16_t intValue2;
     int32_t intValue3;
     double doubelValue;
     bool boolValue;
-    ::std::vector<int32_t> union_list;
-    ::std::set<int64_t> union_set;
-    ::std::map<::std::string, int32_t> union_map;
-    ::std::map<::std::string, int32_t> opt_union_map;
+    std::vector<int32_t> union_list;
+    std::set<int64_t> union_set;
+    std::map<std::string, int32_t> union_map;
+    std::map<std::string, int32_t> opt_union_map;
      ::some::valid::ns::MyEnumA enum_field;
-    ::std::vector< ::some::valid::ns::MyEnumA> enum_container;
+    std::vector< ::some::valid::ns::MyEnumA> enum_container;
      ::some::valid::ns::MyStruct a_struct;
-    ::std::set< ::some::valid::ns::MyStruct> a_set_struct;
+    std::set< ::some::valid::ns::MyStruct> a_set_struct;
      ::some::valid::ns::SimpleUnion a_union;
      ::some::valid::ns::SimpleUnion opt_a_union;
-    ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
+    std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
      ::some::valid::ns::unionTypeDef a_union_typedef;
-    ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
-    ::std::string MyBinaryField;
-    ::std::string MyBinaryField2;
-    ::std::vector<::std::string> MyBinaryListField4;
+    std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
+    std::string MyBinaryField;
+    std::string MyBinaryField2;
+    std::vector<std::string> MyBinaryListField4;
     std::unique_ptr< ::some::valid::ns::MyStruct> ref_field;
     std::shared_ptr<const  ::some::valid::ns::MyStruct> ref_field2;
      ::some::valid::ns::AnException excp_field;
@@ -1787,45 +1787,45 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.opt_intValue;
   }
 
-  ::std::string& set_stringValue(::std::string const &t) {
+  std::string& set_stringValue(std::string const &t) {
     __clear();
     type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) ::std::string(t);
+    ::new (std::addressof(value_.stringValue)) std::string(t);
     return value_.stringValue;
   }
 
-  ::std::string& set_stringValue(::std::string&& t) {
+  std::string& set_stringValue(std::string&& t) {
     __clear();
     type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
     return value_.stringValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_stringValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
     __clear();
     type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
     return value_.stringValue;
   }
 
-  ::std::string& set_opt_stringValue(::std::string const &t) {
+  std::string& set_opt_stringValue(std::string const &t) {
     __clear();
     type_ = Type::opt_stringValue;
-    ::new (std::addressof(value_.opt_stringValue)) ::std::string(t);
+    ::new (std::addressof(value_.opt_stringValue)) std::string(t);
     return value_.opt_stringValue;
   }
 
-  ::std::string& set_opt_stringValue(::std::string&& t) {
+  std::string& set_opt_stringValue(std::string&& t) {
     __clear();
     type_ = Type::opt_stringValue;
-    ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.opt_stringValue)) std::string(std::move(t));
     return value_.opt_stringValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_opt_stringValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_opt_stringValue(T&&... t) {
     __clear();
     type_ = Type::opt_stringValue;
-    ::new (std::addressof(value_.opt_stringValue)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.opt_stringValue)) std::string(std::forward<T>(t)...);
     return value_.opt_stringValue;
   }
 
@@ -1857,87 +1857,87 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.boolValue;
   }
 
-  ::std::vector<int32_t>& set_union_list(::std::vector<int32_t> const &t) {
+  std::vector<int32_t>& set_union_list(std::vector<int32_t> const &t) {
     __clear();
     type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) ::std::vector<int32_t>(t);
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(t);
     return value_.union_list;
   }
 
-  ::std::vector<int32_t>& set_union_list(::std::vector<int32_t>&& t) {
+  std::vector<int32_t>& set_union_list(std::vector<int32_t>&& t) {
     __clear();
     type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) ::std::vector<int32_t>(std::move(t));
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::move(t));
     return value_.union_list;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<int32_t>, T...>> ::std::vector<int32_t>& set_union_list(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<int32_t>, T...>> std::vector<int32_t>& set_union_list(T&&... t) {
     __clear();
     type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) ::std::vector<int32_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::forward<T>(t)...);
     return value_.union_list;
   }
 
-  ::std::set<int64_t>& set_union_set(::std::set<int64_t> const &t) {
+  std::set<int64_t>& set_union_set(std::set<int64_t> const &t) {
     __clear();
     type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) ::std::set<int64_t>(t);
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(t);
     return value_.union_set;
   }
 
-  ::std::set<int64_t>& set_union_set(::std::set<int64_t>&& t) {
+  std::set<int64_t>& set_union_set(std::set<int64_t>&& t) {
     __clear();
     type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) ::std::set<int64_t>(std::move(t));
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::move(t));
     return value_.union_set;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<int64_t>, T...>> ::std::set<int64_t>& set_union_set(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::set<int64_t>, T...>> std::set<int64_t>& set_union_set(T&&... t) {
     __clear();
     type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) ::std::set<int64_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::forward<T>(t)...);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, int32_t>& set_union_map(::std::map<::std::string, int32_t> const &t) {
+  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t> const &t) {
     __clear();
     type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, int32_t>(t);
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(t);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t>& set_union_map(::std::map<::std::string, int32_t>&& t) {
+  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t>&& t) {
     __clear();
     type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, int32_t>(std::move(t));
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::move(t));
     return value_.union_map;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, int32_t>, T...>> ::std::map<::std::string, int32_t>& set_union_map(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_union_map(T&&... t) {
     __clear();
     type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, int32_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t>& set_opt_union_map(::std::map<::std::string, int32_t> const &t) {
+  std::map<std::string, int32_t>& set_opt_union_map(std::map<std::string, int32_t> const &t) {
     __clear();
     type_ = Type::opt_union_map;
-    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, int32_t>(t);
+    ::new (std::addressof(value_.opt_union_map)) std::map<std::string, int32_t>(t);
     return value_.opt_union_map;
   }
 
-  ::std::map<::std::string, int32_t>& set_opt_union_map(::std::map<::std::string, int32_t>&& t) {
+  std::map<std::string, int32_t>& set_opt_union_map(std::map<std::string, int32_t>&& t) {
     __clear();
     type_ = Type::opt_union_map;
-    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, int32_t>(std::move(t));
+    ::new (std::addressof(value_.opt_union_map)) std::map<std::string, int32_t>(std::move(t));
     return value_.opt_union_map;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, int32_t>, T...>> ::std::map<::std::string, int32_t>& set_opt_union_map(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_opt_union_map(T&&... t) {
     __clear();
     type_ = Type::opt_union_map;
-    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, int32_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.opt_union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
     return value_.opt_union_map;
   }
 
@@ -1948,24 +1948,24 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.enum_field;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(::std::vector< ::some::valid::ns::MyEnumA> const &t) {
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA> const &t) {
     __clear();
     type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) ::std::vector< ::some::valid::ns::MyEnumA>(t);
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(t);
     return value_.enum_container;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(::std::vector< ::some::valid::ns::MyEnumA>&& t) {
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA>&& t) {
     __clear();
     type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) ::std::vector< ::some::valid::ns::MyEnumA>(std::move(t));
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::move(t));
     return value_.enum_container;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector< ::some::valid::ns::MyEnumA>, T...>> ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::MyEnumA>, T...>> std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
     __clear();
     type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) ::std::vector< ::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
     return value_.enum_container;
   }
 
@@ -1990,24 +1990,24 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.a_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(::std::set< ::some::valid::ns::MyStruct> const &t) {
+  std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(std::set< ::some::valid::ns::MyStruct> const &t) {
     __clear();
     type_ = Type::a_set_struct;
-    ::new (std::addressof(value_.a_set_struct)) ::std::set< ::some::valid::ns::MyStruct>(t);
+    ::new (std::addressof(value_.a_set_struct)) std::set< ::some::valid::ns::MyStruct>(t);
     return value_.a_set_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(::std::set< ::some::valid::ns::MyStruct>&& t) {
+  std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(std::set< ::some::valid::ns::MyStruct>&& t) {
     __clear();
     type_ = Type::a_set_struct;
-    ::new (std::addressof(value_.a_set_struct)) ::std::set< ::some::valid::ns::MyStruct>(std::move(t));
+    ::new (std::addressof(value_.a_set_struct)) std::set< ::some::valid::ns::MyStruct>(std::move(t));
     return value_.a_set_struct;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set< ::some::valid::ns::MyStruct>, T...>> ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::set< ::some::valid::ns::MyStruct>, T...>> std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
     __clear();
     type_ = Type::a_set_struct;
-    ::new (std::addressof(value_.a_set_struct)) ::std::set< ::some::valid::ns::MyStruct>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_set_struct)) std::set< ::some::valid::ns::MyStruct>(std::forward<T>(t)...);
     return value_.a_set_struct;
   }
 
@@ -2053,24 +2053,24 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.opt_a_union;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector< ::some::valid::ns::SimpleUnion> const &t) {
+  std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(std::vector< ::some::valid::ns::SimpleUnion> const &t) {
     __clear();
     type_ = Type::a_union_list;
-    ::new (std::addressof(value_.a_union_list)) ::std::vector< ::some::valid::ns::SimpleUnion>(t);
+    ::new (std::addressof(value_.a_union_list)) std::vector< ::some::valid::ns::SimpleUnion>(t);
     return value_.a_union_list;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector< ::some::valid::ns::SimpleUnion>&& t) {
+  std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(std::vector< ::some::valid::ns::SimpleUnion>&& t) {
     __clear();
     type_ = Type::a_union_list;
-    ::new (std::addressof(value_.a_union_list)) ::std::vector< ::some::valid::ns::SimpleUnion>(std::move(t));
+    ::new (std::addressof(value_.a_union_list)) std::vector< ::some::valid::ns::SimpleUnion>(std::move(t));
     return value_.a_union_list;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector< ::some::valid::ns::SimpleUnion>, T...>> ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::SimpleUnion>, T...>> std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
     __clear();
     type_ = Type::a_union_list;
-    ::new (std::addressof(value_.a_union_list)) ::std::vector< ::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_union_list)) std::vector< ::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
     return value_.a_union_list;
   }
 
@@ -2095,87 +2095,87 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.a_union_typedef;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector< ::some::valid::ns::unionTypeDef> const &t) {
+  std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(std::vector< ::some::valid::ns::unionTypeDef> const &t) {
     __clear();
     type_ = Type::a_union_typedef_list;
-    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector< ::some::valid::ns::unionTypeDef>(t);
+    ::new (std::addressof(value_.a_union_typedef_list)) std::vector< ::some::valid::ns::unionTypeDef>(t);
     return value_.a_union_typedef_list;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector< ::some::valid::ns::unionTypeDef>&& t) {
+  std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(std::vector< ::some::valid::ns::unionTypeDef>&& t) {
     __clear();
     type_ = Type::a_union_typedef_list;
-    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector< ::some::valid::ns::unionTypeDef>(std::move(t));
+    ::new (std::addressof(value_.a_union_typedef_list)) std::vector< ::some::valid::ns::unionTypeDef>(std::move(t));
     return value_.a_union_typedef_list;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector< ::some::valid::ns::unionTypeDef>, T...>> ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::unionTypeDef>, T...>> std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
     __clear();
     type_ = Type::a_union_typedef_list;
-    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector< ::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_union_typedef_list)) std::vector< ::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
     return value_.a_union_typedef_list;
   }
 
-  ::std::string& set_MyBinaryField(::std::string const &t) {
+  std::string& set_MyBinaryField(std::string const &t) {
     __clear();
     type_ = Type::MyBinaryField;
-    ::new (std::addressof(value_.MyBinaryField)) ::std::string(t);
+    ::new (std::addressof(value_.MyBinaryField)) std::string(t);
     return value_.MyBinaryField;
   }
 
-  ::std::string& set_MyBinaryField(::std::string&& t) {
+  std::string& set_MyBinaryField(std::string&& t) {
     __clear();
     type_ = Type::MyBinaryField;
-    ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.MyBinaryField)) std::string(std::move(t));
     return value_.MyBinaryField;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_MyBinaryField(T&&... t) {
     __clear();
     type_ = Type::MyBinaryField;
-    ::new (std::addressof(value_.MyBinaryField)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.MyBinaryField)) std::string(std::forward<T>(t)...);
     return value_.MyBinaryField;
   }
 
-  ::std::string& set_MyBinaryField2(::std::string const &t) {
+  std::string& set_MyBinaryField2(std::string const &t) {
     __clear();
     type_ = Type::MyBinaryField2;
-    ::new (std::addressof(value_.MyBinaryField2)) ::std::string(t);
+    ::new (std::addressof(value_.MyBinaryField2)) std::string(t);
     return value_.MyBinaryField2;
   }
 
-  ::std::string& set_MyBinaryField2(::std::string&& t) {
+  std::string& set_MyBinaryField2(std::string&& t) {
     __clear();
     type_ = Type::MyBinaryField2;
-    ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::move(t));
+    ::new (std::addressof(value_.MyBinaryField2)) std::string(std::move(t));
     return value_.MyBinaryField2;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_MyBinaryField2(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_MyBinaryField2(T&&... t) {
     __clear();
     type_ = Type::MyBinaryField2;
-    ::new (std::addressof(value_.MyBinaryField2)) ::std::string(std::forward<T>(t)...);
+    ::new (std::addressof(value_.MyBinaryField2)) std::string(std::forward<T>(t)...);
     return value_.MyBinaryField2;
   }
 
-  ::std::vector<::std::string>& set_MyBinaryListField4(::std::vector<::std::string> const &t) {
+  std::vector<std::string>& set_MyBinaryListField4(std::vector<std::string> const &t) {
     __clear();
     type_ = Type::MyBinaryListField4;
-    ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(t);
+    ::new (std::addressof(value_.MyBinaryListField4)) std::vector<std::string>(t);
     return value_.MyBinaryListField4;
   }
 
-  ::std::vector<::std::string>& set_MyBinaryListField4(::std::vector<::std::string>&& t) {
+  std::vector<std::string>& set_MyBinaryListField4(std::vector<std::string>&& t) {
     __clear();
     type_ = Type::MyBinaryListField4;
-    ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::move(t));
+    ::new (std::addressof(value_.MyBinaryListField4)) std::vector<std::string>(std::move(t));
     return value_.MyBinaryListField4;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::string>, T...>> ::std::vector<::std::string>& set_MyBinaryListField4(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<std::string>, T...>> std::vector<std::string>& set_MyBinaryListField4(T&&... t) {
     __clear();
     type_ = Type::MyBinaryListField4;
-    ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.MyBinaryListField4)) std::vector<std::string>(std::forward<T>(t)...);
     return value_.MyBinaryListField4;
   }
   std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field( ::some::valid::ns::MyStruct const &t);
@@ -2216,12 +2216,12 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.opt_intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  std::string const & get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::string const & get_opt_stringValue() const {
+  std::string const & get_opt_stringValue() const {
     assert(type_ == Type::opt_stringValue);
     return value_.opt_stringValue;
   }
@@ -2246,22 +2246,22 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.boolValue;
   }
 
-  ::std::vector<int32_t> const & get_union_list() const {
+  std::vector<int32_t> const & get_union_list() const {
     assert(type_ == Type::union_list);
     return value_.union_list;
   }
 
-  ::std::set<int64_t> const & get_union_set() const {
+  std::set<int64_t> const & get_union_set() const {
     assert(type_ == Type::union_set);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, int32_t> const & get_union_map() const {
+  std::map<std::string, int32_t> const & get_union_map() const {
     assert(type_ == Type::union_map);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t> const & get_opt_union_map() const {
+  std::map<std::string, int32_t> const & get_opt_union_map() const {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
   }
@@ -2271,7 +2271,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.enum_field;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA> const & get_enum_container() const {
+  std::vector< ::some::valid::ns::MyEnumA> const & get_enum_container() const {
     assert(type_ == Type::enum_container);
     return value_.enum_container;
   }
@@ -2281,7 +2281,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.a_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct> const & get_a_set_struct() const {
+  std::set< ::some::valid::ns::MyStruct> const & get_a_set_struct() const {
     assert(type_ == Type::a_set_struct);
     return value_.a_set_struct;
   }
@@ -2296,7 +2296,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.opt_a_union;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion> const & get_a_union_list() const {
+  std::vector< ::some::valid::ns::SimpleUnion> const & get_a_union_list() const {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
   }
@@ -2306,22 +2306,22 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.a_union_typedef;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef> const & get_a_union_typedef_list() const {
+  std::vector< ::some::valid::ns::unionTypeDef> const & get_a_union_typedef_list() const {
     assert(type_ == Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
-  ::std::string const & get_MyBinaryField() const {
+  std::string const & get_MyBinaryField() const {
     assert(type_ == Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
-  ::std::string const & get_MyBinaryField2() const {
+  std::string const & get_MyBinaryField2() const {
     assert(type_ == Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
-  ::std::vector<::std::string> const & get_MyBinaryListField4() const {
+  std::vector<std::string> const & get_MyBinaryListField4() const {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
@@ -2351,12 +2351,12 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.opt_intValue;
   }
 
-  ::std::string & mutable_stringValue() {
+  std::string & mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::string & mutable_opt_stringValue() {
+  std::string & mutable_opt_stringValue() {
     assert(type_ == Type::opt_stringValue);
     return value_.opt_stringValue;
   }
@@ -2381,22 +2381,22 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.boolValue;
   }
 
-  ::std::vector<int32_t> & mutable_union_list() {
+  std::vector<int32_t> & mutable_union_list() {
     assert(type_ == Type::union_list);
     return value_.union_list;
   }
 
-  ::std::set<int64_t> & mutable_union_set() {
+  std::set<int64_t> & mutable_union_set() {
     assert(type_ == Type::union_set);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, int32_t> & mutable_union_map() {
+  std::map<std::string, int32_t> & mutable_union_map() {
     assert(type_ == Type::union_map);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t> & mutable_opt_union_map() {
+  std::map<std::string, int32_t> & mutable_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
   }
@@ -2406,7 +2406,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.enum_field;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA> & mutable_enum_container() {
+  std::vector< ::some::valid::ns::MyEnumA> & mutable_enum_container() {
     assert(type_ == Type::enum_container);
     return value_.enum_container;
   }
@@ -2416,7 +2416,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.a_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct> & mutable_a_set_struct() {
+  std::set< ::some::valid::ns::MyStruct> & mutable_a_set_struct() {
     assert(type_ == Type::a_set_struct);
     return value_.a_set_struct;
   }
@@ -2431,7 +2431,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.opt_a_union;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion> & mutable_a_union_list() {
+  std::vector< ::some::valid::ns::SimpleUnion> & mutable_a_union_list() {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
   }
@@ -2441,22 +2441,22 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return value_.a_union_typedef;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef> & mutable_a_union_typedef_list() {
+  std::vector< ::some::valid::ns::unionTypeDef> & mutable_a_union_typedef_list() {
     assert(type_ == Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
-  ::std::string & mutable_MyBinaryField() {
+  std::string & mutable_MyBinaryField() {
     assert(type_ == Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
-  ::std::string & mutable_MyBinaryField2() {
+  std::string & mutable_MyBinaryField2() {
     assert(type_ == Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
-  ::std::vector<::std::string> & mutable_MyBinaryListField4() {
+  std::vector<std::string> & mutable_MyBinaryListField4() {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
@@ -2486,12 +2486,12 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.opt_intValue);
   }
 
-  ::std::string move_stringValue() {
+  std::string move_stringValue() {
     assert(type_ == Type::stringValue);
     return std::move(value_.stringValue);
   }
 
-  ::std::string move_opt_stringValue() {
+  std::string move_opt_stringValue() {
     assert(type_ == Type::opt_stringValue);
     return std::move(value_.opt_stringValue);
   }
@@ -2516,22 +2516,22 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.boolValue);
   }
 
-  ::std::vector<int32_t> move_union_list() {
+  std::vector<int32_t> move_union_list() {
     assert(type_ == Type::union_list);
     return std::move(value_.union_list);
   }
 
-  ::std::set<int64_t> move_union_set() {
+  std::set<int64_t> move_union_set() {
     assert(type_ == Type::union_set);
     return std::move(value_.union_set);
   }
 
-  ::std::map<::std::string, int32_t> move_union_map() {
+  std::map<std::string, int32_t> move_union_map() {
     assert(type_ == Type::union_map);
     return std::move(value_.union_map);
   }
 
-  ::std::map<::std::string, int32_t> move_opt_union_map() {
+  std::map<std::string, int32_t> move_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return std::move(value_.opt_union_map);
   }
@@ -2541,7 +2541,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.enum_field);
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA> move_enum_container() {
+  std::vector< ::some::valid::ns::MyEnumA> move_enum_container() {
     assert(type_ == Type::enum_container);
     return std::move(value_.enum_container);
   }
@@ -2551,7 +2551,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.a_struct);
   }
 
-  ::std::set< ::some::valid::ns::MyStruct> move_a_set_struct() {
+  std::set< ::some::valid::ns::MyStruct> move_a_set_struct() {
     assert(type_ == Type::a_set_struct);
     return std::move(value_.a_set_struct);
   }
@@ -2566,7 +2566,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.opt_a_union);
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion> move_a_union_list() {
+  std::vector< ::some::valid::ns::SimpleUnion> move_a_union_list() {
     assert(type_ == Type::a_union_list);
     return std::move(value_.a_union_list);
   }
@@ -2576,22 +2576,22 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     return std::move(value_.a_union_typedef);
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef> move_a_union_typedef_list() {
+  std::vector< ::some::valid::ns::unionTypeDef> move_a_union_typedef_list() {
     assert(type_ == Type::a_union_typedef_list);
     return std::move(value_.a_union_typedef_list);
   }
 
-  ::std::string move_MyBinaryField() {
+  std::string move_MyBinaryField() {
     assert(type_ == Type::MyBinaryField);
     return std::move(value_.MyBinaryField);
   }
 
-  ::std::string move_MyBinaryField2() {
+  std::string move_MyBinaryField2() {
     assert(type_ == Type::MyBinaryField2);
     return std::move(value_.MyBinaryField2);
   }
 
-  ::std::vector<::std::string> move_MyBinaryListField4() {
+  std::vector<std::string> move_MyBinaryListField4() {
     assert(type_ == Type::MyBinaryListField4);
     return std::move(value_.MyBinaryListField4);
   }
@@ -2663,7 +2663,7 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
       message2(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<int32_t> exception_list__arg, ::std::set<int64_t> exception_set__arg, ::std::map<::std::string, int32_t> exception_map__arg, ::std::map<::std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, ::std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message2__arg, std::string req_message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg, std::map<std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     code = arg.extract();
@@ -2750,19 +2750,19 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
 
   int32_t code;
   int32_t req_code;
-  ::std::string message2;
-  ::std::string req_message;
-  ::std::vector<int32_t> exception_list;
-  ::std::set<int64_t> exception_set;
-  ::std::map<::std::string, int32_t> exception_map;
-  ::std::map<::std::string, int32_t> req_exception_map;
+  std::string message2;
+  std::string req_message;
+  std::vector<int32_t> exception_list;
+  std::set<int64_t> exception_set;
+  std::map<std::string, int32_t> exception_map;
+  std::map<std::string, int32_t> req_exception_map;
    ::some::valid::ns::MyEnumA enum_field;
-  ::std::vector< ::some::valid::ns::MyEnumA> enum_container;
+  std::vector< ::some::valid::ns::MyEnumA> enum_container;
    ::some::valid::ns::MyStruct a_struct;
-  ::std::set< ::some::valid::ns::MyStruct> a_set_struct;
-  ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
+  std::set< ::some::valid::ns::MyStruct> a_set_struct;
+  std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
    ::some::valid::ns::unionTypeDef union_typedef;
-  ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
+  std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
   struct __isset {
     bool code;
@@ -2800,66 +2800,66 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
     return req_code;
   }
 
-  const ::std::string& get_message2() const& {
+  const std::string& get_message2() const& {
     return message2;
   }
 
-  ::std::string get_message2() && {
+  std::string get_message2() && {
     return std::move(message2);
   }
 
-  template <typename T_AnException_message2_struct_setter = ::std::string>
-  ::std::string& set_message2(T_AnException_message2_struct_setter&& message2_) {
+  template <typename T_AnException_message2_struct_setter = std::string>
+  std::string& set_message2(T_AnException_message2_struct_setter&& message2_) {
     message2 = std::forward<T_AnException_message2_struct_setter>(message2_);
     __isset.message2 = true;
     return message2;
   }
 
-  const ::std::string& get_req_message() const& {
+  const std::string& get_req_message() const& {
     return req_message;
   }
 
-  ::std::string get_req_message() && {
+  std::string get_req_message() && {
     return std::move(req_message);
   }
 
-  template <typename T_AnException_req_message_struct_setter = ::std::string>
-  ::std::string& set_req_message(T_AnException_req_message_struct_setter&& req_message_) {
+  template <typename T_AnException_req_message_struct_setter = std::string>
+  std::string& set_req_message(T_AnException_req_message_struct_setter&& req_message_) {
     req_message = std::forward<T_AnException_req_message_struct_setter>(req_message_);
     return req_message;
   }
-  const ::std::vector<int32_t>& get_exception_list() const&;
-  ::std::vector<int32_t> get_exception_list() &&;
+  const std::vector<int32_t>& get_exception_list() const&;
+  std::vector<int32_t> get_exception_list() &&;
 
-  template <typename T_AnException_exception_list_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_) {
+  template <typename T_AnException_exception_list_struct_setter = std::vector<int32_t>>
+  std::vector<int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_) {
     exception_list = std::forward<T_AnException_exception_list_struct_setter>(exception_list_);
     __isset.exception_list = true;
     return exception_list;
   }
-  const ::std::set<int64_t>& get_exception_set() const&;
-  ::std::set<int64_t> get_exception_set() &&;
+  const std::set<int64_t>& get_exception_set() const&;
+  std::set<int64_t> get_exception_set() &&;
 
-  template <typename T_AnException_exception_set_struct_setter = ::std::set<int64_t>>
-  ::std::set<int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_) {
+  template <typename T_AnException_exception_set_struct_setter = std::set<int64_t>>
+  std::set<int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_) {
     exception_set = std::forward<T_AnException_exception_set_struct_setter>(exception_set_);
     __isset.exception_set = true;
     return exception_set;
   }
-  const ::std::map<::std::string, int32_t>& get_exception_map() const&;
-  ::std::map<::std::string, int32_t> get_exception_map() &&;
+  const std::map<std::string, int32_t>& get_exception_map() const&;
+  std::map<std::string, int32_t> get_exception_map() &&;
 
-  template <typename T_AnException_exception_map_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_) {
+  template <typename T_AnException_exception_map_struct_setter = std::map<std::string, int32_t>>
+  std::map<std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_) {
     exception_map = std::forward<T_AnException_exception_map_struct_setter>(exception_map_);
     __isset.exception_map = true;
     return exception_map;
   }
-  const ::std::map<::std::string, int32_t>& get_req_exception_map() const&;
-  ::std::map<::std::string, int32_t> get_req_exception_map() &&;
+  const std::map<std::string, int32_t>& get_req_exception_map() const&;
+  std::map<std::string, int32_t> get_req_exception_map() &&;
 
-  template <typename T_AnException_req_exception_map_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_req_exception_map(T_AnException_req_exception_map_struct_setter&& req_exception_map_) {
+  template <typename T_AnException_req_exception_map_struct_setter = std::map<std::string, int32_t>>
+  std::map<std::string, int32_t>& set_req_exception_map(T_AnException_req_exception_map_struct_setter&& req_exception_map_) {
     req_exception_map = std::forward<T_AnException_req_exception_map_struct_setter>(req_exception_map_);
     return req_exception_map;
   }
@@ -2873,11 +2873,11 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
     __isset.enum_field = true;
     return enum_field;
   }
-  const ::std::vector< ::some::valid::ns::MyEnumA>& get_enum_container() const&;
-  ::std::vector< ::some::valid::ns::MyEnumA> get_enum_container() &&;
+  const std::vector< ::some::valid::ns::MyEnumA>& get_enum_container() const&;
+  std::vector< ::some::valid::ns::MyEnumA> get_enum_container() &&;
 
-  template <typename T_AnException_enum_container_struct_setter = ::std::vector< ::some::valid::ns::MyEnumA>>
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_) {
+  template <typename T_AnException_enum_container_struct_setter = std::vector< ::some::valid::ns::MyEnumA>>
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_) {
     enum_container = std::forward<T_AnException_enum_container_struct_setter>(enum_container_);
     __isset.enum_container = true;
     return enum_container;
@@ -2891,20 +2891,20 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
     __isset.a_struct = true;
     return a_struct;
   }
-  const ::std::set< ::some::valid::ns::MyStruct>& get_a_set_struct() const&;
-  ::std::set< ::some::valid::ns::MyStruct> get_a_set_struct() &&;
+  const std::set< ::some::valid::ns::MyStruct>& get_a_set_struct() const&;
+  std::set< ::some::valid::ns::MyStruct> get_a_set_struct() &&;
 
-  template <typename T_AnException_a_set_struct_struct_setter = ::std::set< ::some::valid::ns::MyStruct>>
-  ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_) {
+  template <typename T_AnException_a_set_struct_struct_setter = std::set< ::some::valid::ns::MyStruct>>
+  std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_) {
     a_set_struct = std::forward<T_AnException_a_set_struct_struct_setter>(a_set_struct_);
     __isset.a_set_struct = true;
     return a_set_struct;
   }
-  const ::std::vector< ::some::valid::ns::SimpleUnion>& get_a_union_list() const&;
-  ::std::vector< ::some::valid::ns::SimpleUnion> get_a_union_list() &&;
+  const std::vector< ::some::valid::ns::SimpleUnion>& get_a_union_list() const&;
+  std::vector< ::some::valid::ns::SimpleUnion> get_a_union_list() &&;
 
-  template <typename T_AnException_a_union_list_struct_setter = ::std::vector< ::some::valid::ns::SimpleUnion>>
-  ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T_AnException_a_union_list_struct_setter&& a_union_list_) {
+  template <typename T_AnException_a_union_list_struct_setter = std::vector< ::some::valid::ns::SimpleUnion>>
+  std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T_AnException_a_union_list_struct_setter&& a_union_list_) {
     a_union_list = std::forward<T_AnException_a_union_list_struct_setter>(a_union_list_);
     __isset.a_union_list = true;
     return a_union_list;
@@ -2918,11 +2918,11 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
     __isset.union_typedef = true;
     return union_typedef;
   }
-  const ::std::vector< ::some::valid::ns::unionTypeDef>& get_a_union_typedef_list() const&;
-  ::std::vector< ::some::valid::ns::unionTypeDef> get_a_union_typedef_list() &&;
+  const std::vector< ::some::valid::ns::unionTypeDef>& get_a_union_typedef_list() const&;
+  std::vector< ::some::valid::ns::unionTypeDef> get_a_union_typedef_list() &&;
 
-  template <typename T_AnException_a_union_typedef_list_struct_setter = ::std::vector< ::some::valid::ns::unionTypeDef>>
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T_AnException_a_union_typedef_list_struct_setter&& a_union_typedef_list_) {
+  template <typename T_AnException_a_union_typedef_list_struct_setter = std::vector< ::some::valid::ns::unionTypeDef>>
+  std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T_AnException_a_union_typedef_list_struct_setter&& a_union_typedef_list_) {
     a_union_typedef_list = std::forward<T_AnException_a_union_typedef_list_struct_setter>(a_union_typedef_list_);
     __isset.a_union_typedef_list = true;
     return a_union_typedef_list;
@@ -2967,7 +2967,7 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
       req_code(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message__arg);
+  AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     code = arg.extract();
@@ -2996,7 +2996,7 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
 
   int32_t code;
   int32_t req_code;
-  ::std::string message;
+  std::string message;
 
   struct __isset {
     bool code;
@@ -3024,16 +3024,16 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
     return req_code;
   }
 
-  const ::std::string& get_message() const& {
+  const std::string& get_message() const& {
     return message;
   }
 
-  ::std::string get_message() && {
+  std::string get_message() && {
     return std::move(message);
   }
 
-  template <typename T_AnotherException_message_struct_setter = ::std::string>
-  ::std::string& set_message(T_AnotherException_message_struct_setter&& message_) {
+  template <typename T_AnotherException_message_struct_setter = std::string>
+  std::string& set_message(T_AnotherException_message_struct_setter&& message_) {
     message = std::forward<T_AnotherException_message_struct_setter>(message_);
     __isset.message = true;
     return message;
@@ -3077,7 +3077,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg);
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, std::map<std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.extract();
@@ -3312,48 +3312,48 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   bool fieldA;
   bool req_fieldA;
   bool opt_fieldA;
-  ::std::map<::std::string, bool> fieldB;
-  ::std::map<::std::string, bool> req_fieldB;
-  ::std::map<::std::string, bool> opt_fieldB;
-  ::std::set<int32_t> fieldC;
-  ::std::set<int32_t> req_fieldC;
-  ::std::set<int32_t> opt_fieldC;
-  ::std::string fieldD;
-  ::std::string fieldE;
-  ::std::string req_fieldE;
-  ::std::string opt_fieldE;
-  ::std::vector<::std::vector<int32_t>> fieldF;
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
-  ::std::vector<::std::set<int32_t>> fieldH;
+  std::map<std::string, bool> fieldB;
+  std::map<std::string, bool> req_fieldB;
+  std::map<std::string, bool> opt_fieldB;
+  std::set<int32_t> fieldC;
+  std::set<int32_t> req_fieldC;
+  std::set<int32_t> opt_fieldC;
+  std::string fieldD;
+  std::string fieldE;
+  std::string req_fieldE;
+  std::string opt_fieldE;
+  std::vector<std::vector<int32_t>> fieldF;
+  std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG;
+  std::vector<std::set<int32_t>> fieldH;
   bool fieldI;
-  ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
-  ::std::set<::std::set<::std::set<bool>>> fieldL;
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
+  std::map<std::string, std::vector<int32_t>> fieldJ;
+  std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK;
+  std::set<std::set<std::set<bool>>> fieldL;
+  std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM;
    ::some::valid::ns::simpleTypeDef fieldN;
    ::some::valid::ns::complexStructTypeDef fieldO;
-  ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP;
+  std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP;
    ::some::valid::ns::MyEnumA fieldQ;
    ::some::valid::ns::MyEnumA fieldR;
    ::some::valid::ns::MyEnumA req_fieldR;
    ::some::valid::ns::MyEnumA opt_fieldR;
    ::some::valid::ns::MyEnumA fieldS;
-  ::std::vector< ::some::valid::ns::MyEnumA> fieldT;
-  ::std::vector< ::some::valid::ns::MyEnumA> fieldU;
+  std::vector< ::some::valid::ns::MyEnumA> fieldT;
+  std::vector< ::some::valid::ns::MyEnumA> fieldU;
    ::some::valid::ns::MyStruct fieldV;
    ::some::valid::ns::MyStruct req_fieldV;
    ::some::valid::ns::MyStruct opt_fieldV;
-  ::std::set< ::some::valid::ns::MyStruct> fieldW;
+  std::set< ::some::valid::ns::MyStruct> fieldW;
    ::some::valid::ns::ComplexUnion fieldX;
    ::some::valid::ns::ComplexUnion req_fieldX;
    ::some::valid::ns::ComplexUnion opt_fieldX;
-  ::std::vector< ::some::valid::ns::ComplexUnion> fieldY;
+  std::vector< ::some::valid::ns::ComplexUnion> fieldY;
    ::some::valid::ns::unionTypeDef fieldZ;
-  ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
-  ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB;
+  std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
+  std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB;
    ::some::valid::ns::MyEnumB fieldAC;
    ::a::different::ns::AnEnum fieldAD;
-  ::std::map<::std::string, int32_t> fieldAE;
+  std::map<std::string, int32_t> fieldAE;
    ::some::valid::ns::IndirectionD fieldSD;
 
   struct __isset {
@@ -3416,51 +3416,51 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     return {std::move(opt_fieldA), __isset.opt_fieldA};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&> opt_fieldB_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::map<std::string, bool>&> opt_fieldB_ref() const& {
     return {opt_fieldB, __isset.opt_fieldB};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::map<::std::string, bool>&&> opt_fieldB_ref() const&& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::map<std::string, bool>&&> opt_fieldB_ref() const&& {
     return {std::move(opt_fieldB), __isset.opt_fieldB};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&> opt_fieldB_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::map<std::string, bool>&> opt_fieldB_ref() & {
     return {opt_fieldB, __isset.opt_fieldB};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::map<::std::string, bool>&&> opt_fieldB_ref() && {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::map<std::string, bool>&&> opt_fieldB_ref() && {
     return {std::move(opt_fieldB), __isset.opt_fieldB};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&> opt_fieldC_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::set<int32_t>&> opt_fieldC_ref() const& {
     return {opt_fieldC, __isset.opt_fieldC};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::set<int32_t>&&> opt_fieldC_ref() const&& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::set<int32_t>&&> opt_fieldC_ref() const&& {
     return {std::move(opt_fieldC), __isset.opt_fieldC};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::set<int32_t>&> opt_fieldC_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::set<int32_t>&> opt_fieldC_ref() & {
     return {opt_fieldC, __isset.opt_fieldC};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::set<int32_t>&&> opt_fieldC_ref() && {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::set<int32_t>&&> opt_fieldC_ref() && {
     return {std::move(opt_fieldC), __isset.opt_fieldC};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&> opt_fieldE_ref() const& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&> opt_fieldE_ref() const& {
     return {opt_fieldE, __isset.opt_fieldE};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&&> opt_fieldE_ref() const&& {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const std::string&&> opt_fieldE_ref() const&& {
     return {std::move(opt_fieldE), __isset.opt_fieldE};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&> opt_fieldE_ref() & {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&> opt_fieldE_ref() & {
     return {opt_fieldE, __isset.opt_fieldE};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&&> opt_fieldE_ref() && {
+  THRIFT_NOLINK ::apache::thrift::optional_field_ref<std::string&&> opt_fieldE_ref() && {
     return {std::move(opt_fieldE), __isset.opt_fieldE};
   }
 
@@ -3545,143 +3545,143 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.opt_fieldA = true;
     return opt_fieldA;
   }
-  const ::std::map<::std::string, bool>& get_fieldB() const&;
-  ::std::map<::std::string, bool> get_fieldB() &&;
+  const std::map<std::string, bool>& get_fieldB() const&;
+  std::map<std::string, bool> get_fieldB() &&;
 
-  template <typename T_containerStruct_fieldB_struct_setter = ::std::map<::std::string, bool>>
-  ::std::map<::std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
+  template <typename T_containerStruct_fieldB_struct_setter = std::map<std::string, bool>>
+  std::map<std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
     return fieldB;
   }
-  const ::std::map<::std::string, bool>& get_req_fieldB() const&;
-  ::std::map<::std::string, bool> get_req_fieldB() &&;
+  const std::map<std::string, bool>& get_req_fieldB() const&;
+  std::map<std::string, bool> get_req_fieldB() &&;
 
-  template <typename T_containerStruct_req_fieldB_struct_setter = ::std::map<::std::string, bool>>
-  ::std::map<::std::string, bool>& set_req_fieldB(T_containerStruct_req_fieldB_struct_setter&& req_fieldB_) {
+  template <typename T_containerStruct_req_fieldB_struct_setter = std::map<std::string, bool>>
+  std::map<std::string, bool>& set_req_fieldB(T_containerStruct_req_fieldB_struct_setter&& req_fieldB_) {
     req_fieldB = std::forward<T_containerStruct_req_fieldB_struct_setter>(req_fieldB_);
     return req_fieldB;
   }
-  const ::std::map<::std::string, bool>* get_opt_fieldB() const&;
-  ::std::map<::std::string, bool>* get_opt_fieldB() &;
-  ::std::map<::std::string, bool>* get_opt_fieldB() && = delete;
+  const std::map<std::string, bool>* get_opt_fieldB() const&;
+  std::map<std::string, bool>* get_opt_fieldB() &;
+  std::map<std::string, bool>* get_opt_fieldB() && = delete;
 
-  template <typename T_containerStruct_opt_fieldB_struct_setter = ::std::map<::std::string, bool>>
-  ::std::map<::std::string, bool>& set_opt_fieldB(T_containerStruct_opt_fieldB_struct_setter&& opt_fieldB_) {
+  template <typename T_containerStruct_opt_fieldB_struct_setter = std::map<std::string, bool>>
+  std::map<std::string, bool>& set_opt_fieldB(T_containerStruct_opt_fieldB_struct_setter&& opt_fieldB_) {
     opt_fieldB = std::forward<T_containerStruct_opt_fieldB_struct_setter>(opt_fieldB_);
     __isset.opt_fieldB = true;
     return opt_fieldB;
   }
-  const ::std::set<int32_t>& get_fieldC() const&;
-  ::std::set<int32_t> get_fieldC() &&;
+  const std::set<int32_t>& get_fieldC() const&;
+  std::set<int32_t> get_fieldC() &&;
 
-  template <typename T_containerStruct_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
+  template <typename T_containerStruct_fieldC_struct_setter = std::set<int32_t>>
+  std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
     return fieldC;
   }
-  const ::std::set<int32_t>& get_req_fieldC() const&;
-  ::std::set<int32_t> get_req_fieldC() &&;
+  const std::set<int32_t>& get_req_fieldC() const&;
+  std::set<int32_t> get_req_fieldC() &&;
 
-  template <typename T_containerStruct_req_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_req_fieldC(T_containerStruct_req_fieldC_struct_setter&& req_fieldC_) {
+  template <typename T_containerStruct_req_fieldC_struct_setter = std::set<int32_t>>
+  std::set<int32_t>& set_req_fieldC(T_containerStruct_req_fieldC_struct_setter&& req_fieldC_) {
     req_fieldC = std::forward<T_containerStruct_req_fieldC_struct_setter>(req_fieldC_);
     return req_fieldC;
   }
-  const ::std::set<int32_t>* get_opt_fieldC() const&;
-  ::std::set<int32_t>* get_opt_fieldC() &;
-  ::std::set<int32_t>* get_opt_fieldC() && = delete;
+  const std::set<int32_t>* get_opt_fieldC() const&;
+  std::set<int32_t>* get_opt_fieldC() &;
+  std::set<int32_t>* get_opt_fieldC() && = delete;
 
-  template <typename T_containerStruct_opt_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_opt_fieldC(T_containerStruct_opt_fieldC_struct_setter&& opt_fieldC_) {
+  template <typename T_containerStruct_opt_fieldC_struct_setter = std::set<int32_t>>
+  std::set<int32_t>& set_opt_fieldC(T_containerStruct_opt_fieldC_struct_setter&& opt_fieldC_) {
     opt_fieldC = std::forward<T_containerStruct_opt_fieldC_struct_setter>(opt_fieldC_);
     __isset.opt_fieldC = true;
     return opt_fieldC;
   }
 
-  const ::std::string& get_fieldD() const& {
+  const std::string& get_fieldD() const& {
     return fieldD;
   }
 
-  ::std::string get_fieldD() && {
+  std::string get_fieldD() && {
     return std::move(fieldD);
   }
 
-  template <typename T_containerStruct_fieldD_struct_setter = ::std::string>
-  ::std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
+  template <typename T_containerStruct_fieldD_struct_setter = std::string>
+  std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
     return fieldD;
   }
 
-  const ::std::string& get_fieldE() const& {
+  const std::string& get_fieldE() const& {
     return fieldE;
   }
 
-  ::std::string get_fieldE() && {
+  std::string get_fieldE() && {
     return std::move(fieldE);
   }
 
-  template <typename T_containerStruct_fieldE_struct_setter = ::std::string>
-  ::std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
+  template <typename T_containerStruct_fieldE_struct_setter = std::string>
+  std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
     return fieldE;
   }
 
-  const ::std::string& get_req_fieldE() const& {
+  const std::string& get_req_fieldE() const& {
     return req_fieldE;
   }
 
-  ::std::string get_req_fieldE() && {
+  std::string get_req_fieldE() && {
     return std::move(req_fieldE);
   }
 
-  template <typename T_containerStruct_req_fieldE_struct_setter = ::std::string>
-  ::std::string& set_req_fieldE(T_containerStruct_req_fieldE_struct_setter&& req_fieldE_) {
+  template <typename T_containerStruct_req_fieldE_struct_setter = std::string>
+  std::string& set_req_fieldE(T_containerStruct_req_fieldE_struct_setter&& req_fieldE_) {
     req_fieldE = std::forward<T_containerStruct_req_fieldE_struct_setter>(req_fieldE_);
     return req_fieldE;
   }
 
-  const ::std::string* get_opt_fieldE() const& {
+  const std::string* get_opt_fieldE() const& {
     return __isset.opt_fieldE ? std::addressof(opt_fieldE) : nullptr;
   }
 
-  ::std::string* get_opt_fieldE() & {
+  std::string* get_opt_fieldE() & {
     return __isset.opt_fieldE ? std::addressof(opt_fieldE) : nullptr;
   }
-  ::std::string* get_opt_fieldE() && = delete;
+  std::string* get_opt_fieldE() && = delete;
 
-  template <typename T_containerStruct_opt_fieldE_struct_setter = ::std::string>
-  ::std::string& set_opt_fieldE(T_containerStruct_opt_fieldE_struct_setter&& opt_fieldE_) {
+  template <typename T_containerStruct_opt_fieldE_struct_setter = std::string>
+  std::string& set_opt_fieldE(T_containerStruct_opt_fieldE_struct_setter&& opt_fieldE_) {
     opt_fieldE = std::forward<T_containerStruct_opt_fieldE_struct_setter>(opt_fieldE_);
     __isset.opt_fieldE = true;
     return opt_fieldE;
   }
-  const ::std::vector<::std::vector<int32_t>>& get_fieldF() const&;
-  ::std::vector<::std::vector<int32_t>> get_fieldF() &&;
+  const std::vector<std::vector<int32_t>>& get_fieldF() const&;
+  std::vector<std::vector<int32_t>> get_fieldF() &&;
 
-  template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<int32_t>>>
-  ::std::vector<::std::vector<int32_t>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
+  template <typename T_containerStruct_fieldF_struct_setter = std::vector<std::vector<int32_t>>>
+  std::vector<std::vector<int32_t>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
     return fieldF;
   }
-  const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& get_fieldG() const&;
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> get_fieldG() &&;
+  const std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>& get_fieldG() const&;
+  std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> get_fieldG() &&;
 
-  template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_containerStruct_fieldG_struct_setter = std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>>
+  std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
     return fieldG;
   }
-  const ::std::vector<::std::set<int32_t>>& get_fieldH() const&;
-  ::std::vector<::std::set<int32_t>> get_fieldH() &&;
+  const std::vector<std::set<int32_t>>& get_fieldH() const&;
+  std::vector<std::set<int32_t>> get_fieldH() &&;
 
-  template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<int32_t>>>
-  ::std::vector<::std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
+  template <typename T_containerStruct_fieldH_struct_setter = std::vector<std::set<int32_t>>>
+  std::vector<std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;
     return fieldH;
@@ -3696,38 +3696,38 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldI = true;
     return fieldI;
   }
-  const ::std::map<::std::string, ::std::vector<int32_t>>& get_fieldJ() const&;
-  ::std::map<::std::string, ::std::vector<int32_t>> get_fieldJ() &&;
+  const std::map<std::string, std::vector<int32_t>>& get_fieldJ() const&;
+  std::map<std::string, std::vector<int32_t>> get_fieldJ() &&;
 
-  template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<int32_t>>>
-  ::std::map<::std::string, ::std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
+  template <typename T_containerStruct_fieldJ_struct_setter = std::map<std::string, std::vector<int32_t>>>
+  std::map<std::string, std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
     __isset.fieldJ = true;
     return fieldJ;
   }
-  const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& get_fieldK() const&;
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> get_fieldK() &&;
+  const std::vector<std::vector<std::vector<std::vector<int32_t>>>>& get_fieldK() const&;
+  std::vector<std::vector<std::vector<std::vector<int32_t>>>> get_fieldK() &&;
 
-  template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
+  template <typename T_containerStruct_fieldK_struct_setter = std::vector<std::vector<std::vector<std::vector<int32_t>>>>>
+  std::vector<std::vector<std::vector<std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
     __isset.fieldK = true;
     return fieldK;
   }
-  const ::std::set<::std::set<::std::set<bool>>>& get_fieldL() const&;
-  ::std::set<::std::set<::std::set<bool>>> get_fieldL() &&;
+  const std::set<std::set<std::set<bool>>>& get_fieldL() const&;
+  std::set<std::set<std::set<bool>>> get_fieldL() &&;
 
-  template <typename T_containerStruct_fieldL_struct_setter = ::std::set<::std::set<::std::set<bool>>>>
-  ::std::set<::std::set<::std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
+  template <typename T_containerStruct_fieldL_struct_setter = std::set<std::set<std::set<bool>>>>
+  std::set<std::set<std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_containerStruct_fieldL_struct_setter>(fieldL_);
     __isset.fieldL = true;
     return fieldL;
   }
-  const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
+  const std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& get_fieldM() const&;
+  std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> get_fieldM() &&;
 
-  template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
+  template <typename T_containerStruct_fieldM_struct_setter = std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>
+  std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
     __isset.fieldM = true;
     return fieldM;
@@ -3751,11 +3751,11 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldO = true;
     return fieldO;
   }
-  const ::std::vector< ::some::valid::ns::mostComplexTypeDef>& get_fieldP() const&;
-  ::std::vector< ::some::valid::ns::mostComplexTypeDef> get_fieldP() &&;
+  const std::vector< ::some::valid::ns::mostComplexTypeDef>& get_fieldP() const&;
+  std::vector< ::some::valid::ns::mostComplexTypeDef> get_fieldP() &&;
 
-  template <typename T_containerStruct_fieldP_struct_setter = ::std::vector< ::some::valid::ns::mostComplexTypeDef>>
-  ::std::vector< ::some::valid::ns::mostComplexTypeDef>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
+  template <typename T_containerStruct_fieldP_struct_setter = std::vector< ::some::valid::ns::mostComplexTypeDef>>
+  std::vector< ::some::valid::ns::mostComplexTypeDef>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
     __isset.fieldP = true;
     return fieldP;
@@ -3814,20 +3814,20 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldS = true;
     return fieldS;
   }
-  const ::std::vector< ::some::valid::ns::MyEnumA>& get_fieldT() const&;
-  ::std::vector< ::some::valid::ns::MyEnumA> get_fieldT() &&;
+  const std::vector< ::some::valid::ns::MyEnumA>& get_fieldT() const&;
+  std::vector< ::some::valid::ns::MyEnumA> get_fieldT() &&;
 
-  template <typename T_containerStruct_fieldT_struct_setter = ::std::vector< ::some::valid::ns::MyEnumA>>
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_fieldT(T_containerStruct_fieldT_struct_setter&& fieldT_) {
+  template <typename T_containerStruct_fieldT_struct_setter = std::vector< ::some::valid::ns::MyEnumA>>
+  std::vector< ::some::valid::ns::MyEnumA>& set_fieldT(T_containerStruct_fieldT_struct_setter&& fieldT_) {
     fieldT = std::forward<T_containerStruct_fieldT_struct_setter>(fieldT_);
     __isset.fieldT = true;
     return fieldT;
   }
-  const ::std::vector< ::some::valid::ns::MyEnumA>& get_fieldU() const&;
-  ::std::vector< ::some::valid::ns::MyEnumA> get_fieldU() &&;
+  const std::vector< ::some::valid::ns::MyEnumA>& get_fieldU() const&;
+  std::vector< ::some::valid::ns::MyEnumA> get_fieldU() &&;
 
-  template <typename T_containerStruct_fieldU_struct_setter = ::std::vector< ::some::valid::ns::MyEnumA>>
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_) {
+  template <typename T_containerStruct_fieldU_struct_setter = std::vector< ::some::valid::ns::MyEnumA>>
+  std::vector< ::some::valid::ns::MyEnumA>& set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_) {
     fieldU = std::forward<T_containerStruct_fieldU_struct_setter>(fieldU_);
     __isset.fieldU = true;
     return fieldU;
@@ -3859,11 +3859,11 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.opt_fieldV = true;
     return opt_fieldV;
   }
-  const ::std::set< ::some::valid::ns::MyStruct>& get_fieldW() const&;
-  ::std::set< ::some::valid::ns::MyStruct> get_fieldW() &&;
+  const std::set< ::some::valid::ns::MyStruct>& get_fieldW() const&;
+  std::set< ::some::valid::ns::MyStruct> get_fieldW() &&;
 
-  template <typename T_containerStruct_fieldW_struct_setter = ::std::set< ::some::valid::ns::MyStruct>>
-  ::std::set< ::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_) {
+  template <typename T_containerStruct_fieldW_struct_setter = std::set< ::some::valid::ns::MyStruct>>
+  std::set< ::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_) {
     fieldW = std::forward<T_containerStruct_fieldW_struct_setter>(fieldW_);
     __isset.fieldW = true;
     return fieldW;
@@ -3895,11 +3895,11 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.opt_fieldX = true;
     return opt_fieldX;
   }
-  const ::std::vector< ::some::valid::ns::ComplexUnion>& get_fieldY() const&;
-  ::std::vector< ::some::valid::ns::ComplexUnion> get_fieldY() &&;
+  const std::vector< ::some::valid::ns::ComplexUnion>& get_fieldY() const&;
+  std::vector< ::some::valid::ns::ComplexUnion> get_fieldY() &&;
 
-  template <typename T_containerStruct_fieldY_struct_setter = ::std::vector< ::some::valid::ns::ComplexUnion>>
-  ::std::vector< ::some::valid::ns::ComplexUnion>& set_fieldY(T_containerStruct_fieldY_struct_setter&& fieldY_) {
+  template <typename T_containerStruct_fieldY_struct_setter = std::vector< ::some::valid::ns::ComplexUnion>>
+  std::vector< ::some::valid::ns::ComplexUnion>& set_fieldY(T_containerStruct_fieldY_struct_setter&& fieldY_) {
     fieldY = std::forward<T_containerStruct_fieldY_struct_setter>(fieldY_);
     __isset.fieldY = true;
     return fieldY;
@@ -3913,20 +3913,20 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldZ = true;
     return fieldZ;
   }
-  const ::std::vector< ::some::valid::ns::unionTypeDef>& get_fieldAA() const&;
-  ::std::vector< ::some::valid::ns::unionTypeDef> get_fieldAA() &&;
+  const std::vector< ::some::valid::ns::unionTypeDef>& get_fieldAA() const&;
+  std::vector< ::some::valid::ns::unionTypeDef> get_fieldAA() &&;
 
-  template <typename T_containerStruct_fieldAA_struct_setter = ::std::vector< ::some::valid::ns::unionTypeDef>>
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_) {
+  template <typename T_containerStruct_fieldAA_struct_setter = std::vector< ::some::valid::ns::unionTypeDef>>
+  std::vector< ::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_) {
     fieldAA = std::forward<T_containerStruct_fieldAA_struct_setter>(fieldAA_);
     __isset.fieldAA = true;
     return fieldAA;
   }
-  const ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& get_fieldAB() const&;
-  ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> get_fieldAB() &&;
+  const std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& get_fieldAB() const&;
+  std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> get_fieldAB() &&;
 
-  template <typename T_containerStruct_fieldAB_struct_setter = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
-  ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_) {
+  template <typename T_containerStruct_fieldAB_struct_setter = std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
+  std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_) {
     fieldAB = std::forward<T_containerStruct_fieldAB_struct_setter>(fieldAB_);
     __isset.fieldAB = true;
     return fieldAB;
@@ -3951,11 +3951,11 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldAD = true;
     return fieldAD;
   }
-  const ::std::map<::std::string, int32_t>& get_fieldAE() const&;
-  ::std::map<::std::string, int32_t> get_fieldAE() &&;
+  const std::map<std::string, int32_t>& get_fieldAE() const&;
+  std::map<std::string, int32_t> get_fieldAE() &&;
 
-  template <typename T_containerStruct_fieldAE_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_fieldAE(T_containerStruct_fieldAE_struct_setter&& fieldAE_) {
+  template <typename T_containerStruct_fieldAE_struct_setter = std::map<std::string, int32_t>>
+  std::map<std::string, int32_t>& set_fieldAE(T_containerStruct_fieldAE_struct_setter&& fieldAE_) {
     fieldAE = std::forward<T_containerStruct_fieldAE_struct_setter>(fieldAE_);
     __isset.fieldAE = true;
     return fieldAE;
@@ -4112,7 +4112,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<int64_t, ::std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg);
+  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     no_annotation = arg.extract();
@@ -4305,22 +4305,22 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::containerStruct no_annotation;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref;
-  std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref;
+  std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref;
-  std::unique_ptr<::std::vector<::std::string>> req_container_with_ref;
+  std::unique_ptr<std::vector<std::string>> req_container_with_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
-  std::unique_ptr<::std::set<int32_t>> opt_container_with_ref;
+  std::unique_ptr<std::set<int32_t>> opt_container_with_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique;
   std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared;
-  std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const;
+  std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const;
   std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared;
   std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const;
-  std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique;
+  std::unique_ptr<std::vector<std::string>> req_ref_type_unique;
   std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
-  std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared;
+  std::shared_ptr<std::set<int32_t>> opt_ref_type_shared;
    ::some::valid::ns::CppFakeI32 base_type;
    ::some::valid::ns::FollySmallVectorI64 list_type;
    ::some::valid::ns::SortedVectorSetString set_type;
@@ -4329,16 +4329,16 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::IOBuf iobuf_type;
    ::some::valid::ns::IOBufPtr iobuf_ptr;
   std::list<int32_t> list_i32_template;
-  std::deque<::std::string> list_string_template;
-  folly::sorted_vector_set<::std::string> set_template;
-  folly::sorted_vector_map<int64_t, ::std::string> map_template;
+  std::deque<std::string> list_string_template;
+  folly::sorted_vector_set<std::string> set_template;
+  folly::sorted_vector_map<int64_t, std::string> map_template;
    ::some::valid::ns::std_list typedef_list_template;
    ::some::valid::ns::std_deque typedef_deque_template;
    ::some::valid::ns::folly_set typedef_set_template;
    ::some::valid::ns::folly_map typedef_map_template;
    ::some::valid::ns::IndirectionA indirection_a;
-  ::std::vector< ::some::valid::ns::IndirectionB> indirection_b;
-  ::std::set< ::some::valid::ns::IndirectionC> indirection_c;
+  std::vector< ::some::valid::ns::IndirectionB> indirection_b;
+  std::set< ::some::valid::ns::IndirectionC> indirection_c;
    ::some::valid::ns::IOBuf iobuf_type_val;
    ::some::valid::ns::IOBufPtr iobuf_ptr_val;
    ::some::valid::ns::containerStruct struct_struct;
@@ -4463,29 +4463,29 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.list_i32_template = true;
     return list_i32_template;
   }
-  const std::deque<::std::string>& get_list_string_template() const&;
-  std::deque<::std::string> get_list_string_template() &&;
+  const std::deque<std::string>& get_list_string_template() const&;
+  std::deque<std::string> get_list_string_template() &&;
 
-  template <typename T_AnnotatedStruct_list_string_template_struct_setter = std::deque<::std::string>>
-  std::deque<::std::string>& set_list_string_template(T_AnnotatedStruct_list_string_template_struct_setter&& list_string_template_) {
+  template <typename T_AnnotatedStruct_list_string_template_struct_setter = std::deque<std::string>>
+  std::deque<std::string>& set_list_string_template(T_AnnotatedStruct_list_string_template_struct_setter&& list_string_template_) {
     list_string_template = std::forward<T_AnnotatedStruct_list_string_template_struct_setter>(list_string_template_);
     __isset.list_string_template = true;
     return list_string_template;
   }
-  const folly::sorted_vector_set<::std::string>& get_set_template() const&;
-  folly::sorted_vector_set<::std::string> get_set_template() &&;
+  const folly::sorted_vector_set<std::string>& get_set_template() const&;
+  folly::sorted_vector_set<std::string> get_set_template() &&;
 
-  template <typename T_AnnotatedStruct_set_template_struct_setter = folly::sorted_vector_set<::std::string>>
-  folly::sorted_vector_set<::std::string>& set_set_template(T_AnnotatedStruct_set_template_struct_setter&& set_template_) {
+  template <typename T_AnnotatedStruct_set_template_struct_setter = folly::sorted_vector_set<std::string>>
+  folly::sorted_vector_set<std::string>& set_set_template(T_AnnotatedStruct_set_template_struct_setter&& set_template_) {
     set_template = std::forward<T_AnnotatedStruct_set_template_struct_setter>(set_template_);
     __isset.set_template = true;
     return set_template;
   }
-  const folly::sorted_vector_map<int64_t, ::std::string>& get_map_template() const&;
-  folly::sorted_vector_map<int64_t, ::std::string> get_map_template() &&;
+  const folly::sorted_vector_map<int64_t, std::string>& get_map_template() const&;
+  folly::sorted_vector_map<int64_t, std::string> get_map_template() &&;
 
-  template <typename T_AnnotatedStruct_map_template_struct_setter = folly::sorted_vector_map<int64_t, ::std::string>>
-  folly::sorted_vector_map<int64_t, ::std::string>& set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_) {
+  template <typename T_AnnotatedStruct_map_template_struct_setter = folly::sorted_vector_map<int64_t, std::string>>
+  folly::sorted_vector_map<int64_t, std::string>& set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_) {
     map_template = std::forward<T_AnnotatedStruct_map_template_struct_setter>(map_template_);
     __isset.map_template = true;
     return map_template;
@@ -4536,20 +4536,20 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.indirection_a = true;
     return indirection_a;
   }
-  const ::std::vector< ::some::valid::ns::IndirectionB>& get_indirection_b() const&;
-  ::std::vector< ::some::valid::ns::IndirectionB> get_indirection_b() &&;
+  const std::vector< ::some::valid::ns::IndirectionB>& get_indirection_b() const&;
+  std::vector< ::some::valid::ns::IndirectionB> get_indirection_b() &&;
 
-  template <typename T_AnnotatedStruct_indirection_b_struct_setter = ::std::vector< ::some::valid::ns::IndirectionB>>
-  ::std::vector< ::some::valid::ns::IndirectionB>& set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_) {
+  template <typename T_AnnotatedStruct_indirection_b_struct_setter = std::vector< ::some::valid::ns::IndirectionB>>
+  std::vector< ::some::valid::ns::IndirectionB>& set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_) {
     indirection_b = std::forward<T_AnnotatedStruct_indirection_b_struct_setter>(indirection_b_);
     __isset.indirection_b = true;
     return indirection_b;
   }
-  const ::std::set< ::some::valid::ns::IndirectionC>& get_indirection_c() const&;
-  ::std::set< ::some::valid::ns::IndirectionC> get_indirection_c() &&;
+  const std::set< ::some::valid::ns::IndirectionC>& get_indirection_c() const&;
+  std::set< ::some::valid::ns::IndirectionC> get_indirection_c() &&;
 
-  template <typename T_AnnotatedStruct_indirection_c_struct_setter = ::std::set< ::some::valid::ns::IndirectionC>>
-  ::std::set< ::some::valid::ns::IndirectionC>& set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_) {
+  template <typename T_AnnotatedStruct_indirection_c_struct_setter = std::set< ::some::valid::ns::IndirectionC>>
+  std::set< ::some::valid::ns::IndirectionC>& set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_) {
     indirection_c = std::forward<T_AnnotatedStruct_indirection_c_struct_setter>(indirection_c_);
     __isset.indirection_c = true;
     return indirection_c;
@@ -4629,7 +4629,7 @@ class ComplexContainerStruct final : private apache::thrift::detail::st::Compari
   ComplexContainerStruct() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
+  ComplexContainerStruct(apache::thrift::FragileConstructor, std::map<std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, std::map<std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     map_of_iobufs = arg.extract();
@@ -4649,8 +4649,8 @@ class ComplexContainerStruct final : private apache::thrift::detail::st::Compari
 
   ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
   void __clear();
-  ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs;
-  ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
+  std::map<std::string,  ::some::valid::ns::IOBuf> map_of_iobufs;
+  std::map<std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
 
   struct __isset {
     bool map_of_iobufs;
@@ -4658,20 +4658,20 @@ class ComplexContainerStruct final : private apache::thrift::detail::st::Compari
   } __isset = {};
   bool operator==(const ComplexContainerStruct& rhs) const;
   bool operator<(const ComplexContainerStruct& rhs) const;
-  const ::std::map<::std::string,  ::some::valid::ns::IOBuf>& get_map_of_iobufs() const&;
-  ::std::map<::std::string,  ::some::valid::ns::IOBuf> get_map_of_iobufs() &&;
+  const std::map<std::string,  ::some::valid::ns::IOBuf>& get_map_of_iobufs() const&;
+  std::map<std::string,  ::some::valid::ns::IOBuf> get_map_of_iobufs() &&;
 
-  template <typename T_ComplexContainerStruct_map_of_iobufs_struct_setter = ::std::map<::std::string,  ::some::valid::ns::IOBuf>>
-  ::std::map<::std::string,  ::some::valid::ns::IOBuf>& set_map_of_iobufs(T_ComplexContainerStruct_map_of_iobufs_struct_setter&& map_of_iobufs_) {
+  template <typename T_ComplexContainerStruct_map_of_iobufs_struct_setter = std::map<std::string,  ::some::valid::ns::IOBuf>>
+  std::map<std::string,  ::some::valid::ns::IOBuf>& set_map_of_iobufs(T_ComplexContainerStruct_map_of_iobufs_struct_setter&& map_of_iobufs_) {
     map_of_iobufs = std::forward<T_ComplexContainerStruct_map_of_iobufs_struct_setter>(map_of_iobufs_);
     __isset.map_of_iobufs = true;
     return map_of_iobufs;
   }
-  const ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>& get_map_of_iobuf_ptrs() const&;
-  ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> get_map_of_iobuf_ptrs() &&;
+  const std::map<std::string,  ::some::valid::ns::IOBufPtr>& get_map_of_iobuf_ptrs() const&;
+  std::map<std::string,  ::some::valid::ns::IOBufPtr> get_map_of_iobuf_ptrs() &&;
 
-  template <typename T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter = ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>>
-  ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>& set_map_of_iobuf_ptrs(T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter&& map_of_iobuf_ptrs_) {
+  template <typename T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter = std::map<std::string,  ::some::valid::ns::IOBufPtr>>
+  std::map<std::string,  ::some::valid::ns::IOBufPtr>& set_map_of_iobuf_ptrs(T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter&& map_of_iobuf_ptrs_) {
     map_of_iobuf_ptrs = std::forward<T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter>(map_of_iobuf_ptrs_);
     __isset.map_of_iobuf_ptrs = true;
     return map_of_iobuf_ptrs;

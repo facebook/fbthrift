@@ -133,7 +133,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, std::string package__arg, std::string annotation_with_quote__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -182,12 +182,12 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   ~MyStruct();
 
   int64_t MyIntField;
-  ::std::string MyStringField;
+  std::string MyStringField;
    ::cpp2::MyDataItem MyDataField;
   int64_t majorVer;
    ::cpp2::MyEnum myEnum;
-  ::std::string package;
-  ::std::string annotation_with_quote;
+  std::string package;
+  std::string annotation_with_quote;
 
   struct __isset {
     bool MyIntField;
@@ -211,16 +211,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyIntField;
   }
 
-  const ::std::string& get_MyStringField() const& {
+  const std::string& get_MyStringField() const& {
     return MyStringField;
   }
 
-  ::std::string get_MyStringField() && {
+  std::string get_MyStringField() && {
     return std::move(MyStringField);
   }
 
-  template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
-  ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
+  template <typename T_MyStruct_MyStringField_struct_setter = std::string>
+  std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     __isset.MyStringField = true;
     return MyStringField;
@@ -255,31 +255,31 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return myEnum;
   }
 
-  const ::std::string& get_package() const& {
+  const std::string& get_package() const& {
     return package;
   }
 
-  ::std::string get_package() && {
+  std::string get_package() && {
     return std::move(package);
   }
 
-  template <typename T_MyStruct_package_struct_setter = ::std::string>
-  ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
+  template <typename T_MyStruct_package_struct_setter = std::string>
+  std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
     __isset.package = true;
     return package;
   }
 
-  const ::std::string& get_annotation_with_quote() const& {
+  const std::string& get_annotation_with_quote() const& {
     return annotation_with_quote;
   }
 
-  ::std::string get_annotation_with_quote() && {
+  std::string get_annotation_with_quote() && {
     return std::move(annotation_with_quote);
   }
 
-  template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
-  ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
+  template <typename T_MyStruct_annotation_with_quote_struct_setter = std::string>
+  std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
     __isset.annotation_with_quote = true;
     return annotation_with_quote;

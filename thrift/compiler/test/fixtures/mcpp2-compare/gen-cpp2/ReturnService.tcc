@@ -33,29 +33,29 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 typedef apache::thrift::ThriftPresult<false> ReturnService_doubleReturn_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_DOUBLE, double*>> ReturnService_doubleReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_stringReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> ReturnService_stringReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> ReturnService_stringReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_binaryReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> ReturnService_binaryReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> ReturnService_binaryReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_mapReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP, ::std::map<::std::string, int64_t>*>> ReturnService_mapReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_MAP, std::map<std::string, int64_t>*>> ReturnService_mapReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_simpleTypedefReturn_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32,  ::some::valid::ns::simpleTypeDef*>> ReturnService_simpleTypedefReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_complexTypedefReturn_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST,  ::some::valid::ns::complexStructTypeDef*>> ReturnService_complexTypedefReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_list_mostComplexTypedefReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::mostComplexTypeDef>*>> ReturnService_list_mostComplexTypedefReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, std::vector< ::some::valid::ns::mostComplexTypeDef>*>> ReturnService_list_mostComplexTypedefReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_enumReturn_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_I32,  ::some::valid::ns::MyEnumA*>> ReturnService_enumReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_list_EnumReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::MyEnumA>*>> ReturnService_list_EnumReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, std::vector< ::some::valid::ns::MyEnumA>*>> ReturnService_list_EnumReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_structReturn_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::MyStruct*>> ReturnService_structReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_set_StructReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_SET, ::std::set< ::some::valid::ns::MyStruct>*>> ReturnService_set_StructReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_SET, std::set< ::some::valid::ns::MyStruct>*>> ReturnService_set_StructReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_unionReturn_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::some::valid::ns::ComplexUnion*>> ReturnService_unionReturn_presult;
 typedef apache::thrift::ThriftPresult<false> ReturnService_list_UnionReturn_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, ::std::vector< ::some::valid::ns::ComplexUnion>*>> ReturnService_list_UnionReturn_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, std::vector< ::some::valid::ns::ComplexUnion>*>> ReturnService_list_UnionReturn_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> ReturnService_readDataEb_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING,  ::some::valid::ns::IOBuf*>> ReturnService_readDataEb_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> ReturnService_readData_pargs;
@@ -461,16 +461,16 @@ void ReturnServiceAsyncProcessor::process_stringReturn(std::unique_ptr<apache::t
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_stringReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_stringReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_stringReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_stringReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_stringReturn(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_stringReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_stringReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return) {
   ProtocolOut_ prot;
   ReturnService_stringReturn_presult result;
-  result.get<0>().value = const_cast<::std::string*>(&_return);
+  result.get<0>().value = const_cast<std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("stringReturn", &prot, protoSeqId, ctx, result);
 }
@@ -513,7 +513,7 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(std::unique_ptr<apache::t
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_binaryReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_binaryReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_binaryReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_binaryReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -523,10 +523,10 @@ void ReturnServiceAsyncProcessor::process_binaryReturn(std::unique_ptr<apache::t
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_binaryReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_binaryReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return) {
   ProtocolOut_ prot;
   ReturnService_binaryReturn_presult result;
-  result.get<0>().value = const_cast<::std::string*>(&_return);
+  result.get<0>().value = const_cast<std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("binaryReturn", &prot, protoSeqId, ctx, result);
 }
@@ -569,7 +569,7 @@ void ReturnServiceAsyncProcessor::process_mapReturn(std::unique_ptr<apache::thri
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_mapReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>>(std::move(req), std::move(ctxStack), return_mapReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_mapReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -579,10 +579,10 @@ void ReturnServiceAsyncProcessor::process_mapReturn(std::unique_ptr<apache::thri
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_mapReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::map<::std::string, int64_t> const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_mapReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::map<std::string, int64_t> const& _return) {
   ProtocolOut_ prot;
   ReturnService_mapReturn_presult result;
-  result.get<0>().value = const_cast<::std::map<::std::string, int64_t>*>(&_return);
+  result.get<0>().value = const_cast<std::map<std::string, int64_t>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("mapReturn", &prot, protoSeqId, ctx, result);
 }
@@ -737,7 +737,7 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(std::uni
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>>>(std::move(req), std::move(ctxStack), return_list_mostComplexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>>>(std::move(req), std::move(ctxStack), return_list_mostComplexTypedefReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_mostComplexTypedefReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -747,10 +747,10 @@ void ReturnServiceAsyncProcessor::process_list_mostComplexTypedefReturn(std::uni
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_list_mostComplexTypedefReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::mostComplexTypeDef> const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_list_mostComplexTypedefReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::vector< ::some::valid::ns::mostComplexTypeDef> const& _return) {
   ProtocolOut_ prot;
   ReturnService_list_mostComplexTypedefReturn_presult result;
-  result.get<0>().value = const_cast<::std::vector< ::some::valid::ns::mostComplexTypeDef>*>(&_return);
+  result.get<0>().value = const_cast<std::vector< ::some::valid::ns::mostComplexTypeDef>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("list_mostComplexTypedefReturn", &prot, protoSeqId, ctx, result);
 }
@@ -835,16 +835,16 @@ void ReturnServiceAsyncProcessor::process_list_EnumReturn(std::unique_ptr<apache
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_list_EnumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_EnumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>>(std::move(req), std::move(ctxStack), return_list_EnumReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_EnumReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_list_EnumReturn(std::move(callback));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_list_EnumReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::MyEnumA> const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_list_EnumReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::vector< ::some::valid::ns::MyEnumA> const& _return) {
   ProtocolOut_ prot;
   ReturnService_list_EnumReturn_presult result;
-  result.get<0>().value = const_cast<::std::vector< ::some::valid::ns::MyEnumA>*>(&_return);
+  result.get<0>().value = const_cast<std::vector< ::some::valid::ns::MyEnumA>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("list_EnumReturn", &prot, protoSeqId, ctx, result);
 }
@@ -943,7 +943,7 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(std::unique_ptr<apach
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_set_StructReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_set_StructReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>>(std::move(req), std::move(ctxStack), return_set_StructReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_set_StructReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -953,10 +953,10 @@ void ReturnServiceAsyncProcessor::process_set_StructReturn(std::unique_ptr<apach
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_set_StructReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::set< ::some::valid::ns::MyStruct> const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_set_StructReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::set< ::some::valid::ns::MyStruct> const& _return) {
   ProtocolOut_ prot;
   ReturnService_set_StructReturn_presult result;
-  result.get<0>().value = const_cast<::std::set< ::some::valid::ns::MyStruct>*>(&_return);
+  result.get<0>().value = const_cast<std::set< ::some::valid::ns::MyStruct>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("set_StructReturn", &prot, protoSeqId, ctx, result);
 }
@@ -1046,7 +1046,7 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(std::unique_ptr<apach
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_list_UnionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_UnionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>>(std::move(req), std::move(ctxStack), return_list_UnionReturn<ProtocolIn_,ProtocolOut_>, throw_wrapped_list_UnionReturn<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1056,10 +1056,10 @@ void ReturnServiceAsyncProcessor::process_list_UnionReturn(std::unique_ptr<apach
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue ReturnServiceAsyncProcessor::return_list_UnionReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::vector< ::some::valid::ns::ComplexUnion> const& _return) {
+folly::IOBufQueue ReturnServiceAsyncProcessor::return_list_UnionReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::vector< ::some::valid::ns::ComplexUnion> const& _return) {
   ProtocolOut_ prot;
   ReturnService_list_UnionReturn_presult result;
-  result.get<0>().value = const_cast<::std::vector< ::some::valid::ns::ComplexUnion>*>(&_return);
+  result.get<0>().value = const_cast<std::vector< ::some::valid::ns::ComplexUnion>*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("list_UnionReturn", &prot, protoSeqId, ctx, result);
 }

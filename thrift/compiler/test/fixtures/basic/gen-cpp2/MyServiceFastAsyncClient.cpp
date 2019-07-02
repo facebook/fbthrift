@@ -22,14 +22,14 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyServiceFast_ping_pargs;
 typedef apache::thrift::ThriftPresult<true> MyServiceFast_ping_presult;
 typedef apache::thrift::ThriftPresult<false> MyServiceFast_getRandomData_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> MyServiceFast_getRandomData_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> MyServiceFast_getRandomData_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> MyServiceFast_hasDataById_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_BOOL, bool*>> MyServiceFast_hasDataById_presult;
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>> MyServiceFast_getDataById_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> MyServiceFast_getDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, ::std::string*>> MyServiceFast_putDataById_pargs;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> MyServiceFast_getDataById_presult;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, std::string*>> MyServiceFast_putDataById_pargs;
 typedef apache::thrift::ThriftPresult<true> MyServiceFast_putDataById_presult;
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, ::std::string*>> MyServiceFast_lobDataById_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_I64, int64_t*>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRING, std::string*>> MyServiceFast_lobDataById_pargs;
 
 template <typename Protocol_>
 void MyServiceFastAsyncClient::pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -74,11 +74,11 @@ void MyServiceFastAsyncClient::getDataByIdT(Protocol_* prot, apache::thrift::Rpc
 }
 
 template <typename Protocol_>
-void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const std::string& data) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyServiceFast_putDataById_pargs args;
   args.get<0>().value = &id;
-  args.get<1>().value = const_cast<::std::string*>(&data);
+  args.get<1>().value = const_cast<std::string*>(&data);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "putDataById", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
@@ -86,11 +86,11 @@ void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::Rpc
 }
 
 template <typename Protocol_>
-void MyServiceFastAsyncClient::lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::lobDataByIdT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const std::string& data) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   MyServiceFast_lobDataById_pargs args;
   args.get<0>().value = &id;
-  args.get<1>().value = const_cast<::std::string*>(&data);
+  args.get<1>().value = const_cast<std::string*>(&data);
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "lobDataById", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
@@ -283,12 +283,12 @@ void MyServiceFastAsyncClient::getRandomDataImpl(apache::thrift::RpcOptions& rpc
   }
 }
 
-void MyServiceFastAsyncClient::sync_getRandomData(::std::string& _return) {
+void MyServiceFastAsyncClient::sync_getRandomData(std::string& _return) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_getRandomData(rpcOptions, _return);
 }
 
-void MyServiceFastAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return) {
+void MyServiceFastAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
@@ -310,40 +310,40 @@ void MyServiceFastAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rp
   recv_getRandomData(_return, _returnState);
 }
 
-folly::Future<::std::string> MyServiceFastAsyncClient::future_getRandomData() {
+folly::Future<std::string> MyServiceFastAsyncClient::future_getRandomData() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getRandomData(rpcOptions);
 }
 
-folly::SemiFuture<::std::string> MyServiceFastAsyncClient::semifuture_getRandomData() {
+folly::SemiFuture<std::string> MyServiceFastAsyncClient::semifuture_getRandomData() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getRandomData(rpcOptions);
 }
 
-folly::Future<::std::string> MyServiceFastAsyncClient::future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<::std::string> _promise;
+folly::Future<std::string> MyServiceFastAsyncClient::future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(_promise), recv_wrapped_getRandomData, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<std::string>>(std::move(_promise), recv_wrapped_getRandomData, channel_);
   getRandomData(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<::std::string> MyServiceFastAsyncClient::semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::string> MyServiceFastAsyncClient::semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_getRandomData, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getRandomData(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(_promise), recv_wrapped_getRandomData, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_getRandomData, channel_);
   getRandomData(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_getRandomData, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getRandomData(rpcOptions, std::move(callback));
@@ -354,7 +354,7 @@ void MyServiceFastAsyncClient::getRandomData(folly::Function<void (::apache::thr
   getRandomData(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
-folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getRandomData(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -384,18 +384,18 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getRandomData(::
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void MyServiceFastAsyncClient::recv_getRandomData(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void MyServiceFastAsyncClient::recv_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getRandomData(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void MyServiceFastAsyncClient::recv_instance_getRandomData(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void MyServiceFastAsyncClient::recv_instance_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_getRandomData(_return, state);
 }
 
-folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_getRandomData(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_getRandomData(_return, state);
 }
 
@@ -585,12 +585,12 @@ void MyServiceFastAsyncClient::getDataByIdImpl(apache::thrift::RpcOptions& rpcOp
   }
 }
 
-void MyServiceFastAsyncClient::sync_getDataById(::std::string& _return, int64_t id) {
+void MyServiceFastAsyncClient::sync_getDataById(std::string& _return, int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_getDataById(rpcOptions, _return, id);
 }
 
-void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, int64_t id) {
+void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, std::string& _return, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
@@ -612,40 +612,40 @@ void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcO
   recv_getDataById(_return, _returnState);
 }
 
-folly::Future<::std::string> MyServiceFastAsyncClient::future_getDataById(int64_t id) {
+folly::Future<std::string> MyServiceFastAsyncClient::future_getDataById(int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_getDataById(rpcOptions, id);
 }
 
-folly::SemiFuture<::std::string> MyServiceFastAsyncClient::semifuture_getDataById(int64_t id) {
+folly::SemiFuture<std::string> MyServiceFastAsyncClient::semifuture_getDataById(int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_getDataById(rpcOptions, id);
 }
 
-folly::Future<::std::string> MyServiceFastAsyncClient::future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  folly::Promise<::std::string> _promise;
+folly::Future<std::string> MyServiceFastAsyncClient::future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+  folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(_promise), recv_wrapped_getDataById, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<std::string>>(std::move(_promise), recv_wrapped_getDataById, channel_);
   getDataById(rpcOptions, std::move(callback), id);
   return _future;
 }
 
-folly::SemiFuture<::std::string> MyServiceFastAsyncClient::semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+folly::SemiFuture<std::string> MyServiceFastAsyncClient::semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_getDataById, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getDataById(rpcOptions, std::move(callback), id);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
-  folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(_promise), recv_wrapped_getDataById, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_getDataById, channel_);
   getDataById(rpcOptions, std::move(callback), id);
   return _future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_getDataById, channel_);
   auto callback = std::move(callbackAndFuture.first);
   getDataById(rpcOptions, std::move(callback), id);
@@ -656,7 +656,7 @@ void MyServiceFastAsyncClient::getDataById(folly::Function<void (::apache::thrif
   getDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
 
-folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getDataById(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getDataById(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -686,27 +686,27 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getDataById(::st
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void MyServiceFastAsyncClient::recv_getDataById(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void MyServiceFastAsyncClient::recv_getDataById(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getDataById(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void MyServiceFastAsyncClient::recv_instance_getDataById(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void MyServiceFastAsyncClient::recv_instance_getDataById(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_getDataById(_return, state);
 }
 
-folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_getDataById(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_getDataById(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_getDataById(_return, state);
 }
 
-void MyServiceFastAsyncClient::putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   putDataById(rpcOptions, std::move(callback), id, data);
 }
 
-void MyServiceFastAsyncClient::putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "MyServiceFast.putDataById");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
@@ -714,7 +714,7 @@ void MyServiceFastAsyncClient::putDataById(apache::thrift::RpcOptions& rpcOption
   putDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id, data);
 }
 
-void MyServiceFastAsyncClient::putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const std::string& data) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -735,12 +735,12 @@ void MyServiceFastAsyncClient::putDataByIdImpl(apache::thrift::RpcOptions& rpcOp
   }
 }
 
-void MyServiceFastAsyncClient::sync_putDataById(int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::sync_putDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_putDataById(rpcOptions, id, data);
 }
 
-void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
@@ -762,17 +762,17 @@ void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcO
   recv_putDataById(_returnState);
 }
 
-folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(int64_t id, const ::std::string& data) {
+folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_putDataById(rpcOptions, id, data);
 }
 
-folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_putDataById(int64_t id, const ::std::string& data) {
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_putDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_putDataById(rpcOptions, id, data);
 }
 
-folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_putDataById, channel_);
@@ -780,14 +780,14 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_putDataById(apache::
   return _future;
 }
 
-folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_putDataById, channel_);
   auto callback = std::move(callbackAndFuture.first);
   putDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_future_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_putDataById, channel_);
@@ -795,14 +795,14 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceFastAsyncClient::header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_putDataById, channel_);
   auto callback = std::move(callbackAndFuture.first);
   putDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
 
-void MyServiceFastAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   putDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 
@@ -851,12 +851,12 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_putData
   return recv_wrapped_putDataById(state);
 }
 
-void MyServiceFastAsyncClient::lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   lobDataById(rpcOptions, std::move(callback), id, data);
 }
 
-void MyServiceFastAsyncClient::lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "MyServiceFast.lobDataById");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.oneWay = true;
@@ -865,7 +865,7 @@ void MyServiceFastAsyncClient::lobDataById(apache::thrift::RpcOptions& rpcOption
   lobDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id, data);
 }
 
-void MyServiceFastAsyncClient::lobDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::lobDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const std::string& data) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
@@ -886,12 +886,12 @@ void MyServiceFastAsyncClient::lobDataByIdImpl(apache::thrift::RpcOptions& rpcOp
   }
 }
 
-void MyServiceFastAsyncClient::sync_lobDataById(int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::sync_lobDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_lobDataById(rpcOptions, id, data);
 }
 
-void MyServiceFastAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<true> callback(&_returnState);
   auto evb = getChannel()->getEventBase();
@@ -900,17 +900,17 @@ void MyServiceFastAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcO
   callback.waitUntilDone(evb);
 }
 
-folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(int64_t id, const ::std::string& data) {
+folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_lobDataById(rpcOptions, id, data);
 }
 
-folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(int64_t id, const ::std::string& data) {
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_lobDataById(rpcOptions, id, data);
 }
 
-folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
   auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
@@ -918,14 +918,14 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(apache::
   return _future;
 }
 
-folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+folly::SemiFuture<folly::Unit> MyServiceFastAsyncClient::semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   auto callbackAndFuture = makeOneWaySemiFutureCallback(channel_);
   auto callback = std::move(callbackAndFuture.first);
   lobDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
 
-void MyServiceFastAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data) {
+void MyServiceFastAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   lobDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 

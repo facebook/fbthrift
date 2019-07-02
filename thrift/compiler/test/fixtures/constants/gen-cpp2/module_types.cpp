@@ -249,7 +249,7 @@ void TccStructTraits<::cpp2::union2>::translateFieldName(
 
 namespace cpp2 {
 
-Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg) :
+Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
     employer(std::move(employer__arg)) {
@@ -433,7 +433,7 @@ template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 } // cpp2
 namespace cpp2 {
 
-struct1::struct1(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
+struct1::struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
@@ -493,7 +493,7 @@ template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
-struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg,  ::cpp2::struct1 c__arg, ::std::vector<int32_t> d__arg) :
+struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -559,11 +559,11 @@ const  ::cpp2::struct1& struct2::get_c() const& {
   return std::move(c);
 }
 
-const ::std::vector<int32_t>& struct2::get_d() const& {
+const std::vector<int32_t>& struct2::get_d() const& {
   return d;
 }
 
-::std::vector<int32_t> struct2::get_d() && {
+std::vector<int32_t> struct2::get_d() && {
   return std::move(d);
 }
 
@@ -589,7 +589,7 @@ template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 namespace cpp2 {
 
-struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
+struct3::struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {

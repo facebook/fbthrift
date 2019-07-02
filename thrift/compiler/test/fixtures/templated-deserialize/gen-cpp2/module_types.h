@@ -209,7 +209,7 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::std::vector< ::cpp2::IndirectionA> fieldN__arg, ::std::vector< ::cpp2::IndirectionB> fieldO__arg, ::std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<::std::map<::std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg);
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg, std::unique_ptr<std::map<std::string, bool>> fieldR__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldS__arg, std::shared_ptr< ::cpp2::SmallStruct> fieldT__arg, std::shared_ptr<const  ::cpp2::SmallStruct> fieldU__arg, std::unique_ptr< ::cpp2::SmallStruct> fieldX__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     fieldA = arg.extract();
@@ -326,23 +326,23 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   ~containerStruct();
 
   bool fieldA;
-  ::std::map<::std::string, bool> fieldB;
-  ::std::set<int32_t> fieldC;
-  ::std::string fieldD;
-  ::std::string fieldE;
-  ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF;
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
-  ::std::vector<::std::set<int32_t>> fieldH;
+  std::map<std::string, bool> fieldB;
+  std::set<int32_t> fieldC;
+  std::string fieldD;
+  std::string fieldE;
+  std::vector<std::vector<std::vector<int32_t>>> fieldF;
+  std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG;
+  std::vector<std::set<int32_t>> fieldH;
   bool fieldI;
-  ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
-  ::std::set<::std::set<::std::set<bool>>> fieldL;
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
-  ::std::vector< ::cpp2::IndirectionA> fieldN;
-  ::std::vector< ::cpp2::IndirectionB> fieldO;
-  ::std::vector< ::cpp2::IndirectionC> fieldP;
+  std::map<std::string, std::vector<int32_t>> fieldJ;
+  std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK;
+  std::set<std::set<std::set<bool>>> fieldL;
+  std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM;
+  std::vector< ::cpp2::IndirectionA> fieldN;
+  std::vector< ::cpp2::IndirectionB> fieldO;
+  std::vector< ::cpp2::IndirectionC> fieldP;
    ::cpp2::MyEnumA fieldQ;
-  std::unique_ptr<::std::map<::std::string, bool>> fieldR;
+  std::unique_ptr<std::map<std::string, bool>> fieldR;
   std::unique_ptr< ::cpp2::SmallStruct> fieldS;
   std::shared_ptr< ::cpp2::SmallStruct> fieldT;
   std::shared_ptr<const  ::cpp2::SmallStruct> fieldU;
@@ -379,77 +379,77 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldA = true;
     return fieldA;
   }
-  const ::std::map<::std::string, bool>& get_fieldB() const&;
-  ::std::map<::std::string, bool> get_fieldB() &&;
+  const std::map<std::string, bool>& get_fieldB() const&;
+  std::map<std::string, bool> get_fieldB() &&;
 
-  template <typename T_containerStruct_fieldB_struct_setter = ::std::map<::std::string, bool>>
-  ::std::map<::std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
+  template <typename T_containerStruct_fieldB_struct_setter = std::map<std::string, bool>>
+  std::map<std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
     __isset.fieldB = true;
     return fieldB;
   }
-  const ::std::set<int32_t>& get_fieldC() const&;
-  ::std::set<int32_t> get_fieldC() &&;
+  const std::set<int32_t>& get_fieldC() const&;
+  std::set<int32_t> get_fieldC() &&;
 
-  template <typename T_containerStruct_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
+  template <typename T_containerStruct_fieldC_struct_setter = std::set<int32_t>>
+  std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
     __isset.fieldC = true;
     return fieldC;
   }
 
-  const ::std::string& get_fieldD() const& {
+  const std::string& get_fieldD() const& {
     return fieldD;
   }
 
-  ::std::string get_fieldD() && {
+  std::string get_fieldD() && {
     return std::move(fieldD);
   }
 
-  template <typename T_containerStruct_fieldD_struct_setter = ::std::string>
-  ::std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
+  template <typename T_containerStruct_fieldD_struct_setter = std::string>
+  std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct_fieldD_struct_setter>(fieldD_);
     __isset.fieldD = true;
     return fieldD;
   }
 
-  const ::std::string& get_fieldE() const& {
+  const std::string& get_fieldE() const& {
     return fieldE;
   }
 
-  ::std::string get_fieldE() && {
+  std::string get_fieldE() && {
     return std::move(fieldE);
   }
 
-  template <typename T_containerStruct_fieldE_struct_setter = ::std::string>
-  ::std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
+  template <typename T_containerStruct_fieldE_struct_setter = std::string>
+  std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct_fieldE_struct_setter>(fieldE_);
     __isset.fieldE = true;
     return fieldE;
   }
-  const ::std::vector<::std::vector<::std::vector<int32_t>>>& get_fieldF() const&;
-  ::std::vector<::std::vector<::std::vector<int32_t>>> get_fieldF() &&;
+  const std::vector<std::vector<std::vector<int32_t>>>& get_fieldF() const&;
+  std::vector<std::vector<std::vector<int32_t>>> get_fieldF() &&;
 
-  template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<::std::vector<int32_t>>>>
-  ::std::vector<::std::vector<::std::vector<int32_t>>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
+  template <typename T_containerStruct_fieldF_struct_setter = std::vector<std::vector<std::vector<int32_t>>>>
+  std::vector<std::vector<std::vector<int32_t>>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
     __isset.fieldF = true;
     return fieldF;
   }
-  const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& get_fieldG() const&;
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> get_fieldG() &&;
+  const std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>& get_fieldG() const&;
+  std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> get_fieldG() &&;
 
-  template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_containerStruct_fieldG_struct_setter = std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>>
+  std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
     __isset.fieldG = true;
     return fieldG;
   }
-  const ::std::vector<::std::set<int32_t>>& get_fieldH() const&;
-  ::std::vector<::std::set<int32_t>> get_fieldH() &&;
+  const std::vector<std::set<int32_t>>& get_fieldH() const&;
+  std::vector<std::set<int32_t>> get_fieldH() &&;
 
-  template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<int32_t>>>
-  ::std::vector<::std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
+  template <typename T_containerStruct_fieldH_struct_setter = std::vector<std::set<int32_t>>>
+  std::vector<std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
     __isset.fieldH = true;
     return fieldH;
@@ -464,65 +464,65 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
     __isset.fieldI = true;
     return fieldI;
   }
-  const ::std::map<::std::string, ::std::vector<int32_t>>& get_fieldJ() const&;
-  ::std::map<::std::string, ::std::vector<int32_t>> get_fieldJ() &&;
+  const std::map<std::string, std::vector<int32_t>>& get_fieldJ() const&;
+  std::map<std::string, std::vector<int32_t>> get_fieldJ() &&;
 
-  template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<int32_t>>>
-  ::std::map<::std::string, ::std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
+  template <typename T_containerStruct_fieldJ_struct_setter = std::map<std::string, std::vector<int32_t>>>
+  std::map<std::string, std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
     __isset.fieldJ = true;
     return fieldJ;
   }
-  const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& get_fieldK() const&;
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> get_fieldK() &&;
+  const std::vector<std::vector<std::vector<std::vector<int32_t>>>>& get_fieldK() const&;
+  std::vector<std::vector<std::vector<std::vector<int32_t>>>> get_fieldK() &&;
 
-  template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
+  template <typename T_containerStruct_fieldK_struct_setter = std::vector<std::vector<std::vector<std::vector<int32_t>>>>>
+  std::vector<std::vector<std::vector<std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
     __isset.fieldK = true;
     return fieldK;
   }
-  const ::std::set<::std::set<::std::set<bool>>>& get_fieldL() const&;
-  ::std::set<::std::set<::std::set<bool>>> get_fieldL() &&;
+  const std::set<std::set<std::set<bool>>>& get_fieldL() const&;
+  std::set<std::set<std::set<bool>>> get_fieldL() &&;
 
-  template <typename T_containerStruct_fieldL_struct_setter = ::std::set<::std::set<::std::set<bool>>>>
-  ::std::set<::std::set<::std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
+  template <typename T_containerStruct_fieldL_struct_setter = std::set<std::set<std::set<bool>>>>
+  std::set<std::set<std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_containerStruct_fieldL_struct_setter>(fieldL_);
     __isset.fieldL = true;
     return fieldL;
   }
-  const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
+  const std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& get_fieldM() const&;
+  std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> get_fieldM() &&;
 
-  template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
+  template <typename T_containerStruct_fieldM_struct_setter = std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>
+  std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
     __isset.fieldM = true;
     return fieldM;
   }
-  const ::std::vector< ::cpp2::IndirectionA>& get_fieldN() const&;
-  ::std::vector< ::cpp2::IndirectionA> get_fieldN() &&;
+  const std::vector< ::cpp2::IndirectionA>& get_fieldN() const&;
+  std::vector< ::cpp2::IndirectionA> get_fieldN() &&;
 
-  template <typename T_containerStruct_fieldN_struct_setter = ::std::vector< ::cpp2::IndirectionA>>
-  ::std::vector< ::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_) {
+  template <typename T_containerStruct_fieldN_struct_setter = std::vector< ::cpp2::IndirectionA>>
+  std::vector< ::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_) {
     fieldN = std::forward<T_containerStruct_fieldN_struct_setter>(fieldN_);
     __isset.fieldN = true;
     return fieldN;
   }
-  const ::std::vector< ::cpp2::IndirectionB>& get_fieldO() const&;
-  ::std::vector< ::cpp2::IndirectionB> get_fieldO() &&;
+  const std::vector< ::cpp2::IndirectionB>& get_fieldO() const&;
+  std::vector< ::cpp2::IndirectionB> get_fieldO() &&;
 
-  template <typename T_containerStruct_fieldO_struct_setter = ::std::vector< ::cpp2::IndirectionB>>
-  ::std::vector< ::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
+  template <typename T_containerStruct_fieldO_struct_setter = std::vector< ::cpp2::IndirectionB>>
+  std::vector< ::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_containerStruct_fieldO_struct_setter>(fieldO_);
     __isset.fieldO = true;
     return fieldO;
   }
-  const ::std::vector< ::cpp2::IndirectionC>& get_fieldP() const&;
-  ::std::vector< ::cpp2::IndirectionC> get_fieldP() &&;
+  const std::vector< ::cpp2::IndirectionC>& get_fieldP() const&;
+  std::vector< ::cpp2::IndirectionC> get_fieldP() &&;
 
-  template <typename T_containerStruct_fieldP_struct_setter = ::std::vector< ::cpp2::IndirectionC>>
-  ::std::vector< ::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
+  template <typename T_containerStruct_fieldP_struct_setter = std::vector< ::cpp2::IndirectionC>>
+  std::vector< ::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
     __isset.fieldP = true;
     return fieldP;

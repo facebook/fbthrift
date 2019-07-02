@@ -367,7 +367,7 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::tran
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg) :
+decorated_struct::decorated_struct(apache::thrift::FragileConstructor, std::string field__arg) :
     field(std::move(field__arg)) {
   __isset.field = true;
 }
@@ -422,7 +422,7 @@ ContainerStruct::ContainerStruct() {}
 
 ContainerStruct::~ContainerStruct() {}
 
-ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
+ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -485,11 +485,11 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   return true;
 }
 
-const ::std::vector<int32_t>& ContainerStruct::get_fieldA() const& {
+const std::vector<int32_t>& ContainerStruct::get_fieldA() const& {
   return fieldA;
 }
 
-::std::vector<int32_t> ContainerStruct::get_fieldA() && {
+std::vector<int32_t> ContainerStruct::get_fieldA() && {
   return std::move(fieldA);
 }
 
@@ -533,11 +533,11 @@ folly::sorted_vector_set<int32_t> ContainerStruct::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const folly::sorted_vector_map<int32_t, ::std::string>& ContainerStruct::get_fieldG() const& {
+const folly::sorted_vector_map<int32_t, std::string>& ContainerStruct::get_fieldG() const& {
   return fieldG;
 }
 
-folly::sorted_vector_map<int32_t, ::std::string> ContainerStruct::get_fieldG() && {
+folly::sorted_vector_map<int32_t, std::string> ContainerStruct::get_fieldG() && {
   return std::move(fieldG);
 }
 
@@ -871,7 +871,7 @@ template uint32_t TrivialNestedWithDefault::serializedSizeZC<>(apache::thrift::C
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, int32_t> b__arg) :
+ComplexString::ComplexString(apache::thrift::FragileConstructor, std::string a__arg, std::map<std::string, int32_t> b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
@@ -911,11 +911,11 @@ bool ComplexString::operator<(const ComplexString& rhs) const {
   return false;
 }
 
-const ::std::map<::std::string, int32_t>& ComplexString::get_b() const& {
+const std::map<std::string, int32_t>& ComplexString::get_b() const& {
   return b;
 }
 
-::std::map<::std::string, int32_t> ComplexString::get_b() && {
+std::map<std::string, int32_t> ComplexString::get_b() && {
   return std::move(b);
 }
 
@@ -939,7 +939,7 @@ template uint32_t ComplexString::serializedSizeZC<>(apache::thrift::CompactProto
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg) :
+ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg) :
     z(std::move(z__arg)),
     n(std::move(n__arg)) {
   __isset.z = true;
@@ -1116,7 +1116,7 @@ template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocol
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     majorVer(std::move(majorVer__arg)),

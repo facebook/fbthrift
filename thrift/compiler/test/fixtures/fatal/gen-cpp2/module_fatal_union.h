@@ -249,7 +249,7 @@ class union1_variant_traits {
       >
     >,
     ::fatal::variant_member_descriptor<
-      ::std::string,
+      std::string,
       union1__struct_unique_identifiers_list::us,
       union1__struct_unique_getters_list::us,
       union1__struct_unique_setters_list::us,
@@ -524,7 +524,7 @@ class union2_variant_traits {
       >
     >,
     ::fatal::variant_member_descriptor<
-      ::std::string,
+      std::string,
       union2__struct_unique_identifiers_list::us_2,
       union2__struct_unique_getters_list::us_2,
       union2__struct_unique_setters_list::us_2,
@@ -799,7 +799,7 @@ class union3_variant_traits {
       >
     >,
     ::fatal::variant_member_descriptor<
-      ::std::string,
+      std::string,
       union3__struct_unique_identifiers_list::us_3,
       union3__struct_unique_getters_list::us_3,
       union3__struct_unique_setters_list::us_3,
@@ -1111,7 +1111,7 @@ class unionA_variant_traits {
       >
     >,
     ::fatal::variant_member_descriptor<
-      ::std::string,
+      std::string,
       unionA__struct_unique_identifiers_list::s,
       unionA__struct_unique_getters_list::s,
       unionA__struct_unique_setters_list::s,

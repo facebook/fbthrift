@@ -36,7 +36,7 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  IncludedA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg);
+  IncludedA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     i32Field = arg.extract();
@@ -57,7 +57,7 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
   IncludedA& operator=(const IncludedA&) = default;
   void __clear();
   int32_t i32Field;
-  ::std::string strField;
+  std::string strField;
 
   struct __isset {
     bool i32Field;
@@ -76,16 +76,16 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
     return i32Field;
   }
 
-  const ::std::string& get_strField() const& {
+  const std::string& get_strField() const& {
     return strField;
   }
 
-  ::std::string get_strField() && {
+  std::string get_strField() && {
     return std::move(strField);
   }
 
-  template <typename T_IncludedA_strField_struct_setter = ::std::string>
-  ::std::string& set_strField(T_IncludedA_strField_struct_setter&& strField_) {
+  template <typename T_IncludedA_strField_struct_setter = std::string>
+  std::string& set_strField(T_IncludedA_strField_struct_setter&& strField_) {
     strField = std::forward<T_IncludedA_strField_struct_setter>(strField_);
     __isset.strField = true;
     return strField;

@@ -631,7 +631,7 @@ template uint32_t StructWithUnion::serializedSizeZC<>(apache::thrift::CompactPro
 } // cpp2
 namespace cpp2 {
 
-RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::RecursiveStruct> mes__arg) :
+RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, std::vector< ::cpp2::RecursiveStruct> mes__arg) :
     mes(std::move(mes__arg)) {
   __isset.mes = true;
 }
@@ -672,11 +672,11 @@ bool RecursiveStruct::operator<(const RecursiveStruct& rhs) const {
   return false;
 }
 
-const ::std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
+const std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const& {
   return __isset.mes ? std::addressof(mes) : nullptr;
 }
 
-::std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
+std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() & {
   return __isset.mes ? std::addressof(mes) : nullptr;
 }
 
@@ -700,10 +700,10 @@ template uint32_t RecursiveStruct::serializedSizeZC<>(apache::thrift::CompactPro
 namespace cpp2 {
 
 StructWithContainers::StructWithContainers(const StructWithContainers& srcObj) {
-  if (srcObj.list_ref) list_ref.reset(new ::std::vector<int32_t>(*srcObj.list_ref));
-  if (srcObj.set_ref) set_ref.reset(new ::std::set<int32_t>(*srcObj.set_ref));
-  if (srcObj.map_ref) map_ref.reset(new ::std::map<int32_t, int32_t>(*srcObj.map_ref));
-  if (srcObj.list_ref_unique) list_ref_unique.reset(new ::std::vector<int32_t>(*srcObj.list_ref_unique));
+  if (srcObj.list_ref) list_ref.reset(new std::vector<int32_t>(*srcObj.list_ref));
+  if (srcObj.set_ref) set_ref.reset(new std::set<int32_t>(*srcObj.set_ref));
+  if (srcObj.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*srcObj.map_ref));
+  if (srcObj.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*srcObj.list_ref_unique));
   set_ref_shared = srcObj.set_ref_shared;
   list_ref_shared_const = srcObj.list_ref_shared_const;
 }
@@ -715,17 +715,17 @@ StructWithContainers& StructWithContainers::operator=(const StructWithContainers
 }
 
 StructWithContainers::StructWithContainers() :
-      list_ref(std::make_unique<::std::vector<int32_t>>()),
-      set_ref(std::make_unique<::std::set<int32_t>>()),
-      map_ref(std::make_unique<::std::map<int32_t, int32_t>>()),
-      list_ref_unique(std::make_unique<::std::vector<int32_t>>()),
-      set_ref_shared(std::make_shared<::std::set<int32_t>>()),
-      list_ref_shared_const(std::make_shared<::std::vector<int32_t>>()) {}
+      list_ref(std::make_unique<std::vector<int32_t>>()),
+      set_ref(std::make_unique<std::set<int32_t>>()),
+      map_ref(std::make_unique<std::map<int32_t, int32_t>>()),
+      list_ref_unique(std::make_unique<std::vector<int32_t>>()),
+      set_ref_shared(std::make_shared<std::set<int32_t>>()),
+      list_ref_shared_const(std::make_shared<std::vector<int32_t>>()) {}
 
 
 StructWithContainers::~StructWithContainers() {}
 
-StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<int32_t>> list_ref__arg, std::unique_ptr<::std::set<int32_t>> set_ref__arg, std::unique_ptr<::std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<::std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const__arg) :
+StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg) :
     list_ref(std::move(list_ref__arg)),
     set_ref(std::move(set_ref__arg)),
     map_ref(std::move(map_ref__arg)),

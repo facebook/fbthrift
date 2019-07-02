@@ -859,8 +859,8 @@ void RecursiveStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_mes:
   {
-    this->mes = ::std::vector< ::cpp2::RecursiveStruct>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::read(*iprot, this->mes);
+    this->mes = std::vector< ::cpp2::RecursiveStruct>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::cpp2::RecursiveStruct>>::read(*iprot, this->mes);
     this->__isset.mes = true;
   }
 
@@ -911,7 +911,7 @@ uint32_t RecursiveStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("RecursiveStruct");
   if (this->__isset.mes) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->mes);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->mes);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -923,7 +923,7 @@ uint32_t RecursiveStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("RecursiveStruct");
   if (this->__isset.mes) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->mes);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::cpp2::RecursiveStruct>>::serializedSize<false>(*prot_, this->mes);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -935,7 +935,7 @@ uint32_t RecursiveStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("RecursiveStruct");
   if (this->__isset.mes) {
     xfer += prot_->writeFieldBegin("mes", apache::thrift::protocol::T_LIST, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::write(*prot_, this->mes);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::cpp2::RecursiveStruct>>::write(*prot_, this->mes);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -973,8 +973,8 @@ void StructWithContainers::readNoXfer(Protocol_* iprot) {
   }
 _readField_list_ref:
   {
-    std::unique_ptr<::std::vector<int32_t>> ptr = std::make_unique<::std::vector<int32_t>>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, *ptr);
+    std::unique_ptr<std::vector<int32_t>> ptr = std::make_unique<std::vector<int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, *ptr);
     this->list_ref = std::move(ptr);
   }
 
@@ -987,8 +987,8 @@ _readField_list_ref:
   }
 _readField_set_ref:
   {
-    std::unique_ptr<::std::set<int32_t>> ptr = std::make_unique<::std::set<int32_t>>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, *ptr);
+    std::unique_ptr<std::set<int32_t>> ptr = std::make_unique<std::set<int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, *ptr);
     this->set_ref = std::move(ptr);
   }
 
@@ -1001,8 +1001,8 @@ _readField_set_ref:
   }
 _readField_map_ref:
   {
-    std::unique_ptr<::std::map<int32_t, int32_t>> ptr = std::make_unique<::std::map<int32_t, int32_t>>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, *ptr);
+    std::unique_ptr<std::map<int32_t, int32_t>> ptr = std::make_unique<std::map<int32_t, int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, std::map<int32_t, int32_t>>::read(*iprot, *ptr);
     this->map_ref = std::move(ptr);
   }
 
@@ -1015,8 +1015,8 @@ _readField_map_ref:
   }
 _readField_list_ref_unique:
   {
-    std::unique_ptr<::std::vector<int32_t>> ptr = std::make_unique<::std::vector<int32_t>>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, *ptr);
+    std::unique_ptr<std::vector<int32_t>> ptr = std::make_unique<std::vector<int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, *ptr);
     this->list_ref_unique = std::move(ptr);
   }
 
@@ -1029,8 +1029,8 @@ _readField_list_ref_unique:
   }
 _readField_set_ref_shared:
   {
-    std::unique_ptr<::std::set<int32_t>> ptr = std::make_unique<::std::set<int32_t>>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, *ptr);
+    std::unique_ptr<std::set<int32_t>> ptr = std::make_unique<std::set<int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, *ptr);
     this->set_ref_shared = std::move(ptr);
   }
 
@@ -1043,8 +1043,8 @@ _readField_set_ref_shared:
   }
 _readField_list_ref_shared_const:
   {
-    std::unique_ptr<::std::vector<int32_t>> ptr = std::make_unique<::std::vector<int32_t>>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, *ptr);
+    std::unique_ptr<std::vector<int32_t>> ptr = std::make_unique<std::vector<int32_t>>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, *ptr);
     this->list_ref_shared_const = std::move(ptr);
   }
 
@@ -1135,7 +1135,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("StructWithContainers");
   xfer += prot_->serializedFieldSize("list_ref", apache::thrift::protocol::T_LIST, 1);
   if (this->list_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref);
   }
   else {
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1143,7 +1143,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref", apache::thrift::protocol::T_SET, 2);
   if (this->set_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref);
   }
   else {
     xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
@@ -1151,7 +1151,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("map_ref", apache::thrift::protocol::T_MAP, 3);
   if (this->map_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::serializedSize<false>(*prot_, *this->map_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, std::map<int32_t, int32_t>>::serializedSize<false>(*prot_, *this->map_ref);
   }
   else {
     xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
@@ -1159,7 +1159,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
   if (this->list_ref_unique) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_unique);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_unique);
   }
   else {
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1167,7 +1167,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref_shared", apache::thrift::protocol::T_SET, 5);
   if (this->set_ref_shared) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref_shared);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref_shared);
   }
   else {
     xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
@@ -1175,7 +1175,7 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_shared_const", apache::thrift::protocol::T_LIST, 6);
   if (this->list_ref_shared_const) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_shared_const);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_shared_const);
   }
   else {
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1191,7 +1191,7 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("StructWithContainers");
   xfer += prot_->serializedFieldSize("list_ref", apache::thrift::protocol::T_LIST, 1);
   if (this->list_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref);
   }
   else {
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1199,7 +1199,7 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref", apache::thrift::protocol::T_SET, 2);
   if (this->set_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref);
   }
   else {
     xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
@@ -1207,7 +1207,7 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("map_ref", apache::thrift::protocol::T_MAP, 3);
   if (this->map_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::serializedSize<false>(*prot_, *this->map_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, std::map<int32_t, int32_t>>::serializedSize<false>(*prot_, *this->map_ref);
   }
   else {
     xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
@@ -1215,7 +1215,7 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
   if (this->list_ref_unique) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_unique);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_unique);
   }
   else {
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1223,7 +1223,7 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref_shared", apache::thrift::protocol::T_SET, 5);
   if (this->set_ref_shared) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref_shared);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::serializedSize<false>(*prot_, *this->set_ref_shared);
   }
   else {
     xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, 0);
@@ -1231,7 +1231,7 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_shared_const", apache::thrift::protocol::T_LIST, 6);
   if (this->list_ref_shared_const) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_shared_const);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, *this->list_ref_shared_const);
   }
   else {
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1247,7 +1247,7 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithContainers");
   xfer += prot_->writeFieldBegin("list_ref", apache::thrift::protocol::T_LIST, 1);
   if (this->list_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::write(*prot_, *this->list_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::write(*prot_, *this->list_ref);
   }
   else {
     xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1256,7 +1256,7 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("set_ref", apache::thrift::protocol::T_SET, 2);
   if (this->set_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::write(*prot_, *this->set_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::write(*prot_, *this->set_ref);
   }
   else {
     xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, 0);
@@ -1265,7 +1265,7 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("map_ref", apache::thrift::protocol::T_MAP, 3);
   if (this->map_ref) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::write(*prot_, *this->map_ref);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, std::map<int32_t, int32_t>>::write(*prot_, *this->map_ref);
   }
   else {
     xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
@@ -1274,7 +1274,7 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
   if (this->list_ref_unique) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::write(*prot_, *this->list_ref_unique);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::write(*prot_, *this->list_ref_unique);
   }
   else {
     xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, 0);
@@ -1283,7 +1283,7 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("set_ref_shared", apache::thrift::protocol::T_SET, 5);
   if (this->set_ref_shared) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::write(*prot_, *this->set_ref_shared);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::write(*prot_, *this->set_ref_shared);
   }
   else {
     xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, 0);
@@ -1292,7 +1292,7 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("list_ref_shared_const", apache::thrift::protocol::T_LIST, 6);
   if (this->list_ref_shared_const) {
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::write(*prot_, *this->list_ref_shared_const);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::write(*prot_, *this->list_ref_shared_const);
   }
   else {
     xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, 0);

@@ -14,16 +14,16 @@ namespace apache { namespace thrift { namespace frozen {
 
 FROZEN_TYPE(::some::ns::ModuleA,
   FROZEN_FIELD(i32Field, 1, int32_t)
-  FROZEN_FIELD(strField, 2, ::std::string)
-  FROZEN_FIELD(listField, 3, ::std::vector<int16_t>)
-  FROZEN_FIELD(mapField, 4, ::std::map<::std::string, int32_t>)
+  FROZEN_FIELD(strField, 2, std::string)
+  FROZEN_FIELD(listField, 3, std::vector<int16_t>)
+  FROZEN_FIELD(mapField, 4, std::map<std::string, int32_t>)
   FROZEN_FIELD(inclAField, 5,  ::some::ns::IncludedA)
   FROZEN_FIELD(inclBField, 6,  ::some::ns::IncludedB)
   FROZEN_VIEW(
     FROZEN_VIEW_FIELD(i32Field, int32_t)
-    FROZEN_VIEW_FIELD(strField, ::std::string)
-    FROZEN_VIEW_FIELD(listField, ::std::vector<int16_t>)
-    FROZEN_VIEW_FIELD(mapField, ::std::map<::std::string, int32_t>)
+    FROZEN_VIEW_FIELD(strField, std::string)
+    FROZEN_VIEW_FIELD(listField, std::vector<int16_t>)
+    FROZEN_VIEW_FIELD(mapField, std::map<std::string, int32_t>)
     FROZEN_VIEW_FIELD(inclAField,  ::some::ns::IncludedA)
     FROZEN_VIEW_FIELD(inclBField,  ::some::ns::IncludedB))
   FROZEN_SAVE_INLINE(

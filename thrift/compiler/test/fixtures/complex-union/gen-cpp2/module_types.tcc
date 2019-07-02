@@ -108,8 +108,8 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST)) {
           this->set_intListValue();
-          this->mutable_intListValue() = ::std::vector<int64_t>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::read(*iprot, this->mutable_intListValue());
+          this->mutable_intListValue() = std::vector<int64_t>();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::read(*iprot, this->mutable_intListValue());
         } else {
           _readState.skip(iprot);
         }
@@ -119,8 +119,8 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST)) {
           this->set_stringListValue();
-          this->mutable_stringListValue() = ::std::vector<::std::string>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, this->mutable_stringListValue());
+          this->mutable_stringListValue() = std::vector<std::string>();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, this->mutable_stringListValue());
         } else {
           _readState.skip(iprot);
         }
@@ -182,13 +182,13 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     case ComplexUnion::Type::intListValue:
     {
       xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
       break;
     }
     case ComplexUnion::Type::stringListValue:
     {
       xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
       break;
     }
     case ComplexUnion::Type::typedefValue:
@@ -229,13 +229,13 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ComplexUnion::Type::intListValue:
     {
       xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
       break;
     }
     case ComplexUnion::Type::stringListValue:
     {
       xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
       break;
     }
     case ComplexUnion::Type::typedefValue:
@@ -278,14 +278,14 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     case ComplexUnion::Type::intListValue:
     {
       xfer += prot_->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::write(*prot_, this->get_intListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::write(*prot_, this->get_intListValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case ComplexUnion::Type::stringListValue:
     {
       xfer += prot_->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::write(*prot_, this->get_stringListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::write(*prot_, this->get_stringListValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -341,8 +341,8 @@ void ListUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST)) {
           this->set_intListValue();
-          this->mutable_intListValue() = ::std::vector<int64_t>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::read(*iprot, this->mutable_intListValue());
+          this->mutable_intListValue() = std::vector<int64_t>();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::read(*iprot, this->mutable_intListValue());
         } else {
           _readState.skip(iprot);
         }
@@ -352,8 +352,8 @@ void ListUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST)) {
           this->set_stringListValue();
-          this->mutable_stringListValue() = ::std::vector<::std::string>();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, this->mutable_stringListValue());
+          this->mutable_stringListValue() = std::vector<std::string>();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::read(*iprot, this->mutable_stringListValue());
         } else {
           _readState.skip(iprot);
         }
@@ -382,13 +382,13 @@ uint32_t ListUnion::serializedSize(Protocol_ const* prot_) const {
     case ListUnion::Type::intListValue:
     {
       xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
       break;
     }
     case ListUnion::Type::stringListValue:
     {
       xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
       break;
     }
     case ListUnion::Type::__EMPTY__:;
@@ -405,13 +405,13 @@ uint32_t ListUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case ListUnion::Type::intListValue:
     {
       xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
       break;
     }
     case ListUnion::Type::stringListValue:
     {
       xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
       break;
     }
     case ListUnion::Type::__EMPTY__:;
@@ -428,14 +428,14 @@ uint32_t ListUnion::write(Protocol_* prot_) const {
     case ListUnion::Type::intListValue:
     {
       xfer += prot_->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 2);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int64_t>>::write(*prot_, this->get_intListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::write(*prot_, this->get_intListValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case ListUnion::Type::stringListValue:
     {
       xfer += prot_->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 3);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::write(*prot_, this->get_stringListValue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::write(*prot_, this->get_stringListValue());
       xfer += prot_->writeFieldEnd();
       break;
     }

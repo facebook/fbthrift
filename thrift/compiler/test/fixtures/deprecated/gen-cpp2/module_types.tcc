@@ -83,8 +83,8 @@ _readField_houseName:
   }
 _readField_houseColors:
   {
-    this->houseColors = ::std::set< ::cpp2::ColorID>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::read(*iprot, this->houseColors.value());
+    this->houseColors = std::set< ::cpp2::ColorID>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::read(*iprot, this->houseColors.value());
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -154,7 +154,7 @@ uint32_t House::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->houseName);
   if (this->houseColors.hasValue()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -170,7 +170,7 @@ uint32_t House::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->houseName);
   if (this->houseColors.hasValue()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -188,7 +188,7 @@ uint32_t House::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->houseColors.hasValue()) {
     xfer += prot_->writeFieldBegin("houseColors", apache::thrift::protocol::T_SET, 3);
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::write(*prot_, this->houseColors.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::write(*prot_, this->houseColors.value());
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

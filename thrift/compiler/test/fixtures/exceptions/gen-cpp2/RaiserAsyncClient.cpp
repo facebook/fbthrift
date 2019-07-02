@@ -24,9 +24,9 @@ typedef apache::thrift::ThriftPresult<true> Raiser_doBland_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_doRaise_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_doRaise_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get200_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> Raiser_get200_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> Raiser_get200_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get500_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_get500_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_get500_presult;
 
 template <typename Protocol_>
 void RaiserAsyncClient::doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback) {
@@ -404,12 +404,12 @@ void RaiserAsyncClient::get200Impl(apache::thrift::RpcOptions& rpcOptions, std::
   }
 }
 
-void RaiserAsyncClient::sync_get200(::std::string& _return) {
+void RaiserAsyncClient::sync_get200(std::string& _return) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get200(rpcOptions, _return);
 }
 
-void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return) {
+void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
@@ -431,40 +431,40 @@ void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, ::st
   recv_get200(_return, _returnState);
 }
 
-folly::Future<::std::string> RaiserAsyncClient::future_get200() {
+folly::Future<std::string> RaiserAsyncClient::future_get200() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get200(rpcOptions);
 }
 
-folly::SemiFuture<::std::string> RaiserAsyncClient::semifuture_get200() {
+folly::SemiFuture<std::string> RaiserAsyncClient::semifuture_get200() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get200(rpcOptions);
 }
 
-folly::Future<::std::string> RaiserAsyncClient::future_get200(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<::std::string> _promise;
+folly::Future<std::string> RaiserAsyncClient::future_get200(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(_promise), recv_wrapped_get200, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<std::string>>(std::move(_promise), recv_wrapped_get200, channel_);
   get200(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<::std::string> RaiserAsyncClient::semifuture_get200(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::string> RaiserAsyncClient::semifuture_get200(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get200, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get200(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_get200(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_get200(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(_promise), recv_wrapped_get200, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_get200, channel_);
   get200(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_semifuture_get200(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_semifuture_get200(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get200, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get200(rpcOptions, std::move(callback));
@@ -475,7 +475,7 @@ void RaiserAsyncClient::get200(folly::Function<void (::apache::thrift::ClientRec
   get200(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
-folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -505,18 +505,18 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200(::std::string& _
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void RaiserAsyncClient::recv_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void RaiserAsyncClient::recv_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get200(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void RaiserAsyncClient::recv_instance_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void RaiserAsyncClient::recv_instance_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get200(_return, state);
 }
 
-folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get200(_return, state);
 }
 
@@ -554,12 +554,12 @@ void RaiserAsyncClient::get500Impl(apache::thrift::RpcOptions& rpcOptions, std::
   }
 }
 
-void RaiserAsyncClient::sync_get500(::std::string& _return) {
+void RaiserAsyncClient::sync_get500(std::string& _return) {
   ::apache::thrift::RpcOptions rpcOptions;
   sync_get500(rpcOptions, _return);
 }
 
-void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return) {
+void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
@@ -581,40 +581,40 @@ void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, ::st
   recv_get500(_return, _returnState);
 }
 
-folly::Future<::std::string> RaiserAsyncClient::future_get500() {
+folly::Future<std::string> RaiserAsyncClient::future_get500() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_get500(rpcOptions);
 }
 
-folly::SemiFuture<::std::string> RaiserAsyncClient::semifuture_get500() {
+folly::SemiFuture<std::string> RaiserAsyncClient::semifuture_get500() {
   ::apache::thrift::RpcOptions rpcOptions;
   return semifuture_get500(rpcOptions);
 }
 
-folly::Future<::std::string> RaiserAsyncClient::future_get500(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<::std::string> _promise;
+folly::Future<std::string> RaiserAsyncClient::future_get500(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::FutureCallback<::std::string>>(std::move(_promise), recv_wrapped_get500, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<std::string>>(std::move(_promise), recv_wrapped_get500, channel_);
   get500(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<::std::string> RaiserAsyncClient::semifuture_get500(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::string> RaiserAsyncClient::semifuture_get500(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeSemiFutureCallback(recv_wrapped_get500, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get500(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
 
-folly::Future<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_get500(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_future_get500(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<::std::string>>(std::move(_promise), recv_wrapped_get500, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_get500, channel_);
   get500(rpcOptions, std::move(callback));
   return _future;
 }
 
-folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_semifuture_get500(apache::thrift::RpcOptions& rpcOptions) {
+folly::SemiFuture<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> RaiserAsyncClient::header_semifuture_get500(apache::thrift::RpcOptions& rpcOptions) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_get500, channel_);
   auto callback = std::move(callbackAndFuture.first);
   get500(rpcOptions, std::move(callback));
@@ -625,7 +625,7 @@ void RaiserAsyncClient::get500(folly::Function<void (::apache::thrift::ClientRec
   get500(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
-folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
     return std::move(state.exception());
   }
@@ -655,18 +655,18 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500(::std::string& _
   return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
 }
 
-void RaiserAsyncClient::recv_get500(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void RaiserAsyncClient::recv_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get500(_return, state);
   if (ew) {
     ew.throw_exception();
   }
 }
 
-void RaiserAsyncClient::recv_instance_get500(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+void RaiserAsyncClient::recv_instance_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_get500(_return, state);
 }
 
-folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_get500(::std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   return recv_wrapped_get500(_return, state);
 }
 

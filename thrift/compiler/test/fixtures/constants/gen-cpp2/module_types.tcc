@@ -710,8 +710,8 @@ _readField_c:
   }
 _readField_d:
   {
-    this->d = ::std::vector<int32_t>();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->d);
+    this->d = std::vector<int32_t>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->d);
     this->__isset.d = true;
   }
 
@@ -791,7 +791,7 @@ uint32_t struct2::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::serializedSize(prot_, &this->c);
   xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_LIST, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, this->d);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, this->d);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -807,7 +807,7 @@ uint32_t struct2::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::serializedSizeZC(prot_, &this->c);
   xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_LIST, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::serializedSize<false>(*prot_, this->d);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, this->d);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -826,7 +826,7 @@ uint32_t struct2::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::write(prot_, &this->c);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("d", apache::thrift::protocol::T_LIST, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::write(*prot_, this->d);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::write(*prot_, this->d);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

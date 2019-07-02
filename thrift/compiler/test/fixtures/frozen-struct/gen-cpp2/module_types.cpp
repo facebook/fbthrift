@@ -105,7 +105,7 @@ ModuleA::ModuleA() :
 
 ModuleA::~ModuleA() {}
 
-ModuleA::ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<int16_t> listField__arg, ::std::map<::std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
+ModuleA::ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)),
     listField(std::move(listField__arg)),
@@ -181,19 +181,19 @@ bool ModuleA::operator<(const ModuleA& rhs) const {
   return false;
 }
 
-const ::std::vector<int16_t>& ModuleA::get_listField() const& {
+const std::vector<int16_t>& ModuleA::get_listField() const& {
   return listField;
 }
 
-::std::vector<int16_t> ModuleA::get_listField() && {
+std::vector<int16_t> ModuleA::get_listField() && {
   return std::move(listField);
 }
 
-const ::std::map<::std::string, int32_t>& ModuleA::get_mapField() const& {
+const std::map<std::string, int32_t>& ModuleA::get_mapField() const& {
   return mapField;
 }
 
-::std::map<::std::string, int32_t> ModuleA::get_mapField() && {
+std::map<std::string, int32_t> ModuleA::get_mapField() && {
   return std::move(mapField);
 }
 
