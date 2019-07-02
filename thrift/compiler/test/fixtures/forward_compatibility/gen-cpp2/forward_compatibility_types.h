@@ -29,12 +29,12 @@ class NewStructureNestedField;
 // END forward_declare
 // BEGIN typedefs
 namespace cpp2 {
-typedef std::map<int16_t, float> FloatFeatures;
-typedef std::map<int64_t, double> DoubleMapType;
-typedef std::map<int16_t,  ::cpp2::DoubleMapType> OldMapMap;
-typedef std::map<int32_t,  ::cpp2::DoubleMapType> NewMapMap;
-typedef std::map<int16_t, std::vector<float>> OldMapList;
-typedef std::map<int32_t, std::vector<float>> NewMapList;
+typedef ::std::map<int16_t, float> FloatFeatures;
+typedef ::std::map<int64_t, double> DoubleMapType;
+typedef ::std::map<int16_t,  ::cpp2::DoubleMapType> OldMapMap;
+typedef ::std::map<int32_t,  ::cpp2::DoubleMapType> NewMapMap;
+typedef ::std::map<int16_t, ::std::vector<float>> OldMapList;
+typedef ::std::map<int32_t, ::std::vector<float>> NewMapList;
 
 } // cpp2
 // END typedefs
@@ -47,7 +47,7 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
   OldStructure() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  OldStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
+  OldStructure(apache::thrift::FragileConstructor, ::std::map<int16_t, double> features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     features = arg.extract();
@@ -62,18 +62,18 @@ class OldStructure final : private apache::thrift::detail::st::ComparisonOperato
 
   OldStructure& operator=(const OldStructure&) = default;
   void __clear();
-  std::map<int16_t, double> features;
+  ::std::map<int16_t, double> features;
 
   struct __isset {
     bool features;
   } __isset = {};
   bool operator==(const OldStructure& rhs) const;
   bool operator<(const OldStructure& rhs) const;
-  const std::map<int16_t, double>& get_features() const&;
-  std::map<int16_t, double> get_features() &&;
+  const ::std::map<int16_t, double>& get_features() const&;
+  ::std::map<int16_t, double> get_features() &&;
 
-  template <typename T_OldStructure_features_struct_setter = std::map<int16_t, double>>
-  std::map<int16_t, double>& set_features(T_OldStructure_features_struct_setter&& features_) {
+  template <typename T_OldStructure_features_struct_setter = ::std::map<int16_t, double>>
+  ::std::map<int16_t, double>& set_features(T_OldStructure_features_struct_setter&& features_) {
     features = std::forward<T_OldStructure_features_struct_setter>(features_);
     __isset.features = true;
     return features;
@@ -112,7 +112,7 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
   NewStructure() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  NewStructure(apache::thrift::FragileConstructor, std::map<int16_t, double> features__arg);
+  NewStructure(apache::thrift::FragileConstructor, ::std::map<int16_t, double> features__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     features = arg.extract();
@@ -127,18 +127,18 @@ class NewStructure final : private apache::thrift::detail::st::ComparisonOperato
 
   NewStructure& operator=(const NewStructure&) = default;
   void __clear();
-  std::map<int16_t, double> features;
+  ::std::map<int16_t, double> features;
 
   struct __isset {
     bool features;
   } __isset = {};
   bool operator==(const NewStructure& rhs) const;
   bool operator<(const NewStructure& rhs) const;
-  const std::map<int16_t, double>& get_features() const&;
-  std::map<int16_t, double> get_features() &&;
+  const ::std::map<int16_t, double>& get_features() const&;
+  ::std::map<int16_t, double> get_features() &&;
 
-  template <typename T_NewStructure_features_struct_setter = std::map<int16_t, double>>
-  std::map<int16_t, double>& set_features(T_NewStructure_features_struct_setter&& features_) {
+  template <typename T_NewStructure_features_struct_setter = ::std::map<int16_t, double>>
+  ::std::map<int16_t, double>& set_features(T_NewStructure_features_struct_setter&& features_) {
     features = std::forward<T_NewStructure_features_struct_setter>(features_);
     __isset.features = true;
     return features;
@@ -242,7 +242,7 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   NewStructureNested() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  NewStructureNested(apache::thrift::FragileConstructor, std::vector< ::cpp2::FloatFeatures> lst__arg, std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, std::set< ::cpp2::FloatFeatures> s__arg);
+  NewStructureNested(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::FloatFeatures> lst__arg, ::std::map<int16_t,  ::cpp2::FloatFeatures> mp__arg, ::std::set< ::cpp2::FloatFeatures> s__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     lst = arg.extract();
@@ -267,9 +267,9 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
 
   NewStructureNested& operator=(const NewStructureNested&) = default;
   void __clear();
-  std::vector< ::cpp2::FloatFeatures> lst;
-  std::map<int16_t,  ::cpp2::FloatFeatures> mp;
-  std::set< ::cpp2::FloatFeatures> s;
+  ::std::vector< ::cpp2::FloatFeatures> lst;
+  ::std::map<int16_t,  ::cpp2::FloatFeatures> mp;
+  ::std::set< ::cpp2::FloatFeatures> s;
 
   struct __isset {
     bool lst;
@@ -278,29 +278,29 @@ class NewStructureNested final : private apache::thrift::detail::st::ComparisonO
   } __isset = {};
   bool operator==(const NewStructureNested& rhs) const;
   bool operator<(const NewStructureNested& rhs) const;
-  const std::vector< ::cpp2::FloatFeatures>& get_lst() const&;
-  std::vector< ::cpp2::FloatFeatures> get_lst() &&;
+  const ::std::vector< ::cpp2::FloatFeatures>& get_lst() const&;
+  ::std::vector< ::cpp2::FloatFeatures> get_lst() &&;
 
-  template <typename T_NewStructureNested_lst_struct_setter = std::vector< ::cpp2::FloatFeatures>>
-  std::vector< ::cpp2::FloatFeatures>& set_lst(T_NewStructureNested_lst_struct_setter&& lst_) {
+  template <typename T_NewStructureNested_lst_struct_setter = ::std::vector< ::cpp2::FloatFeatures>>
+  ::std::vector< ::cpp2::FloatFeatures>& set_lst(T_NewStructureNested_lst_struct_setter&& lst_) {
     lst = std::forward<T_NewStructureNested_lst_struct_setter>(lst_);
     __isset.lst = true;
     return lst;
   }
-  const std::map<int16_t,  ::cpp2::FloatFeatures>& get_mp() const&;
-  std::map<int16_t,  ::cpp2::FloatFeatures> get_mp() &&;
+  const ::std::map<int16_t,  ::cpp2::FloatFeatures>& get_mp() const&;
+  ::std::map<int16_t,  ::cpp2::FloatFeatures> get_mp() &&;
 
-  template <typename T_NewStructureNested_mp_struct_setter = std::map<int16_t,  ::cpp2::FloatFeatures>>
-  std::map<int16_t,  ::cpp2::FloatFeatures>& set_mp(T_NewStructureNested_mp_struct_setter&& mp_) {
+  template <typename T_NewStructureNested_mp_struct_setter = ::std::map<int16_t,  ::cpp2::FloatFeatures>>
+  ::std::map<int16_t,  ::cpp2::FloatFeatures>& set_mp(T_NewStructureNested_mp_struct_setter&& mp_) {
     mp = std::forward<T_NewStructureNested_mp_struct_setter>(mp_);
     __isset.mp = true;
     return mp;
   }
-  const std::set< ::cpp2::FloatFeatures>& get_s() const&;
-  std::set< ::cpp2::FloatFeatures> get_s() &&;
+  const ::std::set< ::cpp2::FloatFeatures>& get_s() const&;
+  ::std::set< ::cpp2::FloatFeatures> get_s() &&;
 
-  template <typename T_NewStructureNested_s_struct_setter = std::set< ::cpp2::FloatFeatures>>
-  std::set< ::cpp2::FloatFeatures>& set_s(T_NewStructureNested_s_struct_setter&& s_) {
+  template <typename T_NewStructureNested_s_struct_setter = ::std::set< ::cpp2::FloatFeatures>>
+  ::std::set< ::cpp2::FloatFeatures>& set_s(T_NewStructureNested_s_struct_setter&& s_) {
     s = std::forward<T_NewStructureNested_s_struct_setter>(s_);
     __isset.s = true;
     return s;

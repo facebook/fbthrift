@@ -33,15 +33,15 @@ class MyServiceFastSvAsyncIf {
   virtual void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) = 0;
   virtual folly::Future<bool> future_hasDataById(int64_t id) = 0;
   virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) = 0;
-  virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback, int64_t id) = 0;
-  virtual folly::Future<std::string> future_getDataById(int64_t id) = 0;
-  virtual folly::SemiFuture<std::string> semifuture_getDataById(int64_t id) = 0;
-  virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) = 0;
-  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const std::string& data) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const std::string& data) = 0;
-  virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) = 0;
-  virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, const std::string& data) = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, const std::string& data) = 0;
+  virtual void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t id) = 0;
+  virtual folly::Future<::std::string> future_getDataById(int64_t id) = 0;
+  virtual folly::SemiFuture<::std::string> semifuture_getDataById(int64_t id) = 0;
+  virtual void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const ::std::string& data) = 0;
+  virtual folly::Future<folly::Unit> future_putDataById(int64_t id, const ::std::string& data) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const ::std::string& data) = 0;
+  virtual void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const ::std::string& data) = 0;
+  virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, const ::std::string& data) = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, const ::std::string& data) = 0;
 };
 
 class MyServiceFastAsyncProcessor;
@@ -54,18 +54,18 @@ class MyServiceFastSvIf : public MyServiceFastSvAsyncIf, public apache::thrift::
   folly::Future<bool> future_hasDataById(int64_t id) override;
   folly::SemiFuture<bool> semifuture_hasDataById(int64_t id) override;
   void async_eb_hasDataById(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int64_t id) override;
-  virtual void getDataById(std::string& /*_return*/, int64_t /*id*/);
-  folly::Future<std::string> future_getDataById(int64_t id) override;
-  folly::SemiFuture<std::string> semifuture_getDataById(int64_t id) override;
-  void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback, int64_t id) override;
-  virtual void putDataById(int64_t /*id*/, const std::string& /*data*/);
-  folly::Future<folly::Unit> future_putDataById(int64_t id, const std::string& data) override;
-  folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const std::string& data) override;
-  void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) override;
-  virtual void lobDataById(int64_t /*id*/, const std::string& /*data*/);
-  folly::Future<folly::Unit> future_lobDataById(int64_t id, const std::string& data) override;
-  folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, const std::string& data) override;
-  void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) override;
+  virtual void getDataById(::std::string& /*_return*/, int64_t /*id*/);
+  folly::Future<::std::string> future_getDataById(int64_t id) override;
+  folly::SemiFuture<::std::string> semifuture_getDataById(int64_t id) override;
+  void async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t id) override;
+  virtual void putDataById(int64_t /*id*/, const ::std::string& /*data*/);
+  folly::Future<folly::Unit> future_putDataById(int64_t id, const ::std::string& data) override;
+  folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const ::std::string& data) override;
+  void async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const ::std::string& data) override;
+  virtual void lobDataById(int64_t /*id*/, const ::std::string& /*data*/);
+  folly::Future<folly::Unit> future_lobDataById(int64_t id, const ::std::string& data) override;
+  folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, const ::std::string& data) override;
+  void async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const ::std::string& data) override;
 };
 
 class MyServiceFastSvNull : public MyServiceFastSvIf {
@@ -105,7 +105,7 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_getDataById(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
+  static folly::IOBufQueue return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_getDataById(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>

@@ -41,7 +41,7 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
       id(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg);
+  House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, ::std::string houseName__arg, ::std::set< ::cpp2::ColorID> houseColors__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     id = arg.extract();
@@ -64,8 +64,8 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   House& operator=(const House&) = default;
   void __clear();
    ::cpp2::ColorID id;
-  std::string houseName;
-  folly::Optional<std::set< ::cpp2::ColorID>> houseColors;
+  ::std::string houseName;
+  folly::Optional<::std::set< ::cpp2::ColorID>> houseColors;
   bool operator==(const House& rhs) const;
   bool operator<(const House& rhs) const;
 

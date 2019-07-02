@@ -87,7 +87,7 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
+  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<int16_t> listField__arg, ::std::map<::std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     i32Field = arg.extract();
@@ -131,9 +131,9 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   ~ModuleA();
 
   int32_t i32Field;
-  std::string strField;
-  std::vector<int16_t> listField;
-  std::map<std::string, int32_t> mapField;
+  ::std::string strField;
+  ::std::vector<int16_t> listField;
+  ::std::map<::std::string, int32_t> mapField;
    ::some::ns::IncludedA inclAField;
    ::some::ns::IncludedB inclBField;
 
@@ -158,34 +158,34 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
     return i32Field;
   }
 
-  const std::string& get_strField() const& {
+  const ::std::string& get_strField() const& {
     return strField;
   }
 
-  std::string get_strField() && {
+  ::std::string get_strField() && {
     return std::move(strField);
   }
 
-  template <typename T_ModuleA_strField_struct_setter = std::string>
-  std::string& set_strField(T_ModuleA_strField_struct_setter&& strField_) {
+  template <typename T_ModuleA_strField_struct_setter = ::std::string>
+  ::std::string& set_strField(T_ModuleA_strField_struct_setter&& strField_) {
     strField = std::forward<T_ModuleA_strField_struct_setter>(strField_);
     __isset.strField = true;
     return strField;
   }
-  const std::vector<int16_t>& get_listField() const&;
-  std::vector<int16_t> get_listField() &&;
+  const ::std::vector<int16_t>& get_listField() const&;
+  ::std::vector<int16_t> get_listField() &&;
 
-  template <typename T_ModuleA_listField_struct_setter = std::vector<int16_t>>
-  std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
+  template <typename T_ModuleA_listField_struct_setter = ::std::vector<int16_t>>
+  ::std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
     listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
     __isset.listField = true;
     return listField;
   }
-  const std::map<std::string, int32_t>& get_mapField() const&;
-  std::map<std::string, int32_t> get_mapField() &&;
+  const ::std::map<::std::string, int32_t>& get_mapField() const&;
+  ::std::map<::std::string, int32_t> get_mapField() &&;
 
-  template <typename T_ModuleA_mapField_struct_setter = std::map<std::string, int32_t>>
-  std::map<std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
+  template <typename T_ModuleA_mapField_struct_setter = ::std::map<::std::string, int32_t>>
+  ::std::map<::std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
     __isset.mapField = true;
     return mapField;

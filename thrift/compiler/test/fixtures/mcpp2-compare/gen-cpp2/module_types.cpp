@@ -1003,7 +1003,7 @@ MyStruct::MyStruct() :
       MyBoolField(0),
       MyIntField(12LL),
       MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::some::valid::ns::MyEnumA, std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
+      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
   { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")},
   {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits< std::string>::fromStringLiteral("nothing")}}) {}
 
@@ -1020,7 +1020,7 @@ MyStruct::MyStruct(MyStruct&& other) noexcept :
     __isset(other.__isset) {}
 MyStruct::~MyStruct() {}
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg, std::map< ::some::valid::ns::MyEnumA, std::string> MyMapEnumAndInt__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
     MyBoolField(std::move(MyBoolField__arg)),
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
@@ -1132,19 +1132,19 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   return false;
 }
 
-const std::vector<std::string>& MyStruct::get_MyBinaryListField4() const& {
+const ::std::vector<::std::string>& MyStruct::get_MyBinaryListField4() const& {
   return MyBinaryListField4;
 }
 
-std::vector<std::string> MyStruct::get_MyBinaryListField4() && {
+::std::vector<::std::string> MyStruct::get_MyBinaryListField4() && {
   return std::move(MyBinaryListField4);
 }
 
-const std::map< ::some::valid::ns::MyEnumA, std::string>& MyStruct::get_MyMapEnumAndInt() const& {
+const ::std::map< ::some::valid::ns::MyEnumA, ::std::string>& MyStruct::get_MyMapEnumAndInt() const& {
   return MyMapEnumAndInt;
 }
 
-std::map< ::some::valid::ns::MyEnumA, std::string> MyStruct::get_MyMapEnumAndInt() && {
+::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyStruct::get_MyMapEnumAndInt() && {
   return std::move(MyMapEnumAndInt);
 }
 
@@ -1653,7 +1653,7 @@ AnException::AnException() :
 
 AnException::~AnException() {}
 
-AnException::AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message2__arg, std::string req_message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg, std::map<std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
+AnException::AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<int32_t> exception_list__arg, ::std::set<int64_t> exception_set__arg, ::std::map<::std::string, int32_t> exception_map__arg, ::std::map<::std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, ::std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
     code(std::move(code__arg)),
     req_code(std::move(req_code__arg)),
     message2(std::move(message2__arg)),
@@ -1807,43 +1807,43 @@ bool AnException::operator<(const AnException& rhs) const {
   return false;
 }
 
-const std::vector<int32_t>& AnException::get_exception_list() const& {
+const ::std::vector<int32_t>& AnException::get_exception_list() const& {
   return exception_list;
 }
 
-std::vector<int32_t> AnException::get_exception_list() && {
+::std::vector<int32_t> AnException::get_exception_list() && {
   return std::move(exception_list);
 }
 
-const std::set<int64_t>& AnException::get_exception_set() const& {
+const ::std::set<int64_t>& AnException::get_exception_set() const& {
   return exception_set;
 }
 
-std::set<int64_t> AnException::get_exception_set() && {
+::std::set<int64_t> AnException::get_exception_set() && {
   return std::move(exception_set);
 }
 
-const std::map<std::string, int32_t>& AnException::get_exception_map() const& {
+const ::std::map<::std::string, int32_t>& AnException::get_exception_map() const& {
   return exception_map;
 }
 
-std::map<std::string, int32_t> AnException::get_exception_map() && {
+::std::map<::std::string, int32_t> AnException::get_exception_map() && {
   return std::move(exception_map);
 }
 
-const std::map<std::string, int32_t>& AnException::get_req_exception_map() const& {
+const ::std::map<::std::string, int32_t>& AnException::get_req_exception_map() const& {
   return req_exception_map;
 }
 
-std::map<std::string, int32_t> AnException::get_req_exception_map() && {
+::std::map<::std::string, int32_t> AnException::get_req_exception_map() && {
   return std::move(req_exception_map);
 }
 
-const std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
+const ::std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
   return enum_container;
 }
 
-std::vector< ::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
+::std::vector< ::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
   return std::move(enum_container);
 }
 
@@ -1855,19 +1855,19 @@ const  ::some::valid::ns::MyStruct& AnException::get_a_struct() const& {
   return std::move(a_struct);
 }
 
-const std::set< ::some::valid::ns::MyStruct>& AnException::get_a_set_struct() const& {
+const ::std::set< ::some::valid::ns::MyStruct>& AnException::get_a_set_struct() const& {
   return a_set_struct;
 }
 
-std::set< ::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
+::std::set< ::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
   return std::move(a_set_struct);
 }
 
-const std::vector< ::some::valid::ns::SimpleUnion>& AnException::get_a_union_list() const& {
+const ::std::vector< ::some::valid::ns::SimpleUnion>& AnException::get_a_union_list() const& {
   return a_union_list;
 }
 
-std::vector< ::some::valid::ns::SimpleUnion> AnException::get_a_union_list() && {
+::std::vector< ::some::valid::ns::SimpleUnion> AnException::get_a_union_list() && {
   return std::move(a_union_list);
 }
 
@@ -1879,11 +1879,11 @@ const  ::some::valid::ns::unionTypeDef& AnException::get_union_typedef() const& 
   return std::move(union_typedef);
 }
 
-const std::vector< ::some::valid::ns::unionTypeDef>& AnException::get_a_union_typedef_list() const& {
+const ::std::vector< ::some::valid::ns::unionTypeDef>& AnException::get_a_union_typedef_list() const& {
   return a_union_typedef_list;
 }
 
-std::vector< ::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_list() && {
+::std::vector< ::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_list() && {
   return std::move(a_union_typedef_list);
 }
 
@@ -1924,7 +1924,7 @@ template uint32_t AnException::serializedSizeZC<>(apache::thrift::SimpleJSONProt
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
-AnotherException::AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message__arg) :
+AnotherException::AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message__arg) :
     code(std::move(code__arg)),
     req_code(std::move(req_code__arg)),
     message(std::move(message__arg)) {
@@ -2016,7 +2016,7 @@ containerStruct::containerStruct() :
       fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      fieldF(std::initializer_list<std::vector<int32_t>>{std::initializer_list<int32_t>{1,
+      fieldF(std::initializer_list<::std::vector<int32_t>>{std::initializer_list<int32_t>{1,
   3,
   5,
   7,
@@ -2027,7 +2027,7 @@ containerStruct::containerStruct() :
   10,
   12}}),
       fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const std::string, std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
+      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
   4,
   8,
   12}},
@@ -2050,7 +2050,7 @@ containerStruct::containerStruct() :
 
 containerStruct::~containerStruct() {}
 
-containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, std::map<std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg) :
+containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg) :
     fieldA(std::move(fieldA__arg)),
     req_fieldA(std::move(req_fieldA__arg)),
     opt_fieldA(std::move(opt_fieldA__arg)),
@@ -2549,107 +2549,107 @@ bool containerStruct::operator<(const containerStruct& rhs) const {
   return false;
 }
 
-const std::map<std::string, bool>& containerStruct::get_fieldB() const& {
+const ::std::map<::std::string, bool>& containerStruct::get_fieldB() const& {
   return fieldB;
 }
 
-std::map<std::string, bool> containerStruct::get_fieldB() && {
+::std::map<::std::string, bool> containerStruct::get_fieldB() && {
   return std::move(fieldB);
 }
 
-const std::map<std::string, bool>& containerStruct::get_req_fieldB() const& {
+const ::std::map<::std::string, bool>& containerStruct::get_req_fieldB() const& {
   return req_fieldB;
 }
 
-std::map<std::string, bool> containerStruct::get_req_fieldB() && {
+::std::map<::std::string, bool> containerStruct::get_req_fieldB() && {
   return std::move(req_fieldB);
 }
 
-const std::map<std::string, bool>* containerStruct::get_opt_fieldB() const& {
+const ::std::map<::std::string, bool>* containerStruct::get_opt_fieldB() const& {
   return __isset.opt_fieldB ? std::addressof(opt_fieldB) : nullptr;
 }
 
-std::map<std::string, bool>* containerStruct::get_opt_fieldB() & {
+::std::map<::std::string, bool>* containerStruct::get_opt_fieldB() & {
   return __isset.opt_fieldB ? std::addressof(opt_fieldB) : nullptr;
 }
 
-const std::set<int32_t>& containerStruct::get_fieldC() const& {
+const ::std::set<int32_t>& containerStruct::get_fieldC() const& {
   return fieldC;
 }
 
-std::set<int32_t> containerStruct::get_fieldC() && {
+::std::set<int32_t> containerStruct::get_fieldC() && {
   return std::move(fieldC);
 }
 
-const std::set<int32_t>& containerStruct::get_req_fieldC() const& {
+const ::std::set<int32_t>& containerStruct::get_req_fieldC() const& {
   return req_fieldC;
 }
 
-std::set<int32_t> containerStruct::get_req_fieldC() && {
+::std::set<int32_t> containerStruct::get_req_fieldC() && {
   return std::move(req_fieldC);
 }
 
-const std::set<int32_t>* containerStruct::get_opt_fieldC() const& {
+const ::std::set<int32_t>* containerStruct::get_opt_fieldC() const& {
   return __isset.opt_fieldC ? std::addressof(opt_fieldC) : nullptr;
 }
 
-std::set<int32_t>* containerStruct::get_opt_fieldC() & {
+::std::set<int32_t>* containerStruct::get_opt_fieldC() & {
   return __isset.opt_fieldC ? std::addressof(opt_fieldC) : nullptr;
 }
 
-const std::vector<std::vector<int32_t>>& containerStruct::get_fieldF() const& {
+const ::std::vector<::std::vector<int32_t>>& containerStruct::get_fieldF() const& {
   return fieldF;
 }
 
-std::vector<std::vector<int32_t>> containerStruct::get_fieldF() && {
+::std::vector<::std::vector<int32_t>> containerStruct::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>& containerStruct::get_fieldG() const& {
+const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& containerStruct::get_fieldG() const& {
   return fieldG;
 }
 
-std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> containerStruct::get_fieldG() && {
+::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> containerStruct::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const std::vector<std::set<int32_t>>& containerStruct::get_fieldH() const& {
+const ::std::vector<::std::set<int32_t>>& containerStruct::get_fieldH() const& {
   return fieldH;
 }
 
-std::vector<std::set<int32_t>> containerStruct::get_fieldH() && {
+::std::vector<::std::set<int32_t>> containerStruct::get_fieldH() && {
   return std::move(fieldH);
 }
 
-const std::map<std::string, std::vector<int32_t>>& containerStruct::get_fieldJ() const& {
+const ::std::map<::std::string, ::std::vector<int32_t>>& containerStruct::get_fieldJ() const& {
   return fieldJ;
 }
 
-std::map<std::string, std::vector<int32_t>> containerStruct::get_fieldJ() && {
+::std::map<::std::string, ::std::vector<int32_t>> containerStruct::get_fieldJ() && {
   return std::move(fieldJ);
 }
 
-const std::vector<std::vector<std::vector<std::vector<int32_t>>>>& containerStruct::get_fieldK() const& {
+const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& containerStruct::get_fieldK() const& {
   return fieldK;
 }
 
-std::vector<std::vector<std::vector<std::vector<int32_t>>>> containerStruct::get_fieldK() && {
+::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> containerStruct::get_fieldK() && {
   return std::move(fieldK);
 }
 
-const std::set<std::set<std::set<bool>>>& containerStruct::get_fieldL() const& {
+const ::std::set<::std::set<::std::set<bool>>>& containerStruct::get_fieldL() const& {
   return fieldL;
 }
 
-std::set<std::set<std::set<bool>>> containerStruct::get_fieldL() && {
+::std::set<::std::set<::std::set<bool>>> containerStruct::get_fieldL() && {
   return std::move(fieldL);
 }
 
-const std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& containerStruct::get_fieldM() const& {
+const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& containerStruct::get_fieldM() const& {
   return fieldM;
 }
 
-std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> containerStruct::get_fieldM() && {
+::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> containerStruct::get_fieldM() && {
   return std::move(fieldM);
 }
 
@@ -2661,27 +2661,27 @@ const  ::some::valid::ns::complexStructTypeDef& containerStruct::get_fieldO() co
   return std::move(fieldO);
 }
 
-const std::vector< ::some::valid::ns::mostComplexTypeDef>& containerStruct::get_fieldP() const& {
+const ::std::vector< ::some::valid::ns::mostComplexTypeDef>& containerStruct::get_fieldP() const& {
   return fieldP;
 }
 
-std::vector< ::some::valid::ns::mostComplexTypeDef> containerStruct::get_fieldP() && {
+::std::vector< ::some::valid::ns::mostComplexTypeDef> containerStruct::get_fieldP() && {
   return std::move(fieldP);
 }
 
-const std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldT() const& {
+const ::std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldT() const& {
   return fieldT;
 }
 
-std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldT() && {
+::std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldT() && {
   return std::move(fieldT);
 }
 
-const std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldU() const& {
+const ::std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldU() const& {
   return fieldU;
 }
 
-std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldU() && {
+::std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldU() && {
   return std::move(fieldU);
 }
 
@@ -2709,11 +2709,11 @@ const  ::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() const& {
   return __isset.opt_fieldV ? std::addressof(opt_fieldV) : nullptr;
 }
 
-const std::set< ::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
+const ::std::set< ::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
   return fieldW;
 }
 
-std::set< ::some::valid::ns::MyStruct> containerStruct::get_fieldW() && {
+::std::set< ::some::valid::ns::MyStruct> containerStruct::get_fieldW() && {
   return std::move(fieldW);
 }
 
@@ -2741,11 +2741,11 @@ const  ::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() const&
   return __isset.opt_fieldX ? std::addressof(opt_fieldX) : nullptr;
 }
 
-const std::vector< ::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
+const ::std::vector< ::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
   return fieldY;
 }
 
-std::vector< ::some::valid::ns::ComplexUnion> containerStruct::get_fieldY() && {
+::std::vector< ::some::valid::ns::ComplexUnion> containerStruct::get_fieldY() && {
   return std::move(fieldY);
 }
 
@@ -2757,27 +2757,27 @@ const  ::some::valid::ns::unionTypeDef& containerStruct::get_fieldZ() const& {
   return std::move(fieldZ);
 }
 
-const std::vector< ::some::valid::ns::unionTypeDef>& containerStruct::get_fieldAA() const& {
+const ::std::vector< ::some::valid::ns::unionTypeDef>& containerStruct::get_fieldAA() const& {
   return fieldAA;
 }
 
-std::vector< ::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && {
+::std::vector< ::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && {
   return std::move(fieldAA);
 }
 
-const std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& containerStruct::get_fieldAB() const& {
+const ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& containerStruct::get_fieldAB() const& {
   return fieldAB;
 }
 
-std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> containerStruct::get_fieldAB() && {
+::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> containerStruct::get_fieldAB() && {
   return std::move(fieldAB);
 }
 
-const std::map<std::string, int32_t>& containerStruct::get_fieldAE() const& {
+const ::std::map<::std::string, int32_t>& containerStruct::get_fieldAE() const& {
   return fieldAE;
 }
 
-std::map<std::string, int32_t> containerStruct::get_fieldAE() && {
+::std::map<::std::string, int32_t> containerStruct::get_fieldAE() && {
   return std::move(fieldAE);
 }
 
@@ -2975,16 +2975,16 @@ namespace some { namespace valid { namespace ns {
 AnnotatedStruct::AnnotatedStruct() :
       cpp_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
       cpp2_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
-      container_with_ref(std::make_unique<std::map<int32_t, std::vector<std::string>>>()),
+      container_with_ref(std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>()),
       req_cpp_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
       req_cpp2_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
-      req_container_with_ref(std::make_unique<std::vector<std::string>>()),
+      req_container_with_ref(std::make_unique<::std::vector<::std::string>>()),
       ref_type_unique(std::make_unique< ::some::valid::ns::containerStruct>()),
       ref_type_shared(std::make_shared< ::some::valid::ns::containerStruct>()),
-      ref_type_const(std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
+      ref_type_const(std::make_shared<::std::map<int32_t, ::std::vector<::std::string>>>()),
       req_ref_type_shared(std::make_shared< ::some::valid::ns::containerStruct>()),
       req_ref_type_const(std::make_shared< ::some::valid::ns::containerStruct>()),
-      req_ref_type_unique(std::make_unique<std::vector<std::string>>()),
+      req_ref_type_unique(std::make_unique<::std::vector<::std::string>>()),
       base_type(0),
       indirection_a(0),
       iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
@@ -3035,7 +3035,7 @@ AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept :
     __isset(other.__isset) {}
 AnnotatedStruct::~AnnotatedStruct() {}
 
-AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg) :
+AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<int64_t, ::std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg) :
     no_annotation(std::move(no_annotation__arg)),
     cpp_unique_ref(std::move(cpp_unique_ref__arg)),
     cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -3410,27 +3410,27 @@ std::list<int32_t> AnnotatedStruct::get_list_i32_template() && {
   return std::move(list_i32_template);
 }
 
-const std::deque<std::string>& AnnotatedStruct::get_list_string_template() const& {
+const std::deque<::std::string>& AnnotatedStruct::get_list_string_template() const& {
   return list_string_template;
 }
 
-std::deque<std::string> AnnotatedStruct::get_list_string_template() && {
+std::deque<::std::string> AnnotatedStruct::get_list_string_template() && {
   return std::move(list_string_template);
 }
 
-const folly::sorted_vector_set<std::string>& AnnotatedStruct::get_set_template() const& {
+const folly::sorted_vector_set<::std::string>& AnnotatedStruct::get_set_template() const& {
   return set_template;
 }
 
-folly::sorted_vector_set<std::string> AnnotatedStruct::get_set_template() && {
+folly::sorted_vector_set<::std::string> AnnotatedStruct::get_set_template() && {
   return std::move(set_template);
 }
 
-const folly::sorted_vector_map<int64_t, std::string>& AnnotatedStruct::get_map_template() const& {
+const folly::sorted_vector_map<int64_t, ::std::string>& AnnotatedStruct::get_map_template() const& {
   return map_template;
 }
 
-folly::sorted_vector_map<int64_t, std::string> AnnotatedStruct::get_map_template() && {
+folly::sorted_vector_map<int64_t, ::std::string> AnnotatedStruct::get_map_template() && {
   return std::move(map_template);
 }
 
@@ -3466,19 +3466,19 @@ const  ::some::valid::ns::folly_map& AnnotatedStruct::get_typedef_map_template()
   return std::move(typedef_map_template);
 }
 
-const std::vector< ::some::valid::ns::IndirectionB>& AnnotatedStruct::get_indirection_b() const& {
+const ::std::vector< ::some::valid::ns::IndirectionB>& AnnotatedStruct::get_indirection_b() const& {
   return indirection_b;
 }
 
-std::vector< ::some::valid::ns::IndirectionB> AnnotatedStruct::get_indirection_b() && {
+::std::vector< ::some::valid::ns::IndirectionB> AnnotatedStruct::get_indirection_b() && {
   return std::move(indirection_b);
 }
 
-const std::set< ::some::valid::ns::IndirectionC>& AnnotatedStruct::get_indirection_c() const& {
+const ::std::set< ::some::valid::ns::IndirectionC>& AnnotatedStruct::get_indirection_c() const& {
   return indirection_c;
 }
 
-std::set< ::some::valid::ns::IndirectionC> AnnotatedStruct::get_indirection_c() && {
+::std::set< ::some::valid::ns::IndirectionC> AnnotatedStruct::get_indirection_c() && {
   return std::move(indirection_c);
 }
 
@@ -3552,7 +3552,7 @@ template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::SimpleJSON
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
-ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructor, std::map<std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, std::map<std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg) :
+ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg) :
     map_of_iobufs(std::move(map_of_iobufs__arg)),
     map_of_iobuf_ptrs(std::move(map_of_iobuf_ptrs__arg)) {
   __isset.map_of_iobufs = true;
@@ -3592,19 +3592,19 @@ bool ComplexContainerStruct::operator<(const ComplexContainerStruct& rhs) const 
   return false;
 }
 
-const std::map<std::string,  ::some::valid::ns::IOBuf>& ComplexContainerStruct::get_map_of_iobufs() const& {
+const ::std::map<::std::string,  ::some::valid::ns::IOBuf>& ComplexContainerStruct::get_map_of_iobufs() const& {
   return map_of_iobufs;
 }
 
-std::map<std::string,  ::some::valid::ns::IOBuf> ComplexContainerStruct::get_map_of_iobufs() && {
+::std::map<::std::string,  ::some::valid::ns::IOBuf> ComplexContainerStruct::get_map_of_iobufs() && {
   return std::move(map_of_iobufs);
 }
 
-const std::map<std::string,  ::some::valid::ns::IOBufPtr>& ComplexContainerStruct::get_map_of_iobuf_ptrs() const& {
+const ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>& ComplexContainerStruct::get_map_of_iobuf_ptrs() const& {
   return map_of_iobuf_ptrs;
 }
 
-std::map<std::string,  ::some::valid::ns::IOBufPtr> ComplexContainerStruct::get_map_of_iobuf_ptrs() && {
+::std::map<::std::string,  ::some::valid::ns::IOBufPtr> ComplexContainerStruct::get_map_of_iobuf_ptrs() && {
   return std::move(map_of_iobuf_ptrs);
 }
 

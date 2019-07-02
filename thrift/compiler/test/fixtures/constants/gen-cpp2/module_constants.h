@@ -30,7 +30,7 @@ struct module_constants {
     return name_;
   }
 
-  static std::vector<std::map<std::string, int32_t>> const& states();
+  static ::std::vector<::std::map<::std::string, int32_t>> const& states();
 
   static constexpr double const x_ = 1;
 
@@ -88,9 +88,9 @@ struct module_constants {
 
   static  ::cpp2::Internship const& partial_const();
 
-  static std::vector< ::cpp2::Range> const& kRanges();
+  static ::std::vector< ::cpp2::Range> const& kRanges();
 
-  static std::vector< ::cpp2::Internship> const& internList();
+  static ::std::vector< ::cpp2::Internship> const& internList();
 
   static  ::cpp2::struct1 const& pod_0();
 
@@ -168,9 +168,9 @@ struct module_constants {
     return escaped_a_;
   }
 
-  static std::map<std::string, int32_t> const& char2ascii();
+  static ::std::map<::std::string, int32_t> const& char2ascii();
 
-  static std::vector<std::string> const& escaped_strings();
+  static ::std::vector<::std::string> const& escaped_strings();
 
   static constexpr bool const false_c_ = false;
 
@@ -224,21 +224,21 @@ struct module_constants {
     return empty_string_;
   }
 
-  static std::vector<int32_t> const& empty_int_list();
+  static ::std::vector<int32_t> const& empty_int_list();
 
-  static std::vector<std::string> const& empty_string_list();
+  static ::std::vector<::std::string> const& empty_string_list();
 
-  static std::set<int32_t> const& empty_int_set();
+  static ::std::set<int32_t> const& empty_int_set();
 
-  static std::set<std::string> const& empty_string_set();
+  static ::std::set<::std::string> const& empty_string_set();
 
-  static std::map<int32_t, int32_t> const& empty_int_int_map();
+  static ::std::map<int32_t, int32_t> const& empty_int_int_map();
 
-  static std::map<int32_t, std::string> const& empty_int_string_map();
+  static ::std::map<int32_t, ::std::string> const& empty_int_string_map();
 
-  static std::map<std::string, int32_t> const& empty_string_int_map();
+  static ::std::map<::std::string, int32_t> const& empty_string_int_map();
 
-  static std::map<std::string, std::string> const& empty_string_string_map();
+  static ::std::map<::std::string, ::std::string> const& empty_string_string_map();
 
 };
 

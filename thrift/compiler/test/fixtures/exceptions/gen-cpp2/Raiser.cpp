@@ -52,38 +52,38 @@ void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallbac
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_doRaise(); });
 }
 
-void RaiserSvIf::get200(std::string& /*_return*/) {
+void RaiserSvIf::get200(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get200");
 }
 
-folly::SemiFuture<std::unique_ptr<std::string>> RaiserSvIf::semifuture_get200() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](std::string& _return) { get200(_return); });
+folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get200() {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { get200(_return); });
 }
 
-folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get200() {
+folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get200() {
   return apache::thrift::detail::si::future(semifuture_get200(), getThreadManager());
 }
 
 
-void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get200(); });
 }
 
 
-void RaiserSvIf::get500(std::string& /*_return*/) {
+void RaiserSvIf::get500(::std::string& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("get500");
 }
 
-folly::SemiFuture<std::unique_ptr<std::string>> RaiserSvIf::semifuture_get500() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](std::string& _return) { get500(_return); });
+folly::SemiFuture<std::unique_ptr<::std::string>> RaiserSvIf::semifuture_get500() {
+  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { get500(_return); });
 }
 
-folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get500() {
+folly::Future<std::unique_ptr<::std::string>> RaiserSvIf::future_get500() {
   return apache::thrift::detail::si::future(semifuture_get500(), getThreadManager());
 }
 
 
-void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+void RaiserSvIf::async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_get500(); });
 }
 
@@ -96,9 +96,9 @@ void RaiserSvNull::doRaise() {
   return;
 }
 
-void RaiserSvNull::get200(std::string& /*_return*/) {}
+void RaiserSvNull::get200(::std::string& /*_return*/) {}
 
-void RaiserSvNull::get500(std::string& /*_return*/) {}
+void RaiserSvNull::get500(::std::string& /*_return*/) {}
 
 const char* RaiserAsyncProcessor::getServiceName() {
   return "Raiser";

@@ -23,9 +23,9 @@ typedef apache::thrift::ThriftPresult<true> Raiser_doBland_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_doRaise_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_doRaise_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get200_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>> Raiser_get200_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>> Raiser_get200_presult;
 typedef apache::thrift::ThriftPresult<false> Raiser_get500_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_get500_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRING, ::std::string*>, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::Fiery>, apache::thrift::FieldData<2, apache::thrift::protocol::T_STRUCT,  ::cpp2::Banal>, apache::thrift::FieldData<3, apache::thrift::protocol::T_STRUCT,  ::cpp2::Serious>> Raiser_get500_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void RaiserAsyncProcessor::_processInThread_doBland(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
@@ -182,7 +182,7 @@ void RaiserAsyncProcessor::process_get200(std::unique_ptr<apache::thrift::Respon
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_get200<ProtocolIn_,ProtocolOut_>, throw_wrapped_get200<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_get200<ProtocolIn_,ProtocolOut_>, throw_wrapped_get200<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -192,10 +192,10 @@ void RaiserAsyncProcessor::process_get200(std::unique_ptr<apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue RaiserAsyncProcessor::return_get200(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return) {
+folly::IOBufQueue RaiserAsyncProcessor::return_get200(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   Raiser_get200_presult result;
-  result.get<0>().value = const_cast<std::string*>(&_return);
+  result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("get200", &prot, protoSeqId, ctx, result);
 }
@@ -238,7 +238,7 @@ void RaiserAsyncProcessor::process_get500(std::unique_ptr<apache::thrift::Respon
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(ctxStack), return_get500<ProtocolIn_,ProtocolOut_>, throw_wrapped_get500<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>(std::move(req), std::move(ctxStack), return_get500<ProtocolIn_,ProtocolOut_>, throw_wrapped_get500<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -248,10 +248,10 @@ void RaiserAsyncProcessor::process_get500(std::unique_ptr<apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-folly::IOBufQueue RaiserAsyncProcessor::return_get500(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return) {
+folly::IOBufQueue RaiserAsyncProcessor::return_get500(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   Raiser_get500_presult result;
-  result.get<0>().value = const_cast<std::string*>(&_return);
+  result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("get500", &prot, protoSeqId, ctx, result);
 }

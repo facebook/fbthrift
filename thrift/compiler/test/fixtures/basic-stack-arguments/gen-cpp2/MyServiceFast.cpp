@@ -35,55 +35,55 @@ void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::Han
   apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable { return future_hasDataById(id); });
 }
 
-void MyServiceFastSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
+void MyServiceFastSvIf::getDataById(::std::string& /*_return*/, int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("getDataById");
 }
 
-folly::SemiFuture<std::string> MyServiceFastSvIf::semifuture_getDataById(int64_t id) {
-  return apache::thrift::detail::si::semifuture_returning([&](std::string& _return) { getDataById(_return, id); });
+folly::SemiFuture<::std::string> MyServiceFastSvIf::semifuture_getDataById(int64_t id) {
+  return apache::thrift::detail::si::semifuture_returning([&](::std::string& _return) { getDataById(_return, id); });
 }
 
-folly::Future<std::string> MyServiceFastSvIf::future_getDataById(int64_t id) {
+folly::Future<::std::string> MyServiceFastSvIf::future_getDataById(int64_t id) {
   return apache::thrift::detail::si::future(semifuture_getDataById(id), getThreadManager());
 }
 
 
-void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback, int64_t id) {
+void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, int64_t id) {
   apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id]() mutable { return future_getDataById(id); });
 }
 
 
-void MyServiceFastSvIf::putDataById(int64_t /*id*/, const std::string& /*data*/) {
+void MyServiceFastSvIf::putDataById(int64_t /*id*/, const ::std::string& /*data*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceFastSvIf::semifuture_putDataById(int64_t id, const std::string& data) {
+folly::SemiFuture<folly::Unit> MyServiceFastSvIf::semifuture_putDataById(int64_t id, const ::std::string& data) {
   return apache::thrift::detail::si::semifuture([&] { return putDataById(id, data); });
 }
 
-folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, const std::string& data) {
+folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, const ::std::string& data) {
   return apache::thrift::detail::si::future(semifuture_putDataById(id, data), getThreadManager());
 }
 
 
-void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const std::string& data) {
+void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int64_t id, const ::std::string& data) {
   apache::thrift::detail::si::async_eb(this, std::move(callback), [this, id, data = std::move(data)]() mutable { return future_putDataById(id, data); });
 }
 
-void MyServiceFastSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
+void MyServiceFastSvIf::lobDataById(int64_t /*id*/, const ::std::string& /*data*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("lobDataById");
 }
 
-folly::SemiFuture<folly::Unit> MyServiceFastSvIf::semifuture_lobDataById(int64_t id, const std::string& data) {
+folly::SemiFuture<folly::Unit> MyServiceFastSvIf::semifuture_lobDataById(int64_t id, const ::std::string& data) {
   return apache::thrift::detail::si::semifuture([&] { return lobDataById(id, data); });
 }
 
-folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, const std::string& data) {
+folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, const ::std::string& data) {
   return apache::thrift::detail::si::future(semifuture_lobDataById(id, data), getThreadManager());
 }
 
 
-void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const std::string& data) {
+void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, const ::std::string& data) {
   apache::thrift::detail::si::async_eb_oneway(this, std::move(callback), [this, id, data = std::move(data)]() mutable { return future_lobDataById(id, data); });
 }
 
