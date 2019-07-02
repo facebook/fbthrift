@@ -189,7 +189,7 @@ void SimpleJSONProtocolReader::readFieldBegin(
   readString(name);
   ensureAndSkipContext();
   skipWhitespace();
-  auto peek = *in_.peek().first;
+  auto peek = peekCharSafe();
   if (peek == 'n') {
     bool tmp;
     ensureAndReadContext(tmp);
@@ -247,12 +247,12 @@ void SimpleJSONProtocolReader::readBool(std::vector<bool>::reference value) {
 
 bool SimpleJSONProtocolReader::peekMap() {
   skipWhitespace();
-  return *in_.peek().first != detail::json::kJSONObjectEnd;
+  return peekCharSafe() != detail::json::kJSONObjectEnd;
 }
 
 bool SimpleJSONProtocolReader::peekList() {
   skipWhitespace();
-  return *in_.peek().first != detail::json::kJSONArrayEnd;
+  return peekCharSafe() != detail::json::kJSONArrayEnd;
 }
 
 bool SimpleJSONProtocolReader::peekSet() {
