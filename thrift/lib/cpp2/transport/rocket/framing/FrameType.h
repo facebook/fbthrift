@@ -28,7 +28,7 @@ enum class FrameType : uint8_t {
   RESERVED = 0x00, // Reserved. Never transmitted over the wire.
   SETUP = 0x01,
   // LEASE = 0x02,
-  // KEEPALIVE = 0x03,
+  KEEPALIVE = 0x03,
   REQUEST_RESPONSE = 0x04,
   REQUEST_FNF = 0x05,
   REQUEST_STREAM = 0x06,

@@ -467,6 +467,43 @@ void ErrorFrame::serialize(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+void KeepAliveFrame::serialize(Serializer& writer) && {
+  /**
+   * 0                   1                   2                   3
+   * 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   * |                         Stream ID = 0                         |
+   * +-----------+-+-+-+-------------+-------------------------------+
+   * |Frame Type |0|0|R|    Flags    |
+   * +-----------+-+-+-+-------------+-------------------------------+
+   * |0|                  Last Received Position                     |
+   * +                                                               +
+   * |                                                               |
+   * +---------------------------------------------------------------+
+   *                              Data
+   */
+
+  // Excludes room for frame length
+  const auto frameSize = frameHeaderSize() + data_->computeChainDataLength();
+  auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
+
+  nwritten += writer.write(StreamId{0});
+  nwritten += writer.writeFrameTypeAndFlags(frameType(), flags_);
+
+  // Last received position: send 0 if not supported.
+  nwritten += writer.writeBE(static_cast<uint64_t>(0));
+
+  nwritten += writer.write(std::move(data_));
+
+  DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
+std::unique_ptr<folly::IOBuf> KeepAliveFrame::serialize() && {
+  Serializer writer;
+  std::move(*this).serialize(writer);
+  return std::move(writer).move();
+}
+
 FOLLY_NOINLINE void RequestResponseFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
   serializeInFragmentsSlowCommon(std::move(*this), Flags::none(), writer);
@@ -720,6 +757,24 @@ ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   // Finally, adjust the data portion of frame.
   frame->trimStart(frameHeaderSize());
   payload_ = Payload::makeFromData(std::move(frame));
+}
+
+KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
+  DCHECK(!frame->isChained());
+  DCHECK_GE(frame->length(), frameHeaderSize());
+
+  folly::io::Cursor cursor(frame.get());
+  const StreamId zero(readStreamId(cursor));
+  DCHECK_EQ(StreamId{0}, zero);
+
+  FrameType type;
+  std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
+  DCHECK(frameType() == type);
+
+  cursor.skip(sizeof(uint64_t)); // Skip 'last received position'
+
+  frame->trimStart(cursor.getCurrentPosition());
+  data_ = std::move(frame);
 }
 
 // Static member definition

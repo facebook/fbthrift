@@ -68,6 +68,7 @@ class Flags {
   THRIFT_ROCKET_CREATE_GETTER_SETTER(resumeToken, Bits::RESUME_TOKEN)
   THRIFT_ROCKET_CREATE_GETTER_SETTER(metadata, Bits::METADATA)
   THRIFT_ROCKET_CREATE_GETTER_SETTER(ignore, Bits::IGNORE_)
+  THRIFT_ROCKET_CREATE_GETTER_SETTER(respond, Bits::RESPOND)
 
 #undef THRIFT_ROCKET_CREATE_GETTER_SETTER
 
@@ -83,6 +84,7 @@ class Flags {
     LEASE = 1 << 6,
     FOLLOWS = 1 << 7,
     RESUME_TOKEN = 1 << 7,
+    RESPOND = 1 << 7,
     METADATA = 1 << 8,
     IGNORE_ = 1 << 9,
   };

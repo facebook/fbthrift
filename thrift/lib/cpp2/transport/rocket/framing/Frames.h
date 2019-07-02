@@ -486,6 +486,36 @@ class ErrorFrame {
   Payload payload_;
 };
 
+class KeepAliveFrame {
+ public:
+  explicit KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame);
+  KeepAliveFrame(Flags flags, std::unique_ptr<folly::IOBuf> data)
+      : flags_(flags), data_(std::move(data)) {}
+
+  static constexpr FrameType frameType() {
+    return FrameType::KEEPALIVE;
+  }
+
+  static constexpr size_t frameHeaderSize() {
+    return 14;
+  }
+
+  bool hasRespondFlag() const {
+    return flags_.respond();
+  }
+
+  std::unique_ptr<folly::IOBuf> data() && {
+    return std::move(data_);
+  }
+
+  void serialize(Serializer& writer) &&;
+  std::unique_ptr<folly::IOBuf> serialize() &&;
+
+ private:
+  Flags flags_{Flags::none()};
+  std::unique_ptr<folly::IOBuf> data_;
+};
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

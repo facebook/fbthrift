@@ -212,6 +212,24 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
       return std::move(frameContext).onPayloadFrame(std::move(payloadFrame));
     }
 
+    case FrameType::KEEPALIVE: {
+      if (streamId == StreamId{0}) {
+        KeepAliveFrame keepAliveFrame{std::move(frame)};
+        if (keepAliveFrame.hasRespondFlag()) {
+          // Echo back data without 'respond' flag
+          send(KeepAliveFrame{Flags::none(), std::move(keepAliveFrame).data()}
+                   .serialize());
+        }
+      } else {
+        close(folly::make_exception_wrapper<RocketException>(
+            ErrorCode::CONNECTION_ERROR,
+            fmt::format(
+                "Received keepalive frame with non-zero stream ID {}",
+                static_cast<uint32_t>(streamId))));
+      }
+      return;
+    }
+
     default:
       close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID,
