@@ -8,6 +8,7 @@ from thrift.py3 import serialize, deserialize, Protocol, Struct, Error
 from thrift.py3.serializer import (
     serialize_iobuf,
     serialize_with_header,
+    serialize_with_header_iobuf,
     deserialize_from_header,
     Transform,
 )
@@ -15,23 +16,29 @@ from testing.types import easy, hard, Integers, I32List, StrStrMap, SetI32, Digi
 
 
 class SerializerTests(unittest.TestCase):
-    def test_with_header(self) -> None:
+    def test_with_header_bytes(self) -> None:
         control = easy(val=5, val_list=[4, 3, 2, 1])
-        iobuf = serialize_with_header(control, transform=Transform.ZSTD_TRANSFORM)
+        buf = serialize_with_header(control, transform=Transform.ZSTD_TRANSFORM)
+        decoded = deserialize_from_header(easy, buf)
+        self.assertEqual(control, decoded)
+
+    def test_with_header_iobuf(self) -> None:
+        control = easy(val=5, val_list=[4, 3, 2, 1])
+        iobuf = serialize_with_header_iobuf(control, transform=Transform.ZSTD_TRANSFORM)
         decoded = deserialize_from_header(easy, iobuf)
         self.assertEqual(control, decoded)
 
-    def test_with_header_binary(self) -> None:
+    def test_with_header_iobuf_binary(self) -> None:
         control = easy(val=6, val_list=[5, 4, 3, 2, 1])
-        iobuf = serialize_with_header(
+        iobuf = serialize_with_header_iobuf(
             control, protocol=Protocol.BINARY, transform=Transform.ZLIB_TRANSFORM
         )
         decoded = deserialize_from_header(easy, iobuf)
         self.assertEqual(control, decoded)
 
-    def test_with_header_json(self) -> None:
+    def test_with_header_iobuf_json(self) -> None:
         control = easy(val=4, val_list=[3, 2, 1])
-        iobuf = serialize_with_header(control, protocol=Protocol.JSON)
+        iobuf = serialize_with_header_iobuf(control, protocol=Protocol.JSON)
         decoded = deserialize_from_header(easy, iobuf)
         self.assertEqual(control, decoded)
 

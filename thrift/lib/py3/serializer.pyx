@@ -37,7 +37,10 @@ def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
         raise Error.__new__(Error, *e.args) from None
 
 
-def serialize_with_header(Struct tstruct not None, protocol=Protocol.COMPACT, Transform transform = Transform.NONE):
+def serialize_with_header(tstruct, protocol=Protocol.COMPACT, transform=Transform.NONE):
+    return b''.join(serialize_with_header_iobuf(tstruct, protocol, transform))
+
+def serialize_with_header_iobuf(Struct tstruct not None, protocol=Protocol.COMPACT, Transform transform=Transform.NONE):
     cdef cTHeader header
     cdef map[string, string] pheaders
     cdef IOBuf buf = <IOBuf>serialize_iobuf(tstruct, protocol)
