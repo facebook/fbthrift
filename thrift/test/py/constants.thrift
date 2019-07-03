@@ -19,7 +19,7 @@
 
 namespace py thrift.test.py.constants
 
-include "constants_include.thrift"
+include "thrift/test/py/constants_include.thrift"
 
 const string apostrophe = "'";
 const string tripleApostrophe = "'''";
