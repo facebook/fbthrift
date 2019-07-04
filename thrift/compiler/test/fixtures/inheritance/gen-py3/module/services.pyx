@@ -15,11 +15,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -88,24 +83,6 @@ cdef class MyRootInterface(
     async def do_root(
             self):
         raise NotImplementedError("async def do_root is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyRoot",
-        methods=[
-          __MethodSpec(
-            name="do_root",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 cdef object _MyNode_annotations = _py_types.MappingProxyType({
 })
 
@@ -128,24 +105,6 @@ MyRootInterface
     async def do_mid(
             self):
         raise NotImplementedError("async def do_mid is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyNode",
-        methods=[
-          __MethodSpec(
-            name="do_mid",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
 })
 
@@ -168,24 +127,6 @@ MyNodeInterface
     async def do_leaf(
             self):
         raise NotImplementedError("async def do_leaf is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyLeaf",
-        methods=[
-          __MethodSpec(
-            name="do_leaf",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 
 
 cdef api void call_cy_MyRoot_do_root(

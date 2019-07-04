@@ -15,11 +15,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -166,108 +161,6 @@ cdef class MyServiceInterface(
     async def doNothing(
             self):
         raise NotImplementedError("async def doNothing is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyService",
-        methods=[
-          __MethodSpec(
-            name="ping",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="getRandomData",
-            arguments=[],
-            result=str,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="hasDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=bool,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="getDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=str,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="putDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="lobDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="doNothing",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """cpp.name""": """cppDoNothing""",        }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
 })
 
@@ -336,100 +229,6 @@ cdef class MyServiceFastInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyServiceFast",
-        methods=[
-          __MethodSpec(
-            name="ping",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="getRandomData",
-            arguments=[],
-            result=str,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="hasDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=bool,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="getDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=str,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="putDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="lobDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 cdef object _MyServiceEmpty_annotations = _py_types.MappingProxyType({
 })
 
@@ -444,18 +243,9 @@ cdef class MyServiceEmptyInterface(
             <PyObject *> self,
             get_executor()
         )
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyServiceEmpty",
-        methods=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 cdef object _MyServicePrioParent_annotations = _py_types.MappingProxyType({
-    """priority""": """HIGH""",})
+    """priority""": "HIGH",
+})
 
 
 cdef class MyServicePrioParentInterface(
@@ -484,32 +274,6 @@ cdef class MyServicePrioParentInterface(
     async def pong(
             self):
         raise NotImplementedError("async def pong is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyServicePrioParent",
-        methods=[
-          __MethodSpec(
-            name="ping",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """priority""": """IMPORTANT""",        }),
-          ),
-                __MethodSpec(
-            name="pong",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """priority""": """HIGH_IMPORTANT""",        }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-          """priority""": """HIGH""",    }),
-      )
 cdef object _MyServicePrioChild_annotations = _py_types.MappingProxyType({
 })
 
@@ -532,24 +296,6 @@ MyServicePrioParentInterface
     async def pang(
             self):
         raise NotImplementedError("async def pang is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyServicePrioChild",
-        methods=[
-          __MethodSpec(
-            name="pang",
-            arguments=[],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """priority""": """BEST_EFFORT""",        }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 
 
 cdef api void call_cy_MyService_ping(

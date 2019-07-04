@@ -8,9 +8,6 @@ from typing import (
     Tuple,
     Union as tUnion,
     Mapping,
-    NamedTuple,
-    Sequence,
-    Optional,
 )
 
 _T = TypeVar("_T")
@@ -60,36 +57,3 @@ class BadEnum(SupportsInt):
     def __init__(self, the_enum: Type[eT], value: int) -> None: ...
     def __repr__(self) -> str: ...
     def __int__(self) -> int: ...
-
-class StructType(enum.Enum):
-    STRUCT: StructType = ...
-    UNION: StructType = ...
-    EXCEPTION: StructType = ...
-
-class Qualifier(enum.Enum):
-    NONE: Qualifier = ...
-    REQUIRED: Qualifier = ...
-    OPTIONAL: Qualifier = ...
-
-class StructSpec(NamedTuple):
-    name: str
-    fields: Sequence[FieldSpec]
-    kind: StructType
-    annotations: Mapping[str, str] = {}
-
-class FieldSpec(NamedTuple):
-    name: str
-    type: Type[Any]
-    qualifier: Qualifier
-    default: Optional[Any]
-    annotations: Mapping[str, str] = {}
-
-class ListSpec(NamedTuple):
-    value: Type[Any]
-
-class SetSpec(NamedTuple):
-    value: Type[Any]
-
-class MapSpec(NamedTuple):
-    key: Type[Any]
-    value: Type[Any]

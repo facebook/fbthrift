@@ -17,16 +17,7 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,7 +32,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -322,33 +312,6 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = SmallStruct.create(constant_shared_ptr[cSmallStruct](default_inst[cSmallStruct]()))
-      return __StructSpec(
-        name="SmallStruct",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="small_A",
-  type=bool,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="small_B",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(SmallStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSmallStruct* cpp_obj = self._cpp_obj.get()
@@ -1152,193 +1115,6 @@ cdef class containerStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = containerStruct.create(constant_shared_ptr[ccontainerStruct](default_inst[ccontainerStruct]()))
-      return __StructSpec(
-        name="containerStruct",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="fieldA",
-  type=bool,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldB",
-  type=Map__string_bool,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldC",
-  type=Set__i32,
-  qualifier=__Qualifier.NONE,
-  default=defaults.fieldC,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldD",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldE",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=defaults.fieldE,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldF",
-  type=List__List__List__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldG",
-  type=Map__string_Map__string_Map__string_i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldH",
-  type=List__Set__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldI",
-  type=bool,
-  qualifier=__Qualifier.NONE,
-  default=defaults.fieldI,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldJ",
-  type=Map__string_List__i32,
-  qualifier=__Qualifier.NONE,
-  default=defaults.fieldJ,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldK",
-  type=List__List__List__List__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldL",
-  type=Set__Set__Set__bool,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldM",
-  type=Map__Set__List__i32_Map__List__Set__string_string,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldN",
-  type=List__Foo__i64,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldO",
-  type=List__Bar__double,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldP",
-  type=List__Baz__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldQ",
-  type=MyEnumA,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="fieldR",
-  type=Map__string_bool,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
-),
-                __FieldSpec(
-  name="fieldS",
-  type=SmallStruct,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """unique""",  }),
-),
-                __FieldSpec(
-  name="fieldT",
-  type=SmallStruct,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared""",  }),
-),
-                __FieldSpec(
-  name="fieldU",
-  type=SmallStruct,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",  }),
-),
-                __FieldSpec(
-  name="fieldX",
-  type=SmallStruct,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(containerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef ccontainerStruct* cpp_obj = self._cpp_obj.get()
@@ -1507,10 +1283,6 @@ cdef class Map__string_bool:
 
     def __reduce__(self):
         return (Map__string_bool, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=bool)
 
 
 Mapping.register(Map__string_bool)
@@ -1756,10 +1528,6 @@ cdef class Set__i32:
     def __reduce__(self):
         return (Set__i32, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=int)
-
 
 Set.register(Set__i32)
 
@@ -1920,10 +1688,6 @@ cdef class List__i32:
 
     def __reduce__(self):
         return (List__i32, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=int)
 
 
 Sequence.register(List__i32)
@@ -2102,10 +1866,6 @@ cdef class List__List__i32:
     def __reduce__(self):
         return (List__List__i32, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=List__i32)
-
 
 Sequence.register(List__List__i32)
 
@@ -2283,10 +2043,6 @@ cdef class List__List__List__i32:
     def __reduce__(self):
         return (List__List__List__i32, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=List__List__i32)
-
 
 Sequence.register(List__List__List__i32)
 
@@ -2420,10 +2176,6 @@ cdef class Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_i32, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=int)
 
 
 Mapping.register(Map__string_i32)
@@ -2560,10 +2312,6 @@ cdef class Map__string_Map__string_i32:
     def __reduce__(self):
         return (Map__string_Map__string_i32, (dict(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=Map__string_i32)
-
 
 Mapping.register(Map__string_Map__string_i32)
 
@@ -2698,10 +2446,6 @@ cdef class Map__string_Map__string_Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_Map__string_Map__string_i32, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=Map__string_Map__string_i32)
 
 
 Mapping.register(Map__string_Map__string_Map__string_i32)
@@ -2880,10 +2624,6 @@ cdef class List__Set__i32:
     def __reduce__(self):
         return (List__Set__i32, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=Set__i32)
-
 
 Sequence.register(List__Set__i32)
 
@@ -3018,10 +2758,6 @@ cdef class Map__string_List__i32:
 
     def __reduce__(self):
         return (Map__string_List__i32, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=List__i32)
 
 
 Mapping.register(Map__string_List__i32)
@@ -3199,10 +2935,6 @@ cdef class List__List__List__List__i32:
 
     def __reduce__(self):
         return (List__List__List__List__i32, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=List__List__List__i32)
 
 
 Sequence.register(List__List__List__List__i32)
@@ -3446,10 +3178,6 @@ cdef class Set__bool:
 
     def __reduce__(self):
         return (Set__bool, (set(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=bool)
 
 
 Set.register(Set__bool)
@@ -3701,10 +3429,6 @@ cdef class Set__Set__bool:
     def __reduce__(self):
         return (Set__Set__bool, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=Set__bool)
-
 
 Set.register(Set__Set__bool)
 
@@ -3954,10 +3678,6 @@ cdef class Set__Set__Set__bool:
 
     def __reduce__(self):
         return (Set__Set__Set__bool, (set(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=Set__Set__bool)
 
 
 Set.register(Set__Set__Set__bool)
@@ -4209,10 +3929,6 @@ cdef class Set__List__i32:
     def __reduce__(self):
         return (Set__List__i32, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=List__i32)
-
 
 Set.register(Set__List__i32)
 
@@ -4456,10 +4172,6 @@ cdef class Set__string:
     def __reduce__(self):
         return (Set__string, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=str)
-
 
 Set.register(Set__string)
 
@@ -4637,10 +4349,6 @@ cdef class List__Set__string:
     def __reduce__(self):
         return (List__Set__string, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=Set__string)
-
 
 Sequence.register(List__Set__string)
 
@@ -4790,10 +4498,6 @@ cdef class Map__List__Set__string_string:
 
     def __reduce__(self):
         return (Map__List__Set__string_string, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=List__Set__string, value=str)
 
 
 Mapping.register(Map__List__Set__string_string)
@@ -4946,10 +4650,6 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
     def __reduce__(self):
         return (Map__Set__List__i32_Map__List__Set__string_string, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=Set__List__i32, value=Map__List__Set__string_string)
 
 
 Mapping.register(Map__Set__List__i32_Map__List__Set__string_string)
@@ -5112,10 +4812,6 @@ cdef class List__Foo__i64:
     def __reduce__(self):
         return (List__Foo__i64, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=int)
-
 
 Sequence.register(List__Foo__i64)
 
@@ -5275,10 +4971,6 @@ cdef class List__Bar__double:
 
     def __reduce__(self):
         return (List__Bar__double, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=float)
 
 
 Sequence.register(List__Bar__double)
@@ -5440,10 +5132,6 @@ cdef class List__Baz__i32:
 
     def __reduce__(self):
         return (List__Baz__i32, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=int)
 
 
 Sequence.register(List__Baz__i32)

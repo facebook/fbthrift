@@ -24,12 +24,7 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import (
-  RpcOptions as __RpcOptions,
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
+from thrift.py3.common import RpcOptions as __RpcOptions
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -310,85 +305,6 @@ cdef class NestedContainers(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="NestedContainers",
-        methods=[
-          __MethodSpec(
-            name="mapList",
-            arguments=[
-              __ArgumentSpec(
-                name="foo",
-                type=_module_types.Map__i32_List__i32,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="mapSet",
-            arguments=[
-              __ArgumentSpec(
-                name="foo",
-                type=_module_types.Map__i32_Set__i32,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="listMap",
-            arguments=[
-              __ArgumentSpec(
-                name="foo",
-                type=_module_types.List__Map__i32_i32,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="listSet",
-            arguments=[
-              __ArgumentSpec(
-                name="foo",
-                type=_module_types.List__Set__i32,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="turtles",
-            arguments=[
-              __ArgumentSpec(
-                name="foo",
-                type=_module_types.List__List__Map__i32_Map__i32_Set__i32,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 
 cdef void closed_NestedContainers_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

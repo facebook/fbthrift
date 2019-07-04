@@ -17,16 +17,7 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,7 +32,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -388,32 +378,6 @@ cdef class MyUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      return __StructSpec(
-        name="MyUnion",
-        kind=__StructType.UNION,
-        fields=[
-          __FieldSpec(
-  name="anInteger",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="aString",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(MyUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyUnion* cpp_obj = self._cpp_obj.get()
@@ -666,41 +630,6 @@ cdef class MyField(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = MyField.create(constant_shared_ptr[cMyField](default_inst[cMyField]()))
-      return __StructSpec(
-        name="MyField",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="opt_value",
-  type=int,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="value",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="req_value",
-  type=int,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(MyField self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyField* cpp_obj = self._cpp_obj.get()
@@ -941,41 +870,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
-      return __StructSpec(
-        name="MyStruct",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="opt_ref",
-  type=MyField,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",    """cpp2.ref""": """true""",  }),
-),
-                __FieldSpec(
-  name="ref",
-  type=MyField,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",    """cpp2.ref""": """true""",  }),
-),
-                __FieldSpec(
-  name="req_ref",
-  type=MyField,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",    """cpp2.ref""": """true""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
@@ -1216,41 +1110,6 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithUnion.create(constant_shared_ptr[cStructWithUnion](default_inst[cStructWithUnion]()))
-      return __StructSpec(
-        name="StructWithUnion",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="u",
-  type=MyUnion,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",  }),
-),
-                __FieldSpec(
-  name="aDouble",
-  type=float,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="f",
-  type=MyField,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithUnion* cpp_obj = self._cpp_obj.get()
@@ -1420,25 +1279,6 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = RecursiveStruct.create(constant_shared_ptr[cRecursiveStruct](default_inst[cRecursiveStruct]()))
-      return __StructSpec(
-        name="RecursiveStruct",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="mes",
-  type=List__RecursiveStruct,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """swift.recursive_reference""": """true""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(RecursiveStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cRecursiveStruct* cpp_obj = self._cpp_obj.get()
@@ -1752,65 +1592,6 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithContainers.create(constant_shared_ptr[cStructWithContainers](default_inst[cStructWithContainers]()))
-      return __StructSpec(
-        name="StructWithContainers",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="list_ref",
-  type=List__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",    """cpp2.ref""": """true""",  }),
-),
-                __FieldSpec(
-  name="set_ref",
-  type=Set__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",    """cpp2.ref""": """true""",  }),
-),
-                __FieldSpec(
-  name="map_ref",
-  type=Map__i32_i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """true""",    """cpp2.ref""": """true""",  }),
-),
-                __FieldSpec(
-  name="list_ref_unique",
-  type=List__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """unique""",    """cpp2.ref_type""": """unique""",  }),
-),
-                __FieldSpec(
-  name="set_ref_shared",
-  type=Set__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared""",    """cpp2.ref_type""": """shared""",  }),
-),
-                __FieldSpec(
-  name="list_ref_shared_const",
-  type=List__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",    """cpp2.ref_type""": """shared_const""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithContainers self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithContainers* cpp_obj = self._cpp_obj.get()
@@ -2051,41 +1832,6 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithSharedConst.create(constant_shared_ptr[cStructWithSharedConst](default_inst[cStructWithSharedConst]()))
-      return __StructSpec(
-        name="StructWithSharedConst",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="opt_shared_const",
-  type=MyField,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",    """cpp2.ref_type""": """shared_const""",  }),
-),
-                __FieldSpec(
-  name="shared_const",
-  type=MyField,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",    """cpp2.ref_type""": """shared_const""",  }),
-),
-                __FieldSpec(
-  name="req_shared_const",
-  type=MyField,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",    """cpp2.ref_type""": """shared_const""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithSharedConst self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithSharedConst* cpp_obj = self._cpp_obj.get()
@@ -2215,17 +1961,6 @@ cdef class Empty(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = Empty.create(constant_shared_ptr[cEmpty](default_inst[cEmpty]()))
-      return __StructSpec(
-        name="Empty",
-        kind=__StructType.STRUCT,
-        fields=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(Empty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cEmpty* cpp_obj = self._cpp_obj.get()
@@ -2466,41 +2201,6 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithRef.create(constant_shared_ptr[cStructWithRef](default_inst[cStructWithRef]()))
-      return __StructSpec(
-        name="StructWithRef",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="def_field",
-  type=Empty,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
-),
-                __FieldSpec(
-  name="opt_field",
-  type=Empty,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
-),
-                __FieldSpec(
-  name="req_field",
-  type=Empty,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithRef self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithRef* cpp_obj = self._cpp_obj.get()
@@ -2741,41 +2441,6 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithRefTypeUnique.create(constant_shared_ptr[cStructWithRefTypeUnique](default_inst[cStructWithRefTypeUnique]()))
-      return __StructSpec(
-        name="StructWithRefTypeUnique",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="def_field",
-  type=Empty,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """unique""",  }),
-),
-                __FieldSpec(
-  name="opt_field",
-  type=Empty,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """unique""",  }),
-),
-                __FieldSpec(
-  name="req_field",
-  type=Empty,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """unique""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithRefTypeUnique self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithRefTypeUnique* cpp_obj = self._cpp_obj.get()
@@ -3016,41 +2681,6 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithRefTypeShared.create(constant_shared_ptr[cStructWithRefTypeShared](default_inst[cStructWithRefTypeShared]()))
-      return __StructSpec(
-        name="StructWithRefTypeShared",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="def_field",
-  type=Empty,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared""",  }),
-),
-                __FieldSpec(
-  name="opt_field",
-  type=Empty,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared""",  }),
-),
-                __FieldSpec(
-  name="req_field",
-  type=Empty,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithRefTypeShared self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithRefTypeShared* cpp_obj = self._cpp_obj.get()
@@ -3291,41 +2921,6 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithRefTypeSharedConst.create(constant_shared_ptr[cStructWithRefTypeSharedConst](default_inst[cStructWithRefTypeSharedConst]()))
-      return __StructSpec(
-        name="StructWithRefTypeSharedConst",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="def_field",
-  type=Empty,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",  }),
-),
-                __FieldSpec(
-  name="opt_field",
-  type=Empty,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",  }),
-),
-                __FieldSpec(
-  name="req_field",
-  type=Empty,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref_type""": """shared_const""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithRefTypeSharedConst self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithRefTypeSharedConst* cpp_obj = self._cpp_obj.get()
@@ -3498,25 +3093,6 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = StructWithRefAndAnnotCppNoexceptMoveCtor.create(constant_shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor](default_inst[cStructWithRefAndAnnotCppNoexceptMoveCtor]()))
-      return __StructSpec(
-        name="StructWithRefAndAnnotCppNoexceptMoveCtor",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="def_field",
-  type=Empty,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-    """cpp.ref""": """1""",  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-          """cpp.noexcept_move_ctor""": """1""",    }),
-      )
     cdef __iobuf.IOBuf _serialize(StructWithRefAndAnnotCppNoexceptMoveCtor self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cStructWithRefAndAnnotCppNoexceptMoveCtor* cpp_obj = self._cpp_obj.get()
@@ -3713,10 +3289,6 @@ cdef class List__RecursiveStruct:
     def __reduce__(self):
         return (List__RecursiveStruct, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=RecursiveStruct)
-
 
 Sequence.register(List__RecursiveStruct)
 
@@ -3877,10 +3449,6 @@ cdef class List__i32:
 
     def __reduce__(self):
         return (List__i32, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=int)
 
 
 Sequence.register(List__i32)
@@ -4126,10 +3694,6 @@ cdef class Set__i32:
     def __reduce__(self):
         return (Set__i32, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=int)
-
 
 Set.register(Set__i32)
 
@@ -4264,10 +3828,6 @@ cdef class Map__i32_i32:
 
     def __reduce__(self):
         return (Map__i32_i32, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=int, value=int)
 
 
 Mapping.register(Map__i32_i32)

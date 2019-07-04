@@ -17,16 +17,7 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import (
-    NOTSET as __NOTSET,
-    StructSpec as __StructSpec,
-    ListSpec as __ListSpec,
-    SetSpec as __SetSpec,
-    MapSpec as __MapSpec,
-    FieldSpec as __FieldSpec,
-    StructType as __StructType,
-    Qualifier as __Qualifier,
-)
+from thrift.py3.types import NOTSET as __NOTSET
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -41,7 +32,6 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
-import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -764,41 +754,6 @@ cdef class Internship(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = Internship.create(constant_shared_ptr[cInternship](default_inst[cInternship]()))
-      return __StructSpec(
-        name="Internship",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="weeks",
-  type=int,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="title",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="employer",
-  type=Company,
-  qualifier=__Qualifier.OPTIONAL,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(Internship self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cInternship* cpp_obj = self._cpp_obj.get()
@@ -969,25 +924,6 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = UnEnumStruct.create(constant_shared_ptr[cUnEnumStruct](default_inst[cUnEnumStruct]()))
-      return __StructSpec(
-        name="UnEnumStruct",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="city",
-  type=City,
-  qualifier=__Qualifier.NONE,
-  default=defaults.city,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(UnEnumStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cUnEnumStruct* cpp_obj = self._cpp_obj.get()
@@ -1199,33 +1135,6 @@ cdef class Range(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = Range.create(constant_shared_ptr[cRange](default_inst[cRange]()))
-      return __StructSpec(
-        name="Range",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="min",
-  type=int,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="max",
-  type=int,
-  qualifier=__Qualifier.REQUIRED,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(Range self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cRange* cpp_obj = self._cpp_obj.get()
@@ -1433,33 +1342,6 @@ cdef class struct1(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = struct1.create(constant_shared_ptr[cstruct1](default_inst[cstruct1]()))
-      return __StructSpec(
-        name="struct1",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="a",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=defaults.a,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="b",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=defaults.b,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(struct1 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cstruct1* cpp_obj = self._cpp_obj.get()
@@ -1729,49 +1611,6 @@ cdef class struct2(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = struct2.create(constant_shared_ptr[cstruct2](default_inst[cstruct2]()))
-      return __StructSpec(
-        name="struct2",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="a",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="b",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="c",
-  type=struct1,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="d",
-  type=List__i32,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(struct2 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cstruct2* cpp_obj = self._cpp_obj.get()
@@ -2012,41 +1851,6 @@ cdef class struct3(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      defaults = struct3.create(constant_shared_ptr[cstruct3](default_inst[cstruct3]()))
-      return __StructSpec(
-        name="struct3",
-        kind=__StructType.STRUCT,
-        fields=[
-          __FieldSpec(
-  name="a",
-  type=str,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="b",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="c",
-  type=struct2,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(struct3 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cstruct3* cpp_obj = self._cpp_obj.get()
@@ -2241,32 +2045,6 @@ cdef class union1(thrift.py3.types.Union):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      return __StructSpec(
-        name="union1",
-        kind=__StructType.UNION,
-        fields=[
-          __FieldSpec(
-  name="i",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="d",
-  type=float,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(union1 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cunion1* cpp_obj = self._cpp_obj.get()
@@ -2499,48 +2277,6 @@ cdef class union2(thrift.py3.types.Union):
         else:
             return NotImplemented
 
-    @staticmethod
-    def __get_reflection__():
-      return __StructSpec(
-        name="union2",
-        kind=__StructType.UNION,
-        fields=[
-          __FieldSpec(
-  name="i",
-  type=int,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="d",
-  type=float,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="s",
-  type=struct1,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-                __FieldSpec(
-  name="u",
-  type=union1,
-  qualifier=__Qualifier.NONE,
-  default=None,
-  annotations=_py_types.MappingProxyType({
-  }),
-),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
     cdef __iobuf.IOBuf _serialize(union2 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cunion2* cpp_obj = self._cpp_obj.get()
@@ -2740,10 +2476,6 @@ cdef class List__i32:
     def __reduce__(self):
         return (List__i32, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=int)
-
 
 Sequence.register(List__i32)
 
@@ -2877,10 +2609,6 @@ cdef class Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_i32, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=int)
 
 
 Mapping.register(Map__string_i32)
@@ -3059,10 +2787,6 @@ cdef class List__Map__string_i32:
     def __reduce__(self):
         return (List__Map__string_i32, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=Map__string_i32)
-
 
 Sequence.register(List__Map__string_i32)
 
@@ -3222,10 +2946,6 @@ cdef class List__Range:
 
     def __reduce__(self):
         return (List__Range, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=Range)
 
 
 Sequence.register(List__Range)
@@ -3387,10 +3107,6 @@ cdef class List__Internship:
     def __reduce__(self):
         return (List__Internship, (list(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=Internship)
-
 
 Sequence.register(List__Internship)
 
@@ -3550,10 +3266,6 @@ cdef class List__string:
 
     def __reduce__(self):
         return (List__string, (list(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __ListSpec(value=str)
 
 
 Sequence.register(List__string)
@@ -3799,10 +3511,6 @@ cdef class Set__i32:
     def __reduce__(self):
         return (Set__i32, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=int)
-
 
 Set.register(Set__i32)
 
@@ -4046,10 +3754,6 @@ cdef class Set__string:
     def __reduce__(self):
         return (Set__string, (set(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __SetSpec(value=str)
-
 
 Set.register(Set__string)
 
@@ -4185,10 +3889,6 @@ cdef class Map__i32_i32:
     def __reduce__(self):
         return (Map__i32_i32, (dict(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=int, value=int)
-
 
 Mapping.register(Map__i32_i32)
 
@@ -4323,10 +4023,6 @@ cdef class Map__i32_string:
     def __reduce__(self):
         return (Map__i32_string, (dict(self), ))
 
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=int, value=str)
-
 
 Mapping.register(Map__i32_string)
 
@@ -4459,10 +4155,6 @@ cdef class Map__string_string:
 
     def __reduce__(self):
         return (Map__string_string, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=str)
 
 
 Mapping.register(Map__string_string)

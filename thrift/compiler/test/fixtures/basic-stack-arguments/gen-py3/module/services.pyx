@@ -15,11 +15,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -139,84 +134,6 @@ cdef class MyServiceInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyService",
-        methods=[
-          __MethodSpec(
-            name="hasDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=bool,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="getDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=str,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="putDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-                __MethodSpec(
-            name="lobDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
 })
 
@@ -269,84 +186,6 @@ cdef class MyServiceFastInterface(
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="MyServiceFast",
-        methods=[
-          __MethodSpec(
-            name="hasDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=bool,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="getDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=str,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="putDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-                __MethodSpec(
-            name="lobDataById",
-            arguments=[
-              __ArgumentSpec(
-                name="id",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),
-              __ArgumentSpec(
-                name="data",
-                type=str,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=None,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-              """thread""": """eb""",        }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 
 
 cdef api void call_cy_MyService_hasDataById(

@@ -15,11 +15,6 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.py3.common import (
-  InterfaceSpec as __InterfaceSpec,
-  MethodSpec as __MethodSpec,
-  ArgumentSpec as __ArgumentSpec,
-)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -87,30 +82,6 @@ cdef class TestServiceInterface(
             self,
             int1):
         raise NotImplementedError("async def init is not implemented")
-
-    @staticmethod
-    def __get_reflection__():
-      return __InterfaceSpec(
-        name="TestService",
-        methods=[
-          __MethodSpec(
-            name="init",
-            arguments=[
-              __ArgumentSpec(
-                name="int1",
-                type=int,
-                annotations=_py_types.MappingProxyType({
-                }),
-              ),],
-            result=int,
-            exceptions=[],
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
 
 
 cdef api void call_cy_TestService_init(
