@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -200,6 +205,55 @@ cdef class MyService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="MyService",
+        methods=[
+          __MethodSpec(
+            name="query",
+            arguments=[
+              __ArgumentSpec(
+                name="s",
+                type=_module_types.MyStruct,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="i",
+                type=_includes_types.Included,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="has_arg_docs",
+            arguments=[
+              __ArgumentSpec(
+                name="s",
+                type=_module_types.MyStruct,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="i",
+                type=_includes_types.Included,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_MyService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

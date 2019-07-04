@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -384,6 +394,49 @@ cdef class Color(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Color.create(constant_shared_ptr[cColor](default_inst[cColor]()))
+      return __StructSpec(
+        name="Color",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="red",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="green",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="blue",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="alpha",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(Color self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cColor* cpp_obj = self._cpp_obj.get()
@@ -683,6 +736,57 @@ cdef class Vehicle(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Vehicle.create(constant_shared_ptr[cVehicle](default_inst[cVehicle]()))
+      return __StructSpec(
+        name="Vehicle",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="color",
+  type=Color,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="licensePlate",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="description",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="name",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="hasAC",
+  type=bool,
+  qualifier=__Qualifier.OPTIONAL,
+  default=defaults.hasAC,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(Vehicle self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cVehicle* cpp_obj = self._cpp_obj.get()
@@ -1154,6 +1258,97 @@ cdef class Person(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Person.create(constant_shared_ptr[cPerson](default_inst[cPerson]()))
+      return __StructSpec(
+        name="Person",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="id",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="name",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="age",
+  type=int,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="address",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="favoriteColor",
+  type=Color,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="friends",
+  type=Set__i64,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="bestFriend",
+  type=int,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="petNames",
+  type=Map__Animal_string,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="afraidOfAnimal",
+  type=Animal,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="vehicles",
+  type=List__Vehicle,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(Person self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cPerson* cpp_obj = self._cpp_obj.get()
@@ -1434,6 +1629,10 @@ cdef class Set__i64:
     def __reduce__(self):
         return (Set__i64, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=int)
+
 
 Set.register(Set__i64)
 
@@ -1566,6 +1765,10 @@ cdef class Map__Animal_string:
 
     def __reduce__(self):
         return (Map__Animal_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=Animal, value=str)
 
 
 Mapping.register(Map__Animal_string)
@@ -1726,6 +1929,10 @@ cdef class List__Vehicle:
 
     def __reduce__(self):
         return (List__Vehicle, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Vehicle)
 
 
 Sequence.register(List__Vehicle)

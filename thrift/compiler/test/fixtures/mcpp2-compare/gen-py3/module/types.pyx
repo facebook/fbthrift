@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -1011,6 +1021,17 @@ cdef class Empty(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Empty.create(constant_shared_ptr[cEmpty](default_inst[cEmpty]()))
+      return __StructSpec(
+        name="Empty",
+        kind=__StructType.STRUCT,
+        fields=[
+    ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.noexcept_move_ctor""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(Empty self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cEmpty* cpp_obj = self._cpp_obj.get()
@@ -1179,6 +1200,25 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = ASimpleStruct.create(constant_shared_ptr[cASimpleStruct](default_inst[cASimpleStruct]()))
+      return __StructSpec(
+        name="ASimpleStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="boolField",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """no_default_comparators""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(ASimpleStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cASimpleStruct* cpp_obj = self._cpp_obj.get()
@@ -1355,6 +1395,25 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = ASimpleStructNoexcept.create(constant_shared_ptr[cASimpleStructNoexcept](default_inst[cASimpleStructNoexcept]()))
+      return __StructSpec(
+        name="ASimpleStructNoexcept",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="boolField",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.noexcept_move_ctor""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(ASimpleStructNoexcept self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cASimpleStructNoexcept* cpp_obj = self._cpp_obj.get()
@@ -1775,6 +1834,89 @@ cdef class MyStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = MyStruct.create(constant_shared_ptr[cMyStruct](default_inst[cMyStruct]()))
+      return __StructSpec(
+        name="MyStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="MyBoolField",
+  type=bool,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyIntField",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=defaults.MyIntField,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyStringField",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=defaults.MyStringField,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyStringField2",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryField",
+  type=bytes,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryField2",
+  type=bytes,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryField3",
+  type=bytes,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryListField4",
+  type=List__binary,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyMapEnumAndInt",
+  type=Map__MyEnumA_string,
+  qualifier=__Qualifier.NONE,
+  default=defaults.MyMapEnumAndInt,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.noexcept_move_ctor""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyStruct* cpp_obj = self._cpp_obj.get()
@@ -1955,6 +2097,32 @@ cdef class SimpleUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="SimpleUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="intValue",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringValue",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.virtual""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(SimpleUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSimpleUnion* cpp_obj = self._cpp_obj.get()
@@ -2637,6 +2805,232 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="ComplexUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="intValue",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_intValue",
+  type=int,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringValue",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_stringValue",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="intValue2",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="intValue3",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="doubelValue",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="boolValue",
+  type=bool,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="union_list",
+  type=List__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="union_set",
+  type=Set__i64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="union_map",
+  type=Map__string_i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_union_map",
+  type=Map__string_i32,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="enum_field",
+  type=MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="enum_container",
+  type=List__MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_struct",
+  type=MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_set_struct",
+  type=Set__MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_union",
+  type=SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_a_union",
+  type=SimpleUnion,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_union_list",
+  type=List__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_union_typedef",
+  type=Set__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_union_typedef_list",
+  type=List__Set__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryField",
+  type=bytes,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryField2",
+  type=bytes,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyBinaryListField4",
+  type=List__binary,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="ref_field",
+  type=MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="ref_field2",
+  type=MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref_type""": """shared_const""",  }),
+),
+                __FieldSpec(
+  name="excp_field",
+  type=AnException,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.methods""": """void foo(const std::string& bar) {}""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexUnion* cpp_obj = self._cpp_obj.get()
@@ -2977,6 +3371,137 @@ cdef class AnException(thrift.py3.exceptions.Error):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = AnException.create(constant_shared_ptr[cAnException](default_inst[cAnException]()))
+      return __StructSpec(
+        name="AnException",
+        kind=__StructType.EXCEPTION,
+        fields=[
+          __FieldSpec(
+  name="code",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_code",
+  type=int,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="message2",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_message",
+  type=str,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="exception_list",
+  type=List__i32,
+  qualifier=__Qualifier.NONE,
+  default=defaults.exception_list,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="exception_set",
+  type=Set__i64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="exception_map",
+  type=Map__string_i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_exception_map",
+  type=Map__string_i32,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="enum_field",
+  type=MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="enum_container",
+  type=List__MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_struct",
+  type=MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_set_struct",
+  type=Set__MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_union_list",
+  type=List__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="union_typedef",
+  type=Set__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="a_union_typedef_list",
+  type=List__Set__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """message""": """message2""",    }),
+      )
 
 
 cdef class AnotherException(thrift.py3.exceptions.Error):
@@ -3106,6 +3631,41 @@ cdef class AnotherException(thrift.py3.exceptions.Error):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = AnotherException.create(constant_shared_ptr[cAnotherException](default_inst[cAnotherException]()))
+      return __StructSpec(
+        name="AnotherException",
+        kind=__StructType.EXCEPTION,
+        fields=[
+          __FieldSpec(
+  name="code",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_code",
+  type=int,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="message",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.virtual""": """1""",    }),
+      )
 
 
 cdef class containerStruct(thrift.py3.types.Struct):
@@ -4600,6 +5160,385 @@ cdef class containerStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = containerStruct.create(constant_shared_ptr[ccontainerStruct](default_inst[ccontainerStruct]()))
+      return __StructSpec(
+        name="containerStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="fieldA",
+  type=bool,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldA",
+  type=bool,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldA",
+  type=bool,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldB",
+  type=Map__string_bool,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldB",
+  type=Map__string_bool,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldB",
+  type=Map__string_bool,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldC",
+  type=Set__i32,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldC,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldC",
+  type=Set__i32,
+  qualifier=__Qualifier.REQUIRED,
+  default=defaults.req_fieldC,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldC",
+  type=Set__i32,
+  qualifier=__Qualifier.OPTIONAL,
+  default=defaults.opt_fieldC,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldD",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldE",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldE,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldE",
+  type=str,
+  qualifier=__Qualifier.REQUIRED,
+  default=defaults.req_fieldE,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldE",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=defaults.opt_fieldE,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldF",
+  type=List__List__i32,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldF,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldG",
+  type=Map__string_Map__string_Map__string_i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldH",
+  type=List__Set__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldI",
+  type=bool,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldI,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldJ",
+  type=Map__string_List__i32,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldJ,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldK",
+  type=List__List__List__List__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldL",
+  type=Set__Set__Set__bool,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldM",
+  type=Map__Set__List__i32_Map__List__Set__string_string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldN",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldO",
+  type=List__Map__Empty_MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldP",
+  type=List__List__List__Map__Empty_MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldQ",
+  type=MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldR",
+  type=MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldR,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldR",
+  type=MyEnumA,
+  qualifier=__Qualifier.REQUIRED,
+  default=defaults.req_fieldR,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldR",
+  type=MyEnumA,
+  qualifier=__Qualifier.OPTIONAL,
+  default=defaults.opt_fieldR,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldS",
+  type=MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldS,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldT",
+  type=List__MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldU",
+  type=List__MyEnumA,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldU,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldV",
+  type=MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldV",
+  type=MyStruct,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldV",
+  type=MyStruct,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldW",
+  type=Set__MyStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldX",
+  type=ComplexUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="req_fieldX",
+  type=ComplexUnion,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="opt_fieldX",
+  type=ComplexUnion,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldY",
+  type=List__ComplexUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldZ",
+  type=Set__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldAA",
+  type=List__Set__SimpleUnion,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldAB",
+  type=Map__Bar__double_Baz__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldAC",
+  type=MyEnumB,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldAD",
+  type=_includes_types.AnEnum,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldAE",
+  type=Map__string_i32,
+  qualifier=__Qualifier.NONE,
+  default=defaults.fieldAE,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="fieldSD",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.methods""": """void foo(const std::string& bar) {}""",      """cpp2.noncopyable""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(containerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef ccontainerStruct* cpp_obj = self._cpp_obj.get()
@@ -4874,6 +5813,49 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = MyIncludedStruct.create(constant_shared_ptr[cMyIncludedStruct](default_inst[cMyIncludedStruct]()))
+      return __StructSpec(
+        name="MyIncludedStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="MyIncludedInt",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=defaults.MyIncludedInt,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="MyIncludedStruct",
+  type=_includes_types.AStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="ARefField",
+  type=_includes_types.AStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref""": """true""",  }),
+),
+                __FieldSpec(
+  name="ARequiredField",
+  type=_includes_types.AStruct,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp2.declare_equal_to""": """1""",      """cpp2.declare_hash""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(MyIncludedStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cMyIncludedStruct* cpp_obj = self._cpp_obj.get()
@@ -6269,6 +7251,337 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = AnnotatedStruct.create(constant_shared_ptr[cAnnotatedStruct](default_inst[cAnnotatedStruct]()))
+      return __StructSpec(
+        name="AnnotatedStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="no_annotation",
+  type=containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="cpp_unique_ref",
+  type=containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="cpp2_unique_ref",
+  type=containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="container_with_ref",
+  type=Map__i32_List__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="req_cpp_unique_ref",
+  type=containerStruct,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="req_cpp2_unique_ref",
+  type=containerStruct,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="req_container_with_ref",
+  type=List__string,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="opt_cpp_unique_ref",
+  type=containerStruct,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="opt_cpp2_unique_ref",
+  type=containerStruct,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="opt_container_with_ref",
+  type=Set__i32,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """1""",  }),
+),
+                __FieldSpec(
+  name="ref_type_unique",
+  type=containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref_type""": """unique""",  }),
+),
+                __FieldSpec(
+  name="ref_type_shared",
+  type=containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref_type""": """shared""",  }),
+),
+                __FieldSpec(
+  name="ref_type_const",
+  type=Map__i32_List__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref_type""": """shared_const""",  }),
+),
+                __FieldSpec(
+  name="req_ref_type_shared",
+  type=containerStruct,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref_type""": """shared""",  }),
+),
+                __FieldSpec(
+  name="req_ref_type_const",
+  type=containerStruct,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref_type""": """shared_const""",  }),
+),
+                __FieldSpec(
+  name="req_ref_type_unique",
+  type=List__string,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref_type""": """unique""",  }),
+),
+                __FieldSpec(
+  name="opt_ref_type_const",
+  type=containerStruct,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp.ref_type""": """shared_const""",  }),
+),
+                __FieldSpec(
+  name="opt_ref_type_unique",
+  type=containerStruct,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref_type""": """unique""",  }),
+),
+                __FieldSpec(
+  name="opt_ref_type_shared",
+  type=Set__i32,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref_type""": """shared""",  }),
+),
+                __FieldSpec(
+  name="base_type",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="list_type",
+  type=folly_small_vector_int64_t_8__List__i64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="set_type",
+  type=folly_sorted_vector_set_std_string__Set__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="map_type",
+  type=FakeMap__Map__i64_double,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="map_struct_type",
+  type=std_unordered_map_std_string_containerStruct__Map__string_containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="iobuf_type",
+  type=__iobuf.IOBuf,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="iobuf_ptr",
+  type=__iobuf.IOBuf,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="list_i32_template",
+  type=std_list__List__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="list_string_template",
+  type=std_deque__List__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="set_template",
+  type=folly_sorted_vector_set__Set__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="map_template",
+  type=folly_sorted_vector_map__Map__i64_string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="typedef_list_template",
+  type=std_list__List__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="typedef_deque_template",
+  type=std_deque__List__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="typedef_set_template",
+  type=folly_sorted_vector_set__Set__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="typedef_map_template",
+  type=folly_sorted_vector_map__Map__i64_string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="indirection_a",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="indirection_b",
+  type=List__Bar__double,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="indirection_c",
+  type=Set__Baz__i32,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="iobuf_type_val",
+  type=__iobuf.IOBuf,
+  qualifier=__Qualifier.NONE,
+  default=defaults.iobuf_type_val,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="iobuf_ptr_val",
+  type=__iobuf.IOBuf,
+  qualifier=__Qualifier.NONE,
+  default=defaults.iobuf_ptr_val,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="struct_struct",
+  type=containerStruct,
+  qualifier=__Qualifier.NONE,
+  default=defaults.struct_struct,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.declare_equal_to""": """1""",      """cpp.declare_hash""": """1""",      """cpp.virtual""": """1""",      """cpp2.methods""": """void foo(const std::string& bar) {}""",      """cpp2.noexcept_move_ctor""": """1""",      """cpp2.noncopyable""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(AnnotatedStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAnnotatedStruct* cpp_obj = self._cpp_obj.get()
@@ -6466,6 +7779,33 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = ComplexContainerStruct.create(constant_shared_ptr[cComplexContainerStruct](default_inst[cComplexContainerStruct]()))
+      return __StructSpec(
+        name="ComplexContainerStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="map_of_iobufs",
+  type=Map__string_folly_IOBuf__binary,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="map_of_iobuf_ptrs",
+  type=Map__string_std_unique_ptr_folly_IOBuf__binary,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(ComplexContainerStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexContainerStruct* cpp_obj = self._cpp_obj.get()
@@ -6675,6 +8015,33 @@ cdef class FloatStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = FloatStruct.create(constant_shared_ptr[cFloatStruct](default_inst[cFloatStruct]()))
+      return __StructSpec(
+        name="FloatStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="floatField",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="doubleField",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(FloatStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFloatStruct* cpp_obj = self._cpp_obj.get()
@@ -6875,6 +8242,32 @@ cdef class FloatUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="FloatUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="floatSide",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="doubleSide",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(FloatUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cFloatUnion* cpp_obj = self._cpp_obj.get()
@@ -7052,6 +8445,25 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = AllRequiredNoExceptMoveCtrStruct.create(constant_shared_ptr[cAllRequiredNoExceptMoveCtrStruct](default_inst[cAllRequiredNoExceptMoveCtrStruct]()))
+      return __StructSpec(
+        name="AllRequiredNoExceptMoveCtrStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="intField",
+  type=int,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.noexcept_move_ctor""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(AllRequiredNoExceptMoveCtrStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cAllRequiredNoExceptMoveCtrStruct* cpp_obj = self._cpp_obj.get()
@@ -7222,6 +8634,10 @@ cdef class Map__string_i64:
     def __reduce__(self):
         return (Map__string_i64, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=int)
+
 
 Mapping.register(Map__string_i64)
 
@@ -7354,6 +8770,10 @@ cdef class Map__Empty_MyStruct:
 
     def __reduce__(self):
         return (Map__Empty_MyStruct, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=Empty, value=MyStruct)
 
 
 Mapping.register(Map__Empty_MyStruct)
@@ -7532,6 +8952,10 @@ cdef class List__Map__Empty_MyStruct:
     def __reduce__(self):
         return (List__Map__Empty_MyStruct, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__Empty_MyStruct)
+
 
 Sequence.register(List__Map__Empty_MyStruct)
 
@@ -7708,6 +9132,10 @@ cdef class List__List__Map__Empty_MyStruct:
 
     def __reduce__(self):
         return (List__List__Map__Empty_MyStruct, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__Map__Empty_MyStruct)
 
 
 Sequence.register(List__List__Map__Empty_MyStruct)
@@ -7886,6 +9314,10 @@ cdef class List__List__List__Map__Empty_MyStruct:
     def __reduce__(self):
         return (List__List__List__Map__Empty_MyStruct, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__List__Map__Empty_MyStruct)
+
 
 Sequence.register(List__List__List__Map__Empty_MyStruct)
 
@@ -8045,6 +9477,10 @@ cdef class List__MyEnumA:
 
     def __reduce__(self):
         return (List__MyEnumA, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=MyEnumA)
 
 
 Sequence.register(List__MyEnumA)
@@ -8289,6 +9725,10 @@ cdef class Set__MyStruct:
     def __reduce__(self):
         return (Set__MyStruct, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=MyStruct)
+
 
 Set.register(Set__MyStruct)
 
@@ -8449,6 +9889,10 @@ cdef class List__ComplexUnion:
     def __reduce__(self):
         return (List__ComplexUnion, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=ComplexUnion)
+
 
 Sequence.register(List__ComplexUnion)
 
@@ -8608,6 +10052,10 @@ cdef class List__string:
 
     def __reduce__(self):
         return (List__string, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=str)
 
 
 Sequence.register(List__string)
@@ -8859,6 +10307,10 @@ cdef class Set__List__string:
     def __reduce__(self):
         return (Set__List__string, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=List__string)
+
 
 Set.register(Set__List__string)
 
@@ -9109,6 +10561,10 @@ cdef class Set__List__List__Map__Empty_MyStruct:
     def __reduce__(self):
         return (Set__List__List__Map__Empty_MyStruct, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=List__List__Map__Empty_MyStruct)
+
 
 Set.register(Set__List__List__Map__Empty_MyStruct)
 
@@ -9244,6 +10700,10 @@ cdef class Map__i32_List__string:
 
     def __reduce__(self):
         return (Map__i32_List__string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=List__string)
 
 
 Mapping.register(Map__i32_List__string)
@@ -9405,6 +10865,10 @@ cdef class List__bool:
     def __reduce__(self):
         return (List__bool, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=bool)
+
 
 Sequence.register(List__bool)
 
@@ -9565,6 +11029,10 @@ cdef class List__i32:
 
     def __reduce__(self):
         return (List__i32, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
 
 
 Sequence.register(List__i32)
@@ -9743,6 +11211,10 @@ cdef class List__List__i32:
     def __reduce__(self):
         return (List__List__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__i32)
+
 
 Sequence.register(List__List__i32)
 
@@ -9920,6 +11392,10 @@ cdef class List__List__List__i32:
     def __reduce__(self):
         return (List__List__List__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__List__i32)
+
 
 Sequence.register(List__List__List__i32)
 
@@ -10096,6 +11572,10 @@ cdef class List__List__List__List__i32:
 
     def __reduce__(self):
         return (List__List__List__List__i32, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__List__List__i32)
 
 
 Sequence.register(List__List__List__List__i32)
@@ -10347,6 +11827,10 @@ cdef class Set__List__i32:
     def __reduce__(self):
         return (Set__List__i32, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=List__i32)
+
 
 Set.register(Set__List__i32)
 
@@ -10590,6 +12074,10 @@ cdef class Set__string:
     def __reduce__(self):
         return (Set__string, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=str)
+
 
 Set.register(Set__string)
 
@@ -10767,6 +12255,10 @@ cdef class List__Set__string:
     def __reduce__(self):
         return (List__Set__string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Set__string)
+
 
 Sequence.register(List__Set__string)
 
@@ -10916,6 +12408,10 @@ cdef class Map__List__Set__string_string:
 
     def __reduce__(self):
         return (Map__List__Set__string_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=List__Set__string, value=str)
 
 
 Mapping.register(Map__List__Set__string_string)
@@ -11068,6 +12564,10 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
     def __reduce__(self):
         return (Map__Set__List__i32_Map__List__Set__string_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=Set__List__i32, value=Map__List__Set__string_string)
 
 
 Mapping.register(Map__Set__List__i32_Map__List__Set__string_string)
@@ -11229,6 +12729,10 @@ cdef class List__binary:
     def __reduce__(self):
         return (List__binary, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=bytes)
+
 
 Sequence.register(List__binary)
 
@@ -11361,6 +12865,10 @@ cdef class Map__MyEnumA_string:
 
     def __reduce__(self):
         return (Map__MyEnumA_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=MyEnumA, value=str)
 
 
 Mapping.register(Map__MyEnumA_string)
@@ -11606,6 +13114,10 @@ cdef class Set__i64:
     def __reduce__(self):
         return (Set__i64, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=int)
+
 
 Set.register(Set__i64)
 
@@ -11739,6 +13251,10 @@ cdef class Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=int)
 
 
 Mapping.register(Map__string_i32)
@@ -11899,6 +13415,10 @@ cdef class List__SimpleUnion:
 
     def __reduce__(self):
         return (List__SimpleUnion, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=SimpleUnion)
 
 
 Sequence.register(List__SimpleUnion)
@@ -12143,6 +13663,10 @@ cdef class Set__SimpleUnion:
     def __reduce__(self):
         return (Set__SimpleUnion, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=SimpleUnion)
+
 
 Set.register(Set__SimpleUnion)
 
@@ -12320,6 +13844,10 @@ cdef class List__Set__SimpleUnion:
     def __reduce__(self):
         return (List__Set__SimpleUnion, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Set__SimpleUnion)
+
 
 Sequence.register(List__Set__SimpleUnion)
 
@@ -12452,6 +13980,10 @@ cdef class Map__string_bool:
 
     def __reduce__(self):
         return (Map__string_bool, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=bool)
 
 
 Mapping.register(Map__string_bool)
@@ -12697,6 +14229,10 @@ cdef class Set__i32:
     def __reduce__(self):
         return (Set__i32, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=int)
+
 
 Set.register(Set__i32)
 
@@ -12832,6 +14368,10 @@ cdef class Map__string_Map__string_i32:
     def __reduce__(self):
         return (Map__string_Map__string_i32, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=Map__string_i32)
+
 
 Mapping.register(Map__string_Map__string_i32)
 
@@ -12966,6 +14506,10 @@ cdef class Map__string_Map__string_Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_Map__string_Map__string_i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=Map__string_Map__string_i32)
 
 
 Mapping.register(Map__string_Map__string_Map__string_i32)
@@ -13144,6 +14688,10 @@ cdef class List__Set__i32:
     def __reduce__(self):
         return (List__Set__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Set__i32)
+
 
 Sequence.register(List__Set__i32)
 
@@ -13278,6 +14826,10 @@ cdef class Map__string_List__i32:
 
     def __reduce__(self):
         return (Map__string_List__i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=List__i32)
 
 
 Mapping.register(Map__string_List__i32)
@@ -13521,6 +15073,10 @@ cdef class Set__bool:
 
     def __reduce__(self):
         return (Set__bool, (set(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=bool)
 
 
 Set.register(Set__bool)
@@ -13772,6 +15328,10 @@ cdef class Set__Set__bool:
     def __reduce__(self):
         return (Set__Set__bool, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=Set__bool)
+
 
 Set.register(Set__Set__bool)
 
@@ -14022,6 +15582,10 @@ cdef class Set__Set__Set__bool:
     def __reduce__(self):
         return (Set__Set__Set__bool, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=Set__Set__bool)
+
 
 Set.register(Set__Set__Set__bool)
 
@@ -14155,6 +15719,10 @@ cdef class Map__Bar__double_Baz__i32:
 
     def __reduce__(self):
         return (Map__Bar__double_Baz__i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=float, value=int)
 
 
 Mapping.register(Map__Bar__double_Baz__i32)
@@ -14316,6 +15884,10 @@ cdef class folly_small_vector_int64_t_8__List__i64:
 
     def __reduce__(self):
         return (folly_small_vector_int64_t_8__List__i64, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
 
 
 Sequence.register(folly_small_vector_int64_t_8__List__i64)
@@ -14560,6 +16132,10 @@ cdef class folly_sorted_vector_set_std_string__Set__string:
     def __reduce__(self):
         return (folly_sorted_vector_set_std_string__Set__string, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=str)
+
 
 Set.register(folly_sorted_vector_set_std_string__Set__string)
 
@@ -14694,6 +16270,10 @@ cdef class FakeMap__Map__i64_double:
     def __reduce__(self):
         return (FakeMap__Map__i64_double, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=float)
+
 
 Mapping.register(FakeMap__Map__i64_double)
 
@@ -14826,6 +16406,10 @@ cdef class std_unordered_map_std_string_containerStruct__Map__string_containerSt
 
     def __reduce__(self):
         return (std_unordered_map_std_string_containerStruct__Map__string_containerStruct, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=containerStruct)
 
 
 Mapping.register(std_unordered_map_std_string_containerStruct__Map__string_containerStruct)
@@ -14988,6 +16572,10 @@ cdef class std_list__List__i32:
     def __reduce__(self):
         return (std_list__List__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
+
 
 Sequence.register(std_list__List__i32)
 
@@ -15147,6 +16735,10 @@ cdef class std_deque__List__string:
 
     def __reduce__(self):
         return (std_deque__List__string, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=str)
 
 
 Sequence.register(std_deque__List__string)
@@ -15391,6 +16983,10 @@ cdef class folly_sorted_vector_set__Set__string:
     def __reduce__(self):
         return (folly_sorted_vector_set__Set__string, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=str)
+
 
 Set.register(folly_sorted_vector_set__Set__string)
 
@@ -15524,6 +17120,10 @@ cdef class folly_sorted_vector_map__Map__i64_string:
 
     def __reduce__(self):
         return (folly_sorted_vector_map__Map__i64_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=str)
 
 
 Mapping.register(folly_sorted_vector_map__Map__i64_string)
@@ -15684,6 +17284,10 @@ cdef class List__Bar__double:
 
     def __reduce__(self):
         return (List__Bar__double, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=float)
 
 
 Sequence.register(List__Bar__double)
@@ -15929,6 +17533,10 @@ cdef class Set__Baz__i32:
     def __reduce__(self):
         return (Set__Baz__i32, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=int)
+
 
 Set.register(Set__Baz__i32)
 
@@ -16061,6 +17669,10 @@ cdef class Map__string_folly_IOBuf__binary:
 
     def __reduce__(self):
         return (Map__string_folly_IOBuf__binary, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=__iobuf.IOBuf)
 
 
 Mapping.register(Map__string_folly_IOBuf__binary)
@@ -16195,6 +17807,10 @@ cdef class Map__string_std_unique_ptr_folly_IOBuf__binary:
     def __reduce__(self):
         return (Map__string_std_unique_ptr_folly_IOBuf__binary, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=__iobuf.IOBuf)
+
 
 Mapping.register(Map__string_std_unique_ptr_folly_IOBuf__binary)
 
@@ -16328,6 +17944,10 @@ cdef class Map__i32_string:
 
     def __reduce__(self):
         return (Map__i32_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=str)
 
 
 Mapping.register(Map__i32_string)
@@ -16506,6 +18126,10 @@ cdef class List__Map__string_i32:
     def __reduce__(self):
         return (List__Map__string_i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__string_i32)
+
 
 Sequence.register(List__Map__string_i32)
 
@@ -16639,6 +18263,10 @@ cdef class Map__i16_string:
 
     def __reduce__(self):
         return (Map__i16_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=str)
 
 
 Mapping.register(Map__i16_string)
@@ -16817,6 +18445,10 @@ cdef class List__Map__i16_string:
     def __reduce__(self):
         return (List__Map__i16_string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__i16_string)
+
 
 Sequence.register(List__Map__i16_string)
 
@@ -16976,6 +18608,10 @@ cdef class List__MyStruct:
 
     def __reduce__(self):
         return (List__MyStruct, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=MyStruct)
 
 
 Sequence.register(List__MyStruct)

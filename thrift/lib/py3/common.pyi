@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Mapping, Iterator
+from typing import Any, Mapping, Iterator, Optional, Sequence, NamedTuple, Type
 
 class Protocol(Enum):
     COMPACT: Protocol = ...
@@ -49,3 +49,20 @@ class RpcOptions:
     def read_headers(self) -> ReadHeaders: ...
     @property
     def write_headers(self) -> WriteHeaders: ...
+
+class InterfaceSpec(NamedTuple):
+    name: str
+    methods: Sequence[MethodSpec]
+    annotations: Mapping[str, str] = {}
+
+class MethodSpec(NamedTuple):
+    name: str
+    arguments: Sequence[ArgumentSpec]
+    result: Optional[Type[Any]]
+    exceptions: Sequence[Type[Any]] = []
+    annotations: Mapping[str, str] = {}
+
+class ArgumentSpec(NamedTuple):
+    name: str
+    type: Type[Any]
+    annotations: Mapping[str, str] = {}

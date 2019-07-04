@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -120,6 +130,17 @@ cdef class Banal(thrift.py3.exceptions.Error):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Banal.create(constant_shared_ptr[cBanal](default_inst[cBanal]()))
+      return __StructSpec(
+        name="Banal",
+        kind=__StructType.EXCEPTION,
+        fields=[
+    ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef class Fiery(thrift.py3.exceptions.Error):
@@ -221,6 +242,25 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Fiery.create(constant_shared_ptr[cFiery](default_inst[cFiery]()))
+      return __StructSpec(
+        name="Fiery",
+        kind=__StructType.EXCEPTION,
+        fields=[
+          __FieldSpec(
+  name="message",
+  type=str,
+  qualifier=__Qualifier.REQUIRED,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """message""": """message""",    }),
+      )
 
 
 cdef class Serious(thrift.py3.exceptions.Error):
@@ -323,5 +363,24 @@ cdef class Serious(thrift.py3.exceptions.Error):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Serious.create(constant_shared_ptr[cSerious](default_inst[cSerious]()))
+      return __StructSpec(
+        name="Serious",
+        kind=__StructType.EXCEPTION,
+        fields=[
+          __FieldSpec(
+  name="sonnet",
+  type=str,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """message""": """sonnet""",    }),
+      )
 
 

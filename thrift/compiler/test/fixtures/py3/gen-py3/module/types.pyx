@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -414,6 +424,25 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = SimpleException.create(constant_shared_ptr[cSimpleException](default_inst[cSimpleException]()))
+      return __StructSpec(
+        name="SimpleException",
+        kind=__StructType.EXCEPTION,
+        fields=[
+          __FieldSpec(
+  name="err_code",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef class OptionalRefStruct(thrift.py3.types.Struct):
@@ -553,6 +582,25 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = OptionalRefStruct.create(constant_shared_ptr[cOptionalRefStruct](default_inst[cOptionalRefStruct]()))
+      return __StructSpec(
+        name="OptionalRefStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="optional_blob",
+  type=__iobuf.IOBuf,
+  qualifier=__Qualifier.OPTIONAL,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(OptionalRefStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cOptionalRefStruct* cpp_obj = self._cpp_obj.get()
@@ -941,6 +989,73 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = SimpleStruct.create(constant_shared_ptr[cSimpleStruct](default_inst[cSimpleStruct]()))
+      return __StructSpec(
+        name="SimpleStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="is_on",
+  type=bool,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="tiny_int",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="small_int",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="nice_sized_int",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="big_int",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="real",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="smaller_real",
+  type=float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(SimpleStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cSimpleStruct* cpp_obj = self._cpp_obj.get()
@@ -1369,6 +1484,89 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = ComplexStruct.create(constant_shared_ptr[cComplexStruct](default_inst[cComplexStruct]()))
+      return __StructSpec(
+        name="ComplexStruct",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="structOne",
+  type=SimpleStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="structTwo",
+  type=SimpleStruct,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="an_integer",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="name",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="an_enum",
+  type=AnEnum,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="some_bytes",
+  type=bytes,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="sender",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """py3.name""": """sender""",  }),
+),
+                __FieldSpec(
+  name="cdef_",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="bytes_with_cpp_type",
+  type=bytes,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(ComplexStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexStruct* cpp_obj = self._cpp_obj.get()
@@ -1566,6 +1764,10 @@ cdef class List__i16:
     def __reduce__(self):
         return (List__i16, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
+
 
 Sequence.register(List__i16)
 
@@ -1726,6 +1928,10 @@ cdef class List__i32:
 
     def __reduce__(self):
         return (List__i32, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
 
 
 Sequence.register(List__i32)
@@ -1888,6 +2094,10 @@ cdef class List__i64:
     def __reduce__(self):
         return (List__i64, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
+
 
 Sequence.register(List__i64)
 
@@ -2048,6 +2258,10 @@ cdef class List__string:
     def __reduce__(self):
         return (List__string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=str)
+
 
 Sequence.register(List__string)
 
@@ -2207,6 +2421,10 @@ cdef class List__SimpleStruct:
 
     def __reduce__(self):
         return (List__SimpleStruct, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=SimpleStruct)
 
 
 Sequence.register(List__SimpleStruct)
@@ -2452,6 +2670,10 @@ cdef class Set__i32:
     def __reduce__(self):
         return (Set__i32, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=int)
+
 
 Set.register(Set__i32)
 
@@ -2695,6 +2917,10 @@ cdef class Set__string:
     def __reduce__(self):
         return (Set__string, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=str)
+
 
 Set.register(Set__string)
 
@@ -2827,6 +3053,10 @@ cdef class Map__string_string:
 
     def __reduce__(self):
         return (Map__string_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=str)
 
 
 Mapping.register(Map__string_string)
@@ -2961,6 +3191,10 @@ cdef class Map__string_SimpleStruct:
     def __reduce__(self):
         return (Map__string_SimpleStruct, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=SimpleStruct)
+
 
 Mapping.register(Map__string_SimpleStruct)
 
@@ -3094,6 +3328,10 @@ cdef class Map__string_i16:
 
     def __reduce__(self):
         return (Map__string_i16, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=int)
 
 
 Mapping.register(Map__string_i16)
@@ -3272,6 +3510,10 @@ cdef class List__List__i32:
     def __reduce__(self):
         return (List__List__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__i32)
+
 
 Sequence.register(List__List__i32)
 
@@ -3405,6 +3647,10 @@ cdef class Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=int)
 
 
 Mapping.register(Map__string_i32)
@@ -3540,6 +3786,10 @@ cdef class Map__string_Map__string_i32:
 
     def __reduce__(self):
         return (Map__string_Map__string_i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=Map__string_i32)
 
 
 Mapping.register(Map__string_Map__string_i32)
@@ -3718,6 +3968,10 @@ cdef class List__Set__string:
     def __reduce__(self):
         return (List__Set__string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Set__string)
+
 
 Sequence.register(List__Set__string)
 
@@ -3852,6 +4106,10 @@ cdef class Map__string_List__SimpleStruct:
 
     def __reduce__(self):
         return (Map__string_List__SimpleStruct, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=List__SimpleStruct)
 
 
 Mapping.register(Map__string_List__SimpleStruct)
@@ -4030,6 +4288,10 @@ cdef class List__List__string:
     def __reduce__(self):
         return (List__List__string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__string)
+
 
 Sequence.register(List__List__string)
 
@@ -4206,6 +4468,10 @@ cdef class List__Set__i32:
 
     def __reduce__(self):
         return (List__Set__i32, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Set__i32)
 
 
 Sequence.register(List__Set__i32)
@@ -4384,6 +4650,10 @@ cdef class List__Map__string_string:
     def __reduce__(self):
         return (List__Map__string_string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__string_string)
+
 
 Sequence.register(List__Map__string_string)
 
@@ -4543,6 +4813,10 @@ cdef class List__binary:
 
     def __reduce__(self):
         return (List__binary, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=bytes)
 
 
 Sequence.register(List__binary)
@@ -4787,6 +5061,10 @@ cdef class Set__binary:
     def __reduce__(self):
         return (Set__binary, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=bytes)
+
 
 Set.register(Set__binary)
 
@@ -4947,6 +5225,10 @@ cdef class List__AnEnum:
     def __reduce__(self):
         return (List__AnEnum, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=AnEnum)
+
 
 Sequence.register(List__AnEnum)
 
@@ -5080,6 +5362,10 @@ cdef class Map__i32_double:
 
     def __reduce__(self):
         return (Map__i32_double, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=float)
 
 
 Mapping.register(Map__i32_double)
@@ -5257,6 +5543,10 @@ cdef class List__Map__i32_double:
 
     def __reduce__(self):
         return (List__Map__i32_double, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__i32_double)
 
 
 Sequence.register(List__Map__i32_double)

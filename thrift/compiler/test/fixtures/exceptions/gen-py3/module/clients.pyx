@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -264,6 +269,59 @@ cdef class Raiser(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="Raiser",
+        methods=[
+          __MethodSpec(
+            name="doBland",
+            arguments=[],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="doRaise",
+            arguments=[],
+            result=None,
+            exceptions=[
+              _module_types.Banal,
+            
+              _module_types.Fiery,
+            
+              _module_types.Serious,
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="get200",
+            arguments=[],
+            result=str,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="get500",
+            arguments=[],
+            result=str,
+            exceptions=[
+              _module_types.Fiery,
+            
+              _module_types.Banal,
+            
+              _module_types.Serious,
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_Raiser_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -333,6 +338,83 @@ cdef class MyService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="MyService",
+        methods=[
+          __MethodSpec(
+            name="hasDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=bool,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="getDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=str,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="putDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="data",
+                type=str,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="lobDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="data",
+                type=str,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_MyService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -524,6 +606,83 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="MyServiceFast",
+        methods=[
+          __MethodSpec(
+            name="hasDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=bool,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+              """thread""": """eb""",        }),
+          ),
+                __MethodSpec(
+            name="getDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=str,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+              """thread""": """eb""",        }),
+          ),
+                __MethodSpec(
+            name="putDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="data",
+                type=str,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+              """thread""": """eb""",        }),
+          ),
+                __MethodSpec(
+            name="lobDataById",
+            arguments=[
+              __ArgumentSpec(
+                name="id",
+                type=int,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="data",
+                type=str,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+              """thread""": """eb""",        }),
+          ),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_MyServiceFast_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

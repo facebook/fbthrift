@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -169,6 +179,10 @@ cdef class std_unordered_map__Map__i32_string:
 
     def __reduce__(self):
         return (std_unordered_map__Map__i32_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=str)
 
 
 Mapping.register(std_unordered_map__Map__i32_string)
@@ -346,6 +360,10 @@ cdef class List__std_unordered_map__Map__i32_string:
 
     def __reduce__(self):
         return (List__std_unordered_map__Map__i32_string, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=std_unordered_map__Map__i32_string)
 
 
 Sequence.register(List__std_unordered_map__Map__i32_string)

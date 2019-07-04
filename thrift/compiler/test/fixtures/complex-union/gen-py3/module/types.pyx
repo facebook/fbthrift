@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -778,6 +788,64 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="ComplexUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="intValue",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringValue",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="intListValue",
+  type=List__i64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringListValue",
+  type=List__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="typedefValue",
+  type=Map__i16_string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringRef",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """cpp2.ref""": """true""",  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(ComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cComplexUnion* cpp_obj = self._cpp_obj.get()
@@ -950,6 +1018,32 @@ cdef class ListUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="ListUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="intListValue",
+  type=List__i64,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringListValue",
+  type=List__string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(ListUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cListUnion* cpp_obj = self._cpp_obj.get()
@@ -1122,6 +1216,32 @@ cdef class DataUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="DataUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="binaryData",
+  type=bytes,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="stringData",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(DataUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cDataUnion* cpp_obj = self._cpp_obj.get()
@@ -1360,6 +1480,41 @@ cdef class Val(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = Val.create(constant_shared_ptr[cVal](default_inst[cVal]()))
+      return __StructSpec(
+        name="Val",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="strVal",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="intVal",
+  type=int,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="typedefValue",
+  type=Map__i16_string,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(Val self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cVal* cpp_obj = self._cpp_obj.get()
@@ -1530,6 +1685,32 @@ cdef class ValUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="ValUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="v1",
+  type=Val,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="v2",
+  type=Val,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(ValUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cValUnion* cpp_obj = self._cpp_obj.get()
@@ -1702,6 +1883,32 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      return __StructSpec(
+        name="VirtualComplexUnion",
+        kind=__StructType.UNION,
+        fields=[
+          __FieldSpec(
+  name="thingOne",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="thingTwo",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """cpp.virtual""": """1""",    }),
+      )
     cdef __iobuf.IOBuf _serialize(VirtualComplexUnion self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cVirtualComplexUnion* cpp_obj = self._cpp_obj.get()
@@ -1901,6 +2108,10 @@ cdef class List__i64:
     def __reduce__(self):
         return (List__i64, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
+
 
 Sequence.register(List__i64)
 
@@ -2061,6 +2272,10 @@ cdef class List__string:
     def __reduce__(self):
         return (List__string, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=str)
+
 
 Sequence.register(List__string)
 
@@ -2194,6 +2409,10 @@ cdef class Map__i16_string:
 
     def __reduce__(self):
         return (Map__i16_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=str)
 
 
 Mapping.register(Map__i16_string)

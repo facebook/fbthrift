@@ -120,7 +120,7 @@ struct easy {
     2: I32List val_list,
     3: optional string name,
     4: Integers an_int,
-}
+} (anno1="foo", bar)
 
 struct Optionals {
     1: optional list<string> values,
@@ -216,15 +216,25 @@ struct SlowCompare {
   3: Color field3,
 } (cpp2.noncomparable)
 
+struct Messy {
+    1: optional string opt_field (some="annotation", a.b.c="d.e.f"),
+    2: required string req_field,
+    3: string unq_field = "xyzzy",
+    4: Runtime struct_field = {
+      "bool_val": true, "enum_val": Color.blue, "int_list_val": [10, 20, 30]
+    }
+}
+
 service TestingService {
     string getName()
     oneway void shutdown()
     bool invert(1: bool value)
     i32 complex_action(
-        1: string first, 2: string second, 3: i64 third, 4: string fourth
+        1: string first, 2: string second, 3: i64 third,
+        4: string fourth (iv="4")
     )
-    void takes_a_list(1: I32List ints)
-    void take_it_easy(1: i32 how, 2: easy what)
+    void takes_a_list(1: I32List ints) throws (1: SimpleError e)
+    void take_it_easy(1: i32 how, 2: easy what) (a="b.c.d")
     void pick_a_color(1: Color color)
     void int_sizes(1: byte one, 2: i16 two, 3: i32 three, 4: i64 four)
 } (fun_times = "yes", py3.pass_context)

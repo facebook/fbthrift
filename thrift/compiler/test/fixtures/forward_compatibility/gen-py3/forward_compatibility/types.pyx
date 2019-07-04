@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -168,6 +178,25 @@ cdef class OldStructure(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = OldStructure.create(constant_shared_ptr[cOldStructure](default_inst[cOldStructure]()))
+      return __StructSpec(
+        name="OldStructure",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="features",
+  type=Map__i16_double,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(OldStructure self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cOldStructure* cpp_obj = self._cpp_obj.get()
@@ -336,6 +365,25 @@ cdef class NewStructure(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = NewStructure.create(constant_shared_ptr[cNewStructure](default_inst[cNewStructure]()))
+      return __StructSpec(
+        name="NewStructure",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="features",
+  type=Map__i16_double,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(NewStructure self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructure* cpp_obj = self._cpp_obj.get()
@@ -504,6 +552,25 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = NewStructure2.create(constant_shared_ptr[cNewStructure2](default_inst[cNewStructure2]()))
+      return __StructSpec(
+        name="NewStructure2",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="features",
+  type=Map__i16_float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(NewStructure2 self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructure2* cpp_obj = self._cpp_obj.get()
@@ -730,6 +797,41 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = NewStructureNested.create(constant_shared_ptr[cNewStructureNested](default_inst[cNewStructureNested]()))
+      return __StructSpec(
+        name="NewStructureNested",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="lst",
+  type=List__Map__i16_float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="mp",
+  type=Map__i16_Map__i16_float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+                __FieldSpec(
+  name="s",
+  type=Set__Map__i16_float,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(NewStructureNested self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructureNested* cpp_obj = self._cpp_obj.get()
@@ -902,6 +1004,25 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
         else:
             return NotImplemented
 
+    @staticmethod
+    def __get_reflection__():
+      defaults = NewStructureNestedField.create(constant_shared_ptr[cNewStructureNestedField](default_inst[cNewStructureNestedField]()))
+      return __StructSpec(
+        name="NewStructureNestedField",
+        kind=__StructType.STRUCT,
+        fields=[
+          __FieldSpec(
+  name="f",
+  type=NewStructureNested,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+  }),
+),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
     cdef __iobuf.IOBuf _serialize(NewStructureNestedField self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
         cdef cNewStructureNestedField* cpp_obj = self._cpp_obj.get()
@@ -1072,6 +1193,10 @@ cdef class Map__i16_double:
     def __reduce__(self):
         return (Map__i16_double, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=float)
+
 
 Mapping.register(Map__i16_double)
 
@@ -1205,6 +1330,10 @@ cdef class Map__i16_float:
 
     def __reduce__(self):
         return (Map__i16_float, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=float)
 
 
 Mapping.register(Map__i16_float)
@@ -1383,6 +1512,10 @@ cdef class List__Map__i16_float:
     def __reduce__(self):
         return (List__Map__i16_float, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__i16_float)
+
 
 Sequence.register(List__Map__i16_float)
 
@@ -1518,6 +1651,10 @@ cdef class Map__i16_Map__i16_float:
 
     def __reduce__(self):
         return (Map__i16_Map__i16_float, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=Map__i16_float)
 
 
 Mapping.register(Map__i16_Map__i16_float)
@@ -1769,6 +1906,10 @@ cdef class Set__Map__i16_float:
     def __reduce__(self):
         return (Set__Map__i16_float, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=Map__i16_float)
+
 
 Set.register(Set__Map__i16_float)
 
@@ -1902,6 +2043,10 @@ cdef class Map__i64_double:
 
     def __reduce__(self):
         return (Map__i64_double, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=float)
 
 
 Mapping.register(Map__i64_double)
@@ -2039,6 +2184,10 @@ cdef class Map__i16_Map__i64_double:
     def __reduce__(self):
         return (Map__i16_Map__i64_double, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=Map__i64_double)
+
 
 Mapping.register(Map__i16_Map__i64_double)
 
@@ -2174,6 +2323,10 @@ cdef class Map__i32_Map__i64_double:
 
     def __reduce__(self):
         return (Map__i32_Map__i64_double, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=Map__i64_double)
 
 
 Mapping.register(Map__i32_Map__i64_double)
@@ -2335,6 +2488,10 @@ cdef class List__float:
     def __reduce__(self):
         return (List__float, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=float)
+
 
 Sequence.register(List__float)
 
@@ -2471,6 +2628,10 @@ cdef class Map__i16_List__float:
     def __reduce__(self):
         return (Map__i16_List__float, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=List__float)
+
 
 Mapping.register(Map__i16_List__float)
 
@@ -2606,6 +2767,10 @@ cdef class Map__i32_List__float:
 
     def __reduce__(self):
         return (Map__i32_List__float, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=List__float)
 
 
 Mapping.register(Map__i32_List__float)

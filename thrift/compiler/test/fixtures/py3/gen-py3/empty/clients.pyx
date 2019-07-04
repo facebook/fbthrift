@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -120,6 +125,15 @@ cdef class NullService(thrift.py3.client.Client):
         deref(self._empty_NullService_client).setPersistentHeader(ckey, cvalue)
 
 
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="NullService",
+        methods=[
+    ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_NullService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

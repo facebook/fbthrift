@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -196,6 +201,43 @@ cdef class SomeService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="SomeService",
+        methods=[
+          __MethodSpec(
+            name="bounce_map",
+            arguments=[
+              __ArgumentSpec(
+                name="m",
+                type=_module_types.std_unordered_map__Map__i32_string,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=_module_types.std_unordered_map__Map__i32_string,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="binary_keyed_map",
+            arguments=[
+              __ArgumentSpec(
+                name="r",
+                type=_module_types.List__i64,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=_module_types.Map__binary_i64,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_SomeService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

@@ -15,6 +15,11 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
+from thrift.py3.common import (
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -99,6 +104,56 @@ cdef class MyServiceInterface(
             s,
             i):
         raise NotImplementedError("async def has_arg_docs is not implemented")
+
+    @staticmethod
+    def __get_reflection__():
+      return __InterfaceSpec(
+        name="MyService",
+        methods=[
+          __MethodSpec(
+            name="query",
+            arguments=[
+              __ArgumentSpec(
+                name="s",
+                type=_module_types.MyStruct,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="i",
+                type=_includes_types.Included,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+                __MethodSpec(
+            name="has_arg_docs",
+            arguments=[
+              __ArgumentSpec(
+                name="s",
+                type=_module_types.MyStruct,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),
+              __ArgumentSpec(
+                name="i",
+                type=_includes_types.Included,
+                annotations=_py_types.MappingProxyType({
+                }),
+              ),],
+            result=None,
+            exceptions=[],
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef api void call_cy_MyService_query(
