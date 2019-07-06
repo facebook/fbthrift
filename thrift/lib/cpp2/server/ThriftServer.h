@@ -158,6 +158,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   std::shared_ptr<folly::IOThreadPoolExecutor> acceptPool_;
   int nAcceptors_ = 1;
+  uint16_t socketMaxReadsPerEvent_{16};
 
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
@@ -353,6 +354,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     idleServerTimeout_ = timeout;
   }
 
+  /**
+   * Configures maxReadsPerEvent for accepted connections, see
+   * `folly::AsyncSocket::setMaxReadsPerEvent` for more details.
+   */
+  void setSocketMaxReadsPerEvent(uint16_t socketMaxReadsPerEvent) {
+    socketMaxReadsPerEvent_ = socketMaxReadsPerEvent;
+  }
+
   void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);
 
   void updateTLSCert();
@@ -423,6 +432,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     // even if cert/key is missing as it may become available later
     config.strictSSL = getStrictSSL();
     config.fizzConfig = fizzConfig_;
+    config.socketMaxReadsPerEvent = socketMaxReadsPerEvent_;
     return config;
   }
 
