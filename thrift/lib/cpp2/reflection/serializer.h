@@ -26,7 +26,7 @@
 #include <fatal/type/trie.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
-#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
+#include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
 

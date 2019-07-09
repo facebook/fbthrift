@@ -21,6 +21,7 @@
 #include <folly/Range.h>
 
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
 
 namespace apache {
 namespace thrift {

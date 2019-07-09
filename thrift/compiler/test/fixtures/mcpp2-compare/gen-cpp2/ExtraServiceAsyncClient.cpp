@@ -16,7 +16,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
-#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 
 namespace extra { namespace svc {
 typedef apache::thrift::ThriftPresult<false> ExtraService_simple_function_pargs;
