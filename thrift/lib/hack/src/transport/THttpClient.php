@@ -1,15 +1,20 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.transport
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * HTTP client for Thrift
  *
@@ -57,7 +62,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @var resource
    */
-  protected string $data_;
+  protected /*Sometimes assigned bool*/ WRONG_TYPE_HH_FIXME<string> $data_;
 
   /**
    * Error message
@@ -92,7 +97,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @var mixed
    */
-  protected (function(string): bool) $debugHandler_;
+  protected Predicate<string> $debugHandler_;
 
   /**
    * Specifies the maximum number of bytes to read
@@ -118,9 +123,9 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
     int $port = 80,
     string $uri = '',
     string $scheme = 'http',
-    ?(function(string): bool) $debugHandler = null,
+    ?Predicate<string> $debugHandler = null,
   ) {
-    if ($uri && ($uri[0] != '/')) {
+    if ($uri !== '' && ($uri[0] != '/')) {
       $uri = '/'.$uri;
     }
     $this->scheme_ = $scheme;
@@ -132,7 +137,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
     $this->errstr_ = '';
     $this->timeout_ = null;
     $this->custom_headers_ = null;
-    $this->debugHandler_ = $debugHandler ?: fun('error_log');
+    $this->debugHandler_ = $debugHandler ?: fun('HH\\Lib\\PHP\\error_log');
   }
 
   /**
@@ -217,6 +222,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @return boolean true if open
    */
+  <<__Override>>
   public function isOpen(): bool {
     return true;
   }
@@ -226,11 +232,13 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @throws TTransportException if cannot open
    */
+  <<__Override>>
   public function open(): void {}
 
   /**
    * Close the transport.
    */
+  <<__Override>>
   public function close(): void {
     $this->data_ = '';
   }
@@ -242,17 +250,18 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    * @return string The data that has been read
    * @throws TTransportException if cannot read any more data
    */
+  <<__Override>>
   public function read(int $len): string {
     if ($this->maxReadChunkSize_ !== null) {
-      $len = min($len, $this->maxReadChunkSize_);
+      $len = Math\minva($len, $this->maxReadChunkSize_);
     }
 
-    if (strlen($this->data_) < $len) {
+    if (Str\length($this->data_) < $len) {
       $data = $this->data_;
       $this->data_ = '';
     } else {
-      $data = substr($this->data_, 0, $len);
-      $this->data_ = substr($this->data_, $len);
+      $data = PHP\substr($this->data_, 0, $len);
+      $this->data_ = PHP\substr($this->data_, $len);
     }
 
     if ($data === false || $data === '') {
@@ -279,6 +288,7 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    * @param string $buf  The data to write
    * @throws TTransportException if writing fails
    */
+  <<__Override>>
   public function write(string $buf): void {
     $this->buf_ .= $buf;
   }
@@ -288,50 +298,51 @@ class THttpClient extends TTransport implements IThriftRemoteConn {
    *
    * @throws TTransportException if a writing error occurs
    */
+  <<__Override>>
   public function flush(): void {
     $host = $this->host_.':'.$this->port_;
     $user_agent = 'PHP/THttpClient';
-    /* HH_FIXME[2050] We know $_SERVER exists, even if Hack doesn't */
-    $script = (string) urlencode(basename($_SERVER['SCRIPT_FILENAME']));
-    if ($script) {
+    $script = (string) PHP\urlencode(PHP\basename(PHPism_FIXME::coerceToString(GlobalSERVER::idx('SCRIPT_FILENAME'))));
+    if ($script !== '') {
       $user_agent .= ' ('.$script.')';
     }
 
-    $curl = curl_init($this->scheme_.'://'.$host.$this->uri_);
+    $curl = PHP\curl_init($this->scheme_.'://'.$host.$this->uri_);
 
-    $headers = array(
+    $headers = varray[
       'Host: '.$host,
       'Accept: application/x-thrift',
       'User-Agent: '.$user_agent,
       'Content-Type: application/x-thrift',
-      'Content-Length: '.(string) strlen($this->buf_),
-    );
+      'Content-Length: '.(string) Str\length($this->buf_),
+    ];
 
     if ($this->custom_headers_ !== null) {
       foreach ($this->custom_headers_ as $header => $value) {
         $headers[] = $header.': '.$value;
       }
     }
-    curl_setopt($curl, CURLOPT_PROXY, '');
-    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-    curl_setopt($curl, CURLOPT_POST, true);
-    curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
-    curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($curl, CURLOPT_POSTFIELDS, $this->buf_);
-    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
-    curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout_);
+    PHP\curl_setopt($curl, CURLOPT_PROXY, '');
+    PHP\curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    PHP\curl_setopt($curl, CURLOPT_POST, true);
+    PHP\curl_setopt($curl, CURLOPT_MAXREDIRS, 1);
+    PHP\curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+    PHP\curl_setopt($curl, CURLOPT_POSTFIELDS, $this->buf_);
+    PHP\curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    PHP\curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
+    PHP\curl_setopt($curl, CURLOPT_TIMEOUT, $this->timeout_);
     if ($this->caInfo_ !== null) {
-      curl_setopt($curl, CURLOPT_CAINFO, $this->caInfo_);
+      PHP\curl_setopt($curl, CURLOPT_CAINFO, $this->caInfo_);
     }
 
     $this->buf_ = '';
-    $this->data_ = curl_exec($curl);
+    $this->data_ = PHP\curl_exec($curl);
 
-    $this->errstr_ = curl_error($curl);
-    curl_close($curl);
+    $this->errstr_ = PHP\curl_error($curl);
+    PHP\curl_close($curl);
 
     // Connect failed?
+    /* HH_FIXME[4118] trivial equality check */
     if ($this->data_ === false) {
       $error = 'THttpClient: Could not connect to '.$host.$this->uri_;
       throw new TTransportException($error, TTransportException::NOT_OPEN);

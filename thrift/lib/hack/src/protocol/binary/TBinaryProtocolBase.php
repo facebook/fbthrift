@@ -1,15 +1,20 @@
-<?hh
+<?hh // partial
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.protocol.binary
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * Binary implementation of the Thrift protocol.
  */
@@ -18,46 +23,28 @@ abstract class TBinaryProtocolBase extends TProtocol {
   const VERSION_MASK = 0xffff0000;
   const VERSION_1 = 0x80010000;
 
-  protected $strictRead_ = false;
-  protected $strictWrite_ = true;
-  protected $littleendian_ = false;
+  protected bool $strictRead_ = false;
+  protected bool $strictWrite_ = true;
+  protected bool $littleendian_ = false;
   protected $memory_limit = 128000000; //128M, the default
   protected $sequenceID = null;
 
   public function __construct(
     $trans,
-    $strictRead = false,
-    $strictWrite = true,
+    bool $strictRead = false,
+    bool $strictWrite = true,
   ) {
     parent::__construct($trans);
     $this->strictRead_ = $strictRead;
     $this->strictWrite_ = $strictWrite;
-    if (pack('S', 1) == "\x01\x00") {
+    if (PHP\pack('S', 1) == "\x01\x00") {
       $this->littleendian_ = true;
     }
-    $this->memory_limit = self::getBytes(ini_get('memory_limit'));
+    $this->memory_limit = MemoryLimit::get();
   }
 
-  // helper function to get integer from potential php short notation
-  public static function getBytes($notation) {
-    $val = trim($notation);
-    $last = strtolower($val[strlen($val) - 1]);
-    switch ($last) {
-      // The 'G' modifier is available since PHP 5.1.0
-      case 'g':
-        $val *= 1024;
-        // FALLTHROUGH
-      case 'm':
-        $val *= 1024;
-        // FALLTHROUGH
-      case 'k':
-        $val *= 1024;
-    }
-
-    return $val;
-  }
-
-  public function writeMessageBegin($name, $type, $seqid) {
+  <<__Override>>
+  public function writeMessageBegin($name, $type, $seqid): num {
     if ($this->strictWrite_) {
       $version = self::VERSION_1 | $type;
       return
@@ -72,92 +59,116 @@ abstract class TBinaryProtocolBase extends TProtocol {
     }
   }
 
-  public function writeMessageEnd() {
+  <<__Override>>
+  public function writeMessageEnd(): int {
     return 0;
   }
 
-  public function writeStructBegin($name) {
+  <<__Override>>
+  public function writeStructBegin($_name): int {
     return 0;
   }
 
-  public function writeStructEnd() {
+  <<__Override>>
+  public function writeStructEnd(): int {
     return 0;
   }
 
-  public function writeFieldBegin($fieldName, $fieldType, $fieldId) {
-    return $this->writeByte($fieldType) + $this->writeI16($fieldId);
+  <<__Override>>
+  public function writeFieldBegin(
+    $_field_name,
+    int $field_type,
+    int $field_id,
+  ): int {
+    return $this->writeByte($field_type) + $this->writeI16($field_id);
   }
 
-  public function writeFieldEnd() {
+  <<__Override>>
+  public function writeFieldEnd(): int {
     return 0;
   }
 
-  public function writeFieldStop() {
+  <<__Override>>
+  public function writeFieldStop(): int {
     return $this->writeByte(TType::STOP);
   }
 
-  public function writeMapBegin($keyType, $valType, $size) {
+  <<__Override>>
+  public function writeMapBegin(
+    int $key_type,
+    int $val_type,
+    int $size,
+  ): int {
     return
-      $this->writeByte($keyType) +
-      $this->writeByte($valType) +
+      $this->writeByte($key_type) +
+      $this->writeByte($val_type) +
       $this->writeI32($size);
   }
 
-  public function writeMapEnd() {
+  <<__Override>>
+  public function writeMapEnd(): int {
     return 0;
   }
 
-  public function writeListBegin($elemType, $size) {
-    return $this->writeByte($elemType) + $this->writeI32($size);
+  <<__Override>>
+  public function writeListBegin(int $elem_type, int $size): int {
+    return $this->writeByte($elem_type) + $this->writeI32($size);
   }
 
-  public function writeListEnd() {
+  <<__Override>>
+  public function writeListEnd(): int {
     return 0;
   }
 
-  public function writeSetBegin($elemType, $size) {
-    return $this->writeByte($elemType) + $this->writeI32($size);
+  <<__Override>>
+  public function writeSetBegin(int $elem_type, int $size): int {
+    return $this->writeByte($elem_type) + $this->writeI32($size);
   }
 
-  public function writeSetEnd() {
+  <<__Override>>
+  public function writeSetEnd(): int {
     return 0;
   }
 
-  public function writeBool($value) {
-    $data = pack('c', $value ? 1 : 0);
+  <<__Override>>
+  public function writeBool($value): int {
+    $data = PHP\pack('c', $value ? 1 : 0);
     $this->trans_->write($data);
     return 1;
   }
 
-  public function writeByte($value) {
-    $this->trans_->write(chr($value));
+  <<__Override>>
+  public function writeByte(int $value): int {
+    $this->trans_->write(PHP\chr($value));
     return 1;
   }
 
-  public function writeI16($value) {
-    $data = chr($value).chr($value >> 8);
+  <<__Override>>
+  public function writeI16(int $value): int {
+    $data = PHP\chr($value).PHP\chr($value >> 8);
     if ($this->littleendian_) {
-      $data = strrev($data);
+      $data = PHP\strrev($data);
     }
     $this->trans_->write($data);
     return 2;
   }
 
-  public function writeI32($value) {
-    $data = chr($value).chr($value >> 8).chr($value >> 16).chr($value >> 24);
+  <<__Override>>
+  public function writeI32(int $value): int {
+    $data = PHP\chr($value).PHP\chr($value >> 8).PHP\chr($value >> 16).PHP\chr($value >> 24);
     if ($this->littleendian_) {
-      $data = strrev($data);
+      $data = PHP\strrev($data);
     }
     $this->trans_->write($data);
     return 4;
   }
 
-  public function writeI64($value) {
-    $data = '';
+  <<__Override>>
+  public function writeI64($value): int {
     // If we are on a 32bit architecture we have to explicitly deal with
     // 64-bit twos-complement arithmetic since PHP wants to treat all ints
     // as signed and any int over 2^31 - 1 as a float
-    if (PHP_INT_SIZE == 4) {
+    if (PHP_INT_SIZE === 4) {
       $neg = $value < 0;
 
       if ($neg) {
@@ -177,20 +188,19 @@ abstract class TBinaryProtocolBase extends TProtocol {
           $lo++;
         }
       }
-      $data = pack('N2', $hi, $lo);
-
+      $data = PHP\pack('N2', $hi, $lo);
     } else {
       $data =
-        chr($value).
-        chr($value >> 8).
-        chr($value >> 16).
-        chr($value >> 24).
-        chr($value >> 32).
-        chr($value >> 40).
-        chr($value >> 48).
-        chr($value >> 56);
+        PHP\chr($value).
+        PHP\chr($value >> 8).
+        PHP\chr($value >> 16).
+        PHP\chr($value >> 24).
+        PHP\chr($value >> 32).
+        PHP\chr($value >> 40).
+        PHP\chr($value >> 48).
+        PHP\chr($value >> 56);
       if ($this->littleendian_) {
-        $data = strrev($data);
+        $data = PHP\strrev($data);
       }
     }
 
@@ -198,26 +208,29 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 8;
   }
 
-  public function writeDouble($value) {
-    $data = pack('d', $value);
+  <<__Override>>
+  public function writeDouble($value): int {
+    $data = PHP\pack('d', $value);
     if ($this->littleendian_) {
-      $data = strrev($data);
+      $data = PHP\strrev($data);
     }
     $this->trans_->write($data);
     return 8;
   }
 
-  public function writeFloat($value) {
-    $data = pack('f', $value);
+  <<__Override>>
+  public function writeFloat($value): int {
+    $data = PHP\pack('f', $value);
     if ($this->littleendian_) {
-      $data = strrev($data);
+      $data = PHP\strrev($data);
     }
     $this->trans_->write($data);
     return 4;
   }
 
-  public function writeString($value) {
-    $len = strlen($value);
+  <<__Override>>
+  public function writeString(string $value): num {
+    $len = Str\length($value);
     $result = $this->writeI32($len);
     if ($len) {
       $this->trans_->write($value);
@@ -225,12 +238,12 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return $result + $len;
   }
 
-  private function unpackI32($data) {
+  private function unpackI32($data): int {
     $value =
-      ord($data[3]) |
-      (ord($data[2]) << 8) |
-      (ord($data[1]) << 16) |
-      (ord($data[0]) << 24);
+      PHP\ord($data[3]) |
+      (PHP\ord($data[2]) << 8) |
+      (PHP\ord($data[1]) << 16) |
+      (PHP\ord($data[0]) << 24);
     if ($value > 0x7fffffff) {
       $value = 0 - (($value - 1) ^ 0xffffffff);
     }
@@ -241,9 +254,9 @@ abstract class TBinaryProtocolBase extends TProtocol {
    * Returns the sequence ID of the next message; only valid when called
    * before readMessageBegin()
    */
-  public function peekSequenceID() {
+  public function peekSequenceID(): int {
     $trans = $this->trans_;
-    if (!($trans instanceof IThriftBufferedTransport)) {
+    if (!($trans is IThriftBufferedTransport)) {
       throw new TProtocolException(
         get_class($this->trans_).' does not support peek',
         TProtocolException::BAD_VERSION,
@@ -303,9 +316,14 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return $seqid;
   }
 
-  public function readMessageBegin(inout $name, inout $type, inout $seqid) {
+  <<__Override>>
+  public function readMessageBegin(
+    inout $name,
+    inout $type,
+    inout $seqid,
+  ): num {
     $sz = 0;
-    $result = $this->readI32($sz);
+    $result = $this->readI32(inout $sz);
     if ($sz < 0) {
       $version = $sz & self::VERSION_MASK;
       if ($version != self::VERSION_1) {
@@ -315,7 +333,9 @@ abstract class TBinaryProtocolBase extends TProtocol {
         );
       }
       $type = $sz & 0x000000ff;
-      $result += $this->readString($name) + $this->readI32($seqid);
+      $name_res = $this->readString(inout $name);
+      $seqid_res = $this->readI32(inout $seqid);
+      $result += $name_res + $seqid_res;
     } else {
       if ($this->strictRead_) {
         throw new TProtocolException(
@@ -334,113 +354,139 @@ abstract class TBinaryProtocolBase extends TProtocol {
         }
         // Handle pre-versioned input
         $name = $this->trans_->readAll($sz);
-        $result += $sz + $this->readByte($type) + $this->readI32($seqid);
+        $type_res = $this->readByte(inout $type);
+        $seqid_res = $this->readI32(inout $seqid);
+        $result += $sz + $type_res + $seqid_res;
       }
     }
     $this->sequenceID = $seqid;
     return $result;
   }
 
-  public function readMessageEnd() {
+  <<__Override>>
+  public function readMessageEnd(): int {
     $this->sequenceID = null;
     return 0;
   }
 
-  public function readStructBegin(inout $name) {
+  <<__Override>>
+  public function readStructBegin(inout $name): int {
     $name = '';
     return 0;
   }
 
-  public function readStructEnd() {
+  <<__Override>>
+  public function readStructEnd(): int {
     return 0;
   }
 
+  <<__Override>>
   public function readFieldBegin(
-    inout $name,
-    inout $fieldType,
-    inout $fieldId,
-  ) {
-    $result = $this->readByte($fieldType);
-    if ($fieldType == TType::STOP) {
-      $fieldId = 0;
+    inout $_name,
+    inout $field_type,
+    inout $field_id,
+  ): int {
+    $result = $this->readByte(inout $field_type);
+    if ($field_type === TType::STOP) {
+      $field_id = 0;
       return $result;
     }
-    $result += $this->readI16($fieldId);
+    $fid_res = $this->readI16(inout $field_id);
+    $result += $fid_res;
     return $result;
   }
 
-  public function readFieldEnd() {
+  <<__Override>>
+  public function readFieldEnd(): int {
     return 0;
   }
 
-  public function readMapBegin(inout $keyType, inout $valType, inout $size) {
-    return
-      $this->readByte($keyType) +
-      $this->readByte($valType) +
-      $this->readI32($size);
+  <<__Override>>
+  public function readMapBegin(
+    inout $key_type,
+    inout $val_type,
+    inout $size,
+  ): int {
+    $key_res = $this->readByte(inout $key_type);
+    $val_res = $this->readByte(inout $val_type);
+    $size_res = $this->readI32(inout $size);
+    return $key_res + $val_res + $size_res;
   }
 
-  public function readMapEnd() {
+  <<__Override>>
+  public function readMapEnd(): int {
     return 0;
   }
 
-  public function readListBegin(&$elemType, &$size) {
-    return $this->readByte($elemType) + $this->readI32($size);
+  <<__Override>>
+  public function readListBegin(inout $elem_type, inout $size): int {
+    $etype_res = $this->readByte(inout $elem_type);
+    $size_res = $this->readI32(inout $size);
+    return $etype_res + $size_res;
   }
 
-  public function readListEnd() {
+  <<__Override>>
+  public function readListEnd(): int {
     return 0;
   }
 
-  public function readSetBegin(&$elemType, &$size) {
-    return $this->readByte($elemType) + $this->readI32($size);
+  <<__Override>>
+  public function readSetBegin(inout $elem_type, inout $size): int {
+    $etype_res = $this->readByte(inout $elem_type);
+    $size_res = $this->readI32(inout $size);
+    return $etype_res + $size_res;
   }
 
-  public function readSetEnd() {
+  <<__Override>>
+  public function readSetEnd(): int {
     return 0;
   }
 
-  public function readBool(&$value) {
+  <<__Override>>
+  public function readBool(inout $value): int {
     $data = $this->trans_->readAll(1);
-    $arr = unpack('c', $data);
+    $arr = PHP\unpack('c', $data);
     $value = $arr[1] == 1;
     return 1;
   }
 
-  public function readByte(&$value) {
+  <<__Override>>
+  public function readByte(inout $value): int {
     $data = $this->trans_->readAll(1);
-    $value = ord($data);
+    $value = PHP\ord($data);
     if ($value > 0x7f) {
       $value = 0 - (($value - 1) ^ 0xff);
     }
     return 1;
   }
 
-  public function readI16(&$value) {
+  <<__Override>>
+  public function readI16(inout $value): int {
     $data = $this->trans_->readAll(2);
-    $value = ord($data[1]) | (ord($data[0]) << 8);
+    $value = PHP\ord($data[1]) | (PHP\ord($data[0]) << 8);
     if ($value > 0x7fff) {
       $value = 0 - (($value - 1) ^ 0xffff);
     }
     return 2;
   }
 
-  public function readI32(&$value) {
+  <<__Override>>
+  public function readI32(inout $value): int {
     $data = $this->trans_->readAll(4);
     $value = $this->unpackI32($data);
     return 4;
   }
 
-  public function readI64(&$value) {
+  <<__Override>>
+  public function readI64(inout $value): int {
     $data = $this->trans_->readAll(8);
 
-    $arr = unpack('N2', $data);
+    $arr = PHP\unpack('N2', $data);
 
     // If we are on a 32bit architecture we have to explicitly deal with
     // 64-bit twos-complement arithmetic since PHP wants to treat all ints
     // as signed and any int over 2^31 - 1 as a float
-    if (PHP_INT_SIZE == 4) {
-
+    if (PHP_INT_SIZE === 4) {
       $hi = $arr[1];
       $lo = $arr[2];
       $isNeg = $hi < 0;
@@ -477,7 +523,6 @@ abstract class TBinaryProtocolBase extends TProtocol {
         $value = 0 - $value;
       }
     } else {
-
       // Upcast negatives in LSB bit
       if ($arr[2] & 0x80000000) {
         $arr[2] = $arr[2] & 0xffffffff;
@@ -497,29 +542,32 @@ abstract class TBinaryProtocolBase extends TProtocol {
     return 8;
   }
 
-  public function readDouble(&$value) {
+  <<__Override>>
+  public function readDouble(inout $value): int {
     $data = $this->trans_->readAll(8);
     if ($this->littleendian_) {
-      $data = strrev($data);
+      $data = PHP\strrev($data);
     }
-    $arr = unpack('d', $data);
+    $arr = PHP\unpack('d', $data);
     $value = $arr[1];
     return 8;
   }
 
-  public function readFloat(&$value) {
+  <<__Override>>
+  public function readFloat(inout $value): int {
     $data = $this->trans_->readAll(4);
     if ($this->littleendian_) {
-      $data = strrev($data);
+      $data = PHP\strrev($data);
     }
-    $arr = unpack('f', $data);
+    $arr = PHP\unpack('f', $data);
     $value = $arr[1];
     return 4;
   }
 
-  public function readString(&$value) {
+  <<__Override>>
+  public function readString(inout $value): num {
     $len = 0;
-    $result = $this->readI32($len);
+    $result = $this->readI32(inout $len);
     if ($len) {
       $value = $this->trans_->readAll($len);
     } else {

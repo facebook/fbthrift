@@ -1,15 +1,20 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.transport
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * A memory buffer is a tranpsort that simply reads from and writes to an
  * in-memory string buffer. Anytime you call write on it, the data is simply
@@ -18,7 +23,9 @@
  *
  * @package thrift.transport
  */
-class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
+final class TMemoryBuffer
+  extends TTransport
+  implements IThriftBufferedTransport {
 
   private string $buf_ = '';
   private int $index_ = 0;
@@ -28,21 +35,25 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
    * Constructor. Optionally pass an initial value
    * for the buffer.
    */
+  <<__Rx>>
   public function __construct(string $buf = '') {
-    $this->buf_ = (string) $buf;
+    $this->buf_ = $buf;
   }
 
+  <<__Override>>
   public function isOpen(): bool {
     return true;
   }
 
+  <<__Override>>
   public function open(): void {}
 
+  <<__Override>>
   public function close(): void {}
 
   private function length(): int {
     if ($this->length_ === null) {
-      $this->length_ = strlen($this->buf_);
+      $this->length_ = Str\length($this->buf_);
     }
     return $this->length_;
   }
@@ -51,19 +62,17 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
     return $this->length() - $this->index_;
   }
 
-  public function minBytesAvailable(): int {
-    return $this->available();
-  }
-
+  <<__Override>>
   public function write(string $buf): void {
     $this->buf_ .= $buf;
     $this->length_ = null; // reset length
   }
 
+  <<__Override>>
   public function read(int $len): string {
     $available = $this->available();
     if ($available === 0) {
-      $buffer_dump = bin2hex($this->buf_);
+      $buffer_dump = PHP\bin2hex($this->buf_);
       throw new TTransportException(
         'TMemoryBuffer: Could not read '.
         $len.
@@ -88,28 +97,32 @@ class TMemoryBuffer extends TTransport implements IThriftBufferedTransport {
   }
 
   public function peek(int $len, int $start = 0): string {
-    return
-      $len === 1
-        ? $this->buf_[$this->index_ + $start]
-        : substr($this->buf_, $this->index_ + $start, $len);
+    if ($len !== 1) {
+      return Str\slice($this->buf_, $this->index_ + $start, $len);
+    }
+    if (Str\length($this->buf_)) {
+      return $this->buf_[$this->index_ + $start];
+    }
+    return '';
   }
 
   public function putBack(string $buf): void {
     if ($this->available() === 0) {
       $this->buf_ = $buf;
     } else {
-      $remaining = (string) substr($this->buf_, $this->index_);
+      $remaining = (string) PHP\substr($this->buf_, $this->index_);
       $this->buf_ = $buf.$remaining;
     }
     $this->length_ = null;
     $this->index_ = 0;
   }
 
-  public function getBuffer(): @string { // Task #5347782
+  <<__RxShallow>>
+  public function getBuffer(): @string {
     if ($this->index_ === 0) {
       return $this->buf_;
     }
-    return substr($this->buf_, $this->index_);
+    return PHP\substr($this->buf_, $this->index_);
   }
 
   public function resetBuffer(): void {

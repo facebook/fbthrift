@@ -1,15 +1,20 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.transport
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /** Inherits from THttpClient */
 
 /**
@@ -24,7 +29,7 @@ class THttpClientPool extends THttpClient {
    * Servers belonging to this pool. Array of associative arrays with 'host' and
    * 'port' keys.
    */
-  protected array<(string, int)> $servers_ = array();
+  protected varray<(string, int)> $servers_ = varray[];
 
   /**
    * Try hosts in order? or randomized?
@@ -50,11 +55,11 @@ class THttpClientPool extends THttpClient {
    * @param string $scheme  http or https
    */
   public function __construct(
-    KeyedContainer<mixed, string> $hosts,
-    KeyedContainer<mixed, int> $ports,
+    KeyedContainer<arraykey, string> $hosts,
+    KeyedContainer<arraykey, int> $ports,
     string $uri = '',
     string $scheme = 'http',
-    ?(function(string): bool) $debugHandler = null,
+    ?Predicate<string> $debugHandler = null,
   ) {
     parent::__construct('', 0, $uri, $scheme, $debugHandler);
 
@@ -97,9 +102,12 @@ class THttpClientPool extends THttpClient {
    * Trys to open a connection and send the actual HTTP request to the first
    * available server in the pool.
    */
+  <<__Override>>
   public function flush(): void {
     if ($this->randomize_) {
-      shuffle($this->servers_);
+      $__servers = $this->servers_;
+      PHP\shuffle(inout $__servers);
+      $this->servers_ = $__servers;
     }
 
     foreach ($this->servers_ as $server) {
@@ -113,7 +121,7 @@ class THttpClientPool extends THttpClient {
           return;
         } catch (TTransportException $e) {
           if ($this->debug_) {
-            call_user_func($this->debugHandler_, $e->getMessage());
+            ($this->debugHandler_)($e->getMessage());
           }
           --$j;
         }

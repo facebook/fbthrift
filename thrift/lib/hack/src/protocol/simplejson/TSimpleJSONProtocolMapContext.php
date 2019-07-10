@@ -1,24 +1,31 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.protocol.simplejson
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
   private bool $first = true;
   private bool $colon = true;
 
+  <<__Override>>
   public function writeStart(): int {
     $this->trans->write('{');
     return 1;
   }
 
+  <<__Override>>
   public function writeSeparator(): int {
     if ($this->first) {
       $this->first = false;
@@ -35,21 +42,24 @@ class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
     return 1;
   }
 
+  <<__Override>>
   public function writeEnd(): int {
     $this->trans->write('}');
     return 1;
   }
 
+  <<__Override>>
   public function readStart(): void {
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
     if ($c !== '{') {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "{", encountered 0x'.bin2hex($c),
+        'TSimpleJSONProtocol: Expected "{", encountered 0x'.PHP\bin2hex($c),
       );
     }
   }
 
+  <<__Override>>
   public function readSeparator(): void {
     if ($this->first) {
       $this->first = false;
@@ -65,36 +75,39 @@ class TSimpleJSONProtocolMapContext extends TSimpleJSONProtocolContext {
         'TSimpleJSONProtocol: Expected "'.
         $target.
         '", encountered 0x'.
-        bin2hex($c),
+        PHP\bin2hex($c),
       );
     }
 
     $this->colon = !$this->colon;
   }
 
+  <<__Override>>
   public function readContextOver(): bool {
     $pos = $this->skipWhitespace(false);
-    $c = $this->bufTrans->peek(1, $pos);
+    $c = $this->trans->peek(1, $pos);
     if (!$this->first && $c !== ',' && $c !== '}') {
       throw new TProtocolException(
         'TSimpleJSONProtocol: Expected "," or "}", encountered 0x'.
-        bin2hex($c),
+        PHP\bin2hex($c),
       );
     }
 
     return ($c === '}');
   }
 
+  <<__Override>>
   public function readEnd(): void {
     $this->skipWhitespace();
     $c = $this->trans->readAll(1);
     if ($c !== '}') {
       throw new TProtocolException(
-        'TSimpleJSONProtocol: Expected "}", encountered 0x'.bin2hex($c),
+        'TSimpleJSONProtocol: Expected "}", encountered 0x'.PHP\bin2hex($c),
       );
     }
   }
 
+  <<__Override>>
   public function escapeNum(): bool {
     return $this->colon;
   }

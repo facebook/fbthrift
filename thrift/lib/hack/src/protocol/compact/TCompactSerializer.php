@@ -1,21 +1,27 @@
 <?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.protocol.compact
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * Utility class for serializing and deserializing
  * a thrift object using TCompactProtocol.
  */
-class TCompactSerializer extends TProtocolSerializer {
+final class TCompactSerializer extends TProtocolSerializer {
 
+  <<__Override, __RxLocal>>
   public static function serialize(
     IThriftStruct $object,
     ?int $override_version = null,
@@ -25,13 +31,13 @@ class TCompactSerializer extends TProtocolSerializer {
     $protocol = new TCompactProtocolAccelerated($transport);
 
     $use_hphp_extension =
-      function_exists('thrift_protocol_write_compact') &&
+      PHP\function_exists('thrift_protocol_write_compact') &&
       !$disable_hphp_extension;
 
     $last_version = null;
     if ($override_version !== null) {
       $protocol->setWriteVersion($override_version);
-      if (function_exists('thrift_protocol_set_compact_version')) {
+      if (PHP\function_exists('thrift_protocol_set_compact_version')) {
         $last_version =
           thrift_protocol_set_compact_version($override_version);
       } else {
@@ -64,22 +70,38 @@ class TCompactSerializer extends TProtocolSerializer {
     return $transport->getBuffer();
   }
 
+  public static function deserializeTyped<T as IThriftStruct>(
+    string $str,
+    T $object,
+    ?int $override_version = null,
+    bool $disable_hphp_extension = false,
+  ): T {
+    return self::deserialize(
+      $str,
+      $object,
+      $override_version,
+      $disable_hphp_extension,
+    );
+  }
+
+  <<__Override>>
   public static function deserialize<T as IThriftStruct>(
     string $str,
     T $object,
     ?int $override_version = null,
     bool $disable_hphp_extension = false,
-  ) {
+    bool $should_leave_extra = false,
+  ): T {
     $transport = new TMemoryBuffer();
     $protocol = new TCompactProtocolAccelerated($transport);
 
     $use_hphp_extension =
-      function_exists('thrift_protocol_read_compact') &&
+      PHP\function_exists('thrift_protocol_read_compact') &&
       !$disable_hphp_extension;
 
     if ($override_version !== null) {
       $protocol->setWriteVersion($override_version);
-      if (!function_exists('thrift_protocol_set_compact_version')) {
+      if (!PHP\function_exists('thrift_protocol_set_compact_version')) {
         $use_hphp_extension = false;
       }
     }
@@ -90,7 +112,6 @@ class TCompactSerializer extends TProtocolSerializer {
       $object = thrift_protocol_read_compact($protocol, get_class($object));
     } else {
       $transport->write($str);
-      /* HH_FIXME[2060] Trust me, I know what I'm doing */
       $object->read($protocol);
     }
     return $object;

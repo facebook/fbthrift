@@ -1,15 +1,20 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.transport
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /** Inherits from Socket */
 
 /**
@@ -19,18 +24,10 @@
  * @package thrift.transport
  */
 class TSocketPool extends TSocket {
-
-  /**
-   * Custom caching functions for environments without AP
-   */
-  private ?(function(string): mixed) $fakeAPCFetch_ = null;
-  private ?(function(string, mixed, int): bool) $fakeAPCStore_ = null;
-  private ?(function(string): void) $apcLogger_ = null;
-
   /**
    * Remote servers. List of host:port pairs.
    */
-  private array<(string, int)> $servers_ = array();
+  private varray<(string, int)> $servers_ = varray[];
 
   /**
    * How many times to retry each host in connect
@@ -89,10 +86,10 @@ class TSocketPool extends TSocket {
    * @param mixed  $debugHandler Function for error logging
    */
   public function __construct(
-    KeyedContainer<int, string> $hosts = array('localhost'),
-    KeyedContainer<int, int> $ports = array(9090),
+    KeyedContainer<int, string> $hosts = varray['localhost'],
+    KeyedContainer<int, int> $ports = varray[9090],
     bool $persist = false,
-    ?(function(string): bool) $debugHandler = null,
+    ?Predicate<string> $debugHandler = null,
   ) {
     parent::__construct('', 0, $persist, $debugHandler);
 
@@ -179,15 +176,16 @@ class TSocketPool extends TSocket {
    * @return bool  false: any IP in the pool failed to connect before returning
    *               true: no failures
    */
+  <<__Override>>
   public function open(): void {
     // Check if we want order randomization
     if ($this->randomize_) {
       // warning: don't use shuffle here because it leads to uneven
       // load distribution
-      $n = count($this->servers_);
+      $n = PHP\count($this->servers_);
       $s = $this->servers_;
       for ($i = 1; $i < $n; $i++) {
-        $j = mt_rand(0, $i);
+        $j = PHP\mt_rand(0, $i);
         $tmp = $s[$i];
         $s[$i] = $s[$j];
         $s[$j] = $tmp;
@@ -196,10 +194,10 @@ class TSocketPool extends TSocket {
     }
 
     // Count servers to identify the "last" one
-    $numServers = count($this->servers_);
+    $numServers = PHP\count($this->servers_);
     $has_conn_errors = false;
 
-    $fail_reason = array(); // reasons of conn failures
+    $fail_reason = darray[]; // reasons of conn failures
     for ($i = 0; $i < $numServers; ++$i) {
 
       // host port is stored as an array
@@ -207,16 +205,13 @@ class TSocketPool extends TSocket {
 
       $failtimeKey = TSocketPool::getAPCFailtimeKey($host, $port);
       // Cache miss? Assume it's OK
-      $lastFailtime = (int) $this->apcFetch($failtimeKey);
-      $this->apcLog(
-        "TSocketPool: host $host:$port last fail time: ".$lastFailtime,
-      );
+      $lastFailtime = (int) PHP\fb\apc_fetch_no_success_check($failtimeKey);
 
       $retryIntervalPassed = false;
 
       // Cache hit...make sure enough the retry interval has elapsed
       if ($lastFailtime > 0) {
-        $elapsed = time() - $lastFailtime;
+        $elapsed = PHP\time() - $lastFailtime;
         if ($elapsed > $this->retryInterval_) {
           $retryIntervalPassed = true;
           if ($this->debug_ && $this->debugHandler_ !== null) {
@@ -258,7 +253,7 @@ class TSocketPool extends TSocket {
 
             // Only clear the failure counts if required to do so
             if ($lastFailtime > 0) {
-              $this->apcStore($failtimeKey, 0);
+              PHP\apc_store($failtimeKey, 0);
             }
 
             // Successful connection, return now
@@ -300,17 +295,17 @@ class TSocketPool extends TSocket {
 
     // Holy shit we failed them all. The system is totally ill!
     $error = 'TSocketPool: All hosts in pool are down. ';
-    $hosts = array();
+    $hosts = varray[];
     foreach ($this->servers_ as $i => $server) {
       // array(host, port) (reasons, if exist)
       list($host, $port) = $server;
       $h = $host.':'.$port;
-      if (array_key_exists($i, $fail_reason)) {
+      if (PHP\array_key_exists($i, $fail_reason)) {
         $h .= (string) $fail_reason[$i];
       }
       $hosts[] = $h;
     }
-    $hostlist = implode(',', $hosts);
+    $hostlist = PHP\implode(',', $hosts);
     $error .= '('.$hostlist.')';
     if ($this->debug_ && $this->debugHandler_ !== null) {
       $dh = $this->debugHandler_;
@@ -338,22 +333,14 @@ class TSocketPool extends TSocket {
     int $port,
     int $max_failures,
     int $down_period,
-    ?(function(string): bool) $log_handler = null,
+    ?Predicate<string> $log_handler = null,
   ): bool {
     $marked_down = false;
     // Mark failure of this host in the cache
-    $failtimeKey = self::getAPCFailtimeKey($host, $port);
     $consecfailsKey = 'thrift_consecfails:'.$host.':'.$port.'~';
 
-    // Ignore cache misses
-    $consecfails = $this->apcFetch($consecfailsKey);
-    if ($consecfails === false) {
-      $consecfails = 0;
-    }
-    $consecfails = (int) $consecfails;
-
-    // Increment by one
-    $consecfails++;
+    // Ignore APC misses (treat as 0)
+    $consecfails = ((int) PHP\fb\apc_fetch_no_success_check($consecfailsKey)) + 1;
 
     // Log and cache this failure
     if ($consecfails >= $max_failures) {
@@ -372,84 +359,18 @@ class TSocketPool extends TSocket {
         );
       }
       // Store the failure time
-      $curr_time = time();
-      $this->apcStore($failtimeKey, $curr_time);
-      $this->apcLog(
-        'TSocketPool: marking '.
-        $host.
-        ':'.
-        $port.
-        ' as down for '.
-        $down_period.
-        ' secs '.
-        'after '.
-        $consecfails.
-        ' failed attempts.('.
-        "max_failures=$max_failures)",
-      );
+      $failtimeKey = self::getAPCFailtimeKey($host, $port);
+      $curr_time = PHP\time();
+      PHP\apc_store($failtimeKey, $curr_time);
       $marked_down = true;
 
       // Clear the count of consecutive failures
-      $this->apcStore($consecfailsKey, 0);
+      PHP\apc_store($consecfailsKey, 0);
     } else {
-      $this->apcLog(
-        "TSocketPool: increased $host:$port consec fails to ".$consecfails,
-      );
-      $this->apcStore($consecfailsKey, $consecfails);
+      PHP\apc_store($consecfailsKey, $consecfails);
     }
 
     return $marked_down;
-  }
-
-  /**
-   * !! To call this API, you must give apc_is_useful() as the last param
-   */
-  public function overrideAPCFunctions(
-    ?(function(string): mixed) $fake_apc_fetch,
-    ?(function(string, mixed, int): bool) $fake_apc_store,
-    ?(function(string): void) $logger,
-    bool $apc_is_useful,
-  ): void {
-    if (!$apc_is_useful) {
-      $this->fakeAPCFetch_ = $fake_apc_fetch;
-      $this->fakeAPCStore_ = $fake_apc_store;
-      $this->apcLogger_ = $logger;
-    }
-  }
-
-  /**
-   * Wrapper function around apc_fetch to be able to fetch from fake APC
-   * when there is no real APC
-   */
-  protected function apcFetch(string $key): mixed {
-    if ($this->fakeAPCFetch_ === null) {
-      return apc_fetch($key);
-    } else {
-      // try fake APC here
-      $ff = $this->fakeAPCFetch_;
-      return $ff($key);
-    }
-  }
-
-  /**
-   * wrapper function around apc_store to be able to store variable to fake APC
-   * when there is no real APC
-   */
-  protected function apcStore(string $key, mixed $value, int $ttl = 0): bool {
-    if ($this->fakeAPCStore_ === null) {
-      return apc_store($key, $value, $ttl);
-    } else {
-      // try fake APC here
-      $fs = $this->fakeAPCStore_;
-      return $fs($key, $value, $ttl);
-    }
-  }
-
-  protected function apcLog(string $message): void {
-    if ($this->apcLogger_ !== null) {
-      $logger = $this->apcLogger_;
-      $logger($message);
-    }
   }
 
   /**

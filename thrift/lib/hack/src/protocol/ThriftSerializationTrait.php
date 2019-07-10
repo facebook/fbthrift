@@ -16,13 +16,19 @@
  * limitations under the License.
  */
 /**
- * Compact Protocol Factory
+ * Trait for Thrift Structs to call into the Serialization Helper
  */
-class TCompactProtocolFactory implements TProtocolFactory {
+trait ThriftSerializationTrait implements IThriftStruct {
 
-  public function __construct() {}
+  <<__Rx, __AtMostRxAsArgs, __Mutable>>
+  public function read(
+    <<__OnlyRxIfImpl(IRxTProtocol::class), __Mutable>>
+    TProtocol $protocol,
+  ): int {
+    return ThriftSerializationHelper::readStruct($protocol, $this);
+  }
 
-  public function getProtocol(TTransport $trans): TProtocol {
-    return new TCompactProtocolAccelerated($trans);
+  public function write(TProtocol $protocol): int {
+    return ThriftSerializationHelper::writeStruct($protocol, $this);
   }
 }

@@ -1,15 +1,20 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.transport
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * Php stream transport. Reads to and writes from the php standard streams
  * php://input and php://output
@@ -48,44 +53,47 @@ class TPhpStream extends TTransport {
     $this->maxReadChunkSize_ = $maxReadChunkSize;
   }
 
+  <<__Override>>
   public function open(): void {
     if ($this->read_) {
-      $this->inStream_ = @fopen(self::inStreamName(), 'r');
-      if (!is_resource($this->inStream_)) {
-        throw new TException('TPhpStream: Could not open php://input');
+      $this->inStream_ = @PHP\fopen(self::inStreamName(), 'r');
+        if (!($this->inStream_ is resource)) {
+          throw new TException('TPhpStream: Could not open php://input');
+        }
       }
-    }
     if ($this->write_) {
-      $this->outStream_ = @fopen('php://output', 'w');
-      if (!is_resource($this->outStream_)) {
-        throw new TException('TPhpStream: Could not open php://output');
+      $this->outStream_ = @PHP\fopen('php://output', 'w');
+        if (!($this->outStream_ is resource)) {
+          throw new TException('TPhpStream: Could not open php://output');
+        }
       }
-    }
   }
 
+  <<__Override>>
   public function close(): void {
     if ($this->read_) {
-      @fclose($this->inStream_);
+      @PHP\fclose(nullthrows($this->inStream_));
       $this->inStream_ = null;
     }
     if ($this->write_) {
-      @fclose($this->outStream_);
+      @PHP\fclose(nullthrows($this->outStream_));
       $this->outStream_ = null;
     }
   }
 
+  <<__Override>>
   public function isOpen(): bool {
-    return
-      (!$this->read_ || is_resource($this->inStream_)) &&
-      (!$this->write_ || is_resource($this->outStream_));
+    return (!$this->read_ || $this->inStream_ is resource) &&
+      (!$this->write_ || $this->outStream_ is resource);
   }
 
+  <<__Override>>
   public function read(int $len): string {
     if ($this->maxReadChunkSize_ !== null) {
-      $len = min($len, $this->maxReadChunkSize_);
+      $len = Math\minva($len, $this->maxReadChunkSize_);
     }
 
-    $data = @fread($this->inStream_, $len);
+    $data = @PHP\fread(nullthrows($this->inStream_), $len);
 
     if ($data === false || $data === '') {
       throw new TException('TPhpStream: Could not read '.$len.' bytes');
@@ -93,25 +101,27 @@ class TPhpStream extends TTransport {
     return $data;
   }
 
+  <<__Override>>
   public function write(string $buf): void {
-    while (strlen($buf) > 0) {
-      $got = @fwrite($this->outStream_, $buf);
+    while (Str\length($buf) > 0) {
+      $got = @PHP\fwrite(nullthrows($this->outStream_), $buf);
 
       if ($got === 0 || $got === false) {
         throw new TException(
-          'TPhpStream: Could not write '.(string) strlen($buf).' bytes',
+          'TPhpStream: Could not write '.(string) Str\length($buf).' bytes',
         );
       }
-      $buf = substr($buf, $got);
+      $buf = PHP\substr($buf, $got);
     }
   }
 
+  <<__Override>>
   public function flush(): void {
-    @fflush($this->outStream_);
+    @PHP\fflush(nullthrows($this->outStream_));
   }
 
   private static function inStreamName(): string {
-    if (php_sapi_name() == 'cli') {
+    if (PHP\php_sapi_name() == 'cli') {
       return 'php://stdin';
     }
     return 'php://input';

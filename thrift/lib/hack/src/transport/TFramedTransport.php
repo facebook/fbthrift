@@ -1,15 +1,20 @@
-<?hh // strict
+<?hh
 
-/**
-* Copyright (c) 2006- Facebook
-* Distributed under the Thrift Software License
-*
-* See accompanying file LICENSE or visit the Thrift site at:
-* http://developers.facebook.com/thrift/
-*
-* @package thrift.transport
-*/
-
+/*
+ * Copyright 2006-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 /**
  * Framed transport. Writes and reads data in chunks that are stamped with
  * their length.
@@ -76,24 +81,27 @@ class TFramedTransport extends TTransport
     $this->write_ = $write;
   }
 
+  <<__Override>>
   public function isOpen(): bool {
     return $this->transport_->isOpen();
   }
 
+  <<__Override>>
   public function open(): void {
     $this->transport_->open();
   }
 
+  <<__Override>>
   public function close(): void {
     $this->transport_->close();
   }
 
   public function isReadable(): bool {
-    if (strlen($this->rBuf_) > 0) {
+    if (Str\length($this->rBuf_) > 0) {
       return true;
     }
 
-    if ($this->transport_ instanceof TTransportStatus) {
+    if ($this->transport_ is TTransportStatus) {
       return $this->transport_->isReadable();
     }
 
@@ -101,15 +109,11 @@ class TFramedTransport extends TTransport
   }
 
   public function isWritable(): bool {
-    if ($this->transport_ instanceof TTransportStatus) {
+    if ($this->transport_ is TTransportStatus) {
       return $this->transport_->isWritable();
     }
 
     return true;
-  }
-
-  public function minBytesAvailable(): int {
-    return strlen($this->rBuf_) - $this->rIndex_;
   }
 
   /**
@@ -118,20 +122,21 @@ class TFramedTransport extends TTransport
    *
    * @param int $len How much data
    */
+  <<__Override>>
   public function read(int $len): string {
     if (!$this->read_) {
       return $this->transport_->read($len);
     }
 
-    if (strlen($this->rBuf_) === 0) {
+    if (Str\length($this->rBuf_) === 0) {
       $this->readFrame();
     }
 
     // Return substr
-    $out = substr($this->rBuf_, $this->rIndex_, $len);
+    $out = PHP\substr($this->rBuf_, $this->rIndex_, $len);
     $this->rIndex_ += $len;
 
-    if (strlen($this->rBuf_) <= $this->rIndex_) {
+    if (Str\length($this->rBuf_) <= $this->rIndex_) {
       $this->rBuf_ = '';
       $this->rIndex_ = 0;
     }
@@ -149,12 +154,12 @@ class TFramedTransport extends TTransport
       return '';
     }
 
-    if (strlen($this->rBuf_) === 0) {
+    if (Str\length($this->rBuf_) === 0) {
       $this->readFrame();
     }
 
     // Return substr
-    $out = substr($this->rBuf_, $this->rIndex_ + $start, $len);
+    $out = PHP\substr($this->rBuf_, $this->rIndex_ + $start, $len);
 
     return $out;
   }
@@ -165,10 +170,10 @@ class TFramedTransport extends TTransport
    * @param string $data data to return
    */
   public function putBack(string $data): void {
-    if (strlen($this->rBuf_) === 0) {
+    if (Str\length($this->rBuf_) === 0) {
       $this->rBuf_ = $data;
     } else {
-      $this->rBuf_ = ($data.(string) substr($this->rBuf_, $this->rIndex_));
+      $this->rBuf_ = ($data.(string) PHP\substr($this->rBuf_, $this->rIndex_));
     }
     $this->rIndex_ = 0;
   }
@@ -178,7 +183,7 @@ class TFramedTransport extends TTransport
    */
   private function readFrame(): void {
     $buf = $this->transport_->readAll(4);
-    $val = unpack('N', $buf);
+    $val = PHP\unpack('N', $buf);
     $sz = $val[1];
 
     $this->rBuf_ = $this->transport_->readAll($sz);
@@ -191,14 +196,15 @@ class TFramedTransport extends TTransport
    * @param string $buf The data
    * @param int    $len Limit of bytes to write
    */
+  <<__Override>>
   public function write(string $buf, ?int $len = null): void {
     if (!$this->write_) {
       $this->transport_->write($buf);
       return;
     }
 
-    if ($len !== null && $len < strlen($buf)) {
-      $buf = substr($buf, 0, $len);
+    if ($len !== null && $len < Str\length($buf)) {
+      $buf = PHP\substr($buf, 0, $len);
     }
     $this->wBuf_ .= $buf;
   }
@@ -207,13 +213,14 @@ class TFramedTransport extends TTransport
    * Writes the output buffer to the stream in the format of a 4-byte length
    * followed by the actual data.
    */
+  <<__Override>>
   public function flush(): void {
-    if (!$this->write_ || strlen($this->wBuf_) == 0) {
+    if (!$this->write_ || Str\length($this->wBuf_) == 0) {
       $this->transport_->flush();
       return;
     }
 
-    $out = (string) pack('N', strlen($this->wBuf_));
+    $out = (string) PHP\pack('N', Str\length($this->wBuf_));
     $out .= $this->wBuf_;
 
     // Note that we clear the internal wBuf_ prior to the underlying write
