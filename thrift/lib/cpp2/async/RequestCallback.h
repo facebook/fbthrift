@@ -410,6 +410,15 @@ class RpcOptions {
     return clientOnlyTimeouts_;
   }
 
+  RpcOptions& setEnableChecksum(bool val) {
+    enableChecksum_ = val;
+    return *this;
+  }
+
+  bool getEnableChecksum() const {
+    return enableChecksum_;
+  }
+
   RpcOptions& setChunkTimeout(std::chrono::milliseconds chunkTimeout) {
     chunkTimeout_ = chunkTimeout;
     return *this;
@@ -456,6 +465,7 @@ class RpcOptions {
   std::chrono::milliseconds queueTimeout_{0};
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
+  bool enableChecksum_{false};
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;

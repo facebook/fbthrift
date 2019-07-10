@@ -744,7 +744,8 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
           folly::IOBuf::copyBuffer(asString);
       setCorruption(testType);
 
-      auto future = client->future_echo(*payload);
+      auto future =
+          client->future_echo(RpcOptions().setEnableChecksum(true), *payload);
 
       if (testType == CorruptionType::NONE) {
         EXPECT_EQ(asString, std::move(future).get());
@@ -883,7 +884,9 @@ void TransportCompatibilityTest::TestOneway_Checksumming() {
       setCorruption(shouldCorrupt);
 
       auto payload = folly::IOBuf::copyBuffer(asString);
-      client->future_onewayLogBlob(*payload).get();
+      client
+          ->future_onewayLogBlob(RpcOptions().setEnableChecksum(true), *payload)
+          .get();
       // Unlike request/response case, no exception is thrown here for
       // a one-way RPC.
       /* sleep override */

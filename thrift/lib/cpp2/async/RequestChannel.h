@@ -200,7 +200,11 @@ void clientSendT(
         folly::exception_wrapper(std::current_exception(), ex));
     throw;
   }
-  header->setCrc32c(apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
+
+  if (rpcOptions.getEnableChecksum()) {
+    header->setCrc32c(
+        apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
+  }
 
   channel->sendRequestAsync(
       rpcOptions, queue.move(), std::move(header), std::move(callback), kind);

@@ -216,7 +216,8 @@ TEST_P(StreamingTest, ChecksummingRequest) {
           setCorruption(testType);
           bool didThrow = false;
           try {
-            auto futureRet = client->future_requestWithBlob(*payload);
+            auto futureRet = client->future_requestWithBlob(
+                RpcOptions().setEnableChecksum(true), *payload);
             auto stream = std::move(futureRet).get();
             auto result = std::move(stream).via(&executor_);
             auto subscription = std::move(result).subscribe(
