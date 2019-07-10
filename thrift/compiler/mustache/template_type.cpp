@@ -100,6 +100,8 @@ void template_type::tokenize(const std::string& tmp) {
 }
 
 void template_type::strip_whitespace() {
+  auto erases = std::vector<bool>();
+  erases.resize(m_tokens.size());
   auto line_begin = m_tokens.begin();
   bool has_tag = false, non_space = false;
 
@@ -117,10 +119,12 @@ void template_type::strip_whitespace() {
         store_prefixes(line_begin);
 
         auto c = line_begin;
-        for (bool end = false; !end;
-             (*c).ws_only() ? c = m_tokens.erase(c) : ++c) {
+        for (bool end = false; !end; ++c) {
           if ((end = (*c).eol())) {
             it = c - 1;
+          }
+          if ((*c).ws_only()) {
+            erases[c - m_tokens.begin()] = true;
           }
         }
       }
@@ -129,6 +133,15 @@ void template_type::strip_whitespace() {
       line_begin = it + 1;
     }
   }
+
+  size_t compact = 0;
+  for (size_t expanded = 0; expanded < m_tokens.size(); ++expanded) {
+    if (!erases[expanded]) {
+      std::swap(m_tokens[compact], m_tokens[expanded]);
+      ++compact;
+    }
+  }
+  m_tokens.erase(m_tokens.begin() + compact, m_tokens.end());
 }
 
 void template_type::store_prefixes(std::vector<token>::iterator beg) {
