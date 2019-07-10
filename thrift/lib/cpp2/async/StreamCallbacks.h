@@ -123,7 +123,6 @@ class SinkClientCallback {
   virtual void onFinalResponseError(folly::exception_wrapper) = 0;
 
   virtual void onSinkRequestN(uint64_t) = 0;
-  virtual void onSinkCancel() = 0;
 };
 
 } // namespace thrift

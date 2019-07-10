@@ -30,56 +30,10 @@
 
 namespace apache {
 namespace thrift {
-
 namespace rocket {
 class RocketClient;
 
-namespace detail {
-
-class ChannelState {
- public:
-  enum class State { Alive, StreamOpen, SinkOpen, Complete };
-  void onStreamComplete() {
-    switch (state_) {
-      case State::Alive:
-        state_ = State::SinkOpen;
-        break;
-      case State::StreamOpen:
-        state_ = State::Complete;
-        break;
-      case State::SinkOpen:
-        break;
-      case State::Complete:
-        break;
-    }
-  }
-
-  void onSinkComplete() {
-    switch (state_) {
-      case State::Alive:
-        state_ = State::StreamOpen;
-        break;
-      case State::StreamOpen:
-        break;
-      case State::SinkOpen:
-        state_ = State::Complete;
-        break;
-      case State::Complete:
-        break;
-    }
-  }
-
-  bool isComplete() {
-    return state_ == State::Complete;
-  }
-
- private:
-  State state_ = State::Alive;
-};
-
-} // namespace detail
-
-} // namespace rocket
+enum class StreamChannelStatus { Alive, Complete, ContractViolation };
 
 class RocketStreamServerCallback : public StreamServerCallback {
  public:
@@ -92,13 +46,17 @@ class RocketStreamServerCallback : public StreamServerCallback {
   void onStreamRequestN(uint64_t tokens) override;
   void onStreamCancel() override;
 
-  StreamClientCallback& getClientCallback() const {
-    return clientCallback_;
-  }
+  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  void onInitialError(folly::exception_wrapper ew);
+  void onStreamTransportError(folly::exception_wrapper);
 
-  void onStreamNext(StreamPayload&&);
-  void onStreamError(folly::exception_wrapper ew);
-  void onStreamComplete();
+  StreamChannelStatus onStreamPayload(StreamPayload&&);
+  StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
+  StreamChannelStatus onStreamComplete();
+  StreamChannelStatus onStreamError(folly::exception_wrapper);
+
+  StreamChannelStatus onSinkRequestN(uint64_t tokens);
+  StreamChannelStatus onSinkCancel();
 
  private:
   rocket::RocketClient& client_;
@@ -121,19 +79,24 @@ class RocketChannelServerCallback : public ChannelServerCallback {
   void onSinkError(folly::exception_wrapper) override;
   void onSinkComplete() override;
 
-  ChannelClientCallback& getClientCallback() const {
-    return clientCallback_;
-  }
+  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  void onInitialError(folly::exception_wrapper);
+  void onStreamTransportError(folly::exception_wrapper);
 
-  void onStreamNext(StreamPayload&&);
-  void onStreamError(folly::exception_wrapper ew);
-  void onStreamComplete();
+  StreamChannelStatus onStreamPayload(StreamPayload&&);
+  StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
+  StreamChannelStatus onStreamComplete();
+  StreamChannelStatus onStreamError(folly::exception_wrapper);
+
+  StreamChannelStatus onSinkRequestN(uint64_t tokens);
+  StreamChannelStatus onSinkCancel();
 
  private:
   rocket::RocketClient& client_;
   ChannelClientCallback& clientCallback_;
   rocket::StreamId streamId_;
-  rocket::detail::ChannelState state_;
+  enum class State { BothOpen, StreamOpen, SinkOpen };
+  State state_{State::BothOpen};
 };
 
 class RocketSinkServerCallback : public SinkServerCallback {
@@ -148,20 +111,47 @@ class RocketSinkServerCallback : public SinkServerCallback {
   void onSinkError(folly::exception_wrapper) override;
   void onSinkComplete() override;
 
-  SinkClientCallback& getClientCallback() const {
-    return clientCallback_;
-  }
+  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  void onInitialError(folly::exception_wrapper);
+  void onStreamTransportError(folly::exception_wrapper);
 
-  void onStreamNext(StreamPayload&&);
-  void onStreamError(folly::exception_wrapper ew);
-  void onStreamComplete();
+  StreamChannelStatus onStreamPayload(StreamPayload&&);
+  StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
+  StreamChannelStatus onStreamComplete();
+  StreamChannelStatus onStreamError(folly::exception_wrapper);
+
+  StreamChannelStatus onSinkRequestN(uint64_t tokens);
+  StreamChannelStatus onSinkCancel();
 
  private:
   rocket::RocketClient& client_;
   SinkClientCallback& clientCallback_;
   rocket::StreamId streamId_;
-  bool receivedFinalResponse_{false};
+  enum class State { BothOpen, StreamOpen };
+  State state_{State::BothOpen};
 };
 
+namespace detail {
+template <typename ClientCallback>
+struct RocketServerCallbackHelper {};
+template <>
+struct RocketServerCallbackHelper<StreamClientCallback> {
+  using type = RocketStreamServerCallback;
+};
+template <>
+struct RocketServerCallbackHelper<ChannelClientCallback> {
+  using type = RocketChannelServerCallback;
+};
+template <>
+struct RocketServerCallbackHelper<SinkClientCallback> {
+  using type = RocketSinkServerCallback;
+};
+} // namespace detail
+
+template <typename ClientCallback>
+using RocketServerCallback =
+    typename detail::RocketServerCallbackHelper<ClientCallback>::type;
+
+} // namespace rocket
 } // namespace thrift
 } // namespace apache

@@ -102,9 +102,9 @@ class RocketClient : public folly::DelayedDestruction,
   void cancelStream(StreamId streamId);
   void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
   void sendError(StreamId streamId, RocketException&& rex);
-  void sendComplete(StreamId streamId);
+  void sendComplete(StreamId streamId, bool closeStream);
 
-  void freeStream(StreamId streamId);
+  bool streamExists(StreamId streamId) const;
 
   // AsyncTransportWrapper::WriteCallback implementation
   void writeSuccess() noexcept final;
@@ -260,44 +260,35 @@ class RocketClient : public folly::DelayedDestruction,
       std::chrono::milliseconds firstResponseTimeout,
       CallbackType* clientCallback);
 
-  // return false if streamId is not found
-  folly::Optional<ServerCallbackPtr> getStreamById(StreamId streamId);
+  void freeStream(StreamId streamId);
 
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void handleRequestResponseFrame(
       RequestContext& ctx,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
-  void handleStreamFrame(
-      RocketStreamServerCallback& serverCallback,
-      FrameType frameType,
-      std::unique_ptr<folly::IOBuf> frame);
-  void handleChannelFrame(
-      RocketChannelServerCallback& serverCallback,
-      FrameType frameType,
-      std::unique_ptr<folly::IOBuf> frame);
-  void handleSinkFrame(
-      RocketSinkServerCallback& serverCallback,
+  void handleStreamChannelFrame(
+      StreamId streamId,
       FrameType frameType,
       std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  void handlePayloadFrame(
+  StreamChannelStatus handlePayloadFrame(
       CallbackType& serverCallback,
       std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  void handleErrorFrame(
+  StreamChannelStatus handleErrorFrame(
       CallbackType& serverCallback,
       std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  void handleReqestNFrame(
+  StreamChannelStatus handleRequestNFrame(
       CallbackType& serverCallback,
       std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  void handleCancelFrame(
+  StreamChannelStatus handleCancelFrame(
       CallbackType& serverCallback,
       std::unique_ptr<folly::IOBuf> frame);
 
