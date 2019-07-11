@@ -759,6 +759,21 @@ class TestStructRandomizer(TestRandomizer, unittest.TestCase):
             self.assertTrue(val.a)
             self.assertIsNone(val.b)
 
+    def testStructSeed(self):
+        cls = self.__class__
+        constraints = {
+            '|Rainbow': {
+                "seeds": [ttypes.Rainbow(colors=[ttypes.Color.RED])],
+            },
+            '|NestedStructs': {
+                'seeds': [ttypes.NestedStructs(rainbow=ttypes.Rainbow(colors=[ttypes.Color.ORANGE]))],
+            },
+        }
+        gen = self.struct_randomizer(ttypes.NestedStructs, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
+
     def testNestedConstraints(self):
         cls = self.__class__
 

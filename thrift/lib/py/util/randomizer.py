@@ -849,11 +849,20 @@ class StructRandomizer(BaseRandomizer):
         else:
             return self._ttype(**fields)
 
+    def _seed_to_dict(self, seed):
+        if isinstance(seed, dict):
+            return seed
+        res = {}
+        for key, value in vars(seed).items():
+            if value is not None:
+                res[key] = value
+        return res
+
     def _fuzz(self, seed):
         """Fuzz a single field of the struct at random"""
         fields = {}
         field_rules = self._field_rules
-
+        seed = self._seed_to_dict(seed)
         if self._is_union:
             # The seed should be a single key/value pair
             field_name, seed_val = six.next(six.iteritems(seed))
@@ -886,6 +895,7 @@ class StructRandomizer(BaseRandomizer):
 
     def eval_seed(self, seed):
         fields = {}
+        seed = self._seed_to_dict(seed)
         for key, val in six.iteritems(seed):
             field_randomizer = self._field_rules[key]['randomizer']
             val = field_randomizer.eval_seed(val)
