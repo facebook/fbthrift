@@ -32,7 +32,7 @@ folly::Function<Ret(Args...)> object_partial(
   Py_INCREF(py_object);
   auto guard = folly::makeGuard([=] { Py_DECREF(py_object); });
   return [func, py_object, guard = std::move(guard)](Args... args) mutable {
-    func(py_object, std::forward<Args>(args)...);
+    return func(py_object, std::forward<Args>(args)...);
   };
 }
 
