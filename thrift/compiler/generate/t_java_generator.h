@@ -44,21 +44,11 @@ class t_java_generator : public t_oop_generator {
   t_java_generator(
       t_program* program,
       t_generation_context context,
-      const std::map<std::string, std::string>& parsed_options,
+      const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
       : t_oop_generator(program, std::move(context)) {
     std::map<std::string, std::string>::const_iterator iter;
-
-    iter = parsed_options.find("beans");
-    bean_style_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("nocamel");
-    nocamel_style_ = (iter != parsed_options.end());
-
-    iter = parsed_options.find("hashcode");
-    gen_hash_code_ = (iter != parsed_options.end());
-
-    out_dir_base_ = (bean_style_ ? "gen-javabean" : "gen-java");
+    out_dir_base_ = "gen-java";
   }
 
   /**
@@ -325,10 +315,6 @@ class t_java_generator : public t_oop_generator {
   std::string package_name_;
   std::ofstream f_service_;
   std::string package_dir_;
-
-  bool bean_style_;
-  bool nocamel_style_;
-  bool gen_hash_code_;
 };
 
 } // namespace compiler

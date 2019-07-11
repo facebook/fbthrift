@@ -286,9 +286,6 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   }
 
 
-  /**
-   * If you'd like this to perform more respectably, use the hashcode generator option.
-   */
   @Override
   public int hashCode() {
     return 0;

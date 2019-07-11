@@ -264,9 +264,6 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
   }
 
 
-  /**
-   * If you'd like this to perform more respectably, use the hashcode generator option.
-   */
   @Override
   public int hashCode() {
     return 0;

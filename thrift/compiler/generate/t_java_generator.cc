@@ -85,12 +85,7 @@ string t_java_generator::java_package() {
  * @return List of imports for Java types that are used in here
  */
 string t_java_generator::java_type_imports() {
-  string hash_builder;
-  if (gen_hash_code_) {
-    hash_builder = "import org.apache.commons.lang.builder.HashCodeBuilder;\n";
-  }
-
-  return string() + hash_builder + "import java.util.List;\n" +
+  return string() + "import java.util.List;\n" +
       "import java.util.ArrayList;\n" + "import java.util.Map;\n" +
       "import java.util.HashMap;\n" + "import java.util.Set;\n" +
       "import java.util.HashSet;\n" + "import java.util.Collections;\n" +
@@ -998,24 +993,10 @@ void t_java_generator::generate_union_comparisons(
 void t_java_generator::generate_union_hashcode(
     ofstream& out,
     t_struct* /*tstruct*/) {
-  if (gen_hash_code_) {
-    indent(out) << "@Override" << endl;
-    indent(out) << "public int hashCode() {" << endl;
-    indent(out)
-        << "  return new HashCodeBuilder().append(getSetField()).append(getFieldValue()).toHashCode();"
-        << endl;
-    indent(out) << "}";
-  } else {
-    indent(out) << "/**" << endl;
-    indent(out)
-        << " * If you'd like this to perform more respectably, use the hashcode generator option."
-        << endl;
-    indent(out) << " */" << endl;
-    indent(out) << "@Override" << endl;
-    indent(out) << "public int hashCode() {" << endl;
-    indent(out) << "  return 0;" << endl;
-    indent(out) << "}" << endl;
-  }
+  indent(out) << "@Override" << endl;
+  indent(out) << "public int hashCode() {" << endl;
+  indent(out) << "  return 0;" << endl;
+  indent(out) << "}" << endl;
 }
 
 /**
@@ -1101,12 +1082,8 @@ void t_java_generator::generate_java_struct_definition(
   out << endl;
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    if (bean_style_) {
-      indent(out) << "private ";
-    } else {
-      generate_java_doc(out, *m_iter);
-      indent(out) << "public ";
-    }
+    generate_java_doc(out, *m_iter);
+    indent(out) << "public ";
     out << declare_field(*m_iter, false) << endl;
   }
   generate_field_name_constants(out, tstruct);
@@ -1344,35 +1321,7 @@ void t_java_generator::generate_java_struct_equality(
   out << indent() << "@Override" << endl
       << indent() << "public int hashCode() {" << endl;
   indent_up();
-  if (gen_hash_code_) {
-    indent(out) << "HashCodeBuilder builder = new HashCodeBuilder();" << endl;
-
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      out << endl;
-
-      t_type* t = (*m_iter)->get_type()->get_true_type();
-      bool is_optional = (*m_iter)->get_req() == t_field::T_OPTIONAL;
-      bool can_be_null = type_can_be_null(t);
-      string name = (*m_iter)->get_name();
-
-      string present = "true";
-
-      if (is_optional || can_be_null) {
-        present += " && (" + generate_isset_check(*m_iter) + ")";
-      }
-
-      out << indent() << "boolean present_" << name << " = " << present << ";"
-          << endl
-          << indent() << "builder.append(present_" << name << ");" << endl
-          << indent() << "if (present_" << name << ")" << endl
-          << indent() << "  builder.append(" << name << ");" << endl;
-    }
-
-    out << endl;
-    indent(out) << "return builder.toHashCode();" << endl;
-  } else {
-    indent(out) << "return 0;" << endl;
-  }
+  indent(out) << "return 0;" << endl;
   indent_down();
   indent(out) << "}" << endl << endl;
 }
@@ -1494,24 +1443,22 @@ void t_java_generator::generate_java_struct_reader(
 
   out << indent() << "iprot.readStructEnd();" << endl << endl;
 
-  // in non-beans style, check for required fields of primitive type
+  // Check for required fields of primitive type
   // (which can be checked here but not in the general validate method)
-  if (!bean_style_) {
-    out << endl
-        << indent()
-        << "// check for required fields of primitive type, which can't be checked in the validate method"
-        << endl;
-    for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-      if ((*f_iter)->get_req() == t_field::T_REQUIRED &&
-          !type_can_be_null((*f_iter)->get_type())) {
-        out << indent() << "if (!" << generate_isset_check(*f_iter) << ") {"
-            << endl
-            << indent() << "  throw new TProtocolException(\"Required field '"
-            << (*f_iter)->get_name()
-            << "' was not found in serialized data! Struct: \" + toString());"
-            << endl
-            << indent() << "}" << endl;
-      }
+  out << endl
+      << indent()
+      << "// check for required fields of primitive type, which can't be checked in the validate method"
+      << endl;
+  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+    if ((*f_iter)->get_req() == t_field::T_REQUIRED &&
+        !type_can_be_null((*f_iter)->get_type())) {
+      out << indent() << "if (!" << generate_isset_check(*f_iter) << ") {"
+          << endl
+          << indent() << "  throw new TProtocolException(\"Required field '"
+          << (*f_iter)->get_name()
+          << "' was not found in serialized data! Struct: \" + toString());"
+          << endl
+          << indent() << "}" << endl;
     }
   }
 
@@ -1536,30 +1483,17 @@ void t_java_generator::generate_java_validator(
   out << indent() << "// check for required fields" << endl;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
-      if (bean_style_) {
-        out << indent() << "if (!" << generate_isset_check(*f_iter) << ") {"
-            << endl
-            << indent() << "  throw new TProtocolException("
-            << "TProtocolException.MISSING_REQUIRED_FIELD, "
-            << "\"Required field '" << (*f_iter)->get_name()
-            << "' is unset! Struct:\" + toString());" << endl
-            << indent() << "}" << endl
-            << endl;
+      if (type_can_be_null((*f_iter)->get_type())) {
+        indent(out) << "if (" << (*f_iter)->get_name() << " == null) {" << endl;
+        indent(out) << "  throw new TProtocolException("
+                    << "TProtocolException.MISSING_REQUIRED_FIELD, "
+                    << "\"Required field '" << (*f_iter)->get_name()
+                    << "' was not present! Struct: \" + toString());" << endl;
+        indent(out) << "}" << endl;
       } else {
-        if (type_can_be_null((*f_iter)->get_type())) {
-          indent(out) << "if (" << (*f_iter)->get_name() << " == null) {"
-                      << endl;
-          indent(out) << "  throw new TProtocolException("
-                      << "TProtocolException.MISSING_REQUIRED_FIELD, "
-                      << "\"Required field '" << (*f_iter)->get_name()
-                      << "' was not present! Struct: \" + toString());" << endl;
-          indent(out) << "}" << endl;
-        } else {
-          indent(out)
-              << "// alas, we cannot check '" << (*f_iter)->get_name()
-              << "' because it's a primitive and you chose the non-beans "
-              << "generator." << endl;
-        }
+        indent(out) << "// alas, we cannot check '" << (*f_iter)->get_name()
+                    << "' because it's a primitive and you chose the non-beans "
+                    << "generator." << endl;
       }
     }
   }
@@ -3742,15 +3676,11 @@ string t_java_generator::type_to_enum(t_type* type) {
 }
 
 /**
- * Applies the correct style to a string based on the value of nocamel_style_
+ * Applies the correct style to a string
  */
 std::string t_java_generator::get_cap_name(std::string name) {
-  if (nocamel_style_) {
-    return "_" + name;
-  } else {
-    name[0] = toupper(name[0]);
-    return name;
-  }
+  name[0] = toupper(name[0]);
+  return name;
 }
 
 string t_java_generator::constant_name(string name) {

@@ -228,9 +228,6 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
   }
 
 
-  /**
-   * If you'd like this to perform more respectably, use the hashcode generator option.
-   */
   @Override
   public int hashCode() {
     return 0;

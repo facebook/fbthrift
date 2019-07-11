@@ -226,9 +226,6 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   }
 
 
-  /**
-   * If you'd like this to perform more respectably, use the hashcode generator option.
-   */
   @Override
   public int hashCode() {
     return 0;
