@@ -673,8 +673,16 @@ class MapRandomizer(CollectionTypeRandomizer):
         while len(elements) < length and i < N:
             key = key_randomizer.generate()
             val = val_randomizer.generate()
-            if key is not None and val is not None:
-                elements[key] = val
+            try:
+                if key is not None and val is not None:
+                    elements[key] = val
+            except TypeError:
+                # If we have a type error here it means that the key
+                # can't be hashed. There can be structs that have
+                # keys python doesn't like.
+                #
+                # For now just bail out.
+                return elements
             i += 1
 
         return elements
