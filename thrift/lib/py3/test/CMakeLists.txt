@@ -78,7 +78,6 @@ foreach(_src
   exceptions.py
   exception_helper.pyx
   iobuf.py
-  iobuf_helper.pyx
   lists.py
   maps.py
   optional_mode.py
@@ -101,7 +100,6 @@ add_custom_target(py3-test-symlinks DEPENDS ${_linked_files})
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/gen-py3/test/__init__.py)
 
 foreach(_src
-    "iobuf_helper"
     "exception_helper"
 )
   set(_pyx "gen-py3/test/${_src}.pyx")
