@@ -17,8 +17,7 @@ namespace cpp2 {
 
 enum class MyEnum {
   MyValue1 = 0,
-  MyValue2 = 1,
-  REALM = 2
+  MyValue2 = 1
 };
 
 
@@ -42,7 +41,7 @@ template <> struct TEnumDataStorage<::cpp2::MyEnum>;
 template <> struct TEnumTraits<::cpp2::MyEnum> {
   using type = ::cpp2::MyEnum;
 
-  static constexpr std::size_t const size = 3;
+  static constexpr std::size_t const size = 2;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 
@@ -50,7 +49,7 @@ template <> struct TEnumTraits<::cpp2::MyEnum> {
   static bool findValue(char const* name, type* out);
 
   static constexpr type min() { return type::MyValue1; }
-  static constexpr type max() { return type::REALM; }
+  static constexpr type max() { return type::MyValue2; }
 };
 
 
@@ -72,6 +71,7 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 namespace cpp2 {
 class MyDataItem;
 class MyStruct;
+class MyUnion;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -129,11 +129,12 @@ namespace cpp2 {
 class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<MyStruct> {
  public:
 
-  MyStruct();
-
+  MyStruct() :
+      MyIntField(0),
+      myEnum( ::cpp2::MyEnum::MyValue1) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg);
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     MyIntField = arg.extract();
@@ -151,23 +152,8 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    majorVer = arg.extract();
-    __isset.majorVer = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
     myEnum = arg.extract();
     __isset.myEnum = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    package = arg.extract();
-    __isset.package = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    annotation_with_quote = arg.extract();
-    __isset.annotation_with_quote = true;
   }
 
   MyStruct(MyStruct&&) = default;
@@ -178,25 +164,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
-
-  ~MyStruct();
-
   int64_t MyIntField;
   ::std::string MyStringField;
    ::cpp2::MyDataItem MyDataField;
-  int64_t majorVer;
    ::cpp2::MyEnum myEnum;
-  ::std::string package;
-  ::std::string annotation_with_quote;
 
   struct __isset {
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
-    bool majorVer;
     bool myEnum;
-    bool package;
-    bool annotation_with_quote;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -235,16 +212,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     return MyDataField;
   }
 
-  int64_t get_majorVer() const {
-    return majorVer;
-  }
-
-  int64_t& set_majorVer(int64_t majorVer_) {
-    majorVer = majorVer_;
-    __isset.majorVer = true;
-    return majorVer;
-  }
-
    ::cpp2::MyEnum get_myEnum() const {
     return myEnum;
   }
@@ -253,36 +220,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     myEnum = myEnum_;
     __isset.myEnum = true;
     return myEnum;
-  }
-
-  const ::std::string& get_package() const& {
-    return package;
-  }
-
-  ::std::string get_package() && {
-    return std::move(package);
-  }
-
-  template <typename T_MyStruct_package_struct_setter = ::std::string>
-  ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
-    package = std::forward<T_MyStruct_package_struct_setter>(package_);
-    __isset.package = true;
-    return package;
-  }
-
-  const ::std::string& get_annotation_with_quote() const& {
-    return annotation_with_quote;
-  }
-
-  ::std::string get_annotation_with_quote() && {
-    return std::move(annotation_with_quote);
-  }
-
-  template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
-  ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
-    annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
-    __isset.annotation_with_quote = true;
-    return annotation_with_quote;
   }
 
   template <class Protocol_>
@@ -305,6 +242,292 @@ void swap(MyStruct& a, MyStruct& b);
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    myEnum = 1,
+    myStruct = 2,
+    myDataItem = 3,
+  } ;
+
+  MyUnion()
+      : type_(Type::__EMPTY__) {}
+
+  MyUnion(MyUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::myEnum:
+      {
+        set_myEnum(std::move(rhs.value_.myEnum));
+        break;
+      }
+      case Type::myStruct:
+      {
+        set_myStruct(std::move(rhs.value_.myStruct));
+        break;
+      }
+      case Type::myDataItem:
+      {
+        set_myDataItem(std::move(rhs.value_.myDataItem));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  MyUnion(const MyUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::myEnum:
+      {
+        set_myEnum(rhs.value_.myEnum);
+        break;
+      }
+      case Type::myStruct:
+      {
+        set_myStruct(rhs.value_.myStruct);
+        break;
+      }
+      case Type::myDataItem:
+      {
+        set_myDataItem(rhs.value_.myDataItem);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  MyUnion& operator=(MyUnion&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::myEnum:
+      {
+        set_myEnum(std::move(rhs.value_.myEnum));
+        break;
+      }
+      case Type::myStruct:
+      {
+        set_myStruct(std::move(rhs.value_.myStruct));
+        break;
+      }
+      case Type::myDataItem:
+      {
+        set_myDataItem(std::move(rhs.value_.myDataItem));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  MyUnion& operator=(const MyUnion& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::myEnum:
+      {
+        set_myEnum(rhs.value_.myEnum);
+        break;
+      }
+      case Type::myStruct:
+      {
+        set_myStruct(rhs.value_.myStruct);
+        break;
+      }
+      case Type::myDataItem:
+      {
+        set_myDataItem(rhs.value_.myDataItem);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    set_myEnum(arg.extract());
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    set_myStruct(arg.extract());
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    set_myDataItem(arg.extract());
+  }
+  void __clear();
+
+  ~MyUnion() {
+    __clear();
+  }
+  union storage_type {
+     ::cpp2::MyEnum myEnum;
+     ::cpp2::MyStruct myStruct;
+     ::cpp2::MyDataItem myDataItem;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const MyUnion& rhs) const;
+  bool operator<(const MyUnion& rhs) const;
+
+   ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum t =  ::cpp2::MyEnum()) {
+    __clear();
+    type_ = Type::myEnum;
+    ::new (std::addressof(value_.myEnum))  ::cpp2::MyEnum(t);
+    return value_.myEnum;
+  }
+
+   ::cpp2::MyStruct& set_myStruct( ::cpp2::MyStruct const &t) {
+    __clear();
+    type_ = Type::myStruct;
+    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(t);
+    return value_.myStruct;
+  }
+
+   ::cpp2::MyStruct& set_myStruct( ::cpp2::MyStruct&& t) {
+    __clear();
+    type_ = Type::myStruct;
+    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(std::move(t));
+    return value_.myStruct;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::MyStruct, T...>>  ::cpp2::MyStruct& set_myStruct(T&&... t) {
+    __clear();
+    type_ = Type::myStruct;
+    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(std::forward<T>(t)...);
+    return value_.myStruct;
+  }
+
+   ::cpp2::MyDataItem& set_myDataItem( ::cpp2::MyDataItem const &t) {
+    __clear();
+    type_ = Type::myDataItem;
+    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(t);
+    return value_.myDataItem;
+  }
+
+   ::cpp2::MyDataItem& set_myDataItem( ::cpp2::MyDataItem&& t) {
+    __clear();
+    type_ = Type::myDataItem;
+    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(std::move(t));
+    return value_.myDataItem;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::MyDataItem, T...>>  ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
+    __clear();
+    type_ = Type::myDataItem;
+    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(std::forward<T>(t)...);
+    return value_.myDataItem;
+  }
+
+   ::cpp2::MyEnum const & get_myEnum() const {
+    assert(type_ == Type::myEnum);
+    return value_.myEnum;
+  }
+
+   ::cpp2::MyStruct const & get_myStruct() const {
+    assert(type_ == Type::myStruct);
+    return value_.myStruct;
+  }
+
+   ::cpp2::MyDataItem const & get_myDataItem() const {
+    assert(type_ == Type::myDataItem);
+    return value_.myDataItem;
+  }
+
+   ::cpp2::MyEnum & mutable_myEnum() {
+    assert(type_ == Type::myEnum);
+    return value_.myEnum;
+  }
+
+   ::cpp2::MyStruct & mutable_myStruct() {
+    assert(type_ == Type::myStruct);
+    return value_.myStruct;
+  }
+
+   ::cpp2::MyDataItem & mutable_myDataItem() {
+    assert(type_ == Type::myDataItem);
+    return value_.myDataItem;
+  }
+
+   ::cpp2::MyEnum move_myEnum() {
+    assert(type_ == Type::myEnum);
+    return std::move(value_.myEnum);
+  }
+
+   ::cpp2::MyStruct move_myStruct() {
+    assert(type_ == Type::myStruct);
+    return std::move(value_.myStruct);
+  }
+
+   ::cpp2::MyDataItem move_myDataItem() {
+    assert(type_ == Type::myDataItem);
+    return std::move(value_.myDataItem);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< MyUnion >;
+};
+
+void swap(MyUnion& a, MyUnion& b);
+
+template <class Protocol_>
+uint32_t MyUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

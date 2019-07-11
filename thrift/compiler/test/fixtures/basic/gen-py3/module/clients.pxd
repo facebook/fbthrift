@@ -9,10 +9,6 @@ cimport thrift.py3.client
 
 
 from module.clients_wrapper cimport cMyServiceClientWrapper
-from module.clients_wrapper cimport cMyServiceFastClientWrapper
-from module.clients_wrapper cimport cMyServiceEmptyClientWrapper
-from module.clients_wrapper cimport cMyServicePrioParentClientWrapper
-from module.clients_wrapper cimport cMyServicePrioChildClientWrapper
 
 cdef class MyService(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceClientWrapper] _module_MyService_client
@@ -20,32 +16,4 @@ cdef class MyService(thrift.py3.client.Client):
     cdef _module_MyService_set_client(MyService self, shared_ptr[cMyServiceClientWrapper] c_obj)
 
     cdef _module_MyService_reset_client(MyService self)
-
-cdef class MyServiceFast(thrift.py3.client.Client):
-    cdef shared_ptr[cMyServiceFastClientWrapper] _module_MyServiceFast_client
-
-    cdef _module_MyServiceFast_set_client(MyServiceFast self, shared_ptr[cMyServiceFastClientWrapper] c_obj)
-
-    cdef _module_MyServiceFast_reset_client(MyServiceFast self)
-
-cdef class MyServiceEmpty(thrift.py3.client.Client):
-    cdef shared_ptr[cMyServiceEmptyClientWrapper] _module_MyServiceEmpty_client
-
-    cdef _module_MyServiceEmpty_set_client(MyServiceEmpty self, shared_ptr[cMyServiceEmptyClientWrapper] c_obj)
-
-    cdef _module_MyServiceEmpty_reset_client(MyServiceEmpty self)
-
-cdef class MyServicePrioParent(thrift.py3.client.Client):
-    cdef shared_ptr[cMyServicePrioParentClientWrapper] _module_MyServicePrioParent_client
-
-    cdef _module_MyServicePrioParent_set_client(MyServicePrioParent self, shared_ptr[cMyServicePrioParentClientWrapper] c_obj)
-
-    cdef _module_MyServicePrioParent_reset_client(MyServicePrioParent self)
-
-cdef class MyServicePrioChild(MyServicePrioParent):
-    cdef shared_ptr[cMyServicePrioChildClientWrapper] _module_MyServicePrioChild_client
-
-    cdef _module_MyServicePrioChild_set_client(MyServicePrioChild self, shared_ptr[cMyServicePrioChildClientWrapper] c_obj)
-
-    cdef _module_MyServicePrioChild_reset_client(MyServicePrioChild self)
 

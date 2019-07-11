@@ -7,10 +7,6 @@
 
 #pragma once
 #include <src/gen-cpp2/MyService.h>
-#include <src/gen-cpp2/MyServiceFast.h>
-#include <src/gen-cpp2/MyServiceEmpty.h>
-#include <src/gen-cpp2/MyServicePrioParent.h>
-#include <src/gen-cpp2/MyServicePrioChild.h>
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
@@ -58,98 +54,6 @@ class MyServiceClientWrapper {
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
-    folly::Future<folly::Unit> doNothing(
-      apache::thrift::RpcOptions& rpcOptions);
-};
-
-
-class MyServiceFastClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
-  public:
-    explicit MyServiceFastClientWrapper(
-      std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServiceFastClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
-
-    folly::Future<folly::Unit> ping(
-      apache::thrift::RpcOptions& rpcOptions);
-    folly::Future<std::string> getRandomData(
-      apache::thrift::RpcOptions& rpcOptions);
-    folly::Future<bool> hasDataById(
-      apache::thrift::RpcOptions& rpcOptions,
-      int64_t arg_id);
-    folly::Future<std::string> getDataById(
-      apache::thrift::RpcOptions& rpcOptions,
-      int64_t arg_id);
-    folly::Future<folly::Unit> putDataById(
-      apache::thrift::RpcOptions& rpcOptions,
-      int64_t arg_id,
-      std::string arg_data);
-    folly::Future<folly::Unit> lobDataById(
-      apache::thrift::RpcOptions& rpcOptions,
-      int64_t arg_id,
-      std::string arg_data);
-};
-
-
-class MyServiceEmptyClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServiceEmptyAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
-  public:
-    explicit MyServiceEmptyClientWrapper(
-      std::shared_ptr<::cpp2::MyServiceEmptyAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServiceEmptyClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
-
-};
-
-
-class MyServicePrioParentClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
-  public:
-    explicit MyServicePrioParentClientWrapper(
-      std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServicePrioParentClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
-
-    folly::Future<folly::Unit> ping(
-      apache::thrift::RpcOptions& rpcOptions);
-    folly::Future<folly::Unit> pong(
-      apache::thrift::RpcOptions& rpcOptions);
-};
-
-
-class MyServicePrioChildClientWrapper : public ::cpp2::MyServicePrioParentClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
-  public:
-    explicit MyServicePrioChildClientWrapper(
-      std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-
-    folly::Future<folly::Unit> pang(
-      apache::thrift::RpcOptions& rpcOptions);
 };
 
 

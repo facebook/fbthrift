@@ -48,9 +48,6 @@ class MyServiceSvAsyncIf {
   virtual void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, std::unique_ptr<::std::string> data) = 0;
-  virtual void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
-  virtual folly::Future<folly::Unit> future_cppDoNothing() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_cppDoNothing() = 0;
 };
 
 class MyServiceAsyncProcessor;
@@ -83,10 +80,6 @@ class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerIn
   folly::Future<folly::Unit> future_lobDataById(int64_t id, std::unique_ptr<::std::string> data) override;
   folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, std::unique_ptr<::std::string> data) override;
   void async_tm_lobDataById(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int64_t id, std::unique_ptr<::std::string> data) override;
-  virtual void cppDoNothing();
-  folly::Future<folly::Unit> future_cppDoNothing() override;
-  folly::SemiFuture<folly::Unit> semifuture_cppDoNothing() override;
-  void async_tm_cppDoNothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
 class MyServiceSvNull : public MyServiceSvIf {
@@ -97,7 +90,6 @@ class MyServiceSvNull : public MyServiceSvIf {
   void getDataById(::std::string& /*_return*/, int64_t /*id*/) override;
   void putDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
   void lobDataById(int64_t /*id*/, std::unique_ptr<::std::string> /*data*/) override;
-  void cppDoNothing() override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -168,14 +160,6 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
   void _processInThread_lobDataById(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_lobDataById(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_cppDoNothing(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_cppDoNothing(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_cppDoNothing(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
-  template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_cppDoNothing(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyServiceAsyncProcessor(MyServiceSvIf* iface) :
       iface_(iface) {}

@@ -27,7 +27,6 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator!=(cMyEnum&)
     cMyEnum MyEnum__MyValue1 "::cpp2::MyEnum::MyValue1"
     cMyEnum MyEnum__MyValue2 "::cpp2::MyEnum::MyValue2"
-    cMyEnum MyEnum__DOMAIN "::cpp2::MyEnum::DOMAIN"
 
 
 
@@ -45,16 +44,15 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
     cdef cppclass cMyStruct "::cpp2::MyStruct"
     # Forward Declaration
     cdef cppclass cMyDataItem "::cpp2::MyDataItem"
+    # Forward Declaration
+    cdef cppclass cMyUnion "::cpp2::MyUnion"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
         bint MyIntField
         bint MyStringField
         bint MyDataField
-        bint major "majorVer"
         bint myEnum
-        bint package
-        bint annotation_with_quote
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -68,10 +66,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         int64_t MyIntField
         string MyStringField
         cMyDataItem MyDataField
-        int64_t major "majorVer"
         cMyEnum myEnum
-        string package
-        string annotation_with_quote
         cMyStruct__isset __isset
 
     cdef cppclass cMyDataItem__isset "::cpp2::MyDataItem::__isset":
@@ -88,7 +83,32 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>=(cMyDataItem&)
         cMyDataItem__isset __isset
 
+    cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
+        cMyUnion__type_myEnum "::cpp2::MyUnion::Type::myEnum",
+        cMyUnion__type_myStruct "::cpp2::MyUnion::Type::myStruct",
+        cMyUnion__type_myDataItem "::cpp2::MyUnion::Type::myDataItem",
+
+    cdef cppclass cMyUnion "::cpp2::MyUnion":
+        cMyUnion() except +
+        cMyUnion(const cMyUnion&) except +
+        bint operator==(cMyUnion&)
+        bint operator!=(cMyUnion&)
+        bint operator<(cMyUnion&)
+        bint operator>(cMyUnion&)
+        bint operator<=(cMyUnion&)
+        bint operator>=(cMyUnion&)
+        cMyUnion__type getType() const
+        const cMyEnum& get_myEnum() const
+        cMyEnum& set_myEnum(const cMyEnum&)
+        const cMyStruct& get_myStruct() const
+        cMyStruct& set_myStruct(const cMyStruct&)
+        const cMyDataItem& get_myDataItem() const
+        cMyDataItem& set_myDataItem(const cMyDataItem&)
+
     cdef shared_ptr[cMyDataItem] reference_shared_ptr_MyDataField "thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyStruct]&, cMyDataItem&)
+    cdef shared_ptr[cMyStruct] reference_shared_ptr_myStruct "thrift::py3::reference_shared_ptr<::cpp2::MyStruct>"(shared_ptr[cMyUnion]&, cMyStruct&)
+    cdef shared_ptr[cMyDataItem] reference_shared_ptr_myDataItem "thrift::py3::reference_shared_ptr<::cpp2::MyDataItem>"(shared_ptr[cMyUnion]&, cMyDataItem&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
@@ -97,10 +117,14 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyDataItem] move(unique_ptr[cMyDataItem])
     cdef shared_ptr[cMyDataItem] move_shared "std::move"(shared_ptr[cMyDataItem])
     cdef unique_ptr[cMyDataItem] move_unique "std::move"(unique_ptr[cMyDataItem])
+    cdef shared_ptr[cMyUnion] move(unique_ptr[cMyUnion])
+    cdef shared_ptr[cMyUnion] move_shared "std::move"(shared_ptr[cMyUnion])
+    cdef unique_ptr[cMyUnion] move_unique "std::move"(unique_ptr[cMyUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cMyStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyStruct>"(shared_ptr[cMyStruct])
     cdef shared_ptr[const cMyDataItem] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyDataItem>"(shared_ptr[cMyDataItem])
+    cdef shared_ptr[const cMyUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::MyUnion>"(shared_ptr[cMyUnion])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
@@ -119,10 +143,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         object MyIntField,
         str MyStringField,
         MyDataItem MyDataField,
-        object major,
-        MyEnum myEnum,
-        str package,
-        str annotation_with_quote
+        MyEnum myEnum
     ) except *
 
     @staticmethod
@@ -145,6 +166,33 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cMyDataItem])
+
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+# Forward Definition of the cython struct
+cdef class MyUnion(thrift.py3.types.Union)
+
+
+cdef class MyUnion(thrift.py3.types.Union):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cMyUnion] _cpp_obj
+    cdef readonly __MyUnionType type
+    cdef readonly object value
+    cdef _load_cache(MyUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cMyUnion] _make_instance(
+        cMyUnion* base_instance,
+        MyEnum myEnum,
+        MyStruct myStruct,
+        MyDataItem myDataItem
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cMyUnion])
 
 
 

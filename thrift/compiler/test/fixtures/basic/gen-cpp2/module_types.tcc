@@ -42,6 +42,13 @@ struct TccStructTraits<::cpp2::MyStruct> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits<::cpp2::MyUnion> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -179,19 +186,6 @@ _readField_MyDataField:
           iprot,
           3,
           4,
-          apache::thrift::protocol::T_I64))) {
-    goto _loop;
-  }
-_readField_majorVer:
-  {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->majorVer);
-    this->__isset.majorVer = true;
-  }
-
-  if (UNLIKELY(!_readState.advanceToNextField(
-          iprot,
-          4,
-          5,
           apache::thrift::protocol::T_I32))) {
     goto _loop;
   }
@@ -203,33 +197,7 @@ _readField_myEnum:
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
-          5,
-          6,
-          apache::thrift::protocol::T_STRING))) {
-    goto _loop;
-  }
-_readField_package:
-  {
-    iprot->readString(this->package);
-    this->__isset.package = true;
-  }
-
-  if (UNLIKELY(!_readState.advanceToNextField(
-          iprot,
-          6,
-          7,
-          apache::thrift::protocol::T_STRING))) {
-    goto _loop;
-  }
-_readField_annotation_with_quote:
-  {
-    iprot->readString(this->annotation_with_quote);
-    this->__isset.annotation_with_quote = true;
-  }
-
-  if (UNLIKELY(!_readState.advanceToNextField(
-          iprot,
-          7,
+          4,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -275,32 +243,8 @@ _loop:
     }
     case 4:
     {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
-        goto _readField_majorVer;
-      } else {
-        goto _skip;
-      }
-    }
-    case 5:
-    {
       if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32))) {
         goto _readField_myEnum;
-      } else {
-        goto _skip;
-      }
-    }
-    case 6:
-    {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
-        goto _readField_package;
-      } else {
-        goto _skip;
-      }
-    }
-    case 7:
-    {
-      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
-        goto _readField_annotation_with_quote;
       } else {
         goto _skip;
       }
@@ -326,14 +270,8 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedFieldSize("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSize(prot_, &this->MyDataField);
-  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
-  xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 5);
+  xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
-  xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 6);
-  xfer += prot_->serializedSizeString(this->package);
-  xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 7);
-  xfer += prot_->serializedSizeString(this->annotation_with_quote);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -348,14 +286,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedFieldSize("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSizeZC(prot_, &this->MyDataField);
-  xfer += prot_->serializedFieldSize("major", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->majorVer);
-  xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 5);
+  xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->myEnum);
-  xfer += prot_->serializedFieldSize("package", apache::thrift::protocol::T_STRING, 6);
-  xfer += prot_->serializedSizeString(this->package);
-  xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 7);
-  xfer += prot_->serializedSizeString(this->annotation_with_quote);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -373,17 +305,8 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("MyDataField", apache::thrift::protocol::T_STRUCT, 3);
   xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::write(prot_, &this->MyDataField);
   xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("major", apache::thrift::protocol::T_I64, 4);
-  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->majorVer);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("myEnum", apache::thrift::protocol::T_I32, 5);
+  xfer += prot_->writeFieldBegin("myEnum", apache::thrift::protocol::T_I32, 4);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::write(*prot_, this->myEnum);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("package", apache::thrift::protocol::T_STRING, 6);
-  xfer += prot_->writeString(this->package);
-  xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("annotation_with_quote", apache::thrift::protocol::T_STRING, 7);
-  xfer += prot_->writeString(this->annotation_with_quote);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -398,5 +321,168 @@ extern template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReade
 extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void MyUnion::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
+
+  _readState.readStructBegin(iprot);
+
+  _readState.readFieldBegin(iprot);
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (iprot->kUsesFieldNames()) {
+      apache::thrift::detail::TccStructTraits<MyUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    }
+    switch (_readState.fieldId) {
+      case 1:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
+          this->set_myEnum();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::read(*iprot, this->mutable_myEnum());
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
+          this->set_myStruct();
+          ::apache::thrift::Cpp2Ops<  ::cpp2::MyStruct>::read(iprot, &this->mutable_myStruct());
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      case 3:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
+          this->set_myDataItem();
+          ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::read(iprot, &this->mutable_myDataItem());
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      default:
+      {
+        _readState.skip(iprot);
+        break;
+      }
+    }
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  _readState.readStructEnd(iprot);
+}
+template <class Protocol_>
+uint32_t MyUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyUnion");
+  switch(this->getType()) {
+    case MyUnion::Type::myEnum:
+    {
+      xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->get_myEnum());
+      break;
+    }
+    case MyUnion::Type::myStruct:
+    {
+      xfer += prot_->serializedFieldSize("myStruct", apache::thrift::protocol::T_STRUCT, 2);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyStruct>::serializedSize(prot_, &this->get_myStruct());
+      break;
+    }
+    case MyUnion::Type::myDataItem:
+    {
+      xfer += prot_->serializedFieldSize("myDataItem", apache::thrift::protocol::T_STRUCT, 3);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSize(prot_, &this->get_myDataItem());
+      break;
+    }
+    case MyUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyUnion");
+  switch(this->getType()) {
+    case MyUnion::Type::myEnum:
+    {
+      xfer += prot_->serializedFieldSize("myEnum", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::serializedSize<false>(*prot_, this->get_myEnum());
+      break;
+    }
+    case MyUnion::Type::myStruct:
+    {
+      xfer += prot_->serializedFieldSize("myStruct", apache::thrift::protocol::T_STRUCT, 2);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyStruct>::serializedSizeZC(prot_, &this->get_myStruct());
+      break;
+    }
+    case MyUnion::Type::myDataItem:
+    {
+      xfer += prot_->serializedFieldSize("myDataItem", apache::thrift::protocol::T_STRUCT, 3);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::serializedSizeZC(prot_, &this->get_myDataItem());
+      break;
+    }
+    case MyUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyUnion");
+  switch(this->getType()) {
+    case MyUnion::Type::myEnum:
+    {
+      xfer += prot_->writeFieldBegin("myEnum", apache::thrift::protocol::T_I32, 1);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::write(*prot_, this->get_myEnum());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case MyUnion::Type::myStruct:
+    {
+      xfer += prot_->writeFieldBegin("myStruct", apache::thrift::protocol::T_STRUCT, 2);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyStruct>::write(prot_, &this->get_myStruct());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case MyUnion::Type::myDataItem:
+    {
+      xfer += prot_->writeFieldBegin("myDataItem", apache::thrift::protocol::T_STRUCT, 3);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::write(prot_, &this->get_myDataItem());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case MyUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

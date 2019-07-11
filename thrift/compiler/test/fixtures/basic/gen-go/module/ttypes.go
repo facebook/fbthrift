@@ -25,19 +25,16 @@ type MyEnum int64
 const (
   MyEnum_MyValue1 MyEnum = 0
   MyEnum_MyValue2 MyEnum = 1
-  MyEnum_DOMAIN MyEnum = 2
 )
 
 var MyEnumToName = map[MyEnum]string {
   MyEnum_MyValue1: "MyValue1",
   MyEnum_MyValue2: "MyValue2",
-  MyEnum_DOMAIN: "DOMAIN",
 }
 
 var MyEnumToValue = map[string]MyEnum {
   "MyValue1": MyEnum_MyValue1,
   "MyValue2": MyEnum_MyValue2,
-  "DOMAIN": MyEnum_DOMAIN,
 }
 
 func (p MyEnum) String() string {
@@ -60,18 +57,12 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 //  - MyIntField
 //  - MyStringField
 //  - MyDataField
-//  - Major
 //  - MyEnum
-//  - Package
-//  - AnnotationWithQuote
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
   MyDataField *MyDataItem `thrift:"MyDataField,3" db:"MyDataField" json:"MyDataField"`
-  Major int64 `thrift:"major,4" db:"major" json:"major"`
-  MyEnum MyEnum `thrift:"myEnum,5" db:"myEnum" json:"myEnum"`
-  Package string `thrift:"package,6" db:"package" json:"package"`
-  AnnotationWithQuote string `thrift:"annotation_with_quote,7" tag:"somevalue"`
+  MyEnum MyEnum `thrift:"myEnum,4" db:"myEnum" json:"myEnum"`
 }
 
 func NewMyStruct() *MyStruct {
@@ -94,20 +85,8 @@ func (p *MyStruct) GetMyDataField() *MyDataItem {
 return p.MyDataField
 }
 
-func (p *MyStruct) GetMajor() int64 {
-  return p.Major
-}
-
 func (p *MyStruct) GetMyEnum() MyEnum {
   return p.MyEnum
-}
-
-func (p *MyStruct) GetPackage() string {
-  return p.Package
-}
-
-func (p *MyStruct) GetAnnotationWithQuote() string {
-  return p.AnnotationWithQuote
 }
 func (p *MyStruct) IsSetMyDataField() bool {
   return p.MyDataField != nil
@@ -140,18 +119,6 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       }
     case 4:
       if err := p.ReadField4(iprot); err != nil {
-        return err
-      }
-    case 5:
-      if err := p.ReadField5(iprot); err != nil {
-        return err
-      }
-    case 6:
-      if err := p.ReadField6(iprot); err != nil {
-        return err
-      }
-    case 7:
-      if err := p.ReadField7(iprot); err != nil {
         return err
       }
     default:
@@ -196,38 +163,11 @@ func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
 }
 
 func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.Major = v
-}
-  return nil
-}
-
-func (p *MyStruct)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
+  return thrift.PrependError("error reading field 4: ", err)
 } else {
   temp := MyEnum(v)
   p.MyEnum = temp
-}
-  return nil
-}
-
-func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 6: ", err)
-} else {
-  p.Package = v
-}
-  return nil
-}
-
-func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 7: ", err)
-} else {
-  p.AnnotationWithQuote = v
 }
   return nil
 }
@@ -239,9 +179,6 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
-  if err := p.writeField5(oprot); err != nil { return err }
-  if err := p.writeField6(oprot); err != nil { return err }
-  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -281,42 +218,12 @@ func (p *MyStruct) writeField3(oprot thrift.Protocol) (err error) {
 }
 
 func (p *MyStruct) writeField4(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("major", thrift.I64, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:major: ", p), err) }
-  if err := oprot.WriteI64(int64(p.Major)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.major (4) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:major: ", p), err) }
-  return err
-}
-
-func (p *MyStruct) writeField5(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("myEnum", thrift.I32, 5); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:myEnum: ", p), err) }
+  if err := oprot.WriteFieldBegin("myEnum", thrift.I32, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:myEnum: ", p), err) }
   if err := oprot.WriteI32(int32(p.MyEnum)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.myEnum (5) field write error: ", p), err) }
+  return thrift.PrependError(fmt.Sprintf("%T.myEnum (4) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:myEnum: ", p), err) }
-  return err
-}
-
-func (p *MyStruct) writeField6(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("package", thrift.STRING, 6); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:package: ", p), err) }
-  if err := oprot.WriteString(string(p.Package)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.package (6) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:package: ", p), err) }
-  return err
-}
-
-func (p *MyStruct) writeField7(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("annotation_with_quote", thrift.STRING, 7); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:annotation_with_quote: ", p), err) }
-  if err := oprot.WriteString(string(p.AnnotationWithQuote)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.annotation_with_quote (7) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:annotation_with_quote: ", p), err) }
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:myEnum: ", p), err) }
   return err
 }
 
@@ -374,5 +281,194 @@ func (p *MyDataItem) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("MyDataItem(%+v)", *p)
+}
+
+// Attributes:
+//  - MyEnum
+//  - MyStruct
+//  - MyDataItem
+type MyUnion struct {
+  MyEnum *MyEnum `thrift:"myEnum,1" db:"myEnum" json:"myEnum,omitempty"`
+  MyStruct *MyStruct `thrift:"myStruct,2" db:"myStruct" json:"myStruct,omitempty"`
+  MyDataItem *MyDataItem `thrift:"myDataItem,3" db:"myDataItem" json:"myDataItem,omitempty"`
+}
+
+func NewMyUnion() *MyUnion {
+  return &MyUnion{}
+}
+
+var MyUnion_MyEnum_DEFAULT MyEnum
+func (p *MyUnion) GetMyEnum() MyEnum {
+  if !p.IsSetMyEnum() {
+    return MyUnion_MyEnum_DEFAULT
+  }
+return *p.MyEnum
+}
+var MyUnion_MyStruct_DEFAULT *MyStruct
+func (p *MyUnion) GetMyStruct() *MyStruct {
+  if !p.IsSetMyStruct() {
+    return MyUnion_MyStruct_DEFAULT
+  }
+return p.MyStruct
+}
+var MyUnion_MyDataItem_DEFAULT *MyDataItem
+func (p *MyUnion) GetMyDataItem() *MyDataItem {
+  if !p.IsSetMyDataItem() {
+    return MyUnion_MyDataItem_DEFAULT
+  }
+return p.MyDataItem
+}
+func (p *MyUnion) CountSetFieldsMyUnion() int {
+  count := 0
+  if (p.IsSetMyEnum()) {
+    count++
+  }
+  if (p.IsSetMyStruct()) {
+    count++
+  }
+  if (p.IsSetMyDataItem()) {
+    count++
+  }
+  return count
+
+}
+
+func (p *MyUnion) IsSetMyEnum() bool {
+  return p.MyEnum != nil
+}
+
+func (p *MyUnion) IsSetMyStruct() bool {
+  return p.MyStruct != nil
+}
+
+func (p *MyUnion) IsSetMyDataItem() bool {
+  return p.MyDataItem != nil
+}
+
+func (p *MyUnion) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyUnion)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  temp := MyEnum(v)
+  p.MyEnum = &temp
+}
+  return nil
+}
+
+func (p *MyUnion)  ReadField2(iprot thrift.Protocol) error {
+  p.MyStruct = NewMyStruct()
+  if err := p.MyStruct.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyStruct), err)
+  }
+  return nil
+}
+
+func (p *MyUnion)  ReadField3(iprot thrift.Protocol) error {
+  p.MyDataItem = NewMyDataItem()
+  if err := p.MyDataItem.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.MyDataItem), err)
+  }
+  return nil
+}
+
+func (p *MyUnion) Write(oprot thrift.Protocol) error {
+  if c := p.CountSetFieldsMyUnion(); c != 1 {
+    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  }
+  if err := oprot.WriteStructBegin("MyUnion"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyUnion) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetMyEnum() {
+    if err := oprot.WriteFieldBegin("myEnum", thrift.I32, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:myEnum: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.MyEnum)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.myEnum (1) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:myEnum: ", p), err) }
+  }
+  return err
+}
+
+func (p *MyUnion) writeField2(oprot thrift.Protocol) (err error) {
+  if p.IsSetMyStruct() {
+    if err := oprot.WriteFieldBegin("myStruct", thrift.STRUCT, 2); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:myStruct: ", p), err) }
+    if err := p.MyStruct.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.MyStruct), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 2:myStruct: ", p), err) }
+  }
+  return err
+}
+
+func (p *MyUnion) writeField3(oprot thrift.Protocol) (err error) {
+  if p.IsSetMyDataItem() {
+    if err := oprot.WriteFieldBegin("myDataItem", thrift.STRUCT, 3); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:myDataItem: ", p), err) }
+    if err := p.MyDataItem.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.MyDataItem), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 3:myDataItem: ", p), err) }
+  }
+  return err
+}
+
+func (p *MyUnion) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MyUnion(%+v)", *p)
 }
 

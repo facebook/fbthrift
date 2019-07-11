@@ -55,8 +55,6 @@ cdef class __MyEnumMeta(type):
                 return MyEnum.MyValue1
             elif cvalue == 1:
                 return MyEnum.MyValue2
-            elif cvalue == 2:
-                return MyEnum.DOMAIN
 
         raise ValueError(f'{value} is not a valid MyEnum')
 
@@ -67,7 +65,6 @@ cdef class __MyEnumMeta(type):
         return ['__class__', '__doc__', '__members__', '__module__',
         'MyValue1',
         'MyValue2',
-        'DOMAIN',
         ]
 
     def __iter__(cls):
@@ -97,7 +94,6 @@ cdef __MyEnum_unique_instance(int value, str name):
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     MyValue1 = __MyEnum_unique_instance(0, "MyValue1")
     MyValue2 = __MyEnum_unique_instance(1, "MyValue2")
-    DOMAIN = __MyEnum_unique_instance(2, "DOMAIN")
     __members__ = thrift.py3.types.MappingProxyType(__MyEnumEnumMembers)
 
     def __cinit__(self, value, name):
@@ -141,8 +137,112 @@ cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
         return MyEnum__MyValue1
     elif cvalue == 1:
         return MyEnum__MyValue2
-    elif cvalue == 2:
-        return MyEnum__DOMAIN
+
+
+cdef object __MyUnion_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __MyUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __MyUnion_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __MyUnionType.EMPTY
+            elif cvalue == 1:
+                return __MyUnionType.myEnum
+            elif cvalue == 2:
+                return __MyUnionType.myStruct
+            elif cvalue == 3:
+                return __MyUnionType.myDataItem
+
+        raise ValueError(f'{value} is not a valid MyUnion.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __MyUnionType.EMPTY
+        elif name == "myEnum":
+            return __MyUnionType.myEnum
+        elif name == "myStruct":
+            return __MyUnionType.myStruct
+        elif name == "myDataItem":
+            return __MyUnionType.myDataItem
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'myEnum',
+            'myStruct',
+            'myDataItem',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __MyUnionType.EMPTY
+        yield __MyUnionType.myEnum
+        yield __MyUnionType.myStruct
+        yield __MyUnionType.myDataItem
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __MyUnion_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 3+1  # For Empty
+
+
+@__cython.final
+cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
+    EMPTY = __MyUnionType.__new__(__MyUnionType, 0, "EMPTY")
+    myEnum = __MyUnionType.__new__(__MyUnionType, 1, "myEnum")
+    myStruct = __MyUnionType.__new__(__MyUnionType, 2, "myStruct")
+    myDataItem = __MyUnionType.__new__(__MyUnionType, 3, "myDataItem")
+
+    def __cinit__(self, value, name):
+        if __MyUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"MyUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __MyUnionType):
+            warnings.warn(f"comparison not supported between instances of { __MyUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __MyUnionType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_TypeMeta)
+__MyUnion_Union_TypeEnumMembers = set(__MyUnionType)
+
 
 cdef class MyStruct(thrift.py3.types.Struct):
 
@@ -151,20 +251,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=None,
         str MyStringField=None,
         MyDataItem MyDataField=None,
-        major=None,
-        MyEnum myEnum=None,
-        str package=None,
-        str annotation_with_quote=None
+        MyEnum myEnum=None
     ):
         if MyIntField is not None:
             if not isinstance(MyIntField, int):
                 raise TypeError(f'MyIntField is not a { int !r}.')
             MyIntField = <int64_t> MyIntField
-
-        if major is not None:
-            if not isinstance(major, int):
-                raise TypeError(f'major is not a { int !r}.')
-            major = <int64_t> major
 
         self._cpp_obj = move(MyStruct._make_instance(
           NULL,
@@ -172,10 +264,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           MyIntField,
           MyStringField,
           MyDataField,
-          major,
           myEnum,
-          package,
-          annotation_with_quote,
         ))
 
     def __call__(
@@ -183,13 +272,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=__NOTSET,
         MyStringField=__NOTSET,
         MyDataField=__NOTSET,
-        major=__NOTSET,
-        myEnum=__NOTSET,
-        package=__NOTSET,
-        annotation_with_quote=__NOTSET
+        myEnum=__NOTSET
     ):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[7] __isNOTSET  # so make_instance is typed
+        cdef bint[4] __isNOTSET  # so make_instance is typed
 
         changes = False
         if MyIntField is ___NOTSET:
@@ -213,32 +299,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
             __isNOTSET[2] = False
             changes = True
 
-        if major is ___NOTSET:
-            __isNOTSET[3] = True
-            major = None
-        else:
-            __isNOTSET[3] = False
-            changes = True
-
         if myEnum is ___NOTSET:
-            __isNOTSET[4] = True
+            __isNOTSET[3] = True
             myEnum = None
         else:
-            __isNOTSET[4] = False
-            changes = True
-
-        if package is ___NOTSET:
-            __isNOTSET[5] = True
-            package = None
-        else:
-            __isNOTSET[5] = False
-            changes = True
-
-        if annotation_with_quote is ___NOTSET:
-            __isNOTSET[6] = True
-            annotation_with_quote = None
-        else:
-            __isNOTSET[6] = False
+            __isNOTSET[3] = False
             changes = True
 
 
@@ -258,22 +323,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(MyDataField, MyDataItem):
                 raise TypeError(f'MyDataField is not a { MyDataItem !r}.')
 
-        if major is not None:
-            if not isinstance(major, int):
-                raise TypeError(f'major is not a { int !r}.')
-            major = <int64_t> major
-
         if myEnum is not None:
             if not isinstance(myEnum, MyEnum):
                 raise TypeError(f'field myEnum value: { myEnum !r} is not of the enum type { MyEnum }.')
-
-        if package is not None:
-            if not isinstance(package, str):
-                raise TypeError(f'package is not a { str !r}.')
-
-        if annotation_with_quote is not None:
-            if not isinstance(annotation_with_quote, str):
-                raise TypeError(f'annotation_with_quote is not a { str !r}.')
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
@@ -282,10 +334,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           MyIntField,
           MyStringField,
           MyDataField,
-          major,
           myEnum,
-          package,
-          annotation_with_quote,
         ))
         return inst
 
@@ -296,10 +345,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         object MyIntField ,
         str MyStringField ,
         MyDataItem MyDataField ,
-        object major ,
-        MyEnum myEnum ,
-        str package ,
-        str annotation_with_quote 
+        MyEnum myEnum 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -324,24 +370,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 deref(c_inst).__isset.MyDataField = False
                 pass
 
-            if not __isNOTSET[3] and major is None:
-                deref(c_inst).major = default_inst[cMyStruct]().major
-                deref(c_inst).__isset.major = False
-                pass
-
-            if not __isNOTSET[4] and myEnum is None:
+            if not __isNOTSET[3] and myEnum is None:
                 deref(c_inst).myEnum = default_inst[cMyStruct]().myEnum
                 deref(c_inst).__isset.myEnum = False
-                pass
-
-            if not __isNOTSET[5] and package is None:
-                deref(c_inst).package = default_inst[cMyStruct]().package
-                deref(c_inst).__isset.package = False
-                pass
-
-            if not __isNOTSET[6] and annotation_with_quote is None:
-                deref(c_inst).annotation_with_quote = default_inst[cMyStruct]().annotation_with_quote
-                deref(c_inst).__isset.annotation_with_quote = False
                 pass
 
         if MyIntField is not None:
@@ -353,18 +384,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if MyDataField is not None:
             deref(c_inst).MyDataField = deref((<MyDataItem?> MyDataField)._cpp_obj)
             deref(c_inst).__isset.MyDataField = True
-        if major is not None:
-            deref(c_inst).major = major
-            deref(c_inst).__isset.major = True
         if myEnum is not None:
             deref(c_inst).myEnum = MyEnum_to_cpp(myEnum)
             deref(c_inst).__isset.myEnum = True
-        if package is not None:
-            deref(c_inst).package = thrift.py3.types.move(thrift.py3.types.bytes_to_string(package.encode('utf-8')))
-            deref(c_inst).__isset.package = True
-        if annotation_with_quote is not None:
-            deref(c_inst).annotation_with_quote = thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_quote.encode('utf-8')))
-            deref(c_inst).__isset.annotation_with_quote = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -373,10 +395,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyIntField', self.MyIntField
         yield 'MyStringField', self.MyStringField
         yield 'MyDataField', self.MyDataField
-        yield 'major', self.major
         yield 'myEnum', self.myEnum
-        yield 'package', self.package
-        yield 'annotation_with_quote', self.annotation_with_quote
 
     def __bool__(self):
         return True
@@ -405,24 +424,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return self.__field_MyDataField
 
     @property
-    def major(self):
-
-        return deref(self._cpp_obj).major
-
-    @property
     def myEnum(self):
 
         return translate_cpp_enum_to_python(MyEnum, <int>(deref(self._cpp_obj).myEnum))
-
-    @property
-    def package(self):
-
-        return (<bytes>deref(self._cpp_obj).package).decode('UTF-8')
-
-    @property
-    def annotation_with_quote(self):
-
-        return (<bytes>deref(self._cpp_obj).annotation_with_quote).decode('UTF-8')
 
 
     def __hash__(MyStruct self):
@@ -431,15 +435,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.MyIntField,
             self.MyStringField,
             self.MyDataField,
-            self.major,
             self.myEnum,
-            self.package,
-            self.annotation_with_quote,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, major={repr(self.major)}, myEnum={repr(self.myEnum)}, package={repr(self.package)}, annotation_with_quote={repr(self.annotation_with_quote)})'
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)}, MyDataField={repr(self.MyDataField)}, myEnum={repr(self.myEnum)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -641,5 +642,195 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (MyDataItem, serialize(self)))
+
+
+
+
+cdef class MyUnion(thrift.py3.types.Union):
+    Type = __MyUnionType
+
+    def __init__(
+        self, *,
+        MyEnum myEnum=None,
+        MyStruct myStruct=None,
+        MyDataItem myDataItem=None
+    ):
+        self._cpp_obj = move(MyUnion._make_instance(
+          NULL,
+          myEnum,
+          myStruct,
+          myDataItem,
+        ))
+        self._load_cache()
+
+    @staticmethod
+    def fromValue(value):
+        if value is None:
+            return MyUnion()
+        if isinstance(value, MyEnum):
+            return MyUnion(myEnum=value)
+        if isinstance(value, MyStruct):
+            return MyUnion(myStruct=value)
+        if isinstance(value, MyDataItem):
+            return MyUnion(myDataItem=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
+    cdef unique_ptr[cMyUnion] _make_instance(
+        cMyUnion* base_instance,
+        MyEnum myEnum,
+        MyStruct myStruct,
+        MyDataItem myDataItem
+    ) except *:
+        cdef unique_ptr[cMyUnion] c_inst = make_unique[cMyUnion]()
+        cdef bint any_set = False
+        if myEnum is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_myEnum(MyEnum_to_cpp(myEnum))
+            any_set = True
+        if myStruct is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_myStruct(deref((<MyStruct?> myStruct)._cpp_obj))
+            any_set = True
+        if myDataItem is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_myDataItem(deref((<MyDataItem?> myDataItem)._cpp_obj))
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.type is not __MyUnionType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cMyUnion] cpp_obj):
+        inst = <MyUnion>MyUnion.__new__(MyUnion)
+        inst._cpp_obj = move_shared(cpp_obj)
+        inst._load_cache()
+        return inst
+
+    @property
+    def myEnum(self):
+        if self.type.value != 1:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not myEnum')
+        return self.value
+
+    @property
+    def myStruct(self):
+        if self.type.value != 2:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not myStruct')
+        return self.value
+
+    @property
+    def myDataItem(self):
+        if self.type.value != 3:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not myDataItem')
+        return self.value
+
+
+    def __hash__(MyUnion self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.type,
+                self.value,
+            ))
+        return self.__hash
+
+    def __repr__(MyUnion self):
+        return f'MyUnion(type={self.type.name}, value={self.value!r})'
+
+    cdef _load_cache(MyUnion self):
+        self.type = MyUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        cdef int type = self.type.value
+        if type == 0:    # Empty
+            self.value = None
+        elif type == 1:
+            self.value = translate_cpp_enum_to_python(MyEnum, <int>deref(self._cpp_obj).get_myEnum())
+        elif type == 2:
+            self.value = MyStruct.create(make_shared[cMyStruct](deref(self._cpp_obj).get_myStruct()))
+        elif type == 3:
+            self.value = MyDataItem.create(make_shared[cMyDataItem](deref(self._cpp_obj).get_myDataItem()))
+
+    def get_type(MyUnion self):
+        return self.type
+
+    def __copy__(MyUnion self):
+        cdef shared_ptr[cMyUnion] cpp_obj = make_shared[cMyUnion](
+            deref(self._cpp_obj)
+        )
+        return MyUnion.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, MyUnion) and
+                isinstance(other, MyUnion)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cMyUnion* cself = (<MyUnion>self)._cpp_obj.get()
+        cdef cMyUnion* cother = (<MyUnion>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(MyUnion self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cMyUnion* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cMyUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cMyUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cMyUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cMyUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(MyUnion self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cMyUnion]()
+        cdef cMyUnion* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cMyUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cMyUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cMyUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cMyUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        # force a cache reload since the underlying data's changed
+        self._load_cache()
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyUnion, serialize(self)))
 
 

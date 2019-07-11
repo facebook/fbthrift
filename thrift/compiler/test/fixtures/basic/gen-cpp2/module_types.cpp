@@ -71,21 +71,27 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRUCT;
   }
-  else if (_fname == "major") {
-    fid = 4;
-    _ftype = apache::thrift::protocol::T_I64;
-  }
   else if (_fname == "myEnum") {
-    fid = 5;
+    fid = 4;
     _ftype = apache::thrift::protocol::T_I32;
   }
-  else if (_fname == "package") {
-    fid = 6;
-    _ftype = apache::thrift::protocol::T_STRING;
+}
+void TccStructTraits<::cpp2::MyUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "myEnum") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I32;
   }
-  else if (_fname == "annotation_with_quote") {
-    fid = 7;
-    _ftype = apache::thrift::protocol::T_STRING;
+  else if (_fname == "myStruct") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+  else if (_fname == "myDataItem") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRUCT;
   }
 }
 
@@ -134,39 +140,22 @@ template uint32_t MyDataItem::serializedSizeZC<>(apache::thrift::CompactProtocol
 } // cpp2
 namespace cpp2 {
 
-MyStruct::MyStruct() :
-      MyIntField(0),
-      majorVer(0),
-      myEnum( ::cpp2::MyEnum::MyValue1) {}
-
-
-MyStruct::~MyStruct() {}
-
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg, int64_t majorVer__arg,  ::cpp2::MyEnum myEnum__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
-    majorVer(std::move(majorVer__arg)),
-    myEnum(std::move(myEnum__arg)),
-    package(std::move(package__arg)),
-    annotation_with_quote(std::move(annotation_with_quote__arg)) {
+    myEnum(std::move(myEnum__arg)) {
   __isset.MyIntField = true;
   __isset.MyStringField = true;
   __isset.MyDataField = true;
-  __isset.majorVer = true;
   __isset.myEnum = true;
-  __isset.package = true;
-  __isset.annotation_with_quote = true;
 }
 
 void MyStruct::__clear() {
   // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  majorVer = 0;
   myEnum =  ::cpp2::MyEnum::MyValue1;
-  package = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  annotation_with_quote = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -183,16 +172,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.MyDataField == rhs.MyDataField)) {
     return false;
   }
-  if (!(lhs.majorVer == rhs.majorVer)) {
-    return false;
-  }
   if (!(lhs.myEnum == rhs.myEnum)) {
-    return false;
-  }
-  if (!(lhs.package == rhs.package)) {
-    return false;
-  }
-  if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
     return false;
   }
   return true;
@@ -211,17 +191,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.MyDataField == rhs.MyDataField)) {
     return lhs.MyDataField < rhs.MyDataField;
   }
-  if (!(lhs.majorVer == rhs.majorVer)) {
-    return lhs.majorVer < rhs.majorVer;
-  }
   if (!(lhs.myEnum == rhs.myEnum)) {
     return lhs.myEnum < rhs.myEnum;
-  }
-  if (!(lhs.package == rhs.package)) {
-    return lhs.package < rhs.package;
-  }
-  if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
-    return lhs.annotation_with_quote < rhs.annotation_with_quote;
   }
   return false;
 }
@@ -240,10 +211,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyDataField, b.MyDataField);
-  swap(a.majorVer, b.majorVer);
   swap(a.myEnum, b.myEnum);
-  swap(a.package, b.package);
-  swap(a.annotation_with_quote, b.annotation_with_quote);
   swap(a.__isset, b.__isset);
 }
 
@@ -255,5 +223,92 @@ template void MyStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
 template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+void MyUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::myEnum:
+    {
+      destruct(value_.myEnum);
+      break;
+    }
+    case Type::myStruct:
+    {
+      destruct(value_.myStruct);
+      break;
+    }
+    case Type::myDataItem:
+    {
+      destruct(value_.myDataItem);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool MyUnion::operator==(const MyUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::myEnum:
+    {
+      return value_.myEnum == rhs.value_.myEnum;
+    }
+    case Type::myStruct:
+    {
+      return value_.myStruct == rhs.value_.myStruct;
+    }
+    case Type::myDataItem:
+    {
+      return value_.myDataItem == rhs.value_.myDataItem;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool MyUnion::operator<(const MyUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::myEnum:
+      return lhs.value_.myEnum < rhs.value_.myEnum;
+    case Type::myStruct:
+      return lhs.value_.myStruct < rhs.value_.myStruct;
+    case Type::myDataItem:
+      return lhs.value_.myDataItem < rhs.value_.myDataItem;
+    default:
+      return false;
+  }
+}
+
+void swap(MyUnion& a, MyUnion& b) {
+  MyUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void MyUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void MyUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

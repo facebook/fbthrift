@@ -7,10 +7,6 @@
 
 #pragma once
 #include <src/gen-cpp2/MyService.h>
-#include <src/gen-cpp2/MyServiceFast.h>
-#include <src/gen-cpp2/MyServiceEmpty.h>
-#include <src/gen-cpp2/MyServicePrioParent.h>
-#include <src/gen-cpp2/MyServicePrioChild.h>
 #include <folly/python/futures.h>
 #include <Python.h>
 
@@ -41,71 +37,7 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
         int64_t id,
         std::unique_ptr<std::string> data
     ) override;
-    folly::Future<folly::Unit> future_doNothing() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);
-
-
-class MyServiceFastWrapper : virtual public MyServiceFastSvIf {
-  protected:
-    PyObject *if_object;
-    folly::Executor *executor;
-  public:
-    explicit MyServiceFastWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServiceFastWrapper();
-    folly::Future<folly::Unit> future_ping() override;
-    folly::Future<std::unique_ptr<std::string>> future_getRandomData() override;
-    folly::Future<bool> future_hasDataById(
-        int64_t id
-    ) override;
-    folly::Future<std::unique_ptr<std::string>> future_getDataById(
-        int64_t id
-    ) override;
-    folly::Future<folly::Unit> future_putDataById(
-        int64_t id,
-        std::unique_ptr<std::string> data
-    ) override;
-    folly::Future<folly::Unit> future_lobDataById(
-        int64_t id,
-        std::unique_ptr<std::string> data
-    ) override;
-};
-
-std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object, folly::Executor *exc);
-
-
-class MyServiceEmptyWrapper : virtual public MyServiceEmptySvIf {
-  protected:
-    PyObject *if_object;
-    folly::Executor *executor;
-  public:
-    explicit MyServiceEmptyWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServiceEmptyWrapper();
-};
-
-std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObject *if_object, folly::Executor *exc);
-
-
-class MyServicePrioParentWrapper : virtual public MyServicePrioParentSvIf {
-  protected:
-    PyObject *if_object;
-    folly::Executor *executor;
-  public:
-    explicit MyServicePrioParentWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServicePrioParentWrapper();
-    folly::Future<folly::Unit> future_ping() override;
-    folly::Future<folly::Unit> future_pong() override;
-};
-
-std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object, folly::Executor *exc);
-
-
-class MyServicePrioChildWrapper : public ::cpp2::MyServicePrioParentWrapper, virtual public MyServicePrioChildSvIf {
-  public:
-    explicit MyServicePrioChildWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<folly::Unit> future_pang() override;
-};
-
-std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2
