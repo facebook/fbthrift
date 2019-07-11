@@ -276,7 +276,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {u, aDouble, f});
   }
 
   @Override

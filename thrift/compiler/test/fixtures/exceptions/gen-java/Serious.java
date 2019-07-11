@@ -162,7 +162,7 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {sonnet});
   }
 
   public void read(TProtocol iprot) throws TException {

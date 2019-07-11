@@ -450,7 +450,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {list_ref, set_ref, map_ref, list_ref_unique, set_ref_shared, list_ref_shared_const});
   }
 
   @Override

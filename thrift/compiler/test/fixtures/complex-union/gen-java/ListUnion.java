@@ -266,7 +266,7 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
   }
 
   @Override

@@ -290,7 +290,7 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {def_field, opt_field, req_field});
   }
 
   @Override

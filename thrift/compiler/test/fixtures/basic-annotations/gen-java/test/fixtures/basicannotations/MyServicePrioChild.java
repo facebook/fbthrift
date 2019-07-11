@@ -267,7 +267,7 @@ public class MyServicePrioChild {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -423,7 +423,7 @@ public class MyServicePrioChild {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override

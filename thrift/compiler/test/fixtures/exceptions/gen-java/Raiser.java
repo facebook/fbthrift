@@ -649,7 +649,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -805,7 +805,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -960,7 +960,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -1292,7 +1292,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {b, f, s});
     }
 
     public void read(TProtocol iprot) throws TException {
@@ -1501,7 +1501,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -1721,7 +1721,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {success});
     }
 
     @Override
@@ -1906,7 +1906,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -2294,7 +2294,7 @@ public class Raiser {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {success, f, b, s});
     }
 
     public void read(TProtocol iprot) throws TException {

@@ -290,7 +290,7 @@ public class StructWithRefTypeUnique implements TBase, java.io.Serializable, Clo
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {def_field, opt_field, req_field});
   }
 
   @Override

@@ -230,7 +230,7 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
   }
 
   @Override

@@ -765,7 +765,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {foo});
     }
 
     @Override
@@ -990,7 +990,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -1213,7 +1213,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {foo});
     }
 
     @Override
@@ -1438,7 +1438,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -1661,7 +1661,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {foo});
     }
 
     @Override
@@ -1886,7 +1886,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -2108,7 +2108,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {foo});
     }
 
     @Override
@@ -2330,7 +2330,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -2557,7 +2557,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {foo});
     }
 
     @Override
@@ -2839,7 +2839,7 @@ public class NestedContainers {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override

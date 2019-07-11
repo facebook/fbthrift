@@ -98,7 +98,7 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {});
   }
 
   @Override
