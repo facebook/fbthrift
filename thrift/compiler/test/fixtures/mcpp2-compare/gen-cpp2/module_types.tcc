@@ -1006,20 +1006,6 @@ extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::SimpleJ
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
 
-template<typename... T, typename > std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(T&&... t) {
-  __clear();
-  type_ = Type::ref_field;
-  ::new (std::addressof(value_.ref_field)) std::unique_ptr< ::some::valid::ns::MyStruct>(new std::unique_ptr< ::some::valid::ns::MyStruct>::element_type(std::forward<T>(t)...));
-  return value_.ref_field;
-}
-
-template<typename... T, typename > std::shared_ptr<const  ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(T&&... t) {
-  __clear();
-  type_ = Type::ref_field2;
-  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const  ::some::valid::ns::MyStruct>(new std::shared_ptr<const  ::some::valid::ns::MyStruct>::element_type(std::forward<T>(t)...));
-  return value_.ref_field2;
-}
-
 template <class Protocol_>
 void ComplexUnion::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;

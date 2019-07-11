@@ -18,6 +18,7 @@
 
 #include <cstdint>
 #include <initializer_list>
+#include <memory>
 #include <type_traits>
 
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>

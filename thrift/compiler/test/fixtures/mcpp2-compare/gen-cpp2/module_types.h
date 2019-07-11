@@ -2180,10 +2180,24 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
   }
   std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field( ::some::valid::ns::MyStruct const &t);
   std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field( ::some::valid::ns::MyStruct&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field(T&&... t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
+    // defer resolution of ref_ in case ref_::element_type would here be incomplete
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), std::unique_ptr< ::some::valid::ns::MyStruct>, void>;
+    __clear();
+    type_ = Type::ref_field;
+    ::new (std::addressof(value_.ref_field)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    return value_.ref_field;
+  }
   std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2( ::some::valid::ns::MyStruct const &t);
   std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2( ::some::valid::ns::MyStruct&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
+    // defer resolution of ref_ in case ref_::element_type would here be incomplete
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), std::shared_ptr<const  ::some::valid::ns::MyStruct>, void>;
+    __clear();
+    type_ = Type::ref_field2;
+    ::new (std::addressof(value_.ref_field2)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
+    return value_.ref_field2;
+  }
 
    ::some::valid::ns::AnException& set_excp_field( ::some::valid::ns::AnException const &t) {
     __clear();
