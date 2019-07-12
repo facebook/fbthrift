@@ -98,7 +98,7 @@ public class Banal extends Exception implements TBase, java.io.Serializable, Clo
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {});
+    return 0;
   }
 
   public void read(TProtocol iprot) throws TException {

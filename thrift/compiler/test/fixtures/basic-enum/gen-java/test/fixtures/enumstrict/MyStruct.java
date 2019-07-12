@@ -247,7 +247,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {myEnum, myBigEnum});
+    return 0;
   }
 
   @Override

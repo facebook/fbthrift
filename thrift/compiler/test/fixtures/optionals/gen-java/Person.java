@@ -692,7 +692,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {id, name, age, address, favoriteColor, friends, bestFriend, petNames, afraidOfAnimal, vehicles});
+    return 0;
   }
 
   @Override

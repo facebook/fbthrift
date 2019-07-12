@@ -288,7 +288,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
+    return 0;
   }
 
   @Override

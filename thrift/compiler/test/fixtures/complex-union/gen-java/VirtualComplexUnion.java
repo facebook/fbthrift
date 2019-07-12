@@ -228,7 +228,7 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
+    return 0;
   }
 
   @Override

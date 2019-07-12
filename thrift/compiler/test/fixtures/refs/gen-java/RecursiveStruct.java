@@ -164,7 +164,7 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {mes});
+    return 0;
   }
 
   public void read(TProtocol iprot) throws TException {

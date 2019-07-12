@@ -293,7 +293,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {opt_value, value, req_value});
+    return 0;
   }
 
   @Override

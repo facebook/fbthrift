@@ -162,7 +162,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {message});
+    return 0;
   }
 
   public void read(TProtocol iprot) throws TException {

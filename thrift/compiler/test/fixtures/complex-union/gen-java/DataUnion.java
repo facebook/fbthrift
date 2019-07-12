@@ -228,7 +228,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
+    return 0;
   }
 
   @Override

@@ -780,7 +780,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {});
+      return 0;
     }
 
     @Override
@@ -936,7 +936,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {});
+      return 0;
     }
 
     @Override
@@ -1091,7 +1091,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {});
+      return 0;
     }
 
     @Override
@@ -1311,7 +1311,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {success});
+      return 0;
     }
 
     @Override
@@ -1562,7 +1562,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {id});
+      return 0;
     }
 
     @Override
@@ -1809,7 +1809,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {success});
+      return 0;
     }
 
     @Override
@@ -2057,7 +2057,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {id});
+      return 0;
     }
 
     @Override
@@ -2302,7 +2302,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {success});
+      return 0;
     }
 
     @Override
@@ -2609,7 +2609,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {id, data});
+      return 0;
     }
 
     @Override
@@ -2821,7 +2821,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {});
+      return 0;
     }
 
     @Override
@@ -3098,7 +3098,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {id, data});
+      return 0;
     }
 
     @Override

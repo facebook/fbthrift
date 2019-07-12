@@ -290,7 +290,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {opt_shared_const, shared_const, req_shared_const});
+    return 0;
   }
 
   @Override

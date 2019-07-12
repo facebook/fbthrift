@@ -279,7 +279,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {strVal, intVal, typedefValue});
+    return 0;
   }
 
   @Override

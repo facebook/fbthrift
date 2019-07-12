@@ -397,7 +397,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {color, licensePlate, description, name, hasAC});
+    return 0;
   }
 
   @Override

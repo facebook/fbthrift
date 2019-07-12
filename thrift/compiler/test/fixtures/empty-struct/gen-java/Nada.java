@@ -131,7 +131,7 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
+    return 0;
   }
 
   @Override

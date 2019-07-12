@@ -329,7 +329,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {red, green, blue, alpha});
+    return 0;
   }
 
   @Override
