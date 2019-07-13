@@ -169,7 +169,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   doBland(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void RaiserAsyncClient::doBland(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   doBland(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -319,7 +318,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   doRaise(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void RaiserAsyncClient::doRaise(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   doRaise(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -469,7 +467,6 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   get200(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void RaiserAsyncClient::get200(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get200(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -619,7 +616,6 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   get500(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void RaiserAsyncClient::get500(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   get500(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }

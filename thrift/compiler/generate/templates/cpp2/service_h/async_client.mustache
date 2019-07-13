@@ -44,6 +44,17 @@
   virtual folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
   virtual folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/function:oneway?%>
+#if FOLLY_HAS_COROUTINES
+  template <int = 0>
+  folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>) {
+    <%#type:void?%>
+    co_await semifuture_<%function:cpp_name%>(<% > service_common/param_list%>);
+    <%/type:void?%>
+    <%^type:void?%>
+    co_return co_await semifuture_<%function:cpp_name%>(<% > service_common/param_list%>);
+    <%/type:void?%>
+  }
+#endif // FOLLY_HAS_COROUTINES
   virtual void <%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>);
 <%#type:void?%>
 <%^function:oneway?%>

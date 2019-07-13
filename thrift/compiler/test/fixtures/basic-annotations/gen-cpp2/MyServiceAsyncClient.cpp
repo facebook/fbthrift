@@ -210,7 +210,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   ping(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -360,7 +359,6 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   getRandomData(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::getRandomData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getRandomData(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -510,7 +508,6 @@ folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THe
   hasDataById(rpcOptions, std::move(callback), id);
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   hasDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
@@ -662,7 +659,6 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   getDataById(rpcOptions, std::move(callback), id);
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   getDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
@@ -812,7 +808,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   putDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data) {
   putDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
@@ -935,7 +930,6 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_lobDataById(apac
   lobDataById(rpcOptions, std::move(callback), id, data);
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data) {
   lobDataById(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
@@ -1040,7 +1034,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   cppDoNothing(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void MyServiceAsyncClient::cppDoNothing(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   cppDoNothing(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }

@@ -188,7 +188,6 @@ folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr
   returnstream(rpcOptions, std::move(callback), i32_from, i32_to);
   return std::move(callbackAndFuture.second);
 }
-
 void PubSubStreamingServiceAsyncClient::returnstream(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i32_from, int32_t i32_to) {
   returnstream(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), i32_from, i32_to);
 }
@@ -340,7 +339,6 @@ folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr
   streamthrows(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
-
 void PubSubStreamingServiceAsyncClient::streamthrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t foo) {
   streamthrows(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
@@ -492,7 +490,6 @@ folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr
   boththrows(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
-
 void PubSubStreamingServiceAsyncClient::boththrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t foo) {
   boththrows(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
@@ -644,7 +641,6 @@ folly::SemiFuture<std::pair<apache::thrift::ResponseAndSemiStream<int32_t,int32_
   responseandstreamthrows(rpcOptions, std::move(callback), foo);
   return std::move(callbackAndFuture.second);
 }
-
 void PubSubStreamingServiceAsyncClient::responseandstreamthrows(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t foo) {
   responseandstreamthrows(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }

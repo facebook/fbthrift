@@ -133,7 +133,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   pang(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void MyServicePrioChildAsyncClient::pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pang(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }

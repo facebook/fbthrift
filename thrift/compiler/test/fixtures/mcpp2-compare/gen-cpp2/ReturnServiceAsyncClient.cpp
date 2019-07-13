@@ -375,7 +375,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   noReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::noReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   noReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -525,7 +524,6 @@ folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THe
   boolReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::boolReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   boolReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -677,7 +675,6 @@ folly::SemiFuture<std::pair<int16_t, std::unique_ptr<apache::thrift::transport::
   i16Return(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::i16Return(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   i16Return(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -829,7 +826,6 @@ folly::SemiFuture<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::
   i32Return(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::i32Return(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   i32Return(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -981,7 +977,6 @@ folly::SemiFuture<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::
   i64Return(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::i64Return(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   i64Return(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1133,7 +1128,6 @@ folly::SemiFuture<std::pair<float, std::unique_ptr<apache::thrift::transport::TH
   floatReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::floatReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   floatReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1285,7 +1279,6 @@ folly::SemiFuture<std::pair<double, std::unique_ptr<apache::thrift::transport::T
   doubleReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::doubleReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   doubleReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1437,7 +1430,6 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   stringReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::stringReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   stringReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1587,7 +1579,6 @@ folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::trans
   binaryReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::binaryReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   binaryReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1737,7 +1728,6 @@ folly::SemiFuture<std::pair<::std::map<::std::string, int64_t>, std::unique_ptr<
   mapReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::mapReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   mapReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -1887,7 +1877,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::simpleTypeDef, std::unique_ptr<a
   simpleTypedefReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::simpleTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   simpleTypedefReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2039,7 +2028,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::complexStructTypeDef, std::uniqu
   complexTypedefReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::complexTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   complexTypedefReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2189,7 +2177,6 @@ folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::mostComplexTypeDef
   list_mostComplexTypedefReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::list_mostComplexTypedefReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   list_mostComplexTypedefReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2339,7 +2326,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::MyEnumA, std::unique_ptr<apache:
   enumReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::enumReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   enumReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2491,7 +2477,6 @@ folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::MyEnumA>, std::uni
   list_EnumReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::list_EnumReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   list_EnumReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2641,7 +2626,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::MyStruct, std::unique_ptr<apache
   structReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::structReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   structReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2791,7 +2775,6 @@ folly::SemiFuture<std::pair<::std::set< ::some::valid::ns::MyStruct>, std::uniqu
   set_StructReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::set_StructReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   set_StructReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -2941,7 +2924,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::ComplexUnion, std::unique_ptr<ap
   unionReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::unionReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   unionReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -3091,7 +3073,6 @@ folly::SemiFuture<std::pair<::std::vector< ::some::valid::ns::ComplexUnion>, std
   list_UnionReturn(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::list_UnionReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   list_UnionReturn(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
@@ -3241,7 +3222,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::IOBuf, std::unique_ptr<apache::t
   readDataEb(rpcOptions, std::move(callback), size);
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::readDataEb(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t size) {
   readDataEb(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), size);
 }
@@ -3391,7 +3371,6 @@ folly::SemiFuture<std::pair< ::some::valid::ns::IOBufPtr, std::unique_ptr<apache
   readData(rpcOptions, std::move(callback), size);
   return std::move(callbackAndFuture.second);
 }
-
 void ReturnServiceAsyncClient::readData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t size) {
   readData(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), size);
 }

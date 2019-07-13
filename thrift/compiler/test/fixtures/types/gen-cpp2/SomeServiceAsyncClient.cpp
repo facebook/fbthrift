@@ -147,7 +147,6 @@ folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::un
   bounce_map(rpcOptions, std::move(callback), m);
   return std::move(callbackAndFuture.second);
 }
-
 void SomeServiceAsyncClient::bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m) {
   bounce_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), m);
 }
@@ -297,7 +296,6 @@ folly::SemiFuture<std::pair<::std::map< ::apache::thrift::fixtures::types::TBina
   binary_keyed_map(rpcOptions, std::move(callback), r);
   return std::move(callbackAndFuture.second);
 }
-
 void SomeServiceAsyncClient::binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& r) {
   binary_keyed_map(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), r);
 }

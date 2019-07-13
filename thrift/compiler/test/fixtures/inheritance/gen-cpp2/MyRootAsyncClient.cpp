@@ -133,7 +133,6 @@ folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transpo
   do_root(rpcOptions, std::move(callback));
   return std::move(callbackAndFuture.second);
 }
-
 void MyRootAsyncClient::do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_root(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
