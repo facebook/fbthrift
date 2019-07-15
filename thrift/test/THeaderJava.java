@@ -475,10 +475,11 @@ public class THeaderJava extends junit.framework.TestCase {
     assertEquals("value2", headers.get("test2"));
   }
 
-  public void testTransform(THeaderTransport.Transforms transform) throws TException {
+  @Test
+  public void testZlibTransform() throws TException {
     TMemoryBuffer buf = new TMemoryBuffer(200);
     THeaderTransport writer = new THeaderTransport(buf);
-    writer.addTransform(transform);
+    writer.addTransform(THeaderTransport.Transforms.ZLIB_TRANSFORM);
     String frost = "Whose woods these are I think I know";
     byte[] testBytes = frost.getBytes();
     writer.write(testBytes, 0, testBytes.length);
@@ -488,16 +489,6 @@ public class THeaderJava extends junit.framework.TestCase {
     byte[] receivedBytes = new byte[testBytes.length];
     reader.read(receivedBytes, 0, receivedBytes.length);
     Assert.assertArrayEquals(testBytes, receivedBytes);
-  }
-
-  @Test
-  public void testZlibTransform() throws TException {
-    testTransform(THeaderTransport.Transforms.ZLIB_TRANSFORM);
-  }
-
-  @Test
-  public void testSnappyTransform() throws TException {
-    testTransform(THeaderTransport.Transforms.SNAPPY_TRANSFORM);
   }
 
   @Test

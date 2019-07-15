@@ -33,8 +33,6 @@ import java.util.Map;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-import org.iq80.snappy.CorruptionException;
-import org.iq80.snappy.Snappy;
 
 public class THeaderTransport extends TFramedTransport {
   public static final int HEADER_MAGIC_MASK = 0xFFFF0000;
@@ -55,7 +53,7 @@ public class THeaderTransport extends TFramedTransport {
   public enum Transforms {
     ZLIB_TRANSFORM(0x01),
     HMAC_TRANSFORM(0x02), // Deprecated and no longer supported
-    SNAPPY_TRANSFORM(0x03);
+    SNAPPY_TRANSFORM(0x03); // Deprecated and no longer supported
 
     private int value;
 
@@ -409,7 +407,7 @@ public class THeaderTransport extends TFramedTransport {
       if (transId == Transforms.ZLIB_TRANSFORM.getValue()) {
         readTransforms.add(transId);
       } else if (transId == Transforms.SNAPPY_TRANSFORM.getValue()) {
-        readTransforms.add(transId);
+        throw new THeaderException("Snappy transform no longer supported");
       } else if (transId == Transforms.HMAC_TRANSFORM.getValue()) {
         throw new THeaderException("Hmac transform no longer supported");
       } else {
@@ -483,17 +481,6 @@ public class THeaderTransport extends TFramedTransport {
       if (!writeTransforms.contains(Transforms.ZLIB_TRANSFORM)) {
         writeTransforms.add(Transforms.ZLIB_TRANSFORM);
       }
-    } else if (readTransforms.contains(Transforms.SNAPPY_TRANSFORM.getValue())) {
-      try {
-        byte[] output = new byte[Snappy.getUncompressedLength(data.array(), data.position())];
-        int length = Snappy.uncompress(data.array(), data.position(), data.remaining(), output, 0);
-        data = ByteBuffer.wrap(output, 0, length);
-      } catch (CorruptionException e) {
-        throw new THeaderException(e);
-      }
-      if (!writeTransforms.contains(Transforms.SNAPPY_TRANSFORM)) {
-        writeTransforms.add(Transforms.SNAPPY_TRANSFORM);
-      }
     }
     return data;
   }
@@ -517,11 +504,6 @@ public class THeaderTransport extends TFramedTransport {
       } finally {
         compressor.end();
       }
-    } else if (writeTransforms.contains(Transforms.SNAPPY_TRANSFORM)) {
-      byte[] outputBuffer = new byte[Snappy.maxCompressedLength(data.limit())];
-      int length =
-          Snappy.compress(data.array(), data.position(), data.remaining(), outputBuffer, 0);
-      data = ByteBuffer.wrap(outputBuffer, 0, length);
     }
 
     return data;
