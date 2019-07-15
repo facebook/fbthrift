@@ -83,7 +83,7 @@ public final class ByteBufferUtils {
    * Create an instance of an InputStream which streams the data contained in a ByteBuffer. Note:
    * This stream consumes the data in the ByteBuffer (i.e. move the position marker).
    */
-  public static InputStream toInputStream(ByteBuffer buffer) {
+  public static InputStream toInputStream(final ByteBuffer buffer) {
     if (buffer == null) {
       return new InputStream() {
         public int read() throws IOException {
