@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef T_MAP_H
 #define T_MAP_H
 
@@ -33,8 +34,8 @@ namespace compiler {
  */
 class t_map : public t_container {
  public:
-  t_map(t_type* key_type, t_type* val_type, bool unordered)
-      : key_type_(key_type), val_type_(val_type), is_unordered_(unordered) {}
+  t_map(t_type* key_type, t_type* val_type)
+      : key_type_(key_type), val_type_(val_type) {}
 
   t_type* get_key_type() const {
     return key_type_;
@@ -46,10 +47,6 @@ class t_map : public t_container {
 
   bool is_map() const override {
     return true;
-  }
-
-  bool is_unordered() const {
-    return is_unordered_;
   }
 
   std::string get_full_name() const override {
@@ -71,7 +68,6 @@ class t_map : public t_container {
  private:
   t_type* key_type_;
   t_type* val_type_;
-  bool is_unordered_;
 };
 
 } // namespace compiler

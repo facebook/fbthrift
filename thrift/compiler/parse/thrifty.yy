@@ -1399,14 +1399,14 @@ MapType:
   tok_map "<" FieldType "," FieldType ">"
     {
       driver.debug("MapType -> tok_map<FieldType, FieldType>");
-      $$ = new t_map($3, $5, false);
+      $$ = new t_map($3, $5);
     }
 
 SetType:
   tok_set "<" FieldType ">"
     {
       driver.debug("SetType -> tok_set<FieldType>");
-      $$ = new t_set($3, false);
+      $$ = new t_set($3);
     }
 
 ListType:

@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef T_SET_H
 #define T_SET_H
 
@@ -32,8 +33,7 @@ namespace compiler {
  */
 class t_set : public t_container {
  public:
-  t_set(t_type* elem_type, bool unordered)
-      : elem_type_(elem_type), is_unordered_(unordered) {}
+  t_set(t_type* elem_type) : elem_type_(elem_type) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
@@ -41,10 +41,6 @@ class t_set : public t_container {
 
   bool is_set() const override {
     return true;
-  }
-
-  bool is_unordered() const {
-    return is_unordered_;
   }
 
   std::string get_full_name() const override {
@@ -61,7 +57,6 @@ class t_set : public t_container {
 
  private:
   t_type* elem_type_;
-  bool is_unordered_;
 };
 
 } // namespace compiler

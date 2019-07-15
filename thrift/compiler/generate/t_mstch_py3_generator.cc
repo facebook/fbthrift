@@ -425,7 +425,6 @@ mstch::map t_mstch_py3_generator::extend_enum_value(const t_enum_value& val) {
   return result;
 }
 
-// This handles is_unordered as a special case
 string t_mstch_py3_generator::get_cpp_template(const t_type& type) const {
   auto& annotations = type.annotations_;
 
