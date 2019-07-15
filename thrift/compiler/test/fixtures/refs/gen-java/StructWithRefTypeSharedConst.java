@@ -290,7 +290,7 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {def_field, opt_field, req_field});
   }
 
   @Override

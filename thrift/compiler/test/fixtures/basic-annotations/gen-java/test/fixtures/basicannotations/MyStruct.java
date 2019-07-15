@@ -278,7 +278,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote});
   }
 
   @Override

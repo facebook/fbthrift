@@ -100,7 +100,7 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {});
   }
 
   @Override

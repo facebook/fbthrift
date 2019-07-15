@@ -484,7 +484,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
   }
 
   @Override

@@ -162,7 +162,7 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
 
   @Override
   public int hashCode() {
-    return 0;
+    return Arrays.deepHashCode(new Object[] {def_field});
   }
 
   @Override

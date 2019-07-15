@@ -995,7 +995,8 @@ void t_java_generator::generate_union_hashcode(
     t_struct* /*tstruct*/) {
   indent(out) << "@Override" << endl;
   indent(out) << "public int hashCode() {" << endl;
-  indent(out) << "  return 0;" << endl;
+  indent(out) << "  return Arrays.deepHashCode(new Object[] {"
+              << "getSetField(), getFieldValue()});" << endl;
   indent(out) << "}" << endl;
 }
 
@@ -1267,8 +1268,7 @@ void t_java_generator::generate_java_struct_equality(
       indent() << "  return true;" << endl; // slow equals and a bad hashCode
 
   const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+  for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     out << endl;
 
     t_type* t = (*m_iter)->get_type()->get_true_type();
@@ -1321,7 +1321,17 @@ void t_java_generator::generate_java_struct_equality(
   out << indent() << "@Override" << endl
       << indent() << "public int hashCode() {" << endl;
   indent_up();
-  indent(out) << "return 0;" << endl;
+  indent(out) << "return Arrays.deepHashCode(new Object[] {";
+  bool first = true;
+  for (auto m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    if (!first) {
+      out << ", ";
+    }
+    out << (*m_iter)->get_name();
+    first = false;
+  }
+  out << "});" << endl;
+
   indent_down();
   indent(out) << "}" << endl << endl;
 }

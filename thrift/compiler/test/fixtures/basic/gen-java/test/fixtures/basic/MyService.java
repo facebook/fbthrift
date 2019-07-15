@@ -780,7 +780,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -936,7 +936,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -1091,7 +1091,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -1311,7 +1311,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {success});
     }
 
     @Override
@@ -1562,7 +1562,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {id});
     }
 
     @Override
@@ -1809,7 +1809,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {success});
     }
 
     @Override
@@ -2057,7 +2057,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {id});
     }
 
     @Override
@@ -2302,7 +2302,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {success});
     }
 
     @Override
@@ -2609,7 +2609,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {id, data});
     }
 
     @Override
@@ -2821,7 +2821,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {});
     }
 
     @Override
@@ -3098,7 +3098,7 @@ public class MyService {
 
     @Override
     public int hashCode() {
-      return 0;
+      return Arrays.deepHashCode(new Object[] {id, data});
     }
 
     @Override
