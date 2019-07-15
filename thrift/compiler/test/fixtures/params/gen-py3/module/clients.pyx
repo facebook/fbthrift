@@ -113,6 +113,7 @@ cdef object _NestedContainers_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class NestedContainers(thrift.py3.client.Client):
     annotations = _NestedContainers_annotations
 

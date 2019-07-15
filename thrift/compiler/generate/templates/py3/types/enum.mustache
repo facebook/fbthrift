@@ -96,6 +96,7 @@ cdef __{{enum:name}}_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
     {{enumValue:enumSafeName}} = __{{enum:name}}_unique_instance({{enumValue:value}}, "{{enumValue:enumSafeName}}")

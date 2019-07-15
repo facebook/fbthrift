@@ -702,6 +702,7 @@ cdef object _EmptyService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class EmptyService(thrift.py3.client.Client):
     annotations = _EmptyService_annotations
 
@@ -785,6 +786,7 @@ cdef object _ReturnService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class ReturnService(thrift.py3.client.Client):
     annotations = _ReturnService_annotations
 
@@ -1300,6 +1302,7 @@ cdef object _ParamService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class ParamService(thrift.py3.client.Client):
     annotations = _ParamService_annotations
 

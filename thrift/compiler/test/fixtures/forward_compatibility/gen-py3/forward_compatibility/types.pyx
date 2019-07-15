@@ -39,6 +39,7 @@ import weakref as __weakref
 import builtins as _builtins
 
 
+@__cython.auto_pickle(False)
 cdef class OldStructure(thrift.py3.types.Struct):
 
     def __init__(
@@ -207,6 +208,7 @@ cdef class OldStructure(thrift.py3.types.Struct):
         return (deserialize, (OldStructure, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class NewStructure(thrift.py3.types.Struct):
 
     def __init__(
@@ -375,6 +377,7 @@ cdef class NewStructure(thrift.py3.types.Struct):
         return (deserialize, (NewStructure, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class NewStructure2(thrift.py3.types.Struct):
 
     def __init__(
@@ -543,6 +546,7 @@ cdef class NewStructure2(thrift.py3.types.Struct):
         return (deserialize, (NewStructure2, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class NewStructureNested(thrift.py3.types.Struct):
 
     def __init__(
@@ -769,6 +773,7 @@ cdef class NewStructureNested(thrift.py3.types.Struct):
         return (deserialize, (NewStructureNested, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class NewStructureNestedField(thrift.py3.types.Struct):
 
     def __init__(
@@ -941,6 +946,7 @@ cdef class NewStructureNestedField(thrift.py3.types.Struct):
         return (deserialize, (NewStructureNestedField, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Map__i16_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_double):
@@ -1075,6 +1081,7 @@ cdef class Map__i16_double:
 
 Mapping.register(Map__i16_double)
 
+@__cython.auto_pickle(False)
 cdef class Map__i16_float:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_float):
@@ -1209,6 +1216,7 @@ cdef class Map__i16_float:
 
 Mapping.register(Map__i16_float)
 
+@__cython.auto_pickle(False)
 cdef class List__Map__i16_float:
     def __init__(self, items=None):
         if isinstance(items, List__Map__i16_float):
@@ -1386,6 +1394,7 @@ cdef class List__Map__i16_float:
 
 Sequence.register(List__Map__i16_float)
 
+@__cython.auto_pickle(False)
 cdef class Map__i16_Map__i16_float:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_Map__i16_float):
@@ -1522,6 +1531,7 @@ cdef class Map__i16_Map__i16_float:
 
 Mapping.register(Map__i16_Map__i16_float)
 
+@__cython.auto_pickle(False)
 cdef class Set__Map__i16_float:
     def __init__(self, items=None):
         if isinstance(items, Set__Map__i16_float):
@@ -1772,6 +1782,7 @@ cdef class Set__Map__i16_float:
 
 Set.register(Set__Map__i16_float)
 
+@__cython.auto_pickle(False)
 cdef class Map__i64_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i64_double):
@@ -1906,6 +1917,7 @@ cdef class Map__i64_double:
 
 Mapping.register(Map__i64_double)
 
+@__cython.auto_pickle(False)
 cdef class Map__i16_Map__i64_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_Map__i64_double):
@@ -2042,6 +2054,7 @@ cdef class Map__i16_Map__i64_double:
 
 Mapping.register(Map__i16_Map__i64_double)
 
+@__cython.auto_pickle(False)
 cdef class Map__i32_Map__i64_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_Map__i64_double):
@@ -2178,6 +2191,7 @@ cdef class Map__i32_Map__i64_double:
 
 Mapping.register(Map__i32_Map__i64_double)
 
+@__cython.auto_pickle(False)
 cdef class List__float:
     def __init__(self, items=None):
         if isinstance(items, List__float):
@@ -2338,6 +2352,7 @@ cdef class List__float:
 
 Sequence.register(List__float)
 
+@__cython.auto_pickle(False)
 cdef class Map__i16_List__float:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_List__float):
@@ -2474,6 +2489,7 @@ cdef class Map__i16_List__float:
 
 Mapping.register(Map__i16_List__float)
 
+@__cython.auto_pickle(False)
 cdef class Map__i32_List__float:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_List__float):

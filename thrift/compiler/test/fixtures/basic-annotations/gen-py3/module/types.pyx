@@ -94,6 +94,7 @@ cdef __MyEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     MyValue1 = __MyEnum_unique_instance(0, "MyValue1")
     MyValue2 = __MyEnum_unique_instance(1, "MyValue2")
@@ -144,6 +145,7 @@ cdef inline cMyEnum MyEnum_to_cpp(MyEnum value):
     elif cvalue == 2:
         return MyEnum__DOMAIN
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(

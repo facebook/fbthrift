@@ -5,6 +5,7 @@
 #  @generated
 #
 
+cimport cython
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -54,6 +55,7 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
 
+@cython.auto_pickle(False)
 cdef class Promise_cbool:
     cdef cFollyPromise[cbool] cPromise
 
@@ -67,6 +69,7 @@ cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class ExtendTestServiceInterface(
     _hsmodule_services.HsTestServiceInterface
 ):

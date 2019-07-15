@@ -79,6 +79,7 @@ cdef class __EmptyEnumMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
     __members__ = thrift.py3.types.MappingProxyType(__EmptyEnumEnumMembers)
 
@@ -179,6 +180,7 @@ cdef __City_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class City(thrift.py3.types.CompiledEnum):
     NYC = __City_unique_instance(0, "NYC")
     MPK = __City_unique_instance(1, "MPK")
@@ -290,6 +292,7 @@ cdef __Company_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class Company(thrift.py3.types.CompiledEnum):
     FACEBOOK = __Company_unique_instance(0, "FACEBOOK")
     WHATSAPP = __Company_unique_instance(1, "WHATSAPP")
@@ -403,6 +406,7 @@ cdef class __union1_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __union1Type(thrift.py3.types.CompiledEnum):
     EMPTY = __union1Type.__new__(__union1Type, 0, "EMPTY")
     i = __union1Type.__new__(__union1Type, 1, "i")
@@ -514,6 +518,7 @@ cdef class __union2_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __union2Type(thrift.py3.types.CompiledEnum):
     EMPTY = __union2Type.__new__(__union2Type, 0, "EMPTY")
     i = __union2Type.__new__(__union2Type, 1, "i")
@@ -555,6 +560,7 @@ __SetMetaClass(<PyTypeObject*> __union2Type, <PyTypeObject*> __union2_Union_Type
 __union2_Union_TypeEnumMembers = set(__union2Type)
 
 
+@__cython.auto_pickle(False)
 cdef class Internship(thrift.py3.types.Struct):
 
     def __init__(
@@ -793,6 +799,7 @@ cdef class Internship(thrift.py3.types.Struct):
         return (deserialize, (Internship, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -963,6 +970,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         return (deserialize, (UnEnumStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Range(thrift.py3.types.Struct):
 
     def __init__(
@@ -1174,6 +1182,7 @@ cdef class Range(thrift.py3.types.Struct):
         return (deserialize, (Range, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class struct1(thrift.py3.types.Struct):
 
     def __init__(
@@ -1381,6 +1390,7 @@ cdef class struct1(thrift.py3.types.Struct):
         return (deserialize, (struct1, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class struct2(thrift.py3.types.Struct):
 
     def __init__(
@@ -1650,6 +1660,7 @@ cdef class struct2(thrift.py3.types.Struct):
         return (deserialize, (struct2, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class struct3(thrift.py3.types.Struct):
 
     def __init__(
@@ -1892,6 +1903,7 @@ cdef class struct3(thrift.py3.types.Struct):
 
 
 
+@__cython.auto_pickle(False)
 cdef class union1(thrift.py3.types.Union):
     Type = __union1Type
 
@@ -2088,6 +2100,7 @@ cdef class union1(thrift.py3.types.Union):
 
 
 
+@__cython.auto_pickle(False)
 cdef class union2(thrift.py3.types.Union):
     Type = __union2Type
 
@@ -2318,6 +2331,7 @@ cdef class union2(thrift.py3.types.Union):
         return (deserialize, (union2, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):
@@ -2479,6 +2493,7 @@ cdef class List__i32:
 
 Sequence.register(List__i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
@@ -2613,6 +2628,7 @@ cdef class Map__string_i32:
 
 Mapping.register(Map__string_i32)
 
+@__cython.auto_pickle(False)
 cdef class List__Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, List__Map__string_i32):
@@ -2790,6 +2806,7 @@ cdef class List__Map__string_i32:
 
 Sequence.register(List__Map__string_i32)
 
+@__cython.auto_pickle(False)
 cdef class List__Range:
     def __init__(self, items=None):
         if isinstance(items, List__Range):
@@ -2950,6 +2967,7 @@ cdef class List__Range:
 
 Sequence.register(List__Range)
 
+@__cython.auto_pickle(False)
 cdef class List__Internship:
     def __init__(self, items=None):
         if isinstance(items, List__Internship):
@@ -3110,6 +3128,7 @@ cdef class List__Internship:
 
 Sequence.register(List__Internship)
 
+@__cython.auto_pickle(False)
 cdef class List__string:
     def __init__(self, items=None):
         if isinstance(items, List__string):
@@ -3270,6 +3289,7 @@ cdef class List__string:
 
 Sequence.register(List__string)
 
+@__cython.auto_pickle(False)
 cdef class Set__i32:
     def __init__(self, items=None):
         if isinstance(items, Set__i32):
@@ -3514,6 +3534,7 @@ cdef class Set__i32:
 
 Set.register(Set__i32)
 
+@__cython.auto_pickle(False)
 cdef class Set__string:
     def __init__(self, items=None):
         if isinstance(items, Set__string):
@@ -3757,6 +3778,7 @@ cdef class Set__string:
 
 Set.register(Set__string)
 
+@__cython.auto_pickle(False)
 cdef class Map__i32_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_i32):
@@ -3892,6 +3914,7 @@ cdef class Map__i32_i32:
 
 Mapping.register(Map__i32_i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_string):
@@ -4026,6 +4049,7 @@ cdef class Map__i32_string:
 
 Mapping.register(Map__i32_string)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_string:
     def __init__(self, items=None):
         if isinstance(items, Map__string_string):

@@ -91,6 +91,7 @@ cdef __MyEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     MyValue1 = __MyEnum_unique_instance(0, "MyValue1")
     MyValue2 = __MyEnum_unique_instance(1, "MyValue2")
@@ -204,6 +205,7 @@ cdef class __MyUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __MyUnionType.__new__(__MyUnionType, 0, "EMPTY")
     myEnum = __MyUnionType.__new__(__MyUnionType, 1, "myEnum")
@@ -244,6 +246,7 @@ __SetMetaClass(<PyTypeObject*> __MyUnionType, <PyTypeObject*> __MyUnion_Union_Ty
 __MyUnion_Union_TypeEnumMembers = set(__MyUnionType)
 
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -515,6 +518,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __init__(
@@ -646,6 +650,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
 
 
+@__cython.auto_pickle(False)
 cdef class MyUnion(thrift.py3.types.Union):
     Type = __MyUnionType
 

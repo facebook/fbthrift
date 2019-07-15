@@ -91,6 +91,7 @@ cdef __AnEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class AnEnum(thrift.py3.types.CompiledEnum):
     FIELDA = __AnEnum_unique_instance(2, "FIELDA")
     FIELDB = __AnEnum_unique_instance(4, "FIELDB")
@@ -138,6 +139,7 @@ cdef inline cAnEnum AnEnum_to_cpp(AnEnum value):
     elif cvalue == 4:
         return AnEnum__FIELDB
 
+@__cython.auto_pickle(False)
 cdef class AStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -314,6 +316,7 @@ cdef class AStruct(thrift.py3.types.Struct):
         return (deserialize, (AStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class AStructB(thrift.py3.types.Struct):
 
     def __init__(

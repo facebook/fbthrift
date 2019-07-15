@@ -39,6 +39,7 @@ import weakref as __weakref
 import builtins as _builtins
 
 
+@__cython.auto_pickle(False)
 cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
@@ -303,6 +304,7 @@ cdef class Foo(thrift.py3.types.Struct):
         return (deserialize, (Foo, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class List__bool:
     def __init__(self, items=None):
         if isinstance(items, List__bool):
@@ -463,6 +465,7 @@ cdef class List__bool:
 
 Sequence.register(List__bool)
 
+@__cython.auto_pickle(False)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):

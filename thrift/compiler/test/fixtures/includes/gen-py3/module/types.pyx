@@ -41,6 +41,7 @@ cimport includes.types as _includes_types
 import includes.types as _includes_types
 
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(

@@ -123,6 +123,7 @@ cdef class __ComplexUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __ComplexUnionType.__new__(__ComplexUnionType, 0, "EMPTY")
     intValue = __ComplexUnionType.__new__(__ComplexUnionType, 1, "intValue")
@@ -226,6 +227,7 @@ cdef class __ListUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __ListUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __ListUnionType.__new__(__ListUnionType, 0, "EMPTY")
     intListValue = __ListUnionType.__new__(__ListUnionType, 2, "intListValue")
@@ -325,6 +327,7 @@ cdef class __DataUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __DataUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __DataUnionType.__new__(__DataUnionType, 0, "EMPTY")
     binaryData = __DataUnionType.__new__(__DataUnionType, 1, "binaryData")
@@ -424,6 +427,7 @@ cdef class __ValUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __ValUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __ValUnionType.__new__(__ValUnionType, 0, "EMPTY")
     v1 = __ValUnionType.__new__(__ValUnionType, 1, "v1")
@@ -523,6 +527,7 @@ cdef class __VirtualComplexUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __VirtualComplexUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 0, "EMPTY")
     thingOne = __VirtualComplexUnionType.__new__(__VirtualComplexUnionType, 1, "thingOne")
@@ -564,6 +569,7 @@ __VirtualComplexUnion_Union_TypeEnumMembers = set(__VirtualComplexUnionType)
 
 
 
+@__cython.auto_pickle(False)
 cdef class ComplexUnion(thrift.py3.types.Union):
     Type = __ComplexUnionType
 
@@ -821,6 +827,7 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 
 
+@__cython.auto_pickle(False)
 cdef class ListUnion(thrift.py3.types.Union):
     Type = __ListUnionType
 
@@ -993,6 +1000,7 @@ cdef class ListUnion(thrift.py3.types.Union):
 
 
 
+@__cython.auto_pickle(False)
 cdef class DataUnion(thrift.py3.types.Union):
     Type = __DataUnionType
 
@@ -1163,6 +1171,7 @@ cdef class DataUnion(thrift.py3.types.Union):
         return (deserialize, (DataUnion, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Val(thrift.py3.types.Struct):
 
     def __init__(
@@ -1401,6 +1410,7 @@ cdef class Val(thrift.py3.types.Struct):
 
 
 
+@__cython.auto_pickle(False)
 cdef class ValUnion(thrift.py3.types.Union):
     Type = __ValUnionType
 
@@ -1573,6 +1583,7 @@ cdef class ValUnion(thrift.py3.types.Union):
 
 
 
+@__cython.auto_pickle(False)
 cdef class VirtualComplexUnion(thrift.py3.types.Union):
     Type = __VirtualComplexUnionType
 
@@ -1743,6 +1754,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
         return (deserialize, (VirtualComplexUnion, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class List__i64:
     def __init__(self, items=None):
         if isinstance(items, List__i64):
@@ -1904,6 +1916,7 @@ cdef class List__i64:
 
 Sequence.register(List__i64)
 
+@__cython.auto_pickle(False)
 cdef class List__string:
     def __init__(self, items=None):
         if isinstance(items, List__string):
@@ -2064,6 +2077,7 @@ cdef class List__string:
 
 Sequence.register(List__string)
 
+@__cython.auto_pickle(False)
 cdef class Map__i16_string:
     def __init__(self, items=None):
         if isinstance(items, Map__i16_string):

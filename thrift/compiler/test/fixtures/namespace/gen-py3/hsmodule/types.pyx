@@ -39,6 +39,7 @@ import weakref as __weakref
 import builtins as _builtins
 
 
+@__cython.auto_pickle(False)
 cdef class HsFoo(thrift.py3.types.Struct):
 
     def __init__(

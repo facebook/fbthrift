@@ -41,6 +41,7 @@ cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 
 
+@__cython.auto_pickle(False)
 cdef class Included(thrift.py3.types.Struct):
 
     def __init__(

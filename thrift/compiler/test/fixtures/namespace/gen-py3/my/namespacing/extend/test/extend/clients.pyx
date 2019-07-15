@@ -66,6 +66,7 @@ cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class ExtendTestService(_hsmodule_clients.HsTestService):
     annotations = _ExtendTestService_annotations
 

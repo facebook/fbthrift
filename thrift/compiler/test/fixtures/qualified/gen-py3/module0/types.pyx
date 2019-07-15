@@ -94,6 +94,7 @@ cdef __Enum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class Enum(thrift.py3.types.CompiledEnum):
     ONE = __Enum_unique_instance(1, "ONE")
     TWO = __Enum_unique_instance(2, "TWO")
@@ -144,6 +145,7 @@ cdef inline cEnum Enum_to_cpp(Enum value):
     elif cvalue == 3:
         return Enum__THREE
 
+@__cython.auto_pickle(False)
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -351,6 +353,7 @@ cdef class Struct(thrift.py3.types.Struct):
         return (deserialize, (Struct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class List__Enum:
     def __init__(self, items=None):
         if isinstance(items, List__Enum):

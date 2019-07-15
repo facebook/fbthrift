@@ -5,6 +5,7 @@
 #  @generated
 #
 
+cimport cython
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -50,6 +51,7 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
         cFollyPromise[int64_t])
 
+@cython.auto_pickle(False)
 cdef class Promise_int64_t:
     cdef cFollyPromise[int64_t] cPromise
 
@@ -63,6 +65,7 @@ cdef object _TestService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class TestServiceInterface(
     ServiceInterface
 ):

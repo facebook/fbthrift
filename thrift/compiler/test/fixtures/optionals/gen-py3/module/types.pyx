@@ -94,6 +94,7 @@ cdef __Animal_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class Animal(thrift.py3.types.CompiledEnum):
     DOG = __Animal_unique_instance(1, "DOG")
     CAT = __Animal_unique_instance(2, "CAT")
@@ -144,6 +145,7 @@ cdef inline cAnimal Animal_to_cpp(Animal value):
     elif cvalue == 3:
         return Animal__TARANTULA
 
+@__cython.auto_pickle(False)
 cdef class Color(thrift.py3.types.Struct):
 
     def __init__(
@@ -423,6 +425,7 @@ cdef class Color(thrift.py3.types.Struct):
         return (deserialize, (Color, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Vehicle(thrift.py3.types.Struct):
 
     def __init__(
@@ -722,6 +725,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
         return (deserialize, (Vehicle, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Person(thrift.py3.types.Struct):
 
     def __init__(
@@ -1193,6 +1197,7 @@ cdef class Person(thrift.py3.types.Struct):
         return (deserialize, (Person, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Set__i64:
     def __init__(self, items=None):
         if isinstance(items, Set__i64):
@@ -1437,6 +1442,7 @@ cdef class Set__i64:
 
 Set.register(Set__i64)
 
+@__cython.auto_pickle(False)
 cdef class Map__Animal_string:
     def __init__(self, items=None):
         if isinstance(items, Map__Animal_string):
@@ -1570,6 +1576,7 @@ cdef class Map__Animal_string:
 
 Mapping.register(Map__Animal_string)
 
+@__cython.auto_pickle(False)
 cdef class List__Vehicle:
     def __init__(self, items=None):
         if isinstance(items, List__Vehicle):

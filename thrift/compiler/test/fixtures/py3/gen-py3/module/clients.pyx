@@ -598,6 +598,7 @@ cdef object _SimpleService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class SimpleService(thrift.py3.client.Client):
     annotations = _SimpleService_annotations
 
@@ -1627,6 +1628,7 @@ cdef object _DerivedService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class DerivedService(SimpleService):
     annotations = _DerivedService_annotations
 
@@ -1732,6 +1734,7 @@ cdef object _RederivedService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class RederivedService(DerivedService):
     annotations = _RederivedService_annotations
 

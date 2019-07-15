@@ -39,6 +39,7 @@ import weakref as __weakref
 import builtins as _builtins
 
 
+@__cython.auto_pickle(False)
 cdef class Banal(thrift.py3.exceptions.Error):
 
     def __init__(
@@ -122,6 +123,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
 
 
 
+@__cython.auto_pickle(False)
 cdef class Fiery(thrift.py3.exceptions.Error):
 
     def __init__(
@@ -223,6 +225,7 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
 
 
+@__cython.auto_pickle(False)
 cdef class Serious(thrift.py3.exceptions.Error):
 
     def __init__(

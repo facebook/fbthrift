@@ -78,6 +78,7 @@ import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeN
 
 {{#program:structs}}
 {{^struct:union?}}
+@__cython.auto_pickle(False)
 cdef class {{struct:name}}({{> types/PythonStructClass}}):
 
     {{^struct:exception?}}
@@ -381,6 +382,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 }}{{#struct:union?}}
 
 
+@__cython.auto_pickle(False)
 cdef class {{struct:name}}(thrift.py3.types.Union):
     Type = __{{struct:name}}Type
 
@@ -642,6 +644,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
 
 {{/program:structs}}
 {{#program:containerTypes}}
+@__cython.auto_pickle(False)
 cdef class {{> types/CythonPythonType}}:
     def __init__(self, items=None):
         if isinstance(items, {{> types/CythonPythonType}}):

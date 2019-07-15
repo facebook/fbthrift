@@ -102,6 +102,7 @@ cdef __has_bitwise_ops_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class has_bitwise_ops(thrift.py3.types.CompiledEnum):
     none = __has_bitwise_ops_unique_instance(0, "none")
     zero = __has_bitwise_ops_unique_instance(1, "zero")
@@ -210,6 +211,7 @@ cdef __is_unscoped_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class is_unscoped(thrift.py3.types.CompiledEnum):
     hello = __is_unscoped_unique_instance(0, "hello")
     world = __is_unscoped_unique_instance(1, "world")
@@ -309,6 +311,7 @@ cdef __MyForwardRefEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
     ZERO = __MyForwardRefEnum_unique_instance(0, "ZERO")
     NONZERO = __MyForwardRefEnum_unique_instance(12, "NONZERO")
@@ -356,6 +359,7 @@ cdef inline cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value):
     elif cvalue == 12:
         return MyForwardRefEnum__NONZERO
 
+@__cython.auto_pickle(False)
 cdef class decorated_struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -526,6 +530,7 @@ cdef class decorated_struct(thrift.py3.types.Struct):
         return (deserialize, (decorated_struct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class ContainerStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -889,6 +894,7 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
         return (deserialize, (ContainerStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class CppTypeStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -1057,6 +1063,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
         return (deserialize, (CppTypeStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class VirtualStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -1233,6 +1240,7 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
         return (deserialize, (VirtualStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
     def __init__(
@@ -1434,6 +1442,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
         return (deserialize, (MyStructWithForwardRefEnum, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class TrivialNumeric(thrift.py3.types.Struct):
 
     def __init__(
@@ -1641,6 +1650,7 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
         return (deserialize, (TrivialNumeric, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
     def __init__(
@@ -1850,6 +1860,7 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
         return (deserialize, (TrivialNestedWithDefault, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class ComplexString(thrift.py3.types.Struct):
 
     def __init__(
@@ -2049,6 +2060,7 @@ cdef class ComplexString(thrift.py3.types.Struct):
         return (deserialize, (ComplexString, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
     def __init__(
@@ -2252,6 +2264,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
         return (deserialize, (ComplexNestedWithDefault, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MinPadding(thrift.py3.types.Struct):
 
     def __init__(
@@ -2571,6 +2584,7 @@ cdef class MinPadding(thrift.py3.types.Struct):
         return (deserialize, (MinPadding, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -2849,6 +2863,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MyDataItem(thrift.py3.types.Struct):
 
     def __init__(
@@ -2973,6 +2988,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
         return (deserialize, (MyDataItem, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Renaming(thrift.py3.types.Struct):
 
     def __init__(
@@ -3149,6 +3165,7 @@ cdef class Renaming(thrift.py3.types.Struct):
         return (deserialize, (Renaming, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
     def __init__(
@@ -3340,6 +3357,7 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
         return (deserialize, (AnnotatedTypes, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
     def __init__(
@@ -3546,6 +3564,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
         return (deserialize, (ForwardUsageRoot, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -3719,6 +3738,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
         return (deserialize, (ForwardUsageStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
     def __init__(
@@ -3892,6 +3912,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
         return (deserialize, (ForwardUsageByRef, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):
@@ -4026,6 +4047,7 @@ cdef class std_unordered_map__Map__i32_string:
 
 Mapping.register(std_unordered_map__Map__i32_string)
 
+@__cython.auto_pickle(False)
 cdef class List__i64:
     def __init__(self, items=None):
         if isinstance(items, List__i64):
@@ -4187,6 +4209,7 @@ cdef class List__i64:
 
 Sequence.register(List__i64)
 
+@__cython.auto_pickle(False)
 cdef class Map__binary_i64:
     def __init__(self, items=None):
         if isinstance(items, Map__binary_i64):
@@ -4321,6 +4344,7 @@ cdef class Map__binary_i64:
 
 Mapping.register(Map__binary_i64)
 
+@__cython.auto_pickle(False)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):
@@ -4482,6 +4506,7 @@ cdef class List__i32:
 
 Sequence.register(List__i32)
 
+@__cython.auto_pickle(False)
 cdef class std_list__List__i32:
     def __init__(self, items=None):
         if isinstance(items, std_list__List__i32):
@@ -4643,6 +4668,7 @@ cdef class std_list__List__i32:
 
 Sequence.register(std_list__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class std_deque__List__i32:
     def __init__(self, items=None):
         if isinstance(items, std_deque__List__i32):
@@ -4804,6 +4830,7 @@ cdef class std_deque__List__i32:
 
 Sequence.register(std_deque__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class folly_fbvector__List__i32:
     def __init__(self, items=None):
         if isinstance(items, folly_fbvector__List__i32):
@@ -4965,6 +4992,7 @@ cdef class folly_fbvector__List__i32:
 
 Sequence.register(folly_fbvector__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class folly_small_vector__List__i32:
     def __init__(self, items=None):
         if isinstance(items, folly_small_vector__List__i32):
@@ -5126,6 +5154,7 @@ cdef class folly_small_vector__List__i32:
 
 Sequence.register(folly_small_vector__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class folly_sorted_vector_set__Set__i32:
     def __init__(self, items=None):
         if isinstance(items, folly_sorted_vector_set__Set__i32):
@@ -5370,6 +5399,7 @@ cdef class folly_sorted_vector_set__Set__i32:
 
 Set.register(folly_sorted_vector_set__Set__i32)
 
+@__cython.auto_pickle(False)
 cdef class folly_sorted_vector_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, folly_sorted_vector_map__Map__i32_string):
@@ -5504,6 +5534,7 @@ cdef class folly_sorted_vector_map__Map__i32_string:
 
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
 
+@__cython.auto_pickle(False)
 cdef class std_list_int32_t__List__i32:
     def __init__(self, items=None):
         if isinstance(items, std_list_int32_t__List__i32):
@@ -5665,6 +5696,7 @@ cdef class std_list_int32_t__List__i32:
 
 Sequence.register(std_list_int32_t__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
@@ -5799,6 +5831,7 @@ cdef class Map__string_i32:
 
 Mapping.register(Map__string_i32)
 
+@__cython.auto_pickle(False)
 cdef class List__std_unordered_map__Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, List__std_unordered_map__Map__i32_string):

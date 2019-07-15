@@ -94,6 +94,7 @@ cdef __MyEnumA_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     fieldA = __MyEnumA_unique_instance(1, "fieldA")
     fieldB = __MyEnumA_unique_instance(2, "fieldB")
@@ -144,6 +145,7 @@ cdef inline cMyEnumA MyEnumA_to_cpp(MyEnumA value):
     elif cvalue == 4:
         return MyEnumA__fieldC
 
+@__cython.auto_pickle(False)
 cdef class SmallStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -351,6 +353,7 @@ cdef class SmallStruct(thrift.py3.types.Struct):
         return (deserialize, (SmallStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class containerStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -1154,6 +1157,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         return (deserialize, (containerStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Map__string_bool:
     def __init__(self, items=None):
         if isinstance(items, Map__string_bool):
@@ -1287,6 +1291,7 @@ cdef class Map__string_bool:
 
 Mapping.register(Map__string_bool)
 
+@__cython.auto_pickle(False)
 cdef class Set__i32:
     def __init__(self, items=None):
         if isinstance(items, Set__i32):
@@ -1531,6 +1536,7 @@ cdef class Set__i32:
 
 Set.register(Set__i32)
 
+@__cython.auto_pickle(False)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):
@@ -1692,6 +1698,7 @@ cdef class List__i32:
 
 Sequence.register(List__i32)
 
+@__cython.auto_pickle(False)
 cdef class List__List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__List__i32):
@@ -1869,6 +1876,7 @@ cdef class List__List__i32:
 
 Sequence.register(List__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class List__List__List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__List__List__i32):
@@ -2046,6 +2054,7 @@ cdef class List__List__List__i32:
 
 Sequence.register(List__List__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
@@ -2180,6 +2189,7 @@ cdef class Map__string_i32:
 
 Mapping.register(Map__string_i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_Map__string_i32):
@@ -2315,6 +2325,7 @@ cdef class Map__string_Map__string_i32:
 
 Mapping.register(Map__string_Map__string_i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_Map__string_Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_Map__string_Map__string_i32):
@@ -2450,6 +2461,7 @@ cdef class Map__string_Map__string_Map__string_i32:
 
 Mapping.register(Map__string_Map__string_Map__string_i32)
 
+@__cython.auto_pickle(False)
 cdef class List__Set__i32:
     def __init__(self, items=None):
         if isinstance(items, List__Set__i32):
@@ -2627,6 +2639,7 @@ cdef class List__Set__i32:
 
 Sequence.register(List__Set__i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__string_List__i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_List__i32):
@@ -2762,6 +2775,7 @@ cdef class Map__string_List__i32:
 
 Mapping.register(Map__string_List__i32)
 
+@__cython.auto_pickle(False)
 cdef class List__List__List__List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__List__List__List__i32):
@@ -2939,6 +2953,7 @@ cdef class List__List__List__List__i32:
 
 Sequence.register(List__List__List__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class Set__bool:
     def __init__(self, items=None):
         if isinstance(items, Set__bool):
@@ -3182,6 +3197,7 @@ cdef class Set__bool:
 
 Set.register(Set__bool)
 
+@__cython.auto_pickle(False)
 cdef class Set__Set__bool:
     def __init__(self, items=None):
         if isinstance(items, Set__Set__bool):
@@ -3432,6 +3448,7 @@ cdef class Set__Set__bool:
 
 Set.register(Set__Set__bool)
 
+@__cython.auto_pickle(False)
 cdef class Set__Set__Set__bool:
     def __init__(self, items=None):
         if isinstance(items, Set__Set__Set__bool):
@@ -3682,6 +3699,7 @@ cdef class Set__Set__Set__bool:
 
 Set.register(Set__Set__Set__bool)
 
+@__cython.auto_pickle(False)
 cdef class Set__List__i32:
     def __init__(self, items=None):
         if isinstance(items, Set__List__i32):
@@ -3932,6 +3950,7 @@ cdef class Set__List__i32:
 
 Set.register(Set__List__i32)
 
+@__cython.auto_pickle(False)
 cdef class Set__string:
     def __init__(self, items=None):
         if isinstance(items, Set__string):
@@ -4175,6 +4194,7 @@ cdef class Set__string:
 
 Set.register(Set__string)
 
+@__cython.auto_pickle(False)
 cdef class List__Set__string:
     def __init__(self, items=None):
         if isinstance(items, List__Set__string):
@@ -4352,6 +4372,7 @@ cdef class List__Set__string:
 
 Sequence.register(List__Set__string)
 
+@__cython.auto_pickle(False)
 cdef class Map__List__Set__string_string:
     def __init__(self, items=None):
         if isinstance(items, Map__List__Set__string_string):
@@ -4502,6 +4523,7 @@ cdef class Map__List__Set__string_string:
 
 Mapping.register(Map__List__Set__string_string)
 
+@__cython.auto_pickle(False)
 cdef class Map__Set__List__i32_Map__List__Set__string_string:
     def __init__(self, items=None):
         if isinstance(items, Map__Set__List__i32_Map__List__Set__string_string):
@@ -4654,6 +4676,7 @@ cdef class Map__Set__List__i32_Map__List__Set__string_string:
 
 Mapping.register(Map__Set__List__i32_Map__List__Set__string_string)
 
+@__cython.auto_pickle(False)
 cdef class List__Foo__i64:
     def __init__(self, items=None):
         if isinstance(items, List__Foo__i64):
@@ -4815,6 +4838,7 @@ cdef class List__Foo__i64:
 
 Sequence.register(List__Foo__i64)
 
+@__cython.auto_pickle(False)
 cdef class List__Bar__double:
     def __init__(self, items=None):
         if isinstance(items, List__Bar__double):
@@ -4975,6 +4999,7 @@ cdef class List__Bar__double:
 
 Sequence.register(List__Bar__double)
 
+@__cython.auto_pickle(False)
 cdef class List__Baz__i32:
     def __init__(self, items=None):
         if isinstance(items, List__Baz__i32):

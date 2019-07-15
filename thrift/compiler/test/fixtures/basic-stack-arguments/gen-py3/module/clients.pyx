@@ -153,6 +153,7 @@ cdef object _MyService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class MyService(thrift.py3.client.Client):
     annotations = _MyService_annotations
 
@@ -344,6 +345,7 @@ cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class MyServiceFast(thrift.py3.client.Client):
     annotations = _MyServiceFast_annotations
 

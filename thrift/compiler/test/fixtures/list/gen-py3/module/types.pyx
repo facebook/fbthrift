@@ -39,6 +39,7 @@ import weakref as __weakref
 import builtins as _builtins
 
 
+@__cython.auto_pickle(False)
 cdef class List__string:
     def __init__(self, items=None):
         if isinstance(items, List__string):
@@ -199,6 +200,7 @@ cdef class List__string:
 
 Sequence.register(List__string)
 
+@__cython.auto_pickle(False)
 cdef class Map__i64_List__string:
     def __init__(self, items=None):
         if isinstance(items, Map__i64_List__string):

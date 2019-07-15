@@ -112,6 +112,7 @@ cdef object _Raiser_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class Raiser(thrift.py3.client.Client):
     annotations = _Raiser_annotations
 

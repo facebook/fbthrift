@@ -43,6 +43,7 @@ cimport module1.types as _module1_types
 import module1.types as _module1_types
 
 
+@__cython.auto_pickle(False)
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -248,6 +249,7 @@ cdef class Struct(thrift.py3.types.Struct):
         return (deserialize, (Struct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class BigStruct(thrift.py3.types.Struct):
 
     def __init__(

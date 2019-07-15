@@ -48,6 +48,7 @@ cdef object _NullService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class NullService(thrift.py3.client.Client):
     annotations = _NullService_annotations
 

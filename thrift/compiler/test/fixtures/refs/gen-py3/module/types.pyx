@@ -91,6 +91,7 @@ cdef __TypedEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class TypedEnum(thrift.py3.types.CompiledEnum):
     VAL1 = __TypedEnum_unique_instance(0, "VAL1")
     VAL2 = __TypedEnum_unique_instance(1, "VAL2")
@@ -198,6 +199,7 @@ cdef class __MyUnion_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
     EMPTY = __MyUnionType.__new__(__MyUnionType, 0, "EMPTY")
     anInteger = __MyUnionType.__new__(__MyUnionType, 1, "anInteger")
@@ -239,6 +241,7 @@ __MyUnion_Union_TypeEnumMembers = set(__MyUnionType)
 
 
 
+@__cython.auto_pickle(False)
 cdef class MyUnion(thrift.py3.types.Union):
     Type = __MyUnionType
 
@@ -419,6 +422,7 @@ cdef class MyUnion(thrift.py3.types.Union):
         return (deserialize, (MyUnion, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MyField(thrift.py3.types.Struct):
 
     def __init__(
@@ -669,6 +673,7 @@ cdef class MyField(thrift.py3.types.Struct):
         return (deserialize, (MyField, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -909,6 +914,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithUnion(thrift.py3.types.Struct):
 
     def __init__(
@@ -1149,6 +1155,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         return (deserialize, (StructWithUnion, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class RecursiveStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -1318,6 +1325,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
         return (deserialize, (RecursiveStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithContainers(thrift.py3.types.Struct):
 
     def __init__(
@@ -1631,6 +1639,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         return (deserialize, (StructWithContainers, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
     def __init__(
@@ -1871,6 +1880,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         return (deserialize, (StructWithSharedConst, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
 
     def __init__(
@@ -2000,6 +2010,7 @@ cdef class Empty(thrift.py3.types.Struct):
         return (deserialize, (Empty, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithRef(thrift.py3.types.Struct):
 
     def __init__(
@@ -2240,6 +2251,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         return (deserialize, (StructWithRef, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
     def __init__(
@@ -2480,6 +2492,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         return (deserialize, (StructWithRefTypeUnique, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
     def __init__(
@@ -2720,6 +2733,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         return (deserialize, (StructWithRefTypeShared, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
     def __init__(
@@ -2960,6 +2974,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         return (deserialize, (StructWithRefTypeSharedConst, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 
     def __init__(
@@ -3132,6 +3147,7 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
         return (deserialize, (StructWithRefAndAnnotCppNoexceptMoveCtor, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class List__RecursiveStruct:
     def __init__(self, items=None):
         if isinstance(items, List__RecursiveStruct):
@@ -3292,6 +3308,7 @@ cdef class List__RecursiveStruct:
 
 Sequence.register(List__RecursiveStruct)
 
+@__cython.auto_pickle(False)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):
@@ -3453,6 +3470,7 @@ cdef class List__i32:
 
 Sequence.register(List__i32)
 
+@__cython.auto_pickle(False)
 cdef class Set__i32:
     def __init__(self, items=None):
         if isinstance(items, Set__i32):
@@ -3697,6 +3715,7 @@ cdef class Set__i32:
 
 Set.register(Set__i32)
 
+@__cython.auto_pickle(False)
 cdef class Map__i32_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_i32):

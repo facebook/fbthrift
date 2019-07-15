@@ -79,6 +79,7 @@ cdef class __EmptyEnumMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class EmptyEnum(thrift.py3.types.CompiledEnum):
     __members__ = thrift.py3.types.MappingProxyType(__EmptyEnumEnumMembers)
 
@@ -173,6 +174,7 @@ cdef __MyEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     ONE = __MyEnum_unique_instance(1, "ONE")
     TWO = __MyEnum_unique_instance(2, "TWO")
@@ -326,6 +328,7 @@ cdef __MyBigEnum_unique_instance(int value, str name):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class MyBigEnum(thrift.py3.types.CompiledEnum):
     UNKNOWN = __MyBigEnum_unique_instance(0, "UNKNOWN")
     ONE = __MyBigEnum_unique_instance(1, "ONE")
@@ -427,6 +430,7 @@ cdef inline cMyBigEnum MyBigEnum_to_cpp(MyBigEnum value):
     elif cvalue == 19:
         return MyBigEnum__NINETEEN
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(

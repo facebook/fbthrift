@@ -87,6 +87,7 @@ cdef class __{{struct:name}}_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __{{struct:name}}Type(thrift.py3.types.CompiledEnum):
     EMPTY = __{{struct:name}}Type.__new__(__{{struct:name}}Type, 0, "EMPTY")
     {{#struct:fields}}

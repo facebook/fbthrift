@@ -61,6 +61,7 @@ cdef object _HsTestService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class HsTestService(thrift.py3.client.Client):
     annotations = _HsTestService_annotations
 

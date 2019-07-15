@@ -5,6 +5,7 @@
 #  @generated
 #
 
+cimport cython
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -54,6 +55,7 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move_promise_cmap__binary_int64_t "std::move"(
         cFollyPromise[unique_ptr[cmap[string,int64_t]]])
 
+@cython.auto_pickle(False)
 cdef class Promise__module_types_std_unordered_map__int32_t_string:
     cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise
 
@@ -63,6 +65,7 @@ cdef class Promise__module_types_std_unordered_map__int32_t_string:
         inst.cPromise = move_promise__module_types_std_unordered_map__int32_t_string(cPromise)
         return inst
 
+@cython.auto_pickle(False)
 cdef class Promise_cmap__binary_int64_t:
     cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise
 
@@ -76,6 +79,7 @@ cdef object _SomeService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class SomeServiceInterface(
     ServiceInterface
 ):

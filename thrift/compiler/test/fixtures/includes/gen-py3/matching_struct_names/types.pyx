@@ -41,6 +41,7 @@ cimport module.types as _module_types
 import module.types as _module_types
 
 
+@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -211,6 +212,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return (deserialize, (MyStruct, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class Combo(thrift.py3.types.Struct):
 
     def __init__(
@@ -466,6 +468,7 @@ cdef class Combo(thrift.py3.types.Struct):
         return (deserialize, (Combo, serialize(self)))
 
 
+@__cython.auto_pickle(False)
 cdef class List__MyStruct:
     def __init__(self, items=None):
         if isinstance(items, List__MyStruct):
@@ -626,6 +629,7 @@ cdef class List__MyStruct:
 
 Sequence.register(List__MyStruct)
 
+@__cython.auto_pickle(False)
 cdef class List__List__MyStruct:
     def __init__(self, items=None):
         if isinstance(items, List__List__MyStruct):
@@ -803,6 +807,7 @@ cdef class List__List__MyStruct:
 
 Sequence.register(List__List__MyStruct)
 
+@__cython.auto_pickle(False)
 cdef class List__module_MyStruct:
     def __init__(self, items=None):
         if isinstance(items, List__module_MyStruct):
@@ -963,6 +968,7 @@ cdef class List__module_MyStruct:
 
 Sequence.register(List__module_MyStruct)
 
+@__cython.auto_pickle(False)
 cdef class List__List__module_MyStruct:
     def __init__(self, items=None):
         if isinstance(items, List__List__module_MyStruct):

@@ -5,6 +5,7 @@
 #  @generated
 #
 
+cimport cython
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -54,6 +55,7 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
 
+@cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
@@ -63,6 +65,7 @@ cdef class Promise_cFollyUnit:
         inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
+@cython.auto_pickle(False)
 cdef class Promise_string:
     cdef cFollyPromise[unique_ptr[string]] cPromise
 
@@ -72,6 +75,7 @@ cdef class Promise_string:
         inst.cPromise = move_promise_string(cPromise)
         return inst
 
+@cython.auto_pickle(False)
 cdef class Promise_cbool:
     cdef cFollyPromise[cbool] cPromise
 
@@ -85,6 +89,7 @@ cdef object _MyService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class MyServiceInterface(
     ServiceInterface
 ):

@@ -89,6 +89,7 @@ cdef object _MyRoot_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class MyRoot(thrift.py3.client.Client):
     annotations = _MyRoot_annotations
 
@@ -192,6 +193,7 @@ cdef object _MyNode_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class MyNode(MyRoot):
     annotations = _MyNode_annotations
 
@@ -297,6 +299,7 @@ cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class MyLeaf(MyNode):
     annotations = _MyLeaf_annotations
 

@@ -88,6 +88,7 @@ cdef class __Nada_Union_TypeMeta(type):
 
 
 @__cython.final
+@__cython.auto_pickle(False)
 cdef class __NadaType(thrift.py3.types.CompiledEnum):
     EMPTY = __NadaType.__new__(__NadaType, 0, "EMPTY")
 
@@ -125,6 +126,7 @@ __SetMetaClass(<PyTypeObject*> __NadaType, <PyTypeObject*> __Nada_Union_TypeMeta
 __Nada_Union_TypeEnumMembers = set(__NadaType)
 
 
+@__cython.auto_pickle(False)
 cdef class Empty(thrift.py3.types.Struct):
 
     def __init__(
@@ -256,6 +258,7 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
 
+@__cython.auto_pickle(False)
 cdef class Nada(thrift.py3.types.Union):
     Type = __NadaType
 

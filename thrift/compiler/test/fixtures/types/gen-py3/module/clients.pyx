@@ -76,6 +76,7 @@ cdef object _SomeService_annotations = _py_types.MappingProxyType({
 })
 
 
+@cython.auto_pickle(False)
 cdef class SomeService(thrift.py3.client.Client):
     annotations = _SomeService_annotations
 
