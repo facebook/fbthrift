@@ -2,7 +2,6 @@ from enum import Enum
 from types import TracebackType
 from typing import (
     Any,
-    AsyncContextManager,
     Callable,
     ClassVar,
     Dict,
@@ -33,7 +32,7 @@ class ClientType(Enum):
     THRIFT_UNKNOWN_CLIENT_TYPE: ClientType = ...
     THRIFT_UNFRAMED_COMPACT_DEPRECATED: ClientType = ...
 
-class Client(AsyncContextManager[cT]):
+class Client:
     def set_persistent_header(self, key: str, value: str) -> None: ...
     async def __aenter__(self: cT) -> cT: ...
     async def __aexit__(
