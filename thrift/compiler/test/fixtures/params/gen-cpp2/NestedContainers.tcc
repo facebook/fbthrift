@@ -8,13 +8,7 @@
 
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/NestedContainers.h"
 
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/gen/service_tcc.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP, ::std::map<int32_t, ::std::vector<int32_t>>*>> NestedContainers_mapList_pargs;

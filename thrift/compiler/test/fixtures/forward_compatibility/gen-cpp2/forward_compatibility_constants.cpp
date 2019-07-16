@@ -7,7 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_constants.h"
 
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
 
 namespace cpp2 {
 

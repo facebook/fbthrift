@@ -18,6 +18,8 @@
 
 #include "<%program:include_prefix%><%program:name%>_constants.h"
 
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
 <%#program:constants?%>
 <%#program:thrift_includes%>
   <%#program:constants?%>
@@ -25,7 +27,6 @@
   <%/program:constants?%>
 <%/program:thrift_includes%>
 <%/program:constants?%>
-#include <folly/Indestructible.h>
 
 <% > common/namespace_cpp2_begin%>
 

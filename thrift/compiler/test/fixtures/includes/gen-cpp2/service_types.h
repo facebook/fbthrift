@@ -6,10 +6,8 @@
  */
 #pragma once
 
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
-#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/gen/module_types_h.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
+
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_types.h"

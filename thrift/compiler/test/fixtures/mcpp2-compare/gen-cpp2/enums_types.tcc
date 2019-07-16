@@ -10,11 +10,6 @@
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-
 namespace facebook { namespace ns { namespace qwerty {
 
 }}} // facebook::ns::qwerty

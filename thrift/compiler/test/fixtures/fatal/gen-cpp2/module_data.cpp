@@ -7,6 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 namespace test_cpp2 { namespace cpp_reflection {
 
 constexpr const std::size_t _enum1EnumDataStorage::size;

@@ -7,8 +7,7 @@
 #include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.h"
 #include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_types.tcc"
 
-#include <algorithm>
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_types_cpp.h>
 
 #include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_data.h"
 

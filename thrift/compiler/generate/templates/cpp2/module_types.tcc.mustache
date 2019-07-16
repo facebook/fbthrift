@@ -21,16 +21,6 @@
 
 #include <thrift/lib/cpp2/gen/module_types_tcc.h>
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
-<%#program:json?%>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-<%/program:json?%>
-<%#program:nimble?%>
-#include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
-<%/program:nimble?%>
-
 <% > module_types_tcc/declare_enums%>
 <% > module_types_tcc/tcc_struct_traits%>
 

@@ -7,7 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_constants.h"
 
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
 
 namespace test_cpp2 { namespace cpp_reflection {
 

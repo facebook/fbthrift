@@ -6,9 +6,7 @@
  */
 #pragma once
 
-#include <array>
-#include <cstddef>
-#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp2/gen/module_data_h.h>
 
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_types.h"
 

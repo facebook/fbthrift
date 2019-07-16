@@ -6,11 +6,8 @@
  */
 #pragma once
 
-#include <folly/futures/Future.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp2/ServiceIncludes.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
-#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp2/gen/service_h.h>
+
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/CAsyncClient.h"
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_types.h"
 

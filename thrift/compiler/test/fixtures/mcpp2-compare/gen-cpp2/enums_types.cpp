@@ -7,8 +7,7 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.tcc"
 
-#include <algorithm>
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_types_cpp.h>
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_data.h"
 

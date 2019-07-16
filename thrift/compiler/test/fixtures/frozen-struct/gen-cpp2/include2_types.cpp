@@ -7,8 +7,7 @@
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.tcc"
 
-#include <algorithm>
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_types_cpp.h>
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_data.h"
 

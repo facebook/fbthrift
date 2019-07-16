@@ -7,6 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 namespace facebook { namespace ns { namespace qwerty {
 
 constexpr const std::size_t _AnEnumAEnumDataStorage::size;

@@ -8,13 +8,7 @@
 
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/SomeService.h"
 
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp/transport/THeader.h>
-#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/gen/service_tcc.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_MAP,  ::apache::thrift::fixtures::types::SomeMap*>> SomeService_bounce_map_pargs;

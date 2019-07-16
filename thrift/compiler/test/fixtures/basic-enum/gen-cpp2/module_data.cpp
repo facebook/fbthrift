@@ -7,6 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/basic-enum/gen-cpp2/module_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 namespace test { namespace fixtures { namespace enumstrict {
 
 constexpr const std::size_t _EmptyEnumEnumDataStorage::size;

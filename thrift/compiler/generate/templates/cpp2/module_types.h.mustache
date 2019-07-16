@@ -17,13 +17,11 @@
 %><% > Autogen%>
 #pragma once
 
+#include <thrift/lib/cpp2/gen/module_types_h.h>
+
 <%#program:optionals?%>
 #include <folly/Optional.h>
 <%/program:optionals?%>
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
-#include <thrift/lib/cpp2/Thrift.h>
-#include <thrift/lib/cpp2/gen/module_types_h.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
 <%#program:frozen?%>
 #include <thrift/lib/cpp/Frozen.h>
 <%/program:frozen?%>

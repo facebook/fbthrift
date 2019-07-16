@@ -9,10 +9,6 @@
 
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
-
 namespace test_cpp2 { namespace cpp_reflection {
 std::unique_ptr<apache::thrift::AsyncProcessor> service1SvIf::getProcessor() {
   return std::make_unique<service1AsyncProcessor>(this);

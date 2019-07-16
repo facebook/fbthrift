@@ -7,15 +7,7 @@
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service2AsyncClient.h"
 
-#include <folly/io/IOBuf.h>
-#include <folly/io/IOBufQueue.h>
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/gen/client_cpp.h>
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
-#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 
 namespace test_cpp2 { namespace cpp_reflection {
 typedef apache::thrift::ThriftPresult<false> service2_methodA_pargs;

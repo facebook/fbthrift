@@ -7,8 +7,7 @@
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_types.tcc"
 
-#include <algorithm>
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_types_cpp.h>
 
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_data.h"
 

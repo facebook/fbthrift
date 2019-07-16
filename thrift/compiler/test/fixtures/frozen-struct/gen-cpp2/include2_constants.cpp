@@ -7,7 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_constants.h"
 
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
 
 namespace some { namespace ns {
 

@@ -13,13 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef SERVICEINCLUDES_H
-#define SERVICEINCLUDES_H
 
-#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <unordered_map>
-#include <unordered_set>
+#pragma once
 
-#endif
+#include <array>
+#include <cstddef>
+
+#include <thrift/lib/cpp/Thrift.h>

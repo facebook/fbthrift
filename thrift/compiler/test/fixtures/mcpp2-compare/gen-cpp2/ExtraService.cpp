@@ -9,10 +9,6 @@
 
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/cpp2/protocol/Protocol.h>
-
 namespace extra { namespace svc {
 std::unique_ptr<apache::thrift::AsyncProcessor> ExtraServiceSvIf::getProcessor() {
   return std::make_unique<ExtraServiceAsyncProcessor>(this);

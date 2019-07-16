@@ -7,7 +7,8 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_constants.h"
 
-#include <folly/Indestructible.h>
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
 
 namespace matching_module_name {
 

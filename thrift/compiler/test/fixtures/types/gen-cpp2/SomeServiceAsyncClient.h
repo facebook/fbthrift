@@ -6,13 +6,8 @@
  */
 #pragma once
 
-#include <folly/futures/Future.h>
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/Task.h>
-#endif
-#include <thrift/lib/cpp/TApplicationException.h>
-#include <thrift/lib/cpp2/async/AsyncClient.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/gen/client_h.h>
+
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
 

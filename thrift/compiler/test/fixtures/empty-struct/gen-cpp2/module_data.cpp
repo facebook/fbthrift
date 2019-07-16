@@ -7,4 +7,6 @@
 
 #include "thrift/compiler/test/fixtures/empty-struct/gen-cpp2/module_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 

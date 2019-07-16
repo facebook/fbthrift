@@ -7,4 +7,6 @@
 
 #include "thrift/compiler/test/fixtures/forward_compatibility/gen-cpp2/forward_compatibility_data.h"
 
+#include <thrift/lib/cpp2/gen/module_data_cpp.h>
+
 

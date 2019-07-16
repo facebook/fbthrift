@@ -7,9 +7,10 @@
 
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_constants.h"
 
+#include <thrift/lib/cpp2/gen/module_constants_cpp.h>
+
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_constants.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_constants.h"
-#include <folly/Indestructible.h>
 
 namespace module2 {
 
