@@ -73,19 +73,20 @@ void MyServiceFastAsyncClient::hasDataById(std::unique_ptr<apache::thrift::Reque
 
 void MyServiceFastAsyncClient::hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      getChannel()->getProtocolId(),
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
       this->handlers_,
       this->getServiceName(),
       "MyServiceFast.hasDataById");
   apache::thrift::RequestCallback::Context callbackContext;
-  callbackContext.protocolId = getChannel()->getProtocolId();
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   hasDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id);
 }
 
 void MyServiceFastAsyncClient::hasDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id) {
-  switch(getChannel()->getProtocolId()) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
@@ -113,8 +114,8 @@ bool MyServiceFastAsyncClient::sync_hasDataById(int64_t id) {
 bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
-  auto protocolId = getChannel()->getProtocolId();
-  auto evb = getChannel()->getEventBase();
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       protocolId,
       rpcOptions.releaseWriteHeaders(),
@@ -234,19 +235,20 @@ void MyServiceFastAsyncClient::getDataById(std::unique_ptr<apache::thrift::Reque
 
 void MyServiceFastAsyncClient::getDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      getChannel()->getProtocolId(),
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
       this->handlers_,
       this->getServiceName(),
       "MyServiceFast.getDataById");
   apache::thrift::RequestCallback::Context callbackContext;
-  callbackContext.protocolId = getChannel()->getProtocolId();
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   getDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id);
 }
 
 void MyServiceFastAsyncClient::getDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id) {
-  switch(getChannel()->getProtocolId()) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
@@ -274,8 +276,8 @@ void MyServiceFastAsyncClient::sync_getDataById(::std::string& _return, int64_t 
 void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, ::std::string& _return, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
-  auto protocolId = getChannel()->getProtocolId();
-  auto evb = getChannel()->getEventBase();
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       protocolId,
       rpcOptions.releaseWriteHeaders(),
@@ -393,19 +395,20 @@ void MyServiceFastAsyncClient::putDataById(std::unique_ptr<apache::thrift::Reque
 
 void MyServiceFastAsyncClient::putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      getChannel()->getProtocolId(),
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
       this->handlers_,
       this->getServiceName(),
       "MyServiceFast.putDataById");
   apache::thrift::RequestCallback::Context callbackContext;
-  callbackContext.protocolId = getChannel()->getProtocolId();
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   putDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id, data);
 }
 
 void MyServiceFastAsyncClient::putDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
-  switch(getChannel()->getProtocolId()) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
@@ -433,8 +436,8 @@ void MyServiceFastAsyncClient::sync_putDataById(int64_t id, const ::std::string&
 void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
-  auto protocolId = getChannel()->getProtocolId();
-  auto evb = getChannel()->getEventBase();
+  auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
       protocolId,
       rpcOptions.releaseWriteHeaders(),
@@ -552,20 +555,21 @@ void MyServiceFastAsyncClient::lobDataById(std::unique_ptr<apache::thrift::Reque
 
 void MyServiceFastAsyncClient::lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const ::std::string& data) {
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      getChannel()->getProtocolId(),
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
       this->handlers_,
       this->getServiceName(),
       "MyServiceFast.lobDataById");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.oneWay = true;
-  callbackContext.protocolId = getChannel()->getProtocolId();
+  callbackContext.protocolId =
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
   lobDataByIdImpl(rpcOptions, std::move(ctx), apache::thrift::toRequestClientCallbackPtr(std::move(callback), std::move(callbackContext)), id, data);
 }
 
 void MyServiceFastAsyncClient::lobDataByIdImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback, int64_t id, const ::std::string& data) {
-  switch(getChannel()->getProtocolId()) {
+  switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
@@ -593,9 +597,9 @@ void MyServiceFastAsyncClient::sync_lobDataById(int64_t id, const ::std::string&
 void MyServiceFastAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
   apache::thrift::ClientSyncCallback<true> callback(&_returnState);
-  auto evb = getChannel()->getEventBase();
+  auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      getChannel()->getProtocolId(),
+      apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId(),
       rpcOptions.releaseWriteHeaders(),
       this->handlers_,
       this->getServiceName(),
