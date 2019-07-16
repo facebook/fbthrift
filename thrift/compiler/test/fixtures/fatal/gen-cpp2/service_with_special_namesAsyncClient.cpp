@@ -355,7 +355,12 @@ void service_with_special_namesAsyncClient::get(std::unique_ptr<apache::thrift::
 }
 
 void service_with_special_namesAsyncClient::get(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.get");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.get");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -393,7 +398,12 @@ int32_t service_with_special_namesAsyncClient::sync_get(apache::thrift::RpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.get");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.get");
   getImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -506,7 +516,12 @@ void service_with_special_namesAsyncClient::getter(std::unique_ptr<apache::thrif
 }
 
 void service_with_special_namesAsyncClient::getter(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.getter");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.getter");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -544,7 +559,12 @@ int32_t service_with_special_namesAsyncClient::sync_getter(apache::thrift::RpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.getter");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.getter");
   getterImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -657,7 +677,12 @@ void service_with_special_namesAsyncClient::lists(std::unique_ptr<apache::thrift
 }
 
 void service_with_special_namesAsyncClient::lists(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.lists");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.lists");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -695,7 +720,12 @@ int32_t service_with_special_namesAsyncClient::sync_lists(apache::thrift::RpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.lists");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.lists");
   listsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -808,7 +838,12 @@ void service_with_special_namesAsyncClient::maps(std::unique_ptr<apache::thrift:
 }
 
 void service_with_special_namesAsyncClient::maps(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.maps");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.maps");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -846,7 +881,12 @@ int32_t service_with_special_namesAsyncClient::sync_maps(apache::thrift::RpcOpti
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.maps");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.maps");
   mapsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -959,7 +999,12 @@ void service_with_special_namesAsyncClient::name(std::unique_ptr<apache::thrift:
 }
 
 void service_with_special_namesAsyncClient::name(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.name");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.name");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -997,7 +1042,12 @@ int32_t service_with_special_namesAsyncClient::sync_name(apache::thrift::RpcOpti
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.name");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.name");
   nameImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -1110,7 +1160,12 @@ void service_with_special_namesAsyncClient::name_to_value(std::unique_ptr<apache
 }
 
 void service_with_special_namesAsyncClient::name_to_value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.name_to_value");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.name_to_value");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -1148,7 +1203,12 @@ int32_t service_with_special_namesAsyncClient::sync_name_to_value(apache::thrift
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.name_to_value");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.name_to_value");
   name_to_valueImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -1261,7 +1321,12 @@ void service_with_special_namesAsyncClient::names(std::unique_ptr<apache::thrift
 }
 
 void service_with_special_namesAsyncClient::names(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.names");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.names");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -1299,7 +1364,12 @@ int32_t service_with_special_namesAsyncClient::sync_names(apache::thrift::RpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.names");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.names");
   namesImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -1412,7 +1482,12 @@ void service_with_special_namesAsyncClient::prefix_tree(std::unique_ptr<apache::
 }
 
 void service_with_special_namesAsyncClient::prefix_tree(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.prefix_tree");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.prefix_tree");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -1450,7 +1525,12 @@ int32_t service_with_special_namesAsyncClient::sync_prefix_tree(apache::thrift::
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.prefix_tree");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.prefix_tree");
   prefix_treeImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -1563,7 +1643,12 @@ void service_with_special_namesAsyncClient::sets(std::unique_ptr<apache::thrift:
 }
 
 void service_with_special_namesAsyncClient::sets(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.sets");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.sets");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -1601,7 +1686,12 @@ int32_t service_with_special_namesAsyncClient::sync_sets(apache::thrift::RpcOpti
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.sets");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.sets");
   setsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -1714,7 +1804,12 @@ void service_with_special_namesAsyncClient::setter(std::unique_ptr<apache::thrif
 }
 
 void service_with_special_namesAsyncClient::setter(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.setter");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.setter");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -1752,7 +1847,12 @@ int32_t service_with_special_namesAsyncClient::sync_setter(apache::thrift::RpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.setter");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.setter");
   setterImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -1865,7 +1965,12 @@ void service_with_special_namesAsyncClient::str(std::unique_ptr<apache::thrift::
 }
 
 void service_with_special_namesAsyncClient::str(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.str");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.str");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -1903,7 +2008,12 @@ int32_t service_with_special_namesAsyncClient::sync_str(apache::thrift::RpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.str");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.str");
   strImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2016,7 +2126,12 @@ void service_with_special_namesAsyncClient::strings(std::unique_ptr<apache::thri
 }
 
 void service_with_special_namesAsyncClient::strings(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.strings");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.strings");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2054,7 +2169,12 @@ int32_t service_with_special_namesAsyncClient::sync_strings(apache::thrift::RpcO
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.strings");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.strings");
   stringsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2167,7 +2287,12 @@ void service_with_special_namesAsyncClient::type(std::unique_ptr<apache::thrift:
 }
 
 void service_with_special_namesAsyncClient::type(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.type");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.type");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2205,7 +2330,12 @@ int32_t service_with_special_namesAsyncClient::sync_type(apache::thrift::RpcOpti
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.type");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.type");
   typeImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2318,7 +2448,12 @@ void service_with_special_namesAsyncClient::value(std::unique_ptr<apache::thrift
 }
 
 void service_with_special_namesAsyncClient::value(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.value");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.value");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2356,7 +2491,12 @@ int32_t service_with_special_namesAsyncClient::sync_value(apache::thrift::RpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.value");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.value");
   valueImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2469,7 +2609,12 @@ void service_with_special_namesAsyncClient::value_to_name(std::unique_ptr<apache
 }
 
 void service_with_special_namesAsyncClient::value_to_name(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.value_to_name");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.value_to_name");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2507,7 +2652,12 @@ int32_t service_with_special_namesAsyncClient::sync_value_to_name(apache::thrift
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.value_to_name");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.value_to_name");
   value_to_nameImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2620,7 +2770,12 @@ void service_with_special_namesAsyncClient::values(std::unique_ptr<apache::thrif
 }
 
 void service_with_special_namesAsyncClient::values(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.values");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.values");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2658,7 +2813,12 @@ int32_t service_with_special_namesAsyncClient::sync_values(apache::thrift::RpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.values");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.values");
   valuesImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2771,7 +2931,12 @@ void service_with_special_namesAsyncClient::id(std::unique_ptr<apache::thrift::R
 }
 
 void service_with_special_namesAsyncClient::id(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.id");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.id");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2809,7 +2974,12 @@ int32_t service_with_special_namesAsyncClient::sync_id(apache::thrift::RpcOption
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.id");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.id");
   idImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -2922,7 +3092,12 @@ void service_with_special_namesAsyncClient::ids(std::unique_ptr<apache::thrift::
 }
 
 void service_with_special_namesAsyncClient::ids(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.ids");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.ids");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -2960,7 +3135,12 @@ int32_t service_with_special_namesAsyncClient::sync_ids(apache::thrift::RpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.ids");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.ids");
   idsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3073,7 +3253,12 @@ void service_with_special_namesAsyncClient::descriptor(std::unique_ptr<apache::t
 }
 
 void service_with_special_namesAsyncClient::descriptor(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.descriptor");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.descriptor");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -3111,7 +3296,12 @@ int32_t service_with_special_namesAsyncClient::sync_descriptor(apache::thrift::R
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.descriptor");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.descriptor");
   descriptorImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3224,7 +3414,12 @@ void service_with_special_namesAsyncClient::descriptors(std::unique_ptr<apache::
 }
 
 void service_with_special_namesAsyncClient::descriptors(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.descriptors");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.descriptors");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -3262,7 +3457,12 @@ int32_t service_with_special_namesAsyncClient::sync_descriptors(apache::thrift::
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.descriptors");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.descriptors");
   descriptorsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3375,7 +3575,12 @@ void service_with_special_namesAsyncClient::key(std::unique_ptr<apache::thrift::
 }
 
 void service_with_special_namesAsyncClient::key(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.key");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.key");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -3413,7 +3618,12 @@ int32_t service_with_special_namesAsyncClient::sync_key(apache::thrift::RpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.key");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.key");
   keyImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3526,7 +3736,12 @@ void service_with_special_namesAsyncClient::keys(std::unique_ptr<apache::thrift:
 }
 
 void service_with_special_namesAsyncClient::keys(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.keys");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.keys");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -3564,7 +3779,12 @@ int32_t service_with_special_namesAsyncClient::sync_keys(apache::thrift::RpcOpti
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.keys");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.keys");
   keysImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3677,7 +3897,12 @@ void service_with_special_namesAsyncClient::annotation(std::unique_ptr<apache::t
 }
 
 void service_with_special_namesAsyncClient::annotation(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.annotation");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.annotation");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -3715,7 +3940,12 @@ int32_t service_with_special_namesAsyncClient::sync_annotation(apache::thrift::R
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.annotation");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.annotation");
   annotationImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3828,7 +4058,12 @@ void service_with_special_namesAsyncClient::annotations(std::unique_ptr<apache::
 }
 
 void service_with_special_namesAsyncClient::annotations(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.annotations");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.annotations");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -3866,7 +4101,12 @@ int32_t service_with_special_namesAsyncClient::sync_annotations(apache::thrift::
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.annotations");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.annotations");
   annotationsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -3979,7 +4219,12 @@ void service_with_special_namesAsyncClient::member(std::unique_ptr<apache::thrif
 }
 
 void service_with_special_namesAsyncClient::member(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.member");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.member");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -4017,7 +4262,12 @@ int32_t service_with_special_namesAsyncClient::sync_member(apache::thrift::RpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.member");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.member");
   memberImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -4130,7 +4380,12 @@ void service_with_special_namesAsyncClient::members(std::unique_ptr<apache::thri
 }
 
 void service_with_special_namesAsyncClient::members(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.members");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.members");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -4168,7 +4423,12 @@ int32_t service_with_special_namesAsyncClient::sync_members(apache::thrift::RpcO
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.members");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.members");
   membersImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -4281,7 +4541,12 @@ void service_with_special_namesAsyncClient::field(std::unique_ptr<apache::thrift
 }
 
 void service_with_special_namesAsyncClient::field(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.field");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.field");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -4319,7 +4584,12 @@ int32_t service_with_special_namesAsyncClient::sync_field(apache::thrift::RpcOpt
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.field");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.field");
   fieldImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
@@ -4432,7 +4702,12 @@ void service_with_special_namesAsyncClient::fields(std::unique_ptr<apache::thrif
 }
 
 void service_with_special_namesAsyncClient::fields(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.fields");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.fields");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -4470,7 +4745,12 @@ int32_t service_with_special_namesAsyncClient::sync_fields(apache::thrift::RpcOp
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "service_with_special_names.fields");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "service_with_special_names.fields");
   fieldsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);

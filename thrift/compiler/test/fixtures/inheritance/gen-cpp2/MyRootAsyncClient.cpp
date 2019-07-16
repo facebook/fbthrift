@@ -31,7 +31,12 @@ void MyRootAsyncClient::do_root(std::unique_ptr<apache::thrift::RequestCallback>
 }
 
 void MyRootAsyncClient::do_root(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(getChannel()->getProtocolId(), rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "MyRoot.do_root");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      getChannel()->getProtocolId(),
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "MyRoot.do_root");
   apache::thrift::RequestCallback::Context callbackContext;
   callbackContext.protocolId = getChannel()->getProtocolId();
   callbackContext.ctx = std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx);
@@ -69,7 +74,12 @@ void MyRootAsyncClient::sync_do_root(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientSyncCallback<false> callback(&_returnState);
   auto protocolId = getChannel()->getProtocolId();
   auto evb = getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "MyRoot.do_root");
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "MyRoot.do_root");
   do_rootImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback));
   callback.waitUntilDone(evb);
   _returnState.resetProtocolId(protocolId);
