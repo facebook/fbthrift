@@ -1,2 +1,1 @@
 hack src/module1.thrift
-hack:oldenum=1 src/module2.thrift

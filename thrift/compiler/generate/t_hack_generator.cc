@@ -51,7 +51,6 @@ class t_hack_generator : public t_oop_generator {
     json_ = option_is_specified(parsed_options, "json");
     rest_ = option_is_specified(parsed_options, "rest");
     phps_ = option_is_specified(parsed_options, "server");
-    oldenum_ = option_is_specified(parsed_options, "oldenum");
     strict_types_ = option_is_specified(parsed_options, "stricttypes");
     arraysets_ = option_is_specified(parsed_options, "arraysets");
     no_nullables_ = option_is_specified(parsed_options, "nonullables");
@@ -549,11 +548,6 @@ class t_hack_generator : public t_oop_generator {
   bool phps_;
 
   /**
-   * * Whether to generate the old style php enums
-   */
-  bool oldenum_;
-
-  /**
    * * Whether to use collection classes everywhere vs KeyedContainer
    */
   bool strict_types_;
@@ -1041,15 +1035,6 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     typehint = "int";
     f_types_ << "final class " << hack_name(tenum, true)
              << " extends Flags {\n";
-  } else if (oldenum_) {
-    typehint = hack_name(tenum, true) + "Type";
-    f_types_ << "newtype " << typehint << " as arraykey = int;\n";
-    std::string const* attributes = get_hack_annotation(tenum, "attributes");
-    if (attributes) {
-      f_types_ << "<<" << *attributes << ">>\n";
-    }
-    f_types_ << "final class " << hack_name(tenum, true) << " extends Enum<"
-             << typehint << "> {\n";
   } else {
     hack_enum = true;
     typehint = hack_name(tenum, true);
@@ -1071,31 +1056,6 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
       indent(f_types_) << "const " << typehint << " ";
     }
     indent(f_types_) << (*c_iter)->get_name() << " = " << value << ";\n";
-  }
-
-  if (oldenum_) {
-    // names
-    indent(f_types_) << "public static "
-                     << generate_array_typehint("int", "string")
-                     << " $__names = " << array_keyword_ << "[\n";
-    for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-      int32_t value = (*c_iter)->get_value();
-
-      indent(f_types_) << "  " << value << " => '" << (*c_iter)->get_name()
-                       << "',\n";
-    }
-    indent(f_types_) << "];\n";
-    // values
-    indent(f_types_) << "public static "
-                     << generate_array_typehint("string", "int")
-                     << " $__values = " << array_keyword_ << "[\n";
-    for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-      int32_t value = (*c_iter)->get_value();
-
-      indent(f_types_) << "  '" << (*c_iter)->get_name() << "' => " << value
-                       << ",\n";
-    }
-    indent(f_types_) << "];\n";
   }
 
   indent_down();
@@ -3737,8 +3697,7 @@ t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool shape) {
     if (is_bitmask_enum((t_enum*)ttype)) {
       return "int";
     } else {
-      return (nullable ? "?" : "") + hack_name(ttype) +
-          (oldenum_ ? "Type" : "");
+      return (nullable ? "?" : "") + hack_name(ttype);
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
@@ -5194,7 +5153,6 @@ THRIFT_REGISTER_GENERATOR(
     "HACK",
     "    server:          Generate Hack server stubs.\n"
     "    rest:            Generate Hack REST processors.\n"
-    "    oldenum:         Generate enums with $__names and $__values fields.\n"
     "    json:            Generate functions to parse JSON into thrift struct.\n"
     "    mangledsvcs      Generate services with namespace mangling.\n"
     "    stricttypes      Use Collection classes everywhere rather than KeyedContainer.\n"
