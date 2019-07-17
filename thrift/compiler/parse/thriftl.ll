@@ -33,6 +33,8 @@
 // by MSVC. With this, we get rid of that include to compile with MSVC.
 #ifdef _WIN32
 #  define YY_NO_UNISTD_H
+// Provides isatty and fileno
+#  include <io.h>
 #endif
 
 #include <errno.h>
