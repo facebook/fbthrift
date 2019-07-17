@@ -67,10 +67,6 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
     return false;
   }
 
-  bool isReplyChecksumNeeded() const override {
-    return true;
-  }
-
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
@@ -135,10 +131,6 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   }
 
   bool isStream() const override {
-    return true;
-  }
-
-  bool isReplyChecksumNeeded() const override {
     return true;
   }
 

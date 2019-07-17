@@ -58,6 +58,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         kind_(metadata.kind_ref().value_or(
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
         active_(true),
+        checksumRequested_(metadata.crc32c_ref().has_value()),
         requestFlags_(metadata.flags_ref().value_or(0)),
         reqContext_(&connContext, &header_),
         queueTimeout_(serverConfigs_),
@@ -176,6 +177,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
       cancelTimeout();
       sendErrorWrappedInternal(std::move(ew), exCode);
     }
+  }
+
+  bool isReplyChecksumNeeded() const override {
+    return checksumRequested_;
   }
 
  protected:
@@ -373,6 +378,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
  private:
   const RpcKind kind_;
   std::atomic<bool> active_;
+  bool checksumRequested_{false};
   transport::THeader header_;
   const uint64_t requestFlags_{0};
   Cpp2RequestContext reqContext_;
