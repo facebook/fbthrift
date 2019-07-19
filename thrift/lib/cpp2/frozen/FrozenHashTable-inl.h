@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// IWYU pragma: private, include "thrift/lib/cpp2/frozen/Frozen.h"
+
 namespace apache {
 namespace thrift {
 namespace frozen {

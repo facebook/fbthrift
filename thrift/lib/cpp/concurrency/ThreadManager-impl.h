@@ -13,6 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// IWYU pragma: private, include "thrift/lib/cpp/concurrency/ThreadManager.h"
+
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
