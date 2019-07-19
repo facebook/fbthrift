@@ -35,6 +35,8 @@ class TestServiceMock : public StreamServiceSvIf {
   apache::thrift::ResponseAndStream<int32_t, int32_t> leakCheck(
       int32_t from,
       int32_t to) override;
+  apache::thrift::ResponseAndStream<int32_t, int32_t>
+  leakCheckWithSleep(int32_t from, int32_t to, int32_t sleepMs) override;
   int32_t instanceCount() override;
 
   apache::thrift::ResponseAndStream<int32_t, int32_t> sleepWithResponse(

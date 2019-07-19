@@ -93,6 +93,12 @@ ResponseAndStream<int32_t, int32_t> TestServiceMock::leakCheck(
               &executor_)};
 }
 
+ResponseAndStream<int32_t, int32_t>
+TestServiceMock::leakCheckWithSleep(int32_t from, int32_t to, int32_t sleepMs) {
+  std::this_thread::sleep_for(std::chrono::milliseconds{sleepMs});
+  return leakCheck(from, to);
+}
+
 int32_t TestServiceMock::instanceCount() {
   return LeakDetector::getInstanceCount();
 }

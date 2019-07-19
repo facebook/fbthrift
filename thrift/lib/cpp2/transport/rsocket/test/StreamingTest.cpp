@@ -37,8 +37,7 @@ namespace thrift {
 
 namespace {
 void waitNoLeak(StreamServiceAsyncClient* client) {
-  auto deadline =
-      std::chrono::steady_clock::now() + std::chrono::milliseconds{100};
+  auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds{2};
   do {
     std::this_thread::yield();
     if (client->sync_instanceCount() == 0) {
@@ -49,7 +48,7 @@ void waitNoLeak(StreamServiceAsyncClient* client) {
       return;
     }
   } while (std::chrono::steady_clock::now() < deadline);
-  CHECK(false);
+  FAIL() << "waitNoLeak failed";
 }
 } // namespace
 
@@ -270,7 +269,7 @@ TEST_P(StreamingTest, ThrowsWithResponse) {
 
 TEST_P(StreamingTest, LifeTimeTesting) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    CHECK_EQ(0, client->sync_instanceCount());
+    ASSERT_EQ(0, client->sync_instanceCount());
 
     { // Never subscribe
       auto result = client->sync_leakCheck(0, 100);
@@ -415,7 +414,7 @@ TEST_P(StreamingTest, ChunkTimeout) {
                 [](auto) { FAIL() << "Should have failed."; },
                 [&failed](auto ew) {
                   ew.with_exception([&](TTransportException& tae) {
-                    CHECK_EQ(
+                    ASSERT_EQ(
                         TTransportException::TTransportExceptionType::TIMED_OUT,
                         tae.getType());
                     failed = true;
@@ -476,7 +475,7 @@ TEST_P(StreamingTest, TwoRequestsOneTimesOut) {
         client->sync_sendMessage(1, false, false);
         ASSERT_TRUE(baton.try_wait_for(std::chrono::milliseconds(100)));
         baton.reset();
-        CHECK_EQ(last, 1);
+        ASSERT_EQ(last, 1);
 
         // timeout a single request
         callSleep(client.get(), 1, 100, true);
@@ -488,7 +487,7 @@ TEST_P(StreamingTest, TwoRequestsOneTimesOut) {
         client->sync_sendMessage(2, true, false);
         ASSERT_TRUE(baton.try_wait_for(waitForMs));
         baton.reset();
-        CHECK_EQ(last, 2);
+        ASSERT_EQ(last, 2);
 
         std::move(subscription).join();
 
@@ -715,6 +714,35 @@ TEST_P(StreamingTest, DetachAndAttachEventBase) {
       .ensure([keepAlive = std::move(keepAlive)] {})
       .via(&mainEventBase)
       .waitVia(&mainEventBase);
+}
+
+TEST_P(StreamingTest, ServerCompletesFirstResponseAfterClientDisconnects) {
+  folly::EventBase evb;
+
+  auto makeChannel = [&]() -> std::shared_ptr<ClientChannel> {
+    auto socket = TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port_));
+    if (GetParam().useRocketClient) {
+      return RocketClientChannel::newChannel(std::move(socket));
+    }
+    return RSocketClientChannel::newChannel(std::move(socket));
+  };
+
+  {
+    // Force the client to disconnect before the server completes the first
+    // response.
+    RpcOptions rpcOptions;
+    rpcOptions.setTimeout(std::chrono::milliseconds{100});
+    rpcOptions.setClientOnlyTimeouts(true);
+    EXPECT_THROW(
+        StreamServiceAsyncClient{makeChannel()}.sync_leakCheckWithSleep(
+            rpcOptions, 0, 0, 200),
+        TTransportException);
+  }
+
+  // Wait for the server to finish processing the first response, then check
+  // that no streams are leaked.
+  StreamServiceAsyncClient client{makeChannel()};
+  waitNoLeak(&client);
 }
 
 TEST_P(BlockStreamingTest, StreamBlockTaskQueue) {
