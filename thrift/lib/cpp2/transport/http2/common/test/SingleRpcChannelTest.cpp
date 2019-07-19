@@ -123,24 +123,44 @@ TEST_F(ChannelTestFixture, BadHeaderFields) {
   apache::thrift::server::ServerConfigsMock server;
   EchoProcessor processor(
       server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  unordered_map<string, string> headersExpectNoEncoding{
+      {"X-FB-Header-Uppercase", "good value"},
+      {"x-fb-header-lowercase", "good value"},
+      {"good header1", "good value"}};
+  unordered_map<string, string> headersExpectEncoding{
+      {"good header2", "bad\x01\x02value\r\n"},
+      {"bad\x01header", "good value"},
+      {"header:with:colon", "bad value\r\n\r\n"},
+      {"asdf:gh", "{\"json\":\"data\"}"}};
   unordered_map<string, string> inputHeaders;
-  inputHeaders["good header1"] = "good value";
-  inputHeaders["good header2"] = "bad\x01\x02value\r\n";
-  inputHeaders["bad\x01header"] = "good value";
-  inputHeaders["bad\x01header"] = "bad value\r\n\r\n";
-  inputHeaders["asdf:gh"] = "{\"json\":\"data\"}";
+  inputHeaders.insert(
+      headersExpectNoEncoding.begin(), headersExpectNoEncoding.end());
+  inputHeaders.insert(
+      headersExpectEncoding.begin(), headersExpectEncoding.end());
   string inputPayload = "single stream payload";
   unordered_map<string, string>* outputHeaders;
   IOBuf* outputPayload;
   sendAndReceiveStream(
       &processor, inputHeaders, inputPayload, 0, outputHeaders, outputPayload);
-  EXPECT_EQ(5, outputHeaders->size());
+  EXPECT_EQ(
+      1 /* extrakey/value */ + headersExpectEncoding.size() +
+          headersExpectNoEncoding.size(),
+      outputHeaders->size());
+  auto numUnencoded = 0;
   for (const auto& elem : *outputHeaders) {
-    LOG(INFO) << elem.first << ": " << elem.second;
+    LOG(INFO) << elem.first << ":" << elem.second;
     if (elem.first.find("encode_") != 0) {
-      EXPECT_EQ("good value", outputHeaders->at("good header1"));
+      if (elem.first == "extrakey") {
+        EXPECT_EQ(elem.second, "extravalue");
+      } else {
+        numUnencoded++;
+        EXPECT_TRUE(
+            headersExpectNoEncoding.find(elem.first) !=
+            headersExpectNoEncoding.end());
+      }
     }
   }
+  EXPECT_EQ(numUnencoded, headersExpectNoEncoding.size());
   EXPECT_EQ("single stream payload<eom>", toString(outputPayload));
 }
 
