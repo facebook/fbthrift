@@ -15,18 +15,34 @@
  */
 #pragma once
 
-#include <future>
+#include <memory>
+#include <utility>
 
+#include <glog/logging.h>
+
+#include <folly/Function.h>
+#include <folly/io/async/DelayedDestruction.h>
+
+#include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+
+namespace folly {
+class EventBase;
+class IOBuf;
+} // namespace folly
 
 namespace apache {
 namespace thrift {
 
-// Simple RequestChannel wrapper, which automatically re-creates underlying
-// RequestChannel in case of any transport exception.
-class ReconnectingRequestChannel : public apache::thrift::RequestChannel {
+namespace transport {
+class THeader;
+} // namespace transport
+
+// Simple RequestChannel wrapper that automatically re-creates underlying
+// RequestChannel in case request is about to be sent over a bad channel.
+class ReconnectingRequestChannel : public RequestChannel {
  public:
-  using Impl = apache::thrift::RequestChannel;
+  using Impl = ClientChannel;
   using ImplPtr = std::shared_ptr<Impl>;
   using ImplCreator = folly::Function<ImplPtr(folly::EventBase&)>;
 
@@ -38,20 +54,20 @@ class ReconnectingRequestChannel : public apache::thrift::RequestChannel {
   }
 
   void sendRequestResponse(
-      apache::thrift::RpcOptions& options,
+      RpcOptions& options,
       std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<apache::thrift::transport::THeader> header,
+      std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
-      apache::thrift::RpcOptions&,
+      RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
-      std::shared_ptr<apache::thrift::transport::THeader>,
+      std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override {
     LOG(FATAL) << "Not supported";
   }
 
-  void setCloseCallback(apache::thrift::CloseCallback*) override {
+  void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
   }
 
@@ -72,11 +88,10 @@ class ReconnectingRequestChannel : public apache::thrift::RequestChannel {
 
   Impl& impl();
 
-  class RequestCallback;
-
   ImplPtr impl_;
   ImplCreator implCreator_;
   folly::EventBase& evb_;
 };
+
 } // namespace thrift
 } // namespace apache
