@@ -622,13 +622,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     $this->recvImpl_doBland($currentseqid);
   }
 
-  <<__Deprecated('use doBland')>>
-  public async function gen_doBland(): Awaitable<void> {
-    $currentseqid = $this->sendImpl_doBland();
-    await $this->asyncHandler_->genWait($currentseqid);
-    $this->recvImpl_doBland($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * void
@@ -638,13 +631,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
    *           3: Serious s);
    */
   public async function doRaise(): Awaitable<void> {
-    $currentseqid = $this->sendImpl_doRaise();
-    await $this->asyncHandler_->genWait($currentseqid);
-    $this->recvImpl_doRaise($currentseqid);
-  }
-
-  <<__Deprecated('use doRaise')>>
-  public async function gen_doRaise(): Awaitable<void> {
     $currentseqid = $this->sendImpl_doRaise();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_doRaise($currentseqid);
@@ -661,13 +647,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
     return $this->recvImpl_get200($currentseqid);
   }
 
-  <<__Deprecated('use get200')>>
-  public async function gen_get200(): Awaitable<string> {
-    $currentseqid = $this->sendImpl_get200();
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recvImpl_get200($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * string
@@ -677,13 +656,6 @@ class RaiserClient extends \ThriftClientBase implements RaiserClientIf {
    *           3: Serious s);
    */
   public async function get500(): Awaitable<string> {
-    $currentseqid = $this->sendImpl_get500();
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recvImpl_get500($currentseqid);
-  }
-
-  <<__Deprecated('use get500')>>
-  public async function gen_get500(): Awaitable<string> {
     $currentseqid = $this->sendImpl_get500();
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_get500($currentseqid);

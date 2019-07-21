@@ -220,13 +220,6 @@ class BazClient extends \ThriftClientBase implements BazClientIf {
     return $this->recvImpl_qux($currentseqid);
   }
 
-  <<__Deprecated('use qux')>>
-  public async function gen_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string> {
-    $currentseqid = $this->sendImpl_qux($a, $b, $c);
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recvImpl_qux($currentseqid);
-  }
-
   /* send and recv functions */
   public function send_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): int {
     return $this->sendImpl_qux($a, $b, $c);

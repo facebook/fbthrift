@@ -211,13 +211,6 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
     return $this->recvImpl_baz($currentseqid);
   }
 
-  <<__Deprecated('use baz')>>
-  public async function gen_baz(ConstSet<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
-    $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recvImpl_baz($currentseqid);
-  }
-
   /* send and recv functions */
   public function send_baz(ConstSet<int> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);

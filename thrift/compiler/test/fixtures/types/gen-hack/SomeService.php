@@ -318,26 +318,12 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
     return $this->recvImpl_bounce_map($currentseqid);
   }
 
-  <<__Deprecated('use bounce_map')>>
-  public async function gen_bounce_map(Map<int, string> $m): Awaitable<Map<int, string>> {
-    $currentseqid = $this->sendImpl_bounce_map($m);
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recvImpl_bounce_map($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * map<TBinary, i64>
    *   binary_keyed_map(1: list<i64> r);
    */
   public async function binary_keyed_map(\HH\KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
-    $currentseqid = $this->sendImpl_binary_keyed_map($r);
-    await $this->asyncHandler_->genWait($currentseqid);
-    return $this->recvImpl_binary_keyed_map($currentseqid);
-  }
-
-  <<__Deprecated('use binary_keyed_map')>>
-  public async function gen_binary_keyed_map(\HH\KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_binary_keyed_map($currentseqid);

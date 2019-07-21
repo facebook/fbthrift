@@ -304,26 +304,12 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
     $this->recvImpl_ping($currentseqid);
   }
 
-  <<__Deprecated('use ping')>>
-  public async function gen_ping(): Awaitable<void> {
-    $currentseqid = $this->sendImpl_ping();
-    await $this->asyncHandler_->genWait($currentseqid);
-    $this->recvImpl_ping($currentseqid);
-  }
-
   /**
    * Original thrift definition:-
    * void
    *   pong();
    */
   public async function pong(): Awaitable<void> {
-    $currentseqid = $this->sendImpl_pong();
-    await $this->asyncHandler_->genWait($currentseqid);
-    $this->recvImpl_pong($currentseqid);
-  }
-
-  <<__Deprecated('use pong')>>
-  public async function gen_pong(): Awaitable<void> {
     $currentseqid = $this->sendImpl_pong();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_pong($currentseqid);
