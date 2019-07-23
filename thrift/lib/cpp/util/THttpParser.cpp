@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 #include <folly/String.h>
 
 #include <cstdlib>

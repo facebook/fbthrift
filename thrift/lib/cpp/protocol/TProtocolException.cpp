@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 
 namespace apache {
 namespace thrift {
