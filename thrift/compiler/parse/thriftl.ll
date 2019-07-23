@@ -22,22 +22,17 @@
  *
  * Tokenizes a thrift definition file.
  */
-%option noyywrap
 
+%option noyywrap
 %option reentrant
 %option yylineno
+%option nounistd
+%option never-interactive
 
 %{
 
-// Flex normally adds: #include <unistd.h>. This include is not supported
-// by MSVC. With this, we get rid of that include to compile with MSVC.
-#ifdef _WIN32
-#  define YY_NO_UNISTD_H
-// Provides isatty and fileno
-#  include <io.h>
-#endif
-
 #include <errno.h>
+#include <stdlib.h>
 
 #include "thrift/compiler/parse/parsing_driver.h"
 
