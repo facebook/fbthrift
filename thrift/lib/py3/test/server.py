@@ -2,16 +2,15 @@
 import asyncio
 import types
 import unittest
+from typing import Sequence
 
 from testing.services import TestingServiceInterface
-from testing.types import easy, Color
+from testing.types import Color, easy
 from thrift.py3 import RequestContext, ThriftServer
 from thrift.py3.server import SocketAddress, getServiceName
-from typing import Sequence
 
 
 class Handler(TestingServiceInterface):
-
     @TestingServiceInterface.pass_context_invert
     async def invert(self, ctx: RequestContext, value: bool) -> bool:
         return not value
@@ -41,10 +40,9 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
-
     def test_get_service_name(self) -> None:
         h = Handler()
-        self.assertEqual(getServiceName(h), 'TestingService')
+        self.assertEqual(getServiceName(h), "TestingService")
 
     def test_get_address(self) -> None:
         loop = asyncio.get_event_loop()
@@ -62,9 +60,9 @@ class ServicesTests(unittest.TestCase):
     def test_annotations(self) -> None:
         annotations = TestingServiceInterface.annotations
         self.assertIsInstance(annotations, types.MappingProxyType)
-        self.assertTrue(annotations.get('py3.pass_context'))
-        self.assertFalse(annotations.get('NotAnAnnotation'))
-        self.assertEqual(annotations['fun_times'], 'yes')
+        self.assertTrue(annotations.get("py3.pass_context"))
+        self.assertFalse(annotations.get("NotAnAnnotation"))
+        self.assertEqual(annotations["fun_times"], "yes")
         with self.assertRaises(TypeError):
             # You can't set attributes on builtin/extension types
             TestingServiceInterface.annotations = {}
@@ -81,7 +79,7 @@ class ServicesTests(unittest.TestCase):
         h = Handler()
         loop = asyncio.get_event_loop()
         call = 5
-        ret = loop.run_until_complete(h.complex_action('', '', call, ''))
+        ret = loop.run_until_complete(h.complex_action("", "", call, ""))
         self.assertEqual(call, ret)
 
     def test_server_manipulate_config(self) -> None:
@@ -91,6 +89,7 @@ class ServicesTests(unittest.TestCase):
         NUM_IO_WORKERS = 10
         NUM_CPU_WORKERS = 42
         NUM_SSL_WORKERS = 12
+        IDLE_TIMEOUT = 19.84
 
         server = ThriftServer(Handler(), port=0)
         server.set_max_requests(MAX_REQUESTS)
@@ -99,13 +98,14 @@ class ServicesTests(unittest.TestCase):
         server.set_io_worker_threads(NUM_IO_WORKERS)
         server.set_cpu_worker_threads(NUM_CPU_WORKERS)
         server.set_ssl_handshake_worker_threads(NUM_SSL_WORKERS)
+        server.set_idle_timeout(IDLE_TIMEOUT)
         self.assertEqual(server.get_max_requests(), MAX_REQUESTS)
         self.assertEqual(server.get_max_connections(), MAX_CONNECTIONS)
         self.assertEqual(server.get_listen_backlog(), LISTEN_BACKLOG)
         self.assertEqual(server.get_io_worker_threads(), NUM_IO_WORKERS)
         self.assertEqual(server.get_cpu_worker_threads(), NUM_CPU_WORKERS)
-        self.assertEqual(
-            server.get_ssl_handshake_worker_threads(), NUM_SSL_WORKERS)
+        self.assertEqual(server.get_ssl_handshake_worker_threads(), NUM_SSL_WORKERS)
+        self.assertEqual(server.get_idle_timeout(), IDLE_TIMEOUT)
 
         self.assertFalse(server.is_plaintext_allowed_on_loopback())
         server.set_allow_plaintext_on_loopback(True)

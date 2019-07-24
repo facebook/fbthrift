@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 import ipaddress
-from enum import Enum
-import pathlib
 import os
-from typing import Callable, NamedTuple, Union, Optional, TypeVar, Mapping, ClassVar
-from thrift.py3.common import Priority, Headers
+import pathlib
+from enum import Enum
+from typing import Callable, ClassVar, Mapping, NamedTuple, Optional, TypeVar, Union
+
+from thrift.py3.common import Headers, Priority
 
 mT = TypeVar("mT", bound=Callable)
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
@@ -62,6 +63,8 @@ class ThriftServer:
     def get_ssl_handshake_worker_threads(self) -> int: ...
     def set_allow_plaintext_on_loopback(self, enabled: bool) -> None: ...
     def is_plaintext_allowed_on_loopback(self) -> bool: ...
+    def set_idle_timeout(self, seconds: float) -> None: ...
+    def get_idle_timeout(self) -> float: ...
 
 class ReadHeaders(Headers): ...
 class WriteHeaders(Headers): ...

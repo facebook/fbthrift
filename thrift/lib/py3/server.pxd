@@ -1,4 +1,4 @@
-from libc.stdint cimport uint16_t, int32_t, uint32_t
+from libc.stdint cimport uint16_t, int32_t, uint32_t, int64_t
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.map cimport map
@@ -8,6 +8,7 @@ from folly.range cimport StringPiece
 from folly cimport cFollyExecutor
 from cpython.ref cimport PyObject
 from thrift.py3.common cimport cPriority, Priority_to_cpp, Headers
+from thrift.py3.std_libcpp cimport milliseconds
 
 cdef extern from "thrift/lib/py3/server.h" namespace "thrift::py3":
     cdef cppclass cfollySocketAddress "folly::SocketAddress":
@@ -87,6 +88,8 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         uint32_t getNumSSLHandshakeWorkerThreads()
         void setAllowPlaintextOnLoopback(cbool allow)
         cbool isPlaintextAllowedOnLoopback()
+        void setIdleTimeout(milliseconds idleTimeout)
+        milliseconds getIdleTimeout()
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs

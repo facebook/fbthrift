@@ -193,6 +193,12 @@ cdef class ThriftServer:
     def is_plaintext_allowed_on_loopback(self):
         return self.server.get().isPlaintextAllowedOnLoopback();
 
+    def set_idle_timeout(self, seconds):
+        self.server.get().setIdleTimeout(milliseconds(<int64_t>(seconds * 1000)))
+
+    def get_idle_timeout(self):
+        return self.server.get().getIdleTimeout().count() / 1000
+
     def stop(self):
         self.server.get().stop()
         self.address_future.cancel()
