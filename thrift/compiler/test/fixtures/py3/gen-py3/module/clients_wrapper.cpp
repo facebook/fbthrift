@@ -13,24 +13,8 @@ namespace simple {
 
 SimpleServiceClientWrapper::SimpleServiceClientWrapper(
     std::shared_ptr<::py3::simple::SimpleServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    async_client(async_client),
-      channel_(channel) {}
-
-SimpleServiceClientWrapper::~SimpleServiceClientWrapper() {}
-
-folly::Future<folly::Unit> SimpleServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-}
-
-void SimpleServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
-    auto headerChannel = async_client->getHeaderChannel();
-    if (headerChannel != nullptr) {
-        headerChannel->setPersistentHeader(key, value);
-    }
-}
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<int32_t>
@@ -38,9 +22,10 @@ SimpleServiceClientWrapper::get_five(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_five, channel_);
-  async_client->get_five(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_five, channel_);
+  client->get_five(
     rpcOptions,
     std::move(callback)
   );
@@ -53,9 +38,10 @@ SimpleServiceClientWrapper::add_five(
     int32_t arg_num) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_add_five, channel_);
-  async_client->add_five(
+    std::move(_promise), rpcOptions, client->recv_wrapped_add_five, channel_);
+  client->add_five(
     rpcOptions,
     std::move(callback),
     arg_num
@@ -68,9 +54,10 @@ SimpleServiceClientWrapper::do_nothing(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_do_nothing, channel_);
-  async_client->do_nothing(
+    std::move(_promise), rpcOptions, client->recv_wrapped_do_nothing, channel_);
+  client->do_nothing(
     rpcOptions,
     std::move(callback)
   );
@@ -84,9 +71,10 @@ SimpleServiceClientWrapper::concat(
     std::string arg_second) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_concat, channel_);
-  async_client->concat(
+    std::move(_promise), rpcOptions, client->recv_wrapped_concat, channel_);
+  client->concat(
     rpcOptions,
     std::move(callback),
     arg_first,
@@ -101,9 +89,10 @@ SimpleServiceClientWrapper::get_value(
     ::py3::simple::SimpleStruct arg_simple_struct) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_value, channel_);
-  async_client->get_value(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_value, channel_);
+  client->get_value(
     rpcOptions,
     std::move(callback),
     arg_simple_struct
@@ -117,9 +106,10 @@ SimpleServiceClientWrapper::negate(
     bool arg_input) {
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_negate, channel_);
-  async_client->negate(
+    std::move(_promise), rpcOptions, client->recv_wrapped_negate, channel_);
+  client->negate(
     rpcOptions,
     std::move(callback),
     arg_input
@@ -133,9 +123,10 @@ SimpleServiceClientWrapper::tiny(
     int8_t arg_input) {
   folly::Promise<int8_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int8_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_tiny, channel_);
-  async_client->tiny(
+    std::move(_promise), rpcOptions, client->recv_wrapped_tiny, channel_);
+  client->tiny(
     rpcOptions,
     std::move(callback),
     arg_input
@@ -149,9 +140,10 @@ SimpleServiceClientWrapper::small(
     int16_t arg_input) {
   folly::Promise<int16_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int16_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_small, channel_);
-  async_client->small(
+    std::move(_promise), rpcOptions, client->recv_wrapped_small, channel_);
+  client->small(
     rpcOptions,
     std::move(callback),
     arg_input
@@ -165,9 +157,10 @@ SimpleServiceClientWrapper::big(
     int64_t arg_input) {
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_big, channel_);
-  async_client->big(
+    std::move(_promise), rpcOptions, client->recv_wrapped_big, channel_);
+  client->big(
     rpcOptions,
     std::move(callback),
     arg_input
@@ -181,9 +174,10 @@ SimpleServiceClientWrapper::two(
     double arg_input) {
   folly::Promise<double> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<double>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_two, channel_);
-  async_client->two(
+    std::move(_promise), rpcOptions, client->recv_wrapped_two, channel_);
+  client->two(
     rpcOptions,
     std::move(callback),
     arg_input
@@ -196,9 +190,10 @@ SimpleServiceClientWrapper::expected_exception(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_expected_exception, channel_);
-  async_client->expected_exception(
+    std::move(_promise), rpcOptions, client->recv_wrapped_expected_exception, channel_);
+  client->expected_exception(
     rpcOptions,
     std::move(callback)
   );
@@ -210,9 +205,10 @@ SimpleServiceClientWrapper::unexpected_exception(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_unexpected_exception, channel_);
-  async_client->unexpected_exception(
+    std::move(_promise), rpcOptions, client->recv_wrapped_unexpected_exception, channel_);
+  client->unexpected_exception(
     rpcOptions,
     std::move(callback)
   );
@@ -225,9 +221,10 @@ SimpleServiceClientWrapper::sum_i16_list(
     std::vector<int16_t> arg_numbers) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_sum_i16_list, channel_);
-  async_client->sum_i16_list(
+    std::move(_promise), rpcOptions, client->recv_wrapped_sum_i16_list, channel_);
+  client->sum_i16_list(
     rpcOptions,
     std::move(callback),
     arg_numbers
@@ -241,9 +238,10 @@ SimpleServiceClientWrapper::sum_i32_list(
     std::vector<int32_t> arg_numbers) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_sum_i32_list, channel_);
-  async_client->sum_i32_list(
+    std::move(_promise), rpcOptions, client->recv_wrapped_sum_i32_list, channel_);
+  client->sum_i32_list(
     rpcOptions,
     std::move(callback),
     arg_numbers
@@ -257,9 +255,10 @@ SimpleServiceClientWrapper::sum_i64_list(
     std::vector<int64_t> arg_numbers) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_sum_i64_list, channel_);
-  async_client->sum_i64_list(
+    std::move(_promise), rpcOptions, client->recv_wrapped_sum_i64_list, channel_);
+  client->sum_i64_list(
     rpcOptions,
     std::move(callback),
     arg_numbers
@@ -273,9 +272,10 @@ SimpleServiceClientWrapper::concat_many(
     std::vector<std::string> arg_words) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_concat_many, channel_);
-  async_client->concat_many(
+    std::move(_promise), rpcOptions, client->recv_wrapped_concat_many, channel_);
+  client->concat_many(
     rpcOptions,
     std::move(callback),
     arg_words
@@ -289,9 +289,10 @@ SimpleServiceClientWrapper::count_structs(
     std::vector<::py3::simple::SimpleStruct> arg_items) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_count_structs, channel_);
-  async_client->count_structs(
+    std::move(_promise), rpcOptions, client->recv_wrapped_count_structs, channel_);
+  client->count_structs(
     rpcOptions,
     std::move(callback),
     arg_items
@@ -305,9 +306,10 @@ SimpleServiceClientWrapper::sum_set(
     std::set<int32_t> arg_numbers) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_sum_set, channel_);
-  async_client->sum_set(
+    std::move(_promise), rpcOptions, client->recv_wrapped_sum_set, channel_);
+  client->sum_set(
     rpcOptions,
     std::move(callback),
     arg_numbers
@@ -322,9 +324,10 @@ SimpleServiceClientWrapper::contains_word(
     std::string arg_word) {
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_contains_word, channel_);
-  async_client->contains_word(
+    std::move(_promise), rpcOptions, client->recv_wrapped_contains_word, channel_);
+  client->contains_word(
     rpcOptions,
     std::move(callback),
     arg_words,
@@ -340,9 +343,10 @@ SimpleServiceClientWrapper::get_map_value(
     std::string arg_key) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_map_value, channel_);
-  async_client->get_map_value(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_map_value, channel_);
+  client->get_map_value(
     rpcOptions,
     std::move(callback),
     arg_words,
@@ -357,9 +361,10 @@ SimpleServiceClientWrapper::map_length(
     std::map<std::string,::py3::simple::SimpleStruct> arg_items) {
   folly::Promise<int16_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int16_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_map_length, channel_);
-  async_client->map_length(
+    std::move(_promise), rpcOptions, client->recv_wrapped_map_length, channel_);
+  client->map_length(
     rpcOptions,
     std::move(callback),
     arg_items
@@ -373,9 +378,10 @@ SimpleServiceClientWrapper::sum_map_values(
     std::map<std::string,int16_t> arg_items) {
   folly::Promise<int16_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int16_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_sum_map_values, channel_);
-  async_client->sum_map_values(
+    std::move(_promise), rpcOptions, client->recv_wrapped_sum_map_values, channel_);
+  client->sum_map_values(
     rpcOptions,
     std::move(callback),
     arg_items
@@ -389,9 +395,10 @@ SimpleServiceClientWrapper::complex_sum_i32(
     ::py3::simple::ComplexStruct arg_counter) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_complex_sum_i32, channel_);
-  async_client->complex_sum_i32(
+    std::move(_promise), rpcOptions, client->recv_wrapped_complex_sum_i32, channel_);
+  client->complex_sum_i32(
     rpcOptions,
     std::move(callback),
     arg_counter
@@ -405,9 +412,10 @@ SimpleServiceClientWrapper::repeat_name(
     ::py3::simple::ComplexStruct arg_counter) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_repeat_name, channel_);
-  async_client->repeat_name(
+    std::move(_promise), rpcOptions, client->recv_wrapped_repeat_name, channel_);
+  client->repeat_name(
     rpcOptions,
     std::move(callback),
     arg_counter
@@ -420,9 +428,10 @@ SimpleServiceClientWrapper::get_struct(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<::py3::simple::SimpleStruct> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::py3::simple::SimpleStruct>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_struct, channel_);
-  async_client->get_struct(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_struct, channel_);
+  client->get_struct(
     rpcOptions,
     std::move(callback)
   );
@@ -435,9 +444,10 @@ SimpleServiceClientWrapper::fib(
     int16_t arg_n) {
   folly::Promise<std::vector<int32_t>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<int32_t>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_fib, channel_);
-  async_client->fib(
+    std::move(_promise), rpcOptions, client->recv_wrapped_fib, channel_);
+  client->fib(
     rpcOptions,
     std::move(callback),
     arg_n
@@ -451,9 +461,10 @@ SimpleServiceClientWrapper::unique_words(
     std::vector<std::string> arg_words) {
   folly::Promise<std::set<std::string>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<std::string>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_unique_words, channel_);
-  async_client->unique_words(
+    std::move(_promise), rpcOptions, client->recv_wrapped_unique_words, channel_);
+  client->unique_words(
     rpcOptions,
     std::move(callback),
     arg_words
@@ -467,9 +478,10 @@ SimpleServiceClientWrapper::words_count(
     std::vector<std::string> arg_words) {
   folly::Promise<std::map<std::string,int16_t>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int16_t>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_words_count, channel_);
-  async_client->words_count(
+    std::move(_promise), rpcOptions, client->recv_wrapped_words_count, channel_);
+  client->words_count(
     rpcOptions,
     std::move(callback),
     arg_words
@@ -483,9 +495,10 @@ SimpleServiceClientWrapper::set_enum(
     ::py3::simple::AnEnum arg_in_enum) {
   folly::Promise<::py3::simple::AnEnum> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<::py3::simple::AnEnum>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_set_enum, channel_);
-  async_client->set_enum(
+    std::move(_promise), rpcOptions, client->recv_wrapped_set_enum, channel_);
+  client->set_enum(
     rpcOptions,
     std::move(callback),
     arg_in_enum
@@ -500,9 +513,10 @@ SimpleServiceClientWrapper::list_of_lists(
     int16_t arg_num_items) {
   folly::Promise<std::vector<std::vector<int32_t>>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<std::vector<int32_t>>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_list_of_lists, channel_);
-  async_client->list_of_lists(
+    std::move(_promise), rpcOptions, client->recv_wrapped_list_of_lists, channel_);
+  client->list_of_lists(
     rpcOptions,
     std::move(callback),
     arg_num_lists,
@@ -517,9 +531,10 @@ SimpleServiceClientWrapper::word_character_frequency(
     std::string arg_sentence) {
   folly::Promise<std::map<std::string,std::map<std::string,int32_t>>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,std::map<std::string,int32_t>>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_word_character_frequency, channel_);
-  async_client->word_character_frequency(
+    std::move(_promise), rpcOptions, client->recv_wrapped_word_character_frequency, channel_);
+  client->word_character_frequency(
     rpcOptions,
     std::move(callback),
     arg_sentence
@@ -533,9 +548,10 @@ SimpleServiceClientWrapper::list_of_sets(
     std::string arg_some_words) {
   folly::Promise<std::vector<std::set<std::string>>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<std::set<std::string>>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_list_of_sets, channel_);
-  async_client->list_of_sets(
+    std::move(_promise), rpcOptions, client->recv_wrapped_list_of_sets, channel_);
+  client->list_of_sets(
     rpcOptions,
     std::move(callback),
     arg_some_words
@@ -549,9 +565,10 @@ SimpleServiceClientWrapper::nested_map_argument(
     std::map<std::string,std::vector<::py3::simple::SimpleStruct>> arg_struct_map) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_nested_map_argument, channel_);
-  async_client->nested_map_argument(
+    std::move(_promise), rpcOptions, client->recv_wrapped_nested_map_argument, channel_);
+  client->nested_map_argument(
     rpcOptions,
     std::move(callback),
     arg_struct_map
@@ -565,9 +582,10 @@ SimpleServiceClientWrapper::make_sentence(
     std::vector<std::vector<std::string>> arg_word_chars) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_make_sentence, channel_);
-  async_client->make_sentence(
+    std::move(_promise), rpcOptions, client->recv_wrapped_make_sentence, channel_);
+  client->make_sentence(
     rpcOptions,
     std::move(callback),
     arg_word_chars
@@ -581,9 +599,10 @@ SimpleServiceClientWrapper::get_union(
     std::vector<std::set<int32_t>> arg_sets) {
   folly::Promise<std::set<int32_t>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<int32_t>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_union, channel_);
-  async_client->get_union(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_union, channel_);
+  client->get_union(
     rpcOptions,
     std::move(callback),
     arg_sets
@@ -597,9 +616,10 @@ SimpleServiceClientWrapper::get_keys(
     std::vector<std::map<std::string,std::string>> arg_string_map) {
   folly::Promise<std::set<std::string>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<std::string>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_keys, channel_);
-  async_client->get_keys(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_keys, channel_);
+  client->get_keys(
     rpcOptions,
     std::move(callback),
     arg_string_map
@@ -613,9 +633,10 @@ SimpleServiceClientWrapper::lookup_double(
     int32_t arg_key) {
   folly::Promise<double> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<double>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_lookup_double, channel_);
-  async_client->lookup_double(
+    std::move(_promise), rpcOptions, client->recv_wrapped_lookup_double, channel_);
+  client->lookup_double(
     rpcOptions,
     std::move(callback),
     arg_key
@@ -629,9 +650,10 @@ SimpleServiceClientWrapper::retrieve_binary(
     std::string arg_something) {
   folly::Promise<std::string> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_retrieve_binary, channel_);
-  async_client->retrieve_binary(
+    std::move(_promise), rpcOptions, client->recv_wrapped_retrieve_binary, channel_);
+  client->retrieve_binary(
     rpcOptions,
     std::move(callback),
     arg_something
@@ -645,9 +667,10 @@ SimpleServiceClientWrapper::contain_binary(
     std::vector<std::string> arg_binaries) {
   folly::Promise<std::set<std::string>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<std::string>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_contain_binary, channel_);
-  async_client->contain_binary(
+    std::move(_promise), rpcOptions, client->recv_wrapped_contain_binary, channel_);
+  client->contain_binary(
     rpcOptions,
     std::move(callback),
     arg_binaries
@@ -661,9 +684,10 @@ SimpleServiceClientWrapper::contain_enum(
     std::vector<::py3::simple::AnEnum> arg_the_enum) {
   folly::Promise<std::vector<::py3::simple::AnEnum>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::py3::simple::AnEnum>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_contain_enum, channel_);
-  async_client->contain_enum(
+    std::move(_promise), rpcOptions, client->recv_wrapped_contain_enum, channel_);
+  client->contain_enum(
     rpcOptions,
     std::move(callback),
     arg_the_enum
@@ -674,19 +698,8 @@ SimpleServiceClientWrapper::contain_enum(
 
 DerivedServiceClientWrapper::DerivedServiceClientWrapper(
     std::shared_ptr<::py3::simple::DerivedServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    SimpleServiceClientWrapper(async_client, channel),
-    async_client(async_client),
-      channel_(channel) {}
-
-
-folly::Future<folly::Unit> DerivedServiceClientWrapper::disconnect() {
-  folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-  return ::py3::simple::SimpleServiceClientWrapper::disconnect();
-}
-
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    SimpleServiceClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<int32_t>
@@ -694,9 +707,10 @@ DerivedServiceClientWrapper::get_six(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::DerivedServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_six, channel_);
-  async_client->get_six(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_six, channel_);
+  client->get_six(
     rpcOptions,
     std::move(callback)
   );
@@ -706,19 +720,8 @@ DerivedServiceClientWrapper::get_six(
 
 RederivedServiceClientWrapper::RederivedServiceClientWrapper(
     std::shared_ptr<::py3::simple::RederivedServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    DerivedServiceClientWrapper(async_client, channel),
-    async_client(async_client),
-      channel_(channel) {}
-
-
-folly::Future<folly::Unit> RederivedServiceClientWrapper::disconnect() {
-  folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-  return ::py3::simple::DerivedServiceClientWrapper::disconnect();
-}
-
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    DerivedServiceClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<int32_t>
@@ -726,9 +729,10 @@ RederivedServiceClientWrapper::get_seven(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::RederivedServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_get_seven, channel_);
-  async_client->get_seven(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_seven, channel_);
+  client->get_seven(
     rpcOptions,
     std::move(callback)
   );

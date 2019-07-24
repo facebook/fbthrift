@@ -12,24 +12,8 @@ namespace cpp2 {
 
 MyServiceClientWrapper::MyServiceClientWrapper(
     std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    async_client(async_client),
-      channel_(channel) {}
-
-MyServiceClientWrapper::~MyServiceClientWrapper() {}
-
-folly::Future<folly::Unit> MyServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-}
-
-void MyServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
-    auto headerChannel = async_client->getHeaderChannel();
-    if (headerChannel != nullptr) {
-        headerChannel->setPersistentHeader(key, value);
-    }
-}
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<folly::Unit>
@@ -39,9 +23,10 @@ MyServiceClientWrapper::query(
     ::cpp2::Included arg_i) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_query, channel_);
-  async_client->query(
+    std::move(_promise), rpcOptions, client->recv_wrapped_query, channel_);
+  client->query(
     rpcOptions,
     std::move(callback),
     arg_s,
@@ -57,9 +42,10 @@ MyServiceClientWrapper::has_arg_docs(
     ::cpp2::Included arg_i) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_has_arg_docs, channel_);
-  async_client->has_arg_docs(
+    std::move(_promise), rpcOptions, client->recv_wrapped_has_arg_docs, channel_);
+  client->has_arg_docs(
     rpcOptions,
     std::move(callback),
     arg_s,

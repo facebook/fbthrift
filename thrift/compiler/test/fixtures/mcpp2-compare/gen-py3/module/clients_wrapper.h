@@ -14,6 +14,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -26,36 +27,20 @@ namespace some {
 namespace valid {
 namespace ns {
 
-class EmptyServiceClientWrapper {
-  protected:
-    std::shared_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class EmptyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit EmptyServiceClientWrapper(
       std::shared_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~EmptyServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
 };
 
 
-class ReturnServiceClientWrapper {
-  protected:
-    std::shared_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class ReturnServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit ReturnServiceClientWrapper(
       std::shared_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~ReturnServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> noReturn(
       apache::thrift::RpcOptions& rpcOptions);
@@ -104,19 +89,11 @@ class ReturnServiceClientWrapper {
 };
 
 
-class ParamServiceClientWrapper {
-  protected:
-    std::shared_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class ParamServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit ParamServiceClientWrapper(
       std::shared_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~ParamServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> void_ret_i16_param(
       apache::thrift::RpcOptions& rpcOptions,

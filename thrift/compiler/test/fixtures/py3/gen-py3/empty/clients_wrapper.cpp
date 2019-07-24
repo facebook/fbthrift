@@ -12,24 +12,8 @@ namespace cpp2 {
 
 NullServiceClientWrapper::NullServiceClientWrapper(
     std::shared_ptr<::cpp2::NullServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    async_client(async_client),
-      channel_(channel) {}
-
-NullServiceClientWrapper::~NullServiceClientWrapper() {}
-
-folly::Future<folly::Unit> NullServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-}
-
-void NullServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
-    auto headerChannel = async_client->getHeaderChannel();
-    if (headerChannel != nullptr) {
-        headerChannel->setPersistentHeader(key, value);
-    }
-}
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 

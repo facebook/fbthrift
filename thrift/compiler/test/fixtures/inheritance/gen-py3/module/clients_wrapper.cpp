@@ -12,24 +12,8 @@ namespace cpp2 {
 
 MyRootClientWrapper::MyRootClientWrapper(
     std::shared_ptr<::cpp2::MyRootAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    async_client(async_client),
-      channel_(channel) {}
-
-MyRootClientWrapper::~MyRootClientWrapper() {}
-
-folly::Future<folly::Unit> MyRootClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-}
-
-void MyRootClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
-    auto headerChannel = async_client->getHeaderChannel();
-    if (headerChannel != nullptr) {
-        headerChannel->setPersistentHeader(key, value);
-    }
-}
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<folly::Unit>
@@ -37,9 +21,10 @@ MyRootClientWrapper::do_root(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyRootAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_do_root, channel_);
-  async_client->do_root(
+    std::move(_promise), rpcOptions, client->recv_wrapped_do_root, channel_);
+  client->do_root(
     rpcOptions,
     std::move(callback)
   );
@@ -49,19 +34,8 @@ MyRootClientWrapper::do_root(
 
 MyNodeClientWrapper::MyNodeClientWrapper(
     std::shared_ptr<::cpp2::MyNodeAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    MyRootClientWrapper(async_client, channel),
-    async_client(async_client),
-      channel_(channel) {}
-
-
-folly::Future<folly::Unit> MyNodeClientWrapper::disconnect() {
-  folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-  return ::cpp2::MyRootClientWrapper::disconnect();
-}
-
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    MyRootClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<folly::Unit>
@@ -69,9 +43,10 @@ MyNodeClientWrapper::do_mid(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyNodeAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_do_mid, channel_);
-  async_client->do_mid(
+    std::move(_promise), rpcOptions, client->recv_wrapped_do_mid, channel_);
+  client->do_mid(
     rpcOptions,
     std::move(callback)
   );
@@ -81,19 +56,8 @@ MyNodeClientWrapper::do_mid(
 
 MyLeafClientWrapper::MyLeafClientWrapper(
     std::shared_ptr<::cpp2::MyLeafAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    MyNodeClientWrapper(async_client, channel),
-    async_client(async_client),
-      channel_(channel) {}
-
-
-folly::Future<folly::Unit> MyLeafClientWrapper::disconnect() {
-  folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-  return ::cpp2::MyNodeClientWrapper::disconnect();
-}
-
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    MyNodeClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<folly::Unit>
@@ -101,9 +65,10 @@ MyLeafClientWrapper::do_leaf(
     apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::MyLeafAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_do_leaf, channel_);
-  async_client->do_leaf(
+    std::move(_promise), rpcOptions, client->recv_wrapped_do_leaf, channel_);
+  client->do_leaf(
     rpcOptions,
     std::move(callback)
   );

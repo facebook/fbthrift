@@ -14,6 +14,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -24,19 +25,11 @@
 
 namespace cpp2 {
 
-class MyServiceClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit MyServiceClientWrapper(
       std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping(
       apache::thrift::RpcOptions& rpcOptions);
@@ -61,19 +54,11 @@ class MyServiceClientWrapper {
 };
 
 
-class MyServicePrioParentClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class MyServicePrioParentClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit MyServicePrioParentClientWrapper(
       std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServicePrioParentClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping(
       apache::thrift::RpcOptions& rpcOptions);
@@ -83,16 +68,10 @@ class MyServicePrioParentClientWrapper {
 
 
 class MyServicePrioChildClientWrapper : public ::cpp2::MyServicePrioParentClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit MyServicePrioChildClientWrapper(
       std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<folly::Unit> pang(
       apache::thrift::RpcOptions& rpcOptions);

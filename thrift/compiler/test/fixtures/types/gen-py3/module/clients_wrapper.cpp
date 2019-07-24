@@ -15,24 +15,8 @@ namespace types {
 
 SomeServiceClientWrapper::SomeServiceClientWrapper(
     std::shared_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) : 
-    async_client(async_client),
-      channel_(channel) {}
-
-SomeServiceClientWrapper::~SomeServiceClientWrapper() {}
-
-folly::Future<folly::Unit> SomeServiceClientWrapper::disconnect() {
-  return folly::via(
-    this->async_client->getChannel()->getEventBase(),
-    [cha = std::move(channel_), cli = std::move(async_client)] {});
-}
-
-void SomeServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
-    auto headerChannel = async_client->getHeaderChannel();
-    if (headerChannel != nullptr) {
-        headerChannel->setPersistentHeader(key, value);
-    }
-}
+    std::shared_ptr<apache::thrift::RequestChannel> channel) :
+    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 folly::Future<std::unordered_map<int32_t,std::string>>
@@ -41,9 +25,10 @@ SomeServiceClientWrapper::bounce_map(
     std::unordered_map<int32_t,std::string> arg_m) {
   folly::Promise<std::unordered_map<int32_t,std::string>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::apache::thrift::fixtures::types::SomeServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::unordered_map<int32_t,std::string>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_bounce_map, channel_);
-  async_client->bounce_map(
+    std::move(_promise), rpcOptions, client->recv_wrapped_bounce_map, channel_);
+  client->bounce_map(
     rpcOptions,
     std::move(callback),
     arg_m
@@ -57,9 +42,10 @@ SomeServiceClientWrapper::binary_keyed_map(
     std::vector<int64_t> arg_r) {
   folly::Promise<std::map<std::string,int64_t>> _promise;
   auto _future = _promise.getFuture();
+  auto* client = static_cast<::apache::thrift::fixtures::types::SomeServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
-    std::move(_promise), rpcOptions, async_client->recv_wrapped_binary_keyed_map, channel_);
-  async_client->binary_keyed_map(
+    std::move(_promise), rpcOptions, client->recv_wrapped_binary_keyed_map, channel_);
+  client->binary_keyed_map(
     rpcOptions,
     std::move(callback),
     arg_r

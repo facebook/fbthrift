@@ -12,6 +12,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -25,19 +26,11 @@ namespace thrift {
 namespace fixtures {
 namespace types {
 
-class SomeServiceClientWrapper {
-  protected:
-    std::shared_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class SomeServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit SomeServiceClientWrapper(
       std::shared_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~SomeServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<std::unordered_map<int32_t,std::string>> bounce_map(
       apache::thrift::RpcOptions& rpcOptions,

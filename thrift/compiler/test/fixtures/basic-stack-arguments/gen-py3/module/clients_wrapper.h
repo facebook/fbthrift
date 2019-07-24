@@ -13,6 +13,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -23,19 +24,11 @@
 
 namespace cpp2 {
 
-class MyServiceClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit MyServiceClientWrapper(
       std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<bool> hasDataById(
       apache::thrift::RpcOptions& rpcOptions,
@@ -54,19 +47,11 @@ class MyServiceClientWrapper {
 };
 
 
-class MyServiceFastClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class MyServiceFastClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit MyServiceFastClientWrapper(
       std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~MyServiceFastClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<bool> hasDataById(
       apache::thrift::RpcOptions& rpcOptions,

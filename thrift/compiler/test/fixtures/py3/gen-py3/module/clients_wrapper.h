@@ -14,6 +14,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -25,19 +26,11 @@
 namespace py3 {
 namespace simple {
 
-class SimpleServiceClientWrapper {
-  protected:
-    std::shared_ptr<::py3::simple::SimpleServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class SimpleServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit SimpleServiceClientWrapper(
       std::shared_ptr<::py3::simple::SimpleServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~SimpleServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<int32_t> get_five(
       apache::thrift::RpcOptions& rpcOptions);
@@ -162,16 +155,10 @@ class SimpleServiceClientWrapper {
 
 
 class DerivedServiceClientWrapper : public ::py3::simple::SimpleServiceClientWrapper {
-  protected:
-    std::shared_ptr<::py3::simple::DerivedServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit DerivedServiceClientWrapper(
       std::shared_ptr<::py3::simple::DerivedServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<int32_t> get_six(
       apache::thrift::RpcOptions& rpcOptions);
@@ -179,16 +166,10 @@ class DerivedServiceClientWrapper : public ::py3::simple::SimpleServiceClientWra
 
 
 class RederivedServiceClientWrapper : public ::py3::simple::DerivedServiceClientWrapper {
-  protected:
-    std::shared_ptr<::py3::simple::RederivedServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit RederivedServiceClientWrapper(
       std::shared_ptr<::py3::simple::RederivedServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
 
     folly::Future<int32_t> get_seven(
       apache::thrift::RpcOptions& rpcOptions);

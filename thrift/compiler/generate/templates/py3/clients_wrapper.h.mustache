@@ -34,6 +34,7 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -46,25 +47,14 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 {{/program:cppNamespaces}}
 
 {{#program:services}}
-class {{service:name}}ClientWrapper{{#service:extends?}} : {{/service:extends?}}{{!
-  }}{{#service:extends}}public ::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper{{/service:extends}}{{!
+class {{service:name}}ClientWrapper : {{!
+}}{{#service:extends?}}{{#service:extends}}public ::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper{{/service:extends}}{{/service:extends?}}{{!
+}}{{^service:extends?}}public ::thrift::py3::ClientWrapper{{/service:extends?}}{{!
 }} {
-  protected:
-    std::shared_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
   public:
     explicit {{service:name}}ClientWrapper(
       std::shared_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-{{^service:extends?}}
-    virtual ~{{service:name}}ClientWrapper();
-{{/service:extends?}}
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-{{^service:extends?}}
-    void setPersistentHeader(const std::string& key, const std::string& value);
-{{/service:extends?}}
 
 {{#service:functions}}
     folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}> {{function:name}}(

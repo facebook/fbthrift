@@ -12,6 +12,7 @@
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
 #include <thrift/lib/py3/clientcallbacks.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
 #include <functional>
@@ -22,19 +23,11 @@
 
 namespace cpp2 {
 
-class NullServiceClientWrapper {
-  protected:
-    std::shared_ptr<::cpp2::NullServiceAsyncClient> async_client;
-    std::shared_ptr<apache::thrift::RequestChannel> channel_;
+class NullServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit NullServiceClientWrapper(
       std::shared_ptr<::cpp2::NullServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
-    virtual ~NullServiceClientWrapper();
-
-    folly::Future<folly::Unit> disconnect();
-    void disconnectInLoop();
-    void setPersistentHeader(const std::string& key, const std::string& value);
 
 };
 
