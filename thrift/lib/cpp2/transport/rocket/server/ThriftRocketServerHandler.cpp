@@ -197,6 +197,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
             metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
                                          : nullptr,
             &*metadata.name_ref()))) {
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->serverOverloaded();
+      }
       handleRequestOverloadedServer(makeRequest(std::move(metadata)));
       return;
     }
