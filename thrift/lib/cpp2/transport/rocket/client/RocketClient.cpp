@@ -168,20 +168,21 @@ void RocketClient::handleStreamChannelFrame(
         auto& serverCallback = *serverCallbackUniquePtr;
         switch (frameType) {
           case FrameType::PAYLOAD:
-            return handlePayloadFrame(serverCallback, std::move(frame));
+            return this->handlePayloadFrame(serverCallback, std::move(frame));
           case FrameType::ERROR:
-            return handleErrorFrame(serverCallback, std::move(frame));
+            return this->handleErrorFrame(serverCallback, std::move(frame));
           case FrameType::REQUEST_N:
-            return handleRequestNFrame(serverCallback, std::move(frame));
+            return this->handleRequestNFrame(serverCallback, std::move(frame));
           case FrameType::CANCEL:
-            return handleCancelFrame(serverCallback, std::move(frame));
+            return this->handleCancelFrame(serverCallback, std::move(frame));
           default:
-            close(folly::make_exception_wrapper<transport::TTransportException>(
-                transport::TTransportException::TTransportExceptionType::
-                    NETWORK_ERROR,
-                folly::to<std::string>(
-                    "Client attempting to handle unhandleable frame type: ",
-                    static_cast<uint8_t>(frameType))));
+            this->close(
+                folly::make_exception_wrapper<transport::TTransportException>(
+                    transport::TTransportException::TTransportExceptionType::
+                        NETWORK_ERROR,
+                    folly::to<std::string>(
+                        "Client attempting to handle unhandleable frame type: ",
+                        static_cast<uint8_t>(frameType))));
             return StreamChannelStatus::Alive;
         }
       });
