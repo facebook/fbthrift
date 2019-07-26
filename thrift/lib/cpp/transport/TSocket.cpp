@@ -449,7 +449,7 @@ uint32_t TSocket::read(uint8_t* buf, uint32_t len) {
                                   "EAGAIN (timed out) " + getSocketInfo());
       } else {
         if (retries++ < maxRecvRetries_) {
-          usleep(50);
+          this_thread::sleep_for(chrono::microseconds(50));
           goto try_again;
         } else {
           throw TTransportException(TTransportException::TIMED_OUT,
