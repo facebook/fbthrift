@@ -510,6 +510,8 @@ class StringRandomizer(CollectionTypeRandomizer, ScalarTypeRandomizer):
     def eval_seed(self, seed):
         if isinstance(seed, six.string_types):
             return seed
+        elif isinstance(seed, six.binary_type):
+            return seed
         else:
             raise TypeError("Invalid string seed: %s" % seed)
 
