@@ -71,7 +71,7 @@ int g_doctext_lineno;
 std::string compute_absolute_path(const std::string& path) {
   boost::filesystem::path abspath{path};
   try {
-    abspath = boost::filesystem::canonical(abspath);
+    abspath = boost::filesystem::absolute(abspath);
     return abspath.string();
   } catch (const boost::filesystem::filesystem_error& e) {
     failure("Could not find file: %s. Error: %s", path.c_str(), e.what());
