@@ -2,5 +2,17 @@
     "connection#compile-pic-ManagedRSocketConnection.cpp.o58ec8566,platform007-clang,v13e8451": {
         "workerSize": "MEDIUM",
         "platformType": "LINUX"
+    },
+    "routing#compile-RSRoutingHandler.cpp.od100311b,platform007-gcc,v13e8451": {
+        "workerSize": "MEDIUM",
+        "platformType": "LINUX"
+    },
+    "server#compile-RSResponder.cpp.o432a1a53,platform007-gcc,v13e8451": {
+        "workerSize": "MEDIUM",
+        "platformType": "LINUX"
+    },
+    "connection#compile-ManagedRSocketConnection.cpp.o58ec8566,platform007-gcc,v13e8451": {
+        "workerSize": "MEDIUM",
+        "platformType": "LINUX"
     }
 }
