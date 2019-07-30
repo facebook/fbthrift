@@ -605,13 +605,9 @@ class LayoutRoot {
       LayoutPosition self,
       FieldPosition fieldPos,
       Field<folly::Optional<T>, Layout>& field,
-      bool present,
-      const T& value) {
-    if (present) {
-      return layoutField(self, fieldPos, field, value);
-    } else {
-      return layoutField(self, fieldPos, field, folly::none);
-    }
+      apache::thrift::optional_field_ref<const T&> ref) {
+    return layoutField(
+        self, fieldPos, field, ref ? folly::make_optional(*ref) : folly::none);
   }
 
   /**
@@ -699,13 +695,8 @@ class FreezeRoot {
   void freezeOptionalField(
       FreezePosition self,
       const Field<folly::Optional<T>, Layout>& field,
-      bool present,
-      const T& value) {
-    if (present) {
-      freezeField(self, field, value);
-    } else {
-      freezeField(self, field, folly::none);
-    }
+      apache::thrift::optional_field_ref<const T&> ref) {
+    freezeField(self, field, ref ? folly::make_optional(*ref) : folly::none);
   }
 
   /**
@@ -855,15 +846,13 @@ template <class T>
 void thawField(
     ViewPosition self,
     const Field<folly::Optional<T>>& f,
-    T& out,
-    bool& isset) {
+    apache::thrift::optional_field_ref<T&> out) {
   folly::Optional<T> opt;
   f.layout.thaw(self(f.pos), opt);
   if (opt) {
-    isset = true;
     out = opt.value();
   } else {
-    isset = false;
+    out.reset();
   }
 }
 

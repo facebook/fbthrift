@@ -99,10 +99,8 @@ class Sum {
   ~Sum() = default;
 
   void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
-    request_.x = gen_();
-    request_.__isset.x = true;
-    request_.y = gen_();
-    request_.__isset.y = true;
+    request_.x_ref() = gen_();
+    request_.y_ref() = gen_();
 
     client->sum(std::move(cb), request_);
   }
@@ -110,8 +108,8 @@ class Sum {
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
     try {
       client->recv_sum(response_, rstate);
-      CHECK_EQ(request_.x + request_.y, response_.x);
-      CHECK_EQ(request_.x - request_.y, response_.y);
+      CHECK_EQ(*request_.x_ref() + *request_.y_ref(), *response_.x_ref());
+      CHECK_EQ(*request_.x_ref() - *request_.y_ref(), *response_.y_ref());
       stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
       if (ex.getType() ==

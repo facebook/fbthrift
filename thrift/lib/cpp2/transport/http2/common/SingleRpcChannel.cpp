@@ -128,7 +128,8 @@ void SingleRpcChannel::sendThriftRequest(
   }
   HTTPMessage msg;
   msg.setMethod(HTTPMethod::POST);
-  msg.setURL(metadata.url);
+  auto url = metadata.url_ref();
+  msg.setURL(url ? *url : std::string());
   auto& msgHeaders = msg.getHeaders();
   msgHeaders.set(
       HTTPHeaderCode::HTTP_HEADER_HOST,

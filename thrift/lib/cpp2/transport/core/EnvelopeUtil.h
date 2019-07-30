@@ -53,20 +53,24 @@ class EnvelopeUtil {
       // Sequence id is always 0 in the envelope.  So we ignore it.
       int32_t seqId;
       auto protByte = payload->data()[0];
+      auto name = metadata->name_ref();
+      if (!name) {
+        name = {};
+      }
       switch (protByte) {
         case 0x80: {
           BinaryProtocolReader reader;
-          metadata->protocol = ProtocolId::BINARY;
+          metadata->protocol_ref() = ProtocolId::BINARY;
           reader.setInput(payload.get());
-          reader.readMessageBegin(metadata->name, mtype, seqId);
+          reader.readMessageBegin(*name, mtype, seqId);
           sz = reader.getCursorPosition();
           break;
         }
         case 0x82: {
-          metadata->protocol = ProtocolId::COMPACT;
+          metadata->protocol_ref() = ProtocolId::COMPACT;
           CompactProtocolReader reader;
           reader.setInput(payload.get());
-          reader.readMessageBegin(metadata->name, mtype, seqId);
+          reader.readMessageBegin(*name, mtype, seqId);
           sz = reader.getCursorPosition();
           break;
         }
@@ -81,8 +85,6 @@ class EnvelopeUtil {
     }
     // Remove the envelope.
     removePrefix(payload, sz);
-    metadata->__isset.protocol = true;
-    metadata->__isset.name = true;
     return true;
   }
 

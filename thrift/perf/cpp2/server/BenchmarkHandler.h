@@ -77,10 +77,8 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
       std::unique_ptr<TwoInts> input) override {
     stats_->add(kSum_);
     auto result = std::make_unique<TwoInts>();
-    result->x = input->x + input->y;
-    result->__isset.x = true;
-    result->y = input->x - input->y;
-    result->__isset.y = true;
+    result->x_ref() = input->x_ref().value_or(0) + input->y_ref().value_or(0);
+    result->y_ref() = input->x_ref().value_or(0) - input->y_ref().value_or(0);
     callback->result(std::move(result));
   }
 

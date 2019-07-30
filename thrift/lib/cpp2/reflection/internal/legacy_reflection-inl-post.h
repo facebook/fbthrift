@@ -227,7 +227,8 @@ struct impl<T, type_class::enumeration> {
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
           dt.__isset.enumValues = true;
           for (size_t i = 0; i < traits::size; ++i) {
-            dt.enumValues[traits::names[i].str()] = int(traits::values[i]);
+            (*dt.enumValues_ref())[traits::names[i].str()] =
+                int(traits::values[i]);
           }
         });
   }
@@ -250,15 +251,20 @@ struct impl<T, type_class::structure> {
       using member_name = typename MemberInfo::name;
       using member_annotations = typename MemberInfo::annotations::map;
       type_helper::register_into(schema);
-      auto& f = dt.fields[MemberInfo::id::value];
+      auto& f = (*dt.fields_ref())[MemberInfo::id::value];
       f.isRequired = MemberInfo::optional::value != optionality::optional;
       f.type = type_helper::id();
       f.name = fatal::to_instance<std::string, member_name>();
       f.order = Index;
-      f.__isset.annotations = fatal::size<member_annotations>() > 0;
+      auto annotations = f.annotations_ref();
+      if (fatal::size<member_annotations>() > 0) {
+        annotations = {};
+      } else {
+        annotations.reset();
+      }
       fatal::foreach<member_annotations>([&](auto tag) {
         using annotation = decltype(fatal::tag_type(tag));
-        f.annotations.emplace(
+        annotations->emplace(
             fatal::to_instance<std::string, typename annotation::key>(),
             fatal::to_instance<std::string, typename annotation::value>());
       });
@@ -296,7 +302,7 @@ struct impl<T, type_class::variant> {
       using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::metadata::name;
       type_helper::register_into(schema);
-      auto& f = dt.fields[MemberInfo::metadata::id::value];
+      auto& f = (*dt.fields_ref())[MemberInfo::metadata::id::value];
       f.isRequired = true;
       f.type = type_helper::id();
       f.name = fatal::to_instance<std::string, member_name>();
@@ -335,8 +341,7 @@ struct impl<T, type_class::list<ValueTypeClass>> {
   static void go(schema_t& schema) {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
-          dt.__isset.valueType = true;
-          dt.valueType = value_helper::id();
+          dt.valueType_ref() = value_helper::id();
           legacy_reflection<value_type>::register_into(schema);
         });
   }
@@ -357,8 +362,7 @@ struct impl<T, type_class::set<ValueTypeClass>> {
   static void go(schema_t& schema) {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
-          dt.__isset.valueType = true;
-          dt.valueType = value_helper::id();
+          dt.valueType_ref() = value_helper::id();
           legacy_reflection<value_type>::register_into(schema);
         });
   }
@@ -384,10 +388,8 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
   static void go(schema_t& schema) {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
-          dt.__isset.mapKeyType = true;
-          dt.mapKeyType = key_helper::id();
-          dt.__isset.valueType = true;
-          dt.valueType = mapped_helper::id();
+          dt.mapKeyType_ref() = key_helper::id();
+          dt.valueType_ref() = mapped_helper::id();
           legacy_reflection<key_type>::register_into(schema);
           legacy_reflection<mapped_type>::register_into(schema);
         });
