@@ -38,9 +38,9 @@ class ClientWrapper {
   virtual ~ClientWrapper() {}
 
   folly::Future<folly::Unit> disconnect() {
+    auto eb = channel_->getEventBase();
     return folly::via(
-        this->async_client_->getChannel()->getEventBase(),
-        [cha = std::move(channel_), cli = std::move(async_client_)] {});
+        eb, [cha = std::move(channel_), cli = std::move(async_client_)] {});
   }
 
   void setPersistentHeader(const std::string& key, const std::string& value) {
