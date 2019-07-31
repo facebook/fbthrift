@@ -26,7 +26,7 @@ namespace cpp2 {
 class RaiserClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit RaiserClientWrapper(
-      std::shared_ptr<::cpp2::RaiserAsyncClient> async_client,
+      std::unique_ptr<::cpp2::RaiserAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> doBland(

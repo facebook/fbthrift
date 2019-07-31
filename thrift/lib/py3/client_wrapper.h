@@ -27,12 +27,12 @@ namespace py3 {
 
 class ClientWrapper {
  protected:
-  std::shared_ptr<apache::thrift::GeneratedAsyncClient> async_client_;
+  std::unique_ptr<apache::thrift::GeneratedAsyncClient> async_client_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
 
  public:
   explicit ClientWrapper(
-      std::shared_ptr<apache::thrift::GeneratedAsyncClient> async_client,
+      std::unique_ptr<apache::thrift::GeneratedAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel)
       : async_client_(std::move(async_client)), channel_(std::move(channel)) {}
   virtual ~ClientWrapper() {}

@@ -12,7 +12,7 @@ namespace simple {
 
 
 SimpleServiceClientWrapper::SimpleServiceClientWrapper(
-    std::shared_ptr<::py3::simple::SimpleServiceAsyncClient> async_client,
+    std::unique_ptr<::py3::simple::SimpleServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -697,7 +697,7 @@ SimpleServiceClientWrapper::contain_enum(
 
 
 DerivedServiceClientWrapper::DerivedServiceClientWrapper(
-    std::shared_ptr<::py3::simple::DerivedServiceAsyncClient> async_client,
+    std::unique_ptr<::py3::simple::DerivedServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     SimpleServiceClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -719,7 +719,7 @@ DerivedServiceClientWrapper::get_six(
 
 
 RederivedServiceClientWrapper::RederivedServiceClientWrapper(
-    std::shared_ptr<::py3::simple::RederivedServiceAsyncClient> async_client,
+    std::unique_ptr<::py3::simple::RederivedServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     DerivedServiceClientWrapper(std::move(async_client), std::move(channel)) {}
 

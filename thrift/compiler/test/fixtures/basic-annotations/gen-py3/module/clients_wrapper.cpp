@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -135,7 +135,7 @@ MyServiceClientWrapper::doNothing(
 
 
 MyServicePrioParentClientWrapper::MyServicePrioParentClientWrapper(
-    std::shared_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -172,7 +172,7 @@ MyServicePrioParentClientWrapper::pong(
 
 
 MyServicePrioChildClientWrapper::MyServicePrioChildClientWrapper(
-    std::shared_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     MyServicePrioParentClientWrapper(std::move(async_client), std::move(channel)) {}
 

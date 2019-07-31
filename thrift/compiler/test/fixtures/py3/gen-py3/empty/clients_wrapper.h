@@ -26,7 +26,7 @@ namespace cpp2 {
 class NullServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit NullServiceClientWrapper(
-      std::shared_ptr<::cpp2::NullServiceAsyncClient> async_client,
+      std::unique_ptr<::cpp2::NullServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
 };

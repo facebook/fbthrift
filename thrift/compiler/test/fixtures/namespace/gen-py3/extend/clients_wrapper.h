@@ -27,7 +27,7 @@ namespace cpp2 {
 class ExtendTestServiceClientWrapper : public ::cpp2::HsTestServiceClientWrapper {
   public:
     explicit ExtendTestServiceClientWrapper(
-      std::shared_ptr<::cpp2::ExtendTestServiceAsyncClient> async_client,
+      std::unique_ptr<::cpp2::ExtendTestServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<bool> check(

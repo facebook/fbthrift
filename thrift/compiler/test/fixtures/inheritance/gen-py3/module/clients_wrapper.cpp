@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 MyRootClientWrapper::MyRootClientWrapper(
-    std::shared_ptr<::cpp2::MyRootAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyRootAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -33,7 +33,7 @@ MyRootClientWrapper::do_root(
 
 
 MyNodeClientWrapper::MyNodeClientWrapper(
-    std::shared_ptr<::cpp2::MyNodeAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyNodeAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     MyRootClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -55,7 +55,7 @@ MyNodeClientWrapper::do_mid(
 
 
 MyLeafClientWrapper::MyLeafClientWrapper(
-    std::shared_ptr<::cpp2::MyLeafAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyLeafAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     MyNodeClientWrapper(std::move(async_client), std::move(channel)) {}
 

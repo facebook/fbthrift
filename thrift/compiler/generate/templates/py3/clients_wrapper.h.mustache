@@ -53,7 +53,7 @@ class {{service:name}}ClientWrapper : {{!
 }} {
   public:
     explicit {{service:name}}ClientWrapper(
-      std::shared_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
+      std::unique_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
 {{#service:functions}}

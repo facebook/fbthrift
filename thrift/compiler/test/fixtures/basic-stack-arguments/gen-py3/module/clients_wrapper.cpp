@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -90,7 +90,7 @@ MyServiceClientWrapper::lobDataById(
 
 
 MyServiceFastClientWrapper::MyServiceFastClientWrapper(
-    std::shared_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
+    std::unique_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 

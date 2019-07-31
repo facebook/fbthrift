@@ -26,7 +26,7 @@ namespace cpp2 {
 class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit MyServiceClientWrapper(
-      std::shared_ptr<::cpp2::MyServiceAsyncClient> async_client,
+      std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> query(

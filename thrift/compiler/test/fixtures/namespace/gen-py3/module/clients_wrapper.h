@@ -26,7 +26,7 @@ namespace cpp2 {
 class TestServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit TestServiceClientWrapper(
-      std::shared_ptr<::cpp2::TestServiceAsyncClient> async_client,
+      std::unique_ptr<::cpp2::TestServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<int64_t> init(

@@ -13,14 +13,14 @@ namespace ns {
 
 
 EmptyServiceClientWrapper::EmptyServiceClientWrapper(
-    std::shared_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client,
+    std::unique_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
 
 
 ReturnServiceClientWrapper::ReturnServiceClientWrapper(
-    std::shared_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client,
+    std::unique_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 
@@ -346,7 +346,7 @@ ReturnServiceClientWrapper::readData(
 
 
 ParamServiceClientWrapper::ParamServiceClientWrapper(
-    std::shared_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client,
+    std::unique_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 

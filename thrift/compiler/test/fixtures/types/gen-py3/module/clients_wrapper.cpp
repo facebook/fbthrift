@@ -14,7 +14,7 @@ namespace types {
 
 
 SomeServiceClientWrapper::SomeServiceClientWrapper(
-    std::shared_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
+    std::unique_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
 

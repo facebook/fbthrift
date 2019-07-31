@@ -30,7 +30,7 @@ namespace ns {
 class EmptyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit EmptyServiceClientWrapper(
-      std::shared_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client,
+      std::unique_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
 };
@@ -39,7 +39,7 @@ class EmptyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
 class ReturnServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit ReturnServiceClientWrapper(
-      std::shared_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client,
+      std::unique_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> noReturn(
@@ -92,7 +92,7 @@ class ReturnServiceClientWrapper : public ::thrift::py3::ClientWrapper {
 class ParamServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     explicit ParamServiceClientWrapper(
-      std::shared_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client,
+      std::unique_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client,
       std::shared_ptr<apache::thrift::RequestChannel> channel);
 
     folly::Future<folly::Unit> void_ret_i16_param(

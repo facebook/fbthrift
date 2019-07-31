@@ -11,7 +11,7 @@ namespace cpp2 {
 
 
 ExtendTestServiceClientWrapper::ExtendTestServiceClientWrapper(
-    std::shared_ptr<::cpp2::ExtendTestServiceAsyncClient> async_client,
+    std::unique_ptr<::cpp2::ExtendTestServiceAsyncClient> async_client,
     std::shared_ptr<apache::thrift::RequestChannel> channel) :
     HsTestServiceClientWrapper(std::move(async_client), std::move(channel)) {}
 
