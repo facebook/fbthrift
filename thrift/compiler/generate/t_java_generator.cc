@@ -628,8 +628,8 @@ void t_java_generator::generate_union_constructor(
   indent(out) << "}" << endl << endl;
 
   indent(out) << "public " << type_name(tstruct)
-              << "(int setField, Object value) {" << endl;
-  indent(out) << "  super(setField, value);" << endl;
+              << "(int setField, Object __value) {" << endl;
+  indent(out) << "  super(setField, __value);" << endl;
   indent(out) << "}" << endl << endl;
 
   indent(out) << "public " << type_name(tstruct) << "(" << type_name(tstruct)
@@ -647,11 +647,11 @@ void t_java_generator::generate_union_constructor(
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     indent(out) << "public static " << type_name(tstruct) << " "
                 << (*m_iter)->get_name() << "("
-                << type_name((*m_iter)->get_type()) << " value) {" << endl;
+                << type_name((*m_iter)->get_type()) << " __value) {" << endl;
     indent(out) << "  " << type_name(tstruct) << " x = new "
                 << type_name(tstruct) << "();" << endl;
     indent(out) << "  x.set" << get_cap_name((*m_iter)->get_name())
-                << "(value);" << endl;
+                << "(__value);" << endl;
     indent(out) << "  return x;" << endl;
     indent(out) << "}" << endl << endl;
   }
@@ -692,14 +692,14 @@ void t_java_generator::generate_union_getters_and_setters(
 
     generate_java_doc(out, field);
     indent(out) << "public void set" << get_cap_name(field->get_name()) << "("
-                << type_name(field->get_type()) << " value) {" << endl;
+                << type_name(field->get_type()) << " __value) {" << endl;
     if (type_can_be_null(field->get_type())) {
-      indent(out) << "  if (value == null) throw new NullPointerException();"
+      indent(out) << "  if (__value == null) throw new NullPointerException();"
                   << endl;
     }
     indent(out) << "  setField_ = " << upcase_string(field->get_name()) << ";"
                 << endl;
-    indent(out) << "  value_ = value;" << endl;
+    indent(out) << "  value_ = __value;" << endl;
     indent(out) << "}" << endl;
   }
 }
@@ -723,7 +723,7 @@ void t_java_generator::generate_union_abstract_methods(
 void t_java_generator::generate_check_type(ofstream& out, t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
-      << "protected void checkType(short setField, Object value) throws ClassCastException {"
+      << "protected void checkType(short setField, Object __value) throws ClassCastException {"
       << endl;
   indent_up();
 
@@ -737,7 +737,7 @@ void t_java_generator::generate_check_type(ofstream& out, t_struct* tstruct) {
     t_field* field = (*m_iter);
 
     indent(out) << "case " << upcase_string(field->get_name()) << ":" << endl;
-    indent(out) << "  if (value instanceof "
+    indent(out) << "  if (__value instanceof "
                 << type_name(field->get_type(), true, false, true) << ") {"
                 << endl;
     indent(out) << "    break;" << endl;
@@ -746,7 +746,7 @@ void t_java_generator::generate_check_type(ofstream& out, t_struct* tstruct) {
         << "  throw new ClassCastException(\"Was expecting value of type "
         << type_name(field->get_type(), true, false) << " for field '"
         << field->get_name()
-        << "', but got \" + value.getClass().getSimpleName());" << endl;
+        << "', but got \" + __value.getClass().getSimpleName());" << endl;
     // do the real check here
   }
 
@@ -781,16 +781,16 @@ void t_java_generator::generate_union_reader(ofstream& out, t_struct* tstruct) {
   // deserialization to work.
   indent(out) << "iprot.readStructBegin(metaDataMap);" << endl;
 
-  indent(out) << "TField field = iprot.readFieldBegin();" << endl;
+  indent(out) << "TField __field = iprot.readFieldBegin();" << endl;
 
-  indent(out) << "if (field.type != TType.STOP)" << endl;
+  indent(out) << "if (__field.type != TType.STOP)" << endl;
   scope_up(out);
 
-  indent(out) << "value_ = readValue(iprot, field);" << endl;
+  indent(out) << "value_ = readValue(iprot, __field);" << endl;
   indent(out) << "if (value_ != null)" << endl;
   scope_up(out);
 
-  indent(out) << "switch (field.id) {" << endl;
+  indent(out) << "switch (__field.id) {" << endl;
   indent_up();
 
   const vector<t_field*>& members = tstruct->get_members();
@@ -800,10 +800,10 @@ void t_java_generator::generate_union_reader(ofstream& out, t_struct* tstruct) {
     t_field* field = (*m_iter);
     indent(out) << "case " << upcase_string(field->get_name()) << ":" << endl;
     indent_up();
-    indent(out) << "if (field.type == " << constant_name(field->get_name())
+    indent(out) << "if (__field.type == " << constant_name(field->get_name())
                 << "_FIELD_DESC.type) {" << endl;
     indent_up();
-    indent(out) << "setField_ = field.id;" << endl;
+    indent(out) << "setField_ = __field.id;" << endl;
     indent_down();
     indent(out) << "}" << endl;
     indent(out) << "break;" << endl;
@@ -830,12 +830,12 @@ void t_java_generator::generate_union_reader(ofstream& out, t_struct* tstruct) {
 void t_java_generator::generate_read_value(ofstream& out, t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
-      << "protected Object readValue(TProtocol iprot, TField field) throws TException {"
+      << "protected Object readValue(TProtocol iprot, TField __field) throws TException {"
       << endl;
 
   indent_up();
 
-  indent(out) << "switch (field.id) {" << endl;
+  indent(out) << "switch (__field.id) {" << endl;
   indent_up();
 
   const vector<t_field*>& members = tstruct->get_members();
@@ -846,7 +846,7 @@ void t_java_generator::generate_read_value(ofstream& out, t_struct* tstruct) {
 
     indent(out) << "case " << upcase_string(field->get_name()) << ":" << endl;
     indent_up();
-    indent(out) << "if (field.type == " << constant_name(field->get_name())
+    indent(out) << "if (__field.type == " << constant_name(field->get_name())
                 << "_FIELD_DESC.type) {" << endl;
     indent_up();
     indent(out) << type_name(field->get_type(), true, false) << " "
@@ -855,14 +855,14 @@ void t_java_generator::generate_read_value(ofstream& out, t_struct* tstruct) {
     indent(out) << "return " << field->get_name() << ";" << endl;
     indent_down();
     indent(out) << "} else {" << endl;
-    indent(out) << "  TProtocolUtil.skip(iprot, field.type);" << endl;
+    indent(out) << "  TProtocolUtil.skip(iprot, __field.type);" << endl;
     indent(out) << "  return null;" << endl;
     indent(out) << "}" << endl;
     indent_down();
   }
 
   indent(out) << "default:" << endl;
-  indent(out) << "  TProtocolUtil.skip(iprot, field.type);" << endl;
+  indent(out) << "  TProtocolUtil.skip(iprot, __field.type);" << endl;
   indent(out) << "  return null;" << endl;
 
   indent_down();
@@ -875,7 +875,7 @@ void t_java_generator::generate_read_value(ofstream& out, t_struct* tstruct) {
 void t_java_generator::generate_write_value(ofstream& out, t_struct* tstruct) {
   indent(out) << "@Override" << endl;
   indent(out)
-      << "protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {"
+      << "protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {"
       << endl;
 
   indent_up();
@@ -1398,7 +1398,7 @@ void t_java_generator::generate_java_struct_reader(
   vector<t_field*>::const_iterator f_iter;
 
   // Declare stack tmp variables and read struct header
-  out << indent() << "TField field;" << endl
+  out << indent() << "TField __field;" << endl
       << indent() << "iprot.readStructBegin(metaDataMap);" << endl;
 
   // Loop over reading in fields
@@ -1406,17 +1406,17 @@ void t_java_generator::generate_java_struct_reader(
   scope_up(out);
 
   // Read beginning field marker
-  indent(out) << "field = iprot.readFieldBegin();" << endl;
+  indent(out) << "__field = iprot.readFieldBegin();" << endl;
 
   // Check for field STOP marker and break
-  indent(out) << "if (field.type == TType.STOP) { " << endl;
+  indent(out) << "if (__field.type == TType.STOP) { " << endl;
   indent_up();
   indent(out) << "break;" << endl;
   indent_down();
   indent(out) << "}" << endl;
 
   // Switch statement on the field we are reading
-  indent(out) << "switch (field.id)" << endl;
+  indent(out) << "switch (__field.id)" << endl;
 
   scope_up(out);
 
@@ -1425,7 +1425,7 @@ void t_java_generator::generate_java_struct_reader(
     indent(out) << "case " << upcase_string((*f_iter)->get_name()) << ":"
                 << endl;
     indent_up();
-    indent(out) << "if (field.type == " << type_to_enum((*f_iter)->get_type())
+    indent(out) << "if (__field.type == " << type_to_enum((*f_iter)->get_type())
                 << ") {" << endl;
     indent_up();
 
@@ -1433,7 +1433,7 @@ void t_java_generator::generate_java_struct_reader(
     generate_isset_set(out, *f_iter);
     indent_down();
     out << indent() << "} else { " << endl
-        << indent() << "  TProtocolUtil.skip(iprot, field.type);" << endl
+        << indent() << "  TProtocolUtil.skip(iprot, __field.type);" << endl
         << indent() << "}" << endl
         << indent() << "break;" << endl;
     indent_down();
@@ -1441,7 +1441,7 @@ void t_java_generator::generate_java_struct_reader(
 
   // In the default case we skip the field
   out << indent() << "default:" << endl
-      << indent() << "  TProtocolUtil.skip(iprot, field.type);" << endl
+      << indent() << "  TProtocolUtil.skip(iprot, __field.type);" << endl
       << indent() << "  break;" << endl;
 
   scope_down(out);
@@ -1658,11 +1658,11 @@ void t_java_generator::generate_reflection_setters(
     string cap_name) {
   indent(out) << "case " << upcase_string(field_name) << ":" << endl;
   indent_up();
-  indent(out) << "if (value == null) {" << endl;
+  indent(out) << "if (__value == null) {" << endl;
   indent(out) << "  unset" << get_cap_name(field_name) << "();" << endl;
   indent(out) << "} else {" << endl;
   indent(out) << "  set" << cap_name << "((" << type_name(type, true, false)
-              << ")value);" << endl;
+              << ")__value);" << endl;
   indent(out) << "}" << endl;
   indent(out) << "break;" << endl << endl;
 
@@ -1697,7 +1697,7 @@ void t_java_generator::generate_generic_field_getters_setters(
   // create the setter
   if (needs_suppress_warnings)
     indent(out) << "@SuppressWarnings(\"unchecked\")" << endl;
-  indent(out) << "public void setFieldValue(int fieldID, Object value) {"
+  indent(out) << "public void setFieldValue(int fieldID, Object __value) {"
               << endl;
   indent_up();
 
@@ -1850,15 +1850,15 @@ void t_java_generator::generate_java_bean_boilerplate(
     indent(out) << "}" << endl << endl;
 
     indent(out) << "public void set" << cap_name << get_cap_name("isSet")
-                << "(boolean value) {" << endl;
+                << "(boolean __value) {" << endl;
     indent_up();
     if (type_can_be_null(type)) {
-      indent(out) << "if (!value) {" << endl;
+      indent(out) << "if (!__value) {" << endl;
       indent(out) << "  this." << field_name << " = null;" << endl;
       indent(out) << "}" << endl;
     } else {
       indent(out) << "__isset_bit_vector.set(" << isset_field_id(field)
-                  << ", value);" << endl;
+                  << ", __value);" << endl;
     }
     indent_down();
     indent(out) << "}" << endl << endl;

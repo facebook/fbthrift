@@ -128,8 +128,8 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     return this.opt_shared_const != null;
   }
 
-  public void setOpt_shared_constIsSet(boolean value) {
-    if (!value) {
+  public void setOpt_shared_constIsSet(boolean __value) {
+    if (!__value) {
       this.opt_shared_const = null;
     }
   }
@@ -152,8 +152,8 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     return this.shared_const != null;
   }
 
-  public void setShared_constIsSet(boolean value) {
-    if (!value) {
+  public void setShared_constIsSet(boolean __value) {
+    if (!__value) {
       this.shared_const = null;
     }
   }
@@ -176,35 +176,35 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     return this.req_shared_const != null;
   }
 
-  public void setReq_shared_constIsSet(boolean value) {
-    if (!value) {
+  public void setReq_shared_constIsSet(boolean __value) {
+    if (!__value) {
       this.req_shared_const = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case OPT_SHARED_CONST:
-      if (value == null) {
+      if (__value == null) {
         unsetOpt_shared_const();
       } else {
-        setOpt_shared_const((MyField)value);
+        setOpt_shared_const((MyField)__value);
       }
       break;
 
     case SHARED_CONST:
-      if (value == null) {
+      if (__value == null) {
         unsetShared_const();
       } else {
-        setShared_const((MyField)value);
+        setShared_const((MyField)__value);
       }
       break;
 
     case REQ_SHARED_CONST:
-      if (value == null) {
+      if (__value == null) {
         unsetReq_shared_const();
       } else {
-        setReq_shared_const((MyField)value);
+        setReq_shared_const((MyField)__value);
       }
       break;
 
@@ -333,42 +333,42 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case OPT_SHARED_CONST:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.opt_shared_const = new MyField();
             this.opt_shared_const.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case SHARED_CONST:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.shared_const = new MyField();
             this.shared_const.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REQ_SHARED_CONST:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.req_shared_const = new MyField();
             this.req_shared_const.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

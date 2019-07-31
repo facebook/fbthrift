@@ -53,8 +53,8 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     super();
   }
 
-  public MyUnion(int setField, Object value) {
-    super(setField, value);
+  public MyUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public MyUnion(MyUnion other) {
@@ -64,43 +64,43 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     return new MyUnion(this);
   }
 
-  public static MyUnion myEnum(MyEnum value) {
+  public static MyUnion myEnum(MyEnum __value) {
     MyUnion x = new MyUnion();
-    x.setMyEnum(value);
+    x.setMyEnum(__value);
     return x;
   }
 
-  public static MyUnion myStruct(MyStruct value) {
+  public static MyUnion myStruct(MyStruct __value) {
     MyUnion x = new MyUnion();
-    x.setMyStruct(value);
+    x.setMyStruct(__value);
     return x;
   }
 
-  public static MyUnion myDataItem(MyDataItem value) {
+  public static MyUnion myDataItem(MyDataItem __value) {
     MyUnion x = new MyUnion();
-    x.setMyDataItem(value);
+    x.setMyDataItem(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case MYENUM:
-        if (value instanceof MyEnum) {
+        if (__value instanceof MyEnum) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type MyEnum for field 'myEnum', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type MyEnum for field 'myEnum', but got " + __value.getClass().getSimpleName());
       case MYSTRUCT:
-        if (value instanceof MyStruct) {
+        if (__value instanceof MyStruct) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type MyStruct for field 'myStruct', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type MyStruct for field 'myStruct', but got " + __value.getClass().getSimpleName());
       case MYDATAITEM:
-        if (value instanceof MyDataItem) {
+        if (__value instanceof MyDataItem) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type MyDataItem for field 'myDataItem', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type MyDataItem for field 'myDataItem', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -111,26 +111,26 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case MYENUM:
-            if (field.type == MY_ENUM_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == MY_ENUM_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case MYSTRUCT:
-            if (field.type == MY_STRUCT_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == MY_STRUCT_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case MYDATAITEM:
-            if (field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -143,45 +143,45 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case MYENUM:
-        if (field.type == MY_ENUM_FIELD_DESC.type) {
+        if (__field.type == MY_ENUM_FIELD_DESC.type) {
           MyEnum myEnum;
           myEnum = MyEnum.findByValue(iprot.readI32());
           return myEnum;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case MYSTRUCT:
-        if (field.type == MY_STRUCT_FIELD_DESC.type) {
+        if (__field.type == MY_STRUCT_FIELD_DESC.type) {
           MyStruct myStruct;
           myStruct = new MyStruct();
           myStruct.read(iprot);
           return myStruct;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case MYDATAITEM:
-        if (field.type == MY_DATA_ITEM_FIELD_DESC.type) {
+        if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
           MyDataItem myDataItem;
           myDataItem = new MyDataItem();
           myDataItem.read(iprot);
           return myDataItem;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case MYENUM:
         MyEnum myEnum = (MyEnum)getFieldValue();
@@ -235,9 +235,9 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
    * 
    * @see MyEnum
    */
-  public void setMyEnum(MyEnum value) {
+  public void setMyEnum(MyEnum __value) {
     setField_ = MYENUM;
-    value_ = value;
+    value_ = __value;
   }
 
   public MyStruct getMyStruct() {
@@ -248,10 +248,10 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     }
   }
 
-  public void setMyStruct(MyStruct value) {
-    if (value == null) throw new NullPointerException();
+  public void setMyStruct(MyStruct __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = MYSTRUCT;
-    value_ = value;
+    value_ = __value;
   }
 
   public MyDataItem getMyDataItem() {
@@ -262,10 +262,10 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     }
   }
 
-  public void setMyDataItem(MyDataItem value) {
-    if (value == null) throw new NullPointerException();
+  public void setMyDataItem(MyDataItem __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = MYDATAITEM;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

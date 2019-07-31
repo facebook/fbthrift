@@ -92,19 +92,19 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
     return this.message != null;
   }
 
-  public void setMessageIsSet(boolean value) {
-    if (!value) {
+  public void setMessageIsSet(boolean __value) {
+    if (!__value) {
       this.message = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MESSAGE:
-      if (value == null) {
+      if (__value == null) {
         unsetMessage();
       } else {
-        setMessage((String)value);
+        setMessage((String)__value);
       }
       break;
 
@@ -166,25 +166,25 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case MESSAGE:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.message = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

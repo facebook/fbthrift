@@ -607,7 +607,7 @@ public class Raiser {
       return new doBland_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -668,18 +668,18 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -763,7 +763,7 @@ public class Raiser {
       return new doBland_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -824,18 +824,18 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -918,7 +918,7 @@ public class Raiser {
       return new doRaise_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -979,18 +979,18 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1130,8 +1130,8 @@ public class Raiser {
       return this.b != null;
     }
 
-    public void setBIsSet(boolean value) {
-      if (!value) {
+    public void setBIsSet(boolean __value) {
+      if (!__value) {
         this.b = null;
       }
     }
@@ -1154,8 +1154,8 @@ public class Raiser {
       return this.f != null;
     }
 
-    public void setFIsSet(boolean value) {
-      if (!value) {
+    public void setFIsSet(boolean __value) {
+      if (!__value) {
         this.f = null;
       }
     }
@@ -1178,35 +1178,35 @@ public class Raiser {
       return this.s != null;
     }
 
-    public void setSIsSet(boolean value) {
-      if (!value) {
+    public void setSIsSet(boolean __value) {
+      if (!__value) {
         this.s = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case B:
-        if (value == null) {
+        if (__value == null) {
           unsetB();
         } else {
-          setB((Banal)value);
+          setB((Banal)__value);
         }
         break;
 
       case F:
-        if (value == null) {
+        if (__value == null) {
           unsetF();
         } else {
-          setF((Fiery)value);
+          setF((Fiery)__value);
         }
         break;
 
       case S:
-        if (value == null) {
+        if (__value == null) {
           unsetS();
         } else {
-          setS((Serious)value);
+          setS((Serious)__value);
         }
         break;
 
@@ -1296,42 +1296,42 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case B:
-            if (field.type == TType.STRUCT) {
+            if (__field.type == TType.STRUCT) {
               this.b = new Banal();
               this.b.read(iprot);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case F:
-            if (field.type == TType.STRUCT) {
+            if (__field.type == TType.STRUCT) {
               this.f = new Fiery();
               this.f.read(iprot);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case S:
-            if (field.type == TType.STRUCT) {
+            if (__field.type == TType.STRUCT) {
               this.s = new Serious();
               this.s.read(iprot);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1459,7 +1459,7 @@ public class Raiser {
       return new get200_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1520,18 +1520,18 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1651,19 +1651,19 @@ public class Raiser {
       return this.success != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
         this.success = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
+        if (__value == null) {
           unsetSuccess();
         } else {
-          setSuccess((String)value);
+          setSuccess((String)__value);
         }
         break;
 
@@ -1748,25 +1748,25 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case SUCCESS:
-            if (field.type == TType.STRING) {
+            if (__field.type == TType.STRING) {
               this.success = iprot.readString();
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1864,7 +1864,7 @@ public class Raiser {
       return new get500_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1925,18 +1925,18 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2086,8 +2086,8 @@ public class Raiser {
       return this.success != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
         this.success = null;
       }
     }
@@ -2110,8 +2110,8 @@ public class Raiser {
       return this.f != null;
     }
 
-    public void setFIsSet(boolean value) {
-      if (!value) {
+    public void setFIsSet(boolean __value) {
+      if (!__value) {
         this.f = null;
       }
     }
@@ -2134,8 +2134,8 @@ public class Raiser {
       return this.b != null;
     }
 
-    public void setBIsSet(boolean value) {
-      if (!value) {
+    public void setBIsSet(boolean __value) {
+      if (!__value) {
         this.b = null;
       }
     }
@@ -2158,43 +2158,43 @@ public class Raiser {
       return this.s != null;
     }
 
-    public void setSIsSet(boolean value) {
-      if (!value) {
+    public void setSIsSet(boolean __value) {
+      if (!__value) {
         this.s = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
+        if (__value == null) {
           unsetSuccess();
         } else {
-          setSuccess((String)value);
+          setSuccess((String)__value);
         }
         break;
 
       case F:
-        if (value == null) {
+        if (__value == null) {
           unsetF();
         } else {
-          setF((Fiery)value);
+          setF((Fiery)__value);
         }
         break;
 
       case B:
-        if (value == null) {
+        if (__value == null) {
           unsetB();
         } else {
-          setB((Banal)value);
+          setB((Banal)__value);
         }
         break;
 
       case S:
-        if (value == null) {
+        if (__value == null) {
           unsetS();
         } else {
-          setS((Serious)value);
+          setS((Serious)__value);
         }
         break;
 
@@ -2298,49 +2298,49 @@ public class Raiser {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case SUCCESS:
-            if (field.type == TType.STRING) {
+            if (__field.type == TType.STRING) {
               this.success = iprot.readString();
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case F:
-            if (field.type == TType.STRUCT) {
+            if (__field.type == TType.STRUCT) {
               this.f = new Fiery();
               this.f.read(iprot);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case B:
-            if (field.type == TType.STRUCT) {
+            if (__field.type == TType.STRUCT) {
               this.b = new Banal();
               this.b.read(iprot);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case S:
-            if (field.type == TType.STRUCT) {
+            if (__field.type == TType.STRUCT) {
               this.s = new Serious();
               this.s.read(iprot);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();

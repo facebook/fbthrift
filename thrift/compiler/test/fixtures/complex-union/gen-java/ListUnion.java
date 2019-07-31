@@ -49,8 +49,8 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     super();
   }
 
-  public ListUnion(int setField, Object value) {
-    super(setField, value);
+  public ListUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public ListUnion(ListUnion other) {
@@ -60,32 +60,32 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     return new ListUnion(this);
   }
 
-  public static ListUnion intListValue(List<Long> value) {
+  public static ListUnion intListValue(List<Long> __value) {
     ListUnion x = new ListUnion();
-    x.setIntListValue(value);
+    x.setIntListValue(__value);
     return x;
   }
 
-  public static ListUnion stringListValue(List<String> value) {
+  public static ListUnion stringListValue(List<String> __value) {
     ListUnion x = new ListUnion();
-    x.setStringListValue(value);
+    x.setStringListValue(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case INTLISTVALUE:
-        if (value instanceof List) {
+        if (__value instanceof List) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type List<Long> for field 'intListValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type List<Long> for field 'intListValue', but got " + __value.getClass().getSimpleName());
       case STRINGLISTVALUE:
-        if (value instanceof List) {
+        if (__value instanceof List) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type List<String> for field 'stringListValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type List<String> for field 'stringListValue', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -96,21 +96,21 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case INTLISTVALUE:
-            if (field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case STRINGLISTVALUE:
-            if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -123,10 +123,10 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case INTLISTVALUE:
-        if (field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+        if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
           List<Long> intListValue;
           {
             TList _list13 = iprot.readListBegin();
@@ -143,11 +143,11 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
           }
           return intListValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case STRINGLISTVALUE:
-        if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+        if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
           List<String> stringListValue;
           {
             TList _list16 = iprot.readListBegin();
@@ -164,17 +164,17 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
           }
           return stringListValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case INTLISTVALUE:
         List<Long> intListValue = (List<Long>)getFieldValue();
@@ -226,10 +226,10 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     }
   }
 
-  public void setIntListValue(List<Long> value) {
-    if (value == null) throw new NullPointerException();
+  public void setIntListValue(List<Long> __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = INTLISTVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public List<String> getStringListValue() {
@@ -240,10 +240,10 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
     }
   }
 
-  public void setStringListValue(List<String> value) {
-    if (value == null) throw new NullPointerException();
+  public void setStringListValue(List<String> __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = STRINGLISTVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

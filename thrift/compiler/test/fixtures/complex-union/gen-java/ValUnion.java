@@ -47,8 +47,8 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     super();
   }
 
-  public ValUnion(int setField, Object value) {
-    super(setField, value);
+  public ValUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public ValUnion(ValUnion other) {
@@ -58,32 +58,32 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     return new ValUnion(this);
   }
 
-  public static ValUnion v1(Val value) {
+  public static ValUnion v1(Val __value) {
     ValUnion x = new ValUnion();
-    x.setV1(value);
+    x.setV1(__value);
     return x;
   }
 
-  public static ValUnion v2(Val value) {
+  public static ValUnion v2(Val __value) {
     ValUnion x = new ValUnion();
-    x.setV2(value);
+    x.setV2(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case V1:
-        if (value instanceof Val) {
+        if (__value instanceof Val) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type Val for field 'v1', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type Val for field 'v1', but got " + __value.getClass().getSimpleName());
       case V2:
-        if (value instanceof Val) {
+        if (__value instanceof Val) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type Val for field 'v2', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type Val for field 'v2', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -94,21 +94,21 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case V1:
-            if (field.type == V1_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == V1_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case V2:
-            if (field.type == V2_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == V2_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -121,36 +121,36 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case V1:
-        if (field.type == V1_FIELD_DESC.type) {
+        if (__field.type == V1_FIELD_DESC.type) {
           Val v1;
           v1 = new Val();
           v1.read(iprot);
           return v1;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case V2:
-        if (field.type == V2_FIELD_DESC.type) {
+        if (__field.type == V2_FIELD_DESC.type) {
           Val v2;
           v2 = new Val();
           v2.read(iprot);
           return v2;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case V1:
         Val v1 = (Val)getFieldValue();
@@ -190,10 +190,10 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     }
   }
 
-  public void setV1(Val value) {
-    if (value == null) throw new NullPointerException();
+  public void setV1(Val __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = V1;
-    value_ = value;
+    value_ = __value;
   }
 
   public Val getV2() {
@@ -204,10 +204,10 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
     }
   }
 
-  public void setV2(Val value) {
-    if (value == null) throw new NullPointerException();
+  public void setV2(Val __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = V2;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

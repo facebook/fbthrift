@@ -117,8 +117,8 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     return this.strVal != null;
   }
 
-  public void setStrValIsSet(boolean value) {
-    if (!value) {
+  public void setStrValIsSet(boolean __value) {
+    if (!__value) {
       this.strVal = null;
     }
   }
@@ -142,8 +142,8 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     return __isset_bit_vector.get(__INTVAL_ISSET_ID);
   }
 
-  public void setIntValIsSet(boolean value) {
-    __isset_bit_vector.set(__INTVAL_ISSET_ID, value);
+  public void setIntValIsSet(boolean __value) {
+    __isset_bit_vector.set(__INTVAL_ISSET_ID, __value);
   }
 
   public Map<Short,String> getTypedefValue() {
@@ -164,36 +164,36 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     return this.typedefValue != null;
   }
 
-  public void setTypedefValueIsSet(boolean value) {
-    if (!value) {
+  public void setTypedefValueIsSet(boolean __value) {
+    if (!__value) {
       this.typedefValue = null;
     }
   }
 
   @SuppressWarnings("unchecked")
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case STRVAL:
-      if (value == null) {
+      if (__value == null) {
         unsetStrVal();
       } else {
-        setStrVal((String)value);
+        setStrVal((String)__value);
       }
       break;
 
     case INTVAL:
-      if (value == null) {
+      if (__value == null) {
         unsetIntVal();
       } else {
-        setIntVal((Integer)value);
+        setIntVal((Integer)__value);
       }
       break;
 
     case TYPEDEFVALUE:
-      if (value == null) {
+      if (__value == null) {
         unsetTypedefValue();
       } else {
-        setTypedefValue((Map<Short,String>)value);
+        setTypedefValue((Map<Short,String>)__value);
       }
       break;
 
@@ -322,33 +322,33 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case STRVAL:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.strVal = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case INTVAL:
-          if (field.type == TType.I32) {
+          if (__field.type == TType.I32) {
             this.intVal = iprot.readI32();
             setIntValIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case TYPEDEFVALUE:
-          if (field.type == TType.MAP) {
+          if (__field.type == TType.MAP) {
             {
               TMap _map21 = iprot.readMapBegin();
               this.typedefValue = new HashMap<Short,String>(Math.max(0, 2*_map21.size));
@@ -365,11 +365,11 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
               iprot.readMapEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

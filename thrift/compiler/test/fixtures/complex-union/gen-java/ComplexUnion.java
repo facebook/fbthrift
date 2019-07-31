@@ -67,8 +67,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     super();
   }
 
-  public ComplexUnion(int setField, Object value) {
-    super(setField, value);
+  public ComplexUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public ComplexUnion(ComplexUnion other) {
@@ -78,76 +78,76 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     return new ComplexUnion(this);
   }
 
-  public static ComplexUnion intValue(long value) {
+  public static ComplexUnion intValue(long __value) {
     ComplexUnion x = new ComplexUnion();
-    x.setIntValue(value);
+    x.setIntValue(__value);
     return x;
   }
 
-  public static ComplexUnion stringValue(String value) {
+  public static ComplexUnion stringValue(String __value) {
     ComplexUnion x = new ComplexUnion();
-    x.setStringValue(value);
+    x.setStringValue(__value);
     return x;
   }
 
-  public static ComplexUnion intListValue(List<Long> value) {
+  public static ComplexUnion intListValue(List<Long> __value) {
     ComplexUnion x = new ComplexUnion();
-    x.setIntListValue(value);
+    x.setIntListValue(__value);
     return x;
   }
 
-  public static ComplexUnion stringListValue(List<String> value) {
+  public static ComplexUnion stringListValue(List<String> __value) {
     ComplexUnion x = new ComplexUnion();
-    x.setStringListValue(value);
+    x.setStringListValue(__value);
     return x;
   }
 
-  public static ComplexUnion typedefValue(Map<Short,String> value) {
+  public static ComplexUnion typedefValue(Map<Short,String> __value) {
     ComplexUnion x = new ComplexUnion();
-    x.setTypedefValue(value);
+    x.setTypedefValue(__value);
     return x;
   }
 
-  public static ComplexUnion stringRef(String value) {
+  public static ComplexUnion stringRef(String __value) {
     ComplexUnion x = new ComplexUnion();
-    x.setStringRef(value);
+    x.setStringRef(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case INTVALUE:
-        if (value instanceof Long) {
+        if (__value instanceof Long) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type Long for field 'intValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type Long for field 'intValue', but got " + __value.getClass().getSimpleName());
       case STRINGVALUE:
-        if (value instanceof String) {
+        if (__value instanceof String) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type String for field 'stringValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type String for field 'stringValue', but got " + __value.getClass().getSimpleName());
       case INTLISTVALUE:
-        if (value instanceof List) {
+        if (__value instanceof List) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type List<Long> for field 'intListValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type List<Long> for field 'intListValue', but got " + __value.getClass().getSimpleName());
       case STRINGLISTVALUE:
-        if (value instanceof List) {
+        if (__value instanceof List) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type List<String> for field 'stringListValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type List<String> for field 'stringListValue', but got " + __value.getClass().getSimpleName());
       case TYPEDEFVALUE:
-        if (value instanceof Map) {
+        if (__value instanceof Map) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type Map<Short,String> for field 'typedefValue', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type Map<Short,String> for field 'typedefValue', but got " + __value.getClass().getSimpleName());
       case STRINGREF:
-        if (value instanceof String) {
+        if (__value instanceof String) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type String for field 'stringRef', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type String for field 'stringRef', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -158,41 +158,41 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case INTVALUE:
-            if (field.type == INT_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == INT_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case STRINGVALUE:
-            if (field.type == STRING_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == STRING_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case INTLISTVALUE:
-            if (field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case STRINGLISTVALUE:
-            if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case TYPEDEFVALUE:
-            if (field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case STRINGREF:
-            if (field.type == STRING_REF_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == STRING_REF_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -205,28 +205,28 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case INTVALUE:
-        if (field.type == INT_VALUE_FIELD_DESC.type) {
+        if (__field.type == INT_VALUE_FIELD_DESC.type) {
           Long intValue;
           intValue = iprot.readI64();
           return intValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case STRINGVALUE:
-        if (field.type == STRING_VALUE_FIELD_DESC.type) {
+        if (__field.type == STRING_VALUE_FIELD_DESC.type) {
           String stringValue;
           stringValue = iprot.readString();
           return stringValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case INTLISTVALUE:
-        if (field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+        if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
           List<Long> intListValue;
           {
             TList _list0 = iprot.readListBegin();
@@ -243,11 +243,11 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           }
           return intListValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case STRINGLISTVALUE:
-        if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+        if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
           List<String> stringListValue;
           {
             TList _list3 = iprot.readListBegin();
@@ -264,11 +264,11 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           }
           return stringListValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case TYPEDEFVALUE:
-        if (field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
+        if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
           Map<Short,String> typedefValue;
           {
             TMap _map6 = iprot.readMapBegin();
@@ -287,26 +287,26 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           }
           return typedefValue;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case STRINGREF:
-        if (field.type == STRING_REF_FIELD_DESC.type) {
+        if (__field.type == STRING_REF_FIELD_DESC.type) {
           String stringRef;
           stringRef = iprot.readString();
           return stringRef;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case INTVALUE:
         Long intValue = (Long)getFieldValue();
@@ -389,9 +389,9 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     }
   }
 
-  public void setIntValue(long value) {
+  public void setIntValue(long __value) {
     setField_ = INTVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public String getStringValue() {
@@ -402,10 +402,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     }
   }
 
-  public void setStringValue(String value) {
-    if (value == null) throw new NullPointerException();
+  public void setStringValue(String __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = STRINGVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public List<Long> getIntListValue() {
@@ -416,10 +416,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     }
   }
 
-  public void setIntListValue(List<Long> value) {
-    if (value == null) throw new NullPointerException();
+  public void setIntListValue(List<Long> __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = INTLISTVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public List<String> getStringListValue() {
@@ -430,10 +430,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     }
   }
 
-  public void setStringListValue(List<String> value) {
-    if (value == null) throw new NullPointerException();
+  public void setStringListValue(List<String> __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = STRINGLISTVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public Map<Short,String> getTypedefValue() {
@@ -444,10 +444,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     }
   }
 
-  public void setTypedefValue(Map<Short,String> value) {
-    if (value == null) throw new NullPointerException();
+  public void setTypedefValue(Map<Short,String> __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = TYPEDEFVALUE;
-    value_ = value;
+    value_ = __value;
   }
 
   public String getStringRef() {
@@ -458,10 +458,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     }
   }
 
-  public void setStringRef(String value) {
-    if (value == null) throw new NullPointerException();
+  public void setStringRef(String __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = STRINGREF;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

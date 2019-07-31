@@ -92,19 +92,19 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
     return this.sonnet != null;
   }
 
-  public void setSonnetIsSet(boolean value) {
-    if (!value) {
+  public void setSonnetIsSet(boolean __value) {
+    if (!__value) {
       this.sonnet = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case SONNET:
-      if (value == null) {
+      if (__value == null) {
         unsetSonnet();
       } else {
-        setSonnet((String)value);
+        setSonnet((String)__value);
       }
       break;
 
@@ -166,25 +166,25 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case SONNET:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.sonnet = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

@@ -834,7 +834,7 @@ public class MyService {
       return new ping_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -895,18 +895,18 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -990,7 +990,7 @@ public class MyService {
       return new ping_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1051,18 +1051,18 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1145,7 +1145,7 @@ public class MyService {
       return new getRandomData_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1206,18 +1206,18 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1337,19 +1337,19 @@ public class MyService {
       return this.success != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
         this.success = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
+        if (__value == null) {
           unsetSuccess();
         } else {
-          setSuccess((String)value);
+          setSuccess((String)__value);
         }
         break;
 
@@ -1434,25 +1434,25 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case SUCCESS:
-            if (field.type == TType.STRING) {
+            if (__field.type == TType.STRING) {
               this.success = iprot.readString();
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1590,17 +1590,17 @@ public class MyService {
       return __isset_bit_vector.get(__ID_ISSET_ID);
     }
 
-    public void setIdIsSet(boolean value) {
-      __isset_bit_vector.set(__ID_ISSET_ID, value);
+    public void setIdIsSet(boolean __value) {
+      __isset_bit_vector.set(__ID_ISSET_ID, __value);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case ID:
-        if (value == null) {
+        if (__value == null) {
           unsetId();
         } else {
-          setId((Long)value);
+          setId((Long)__value);
         }
         break;
 
@@ -1685,26 +1685,26 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case ID:
-            if (field.type == TType.I64) {
+            if (__field.type == TType.I64) {
               this.id = iprot.readI64();
               setIdIsSet(true);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1837,17 +1837,17 @@ public class MyService {
       return __isset_bit_vector.get(__SUCCESS_ISSET_ID);
     }
 
-    public void setSuccessIsSet(boolean value) {
-      __isset_bit_vector.set(__SUCCESS_ISSET_ID, value);
+    public void setSuccessIsSet(boolean __value) {
+      __isset_bit_vector.set(__SUCCESS_ISSET_ID, __value);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
+        if (__value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Boolean)value);
+          setSuccess((Boolean)__value);
         }
         break;
 
@@ -1932,26 +1932,26 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case SUCCESS:
-            if (field.type == TType.BOOL) {
+            if (__field.type == TType.BOOL) {
               this.success = iprot.readBool();
               setSuccessIsSet(true);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2085,17 +2085,17 @@ public class MyService {
       return __isset_bit_vector.get(__ID_ISSET_ID);
     }
 
-    public void setIdIsSet(boolean value) {
-      __isset_bit_vector.set(__ID_ISSET_ID, value);
+    public void setIdIsSet(boolean __value) {
+      __isset_bit_vector.set(__ID_ISSET_ID, __value);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case ID:
-        if (value == null) {
+        if (__value == null) {
           unsetId();
         } else {
-          setId((Long)value);
+          setId((Long)__value);
         }
         break;
 
@@ -2180,26 +2180,26 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case ID:
-            if (field.type == TType.I64) {
+            if (__field.type == TType.I64) {
               this.id = iprot.readI64();
               setIdIsSet(true);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2328,19 +2328,19 @@ public class MyService {
       return this.success != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
-      if (!value) {
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
         this.success = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case SUCCESS:
-        if (value == null) {
+        if (__value == null) {
           unsetSuccess();
         } else {
-          setSuccess((String)value);
+          setSuccess((String)__value);
         }
         break;
 
@@ -2425,25 +2425,25 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case SUCCESS:
-            if (field.type == TType.STRING) {
+            if (__field.type == TType.STRING) {
               this.success = iprot.readString();
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2591,8 +2591,8 @@ public class MyService {
       return __isset_bit_vector.get(__ID_ISSET_ID);
     }
 
-    public void setIdIsSet(boolean value) {
-      __isset_bit_vector.set(__ID_ISSET_ID, value);
+    public void setIdIsSet(boolean __value) {
+      __isset_bit_vector.set(__ID_ISSET_ID, __value);
     }
 
     public String getData() {
@@ -2613,27 +2613,27 @@ public class MyService {
       return this.data != null;
     }
 
-    public void setDataIsSet(boolean value) {
-      if (!value) {
+    public void setDataIsSet(boolean __value) {
+      if (!__value) {
         this.data = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case ID:
-        if (value == null) {
+        if (__value == null) {
           unsetId();
         } else {
-          setId((Long)value);
+          setId((Long)__value);
         }
         break;
 
       case DATA:
-        if (value == null) {
+        if (__value == null) {
           unsetData();
         } else {
-          setData((String)value);
+          setData((String)__value);
         }
         break;
 
@@ -2740,33 +2740,33 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case ID:
-            if (field.type == TType.I64) {
+            if (__field.type == TType.I64) {
               this.id = iprot.readI64();
               setIdIsSet(true);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case DATA:
-            if (field.type == TType.STRING) {
+            if (__field.type == TType.STRING) {
               this.data = iprot.readString();
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2875,7 +2875,7 @@ public class MyService {
       return new putDataById_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -2936,18 +2936,18 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -3080,8 +3080,8 @@ public class MyService {
       return __isset_bit_vector.get(__ID_ISSET_ID);
     }
 
-    public void setIdIsSet(boolean value) {
-      __isset_bit_vector.set(__ID_ISSET_ID, value);
+    public void setIdIsSet(boolean __value) {
+      __isset_bit_vector.set(__ID_ISSET_ID, __value);
     }
 
     public String getData() {
@@ -3102,27 +3102,27 @@ public class MyService {
       return this.data != null;
     }
 
-    public void setDataIsSet(boolean value) {
-      if (!value) {
+    public void setDataIsSet(boolean __value) {
+      if (!__value) {
         this.data = null;
       }
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case ID:
-        if (value == null) {
+        if (__value == null) {
           unsetId();
         } else {
-          setId((Long)value);
+          setId((Long)__value);
         }
         break;
 
       case DATA:
-        if (value == null) {
+        if (__value == null) {
           unsetData();
         } else {
-          setData((String)value);
+          setData((String)__value);
         }
         break;
 
@@ -3229,33 +3229,33 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case ID:
-            if (field.type == TType.I64) {
+            if (__field.type == TType.I64) {
               this.id = iprot.readI64();
               setIdIsSet(true);
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           case DATA:
-            if (field.type == TType.STRING) {
+            if (__field.type == TType.STRING) {
               this.data = iprot.readString();
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -3364,7 +3364,7 @@ public class MyService {
       return new doNothing_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -3425,18 +3425,18 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -3520,7 +3520,7 @@ public class MyService {
       return new doNothing_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -3581,18 +3581,18 @@ public class MyService {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();

@@ -135,8 +135,8 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     return __isset_bit_vector.get(__OPT_VALUE_ISSET_ID);
   }
 
-  public void setOpt_valueIsSet(boolean value) {
-    __isset_bit_vector.set(__OPT_VALUE_ISSET_ID, value);
+  public void setOpt_valueIsSet(boolean __value) {
+    __isset_bit_vector.set(__OPT_VALUE_ISSET_ID, __value);
   }
 
   public long getValue() {
@@ -158,8 +158,8 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     return __isset_bit_vector.get(__VALUE_ISSET_ID);
   }
 
-  public void setValueIsSet(boolean value) {
-    __isset_bit_vector.set(__VALUE_ISSET_ID, value);
+  public void setValueIsSet(boolean __value) {
+    __isset_bit_vector.set(__VALUE_ISSET_ID, __value);
   }
 
   public long getReq_value() {
@@ -181,33 +181,33 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     return __isset_bit_vector.get(__REQ_VALUE_ISSET_ID);
   }
 
-  public void setReq_valueIsSet(boolean value) {
-    __isset_bit_vector.set(__REQ_VALUE_ISSET_ID, value);
+  public void setReq_valueIsSet(boolean __value) {
+    __isset_bit_vector.set(__REQ_VALUE_ISSET_ID, __value);
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case OPT_VALUE:
-      if (value == null) {
+      if (__value == null) {
         unsetOpt_value();
       } else {
-        setOpt_value((Long)value);
+        setOpt_value((Long)__value);
       }
       break;
 
     case VALUE:
-      if (value == null) {
+      if (__value == null) {
         unsetValue();
       } else {
-        setValue((Long)value);
+        setValue((Long)__value);
       }
       break;
 
     case REQ_VALUE:
-      if (value == null) {
+      if (__value == null) {
         unsetReq_value();
       } else {
-        setReq_value((Long)value);
+        setReq_value((Long)__value);
       }
       break;
 
@@ -336,42 +336,42 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case OPT_VALUE:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.opt_value = iprot.readI64();
             setOpt_valueIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case VALUE:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.value = iprot.readI64();
             setValueIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REQ_VALUE:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.req_value = iprot.readI64();
             setReq_valueIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

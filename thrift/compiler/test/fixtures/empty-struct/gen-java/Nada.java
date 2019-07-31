@@ -39,8 +39,8 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
     super();
   }
 
-  public Nada(int setField, Object value) {
-    super(setField, value);
+  public Nada(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public Nada(Nada other) {
@@ -52,7 +52,7 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
@@ -64,13 +64,13 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
         }
       }
       iprot.readFieldEnd();
@@ -81,16 +81,16 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       default:
         throw new IllegalStateException("Cannot write union with unknown field " + setField);

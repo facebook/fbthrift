@@ -149,8 +149,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return this.list_ref != null;
   }
 
-  public void setList_refIsSet(boolean value) {
-    if (!value) {
+  public void setList_refIsSet(boolean __value) {
+    if (!__value) {
       this.list_ref = null;
     }
   }
@@ -173,8 +173,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return this.set_ref != null;
   }
 
-  public void setSet_refIsSet(boolean value) {
-    if (!value) {
+  public void setSet_refIsSet(boolean __value) {
+    if (!__value) {
       this.set_ref = null;
     }
   }
@@ -197,8 +197,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return this.map_ref != null;
   }
 
-  public void setMap_refIsSet(boolean value) {
-    if (!value) {
+  public void setMap_refIsSet(boolean __value) {
+    if (!__value) {
       this.map_ref = null;
     }
   }
@@ -221,8 +221,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return this.list_ref_unique != null;
   }
 
-  public void setList_ref_uniqueIsSet(boolean value) {
-    if (!value) {
+  public void setList_ref_uniqueIsSet(boolean __value) {
+    if (!__value) {
       this.list_ref_unique = null;
     }
   }
@@ -245,8 +245,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return this.set_ref_shared != null;
   }
 
-  public void setSet_ref_sharedIsSet(boolean value) {
-    if (!value) {
+  public void setSet_ref_sharedIsSet(boolean __value) {
+    if (!__value) {
       this.set_ref_shared = null;
     }
   }
@@ -269,60 +269,60 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return this.list_ref_shared_const != null;
   }
 
-  public void setList_ref_shared_constIsSet(boolean value) {
-    if (!value) {
+  public void setList_ref_shared_constIsSet(boolean __value) {
+    if (!__value) {
       this.list_ref_shared_const = null;
     }
   }
 
   @SuppressWarnings("unchecked")
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case LIST_REF:
-      if (value == null) {
+      if (__value == null) {
         unsetList_ref();
       } else {
-        setList_ref((List<Integer>)value);
+        setList_ref((List<Integer>)__value);
       }
       break;
 
     case SET_REF:
-      if (value == null) {
+      if (__value == null) {
         unsetSet_ref();
       } else {
-        setSet_ref((Set<Integer>)value);
+        setSet_ref((Set<Integer>)__value);
       }
       break;
 
     case MAP_REF:
-      if (value == null) {
+      if (__value == null) {
         unsetMap_ref();
       } else {
-        setMap_ref((Map<Integer,Integer>)value);
+        setMap_ref((Map<Integer,Integer>)__value);
       }
       break;
 
     case LIST_REF_UNIQUE:
-      if (value == null) {
+      if (__value == null) {
         unsetList_ref_unique();
       } else {
-        setList_ref_unique((List<Integer>)value);
+        setList_ref_unique((List<Integer>)__value);
       }
       break;
 
     case SET_REF_SHARED:
-      if (value == null) {
+      if (__value == null) {
         unsetSet_ref_shared();
       } else {
-        setSet_ref_shared((Set<Integer>)value);
+        setSet_ref_shared((Set<Integer>)__value);
       }
       break;
 
     case LIST_REF_SHARED_CONST:
-      if (value == null) {
+      if (__value == null) {
         unsetList_ref_shared_const();
       } else {
-        setList_ref_shared_const((List<Integer>)value);
+        setList_ref_shared_const((List<Integer>)__value);
       }
       break;
 
@@ -517,18 +517,18 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case LIST_REF:
-          if (field.type == TType.LIST) {
+          if (__field.type == TType.LIST) {
             {
               TList _list16 = iprot.readListBegin();
               this.list_ref = new ArrayList<Integer>(Math.max(0, _list16.size));
@@ -543,11 +543,11 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
               iprot.readListEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case SET_REF:
-          if (field.type == TType.SET) {
+          if (__field.type == TType.SET) {
             {
               TSet _set19 = iprot.readSetBegin();
               this.set_ref = new HashSet<Integer>(Math.max(0, 2*_set19.size));
@@ -562,11 +562,11 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
               iprot.readSetEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MAP_REF:
-          if (field.type == TType.MAP) {
+          if (__field.type == TType.MAP) {
             {
               TMap _map22 = iprot.readMapBegin();
               this.map_ref = new HashMap<Integer,Integer>(Math.max(0, 2*_map22.size));
@@ -583,11 +583,11 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
               iprot.readMapEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case LIST_REF_UNIQUE:
-          if (field.type == TType.LIST) {
+          if (__field.type == TType.LIST) {
             {
               TList _list26 = iprot.readListBegin();
               this.list_ref_unique = new ArrayList<Integer>(Math.max(0, _list26.size));
@@ -602,11 +602,11 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
               iprot.readListEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case SET_REF_SHARED:
-          if (field.type == TType.SET) {
+          if (__field.type == TType.SET) {
             {
               TSet _set29 = iprot.readSetBegin();
               this.set_ref_shared = new HashSet<Integer>(Math.max(0, 2*_set29.size));
@@ -621,11 +621,11 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
               iprot.readSetEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case LIST_REF_SHARED_CONST:
-          if (field.type == TType.LIST) {
+          if (__field.type == TType.LIST) {
             {
               TList _list32 = iprot.readListBegin();
               this.list_ref_shared_const = new ArrayList<Integer>(Math.max(0, _list32.size));
@@ -640,11 +640,11 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
               iprot.readListEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

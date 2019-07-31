@@ -115,8 +115,8 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     return this.u != null;
   }
 
-  public void setUIsSet(boolean value) {
-    if (!value) {
+  public void setUIsSet(boolean __value) {
+    if (!__value) {
       this.u = null;
     }
   }
@@ -140,8 +140,8 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     return __isset_bit_vector.get(__ADOUBLE_ISSET_ID);
   }
 
-  public void setADoubleIsSet(boolean value) {
-    __isset_bit_vector.set(__ADOUBLE_ISSET_ID, value);
+  public void setADoubleIsSet(boolean __value) {
+    __isset_bit_vector.set(__ADOUBLE_ISSET_ID, __value);
   }
 
   public MyField getF() {
@@ -162,35 +162,35 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     return this.f != null;
   }
 
-  public void setFIsSet(boolean value) {
-    if (!value) {
+  public void setFIsSet(boolean __value) {
+    if (!__value) {
       this.f = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case U:
-      if (value == null) {
+      if (__value == null) {
         unsetU();
       } else {
-        setU((MyUnion)value);
+        setU((MyUnion)__value);
       }
       break;
 
     case ADOUBLE:
-      if (value == null) {
+      if (__value == null) {
         unsetADouble();
       } else {
-        setADouble((Double)value);
+        setADouble((Double)__value);
       }
       break;
 
     case F:
-      if (value == null) {
+      if (__value == null) {
         unsetF();
       } else {
-        setF((MyField)value);
+        setF((MyField)__value);
       }
       break;
 
@@ -319,42 +319,42 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case U:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.u = new MyUnion();
             this.u.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ADOUBLE:
-          if (field.type == TType.DOUBLE) {
+          if (__field.type == TType.DOUBLE) {
             this.aDouble = iprot.readDouble();
             setADoubleIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case F:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.f = new MyField();
             this.f.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

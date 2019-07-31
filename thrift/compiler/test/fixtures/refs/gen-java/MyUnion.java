@@ -47,8 +47,8 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     super();
   }
 
-  public MyUnion(int setField, Object value) {
-    super(setField, value);
+  public MyUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public MyUnion(MyUnion other) {
@@ -58,32 +58,32 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     return new MyUnion(this);
   }
 
-  public static MyUnion anInteger(int value) {
+  public static MyUnion anInteger(int __value) {
     MyUnion x = new MyUnion();
-    x.setAnInteger(value);
+    x.setAnInteger(__value);
     return x;
   }
 
-  public static MyUnion aString(String value) {
+  public static MyUnion aString(String __value) {
     MyUnion x = new MyUnion();
-    x.setAString(value);
+    x.setAString(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case ANINTEGER:
-        if (value instanceof Integer) {
+        if (__value instanceof Integer) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type Integer for field 'anInteger', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type Integer for field 'anInteger', but got " + __value.getClass().getSimpleName());
       case ASTRING:
-        if (value instanceof String) {
+        if (__value instanceof String) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type String for field 'aString', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type String for field 'aString', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -94,21 +94,21 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case ANINTEGER:
-            if (field.type == AN_INTEGER_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == AN_INTEGER_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case ASTRING:
-            if (field.type == A_STRING_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == A_STRING_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -121,34 +121,34 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case ANINTEGER:
-        if (field.type == AN_INTEGER_FIELD_DESC.type) {
+        if (__field.type == AN_INTEGER_FIELD_DESC.type) {
           Integer anInteger;
           anInteger = iprot.readI32();
           return anInteger;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case ASTRING:
-        if (field.type == A_STRING_FIELD_DESC.type) {
+        if (__field.type == A_STRING_FIELD_DESC.type) {
           String aString;
           aString = iprot.readString();
           return aString;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case ANINTEGER:
         Integer anInteger = (Integer)getFieldValue();
@@ -188,9 +188,9 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     }
   }
 
-  public void setAnInteger(int value) {
+  public void setAnInteger(int __value) {
     setField_ = ANINTEGER;
-    value_ = value;
+    value_ = __value;
   }
 
   public String getAString() {
@@ -201,10 +201,10 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
     }
   }
 
-  public void setAString(String value) {
-    if (value == null) throw new NullPointerException();
+  public void setAString(String __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = ASTRING;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

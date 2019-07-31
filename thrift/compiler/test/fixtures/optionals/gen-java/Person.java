@@ -204,8 +204,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return __isset_bit_vector.get(__ID_ISSET_ID);
   }
 
-  public void setIdIsSet(boolean value) {
-    __isset_bit_vector.set(__ID_ISSET_ID, value);
+  public void setIdIsSet(boolean __value) {
+    __isset_bit_vector.set(__ID_ISSET_ID, __value);
   }
 
   public String getName() {
@@ -226,8 +226,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return this.name != null;
   }
 
-  public void setNameIsSet(boolean value) {
-    if (!value) {
+  public void setNameIsSet(boolean __value) {
+    if (!__value) {
       this.name = null;
     }
   }
@@ -251,8 +251,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return __isset_bit_vector.get(__AGE_ISSET_ID);
   }
 
-  public void setAgeIsSet(boolean value) {
-    __isset_bit_vector.set(__AGE_ISSET_ID, value);
+  public void setAgeIsSet(boolean __value) {
+    __isset_bit_vector.set(__AGE_ISSET_ID, __value);
   }
 
   public String getAddress() {
@@ -273,8 +273,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return this.address != null;
   }
 
-  public void setAddressIsSet(boolean value) {
-    if (!value) {
+  public void setAddressIsSet(boolean __value) {
+    if (!__value) {
       this.address = null;
     }
   }
@@ -297,8 +297,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return this.favoriteColor != null;
   }
 
-  public void setFavoriteColorIsSet(boolean value) {
-    if (!value) {
+  public void setFavoriteColorIsSet(boolean __value) {
+    if (!__value) {
       this.favoriteColor = null;
     }
   }
@@ -321,8 +321,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return this.friends != null;
   }
 
-  public void setFriendsIsSet(boolean value) {
-    if (!value) {
+  public void setFriendsIsSet(boolean __value) {
+    if (!__value) {
       this.friends = null;
     }
   }
@@ -346,8 +346,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return __isset_bit_vector.get(__BESTFRIEND_ISSET_ID);
   }
 
-  public void setBestFriendIsSet(boolean value) {
-    __isset_bit_vector.set(__BESTFRIEND_ISSET_ID, value);
+  public void setBestFriendIsSet(boolean __value) {
+    __isset_bit_vector.set(__BESTFRIEND_ISSET_ID, __value);
   }
 
   public Map<Animal,String> getPetNames() {
@@ -368,8 +368,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return this.petNames != null;
   }
 
-  public void setPetNamesIsSet(boolean value) {
-    if (!value) {
+  public void setPetNamesIsSet(boolean __value) {
+    if (!__value) {
       this.petNames = null;
     }
   }
@@ -401,8 +401,8 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return __isset_bit_vector.get(__AFRAIDOFANIMAL_ISSET_ID);
   }
 
-  public void setAfraidOfAnimalIsSet(boolean value) {
-    __isset_bit_vector.set(__AFRAIDOFANIMAL_ISSET_ID, value);
+  public void setAfraidOfAnimalIsSet(boolean __value) {
+    __isset_bit_vector.set(__AFRAIDOFANIMAL_ISSET_ID, __value);
   }
 
   public List<Vehicle> getVehicles() {
@@ -423,92 +423,92 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return this.vehicles != null;
   }
 
-  public void setVehiclesIsSet(boolean value) {
-    if (!value) {
+  public void setVehiclesIsSet(boolean __value) {
+    if (!__value) {
       this.vehicles = null;
     }
   }
 
   @SuppressWarnings("unchecked")
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case ID:
-      if (value == null) {
+      if (__value == null) {
         unsetId();
       } else {
-        setId((Long)value);
+        setId((Long)__value);
       }
       break;
 
     case NAME:
-      if (value == null) {
+      if (__value == null) {
         unsetName();
       } else {
-        setName((String)value);
+        setName((String)__value);
       }
       break;
 
     case AGE:
-      if (value == null) {
+      if (__value == null) {
         unsetAge();
       } else {
-        setAge((Short)value);
+        setAge((Short)__value);
       }
       break;
 
     case ADDRESS:
-      if (value == null) {
+      if (__value == null) {
         unsetAddress();
       } else {
-        setAddress((String)value);
+        setAddress((String)__value);
       }
       break;
 
     case FAVORITECOLOR:
-      if (value == null) {
+      if (__value == null) {
         unsetFavoriteColor();
       } else {
-        setFavoriteColor((Color)value);
+        setFavoriteColor((Color)__value);
       }
       break;
 
     case FRIENDS:
-      if (value == null) {
+      if (__value == null) {
         unsetFriends();
       } else {
-        setFriends((Set<Long>)value);
+        setFriends((Set<Long>)__value);
       }
       break;
 
     case BESTFRIEND:
-      if (value == null) {
+      if (__value == null) {
         unsetBestFriend();
       } else {
-        setBestFriend((Long)value);
+        setBestFriend((Long)__value);
       }
       break;
 
     case PETNAMES:
-      if (value == null) {
+      if (__value == null) {
         unsetPetNames();
       } else {
-        setPetNames((Map<Animal,String>)value);
+        setPetNames((Map<Animal,String>)__value);
       }
       break;
 
     case AFRAIDOFANIMAL:
-      if (value == null) {
+      if (__value == null) {
         unsetAfraidOfAnimal();
       } else {
-        setAfraidOfAnimal((Animal)value);
+        setAfraidOfAnimal((Animal)__value);
       }
       break;
 
     case VEHICLES:
-      if (value == null) {
+      if (__value == null) {
         unsetVehicles();
       } else {
-        setVehicles((List<Vehicle>)value);
+        setVehicles((List<Vehicle>)__value);
       }
       break;
 
@@ -791,56 +791,56 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case ID:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.id = iprot.readI64();
             setIdIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case NAME:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.name = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case AGE:
-          if (field.type == TType.I16) {
+          if (__field.type == TType.I16) {
             this.age = iprot.readI16();
             setAgeIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ADDRESS:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.address = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case FAVORITECOLOR:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.favoriteColor = new Color();
             this.favoriteColor.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case FRIENDS:
-          if (field.type == TType.SET) {
+          if (__field.type == TType.SET) {
             {
               TSet _set0 = iprot.readSetBegin();
               this.friends = new HashSet<Long>(Math.max(0, 2*_set0.size));
@@ -855,19 +855,19 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
               iprot.readSetEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case BESTFRIEND:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.bestFriend = iprot.readI64();
             setBestFriendIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case PETNAMES:
-          if (field.type == TType.MAP) {
+          if (__field.type == TType.MAP) {
             {
               TMap _map3 = iprot.readMapBegin();
               this.petNames = new HashMap<Animal,String>(Math.max(0, 2*_map3.size));
@@ -884,19 +884,19 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
               iprot.readMapEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case AFRAIDOFANIMAL:
-          if (field.type == TType.I32) {
+          if (__field.type == TType.I32) {
             this.afraidOfAnimal = Animal.findByValue(iprot.readI32());
             setAfraidOfAnimalIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case VEHICLES:
-          if (field.type == TType.LIST) {
+          if (__field.type == TType.LIST) {
             {
               TList _list7 = iprot.readListBegin();
               this.vehicles = new ArrayList<Vehicle>(Math.max(0, _list7.size));
@@ -912,11 +912,11 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
               iprot.readListEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

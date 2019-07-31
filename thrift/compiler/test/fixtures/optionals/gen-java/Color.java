@@ -126,8 +126,8 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     return __isset_bit_vector.get(__RED_ISSET_ID);
   }
 
-  public void setRedIsSet(boolean value) {
-    __isset_bit_vector.set(__RED_ISSET_ID, value);
+  public void setRedIsSet(boolean __value) {
+    __isset_bit_vector.set(__RED_ISSET_ID, __value);
   }
 
   public double getGreen() {
@@ -149,8 +149,8 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     return __isset_bit_vector.get(__GREEN_ISSET_ID);
   }
 
-  public void setGreenIsSet(boolean value) {
-    __isset_bit_vector.set(__GREEN_ISSET_ID, value);
+  public void setGreenIsSet(boolean __value) {
+    __isset_bit_vector.set(__GREEN_ISSET_ID, __value);
   }
 
   public double getBlue() {
@@ -172,8 +172,8 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     return __isset_bit_vector.get(__BLUE_ISSET_ID);
   }
 
-  public void setBlueIsSet(boolean value) {
-    __isset_bit_vector.set(__BLUE_ISSET_ID, value);
+  public void setBlueIsSet(boolean __value) {
+    __isset_bit_vector.set(__BLUE_ISSET_ID, __value);
   }
 
   public double getAlpha() {
@@ -195,41 +195,41 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     return __isset_bit_vector.get(__ALPHA_ISSET_ID);
   }
 
-  public void setAlphaIsSet(boolean value) {
-    __isset_bit_vector.set(__ALPHA_ISSET_ID, value);
+  public void setAlphaIsSet(boolean __value) {
+    __isset_bit_vector.set(__ALPHA_ISSET_ID, __value);
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case RED:
-      if (value == null) {
+      if (__value == null) {
         unsetRed();
       } else {
-        setRed((Double)value);
+        setRed((Double)__value);
       }
       break;
 
     case GREEN:
-      if (value == null) {
+      if (__value == null) {
         unsetGreen();
       } else {
-        setGreen((Double)value);
+        setGreen((Double)__value);
       }
       break;
 
     case BLUE:
-      if (value == null) {
+      if (__value == null) {
         unsetBlue();
       } else {
-        setBlue((Double)value);
+        setBlue((Double)__value);
       }
       break;
 
     case ALPHA:
-      if (value == null) {
+      if (__value == null) {
         unsetAlpha();
       } else {
-        setAlpha((Double)value);
+        setAlpha((Double)__value);
       }
       break;
 
@@ -380,50 +380,50 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case RED:
-          if (field.type == TType.DOUBLE) {
+          if (__field.type == TType.DOUBLE) {
             this.red = iprot.readDouble();
             setRedIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case GREEN:
-          if (field.type == TType.DOUBLE) {
+          if (__field.type == TType.DOUBLE) {
             this.green = iprot.readDouble();
             setGreenIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case BLUE:
-          if (field.type == TType.DOUBLE) {
+          if (__field.type == TType.DOUBLE) {
             this.blue = iprot.readDouble();
             setBlueIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ALPHA:
-          if (field.type == TType.DOUBLE) {
+          if (__field.type == TType.DOUBLE) {
             this.alpha = iprot.readDouble();
             setAlphaIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

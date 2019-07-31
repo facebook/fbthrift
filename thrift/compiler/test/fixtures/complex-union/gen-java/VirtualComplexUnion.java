@@ -47,8 +47,8 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     super();
   }
 
-  public VirtualComplexUnion(int setField, Object value) {
-    super(setField, value);
+  public VirtualComplexUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public VirtualComplexUnion(VirtualComplexUnion other) {
@@ -58,32 +58,32 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     return new VirtualComplexUnion(this);
   }
 
-  public static VirtualComplexUnion thingOne(String value) {
+  public static VirtualComplexUnion thingOne(String __value) {
     VirtualComplexUnion x = new VirtualComplexUnion();
-    x.setThingOne(value);
+    x.setThingOne(__value);
     return x;
   }
 
-  public static VirtualComplexUnion thingTwo(String value) {
+  public static VirtualComplexUnion thingTwo(String __value) {
     VirtualComplexUnion x = new VirtualComplexUnion();
-    x.setThingTwo(value);
+    x.setThingTwo(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case THINGONE:
-        if (value instanceof String) {
+        if (__value instanceof String) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type String for field 'thingOne', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type String for field 'thingOne', but got " + __value.getClass().getSimpleName());
       case THINGTWO:
-        if (value instanceof String) {
+        if (__value instanceof String) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type String for field 'thingTwo', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type String for field 'thingTwo', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -94,21 +94,21 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case THINGONE:
-            if (field.type == THING_ONE_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == THING_ONE_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case THINGTWO:
-            if (field.type == THING_TWO_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == THING_TWO_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -121,34 +121,34 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case THINGONE:
-        if (field.type == THING_ONE_FIELD_DESC.type) {
+        if (__field.type == THING_ONE_FIELD_DESC.type) {
           String thingOne;
           thingOne = iprot.readString();
           return thingOne;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case THINGTWO:
-        if (field.type == THING_TWO_FIELD_DESC.type) {
+        if (__field.type == THING_TWO_FIELD_DESC.type) {
           String thingTwo;
           thingTwo = iprot.readString();
           return thingTwo;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case THINGONE:
         String thingOne = (String)getFieldValue();
@@ -188,10 +188,10 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     }
   }
 
-  public void setThingOne(String value) {
-    if (value == null) throw new NullPointerException();
+  public void setThingOne(String __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = THINGONE;
-    value_ = value;
+    value_ = __value;
   }
 
   public String getThingTwo() {
@@ -202,10 +202,10 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
     }
   }
 
-  public void setThingTwo(String value) {
-    if (value == null) throw new NullPointerException();
+  public void setThingTwo(String __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = THINGTWO;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

@@ -93,20 +93,20 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
     return this.mes != null;
   }
 
-  public void setMesIsSet(boolean value) {
-    if (!value) {
+  public void setMesIsSet(boolean __value) {
+    if (!__value) {
       this.mes = null;
     }
   }
 
   @SuppressWarnings("unchecked")
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MES:
-      if (value == null) {
+      if (__value == null) {
         unsetMes();
       } else {
-        setMes((List<RecursiveStruct>)value);
+        setMes((List<RecursiveStruct>)__value);
       }
       break;
 
@@ -168,18 +168,18 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case MES:
-          if (field.type == TType.LIST) {
+          if (__field.type == TType.LIST) {
             {
               TList _list12 = iprot.readListBegin();
               this.mes = new ArrayList<RecursiveStruct>(Math.max(0, _list12.size));
@@ -195,11 +195,11 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
               iprot.readListEnd();
             }
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

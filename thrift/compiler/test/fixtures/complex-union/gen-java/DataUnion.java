@@ -47,8 +47,8 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     super();
   }
 
-  public DataUnion(int setField, Object value) {
-    super(setField, value);
+  public DataUnion(int setField, Object __value) {
+    super(setField, __value);
   }
 
   public DataUnion(DataUnion other) {
@@ -58,32 +58,32 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     return new DataUnion(this);
   }
 
-  public static DataUnion binaryData(byte[] value) {
+  public static DataUnion binaryData(byte[] __value) {
     DataUnion x = new DataUnion();
-    x.setBinaryData(value);
+    x.setBinaryData(__value);
     return x;
   }
 
-  public static DataUnion stringData(String value) {
+  public static DataUnion stringData(String __value) {
     DataUnion x = new DataUnion();
-    x.setStringData(value);
+    x.setStringData(__value);
     return x;
   }
 
 
   @Override
-  protected void checkType(short setField, Object value) throws ClassCastException {
+  protected void checkType(short setField, Object __value) throws ClassCastException {
     switch (setField) {
       case BINARYDATA:
-        if (value instanceof byte[]) {
+        if (__value instanceof byte[]) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type byte[] for field 'binaryData', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type byte[] for field 'binaryData', but got " + __value.getClass().getSimpleName());
       case STRINGDATA:
-        if (value instanceof String) {
+        if (__value instanceof String) {
           break;
         }
-        throw new ClassCastException("Was expecting value of type String for field 'stringData', but got " + value.getClass().getSimpleName());
+        throw new ClassCastException("Was expecting value of type String for field 'stringData', but got " + __value.getClass().getSimpleName());
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
@@ -94,21 +94,21 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     setField_ = 0;
     value_ = null;
     iprot.readStructBegin(metaDataMap);
-    TField field = iprot.readFieldBegin();
-    if (field.type != TType.STOP)
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
     {
-      value_ = readValue(iprot, field);
+      value_ = readValue(iprot, __field);
       if (value_ != null)
       {
-        switch (field.id) {
+        switch (__field.id) {
           case BINARYDATA:
-            if (field.type == BINARY_DATA_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == BINARY_DATA_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
           case STRINGDATA:
-            if (field.type == STRING_DATA_FIELD_DESC.type) {
-              setField_ = field.id;
+            if (__field.type == STRING_DATA_FIELD_DESC.type) {
+              setField_ = __field.id;
             }
             break;
         }
@@ -121,34 +121,34 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   }
 
   @Override
-  protected Object readValue(TProtocol iprot, TField field) throws TException {
-    switch (field.id) {
+  protected Object readValue(TProtocol iprot, TField __field) throws TException {
+    switch (__field.id) {
       case BINARYDATA:
-        if (field.type == BINARY_DATA_FIELD_DESC.type) {
+        if (__field.type == BINARY_DATA_FIELD_DESC.type) {
           byte[] binaryData;
           binaryData = iprot.readBinary();
           return binaryData;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       case STRINGDATA:
-        if (field.type == STRING_DATA_FIELD_DESC.type) {
+        if (__field.type == STRING_DATA_FIELD_DESC.type) {
           String stringData;
           stringData = iprot.readString();
           return stringData;
         } else {
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           return null;
         }
       default:
-        TProtocolUtil.skip(iprot, field.type);
+        TProtocolUtil.skip(iprot, __field.type);
         return null;
     }
   }
 
   @Override
-  protected void writeValue(TProtocol oprot, short setField, Object value) throws TException {
+  protected void writeValue(TProtocol oprot, short setField, Object __value) throws TException {
     switch (setField) {
       case BINARYDATA:
         byte[] binaryData = (byte[])getFieldValue();
@@ -188,10 +188,10 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     }
   }
 
-  public void setBinaryData(byte[] value) {
-    if (value == null) throw new NullPointerException();
+  public void setBinaryData(byte[] __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = BINARYDATA;
-    value_ = value;
+    value_ = __value;
   }
 
   public String getStringData() {
@@ -202,10 +202,10 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
     }
   }
 
-  public void setStringData(String value) {
-    if (value == null) throw new NullPointerException();
+  public void setStringData(String __value) {
+    if (__value == null) throw new NullPointerException();
     setField_ = STRINGDATA;
-    value_ = value;
+    value_ = __value;
   }
 
   public boolean equals(Object other) {

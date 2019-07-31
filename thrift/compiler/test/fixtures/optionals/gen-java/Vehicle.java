@@ -144,8 +144,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return this.color != null;
   }
 
-  public void setColorIsSet(boolean value) {
-    if (!value) {
+  public void setColorIsSet(boolean __value) {
+    if (!__value) {
       this.color = null;
     }
   }
@@ -168,8 +168,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return this.licensePlate != null;
   }
 
-  public void setLicensePlateIsSet(boolean value) {
-    if (!value) {
+  public void setLicensePlateIsSet(boolean __value) {
+    if (!__value) {
       this.licensePlate = null;
     }
   }
@@ -192,8 +192,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return this.description != null;
   }
 
-  public void setDescriptionIsSet(boolean value) {
-    if (!value) {
+  public void setDescriptionIsSet(boolean __value) {
+    if (!__value) {
       this.description = null;
     }
   }
@@ -216,8 +216,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return this.name != null;
   }
 
-  public void setNameIsSet(boolean value) {
-    if (!value) {
+  public void setNameIsSet(boolean __value) {
+    if (!__value) {
       this.name = null;
     }
   }
@@ -241,49 +241,49 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return __isset_bit_vector.get(__HASAC_ISSET_ID);
   }
 
-  public void setHasACIsSet(boolean value) {
-    __isset_bit_vector.set(__HASAC_ISSET_ID, value);
+  public void setHasACIsSet(boolean __value) {
+    __isset_bit_vector.set(__HASAC_ISSET_ID, __value);
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case COLOR:
-      if (value == null) {
+      if (__value == null) {
         unsetColor();
       } else {
-        setColor((Color)value);
+        setColor((Color)__value);
       }
       break;
 
     case LICENSEPLATE:
-      if (value == null) {
+      if (__value == null) {
         unsetLicensePlate();
       } else {
-        setLicensePlate((String)value);
+        setLicensePlate((String)__value);
       }
       break;
 
     case DESCRIPTION:
-      if (value == null) {
+      if (__value == null) {
         unsetDescription();
       } else {
-        setDescription((String)value);
+        setDescription((String)__value);
       }
       break;
 
     case NAME:
-      if (value == null) {
+      if (__value == null) {
         unsetName();
       } else {
-        setName((String)value);
+        setName((String)__value);
       }
       break;
 
     case HASAC:
-      if (value == null) {
+      if (__value == null) {
         unsetHasAC();
       } else {
-        setHasAC((Boolean)value);
+        setHasAC((Boolean)__value);
       }
       break;
 
@@ -456,55 +456,55 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case COLOR:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.color = new Color();
             this.color.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case LICENSEPLATE:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.licensePlate = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case DESCRIPTION:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.description = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case NAME:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.name = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case HASAC:
-          if (field.type == TType.BOOL) {
+          if (__field.type == TType.BOOL) {
             this.hasAC = iprot.readBool();
             setHasACIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

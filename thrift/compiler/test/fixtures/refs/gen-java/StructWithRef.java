@@ -128,8 +128,8 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
     return this.def_field != null;
   }
 
-  public void setDef_fieldIsSet(boolean value) {
-    if (!value) {
+  public void setDef_fieldIsSet(boolean __value) {
+    if (!__value) {
       this.def_field = null;
     }
   }
@@ -152,8 +152,8 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
     return this.opt_field != null;
   }
 
-  public void setOpt_fieldIsSet(boolean value) {
-    if (!value) {
+  public void setOpt_fieldIsSet(boolean __value) {
+    if (!__value) {
       this.opt_field = null;
     }
   }
@@ -176,35 +176,35 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
     return this.req_field != null;
   }
 
-  public void setReq_fieldIsSet(boolean value) {
-    if (!value) {
+  public void setReq_fieldIsSet(boolean __value) {
+    if (!__value) {
       this.req_field = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case DEF_FIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetDef_field();
       } else {
-        setDef_field((Empty)value);
+        setDef_field((Empty)__value);
       }
       break;
 
     case OPT_FIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetOpt_field();
       } else {
-        setOpt_field((Empty)value);
+        setOpt_field((Empty)__value);
       }
       break;
 
     case REQ_FIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetReq_field();
       } else {
-        setReq_field((Empty)value);
+        setReq_field((Empty)__value);
       }
       break;
 
@@ -333,42 +333,42 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case DEF_FIELD:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.def_field = new Empty();
             this.def_field.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case OPT_FIELD:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.opt_field = new Empty();
             this.opt_field.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case REQ_FIELD:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.req_field = new Empty();
             this.req_field.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

@@ -126,8 +126,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return __isset_bit_vector.get(__MYENUM_ISSET_ID);
   }
 
-  public void setMyEnumIsSet(boolean value) {
-    __isset_bit_vector.set(__MYENUM_ISSET_ID, value);
+  public void setMyEnumIsSet(boolean __value) {
+    __isset_bit_vector.set(__MYENUM_ISSET_ID, __value);
   }
 
   /**
@@ -157,25 +157,25 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return __isset_bit_vector.get(__MYBIGENUM_ISSET_ID);
   }
 
-  public void setMyBigEnumIsSet(boolean value) {
-    __isset_bit_vector.set(__MYBIGENUM_ISSET_ID, value);
+  public void setMyBigEnumIsSet(boolean __value) {
+    __isset_bit_vector.set(__MYBIGENUM_ISSET_ID, __value);
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MYENUM:
-      if (value == null) {
+      if (__value == null) {
         unsetMyEnum();
       } else {
-        setMyEnum((MyEnum)value);
+        setMyEnum((MyEnum)__value);
       }
       break;
 
     case MYBIGENUM:
-      if (value == null) {
+      if (__value == null) {
         unsetMyBigEnum();
       } else {
-        setMyBigEnum((MyBigEnum)value);
+        setMyBigEnum((MyBigEnum)__value);
       }
       break;
 
@@ -282,34 +282,34 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case MYENUM:
-          if (field.type == TType.I32) {
+          if (__field.type == TType.I32) {
             this.myEnum = MyEnum.findByValue(iprot.readI32());
             setMyEnumIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYBIGENUM:
-          if (field.type == TType.I32) {
+          if (__field.type == TType.I32) {
             this.myBigEnum = MyBigEnum.findByValue(iprot.readI32());
             setMyBigEnumIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

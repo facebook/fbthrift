@@ -132,8 +132,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return __isset_bit_vector.get(__MYINTFIELD_ISSET_ID);
   }
 
-  public void setMyIntFieldIsSet(boolean value) {
-    __isset_bit_vector.set(__MYINTFIELD_ISSET_ID, value);
+  public void setMyIntFieldIsSet(boolean __value) {
+    __isset_bit_vector.set(__MYINTFIELD_ISSET_ID, __value);
   }
 
   public String getMyStringField() {
@@ -154,8 +154,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return this.MyStringField != null;
   }
 
-  public void setMyStringFieldIsSet(boolean value) {
-    if (!value) {
+  public void setMyStringFieldIsSet(boolean __value) {
+    if (!__value) {
       this.MyStringField = null;
     }
   }
@@ -178,8 +178,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return this.MyDataField != null;
   }
 
-  public void setMyDataFieldIsSet(boolean value) {
-    if (!value) {
+  public void setMyDataFieldIsSet(boolean __value) {
+    if (!__value) {
       this.MyDataField = null;
     }
   }
@@ -211,41 +211,41 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return __isset_bit_vector.get(__MYENUM_ISSET_ID);
   }
 
-  public void setMyEnumIsSet(boolean value) {
-    __isset_bit_vector.set(__MYENUM_ISSET_ID, value);
+  public void setMyEnumIsSet(boolean __value) {
+    __isset_bit_vector.set(__MYENUM_ISSET_ID, __value);
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MYINTFIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetMyIntField();
       } else {
-        setMyIntField((Long)value);
+        setMyIntField((Long)__value);
       }
       break;
 
     case MYSTRINGFIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetMyStringField();
       } else {
-        setMyStringField((String)value);
+        setMyStringField((String)__value);
       }
       break;
 
     case MYDATAFIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetMyDataField();
       } else {
-        setMyDataField((MyDataItem)value);
+        setMyDataField((MyDataItem)__value);
       }
       break;
 
     case MYENUM:
-      if (value == null) {
+      if (__value == null) {
         unsetMyEnum();
       } else {
-        setMyEnum((MyEnum)value);
+        setMyEnum((MyEnum)__value);
       }
       break;
 
@@ -396,49 +396,49 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case MYINTFIELD:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.MyIntField = iprot.readI64();
             setMyIntFieldIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYSTRINGFIELD:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.MyStringField = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYDATAFIELD:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.MyDataField = new MyDataItem();
             this.MyDataField.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYENUM:
-          if (field.type == TType.I32) {
+          if (__field.type == TType.I32) {
             this.myEnum = MyEnum.findByValue(iprot.readI32());
             setMyEnumIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

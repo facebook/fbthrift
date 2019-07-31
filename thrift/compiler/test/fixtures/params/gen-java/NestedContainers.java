@@ -694,20 +694,20 @@ public class NestedContainers {
       return this.foo != null;
     }
 
-    public void setFooIsSet(boolean value) {
-      if (!value) {
+    public void setFooIsSet(boolean __value) {
+      if (!__value) {
         this.foo = null;
       }
     }
 
     @SuppressWarnings("unchecked")
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case FOO:
-        if (value == null) {
+        if (__value == null) {
           unsetFoo();
         } else {
-          setFoo((Map<Integer,List<Integer>>)value);
+          setFoo((Map<Integer,List<Integer>>)__value);
         }
         break;
 
@@ -792,18 +792,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case FOO:
-            if (field.type == TType.MAP) {
+            if (__field.type == TType.MAP) {
               {
                 TMap _map30 = iprot.readMapBegin();
                 this.foo = new HashMap<Integer,List<Integer>>(Math.max(0, 2*_map30.size));
@@ -832,11 +832,11 @@ public class NestedContainers {
                 iprot.readMapEnd();
               }
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -948,7 +948,7 @@ public class NestedContainers {
       return new mapList_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1009,18 +1009,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1142,20 +1142,20 @@ public class NestedContainers {
       return this.foo != null;
     }
 
-    public void setFooIsSet(boolean value) {
-      if (!value) {
+    public void setFooIsSet(boolean __value) {
+      if (!__value) {
         this.foo = null;
       }
     }
 
     @SuppressWarnings("unchecked")
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case FOO:
-        if (value == null) {
+        if (__value == null) {
           unsetFoo();
         } else {
-          setFoo((Map<Integer,Set<Integer>>)value);
+          setFoo((Map<Integer,Set<Integer>>)__value);
         }
         break;
 
@@ -1240,18 +1240,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case FOO:
-            if (field.type == TType.MAP) {
+            if (__field.type == TType.MAP) {
               {
                 TMap _map39 = iprot.readMapBegin();
                 this.foo = new HashMap<Integer,Set<Integer>>(Math.max(0, 2*_map39.size));
@@ -1280,11 +1280,11 @@ public class NestedContainers {
                 iprot.readMapEnd();
               }
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1396,7 +1396,7 @@ public class NestedContainers {
       return new mapSet_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1457,18 +1457,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1590,20 +1590,20 @@ public class NestedContainers {
       return this.foo != null;
     }
 
-    public void setFooIsSet(boolean value) {
-      if (!value) {
+    public void setFooIsSet(boolean __value) {
+      if (!__value) {
         this.foo = null;
       }
     }
 
     @SuppressWarnings("unchecked")
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case FOO:
-        if (value == null) {
+        if (__value == null) {
           unsetFoo();
         } else {
-          setFoo((List<Map<Integer,Integer>>)value);
+          setFoo((List<Map<Integer,Integer>>)__value);
         }
         break;
 
@@ -1688,18 +1688,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case FOO:
-            if (field.type == TType.LIST) {
+            if (__field.type == TType.LIST) {
               {
                 TList _list48 = iprot.readListBegin();
                 this.foo = new ArrayList<Map<Integer,Integer>>(Math.max(0, _list48.size));
@@ -1728,11 +1728,11 @@ public class NestedContainers {
                 iprot.readListEnd();
               }
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -1844,7 +1844,7 @@ public class NestedContainers {
       return new listMap_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1905,18 +1905,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2037,20 +2037,20 @@ public class NestedContainers {
       return this.foo != null;
     }
 
-    public void setFooIsSet(boolean value) {
-      if (!value) {
+    public void setFooIsSet(boolean __value) {
+      if (!__value) {
         this.foo = null;
       }
     }
 
     @SuppressWarnings("unchecked")
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case FOO:
-        if (value == null) {
+        if (__value == null) {
           unsetFoo();
         } else {
-          setFoo((List<Set<Integer>>)value);
+          setFoo((List<Set<Integer>>)__value);
         }
         break;
 
@@ -2135,18 +2135,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case FOO:
-            if (field.type == TType.LIST) {
+            if (__field.type == TType.LIST) {
               {
                 TList _list57 = iprot.readListBegin();
                 this.foo = new ArrayList<Set<Integer>>(Math.max(0, _list57.size));
@@ -2173,11 +2173,11 @@ public class NestedContainers {
                 iprot.readListEnd();
               }
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2288,7 +2288,7 @@ public class NestedContainers {
       return new listSet_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -2349,18 +2349,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2486,20 +2486,20 @@ public class NestedContainers {
       return this.foo != null;
     }
 
-    public void setFooIsSet(boolean value) {
-      if (!value) {
+    public void setFooIsSet(boolean __value) {
+      if (!__value) {
         this.foo = null;
       }
     }
 
     @SuppressWarnings("unchecked")
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case FOO:
-        if (value == null) {
+        if (__value == null) {
           unsetFoo();
         } else {
-          setFoo((List<List<Map<Integer,Map<Integer,Set<Integer>>>>>)value);
+          setFoo((List<List<Map<Integer,Map<Integer,Set<Integer>>>>>)__value);
         }
         break;
 
@@ -2584,18 +2584,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           case FOO:
-            if (field.type == TType.LIST) {
+            if (__field.type == TType.LIST) {
               {
                 TList _list65 = iprot.readListBegin();
                 this.foo = new ArrayList<List<Map<Integer,Map<Integer,Set<Integer>>>>>(Math.max(0, _list65.size));
@@ -2662,11 +2662,11 @@ public class NestedContainers {
                 iprot.readListEnd();
               }
             } else { 
-              TProtocolUtil.skip(iprot, field.type);
+              TProtocolUtil.skip(iprot, __field.type);
             }
             break;
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();
@@ -2797,7 +2797,7 @@ public class NestedContainers {
       return new turtles_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object value) {
+    public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -2858,18 +2858,18 @@ public class NestedContainers {
     }
 
     public void read(TProtocol iprot) throws TException {
-      TField field;
+      TField __field;
       iprot.readStructBegin(metaDataMap);
       while (true)
       {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
+        __field = iprot.readFieldBegin();
+        if (__field.type == TType.STOP) { 
           break;
         }
-        switch (field.id)
+        switch (__field.id)
         {
           default:
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
             break;
         }
         iprot.readFieldEnd();

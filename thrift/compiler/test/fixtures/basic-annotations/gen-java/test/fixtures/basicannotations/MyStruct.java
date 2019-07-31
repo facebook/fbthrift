@@ -118,8 +118,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return __isset_bit_vector.get(__MAJOR_ISSET_ID);
   }
 
-  public void setMajorIsSet(boolean value) {
-    __isset_bit_vector.set(__MAJOR_ISSET_ID, value);
+  public void setMajorIsSet(boolean __value) {
+    __isset_bit_vector.set(__MAJOR_ISSET_ID, __value);
   }
 
   public String getPackage() {
@@ -140,8 +140,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return this.package != null;
   }
 
-  public void setPackageIsSet(boolean value) {
-    if (!value) {
+  public void setPackageIsSet(boolean __value) {
+    if (!__value) {
       this.package = null;
     }
   }
@@ -164,35 +164,35 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return this.annotation_with_quote != null;
   }
 
-  public void setAnnotation_with_quoteIsSet(boolean value) {
-    if (!value) {
+  public void setAnnotation_with_quoteIsSet(boolean __value) {
+    if (!__value) {
       this.annotation_with_quote = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MAJOR:
-      if (value == null) {
+      if (__value == null) {
         unsetMajor();
       } else {
-        setMajor((Long)value);
+        setMajor((Long)__value);
       }
       break;
 
     case PACKAGE:
-      if (value == null) {
+      if (__value == null) {
         unsetPackage();
       } else {
-        setPackage((String)value);
+        setPackage((String)__value);
       }
       break;
 
     case ANNOTATION_WITH_QUOTE:
-      if (value == null) {
+      if (__value == null) {
         unsetAnnotation_with_quote();
       } else {
-        setAnnotation_with_quote((String)value);
+        setAnnotation_with_quote((String)__value);
       }
       break;
 
@@ -321,40 +321,40 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case MAJOR:
-          if (field.type == TType.I64) {
+          if (__field.type == TType.I64) {
             this.major = iprot.readI64();
             setMajorIsSet(true);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case PACKAGE:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.package = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case ANNOTATION_WITH_QUOTE:
-          if (field.type == TType.STRING) {
+          if (__field.type == TType.STRING) {
             this.annotation_with_quote = iprot.readString();
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

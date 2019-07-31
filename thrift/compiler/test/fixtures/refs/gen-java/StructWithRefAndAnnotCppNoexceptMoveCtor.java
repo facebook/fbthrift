@@ -92,19 +92,19 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
     return this.def_field != null;
   }
 
-  public void setDef_fieldIsSet(boolean value) {
-    if (!value) {
+  public void setDef_fieldIsSet(boolean __value) {
+    if (!__value) {
       this.def_field = null;
     }
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case DEF_FIELD:
-      if (value == null) {
+      if (__value == null) {
         unsetDef_field();
       } else {
-        setDef_field((Empty)value);
+        setDef_field((Empty)__value);
       }
       break;
 
@@ -189,26 +189,26 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         case DEF_FIELD:
-          if (field.type == TType.STRUCT) {
+          if (__field.type == TType.STRUCT) {
             this.def_field = new Empty();
             this.def_field.read(iprot);
           } else { 
-            TProtocolUtil.skip(iprot, field.type);
+            TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();

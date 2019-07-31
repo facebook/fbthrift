@@ -58,7 +58,7 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
     return new MyDataItem(this);
   }
 
-  public void setFieldValue(int fieldID, Object value) {
+  public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -119,18 +119,18 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
   }
 
   public void read(TProtocol iprot) throws TException {
-    TField field;
+    TField __field;
     iprot.readStructBegin(metaDataMap);
     while (true)
     {
-      field = iprot.readFieldBegin();
-      if (field.type == TType.STOP) { 
+      __field = iprot.readFieldBegin();
+      if (__field.type == TType.STOP) { 
         break;
       }
-      switch (field.id)
+      switch (__field.id)
       {
         default:
-          TProtocolUtil.skip(iprot, field.type);
+          TProtocolUtil.skip(iprot, __field.type);
           break;
       }
       iprot.readFieldEnd();
