@@ -355,9 +355,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
  public:
   /* implicit */
   ThreadManagerExecutorAdapter(std::shared_ptr<folly::Executor> exe)
-      : exe_(std::move(exe)), ka_(folly::getKeepAliveToken(exe.get())) {}
-  explicit ThreadManagerExecutorAdapter(folly::Executor::KeepAlive<> ka)
-      : ka_(std::move(ka)) {}
+      : exe_(std::move(exe)) {}
 
   void join() override {}
   void start() override {}
@@ -384,11 +382,9 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
       int64_t /*expiration*/ = 0,
       bool /*cancellable*/ = false,
       bool /*numa*/ = false) noexcept override {
-    ka_->add([=] { task->run(); });
+    exe_->add([=] { task->run(); });
   }
-  void add(folly::Func f) override {
-    ka_->add(std::move(f));
-  }
+  void add(folly::Func f) override { exe_->add(std::move(f)); }
 
   void remove(std::shared_ptr<Runnable> /*task*/) override {}
   std::shared_ptr<Runnable> removeNextPending() override { return nullptr; }
@@ -404,7 +400,6 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
 
  private:
   std::shared_ptr<folly::Executor> exe_;
-  folly::Executor::KeepAlive<> ka_;
 };
 
 }}} // apache::thrift::concurrency
