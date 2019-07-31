@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-RaiserClientWrapper::RaiserClientWrapper(
-    std::unique_ptr<::cpp2::RaiserAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<folly::Unit>
 RaiserClientWrapper::doBland(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -75,6 +69,5 @@ RaiserClientWrapper::get500(
   );
   return _future;
 }
-
 
 } // namespace cpp2

@@ -27,9 +27,7 @@ namespace cpp2 {
 
 class MyRootClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit MyRootClientWrapper(
-      std::unique_ptr<::cpp2::MyRootAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<folly::Unit> do_root(
       apache::thrift::RpcOptions& rpcOptions);
@@ -38,9 +36,7 @@ class MyRootClientWrapper : public ::thrift::py3::ClientWrapper {
 
 class MyNodeClientWrapper : public ::cpp2::MyRootClientWrapper {
   public:
-    explicit MyNodeClientWrapper(
-      std::unique_ptr<::cpp2::MyNodeAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::cpp2::MyRootClientWrapper::MyRootClientWrapper;
 
     folly::Future<folly::Unit> do_mid(
       apache::thrift::RpcOptions& rpcOptions);
@@ -49,9 +45,7 @@ class MyNodeClientWrapper : public ::cpp2::MyRootClientWrapper {
 
 class MyLeafClientWrapper : public ::cpp2::MyNodeClientWrapper {
   public:
-    explicit MyLeafClientWrapper(
-      std::unique_ptr<::cpp2::MyLeafAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::cpp2::MyNodeClientWrapper::MyNodeClientWrapper;
 
     folly::Future<folly::Unit> do_leaf(
       apache::thrift::RpcOptions& rpcOptions);

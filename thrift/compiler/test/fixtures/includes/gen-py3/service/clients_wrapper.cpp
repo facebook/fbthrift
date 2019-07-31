@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-MyServiceClientWrapper::MyServiceClientWrapper(
-    std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<folly::Unit>
 MyServiceClientWrapper::query(
     apache::thrift::RpcOptions& rpcOptions,
@@ -53,6 +47,5 @@ MyServiceClientWrapper::has_arg_docs(
   );
   return _future;
 }
-
 
 } // namespace cpp2

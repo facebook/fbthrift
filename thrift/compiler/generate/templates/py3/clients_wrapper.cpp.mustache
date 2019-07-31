@@ -30,13 +30,6 @@ thread that will pass data to the cython callback.
 
 
 {{#program:services}}
-{{service:name}}ClientWrapper::{{service:name}}ClientWrapper(
-    std::unique_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(std::move(async_client), std::move(channel)){{/service:extends}}{{/service:extends?}}{{!
-  }}{{^service:extends?}}::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)){{/service:extends?}} {}
-
-
 {{#service:functions}}
 folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}>
 {{service:name}}ClientWrapper::{{function:name}}(
@@ -63,7 +56,6 @@ folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:return
 }
 
 {{/service:functions}}
-
 {{/program:services}}{{!
 }}{{#program:cppNamespaces}}} // namespace {{value}}
 {{/program:cppNamespaces}}

@@ -10,11 +10,4 @@
 namespace cpp2 {
 
 
-NullServiceClientWrapper::NullServiceClientWrapper(
-    std::unique_ptr<::cpp2::NullServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
-
 } // namespace cpp2

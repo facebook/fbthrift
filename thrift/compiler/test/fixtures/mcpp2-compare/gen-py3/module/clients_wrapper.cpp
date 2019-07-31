@@ -12,19 +12,6 @@ namespace valid {
 namespace ns {
 
 
-EmptyServiceClientWrapper::EmptyServiceClientWrapper(
-    std::unique_ptr<::some::valid::ns::EmptyServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
-
-ReturnServiceClientWrapper::ReturnServiceClientWrapper(
-    std::unique_ptr<::some::valid::ns::ReturnServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<folly::Unit>
 ReturnServiceClientWrapper::noReturn(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -343,13 +330,6 @@ ReturnServiceClientWrapper::readData(
   );
   return _future;
 }
-
-
-ParamServiceClientWrapper::ParamServiceClientWrapper(
-    std::unique_ptr<::some::valid::ns::ParamServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
 
 folly::Future<folly::Unit>
 ParamServiceClientWrapper::void_ret_i16_param(
@@ -867,7 +847,6 @@ ParamServiceClientWrapper::listunion_string_param(
   );
   return _future;
 }
-
 
 } // namespace some
 } // namespace valid

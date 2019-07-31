@@ -25,9 +25,7 @@ namespace cpp2 {
 
 class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit MyServiceClientWrapper(
-      std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<folly::Unit> ping(
       apache::thrift::RpcOptions& rpcOptions);

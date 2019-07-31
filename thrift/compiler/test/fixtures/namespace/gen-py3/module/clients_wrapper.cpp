@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-TestServiceClientWrapper::TestServiceClientWrapper(
-    std::unique_ptr<::cpp2::TestServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<int64_t>
 TestServiceClientWrapper::init(
     apache::thrift::RpcOptions& rpcOptions,
@@ -32,6 +26,5 @@ TestServiceClientWrapper::init(
   );
   return _future;
 }
-
 
 } // namespace cpp2

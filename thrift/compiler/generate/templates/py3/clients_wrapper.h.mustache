@@ -52,9 +52,10 @@ class {{service:name}}ClientWrapper : {{!
 }}{{^service:extends?}}public ::thrift::py3::ClientWrapper{{/service:extends?}}{{!
 }} {
   public:
-    explicit {{service:name}}ClientWrapper(
-      std::unique_ptr<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using {{#service:extends?}}{{#service:extends}}{{!
+    }}::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::{{service:name}}ClientWrapper{{!
+    }}{{/service:extends}}{{/service:extends?}}{{!
+    }}{{^service:extends?}}::thrift::py3::ClientWrapper::ClientWrapper{{/service:extends?}};
 
 {{#service:functions}}
     folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}> {{function:name}}(

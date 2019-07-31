@@ -25,9 +25,7 @@ namespace cpp2 {
 
 class NestedContainersClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit NestedContainersClientWrapper(
-      std::unique_ptr<::cpp2::NestedContainersAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<folly::Unit> mapList(
       apache::thrift::RpcOptions& rpcOptions,

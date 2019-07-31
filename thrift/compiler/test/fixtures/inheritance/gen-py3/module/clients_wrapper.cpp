@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-MyRootClientWrapper::MyRootClientWrapper(
-    std::unique_ptr<::cpp2::MyRootAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<folly::Unit>
 MyRootClientWrapper::do_root(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -30,13 +24,6 @@ MyRootClientWrapper::do_root(
   );
   return _future;
 }
-
-
-MyNodeClientWrapper::MyNodeClientWrapper(
-    std::unique_ptr<::cpp2::MyNodeAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    MyRootClientWrapper(std::move(async_client), std::move(channel)) {}
-
 
 folly::Future<folly::Unit>
 MyNodeClientWrapper::do_mid(
@@ -53,13 +40,6 @@ MyNodeClientWrapper::do_mid(
   return _future;
 }
 
-
-MyLeafClientWrapper::MyLeafClientWrapper(
-    std::unique_ptr<::cpp2::MyLeafAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    MyNodeClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<folly::Unit>
 MyLeafClientWrapper::do_leaf(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -74,6 +54,5 @@ MyLeafClientWrapper::do_leaf(
   );
   return _future;
 }
-
 
 } // namespace cpp2

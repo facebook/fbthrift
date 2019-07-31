@@ -13,12 +13,6 @@ namespace fixtures {
 namespace types {
 
 
-SomeServiceClientWrapper::SomeServiceClientWrapper(
-    std::unique_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<std::unordered_map<int32_t,std::string>>
 SomeServiceClientWrapper::bounce_map(
     apache::thrift::RpcOptions& rpcOptions,
@@ -52,7 +46,6 @@ SomeServiceClientWrapper::binary_keyed_map(
   );
   return _future;
 }
-
 
 } // namespace apache
 } // namespace thrift

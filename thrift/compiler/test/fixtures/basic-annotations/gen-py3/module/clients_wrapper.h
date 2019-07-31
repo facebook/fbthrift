@@ -27,9 +27,7 @@ namespace cpp2 {
 
 class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit MyServiceClientWrapper(
-      std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<folly::Unit> ping(
       apache::thrift::RpcOptions& rpcOptions);
@@ -56,9 +54,7 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
 
 class MyServicePrioParentClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit MyServicePrioParentClientWrapper(
-      std::unique_ptr<::cpp2::MyServicePrioParentAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<folly::Unit> ping(
       apache::thrift::RpcOptions& rpcOptions);
@@ -69,9 +65,7 @@ class MyServicePrioParentClientWrapper : public ::thrift::py3::ClientWrapper {
 
 class MyServicePrioChildClientWrapper : public ::cpp2::MyServicePrioParentClientWrapper {
   public:
-    explicit MyServicePrioChildClientWrapper(
-      std::unique_ptr<::cpp2::MyServicePrioChildAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::cpp2::MyServicePrioParentClientWrapper::MyServicePrioParentClientWrapper;
 
     folly::Future<folly::Unit> pang(
       apache::thrift::RpcOptions& rpcOptions);

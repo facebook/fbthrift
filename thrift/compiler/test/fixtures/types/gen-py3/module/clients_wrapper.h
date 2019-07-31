@@ -28,9 +28,7 @@ namespace types {
 
 class SomeServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit SomeServiceClientWrapper(
-      std::unique_ptr<::apache::thrift::fixtures::types::SomeServiceAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<std::unordered_map<int32_t,std::string>> bounce_map(
       apache::thrift::RpcOptions& rpcOptions,

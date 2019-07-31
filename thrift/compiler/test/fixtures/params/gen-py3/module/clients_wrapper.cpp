@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-NestedContainersClientWrapper::NestedContainersClientWrapper(
-    std::unique_ptr<::cpp2::NestedContainersAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<folly::Unit>
 NestedContainersClientWrapper::mapList(
     apache::thrift::RpcOptions& rpcOptions,
@@ -100,6 +94,5 @@ NestedContainersClientWrapper::turtles(
   );
   return _future;
 }
-
 
 } // namespace cpp2

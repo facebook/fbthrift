@@ -26,9 +26,7 @@ namespace cpp2 {
 
 class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit MyServiceClientWrapper(
-      std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<bool> hasDataById(
       apache::thrift::RpcOptions& rpcOptions,
@@ -49,9 +47,7 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
 
 class MyServiceFastClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
-    explicit MyServiceFastClientWrapper(
-      std::unique_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
-      std::shared_ptr<apache::thrift::RequestChannel> channel);
+    using ::thrift::py3::ClientWrapper::ClientWrapper;
 
     folly::Future<bool> hasDataById(
       apache::thrift::RpcOptions& rpcOptions,

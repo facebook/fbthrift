@@ -11,12 +11,6 @@ namespace py3 {
 namespace simple {
 
 
-SimpleServiceClientWrapper::SimpleServiceClientWrapper(
-    std::unique_ptr<::py3::simple::SimpleServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<int32_t>
 SimpleServiceClientWrapper::get_five(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -695,13 +689,6 @@ SimpleServiceClientWrapper::contain_enum(
   return _future;
 }
 
-
-DerivedServiceClientWrapper::DerivedServiceClientWrapper(
-    std::unique_ptr<::py3::simple::DerivedServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    SimpleServiceClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<int32_t>
 DerivedServiceClientWrapper::get_six(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -717,13 +704,6 @@ DerivedServiceClientWrapper::get_six(
   return _future;
 }
 
-
-RederivedServiceClientWrapper::RederivedServiceClientWrapper(
-    std::unique_ptr<::py3::simple::RederivedServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    DerivedServiceClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<int32_t>
 RederivedServiceClientWrapper::get_seven(
     apache::thrift::RpcOptions& rpcOptions) {
@@ -738,7 +718,6 @@ RederivedServiceClientWrapper::get_seven(
   );
   return _future;
 }
-
 
 } // namespace py3
 } // namespace simple

@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-MyServiceClientWrapper::MyServiceClientWrapper(
-    std::unique_ptr<::cpp2::MyServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<bool>
 MyServiceClientWrapper::hasDataById(
     apache::thrift::RpcOptions& rpcOptions,
@@ -88,13 +82,6 @@ MyServiceClientWrapper::lobDataById(
   return _future;
 }
 
-
-MyServiceFastClientWrapper::MyServiceFastClientWrapper(
-    std::unique_ptr<::cpp2::MyServiceFastAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    ::thrift::py3::ClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<bool>
 MyServiceFastClientWrapper::hasDataById(
     apache::thrift::RpcOptions& rpcOptions,
@@ -166,6 +153,5 @@ MyServiceFastClientWrapper::lobDataById(
   );
   return _future;
 }
-
 
 } // namespace cpp2

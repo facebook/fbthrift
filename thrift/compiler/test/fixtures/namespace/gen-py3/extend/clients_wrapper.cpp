@@ -10,12 +10,6 @@
 namespace cpp2 {
 
 
-ExtendTestServiceClientWrapper::ExtendTestServiceClientWrapper(
-    std::unique_ptr<::cpp2::ExtendTestServiceAsyncClient> async_client,
-    std::shared_ptr<apache::thrift::RequestChannel> channel) :
-    HsTestServiceClientWrapper(std::move(async_client), std::move(channel)) {}
-
-
 folly::Future<bool>
 ExtendTestServiceClientWrapper::check(
     apache::thrift::RpcOptions& rpcOptions,
@@ -32,6 +26,5 @@ ExtendTestServiceClientWrapper::check(
   );
   return _future;
 }
-
 
 } // namespace cpp2
