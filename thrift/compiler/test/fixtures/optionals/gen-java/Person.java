@@ -1134,7 +1134,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
       sb.append("afraidOfAnimal");
       sb.append(space);
       sb.append(":").append(space);
-      String afraidOfAnimal_name = Animal.VALUES_TO_NAMES.get(this.getAfraidOfAnimal());
+      String afraidOfAnimal_name = this.getAfraidOfAnimal() == null ? "null" : this.getAfraidOfAnimal().name();
       if (afraidOfAnimal_name != null) {
         sb.append(afraidOfAnimal_name);
         sb.append(" (");

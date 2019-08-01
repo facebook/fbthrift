@@ -8,6 +8,7 @@ package test.fixtures.basic;
 
 
 import com.facebook.thrift.IntRangeSet;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -15,14 +16,6 @@ import java.util.HashMap;
 public enum MyEnum implements com.facebook.thrift.TEnum {
   MyValue1(0),
   MyValue2(1);
-
-  public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
-
-  static {
-    for (MyEnum e: values()) {
-      VALUES_TO_NAMES.put(e.getValue(), e.name());
-    }
-  }
 
   private final int value;
 

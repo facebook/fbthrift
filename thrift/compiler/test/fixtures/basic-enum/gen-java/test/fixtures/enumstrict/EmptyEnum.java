@@ -8,20 +8,13 @@ package test.fixtures.enumstrict;
 
 
 import com.facebook.thrift.IntRangeSet;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 
 @SuppressWarnings({ "unused" })
 public enum EmptyEnum implements com.facebook.thrift.TEnum {
 ;
-
-  public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
-
-  static {
-    for (EmptyEnum e: values()) {
-      VALUES_TO_NAMES.put(e.getValue(), e.name());
-    }
-  }
 
   private final int value;
 

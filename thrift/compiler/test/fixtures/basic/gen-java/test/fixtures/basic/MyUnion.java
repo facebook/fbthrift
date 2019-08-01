@@ -319,7 +319,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
       sb.append("myEnum");
       sb.append(space);
       sb.append(":").append(space);
-      String myEnum_name = MyEnum.VALUES_TO_NAMES.get(this.getMyEnum());
+      String myEnum_name = this.getMyEnum() == null ? "null" : this.getMyEnum().name();
       if (myEnum_name != null) {
         sb.append(myEnum_name);
         sb.append(" (");

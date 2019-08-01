@@ -8,6 +8,7 @@ package test.fixtures.enumstrict;
 
 
 import com.facebook.thrift.IntRangeSet;
+import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -34,11 +35,11 @@ public enum MyBigEnum implements com.facebook.thrift.TEnum {
   EIGHTEEN(18),
   NINETEEN(19);
 
-  public static final Map<Integer, String> VALUES_TO_NAMES = new HashMap<Integer, String>();
+  private static final Map<Integer, MyBigEnum> INDEXED_VALUES = new IdentityHashMap<Integer, MyBigEnum>();
 
   static {
     for (MyBigEnum e: values()) {
-      VALUES_TO_NAMES.put(e.getValue(), e.name());
+      INDEXED_VALUES.put(e.getValue(), e);
     }
   }
 
@@ -60,49 +61,6 @@ public enum MyBigEnum implements com.facebook.thrift.TEnum {
    * @return null if the value is not found.
    */
   public static MyBigEnum findByValue(int value) { 
-    switch (value) {
-      case 0:
-        return UNKNOWN;
-      case 1:
-        return ONE;
-      case 2:
-        return TWO;
-      case 3:
-        return THREE;
-      case 4:
-        return FOUR;
-      case 5:
-        return FIVE;
-      case 6:
-        return SIX;
-      case 7:
-        return SEVEN;
-      case 8:
-        return EIGHT;
-      case 9:
-        return NINE;
-      case 10:
-        return TEN;
-      case 11:
-        return ELEVEN;
-      case 12:
-        return TWELVE;
-      case 13:
-        return THIRTEEN;
-      case 14:
-        return FOURTEEN;
-      case 15:
-        return FIFTEEN;
-      case 16:
-        return SIXTEEN;
-      case 17:
-        return SEVENTEEN;
-      case 18:
-        return EIGHTEEN;
-      case 19:
-        return NINETEEN;
-      default:
-        return null;
-    }
+    return INDEXED_VALUES.get(value);
   }
 }

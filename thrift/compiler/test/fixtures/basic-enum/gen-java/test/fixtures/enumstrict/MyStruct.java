@@ -360,7 +360,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     sb.append("myEnum");
     sb.append(space);
     sb.append(":").append(space);
-    String myEnum_name = MyEnum.VALUES_TO_NAMES.get(this.getMyEnum());
+    String myEnum_name = this.getMyEnum() == null ? "null" : this.getMyEnum().name();
     if (myEnum_name != null) {
       sb.append(myEnum_name);
       sb.append(" (");
@@ -375,7 +375,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     sb.append("myBigEnum");
     sb.append(space);
     sb.append(":").append(space);
-    String myBigEnum_name = MyBigEnum.VALUES_TO_NAMES.get(this.getMyBigEnum());
+    String myBigEnum_name = this.getMyBigEnum() == null ? "null" : this.getMyBigEnum().name();
     if (myBigEnum_name != null) {
       sb.append(myBigEnum_name);
       sb.append(" (");

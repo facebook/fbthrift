@@ -24,7 +24,9 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+import com.facebook.thrift.test.BigEnum;
 import com.facebook.thrift.test.MySimpleStruct;
+import com.facebook.thrift.test.SmallEnum;
 import junit.framework.TestCase;
 import org.junit.Test;
 
@@ -40,5 +42,17 @@ public class StructTest extends TestCase {
     assertThat(struct1.hashCode(), is(not(equalTo(0))));
     assertThat(struct2.hashCode(), is(not(equalTo(0))));
     assertThat(struct1.hashCode(), is(not(equalTo(struct2.hashCode()))));
+  }
+
+  @Test
+  public void testSmallEnum() throws Exception {
+    assertThat(SmallEnum.findByValue(SmallEnum.RED.getValue()), equalTo(SmallEnum.RED));
+    assertThat(SmallEnum.findByValue(Integer.MAX_VALUE), equalTo(null));
+  }
+
+  @Test
+  public void testBigEnum() throws Exception {
+    assertThat(BigEnum.findByValue(BigEnum.ONE.getValue()), equalTo(BigEnum.ONE));
+    assertThat(BigEnum.findByValue(Integer.MAX_VALUE), equalTo(null));
   }
 }
