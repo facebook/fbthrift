@@ -2,7 +2,7 @@
   "thrift_module" : "module",
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 4,
+      "lineno" : 20,
       "constants" : {
         "MyValue1" : 0,
         "MyValue2" : 1
@@ -11,7 +11,7 @@
   },
   "structs" : {
     "MyStruct" : {
-      "lineno" : 9,
+      "lineno" : 25,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -38,7 +38,7 @@
       }
     },
     "MyDataItem" : {
-      "lineno" : 17,
+      "lineno" : 33,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -46,7 +46,7 @@
       }
     },
     "MyUnion" : {
-      "lineno" : 19,
+      "lineno" : 35,
       "is_exception" : false,
       "is_union" : true,
       "fields" : {
@@ -70,7 +70,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 25,
+      "lineno" : 41,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {

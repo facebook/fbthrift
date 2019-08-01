@@ -102,6 +102,7 @@ class t_java_generator : public t_oop_generator {
       bool is_xception = false,
       bool in_class = false,
       bool is_result = false);
+  void construct_constant_fields(std::ofstream& out, t_struct* tstruct);
   void generate_java_struct_equality(std::ofstream& out, t_struct* tstruct);
   void generate_java_struct_compare_to(std::ofstream& out, t_struct* tstruct);
   void generate_java_struct_reader(std::ofstream& out, t_struct* tstruct);
@@ -240,7 +241,9 @@ class t_java_generator : public t_oop_generator {
       std::ofstream& out,
       std::string contents);
 
-  bool is_comparable(t_type* type, std::vector<t_type*>* enclosing = nullptr);
+  virtual bool is_comparable(
+      t_type* type,
+      std::vector<t_type*>* enclosing = nullptr);
   bool struct_has_all_comparable_fields(
       t_struct* tstruct,
       std::vector<t_type*>* enclosing);
@@ -248,7 +251,7 @@ class t_java_generator : public t_oop_generator {
   bool type_has_naked_binary(t_type* type);
   bool struct_has_naked_binary_fields(t_struct* tstruct);
 
-  bool has_bit_vector(t_struct* tstruct);
+  virtual bool has_bit_vector(t_struct* tstruct);
 
   /**
    * Helper rendering functions
@@ -301,17 +304,21 @@ class t_java_generator : public t_oop_generator {
   bool type_can_be_null(t_type* ttype) {
     ttype = ttype->get_true_type();
 
-    return ttype->is_container() || ttype->is_struct() ||
-        ttype->is_xception() || ttype->is_string_or_binary();
+    return generate_boxed_primitive || ttype->is_container() ||
+        ttype->is_struct() || ttype->is_xception() ||
+        ttype->is_string_or_binary();
   }
 
   std::string constant_name(std::string name);
 
- private:
+ protected:
+  bool generate_field_metadata_ = true;
+  bool generate_immutable_structs_ = false;
+  bool generate_boxed_primitive = false;
+
   /**
    * File streams
    */
-
   std::string package_name_;
   std::ofstream f_service_;
   std::string package_dir_;

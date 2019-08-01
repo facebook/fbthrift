@@ -34,7 +34,6 @@ is build all fixtures).
 """
 BUCK_OUT = "buck-out/gen"
 
-
 def parsed_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(

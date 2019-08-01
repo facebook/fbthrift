@@ -1001,7 +1001,7 @@ public final class TBaseHelper {
    */
   public static String toString(Object obj, int indent, boolean prettyPrint) {
     if (obj == null) {
-      return "";
+      return "null";
     }
     String indentStr = prettyPrint ? getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
