@@ -10,14 +10,8 @@
 
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_types.h"
 
-namespace folly {
-  class IOBuf;
-  class IOBufQueue;
-}
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
-  class BinaryProtocolReader;
-  class CompactProtocolReader;
   namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}

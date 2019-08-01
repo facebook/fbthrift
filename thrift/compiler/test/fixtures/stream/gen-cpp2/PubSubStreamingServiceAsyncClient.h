@@ -11,14 +11,8 @@
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp2/async/Stream.h>
 
-namespace folly {
-  class IOBuf;
-  class IOBufQueue;
-}
 namespace apache { namespace thrift {
   class Cpp2RequestContext;
-  class BinaryProtocolReader;
-  class CompactProtocolReader;
   namespace detail { namespace ac { struct ClientRequestContext; }}
   namespace transport { class THeader; }
 }}

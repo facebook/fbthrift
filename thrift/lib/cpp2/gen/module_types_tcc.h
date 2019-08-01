@@ -30,11 +30,20 @@
 
 namespace apache {
 namespace thrift {
+
+class BinaryProtocolReader;
+class BinaryProtocolWriter;
+class ComapctProtocolReader;
+class CompactProtocolWriter;
+class SimpleJSONProtocolReader;
+class SimpleJSONProtocolWriter;
+
 namespace detail {
 
 template <typename T>
 struct TccStructTraits;
 
 } // namespace detail
+
 } // namespace thrift
 } // namespace apache

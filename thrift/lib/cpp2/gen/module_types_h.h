@@ -21,20 +21,12 @@
 #include <memory>
 #include <type_traits>
 
-#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache {
 namespace thrift {
-
-class BinaryProtocolReader;
-class BinaryProtocolWriter;
-class ComapctProtocolReader;
-class CompactProtocolWriter;
-class SimpleJSONProtocolReader;
-class SimpleJSONProtocolWriter;
 
 namespace detail {
 

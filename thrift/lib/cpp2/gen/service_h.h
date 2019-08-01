@@ -31,3 +31,10 @@
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/Task.h>
 #endif
+
+namespace folly {
+
+class IOBuf;
+class IOBufQueue;
+
+} // namespace folly
