@@ -181,6 +181,13 @@ void clientSendT(
   size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+
+  // Preallocate small buffer headroom for transports metadata & framing.
+  constexpr size_t kHeadroomBytes = 128;
+  auto buf = folly::IOBuf::create(kHeadroomBytes + bufSize);
+  buf->advance(kHeadroomBytes);
+  queue.append(std::move(buf));
+
   prot->setOutput(&queue, bufSize);
   auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
   size_t crcSkip = 0;
