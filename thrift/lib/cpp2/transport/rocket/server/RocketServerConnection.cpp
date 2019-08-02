@@ -284,10 +284,9 @@ void RocketServerConnection::dropConnection() {
 }
 
 void RocketServerConnection::closeWhenIdle() {
-  DCHECK(!isBusy());
   close(folly::make_exception_wrapper<transport::TTransportException>(
-      transport::TTransportException::TTransportExceptionType::TIMED_OUT,
-      "Closing idle connection"));
+      transport::TTransportException::TTransportExceptionType::INTERRUPTED,
+      "Closing due to imminent shutdown"));
 }
 
 void RocketServerConnection::writeSuccess() noexcept {
