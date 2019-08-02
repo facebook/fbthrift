@@ -24,7 +24,7 @@ size_t Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::extraSizeImpl
 %><%#struct:fields%><%!
 %><%#field:type%><%!
 %><%^type:bool?%>
-    + extraSize(src.<%field:cpp_name%>)<%!
+    + extraSize(src.<% > module_types_cpp/field_value_ref%>)<%!
 %><%/type:bool?%><%!
 %><%/field:type%><%!
 %><%/struct:fields%>;
@@ -39,10 +39,10 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>
-  dst.<%field:cpp_name%> = src.<%field:cpp_name%>;
+  dst.<% > module_types_cpp/field_value_ref%> = src.<% > module_types_cpp/field_value_ref%>;
 <%/type:bool?%>
 <%^type:bool?%>
-  freeze(src.<%field:cpp_name%>, dst.<%field:cpp_name%>, buffer);
+  freeze(src.<% > module_types_cpp/field_value_ref%>, dst.<%field:cpp_name%>, buffer);
 <%/type:bool?%>
 <%^field:required?%>
 <%^field:cpp_ref?%>
@@ -63,7 +63,7 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::thawImpl(
   dst.<%field:cpp_name%> = src.<%field:cpp_name%>;
 <%/type:bool?%>
 <%^type:bool?%>
-  thaw(src.<%field:cpp_name%>, dst.<%field:cpp_name%>);
+  thaw(src.<%field:cpp_name%>, dst.<% > module_types_cpp/field_value_ref%>);
 <%/type:bool?%>
 <%^field:required?%>
 <%^field:cpp_ref?%>
