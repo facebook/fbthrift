@@ -92,6 +92,7 @@ add_library(
   transport/core/ThriftProcessor.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
+  transport/rocket/PayloadUtils.cpp
   transport/rocket/Types.cpp
   transport/rocket/client/RequestContext.cpp
   transport/rocket/client/RequestContextQueue.cpp

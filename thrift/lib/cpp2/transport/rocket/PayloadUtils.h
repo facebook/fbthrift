@@ -17,13 +17,29 @@
 
 #include <folly/Try.h>
 
-#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 
 namespace apache {
 namespace thrift {
+
+class RequestRpcMetadata;
+class ResponseRpcMetadata;
+
 namespace rocket {
+
+template <class Metadata>
+Payload makePayload(
+    const Metadata& metadata,
+    std::unique_ptr<folly::IOBuf> data);
+
+extern template Payload makePayload<>(
+    const RequestRpcMetadata&,
+    std::unique_ptr<folly::IOBuf> data);
+extern template Payload makePayload<>(
+    const ResponseRpcMetadata&,
+    std::unique_ptr<folly::IOBuf> data);
+
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {

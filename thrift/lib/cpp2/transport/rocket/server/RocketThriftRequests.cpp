@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -35,52 +36,6 @@
 namespace apache {
 namespace thrift {
 namespace rocket {
-
-namespace {
-Payload makePayload(
-    const ResponseRpcMetadata& responseMetadata,
-    std::unique_ptr<folly::IOBuf> data) {
-  CompactProtocolWriter writer;
-  // Default is to leave some headroom for rsocket headers
-  size_t serSize = responseMetadata.serializedSizeZC(&writer);
-  constexpr size_t kHeadroomBytes = 16;
-
-  folly::IOBufQueue queue;
-
-  // If possible, serialize metadata into the headeroom of data.
-  if (!data->isChained() && data->headroom() >= serSize + kHeadroomBytes &&
-      !data->isSharedOne()) {
-    // Store previous state of the buffer pointers and rewind it.
-    auto startBuffer = data->buffer();
-    auto start = data->data();
-    auto origLen = data->length();
-    data->trimEnd(origLen);
-    data->retreat(start - startBuffer);
-
-    queue.append(std::move(data), false);
-    writer.setOutput(&queue);
-    auto metadataLen = responseMetadata.write(&writer);
-
-    // Move the new data to come right before the old data and restore the
-    // old tail pointer.
-    data = queue.move();
-    data->advance(start - data->tail());
-    data->append(origLen);
-
-    return Payload::makeCombined(std::move(data), metadataLen);
-  } else {
-    constexpr size_t kMinAllocBytes = 1024;
-    auto buf = folly::IOBuf::create(
-        std::max(kHeadroomBytes + serSize, kMinAllocBytes));
-    buf->advance(kHeadroomBytes);
-    queue.append(std::move(buf));
-    writer.setOutput(&queue);
-    auto metadataLen = responseMetadata.write(&writer);
-    queue.append(std::move(data));
-    return Payload::makeCombined(queue.move(), metadataLen);
-  }
-}
-} // namespace
 
 ThriftServerRequestResponse::ThriftServerRequestResponse(
     folly::EventBase& evb,

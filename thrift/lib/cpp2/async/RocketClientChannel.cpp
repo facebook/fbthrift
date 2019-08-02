@@ -40,6 +40,7 @@
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/TryUtil.h>
+#include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClientWriteCallback.h>
@@ -208,8 +209,7 @@ void RocketClientChannel::sendRequestStream(
       [rclient = rclient_,
        firstResponseTimeout,
        clientCallback,
-       payload = rocket::Payload::makeFromMetadataAndData(
-           serializeMetadata(metadata), std::move(buf))]() mutable {
+       payload = rocket::makePayload(metadata, std::move(buf))]() mutable {
         return rclient->sendRequestStream(
             std::move(payload), firstResponseTimeout, clientCallback);
       });
@@ -291,15 +291,14 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     RequestClientCallback::Ptr cb) {
   auto& cbRef = *cb;
 
-  auto sendRequestFunc =
-      [&cbRef,
-       rclient = rclient_,
-       requestPayload = rocket::Payload::makeFromMetadataAndData(
-           serializeMetadata(metadata), std::move(buf))]() mutable {
-        OnWriteSuccess writeCallback(cbRef);
-        return rclient->sendRequestFnfSync(
-            std::move(requestPayload), &writeCallback);
-      };
+  auto sendRequestFunc = [&cbRef,
+                          rclient = rclient_,
+                          requestPayload = rocket::makePayload(
+                              metadata, std::move(buf))]() mutable {
+    OnWriteSuccess writeCallback(cbRef);
+    return rclient->sendRequestFnfSync(
+        std::move(requestPayload), &writeCallback);
+  };
 
   auto finallyFunc = [cb = std::move(cb),
                       g = inflightGuard()](folly::Try<void>&& result) mutable {
@@ -331,16 +330,15 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     RequestClientCallback::Ptr cb) {
   auto& cbRef = *cb;
 
-  auto sendRequestFunc =
-      [&cbRef,
-       timeout,
-       rclient = rclient_,
-       requestPayload = rocket::Payload::makeFromMetadataAndData(
-           serializeMetadata(metadata), std::move(buf))]() mutable {
-        OnWriteSuccess writeCallback(cbRef);
-        return rclient->sendRequestResponseSync(
-            std::move(requestPayload), timeout, &writeCallback);
-      };
+  auto sendRequestFunc = [&cbRef,
+                          timeout,
+                          rclient = rclient_,
+                          requestPayload = rocket::makePayload(
+                              metadata, std::move(buf))]() mutable {
+    OnWriteSuccess writeCallback(cbRef);
+    return rclient->sendRequestResponseSync(
+        std::move(requestPayload), timeout, &writeCallback);
+  };
 
   auto finallyFunc = [cb = std::move(cb), g = inflightGuard()](
                          folly::Try<rocket::Payload>&& response) mutable {
