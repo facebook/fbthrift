@@ -689,6 +689,23 @@ SimpleServiceClientWrapper::contain_enum(
   return _future;
 }
 
+folly::Future<::py3::simple::BinaryUnionStruct>
+SimpleServiceClientWrapper::get_binary_union_struct(
+    apache::thrift::RpcOptions& rpcOptions,
+    ::py3::simple::BinaryUnion arg_u) {
+  folly::Promise<::py3::simple::BinaryUnionStruct> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::py3::simple::SimpleServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<::py3::simple::BinaryUnionStruct>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_get_binary_union_struct, channel_);
+  client->get_binary_union_struct(
+    rpcOptions,
+    std::move(callback),
+    arg_u
+  );
+  return _future;
+}
+
 folly::Future<int32_t>
 DerivedServiceClientWrapper::get_six(
     apache::thrift::RpcOptions& rpcOptions) {

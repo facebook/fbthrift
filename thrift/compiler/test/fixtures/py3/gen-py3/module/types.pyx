@@ -319,6 +319,99 @@ __FlagsEnumValueMapping = __weakref.WeakValueDictionary(
 cdef inline cFlags Flags_to_cpp(Flags value):
     return <cFlags>(<int>value.value)
 
+
+cdef object __BinaryUnion_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __BinaryUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __BinaryUnion_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __BinaryUnionType.EMPTY
+            elif cvalue == 1:
+                return __BinaryUnionType.iobuf_val
+
+        raise ValueError(f'{value} is not a valid BinaryUnion.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __BinaryUnionType.EMPTY
+        elif name == "iobuf_val":
+            return __BinaryUnionType.iobuf_val
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            'iobuf_val',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __BinaryUnionType.EMPTY
+        yield __BinaryUnionType.iobuf_val
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __BinaryUnion_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 1+1  # For Empty
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class __BinaryUnionType(thrift.py3.types.CompiledEnum):
+    EMPTY = __BinaryUnionType.__new__(__BinaryUnionType, 0, "EMPTY")
+    iobuf_val = __BinaryUnionType.__new__(__BinaryUnionType, 1, "iobuf_val")
+
+    def __cinit__(self, value, name):
+        if __BinaryUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"BinaryUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __BinaryUnionType):
+            warnings.warn(f"comparison not supported between instances of { __BinaryUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __BinaryUnionType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __BinaryUnionType, <PyTypeObject*> __BinaryUnion_Union_TypeMeta)
+__BinaryUnion_Union_TypeEnumMembers = set(__BinaryUnionType)
+
+
 @__cython.auto_pickle(False)
 cdef class SimpleException(thrift.py3.exceptions.Error):
 
@@ -1412,6 +1505,322 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (ComplexStruct, serialize(self)))
+
+
+
+
+@__cython.auto_pickle(False)
+cdef class BinaryUnion(thrift.py3.types.Union):
+    Type = __BinaryUnionType
+
+    def __init__(
+        self, *,
+        __iobuf.IOBuf iobuf_val=None
+    ):
+        self._cpp_obj = move(BinaryUnion._make_instance(
+          NULL,
+          iobuf_val,
+        ))
+        self._load_cache()
+
+    @staticmethod
+    def fromValue(value):
+        if value is None:
+            return BinaryUnion()
+        if isinstance(value, __iobuf.IOBuf):
+            return BinaryUnion(iobuf_val=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
+    cdef unique_ptr[cBinaryUnion] _make_instance(
+        cBinaryUnion* base_instance,
+        __iobuf.IOBuf iobuf_val
+    ) except *:
+        cdef unique_ptr[cBinaryUnion] c_inst = make_unique[cBinaryUnion]()
+        cdef bint any_set = False
+        if iobuf_val is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_iobuf_val(iobuf_val)
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.type is not __BinaryUnionType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cBinaryUnion] cpp_obj):
+        inst = <BinaryUnion>BinaryUnion.__new__(BinaryUnion)
+        inst._cpp_obj = move_shared(cpp_obj)
+        inst._load_cache()
+        return inst
+
+    @property
+    def iobuf_val(self):
+        if self.type.value != 1:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not iobuf_val')
+        return self.value
+
+
+    def __hash__(BinaryUnion self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.type,
+                self.value,
+            ))
+        return self.__hash
+
+    cdef __BinaryUnion_eq(BinaryUnion self, BinaryUnion other):
+        return self.type == other.type and self.value == other.value
+
+    def __repr__(BinaryUnion self):
+        return f'BinaryUnion(type={self.type.name}, value={self.value!r})'
+
+    cdef _load_cache(BinaryUnion self):
+        self.type = BinaryUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        cdef int type = self.type.value
+        if type == 0:    # Empty
+            self.value = None
+        elif type == 1:
+            self.value = deref(self._cpp_obj).get_iobuf_val()
+
+    def get_type(BinaryUnion self):
+        return self.type
+
+    def __copy__(BinaryUnion self):
+        cdef shared_ptr[cBinaryUnion] cpp_obj = make_shared[cBinaryUnion](
+            deref(self._cpp_obj)
+        )
+        return BinaryUnion.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, BinaryUnion) and
+                isinstance(other, BinaryUnion)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        if cop == Py_EQ:
+            return self.__BinaryUnion_eq(other)
+        elif cop == Py_NE:
+            return not self.__BinaryUnion_eq(other)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(BinaryUnion self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cBinaryUnion* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cBinaryUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cBinaryUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cBinaryUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cBinaryUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(BinaryUnion self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cBinaryUnion]()
+        cdef cBinaryUnion* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cBinaryUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cBinaryUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cBinaryUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cBinaryUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        # force a cache reload since the underlying data's changed
+        self._load_cache()
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (BinaryUnion, serialize(self)))
+
+
+@__cython.auto_pickle(False)
+cdef class BinaryUnionStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        BinaryUnionStruct self, *,
+        BinaryUnion u=None
+    ):
+        self._cpp_obj = move(BinaryUnionStruct._make_instance(
+          NULL,
+          NULL,
+          u,
+        ))
+
+    def __call__(
+        BinaryUnionStruct self,
+        u=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if u is ___NOTSET:
+            __isNOTSET[0] = True
+            u = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if u is not None:
+            if not isinstance(u, BinaryUnion):
+                raise TypeError(f'u is not a { BinaryUnion !r}.')
+
+        inst = <BinaryUnionStruct>BinaryUnionStruct.__new__(BinaryUnionStruct)
+        inst._cpp_obj = move(BinaryUnionStruct._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          u,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cBinaryUnionStruct] _make_instance(
+        cBinaryUnionStruct* base_instance,
+        bint* __isNOTSET,
+        BinaryUnion u 
+    ) except *:
+        cdef unique_ptr[cBinaryUnionStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cBinaryUnionStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cBinaryUnionStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and u is None:
+                deref(c_inst).u = default_inst[cBinaryUnionStruct]().u
+                deref(c_inst).__isset.u = False
+                pass
+
+        if u is not None:
+            deref(c_inst).u = deref((<BinaryUnion?> u)._cpp_obj)
+            deref(c_inst).__isset.u = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'u', self.u
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cBinaryUnionStruct] cpp_obj):
+        inst = <BinaryUnionStruct>BinaryUnionStruct.__new__(BinaryUnionStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def u(self):
+
+        if self.__field_u is None:
+            self.__field_u = BinaryUnion.create(reference_shared_ptr_u(self._cpp_obj, deref(self._cpp_obj).u))
+        return self.__field_u
+
+
+    def __hash__(BinaryUnionStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.u,
+            ))
+        return self.__hash
+
+    cdef __BinaryUnionStruct_eq(BinaryUnionStruct self, BinaryUnionStruct other):
+        if self.u != other.u:
+            return False
+        return True
+
+    def __repr__(BinaryUnionStruct self):
+        return f'BinaryUnionStruct(u={repr(self.u)})'
+    def __copy__(BinaryUnionStruct self):
+        cdef shared_ptr[cBinaryUnionStruct] cpp_obj = make_shared[cBinaryUnionStruct](
+            deref(self._cpp_obj)
+        )
+        return BinaryUnionStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, BinaryUnionStruct) and
+                isinstance(other, BinaryUnionStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        if cop == Py_EQ:
+            return self.__BinaryUnionStruct_eq(other)
+        elif cop == Py_NE:
+            return not self.__BinaryUnionStruct_eq(other)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(BinaryUnionStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cBinaryUnionStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cBinaryUnionStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cBinaryUnionStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cBinaryUnionStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cBinaryUnionStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(BinaryUnionStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cBinaryUnionStruct]()
+        cdef cBinaryUnionStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cBinaryUnionStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cBinaryUnionStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cBinaryUnionStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cBinaryUnionStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (BinaryUnionStruct, serialize(self)))
 
 
 @__cython.auto_pickle(False)
@@ -5305,4 +5714,5 @@ SOME_MAP = List__Map__i32_double.create(constant_shared_ptr(cSOME_MAP()))
 DIGITS = Set__i32.create(constant_shared_ptr(cDIGITS()))
 A_CONST_MAP = Map__string_SimpleStruct.create(constant_shared_ptr(cA_CONST_MAP()))
 IOBufPtr = __iobuf.IOBuf
+IOBuf = __iobuf.IOBuf
 foo_bar = bytes

@@ -90,6 +90,8 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[unique_ptr[cset[string]]])
     cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] move_promise_vector___module_types_cAnEnum "std::move"(
         cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]])
+    cdef cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] move_promise__module_types_cBinaryUnionStruct "std::move"(
+        cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]])
 
 @cython.auto_pickle(False)
 cdef class Promise_int32_t:
@@ -289,6 +291,16 @@ cdef class Promise_vector___module_types_cAnEnum:
     cdef create(cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise):
         inst = <Promise_vector___module_types_cAnEnum>Promise_vector___module_types_cAnEnum.__new__(Promise_vector___module_types_cAnEnum)
         inst.cPromise = move_promise_vector___module_types_cAnEnum(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise__module_types_cBinaryUnionStruct:
+    cdef cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise):
+        inst = <Promise__module_types_cBinaryUnionStruct>Promise__module_types_cBinaryUnionStruct.__new__(Promise__module_types_cBinaryUnionStruct)
+        inst.cPromise = move_promise__module_types_cBinaryUnionStruct(cPromise)
         return inst
 
 cdef object _SimpleService_annotations = _py_types.MappingProxyType({
@@ -665,6 +677,15 @@ cdef class SimpleServiceInterface(
             self,
             the_enum):
         raise NotImplementedError("async def contain_enum is not implemented")
+
+    @staticmethod
+    def pass_context_get_binary_union_struct(fn):
+        return pass_context(fn)
+
+    async def get_binary_union_struct(
+            self,
+            u):
+        raise NotImplementedError("async def get_binary_union_struct is not implemented")
 cdef object _DerivedService_annotations = _py_types.MappingProxyType({
 })
 
@@ -2758,6 +2779,57 @@ async def SimpleService_contain_enum_coro(
         ))
     else:
         promise.cPromise.setValue(make_unique[vector[_module_types.cAnEnum]](deref((<_module_types.List__AnEnum?> result)._cpp_obj)))
+
+cdef api void call_cy_SimpleService_get_binary_union_struct(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise,
+    unique_ptr[_module_types.cBinaryUnion] u
+):
+    cdef SimpleServiceInterface __iface
+    __iface = self
+    __promise = Promise__module_types_cBinaryUnionStruct.create(move_promise__module_types_cBinaryUnionStruct(cPromise))
+    arg_u = _module_types.BinaryUnion.create(shared_ptr[_module_types.cBinaryUnion](u.release()))
+    __context = None
+    if __iface._pass_context_get_binary_union_struct:
+        __context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_binary_union_struct_coro(
+            self,
+            __context,
+            __promise,
+            arg_u
+        )
+    )
+
+async def SimpleService_get_binary_union_struct_coro(
+    object self,
+    object ctx,
+    Promise__module_types_cBinaryUnionStruct promise,
+    u
+):
+    try:
+        if ctx is not None:
+            result = await self.get_binary_union_struct(ctx,
+                      u)
+        else:
+            result = await self.get_binary_union_struct(
+                      u)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_binary_union_struct:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[_module_types.cBinaryUnionStruct](deref((<_module_types.BinaryUnionStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_DerivedService_get_six(
     object self,

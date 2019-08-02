@@ -698,6 +698,23 @@ class SimpleServiceInterface(
         self,
         the_enum: _typing.Sequence[_module_types.AnEnum]
     ) -> _typing.Sequence[_module_types.AnEnum]: ...
+
+    @staticmethod
+    def pass_context_get_binary_union_struct(
+        fn: _typing.Callable[
+                [_SimpleServiceInterfaceT, RequestContext, _module_types.BinaryUnion],
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.BinaryUnionStruct]
+        ]
+    ) -> _typing.Callable[
+        [_SimpleServiceInterfaceT, _module_types.BinaryUnion],
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.BinaryUnionStruct]
+    ]: ...
+
+    @abstractmethod
+    async def get_binary_union_struct(
+        self,
+        u: _module_types.BinaryUnion
+    ) -> _module_types.BinaryUnionStruct: ...
     pass
 
 

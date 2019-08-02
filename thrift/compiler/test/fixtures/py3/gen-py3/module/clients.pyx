@@ -567,6 +567,19 @@ cdef void SimpleService_contain_enum_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void SimpleService_get_binary_union_struct_callback(
+    cFollyTry[_module_types.cBinaryUnionStruct]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_module_types.BinaryUnionStruct.create(make_shared[_module_types.cBinaryUnionStruct](result.value())))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 cdef void DerivedService_get_six_callback(
     cFollyTry[int32_t]&& result,
     PyObject* userdata
@@ -1612,6 +1625,28 @@ cdef class SimpleService(thrift.py3.client.Client):
                 deref((<_module_types.List__AnEnum>the_enum)._cpp_obj),
             ),
             SimpleService_contain_enum_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def get_binary_union_struct(
+            SimpleService self,
+            _module_types.BinaryUnion u not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[_module_types.cBinaryUnionStruct](
+            self._executor,
+            deref(self._module_SimpleService_client).get_binary_union_struct(rpc_options._cpp_obj, 
+                deref((<_module_types.BinaryUnion>u)._cpp_obj),
+            ),
+            SimpleService_get_binary_union_struct_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)

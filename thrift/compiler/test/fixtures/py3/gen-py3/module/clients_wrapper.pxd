@@ -126,6 +126,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::py3::simple
       vector[string] arg_binaries,)
     cFollyFuture[vector[_module_types.cAnEnum]] contain_enum(cRpcOptions, 
       vector[_module_types.cAnEnum] arg_the_enum,)
+    cFollyFuture[_module_types.cBinaryUnionStruct] get_binary_union_struct(cRpcOptions, 
+      _module_types.cBinaryUnion arg_u,)
 
 
   cdef cppclass cDerivedServiceClientWrapper "::py3::simple::DerivedServiceClientWrapper"(cSimpleServiceClientWrapper):

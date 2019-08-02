@@ -138,6 +138,9 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Future<std::unique_ptr<std::vector<::py3::simple::AnEnum>>> future_contain_enum(
         std::unique_ptr<std::vector<::py3::simple::AnEnum>> the_enum
     ) override;
+    folly::Future<std::unique_ptr<::py3::simple::BinaryUnionStruct>> future_get_binary_union_struct(
+        std::unique_ptr<::py3::simple::BinaryUnion> u
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc);

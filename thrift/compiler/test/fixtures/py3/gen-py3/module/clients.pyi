@@ -269,6 +269,12 @@ class SimpleService(thrift.py3.client.Client):
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> _typing.Sequence[_module_types.AnEnum]: ...
 
+    async def get_binary_union_struct(
+        self,
+        u: _module_types.BinaryUnion,
+        rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
+    ) -> _module_types.BinaryUnionStruct: ...
+
 
 
 _DerivedServiceT = _typing.TypeVar('_DerivedServiceT', bound='DerivedService')

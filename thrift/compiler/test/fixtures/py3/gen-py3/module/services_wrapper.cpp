@@ -855,6 +855,27 @@ the_enum = std::move(the_enum)    ]() mutable {
   return future;
 }
 
+folly::Future<std::unique_ptr<::py3::simple::BinaryUnionStruct>> SimpleServiceWrapper::future_get_binary_union_struct(
+  std::unique_ptr<::py3::simple::BinaryUnion> u
+) {
+  folly::Promise<std::unique_ptr<::py3::simple::BinaryUnionStruct>> promise;
+  auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     promise = std::move(promise),
+u = std::move(u)    ]() mutable {
+        call_cy_SimpleService_get_binary_union_struct(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            std::move(u)        );
+    });
+
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<SimpleServiceWrapper>(if_object, exc);
 }

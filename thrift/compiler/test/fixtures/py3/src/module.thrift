@@ -1,6 +1,7 @@
 namespace cpp2 py3.simple
 
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 
 enum AnEnum {
   None = 0 (py3.name = "NOTSET"),
@@ -48,6 +49,14 @@ struct ComplexStruct {
   8: string cdef
   9: foo_bar bytes_with_cpp_type
 }
+
+union BinaryUnion {
+  1: IOBuf iobuf_val
+} (cpp2.noncomparable)
+
+struct BinaryUnionStruct {
+  1: BinaryUnion u
+} (cpp2.noncomparable)
 
 const bool A_BOOL = true
 const byte A_BYTE = 8
@@ -126,6 +135,7 @@ service SimpleService {
   binary retrieve_binary(1: binary something)
   set<binary> contain_binary(1: list<binary> binaries)
   list<AnEnum> contain_enum(1:list<AnEnum> the_enum)
+  BinaryUnionStruct get_binary_union_struct(1:BinaryUnion u)
 }
 
 service DerivedService extends SimpleService {

@@ -49,6 +49,7 @@ cdef class SimpleServiceInterface(ServiceInterface):
     cdef public bint _pass_context_retrieve_binary
     cdef public bint _pass_context_contain_binary
     cdef public bint _pass_context_contain_enum
+    cdef public bint _pass_context_get_binary_union_struct
     pass
 
 cdef class DerivedServiceInterface(SimpleServiceInterface):

@@ -149,6 +149,9 @@ class SimpleServiceClientWrapper : public ::thrift::py3::ClientWrapper {
     folly::Future<std::vector<::py3::simple::AnEnum>> contain_enum(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<::py3::simple::AnEnum> arg_the_enum);
+    folly::Future<::py3::simple::BinaryUnionStruct> get_binary_union_struct(
+      apache::thrift::RpcOptions& rpcOptions,
+      ::py3::simple::BinaryUnion arg_u);
 };
 
 

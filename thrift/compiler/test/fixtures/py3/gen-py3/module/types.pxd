@@ -69,6 +69,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3:
     cdef cppclass cSimpleStruct "::py3::simple::SimpleStruct"
     # Forward Declaration
     cdef cppclass cComplexStruct "::py3::simple::ComplexStruct"
+    # Forward Declaration
+    cdef cppclass cBinaryUnion "::py3::simple::BinaryUnion"
+    # Forward Declaration
+    cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
     cdef cppclass cSimpleException__isset "::py3::simple::SimpleException::__isset":
@@ -159,9 +163,31 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
         foo_Bar bytes_with_cpp_type
         cComplexStruct__isset __isset
 
+    cdef enum cBinaryUnion__type "::py3::simple::BinaryUnion::Type":
+        cBinaryUnion__type___EMPTY__ "::py3::simple::BinaryUnion::Type::__EMPTY__",
+        cBinaryUnion__type_iobuf_val "::py3::simple::BinaryUnion::Type::iobuf_val",
+
+    cdef cppclass cBinaryUnion "::py3::simple::BinaryUnion":
+        cBinaryUnion() except +
+        cBinaryUnion(const cBinaryUnion&) except +
+        cBinaryUnion__type getType() const
+        const __iobuf.cIOBuf& get_iobuf_val() const
+        __iobuf.cIOBuf& set_iobuf_val(const __iobuf.cIOBuf&)
+
+    cdef cppclass cBinaryUnionStruct__isset "::py3::simple::BinaryUnionStruct::__isset":
+        bint u
+
+    cdef cppclass cBinaryUnionStruct "::py3::simple::BinaryUnionStruct":
+        cBinaryUnionStruct() except +
+        cBinaryUnionStruct(const cBinaryUnionStruct&) except +
+        cBinaryUnion u
+        cBinaryUnionStruct__isset __isset
+
     cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structOne "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
     cdef shared_ptr[cSimpleStruct] reference_shared_ptr_structTwo "thrift::py3::reference_shared_ptr<::py3::simple::SimpleStruct>"(shared_ptr[cComplexStruct]&, cSimpleStruct&)
     cdef shared_ptr[foo_Bar] reference_shared_ptr_bytes_with_cpp_type "thrift::py3::reference_shared_ptr<foo::Bar>"(shared_ptr[cComplexStruct]&, foo_Bar&)
+    cdef shared_ptr[__iobuf.cIOBuf] reference_shared_ptr_iobuf_val "thrift::py3::reference_shared_ptr<folly::IOBuf>"(shared_ptr[cBinaryUnion]&, __iobuf.cIOBuf&)
+    cdef shared_ptr[cBinaryUnion] reference_shared_ptr_u "thrift::py3::reference_shared_ptr<::py3::simple::BinaryUnion>"(shared_ptr[cBinaryUnionStruct]&, cBinaryUnion&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])
@@ -176,12 +202,20 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexStruct] move(unique_ptr[cComplexStruct])
     cdef shared_ptr[cComplexStruct] move_shared "std::move"(shared_ptr[cComplexStruct])
     cdef unique_ptr[cComplexStruct] move_unique "std::move"(unique_ptr[cComplexStruct])
+    cdef shared_ptr[cBinaryUnion] move(unique_ptr[cBinaryUnion])
+    cdef shared_ptr[cBinaryUnion] move_shared "std::move"(shared_ptr[cBinaryUnion])
+    cdef unique_ptr[cBinaryUnion] move_unique "std::move"(unique_ptr[cBinaryUnion])
+    cdef shared_ptr[cBinaryUnionStruct] move(unique_ptr[cBinaryUnionStruct])
+    cdef shared_ptr[cBinaryUnionStruct] move_shared "std::move"(shared_ptr[cBinaryUnionStruct])
+    cdef unique_ptr[cBinaryUnionStruct] move_unique "std::move"(unique_ptr[cBinaryUnionStruct])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cSimpleException] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::SimpleException>"(shared_ptr[cSimpleException])
     cdef shared_ptr[const cOptionalRefStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::OptionalRefStruct>"(shared_ptr[cOptionalRefStruct])
     cdef shared_ptr[const cSimpleStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::SimpleStruct>"(shared_ptr[cSimpleStruct])
     cdef shared_ptr[const cComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::ComplexStruct>"(shared_ptr[cComplexStruct])
+    cdef shared_ptr[const cBinaryUnion] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::BinaryUnion>"(shared_ptr[cBinaryUnion])
+    cdef shared_ptr[const cBinaryUnionStruct] const_pointer_cast "std::const_pointer_cast<const ::py3::simple::BinaryUnionStruct>"(shared_ptr[cBinaryUnionStruct])
 
 # Forward Definition of the cython struct
 cdef class SimpleException(thrift.py3.exceptions.Error)
@@ -275,6 +309,53 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cComplexStruct])
+
+cdef class __BinaryUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+# Forward Definition of the cython struct
+cdef class BinaryUnion(thrift.py3.types.Union)
+
+
+cdef class BinaryUnion(thrift.py3.types.Union):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cBinaryUnion] _cpp_obj
+    cdef readonly __BinaryUnionType type
+    cdef readonly object value
+    cdef _load_cache(BinaryUnion self)
+    cdef __BinaryUnion_eq(BinaryUnion self, BinaryUnion other)
+
+    @staticmethod
+    cdef unique_ptr[cBinaryUnion] _make_instance(
+        cBinaryUnion* base_instance,
+        __iobuf.IOBuf iobuf_val
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cBinaryUnion])
+
+# Forward Definition of the cython struct
+cdef class BinaryUnionStruct(thrift.py3.types.Struct)
+
+
+cdef class BinaryUnionStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cBinaryUnionStruct] _cpp_obj
+    cdef BinaryUnion __field_u
+    cdef __BinaryUnionStruct_eq(BinaryUnionStruct self, BinaryUnionStruct other)
+
+    @staticmethod
+    cdef unique_ptr[cBinaryUnionStruct] _make_instance(
+        cBinaryUnionStruct* base_instance,
+        bint* __isNOTSET,
+        BinaryUnion u
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cBinaryUnionStruct])
 
 
 cdef class List__i16:
