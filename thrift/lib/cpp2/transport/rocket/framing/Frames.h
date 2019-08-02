@@ -72,6 +72,7 @@ class SetupFrame {
     return payload_;
   }
 
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -122,6 +123,11 @@ class RequestResponseFrame {
     return payload_;
   }
 
+  Flags flags() const noexcept {
+    return Flags(flags_).metadata(payload().hasNonemptyMetadata());
+  }
+
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -172,6 +178,11 @@ class RequestFnfFrame {
     return payload_;
   }
 
+  Flags flags() const noexcept {
+    return Flags(flags_).metadata(payload().hasNonemptyMetadata());
+  }
+
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -236,6 +247,11 @@ class RequestStreamFrame {
     return payload_;
   }
 
+  Flags flags() const noexcept {
+    return Flags(flags_).metadata(payload().hasNonemptyMetadata());
+  }
+
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -310,6 +326,11 @@ class RequestChannelFrame {
     return payload_;
   }
 
+  Flags flags() const noexcept {
+    return Flags(flags_).metadata(payload().hasNonemptyMetadata());
+  }
+
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -351,6 +372,7 @@ class RequestNFrame {
     return requestN_;
   }
 
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -376,6 +398,7 @@ class CancelFrame {
     return streamId_;
   }
 
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:
@@ -425,6 +448,10 @@ class PayloadFrame {
   }
   bool hasNext() const noexcept {
     return flags_.next();
+  }
+
+  Flags flags() const noexcept {
+    return Flags(flags_).metadata(payload().hasNonemptyMetadata());
   }
 
   std::unique_ptr<folly::IOBuf> serialize() &&;
@@ -478,6 +505,7 @@ class ErrorFrame {
     return payload_;
   }
 
+  std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
 
  private:

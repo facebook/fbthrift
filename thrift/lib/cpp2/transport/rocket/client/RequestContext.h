@@ -134,14 +134,17 @@ class RequestContext {
 
   template <class Frame>
   void serialize(Frame&& frame, SetupFrame* setupFrame) {
-    Serializer writer;
-    if (setupFrame != nullptr) {
-      std::move(*setupFrame).serialize(writer);
-    }
-    std::forward<Frame>(frame).serialize(writer);
-
     DCHECK(!serializedFrame_);
-    serializedFrame_ = std::move(writer).move();
+
+    serializedFrame_ = std::move(frame).serialize();
+
+    if (UNLIKELY(setupFrame != nullptr)) {
+      Serializer writer;
+      std::move(*setupFrame).serialize(writer);
+      auto setupBuffer = std::move(writer).move();
+      setupBuffer->prependChain(std::move(serializedFrame_));
+      serializedFrame_ = std::move(setupBuffer);
+    }
   }
 
   struct Equal {

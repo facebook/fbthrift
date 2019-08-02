@@ -27,6 +27,7 @@
 #include <folly/Likely.h>
 #include <folly/Range.h>
 #include <folly/Utility.h>
+#include <folly/functional/Invoke.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
@@ -84,7 +85,78 @@ void serializeInFragmentsSlowCommon(
     }
   } while (!finished);
 }
+
+FOLLY_CREATE_MEMBER_INVOKE_TRAITS(
+    has_initial_request_n_traits,
+    initialRequestN);
+
+template <typename T>
+using has_initial_request_n = has_initial_request_n_traits::is_invocable<T>;
+
+template <class Frame>
+std::enable_if_t<has_initial_request_n<Frame>::value, void>
+serializeInitialNIfPresent(const Frame& frame, HeaderSerializer& serializer) {
+  serializer.writeBE<uint32_t>(frame.initialRequestN());
+}
+
+template <class Frame>
+std::enable_if_t<!has_initial_request_n<Frame>::value, void>
+serializeInitialNIfPresent(const Frame&, HeaderSerializer&) {}
+
+template <class Frame>
+std::unique_ptr<folly::IOBuf> serializeIntoIOBuf(Frame&& frame) {
+  Serializer writer;
+  std::move(frame).serialize(writer);
+  return std::move(writer).move();
+}
+
+template <class Frame>
+std::unique_ptr<folly::IOBuf> serializeIntoHeadroom(Frame&& frame) {
+  auto flags = frame.flags();
+  // We can assume here that we have non-zero buffer with adequate
+  // headroom for the rsocket header.
+  auto dataLen = frame.payload().dataSize();
+  auto metadataLen = frame.payload().metadataSize();
+  auto buffer = std::move(frame.payload()).buffer();
+
+  constexpr size_t rsocketLen =
+      (2 * Serializer::kBytesForFrameOrMetadataLength) +
+      Frame::frameHeaderSize();
+  DCHECK(buffer->headroom() >= rsocketLen);
+
+  // Write rsocket header directly into the buffer headroom.
+  HeaderSerializer writer(buffer->writableData() - rsocketLen, rsocketLen);
+  const size_t frameSize = frame.frameHeaderSize() + dataLen + metadataLen +
+      Serializer::kBytesForFrameOrMetadataLength;
+  writer.writeFrameOrMetadataSize(frameSize);
+  writer.write(frame.streamId());
+  writer.writeFrameTypeAndFlags(frame.frameType(), flags);
+  serializeInitialNIfPresent(frame, writer);
+  writer.writeFrameOrMetadataSize(metadataLen);
+  DCHECK_EQ(writer.result().size(), rsocketLen);
+  buffer->prepend(rsocketLen);
+
+  return buffer;
+}
+
+template <class Frame>
+std::unique_ptr<folly::IOBuf> serializeIntoHeadroomIfPossible(Frame&& frame) {
+  constexpr size_t kHeadroomSize =
+      Frame::frameHeaderSize() + 2 * Serializer::kBytesForFrameOrMetadataLength;
+  if (LIKELY(
+          frame.payload().metadataAndDataSize() <= kMaxFragmentedPayloadSize &&
+          frame.payload().hasNonemptyMetadata() &&
+          frame.payload().buffer()->headroom() >= kHeadroomSize)) {
+    return serializeIntoHeadroom(std::move(frame));
+  } else {
+    return serializeIntoIOBuf(std::move(frame));
+  }
+}
 } // namespace
+
+std::unique_ptr<folly::IOBuf> SetupFrame::serialize() && {
+  return serializeIntoIOBuf(std::move(*this));
+}
 
 void SetupFrame::serialize(Serializer& writer) && {
   /**
@@ -165,6 +237,10 @@ void SetupFrame::serialize(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+std::unique_ptr<folly::IOBuf> RequestResponseFrame::serialize() && {
+  return serializeIntoHeadroomIfPossible(std::move(*this));
+}
+
 void RequestResponseFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
@@ -199,6 +275,10 @@ void RequestResponseFrame::serializeIntoSingleFrame(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+std::unique_ptr<folly::IOBuf> RequestFnfFrame::serialize() && {
+  return serializeIntoHeadroomIfPossible(std::move(*this));
+}
+
 void RequestFnfFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
@@ -231,6 +311,10 @@ void RequestFnfFrame::serializeIntoSingleFrame(Serializer& writer) && {
   nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
+std::unique_ptr<folly::IOBuf> RequestStreamFrame::serialize() && {
+  return serializeIntoHeadroomIfPossible(std::move(*this));
 }
 
 void RequestStreamFrame::serialize(Serializer& writer) && {
@@ -270,6 +354,10 @@ void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+std::unique_ptr<folly::IOBuf> RequestChannelFrame::serialize() && {
+  return serializeIntoHeadroomIfPossible(std::move(*this));
+}
+
 void RequestChannelFrame::serialize(Serializer& writer) && {
   if (UNLIKELY(payload().metadataAndDataSize() > kMaxFragmentedPayloadSize)) {
     return std::move(*this).serializeInFragmentsSlow(writer);
@@ -307,6 +395,10 @@ void RequestChannelFrame::serializeIntoSingleFrame(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+std::unique_ptr<folly::IOBuf> RequestNFrame::serialize() && {
+  return serializeIntoIOBuf(std::move(*this));
+}
+
 void RequestNFrame::serialize(Serializer& writer) && {
   /**
    *  0                   1                   2                   3
@@ -329,6 +421,10 @@ void RequestNFrame::serialize(Serializer& writer) && {
   nwritten += writer.writeBE<uint32_t>(requestN());
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
+std::unique_ptr<folly::IOBuf> CancelFrame::serialize() && {
+  return serializeIntoIOBuf(std::move(*this));
 }
 
 void CancelFrame::serialize(Serializer& writer) && {
@@ -394,49 +490,11 @@ void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) && {
 }
 
 std::unique_ptr<folly::IOBuf> PayloadFrame::serialize() && {
-  constexpr size_t kRsocketOverheadMax = 3 + 6 + 3;
-  if (LIKELY(
-          payload_.metadataAndDataSize() <= kMaxFragmentedPayloadSize &&
-          payload_.hasNonemptyMetadata() &&
-          payload_.buffer()->headroom() >= kRsocketOverheadMax)) {
-    // Use headroom in the metadata struct for rsocket header.
-    return std::move(*this).serializeUsingMetadataHeadroom();
-  }
-  Serializer writer;
-  std::move(*this).serialize(writer);
-  return std::move(writer).move();
+  return serializeIntoHeadroomIfPossible(std::move(*this));
 }
 
-std::unique_ptr<folly::IOBuf>
-PayloadFrame::serializeUsingMetadataHeadroom() && {
-  // We can assume here that we have non-zero buffer with adequate
-  // headroom for the rsocket header.
-  auto dataLen = payload_.dataSize();
-  auto metadataLen = payload_.metadataSize();
-  auto buffer = std::move(payload_).buffer();
-
-  constexpr size_t rsocketLen = // 12 bytes
-      (2 * Serializer::kBytesForFrameOrMetadataLength) + frameHeaderSize();
-  DCHECK(buffer->headroom() >= rsocketLen);
-
-  // Write 12-byte rsocket header directly into the buffer headroom.
-  HeaderSerializer writer(buffer->writableData() - rsocketLen, rsocketLen);
-  const size_t frameSize = frameHeaderSize() + dataLen + metadataLen +
-      Serializer::kBytesForFrameOrMetadataLength;
-  writer.writeFrameOrMetadataSize(frameSize);
-  writer.write(streamId());
-  writer.writeFrameTypeAndFlags(
-      frameType(),
-      Flags::none()
-          .metadata(true)
-          .follows(hasFollows())
-          .complete(hasComplete())
-          .next(hasNext()));
-  writer.writeFrameOrMetadataSize(metadataLen);
-  DCHECK_EQ(writer.result().size(), rsocketLen);
-  buffer->prepend(rsocketLen);
-
-  return buffer;
+std::unique_ptr<folly::IOBuf> ErrorFrame::serialize() && {
+  return serializeIntoIOBuf(std::move(*this));
 }
 
 void ErrorFrame::serialize(Serializer& writer) && {
@@ -465,6 +523,10 @@ void ErrorFrame::serialize(Serializer& writer) && {
   nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
+std::unique_ptr<folly::IOBuf> KeepAliveFrame::serialize() && {
+  return serializeIntoIOBuf(std::move(*this));
 }
 
 void KeepAliveFrame::serialize(Serializer& writer) && {
@@ -496,12 +558,6 @@ void KeepAliveFrame::serialize(Serializer& writer) && {
   nwritten += writer.write(std::move(data_));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
-}
-
-std::unique_ptr<folly::IOBuf> KeepAliveFrame::serialize() && {
-  Serializer writer;
-  std::move(*this).serialize(writer);
-  return std::move(writer).move();
 }
 
 FOLLY_NOINLINE void RequestResponseFrame::serializeInFragmentsSlow(
