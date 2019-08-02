@@ -100,6 +100,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
   std::string get_enumSafeName(const std::string&);
   template <class T>
   std::string get_rename(const T&);
+  template <class T>
+  std::string get_cppname(const T&);
   void generate_module(const t_program&, ModuleType moduleType);
 
  private:
@@ -207,6 +209,16 @@ std::string t_mstch_py3_generator::get_rename(const T& elem) {
   return elem.get_name();
 }
 
+template <class T>
+std::string t_mstch_py3_generator::get_cppname(const T& elem) {
+  auto& annotation = elem.annotations_;
+  auto it = annotation.find("cpp.name");
+  if (it != annotation.end()) {
+    return it->second;
+  }
+  return elem.get_name();
+}
+
 mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   auto ref_type = this->ref_type(field);
   const bool reference = ref_type != "";
@@ -223,11 +235,7 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
   const auto isPEP484Optional =
       ((!hasDefaultValue && !required) || follyOptional);
   const auto pyName = get_rename(field);
-  auto cppName = field.get_name();
-  auto nit = field.annotations_.find("cpp.name");
-  if (nit != field.annotations_.end()) {
-    cppName = nit->second;
-  }
+  const auto cppName = get_cppname(field);
   // Compiled thrift-py3 enums won't support entries named name or value
   const auto enumSafeName = get_enumSafeName(pyName);
 
@@ -414,7 +422,7 @@ mstch::map t_mstch_py3_generator::extend_enum_value(const t_enum_value& val) {
   const auto name = get_rename(val);
   // Compiled thrift-py3 enums won't support entries named name or value
   const auto enumSafeName = get_enumSafeName(name);
-  auto cppName = val.get_name();
+  const auto cppName = get_cppname(val);
   mstch::map result{
       // We replace the previously-set name on the enum value with the modified
       // name, and put the raw value in origName

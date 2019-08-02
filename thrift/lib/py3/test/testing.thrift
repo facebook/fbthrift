@@ -59,7 +59,7 @@ enum Kind {
     FIFO = 1,
     CHAR = 2,
     BLOCK = 6,
-    SOCK = 12,
+    SOCK = 12 (cpp.name = "SOCKET"),
 }
 
 enum BadMembers {
