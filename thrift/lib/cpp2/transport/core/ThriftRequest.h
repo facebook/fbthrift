@@ -26,7 +26,9 @@
 
 #include <glog/logging.h>
 
+#include <folly/Optional.h>
 #include <folly/io/IOBuf.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -60,6 +62,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
         active_(true),
         checksumRequested_(metadata.crc32c_ref().has_value()),
         requestFlags_(metadata.flags_ref().value_or(0)),
+        loadMetric_(
+            metadata.loadMetric_ref()
+                ? folly::make_optional(std::move(*metadata.loadMetric_ref()))
+                : folly::none),
         reqContext_(&connContext, &header_),
         queueTimeout_(serverConfigs_),
         taskTimeout_(serverConfigs_) {
@@ -252,10 +258,11 @@ class ThriftRequestCore : public ResponseChannelRequest {
     ResponseRpcMetadata metadata;
     metadata.seqId_ref() = 0;
 
-    if (requestFlags_ &
-        static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) {
-      metadata.load_ref() =
-          serverConfigs_.getLoad(transport::THeader::QUERY_LOAD_HEADER);
+    if ((requestFlags_ &
+         static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) ||
+        loadMetric_) {
+      metadata.load_ref() = serverConfigs_.getLoad(
+          loadMetric_.value_or(transport::THeader::QUERY_LOAD_HEADER));
     }
 
     auto writeHeaders = header_.releaseWriteHeaders();
@@ -381,6 +388,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   bool checksumRequested_{false};
   transport::THeader header_;
   const uint64_t requestFlags_{0};
+  folly::Optional<std::string> loadMetric_;
   Cpp2RequestContext reqContext_;
 
   QueueTimeout queueTimeout_;

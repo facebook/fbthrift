@@ -75,6 +75,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
   auto loadIt = writeHeaders.find(transport::THeader::QUERY_LOAD_HEADER);
   if (loadIt != writeHeaders.end()) {
     flags |= static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD);
+    metadata.loadMetric_ref() = std::move(loadIt->second);
     writeHeaders.erase(loadIt);
   }
 

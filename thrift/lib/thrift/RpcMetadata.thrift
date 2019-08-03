@@ -97,6 +97,7 @@ struct RequestRpcMetadata {
   // The CRC32C of the RPC message.
   11: optional i32 (cpp.type = "std::uint32_t") crc32c;
   12: optional i64 (cpp.type = "std::uint64_t") flags;
+  13: optional string loadMetric;
 }
 
 // RPC metadata sent from the server to the client.  The lifetime of

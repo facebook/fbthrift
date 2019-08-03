@@ -134,12 +134,8 @@ void SampleServer<Service>::setupServer() {
   server_->setNumIOWorkerThreads(numIOThreads_);
   server_->setNumCPUWorkerThreads(numWorkerThreads_);
   server_->setProcessorFactory(cpp2PFac);
-  server_->setGetLoad([](const auto& counter) {
-    if (counter == THeader::QUERY_LOAD_HEADER) {
-      return 123;
-    }
-    return -1;
-  });
+  server_->setGetLoad(
+      [](const std::string& metric) { return metric.empty() ? 123 : -1; });
 }
 
 template <typename Service>

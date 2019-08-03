@@ -340,9 +340,11 @@ TEST(ThriftServer, HeaderTest) {
 namespace {
 template <class MakeClientFunc>
 void doLoadHeaderTest(MakeClientFunc&& makeClient) {
+  static constexpr int kEmptyMetricLoad = 12345;
   class Callback : public RequestCallback {
    public:
-    explicit Callback(bool isLoadExpected) : isLoadExpected_(isLoadExpected) {}
+    explicit Callback(folly::Optional<std::string> loadMetric)
+        : loadMetric_(std::move(loadMetric)) {}
 
    private:
     void requestSent() override {}
@@ -350,16 +352,25 @@ void doLoadHeaderTest(MakeClientFunc&& makeClient) {
     void replyReceived(ClientReceiveState&& state) override {
       const auto& headers = state.header()->getHeaders();
       auto loadIter = headers.find(THeader::QUERY_LOAD_HEADER);
-      ASSERT_EQ(isLoadExpected_, loadIter != headers.end());
-      if (isLoadExpected_) {
-        auto load = loadIter->second;
-        EXPECT_NE("", load);
+      ASSERT_EQ(loadMetric_.hasValue(), loadIter != headers.end());
+      if (!loadMetric_) {
+        return;
+      }
+      folly::StringPiece loadMetric(*loadMetric_);
+      if (loadMetric.removePrefix("custom_load_metric_")) {
+        EXPECT_EQ(loadMetric, loadIter->second);
+      } else if (loadMetric.empty()) {
+        EXPECT_EQ(std::to_string(kEmptyMetricLoad), loadIter->second);
+      } else {
+        FAIL() << "Unexpected load metric";
       }
     }
+
     void requestError(ClientReceiveState&&) override {
       ADD_FAILURE() << "The response should not be an error";
     }
-    bool isLoadExpected_;
+
+    folly::Optional<std::string> loadMetric_;
   };
 
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
@@ -368,21 +379,25 @@ void doLoadHeaderTest(MakeClientFunc&& makeClient) {
 
   {
     LOG(ERROR) << "========= no load header ==========";
-    client->voidResponse(std::make_unique<Callback>(false));
+    client->voidResponse(std::make_unique<Callback>(folly::none));
   }
 
   {
     LOG(ERROR) << "========= empty load header ==========";
     RpcOptions emptyLoadOptions;
-    emptyLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, "");
-    client->voidResponse(emptyLoadOptions, std::make_unique<Callback>(true));
+    const std::string kLoadMetric;
+    emptyLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    client->voidResponse(
+        emptyLoadOptions, std::make_unique<Callback>(kLoadMetric));
   }
 
   {
-    LOG(ERROR) << "========= foo load header ==========";
+    LOG(ERROR) << "========= custom load header ==========";
     RpcOptions customLoadOptions;
-    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, "foo");
-    client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
+    const std::string kLoadMetric{"custom_load_metric_789"};
+    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    client->voidResponse(
+        customLoadOptions, std::make_unique<Callback>(kLoadMetric));
   }
 
   {
@@ -394,9 +409,20 @@ void doLoadHeaderTest(MakeClientFunc&& makeClient) {
           EXPECT_EQ("voidResponse", *method);
           return true;
         });
-    runner.getThriftServer().setGetLoad([](const std::string&) { return 1; });
-    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, "foo");
-    client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
+    runner.getThriftServer().setGetLoad([](const std::string& metric) {
+      folly::StringPiece metricPiece(metric);
+      if (metricPiece.removePrefix("custom_load_metric_")) {
+        return folly::to<int32_t>(metricPiece.toString());
+      } else if (metricPiece.empty()) {
+        return kEmptyMetricLoad;
+      }
+      ADD_FAILURE() << "Unexpected load metric on request";
+      return -42;
+    });
+    const std::string kLoadMetric;
+    customLoadOptions.setWriteHeader(THeader::QUERY_LOAD_HEADER, kLoadMetric);
+    client->voidResponse(
+        customLoadOptions, std::make_unique<Callback>(kLoadMetric));
   }
 
   base.loop();
