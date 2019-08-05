@@ -96,7 +96,7 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
                handler.release();
                return future;
              })
-      .then(eb, [=, endpoint{std::move(endpoint)}](HeaderChannel_ptr&& chan_) {
+      .thenValue([=, endpoint{std::move(endpoint)}](HeaderChannel_ptr&& chan_) {
         auto chan = configureClientChannel(std::move(chan_), client_t, proto);
         if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
           chan->useAsHttpClient(host, endpoint);
