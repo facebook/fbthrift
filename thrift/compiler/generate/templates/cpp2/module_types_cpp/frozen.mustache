@@ -39,7 +39,7 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>
-  dst.<% > module_types_cpp/field_value_ref%> = src.<% > module_types_cpp/field_value_ref%>;
+  dst.<%field:cpp_name%> = src.<% > module_types_cpp/field_value_ref%>;
 <%/type:bool?%>
 <%^type:bool?%>
   freeze(src.<% > module_types_cpp/field_value_ref%>, dst.<%field:cpp_name%>, buffer);
