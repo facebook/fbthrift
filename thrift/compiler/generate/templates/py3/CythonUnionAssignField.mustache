@@ -59,7 +59,12 @@ on a union.
   }}deref(c_inst).set_{{field:name}}({{field:name}}.encode('UTF-8')){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
+  }}{{#type:iobuf?}}{{!
+    }}deref(c_inst).set_{{field:name}}(deref((<__iobuf.IOBuf?>{{field:name}}).c_clone().release())) {{!
+  }}{{/type:iobuf?}}{{!
+  }}{{^type:iobuf?}}{{!
+    }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
+  }}{{/type:iobuf?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:enum?}}{{!
   }}deref(c_inst).set_{{field:name}}({{!

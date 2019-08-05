@@ -139,6 +139,10 @@ union ComplexUnion {
     11: bool truthy,
 }
 
+union IOBufUnion {
+  1: binary (cpp2.type = "folly::IOBuf") buf,
+} (cpp2.noncomparable)
+
 struct hard {
     1: required i32 val,
     2: required I32List val_list,

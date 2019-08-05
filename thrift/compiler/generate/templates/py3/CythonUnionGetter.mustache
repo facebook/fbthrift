@@ -55,7 +55,13 @@ else:
   }}self.value = bytes(deref(self._cpp_obj).get_{{field:name}}()).decode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}{{#type:iobuf?}}{{!
+    }}self.value =  __iobuf.from_unique_ptr({{!
+      }}deref(self._cpp_obj).get_{{field:name}}().clone()){{!
+  }}{{/type:iobuf?}}{{!
+  }}{{^type:iobuf?}}{{!
+    }}self.value = deref(self._cpp_obj).get_{{field:name}}(){{!
+  }}{{/type:iobuf?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:enum}}{{!
   }}self.value = translate_cpp_enum_to_python({{!

@@ -2,10 +2,11 @@
 import unittest
 
 from testing.types import (
-    Integers, ComplexUnion, easy, Color, ReservedUnion
+    Integers, ComplexUnion, easy, Color, ReservedUnion, IOBufUnion
 )
 from thrift.py3.types import Union
 from thrift.py3 import deserialize, Protocol
+from folly.iobuf import IOBuf
 
 
 class UnionTests(unittest.TestCase):
@@ -99,6 +100,12 @@ class UnionTests(unittest.TestCase):
         self.assertEqual(union.type, ComplexUnion.Type.raw)
         union = ComplexUnion.fromValue(True)
         self.assertEqual(union.type, ComplexUnion.Type.truthy)
+
+    def test_iobuf_union(self) -> None:
+        abuf = IOBuf(b"3.141592025756836")
+        union = IOBufUnion.fromValue(abuf)
+        self.assertEqual(union.type, IOBufUnion.Type.buf)
+        self.assertEqual(bytes(union.buf), bytes(abuf))
 
     def test_reserved_union(self) -> None:
         x = ReservedUnion(from_="foo")

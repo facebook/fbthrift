@@ -5,6 +5,10 @@ typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 typedef binary (cpp2.type = "folly::fbstring") fbstring_type
 typedef binary (cpp2.type = "test::Buffer") Buffer
 
+union BinaryUnion {
+  1: IOBuf iobuf_val
+} (cpp2.noncomparable)
+
 struct Binaries {
   1: binary no_special_type
   2: IOBuf iobuf_val
@@ -20,4 +24,5 @@ service BinaryService {
   IOBufPtr sendRecvIOBufPtr(1: IOBufPtr val)
   fbstring_type sendRecvFbstring(1: fbstring_type val)
   Buffer sendRecvBuffer(1: Buffer val)
+  BinaryUnion sendRecBinaryUnion(1: BinaryUnion val)
 }

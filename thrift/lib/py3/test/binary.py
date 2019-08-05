@@ -9,7 +9,7 @@ import thrift.py3.server
 
 from binary.clients import BinaryService
 from binary.services import BinaryServiceInterface
-from binary.types import Binaries
+from binary.types import Binaries, BinaryUnion
 
 
 class BinaryTests(unittest.TestCase):
@@ -28,6 +28,11 @@ class BinaryTests(unittest.TestCase):
         self.assertEqual(val.fbstring, b'stuvwx')
         self.assertEqual(val.nonstandard_type, b'yzabcd')
 
+    def test_binary_union(self) -> None:
+        val = BinaryUnion(
+            iobuf_val=IOBuf(b'mnopqr'),
+        )
+        self.assertEqual(bytes(val.iobuf_val), b'mnopqr')
 
 class BinaryHandler(BinaryServiceInterface):
     def __init__(self, unit_test):
@@ -67,6 +72,12 @@ class BinaryHandler(BinaryServiceInterface):
     async def sendRecvBuffer(self, val: bytes) -> bytes:
         self.unit_test.assertEqual(val, b'cv5')
         return b'sv5'
+
+    async def sendRecBinaryUnion(self, val: BinaryUnion) -> BinaryUnion:
+        self.unit_test.assertEqual(bytes(val.iobuf_val), b'cv6')
+        return BinaryUnion(
+            iobuf_val=IOBuf(b'sv6'),
+        )
 
 
 class TestServer:
@@ -128,5 +139,9 @@ class ClientBinaryServerTests(unittest.TestCase):
 
                     val = await client.sendRecvBuffer(b'cv5')
                     self.assertEqual(val, b'sv5')
+
+                    bu = BinaryUnion(iobuf_val=IOBuf(b'cv6'))
+                    val = await client.sendRecBinaryUnion(bu)
+                    self.assertEqual(bytes(val.iobuf_val), b'sv6')
 
         loop.run_until_complete(inner_test())
