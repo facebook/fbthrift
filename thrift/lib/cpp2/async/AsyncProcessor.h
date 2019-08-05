@@ -924,13 +924,13 @@ class RequestParams {
   RequestParams(const RequestParams&) = default;
   RequestParams& operator=(const RequestParams&) = default;
 
-  Cpp2RequestContext* getRequestContext() {
+  Cpp2RequestContext* getRequestContext() const {
     return requestContext_;
   }
-  apache::thrift::concurrency::ThreadManager* getThreadManager() {
+  apache::thrift::concurrency::ThreadManager* getThreadManager() const {
     return threadManager_;
   }
-  folly::EventBase* getEventBase() {
+  folly::EventBase* getEventBase() const {
     return eventBase_;
   }
 
