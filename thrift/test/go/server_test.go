@@ -50,7 +50,7 @@ func createTestHeaderServer(handler thrifttest.ThriftTest) (*thrift.SimpleServer
 	}
 	taddr := transport.Addr()
 
-	server := thrift.NewSimpleServer(processor, transport,
+	server := thrift.NewSimpleServerContext(processor, transport,
 		thrift.TransportFactories(transportFactory),
 		thrift.ProtocolFactories(protocolFactory))
 	go func(server *thrift.SimpleServer) {

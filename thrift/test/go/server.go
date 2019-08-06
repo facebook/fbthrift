@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,69 +21,72 @@
 
 package gotest
 
-import "thrift/test/go/if/thrifttest"
+import (
+	"context"
+	"thrift/test/go/if/thrifttest"
+)
 
 type testHandler struct {
 	ReturnError error
 }
 
-func (t *testHandler) DoTestVoid() error {
+func (t *testHandler) DoTestVoid(ctx context.Context) error {
 	return t.ReturnError
 }
 
-func (t *testHandler) DoTestString(thing string) (string, error) {
+func (t *testHandler) DoTestString(ctx context.Context, thing string) (string, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestByte(thing int8) (int8, error) {
+func (t *testHandler) DoTestByte(ctx context.Context, thing int8) (int8, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestI32(thing int32) (int32, error) {
+func (t *testHandler) DoTestI32(ctx context.Context, thing int32) (int32, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestI64(thing int64) (int64, error) {
+func (t *testHandler) DoTestI64(ctx context.Context, thing int64) (int64, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestDouble(thing float64) (float64, error) {
+func (t *testHandler) DoTestDouble(ctx context.Context, thing float64) (float64, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestFloat(thing float32) (float32, error) {
+func (t *testHandler) DoTestFloat(ctx context.Context, thing float32) (float32, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestStruct(thing *thrifttest.Xtruct) (*thrifttest.Xtruct, error) {
+func (t *testHandler) DoTestStruct(ctx context.Context, thing *thrifttest.Xtruct) (*thrifttest.Xtruct, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestNest(thing *thrifttest.Xtruct2) (*thrifttest.Xtruct2, error) {
+func (t *testHandler) DoTestNest(ctx context.Context, thing *thrifttest.Xtruct2) (*thrifttest.Xtruct2, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestMap(thing map[int32]int32) (map[int32]int32, error) {
+func (t *testHandler) DoTestMap(ctx context.Context, thing map[int32]int32) (map[int32]int32, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestSet(thing []int32) ([]int32, error) {
+func (t *testHandler) DoTestSet(ctx context.Context, thing []int32) ([]int32, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestList(thing []int32) ([]int32, error) {
+func (t *testHandler) DoTestList(ctx context.Context, thing []int32) ([]int32, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestEnum(thing thrifttest.Numberz) (thrifttest.Numberz, error) {
+func (t *testHandler) DoTestEnum(ctx context.Context, thing thrifttest.Numberz) (thrifttest.Numberz, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestTypedef(thing thrifttest.UserId) (thrifttest.UserId, error) {
+func (t *testHandler) DoTestTypedef(ctx context.Context, thing thrifttest.UserId) (thrifttest.UserId, error) {
 	return thing, t.ReturnError
 }
 
-func (t *testHandler) DoTestMapMap(hello int32) (map[int32]map[int32]int32, error) {
+func (t *testHandler) DoTestMapMap(ctx context.Context, hello int32) (map[int32]map[int32]int32, error) {
 	res := map[int32]map[int32]int32{}
 	for i := int32(0); i < hello; i++ {
 		res[i] = map[int32]int32{i: i}
@@ -89,7 +94,7 @@ func (t *testHandler) DoTestMapMap(hello int32) (map[int32]map[int32]int32, erro
 	return res, t.ReturnError
 }
 
-func (t *testHandler) DoTestInsanity(argument *thrifttest.Insanity) (map[thrifttest.UserId]map[thrifttest.Numberz]*thrifttest.Insanity, error) {
+func (t *testHandler) DoTestInsanity(ctx context.Context, argument *thrifttest.Insanity) (map[thrifttest.UserId]map[thrifttest.Numberz]*thrifttest.Insanity, error) {
 	ret := map[thrifttest.UserId]map[thrifttest.Numberz]*thrifttest.Insanity{}
 	ret[thrifttest.UserId(3)] = map[thrifttest.Numberz]*thrifttest.Insanity{
 		thrifttest.Numberz_EIGHT: argument,
@@ -98,6 +103,7 @@ func (t *testHandler) DoTestInsanity(argument *thrifttest.Insanity) (map[thriftt
 }
 
 func (t *testHandler) DoTestMulti(
+	ctx context.Context,
 	arg0 int8, arg1 int32, arg2 int64, arg3 map[int16]string,
 	arg4 thrifttest.Numberz, arg5 thrifttest.UserId,
 ) (*thrifttest.Xtruct, error) {
@@ -108,16 +114,16 @@ func (t *testHandler) DoTestMulti(
 	return xs, t.ReturnError
 }
 
-func (t *testHandler) DoTestException(arg string) error {
+func (t *testHandler) DoTestException(ctx context.Context, arg string) error {
 	return t.ReturnError
 }
 
-func (t *testHandler) DoTestMultiException(arg0, arg1 string) (*thrifttest.Xtruct, error) {
+func (t *testHandler) DoTestMultiException(ctx context.Context, arg0, arg1 string) (*thrifttest.Xtruct, error) {
 	xs := thrifttest.NewXtruct()
 	xs.StringThing = arg0
 	return xs, t.ReturnError
 }
 
-func (t *testHandler) DoTestOneway(secondsToSleep int32) error {
+func (t *testHandler) DoTestOneway(ctx context.Context, secondsToSleep int32) error {
 	return t.ReturnError
 }
