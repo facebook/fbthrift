@@ -23,7 +23,13 @@ type MyRoot interface {
   DoRoot() (err error)
 }
 
+type MyRootClientInterface interface {
+  thrift.ClientInterface
+  DoRoot() (err error)
+}
+
 type MyRootClient struct {
+  MyRootClientInterface
   CC thrift.ClientConn
 }
 
@@ -62,6 +68,7 @@ func (p *MyRootClient) recvDoRoot() (err error) {
 
 
 type MyRootThreadsafeClient struct {
+  MyRootClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

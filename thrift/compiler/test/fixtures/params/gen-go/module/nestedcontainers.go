@@ -37,7 +37,27 @@ type NestedContainers interface {
   Turtles(foo [][]map[int32]map[int32][]int32) (err error)
 }
 
+type NestedContainersClientInterface interface {
+  thrift.ClientInterface
+  // Parameters:
+  //  - Foo
+  MapList(foo map[int32][]int32) (err error)
+  // Parameters:
+  //  - Foo
+  MapSet(foo map[int32][]int32) (err error)
+  // Parameters:
+  //  - Foo
+  ListMap(foo []map[int32]int32) (err error)
+  // Parameters:
+  //  - Foo
+  ListSet(foo [][]int32) (err error)
+  // Parameters:
+  //  - Foo
+  Turtles(foo [][]map[int32]map[int32][]int32) (err error)
+}
+
 type NestedContainersClient struct {
+  NestedContainersClientInterface
   CC thrift.ClientConn
 }
 
@@ -148,6 +168,7 @@ func (p *NestedContainersClient) recvTurtles() (err error) {
 
 
 type NestedContainersThreadsafeClient struct {
+  NestedContainersClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

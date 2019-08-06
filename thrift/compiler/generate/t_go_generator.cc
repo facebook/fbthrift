@@ -160,6 +160,7 @@ class t_go_generator : public t_concat_generator {
       t_field* tfield,
       string* OUT_pub_name,
       const t_const_value** OUT_def_value) const;
+  string make_client_interface_name(t_service* tservice);
 
   /**
    * Service-level generation functions
@@ -167,6 +168,7 @@ class t_go_generator : public t_concat_generator {
 
   void generate_service_helpers(t_service* tservice);
   void generate_service_interface(t_service* tservice);
+  void generate_service_client_interface(t_service* tservice);
   void generate_service_client(t_service* tservice, bool);
   void generate_service_client_common_methods(string&, bool);
   void generate_service_client_method(
@@ -328,6 +330,13 @@ class t_go_generator : public t_concat_generator {
   }
 
  private:
+  struct MethodDefinition {
+    string name;
+    string returnType;
+  };
+
+  vector<MethodDefinition> common_client_methods_;
+
   std::string gen_package_prefix_;
   std::string gen_thrift_import_;
   std::string gen_processor_func_ = "thrift.ProcessorFunction";
@@ -712,6 +721,12 @@ void t_go_generator::init_generator() {
   string module = get_real_go_module(program_);
   string target = module;
   package_dir_ = get_out_dir();
+
+  common_client_methods_ = {
+      {"Open", "error"},
+      {"Close", "error"},
+      {"IsOpen", "bool"},
+  };
 
   // This set is taken from
   // https://github.com/golang/lint/blob/master/lint.go#L692
@@ -1827,6 +1842,7 @@ void t_go_generator::generate_service(t_service* tservice) {
   f_service_ << go_autogen_comment() << go_package() << render_includes();
 
   generate_service_interface(tservice);
+  generate_service_client_interface(tservice);
   generate_service_client(tservice, false);
   generate_service_client(tservice, true); // threadsafe client
   generate_service_server(tservice);
@@ -1919,6 +1935,7 @@ void t_go_generator::generate_service_interface(t_service* tservice) {
 
     for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
       generate_go_docstring(f_service_, (*f_iter));
+
       f_service_ << indent()
                  << function_signature_if(*f_iter, "", gen_use_context_)
                  << endl;
@@ -2074,18 +2091,7 @@ void t_go_generator::generate_service_client_recv_method_exception_handling(
 void t_go_generator::generate_service_client_common_methods(
     string& clientTypeName,
     bool isThreadsafe) {
-  struct methodDefinition {
-    string name;
-    string returnType;
-  };
-
-  vector<methodDefinition> methodsToGenerate = {
-      {"Open", "error"},
-      {"Close", "error"},
-      {"IsOpen", "bool"},
-  };
-
-  for (auto& method : methodsToGenerate) {
+  for (auto& method : common_client_methods_) {
     f_service_ << indent() << "func(client *" << clientTypeName << ") "
                << method.name << "() " << method.returnType << " {" << endl;
 
@@ -2100,6 +2106,28 @@ void t_go_generator::generate_service_client_common_methods(
     indent_down();
     f_service_ << indent() << "}" << endl << endl;
   }
+}
+
+string t_go_generator::make_client_interface_name(t_service* tservice) {
+  return publicize(tservice->get_name()) + "ClientInterface";
+}
+
+void t_go_generator::generate_service_client_interface(t_service* tservice) {
+  auto clientInterfaceName = make_client_interface_name(tservice);
+  f_service_ << "type " << clientInterfaceName << " interface {" << endl;
+  indent_up();
+
+  // Embed the base ClientInterface into this one
+  f_service_ << indent() << "thrift.ClientInterface" << endl;
+
+  for (auto* function : tservice->get_functions()) {
+    generate_go_docstring(f_service_, function);
+    f_service_ << indent() << function_signature_if(function, "", false)
+               << endl;
+  }
+
+  indent_down();
+  f_service_ << indent() << "}" << endl << endl;
 }
 
 /**
@@ -2140,6 +2168,9 @@ void t_go_generator::generate_service_client(
   generate_go_docstring(f_service_, tservice);
   f_service_ << indent() << "type " << clientTypeName << " struct {" << endl;
   indent_up();
+
+  // Force the client struct to implement the expected interface.
+  f_service_ << indent() << make_client_interface_name(tservice) << endl;
 
   if (!extends_client.empty()) {
     f_service_ << indent() << "*" << extends_client << endl;

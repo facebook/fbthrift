@@ -24,7 +24,14 @@ type MyServicePrioParent interface {
   Pong() (err error)
 }
 
+type MyServicePrioParentClientInterface interface {
+  thrift.ClientInterface
+  Ping() (err error)
+  Pong() (err error)
+}
+
 type MyServicePrioParentClient struct {
+  MyServicePrioParentClientInterface
   CC thrift.ClientConn
 }
 
@@ -76,6 +83,7 @@ func (p *MyServicePrioParentClient) recvPong() (err error) {
 
 
 type MyServicePrioParentThreadsafeClient struct {
+  MyServicePrioParentClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

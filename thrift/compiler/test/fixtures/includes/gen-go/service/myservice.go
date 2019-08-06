@@ -38,8 +38,23 @@ type MyService interface {  //This is a service-level docblock
   HasArgDocs(s *module0.MyStruct, i *includes1.Included) (err error)
 }
 
+type MyServiceClientInterface interface {
+  thrift.ClientInterface
+  // This is a function-level docblock
+  // 
+  // Parameters:
+  //  - S
+  //  - I
+  Query(s *module0.MyStruct, i *includes1.Included) (err error)
+  // Parameters:
+  //  - S
+  //  - I: arg doc
+  HasArgDocs(s *module0.MyStruct, i *includes1.Included) (err error)
+}
+
 //This is a service-level docblock
 type MyServiceClient struct {
+  MyServiceClientInterface
   CC thrift.ClientConn
 }
 
@@ -106,6 +121,7 @@ func (p *MyServiceClient) recvHasArgDocs() (err error) {
 
 //This is a service-level docblock
 type MyServiceThreadsafeClient struct {
+  MyServiceClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

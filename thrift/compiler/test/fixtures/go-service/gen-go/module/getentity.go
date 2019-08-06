@@ -36,7 +36,26 @@ type GetEntity interface {
   GetList() (_r []string, err error)
 }
 
+type GetEntityClientInterface interface {
+  thrift.ClientInterface
+  // Parameters:
+  //  - R
+  GetEntity(r *GetEntityRequest) (_r *GetEntityResponse, err error)
+  GetBool() (_r bool, err error)
+  GetByte() (_r int8, err error)
+  GetI16() (_r int16, err error)
+  GetI32() (_r int32, err error)
+  GetI64() (_r int64, err error)
+  GetDouble() (_r float64, err error)
+  GetString() (_r string, err error)
+  GetBinary() (_r []byte, err error)
+  GetMap() (_r map[string]string, err error)
+  GetSet() (_r []string, err error)
+  GetList() (_r []string, err error)
+}
+
 type GetEntityClient struct {
+  GetEntityClientInterface
   CC thrift.ClientConn
 }
 
@@ -258,6 +277,7 @@ func (p *GetEntityClient) recvGetList() (value []string, err error) {
 
 
 type GetEntityThreadsafeClient struct {
+  GetEntityClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

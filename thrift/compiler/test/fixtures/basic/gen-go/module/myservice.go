@@ -38,7 +38,28 @@ type MyService interface {
   LobDataById(id int64, data string) (err error)
 }
 
+type MyServiceClientInterface interface {
+  thrift.ClientInterface
+  Ping() (err error)
+  GetRandomData() (_r string, err error)
+  // Parameters:
+  //  - Id
+  HasDataById(id int64) (_r bool, err error)
+  // Parameters:
+  //  - Id
+  GetDataById(id int64) (_r string, err error)
+  // Parameters:
+  //  - Id
+  //  - Data
+  PutDataById(id int64, data string) (err error)
+  // Parameters:
+  //  - Id
+  //  - Data
+  LobDataById(id int64, data string) (err error)
+}
+
 type MyServiceClient struct {
+  MyServiceClientInterface
   CC thrift.ClientConn
 }
 
@@ -165,6 +186,7 @@ func (p *MyServiceClient) LobDataById(id int64, data string) (err error) {
 
 
 type MyServiceThreadsafeClient struct {
+  MyServiceClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

@@ -25,7 +25,13 @@ MyRoot
   DoMid() (err error)
 }
 
+type MyNodeClientInterface interface {
+  thrift.ClientInterface
+  DoMid() (err error)
+}
+
 type MyNodeClient struct {
+  MyNodeClientInterface
   *MyRootClient
 }
 
@@ -64,6 +70,7 @@ func (p *MyNodeClient) recvDoMid() (err error) {
 
 
 type MyNodeThreadsafeClient struct {
+  MyNodeClientInterface
   *MyRootThreadsafeClient
 }
 

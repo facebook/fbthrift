@@ -25,7 +25,13 @@ MyNode
   DoLeaf() (err error)
 }
 
+type MyLeafClientInterface interface {
+  thrift.ClientInterface
+  DoLeaf() (err error)
+}
+
 type MyLeafClient struct {
+  MyLeafClientInterface
   *MyNodeClient
 }
 
@@ -64,6 +70,7 @@ func (p *MyLeafClient) recvDoLeaf() (err error) {
 
 
 type MyLeafThreadsafeClient struct {
+  MyLeafClientInterface
   *MyNodeThreadsafeClient
 }
 

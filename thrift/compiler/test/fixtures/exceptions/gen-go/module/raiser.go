@@ -26,7 +26,16 @@ type Raiser interface {
   Get500() (_r string, err error)
 }
 
+type RaiserClientInterface interface {
+  thrift.ClientInterface
+  DoBland() (err error)
+  DoRaise() (err error)
+  Get200() (_r string, err error)
+  Get500() (_r string, err error)
+}
+
 type RaiserClient struct {
+  RaiserClientInterface
   CC thrift.ClientConn
 }
 
@@ -131,6 +140,7 @@ func (p *RaiserClient) recvGet500() (value string, err error) {
 
 
 type RaiserThreadsafeClient struct {
+  RaiserClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

@@ -25,7 +25,13 @@ MyServicePrioParent
   Pang() (err error)
 }
 
+type MyServicePrioChildClientInterface interface {
+  thrift.ClientInterface
+  Pang() (err error)
+}
+
 type MyServicePrioChildClient struct {
+  MyServicePrioChildClientInterface
   *MyServicePrioParentClient
 }
 
@@ -64,6 +70,7 @@ func (p *MyServicePrioChildClient) recvPang() (err error) {
 
 
 type MyServicePrioChildThreadsafeClient struct {
+  MyServicePrioChildClientInterface
   *MyServicePrioParentThreadsafeClient
 }
 

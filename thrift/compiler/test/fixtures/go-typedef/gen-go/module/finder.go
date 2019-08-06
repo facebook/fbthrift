@@ -31,7 +31,21 @@ type Finder interface {
   PreviousPlate(plate Plate) (_r Plate, err error)
 }
 
+type FinderClientInterface interface {
+  thrift.ClientInterface
+  // Parameters:
+  //  - Plate
+  ByPlate(plate Plate) (_r *Automobile, err error)
+  // Parameters:
+  //  - Plate
+  AliasByPlate(plate Plate) (_r *Car, err error)
+  // Parameters:
+  //  - Plate
+  PreviousPlate(plate Plate) (_r Plate, err error)
+}
+
 type FinderClient struct {
+  FinderClientInterface
   CC thrift.ClientConn
 }
 
@@ -117,6 +131,7 @@ func (p *FinderClient) recvPreviousPlate() (value Plate, err error) {
 
 
 type FinderThreadsafeClient struct {
+  FinderClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }

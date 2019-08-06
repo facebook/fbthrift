@@ -31,7 +31,18 @@ type SomeService interface {
   BinaryKeyedMap(r []int64) (_r map[string]int64, err error)
 }
 
+type SomeServiceClientInterface interface {
+  thrift.ClientInterface
+  // Parameters:
+  //  - M
+  BounceMap(m include0.SomeMap) (_r include0.SomeMap, err error)
+  // Parameters:
+  //  - R
+  BinaryKeyedMap(r []int64) (_r map[string]int64, err error)
+}
+
 type SomeServiceClient struct {
+  SomeServiceClientInterface
   CC thrift.ClientConn
 }
 
@@ -97,6 +108,7 @@ func (p *SomeServiceClient) recvBinaryKeyedMap() (value map[string]int64, err er
 
 
 type SomeServiceThreadsafeClient struct {
+  SomeServiceClientInterface
   CC thrift.ClientConn
   Mu sync.Mutex
 }
