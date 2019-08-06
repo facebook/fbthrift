@@ -76,6 +76,7 @@ class t_hack_generator : public t_oop_generator {
     enum_extratype_ = option_is_specified(parsed_options, "enum_extratype");
     enum_transparenttype_ =
         option_is_specified(parsed_options, "enum_transparenttype");
+    soft_attribute_ = option_is_specified(parsed_options, "soft_attribute");
 
     // no_use_hack_collections_ is only used to migrate away from php gen
     if (no_use_hack_collections_ && strict_types_) {
@@ -650,6 +651,11 @@ class t_hack_generator : public t_oop_generator {
    * True to use transparent typing for Hack enums: 'enum FooBar: int as int'.
    */
   bool enum_transparenttype_;
+
+  /**
+   * True to generate soft typehints as __Soft instead of @
+   */
+  bool soft_attribute_;
 
   std::string array_keyword_;
 };
@@ -2615,7 +2621,8 @@ void t_hack_generator::_generate_php_struct_definition(
           << "Map<string, mixed> $vals = Map {}) {\n";
     } else {
       // Generate constructor from KeyedContainer
-      out << "@\\HH\\KeyedContainer<string, mixed> $vals = " << array_keyword_
+      out << (soft_attribute_ ? "<<__Soft>> " : "@")
+          << "\\HH\\KeyedContainer<string, mixed> $vals = " << array_keyword_
           << "[]) {\n";
     }
   } else {
