@@ -22,8 +22,9 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include <folly/portability/GTest.h>
-#include <thread>
+#include <folly/synchronization/Baton.h>
 #include <condition_variable>
+#include <thread>
 #include <vector>
 
 using namespace std;
@@ -114,14 +115,16 @@ TEST(RWMutexTest, Readers_Wait_Writer) {
   }
 
   // Testing Timeout
-  std::thread wrThread = std::thread([&l] {
-      EXPECT_TRUE(l.timedWrite(kTimeoutMs));
-      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
-      l.release();
-    });
+  folly::Baton locked;
+  std::thread wrThread = std::thread([&l, &locked] {
+    EXPECT_TRUE(l.timedWrite(kTimeoutMs));
+    locked.post();
+    usleep(duration_cast<microseconds>(kOpTimeInMs).count());
+    l.release();
+  });
 
   // make sure wrThread lock the lock first
-  usleep(1000);
+  locked.wait();
 
   vector<std::thread> threads_;
   for (int i = 0; i < kMaxReaders; ++i) {
