@@ -33,7 +33,7 @@ from thrift.Thrift import (
     TMessageType,
 )
 
-if six.PY3 and not thrift.trollius:
+if six.PY3:
     import asyncio
 else:
     import trollius as asyncio
