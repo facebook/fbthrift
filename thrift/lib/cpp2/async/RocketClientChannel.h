@@ -125,6 +125,12 @@ class RocketClientChannel final : public ClientChannel {
   void closeNow() override;
   void setCloseCallback(CloseCallback* closeCallback) override;
 
+  using FlushList = boost::intrusive::list<
+      folly::EventBase::LoopCallback,
+      boost::intrusive::constant_time_size<false>>;
+
+  void setFlushList(FlushList* flushList);
+
  private:
   static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};
 

@@ -61,6 +61,10 @@ class RocketClient : public folly::DelayedDestruction,
                      private folly::AsyncTransportWrapper::WriteCallback,
                      public std::enable_shared_from_this<RocketClient> {
  public:
+  using FlushList = boost::intrusive::list<
+      folly::EventBase::LoopCallback,
+      boost::intrusive::constant_time_size<false>>;
+
   RocketClient(const RocketClient&) = delete;
   RocketClient(RocketClient&&) = delete;
   RocketClient& operator=(const RocketClient&) = delete;
@@ -166,6 +170,23 @@ class RocketClient : public folly::DelayedDestruction,
     }
   }
 
+  /**
+   * Set a centrilized list for flushing all pending writes.
+   *
+   * By default EventBase itself is used to schedule flush callback at the end
+   * of the next event loop. If flushList is not null, RocketClient would attach
+   * callbacks to it intstead, thus granting control over when writes happen to
+   * the application.
+   *
+   * Note: the caller is responsible for making sure that the list outlives the
+   * client.
+   *
+   * Note2: call to detachEventBase() would reset the list back to nullptr.
+   */
+  void setFlushList(FlushList* flushList) {
+    flushList_ = flushList;
+  }
+
  private:
   folly::EventBase* evb_;
   folly::fibers::FiberManager* fm_;
@@ -174,6 +195,7 @@ class RocketClient : public folly::DelayedDestruction,
   size_t requests_{0};
   StreamId nextStreamId_{1};
   std::unique_ptr<SetupFrame> setupFrame_;
+  FlushList* flushList_{nullptr};
   enum class ConnectionState : uint8_t {
     CONNECTED,
     CLOSED,

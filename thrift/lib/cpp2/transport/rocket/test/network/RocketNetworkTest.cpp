@@ -28,6 +28,7 @@
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>
 #include <folly/executors/ManualExecutor.h>
+#include <folly/fibers/FiberManager.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -105,6 +106,58 @@ struct OnWriteSuccess : RocketClientWriteCallback {
 
 using ServerTypes = ::testing::Types<RsocketTestServer, RocketTestServer>;
 TYPED_TEST_CASE(RocketNetworkTest, ServerTypes);
+
+TYPED_TEST(RocketNetworkTest, FlushList) {
+  this->withClient([](RocketTestClient& client) {
+    constexpr folly::StringPiece kMetadata("metadata");
+    constexpr folly::StringPiece kData("test_request");
+
+    RocketClient::FlushList flushList;
+    auto& rawClient = client.getRawClient();
+    auto& eventBase = client.getEventBase();
+
+    auto& fm = folly::fibers::getFiberManager(eventBase);
+
+    OnWriteSuccess writeCallback;
+
+    // Add a task that would initiate sending the request.
+    auto sendFuture = fm.addTaskRemoteFuture([&] {
+      rawClient.setFlushList(&flushList);
+
+      auto reply = rawClient.sendRequestResponseSync(
+          Payload::makeFromMetadataAndData(kMetadata, kData),
+          std::chrono::milliseconds(250),
+          &writeCallback);
+
+      EXPECT_TRUE(reply.hasValue());
+      return std::move(reply.value());
+    });
+
+    // Add another task that would ensure several event base loops are
+    // performed, then flushes the list.
+    fm.addTaskRemoteFuture([&] {
+        EXPECT_FALSE(writeCallback.writeSuccess);
+
+        auto cbs = std::move(flushList);
+        while (!cbs.empty()) {
+          auto* callback = &cbs.front();
+          cbs.pop_front();
+          callback->runLoopCallback();
+        }
+
+        EXPECT_TRUE(writeCallback.writeSuccess);
+      })
+        .wait();
+
+    auto reply = std::move(sendFuture).get();
+
+    EXPECT_TRUE(writeCallback.writeSuccess);
+    auto dam = splitMetadataAndData(reply);
+    EXPECT_EQ(kData, getRange(*dam.second));
+    EXPECT_TRUE(reply.hasNonemptyMetadata());
+    EXPECT_EQ(kMetadata, getRange(*dam.first));
+  });
+}
 
 /**
  * REQUEST_RESPONSE tests

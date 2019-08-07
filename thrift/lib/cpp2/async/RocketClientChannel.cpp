@@ -125,6 +125,12 @@ RocketClientChannel::~RocketClientChannel() {
   closeNow();
 }
 
+void RocketClientChannel::setFlushList(FlushList* flushList) {
+  if (rclient_) {
+    rclient_->setFlushList(flushList);
+  }
+}
+
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
     async::TAsyncTransport::UniquePtr socket,
     RequestSetupMetadata meta) {

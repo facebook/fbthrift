@@ -98,6 +98,14 @@ class RocketTestClient {
 
   void reconnect();
 
+  RocketClient& getRawClient() {
+    return *client_;
+  }
+
+  folly::EventBase& getEventBase() {
+    return evb_;
+  }
+
  private:
   folly::ScopedEventBaseThread evbThread_;
   folly::EventBase& evb_;

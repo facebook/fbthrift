@@ -574,13 +574,17 @@ folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
 
   queue_.enqueueScheduledWrite(ctx);
   if (!writeLoopCallback_.isLoopCallbackScheduled()) {
-    evb_->runInLoop(&writeLoopCallback_);
+    if (flushList_) {
+      flushList_->push_back(writeLoopCallback_);
+    } else {
+      evb_->runInLoop(&writeLoopCallback_);
+    }
   }
   return {};
 }
 
 void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
-  if (!std::exchange(rescheduled_, true)) {
+  if (!client_.flushList_ && !std::exchange(rescheduled_, true)) {
     client_.evb_->runInLoop(this, true /* thisIteration */);
     return;
   }
@@ -785,6 +789,7 @@ void RocketClient::detachEventBase() {
   socket_->detachEventBase();
   fm_ = nullptr;
   evb_ = nullptr;
+  flushList_ = nullptr;
 }
 
 } // namespace rocket
