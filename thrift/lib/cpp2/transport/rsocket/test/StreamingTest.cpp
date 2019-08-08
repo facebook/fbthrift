@@ -210,60 +210,21 @@ TEST_P(StreamingTest, ClientStreamBridge) {
     firstResponseCallback.baton.wait();
     auto firstResponse = std::move(*firstResponseCallback.firstResponse);
     auto stream = std::move(firstResponseCallback.stream);
-    stream->requestN(3);
 
-    apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
-    struct StreamCallback
-        : public apache::thrift::detail::ClientStreamConsumer {
-      void consume() override {
-        baton.post();
-      }
-      void canceled() override {
-        LOG(FATAL) << "Should never be called.";
-      }
-      folly::fibers::Baton baton;
-    };
-    StreamCallback streamCallback;
-    auto getNext = [&]() {
-      if (queue.empty()) {
-        if (stream->wait(&streamCallback)) {
-          streamCallback.baton.wait();
-          streamCallback.baton.reset();
-        }
-        queue = stream->getMessages();
-        EXPECT_FALSE(queue.empty());
-      }
-
-      auto streamPayload = std::move(queue.front());
-      queue.pop();
-      return streamPayload;
-    };
+    using StreamPResult = apache::thrift::ThriftPresult<
+        true,
+        apache::thrift::
+            FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>;
+    auto bufferedStream = apache::thrift::detail::ap::decode_buffered_stream<
+        apache::thrift::BinaryProtocolReader,
+        StreamPResult,
+        int32_t>(std::move(stream), 5);
 
     size_t expected = 0;
-    folly::Try<apache::thrift::StreamPayload> streamPayload;
-    for (; (streamPayload = getNext()).hasValue(); ++expected) {
-      int32_t value{};
-      {
-        apache::thrift::ThriftPresult<
-            true,
-            apache::thrift::
-                FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>
-            args;
-        args.template get<0>().value = &value;
-
-        apache::thrift::BinaryProtocolReader reader;
-        reader.setInput(streamPayload->payload.get());
-        args.read(&reader);
-      }
-      EXPECT_EQ(expected, value);
-
-      if (expected % 3 == 2) {
-        stream->requestN(3);
-      }
-    }
-    if (streamPayload.hasException()) {
-      *streamPayload;
-    }
+    std::move(bufferedStream)
+        .subscribeInline([&expected](folly::Try<int32_t>&& next) {
+          EXPECT_EQ(expected++, *next);
+        });
     EXPECT_EQ(10, expected);
   });
 }

@@ -26,8 +26,10 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 
@@ -844,6 +846,73 @@ apache::thrift::SemiStream<T> decode_stream(
         return folly::exception_wrapper(
             transport::TTransportException(ew.what().toStdString()));
       });
+}
+
+template <typename Protocol, typename PResult, typename T>
+folly::Try<T> decode_stream_element(
+    folly::Try<apache::thrift::StreamPayload>&& payload) {
+  DCHECK(payload.hasValue() || payload.hasException());
+
+  Protocol prot;
+  if (payload.hasValue()) {
+    PResult args;
+    folly::Try<T> res(folly::in_place);
+    args.template get<0>().value = &(*res);
+
+    prot.setInput(payload->payload.get());
+    args.read(&prot);
+    return res;
+  }
+
+  folly::exception_wrapper hijacked;
+  payload.exception().with_exception(
+      [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
+        PResult result;
+        T res{};
+        result.template get<0>().value = &res;
+
+        prot.setInput(err.encoded.get());
+        result.read(&prot);
+
+        CHECK(!result.getIsSet(0));
+
+        ac::foreach_index<PResult::size::value - 1>([&](auto index) {
+          if (!hijacked && result.getIsSet(index.value + 1)) {
+            auto& fdata = result.template get<index.value + 1>();
+            hijacked = folly::exception_wrapper(std::move(fdata.ref()));
+          }
+        });
+
+        if (!hijacked) {
+          // Could not decode the error. It may be a TApplicationException
+          TApplicationException x;
+          prot.setInput(err.encoded.get());
+          deserializeExceptionBody(&prot, &x);
+          hijacked = folly::exception_wrapper(std::move(x));
+        }
+      });
+
+  if (hijacked) {
+    return folly::Try<T>(hijacked);
+  }
+
+  if (payload.exception()
+          .is_compatible_with<transport::TTransportException>()) {
+    return folly::Try<T>(std::move(payload.exception()));
+  }
+
+  return folly::Try<T>(folly::exception_wrapper(transport::TTransportException(
+      payload.exception().what().toStdString())));
+}
+
+template <typename Protocol, typename PResult, typename T>
+apache::thrift::ClientBufferedStream<T> decode_buffered_stream(
+    apache::thrift::detail::ClientStreamBridge::Ptr streamBridge,
+    int32_t bufferSize) {
+  return apache::thrift::ClientBufferedStream<T>(
+      std::move(streamBridge),
+      decode_stream_element<Protocol, PResult, T>,
+      bufferSize);
 }
 
 } // namespace ap

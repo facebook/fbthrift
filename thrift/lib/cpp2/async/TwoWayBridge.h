@@ -84,7 +84,7 @@ class Queue {
 template <typename Consumer, typename Message>
 class AtomicQueue {
  public:
-  using Queue = Queue<Message>;
+  using MessageQueue = Queue<Message>;
 
   AtomicQueue() {}
   ~AtomicQueue() {
@@ -96,7 +96,7 @@ class AtomicQueue {
       case Type::CLOSED:
         return;
       case Type::TAIL:
-        makeQueue(reinterpret_cast<typename Queue::Node*>(ptr));
+        makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
         return;
       default:
         folly::assume_unreachable();
@@ -106,8 +106,8 @@ class AtomicQueue {
   AtomicQueue& operator=(const AtomicQueue&) = delete;
 
   void push(Message&& value) {
-    std::unique_ptr<typename Queue::Node> node(
-        new typename Queue::Node(std::move(value)));
+    std::unique_ptr<typename MessageQueue::Node> node(
+        new typename MessageQueue::Node(std::move(value)));
     assert(!(reinterpret_cast<intptr_t>(node.get()) & kTypeMask));
 
     auto storage = storage_.load(std::memory_order_relaxed);
@@ -117,7 +117,7 @@ class AtomicQueue {
       switch (type) {
         case Type::EMPTY:
         case Type::TAIL:
-          node->next = reinterpret_cast<typename Queue::Node*>(ptr);
+          node->next = reinterpret_cast<typename MessageQueue::Node*>(ptr);
           if (storage_.compare_exchange_weak(
                   storage,
                   reinterpret_cast<intptr_t>(node.get()) |
@@ -183,7 +183,7 @@ class AtomicQueue {
       case Type::EMPTY:
         return;
       case Type::TAIL:
-        makeQueue(reinterpret_cast<typename Queue::Node*>(ptr));
+        makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
         return;
       case Type::CONSUMER:
         reinterpret_cast<Consumer*>(ptr)->canceled();
@@ -193,14 +193,14 @@ class AtomicQueue {
     };
   }
 
-  Queue getMessages() {
+  MessageQueue getMessages() {
     auto storage = storage_.exchange(
         static_cast<intptr_t>(Type::EMPTY), std::memory_order_acquire);
     auto type = static_cast<Type>(storage & kTypeMask);
     auto ptr = storage & kPointerMask;
     switch (type) {
       case Type::TAIL:
-        return makeQueue(reinterpret_cast<typename Queue::Node*>(ptr));
+        return makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
       default:
         folly::assume_unreachable();
     };
@@ -209,13 +209,13 @@ class AtomicQueue {
  private:
   enum class Type : intptr_t { EMPTY = 0, CONSUMER = 1, TAIL = 2, CLOSED = 3 };
 
-  Queue makeQueue(typename Queue::Node* tail) {
+  MessageQueue makeQueue(typename MessageQueue::Node* tail) {
     // Reverse a linked list.
-    typename Queue::Node* head{nullptr};
+    typename MessageQueue::Node* head{nullptr};
     while (tail) {
       head = std::exchange(tail, std::exchange(tail->next, head));
     }
-    return Queue(head);
+    return MessageQueue(head);
   }
 
   static constexpr intptr_t kTypeMask = 3;
@@ -238,8 +238,8 @@ class TwoWayBridge {
       twowaybridge_detail::AtomicQueue<ServerConsumer, ServerMessage>;
 
  public:
-  using ClientQueue = typename ClientAtomicQueue::Queue;
-  using ServerQueue = typename ServerAtomicQueue::Queue;
+  using ClientQueue = typename ClientAtomicQueue::MessageQueue;
+  using ServerQueue = typename ServerAtomicQueue::MessageQueue;
 
   struct Deleter {
     void operator()(Derived* ptr) {
