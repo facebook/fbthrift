@@ -61,8 +61,8 @@ TEST(BufferingNimbleDecoder, ManyZeros) {
   dataCursor.write<std::uint8_t>(45);
 
   BufferingNimbleDecoder<ChunkRepr::kRaw> dec;
-  dec.setControlInput(*control);
-  dec.setDataInput(*data);
+  dec.setControlInput(folly::io::Cursor{control.get()});
+  dec.setDataInput(folly::io::Cursor{data.get()});
 
   // We wrote 11 control bytes; that should map to 44=4*11 chunks.
   for (int i = 0; i < 44; ++i) {
@@ -105,8 +105,8 @@ void runRefillTest(int controlGrowthAmount, int dataGrowthAmount) {
   }
 
   BufferingNimbleDecoder<ChunkRepr::kRaw> dec;
-  dec.setControlInput(*controlBuf);
-  dec.setDataInput(*dataBuf);
+  dec.setControlInput(folly::io::Cursor{controlBuf.get()});
+  dec.setDataInput(folly::io::Cursor{dataBuf.get()});
 
   for (int i = 0; i < 65536 + 10000; ++i) {
     std::uint32_t chunk = dec.nextChunk();
@@ -140,8 +140,8 @@ TEST(BufferingNimbleDecoder, AlmostOutOfSpace) {
   data.write<std::uint8_t>(7);
 
   BufferingNimbleDecoder<ChunkRepr::kRaw> dec;
-  dec.setControlInput(*controlBuf);
-  dec.setDataInput(*dataBuf);
+  dec.setControlInput(folly::io::Cursor{controlBuf.get()});
+  dec.setDataInput(folly::io::Cursor{dataBuf.get()});
 
   EXPECT_EQ(1, dec.nextChunk());
   EXPECT_EQ(2, dec.nextChunk());
@@ -171,8 +171,8 @@ TEST(BufferingNimbleDecoder, OutOfSpace) {
   data.write<std::uint8_t>(7);
 
   BufferingNimbleDecoder<ChunkRepr::kRaw> dec;
-  dec.setControlInput(*controlBuf);
-  dec.setDataInput(*dataBuf);
+  dec.setControlInput(folly::io::Cursor{controlBuf.get()});
+  dec.setDataInput(folly::io::Cursor{dataBuf.get()});
 
   EXPECT_THROW(
       {

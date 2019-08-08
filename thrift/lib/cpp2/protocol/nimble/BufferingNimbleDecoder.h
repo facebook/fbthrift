@@ -45,12 +45,12 @@ class BufferingNimbleDecoder {
   BufferingNimbleDecoder(const BufferingNimbleDecoder&) = delete;
   BufferingNimbleDecoder& operator=(const BufferingNimbleDecoder&) = delete;
 
-  void setControlInput(const folly::IOBuf& buf) {
-    controlCursor_.reset(&buf);
+  void setControlInput(const folly::io::Cursor& cursor) {
+    controlCursor_ = cursor;
   }
 
-  void setDataInput(const folly::IOBuf& buf) {
-    dataCursor_.reset(&buf);
+  void setDataInput(const folly::io::Cursor& cursor) {
+    dataCursor_ = cursor;
   }
 
   std::uint32_t nextChunk() {

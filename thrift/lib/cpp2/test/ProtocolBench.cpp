@@ -52,6 +52,8 @@ void readBench(size_t iters) {
   IOBufQueue q;
   Serializer::serialize(strct, &q);
   auto buf = q.move();
+  // coalesce the IOBuf chain to test fast path
+  buf->coalesce();
   susp.dismiss();
 
   while (iters--) {

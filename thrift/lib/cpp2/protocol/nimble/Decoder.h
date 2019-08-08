@@ -44,15 +44,19 @@ class Decoder {
     // binaryDataSize
     cursor_.readLE<std::uint32_t>();
 
-    cursor_.clone(fieldControl_, fieldControlSize);
-    cursor_.clone(fieldData_, fieldDataSize);
-    cursor_.clone(contentControl_, contentControlSize);
-    cursor_.clone(contentData_, contentDataSize);
+    folly::io::Cursor fieldControlCursor(cursor_, fieldControlSize);
+    cursor_.skip(fieldControlSize);
+    folly::io::Cursor fieldDataCursor(cursor_, fieldDataSize);
+    cursor_.skip(fieldDataSize);
+    folly::io::Cursor contentControlCursor(cursor_, contentControlSize);
+    cursor_.skip(contentControlSize);
+    folly::io::Cursor contentDataCursor(cursor_, contentDataSize);
+    cursor_.skip(contentDataSize);
 
-    fieldStream_.setControlInput(fieldControl_);
-    fieldStream_.setDataInput(fieldData_);
-    contentStream_.setControlInput(contentControl_);
-    contentStream_.setDataInput(contentData_);
+    fieldStream_.setControlInput(fieldControlCursor);
+    fieldStream_.setDataInput(fieldDataCursor);
+    contentStream_.setControlInput(contentControlCursor);
+    contentStream_.setDataInput(contentDataCursor);
   }
 
   std::uint32_t nextFieldChunk() {
@@ -131,11 +135,6 @@ class Decoder {
  private:
   BufferingNimbleDecoder<ChunkRepr::kRaw> fieldStream_;
   BufferingNimbleDecoder<ChunkRepr::kZigzag> contentStream_;
-
-  folly::IOBuf fieldControl_;
-  folly::IOBuf fieldData_;
-  folly::IOBuf contentControl_;
-  folly::IOBuf contentData_;
 
   folly::io::Cursor cursor_;
 };

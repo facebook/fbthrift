@@ -54,8 +54,8 @@ TEST(BufferingNimbleEncoder, EndToEnd) {
   enc.finalize();
 
   BufferingNimbleDecoder<ChunkRepr::kRaw> dec;
-  dec.setControlInput(*control.front());
-  dec.setDataInput(*data.front());
+  dec.setControlInput(folly::io::Cursor{control.front()});
+  dec.setDataInput(folly::io::Cursor{data.front()});
 
   std::minstd_rand gen1;
   std::uniform_int_distribution<> dist1(0, interestingValues.size() - 1);
