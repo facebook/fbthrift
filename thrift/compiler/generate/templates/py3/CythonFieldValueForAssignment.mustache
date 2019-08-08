@@ -20,17 +20,16 @@ Called specifically from types.pyx when initializing the individual attributes
 on a struct.
 
 }}{{#type:iobuf?}}{{!
-  }}deref(c_inst).{{field:name}} = deref((<__iobuf.IOBuf?>{{field:name}}).c_clone()){{!
+  }}deref((<__iobuf.IOBuf?>{{field:name}}).c_clone()){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}deref(c_inst).{{field:name}} = (<__iobuf.IOBuf?>{{field:name}}).c_clone(){{!
+  }}(<__iobuf.IOBuf?>{{field:name}}).c_clone(){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}deref(c_inst).{{field:name}} = {{> types/CythonCppType}}(move(<string>{{field:name}})){{!
+  }}{{> types/CythonCppType}}(move(<string>{{field:name}})){{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
-}}deref(c_inst).{{field:name}} = {{!
   }}{{#field:unique_ref?}}{{!
     For unique references, we just make a copy of the target object - it's not
     especially efficient but there isn't much else we can do from a shared ptr
@@ -45,7 +44,6 @@ on a struct.
   }}{{/field:shared_const_ref?}}{{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:base?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
   }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
   }}{{#type:string?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:string?}}{{!
   }}{{#type:binary?}}thrift.py3.types.move(thrift.py3.types.bytes_to_string({{/type:binary?}}{{!
@@ -55,19 +53,16 @@ on a struct.
   }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:base?}}{{!
 }}{{#type:enum?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
     }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}{{> types/CythonPythonType}}_to_cpp({{field:name}}){{!
     }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
     }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}deref((<{{> types/CythonPythonType }}?> {{field:name}})._cpp_obj){{!
     }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
     }}{{#program:optionals?}}{{#field:optional?}}cOptional[{{> types/CythonCppType}}]({{/field:optional?}}{{/program:optionals?}}{{!
     }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj){{!
     }}{{#program:optionals?}}{{#field:optional?}}){{/field:optional?}}{{/program:optionals?}}{{!

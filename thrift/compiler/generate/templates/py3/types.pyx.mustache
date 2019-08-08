@@ -262,8 +262,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:exception?}}
         {{#struct:fields}}{{#field:type}}
         if {{field:name}} is not None:
-            {{> CythonAssignField}}
-
+            deref(c_inst).{{field:name}} = {{> CythonFieldValueForAssignment}}
             {{! This should also be inside the if statement, so indent appropriately }}
             {{#field:isset?}}
             deref(c_inst).__isset.{{field:name}} = True
