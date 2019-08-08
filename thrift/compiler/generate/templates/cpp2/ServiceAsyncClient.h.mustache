@@ -30,7 +30,12 @@
 #include <%cpp_include%>
 <%/service:cpp_includes%>
 <%#service:any_streams?%>
+<%#service:client_buffered_stream?%>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+<%/service:client_buffered_stream?%>
+<%^service:client_buffered_stream?%>
 #include <thrift/lib/cpp2/async/Stream.h>
+<%/service:client_buffered_stream?%>
 <%/service:any_streams?%>
 
 namespace apache { namespace thrift {

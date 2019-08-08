@@ -36,6 +36,7 @@
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -166,6 +167,50 @@ class ClientSyncCallback : public RequestClientCallback {
   folly::fibers::Baton doneBaton_;
 };
 
+inline StreamClientCallback* createStreamClientCallback(
+    RequestClientCallback::Ptr requestCallback,
+    int32_t bufferSize) {
+  DCHECK(requestCallback->isInlineSafe());
+  class RequestClientCallbackWrapper
+      : public detail::ClientStreamBridge::FirstResponseCallback {
+   public:
+    RequestClientCallbackWrapper(
+        RequestClientCallback::Ptr requestCallback,
+        int32_t bufferSize)
+        : requestCallback_(std::move(requestCallback)),
+          bufferSize_(bufferSize) {}
+
+    void onFirstResponse(
+        FirstResponsePayload&& firstResponse,
+        detail::ClientStreamBridge::Ptr clientStreamBridge) override {
+      auto tHeader = std::make_unique<transport::THeader>();
+      tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+      detail::fillTHeaderFromResponseRpcMetadata(
+          firstResponse.metadata, *tHeader);
+      requestCallback_.release()->onResponse(ClientReceiveState(
+          static_cast<uint16_t>(-1),
+          std::move(firstResponse.payload),
+          std::move(tHeader),
+          nullptr,
+          std::move(clientStreamBridge),
+          bufferSize_));
+      delete this;
+    }
+
+    void onFirstResponseError(folly::exception_wrapper ew) override {
+      requestCallback_.release()->onResponseError(std::move(ew));
+      delete this;
+    }
+
+   private:
+    RequestClientCallback::Ptr requestCallback_;
+    const int32_t bufferSize_;
+  };
+
+  return detail::ClientStreamBridge::create(
+      new RequestClientCallbackWrapper(std::move(requestCallback), bufferSize));
+}
+
 template <class Protocol>
 void clientSendT(
     Protocol* prot,
@@ -177,7 +222,8 @@ void clientSendT(
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
-    RpcKind kind) {
+    RpcKind kind,
+    bool useClientStreamBridge = false) {
   size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
@@ -213,8 +259,28 @@ void clientSendT(
         apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
   }
 
-  channel->sendRequestAsync(
-      rpcOptions, queue.move(), std::move(header), std::move(callback), kind);
+  if (useClientStreamBridge) {
+    DCHECK(kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+    auto eb = channel->getEventBase();
+    auto streamCallback = createStreamClientCallback(
+        std::move(callback), rpcOptions.getChunkBufferSize());
+    if (!eb || eb->isInEventBaseThread()) {
+      channel->sendRequestStream(
+          rpcOptions, queue.move(), std::move(header), streamCallback);
+    } else {
+      eb->runInEventBaseThread([channel,
+                                rpcOptions,
+                                buf = queue.move(),
+                                header = std::move(header),
+                                streamCallback]() mutable {
+        channel->sendRequestStream(
+            rpcOptions, std::move(buf), std::move(header), streamCallback);
+      });
+    }
+  } else {
+    channel->sendRequestAsync(
+        rpcOptions, queue.move(), std::move(header), std::move(callback), kind);
+  }
 }
 } // namespace thrift
 } // namespace apache

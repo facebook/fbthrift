@@ -15,6 +15,16 @@
   limitations under the License.
 
 %><%#type:streamresponse?%><%!
+  %><%#type:client_buffered_stream?%><%!
+    %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndClientBufferedStream<<%!
+    %><%#type:streamFirstResponseType%><% >types/type%><%/type:streamFirstResponseType%>,<%!
+    %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+    %><%/type:streamHasFirstResponse?%><%!
+    %><%^type:streamHasFirstResponse?%>apache::thrift::ClientBufferedStream<<%!
+    %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
+    %><%/type:streamHasFirstResponse?%><%!
+  %><%/type:client_buffered_stream?%><%!
+  %><%^type:client_buffered_stream?%><%!
     %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndSemiStream<<%!
     %><%#type:streamFirstResponseType%><% >types/type%><%/type:streamFirstResponseType%>,<%!
     %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
@@ -22,6 +32,7 @@
     %><%^type:streamHasFirstResponse?%>apache::thrift::SemiStream<<%!
     %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
     %><%/type:streamHasFirstResponse?%><%!
+  %><%/type:client_buffered_stream?%><%!
 %><%/type:streamresponse?%><%!
 
 %><%^type:streamresponse?%><%!

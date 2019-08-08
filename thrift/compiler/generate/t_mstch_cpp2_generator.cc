@@ -457,6 +457,8 @@ class mstch_cpp2_type : public mstch_type {
              &mstch_cpp2_type::forward_compatibility},
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
+            {"type:client_buffered_stream?",
+             &mstch_cpp2_type::client_buffered_stream},
         });
   }
   std::string get_type_namespace(t_program const* program) override {
@@ -583,6 +585,9 @@ class mstch_cpp2_type : public mstch_type {
       // TODO: stream is not supported
       return "::apache::thrift::type_class::unknown";
     }
+  }
+  mstch::node client_buffered_stream() {
+    return cache_->parsed_options_.count("client_buffered_stream") != 0;
   }
 };
 
@@ -1161,6 +1166,8 @@ class mstch_cpp2_service : public mstch_service {
             {"service:cache_keys?", &mstch_cpp2_service::has_cache_keys},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:coroutines?", &mstch_cpp2_service::coroutines},
+            {"service:client_buffered_stream?",
+             &mstch_cpp2_service::client_buffered_stream},
         });
   }
   std::string get_service_namespace(t_program const* program) override {
@@ -1229,6 +1236,9 @@ class mstch_cpp2_service : public mstch_service {
     return std::any_of(funs.begin(), funs.end(), [](auto fun) {
       return fun->annotations_.count("cpp.coroutine");
     });
+  }
+  mstch::node client_buffered_stream() {
+    return cache_->parsed_options_.count("client_buffered_stream") != 0;
   }
 };
 

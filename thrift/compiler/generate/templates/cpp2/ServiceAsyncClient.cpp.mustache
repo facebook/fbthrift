@@ -46,9 +46,11 @@
 <% > service_async_client_cpp/future_functions%>
 <%/function:oneway?%>
 
+<%^service:client_buffered_stream?%>
 void <%service:name%>AsyncClient::<%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   <%function:cpp_name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback))<%function:comma%><% > service_common/param_list%>);
 }
+<%/service:client_buffered_stream?%>
 
 <%^function:oneway?%>
 <% > service_async_client_cpp/received_wrapped%>

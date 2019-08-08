@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp/ContextStack.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/async/ClientStreamBridge.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 
@@ -54,6 +55,19 @@ class ClientReceiveState {
         buf_(std::move(bufAndStream.response)),
         header_(std::move(_header)),
         stream_(std::move(bufAndStream.stream)) {}
+  ClientReceiveState(
+      uint16_t _protocolId,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::unique_ptr<apache::thrift::transport::THeader> _header,
+      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      detail::ClientStreamBridge::Ptr streamBridge,
+      int32_t chunkBufferSize)
+      : protocolId_(_protocolId),
+        ctx_(std::move(_ctx)),
+        buf_(std::move(buf)),
+        header_(std::move(_header)),
+        streamBridge_(std::move(streamBridge)),
+        chunkBufferSize_(std::move(chunkBufferSize)) {}
   ClientReceiveState(
       folly::exception_wrapper _excw,
       std::shared_ptr<apache::thrift::ContextStack> _ctx)
@@ -90,6 +104,14 @@ class ClientReceiveState {
     return std::move(stream_);
   }
 
+  detail::ClientStreamBridge::Ptr extractStreamBridge() {
+    return std::move(streamBridge_);
+  }
+
+  int32_t chunkBufferSize() const {
+    return chunkBufferSize_;
+  }
+
   apache::thrift::transport::THeader* header() const {
     return header_.get();
   }
@@ -121,6 +143,8 @@ class ClientReceiveState {
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   folly::exception_wrapper excw_;
   SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
+  detail::ClientStreamBridge::Ptr streamBridge_;
+  int32_t chunkBufferSize_;
 };
 
 class RequestClientCallback {
@@ -428,6 +452,15 @@ class RpcOptions {
     return chunkTimeout_;
   }
 
+  RpcOptions& setChunkBufferSize(int32_t chunkBufferSize) {
+    chunkBufferSize_ = chunkBufferSize;
+    return *this;
+  }
+
+  int32_t getChunkBufferSize() const {
+    return chunkBufferSize_;
+  }
+
   RpcOptions& setQueueTimeout(std::chrono::milliseconds queueTimeout) {
     queueTimeout_ = queueTimeout;
     return *this;
@@ -466,6 +499,7 @@ class RpcOptions {
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
+  int32_t chunkBufferSize_{0};
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;

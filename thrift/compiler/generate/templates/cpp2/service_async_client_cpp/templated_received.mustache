@@ -37,7 +37,12 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, apache
 
 %><%^function:oneway?%>
 <%#function:returns_stream?%>
+<%#service:client_buffered_stream?%>
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, true);
+<%/service:client_buffered_stream?%>
+<%^service:client_buffered_stream?%>
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+<%/service:client_buffered_stream?%>
 <%/function:returns_stream?%>
 <%^function:returns_stream?%>
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);

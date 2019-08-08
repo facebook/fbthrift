@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/Try.h>
+
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 

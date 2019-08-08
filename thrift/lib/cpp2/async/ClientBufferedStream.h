@@ -24,9 +24,10 @@ namespace thrift {
 template <typename T>
 class ClientBufferedStream {
  public:
+  ClientBufferedStream() {}
   ClientBufferedStream(
       detail::ClientStreamBridge::Ptr streamBridge,
-      folly::Try<T> (&decode)(folly::Try<StreamPayload>&&),
+      folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
       int32_t bufferSize)
       : streamBridge_(std::move(streamBridge)),
         decode_(decode),
@@ -38,6 +39,11 @@ class ClientBufferedStream {
     SCOPE_EXIT {
       streamBridge->cancel();
     };
+
+    if (!bufferSize_) {
+      bufferSize_ = std::numeric_limits<int32_t>::max();
+    }
+
     streamBridge->requestN(bufferSize_);
     int32_t outstanding = bufferSize_;
 
@@ -93,8 +99,17 @@ class ClientBufferedStream {
 
  private:
   detail::ClientStreamBridge::Ptr streamBridge_;
-  folly::Try<T> (&decode_)(folly::Try<StreamPayload>&&);
-  const int32_t bufferSize_;
+  folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
+  int32_t bufferSize_{0};
+};
+
+template <typename Response, typename StreamElement>
+struct ResponseAndClientBufferedStream {
+  using ResponseType = Response;
+  using StreamElementType = StreamElement;
+
+  Response response;
+  ClientBufferedStream<StreamElement> stream;
 };
 } // namespace thrift
 } // namespace apache

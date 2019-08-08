@@ -23,6 +23,9 @@
   }
 
 <%#service:functions%><%#function:returnType%>
+<%#service:client_buffered_stream?%>
+ private:
+<%/service:client_buffered_stream?%>
   virtual void <%function:cpp_name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
   virtual void <%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
  private:
@@ -36,12 +39,18 @@
   virtual void sync_<%function:cpp_name%>(<% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
   virtual void sync_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, <% > types/type%>& _return<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
+<%^service:client_buffered_stream?%>
   virtual folly::Future<<% > types/service_type_semi%>> future_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
+<%/service:client_buffered_stream?%>
   virtual folly::SemiFuture<<% > types/service_type_semi%>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
+<%^service:client_buffered_stream?%>
   virtual folly::Future<<% > types/service_type_semi%>> future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+<%/service:client_buffered_stream?%>  
   virtual folly::SemiFuture<<% > types/service_type_semi%>> semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%^function:oneway?%>
+<%^service:client_buffered_stream?%>
   virtual folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+<%/service:client_buffered_stream?%>
   virtual folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/function:oneway?%>
 #if FOLLY_HAS_COROUTINES
@@ -55,7 +64,9 @@
     <%/type:void?%>
   }
 #endif // FOLLY_HAS_COROUTINES
+<%^service:client_buffered_stream?%>
   virtual void <%function:cpp_name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%function:comma%><% > service_common/function_param_list_const%>);
+<%/service:client_buffered_stream?%>
 <%#type:void?%>
 <%^function:oneway?%>
   static folly::exception_wrapper recv_wrapped_<%function:cpp_name%>(::apache::thrift::ClientReceiveState& state);

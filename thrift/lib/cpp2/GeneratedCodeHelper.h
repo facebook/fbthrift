@@ -395,6 +395,11 @@ template <typename Protocol, typename PResult, typename T>
 apache::thrift::SemiStream<T> decode_stream(
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream);
 
+template <typename Protocol, typename PResult, typename T>
+apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
+    apache::thrift::detail::ClientStreamBridge::Ptr streamBridge,
+    int32_t bufferSize);
+
 } // namespace ap
 } // namespace detail
 
@@ -591,6 +596,65 @@ folly::exception_wrapper recv_wrapped(
     _return = detail::ap::
         decode_stream<Protocol, typename PResult::StreamPResultType, Item>(
             state.extractStream());
+  }
+  return ew;
+}
+
+template <typename PResult, typename Protocol, typename Response, typename Item>
+folly::exception_wrapper recv_wrapped(
+    const char* method,
+    Protocol* prot,
+    ClientReceiveState& state,
+    apache::thrift::ResponseAndClientBufferedStream<Response, Item>& _return) {
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  apache::thrift::ContextStack* ctx = state.ctx();
+
+  typename PResult::FieldsType result;
+  result.template get<0>().value = &_return.response;
+
+  auto ew = recv_wrapped_helper(method, prot, state, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<true>(result);
+  }
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+
+  if (!ew) {
+    _return.stream = detail::ap::decode_client_buffered_stream<
+        Protocol,
+        typename PResult::StreamPResultType,
+        Item>(state.extractStreamBridge(), state.chunkBufferSize());
+  }
+  return ew;
+}
+
+template <typename PResult, typename Protocol, typename Item>
+folly::exception_wrapper recv_wrapped(
+    const char* method,
+    Protocol* prot,
+    ClientReceiveState& state,
+    apache::thrift::ClientBufferedStream<Item>& _return) {
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  apache::thrift::ContextStack* ctx = state.ctx();
+
+  typename PResult::FieldsType result;
+
+  auto ew = recv_wrapped_helper(method, prot, state, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<false>(result);
+  }
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+
+  if (!ew) {
+    _return = detail::ap::decode_client_buffered_stream<
+        Protocol,
+        typename PResult::StreamPResultType,
+        Item>(state.extractStreamBridge(), state.chunkBufferSize());
   }
   return ew;
 }
@@ -906,7 +970,7 @@ folly::Try<T> decode_stream_element(
 }
 
 template <typename Protocol, typename PResult, typename T>
-apache::thrift::ClientBufferedStream<T> decode_buffered_stream(
+apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
     apache::thrift::detail::ClientStreamBridge::Ptr streamBridge,
     int32_t bufferSize) {
   return apache::thrift::ClientBufferedStream<T>(

@@ -72,6 +72,11 @@ service StreamService {
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
 }
 
+service StreamServiceBuffered {
+  // Generate numbers between `from` to `to`.
+  stream<i32> range(1: i32 from, 2: i32 to);
+}
+
 # OldVersion and NewVersion services will be used to test the behavior
 # when the service functions change
 service OldVersion {

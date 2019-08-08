@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
+#include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamServiceBuffered.h>
 
 #include <thrift/lib/cpp2/gen/client_cpp.h>
 
@@ -141,91 +142,34 @@ TEST_P(StreamingTest, ClientStreamBridge) {
         << "This test only works for transports that support low-level API.";
   }
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    struct FirstResponseCallback
-        : public apache::thrift::detail::ClientStreamBridge::
-              FirstResponseCallback {
-      void onFirstResponse(
-          FirstResponsePayload&& payload,
-          apache::thrift::detail::ClientStreamBridge::Ptr clientStreamBridge)
-          override {
-        firstResponse = folly::Try<FirstResponsePayload>(std::move(payload));
-        stream = std::move(clientStreamBridge);
-        baton.post();
-      }
-      void onFirstResponseError(folly::exception_wrapper ew) override {
-        firstResponse = folly::Try<FirstResponsePayload>(std::move(ew));
-        baton.post();
-      }
+    auto channel = client->getChannel();
+    auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
+        std::shared_ptr<apache::thrift::RequestChannel>(
+            channel, [client = std::move(client)](auto*) {}));
 
-      folly::Try<FirstResponsePayload> firstResponse;
-      apache::thrift::detail::ClientStreamBridge::Ptr stream;
-      folly::fibers::Baton baton;
-    };
-    FirstResponseCallback firstResponseCallback;
+    {
+      auto bufferedStream = bufferedClient->sync_range(0, 10);
 
-    apache::thrift::RpcOptions rpcOptions;
-    auto protocolId = client->getChannel()->getProtocolId();
-    EXPECT_EQ(apache::thrift::protocol::T_BINARY_PROTOCOL, protocolId);
-    auto ctx =
-        std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-            protocolId,
-            rpcOptions.releaseWriteHeaders(),
-            nullptr,
-            "StreamService",
-            "StreamService.range");
-    std::shared_ptr<apache::thrift::transport::THeader> header(
-        ctx, &ctx->header);
+      size_t expected = 0;
+      std::move(bufferedStream)
+          .subscribeInline([&expected](folly::Try<int32_t>&& next) {
+            EXPECT_EQ(expected++, *next);
+          });
+      EXPECT_EQ(10, expected);
+    }
 
-    auto iobuf = [&] {
-      apache::thrift::BinaryProtocolWriter writer;
-      using PArgs = apache::thrift::ThriftPresult<
-          false,
-          apache::thrift::
-              FieldData<1, apache::thrift::protocol::T_I32, int32_t*>,
-          apache::thrift::
-              FieldData<2, apache::thrift::protocol::T_I32, int32_t*>>;
-      PArgs args;
-      int32_t from = 0;
-      int32_t to = 10;
-      args.get<0>().value = &from;
-      args.get<1>().value = &to;
-      size_t bufSize = args.serializedSizeZC(&writer);
-      bufSize += writer.serializedMessageSize("range");
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      writer.setOutput(&queue, bufSize);
-      auto guard = folly::makeGuard([&] { writer.setOutput(nullptr); });
-      writer.writeMessageBegin("range", apache::thrift::T_CALL, 0);
-      args.write(&writer);
-      writer.writeMessageEnd();
-      return queue.move();
-    }();
+    {
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setChunkBufferSize(5);
+      auto bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
 
-    client->getChannel()->sendRequestStream(
-        rpcOptions,
-        std::move(iobuf),
-        std::move(header),
-        apache::thrift::detail::ClientStreamBridge::create(
-            &firstResponseCallback));
-
-    firstResponseCallback.baton.wait();
-    auto firstResponse = std::move(*firstResponseCallback.firstResponse);
-    auto stream = std::move(firstResponseCallback.stream);
-
-    using StreamPResult = apache::thrift::ThriftPresult<
-        true,
-        apache::thrift::
-            FieldData<0, apache::thrift::protocol::T_I32, int32_t*>>;
-    auto bufferedStream = apache::thrift::detail::ap::decode_buffered_stream<
-        apache::thrift::BinaryProtocolReader,
-        StreamPResult,
-        int32_t>(std::move(stream), 5);
-
-    size_t expected = 0;
-    std::move(bufferedStream)
-        .subscribeInline([&expected](folly::Try<int32_t>&& next) {
-          EXPECT_EQ(expected++, *next);
-        });
-    EXPECT_EQ(10, expected);
+      size_t expected = 0;
+      std::move(bufferedStream)
+          .subscribeInline([&expected](folly::Try<int32_t>&& next) {
+            EXPECT_EQ(expected++, *next);
+          });
+      EXPECT_EQ(10, expected);
+    }
   });
 }
 
