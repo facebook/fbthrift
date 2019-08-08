@@ -33,10 +33,12 @@ class HibernatingRequestChannel::RequestCallback
 
   void onResponse(ClientReceiveState&& state) noexcept override {
     cob_.release()->onResponse(std::move(state));
+    delete this;
   }
 
   void onResponseError(folly::exception_wrapper ex) noexcept override {
     cob_.release()->onResponseError(std::move(ex));
+    delete this;
   }
 
  private:
