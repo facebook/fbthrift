@@ -96,7 +96,7 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   struct1 a, b;
   init_struct_1(a);
 
-  EXPECT_EQ(a.field4, std::set<int32_t>({1, 2, 3, 4, 6, 10}));
+  EXPECT_EQ(a.field4, (std::set<int32_t>{1, 2, 3, 4, 6, 10}));
 
   serializer_write(a, this->writer);
   this->prep_read();
