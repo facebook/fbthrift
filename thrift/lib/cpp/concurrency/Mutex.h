@@ -70,8 +70,8 @@ class Mutex {
   std::shared_ptr<PthreadMutex> impl_;
 };
 
-class ReadWriteMutex {
-public:
+class [[deprecated]] ReadWriteMutex {
+ public:
   ReadWriteMutex();
   virtual ~ReadWriteMutex() {}
 
