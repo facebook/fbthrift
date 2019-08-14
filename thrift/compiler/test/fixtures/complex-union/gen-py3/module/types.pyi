@@ -9,7 +9,6 @@ import folly.iobuf as __iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
-from thrift.py3.serializer import Protocol
 import typing as _typing
 
 import sys
