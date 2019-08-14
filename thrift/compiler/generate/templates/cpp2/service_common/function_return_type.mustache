@@ -1,6 +1,6 @@
 <%!
 
-  Copyright 2016 Facebook, Inc.
+  Copyright 2019 Facebook, Inc.
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>SvNull : public <%service:name%>SvIf<%#service:extends%>, virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%> {
- public:
-<%#service:functions%><%#function:returnType%><%^function:eb%>
-  <% > service_common/function_return_type %> <%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) override;
-<%/function:eb%><%/function:returnType%><%/service:functions%>
-};
+%><%^type:resolves_to_complex_return?%><%!
+%><% > types/type%><%!
+%><%/type:resolves_to_complex_return?%><%!
+%><%#type:resolves_to_complex_return?%><%!
+%>void<%!
+%><%/type:resolves_to_complex_return?%>

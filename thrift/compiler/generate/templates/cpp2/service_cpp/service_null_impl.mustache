@@ -15,8 +15,9 @@
   limitations under the License.
 
 %><%#service:functions%><%#function:returnType%><%^function:eb%>
+<% > service_common/function_return_type %> <%service:name%>SvNull::<%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) {<%!
+%><%#type:resolves_to_complex_return?%>}<%/type:resolves_to_complex_return?%>
 <%^type:resolves_to_complex_return?%>
-<% > types/type%> <%service:name%>SvNull::<%function:cpp_name%>(<% > service_common/function_param_list_commented_out%>) {
 <%#type:void?%>
   return;
 <%/type:void?%>
@@ -30,9 +31,6 @@
   return 0;
 <%/type:streamresponse?%><%/type:enum?%><%/type:void?%>
 }
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-void <%service:name%>SvNull::<%function:cpp_name%>(<% > types/type%>& /*_return*/<%function:comma%><% > service_common/function_param_list_commented_out%>) {}
 <%/type:resolves_to_complex_return?%>
 
 <%/function:eb%><%/function:returnType%><%/service:functions%>
