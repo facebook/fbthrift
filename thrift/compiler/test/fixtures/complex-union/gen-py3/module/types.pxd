@@ -37,6 +37,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
     cdef cppclass cValUnion "::cpp2::ValUnion"
     # Forward Declaration
     cdef cppclass cVirtualComplexUnion "::cpp2::VirtualComplexUnion"
+    # Forward Declaration
+    cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct"
+    # Forward Declaration
+    cdef cppclass cNonCopyableUnion "::cpp2::NonCopyableUnion"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef enum cComplexUnion__type "::cpp2::ComplexUnion::Type":
@@ -170,6 +174,38 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         const string& get_thingTwo() const
         string& set_thingTwo(const string&)
 
+    cdef cppclass cNonCopyableStruct__isset "::cpp2::NonCopyableStruct::__isset":
+        bint num
+
+    cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct":
+        cNonCopyableStruct() except +
+        cNonCopyableStruct(const cNonCopyableStruct&) except +
+        bint operator==(cNonCopyableStruct&)
+        bint operator!=(cNonCopyableStruct&)
+        bint operator<(cNonCopyableStruct&)
+        bint operator>(cNonCopyableStruct&)
+        bint operator<=(cNonCopyableStruct&)
+        bint operator>=(cNonCopyableStruct&)
+        int64_t num
+        cNonCopyableStruct__isset __isset
+
+    cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
+        cNonCopyableUnion__type___EMPTY__ "::cpp2::NonCopyableUnion::Type::__EMPTY__",
+        cNonCopyableUnion__type_s "::cpp2::NonCopyableUnion::Type::s",
+
+    cdef cppclass cNonCopyableUnion "::cpp2::NonCopyableUnion":
+        cNonCopyableUnion() except +
+        cNonCopyableUnion(const cNonCopyableUnion&) except +
+        bint operator==(cNonCopyableUnion&)
+        bint operator!=(cNonCopyableUnion&)
+        bint operator<(cNonCopyableUnion&)
+        bint operator>(cNonCopyableUnion&)
+        bint operator<=(cNonCopyableUnion&)
+        bint operator>=(cNonCopyableUnion&)
+        cNonCopyableUnion__type getType() const
+        const cNonCopyableStruct& get_s() const
+        cNonCopyableStruct& set_s(const cNonCopyableStruct&)
+
     cdef shared_ptr[vector[int64_t]] reference_shared_ptr_intListValue "thrift::py3::reference_shared_ptr<std::vector<int64_t>>"(shared_ptr[cComplexUnion]&, vector[int64_t]&)
     cdef shared_ptr[vector[string]] reference_shared_ptr_stringListValue "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cComplexUnion]&, vector[string]&)
     cdef shared_ptr[cmap[int16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cComplexUnion]&, cmap[int16_t,string]&)
@@ -179,6 +215,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef shared_ptr[cmap[int16_t,string]] reference_shared_ptr_typedefValue "thrift::py3::reference_shared_ptr<std::map<int16_t,std::string>>"(shared_ptr[cVal]&, cmap[int16_t,string]&)
     cdef shared_ptr[cVal] reference_shared_ptr_v1 "thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
     cdef shared_ptr[cVal] reference_shared_ptr_v2 "thrift::py3::reference_shared_ptr<::cpp2::Val>"(shared_ptr[cValUnion]&, cVal&)
+    cdef shared_ptr[cNonCopyableStruct] reference_shared_ptr_s "thrift::py3::reference_shared_ptr<::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableUnion]&, cNonCopyableStruct&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexUnion] move(unique_ptr[cComplexUnion])
@@ -199,6 +236,12 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cVirtualComplexUnion] move(unique_ptr[cVirtualComplexUnion])
     cdef shared_ptr[cVirtualComplexUnion] move_shared "std::move"(shared_ptr[cVirtualComplexUnion])
     cdef unique_ptr[cVirtualComplexUnion] move_unique "std::move"(unique_ptr[cVirtualComplexUnion])
+    cdef shared_ptr[cNonCopyableStruct] move(unique_ptr[cNonCopyableStruct])
+    cdef shared_ptr[cNonCopyableStruct] move_shared "std::move"(shared_ptr[cNonCopyableStruct])
+    cdef unique_ptr[cNonCopyableStruct] move_unique "std::move"(unique_ptr[cNonCopyableStruct])
+    cdef shared_ptr[cNonCopyableUnion] move(unique_ptr[cNonCopyableUnion])
+    cdef shared_ptr[cNonCopyableUnion] move_shared "std::move"(shared_ptr[cNonCopyableUnion])
+    cdef unique_ptr[cNonCopyableUnion] move_unique "std::move"(unique_ptr[cNonCopyableUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cComplexUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ComplexUnion>"(shared_ptr[cComplexUnion])
@@ -207,6 +250,8 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cVal] const_pointer_cast "std::const_pointer_cast<const ::cpp2::Val>"(shared_ptr[cVal])
     cdef shared_ptr[const cValUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::ValUnion>"(shared_ptr[cValUnion])
     cdef shared_ptr[const cVirtualComplexUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::VirtualComplexUnion>"(shared_ptr[cVirtualComplexUnion])
+    cdef shared_ptr[const cNonCopyableStruct] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NonCopyableStruct>"(shared_ptr[cNonCopyableStruct])
+    cdef shared_ptr[const cNonCopyableUnion] const_pointer_cast "std::const_pointer_cast<const ::cpp2::NonCopyableUnion>"(shared_ptr[cNonCopyableUnion])
 
 cdef class __ComplexUnionType(thrift.py3.types.CompiledEnum):
     pass
@@ -363,6 +408,50 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     @staticmethod
     cdef create(shared_ptr[cVirtualComplexUnion])
+
+# Forward Definition of the cython struct
+cdef class NonCopyableStruct(thrift.py3.types.Struct)
+
+
+cdef class NonCopyableStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNonCopyableStruct] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cNonCopyableStruct] _make_instance(
+        cNonCopyableStruct* base_instance,
+        bint* __isNOTSET,
+        object num
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNonCopyableStruct])
+
+cdef class __NonCopyableUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+# Forward Definition of the cython struct
+cdef class NonCopyableUnion(thrift.py3.types.Union)
+
+
+cdef class NonCopyableUnion(thrift.py3.types.Union):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNonCopyableUnion] _cpp_obj
+    cdef readonly __NonCopyableUnionType type
+    cdef readonly object value
+    cdef _load_cache(NonCopyableUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cNonCopyableUnion] _make_instance(
+        cNonCopyableUnion* base_instance,
+        NonCopyableStruct s
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNonCopyableUnion])
 
 
 cdef class List__i64:

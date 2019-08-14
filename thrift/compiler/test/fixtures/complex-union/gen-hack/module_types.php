@@ -890,3 +890,135 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
 
 }
 
+/**
+ * Original thrift struct:-
+ * NonCopyableStruct
+ */
+class NonCopyableStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'num',
+      'type' => \TType::I64,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'num' => 1,
+  ];
+  const int STRUCTURAL_ID = 7064950569513307469;
+  /**
+   * Original thrift field:-
+   * 1: i64 num
+   */
+  public int $num;
+
+  <<__Rx>>
+  public function __construct(?int $num = null  ) {
+    if ($num === null) {
+      $this->num = 0;
+    } else {
+      $this->num = $num;
+    }
+  }
+
+  public function getName(): string {
+    return 'NonCopyableStruct';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'num') !== null) {
+      $this->num = $parsed['num'];
+    }    
+  }
+
+}
+
+enum NonCopyableUnionEnum: int {
+  _EMPTY_ = 0;
+  s = 1;
+}
+
+/**
+ * Original thrift struct:-
+ * NonCopyableUnion
+ */
+class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnionEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 's',
+      'union' => true,
+      'type' => \TType::STRUCT,
+      'class' => NonCopyableStruct::class,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    's' => 1,
+  ];
+  const int STRUCTURAL_ID = 5595426780316201025;
+  /**
+   * Original thrift field:-
+   * 1: struct module.NonCopyableStruct s
+   */
+  public ?NonCopyableStruct $s;
+  protected NonCopyableUnionEnum $_type = NonCopyableUnionEnum::_EMPTY_;
+
+  <<__Rx>>
+  public function __construct(?NonCopyableStruct $s = null  ) {
+    $this->_type = NonCopyableUnionEnum::_EMPTY_;
+    if ($s !== null) {
+      $this->s = $s;
+      $this->_type = NonCopyableUnionEnum::s;
+    }
+  }
+
+  public function getName(): string {
+    return 'NonCopyableUnion';
+  }
+
+  public function getType(): NonCopyableUnionEnum {
+    return $this->_type;
+  }
+
+  public function set_s(NonCopyableStruct $s): this {
+    $this->_type = NonCopyableUnionEnum::s;
+    $this->s = $s;
+    return $this;
+  }
+
+  public function get_s(): NonCopyableStruct {
+    invariant(
+      $this->_type === NonCopyableUnionEnum::s,
+      'get_s called on an instance of NonCopyableUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->s);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = NonCopyableUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 's') !== null) {
+      $_tmp0 = json_encode($parsed['s']);
+      $_tmp1 = new NonCopyableStruct();
+      $_tmp1->readFromJson($_tmp0);
+      $this->s = $_tmp1;
+      $this->_type = NonCopyableUnionEnum::s;
+    }    
+  }
+
+}
+

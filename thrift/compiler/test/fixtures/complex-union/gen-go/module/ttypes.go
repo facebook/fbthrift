@@ -1174,3 +1174,190 @@ func (p *VirtualComplexUnion) String() string {
   return fmt.Sprintf("VirtualComplexUnion(%+v)", *p)
 }
 
+// Attributes:
+//  - Num
+type NonCopyableStruct struct {
+  Num int64 `thrift:"num,1" db:"num" json:"num"`
+}
+
+func NewNonCopyableStruct() *NonCopyableStruct {
+  return &NonCopyableStruct{}
+}
+
+
+func (p *NonCopyableStruct) GetNum() int64 {
+  return p.Num
+}
+func (p *NonCopyableStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NonCopyableStruct)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.Num = v
+}
+  return nil
+}
+
+func (p *NonCopyableStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NonCopyableStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NonCopyableStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("num", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:num: ", p), err) }
+  if err := oprot.WriteI64(int64(p.Num)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.num (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:num: ", p), err) }
+  return err
+}
+
+func (p *NonCopyableStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("NonCopyableStruct(%+v)", *p)
+}
+
+// Attributes:
+//  - S
+type NonCopyableUnion struct {
+  S *NonCopyableStruct `thrift:"s,1" db:"s" json:"s,omitempty"`
+}
+
+func NewNonCopyableUnion() *NonCopyableUnion {
+  return &NonCopyableUnion{}
+}
+
+var NonCopyableUnion_S_DEFAULT *NonCopyableStruct
+func (p *NonCopyableUnion) GetS() *NonCopyableStruct {
+  if !p.IsSetS() {
+    return NonCopyableUnion_S_DEFAULT
+  }
+return p.S
+}
+func (p *NonCopyableUnion) CountSetFieldsNonCopyableUnion() int {
+  count := 0
+  if (p.IsSetS()) {
+    count++
+  }
+  return count
+
+}
+
+func (p *NonCopyableUnion) IsSetS() bool {
+  return p.S != nil
+}
+
+func (p *NonCopyableUnion) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NonCopyableUnion)  ReadField1(iprot thrift.Protocol) error {
+  p.S = NewNonCopyableStruct()
+  if err := p.S.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
+  }
+  return nil
+}
+
+func (p *NonCopyableUnion) Write(oprot thrift.Protocol) error {
+  if c := p.CountSetFieldsNonCopyableUnion(); c != 1 {
+    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  }
+  if err := oprot.WriteStructBegin("NonCopyableUnion"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NonCopyableUnion) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetS() {
+    if err := oprot.WriteFieldBegin("s", thrift.STRUCT, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:s: ", p), err) }
+    if err := p.S.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.S), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:s: ", p), err) }
+  }
+  return err
+}
+
+func (p *NonCopyableUnion) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("NonCopyableUnion(%+v)", *p)
+}
+

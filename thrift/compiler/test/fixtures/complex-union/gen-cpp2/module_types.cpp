@@ -120,6 +120,26 @@ void TccStructTraits<::cpp2::VirtualComplexUnion>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
+void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "num") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+void TccStructTraits<::cpp2::NonCopyableUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "s") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -625,5 +645,120 @@ template void VirtualComplexUnion::readNoXfer<>(apache::thrift::CompactProtocolR
 template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg) :
+    num(std::move(num__arg)) {
+  __isset.num = true;
+}
+
+void NonCopyableStruct::__clear() {
+  // clear all fields
+  num = 0;
+  __isset = {};
+}
+
+bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.num == rhs.num)) {
+    return false;
+  }
+  return true;
+}
+
+bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.num == rhs.num)) {
+    return lhs.num < rhs.num;
+  }
+  return false;
+}
+
+
+void swap(NonCopyableStruct& a, NonCopyableStruct& b) {
+  using ::std::swap;
+  swap(a.num, b.num);
+  swap(a.__isset, b.__isset);
+}
+
+template void NonCopyableStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NonCopyableStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NonCopyableStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NonCopyableStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void NonCopyableStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NonCopyableStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NonCopyableStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NonCopyableStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+void NonCopyableUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::s:
+    {
+      destruct(value_.s);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool NonCopyableUnion::operator==(const NonCopyableUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::s:
+    {
+      return value_.s == rhs.value_.s;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool NonCopyableUnion::operator<(const NonCopyableUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::s:
+      return lhs.value_.s < rhs.value_.s;
+    default:
+      return false;
+  }
+}
+
+void swap(NonCopyableUnion& a, NonCopyableUnion& b) {
+  NonCopyableUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void NonCopyableUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NonCopyableUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NonCopyableUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NonCopyableUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void NonCopyableUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NonCopyableUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NonCopyableUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NonCopyableUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

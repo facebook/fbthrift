@@ -262,6 +262,40 @@ public class ModuleLogger {
         break;
       }
       
+      case NonCopyableStruct: {
+        oprot.writeStructBegin(new TStruct("NonCopyableStruct"));
+        if (mMap.containsKey(Module.NonCopyableStruct_num) && mMap.get(Module.NonCopyableStruct_num) != null) {
+          writeFieldBegin(oprot, Module.NonCopyableStruct_num);
+          oprot.writeI64((long) mMap.get(Module.NonCopyableStruct_num));
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case NonCopyableUnion: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("NonCopyableUnion"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.NonCopyableUnion_s);
+          ((ModuleLogger) mMap.get(Module.NonCopyableUnion_s)).write(oprot);
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       
     }
   }

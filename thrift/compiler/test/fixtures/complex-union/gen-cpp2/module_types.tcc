@@ -57,6 +57,20 @@ struct TccStructTraits<::cpp2::VirtualComplexUnion> {
       int16_t& fid,
       apache::thrift::protocol::TType& _ftype);
 };
+template <>
+struct TccStructTraits<::cpp2::NonCopyableStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::cpp2::NonCopyableUnion> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
 
 } // namespace detail
 } // namespace thrift
@@ -1015,5 +1029,217 @@ extern template void VirtualComplexUnion::readNoXfer<>(apache::thrift::CompactPr
 extern template uint32_t VirtualComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t VirtualComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t VirtualComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void NonCopyableStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_num:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->num);
+    this->__isset.num = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<NonCopyableStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_num;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t NonCopyableStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NonCopyableStruct");
+  xfer += prot_->serializedFieldSize("num", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->num);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NonCopyableStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NonCopyableStruct");
+  xfer += prot_->serializedFieldSize("num", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->num);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NonCopyableStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("NonCopyableStruct");
+  xfer += prot_->writeFieldBegin("num", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->num);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void NonCopyableStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NonCopyableStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NonCopyableStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NonCopyableStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NonCopyableStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NonCopyableStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NonCopyableStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NonCopyableStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void NonCopyableUnion::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
+
+  _readState.readStructBegin(iprot);
+
+  _readState.readFieldBegin(iprot);
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (iprot->kUsesFieldNames()) {
+      apache::thrift::detail::TccStructTraits<NonCopyableUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    }
+    switch (_readState.fieldId) {
+      case 1:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
+          this->set_s();
+          ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::read(iprot, &this->mutable_s());
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      default:
+      {
+        _readState.skip(iprot);
+        break;
+      }
+    }
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  _readState.readStructEnd(iprot);
+}
+template <class Protocol_>
+uint32_t NonCopyableUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NonCopyableUnion");
+  switch(this->getType()) {
+    case NonCopyableUnion::Type::s:
+    {
+      xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 1);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::serializedSize(prot_, &this->get_s());
+      break;
+    }
+    case NonCopyableUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NonCopyableUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NonCopyableUnion");
+  switch(this->getType()) {
+    case NonCopyableUnion::Type::s:
+    {
+      xfer += prot_->serializedFieldSize("s", apache::thrift::protocol::T_STRUCT, 1);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::serializedSizeZC(prot_, &this->get_s());
+      break;
+    }
+    case NonCopyableUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NonCopyableUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("NonCopyableUnion");
+  switch(this->getType()) {
+    case NonCopyableUnion::Type::s:
+    {
+      xfer += prot_->writeFieldBegin("s", apache::thrift::protocol::T_STRUCT, 1);
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::NonCopyableStruct>::write(prot_, &this->get_s());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case NonCopyableUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void NonCopyableUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NonCopyableUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NonCopyableUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NonCopyableUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NonCopyableUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NonCopyableUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NonCopyableUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NonCopyableUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

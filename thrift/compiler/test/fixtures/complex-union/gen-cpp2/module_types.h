@@ -24,6 +24,8 @@ class DataUnion;
 class Val;
 class ValUnion;
 class VirtualComplexUnion;
+class NonCopyableStruct;
+class NonCopyableUnion;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -1558,6 +1560,245 @@ void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
 
 template <class Protocol_>
 uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOperators<NonCopyableStruct> {
+ public:
+
+  NonCopyableStruct() :
+      num(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    num = arg.extract();
+    __isset.num = true;
+  }
+
+  NonCopyableStruct(NonCopyableStruct&&) = default;
+
+  NonCopyableStruct& operator=(NonCopyableStruct&&) = default;
+  void __clear();
+  int64_t num;
+
+  struct __isset {
+    bool num;
+  } __isset = {};
+  bool operator==(const NonCopyableStruct& rhs) const;
+  bool operator<(const NonCopyableStruct& rhs) const;
+
+  int64_t get_num() const {
+    return num;
+  }
+
+  int64_t& set_num(int64_t num_) {
+    num = num_;
+    __isset.num = true;
+    return num;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NonCopyableStruct >;
+};
+
+void swap(NonCopyableStruct& a, NonCopyableStruct& b);
+
+template <class Protocol_>
+uint32_t NonCopyableStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOperators<NonCopyableUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    s = 1,
+  } ;
+
+  NonCopyableUnion()
+      : type_(Type::__EMPTY__) {}
+
+  NonCopyableUnion(NonCopyableUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::s:
+      {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  NonCopyableUnion(const NonCopyableUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::s:
+      {
+        set_s(rhs.value_.s);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::s:
+      {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  NonCopyableUnion& operator=(const NonCopyableUnion& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::s:
+      {
+        set_s(rhs.value_.s);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    set_s(arg.extract());
+  }
+  void __clear();
+
+  ~NonCopyableUnion() {
+    __clear();
+  }
+  union storage_type {
+     ::cpp2::NonCopyableStruct s;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const NonCopyableUnion& rhs) const;
+  bool operator<(const NonCopyableUnion& rhs) const;
+
+   ::cpp2::NonCopyableStruct& set_s( ::cpp2::NonCopyableStruct const &t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s))  ::cpp2::NonCopyableStruct(t);
+    return value_.s;
+  }
+
+   ::cpp2::NonCopyableStruct& set_s( ::cpp2::NonCopyableStruct&& t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s))  ::cpp2::NonCopyableStruct(std::move(t));
+    return value_.s;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::NonCopyableStruct, T...>>  ::cpp2::NonCopyableStruct& set_s(T&&... t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s))  ::cpp2::NonCopyableStruct(std::forward<T>(t)...);
+    return value_.s;
+  }
+
+   ::cpp2::NonCopyableStruct const & get_s() const {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+   ::cpp2::NonCopyableStruct & mutable_s() {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+   ::cpp2::NonCopyableStruct move_s() {
+    assert(type_ == Type::s);
+    return std::move(value_.s);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NonCopyableUnion >;
+};
+
+void swap(NonCopyableUnion& a, NonCopyableUnion& b);
+
+template <class Protocol_>
+uint32_t NonCopyableUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

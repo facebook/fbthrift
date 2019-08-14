@@ -15,7 +15,7 @@ import com.facebook.thrift.lite.protocol.*;
 public class Module {
 
   public enum EventType {
-    ComplexUnion, ListUnion, DataUnion, Val, ValUnion, VirtualComplexUnion;
+    ComplexUnion, ListUnion, DataUnion, Val, ValUnion, VirtualComplexUnion, NonCopyableStruct, NonCopyableUnion;
   }
 
   public static final ThriftProperty<Long> ComplexUnion_intValue =
@@ -52,5 +52,9 @@ public class Module {
       new ThriftProperty<String>("thingOne", TType.STRING, (short) 1);
   public static final ThriftProperty<String> VirtualComplexUnion_thingTwo =
       new ThriftProperty<String>("thingTwo", TType.STRING, (short) 2);
+  public static final ThriftProperty<Long> NonCopyableStruct_num =
+      new ThriftProperty<Long>("num", TType.I64, (short) 1);
+  public static final ThriftProperty<ModuleLogger> NonCopyableUnion_s =
+      new ThriftProperty<ModuleLogger>("s", TType.STRUCT, (short) 1);
   
 }

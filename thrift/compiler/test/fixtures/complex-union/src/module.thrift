@@ -36,3 +36,11 @@ union VirtualComplexUnion {
   1: string thingOne;
   2: string thingTwo;
 } (cpp.virtual)
+
+struct NonCopyableStruct {
+  1: i64 num,
+} (cpp2.noncopyable)
+
+union NonCopyableUnion {
+  1: NonCopyableStruct s,
+} (cpp2.noncopyable)

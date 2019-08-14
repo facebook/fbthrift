@@ -568,6 +568,99 @@ __VirtualComplexUnion_Union_TypeEnumMembers = set(__VirtualComplexUnionType)
 
 
 
+cdef object __NonCopyableUnion_Union_TypeEnumMembers = None
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __NonCopyableUnion_Union_TypeMeta(type):
+    def __call__(cls, value):
+        cdef int cvalue
+        if isinstance(value, cls) and value in __NonCopyableUnion_Union_TypeEnumMembers:
+            return value
+
+        if isinstance(value, int):
+            cvalue = value
+            if cvalue == 0:
+                return __NonCopyableUnionType.EMPTY
+            elif cvalue == 1:
+                return __NonCopyableUnionType.s
+
+        raise ValueError(f'{value} is not a valid NonCopyableUnion.Type')
+
+    def __getitem__(cls, name):
+        if name == "EMPTY":
+            return __NonCopyableUnionType.EMPTY
+        elif name == "s":
+            return __NonCopyableUnionType.s
+        raise KeyError(name)
+
+    def __dir__(cls):
+        return ['__class__', '__doc__', '__members__', '__module__', 'EMPTY',
+            's',
+        ]
+
+    @property
+    def __members__(cls):
+        return {m.name: m for m in cls}
+
+    def __iter__(cls):
+        yield __NonCopyableUnionType.EMPTY
+        yield __NonCopyableUnionType.s
+
+    def __reversed__(cls):
+        return reversed(iter(cls))
+
+    def __contains__(cls, item):
+        if not isinstance(item, cls):
+            return False
+        return item in __NonCopyableUnion_Union_TypeEnumMembers
+
+    def __len__(cls):
+        return 1+1  # For Empty
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class __NonCopyableUnionType(thrift.py3.types.CompiledEnum):
+    EMPTY = __NonCopyableUnionType.__new__(__NonCopyableUnionType, 0, "EMPTY")
+    s = __NonCopyableUnionType.__new__(__NonCopyableUnionType, 1, "s")
+
+    def __cinit__(self, value, name):
+        if __NonCopyableUnion_Union_TypeEnumMembers is not None:
+            raise TypeError('For Safty we have disabled __new__')
+        self.value = value
+        self.name = name
+        self.__hash = hash(name)
+        self.__str = f"NonCopyableUnion.Type.{name}"
+        self.__repr = f"<{self.__str}: {value}>"
+
+    def __repr__(self):
+        return self.__repr
+
+    def __str__(self):
+        return self.__str
+
+    def __int__(self):
+        return self.value
+
+    def __eq__(self, other):
+        if not isinstance(other, __NonCopyableUnionType):
+            warnings.warn(f"comparison not supported between instances of { __NonCopyableUnionType } and {type(other)}", RuntimeWarning, stacklevel=2)
+            return False
+        return self is other
+
+    def __hash__(self):
+        return self.__hash
+
+    def __reduce__(self):
+        return __NonCopyableUnionType, (self.value,)
+
+__SetMetaClass(<PyTypeObject*> __NonCopyableUnionType, <PyTypeObject*> __NonCopyableUnion_Union_TypeMeta)
+__NonCopyableUnion_Union_TypeEnumMembers = set(__NonCopyableUnionType)
+
+
+
 
 @__cython.auto_pickle(False)
 cdef class ComplexUnion(thrift.py3.types.Union):
@@ -1752,6 +1845,338 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
     def __reduce__(self):
         return (deserialize, (VirtualComplexUnion, serialize(self)))
+
+
+@__cython.auto_pickle(False)
+cdef class NonCopyableStruct(thrift.py3.types.Struct):
+
+    def __init__(
+        NonCopyableStruct self, *,
+        num=None
+    ):
+        if num is not None:
+            if not isinstance(num, int):
+                raise TypeError(f'num is not a { int !r}.')
+            num = <int64_t> num
+
+        self._cpp_obj = move(NonCopyableStruct._make_instance(
+          NULL,
+          NULL,
+          num,
+        ))
+
+    def __call__(
+        NonCopyableStruct self,
+        num=__NOTSET
+    ):
+        ___NOTSET = __NOTSET  # Cheaper for larger structs
+        cdef bint[1] __isNOTSET  # so make_instance is typed
+
+        changes = False
+        if num is ___NOTSET:
+            __isNOTSET[0] = True
+            num = None
+        else:
+            __isNOTSET[0] = False
+            changes = True
+
+
+        if not changes:
+            return self
+
+        if num is not None:
+            if not isinstance(num, int):
+                raise TypeError(f'num is not a { int !r}.')
+            num = <int64_t> num
+
+        inst = <NonCopyableStruct>NonCopyableStruct.__new__(NonCopyableStruct)
+        inst._cpp_obj = move(NonCopyableStruct._make_instance(
+          self._cpp_obj.get(),
+          __isNOTSET,
+          num,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cNonCopyableStruct] _make_instance(
+        cNonCopyableStruct* base_instance,
+        bint* __isNOTSET,
+        object num 
+    ) except *:
+        cdef unique_ptr[cNonCopyableStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cNonCopyableStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cNonCopyableStruct]()
+
+        if base_instance:
+            # Convert None's to default value. (or unset)
+            if not __isNOTSET[0] and num is None:
+                deref(c_inst).num = default_inst[cNonCopyableStruct]().num
+                deref(c_inst).__isset.num = False
+                pass
+
+        if num is not None:
+            deref(c_inst).num = num
+            deref(c_inst).__isset.num = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'num', self.num
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cNonCopyableStruct] cpp_obj):
+        inst = <NonCopyableStruct>NonCopyableStruct.__new__(NonCopyableStruct)
+        inst._cpp_obj = move_shared(cpp_obj)
+        return inst
+
+    @property
+    def num(self):
+
+        return deref(self._cpp_obj).num
+
+
+    def __hash__(NonCopyableStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.num,
+            ))
+        return self.__hash
+
+    def __repr__(NonCopyableStruct self):
+        return f'NonCopyableStruct(num={repr(self.num)})'
+    def __copy__(NonCopyableStruct self):
+        cdef shared_ptr[cNonCopyableStruct] cpp_obj = make_shared[cNonCopyableStruct](
+            deref(self._cpp_obj)
+        )
+        return NonCopyableStruct.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, NonCopyableStruct) and
+                isinstance(other, NonCopyableStruct)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cNonCopyableStruct* cself = (<NonCopyableStruct>self)._cpp_obj.get()
+        cdef cNonCopyableStruct* cother = (<NonCopyableStruct>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(NonCopyableStruct self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cNonCopyableStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cNonCopyableStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cNonCopyableStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cNonCopyableStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cNonCopyableStruct](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(NonCopyableStruct self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cNonCopyableStruct]()
+        cdef cNonCopyableStruct* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cNonCopyableStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cNonCopyableStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cNonCopyableStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cNonCopyableStruct](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (NonCopyableStruct, serialize(self)))
+
+
+
+
+@__cython.auto_pickle(False)
+cdef class NonCopyableUnion(thrift.py3.types.Union):
+    Type = __NonCopyableUnionType
+
+    def __init__(
+        self, *,
+        NonCopyableStruct s=None
+    ):
+        self._cpp_obj = move(NonCopyableUnion._make_instance(
+          NULL,
+          s,
+        ))
+        self._load_cache()
+
+    @staticmethod
+    def fromValue(value):
+        if value is None:
+            return NonCopyableUnion()
+        if isinstance(value, NonCopyableStruct):
+            return NonCopyableUnion(s=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
+    cdef unique_ptr[cNonCopyableUnion] _make_instance(
+        cNonCopyableUnion* base_instance,
+        NonCopyableStruct s
+    ) except *:
+        cdef unique_ptr[cNonCopyableUnion] c_inst = make_unique[cNonCopyableUnion]()
+        cdef bint any_set = False
+        if s is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_s(deref((<NonCopyableStruct?> s)._cpp_obj))
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.type is not __NonCopyableUnionType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cNonCopyableUnion] cpp_obj):
+        inst = <NonCopyableUnion>NonCopyableUnion.__new__(NonCopyableUnion)
+        inst._cpp_obj = move_shared(cpp_obj)
+        inst._load_cache()
+        return inst
+
+    @property
+    def s(self):
+        if self.type.value != 1:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not s')
+        return self.value
+
+
+    def __hash__(NonCopyableUnion self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.type,
+                self.value,
+            ))
+        return self.__hash
+
+    def __repr__(NonCopyableUnion self):
+        return f'NonCopyableUnion(type={self.type.name}, value={self.value!r})'
+
+    cdef _load_cache(NonCopyableUnion self):
+        self.type = NonCopyableUnion.Type(<int>(deref(self._cpp_obj).getType()))
+        cdef int type = self.type.value
+        if type == 0:    # Empty
+            self.value = None
+        elif type == 1:
+            self.value = NonCopyableStruct.create(make_shared[cNonCopyableStruct](deref(self._cpp_obj).get_s()))
+
+    def get_type(NonCopyableUnion self):
+        return self.type
+
+    def __copy__(NonCopyableUnion self):
+        cdef shared_ptr[cNonCopyableUnion] cpp_obj = make_shared[cNonCopyableUnion](
+            deref(self._cpp_obj)
+        )
+        return NonCopyableUnion.create(move_shared(cpp_obj))
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if not (
+                isinstance(self, NonCopyableUnion) and
+                isinstance(other, NonCopyableUnion)):
+            if cop == Py_EQ:  # different types are never equal
+                return False
+            elif cop == Py_NE:  # different types are always notequal
+                return True
+            else:
+                return NotImplemented
+
+        cdef cNonCopyableUnion* cself = (<NonCopyableUnion>self)._cpp_obj.get()
+        cdef cNonCopyableUnion* cother = (<NonCopyableUnion>other)._cpp_obj.get()
+        if cop == Py_EQ:
+            return deref(cself) == deref(cother)
+        elif cop == Py_NE:
+            return deref(cself) != deref(cother)
+        elif cop == Py_LT:
+            return deref(cself) < deref(cother)
+        elif cop == Py_LE:
+            return deref(cself) <= deref(cother)
+        elif cop == Py_GT:
+            return deref(cself) > deref(cother)
+        elif cop == Py_GE:
+            return deref(cself) >= deref(cother)
+        else:
+            return NotImplemented
+
+    cdef __iobuf.IOBuf _serialize(NonCopyableUnion self, proto):
+        cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
+        cdef cNonCopyableUnion* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                serializer.CompactSerialize[cNonCopyableUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                serializer.BinarySerialize[cNonCopyableUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                serializer.JSONSerialize[cNonCopyableUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                serializer.CompactJSONSerialize[cNonCopyableUnion](deref(cpp_obj), &queue, serializer.SHARE_EXTERNAL_BUFFER)
+        return __iobuf.from_unique_ptr(queue.move())
+
+    cdef uint32_t _deserialize(NonCopyableUnion self, const __iobuf.cIOBuf* buf, proto) except? 0:
+        cdef uint32_t needed
+        self._cpp_obj = make_shared[cNonCopyableUnion]()
+        cdef cNonCopyableUnion* cpp_obj = self._cpp_obj.get()
+        if proto is __Protocol.COMPACT:
+            with nogil:
+                needed = serializer.CompactDeserialize[cNonCopyableUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.BINARY:
+            with nogil:
+                needed = serializer.BinaryDeserialize[cNonCopyableUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.JSON:
+            with nogil:
+                needed = serializer.JSONDeserialize[cNonCopyableUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        elif proto is __Protocol.COMPACT_JSON:
+            with nogil:
+                needed = serializer.CompactJSONDeserialize[cNonCopyableUnion](buf, deref(cpp_obj), serializer.SHARE_EXTERNAL_BUFFER)
+        # force a cache reload since the underlying data's changed
+        self._load_cache()
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (NonCopyableUnion, serialize(self)))
 
 
 @__cython.auto_pickle(False)
