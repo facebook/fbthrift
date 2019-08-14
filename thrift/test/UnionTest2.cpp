@@ -158,3 +158,11 @@ TEST(NonCopyableUnion, Simple) {
   EXPECT_EQ(sizeof(buf), iob.length());
   EXPECT_EQ(0, memcmp(buf, iob.data(), sizeof(buf)));
 }
+
+TEST(NonCopyableUnion, NoncopyableMember) {
+  NonCopyableStruct s;
+  s.num = 42;
+  NonCopyableUnion u;
+  u.set_ncs(std::move(s));
+  EXPECT_EQ(u.get_ncs().num, 42);
+}

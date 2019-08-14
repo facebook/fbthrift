@@ -194,6 +194,7 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_anInteger(arg.extract());

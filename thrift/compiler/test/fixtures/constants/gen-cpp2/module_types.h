@@ -843,6 +843,7 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_i(arg.extract());
@@ -1095,6 +1096,7 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_i(arg.extract());

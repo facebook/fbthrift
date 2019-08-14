@@ -39,6 +39,7 @@
     }
     rhs.__clear();
   }
+<%^struct:cpp_noncopyable%>
 
   <%struct:name%>(const <%struct:name%>& rhs)
       : type_(Type::__EMPTY__) {
@@ -64,3 +65,4 @@
       }
     }
   }
+<%/struct:cpp_noncopyable%>

@@ -66,12 +66,14 @@
   <%#type:resolves_to_container_or_struct?%>
   <%^field:cpp_ref?%>
 
+  <%^field:cpp_noncopyable?%>
   <% > types/type%>& set_<%field:cpp_name%>(<% > types/type%> const &t) {
     __clear();
     type_ = Type::<%field:cpp_name%>;
     ::new (std::addressof(value_.<%field:cpp_name%>)) <% > types/type%>(t);
     return value_.<%field:cpp_name%>;
   }
+  <%/field:cpp_noncopyable?%>
 
   <% > types/type%>& set_<%field:cpp_name%>(<% > types/type%>&& t) {
     __clear();

@@ -138,6 +138,7 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     }
     return *this;
   }
+
   void __clear();
 
   ~Nada() {

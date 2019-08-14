@@ -40,6 +40,7 @@
     rhs.__clear();
     return *this;
   }
+<%^struct:cpp_noncopyable%>
 
   <%struct:name%>& operator=(const <%struct:name%>& rhs) {
     if (this == &rhs) { return *this; }
@@ -66,3 +67,4 @@
     }
     return *this;
   }
+<%/struct:cpp_noncopyable%>

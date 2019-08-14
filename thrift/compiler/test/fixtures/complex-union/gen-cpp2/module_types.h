@@ -227,6 +227,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_intValue(arg.extract());
@@ -615,6 +616,7 @@ class ListUnion final : private apache::thrift::detail::st::ComparisonOperators<
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
     set_intListValue(arg.extract());
@@ -853,6 +855,7 @@ class DataUnion final : private apache::thrift::detail::st::ComparisonOperators<
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_binaryData(arg.extract());
@@ -1196,6 +1199,7 @@ class ValUnion final : private apache::thrift::detail::st::ComparisonOperators<V
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_v1(arg.extract());
@@ -1434,6 +1438,7 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_thingOne(arg.extract());
@@ -1659,24 +1664,6 @@ class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOpe
     rhs.__clear();
   }
 
-  NonCopyableUnion(const NonCopyableUnion& rhs)
-      : type_(Type::__EMPTY__) {
-    if (this == &rhs) { return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch (rhs.type_) {
-      case Type::s:
-      {
-        set_s(rhs.value_.s);
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-  }
-
   NonCopyableUnion& operator=(NonCopyableUnion&& rhs) {
     if (this == &rhs) { return *this; }
     __clear();
@@ -1697,24 +1684,6 @@ class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOpe
     return *this;
   }
 
-  NonCopyableUnion& operator=(const NonCopyableUnion& rhs) {
-    if (this == &rhs) { return *this; }
-    __clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch (rhs.type_) {
-      case Type::s:
-      {
-        set_s(rhs.value_.s);
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    return *this;
-  }
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_s(arg.extract());
@@ -1733,12 +1702,6 @@ class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOpe
   bool operator==(const NonCopyableUnion& rhs) const;
   bool operator<(const NonCopyableUnion& rhs) const;
 
-   ::cpp2::NonCopyableStruct& set_s( ::cpp2::NonCopyableStruct const &t) {
-    __clear();
-    type_ = Type::s;
-    ::new (std::addressof(value_.s))  ::cpp2::NonCopyableStruct(t);
-    return value_.s;
-  }
 
    ::cpp2::NonCopyableStruct& set_s( ::cpp2::NonCopyableStruct&& t) {
     __clear();

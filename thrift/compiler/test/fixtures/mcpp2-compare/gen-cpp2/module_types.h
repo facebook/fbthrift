@@ -873,6 +873,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
     set_intValue(arg.extract());
@@ -1623,6 +1624,7 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_intValue(arg.extract());
@@ -4907,6 +4909,7 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_floatSide(arg.extract());

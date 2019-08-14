@@ -411,6 +411,7 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_ui(arg.extract());
@@ -731,6 +732,7 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_ui_2(arg.extract());
@@ -1051,6 +1053,7 @@ class union3 final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_ui_3(arg.extract());
@@ -1481,6 +1484,7 @@ class unionA final : private apache::thrift::detail::st::ComparisonOperators<uni
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_i(arg.extract());
@@ -4301,6 +4305,7 @@ class union_with_special_names final : private apache::thrift::detail::st::Compa
     }
     return *this;
   }
+
   template <typename _T>
   void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
     set_get(arg.extract());

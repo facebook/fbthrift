@@ -66,7 +66,12 @@ struct StructWithAUnion {
 
 typedef binary (cpp.type = "folly::IOBuf") IOBuf
 
+struct NonCopyableStruct {
+  1: i64 num,
+} (cpp2.noncopyable)
+
 union NonCopyableUnion {
   1: i32 a,
   2: IOBuf buf,
+  3: NonCopyableStruct ncs,
 } (cpp2.noncopyable, cpp2.noncomparable)
