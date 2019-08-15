@@ -199,6 +199,8 @@ class AtomicQueue {
     auto type = static_cast<Type>(storage & kTypeMask);
     auto ptr = storage & kPointerMask;
     switch (type) {
+      case Type::EMPTY:
+        return MessageQueue();
       case Type::TAIL:
         return makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
       default:
