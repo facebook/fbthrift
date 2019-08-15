@@ -30,4 +30,6 @@ service Coroutine {
   i32 implementedWithFuturesPrimitive() (cpp.coroutine);
 
   i32 takesRequestParams() (cpp.coroutine);
+
+  oneway void onewayRequest(1: i32 x) (cpp.coroutine);
 }

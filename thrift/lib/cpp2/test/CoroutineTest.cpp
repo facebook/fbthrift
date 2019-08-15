@@ -110,6 +110,13 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     *(volatile char*)eventBase;
     co_return 0;
   }
+
+  folly::coro::Task<void> co_onewayRequest(int32_t x) override {
+    onewayRequestPromise.setValue(x);
+    co_return;
+  }
+
+  folly::Promise<int32_t> onewayRequestPromise;
 };
 
 #endif
@@ -180,13 +187,21 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
     // make the code compile.
     return folly::makeFuture(0);
   }
+
+  folly::Future<folly::Unit> future_onewayRequest(int32_t x) override {
+    onewayRequestPromise.setValue(x);
+    return folly::makeFuture(folly::Unit());
+  }
+
+  folly::Promise<int32_t> onewayRequestPromise;
 };
 
 template <class Handler>
 class CoroutineTest : public testing::Test {
  public:
   CoroutineTest()
-      : ssit_(std::make_shared<Handler>()),
+      : handler_(std::make_shared<Handler>()),
+        ssit_(handler_),
         client_(ssit_.newClient<CoroutineAsyncClient>(
             *EventBaseManager::get()->getEventBase())) {}
 
@@ -199,6 +214,7 @@ class CoroutineTest : public testing::Test {
       }
     }
   }
+  std::shared_ptr<Handler> handler_;
   ScopedServerInterfaceThread ssit_;
   std::unique_ptr<CoroutineAsyncClient> client_;
 };
@@ -352,6 +368,12 @@ TYPED_TEST_P(CoroutineTest, ImplemetedWithFuturesPrimitive) {
       this->client_->sync_implementedWithFuturesPrimitive());
 }
 
+TYPED_TEST_P(CoroutineTest, Oneway) {
+  auto f = this->handler_->onewayRequestPromise.getSemiFuture();
+  this->client_->sync_onewayRequest(35);
+  EXPECT_EQ(35, std::move(f).via(&folly::InlineExecutor::instance()).get());
+}
+
 TYPED_TEST_P(CoroutineTest, TakesRequestParams) {
   this->client_->sync_takesRequestParams();
 }
@@ -370,6 +392,7 @@ REGISTER_TYPED_TEST_CASE_P(
     NoParameters,
     ImplemetedWithFutures,
     ImplemetedWithFuturesPrimitive,
+    Oneway,
     TakesRequestParams);
 
 INSTANTIATE_TYPED_TEST_CASE_P(
