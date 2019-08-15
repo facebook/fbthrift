@@ -33,7 +33,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-#if __cpp_lib_exchange_function || _LIBCPP_STD_VER > 11 || _MSC_VER
+#if defined(__cpp_lib_exchange_function) || _LIBCPP_STD_VER > 11 || _MSC_VER
 
 /* using override */ using std::exchange;
 
