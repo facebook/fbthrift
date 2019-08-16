@@ -31,9 +31,6 @@
 #include <folly/CPortability.h>
 #include <folly/Likely.h>
 
-// Let the optimizer remove these artificial functions completely.
-#define THRIFT_NOLINK FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN
-
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -58,7 +55,7 @@ class field_ref {
   using value_type = std::remove_reference_t<T>;
   using reference_type = T;
 
-  THRIFT_NOLINK field_ref(
+  FOLLY_ERASE field_ref(
       reference_type value,
       detail::is_set_t<value_type>& is_set) noexcept
       : value_(value), is_set_(is_set) {}
@@ -71,11 +68,11 @@ class field_ref {
               value_type>{} &&
               !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
           int> = 0>
-  THRIFT_NOLINK /* implicit */ field_ref(const field_ref<U>& other) noexcept
+  FOLLY_ERASE /* implicit */ field_ref(const field_ref<U>& other) noexcept
       : value_(other.value_), is_set_(other.is_set_) {}
 
   template <typename U = value_type>
-  THRIFT_NOLINK
+  FOLLY_ERASE
       std::enable_if_t<std::is_assignable<value_type&, U>::value, field_ref&>
       operator=(U&& value) noexcept(
           std::is_nothrow_assignable<value_type&, U>::value) {
@@ -88,34 +85,34 @@ class field_ref {
   // potential confusion between two possible behaviors, copying and reference
   // rebinding. The copy_from method is provided instead.
   template <typename U>
-  THRIFT_NOLINK void copy_from(field_ref<U> other) noexcept(
+  FOLLY_ERASE void copy_from(field_ref<U> other) noexcept(
       std::is_nothrow_assignable<value_type&, U>::value) {
     value_ = other.value();
     is_set_ = other.is_set();
   }
 
   template <typename U>
-  THRIFT_NOLINK void move_from(field_ref<U> other) noexcept(
+  FOLLY_ERASE void move_from(field_ref<U> other) noexcept(
       std::is_nothrow_assignable<value_type&, U&&>::value) {
     value_ = std::move(other.value_);
     is_set_ = other.is_set_;
     other.is_set_ = false;
   }
 
-  THRIFT_NOLINK bool is_set() const noexcept {
+  FOLLY_ERASE bool is_set() const noexcept {
     return is_set_;
   }
 
   // Returns a reference to the value.
-  THRIFT_NOLINK reference_type value() const noexcept {
+  FOLLY_ERASE reference_type value() const noexcept {
     return std::forward<reference_type>(value_);
   }
 
-  THRIFT_NOLINK reference_type operator*() const noexcept {
+  FOLLY_ERASE reference_type operator*() const noexcept {
     return std::forward<reference_type>(value_);
   }
 
-  THRIFT_NOLINK value_type* operator->() const noexcept {
+  FOLLY_ERASE value_type* operator->() const noexcept {
     return &value_;
   }
 
@@ -144,7 +141,7 @@ class optional_field_ref {
       value_type>;
 
  public:
-  THRIFT_NOLINK optional_field_ref(
+  FOLLY_ERASE optional_field_ref(
       reference_type value,
       detail::is_set_t<value_type>& is_set) noexcept
       : value_(value), is_set_(is_set) {}
@@ -157,7 +154,7 @@ class optional_field_ref {
               value_type>{} &&
               !(std::is_rvalue_reference<T>{} && std::is_lvalue_reference<U>{}),
           int> = 0>
-  THRIFT_NOLINK /* implicit */ optional_field_ref(
+  FOLLY_ERASE /* implicit */ optional_field_ref(
       const optional_field_ref<U>& other) noexcept
       : value_(other.value_), is_set_(other.is_set_) {}
 
@@ -166,12 +163,12 @@ class optional_field_ref {
       std::enable_if_t<
           std::is_same<T, U&&>{} || std::is_same<T, const U&&>{},
           int> = 0>
-  THRIFT_NOLINK explicit optional_field_ref(
+  FOLLY_ERASE explicit optional_field_ref(
       const optional_field_ref<U&>& other) noexcept
       : value_(other.value_), is_set_(other.is_set_) {}
 
   template <typename U = value_type>
-  THRIFT_NOLINK std::enable_if_t<
+  FOLLY_ERASE std::enable_if_t<
       std::is_assignable<value_type&, U>::value,
       optional_field_ref&>
   operator=(U&& value) noexcept(
@@ -188,14 +185,14 @@ class optional_field_ref {
   // potential confusion between two possible behaviors, copying and reference
   // rebinding. This copy_from method is provided instead.
   template <typename U>
-  THRIFT_NOLINK void copy_from(const optional_field_ref<U>& other) noexcept(
+  FOLLY_ERASE void copy_from(const optional_field_ref<U>& other) noexcept(
       std::is_nothrow_assignable<value_type&, U>::value) {
     value_ = other.value_unchecked();
     is_set_ = other.has_value();
   }
 
   template <typename U>
-  THRIFT_NOLINK void move_from(optional_field_ref<U> other) noexcept(
+  FOLLY_ERASE void move_from(optional_field_ref<U> other) noexcept(
       std::is_nothrow_assignable<value_type&, U&&>::value) {
     value_ = std::move(other.value_);
     is_set_ = other.is_set_;
@@ -204,7 +201,7 @@ class optional_field_ref {
 
 #ifdef THRIFT_HAS_OPTIONAL
   template <typename U>
-  THRIFT_NOLINK void from_optional(const std::optional<U>& other) noexcept(
+  FOLLY_ERASE void from_optional(const std::optional<U>& other) noexcept(
       std::is_nothrow_assignable<value_type&, U>::value) {
     // Use if instead of a shorter ternary expression to prevent a potential
     // copy if T and U mismatch.
@@ -219,7 +216,7 @@ class optional_field_ref {
   // Moves the value from std::optional. As std::optional's move constructor,
   // move_from doesn't make other empty.
   template <typename U>
-  THRIFT_NOLINK void from_optional(std::optional<U>&& other) noexcept(
+  FOLLY_ERASE void from_optional(std::optional<U>&& other) noexcept(
       std::is_nothrow_assignable<value_type&, U>::value) {
     // Use if instead of a shorter ternary expression to prevent a potential
     // copy if T and U mismatch.
@@ -231,27 +228,27 @@ class optional_field_ref {
     is_set_ = other.has_value();
   }
 
-  THRIFT_NOLINK std::optional<value_type> to_optional() const {
+  FOLLY_ERASE std::optional<value_type> to_optional() const {
     return is_set_ ? std::make_optional(value_) : std::nullopt;
   }
 #endif
 
-  THRIFT_NOLINK bool has_value() const noexcept {
+  FOLLY_ERASE bool has_value() const noexcept {
     return is_set_;
   }
 
-  THRIFT_NOLINK explicit operator bool() const noexcept {
+  FOLLY_ERASE explicit operator bool() const noexcept {
     return is_set_;
   }
 
-  THRIFT_NOLINK void reset() noexcept {
+  FOLLY_ERASE void reset() noexcept {
     value_ = value_type();
     is_set_ = false;
   }
 
   // Returns a reference to the value if this optional_field_ref has one; throws
   // bad_field_access otherwise.
-  THRIFT_NOLINK reference_type value() const {
+  FOLLY_ERASE reference_type value() const {
     if (FOLLY_UNLIKELY(!is_set_)) {
       detail::throw_on_bad_field_access();
     }
@@ -259,22 +256,22 @@ class optional_field_ref {
   }
 
   template <typename U = value_type>
-  THRIFT_NOLINK value_type value_or(U&& default_value) const {
+  FOLLY_ERASE value_type value_or(U&& default_value) const {
     return is_set_
         ? static_cast<value_type>(std::forward<reference_type>(value_))
         : static_cast<value_type>(std::forward<U>(default_value));
   }
 
   // Returns a reference to the value without checking whether it is available.
-  THRIFT_NOLINK reference_type value_unchecked() const {
+  FOLLY_ERASE reference_type value_unchecked() const {
     return std::forward<reference_type>(value_);
   }
 
-  THRIFT_NOLINK reference_type operator*() const {
+  FOLLY_ERASE reference_type operator*() const {
     return value();
   }
 
-  THRIFT_NOLINK pointee_type* operator->() const {
+  FOLLY_ERASE pointee_type* operator->() const {
     return &static_cast<pointee_type&>(value());
   }
 

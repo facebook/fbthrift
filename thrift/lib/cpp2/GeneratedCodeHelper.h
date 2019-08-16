@@ -413,9 +413,7 @@ struct foreach_;
 template <std::size_t... I>
 struct foreach_<std::index_sequence<I...>> {
   template <typename F, typename... O>
-  FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN static void go(
-      F&& f,
-      O&&... o) {
+  FOLLY_ERASE static void go(F&& f, O&&... o) {
     using _ = int[];
     void(_{
         (void(f(std::integral_constant<std::size_t, I>{}, std::forward<O>(o))),
@@ -425,20 +423,18 @@ struct foreach_<std::index_sequence<I...>> {
 };
 
 template <typename F, typename... O>
-FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN void foreach(F&& f, O&&... o) {
+FOLLY_ERASE void foreach(F&& f, O&&... o) {
   using seq = std::make_index_sequence<sizeof...(O)>;
   foreach_<seq>::go(std::forward<F>(f), std::forward<O>(o)...);
 }
 
 template <typename F, std::size_t... I>
-FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN void foreach_index_(
-    F&& f,
-    std::index_sequence<I...>) {
+FOLLY_ERASE void foreach_index_(F&& f, std::index_sequence<I...>) {
   foreach_<std::index_sequence<I...>>::go(std::forward<F>(f), I...);
 }
 
 template <std::size_t Size, typename F>
-FOLLY_ALWAYS_INLINE FOLLY_ATTR_VISIBILITY_HIDDEN void foreach_index(F&& f) {
+FOLLY_ERASE void foreach_index(F&& f) {
   using seq = std::make_index_sequence<Size>;
   foreach_index_([&](auto _, auto) { f(_); }, seq{});
 }

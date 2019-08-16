@@ -196,19 +196,19 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const Internship& rhs) const;
   bool operator<(const Internship& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company&> employer_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Company&> employer_ref() const& {
     return {employer, __isset.employer};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::cpp2::Company&&> employer_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Company&&> employer_ref() const&& {
     return {std::move(employer), __isset.employer};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company&> employer_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::Company&> employer_ref() & {
     return {employer, __isset.employer};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::cpp2::Company&&> employer_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::cpp2::Company&&> employer_ref() && {
     return {std::move(employer), __isset.employer};
   }
 

@@ -79,35 +79,35 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const BasicTypes& rhs) const;
   bool operator<(const BasicTypes& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int32_t&> second_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&> second_ref() const& {
     return {second, __isset.second};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int32_t&&> second_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int32_t&&> second_ref() const&& {
     return {std::move(second), __isset.second};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int32_t&> second_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int32_t&> second_ref() & {
     return {second, __isset.second};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int32_t&&> second_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int32_t&&> second_ref() && {
     return {std::move(second), __isset.second};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int64_t&> third_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&> third_ref() const& {
     return {third, __isset.third};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int64_t&&> third_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&&> third_ref() const&& {
     return {std::move(third), __isset.third};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int64_t&> third_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&> third_ref() & {
     return {third, __isset.third};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int64_t&&> third_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&&> third_ref() && {
     return {std::move(third), __isset.third};
   }
 

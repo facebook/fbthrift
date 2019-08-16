@@ -1491,19 +1491,19 @@ class ForwardUsageStruct final : private apache::thrift::detail::st::ComparisonO
   bool operator==(const ForwardUsageStruct& rhs) const;
   bool operator<(const ForwardUsageStruct& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
     return {foo, __isset.foo};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
     return {std::move(foo), __isset.foo};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
     return {foo, __isset.foo};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
     return {std::move(foo), __isset.foo};
   }
   const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;
@@ -1576,19 +1576,19 @@ class ForwardUsageRoot final : private apache::thrift::detail::st::ComparisonOpe
   bool operator==(const ForwardUsageRoot& rhs) const;
   bool operator<(const ForwardUsageRoot& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() const& {
     return {ForwardUsageStruct, __isset.ForwardUsageStruct};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&&> ForwardUsageStruct_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageStruct&&> ForwardUsageStruct_ref() const&& {
     return {std::move(ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageStruct&> ForwardUsageStruct_ref() & {
     return {ForwardUsageStruct, __isset.ForwardUsageStruct};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageStruct&&> ForwardUsageStruct_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageStruct&&> ForwardUsageStruct_ref() && {
     return {std::move(ForwardUsageStruct), __isset.ForwardUsageStruct};
   }
   const  ::apache::thrift::fixtures::types::ForwardUsageStruct* get_ForwardUsageStruct() const&;
@@ -1658,19 +1658,19 @@ class ForwardUsageByRef final : private apache::thrift::detail::st::ComparisonOp
   bool operator==(const ForwardUsageByRef& rhs) const;
   bool operator<(const ForwardUsageByRef& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() const& {
     return {foo, __isset.foo};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() const&& {
     return {std::move(foo), __isset.foo};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&> foo_ref() & {
     return {foo, __isset.foo};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::apache::thrift::fixtures::types::ForwardUsageRoot&&> foo_ref() && {
     return {std::move(foo), __isset.foo};
   }
   const  ::apache::thrift::fixtures::types::ForwardUsageRoot* get_foo() const&;

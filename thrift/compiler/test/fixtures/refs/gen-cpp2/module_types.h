@@ -357,19 +357,19 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
   bool operator==(const MyField& rhs) const;
   bool operator<(const MyField& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int64_t&> opt_value_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&> opt_value_ref() const& {
     return {opt_value, __isset.opt_value};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const int64_t&&> opt_value_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const int64_t&&> opt_value_ref() const&& {
     return {std::move(opt_value), __isset.opt_value};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int64_t&> opt_value_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&> opt_value_ref() & {
     return {opt_value, __isset.opt_value};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<int64_t&&> opt_value_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<int64_t&&> opt_value_ref() && {
     return {std::move(opt_value), __isset.opt_value};
   }
 
@@ -611,19 +611,19 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   bool operator==(const RecursiveStruct& rhs) const;
   bool operator<(const RecursiveStruct& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() const& {
     return {mes, __isset.mes};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() const&& {
     return {std::move(mes), __isset.mes};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&> mes_ref() & {
     return {mes, __isset.mes};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::vector< ::cpp2::RecursiveStruct>&&> mes_ref() && {
     return {std::move(mes), __isset.mes};
   }
   const ::std::vector< ::cpp2::RecursiveStruct>* get_mes() const&;

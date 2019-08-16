@@ -2391,35 +2391,35 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct1& rhs) const;
   bool operator<(const struct1& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
     return {field1, __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&&> field1_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> field1_ref() const&& {
     return {std::move(field1), __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&> field1_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> field1_ref() & {
     return {field1, __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&&> field1_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> field1_ref() && {
     return {std::move(field1), __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&> field4_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&> field4_ref() const& {
     return {field4, __isset.field4};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&&> field4_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&&> field4_ref() const&& {
     return {std::move(field4), __isset.field4};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&> field4_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&> field4_ref() & {
     return {field4, __isset.field4};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&&> field4_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&&> field4_ref() && {
     return {std::move(field4), __isset.field4};
   }
 
@@ -3084,19 +3084,19 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct4& rhs) const;
   bool operator<(const struct4& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
     return {field1, __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&&> field1_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> field1_ref() const&& {
     return {std::move(field1), __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&> field1_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> field1_ref() & {
     return {field1, __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&&> field1_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> field1_ref() && {
     return {std::move(field1), __isset.field1};
   }
 
@@ -3221,19 +3221,19 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct5& rhs) const;
   bool operator<(const struct5& rhs) const;
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> field1_ref() const& {
     return {field1, __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<const ::std::string&&> field1_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> field1_ref() const&& {
     return {std::move(field1), __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&> field1_ref() & {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> field1_ref() & {
     return {field1, __isset.field1};
   }
 
-  THRIFT_NOLINK ::apache::thrift::optional_field_ref<::std::string&&> field1_ref() && {
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> field1_ref() && {
     return {std::move(field1), __isset.field1};
   }
 
