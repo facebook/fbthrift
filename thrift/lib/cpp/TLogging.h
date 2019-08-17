@@ -145,6 +145,10 @@
  *                                      printed by calling
  *                                      apache::thrift::profile_print_info()
  */
+#ifndef T_GLOBAL_DEBUG_VIRTUAL
+#define T_GLOBAL_DEBUG_VIRTUAL 0
+#endif
+
 #if T_GLOBAL_DEBUG_VIRTUAL > 1
   #define T_VIRTUAL_CALL()                                                \
     ::apache::thrift::profile_virtual_call(typeid(*this))
