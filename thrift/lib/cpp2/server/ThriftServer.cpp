@@ -276,7 +276,7 @@ void ThriftServer::setup() {
       ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();
       ServerBootstrap::socketConfig.maxNumPendingConnectionsPerWorker =
           getMaxNumPendingConnectionsPerWorker();
-      if (reusePort_) {
+      if (reusePort_.value_or(false)) {
         ServerBootstrap::setReusePort(true);
       }
       if (enableTFO_) {
