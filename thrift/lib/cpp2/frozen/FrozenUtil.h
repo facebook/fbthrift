@@ -25,6 +25,7 @@
 #include <thrift/lib/thrift/gen-cpp2/frozen_constants.h>
 
 DECLARE_bool(thrift_frozen_util_disable_mlock);
+DECLARE_bool(thrift_frozen_util_mlock_on_fault);
 
 namespace apache {
 namespace thrift {
@@ -288,7 +289,11 @@ template <class T>
 MappedFrozen<T> mapFrozen(folly::File file) {
   folly::MemoryMapping mapping(std::move(file), 0);
   if (!FLAGS_thrift_frozen_util_disable_mlock) {
-    mapping.mlock(folly::MemoryMapping::LockMode::TRY_LOCK);
+    mapping.mlock(
+        folly::MemoryMapping::LockMode::TRY_LOCK,
+        FLAGS_thrift_frozen_util_mlock_on_fault
+            ? folly::MemoryMapping::LockFlags::LOCK_ONFAULT
+            : folly::MemoryMapping::LockFlags::LOCK_PREFAULT);
   }
   return mapFrozen<T>(std::move(mapping));
 }
@@ -298,7 +303,11 @@ MappedFrozen<T> mapFrozen(
     folly::File file,
     folly::MemoryMapping::LockMode lockMode) {
   folly::MemoryMapping mapping(std::move(file), 0);
-  mapping.mlock(lockMode);
+  mapping.mlock(
+      lockMode,
+      FLAGS_thrift_frozen_util_mlock_on_fault
+          ? folly::MemoryMapping::LockFlags::LOCK_ONFAULT
+          : folly::MemoryMapping::LockFlags::LOCK_PREFAULT);
   return mapFrozen<T>(std::move(mapping));
 }
 
