@@ -46,27 +46,26 @@ UnionType serializeDeserialize(const UnionType& val) {
 }
 
 template <class UnionType>
-void testSerializeDeserialize(const UnionType &val) {
+void testSerializeDeserialize(const UnionType& val) {
   EXPECT_EQ(val, serializeDeserialize(val));
 }
 
-class UnionTestFixture: public Test {
+class UnionTestFixture : public Test {
  public:
-  void serializeDeserialize(TestUnion &val) {
+  void serializeDeserialize(TestUnion& val) {
     testSerializeDeserialize(val);
   }
 };
 
-class TerseUnionTestFixture: public Test {
+class TerseUnionTestFixture : public Test {
  public:
-  void serializeDeserialize(TerseTestUnion &val) {
+  void serializeDeserialize(TerseTestUnion& val) {
     testSerializeDeserialize(val);
   }
 };
-
 
 TEST_F(UnionTestFixture, Constructors) {
-  auto f = [] (const TestUnion& u) {
+  auto f = [](const TestUnion& u) {
     EXPECT_EQ(TestUnion::Type::i32_field, u.getType());
     EXPECT_EQ(100, u.get_i32_field());
   };
