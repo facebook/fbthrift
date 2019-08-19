@@ -148,7 +148,12 @@ class <%struct:name%> <%!
 <%/struct:fields_contain_cpp_ref_unique_either?%>
 <%/struct:cpp_noncopyable%>
 
+<%#struct:cpp_noexcept_move%>
+  <%struct:name%>& operator=(<%struct:name%>&&) noexcept = default;
+<%/struct:cpp_noexcept_move%>
+<%^struct:cpp_noexcept_move%>
   <%struct:name%>& operator=(<%struct:name%>&&) = default;
+<%/struct:cpp_noexcept_move%>
 <%^struct:cpp_noncopyable%>
 <%^struct:fields_contain_cpp_ref_unique_either?%>
 

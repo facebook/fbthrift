@@ -1705,7 +1705,17 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyMapEnumAndInt(std::initializer_list<std::pair<const  ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
   { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")}}) {}
 
-
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept :
+    MyBoolField(std::move(other.MyBoolField)),
+    MyIntField(std::move(other.MyIntField)),
+    MyStringField(std::move(other.MyStringField)),
+    MyStringField2(std::move(other.MyStringField2)),
+    MyBinaryField(std::move(other.MyBinaryField)),
+    MyBinaryField2(std::move(other.MyBinaryField2)),
+    MyBinaryField3(std::move(other.MyBinaryField3)),
+    MyBinaryListField4(std::move(other.MyBinaryListField4)),
+    MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
+    __isset(other.__isset) {}
 NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
 
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :

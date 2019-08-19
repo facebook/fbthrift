@@ -1756,12 +1756,11 @@ class NoexceptMoveEmpty final : private apache::thrift::detail::st::ComparisonOp
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveEmpty(apache::thrift::FragileConstructor);
-
-  NoexceptMoveEmpty(NoexceptMoveEmpty&&) = default;
+  NoexceptMoveEmpty(NoexceptMoveEmpty&& other) noexcept {}
 
   NoexceptMoveEmpty(const NoexceptMoveEmpty&) = default;
 
-  NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) = default;
+  NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) noexcept = default;
 
   NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
   void __clear();
@@ -1808,12 +1807,12 @@ class NoexceptMoveSimpleStruct final : private apache::thrift::detail::st::Compa
     boolField = arg.extract();
     __isset.boolField = true;
   }
-
-  NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&&) = default;
-
+  NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
+      boolField(std::move(other.boolField)),
+      __isset(other.__isset) {}
   NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;
 
-  NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) = default;
+  NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) noexcept = default;
 
   NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
   void __clear();
@@ -1914,12 +1913,11 @@ class NoexceptMoveComplexStruct final : private apache::thrift::detail::st::Comp
     MyMapEnumAndInt = arg.extract();
     __isset.MyMapEnumAndInt = true;
   }
-
-  NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&) = default;
+  NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept;
 
   NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
 
-  NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) = default;
+  NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) noexcept = default;
 
   NoexceptMoveComplexStruct& operator=(const NoexceptMoveComplexStruct&) = default;
   void __clear();

@@ -484,3 +484,15 @@ TEST_F(StructTest, small_sorted_vector) {
   EXPECT_EQ(o.set_field, a.set_field);
   EXPECT_EQ(o.map_field, a.map_field);
 }
+
+TEST_F(StructTest, noexcept_move_annotation) {
+  EXPECT_TRUE(std::is_nothrow_move_constructible<NoexceptMoveStruct>::value);
+  EXPECT_TRUE(std::is_nothrow_move_assignable<NoexceptMoveStruct>::value);
+  NoexceptMoveStruct a;
+  a.set_string_field("hello world");
+  NoexceptMoveStruct b(std::move(a));
+  EXPECT_EQ(b.get_string_field(), "hello world");
+  NoexceptMoveStruct c;
+  c = std::move(b);
+  EXPECT_EQ(c.get_string_field(), "hello world");
+}

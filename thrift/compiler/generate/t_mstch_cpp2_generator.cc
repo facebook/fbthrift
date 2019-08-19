@@ -885,7 +885,8 @@ class mstch_cpp2_struct : public mstch_struct {
     return bool(strct_->annotations_.count("cpp.noexcept_move"));
   }
   mstch::node cpp_noexcept_move_ctor() {
-    return strct_->annotations_.count("cpp.noexcept_move_ctor") ||
+    return strct_->annotations_.count("cpp.noexcept_move") ||
+        strct_->annotations_.count("cpp.noexcept_move_ctor") ||
         strct_->annotations_.count("cpp2.noexcept_move_ctor");
   }
   mstch::node cpp_virtual() {

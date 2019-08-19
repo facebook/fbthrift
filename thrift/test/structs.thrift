@@ -64,3 +64,8 @@ struct HasSmallSortedVector {
   1: set<i32> (cpp.template = "SmallSortedVectorSet") set_field,
   2: map<i32, i32> (cpp.template = "SmallSortedVectorMap") map_field,
 }
+
+struct NoexceptMoveStruct {
+  1: string string_field,
+  2: i32 i32_field,
+} (cpp.noexcept_move)
