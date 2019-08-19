@@ -2116,7 +2116,7 @@ class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOp
   NoExceptMoveUnion()
       : type_(Type::__EMPTY__) {}
 
-  NoExceptMoveUnion(NoExceptMoveUnion&& rhs)
+  NoExceptMoveUnion(NoExceptMoveUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2163,7 +2163,7 @@ class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOp
     }
   }
 
-  NoExceptMoveUnion& operator=(NoExceptMoveUnion&& rhs) {
+  NoExceptMoveUnion& operator=(NoExceptMoveUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

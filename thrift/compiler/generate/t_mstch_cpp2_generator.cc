@@ -750,6 +750,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::cpp_declare_equal_to},
             {"struct:cpp_noncopyable", &mstch_cpp2_struct::cpp_noncopyable},
             {"struct:cpp_noncomparable", &mstch_cpp2_struct::cpp_noncomparable},
+            {"struct:cpp_noexcept_move", &mstch_cpp2_struct::cpp_noexcept_move},
             {"struct:cpp_noexcept_move_ctor",
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
             {"struct:virtual", &mstch_cpp2_struct::cpp_virtual},
@@ -879,6 +880,9 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node cpp_noncomparable() {
     return bool(strct_->annotations_.count("cpp2.noncomparable"));
+  }
+  mstch::node cpp_noexcept_move() {
+    return bool(strct_->annotations_.count("cpp.noexcept_move"));
   }
   mstch::node cpp_noexcept_move_ctor() {
     return strct_->annotations_.count("cpp.noexcept_move_ctor") ||

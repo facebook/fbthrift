@@ -165,3 +165,20 @@ TEST(NonCopyableUnion, NoncopyableMember) {
   u.set_ncs(std::move(s));
   EXPECT_EQ(u.get_ncs().num, 42);
 }
+
+TEST(NoExceptMoveUnion, Constructor) {
+  EXPECT_TRUE(std::is_nothrow_move_constructible<NoExceptMoveUnion>::value);
+  NoExceptMoveUnion u1;
+  u1.set_string_field("hello world");
+  NoExceptMoveUnion u2(std::move(u1));
+  EXPECT_EQ(u2.get_string_field(), "hello world");
+}
+
+TEST(NoExceptMoveUnion, MoveOperator) {
+  EXPECT_TRUE(std::is_nothrow_move_assignable<NoExceptMoveUnion>::value);
+  NoExceptMoveUnion u1;
+  u1.set_string_field("hello world");
+  NoExceptMoveUnion u2;
+  u2 = std::move(u1);
+  EXPECT_EQ(u2.get_string_field(), "hello world");
+}
