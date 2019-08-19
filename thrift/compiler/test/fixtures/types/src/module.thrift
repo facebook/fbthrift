@@ -119,3 +119,36 @@ struct ForwardUsageStruct {
 struct ForwardUsageByRef {
   1: optional ForwardUsageRoot foo
 }
+
+struct NoexceptMoveEmpty {
+} (cpp.noexcept_move)
+
+struct NoexceptMoveSimpleStruct {
+  1: i64 boolField
+} (cpp.noexcept_move)
+
+enum MyEnumA {
+  fieldA = 1
+  fieldB = 2
+  fieldC = 4
+}
+
+struct NoexceptMoveComplexStruct {
+  1: bool MyBoolField,
+  2: i64 MyIntField = 12,
+  3: string MyStringField = "test"
+  4: string MyStringField2
+  5: binary MyBinaryField
+  6: optional binary MyBinaryField2
+  7: required binary MyBinaryField3
+  8: list<binary> MyBinaryListField4
+  9: map<MyEnumA, string> MyMapEnumAndInt = {
+    1: "fieldA",
+    4: "fieldC",
+  }
+} (cpp.noexcept_move)
+
+union NoExceptMoveUnion {
+  1: string string_field,
+  2: i32 i32_field,
+} (cpp.noexcept_move)

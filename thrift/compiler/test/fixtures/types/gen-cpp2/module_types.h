@@ -72,6 +72,15 @@ enum class MyForwardRefEnum {
 
 
 
+enum class MyEnumA {
+  fieldA = 1,
+  fieldB = 2,
+  fieldC = 4
+};
+
+
+
+
 }}}} // apache::thrift::fixtures::types
 namespace std {
 
@@ -86,6 +95,10 @@ template<> struct equal_to<typename ::apache::thrift::fixtures::types::is_unscop
 
 template<> struct hash<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
 template<> struct equal_to<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::MyForwardRefEnum> {};
+
+
+template<> struct hash<typename ::apache::thrift::fixtures::types::MyEnumA> : public apache::thrift::detail::enum_hash<typename ::apache::thrift::fixtures::types::MyEnumA> {};
+template<> struct equal_to<typename ::apache::thrift::fixtures::types::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename ::apache::thrift::fixtures::types::MyEnumA> {};
 
 
 } // std
@@ -144,6 +157,23 @@ template <> struct TEnumTraits<::apache::thrift::fixtures::types::MyForwardRefEn
 };
 
 
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA>;
+
+template <> struct TEnumTraits<::apache::thrift::fixtures::types::MyEnumA> {
+  using type = ::apache::thrift::fixtures::types::MyEnumA;
+
+  static constexpr std::size_t const size = 3;
+  static folly::Range<type const*> const values;
+  static folly::Range<folly::StringPiece const*> const names;
+
+  static char const* findName(type value);
+  static bool findValue(char const* name, type* out);
+
+  static constexpr type min() { return type::fieldA; }
+  static constexpr type max() { return type::fieldC; }
+};
+
+
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
@@ -159,6 +189,10 @@ extern const _is_unscoped_EnumMapFactory::NamesToValuesMapType _is_unscoped_NAME
 using _MyForwardRefEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyForwardRefEnum>;
 extern const _MyForwardRefEnum_EnumMapFactory::ValuesToNamesMapType _MyForwardRefEnum_VALUES_TO_NAMES;
 extern const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_NAMES_TO_VALUES;
+
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA>;
+extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 }}}} // apache::thrift::fixtures::types
 
@@ -185,6 +219,10 @@ class AnnotatedTypes;
 class ForwardUsageStruct;
 class ForwardUsageRoot;
 class ForwardUsageByRef;
+class NoexceptMoveEmpty;
+class NoexceptMoveSimpleStruct;
+class NoexceptMoveComplexStruct;
+class NoExceptMoveUnion;
 }}}} // apache::thrift::fixtures::types
 // END forward_declare
 // BEGIN typedefs
@@ -1704,6 +1742,587 @@ void swap(ForwardUsageByRef& a, ForwardUsageByRef& b);
 
 template <class Protocol_>
 uint32_t ForwardUsageByRef::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class NoexceptMoveEmpty final : private apache::thrift::detail::st::ComparisonOperators<NoexceptMoveEmpty> {
+ public:
+
+  NoexceptMoveEmpty() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  NoexceptMoveEmpty(apache::thrift::FragileConstructor);
+
+  NoexceptMoveEmpty(NoexceptMoveEmpty&&) = default;
+
+  NoexceptMoveEmpty(const NoexceptMoveEmpty&) = default;
+
+  NoexceptMoveEmpty& operator=(NoexceptMoveEmpty&&) = default;
+
+  NoexceptMoveEmpty& operator=(const NoexceptMoveEmpty&) = default;
+  void __clear();
+  bool operator==(const NoexceptMoveEmpty& rhs) const;
+  bool operator<(const NoexceptMoveEmpty& rhs) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NoexceptMoveEmpty >;
+};
+
+void swap(NoexceptMoveEmpty& a, NoexceptMoveEmpty& b);
+
+template <class Protocol_>
+uint32_t NoexceptMoveEmpty::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class NoexceptMoveSimpleStruct final : private apache::thrift::detail::st::ComparisonOperators<NoexceptMoveSimpleStruct> {
+ public:
+
+  NoexceptMoveSimpleStruct() :
+      boolField(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    boolField = arg.extract();
+    __isset.boolField = true;
+  }
+
+  NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&&) = default;
+
+  NoexceptMoveSimpleStruct(const NoexceptMoveSimpleStruct&) = default;
+
+  NoexceptMoveSimpleStruct& operator=(NoexceptMoveSimpleStruct&&) = default;
+
+  NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
+  void __clear();
+  int64_t boolField;
+
+  struct __isset {
+    bool boolField;
+  } __isset = {};
+  bool operator==(const NoexceptMoveSimpleStruct& rhs) const;
+  bool operator<(const NoexceptMoveSimpleStruct& rhs) const;
+
+  int64_t get_boolField() const {
+    return boolField;
+  }
+
+  int64_t& set_boolField(int64_t boolField_) {
+    boolField = boolField_;
+    __isset.boolField = true;
+    return boolField;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NoexceptMoveSimpleStruct >;
+};
+
+void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b);
+
+template <class Protocol_>
+uint32_t NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class NoexceptMoveComplexStruct final : private apache::thrift::detail::st::ComparisonOperators<NoexceptMoveComplexStruct> {
+ public:
+
+  NoexceptMoveComplexStruct();
+
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    MyBoolField = arg.extract();
+    __isset.MyBoolField = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    MyIntField = arg.extract();
+    __isset.MyIntField = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
+    MyStringField = arg.extract();
+    __isset.MyStringField = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
+    MyStringField2 = arg.extract();
+    __isset.MyStringField2 = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
+    MyBinaryField = arg.extract();
+    __isset.MyBinaryField = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
+    MyBinaryField2 = arg.extract();
+    __isset.MyBinaryField2 = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
+    MyBinaryField3 = arg.extract();
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
+    MyBinaryListField4 = arg.extract();
+    __isset.MyBinaryListField4 = true;
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
+    MyMapEnumAndInt = arg.extract();
+    __isset.MyMapEnumAndInt = true;
+  }
+
+  NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&) = default;
+
+  NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
+
+  NoexceptMoveComplexStruct& operator=(NoexceptMoveComplexStruct&&) = default;
+
+  NoexceptMoveComplexStruct& operator=(const NoexceptMoveComplexStruct&) = default;
+  void __clear();
+
+  ~NoexceptMoveComplexStruct();
+
+  bool MyBoolField;
+  int64_t MyIntField;
+  ::std::string MyStringField;
+  ::std::string MyStringField2;
+  ::std::string MyBinaryField;
+  ::std::string MyBinaryField2;
+  ::std::string MyBinaryField3;
+  ::std::vector<::std::string> MyBinaryListField4;
+  ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
+
+  struct __isset {
+    bool MyBoolField;
+    bool MyIntField;
+    bool MyStringField;
+    bool MyStringField2;
+    bool MyBinaryField;
+    bool MyBinaryField2;
+    bool MyBinaryListField4;
+    bool MyMapEnumAndInt;
+  } __isset = {};
+  bool operator==(const NoexceptMoveComplexStruct& rhs) const;
+  bool operator<(const NoexceptMoveComplexStruct& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&> MyBinaryField2_ref() const& {
+    return {MyBinaryField2, __isset.MyBinaryField2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const ::std::string&&> MyBinaryField2_ref() const&& {
+    return {std::move(MyBinaryField2), __isset.MyBinaryField2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&> MyBinaryField2_ref() & {
+    return {MyBinaryField2, __isset.MyBinaryField2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<::std::string&&> MyBinaryField2_ref() && {
+    return {std::move(MyBinaryField2), __isset.MyBinaryField2};
+  }
+
+  bool get_MyBoolField() const {
+    return MyBoolField;
+  }
+
+  bool& set_MyBoolField(bool MyBoolField_) {
+    MyBoolField = MyBoolField_;
+    __isset.MyBoolField = true;
+    return MyBoolField;
+  }
+
+  int64_t get_MyIntField() const {
+    return MyIntField;
+  }
+
+  int64_t& set_MyIntField(int64_t MyIntField_) {
+    MyIntField = MyIntField_;
+    __isset.MyIntField = true;
+    return MyIntField;
+  }
+
+  const ::std::string& get_MyStringField() const& {
+    return MyStringField;
+  }
+
+  ::std::string get_MyStringField() && {
+    return std::move(MyStringField);
+  }
+
+  template <typename T_NoexceptMoveComplexStruct_MyStringField_struct_setter = ::std::string>
+  ::std::string& set_MyStringField(T_NoexceptMoveComplexStruct_MyStringField_struct_setter&& MyStringField_) {
+    MyStringField = std::forward<T_NoexceptMoveComplexStruct_MyStringField_struct_setter>(MyStringField_);
+    __isset.MyStringField = true;
+    return MyStringField;
+  }
+
+  const ::std::string& get_MyStringField2() const& {
+    return MyStringField2;
+  }
+
+  ::std::string get_MyStringField2() && {
+    return std::move(MyStringField2);
+  }
+
+  template <typename T_NoexceptMoveComplexStruct_MyStringField2_struct_setter = ::std::string>
+  ::std::string& set_MyStringField2(T_NoexceptMoveComplexStruct_MyStringField2_struct_setter&& MyStringField2_) {
+    MyStringField2 = std::forward<T_NoexceptMoveComplexStruct_MyStringField2_struct_setter>(MyStringField2_);
+    __isset.MyStringField2 = true;
+    return MyStringField2;
+  }
+
+  const ::std::string& get_MyBinaryField() const& {
+    return MyBinaryField;
+  }
+
+  ::std::string get_MyBinaryField() && {
+    return std::move(MyBinaryField);
+  }
+
+  template <typename T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter = ::std::string>
+  ::std::string& set_MyBinaryField(T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
+    MyBinaryField = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter>(MyBinaryField_);
+    __isset.MyBinaryField = true;
+    return MyBinaryField;
+  }
+
+  const ::std::string* get_MyBinaryField2() const& {
+    return __isset.MyBinaryField2 ? std::addressof(MyBinaryField2) : nullptr;
+  }
+
+  ::std::string* get_MyBinaryField2() & {
+    return __isset.MyBinaryField2 ? std::addressof(MyBinaryField2) : nullptr;
+  }
+  ::std::string* get_MyBinaryField2() && = delete;
+
+  template <typename T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter = ::std::string>
+  ::std::string& set_MyBinaryField2(T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
+    MyBinaryField2 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
+    __isset.MyBinaryField2 = true;
+    return MyBinaryField2;
+  }
+
+  const ::std::string& get_MyBinaryField3() const& {
+    return MyBinaryField3;
+  }
+
+  ::std::string get_MyBinaryField3() && {
+    return std::move(MyBinaryField3);
+  }
+
+  template <typename T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter = ::std::string>
+  ::std::string& set_MyBinaryField3(T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
+    MyBinaryField3 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
+    return MyBinaryField3;
+  }
+  const ::std::vector<::std::string>& get_MyBinaryListField4() const&;
+  ::std::vector<::std::string> get_MyBinaryListField4() &&;
+
+  template <typename T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter = ::std::vector<::std::string>>
+  ::std::vector<::std::string>& set_MyBinaryListField4(T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
+    MyBinaryListField4 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
+    __isset.MyBinaryListField4 = true;
+    return MyBinaryListField4;
+  }
+  const ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
+  ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
+
+  template <typename T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
+  ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
+    MyMapEnumAndInt = std::forward<T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
+    __isset.MyMapEnumAndInt = true;
+    return MyMapEnumAndInt;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NoexceptMoveComplexStruct >;
+};
+
+void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b);
+
+template <class Protocol_>
+uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOperators<NoExceptMoveUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    string_field = 1,
+    i32_field = 2,
+  } ;
+
+  NoExceptMoveUnion()
+      : type_(Type::__EMPTY__) {}
+
+  NoExceptMoveUnion(NoExceptMoveUnion&& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::string_field:
+      {
+        set_string_field(std::move(rhs.value_.string_field));
+        break;
+      }
+      case Type::i32_field:
+      {
+        set_i32_field(std::move(rhs.value_.i32_field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  NoExceptMoveUnion(const NoExceptMoveUnion& rhs)
+      : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::string_field:
+      {
+        set_string_field(rhs.value_.string_field);
+        break;
+      }
+      case Type::i32_field:
+      {
+        set_i32_field(rhs.value_.i32_field);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  NoExceptMoveUnion& operator=(NoExceptMoveUnion&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::string_field:
+      {
+        set_string_field(std::move(rhs.value_.string_field));
+        break;
+      }
+      case Type::i32_field:
+      {
+        set_i32_field(std::move(rhs.value_.i32_field));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  NoExceptMoveUnion& operator=(const NoExceptMoveUnion& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::string_field:
+      {
+        set_string_field(rhs.value_.string_field);
+        break;
+      }
+      case Type::i32_field:
+      {
+        set_i32_field(rhs.value_.i32_field);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    set_string_field(arg.extract());
+  }
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
+    set_i32_field(arg.extract());
+  }
+  void __clear();
+
+  ~NoExceptMoveUnion() {
+    __clear();
+  }
+  union storage_type {
+    ::std::string string_field;
+    int32_t i32_field;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const NoExceptMoveUnion& rhs) const;
+  bool operator<(const NoExceptMoveUnion& rhs) const;
+
+  ::std::string& set_string_field(::std::string const &t) {
+    __clear();
+    type_ = Type::string_field;
+    ::new (std::addressof(value_.string_field)) ::std::string(t);
+    return value_.string_field;
+  }
+
+  ::std::string& set_string_field(::std::string&& t) {
+    __clear();
+    type_ = Type::string_field;
+    ::new (std::addressof(value_.string_field)) ::std::string(std::move(t));
+    return value_.string_field;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::string& set_string_field(T&&... t) {
+    __clear();
+    type_ = Type::string_field;
+    ::new (std::addressof(value_.string_field)) ::std::string(std::forward<T>(t)...);
+    return value_.string_field;
+  }
+
+  int32_t& set_i32_field(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::i32_field;
+    ::new (std::addressof(value_.i32_field)) int32_t(t);
+    return value_.i32_field;
+  }
+
+  ::std::string const & get_string_field() const {
+    assert(type_ == Type::string_field);
+    return value_.string_field;
+  }
+
+  int32_t const & get_i32_field() const {
+    assert(type_ == Type::i32_field);
+    return value_.i32_field;
+  }
+
+  ::std::string & mutable_string_field() {
+    assert(type_ == Type::string_field);
+    return value_.string_field;
+  }
+
+  int32_t & mutable_i32_field() {
+    assert(type_ == Type::i32_field);
+    return value_.i32_field;
+  }
+
+  ::std::string move_string_field() {
+    assert(type_ == Type::string_field);
+    return std::move(value_.string_field);
+  }
+
+  int32_t move_i32_field() {
+    assert(type_ == Type::i32_field);
+    return std::move(value_.i32_field);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< NoExceptMoveUnion >;
+};
+
+void swap(NoExceptMoveUnion& a, NoExceptMoveUnion& b);
+
+template <class Protocol_>
+uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

@@ -320,4 +320,97 @@ FATAL_REGISTER_ENUM_TRAITS(
     static_cast<::apache::thrift::legacy_type_id_t>(11057525912578401640ull)
   >
 );
+namespace thrift_fatal_impl_detail {
+
+struct MyEnumA_enum_traits {
+  using type = ::apache::thrift::fixtures::types::MyEnumA;
+  using name = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyEnumA;
+
+  struct MyEnumA__struct_unique_strings_list {
+    using fieldA = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::fieldA;
+    using fieldB = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::fieldB;
+    using fieldC = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::fieldC;
+  };
+
+  struct MyEnumA__struct_enum_members_fieldA {
+    using name = MyEnumA__struct_unique_strings_list::fieldA;
+    using value = std::integral_constant<type, type::fieldA>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+  };
+
+  struct MyEnumA__struct_enum_members_fieldB {
+    using name = MyEnumA__struct_unique_strings_list::fieldB;
+    using value = std::integral_constant<type, type::fieldB>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+  };
+
+  struct MyEnumA__struct_enum_members_fieldC {
+    using name = MyEnumA__struct_unique_strings_list::fieldC;
+    using value = std::integral_constant<type, type::fieldC>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+  };
+
+  struct MyEnumA__struct_enum_members {
+    using fieldA = MyEnumA__struct_enum_members_fieldA;
+    using fieldB = MyEnumA__struct_enum_members_fieldB;
+    using fieldC = MyEnumA__struct_enum_members_fieldC;
+  };
+
+  using member = MyEnumA__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::fieldA,
+      member::fieldB,
+      member::fieldC
+  >;
+
+  class annotations {
+    public:
+    using keys = void;
+    using values = void;
+    using map = ::fatal::list<
+    >;
+  };
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      case type::fieldA: return "fieldA";
+      case type::fieldB: return "fieldB";
+      case type::fieldC: return "fieldC";
+      default: return fallback;
+    }
+  }
+};
+
+} // thrift_fatal_impl_detail
+
+FATAL_REGISTER_ENUM_TRAITS(
+  ::apache::thrift::fixtures::types::thrift_fatal_impl_detail::MyEnumA_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<::apache::thrift::fixtures::types::thrift_fatal_impl_detail::MyEnumA_enum_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(12764631319602759848ull)
+  >
+);
 }}}} // apache::thrift::fixtures::types

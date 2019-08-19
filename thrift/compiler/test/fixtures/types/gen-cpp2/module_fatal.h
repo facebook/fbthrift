@@ -27,17 +27,30 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using ForwardUsageRoot = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'R', 'o', 'o', 't'>;
   using ForwardUsageStruct = ::fatal::sequence<char, 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'U', 's', 'a', 'g', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
   using MinPadding = ::fatal::sequence<char, 'M', 'i', 'n', 'P', 'a', 'd', 'd', 'i', 'n', 'g'>;
+  using MyBinaryField = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd'>;
+  using MyBinaryField2 = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd', '2'>;
+  using MyBinaryField3 = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'F', 'i', 'e', 'l', 'd', '3'>;
+  using MyBinaryListField4 = ::fatal::sequence<char, 'M', 'y', 'B', 'i', 'n', 'a', 'r', 'y', 'L', 'i', 's', 't', 'F', 'i', 'e', 'l', 'd', '4'>;
+  using MyBoolField = ::fatal::sequence<char, 'M', 'y', 'B', 'o', 'o', 'l', 'F', 'i', 'e', 'l', 'd'>;
   using MyDataItem = ::fatal::sequence<char, 'M', 'y', 'D', 'a', 't', 'a', 'I', 't', 'e', 'm'>;
+  using MyEnumA = ::fatal::sequence<char, 'M', 'y', 'E', 'n', 'u', 'm', 'A'>;
   using MyForwardRefEnum = ::fatal::sequence<char, 'M', 'y', 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'R', 'e', 'f', 'E', 'n', 'u', 'm'>;
   using MyIntField = ::fatal::sequence<char, 'M', 'y', 'I', 'n', 't', 'F', 'i', 'e', 'l', 'd'>;
+  using MyMapEnumAndInt = ::fatal::sequence<char, 'M', 'y', 'M', 'a', 'p', 'E', 'n', 'u', 'm', 'A', 'n', 'd', 'I', 'n', 't'>;
   using MyStringField = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'i', 'n', 'g', 'F', 'i', 'e', 'l', 'd'>;
+  using MyStringField2 = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'i', 'n', 'g', 'F', 'i', 'e', 'l', 'd', '2'>;
   using MyStruct = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'u', 'c', 't'>;
   using MyStructWithForwardRefEnum = ::fatal::sequence<char, 'M', 'y', 'S', 't', 'r', 'u', 'c', 't', 'W', 'i', 't', 'h', 'F', 'o', 'r', 'w', 'a', 'r', 'd', 'R', 'e', 'f', 'E', 'n', 'u', 'm'>;
   using NONZERO = ::fatal::sequence<char, 'N', 'O', 'N', 'Z', 'E', 'R', 'O'>;
+  using NoExceptMoveUnion = ::fatal::sequence<char, 'N', 'o', 'E', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'U', 'n', 'i', 'o', 'n'>;
+  using NoexceptMoveComplexStruct = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'C', 'o', 'm', 'p', 'l', 'e', 'x', 'S', 't', 'r', 'u', 'c', 't'>;
+  using NoexceptMoveEmpty = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'E', 'm', 'p', 't', 'y'>;
+  using NoexceptMoveSimpleStruct = ::fatal::sequence<char, 'N', 'o', 'e', 'x', 'c', 'e', 'p', 't', 'M', 'o', 'v', 'e', 'S', 'i', 'm', 'p', 'l', 'e', 'S', 't', 'r', 'u', 'c', 't'>;
   using Renaming = ::fatal::sequence<char, 'R', 'e', 'n', 'a', 'm', 'i', 'n', 'g'>;
   using SomeService = ::fatal::sequence<char, 'S', 'o', 'm', 'e', 'S', 'e', 'r', 'v', 'i', 'c', 'e'>;
   using TrivialNestedWithDefault = ::fatal::sequence<char, 'T', 'r', 'i', 'v', 'i', 'a', 'l', 'N', 'e', 's', 't', 'e', 'd', 'W', 'i', 't', 'h', 'D', 'e', 'f', 'a', 'u', 'l', 't'>;
   using TrivialNumeric = ::fatal::sequence<char, 'T', 'r', 'i', 'v', 'i', 'a', 'l', 'N', 'u', 'm', 'e', 'r', 'i', 'c'>;
+  using Type = ::fatal::sequence<char, 'T', 'y', 'p', 'e'>;
   using VirtualStruct = ::fatal::sequence<char, 'V', 'i', 'r', 't', 'u', 'a', 'l', 'S', 't', 'r', 'u', 'c', 't'>;
   using ZERO = ::fatal::sequence<char, 'Z', 'E', 'R', 'O'>;
   using a = ::fatal::sequence<char, 'a'>;
@@ -48,6 +61,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using biggish = ::fatal::sequence<char, 'b', 'i', 'g', 'g', 'i', 's', 'h'>;
   using binary_field = ::fatal::sequence<char, 'b', 'i', 'n', 'a', 'r', 'y', '_', 'f', 'i', 'e', 'l', 'd'>;
   using binary_keyed_map = ::fatal::sequence<char, 'b', 'i', 'n', 'a', 'r', 'y', '_', 'k', 'e', 'y', 'e', 'd', '_', 'm', 'a', 'p'>;
+  using boolField = ::fatal::sequence<char, 'b', 'o', 'o', 'l', 'F', 'i', 'e', 'l', 'd'>;
   using bounce_map = ::fatal::sequence<char, 'b', 'o', 'u', 'n', 'c', 'e', '_', 'm', 'a', 'p'>;
   using cpp = ::fatal::sequence<char, 'c', 'p', 'p'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
@@ -57,6 +71,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using cpp_declare_hash = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'c', 'l', 'a', 'r', 'e', '_', 'h', 'a', 's', 'h'>;
   using cpp_deprecated_enum_unscoped = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '_', 'e', 'n', 'u', 'm', '_', 'u', 'n', 's', 'c', 'o', 'p', 'e', 'd'>;
   using cpp_minimize_padding = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'm', 'i', 'n', 'i', 'm', 'i', 'z', 'e', '_', 'p', 'a', 'd', 'd', 'i', 'n', 'g'>;
+  using cpp_noexcept_move = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'n', 'o', 'e', 'x', 'c', 'e', 'p', 't', '_', 'm', 'o', 'v', 'e'>;
   using cpp_virtual = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'v', 'i', 'r', 't', 'u', 'a', 'l'>;
   using data = ::fatal::sequence<char, 'd', 'a', 't', 'a'>;
   using decorated_struct = ::fatal::sequence<char, 'd', 'e', 'c', 'o', 'r', 'a', 't', 'e', 'd', '_', 's', 't', 'r', 'u', 'c', 't'>;
@@ -72,6 +87,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using foo = ::fatal::sequence<char, 'f', 'o', 'o'>;
   using has_bitwise_ops = ::fatal::sequence<char, 'h', 'a', 's', '_', 'b', 'i', 't', 'w', 'i', 's', 'e', '_', 'o', 'p', 's'>;
   using hello = ::fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>;
+  using i32_field = ::fatal::sequence<char, 'i', '3', '2', '_', 'f', 'i', 'e', 'l', 'd'>;
   using is_unscoped = ::fatal::sequence<char, 'i', 's', '_', 'u', 'n', 's', 'c', 'o', 'p', 'e', 'd'>;
   using list_field = ::fatal::sequence<char, 'l', 'i', 's', 't', '_', 'f', 'i', 'e', 'l', 'd'>;
   using m = ::fatal::sequence<char, 'm'>;
@@ -83,6 +99,7 @@ struct apache_thrift_fixtures_types_module__unique_strings_list {
   using one = ::fatal::sequence<char, 'o', 'n', 'e'>;
   using r = ::fatal::sequence<char, 'r'>;
   using small = ::fatal::sequence<char, 's', 'm', 'a', 'l', 'l'>;
+  using string_field = ::fatal::sequence<char, 's', 't', 'r', 'i', 'n', 'g', '_', 'f', 'i', 'e', 'l', 'd'>;
   using three = ::fatal::sequence<char, 't', 'h', 'r', 'e', 'e'>;
   using tiny = ::fatal::sequence<char, 't', 'i', 'n', 'y'>;
   using two = ::fatal::sequence<char, 't', 'w', 'o'>;
@@ -102,9 +119,11 @@ class module_tags {
     using has_bitwise_ops = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::has_bitwise_ops;
     using is_unscoped = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::is_unscoped;
     using MyForwardRefEnum = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyForwardRefEnum;
+    using MyEnumA = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyEnumA;
   };
 
   struct apache_thrift_fixtures_types_module__unique_unions_list {
+    using NoExceptMoveUnion = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoExceptMoveUnion;
   };
 
   struct apache_thrift_fixtures_types_module__unique_structs_list {
@@ -125,6 +144,9 @@ class module_tags {
     using ForwardUsageRoot = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageRoot;
     using ForwardUsageStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageStruct;
     using ForwardUsageByRef = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageByRef;
+    using NoexceptMoveEmpty = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveEmpty;
+    using NoexceptMoveSimpleStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct;
+    using NoexceptMoveComplexStruct = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct;
   };
 
   struct apache_thrift_fixtures_types_module__unique_constants_list {
@@ -159,10 +181,12 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   ::fatal::list<
     ::fatal::pair<has_bitwise_ops, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::has_bitwise_ops>,
     ::fatal::pair<is_unscoped, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::is_unscoped>,
-    ::fatal::pair<MyForwardRefEnum, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyForwardRefEnum>
+    ::fatal::pair<MyForwardRefEnum, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyForwardRefEnum>,
+    ::fatal::pair<MyEnumA, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyEnumA>
   >,
   // unions
   ::fatal::list<
+    ::fatal::pair<NoExceptMoveUnion, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoExceptMoveUnion>
   >,
   // structs
   ::fatal::list<
@@ -182,7 +206,10 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<AnnotatedTypes, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::AnnotatedTypes>,
     ::fatal::pair<ForwardUsageRoot, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageRoot>,
     ::fatal::pair<ForwardUsageStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageStruct>,
-    ::fatal::pair<ForwardUsageByRef, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageByRef>
+    ::fatal::pair<ForwardUsageByRef, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::ForwardUsageByRef>,
+    ::fatal::pair<NoexceptMoveEmpty, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveEmpty>,
+    ::fatal::pair<NoexceptMoveSimpleStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct>,
+    ::fatal::pair<NoexceptMoveComplexStruct, thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct>
   >,
   // constants
   ::fatal::list<

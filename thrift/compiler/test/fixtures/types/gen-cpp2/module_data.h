@@ -85,4 +85,29 @@ template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::MyForward
 };
 
 }} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+struct _MyEnumAEnumDataStorage {
+  using type = MyEnumA;
+  static constexpr const std::size_t size = 3;
+  static constexpr const std::array<MyEnumA, 3> values = {{
+    MyEnumA::fieldA,
+    MyEnumA::fieldB,
+    MyEnumA::fieldC,
+  }};
+  static constexpr const std::array<folly::StringPiece, 3> names = {{
+    "fieldA",
+    "fieldB",
+    "fieldC",
+  }};
+};
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<::apache::thrift::fixtures::types::MyEnumA> {
+  using storage_type = ::apache::thrift::fixtures::types::_MyEnumAEnumDataStorage;
+};
+
+}} // apache::thrift
 

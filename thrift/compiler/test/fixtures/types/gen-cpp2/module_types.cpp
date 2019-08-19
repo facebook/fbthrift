@@ -105,6 +105,37 @@ const _MyForwardRefEnum_EnumMapFactory::NamesToValuesMapType _MyForwardRefEnum_N
 
 }}}} // apache::thrift::fixtures::types
 
+namespace apache { namespace thrift {
+
+constexpr std::size_t const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::size;
+folly::Range<::apache::thrift::fixtures::types::MyEnumA const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::values = folly::range(::apache::thrift::fixtures::types::_MyEnumAEnumDataStorage::values);
+folly::Range<folly::StringPiece const*> const TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::names = folly::range(::apache::thrift::fixtures::types::_MyEnumAEnumDataStorage::names);
+
+char const* TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findName(type value) {
+  using factory = ::apache::thrift::fixtures::types::_MyEnumA_EnumMapFactory;
+  static folly::Indestructible<factory::ValuesToNamesMapType> const map{
+      factory::makeValuesToNamesMap()};
+  auto found = map->find(value);
+  return found == map->end() ? nullptr : found->second;
+}
+
+bool TEnumTraits<::apache::thrift::fixtures::types::MyEnumA>::findValue(char const* name, type* out) {
+  using factory = ::apache::thrift::fixtures::types::_MyEnumA_EnumMapFactory;
+  static folly::Indestructible<factory::NamesToValuesMapType> const map{
+      factory::makeNamesToValuesMap()};
+  auto found = map->find(name);
+  return found == map->end() ? false : (*out = found->second, true);
+}
+
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES = _MyEnumA_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES = _MyEnumA_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -357,6 +388,78 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::tran
   else if (_fname == "foo") {
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRUCT;
+  }
+}
+void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+}
+void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "boolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+}
+void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "MyBoolField") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_BOOL;
+  }
+  else if (_fname == "MyIntField") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I64;
+  }
+  else if (_fname == "MyStringField") {
+    fid = 3;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyStringField2") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField") {
+    fid = 5;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField2") {
+    fid = 6;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryField3") {
+    fid = 7;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "MyBinaryListField4") {
+    fid = 8;
+    _ftype = apache::thrift::protocol::T_LIST;
+  }
+  else if (_fname == "MyMapEnumAndInt") {
+    fid = 9;
+    _ftype = apache::thrift::protocol::T_MAP;
+  }
+}
+void TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "string_field") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+  else if (_fname == "i32_field") {
+    fid = 2;
+    _ftype = apache::thrift::protocol::T_I32;
   }
 }
 
@@ -1502,5 +1605,335 @@ template void ForwardUsageByRef::readNoXfer<>(apache::thrift::CompactProtocolRea
 template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
+
+void NoexceptMoveEmpty::__clear() {
+  // clear all fields
+}
+
+bool NoexceptMoveEmpty::operator==(const NoexceptMoveEmpty& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return true;
+}
+
+bool NoexceptMoveEmpty::operator<(const NoexceptMoveEmpty& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  return false;
+}
+
+
+void swap(NoexceptMoveEmpty& a, NoexceptMoveEmpty& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template void NoexceptMoveEmpty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void NoexceptMoveEmpty::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg) :
+    boolField(std::move(boolField__arg)) {
+  __isset.boolField = true;
+}
+
+void NoexceptMoveSimpleStruct::__clear() {
+  // clear all fields
+  boolField = 0;
+  __isset = {};
+}
+
+bool NoexceptMoveSimpleStruct::operator==(const NoexceptMoveSimpleStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.boolField == rhs.boolField)) {
+    return false;
+  }
+  return true;
+}
+
+bool NoexceptMoveSimpleStruct::operator<(const NoexceptMoveSimpleStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.boolField == rhs.boolField)) {
+    return lhs.boolField < rhs.boolField;
+  }
+  return false;
+}
+
+
+void swap(NoexceptMoveSimpleStruct& a, NoexceptMoveSimpleStruct& b) {
+  using ::std::swap;
+  swap(a.boolField, b.boolField);
+  swap(a.__isset, b.__isset);
+}
+
+template void NoexceptMoveSimpleStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void NoexceptMoveSimpleStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
+      MyBoolField(0),
+      MyIntField(12LL),
+      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
+      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
+  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")}}) {}
+
+
+NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
+
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
+    MyBoolField(std::move(MyBoolField__arg)),
+    MyIntField(std::move(MyIntField__arg)),
+    MyStringField(std::move(MyStringField__arg)),
+    MyStringField2(std::move(MyStringField2__arg)),
+    MyBinaryField(std::move(MyBinaryField__arg)),
+    MyBinaryField2(std::move(MyBinaryField2__arg)),
+    MyBinaryField3(std::move(MyBinaryField3__arg)),
+    MyBinaryListField4(std::move(MyBinaryListField4__arg)),
+    MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
+  __isset.MyBoolField = true;
+  __isset.MyIntField = true;
+  __isset.MyStringField = true;
+  __isset.MyStringField2 = true;
+  __isset.MyBinaryField = true;
+  __isset.MyBinaryField2 = true;
+  __isset.MyBinaryListField4 = true;
+  __isset.MyMapEnumAndInt = true;
+}
+
+void NoexceptMoveComplexStruct::__clear() {
+  // clear all fields
+  MyBoolField = 0;
+  MyIntField = 12LL;
+  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
+  MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryListField4.clear();
+  MyMapEnumAndInt.clear();
+  __isset = {};
+}
+
+bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
+    return false;
+  }
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
+    return false;
+  }
+  if (!(lhs.MyStringField == rhs.MyStringField)) {
+    return false;
+  }
+  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
+    return false;
+  }
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
+    return false;
+  }
+  if (lhs.__isset.MyBinaryField2 != rhs.__isset.MyBinaryField2) {
+    return false;
+  }
+  if (lhs.__isset.MyBinaryField2) {
+    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
+      return false;
+    }
+  }
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
+    return false;
+  }
+  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
+    return false;
+  }
+  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
+    return false;
+  }
+  return true;
+}
+
+bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
+    return lhs.MyBoolField < rhs.MyBoolField;
+  }
+  if (!(lhs.MyIntField == rhs.MyIntField)) {
+    return lhs.MyIntField < rhs.MyIntField;
+  }
+  if (!(lhs.MyStringField == rhs.MyStringField)) {
+    return lhs.MyStringField < rhs.MyStringField;
+  }
+  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
+    return lhs.MyStringField2 < rhs.MyStringField2;
+  }
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField, rhs.MyBinaryField);
+  }
+  if (lhs.__isset.MyBinaryField2 != rhs.__isset.MyBinaryField2) {
+    return lhs.__isset.MyBinaryField2 < rhs.__isset.MyBinaryField2;
+  }
+  if (lhs.__isset.MyBinaryField2) {
+    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
+      return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2);
+    }
+  }
+  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
+    return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
+  }
+  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
+    return lhs.MyBinaryListField4 < rhs.MyBinaryListField4;
+  }
+  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
+    return lhs.MyMapEnumAndInt < rhs.MyMapEnumAndInt;
+  }
+  return false;
+}
+
+const ::std::vector<::std::string>& NoexceptMoveComplexStruct::get_MyBinaryListField4() const& {
+  return MyBinaryListField4;
+}
+
+::std::vector<::std::string> NoexceptMoveComplexStruct::get_MyBinaryListField4() && {
+  return std::move(MyBinaryListField4);
+}
+
+const ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& NoexceptMoveComplexStruct::get_MyMapEnumAndInt() const& {
+  return MyMapEnumAndInt;
+}
+
+::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> NoexceptMoveComplexStruct::get_MyMapEnumAndInt() && {
+  return std::move(MyMapEnumAndInt);
+}
+
+
+void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b) {
+  using ::std::swap;
+  swap(a.MyBoolField, b.MyBoolField);
+  swap(a.MyIntField, b.MyIntField);
+  swap(a.MyStringField, b.MyStringField);
+  swap(a.MyStringField2, b.MyStringField2);
+  swap(a.MyBinaryField, b.MyBinaryField);
+  swap(a.MyBinaryField2, b.MyBinaryField2);
+  swap(a.MyBinaryField3, b.MyBinaryField3);
+  swap(a.MyBinaryListField4, b.MyBinaryListField4);
+  swap(a.MyMapEnumAndInt, b.MyMapEnumAndInt);
+  swap(a.__isset, b.__isset);
+}
+
+template void NoexceptMoveComplexStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NoexceptMoveComplexStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void NoexceptMoveComplexStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NoexceptMoveComplexStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+void NoExceptMoveUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::string_field:
+    {
+      destruct(value_.string_field);
+      break;
+    }
+    case Type::i32_field:
+    {
+      destruct(value_.i32_field);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool NoExceptMoveUnion::operator==(const NoExceptMoveUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::string_field:
+    {
+      return value_.string_field == rhs.value_.string_field;
+    }
+    case Type::i32_field:
+    {
+      return value_.i32_field == rhs.value_.i32_field;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+bool NoExceptMoveUnion::operator<(const NoExceptMoveUnion& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (lhs.type_ != rhs.type_) {
+    return lhs.type_ < rhs.type_;
+  }
+  switch (lhs.type_) {
+    case Type::string_field:
+      return lhs.value_.string_field < rhs.value_.string_field;
+    case Type::i32_field:
+      return lhs.value_.i32_field < rhs.value_.i32_field;
+    default:
+      return false;
+  }
+}
+
+void swap(NoExceptMoveUnion& a, NoExceptMoveUnion& b) {
+  NoExceptMoveUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t NoExceptMoveUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types

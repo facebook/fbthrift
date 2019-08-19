@@ -18,4 +18,204 @@
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+namespace thrift_fatal_impl_detail {
+
+struct NoExceptMoveUnion_Type_enum_traits {
+  using type = ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type;
+  using name = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::Type;
+
+  struct Type__struct_unique_strings_list {
+    using string_field = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::string_field;
+    using i32_field = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::i32_field;
+  };
+
+  struct Type__struct_enum_members_string_field {
+    using name = Type__struct_unique_strings_list::string_field;
+    using value = std::integral_constant<type, type::string_field>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+  };
+
+  struct Type__struct_enum_members_i32_field {
+    using name = Type__struct_unique_strings_list::i32_field;
+    using value = std::integral_constant<type, type::i32_field>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+  };
+
+  struct Type__struct_enum_members {
+    using string_field = Type__struct_enum_members_string_field;
+    using i32_field = Type__struct_enum_members_i32_field;
+  };
+
+  using member = Type__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::string_field,
+      member::i32_field
+  >;
+
+  class annotations {
+    public:
+    using keys = void;
+    using values = void;
+    using map = ::fatal::list<
+    >;
+  };
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      case type::string_field: return "string_field";
+      case type::i32_field: return "i32_field";
+      default: return fallback;
+    }
+  }
+};
+
+} // thrift_fatal_impl_detail
+
+FATAL_REGISTER_ENUM_TRAITS(
+  ::apache::thrift::fixtures::types::thrift_fatal_impl_detail::NoExceptMoveUnion_Type_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<::apache::thrift::fixtures::types::thrift_fatal_impl_detail::NoExceptMoveUnion_Type_enum_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
+
+namespace thrift_fatal_impl_detail {
+
+class NoExceptMoveUnion_variant_traits {
+  struct NoExceptMoveUnion__struct_unique_identifiers_list {
+    using string_field = std::integral_constant<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type, ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::string_field>;
+    using i32_field = std::integral_constant<::apache::thrift::fixtures::types::NoExceptMoveUnion::Type, ::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::i32_field>;
+  };
+
+  struct NoExceptMoveUnion__struct_unique_getters_list {
+    struct string_field {
+      decltype(auto) operator ()(NoExceptMoveUnion const &variant) const {
+        return variant.get_string_field();
+      }
+      decltype(auto) operator ()(NoExceptMoveUnion &variant) const {
+        return variant.mutable_string_field();
+      }
+      decltype(auto) operator ()(NoExceptMoveUnion &&variant) const {
+        return std::move(variant).move_string_field();
+      }
+    };
+
+    struct i32_field {
+      decltype(auto) operator ()(NoExceptMoveUnion const &variant) const {
+        return variant.get_i32_field();
+      }
+      decltype(auto) operator ()(NoExceptMoveUnion &variant) const {
+        return variant.mutable_i32_field();
+      }
+      decltype(auto) operator ()(NoExceptMoveUnion &&variant) const {
+        return std::move(variant).move_i32_field();
+      }
+    };
+  };
+
+  struct NoExceptMoveUnion__struct_unique_setters_list {
+    struct string_field {
+      template <typename... Args>
+      decltype(auto) operator ()(NoExceptMoveUnion &variant, Args &&...args) const {
+        return variant.set_string_field(std::forward<Args>(args)...);
+      }
+    };
+
+    struct i32_field {
+      template <typename... Args>
+      decltype(auto) operator ()(NoExceptMoveUnion &variant, Args &&...args) const {
+        return variant.set_i32_field(std::forward<Args>(args)...);
+      }
+    };
+  };
+
+  public:
+  using type = ::apache::thrift::fixtures::types::NoExceptMoveUnion;
+  using name = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoExceptMoveUnion;
+  using id = type::Type;
+  using ids = NoExceptMoveUnion__struct_unique_identifiers_list;
+  using descriptors = ::fatal::list<
+    ::fatal::variant_member_descriptor<
+      ::std::string,
+      NoExceptMoveUnion__struct_unique_identifiers_list::string_field,
+      NoExceptMoveUnion__struct_unique_getters_list::string_field,
+      NoExceptMoveUnion__struct_unique_setters_list::string_field,
+      ::apache::thrift::reflected_variant_member_metadata<
+        thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::string_field,
+        1,
+        ::apache::thrift::type_class::string
+      >
+    >,
+    ::fatal::variant_member_descriptor<
+      int32_t,
+      NoExceptMoveUnion__struct_unique_identifiers_list::i32_field,
+      NoExceptMoveUnion__struct_unique_getters_list::i32_field,
+      NoExceptMoveUnion__struct_unique_setters_list::i32_field,
+      ::apache::thrift::reflected_variant_member_metadata<
+        thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::i32_field,
+        2,
+        ::apache::thrift::type_class::integral
+      >
+    >
+  >;
+
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using cpp_noexcept_move = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp_noexcept_move;
+    };
+
+    struct annotations__unique_annotations_values {
+      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      ::apache::thrift::annotation<
+        keys::cpp_noexcept_move,
+        values::cpp_noexcept_move
+      >
+    >;
+  };
+
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
+
+  static void clear(type &variant) {
+    return variant.__clear();
+  }
+};
+
+} // thrift_fatal_impl_detail
+FATAL_REGISTER_VARIANT_TRAITS(
+  ::apache::thrift::fixtures::types::thrift_fatal_impl_detail::NoExceptMoveUnion_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<::apache::thrift::fixtures::types::thrift_fatal_impl_detail::NoExceptMoveUnion_variant_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(2244191815193815340ull)
+  >
+);
 }}}} // apache::thrift::fixtures::types

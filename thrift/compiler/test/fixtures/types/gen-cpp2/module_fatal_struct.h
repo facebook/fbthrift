@@ -48,6 +48,14 @@ struct apache_thrift_fixtures_types_module__struct_unique_data_member_getters_li
   FATAL_DATA_MEMBER_GETTER(ForwardUsageStruct, ForwardUsageStruct);
   FATAL_DATA_MEMBER_GETTER(ForwardUsageByRef, ForwardUsageByRef);
   FATAL_DATA_MEMBER_GETTER(foo, foo);
+  FATAL_DATA_MEMBER_GETTER(boolField, boolField);
+  FATAL_DATA_MEMBER_GETTER(MyBoolField, MyBoolField);
+  FATAL_DATA_MEMBER_GETTER(MyStringField2, MyStringField2);
+  FATAL_DATA_MEMBER_GETTER(MyBinaryField, MyBinaryField);
+  FATAL_DATA_MEMBER_GETTER(MyBinaryField2, MyBinaryField2);
+  FATAL_DATA_MEMBER_GETTER(MyBinaryField3, MyBinaryField3);
+  FATAL_DATA_MEMBER_GETTER(MyBinaryListField4, MyBinaryListField4);
+  FATAL_DATA_MEMBER_GETTER(MyMapEnumAndInt, MyMapEnumAndInt);
 };
 
 
@@ -218,6 +226,54 @@ struct apache_thrift_fixtures_types_module__struct_unique_member_pod_list {
 
   struct apache_thrift_fixtures_types_module_struct_member_pod_foo {
     T_apache_thrift_fixtures_types_module_struct_member_pod foo;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_boolField {
+    T_apache_thrift_fixtures_types_module_struct_member_pod boolField;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyBoolField {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyBoolField;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyStringField2 {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyStringField2;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryField {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyBinaryField;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryField2 {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyBinaryField2;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryField3 {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyBinaryField3;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryListField4 {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyBinaryListField4;
+  };
+
+  template <typename T_apache_thrift_fixtures_types_module_struct_member_pod>
+
+  struct apache_thrift_fixtures_types_module_struct_member_pod_MyMapEnumAndInt {
+    T_apache_thrift_fixtures_types_module_struct_member_pod MyMapEnumAndInt;
   };
 
 };
@@ -1407,6 +1463,311 @@ struct ForwardUsageByRef_apache_thrift_fixtures_types_module__struct_unique_memb
   >;
 };
 
+class NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    public:
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using cpp_noexcept_move = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp_noexcept_move;
+    };
+
+    struct annotations__unique_annotations_values {
+      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      ::apache::thrift::annotation<
+        keys::cpp_noexcept_move,
+        values::cpp_noexcept_move
+      >
+    >;
+  };
+
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+};
+
+class NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    class NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_boolField {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    public:
+    using boolField = ::apache::thrift::reflected_annotations<NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_boolField>;
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using cpp_noexcept_move = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp_noexcept_move;
+    };
+
+    struct annotations__unique_annotations_values {
+      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      ::apache::thrift::annotation<
+        keys::cpp_noexcept_move,
+        values::cpp_noexcept_move
+      >
+    >;
+  };
+
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+  using boolField = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::boolField,
+    int64_t,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::boolField,
+    ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_boolField,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::boolField>,
+    NoexceptMoveSimpleStruct
+  >;
+};
+
+class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations {
+  class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members {
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBoolField {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyIntField {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyStringField {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyStringField2 {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryField {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryField2 {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryField3 {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryListField4 {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    class NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyMapEnumAndInt {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
+
+    public:
+    using MyBoolField = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBoolField>;
+    using MyIntField = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyIntField>;
+    using MyStringField = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyStringField>;
+    using MyStringField2 = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyStringField2>;
+    using MyBinaryField = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryField>;
+    using MyBinaryField2 = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryField2>;
+    using MyBinaryField3 = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryField3>;
+    using MyBinaryListField4 = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyBinaryListField4>;
+    using MyMapEnumAndInt = ::apache::thrift::reflected_annotations<NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members_MyMapEnumAndInt>;
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {
+      using cpp_noexcept_move = thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::cpp_noexcept_move;
+    };
+
+    struct annotations__unique_annotations_values {
+      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
+    };
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::list<
+      ::apache::thrift::annotation<
+        keys::cpp_noexcept_move,
+        values::cpp_noexcept_move
+      >
+    >;
+  };
+
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations_members;
+};
+
+struct NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list {
+  using MyBoolField = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyBoolField,
+    bool,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyBoolField,
+    ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyBoolField,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyBoolField>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyIntField = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyIntField,
+    int64_t,
+    2,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyIntField,
+    ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyIntField,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyIntField>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyStringField = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStringField,
+    ::std::string,
+    3,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyStringField,
+    ::apache::thrift::type_class::string,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyStringField,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyStringField>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyStringField2 = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyStringField2,
+    ::std::string,
+    4,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyStringField2,
+    ::apache::thrift::type_class::string,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyStringField2,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyStringField2>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyBinaryField = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyBinaryField,
+    ::std::string,
+    5,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyBinaryField,
+    ::apache::thrift::type_class::binary,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryField,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyBinaryField>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyBinaryField2 = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyBinaryField2,
+    ::std::string,
+    6,
+    ::apache::thrift::optionality::optional,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyBinaryField2,
+    ::apache::thrift::type_class::binary,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryField2,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyBinaryField2>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyBinaryField3 = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyBinaryField3,
+    ::std::string,
+    7,
+    ::apache::thrift::optionality::required,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyBinaryField3,
+    ::apache::thrift::type_class::binary,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryField3,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyBinaryField3>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyBinaryListField4 = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyBinaryListField4,
+    ::std::vector<::std::string>,
+    8,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyBinaryListField4,
+    ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyBinaryListField4,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyBinaryListField4>,
+    NoexceptMoveComplexStruct
+  >;
+  using MyMapEnumAndInt = ::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::MyMapEnumAndInt,
+    ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>,
+    9,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_data_member_getters_list::MyMapEnumAndInt,
+    ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>,
+    thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__struct_unique_member_pod_list::apache_thrift_fixtures_types_module_struct_member_pod_MyMapEnumAndInt,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members::MyMapEnumAndInt>,
+    NoexceptMoveComplexStruct
+  >;
+};
+
 
 
 } // thrift_fatal_impl_detail
@@ -1666,6 +2027,55 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ForwardUsageByRef_apache_thrift_fixtures_types_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(7502886793208594252ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  NoexceptMoveEmpty,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveEmpty,
+  thrift_fatal_impl_detail::NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+  >,
+  thrift_fatal_impl_detail::NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveEmpty_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(11676134689775956652ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  NoexceptMoveSimpleStruct,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveSimpleStruct,
+  thrift_fatal_impl_detail::NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+      thrift_fatal_impl_detail::NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::boolField
+  >,
+  thrift_fatal_impl_detail::NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveSimpleStruct_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(18391302915442473772ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  NoexceptMoveComplexStruct,
+  thrift_fatal_impl_detail::apache_thrift_fixtures_types_module__unique_strings_list::NoexceptMoveComplexStruct,
+  thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list,
+  ::fatal::list<
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyBoolField,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyIntField,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyStringField,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyStringField2,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyBinaryField,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyBinaryField2,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyBinaryField3,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyBinaryListField4,
+      thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_member_info_list::MyMapEnumAndInt
+  >,
+  thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::NoexceptMoveComplexStruct_apache_thrift_fixtures_types_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(4890647338471635948ull)
   >
 );
 

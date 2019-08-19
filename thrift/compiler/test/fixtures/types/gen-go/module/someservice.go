@@ -205,10 +205,10 @@ func (p *SomeServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunctio
 }
 
 func NewSomeServiceProcessor(handler SomeService) *SomeServiceProcessor {
-  self17 := &SomeServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
-  self17.processorMap["bounce_map"] = &someServiceProcessorBounceMap{handler:handler}
-  self17.processorMap["binary_keyed_map"] = &someServiceProcessorBinaryKeyedMap{handler:handler}
-  return self17
+  self20 := &SomeServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self20.processorMap["bounce_map"] = &someServiceProcessorBounceMap{handler:handler}
+  self20.processorMap["binary_keyed_map"] = &someServiceProcessorBinaryKeyedMap{handler:handler}
+  return self20
 }
 
 type someServiceProcessorBounceMap struct {
@@ -369,19 +369,19 @@ func (p *SomeServiceBounceMapArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(include0.SomeMap, size)
   p.M =  tMap
   for i := 0; i < size; i ++ {
-var _key19 int32
+var _key22 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key19 = v
+    _key22 = v
 }
-var _val20 string
+var _val23 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val20 = v
+    _val23 = v
 }
-    p.M[_key19] = _val20
+    p.M[_key22] = _val23
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -487,19 +487,19 @@ func (p *SomeServiceBounceMapResult)  ReadField0(iprot thrift.Protocol) error {
   tMap := make(include0.SomeMap, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key21 int32
+var _key24 int32
     if v, err := iprot.ReadI32(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key21 = v
+    _key24 = v
 }
-var _val22 string
+var _val25 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val22 = v
+    _val25 = v
 }
-    p.Success[_key21] = _val22
+    p.Success[_key24] = _val25
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)
@@ -602,13 +602,13 @@ func (p *SomeServiceBinaryKeyedMapArgs)  ReadField1(iprot thrift.Protocol) error
   tSlice := make([]int64, 0, size)
   p.R =  tSlice
   for i := 0; i < size; i ++ {
-var _elem23 int64
+var _elem26 int64
     if v, err := iprot.ReadI64(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _elem23 = v
+    _elem26 = v
 }
-    p.R = append(p.R, _elem23)
+    p.R = append(p.R, _elem26)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -712,19 +712,19 @@ func (p *SomeServiceBinaryKeyedMapResult)  ReadField0(iprot thrift.Protocol) err
   tMap := make(map[string]int64, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key24 string
+var _key27 string
     if v, err := iprot.ReadString(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _key24 = v
+    _key27 = v
 }
-var _val25 int64
+var _val28 int64
     if v, err := iprot.ReadI64(); err != nil {
     return thrift.PrependError("error reading field 0: ", err)
 } else {
-    _val25 = v
+    _val28 = v
 }
-    p.Success[_key24] = _val25
+    p.Success[_key27] = _val28
   }
   if err := iprot.ReadMapEnd(); err != nil {
     return thrift.PrependError("error reading map end: ", err)

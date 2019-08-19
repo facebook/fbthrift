@@ -37,6 +37,16 @@ enum MyForwardRefEnum: int {
 }
 
 /**
+ * Original thrift enum:-
+ * MyEnumA
+ */
+enum MyEnumA: int {
+  fieldA = 1;
+  fieldB = 2;
+  fieldC = 4;
+}
+
+/**
  * Original thrift struct:-
  * decorated_struct
  */
@@ -1481,6 +1491,430 @@ class ForwardUsageByRef implements \IThriftStruct {
       $_tmp1 = new ForwardUsageRoot();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * NoexceptMoveEmpty
+ */
+class NoexceptMoveEmpty implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  <<__Rx>>
+  public function __construct(  ) {
+  }
+
+  public function getName(): string {
+    return 'NoexceptMoveEmpty';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * NoexceptMoveSimpleStruct
+ */
+class NoexceptMoveSimpleStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'boolField',
+      'type' => \TType::I64,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'boolField' => 1,
+  ];
+  const int STRUCTURAL_ID = 7058232826271171943;
+  /**
+   * Original thrift field:-
+   * 1: i64 boolField
+   */
+  public int $boolField;
+
+  <<__Rx>>
+  public function __construct(?int $boolField = null  ) {
+    if ($boolField === null) {
+      $this->boolField = 0;
+    } else {
+      $this->boolField = $boolField;
+    }
+  }
+
+  public function getName(): string {
+    return 'NoexceptMoveSimpleStruct';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'boolField') !== null) {
+      $this->boolField = $parsed['boolField'];
+    }    
+  }
+
+}
+
+/**
+ * Original thrift struct:-
+ * NoexceptMoveComplexStruct
+ */
+class NoexceptMoveComplexStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'MyBoolField',
+      'type' => \TType::BOOL,
+    ),
+    2 => shape(
+      'var' => 'MyIntField',
+      'type' => \TType::I64,
+    ),
+    3 => shape(
+      'var' => 'MyStringField',
+      'type' => \TType::STRING,
+    ),
+    4 => shape(
+      'var' => 'MyStringField2',
+      'type' => \TType::STRING,
+    ),
+    5 => shape(
+      'var' => 'MyBinaryField',
+      'type' => \TType::STRING,
+    ),
+    6 => shape(
+      'var' => 'MyBinaryField2',
+      'type' => \TType::STRING,
+    ),
+    7 => shape(
+      'var' => 'MyBinaryField3',
+      'type' => \TType::STRING,
+    ),
+    8 => shape(
+      'var' => 'MyBinaryListField4',
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
+    9 => shape(
+      'var' => 'MyMapEnumAndInt',
+      'type' => \TType::MAP,
+      'ktype' => \TType::I32,
+      'vtype' => \TType::STRING,
+      'key' => shape(
+        'type' => \TType::I32,
+        'enum' => MyEnumA::class,
+      ),
+      'val' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'MyBoolField' => 1,
+    'MyIntField' => 2,
+    'MyStringField' => 3,
+    'MyStringField2' => 4,
+    'MyBinaryField' => 5,
+    'MyBinaryField2' => 6,
+    'MyBinaryField3' => 7,
+    'MyBinaryListField4' => 8,
+    'MyMapEnumAndInt' => 9,
+  ];
+  const int STRUCTURAL_ID = 8958221528844030164;
+  /**
+   * Original thrift field:-
+   * 1: bool MyBoolField
+   */
+  public bool $MyBoolField;
+  /**
+   * Original thrift field:-
+   * 2: i64 MyIntField
+   */
+  public int $MyIntField;
+  /**
+   * Original thrift field:-
+   * 3: string MyStringField
+   */
+  public string $MyStringField;
+  /**
+   * Original thrift field:-
+   * 4: string MyStringField2
+   */
+  public string $MyStringField2;
+  /**
+   * Original thrift field:-
+   * 5: binary MyBinaryField
+   */
+  public string $MyBinaryField;
+  /**
+   * Original thrift field:-
+   * 6: binary MyBinaryField2
+   */
+  public ?string $MyBinaryField2;
+  /**
+   * Original thrift field:-
+   * 7: binary MyBinaryField3
+   */
+  public string $MyBinaryField3;
+  /**
+   * Original thrift field:-
+   * 8: list<binary> MyBinaryListField4
+   */
+  public Vector<string> $MyBinaryListField4;
+  /**
+   * Original thrift field:-
+   * 9: map<enum module.MyEnumA, string> MyMapEnumAndInt
+   */
+  public Map<MyEnumA, string> $MyMapEnumAndInt;
+
+  <<__Rx>>
+  public function __construct(?bool $MyBoolField = null, ?int $MyIntField = null, ?string $MyStringField = null, ?string $MyStringField2 = null, ?string $MyBinaryField = null, ?string $MyBinaryField2 = null, ?string $MyBinaryField3 = null, ?Vector<string> $MyBinaryListField4 = null, ?Map<MyEnumA, string> $MyMapEnumAndInt = null  ) {
+    if ($MyBoolField === null) {
+      $this->MyBoolField = false;
+    } else {
+      $this->MyBoolField = $MyBoolField;
+    }
+    if ($MyIntField === null) {
+      $this->MyIntField = 12;
+    } else {
+      $this->MyIntField = $MyIntField;
+    }
+    if ($MyStringField === null) {
+      $this->MyStringField = "test";
+    } else {
+      $this->MyStringField = $MyStringField;
+    }
+    if ($MyStringField2 === null) {
+      $this->MyStringField2 = '';
+    } else {
+      $this->MyStringField2 = $MyStringField2;
+    }
+    if ($MyBinaryField === null) {
+      $this->MyBinaryField = '';
+    } else {
+      $this->MyBinaryField = $MyBinaryField;
+    }
+    $this->MyBinaryField2 = $MyBinaryField2;
+    if ($MyBinaryField3 === null) {
+      $this->MyBinaryField3 = '';
+    } else {
+      $this->MyBinaryField3 = $MyBinaryField3;
+    }
+    if ($MyBinaryListField4 === null) {
+      $this->MyBinaryListField4 = Vector {};
+    } else {
+      $this->MyBinaryListField4 = $MyBinaryListField4;
+    }
+    if ($MyMapEnumAndInt === null) {
+      $this->MyMapEnumAndInt = Map {
+      MyEnumA::fieldA => "fieldA",
+      MyEnumA::fieldC => "fieldC",
+    };
+    } else {
+      $this->MyMapEnumAndInt = $MyMapEnumAndInt;
+    }
+  }
+
+  public function getName(): string {
+    return 'NoexceptMoveComplexStruct';
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'MyBoolField') !== null) {
+      $this->MyBoolField = $parsed['MyBoolField'];
+    }    
+    if (idx($parsed, 'MyIntField') !== null) {
+      $this->MyIntField = $parsed['MyIntField'];
+    }    
+    if (idx($parsed, 'MyStringField') !== null) {
+      $this->MyStringField = $parsed['MyStringField'];
+    }    
+    if (idx($parsed, 'MyStringField2') !== null) {
+      $this->MyStringField2 = $parsed['MyStringField2'];
+    }    
+    if (idx($parsed, 'MyBinaryField') !== null) {
+      $this->MyBinaryField = $parsed['MyBinaryField'];
+    }    
+    if (idx($parsed, 'MyBinaryField2') !== null) {
+      $this->MyBinaryField2 = $parsed['MyBinaryField2'];
+    }    
+    if (idx($parsed, 'MyBinaryField3') !== null) {
+      $this->MyBinaryField3 = $parsed['MyBinaryField3'];
+    } else {
+      throw new \TProtocolException("Required field MyBinaryField3 cannot be found.");
+    }    
+    if (idx($parsed, 'MyBinaryListField4') !== null) {
+      $_json3 = $parsed['MyBinaryListField4'];
+      $_container4 = Vector {};
+      foreach($_json3 as $_key1 => $_value2) {
+        $_elem5 = '';
+        $_elem5 = $_value2;
+        $_container4 []= $_elem5;
+      }
+      $this->MyBinaryListField4 = $_container4;
+    }    
+    if (idx($parsed, 'MyMapEnumAndInt') !== null) {
+      $_json9 = $parsed['MyMapEnumAndInt'];
+      $_container10 = Map {};
+      foreach($_json9 as $_key7 => $_value8) {
+        $_value11 = '';
+        $_value11 = $_value8;
+        $_container10[$_key7] = $_value11;
+      }
+      $this->MyMapEnumAndInt = $_container10;
+    }    
+  }
+
+}
+
+enum NoExceptMoveUnionEnum: int {
+  _EMPTY_ = 0;
+  string_field = 1;
+  i32_field = 2;
+}
+
+/**
+ * Original thrift struct:-
+ * NoExceptMoveUnion
+ */
+class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUnionEnum> {
+  use \ThriftUnionSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'string_field',
+      'union' => true,
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'i32_field',
+      'union' => true,
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'string_field' => 1,
+    'i32_field' => 2,
+  ];
+  const int STRUCTURAL_ID = 5659539827624892912;
+  /**
+   * Original thrift field:-
+   * 1: string string_field
+   */
+  public ?string $string_field;
+  /**
+   * Original thrift field:-
+   * 2: i32 i32_field
+   */
+  public ?int $i32_field;
+  protected NoExceptMoveUnionEnum $_type = NoExceptMoveUnionEnum::_EMPTY_;
+
+  <<__Rx>>
+  public function __construct(?string $string_field = null, ?int $i32_field = null  ) {
+    $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
+    if ($string_field !== null) {
+      $this->string_field = $string_field;
+      $this->_type = NoExceptMoveUnionEnum::string_field;
+    }
+    if ($i32_field !== null) {
+      $this->i32_field = $i32_field;
+      $this->_type = NoExceptMoveUnionEnum::i32_field;
+    }
+  }
+
+  public function getName(): string {
+    return 'NoExceptMoveUnion';
+  }
+
+  public function getType(): NoExceptMoveUnionEnum {
+    return $this->_type;
+  }
+
+  public function set_string_field(string $string_field): this {
+    $this->_type = NoExceptMoveUnionEnum::string_field;
+    $this->string_field = $string_field;
+    return $this;
+  }
+
+  public function get_string_field(): string {
+    invariant(
+      $this->_type === NoExceptMoveUnionEnum::string_field,
+      'get_string_field called on an instance of NoExceptMoveUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->string_field);
+  }
+
+  public function set_i32_field(int $i32_field): this {
+    $this->_type = NoExceptMoveUnionEnum::i32_field;
+    $this->i32_field = $i32_field;
+    return $this;
+  }
+
+  public function get_i32_field(): int {
+    invariant(
+      $this->_type === NoExceptMoveUnionEnum::i32_field,
+      'get_i32_field called on an instance of NoExceptMoveUnion whose current type is %s',
+      $this->_type,
+    );
+    return \nullthrows($this->i32_field);
+  }
+
+  public function readFromJson(string $jsonText): void {
+    $this->_type = NoExceptMoveUnionEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !is_array($parsed)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'string_field') !== null) {
+      $this->string_field = $parsed['string_field'];
+      $this->_type = NoExceptMoveUnionEnum::string_field;
+    }    
+    if (idx($parsed, 'i32_field') !== null) {
+      $_tmp0 = (int)$parsed['i32_field'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->i32_field = (int)$_tmp0;
+      }
+      $this->_type = NoExceptMoveUnionEnum::i32_field;
     }    
   }
 

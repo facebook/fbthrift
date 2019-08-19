@@ -277,6 +277,12 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         bint operator!=(cMyForwardRefEnum&)
     cMyForwardRefEnum MyForwardRefEnum__ZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::ZERO"
     cMyForwardRefEnum MyForwardRefEnum__NONZERO "::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO"
+    cdef cppclass cMyEnumA "::apache::thrift::fixtures::types::MyEnumA":
+        bint operator==(cMyEnumA&)
+        bint operator!=(cMyEnumA&)
+    cMyEnumA MyEnumA__fieldA "::apache::thrift::fixtures::types::MyEnumA::fieldA"
+    cMyEnumA MyEnumA__fieldB "::apache::thrift::fixtures::types::MyEnumA::fieldB"
+    cMyEnumA MyEnumA__fieldC "::apache::thrift::fixtures::types::MyEnumA::fieldC"
 
 
 
@@ -304,6 +310,15 @@ cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
 
 
 cdef cMyForwardRefEnum MyForwardRefEnum_to_cpp(MyForwardRefEnum value)
+
+
+
+
+cdef class MyEnumA(thrift.py3.types.CompiledEnum):
+    pass
+
+
+cdef cMyEnumA MyEnumA_to_cpp(MyEnumA value)
 
 
 
@@ -342,6 +357,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
     cdef cppclass cForwardUsageStruct "::apache::thrift::fixtures::types::ForwardUsageStruct"
     # Forward Declaration
     cdef cppclass cForwardUsageByRef "::apache::thrift::fixtures::types::ForwardUsageByRef"
+    # Forward Declaration
+    cdef cppclass cNoexceptMoveEmpty "::apache::thrift::fixtures::types::NoexceptMoveEmpty"
+    # Forward Declaration
+    cdef cppclass cNoexceptMoveSimpleStruct "::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct"
+    # Forward Declaration
+    cdef cppclass cNoexceptMoveComplexStruct "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct"
+    # Forward Declaration
+    cdef cppclass cNoExceptMoveUnion "::apache::thrift::fixtures::types::NoExceptMoveUnion"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":
@@ -620,6 +643,86 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         cForwardUsageRoot foo
         cForwardUsageByRef__isset __isset
 
+    cdef cppclass cNoexceptMoveEmpty__isset "::apache::thrift::fixtures::types::NoexceptMoveEmpty::__isset":
+        pass
+
+    cdef cppclass cNoexceptMoveEmpty "::apache::thrift::fixtures::types::NoexceptMoveEmpty":
+        cNoexceptMoveEmpty() except +
+        cNoexceptMoveEmpty(const cNoexceptMoveEmpty&) except +
+        bint operator==(cNoexceptMoveEmpty&)
+        bint operator!=(cNoexceptMoveEmpty&)
+        bint operator<(cNoexceptMoveEmpty&)
+        bint operator>(cNoexceptMoveEmpty&)
+        bint operator<=(cNoexceptMoveEmpty&)
+        bint operator>=(cNoexceptMoveEmpty&)
+        cNoexceptMoveEmpty__isset __isset
+
+    cdef cppclass cNoexceptMoveSimpleStruct__isset "::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct::__isset":
+        bint boolField
+
+    cdef cppclass cNoexceptMoveSimpleStruct "::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct":
+        cNoexceptMoveSimpleStruct() except +
+        cNoexceptMoveSimpleStruct(const cNoexceptMoveSimpleStruct&) except +
+        bint operator==(cNoexceptMoveSimpleStruct&)
+        bint operator!=(cNoexceptMoveSimpleStruct&)
+        bint operator<(cNoexceptMoveSimpleStruct&)
+        bint operator>(cNoexceptMoveSimpleStruct&)
+        bint operator<=(cNoexceptMoveSimpleStruct&)
+        bint operator>=(cNoexceptMoveSimpleStruct&)
+        int64_t boolField
+        cNoexceptMoveSimpleStruct__isset __isset
+
+    cdef cppclass cNoexceptMoveComplexStruct__isset "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct::__isset":
+        bint MyBoolField
+        bint MyIntField
+        bint MyStringField
+        bint MyStringField2
+        bint MyBinaryField
+        bint MyBinaryField2
+        bint MyBinaryField3
+        bint MyBinaryListField4
+        bint MyMapEnumAndInt
+
+    cdef cppclass cNoexceptMoveComplexStruct "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct":
+        cNoexceptMoveComplexStruct() except +
+        cNoexceptMoveComplexStruct(const cNoexceptMoveComplexStruct&) except +
+        bint operator==(cNoexceptMoveComplexStruct&)
+        bint operator!=(cNoexceptMoveComplexStruct&)
+        bint operator<(cNoexceptMoveComplexStruct&)
+        bint operator>(cNoexceptMoveComplexStruct&)
+        bint operator<=(cNoexceptMoveComplexStruct&)
+        bint operator>=(cNoexceptMoveComplexStruct&)
+        cbool MyBoolField
+        int64_t MyIntField
+        string MyStringField
+        string MyStringField2
+        string MyBinaryField
+        string MyBinaryField2
+        string MyBinaryField3
+        vector[string] MyBinaryListField4
+        cmap[cMyEnumA,string] MyMapEnumAndInt
+        cNoexceptMoveComplexStruct__isset __isset
+
+    cdef enum cNoExceptMoveUnion__type "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type":
+        cNoExceptMoveUnion__type___EMPTY__ "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::__EMPTY__",
+        cNoExceptMoveUnion__type_string_field "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::string_field",
+        cNoExceptMoveUnion__type_i32_field "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::i32_field",
+
+    cdef cppclass cNoExceptMoveUnion "::apache::thrift::fixtures::types::NoExceptMoveUnion":
+        cNoExceptMoveUnion() except +
+        cNoExceptMoveUnion(const cNoExceptMoveUnion&) except +
+        bint operator==(cNoExceptMoveUnion&)
+        bint operator!=(cNoExceptMoveUnion&)
+        bint operator<(cNoExceptMoveUnion&)
+        bint operator>(cNoExceptMoveUnion&)
+        bint operator<=(cNoExceptMoveUnion&)
+        bint operator>=(cNoExceptMoveUnion&)
+        cNoExceptMoveUnion__type getType() const
+        const string& get_string_field() const
+        string& set_string_field(const string&)
+        const int32_t& get_i32_field() const
+        int32_t& set_i32_field(const int32_t&)
+
     cdef shared_ptr[vector[int32_t]] reference_shared_ptr_fieldA "thrift::py3::reference_shared_ptr<std::vector<int32_t>>"(shared_ptr[cContainerStruct]&, vector[int32_t]&)
     cdef shared_ptr[std_list[int32_t]] reference_shared_ptr_fieldB "thrift::py3::reference_shared_ptr<std::list<int32_t>>"(shared_ptr[cContainerStruct]&, std_list[int32_t]&)
     cdef shared_ptr[std_deque[int32_t]] reference_shared_ptr_fieldC "thrift::py3::reference_shared_ptr<std::deque<int32_t>>"(shared_ptr[cContainerStruct]&, std_deque[int32_t]&)
@@ -638,6 +741,8 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
     cdef shared_ptr[cForwardUsageByRef] reference_shared_ptr_ForwardUsageByRef "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef>"(shared_ptr[cForwardUsageRoot]&, cForwardUsageByRef&)
     cdef shared_ptr[cForwardUsageRoot] reference_shared_ptr_foo "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageStruct]&, cForwardUsageRoot&)
     cdef shared_ptr[cForwardUsageRoot] reference_shared_ptr_foo "thrift::py3::reference_shared_ptr<::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageByRef]&, cForwardUsageRoot&)
+    cdef shared_ptr[vector[string]] reference_shared_ptr_MyBinaryListField4 "thrift::py3::reference_shared_ptr<std::vector<std::string>>"(shared_ptr[cNoexceptMoveComplexStruct]&, vector[string]&)
+    cdef shared_ptr[cmap[cMyEnumA,string]] reference_shared_ptr_MyMapEnumAndInt "thrift::py3::reference_shared_ptr<std::map<::apache::thrift::fixtures::types::MyEnumA,std::string>>"(shared_ptr[cNoexceptMoveComplexStruct]&, cmap[cMyEnumA,string]&)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cdecorated_struct] move(unique_ptr[cdecorated_struct])
@@ -691,6 +796,18 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cForwardUsageByRef] move(unique_ptr[cForwardUsageByRef])
     cdef shared_ptr[cForwardUsageByRef] move_shared "std::move"(shared_ptr[cForwardUsageByRef])
     cdef unique_ptr[cForwardUsageByRef] move_unique "std::move"(unique_ptr[cForwardUsageByRef])
+    cdef shared_ptr[cNoexceptMoveEmpty] move(unique_ptr[cNoexceptMoveEmpty])
+    cdef shared_ptr[cNoexceptMoveEmpty] move_shared "std::move"(shared_ptr[cNoexceptMoveEmpty])
+    cdef unique_ptr[cNoexceptMoveEmpty] move_unique "std::move"(unique_ptr[cNoexceptMoveEmpty])
+    cdef shared_ptr[cNoexceptMoveSimpleStruct] move(unique_ptr[cNoexceptMoveSimpleStruct])
+    cdef shared_ptr[cNoexceptMoveSimpleStruct] move_shared "std::move"(shared_ptr[cNoexceptMoveSimpleStruct])
+    cdef unique_ptr[cNoexceptMoveSimpleStruct] move_unique "std::move"(unique_ptr[cNoexceptMoveSimpleStruct])
+    cdef shared_ptr[cNoexceptMoveComplexStruct] move(unique_ptr[cNoexceptMoveComplexStruct])
+    cdef shared_ptr[cNoexceptMoveComplexStruct] move_shared "std::move"(shared_ptr[cNoexceptMoveComplexStruct])
+    cdef unique_ptr[cNoexceptMoveComplexStruct] move_unique "std::move"(unique_ptr[cNoexceptMoveComplexStruct])
+    cdef shared_ptr[cNoExceptMoveUnion] move(unique_ptr[cNoExceptMoveUnion])
+    cdef shared_ptr[cNoExceptMoveUnion] move_shared "std::move"(shared_ptr[cNoExceptMoveUnion])
+    cdef unique_ptr[cNoExceptMoveUnion] move_unique "std::move"(unique_ptr[cNoExceptMoveUnion])
 
 cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cdecorated_struct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::decorated_struct>"(shared_ptr[cdecorated_struct])
@@ -710,6 +827,10 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const cForwardUsageRoot] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ForwardUsageRoot>"(shared_ptr[cForwardUsageRoot])
     cdef shared_ptr[const cForwardUsageStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ForwardUsageStruct>"(shared_ptr[cForwardUsageStruct])
     cdef shared_ptr[const cForwardUsageByRef] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::ForwardUsageByRef>"(shared_ptr[cForwardUsageByRef])
+    cdef shared_ptr[const cNoexceptMoveEmpty] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveEmpty>"(shared_ptr[cNoexceptMoveEmpty])
+    cdef shared_ptr[const cNoexceptMoveSimpleStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>"(shared_ptr[cNoexceptMoveSimpleStruct])
+    cdef shared_ptr[const cNoexceptMoveComplexStruct] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>"(shared_ptr[cNoexceptMoveComplexStruct])
+    cdef shared_ptr[const cNoExceptMoveUnion] const_pointer_cast "std::const_pointer_cast<const ::apache::thrift::fixtures::types::NoExceptMoveUnion>"(shared_ptr[cNoExceptMoveUnion])
 
 # Forward Definition of the cython struct
 cdef class decorated_struct(thrift.py3.types.Struct)
@@ -1074,6 +1195,98 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cForwardUsageByRef])
 
+# Forward Definition of the cython struct
+cdef class NoexceptMoveEmpty(thrift.py3.types.Struct)
+
+
+cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNoexceptMoveEmpty] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cNoexceptMoveEmpty] _make_instance(
+        cNoexceptMoveEmpty* base_instance,
+        bint* __isNOTSET
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNoexceptMoveEmpty])
+
+# Forward Definition of the cython struct
+cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct)
+
+
+cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNoexceptMoveSimpleStruct] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cNoexceptMoveSimpleStruct] _make_instance(
+        cNoexceptMoveSimpleStruct* base_instance,
+        bint* __isNOTSET,
+        object boolField
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNoexceptMoveSimpleStruct])
+
+# Forward Definition of the cython struct
+cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct)
+
+
+cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNoexceptMoveComplexStruct] _cpp_obj
+    cdef List__binary __field_MyBinaryListField4
+    cdef Map__MyEnumA_string __field_MyMapEnumAndInt
+
+    @staticmethod
+    cdef unique_ptr[cNoexceptMoveComplexStruct] _make_instance(
+        cNoexceptMoveComplexStruct* base_instance,
+        bint* __isNOTSET,
+        pbool MyBoolField,
+        object MyIntField,
+        str MyStringField,
+        str MyStringField2,
+        bytes MyBinaryField,
+        bytes MyBinaryField2,
+        bytes MyBinaryField3,
+        object MyBinaryListField4,
+        object MyMapEnumAndInt
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNoexceptMoveComplexStruct])
+
+cdef class __NoExceptMoveUnionType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+# Forward Definition of the cython struct
+cdef class NoExceptMoveUnion(thrift.py3.types.Union)
+
+
+cdef class NoExceptMoveUnion(thrift.py3.types.Union):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNoExceptMoveUnion] _cpp_obj
+    cdef readonly __NoExceptMoveUnionType type
+    cdef readonly object value
+    cdef _load_cache(NoExceptMoveUnion self)
+
+    @staticmethod
+    cdef unique_ptr[cNoExceptMoveUnion] _make_instance(
+        cNoExceptMoveUnion* base_instance,
+        str string_field,
+        object i32_field
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cNoExceptMoveUnion])
+
 
 cdef class std_unordered_map__Map__i32_string:
     cdef object __hash
@@ -1192,6 +1405,24 @@ cdef class List__std_unordered_map__Map__i32_string:
     @staticmethod
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *
 
+cdef class List__binary:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[string]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[string]])
+    @staticmethod
+    cdef shared_ptr[vector[string]] _make_instance(object items) except *
+
+cdef class Map__MyEnumA_string:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cmap[cMyEnumA,string]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[cMyEnumA,string]])
+    @staticmethod
+    cdef shared_ptr[cmap[cMyEnumA,string]] _make_instance(object items) except *
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[std_unordered_map[int32_t,string]] move "std::move"(unique_ptr[std_unordered_map[int32_t,string]])
     cdef shared_ptr[std_unordered_map[int32_t,string]] move_shared "std::move"(shared_ptr[std_unordered_map[int32_t,string]])
@@ -1219,6 +1450,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[string,int32_t]] move_shared "std::move"(shared_ptr[cmap[string,int32_t]])
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move "std::move"(unique_ptr[vector[std_unordered_map[int32_t,string]]])
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] move_shared "std::move"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
+    cdef shared_ptr[vector[string]] move "std::move"(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[string]] move_shared "std::move"(shared_ptr[vector[string]])
+    cdef shared_ptr[cmap[cMyEnumA,string]] move "std::move"(unique_ptr[cmap[cMyEnumA,string]])
+    cdef shared_ptr[cmap[cMyEnumA,string]] move_shared "std::move"(shared_ptr[cmap[cMyEnumA,string]])
 cdef extern from "<utility>" nogil:
     pass  
     shared_ptr[std_unordered_map[int32_t,string]] reference_shared_ptr_List__std_unordered_map__Map__i32_string "thrift::py3::reference_shared_ptr<std::unordered_map<int32_t,std::string>>"(...)
@@ -1236,4 +1471,6 @@ cdef extern from "<memory>" namespace "std" nogil:
     cdef shared_ptr[const std_list_int32_t] const_pointer_cast "std::const_pointer_cast<const std::list<int32_t>>"(shared_ptr[std_list_int32_t])
     cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast<const std::map<std::string,int32_t>>"(shared_ptr[cmap[string,int32_t]])
     cdef shared_ptr[const vector[std_unordered_map[int32_t,string]]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::unordered_map<int32_t,std::string>>>"(shared_ptr[vector[std_unordered_map[int32_t,string]]])
+    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast<const std::vector<std::string>>"(shared_ptr[vector[string]])
+    cdef shared_ptr[const cmap[cMyEnumA,string]] const_pointer_cast "std::const_pointer_cast<const std::map<::apache::thrift::fixtures::types::MyEnumA,std::string>>"(shared_ptr[cmap[cMyEnumA,string]])
 

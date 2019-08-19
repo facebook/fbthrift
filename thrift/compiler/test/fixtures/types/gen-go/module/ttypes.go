@@ -129,6 +129,41 @@ func MyForwardRefEnumFromString(s string) (MyForwardRefEnum, error) {
 
 func MyForwardRefEnumPtr(v MyForwardRefEnum) *MyForwardRefEnum { return &v }
 
+type MyEnumA int64
+const (
+  MyEnumA_fieldA MyEnumA = 1
+  MyEnumA_fieldB MyEnumA = 2
+  MyEnumA_fieldC MyEnumA = 4
+)
+
+var MyEnumAToName = map[MyEnumA]string {
+  MyEnumA_fieldA: "fieldA",
+  MyEnumA_fieldB: "fieldB",
+  MyEnumA_fieldC: "fieldC",
+}
+
+var MyEnumAToValue = map[string]MyEnumA {
+  "fieldA": MyEnumA_fieldA,
+  "fieldB": MyEnumA_fieldB,
+  "fieldC": MyEnumA_fieldC,
+}
+
+func (p MyEnumA) String() string {
+  if v, ok := MyEnumAToName[p]; ok {
+    return v
+  }
+  return "<UNSET>"
+}
+
+func MyEnumAFromString(s string) (MyEnumA, error) {
+  if v, ok := MyEnumAToValue[s]; ok {
+    return v, nil
+  }
+  return MyEnumA(0), fmt.Errorf("not a valid MyEnumA string")
+}
+
+func MyEnumAPtr(v MyEnumA) *MyEnumA { return &v }
+
 type TBinary = []byte
 
 func TBinaryPtr(v TBinary) *TBinary { return &v }
@@ -2537,5 +2572,678 @@ func (p *ForwardUsageByRef) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("ForwardUsageByRef(%+v)", *p)
+}
+
+type NoexceptMoveEmpty struct {
+}
+
+func NewNoexceptMoveEmpty() *NoexceptMoveEmpty {
+  return &NoexceptMoveEmpty{}
+}
+
+func (p *NoexceptMoveEmpty) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoexceptMoveEmpty) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoexceptMoveEmpty"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoexceptMoveEmpty) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("NoexceptMoveEmpty(%+v)", *p)
+}
+
+// Attributes:
+//  - BoolField
+type NoexceptMoveSimpleStruct struct {
+  BoolField int64 `thrift:"boolField,1" db:"boolField" json:"boolField"`
+}
+
+func NewNoexceptMoveSimpleStruct() *NoexceptMoveSimpleStruct {
+  return &NoexceptMoveSimpleStruct{}
+}
+
+
+func (p *NoexceptMoveSimpleStruct) GetBoolField() int64 {
+  return p.BoolField
+}
+func (p *NoexceptMoveSimpleStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoexceptMoveSimpleStruct)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.BoolField = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveSimpleStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoexceptMoveSimpleStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoexceptMoveSimpleStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("boolField", thrift.I64, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:boolField: ", p), err) }
+  if err := oprot.WriteI64(int64(p.BoolField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.boolField (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:boolField: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveSimpleStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("NoexceptMoveSimpleStruct(%+v)", *p)
+}
+
+// Attributes:
+//  - MyBoolField
+//  - MyIntField
+//  - MyStringField
+//  - MyStringField2
+//  - MyBinaryField
+//  - MyBinaryField2
+//  - MyBinaryField3
+//  - MyBinaryListField4
+//  - MyMapEnumAndInt
+type NoexceptMoveComplexStruct struct {
+  MyBoolField bool `thrift:"MyBoolField,1" db:"MyBoolField" json:"MyBoolField"`
+  MyIntField int64 `thrift:"MyIntField,2" db:"MyIntField" json:"MyIntField"`
+  MyStringField string `thrift:"MyStringField,3" db:"MyStringField" json:"MyStringField"`
+  MyStringField2 string `thrift:"MyStringField2,4" db:"MyStringField2" json:"MyStringField2"`
+  MyBinaryField []byte `thrift:"MyBinaryField,5" db:"MyBinaryField" json:"MyBinaryField"`
+  MyBinaryField2 []byte `thrift:"MyBinaryField2,6" db:"MyBinaryField2" json:"MyBinaryField2,omitempty"`
+  MyBinaryField3 []byte `thrift:"MyBinaryField3,7,required" db:"MyBinaryField3" json:"MyBinaryField3"`
+  MyBinaryListField4 [][]byte `thrift:"MyBinaryListField4,8" db:"MyBinaryListField4" json:"MyBinaryListField4"`
+  MyMapEnumAndInt map[MyEnumA]string `thrift:"MyMapEnumAndInt,9" db:"MyMapEnumAndInt" json:"MyMapEnumAndInt"`
+}
+
+func NewNoexceptMoveComplexStruct() *NoexceptMoveComplexStruct {
+  return &NoexceptMoveComplexStruct{
+MyIntField: 12,
+
+MyStringField: "test",
+
+MyMapEnumAndInt: map[MyEnumA]string{
+    1: "fieldA",
+    4: "fieldC",
+},
+}
+}
+
+
+func (p *NoexceptMoveComplexStruct) GetMyBoolField() bool {
+  return p.MyBoolField
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyIntField() int64 {
+  return p.MyIntField
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyStringField() string {
+  return p.MyStringField
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyStringField2() string {
+  return p.MyStringField2
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyBinaryField() []byte {
+  return p.MyBinaryField
+}
+var NoexceptMoveComplexStruct_MyBinaryField2_DEFAULT []byte
+
+func (p *NoexceptMoveComplexStruct) GetMyBinaryField2() []byte {
+  return p.MyBinaryField2
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyBinaryField3() []byte {
+  return p.MyBinaryField3
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyBinaryListField4() [][]byte {
+  return p.MyBinaryListField4
+}
+
+func (p *NoexceptMoveComplexStruct) GetMyMapEnumAndInt() map[MyEnumA]string {
+  return p.MyMapEnumAndInt
+}
+func (p *NoexceptMoveComplexStruct) IsSetMyBinaryField2() bool {
+  return p.MyBinaryField2 != nil
+}
+
+func (p *NoexceptMoveComplexStruct) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+  var issetMyBinaryField3 bool = false;
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
+        return err
+      }
+      issetMyBinaryField3 = true
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    case 9:
+      if err := p.ReadField9(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  if !issetMyBinaryField3{
+    return thrift.NewProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("Required field MyBinaryField3 is not set"));
+  }
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.MyBoolField = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.MyIntField = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField3(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 3: ", err)
+} else {
+  p.MyStringField = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField4(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 4: ", err)
+} else {
+  p.MyStringField2 = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.MyBinaryField = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField6(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+  return thrift.PrependError("error reading field 6: ", err)
+} else {
+  p.MyBinaryField2 = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField7(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+  return thrift.PrependError("error reading field 7: ", err)
+} else {
+  p.MyBinaryField3 = v
+}
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField8(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadListBegin()
+  if err != nil {
+    return thrift.PrependError("error reading list begin: ", err)
+  }
+  tSlice := make([][]byte, 0, size)
+  p.MyBinaryListField4 =  tSlice
+  for i := 0; i < size; i ++ {
+var _elem17 []byte
+    if v, err := iprot.ReadBinary(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _elem17 = v
+}
+    p.MyBinaryListField4 = append(p.MyBinaryListField4, _elem17)
+  }
+  if err := iprot.ReadListEnd(); err != nil {
+    return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct)  ReadField9(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[MyEnumA]string, size)
+  p.MyMapEnumAndInt =  tMap
+  for i := 0; i < size; i ++ {
+var _key18 MyEnumA
+    if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    temp := MyEnumA(v)
+    _key18 = temp
+}
+var _val19 string
+    if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 0: ", err)
+} else {
+    _val19 = v
+}
+    p.MyMapEnumAndInt[_key18] = _val19
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct) Write(oprot thrift.Protocol) error {
+  if err := oprot.WriteStructBegin("NoexceptMoveComplexStruct"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
+  if err := p.writeField9(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoexceptMoveComplexStruct) writeField1(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyBoolField", thrift.BOOL, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:MyBoolField: ", p), err) }
+  if err := oprot.WriteBool(bool(p.MyBoolField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyBoolField (1) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:MyBoolField: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField2(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyIntField", thrift.I64, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:MyIntField: ", p), err) }
+  if err := oprot.WriteI64(int64(p.MyIntField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyIntField (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:MyIntField: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyStringField", thrift.STRING, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:MyStringField: ", p), err) }
+  if err := oprot.WriteString(string(p.MyStringField)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyStringField (3) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:MyStringField: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField4(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyStringField2", thrift.STRING, 4); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:MyStringField2: ", p), err) }
+  if err := oprot.WriteString(string(p.MyStringField2)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyStringField2 (4) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:MyStringField2: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyBinaryField", thrift.STRING, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:MyBinaryField: ", p), err) }
+  if err := oprot.WriteBinary(p.MyBinaryField); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyBinaryField (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:MyBinaryField: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField6(oprot thrift.Protocol) (err error) {
+  if p.IsSetMyBinaryField2() {
+    if err := oprot.WriteFieldBegin("MyBinaryField2", thrift.STRING, 6); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:MyBinaryField2: ", p), err) }
+    if err := oprot.WriteBinary(p.MyBinaryField2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.MyBinaryField2 (6) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 6:MyBinaryField2: ", p), err) }
+  }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyBinaryField3", thrift.STRING, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:MyBinaryField3: ", p), err) }
+  if err := oprot.WriteBinary(p.MyBinaryField3); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyBinaryField3 (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:MyBinaryField3: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField8(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyBinaryListField4", thrift.LIST, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:MyBinaryListField4: ", p), err) }
+  if err := oprot.WriteListBegin(thrift.STRING, len(p.MyBinaryListField4)); err != nil {
+    return thrift.PrependError("error writing list begin: ", err)
+  }
+  for _, v := range p.MyBinaryListField4 {
+    if err := oprot.WriteBinary(v); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteListEnd(); err != nil {
+    return thrift.PrependError("error writing list end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:MyBinaryListField4: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) writeField9(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyMapEnumAndInt", thrift.MAP, 9); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 9:MyMapEnumAndInt: ", p), err) }
+  if err := oprot.WriteMapBegin(thrift.I32, thrift.STRING, len(p.MyMapEnumAndInt)); err != nil {
+    return thrift.PrependError("error writing map begin: ", err)
+  }
+  for k, v := range p.MyMapEnumAndInt {
+    if err := oprot.WriteI32(int32(k)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    if err := oprot.WriteString(string(v)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+  }
+  if err := oprot.WriteMapEnd(); err != nil {
+    return thrift.PrependError("error writing map end: ", err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 9:MyMapEnumAndInt: ", p), err) }
+  return err
+}
+
+func (p *NoexceptMoveComplexStruct) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("NoexceptMoveComplexStruct(%+v)", *p)
+}
+
+// Attributes:
+//  - StringField
+//  - I32Field
+type NoExceptMoveUnion struct {
+  StringField *string `thrift:"string_field,1" db:"string_field" json:"string_field,omitempty"`
+  I32Field *int32 `thrift:"i32_field,2" db:"i32_field" json:"i32_field,omitempty"`
+}
+
+func NewNoExceptMoveUnion() *NoExceptMoveUnion {
+  return &NoExceptMoveUnion{}
+}
+
+var NoExceptMoveUnion_StringField_DEFAULT string
+func (p *NoExceptMoveUnion) GetStringField() string {
+  if !p.IsSetStringField() {
+    return NoExceptMoveUnion_StringField_DEFAULT
+  }
+return *p.StringField
+}
+var NoExceptMoveUnion_I32Field_DEFAULT int32
+func (p *NoExceptMoveUnion) GetI32Field() int32 {
+  if !p.IsSetI32Field() {
+    return NoExceptMoveUnion_I32Field_DEFAULT
+  }
+return *p.I32Field
+}
+func (p *NoExceptMoveUnion) CountSetFieldsNoExceptMoveUnion() int {
+  count := 0
+  if (p.IsSetStringField()) {
+    count++
+  }
+  if (p.IsSetI32Field()) {
+    count++
+  }
+  return count
+
+}
+
+func (p *NoExceptMoveUnion) IsSetStringField() bool {
+  return p.StringField != nil
+}
+
+func (p *NoExceptMoveUnion) IsSetI32Field() bool {
+  return p.I32Field != nil
+}
+
+func (p *NoExceptMoveUnion) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *NoExceptMoveUnion)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+  return thrift.PrependError("error reading field 1: ", err)
+} else {
+  p.StringField = &v
+}
+  return nil
+}
+
+func (p *NoExceptMoveUnion)  ReadField2(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  p.I32Field = &v
+}
+  return nil
+}
+
+func (p *NoExceptMoveUnion) Write(oprot thrift.Protocol) error {
+  if c := p.CountSetFieldsNoExceptMoveUnion(); c != 1 {
+    return fmt.Errorf("%T write union: exactly one field must be set (%d set).", p, c)
+  }
+  if err := oprot.WriteStructBegin("NoExceptMoveUnion"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *NoExceptMoveUnion) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetStringField() {
+    if err := oprot.WriteFieldBegin("string_field", thrift.STRING, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:string_field: ", p), err) }
+    if err := oprot.WriteString(string(*p.StringField)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.string_field (1) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:string_field: ", p), err) }
+  }
+  return err
+}
+
+func (p *NoExceptMoveUnion) writeField2(oprot thrift.Protocol) (err error) {
+  if p.IsSetI32Field() {
+    if err := oprot.WriteFieldBegin("i32_field", thrift.I32, 2); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:i32_field: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.I32Field)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.i32_field (2) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 2:i32_field: ", p), err) }
+  }
+  return err
+}
+
+func (p *NoExceptMoveUnion) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("NoExceptMoveUnion(%+v)", *p)
 }
 

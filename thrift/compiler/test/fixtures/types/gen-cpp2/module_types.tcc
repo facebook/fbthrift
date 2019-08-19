@@ -37,6 +37,15 @@ namespace std {
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+}}}} // apache::thrift::fixtures::types
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+}} // apache::thrift
 
 namespace apache {
 namespace thrift {
@@ -156,6 +165,34 @@ struct TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageRoot> {
 };
 template <>
 struct TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -2592,5 +2629,662 @@ extern template void ForwardUsageByRef::readNoXfer<>(apache::thrift::CompactProt
 extern template uint32_t ForwardUsageByRef::write<>(apache::thrift::CompactProtocolWriter*) const;
 extern template uint32_t ForwardUsageByRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t ForwardUsageByRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void NoexceptMoveEmpty::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<NoexceptMoveEmpty>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    default:
+    {
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveEmpty::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoexceptMoveEmpty");
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveEmpty::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoexceptMoveEmpty");
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveEmpty::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("NoexceptMoveEmpty");
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void NoexceptMoveEmpty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NoexceptMoveEmpty::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NoexceptMoveEmpty::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NoexceptMoveEmpty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NoexceptMoveEmpty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void NoexceptMoveSimpleStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_boolField:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->boolField);
+    this->__isset.boolField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<NoexceptMoveSimpleStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_boolField;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveSimpleStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoexceptMoveSimpleStruct");
+  xfer += prot_->serializedFieldSize("boolField", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->boolField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveSimpleStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoexceptMoveSimpleStruct");
+  xfer += prot_->serializedFieldSize("boolField", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->boolField);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveSimpleStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("NoexceptMoveSimpleStruct");
+  xfer += prot_->writeFieldBegin("boolField", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->boolField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void NoexceptMoveSimpleStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NoexceptMoveSimpleStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NoexceptMoveSimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NoexceptMoveSimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NoexceptMoveSimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void NoexceptMoveComplexStruct::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_BOOL))) {
+    goto _loop;
+  }
+_readField_MyBoolField:
+  {
+    iprot->readBool(this->MyBoolField);
+    this->__isset.MyBoolField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          2,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_MyIntField:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    this->__isset.MyIntField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          2,
+          3,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_MyStringField:
+  {
+    iprot->readString(this->MyStringField);
+    this->__isset.MyStringField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          3,
+          4,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_MyStringField2:
+  {
+    iprot->readString(this->MyStringField2);
+    this->__isset.MyStringField2 = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
+          5,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_MyBinaryField:
+  {
+    iprot->readBinary(this->MyBinaryField);
+    this->__isset.MyBinaryField = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          5,
+          6,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_MyBinaryField2:
+  {
+    iprot->readBinary(this->MyBinaryField2);
+    this->__isset.MyBinaryField2 = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          6,
+          7,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_MyBinaryField3:
+  {
+    iprot->readBinary(this->MyBinaryField3);
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          7,
+          8,
+          apache::thrift::protocol::T_LIST))) {
+    goto _loop;
+  }
+_readField_MyBinaryListField4:
+  {
+    this->MyBinaryListField4 = ::std::vector<::std::string>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::read(*iprot, this->MyBinaryListField4);
+    this->__isset.MyBinaryListField4 = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          8,
+          9,
+          apache::thrift::protocol::T_MAP))) {
+    goto _loop;
+  }
+_readField_MyMapEnumAndInt:
+  {
+    this->MyMapEnumAndInt = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>();
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::read(*iprot, this->MyMapEnumAndInt);
+    this->__isset.MyMapEnumAndInt = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          9,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    apache::thrift::detail::TccStructTraits<NoexceptMoveComplexStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_BOOL))) {
+        goto _readField_MyBoolField;
+      } else {
+        goto _skip;
+      }
+    }
+    case 2:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_MyIntField;
+      } else {
+        goto _skip;
+      }
+    }
+    case 3:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_MyStringField;
+      } else {
+        goto _skip;
+      }
+    }
+    case 4:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_MyStringField2;
+      } else {
+        goto _skip;
+      }
+    }
+    case 5:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_MyBinaryField;
+      } else {
+        goto _skip;
+      }
+    }
+    case 6:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_MyBinaryField2;
+      } else {
+        goto _skip;
+      }
+    }
+    case 7:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_MyBinaryField3;
+      } else {
+        goto _skip;
+      }
+    }
+    case 8:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_LIST))) {
+        goto _readField_MyBinaryListField4;
+      } else {
+        goto _skip;
+      }
+    }
+    case 9:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_MAP))) {
+        goto _readField_MyMapEnumAndInt;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveComplexStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoexceptMoveComplexStruct");
+  xfer += prot_->serializedFieldSize("MyBoolField", apache::thrift::protocol::T_BOOL, 1);
+  xfer += prot_->serializedSizeBool(this->MyBoolField);
+  xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
+  xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 3);
+  xfer += prot_->serializedSizeString(this->MyStringField);
+  xfer += prot_->serializedFieldSize("MyStringField2", apache::thrift::protocol::T_STRING, 4);
+  xfer += prot_->serializedSizeString(this->MyStringField2);
+  xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeBinary(this->MyBinaryField);
+  if (this->__isset.MyBinaryField2) {
+    xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
+    xfer += prot_->serializedSizeBinary(this->MyBinaryField2);
+  }
+  xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->serializedSizeBinary(this->MyBinaryField3);
+  xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::serializedSize<false>(*prot_, this->MyBinaryListField4);
+  xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->MyMapEnumAndInt);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveComplexStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoexceptMoveComplexStruct");
+  xfer += prot_->serializedFieldSize("MyBoolField", apache::thrift::protocol::T_BOOL, 1);
+  xfer += prot_->serializedSizeBool(this->MyBoolField);
+  xfer += prot_->serializedFieldSize("MyIntField", apache::thrift::protocol::T_I64, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->MyIntField);
+  xfer += prot_->serializedFieldSize("MyStringField", apache::thrift::protocol::T_STRING, 3);
+  xfer += prot_->serializedSizeString(this->MyStringField);
+  xfer += prot_->serializedFieldSize("MyStringField2", apache::thrift::protocol::T_STRING, 4);
+  xfer += prot_->serializedSizeString(this->MyStringField2);
+  xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeZCBinary(this->MyBinaryField);
+  if (this->__isset.MyBinaryField2) {
+    xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
+    xfer += prot_->serializedSizeZCBinary(this->MyBinaryField2);
+  }
+  xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->serializedSizeZCBinary(this->MyBinaryField3);
+  xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::serializedSize<false>(*prot_, this->MyBinaryListField4);
+  xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->MyMapEnumAndInt);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoexceptMoveComplexStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("NoexceptMoveComplexStruct");
+  xfer += prot_->writeFieldBegin("MyBoolField", apache::thrift::protocol::T_BOOL, 1);
+  xfer += prot_->writeBool(this->MyBoolField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyIntField", apache::thrift::protocol::T_I64, 2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->MyIntField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyStringField", apache::thrift::protocol::T_STRING, 3);
+  xfer += prot_->writeString(this->MyStringField);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyStringField2", apache::thrift::protocol::T_STRING, 4);
+  xfer += prot_->writeString(this->MyStringField2);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->writeBinary(this->MyBinaryField);
+  xfer += prot_->writeFieldEnd();
+  if (this->__isset.MyBinaryField2) {
+    xfer += prot_->writeFieldBegin("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
+    xfer += prot_->writeBinary(this->MyBinaryField2);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldBegin("MyBinaryField3", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->writeBinary(this->MyBinaryField3);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::write(*prot_, this->MyBinaryListField4);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::write(*prot_, this->MyMapEnumAndInt);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void NoexceptMoveComplexStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NoexceptMoveComplexStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NoexceptMoveComplexStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NoexceptMoveComplexStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NoexceptMoveComplexStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NoexceptMoveComplexStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+template <class Protocol_>
+void NoExceptMoveUnion::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+  _readState.fieldId = 0;
+
+  _readState.readStructBegin(iprot);
+
+  _readState.readFieldBegin(iprot);
+  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (iprot->kUsesFieldNames()) {
+      apache::thrift::detail::TccStructTraits<NoExceptMoveUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    }
+    switch (_readState.fieldId) {
+      case 1:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
+          this->set_string_field();
+          iprot->readString(this->mutable_string_field());
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
+          this->set_i32_field();
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_i32_field());
+        } else {
+          _readState.skip(iprot);
+        }
+        break;
+      }
+      default:
+      {
+        _readState.skip(iprot);
+        break;
+      }
+    }
+    _readState.readFieldEnd(iprot);
+    _readState.readFieldBegin(iprot);
+    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  _readState.readStructEnd(iprot);
+}
+template <class Protocol_>
+uint32_t NoExceptMoveUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoExceptMoveUnion");
+  switch(this->getType()) {
+    case NoExceptMoveUnion::Type::string_field:
+    {
+      xfer += prot_->serializedFieldSize("string_field", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->serializedSizeString(this->get_string_field());
+      break;
+    }
+    case NoExceptMoveUnion::Type::i32_field:
+    {
+      xfer += prot_->serializedFieldSize("i32_field", apache::thrift::protocol::T_I32, 2);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->get_i32_field());
+      break;
+    }
+    case NoExceptMoveUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoExceptMoveUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("NoExceptMoveUnion");
+  switch(this->getType()) {
+    case NoExceptMoveUnion::Type::string_field:
+    {
+      xfer += prot_->serializedFieldSize("string_field", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->serializedSizeString(this->get_string_field());
+      break;
+    }
+    case NoExceptMoveUnion::Type::i32_field:
+    {
+      xfer += prot_->serializedFieldSize("i32_field", apache::thrift::protocol::T_I32, 2);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::serializedSize<false>(*prot_, this->get_i32_field());
+      break;
+    }
+    case NoExceptMoveUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t NoExceptMoveUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("NoExceptMoveUnion");
+  switch(this->getType()) {
+    case NoExceptMoveUnion::Type::string_field:
+    {
+      xfer += prot_->writeFieldBegin("string_field", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->writeString(this->get_string_field());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case NoExceptMoveUnion::Type::i32_field:
+    {
+      xfer += prot_->writeFieldBegin("i32_field", apache::thrift::protocol::T_I32, 2);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::write(*prot_, this->get_i32_field());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case NoExceptMoveUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t NoExceptMoveUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void NoExceptMoveUnion::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t NoExceptMoveUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t NoExceptMoveUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t NoExceptMoveUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}}} // apache::thrift::fixtures::types
