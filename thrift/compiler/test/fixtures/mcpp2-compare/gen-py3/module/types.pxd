@@ -17,7 +17,7 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.types cimport bstring, move
+from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
 cimport includes.types as _includes_types
 
@@ -432,7 +432,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         string MyStringField
         string MyStringField2
         string MyBinaryField
-        string MyBinaryField2
+        optional_field_ref[string] MyBinaryField2_ref()
         string MyBinaryField3
         vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
@@ -674,17 +674,17 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         bint operator>=(ccontainerStruct&)
         cbool fieldA
         cbool req_fieldA
-        cbool opt_fieldA
+        optional_field_ref[cbool] opt_fieldA_ref()
         cmap[string,cbool] fieldB
         cmap[string,cbool] req_fieldB
-        cmap[string,cbool] opt_fieldB
+        optional_field_ref[cmap[string,cbool]] opt_fieldB_ref()
         cset[int32_t] fieldC
         cset[int32_t] req_fieldC
-        cset[int32_t] opt_fieldC
+        optional_field_ref[cset[int32_t]] opt_fieldC_ref()
         string fieldD
         string fieldE
         string req_fieldE
-        string opt_fieldE
+        optional_field_ref[string] opt_fieldE_ref()
         vector[vector[int32_t]] fieldF
         cmap[string,cmap[string,cmap[string,int32_t]]] fieldG
         vector[cset[int32_t]] fieldH
@@ -699,17 +699,17 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
         cMyEnumA fieldQ
         cMyEnumA fieldR
         cMyEnumA req_fieldR
-        cMyEnumA opt_fieldR
+        optional_field_ref[cMyEnumA] opt_fieldR_ref()
         cMyEnumA fieldS
         vector[cMyEnumA] fieldT
         vector[cMyEnumA] fieldU
         cMyStruct fieldV
         cMyStruct req_fieldV
-        cMyStruct opt_fieldV
+        optional_field_ref[cMyStruct] opt_fieldV_ref()
         cset[cMyStruct] fieldW
         cComplexUnion fieldX
         cComplexUnion req_fieldX
-        cComplexUnion opt_fieldX
+        optional_field_ref[cComplexUnion] opt_fieldX_ref()
         vector[cComplexUnion] fieldY
         cset[cSimpleUnion] fieldZ
         vector[cset[cSimpleUnion]] fieldAA

@@ -24,32 +24,32 @@ if they have been previously retrieved.
 
 }}{{#type:iobuf?}}{{!
 }}if self.__field_{{field:name}} is None:
-    self.__field_{{field:name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{field:name}}), self)
+    self.__field_{{field:name}} = __iobuf.IOBuf.create(ptr_address(deref(self._cpp_obj).{{> CythonFieldRef}}), self)
 return self.__field_{{field:name}}{{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
 }}if self.__field_{{field:name}} is None:
-    if not deref(self._cpp_obj).{{field:name}}:
+    if not deref(self._cpp_obj).{{> CythonFieldValueRef}}:
         return None
-    self.__field_{{field:name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{field:name}}.get(), self)
+    self.__field_{{field:name}} = __iobuf.IOBuf.create(deref(self._cpp_obj).{{> CythonFieldValueRef}}.get(), self)
 return self.__field_{{field:name}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
-  }}return (<const char*>deref(self._cpp_obj).{{field:name}}{{!
+  }}return (<const char*>deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
-    }}.data())[:deref(self._cpp_obj).{{field:name}}{{!
+    }}.data())[:deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
     }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
     }}.size()]{{!
 }}{{/type:flexibleBinary?}}{{!
 }}{{^type:hasCustomTypeBehavior?}}{{!
 }}{{#field:reference?}}{{!
 }}if self.__field_{{field:name}} is None:
-    if not deref(self._cpp_obj).{{field:name}}:
+    if not deref(self._cpp_obj).{{> CythonFieldValueRef}}:
         return None
     {{! Use an aliasing constructor since the object we're returning is still
         managed by the top-level object, possible via a unique_ptr }}
     self.__field_{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
-      }}self._cpp_obj, deref(deref(self._cpp_obj).{{field:name}})))
+      }}self._cpp_obj, deref(deref(self._cpp_obj).{{> CythonFieldValueRef}})))
 return self.__field_{{field:name}}{{!
 }}{{/field:reference?}}{{!
 }}{{^field:reference?}}{{!
@@ -57,8 +57,8 @@ return self.__field_{{field:name}}{{!
   }}return {{!
     }}{{#type:bool?}}<pbool> {{/type:bool?}}{{!
     }}{{#type:string?}}(<bytes>{{/type:string?}}{{!
-    }}deref(self._cpp_obj).{{field:name}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+    }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
+    }}{{#field:optional?}}{{#program:optionals?}}.value(){{/program:optionals?}}{{/field:optional?}}{{!
     }}{{#type:string?}}).decode('UTF-8'){{/type:string?}}{{!
 }}{{/type:base?}}{{!
 }}{{^type:base?}}{{!
@@ -66,15 +66,15 @@ return self.__field_{{field:name}}{{!
   }}return translate_cpp_enum_to_python({{!
     }}{{> types/CythonPythonType}}, {{!
     }}<int>({{!
-    }}deref(self._cpp_obj).{{field:name}}{{!
-    }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
+    }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
+    }}{{#field:optional?}}{{#program:optionals?}}.value(){{/program:optionals?}}{{/field:optional?}}{{!
     }})){{!
 }}{{/type:enum?}}{{!
 }}{{^type:enum?}}{{!  Structs and Containers
 }}if self.__field_{{field:name}} is None:
     self.__field_{{field:name}} = {{> types/CythonPythonType}}.create(reference_shared_ptr_{{field:name}}({{!
       }}self._cpp_obj, {{!
-      }}deref(self._cpp_obj).{{field:name}}{{!
+      }}deref(self._cpp_obj).{{> CythonFieldValueRef}}{{!
         }}{{#program:optionals?}}{{#field:optional?}}.value(){{/field:optional?}}{{/program:optionals?}}{{!
       }}))
 return self.__field_{{field:name}}{{!

@@ -17,7 +17,7 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.types cimport bstring, move
+from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
 
 
@@ -87,10 +87,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
         cColor color
-        string licensePlate
-        string description
-        string name
-        cbool hasAC
+        optional_field_ref[string] licensePlate_ref()
+        optional_field_ref[string] description_ref()
+        optional_field_ref[string] name_ref()
+        optional_field_ref[cbool] hasAC_ref()
         cVehicle__isset __isset
 
     cdef cppclass cPerson__isset "::cpp2::Person::__isset":
@@ -116,14 +116,14 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>=(cPerson&)
         int64_t id
         string name
-        int16_t age
-        string address
-        cColor favoriteColor
-        cset[int64_t] friends
-        int64_t bestFriend
-        cmap[cAnimal,string] petNames
-        cAnimal afraidOfAnimal
-        vector[cVehicle] vehicles
+        optional_field_ref[int16_t] age_ref()
+        optional_field_ref[string] address_ref()
+        optional_field_ref[cColor] favoriteColor_ref()
+        optional_field_ref[cset[int64_t]] friends_ref()
+        optional_field_ref[int64_t] bestFriend_ref()
+        optional_field_ref[cmap[cAnimal,string]] petNames_ref()
+        optional_field_ref[cAnimal] afraidOfAnimal_ref()
+        optional_field_ref[vector[cVehicle]] vehicles_ref()
         cPerson__isset __isset
 
     cdef shared_ptr[cColor] reference_shared_ptr_color "thrift::py3::reference_shared_ptr<::cpp2::Color>"(shared_ptr[cVehicle]&, cColor&)

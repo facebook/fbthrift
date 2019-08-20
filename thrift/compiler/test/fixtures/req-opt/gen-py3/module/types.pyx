@@ -165,7 +165,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if myInteger is not None:
             deref(c_inst).myInteger = myInteger
         if myString is not None:
-            deref(c_inst).myString = thrift.py3.types.move(thrift.py3.types.bytes_to_string(myString.encode('utf-8')))
+            deref(c_inst).myString_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(myString.encode('utf-8'))))
             deref(c_inst).__isset.myString = True
         if myBools is not None:
             deref(c_inst).myBools = deref(List__bool(myBools)._cpp_obj)
@@ -201,7 +201,7 @@ cdef class Foo(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.myString:
             return None
 
-        return (<bytes>deref(self._cpp_obj).myString).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).myString_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def myBools(self):

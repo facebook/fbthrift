@@ -676,7 +676,7 @@ cdef class Internship(thrift.py3.types.Struct):
             deref(c_inst).title = thrift.py3.types.move(thrift.py3.types.bytes_to_string(title.encode('utf-8')))
             deref(c_inst).__isset.title = True
         if employer is not None:
-            deref(c_inst).employer = Company_to_cpp(employer)
+            deref(c_inst).employer_ref().assign(Company_to_cpp(employer))
             deref(c_inst).__isset.employer = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -711,7 +711,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.employer:
             return None
 
-        return translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer))
+        return translate_cpp_enum_to_python(Company, <int>(deref(self._cpp_obj).employer_ref().value_unchecked()))
 
 
     def __hash__(Internship self):

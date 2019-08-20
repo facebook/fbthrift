@@ -565,7 +565,7 @@ cdef class Vehicle(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[4] and hasAC is None:
-                deref(c_inst).hasAC = default_inst[cVehicle]().hasAC
+                deref(c_inst).hasAC_ref().assign(default_inst[cVehicle]().hasAC_ref().value_unchecked())
                 deref(c_inst).__isset.hasAC = False
                 pass
 
@@ -573,16 +573,16 @@ cdef class Vehicle(thrift.py3.types.Struct):
             deref(c_inst).color = deref((<Color?> color)._cpp_obj)
             deref(c_inst).__isset.color = True
         if licensePlate is not None:
-            deref(c_inst).licensePlate = thrift.py3.types.move(thrift.py3.types.bytes_to_string(licensePlate.encode('utf-8')))
+            deref(c_inst).licensePlate_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(licensePlate.encode('utf-8'))))
             deref(c_inst).__isset.licensePlate = True
         if description is not None:
-            deref(c_inst).description = thrift.py3.types.move(thrift.py3.types.bytes_to_string(description.encode('utf-8')))
+            deref(c_inst).description_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(description.encode('utf-8'))))
             deref(c_inst).__isset.description = True
         if name is not None:
-            deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
+            deref(c_inst).name_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8'))))
             deref(c_inst).__isset.name = True
         if hasAC is not None:
-            deref(c_inst).hasAC = hasAC
+            deref(c_inst).hasAC_ref().assign(hasAC)
             deref(c_inst).__isset.hasAC = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -616,26 +616,26 @@ cdef class Vehicle(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.licensePlate:
             return None
 
-        return (<bytes>deref(self._cpp_obj).licensePlate).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).licensePlate_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def description(self):
         if not deref(self._cpp_obj).__isset.description:
             return None
 
-        return (<bytes>deref(self._cpp_obj).description).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).description_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def name(self):
         if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return (<bytes>deref(self._cpp_obj).name).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).name_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def hasAC(self):
 
-        return <pbool> deref(self._cpp_obj).hasAC
+        return <pbool> deref(self._cpp_obj).hasAC_ref().value_unchecked()
 
 
     def __hash__(Vehicle self):
@@ -982,28 +982,28 @@ cdef class Person(thrift.py3.types.Struct):
             deref(c_inst).name = thrift.py3.types.move(thrift.py3.types.bytes_to_string(name.encode('utf-8')))
             deref(c_inst).__isset.name = True
         if age is not None:
-            deref(c_inst).age = age
+            deref(c_inst).age_ref().assign(age)
             deref(c_inst).__isset.age = True
         if address is not None:
-            deref(c_inst).address = thrift.py3.types.move(thrift.py3.types.bytes_to_string(address.encode('utf-8')))
+            deref(c_inst).address_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(address.encode('utf-8'))))
             deref(c_inst).__isset.address = True
         if favoriteColor is not None:
-            deref(c_inst).favoriteColor = deref((<Color?> favoriteColor)._cpp_obj)
+            deref(c_inst).favoriteColor_ref().assign(deref((<Color?> favoriteColor)._cpp_obj))
             deref(c_inst).__isset.favoriteColor = True
         if friends is not None:
-            deref(c_inst).friends = deref(Set__i64(friends)._cpp_obj)
+            deref(c_inst).friends_ref().assign(deref(Set__i64(friends)._cpp_obj))
             deref(c_inst).__isset.friends = True
         if bestFriend is not None:
-            deref(c_inst).bestFriend = bestFriend
+            deref(c_inst).bestFriend_ref().assign(bestFriend)
             deref(c_inst).__isset.bestFriend = True
         if petNames is not None:
-            deref(c_inst).petNames = deref(Map__Animal_string(petNames)._cpp_obj)
+            deref(c_inst).petNames_ref().assign(deref(Map__Animal_string(petNames)._cpp_obj))
             deref(c_inst).__isset.petNames = True
         if afraidOfAnimal is not None:
-            deref(c_inst).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
+            deref(c_inst).afraidOfAnimal_ref().assign(Animal_to_cpp(afraidOfAnimal))
             deref(c_inst).__isset.afraidOfAnimal = True
         if vehicles is not None:
-            deref(c_inst).vehicles = deref(List__Vehicle(vehicles)._cpp_obj)
+            deref(c_inst).vehicles_ref().assign(deref(List__Vehicle(vehicles)._cpp_obj))
             deref(c_inst).__isset.vehicles = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1045,14 +1045,14 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.age:
             return None
 
-        return deref(self._cpp_obj).age
+        return deref(self._cpp_obj).age_ref().value_unchecked()
 
     @property
     def address(self):
         if not deref(self._cpp_obj).__isset.address:
             return None
 
-        return (<bytes>deref(self._cpp_obj).address).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).address_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def favoriteColor(self):
@@ -1060,7 +1060,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__field_favoriteColor is None:
-            self.__field_favoriteColor = Color.create(reference_shared_ptr_favoriteColor(self._cpp_obj, deref(self._cpp_obj).favoriteColor))
+            self.__field_favoriteColor = Color.create(reference_shared_ptr_favoriteColor(self._cpp_obj, deref(self._cpp_obj).favoriteColor_ref().value_unchecked()))
         return self.__field_favoriteColor
 
     @property
@@ -1069,7 +1069,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__field_friends is None:
-            self.__field_friends = Set__i64.create(reference_shared_ptr_friends(self._cpp_obj, deref(self._cpp_obj).friends))
+            self.__field_friends = Set__i64.create(reference_shared_ptr_friends(self._cpp_obj, deref(self._cpp_obj).friends_ref().value_unchecked()))
         return self.__field_friends
 
     @property
@@ -1077,7 +1077,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.bestFriend:
             return None
 
-        return deref(self._cpp_obj).bestFriend
+        return deref(self._cpp_obj).bestFriend_ref().value_unchecked()
 
     @property
     def petNames(self):
@@ -1085,7 +1085,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__field_petNames is None:
-            self.__field_petNames = Map__Animal_string.create(reference_shared_ptr_petNames(self._cpp_obj, deref(self._cpp_obj).petNames))
+            self.__field_petNames = Map__Animal_string.create(reference_shared_ptr_petNames(self._cpp_obj, deref(self._cpp_obj).petNames_ref().value_unchecked()))
         return self.__field_petNames
 
     @property
@@ -1093,7 +1093,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.afraidOfAnimal:
             return None
 
-        return translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal))
+        return translate_cpp_enum_to_python(Animal, <int>(deref(self._cpp_obj).afraidOfAnimal_ref().value_unchecked()))
 
     @property
     def vehicles(self):
@@ -1101,7 +1101,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__field_vehicles is None:
-            self.__field_vehicles = List__Vehicle.create(reference_shared_ptr_vehicles(self._cpp_obj, deref(self._cpp_obj).vehicles))
+            self.__field_vehicles = List__Vehicle.create(reference_shared_ptr_vehicles(self._cpp_obj, deref(self._cpp_obj).vehicles_ref().value_unchecked()))
         return self.__field_vehicles
 
 

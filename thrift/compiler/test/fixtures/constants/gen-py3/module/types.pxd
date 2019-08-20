@@ -17,7 +17,7 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.types cimport bstring, move
+from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
 
 
@@ -104,7 +104,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>=(cInternship&)
         int32_t weeks
         string title
-        cCompany employer
+        optional_field_ref[cCompany] employer_ref()
         cInternship__isset __isset
 
     cdef cppclass cUnEnumStruct__isset "::cpp2::UnEnumStruct::__isset":

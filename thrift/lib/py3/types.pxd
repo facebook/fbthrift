@@ -107,3 +107,12 @@ cdef inline uint32_t largest_flag(uint32_t v):
     v |= (v >> 8)
     v |= (v >> 16)
     return v ^ (v >> 1)
+
+
+cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift" nogil:
+    cdef cppclass optional_field_ref[T]:
+        void assign "operator="(T)
+        T value_unchecked()
+        # Cython doesn't handle references very well, so use a different name
+        # for value_unchecked in the contexts where references actually work.
+        T& ref_unchecked "value_unchecked" ()

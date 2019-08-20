@@ -545,7 +545,7 @@ cdef class MyField(thrift.py3.types.Struct):
                 pass
 
         if opt_value is not None:
-            deref(c_inst).opt_value = opt_value
+            deref(c_inst).opt_value_ref().assign(opt_value)
             deref(c_inst).__isset.opt_value = True
         if value is not None:
             deref(c_inst).value = value
@@ -575,7 +575,7 @@ cdef class MyField(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.opt_value:
             return None
 
-        return deref(self._cpp_obj).opt_value
+        return deref(self._cpp_obj).opt_value_ref().value_unchecked()
 
     @property
     def value(self):
@@ -1214,7 +1214,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
                 pass
 
         if mes is not None:
-            deref(c_inst).mes = deref(List__RecursiveStruct(mes)._cpp_obj)
+            deref(c_inst).mes_ref().assign(deref(List__RecursiveStruct(mes)._cpp_obj))
             deref(c_inst).__isset.mes = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -1238,7 +1238,7 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
             return None
 
         if self.__field_mes is None:
-            self.__field_mes = List__RecursiveStruct.create(reference_shared_ptr_mes(self._cpp_obj, deref(self._cpp_obj).mes))
+            self.__field_mes = List__RecursiveStruct.create(reference_shared_ptr_mes(self._cpp_obj, deref(self._cpp_obj).mes_ref().value_unchecked()))
         return self.__field_mes
 
 

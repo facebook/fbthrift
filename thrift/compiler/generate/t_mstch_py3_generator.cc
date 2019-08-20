@@ -245,6 +245,8 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       {"shared_ref?", (ref_type == "shared")},
       {"shared_const_ref?", (ref_type == "shared_const")},
       {"iobuf_ref?", (ref_type == "iobuf")},
+      {"has_ref_accessor?",
+       req == t_field::e_req::T_OPTIONAL && !reference && !follyOptional},
       {"hasDefaultValue?", hasDefaultValue},
       {"requireValue?", requireValue},
       {"follyOptional?", follyOptional},

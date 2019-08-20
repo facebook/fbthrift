@@ -1648,7 +1648,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyBinaryField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField))
             deref(c_inst).__isset.MyBinaryField = True
         if MyBinaryField2 is not None:
-            deref(c_inst).MyBinaryField2 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2))
+            deref(c_inst).MyBinaryField2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2)))
             deref(c_inst).__isset.MyBinaryField2 = True
         if MyBinaryField3 is not None:
             deref(c_inst).MyBinaryField3 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3))
@@ -1712,7 +1712,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.MyBinaryField2:
             return None
 
-        return deref(self._cpp_obj).MyBinaryField2
+        return deref(self._cpp_obj).MyBinaryField2_ref().value_unchecked()
 
     @property
     def MyBinaryField3(self):
@@ -3857,7 +3857,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[8] and opt_fieldC is None:
-                deref(c_inst).opt_fieldC = default_inst[ccontainerStruct]().opt_fieldC
+                deref(c_inst).opt_fieldC_ref().assign(default_inst[ccontainerStruct]().opt_fieldC_ref().value_unchecked())
                 deref(c_inst).__isset.opt_fieldC = False
                 pass
 
@@ -3876,7 +3876,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[12] and opt_fieldE is None:
-                deref(c_inst).opt_fieldE = default_inst[ccontainerStruct]().opt_fieldE
+                deref(c_inst).opt_fieldE_ref().assign(default_inst[ccontainerStruct]().opt_fieldE_ref().value_unchecked())
                 deref(c_inst).__isset.opt_fieldE = False
                 pass
 
@@ -3950,7 +3950,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
                 pass
 
             if not __isNOTSET[27] and opt_fieldR is None:
-                deref(c_inst).opt_fieldR = default_inst[ccontainerStruct]().opt_fieldR
+                deref(c_inst).opt_fieldR_ref().assign(default_inst[ccontainerStruct]().opt_fieldR_ref().value_unchecked())
                 deref(c_inst).__isset.opt_fieldR = False
                 pass
 
@@ -4044,7 +4044,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldA is not None:
             deref(c_inst).req_fieldA = req_fieldA
         if opt_fieldA is not None:
-            deref(c_inst).opt_fieldA = opt_fieldA
+            deref(c_inst).opt_fieldA_ref().assign(opt_fieldA)
             deref(c_inst).__isset.opt_fieldA = True
         if fieldB is not None:
             deref(c_inst).fieldB = deref(Map__string_bool(fieldB)._cpp_obj)
@@ -4052,7 +4052,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldB is not None:
             deref(c_inst).req_fieldB = deref(Map__string_bool(req_fieldB)._cpp_obj)
         if opt_fieldB is not None:
-            deref(c_inst).opt_fieldB = deref(Map__string_bool(opt_fieldB)._cpp_obj)
+            deref(c_inst).opt_fieldB_ref().assign(deref(Map__string_bool(opt_fieldB)._cpp_obj))
             deref(c_inst).__isset.opt_fieldB = True
         if fieldC is not None:
             deref(c_inst).fieldC = deref(Set__i32(fieldC)._cpp_obj)
@@ -4060,7 +4060,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldC is not None:
             deref(c_inst).req_fieldC = deref(Set__i32(req_fieldC)._cpp_obj)
         if opt_fieldC is not None:
-            deref(c_inst).opt_fieldC = deref(Set__i32(opt_fieldC)._cpp_obj)
+            deref(c_inst).opt_fieldC_ref().assign(deref(Set__i32(opt_fieldC)._cpp_obj))
             deref(c_inst).__isset.opt_fieldC = True
         if fieldD is not None:
             deref(c_inst).fieldD = thrift.py3.types.move(thrift.py3.types.bytes_to_string(fieldD.encode('utf-8')))
@@ -4071,7 +4071,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldE is not None:
             deref(c_inst).req_fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(req_fieldE.encode('utf-8')))
         if opt_fieldE is not None:
-            deref(c_inst).opt_fieldE = thrift.py3.types.move(thrift.py3.types.bytes_to_string(opt_fieldE.encode('utf-8')))
+            deref(c_inst).opt_fieldE_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(opt_fieldE.encode('utf-8'))))
             deref(c_inst).__isset.opt_fieldE = True
         if fieldF is not None:
             deref(c_inst).fieldF = deref(List__List__i32(fieldF)._cpp_obj)
@@ -4115,7 +4115,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldR is not None:
             deref(c_inst).req_fieldR = MyEnumA_to_cpp(req_fieldR)
         if opt_fieldR is not None:
-            deref(c_inst).opt_fieldR = MyEnumA_to_cpp(opt_fieldR)
+            deref(c_inst).opt_fieldR_ref().assign(MyEnumA_to_cpp(opt_fieldR))
             deref(c_inst).__isset.opt_fieldR = True
         if fieldS is not None:
             deref(c_inst).fieldS = MyEnumA_to_cpp(fieldS)
@@ -4132,7 +4132,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldV is not None:
             deref(c_inst).req_fieldV = deref((<MyStruct?> req_fieldV)._cpp_obj)
         if opt_fieldV is not None:
-            deref(c_inst).opt_fieldV = deref((<MyStruct?> opt_fieldV)._cpp_obj)
+            deref(c_inst).opt_fieldV_ref().assign(deref((<MyStruct?> opt_fieldV)._cpp_obj))
             deref(c_inst).__isset.opt_fieldV = True
         if fieldW is not None:
             deref(c_inst).fieldW = deref(Set__MyStruct(fieldW)._cpp_obj)
@@ -4143,7 +4143,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if req_fieldX is not None:
             deref(c_inst).req_fieldX = deref((<ComplexUnion?> req_fieldX)._cpp_obj)
         if opt_fieldX is not None:
-            deref(c_inst).opt_fieldX = deref((<ComplexUnion?> opt_fieldX)._cpp_obj)
+            deref(c_inst).opt_fieldX_ref().assign(deref((<ComplexUnion?> opt_fieldX)._cpp_obj))
             deref(c_inst).__isset.opt_fieldX = True
         if fieldY is not None:
             deref(c_inst).fieldY = deref(List__ComplexUnion(fieldY)._cpp_obj)
@@ -4245,7 +4245,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.opt_fieldA:
             return None
 
-        return <pbool> deref(self._cpp_obj).opt_fieldA
+        return <pbool> deref(self._cpp_obj).opt_fieldA_ref().value_unchecked()
 
     @property
     def fieldB(self):
@@ -4267,7 +4267,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__field_opt_fieldB is None:
-            self.__field_opt_fieldB = Map__string_bool.create(reference_shared_ptr_opt_fieldB(self._cpp_obj, deref(self._cpp_obj).opt_fieldB))
+            self.__field_opt_fieldB = Map__string_bool.create(reference_shared_ptr_opt_fieldB(self._cpp_obj, deref(self._cpp_obj).opt_fieldB_ref().value_unchecked()))
         return self.__field_opt_fieldB
 
     @property
@@ -4288,7 +4288,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     def opt_fieldC(self):
 
         if self.__field_opt_fieldC is None:
-            self.__field_opt_fieldC = Set__i32.create(reference_shared_ptr_opt_fieldC(self._cpp_obj, deref(self._cpp_obj).opt_fieldC))
+            self.__field_opt_fieldC = Set__i32.create(reference_shared_ptr_opt_fieldC(self._cpp_obj, deref(self._cpp_obj).opt_fieldC_ref().value_unchecked()))
         return self.__field_opt_fieldC
 
     @property
@@ -4309,7 +4309,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def opt_fieldE(self):
 
-        return (<bytes>deref(self._cpp_obj).opt_fieldE).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).opt_fieldE_ref().value_unchecked()).decode('UTF-8')
 
     @property
     def fieldF(self):
@@ -4402,7 +4402,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
     @property
     def opt_fieldR(self):
 
-        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR))
+        return translate_cpp_enum_to_python(MyEnumA, <int>(deref(self._cpp_obj).opt_fieldR_ref().value_unchecked()))
 
     @property
     def fieldS(self):
@@ -4443,7 +4443,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__field_opt_fieldV is None:
-            self.__field_opt_fieldV = MyStruct.create(reference_shared_ptr_opt_fieldV(self._cpp_obj, deref(self._cpp_obj).opt_fieldV))
+            self.__field_opt_fieldV = MyStruct.create(reference_shared_ptr_opt_fieldV(self._cpp_obj, deref(self._cpp_obj).opt_fieldV_ref().value_unchecked()))
         return self.__field_opt_fieldV
 
     @property
@@ -4473,7 +4473,7 @@ cdef class containerStruct(thrift.py3.types.Struct):
             return None
 
         if self.__field_opt_fieldX is None:
-            self.__field_opt_fieldX = ComplexUnion.create(reference_shared_ptr_opt_fieldX(self._cpp_obj, deref(self._cpp_obj).opt_fieldX))
+            self.__field_opt_fieldX = ComplexUnion.create(reference_shared_ptr_opt_fieldX(self._cpp_obj, deref(self._cpp_obj).opt_fieldX_ref().value_unchecked()))
         return self.__field_opt_fieldX
 
     @property

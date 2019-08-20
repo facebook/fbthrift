@@ -17,7 +17,7 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.types cimport bstring, move
+from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
 cimport include.types as _include_types
 
@@ -609,7 +609,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         bint operator>(cForwardUsageRoot&)
         bint operator<=(cForwardUsageRoot&)
         bint operator>=(cForwardUsageRoot&)
-        cForwardUsageStruct ForwardUsageStruct
+        optional_field_ref[cForwardUsageStruct] ForwardUsageStruct_ref()
         unique_ptr[cForwardUsageByRef] ForwardUsageByRef
         cForwardUsageRoot__isset __isset
 
@@ -625,7 +625,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         bint operator>(cForwardUsageStruct&)
         bint operator<=(cForwardUsageStruct&)
         bint operator>=(cForwardUsageStruct&)
-        cForwardUsageRoot foo
+        optional_field_ref[cForwardUsageRoot] foo_ref()
         cForwardUsageStruct__isset __isset
 
     cdef cppclass cForwardUsageByRef__isset "::apache::thrift::fixtures::types::ForwardUsageByRef::__isset":
@@ -640,7 +640,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         bint operator>(cForwardUsageByRef&)
         bint operator<=(cForwardUsageByRef&)
         bint operator>=(cForwardUsageByRef&)
-        cForwardUsageRoot foo
+        optional_field_ref[cForwardUsageRoot] foo_ref()
         cForwardUsageByRef__isset __isset
 
     cdef cppclass cNoexceptMoveEmpty__isset "::apache::thrift::fixtures::types::NoexceptMoveEmpty::__isset":
@@ -697,7 +697,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixt
         string MyStringField
         string MyStringField2
         string MyBinaryField
-        string MyBinaryField2
+        optional_field_ref[string] MyBinaryField2_ref()
         string MyBinaryField3
         vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt

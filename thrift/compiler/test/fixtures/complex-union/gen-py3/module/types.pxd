@@ -17,7 +17,7 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.types cimport bstring, move
+from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
 
 

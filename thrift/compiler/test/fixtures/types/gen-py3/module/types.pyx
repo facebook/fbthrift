@@ -3646,7 +3646,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
                 pass
 
         if ForwardUsageStruct is not None:
-            deref(c_inst).ForwardUsageStruct = deref((<ForwardUsageStruct?> ForwardUsageStruct)._cpp_obj)
+            deref(c_inst).ForwardUsageStruct_ref().assign(deref((<ForwardUsageStruct?> ForwardUsageStruct)._cpp_obj))
             deref(c_inst).__isset.ForwardUsageStruct = True
         if ForwardUsageByRef is not None:
             deref(c_inst).ForwardUsageByRef = make_unique[cForwardUsageByRef](deref((<ForwardUsageByRef?>ForwardUsageByRef)._cpp_obj))
@@ -3673,7 +3673,7 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
             return None
 
         if self.__field_ForwardUsageStruct is None:
-            self.__field_ForwardUsageStruct = ForwardUsageStruct.create(reference_shared_ptr_ForwardUsageStruct(self._cpp_obj, deref(self._cpp_obj).ForwardUsageStruct))
+            self.__field_ForwardUsageStruct = ForwardUsageStruct.create(reference_shared_ptr_ForwardUsageStruct(self._cpp_obj, deref(self._cpp_obj).ForwardUsageStruct_ref().value_unchecked()))
         return self.__field_ForwardUsageStruct
 
     @property
@@ -3833,7 +3833,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
                 pass
 
         if foo is not None:
-            deref(c_inst).foo = deref((<ForwardUsageRoot?> foo)._cpp_obj)
+            deref(c_inst).foo_ref().assign(deref((<ForwardUsageRoot?> foo)._cpp_obj))
             deref(c_inst).__isset.foo = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -3857,7 +3857,7 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
             return None
 
         if self.__field_foo is None:
-            self.__field_foo = ForwardUsageRoot.create(reference_shared_ptr_foo(self._cpp_obj, deref(self._cpp_obj).foo))
+            self.__field_foo = ForwardUsageRoot.create(reference_shared_ptr_foo(self._cpp_obj, deref(self._cpp_obj).foo_ref().value_unchecked()))
         return self.__field_foo
 
 
@@ -4007,7 +4007,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
                 pass
 
         if foo is not None:
-            deref(c_inst).foo = deref((<ForwardUsageRoot?> foo)._cpp_obj)
+            deref(c_inst).foo_ref().assign(deref((<ForwardUsageRoot?> foo)._cpp_obj))
             deref(c_inst).__isset.foo = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -4031,7 +4031,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
             return None
 
         if self.__field_foo is None:
-            self.__field_foo = ForwardUsageRoot.create(reference_shared_ptr_foo(self._cpp_obj, deref(self._cpp_obj).foo))
+            self.__field_foo = ForwardUsageRoot.create(reference_shared_ptr_foo(self._cpp_obj, deref(self._cpp_obj).foo_ref().value_unchecked()))
         return self.__field_foo
 
 
@@ -4669,7 +4669,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
             deref(c_inst).MyBinaryField = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField))
             deref(c_inst).__isset.MyBinaryField = True
         if MyBinaryField2 is not None:
-            deref(c_inst).MyBinaryField2 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2))
+            deref(c_inst).MyBinaryField2_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField2)))
             deref(c_inst).__isset.MyBinaryField2 = True
         if MyBinaryField3 is not None:
             deref(c_inst).MyBinaryField3 = thrift.py3.types.move(thrift.py3.types.bytes_to_string(MyBinaryField3))
@@ -4733,7 +4733,7 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.MyBinaryField2:
             return None
 
-        return deref(self._cpp_obj).MyBinaryField2
+        return deref(self._cpp_obj).MyBinaryField2_ref().value_unchecked()
 
     @property
     def MyBinaryField3(self):

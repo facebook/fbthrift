@@ -253,7 +253,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
             c_inst = make_unique[cSerious]()
 
         if sonnet is not None:
-            deref(c_inst).sonnet = thrift.py3.types.move(thrift.py3.types.bytes_to_string(sonnet.encode('utf-8')))
+            deref(c_inst).sonnet_ref().assign(thrift.py3.types.move(thrift.py3.types.bytes_to_string(sonnet.encode('utf-8'))))
             deref(c_inst).__isset.sonnet = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -277,7 +277,7 @@ cdef class Serious(thrift.py3.exceptions.Error):
         if not deref(self._cpp_obj).__isset.sonnet:
             return None
 
-        return (<bytes>deref(self._cpp_obj).sonnet).decode('UTF-8')
+        return (<bytes>deref(self._cpp_obj).sonnet_ref().value_unchecked()).decode('UTF-8')
 
 
     def __hash__(Serious self):

@@ -244,7 +244,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
                 {{/field:follyOptional?}}
                 {{^field:follyOptional?}}
                 {{#field:hasDefaultValue?}}
-                deref(c_inst).{{field:name}} = default_inst[c{{struct:name}}]().{{field:name}}
+                {{#field:has_ref_accessor?}}
+                deref(c_inst).{{field:name}}_ref().assign(default_inst[c{{struct:name}}]().{{> CythonFieldValueRef}})
+                {{/field:has_ref_accessor?}}
+                {{^field:has_ref_accessor?}}
+                deref(c_inst).{{field:name}} = default_inst[c{{struct:name}}]().{{> CythonFieldValueRef}}
+                {{/field:has_ref_accessor?}}
                 {{/field:hasDefaultValue?}}
                 {{#field:isset?}}
                 deref(c_inst).__isset.{{field:name}} = False
@@ -262,7 +267,12 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
         {{/struct:exception?}}
         {{#struct:fields}}{{#field:type}}
         if {{field:name}} is not None:
+            {{#field:has_ref_accessor?}}
+            deref(c_inst).{{field:name}}_ref().assign({{> CythonFieldValueForAssignment}})
+            {{/field:has_ref_accessor?}}
+            {{^field:has_ref_accessor?}}
             deref(c_inst).{{field:name}} = {{> CythonFieldValueForAssignment}}
+            {{/field:has_ref_accessor?}}
             {{! This should also be inside the if statement, so indent appropriately }}
             {{#field:isset?}}
             deref(c_inst).__isset.{{field:name}} = True

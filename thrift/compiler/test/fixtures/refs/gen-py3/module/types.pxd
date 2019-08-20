@@ -17,7 +17,7 @@ from thrift.py3.exceptions cimport cTException
 cimport folly.iobuf as __iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.types cimport bstring, move
+from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
 
 
@@ -102,7 +102,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
-        int64_t opt_value
+        optional_field_ref[int64_t] opt_value_ref()
         int64_t value
         int64_t req_value
         cMyField__isset __isset
@@ -157,7 +157,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint operator>(cRecursiveStruct&)
         bint operator<=(cRecursiveStruct&)
         bint operator>=(cRecursiveStruct&)
-        vector[cRecursiveStruct] mes
+        optional_field_ref[vector[cRecursiveStruct]] mes_ref()
         cRecursiveStruct__isset __isset
 
     cdef cppclass cStructWithContainers__isset "::cpp2::StructWithContainers::__isset":
