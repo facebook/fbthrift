@@ -14,66 +14,46 @@
  * limitations under the License.
  */
 
-#include <folly/SocketAddress.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/example/cpp2/server/ChatRoomService.h>
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
-#include <thrift/perf/cpp2/util/Util.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 
-DEFINE_string(host, "::1", "ChatroomServer host");
+DEFINE_string(host, "::1", "ChatRoomServer host");
 DEFINE_int32(port, 7777, "ChatRoomServer port");
-DEFINE_string(
-    transport,
-    "header",
-    "Transport to use: header, rsocket, http2, or inmemory");
 
-using apache::thrift::server::ServerConfigsMock;
+using apache::thrift::async::TAsyncSocket;
 using example::chatroom::ChatRoomServiceAsyncClient;
-using example::chatroom::ChatRoomServiceHandler;
 
 int main(int argc, char* argv[]) {
   FLAGS_logtostderr = true;
   folly::init(&argc, &argv);
 
-  // create eventbase first so no dangling stack refs on 'client' dealloc
-  folly::EventBase evb;
+  // Create an EventBase.
+  folly::EventBase eventBase;
 
-  // Create a thrift client
-  auto addr = folly::SocketAddress(FLAGS_host, FLAGS_port);
-  auto ct = std::make_shared<ConnectionThread<ChatRoomServiceAsyncClient>>();
-  auto client = ct->newSyncClient(addr, FLAGS_transport);
+  // Create a Thrift client.
+  auto socket = TAsyncSocket::UniquePtr(
+      new TAsyncSocket(&eventBase, FLAGS_host, FLAGS_port));
+  auto channel =
+      apache::thrift::RocketClientChannel::newChannel(std::move(socket));
+  auto client =
+      std::make_unique<ChatRoomServiceAsyncClient>(std::move(channel));
 
-  // For header transport
-  if (FLAGS_transport == "header") {
-    client = newHeaderClient<ChatRoomServiceAsyncClient>(&evb, addr);
-  }
-
-  // For inmemory transport
-  auto handler = std::make_shared<ChatRoomServiceHandler>();
-  ServerConfigsMock serverConfigs;
-  if (FLAGS_transport == "inmemory") {
-    client =
-        newInMemoryClient<ChatRoomServiceAsyncClient, ChatRoomServiceHandler>(
-            handler, serverConfigs);
-  }
-
-  // Prepare thrift request
-  example::chatroom::SendMessageRequest sendRequest;
-  sendRequest.message = "This is an example!";
-  sendRequest.sender = getenv("USER");
-
-  // Prepare thrift response
-  example::chatroom::GetMessagesRequest getRequest;
-  example::chatroom::GetMessagesResponse response;
-
-  // Send and receive a message
   try {
+    // Send a chat message via a Thrift request.
+    auto sendRequest = example::chatroom::SendMessageRequest();
+    sendRequest.message = "This is an example!";
+    sendRequest.sender = getenv("USER");
     client->sync_sendMessage(sendRequest);
+
+    // Get chat response messages via another Thrift request.
+    auto getRequest = example::chatroom::GetMessagesRequest();
+    auto response = example::chatroom::GetMessagesResponse();
     client->sync_getMessages(response, getRequest);
 
-    // Print all the messages so far
+    // Print all the messages so far.
     for (auto& messagesList : response.messages) {
       LOG(INFO) << "Message: " << messagesList.message
                 << " Sender: " << messagesList.sender;
@@ -83,6 +63,4 @@ int main(int argc, char* argv[]) {
   } catch (example::chatroom::Exception& ex) {
     LOG(ERROR) << "Request failed " << ex.what();
   }
-
-  return 0;
 }
