@@ -246,12 +246,10 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorBasic) {
   SemiStream<int> semi = SemiStream<int>(std::move(stream));
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto gen = toAsyncGenerator<int>(std::move(semi), 100);
-    auto it = co_await gen.begin();
     int val;
-    while (it != gen.end()) {
-      val = *it;
+    while (auto item = co_await gen.next()) {
+      val = *item;
       EXPECT_EQ(expected_i++, val);
-      co_await(++it);
     }
     EXPECT_EQ(length, val + 1);
   }());
@@ -279,12 +277,10 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorMap) {
 
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto gen = toAsyncGenerator<std::string>(std::move(semi), 100);
-    auto it = co_await gen.begin();
     std::string val;
-    while (it != gen.end()) {
-      val = *it;
+    while (auto item = co_await gen.next()) {
+      val = *item;
       EXPECT_EQ(expected_i++, folly::to<int>(val));
-      co_await(++it);
     }
     EXPECT_EQ(length, folly::to<int>(val) + 1);
   }());
@@ -308,12 +304,10 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorSmallBuffer) {
   SemiStream<int> semi = SemiStream<int>(std::move(stream));
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto gen = toAsyncGenerator<int>(std::move(semi), 3);
-    auto it = co_await gen.begin();
     int val = 0;
-    while (it != gen.end()) {
-      val = *it;
+    while (auto item = co_await gen.next()) {
+      val = *item;
       EXPECT_EQ(expected_i++, val);
-      co_await(++it);
     }
     EXPECT_EQ(length, val + 1);
   }());
@@ -346,12 +340,10 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithFuture) {
   SemiStream<int> semi = SemiStream<int>(std::move(stream));
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto gen = toAsyncGenerator<int>(std::move(semi), 5);
-    auto it = co_await gen.begin();
     int val = 0;
-    while (it != gen.end()) {
-      val = *it;
+    while (auto item = co_await gen.next()) {
+      val = *item;
       EXPECT_EQ(expected_i++, val);
-      co_await(++it);
     }
     EXPECT_EQ(length, val + 1);
   }());
@@ -378,12 +370,10 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithError) {
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     try {
       auto gen = toAsyncGenerator<int>(std::move(semi), 100);
-      auto it = co_await gen.begin();
       int val = 0;
-      while (it != gen.end()) {
-        val = *it;
+      while (auto item = co_await gen.next()) {
+        val = *item;
         EXPECT_EQ(expected_i++, val);
-        co_await(++it);
       }
     } catch (const std::exception& e) {
       getError = true;
@@ -421,12 +411,10 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancel) {
     SemiStream<int> semi = SemiStream<int>(std::move(stream));
     folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
       auto gen = toAsyncGenerator<int>(std::move(semi), 5);
-      auto it = co_await gen.begin();
       int val = 0;
-      while (it != gen.end()) {
-        val = *it;
+      while (auto item = co_await gen.next()) {
+        val = *item;
         EXPECT_EQ(expected_i++, val);
-        co_await(++it);
         break;
       }
       EXPECT_GT(length, val + 1);
@@ -717,11 +705,9 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancellationToken) {
         toAsyncGenerator<int>(std::move(stream), 5, cancelSource.getToken());
     int val = 0;
 
-    auto it = co_await gen.begin();
-    while (it != gen.end()) {
-      val = *it;
+    while (auto item = co_await gen.next()) {
+      val = *item;
       EXPECT_EQ(expected_i++, val);
-      co_await(++it);
     }
 
     EXPECT_TRUE(cancelSource.isCancellationRequested());

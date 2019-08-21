@@ -114,8 +114,6 @@ class CoroStreamImpl : public StreamImplIf {
     folly::coro::co_invoke(
         [subscriber = std::move(sharedSubscriber),
          self = std::move(*this)]() mutable -> folly::coro::Task<void> {
-          typename folly::coro::AsyncGenerator<T>::async_iterator iter;
-          bool started = false;
           while (true) {
             while (
                 self.sharedState_->requested_ == 0 &&
@@ -135,19 +133,15 @@ class CoroStreamImpl : public StreamImplIf {
             size_t i = 0;
             folly::Try<Value> value;
             try {
-              if (!started) {
-                iter = co_await self.generator_.begin();
-                started = true;
-              } else {
-                co_await(++iter);
-              }
+              auto item = co_await self.generator_.next();
 
-              if (iter != self.generator_.end()) {
+              if (item.has_value()) {
                 using valueType =
                     typename folly::coro::AsyncGenerator<T>::value_type;
                 value = folly::Try<Value>(
                     std::make_unique<
-                        ::apache::thrift::detail::Value<valueType>>(*iter));
+                        ::apache::thrift::detail::Value<valueType>>(
+                        std::move(*item)));
 
                 for (; i < self.mapFuncs_.size(); i++) {
                   value.emplace(
