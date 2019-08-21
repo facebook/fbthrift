@@ -117,7 +117,7 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
         auto delay = std::chrono::duration_cast<std::chrono::milliseconds>(
           startTime - task->getQueueBeginTime());
 
-        if (manager_->codel_.overloaded(delay)) {
+        if (task->canExpire() && manager_->codel_.overloaded(delay)) {
           if (manager_->codelCallback_) {
             manager_->codelCallback_(task->getRunnable());
           }
