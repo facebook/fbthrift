@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <fizz/server/AsyncFizzServer.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
 
 namespace apache {
 namespace thrift {
@@ -45,23 +45,20 @@ class TAsyncFizzServer : public virtual fizz::server::AsyncFizzServer,
       const void* buf,
       size_t bytes,
       folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    fizz::server::AsyncFizzServer::write(
-        callback, buf, bytes, flags);
+    fizz::server::AsyncFizzServer::write(callback, buf, bytes, flags);
   }
   void writev(
       AsyncTransportWrapper::WriteCallback* callback,
       const iovec* vec,
       size_t count,
       folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    fizz::server::AsyncFizzServer::writev(
-      callback, vec, count, flags);
+    fizz::server::AsyncFizzServer::writev(callback, vec, count, flags);
   }
   void writeChain(
       AsyncTransportWrapper::WriteCallback* callback,
       std::unique_ptr<folly::IOBuf>&& buf,
       folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    fizz::server::AsyncFizzServer::writeChain(
-      callback, std::move(buf), flags);
+    fizz::server::AsyncFizzServer::writeChain(callback, std::move(buf), flags);
   }
 };
 } // namespace async

@@ -34,7 +34,7 @@ class ThriftFizzAcceptorHandshakeHelper
       const std::shared_ptr<const fizz::server::FizzServerContext>& fizzContext,
       const std::shared_ptr<fizz::ServerExtensions>& /*extensions*/) override {
     folly::AsyncSocket::UniquePtr asyncSock(
-      new apache::thrift::async::TAsyncSocket(std::move(sslSock)));
+        new apache::thrift::async::TAsyncSocket(std::move(sslSock)));
     asyncSock->cacheAddresses();
     return fizz::server::AsyncFizzServer::UniquePtr(
         new apache::thrift::async::TAsyncFizzServer(
@@ -46,10 +46,7 @@ class ThriftFizzAcceptorHandshakeHelper
       folly::EventBase* evb,
       int fd) override {
     return folly::AsyncSSLSocket::UniquePtr(
-        new apache::thrift::async::TAsyncSSLSocket(
-          sslContext,
-          evb,
-          fd));
+        new apache::thrift::async::TAsyncSSLSocket(sslContext, evb, fd));
   }
 };
 
@@ -66,12 +63,13 @@ class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
       return nullptr;
     }
     return wangle::AcceptorHandshakeHelper::UniquePtr(
-        new ThriftFizzAcceptorHandshakeHelper(context_,
-                                              clientAddr,
-                                              acceptTime,
-                                              tinfo,
-                                              loggingCallback_,
-                                              tokenBindingContext_));
+        new ThriftFizzAcceptorHandshakeHelper(
+            context_,
+            clientAddr,
+            acceptTime,
+            tinfo,
+            loggingCallback_,
+            tokenBindingContext_));
   }
 };
 } // namespace thrift
