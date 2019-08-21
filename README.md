@@ -66,10 +66,10 @@ Please install the following dependencies before building Facebook Thrift:
 [Zlib](https://zlib.net)
 
 **External**:
-[Double Conversion](https://github.com/google/double-conversion),
 [{fmt}](https://github.com/fmtlib/fmt),
 [GFlags](https://github.com/gflags/gflags),
 [GLog](https://github.com/google/glog),
+[rsocket-cpp](https://github.com/rsocket/rsocket-cpp)
 
 **Facebook**:
 [Fizz](https://github.com/facebookincubator/fizz),
