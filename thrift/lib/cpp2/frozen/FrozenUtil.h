@@ -286,29 +286,20 @@ template <class T>
 mapFrozen(const std::string& str) = delete;
 
 template <class T>
-MappedFrozen<T> mapFrozen(folly::File file) {
-  folly::MemoryMapping mapping(std::move(file), 0);
-  if (!FLAGS_thrift_frozen_util_disable_mlock) {
-    mapping.mlock(
-        folly::MemoryMapping::LockMode::TRY_LOCK,
-        FLAGS_thrift_frozen_util_mlock_on_fault
-            ? folly::MemoryMapping::LockFlags::LOCK_ONFAULT
-            : folly::MemoryMapping::LockFlags::LOCK_PREFAULT);
-  }
-  return mapFrozen<T>(std::move(mapping));
-}
-
-template <class T>
 MappedFrozen<T> mapFrozen(
     folly::File file,
     folly::MemoryMapping::LockMode lockMode) {
   folly::MemoryMapping mapping(std::move(file), 0);
-  mapping.mlock(
-      lockMode,
-      FLAGS_thrift_frozen_util_mlock_on_fault
-          ? folly::MemoryMapping::LockFlags::LOCK_ONFAULT
-          : folly::MemoryMapping::LockFlags::LOCK_PREFAULT);
+  folly::MemoryMapping::LockFlags flags{};
+  flags.lockOnFault = FLAGS_thrift_frozen_util_mlock_on_fault;
+  mapping.mlock(lockMode, flags);
   return mapFrozen<T>(std::move(mapping));
+}
+
+template <class T>
+MappedFrozen<T> mapFrozen(folly::File file) {
+  return mapFrozen<T>(
+      std::move(file), folly::MemoryMapping::LockMode::TRY_LOCK);
 }
 
 } // namespace frozen
