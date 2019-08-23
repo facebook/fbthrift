@@ -65,7 +65,9 @@ void ConnectionThread::maybeCreateConnection(
           new TAsyncSocket(this->getEventBase(), addr, port));
       if (FLAGS_use_ssl) {
         auto sslContext = std::make_shared<folly::SSLContext>();
+#if FOLLY_OPENSSL_HAS_ALPN
         sslContext->setAdvertisedNextProtocols({"h2", "http"});
+#endif
         auto sslSocket = new TAsyncSSLSocket(
             sslContext,
             this->getEventBase(),
