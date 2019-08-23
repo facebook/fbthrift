@@ -94,7 +94,8 @@ bool HeaderClientChannel::isDetachable() {
 }
 
 bool HeaderClientChannel::clientSupportHeader() {
-  return getClientType() == THRIFT_HEADER_CLIENT_TYPE;
+  return getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
+      getClientType() == THRIFT_HTTP_CLIENT_TYPE;
 }
 
 // Client Interface
