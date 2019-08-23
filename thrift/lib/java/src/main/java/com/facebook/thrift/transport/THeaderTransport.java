@@ -374,9 +374,9 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   private String readString(ByteBuffer in) throws TTransportException {
-      int sz = readVarint32Buf(in);
-      byte[] bytearr = new byte[sz];
-      in.get(bytearr, 0, sz);
+    int sz = readVarint32Buf(in);
+    byte[] bytearr = new byte[sz];
+    in.get(bytearr, 0, sz);
     return new String(bytearr, 0, sz, StandardCharsets.UTF_8);
   }
 

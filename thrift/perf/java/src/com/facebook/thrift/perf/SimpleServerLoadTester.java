@@ -1,11 +1,10 @@
 package com.facebook.thrift.perf;
 
 import com.facebook.thrift.*;
-import com.facebook.thrift.perf.*;
 import com.facebook.thrift.protocol.*;
-import com.facebook.thrift.transport.*;
 import com.facebook.thrift.server.*;
 import com.facebook.thrift.server.example.TSimpleServer;
+import com.facebook.thrift.transport.*;
 
 public class SimpleServerLoadTester extends LoadTester {
 
@@ -26,5 +25,4 @@ public class SimpleServerLoadTester extends LoadTester {
 
     return server;
   }
-
 }

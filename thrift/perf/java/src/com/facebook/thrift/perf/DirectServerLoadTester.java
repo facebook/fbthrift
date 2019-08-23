@@ -1,9 +1,9 @@
 package com.facebook.thrift.perf;
 
-import org.apache.commons.cli.*;
 import com.facebook.thrift.*;
-import com.facebook.thrift.server.*;
 import com.facebook.thrift.direct_server.*;
+import com.facebook.thrift.server.*;
+import org.apache.commons.cli.*;
 
 public class DirectServerLoadTester extends LoadTester {
 
@@ -19,15 +19,15 @@ public class DirectServerLoadTester extends LoadTester {
     TServer server;
     if (parser.getHsHaMode()) {
       server =
-        TDirectServer.asHsHaServer(parser.getListenPort(),
-                                   parser.getNumberOfThreads(),
-                                   parser.getNumberOfPendingOperations(),
-                                   processor);
+          TDirectServer.asHsHaServer(
+              parser.getListenPort(),
+              parser.getNumberOfThreads(),
+              parser.getNumberOfPendingOperations(),
+              processor);
     } else {
       server =
-        TDirectServer.asFiberServer(parser.getListenPort(),
-                                    parser.getNumberOfThreads(),
-                                    processor);
+          TDirectServer.asFiberServer(
+              parser.getListenPort(), parser.getNumberOfThreads(), processor);
     }
     return server;
   }

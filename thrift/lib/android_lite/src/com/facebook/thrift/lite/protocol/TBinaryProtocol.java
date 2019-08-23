@@ -25,9 +25,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-/**
- * Binary protocol implementation for thrift.
- */
+/** Binary protocol implementation for thrift. */
 public class TBinaryProtocol {
   public static final int VERSION_1 = 0x80010000;
 
@@ -97,7 +95,7 @@ public class TBinaryProtocol {
   public void writeSetEnd() {}
 
   public void writeBool(boolean b) throws IOException {
-    writeByte(b ? (byte)1 : (byte)0);
+    writeByte(b ? (byte) 1 : (byte) 0);
   }
 
   public void writeByte(byte b) throws IOException {
@@ -106,28 +104,28 @@ public class TBinaryProtocol {
   }
 
   public void writeI16(short i16) throws IOException {
-    mBufferOut[0] = (byte)(0xff & (i16 >> 8));
-    mBufferOut[1] = (byte)(0xff & (i16));
+    mBufferOut[0] = (byte) (0xff & (i16 >> 8));
+    mBufferOut[1] = (byte) (0xff & (i16));
     mTrans.write(mBufferOut, 0, 2);
   }
 
   public void writeI32(int i32) throws IOException {
-    mBufferOut[0] = (byte)(0xff & (i32 >> 24));
-    mBufferOut[1] = (byte)(0xff & (i32 >> 16));
-    mBufferOut[2] = (byte)(0xff & (i32 >> 8));
-    mBufferOut[3] = (byte)(0xff & (i32));
+    mBufferOut[0] = (byte) (0xff & (i32 >> 24));
+    mBufferOut[1] = (byte) (0xff & (i32 >> 16));
+    mBufferOut[2] = (byte) (0xff & (i32 >> 8));
+    mBufferOut[3] = (byte) (0xff & (i32));
     mTrans.write(mBufferOut, 0, 4);
   }
 
   public void writeI64(long i64) throws IOException {
-    mBufferOut[0] = (byte)(0xff & (i64 >> 56));
-    mBufferOut[1] = (byte)(0xff & (i64 >> 48));
-    mBufferOut[2] = (byte)(0xff & (i64 >> 40));
-    mBufferOut[3] = (byte)(0xff & (i64 >> 32));
-    mBufferOut[4] = (byte)(0xff & (i64 >> 24));
-    mBufferOut[5] = (byte)(0xff & (i64 >> 16));
-    mBufferOut[6] = (byte)(0xff & (i64 >> 8));
-    mBufferOut[7] = (byte)(0xff & (i64));
+    mBufferOut[0] = (byte) (0xff & (i64 >> 56));
+    mBufferOut[1] = (byte) (0xff & (i64 >> 48));
+    mBufferOut[2] = (byte) (0xff & (i64 >> 40));
+    mBufferOut[3] = (byte) (0xff & (i64 >> 32));
+    mBufferOut[4] = (byte) (0xff & (i64 >> 24));
+    mBufferOut[5] = (byte) (0xff & (i64 >> 16));
+    mBufferOut[6] = (byte) (0xff & (i64 >> 8));
+    mBufferOut[7] = (byte) (0xff & (i64));
     mTrans.write(mBufferOut, 0, 8);
   }
 

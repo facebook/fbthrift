@@ -23,16 +23,13 @@ public class LoadTesterArgumentParser {
   }
 
   public int getListenPort() {
-    String value =
-      commandLine.getOptionValue(OPT_PORT,
-                                 Integer.toString(OPT_PORT_DEFAULT));
+    String value = commandLine.getOptionValue(OPT_PORT, Integer.toString(OPT_PORT_DEFAULT));
     return Integer.decode(value);
   }
 
   public int getNumberOfThreads() {
     String value =
-      commandLine.getOptionValue(OPT_NUM_THREADS,
-                                 Integer.toString(getNumberOfProcessors()));
+        commandLine.getOptionValue(OPT_NUM_THREADS, Integer.toString(getNumberOfProcessors()));
     return Integer.decode(value);
   }
 
@@ -46,23 +43,21 @@ public class LoadTesterArgumentParser {
 
   protected void registerOptions() {
     options.addOption(
-      OptionBuilder.withLongOpt(OPT_HELP)
-      .withDescription("Print this usage message")
-      .create());
+        OptionBuilder.withLongOpt(OPT_HELP).withDescription("Print this usage message").create());
 
     options.addOption(
-      OptionBuilder.withLongOpt(OPT_PORT)
-      .hasArg()
-      .withArgName("number")
-      .withDescription("Port to bind for listening")
-      .create());
+        OptionBuilder.withLongOpt(OPT_PORT)
+            .hasArg()
+            .withArgName("number")
+            .withDescription("Port to bind for listening")
+            .create());
 
     options.addOption(
-      OptionBuilder.withLongOpt(OPT_NUM_THREADS)
-      .hasArg()
-      .withArgName("count")
-      .withDescription("Number of task threads")
-      .create());
+        OptionBuilder.withLongOpt(OPT_NUM_THREADS)
+            .hasArg()
+            .withArgName("count")
+            .withDescription("Number of task threads")
+            .create());
   }
 
   protected Options options = new Options();

@@ -385,7 +385,7 @@ public class ClientHandlerTest extends junit.framework.TestCase {
 
   public void testClient(TTransport transport, TProtocol prot) throws TException {
     ThriftTest.Client testClient = new ThriftTest.Client(prot);
-    //rohan
+    // rohan
     ClientEventHandler handler = new ClientEventHandler();
     testClient.addEventHandler(handler);
     Insanity insane = new Insanity();

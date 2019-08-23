@@ -1,20 +1,14 @@
 package com.facebook.thrift.perf;
 
-import java.lang.InterruptedException;
-import java.lang.Thread;
-import java.lang.System;
 import com.facebook.thrift.TException;
 import java.util.List;
 
-public class LoadTestHandler implements LoadTest.Iface  {
-  public void noop() {
-  }
+public class LoadTestHandler implements LoadTest.Iface {
+  public void noop() {}
 
-  public void onewayNoop() {
-  }
+  public void onewayNoop() {}
 
-  public void asyncNoop() {
-  }
+  public void asyncNoop() {}
 
   public long add(long a, long b) {
     return a + b;
@@ -24,11 +18,10 @@ public class LoadTestHandler implements LoadTest.Iface  {
     return data;
   }
 
-  public void send(byte[] data) {
-  }
+  public void send(byte[] data) {}
 
   public byte[] recv(long recvBytes) {
-    byte[] array = new byte[(int)recvBytes];
+    byte[] array = new byte[(int) recvBytes];
     return array;
   }
 
@@ -36,8 +29,7 @@ public class LoadTestHandler implements LoadTest.Iface  {
     return recv(recvBytes);
   }
 
-  public void onewaySend(byte[] data) {
-  }
+  public void onewaySend(byte[] data) {}
 
   public void onewayThrow(int code) throws TException {
     throw new TException();
@@ -54,10 +46,9 @@ public class LoadTestHandler implements LoadTest.Iface  {
   public void sleep(long microseconds) {
     try {
       long ms = microseconds / 1000;
-      int us = (int)(microseconds % 1000);
+      int us = (int) (microseconds % 1000);
       Thread.sleep(ms, us);
-    }
-    catch (InterruptedException e) {
+    } catch (InterruptedException e) {
     }
   }
 
@@ -86,8 +77,7 @@ public class LoadTestHandler implements LoadTest.Iface  {
     while (System.nanoTime() < end) {}
   }
 
-  public void largeContainer(List<BigStruct> items) throws TException {
-  }
+  public void largeContainer(List<BigStruct> items) throws TException {}
 
   public List<BigStruct> iterAllFields(List<BigStruct> items) throws TException {
     return items;

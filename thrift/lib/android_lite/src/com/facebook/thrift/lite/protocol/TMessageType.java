@@ -21,12 +21,10 @@
 
 package com.facebook.thrift.lite.protocol;
 
-/**
- * Message type constants in the Thrift protocol.
- */
+/** Message type constants in the Thrift protocol. */
 public final class TMessageType {
 
-  /* package */ static final byte CALL  = 1;
+  /* package */ static final byte CALL = 1;
   /* package */ static final byte REPLY = 2;
   /* package */ static final byte EXCEPTION = 3;
   /* package */ static final byte ONEWAY = 4;

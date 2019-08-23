@@ -19,7 +19,6 @@
 
 package com.facebook.thrift;
 
-import com.facebook.thrift.TClientIf;
 import com.facebook.thrift.protocol.TMessage;
 import com.facebook.thrift.protocol.TMessageType;
 import com.facebook.thrift.protocol.TProtocol;

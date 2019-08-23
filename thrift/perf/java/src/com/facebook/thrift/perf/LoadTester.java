@@ -1,8 +1,8 @@
 package com.facebook.thrift.perf;
 
-import java.io.*;
 import com.facebook.thrift.*;
 import com.facebook.thrift.server.*;
+import java.io.*;
 import org.apache.commons.cli.*;
 
 public abstract class LoadTester {
@@ -14,8 +14,7 @@ public abstract class LoadTester {
 
     try {
       parser.parseOptions(args);
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       System.out.println(e.getMessage());
       System.exit(1);
     }

@@ -21,9 +21,7 @@
 
 package com.facebook.thrift.lite.protocol;
 
-/**
- * Helper class that encapsulates map metadata.
- */
+/** Helper class that encapsulates map metadata. */
 public final class TMap {
 
   /* package */ final byte keyType;

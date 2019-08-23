@@ -21,13 +21,11 @@
 
 package com.facebook.thrift.lite.protocol;
 
-/**
- * Helper class that encapsulates set metadata.
- */
+/** Helper class that encapsulates set metadata. */
 public final class TSet {
 
   /* package */ final byte elemType;
-  /* package */ final int  size;
+  /* package */ final int size;
 
   public TSet() {
     this(TType.STOP, 0);

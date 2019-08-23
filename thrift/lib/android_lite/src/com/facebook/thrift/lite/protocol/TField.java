@@ -21,9 +21,7 @@
 
 package com.facebook.thrift.lite.protocol;
 
-/**
- * Helper class that encapsulates field metadata.
- */
+/** Helper class that encapsulates field metadata. */
 public class TField {
 
   /* package */ final String name;
@@ -31,7 +29,7 @@ public class TField {
   /* package */ final short id;
 
   public TField() {
-    this("", TType.STOP, (short)0);
+    this("", TType.STOP, (short) 0);
   }
 
   public TField(String n, byte t, short i) {

@@ -21,9 +21,7 @@
 
 package com.facebook.thrift.lite.protocol;
 
-/**
- * Helper class that encapsulates struct metadata.
- */
+/** Helper class that encapsulates struct metadata. */
 public final class TMessage {
 
   /* package */ final String name;

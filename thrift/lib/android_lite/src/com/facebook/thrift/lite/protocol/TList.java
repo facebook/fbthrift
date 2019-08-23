@@ -21,13 +21,11 @@
 
 package com.facebook.thrift.lite.protocol;
 
-/**
- * Helper class that encapsulates list metadata.
- */
+/** Helper class that encapsulates list metadata. */
 public final class TList {
 
   /* package */ final byte elemType;
-  /* package */ final int  size;
+  /* package */ final int size;
 
   public TList() {
     this(TType.STOP, 0);

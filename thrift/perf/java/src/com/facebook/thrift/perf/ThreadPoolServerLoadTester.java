@@ -1,11 +1,10 @@
 package com.facebook.thrift.perf;
 
 import com.facebook.thrift.*;
-import com.facebook.thrift.perf.*;
 import com.facebook.thrift.protocol.*;
-import com.facebook.thrift.transport.*;
 import com.facebook.thrift.server.*;
 import com.facebook.thrift.server.example.TThreadPoolServer;
+import com.facebook.thrift.transport.*;
 
 public class ThreadPoolServerLoadTester extends LoadTester {
 
@@ -24,19 +23,12 @@ public class ThreadPoolServerLoadTester extends LoadTester {
     TProtocolFactory pfactory = new TBinaryProtocol.Factory();
 
     TThreadPoolServer.Options options = new TThreadPoolServer.Options();
-    options.minWorkerThreads =
-      options.maxWorkerThreads =
-      parser.getNumberOfThreads();
+    options.minWorkerThreads = options.maxWorkerThreads = parser.getNumberOfThreads();
 
-    TServer server = new TThreadPoolServer(procfactory,
-                                           transport,
-                                           tfactory,
-                                           tfactory,
-                                           pfactory,
-                                           pfactory,
-                                           options);
+    TServer server =
+        new TThreadPoolServer(
+            procfactory, transport, tfactory, tfactory, pfactory, pfactory, options);
 
     return server;
   }
-
 }

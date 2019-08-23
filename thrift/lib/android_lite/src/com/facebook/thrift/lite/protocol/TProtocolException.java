@@ -23,9 +23,7 @@ package com.facebook.thrift.lite.protocol;
 
 import java.io.IOException;
 
-/**
- * Protocol exceptions.
- */
+/** Protocol exceptions. */
 public class TProtocolException extends IOException {
 
   public static final int UNKNOWN = 0;

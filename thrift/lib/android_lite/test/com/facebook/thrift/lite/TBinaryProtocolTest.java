@@ -2,13 +2,8 @@
 
 package com.facebook.thrift.lite;
 
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.facebook.thrift.lite.protocol.TBinaryProtocol;
 import com.facebook.thrift.lite.protocol.TField;
@@ -16,16 +11,18 @@ import com.facebook.thrift.lite.protocol.TList;
 import com.facebook.thrift.lite.protocol.TMap;
 import com.facebook.thrift.lite.protocol.TSet;
 import com.facebook.thrift.lite.protocol.TType;
-
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
-import org.junit.runner.RunWith;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 public class TBinaryProtocolTest {
 
@@ -36,8 +33,7 @@ public class TBinaryProtocolTest {
   private FileInputStream inputFile;
   private byte[] mInputBuffer;
 
-  @Rule
-  public TemporaryFolder folder = new TemporaryFolder();
+  @Rule public TemporaryFolder folder = new TemporaryFolder();
 
   @Before
   public void setupProtocol() throws IOException {
@@ -64,11 +60,11 @@ public class TBinaryProtocolTest {
 
     int offset = 0;
     // tests byte
-    assertEquals(mInputBuffer[0], (byte)0xfb);
+    assertEquals(mInputBuffer[0], (byte) 0xfb);
     offset++;
 
     // tests short (i16)
-    compareShortToBinary((short)0xface, mInputBuffer, offset);
+    compareShortToBinary((short) 0xface, mInputBuffer, offset);
     offset += 2;
 
     // tests int (i32)
@@ -126,7 +122,7 @@ public class TBinaryProtocolTest {
     // tests field
     assertEquals(TType.I64, mInputBuffer[offset]);
     offset++;
-    compareShortToBinary((short)17, mInputBuffer, offset);
+    compareShortToBinary((short) 17, mInputBuffer, offset);
   }
 
   @Test
@@ -138,6 +134,7 @@ public class TBinaryProtocolTest {
 
     compareBufferToBinary(testString.getBytes("UTF-8"), mInputBuffer, 0);
   }
+
   @Test
   public void testWriteStringOverflow() throws Exception {
     String baseString = "This is part of a long string that will be pasted repeatedly. #yolo";
@@ -159,7 +156,7 @@ public class TBinaryProtocolTest {
     int size = 9876;
     byte[] testBinary = new byte[size];
     for (int i = 0; i < size; i++) {
-      testBinary[i] = (byte)(Math.random()*100);
+      testBinary[i] = (byte) (Math.random() * 100);
     }
     binaryProtocol.writeBinary(testBinary);
 
@@ -192,7 +189,7 @@ public class TBinaryProtocolTest {
   }
 
   // thrift strings/binaries are serialized as length (4 bytes) + raw bytes
-  static private void compareBufferToBinary(byte[] firstArray, byte[] secondArray, int offset) {
+  private static void compareBufferToBinary(byte[] firstArray, byte[] secondArray, int offset) {
     // adds 4 as the size of the string is serialized as an int in the binary
     assertTrue(secondArray.length >= firstArray.length + offset + 4);
 
@@ -200,11 +197,11 @@ public class TBinaryProtocolTest {
     compareIntToBinary(firstArray.length, secondArray, 0);
 
     for (int i = 0; i < firstArray.length; i++) {
-      assertEquals(firstArray[i], secondArray[i+4]);
+      assertEquals(firstArray[i], secondArray[i + 4]);
     }
   }
 
-  static private void compareShortToBinary(short input, byte[] byteArray, int offset) {
+  private static void compareShortToBinary(short input, byte[] byteArray, int offset) {
     assertTrue(byteArray.length >= offset + 2);
     short output = 0;
     for (int i = 0; i < 2; i++) {
@@ -214,7 +211,7 @@ public class TBinaryProtocolTest {
     assertEquals(input, output);
   }
 
-  static private void compareIntToBinary(int input, byte[] byteArray, int offset) {
+  private static void compareIntToBinary(int input, byte[] byteArray, int offset) {
     assertTrue(byteArray.length >= offset + 4);
     int output = 0;
     for (int i = 0; i < 4; i++) {
@@ -224,7 +221,7 @@ public class TBinaryProtocolTest {
     assertEquals(input, output);
   }
 
-  static private void compareLongToBinary(long input, byte[] byteArray, int offset) {
+  private static void compareLongToBinary(long input, byte[] byteArray, int offset) {
     assertTrue(byteArray.length >= offset + 8);
     long output = 0;
     for (int i = 0; i < 8; i++) {
