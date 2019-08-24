@@ -53,6 +53,7 @@ namespace apache {
 namespace thrift {
 class StreamClientCallback;
 class ChannelClientCallback;
+class SinkClientCallback;
 
 namespace rocket {
 
@@ -90,11 +91,16 @@ class RocketTestClient {
 
   folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
   void sendRequestChannel(ChannelClientCallback* callback, Payload request);
+  void sendRequestSink(SinkClientCallback* callback, Payload request);
 
   rocket::SetupFrame makeTestSetupFrame(
       MetadataOpaqueMap<std::string, std::string> md =
           MetadataOpaqueMap<std::string, std::string>{
               {"rando_key", "setup_data"}});
+
+  folly::EventBase& getEvb() {
+    return evb_;
+  }
 
   void reconnect();
 

@@ -111,6 +111,8 @@ class RocketSinkServerCallback : public SinkServerCallback {
   void onSinkError(folly::exception_wrapper) override;
   void onSinkComplete() override;
 
+  void onStreamCancel() override;
+
   void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper);
   void onStreamTransportError(folly::exception_wrapper);

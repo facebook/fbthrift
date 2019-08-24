@@ -248,6 +248,11 @@ void RocketSinkServerCallback::onSinkComplete() {
   client_.sendComplete(streamId_, false);
 }
 
+void RocketSinkServerCallback::onStreamCancel() {
+  DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
+  client_.cancelStream(streamId_);
+}
+
 void RocketSinkServerCallback::onInitialPayload(
     FirstResponsePayload&& payload,
     folly::EventBase* evb) {
@@ -270,12 +275,6 @@ StreamChannelStatus RocketSinkServerCallback::onStreamPayload(StreamPayload&&) {
 }
 StreamChannelStatus RocketSinkServerCallback::onStreamFinalPayload(
     StreamPayload&& payload) {
-  if (state_ == State::BothOpen) {
-    client_.sendError(
-        streamId_,
-        rocket::RocketException(
-            rocket::ErrorCode::CANCELED, "Received final payload."));
-  }
   clientCallback_.onFinalResponse(std::move(payload));
   return StreamChannelStatus::Complete;
 }

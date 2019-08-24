@@ -71,6 +71,8 @@ class SinkServerCallback {
   virtual void onSinkNext(StreamPayload&&) = 0;
   virtual void onSinkError(folly::exception_wrapper) = 0;
   virtual void onSinkComplete() = 0;
+
+  virtual void onStreamCancel() = 0;
 };
 
 class StreamClientCallback {
