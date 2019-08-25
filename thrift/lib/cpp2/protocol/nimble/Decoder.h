@@ -30,37 +30,49 @@ namespace detail {
 
 class Decoder {
  public:
-  Decoder() : cursor_(nullptr) {}
+  Decoder() : fieldCursor_(nullptr), stringCursor_(nullptr) {}
   ~Decoder() = default;
   Decoder(const Decoder&) = delete;
   Decoder& operator=(const Decoder&) = delete;
 
-  void setInput(const folly::io::Cursor& cursor) {
-    cursor_ = cursor;
-    std::uint32_t fieldControlSize = cursor_.readLE<std::uint32_t>();
-    std::uint32_t fieldDataSize = cursor_.readLE<std::uint32_t>();
-    std::uint32_t contentControlSize = cursor_.readLE<std::uint32_t>();
-    std::uint32_t contentDataSize = cursor_.readLE<std::uint32_t>();
-    // binaryDataSize
-    cursor_.readLE<std::uint32_t>();
+  void setInput(folly::io::Cursor cursor) {
+    std::uint32_t fieldSize = cursor.readLE<std::uint32_t>();
 
-    folly::io::Cursor fieldControlCursor(cursor_, fieldControlSize);
-    cursor_.skip(fieldControlSize);
-    folly::io::Cursor fieldDataCursor(cursor_, fieldDataSize);
-    cursor_.skip(fieldDataSize);
-    folly::io::Cursor contentControlCursor(cursor_, contentControlSize);
-    cursor_.skip(contentControlSize);
-    folly::io::Cursor contentDataCursor(cursor_, contentDataSize);
-    cursor_.skip(contentDataSize);
+    std::uint32_t sizeControlSize = cursor.readLE<std::uint32_t>();
+    std::uint32_t sizeDataSize = cursor.readLE<std::uint32_t>();
 
-    fieldStream_.setControlInput(fieldControlCursor);
-    fieldStream_.setDataInput(fieldDataCursor);
-    contentStream_.setControlInput(contentControlCursor);
-    contentStream_.setDataInput(contentDataCursor);
+    std::uint32_t contentControlSize = cursor.readLE<std::uint32_t>();
+    std::uint32_t contentDataSize = cursor.readLE<std::uint32_t>();
+
+    std::uint32_t stringSize = cursor.readLE<std::uint32_t>();
+
+    auto splice = [&](std::uint32_t size) {
+      folly::io::Cursor result{cursor, size};
+      cursor.skip(size);
+      return result;
+    };
+
+    fieldCursor_ = splice(fieldSize);
+    auto sizeControl = splice(sizeControlSize);
+    auto sizeData = splice(sizeDataSize);
+    sizeStream_.setControlInput(sizeControl);
+    sizeStream_.setDataInput(sizeData);
+
+    auto contentControl = splice(contentControlSize);
+    auto contentData = splice(contentDataSize);
+    contentStream_.setControlInput(contentControl);
+    contentStream_.setDataInput(contentData);
+
+    // We've skipped all preceding items;
+    stringCursor_ = splice(stringSize);
+
+    if (!cursor.isAtEnd()) {
+      protocol::TProtocolException::throwExceededSizeLimit();
+    }
   }
 
-  std::uint32_t nextFieldChunk() {
-    return fieldStream_.nextChunk();
+  std::uint32_t nextSizeChunk() {
+    return sizeStream_.nextChunk();
   }
 
   std::uint32_t nextContentChunk() {
@@ -68,11 +80,11 @@ class Decoder {
   }
 
   void nextBinary(unsigned char* buf, std::size_t size) {
-    cursor_.pull(buf, size);
+    stringCursor_.pull(buf, size);
   }
 
   void nextBinary(char* buf, std::size_t size) {
-    cursor_.pull(buf, size);
+    stringCursor_.pull(buf, size);
   }
 
   template <class T>
@@ -81,7 +93,7 @@ class Decoder {
     str.clear();
 
     while (size > 0) {
-      auto data = cursor_.peekBytes();
+      auto data = stringCursor_.peekBytes();
       auto data_avail = std::min(data.size(), size);
       if (data.empty()) {
         protocol::TProtocolException::throwExceededSizeLimit();
@@ -89,54 +101,40 @@ class Decoder {
 
       str.append(reinterpret_cast<const char*>(data.data()), data_avail);
       size -= data_avail;
-      cursor_.skipNoAdvance(data_avail);
+      stringCursor_.skipNoAdvance(data_avail);
     }
   }
 
   void nextBinary(folly::IOBuf& buf, std::size_t size) {
-    cursor_.clone(buf, size);
+    stringCursor_.clone(buf, size);
   }
 
-  // For stringy types, and structy containers of a large size, we use a varint
-  // encoding; the high bit of the chunk is set to 1, to indicate that there's a
-  // follow-on chunk containing the remaining bits of the size info. This method
-  // returns the next field stream chunk (which is assumed to be a metadata
-  // chunk[1], because of a previously obtained chunk), but with the high size
-  // bits already filled in by obtaining the next chunk.
-  //
-  // [1] The phrasing might make this seem like a security issue; we're assuming
-  // a property of potentially untrusted data without checking it. But by
-  // "assume" here, we really just mean that the low bits are ignored entirely;
-  // an attacker could fill them with invalid data or valid data, and we'd act
-  // in the same way. We may at some point want to check and throw as
-  // performance/convenience tradeoff.
-  std::uint64_t nextMetadataChunks() {
-    // Note: we pad this chunk out to 64 bits. This makes the arithmetic easier
-    // later on if we need to pad it out because the high bit is set (indicating
-    // a large value for "size").
-    std::uint64_t metadataChunk = nextFieldChunk();
-    if (UNLIKELY((metadataChunk >> 31) > 0)) {
-      std::uint64_t nextChunk = nextFieldChunk();
-      // Low bits are just the type; since we know there's a continuation chunk
-      // coming, we can ignore them.
-      // We could check this and throw if they're not what we expect. This
-      // isn't actually a useful validation for *securtiy* purposes (a hostile
-      // message could just include the correct bits after all), but may help in
-      // detecting that a stream of bytes was not in fact sent by a nimble
-      // serializer, which will never emit a metadata chunk with the high-bit
-      // set followed by a non-metadata chunk.
-      nextChunk >>= nimble::kFieldChunkHintBits;
-      metadataChunk &= 0x7FFFFFFFU;
-      metadataChunk |= (nextChunk << 31);
+  // Failure doesn't mean that it wasn't right; spurious failures are allowed.
+  // Consumes the bytes on success
+  bool tryConsumeFieldBytes(std::size_t len, unsigned char* bytes) {
+    if (LIKELY(fieldCursor_.length() >= len)) {
+      if (LIKELY(std::memcmp(bytes, fieldCursor_.data(), len) == 0)) {
+        fieldCursor_.skipNoAdvance(len);
+        return true;
+      }
     }
-    return metadataChunk;
+    return false;
+  }
+
+  std::uint8_t nextFieldByte() {
+    return fieldCursor_.read<std::uint8_t>();
+  }
+
+  std::uint16_t nextFieldShort() {
+    return fieldCursor_.read<std::uint16_t>();
   }
 
  private:
-  BufferingNimbleDecoder<ChunkRepr::kRaw> fieldStream_;
+  BufferingNimbleDecoder<ChunkRepr::kRaw> sizeStream_;
   BufferingNimbleDecoder<ChunkRepr::kZigzag> contentStream_;
 
-  folly::io::Cursor cursor_;
+  folly::io::Cursor fieldCursor_;
+  folly::io::Cursor stringCursor_;
 };
 
 } // namespace detail

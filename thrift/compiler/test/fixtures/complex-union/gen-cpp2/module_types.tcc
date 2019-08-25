@@ -86,11 +86,11 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<ComplexUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ComplexUnion>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -164,7 +164,7 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -339,11 +339,11 @@ void ListUnion::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<ListUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ListUnion>>();
     }
     switch (_readState.fieldId) {
       case 2:
@@ -376,7 +376,7 @@ void ListUnion::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -475,11 +475,11 @@ void DataUnion::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<DataUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<DataUnion>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -510,7 +510,7 @@ void DataUnion::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -664,11 +664,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<Val>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Val>>();
   }
 
   switch (_readState.fieldId) {
@@ -773,11 +774,11 @@ void ValUnion::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<ValUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<ValUnion>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -808,7 +809,7 @@ void ValUnion::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -907,11 +908,11 @@ void VirtualComplexUnion::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<VirtualComplexUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<VirtualComplexUnion>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -942,7 +943,7 @@ void VirtualComplexUnion::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -1069,11 +1070,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<NonCopyableStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<NonCopyableStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -1148,11 +1150,11 @@ void NonCopyableUnion::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<NonCopyableUnion>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<NonCopyableUnion>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -1173,7 +1175,7 @@ void NonCopyableUnion::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }

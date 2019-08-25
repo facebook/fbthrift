@@ -34,51 +34,12 @@ inline uint32_t NimbleProtocolWriter::writeMessageEnd() {
   return 0;
 }
 
-inline void NimbleProtocolWriter::encodeComplexTypeMetadata(
-    uint32_t size,
-    StructyType structyType) {
-  int metadataBits = (structyType == StructyType::NONE)
-      ? kComplexMetadataBits
-      : kStructyTypeMetadataBits;
-  ComplexType complexType = (structyType == StructyType::NONE)
-      ? ComplexType::STRINGY
-      : ComplexType::STRUCTY;
-  // The lowest two bits of the fieldChunk indicates that this is a complex
-  // type field. The third lowest bit denotes whether this field is a stringy
-  // or structy type. The next 4 bits encode the specific type of the structy
-  // field, if this is a structy type. Otherwise no effect.
-  uint32_t metadata = (structyType << kComplexMetadataBits) |
-      (complexType << kFieldChunkHintBits) |
-      NimbleFieldChunkHint::COMPLEX_METADATA;
-  // To use the short size encoding, we need the high bit of the resulting
-  // chunk to be 0, and so must fit in 31 bits, including the shift for the
-  // metadata.
-  if (LIKELY(size < (1U << (31 - metadataBits)))) {
-    encoder_.encodeFieldChunk((size << metadataBits) | metadata);
-  } else {
-    // long size encoding, takes two field chunks
-    encoder_.encodeFieldChunk((1U << 31) | (size << metadataBits) | metadata);
-    encoder_.encodeFieldChunk(
-        (size >> (31 - metadataBits)) << kFieldChunkHintBits |
-        NimbleFieldChunkHint::COMPLEX_METADATA);
-  }
-}
-
 inline uint32_t NimbleProtocolWriter::writeStructBegin(const char* /*name*/) {
-  // The lowest two bits of this fieldChunk is a fieldChunkHint (00) indicating
-  // that this is a complex type. The third lowest bit (0) denotes that this is
-  // a structy type rather than a stringy type. The next 4 bits encode the
-  // specific type of the structy field, in this case a struct or a union.
-  encoder_.encodeFieldChunk(
-      StructyType::STRUCT << kComplexMetadataBits |
-      ComplexType::STRUCTY << kFieldChunkHintBits |
-      NimbleFieldChunkHint::COMPLEX_METADATA);
   return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeStructEnd() {
-  // field chunk 0 marks the end of a struct
-  encoder_.encodeFieldChunk(0);
+  encoder_.encodeFieldBytes(stopBytes());
   return 0;
 }
 
@@ -86,8 +47,8 @@ inline uint32_t NimbleProtocolWriter::writeFieldBegin(
     const char* /*name*/,
     TType fieldType,
     int16_t fieldId) {
-  auto fieldChunkHint = ttypeToNimbleFieldChunkHint(fieldType);
-  encoder_.encodeFieldChunk(fieldId << kFieldChunkHintBits | fieldChunkHint);
+  FieldBytes info = fieldBeginBytes(ttypeToNimbleType(fieldType), fieldId);
+  encoder_.encodeFieldBytes(info);
   return 0;
 }
 
@@ -103,22 +64,21 @@ inline uint32_t NimbleProtocolWriter::writeMapBegin(
     TType keyType,
     TType valType,
     uint32_t size) {
-  StructyType structyType = getStructyTypeFromMap(keyType, valType);
-  encodeComplexTypeMetadata(size, structyType);
+  encoder_.encodeFieldBytes(
+      mapBeginByte(ttypeToNimbleType(keyType), ttypeToNimbleType(valType)));
+  encoder_.encodeSizeChunk(size);
   return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeMapEnd() {
-  // this 0 field chunk marks the end of the map
-  encoder_.encodeFieldChunk(0);
   return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeCollectionBegin(
     TType elemType,
     uint32_t size) {
-  StructyType structyType = getStructyTypeFromListOrSet(elemType);
-  encodeComplexTypeMetadata(size, structyType);
+  encoder_.encodeFieldBytes(listBeginByte(ttypeToNimbleType(elemType)));
+  encoder_.encodeSizeChunk(size);
   return 0;
 }
 
@@ -129,8 +89,6 @@ inline uint32_t NimbleProtocolWriter::writeListBegin(
 }
 
 inline uint32_t NimbleProtocolWriter::writeListEnd() {
-  // this 0 field chunk marks the end of the list
-  encoder_.encodeFieldChunk(0);
   return 0;
 }
 
@@ -141,7 +99,7 @@ inline uint32_t NimbleProtocolWriter::writeSetBegin(
 }
 
 inline uint32_t NimbleProtocolWriter::writeSetEnd() {
-  return writeListEnd();
+  return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeBool(bool value) {
@@ -195,7 +153,7 @@ inline uint32_t NimbleProtocolWriter::writeBinary(folly::StringPiece str) {
 }
 
 inline uint32_t NimbleProtocolWriter::writeBinary(folly::ByteRange str) {
-  encodeComplexTypeMetadata(str.size());
+  encoder_.encodeSizeChunk(str.size());
   encoder_.encodeBinary(str.data(), str.size());
   return 0;
 }
@@ -203,7 +161,7 @@ inline uint32_t NimbleProtocolWriter::writeBinary(folly::ByteRange str) {
 inline uint32_t NimbleProtocolWriter::writeBinary(
     const std::unique_ptr<folly::IOBuf>& str) {
   if (!str) {
-    encodeComplexTypeMetadata(0);
+    encoder_.encodeSizeChunk(0);
     return 0;
   }
   return writeBinary(*str);
@@ -211,7 +169,7 @@ inline uint32_t NimbleProtocolWriter::writeBinary(
 
 inline uint32_t NimbleProtocolWriter::writeBinary(const folly::IOBuf& str) {
   size_t size = str.computeChainDataLength();
-  encodeComplexTypeMetadata(size);
+  encoder_.encodeSizeChunk(size);
   encoder_.encodeBinary(str.data(), size);
   return 0;
 }
@@ -336,9 +294,6 @@ inline void NimbleProtocolReader::readMessageBegin(
 inline void NimbleProtocolReader::readMessageEnd() {}
 
 inline void NimbleProtocolReader::readStructBegin(const std::string& /*name*/) {
-  uint32_t nextFieldChunk = decoder_.nextFieldChunk();
-  // sanity check
-  checkComplexFieldData(nextFieldChunk, ComplexType::STRUCTY);
 }
 
 inline void NimbleProtocolReader::readStructEnd() {}
@@ -347,58 +302,44 @@ inline void NimbleProtocolReader::readFieldBegin(
     std::string& /*name*/,
     TType& /*fieldType*/,
     int16_t& /*fieldId*/) {}
+
 inline void NimbleProtocolReader::readFieldEnd() {}
 
-inline uint32_t NimbleProtocolReader::readComplexTypeSize(
-    ComplexType complexType) {
-  uint64_t metadataChunk = decoder_.nextMetadataChunks();
-
-  int metadataBits = (complexType == ComplexType::STRINGY)
-      ? kComplexMetadataBits
-      : kStructyTypeMetadataBits;
-
-  // sanity check
-  checkComplexFieldData(
-      static_cast<uint32_t>(metadataChunk & 0xffffffff), complexType);
-
-  return static_cast<uint32_t>(metadataChunk >> metadataBits);
-}
-
 inline void NimbleProtocolReader::readMapBegin(
-    TType& /*keyType*/,
-    TType& /*valType*/,
+    TType& keyType,
+    TType& valType,
     uint32_t& size) {
-  size = readComplexTypeSize(ComplexType::STRUCTY);
+  std::uint8_t byte = decoder_.nextFieldByte();
+  NimbleType nimbleKeyType;
+  NimbleType nimbleValType;
+  mapTypesFromByte(byte, nimbleKeyType, nimbleValType);
 
+  keyType = nimbleTypeToTTypeGuess(nimbleKeyType);
+  valType = nimbleTypeToTTypeGuess(nimbleValType);
+
+  size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
     TProtocolException::throwExceededSizeLimit();
   }
 }
 
 inline void NimbleProtocolReader::readMapEnd() {
-  // To consume the fieldChunk 0 which marks the end of the map
-  uint32_t fieldChunk = decoder_.nextFieldChunk();
-  if (UNLIKELY(fieldChunk != 0)) {
-    TProtocolException::throwInvalidFieldData();
-  }
 }
 
 inline void NimbleProtocolReader::readListBegin(
-    TType& /*elemType*/,
+    TType& elemType,
     uint32_t& size) {
-  size = readComplexTypeSize(ComplexType::STRUCTY);
-
+  NimbleType nElem;
+  std::uint8_t byte = decoder_.nextFieldByte();
+  listTypeFromByte(byte, nElem);
+  elemType = nimbleTypeToTTypeGuess(nElem);
+  size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
     TProtocolException::throwExceededSizeLimit();
   }
 }
 
 inline void NimbleProtocolReader::readListEnd() {
-  // To consume the fieldChunk 0 which marks the end of the list
-  uint32_t fieldChunk = decoder_.nextFieldChunk();
-  if (UNLIKELY(fieldChunk != 0)) {
-    TProtocolException::throwInvalidFieldData();
-  }
 }
 
 inline void NimbleProtocolReader::readSetBegin(
@@ -414,18 +355,24 @@ inline void NimbleProtocolReader::readSetEnd() {
 inline void NimbleProtocolReader::readBool(bool& value) {
   value = static_cast<bool>(decoder_.nextContentChunk());
 }
-inline void NimbleProtocolReader::readBool(
-    std::vector<bool>::reference /*value*/) {}
+inline void NimbleProtocolReader::readBool(std::vector<bool>::reference value) {
+  bool val;
+  readBool(val);
+  value = val;
+}
 
 inline void NimbleProtocolReader::readByte(int8_t& byte) {
   byte = static_cast<int8_t>(decoder_.nextContentChunk());
 }
+
 inline void NimbleProtocolReader::readI16(int16_t& i16) {
   i16 = static_cast<int16_t>(decoder_.nextContentChunk());
 }
+
 inline void NimbleProtocolReader::readI32(int32_t& i32) {
   i32 = static_cast<int32_t>(decoder_.nextContentChunk());
 }
+
 inline void NimbleProtocolReader::readI64(int64_t& i64) {
   auto lower = decoder_.nextContentChunk();
   auto higher = decoder_.nextContentChunk();
@@ -451,7 +398,7 @@ inline void NimbleProtocolReader::readFloat(float& flt) {
 
 template <typename StrType>
 inline void NimbleProtocolReader::readString(StrType& str) {
-  uint32_t size = readComplexTypeSize(ComplexType::STRINGY);
+  uint32_t size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(string_limit_)) {
     TProtocolException::throwExceededSizeLimit();
   }
@@ -473,7 +420,7 @@ inline void NimbleProtocolReader::readBinary(
 }
 
 inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
-  uint32_t size = readComplexTypeSize(ComplexType::STRINGY);
+  uint32_t size = decoder_.nextSizeChunk();
 
   if (size > static_cast<uint32_t>(string_limit_)) {
     TProtocolException::throwExceededSizeLimit();
@@ -481,71 +428,44 @@ inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
   decoder_.nextBinary(str, size);
 }
 
-inline void NimbleProtocolReader::skip(StructReadState& state) {
-  switch (state.fieldChunkHint) {
-    case ONE_CHUNK_TYPE:
-      decoder_.nextContentChunk();
-      break;
-    case TWO_CHUNKS_TYPE:
-      for (int i = 0; i < 2; ++i) {
-        decoder_.nextContentChunk();
-      }
-      break;
-    case COMPLEX_TYPE:
-      // TODO: handle these cases
-      throw std::runtime_error("Not implemented yet");
-      break;
-    default:
-      folly::assume_unreachable();
-  }
-}
-
-inline void NimbleProtocolReader::checkComplexFieldData(
-    uint32_t fieldChunk,
-    ComplexType complexType) {
-  if (UNLIKELY(
-          ((fieldChunk >> kFieldChunkHintBits) & 1) != complexType ||
-          (fieldChunk & 3) != NimbleFieldChunkHint::COMPLEX_METADATA)) {
-    TProtocolException::throwInvalidFieldData();
-  }
+[[noreturn]] inline void NimbleProtocolReader::skip(
+    StructReadState& /*state*/) {
+  throw std::runtime_error("Not implemented yet");
 }
 
 bool NimbleProtocolReader::advanceToNextField(
     int32_t /*currFieldId*/,
     int32_t nextFieldId,
     TType nextFieldType,
+    StructReadState& /* state */) {
+  FieldBytes expected =
+      fieldBeginBytes(ttypeToNimbleType(nextFieldType), nextFieldId);
+  return decoder_.tryConsumeFieldBytes(expected.len, expected.bytes);
+}
+
+inline void NimbleProtocolReader::advanceToNextFieldSlow(
     StructReadState& state) {
-  std::uint32_t expectedNextChunk =
-      ((nextFieldId << kFieldChunkHintBits) |
-       ttypeToNimbleFieldChunkHint(nextFieldType));
-  std::uint32_t fieldChunk = decoder_.nextFieldChunk();
-  if (LIKELY(expectedNextChunk == fieldChunk)) {
-    return true;
+  std::uint8_t firstByte = decoder_.nextFieldByte();
+  if (isCompactMetadata(firstByte)) {
+    // Short encoding
+    state.nimbleType = nimbleTypeFromCompactMetadata(firstByte);
+    state.fieldId = fieldIdFromCompactMetadata(firstByte);
+  } else {
+    state.nimbleType = nimbleTypeFromLargeMetadata(firstByte);
+    if (isLargeMetadataTwoByte(firstByte)) {
+      state.fieldId =
+          fieldIdFromTwoByteMetadata(firstByte, decoder_.nextFieldByte());
+    } else {
+      state.fieldId =
+          fieldIdFromThreeByteMetadata(firstByte, decoder_.nextFieldShort());
+    }
   }
-
-  if (fieldChunk == 0) {
-    state.fieldType = TType::T_STOP;
-    return false;
-  }
-
-  auto fieldChunkHint = static_cast<NimbleFieldChunkHint>(fieldChunk & 3);
-  // sanity check
-  if (UNLIKELY(fieldChunkHint == NimbleFieldChunkHint::COMPLEX_METADATA)) {
-    TProtocolException::throwInvalidFieldData();
-  }
-  state.fieldChunkHint = fieldChunkHint;
-  state.fieldId = fieldChunk >> kFieldChunkHintBits;
-  state.fieldType = TType::T_VOID; // just to make fieldType non-zero
-  return false;
 }
 
 bool NimbleProtocolReader::isCompatibleWithType(
     TType expectedFieldType,
     StructReadState& state) {
-  // store the expected TType in case we need to skip
-  state.fieldType = expectedFieldType;
-  auto expectedFieldChunkHint = ttypeToNimbleFieldChunkHint(expectedFieldType);
-  return state.fieldChunkHint == expectedFieldChunkHint;
+  return ttypeToNimbleType(expectedFieldType) == state.nimbleType;
 }
 } // namespace thrift
 } // namespace apache

@@ -85,11 +85,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<Struct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Struct>>();
   }
 
   switch (_readState.fieldId) {
@@ -220,11 +221,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<BigStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<BigStruct>>();
   }
 
   switch (_readState.fieldId) {

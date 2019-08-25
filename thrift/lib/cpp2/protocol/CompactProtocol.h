@@ -387,6 +387,12 @@ class CompactProtocolReader {
           currFieldId, nextFieldId, nextFieldType, *this);
     }
 
+    void afterAdvanceFailure(CompactProtocolReader* /*iprot*/) {}
+
+    bool atStop() {
+      return fieldType == apache::thrift::protocol::T_STOP;
+    }
+
     /*
      * This is used in generated deserialization code only. When deserializing
      * fields in "non-advanceToNextField" case, we delegate the type check to
@@ -404,6 +410,11 @@ class CompactProtocolReader {
     }
 
     std::string& fieldName() {
+      throw std::logic_error("CompactProtocol doesn't support field names");
+    }
+
+    template <typename StructTraits>
+    void fillFieldTraitsFromName() {
       throw std::logic_error("CompactProtocol doesn't support field names");
     }
   };

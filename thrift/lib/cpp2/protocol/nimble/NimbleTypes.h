@@ -31,140 +31,254 @@ namespace nimble {
 
 using protocol::TType;
 
-constexpr int kFieldChunkHintBits = 2;
-constexpr int kComplexMetadataBits = 3;
-constexpr int kStructyTypeMetadataBits = 7;
+// FIELD METADATA AND TYPE ENCODING
+// There are two encodings we use to encode (field-id, nimble-type) pairs.
+//
+// Note:
+// Below, we'll talk about "adjusted field ids". The adjustment is just
+// subtracting 1, so that we don't waste an encoding on a field ID of 0.
+//
+// COMPACT ENCODING:
+// If the adjusted field id is < 32, then we use a single byte to encode it. The
+// low 3 bits store the type (this avoids ever emitting a 0 byte, which we
+// can then use as the "end of struct" marker), and the high 5 bits encode the
+// adjusted field ID.
+//
+// LARGE-FIELD-ID ENCODING:
+// Otherwise, we'll use a multiple bytes to encode it. The low 3 bits of the
+// first byte will be 1 (which would correspond to an encoded type of INVALID),
+// and the high 3 bits will encode the field type.
+//
+// If the adjusted field ID fits in 1 byte, we set the fourth lowest bit to 0
+// and set the next byte to the adjusted field ID. Otherwise, we set the fourth
+// lowest bit to 1 and set the next 2 bytes to the adjusted field ID, in
+// little-endian order.
+//
+// CONTAINERS
+// Container types get 1 extra byte, to indicate element types. For lists, the
+// element type lives in the low 3 bits. For maps, the key type lives in the
+// low 3 bits and the value type lives in the high 3 bits.
 
-/*
- * The third lowest bit in a complex type's field chunk is used to encode the
- * structy vs stringy of the complex type. A 0 value means the field is structy
- * (i.e. list/set/map/union/struct), whereas a 1 value means the field is
- * stringy (i.e. string or binary).
- */
-enum ComplexType : std::uint32_t {
-  STRUCTY = 0,
-  STRINGY = 1,
+// The NimbleType is all we see on the wire. (We include explicit enum values to
+// emphasize that this is wire-visible; it's not safe to change order without
+// keeping the value).
+enum class NimbleType {
+  // An end-of-struct "STOP" field.
+  STOP = 0,
+  // Primitive types; those that cannot contain any other types. In particular,
+  // primitive types can use the 1-byte-field-metadata encoding scheme.
+  ONE_CHUNK = 1,
+  TWO_CHUNK = 2,
+  STRING = 3,
+  // Complex types; those that *can* contain other types (and therefore a
+  // variable-length number of field stream bytes).
+  STRUCT = 4,
+  LIST = 5,
+  MAP = 6,
+  // We sometimes obtain a NimbleType by masking off 3 bits. The value 7,
+  // though, does not correspond to any type. In field ID encoding, it should
+  // indicate a multi-byte encoding. In (e.g.) map or list encoding, it's just
+  // invalid data.
+  INVALID = 7,
 };
 
-/*
- * An enum representing the hint (lowest two bits) of the field stream chunks
- * (4-byte unit). COMPLEX_METADATA means the field is of stringy or structy
- * type. ONE_CHUNK_TYPE means the field is a 1-, 2-, or 4-byte integer,
- * bool, or float. TWO_CHUNKS_TYPE means the field is an 8-byte integer or
- * double. COMPLEX_TYPE means the field is a string/binary/collections or
- * struct.
- */
-enum NimbleFieldChunkHint : std::uint32_t {
-  COMPLEX_METADATA = 0,
-  ONE_CHUNK_TYPE = 1,
-  TWO_CHUNKS_TYPE = 2,
-  COMPLEX_TYPE = 3,
-};
+// For byte the first byte of some field ID, determine whether or not it uses
+// the compact 1-byte encoding;
+inline bool isCompactMetadata(std::uint8_t byte) {
+  return (byte & 7) != 7;
+}
 
-/*
- * An enum indicating the type of the structy object.
- * LIST_OR_SET_* represent a list/set whose elements match the specified type.
- * MAP_* represent a map whose keys and values match the specified type.
- */
-enum StructyType : std::uint32_t {
-  NONE = 0,
-  STRUCT = 1,
-  UNION = 2,
-  LIST_OR_SET_ONE_CHUNK = 3,
-  LIST_OR_SET_TWO_CHUNKS = 4,
-  LIST_OR_SET_COMPLEX = 5,
-  MAP_ONE_TO_ONE_CHUNK = 6,
-  MAP_ONE_TO_TWO_CHUNKS = 7,
-  MAP_ONE_TO_COMPLEX = 8,
-  MAP_TWO_TO_ONE_CHUNK = 9,
-  MAP_TWO_TO_TWO_CHUNKS = 10,
-  MAP_TWO_TO_COMPLEX = 11,
-  MAP_COMPLEX_TO_ONE_CHUNK = 12,
-  MAP_COMPLEX_TO_TWO_CHUNKS = 13,
-  MAP_COMPLEX_TO_COMPLEX = 14,
-};
+inline NimbleType nimbleTypeFromCompactMetadata(std::uint8_t byte) {
+  DCHECK(isCompactMetadata(byte));
+  return (NimbleType)(byte & 7);
+}
 
-/*
- * This method maps TType to NimbleFieldChunkHint enum.
- */
-inline NimbleFieldChunkHint ttypeToNimbleFieldChunkHint(TType fieldType) {
-  switch (fieldType) {
-    case TType::T_BOOL:
-    case TType::T_BYTE: // same enum value as TType::T_I08
-    case TType::T_I16:
-    case TType::T_I32:
-    case TType::T_FLOAT:
-      return NimbleFieldChunkHint::ONE_CHUNK_TYPE;
-    case TType::T_U64:
-    case TType::T_I64:
-    case TType::T_DOUBLE:
-      return NimbleFieldChunkHint::TWO_CHUNKS_TYPE;
-    case TType::T_STRING: // same enum value as TType::T_UTF7
-    case TType::T_LIST:
-    case TType::T_SET:
-    case TType::T_MAP:
-    case TType::T_STRUCT:
-      return NimbleFieldChunkHint::COMPLEX_TYPE;
+inline std::int16_t fieldIdFromCompactMetadata(std::uint8_t byte) {
+  DCHECK(isCompactMetadata(byte));
+  return (byte >> 3) + 1;
+}
+
+inline NimbleType nimbleTypeFromLargeMetadata(std::uint8_t byte1) {
+  DCHECK(!isCompactMetadata(byte1));
+  return (NimbleType)(byte1 >> 5);
+}
+
+inline bool isLargeMetadataTwoByte(std::uint8_t byte1) {
+  DCHECK(!isCompactMetadata(byte1));
+  return (byte1 & (1 << 3)) == 0;
+}
+
+inline std::uint16_t fieldIdFromTwoByteMetadata(
+    std::uint8_t byte1,
+    std::uint8_t byte2) {
+  DCHECK(isLargeMetadataTwoByte(byte1));
+  return byte2 + 1;
+}
+
+inline std::uint16_t fieldIdFromThreeByteMetadata(
+    std::uint8_t byte1,
+    std::uint16_t short_) {
+  DCHECK(!isLargeMetadataTwoByte(byte1));
+  return short_ + 1;
+}
+
+inline NimbleType ttypeToNimbleType(TType ttype) {
+  // Don't worry about the performance of this switch; this function is only
+  // ever called when its type is a compile-time constant.
+  switch (ttype) {
     case TType::T_STOP:
-      return NimbleFieldChunkHint::COMPLEX_METADATA;
+      return NimbleType::STOP;
+    case TType::T_BOOL:
+      return NimbleType::ONE_CHUNK;
+    case TType::T_BYTE: // == TType::T_I08
+      return NimbleType::ONE_CHUNK;
+    case TType::T_DOUBLE:
+      return NimbleType::TWO_CHUNK;
+    case TType::T_I16:
+      return NimbleType::ONE_CHUNK;
+    case TType::T_I32:
+      return NimbleType::ONE_CHUNK;
+    case TType::T_U64:
+      return NimbleType::TWO_CHUNK;
+    case TType::T_I64:
+      return NimbleType::TWO_CHUNK;
+    case TType::T_STRING:
+      return NimbleType::STRING;
+    case TType::T_STRUCT:
+      return NimbleType::STRUCT;
+    case TType::T_MAP:
+      return NimbleType::MAP;
+    case TType::T_SET:
+      return NimbleType::LIST;
+    case TType::T_LIST:
+      return NimbleType::LIST;
+    case TType::T_UTF8:
+      return NimbleType::STRING;
+    case TType::T_UTF16:
+      return NimbleType::STRING;
+    case TType::T_FLOAT:
+      return NimbleType::ONE_CHUNK;
     default:
+      // A TType never comes in off the wire (it couldn't; we encode Nimble
+      // types on the wire).
       folly::assume_unreachable();
   }
 }
 
-/*
- * Return the StructyType enum of a map based on key/value's TTypes.
- */
-inline StructyType getStructyTypeFromMap(TType keyType, TType valType) {
-  const std::uint32_t kInvalid = -1;
-  const static std::array<uint32_t, 16> structyTypeFromShift = {{
-      // invalid key type
-      kInvalid,
-      kInvalid,
-      kInvalid,
-      kInvalid,
-      // key type = 0b01, one-chunk:
-      kInvalid,
-      MAP_ONE_TO_ONE_CHUNK,
-      MAP_ONE_TO_TWO_CHUNKS,
-      MAP_ONE_TO_COMPLEX,
-      // key type = 0b10, two-chunk:
-      kInvalid,
-      MAP_TWO_TO_ONE_CHUNK,
-      MAP_TWO_TO_TWO_CHUNKS,
-      MAP_TWO_TO_COMPLEX,
-      // key type = 0b11, complex-chunk:
-      kInvalid,
-      MAP_COMPLEX_TO_ONE_CHUNK,
-      MAP_COMPLEX_TO_TWO_CHUNKS,
-      MAP_COMPLEX_TO_COMPLEX,
-  }};
-  auto keyHint = ttypeToNimbleFieldChunkHint(keyType);
-  auto valHint = ttypeToNimbleFieldChunkHint(valType);
-  DCHECK(
-      folly::to_underlying(keyHint) < 4 && folly::to_underlying(valHint) < 4);
-
-  int index = (keyHint << 2) | valHint;
-  std::uint32_t result = structyTypeFromShift[index];
-  DCHECK(result != kInvalid);
-  return static_cast<StructyType>(result);
+// This is a guess at the TType corresponding to a given nimble type. This guess
+// is not correct in general (the TTypes are strictly more specific than the
+// NimbleTypes). But in the short term, it allows the Nimble code to
+// interoperate the generated code that expects that it can work with TTypes
+// everywhere. Removal coming in the next commit.
+// (Doing things in this order lets us skip having to write conversion code for
+// the old version of the Nimble protocol).
+inline TType nimbleTypeToTTypeGuess(NimbleType ntype) {
+  // It's the caller's responsibility not to give us an invalid type.
+  DCHECK(ntype != NimbleType::INVALID);
+  // *This* switch, unlike the one above, does genuinely happen on the
+  // deserialization pathways (e.g. in validating that wire map types match
+  // schema map types). That's why we want to remove this function in the next
+  // commit.
+  switch (ntype) {
+    case NimbleType::STOP:
+      return protocol::T_STOP;
+    case NimbleType::ONE_CHUNK:
+      return protocol::T_I32;
+    case NimbleType::TWO_CHUNK:
+      return protocol::T_I64;
+    case NimbleType::STRING:
+      return protocol::T_STRING;
+    case NimbleType::STRUCT:
+      return protocol::T_STRUCT;
+    case NimbleType::LIST:
+      return protocol::T_LIST;
+    case NimbleType::MAP:
+      return protocol::T_MAP;
+    case NimbleType::INVALID:
+      // It doesn't really matter what we put here, so long as it can't be
+      // confused with a real data type.
+      return protocol::T_VOID;
+  }
 }
 
-inline StructyType getStructyTypeFromListOrSet(TType elemType) {
-  const std::uint32_t kInvalid = -1;
-  auto elemFieldHint = ttypeToNimbleFieldChunkHint(elemType);
-
-  const static std::array<uint32_t, 4> structyType = {{
-      kInvalid,
-      LIST_OR_SET_ONE_CHUNK,
-      LIST_OR_SET_TWO_CHUNKS,
-      LIST_OR_SET_COMPLEX,
-  }};
-  DCHECK(folly::to_underlying(elemFieldHint) < structyType.size());
-  std::uint32_t result = structyType[elemFieldHint];
-  DCHECK(result != kInvalid);
-  return static_cast<StructyType>(result);
+inline bool nimbleTypesMatch(TType a, TType b) {
+  return ttypeToNimbleType(a) == ttypeToNimbleType(b);
 }
+
+struct FieldBytes {
+  FieldBytes() : len(0), bytes{0, 0, 0} {}
+  std::size_t len;
+  std::uint8_t bytes[3];
+};
+
+inline FieldBytes stopBytes() {
+  FieldBytes result;
+  result.len = 1;
+  result.bytes[0] = 0;
+  return result;
+}
+
+inline FieldBytes mapBeginByte(NimbleType key, NimbleType value) {
+  FieldBytes result;
+  result.len = 1;
+  result.bytes[0] = (int)key | ((int)value << 5);
+  return result;
+}
+
+// We take a reference (instead of returning the type directly) to match the map
+// and protocol interface equivalents.
+inline void listTypeFromByte(std::uint8_t byte, NimbleType& elem) {
+  elem = (NimbleType)(byte & 7);
+}
+
+inline void
+mapTypesFromByte(std::uint8_t byte, NimbleType& key, NimbleType& val) {
+  key = (NimbleType)(byte & 7);
+  val = (NimbleType)(byte >> 5);
+}
+
+inline FieldBytes listBeginByte(NimbleType elem) {
+  FieldBytes result;
+  result.len = 1;
+  result.bytes[0] = (int)elem;
+  return result;
+}
+
+inline FieldBytes fieldBeginBytes(NimbleType type, std::uint16_t fieldId) {
+  // This is only called with trusted values, never a type off the wire; that
+  // type should always be valid.
+  DCHECK(type != NimbleType::INVALID);
+
+  FieldBytes result;
+
+  if (type == NimbleType::STOP) {
+    result.len = 1;
+    result.bytes[0] = 0;
+    return result;
+  }
+
+  std::uint16_t adjustedFieldId = fieldId - 1;
+  if (adjustedFieldId < 32) {
+    result.len = 1;
+    result.bytes[0] = (adjustedFieldId << 3) | (int)type;
+  } else {
+    std::uint8_t lengthBit;
+    if (adjustedFieldId < 256) {
+      lengthBit = 0;
+      result.len = 2;
+    } else {
+      lengthBit = (1 << 3);
+      result.len = 3;
+    }
+    std::uint8_t lowTypeBits = (int)NimbleType::INVALID;
+    std::uint8_t highTypeBits = (int)type << 5;
+    result.bytes[0] = lowTypeBits | highTypeBits | lengthBit;
+    result.bytes[1] = adjustedFieldId & 0xFF;
+    result.bytes[2] = adjustedFieldId >> 8;
+  };
+  return result;
+}
+
 } // namespace nimble
 } // namespace detail
 } // namespace thrift

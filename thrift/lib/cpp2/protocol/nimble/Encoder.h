@@ -22,6 +22,7 @@
 #include <folly/io/IOBufQueue.h>
 
 #include <thrift/lib/cpp2/protocol/nimble/BufferingNimbleEncoder.h>
+#include <thrift/lib/cpp2/protocol/nimble/NimbleTypes.h>
 
 namespace apache {
 namespace thrift {
@@ -29,9 +30,9 @@ namespace detail {
 
 class Encoder {
  public:
-  Encoder() {
-    fieldStream_.setControlOutput(&fieldControl_);
-    fieldStream_.setDataOutput(&fieldData_);
+  Encoder() : fieldAppender_(&fieldData_, 4096) {
+    sizeStream_.setControlOutput(&sizeControl_);
+    sizeStream_.setDataOutput(&sizeData_);
     contentStream_.setControlOutput(&contentControl_);
     contentStream_.setDataOutput(&contentData_);
   }
@@ -39,8 +40,8 @@ class Encoder {
   Encoder(const Encoder&) = delete;
   Encoder& operator=(const Encoder&) = delete;
 
-  void encodeFieldChunk(std::uint32_t chunk) {
-    fieldStream_.encodeChunk(chunk);
+  void encodeSizeChunk(std::uint32_t chunk) {
+    sizeStream_.encodeChunk(chunk);
   }
 
   void encodeContentChunk(std::uint32_t chunk) {
@@ -53,11 +54,12 @@ class Encoder {
   }
 
   std::unique_ptr<folly::IOBuf> finalize() {
-    fieldStream_.finalize();
+    sizeStream_.finalize();
     contentStream_.finalize();
 
-    auto fieldControl = fieldControl_.move();
     auto fieldData = fieldData_.move();
+    auto sizeControl = sizeControl_.move();
+    auto sizeData = sizeData_.move();
     auto contentControl = contentControl_.move();
     auto contentData = contentData_.move();
     auto binaryData = binaryData_.move();
@@ -77,9 +79,10 @@ class Encoder {
     };
 
     auto sizeHeader = folly::IOBuf::create(0);
-    folly::io::Appender writer(sizeHeader.get(), 5 * sizeof(std::uint32_t));
-    writer.write<std::uint32_t>(chainLengthBytes(fieldControl));
+    folly::io::Appender writer(sizeHeader.get(), 6 * sizeof(std::uint32_t));
     writer.write<std::uint32_t>(chainLengthBytes(fieldData));
+    writer.write<std::uint32_t>(chainLengthBytes(sizeControl));
+    writer.write<std::uint32_t>(chainLengthBytes(sizeData));
     writer.write<std::uint32_t>(chainLengthBytes(contentControl));
     writer.write<std::uint32_t>(chainLengthBytes(contentData));
     writer.write<std::uint32_t>(chainLengthBytes(binaryData));
@@ -90,8 +93,9 @@ class Encoder {
       }
     };
 
-    prependToSizeHeader(std::move(fieldControl));
     prependToSizeHeader(std::move(fieldData));
+    prependToSizeHeader(std::move(sizeControl));
+    prependToSizeHeader(std::move(sizeData));
     prependToSizeHeader(std::move(contentControl));
     prependToSizeHeader(std::move(contentData));
     prependToSizeHeader(std::move(binaryData));
@@ -99,12 +103,19 @@ class Encoder {
     return sizeHeader;
   }
 
+  void encodeFieldBytes(nimble::FieldBytes bytes) {
+    fieldAppender_.push(bytes.bytes, bytes.len);
+  }
+
  private:
-  folly::IOBufQueue fieldControl_;
   folly::IOBufQueue fieldData_;
-  // We expect field stream data to be exclusively positives, and so don't
+  folly::io::QueueAppender fieldAppender_;
+
+  folly::IOBufQueue sizeControl_;
+  folly::IOBufQueue sizeData_;
+  // We expect size stream data to be exclusively positives, and so don't
   // bother zigzagging it.
-  BufferingNimbleEncoder<ChunkRepr::kRaw> fieldStream_;
+  BufferingNimbleEncoder<ChunkRepr::kRaw> sizeStream_;
 
   folly::IOBufQueue contentControl_;
   folly::IOBufQueue contentData_;

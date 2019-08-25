@@ -87,11 +87,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<MyStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<MyStruct>>();
   }
 
   switch (_readState.fieldId) {

@@ -100,6 +100,17 @@ struct ProtocolReaderStructReadState {
   std::string& fieldName() {
     return fieldName_;
   }
+
+  bool atStop() {
+    return fieldType == protocol::T_STOP;
+  }
+
+  void afterAdvanceFailure(Protocol* /*iprot*/) {}
+
+  template <typename StructTraits>
+  void fillFieldTraitsFromName() {
+    StructTraits::translateFieldName(fieldName(), fieldId, fieldType);
+  }
 };
 
 } // namespace detail

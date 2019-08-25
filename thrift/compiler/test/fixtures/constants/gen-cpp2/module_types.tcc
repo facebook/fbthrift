@@ -166,11 +166,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<Internship>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Internship>>();
   }
 
   switch (_readState.fieldId) {
@@ -309,11 +310,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<UnEnumStruct>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<UnEnumStruct>>();
   }
 
   switch (_readState.fieldId) {
@@ -427,11 +429,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<Range>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<Range>>();
   }
 
   switch (_readState.fieldId) {
@@ -562,11 +565,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<struct1>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<struct1>>();
   }
 
   switch (_readState.fieldId) {
@@ -724,11 +728,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<struct2>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<struct2>>();
   }
 
   switch (_readState.fieldId) {
@@ -902,11 +907,12 @@ _end:
   return;
 
 _loop:
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    apache::thrift::detail::TccStructTraits<struct3>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<struct3>>();
   }
 
   switch (_readState.fieldId) {
@@ -1011,11 +1017,11 @@ void union1::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<union1>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<union1>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -1046,7 +1052,7 @@ void union1::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -1145,11 +1151,11 @@ void union2::readNoXfer(Protocol_* iprot) {
   _readState.readStructBegin(iprot);
 
   _readState.readFieldBegin(iprot);
-  if (_readState.fieldType == apache::thrift::protocol::T_STOP) {
+  if (_readState.atStop()) {
     this->__clear();
   } else {
     if (iprot->kUsesFieldNames()) {
-      apache::thrift::detail::TccStructTraits<union2>::translateFieldName(_readState.fieldName(), _readState.fieldId, _readState.fieldType);
+      _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<union2>>();
     }
     switch (_readState.fieldId) {
       case 1:
@@ -1200,7 +1206,7 @@ void union2::readNoXfer(Protocol_* iprot) {
     }
     _readState.readFieldEnd(iprot);
     _readState.readFieldBegin(iprot);
-    if (UNLIKELY(_readState.fieldType != apache::thrift::protocol::T_STOP)) {
+    if (UNLIKELY(!_readState.atStop())) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }

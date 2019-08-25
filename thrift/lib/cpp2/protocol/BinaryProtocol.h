@@ -329,6 +329,17 @@ class BinaryProtocolReader {
     std::string& fieldName() {
       throw std::logic_error("BinaryProtocol doesn't support field names");
     }
+
+    void afterAdvanceFailure(BinaryProtocolReader* /*iprot*/) {}
+
+    bool atStop() {
+      return fieldType == apache::thrift::protocol::T_STOP;
+    }
+
+    template <typename StructTraits>
+    void fillFieldTraitsFromName() {
+      throw std::logic_error("BinaryProtocol doesn't support field names");
+    }
   };
 
  protected:

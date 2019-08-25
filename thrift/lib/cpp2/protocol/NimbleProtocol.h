@@ -111,11 +111,6 @@ class NimbleProtocolWriter {
   }
 
  private:
-  void encodeComplexTypeMetadata(
-      uint32_t size,
-      detail::nimble::StructyType structyType =
-          detail::nimble::StructyType::NONE);
-
   /*
    * The encoder that manipulates the underlying field and content streams.
    */
@@ -185,7 +180,6 @@ class NimbleProtocolReader {
   void readBinary(StrType& str);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinary(folly::IOBuf& str);
-  uint32_t readComplexTypeSize(detail::nimble::ComplexType complexType);
   void skip(TType /*type*/) {}
   bool peekMap() {
     return false;
@@ -208,9 +202,7 @@ class NimbleProtocolReader {
 
   struct StructReadState {
     int16_t fieldId;
-    apache::thrift::protocol::TType fieldType;
-    detail::nimble::NimbleFieldChunkHint fieldChunkHint;
-    uint32_t fieldChunk;
+    detail::nimble::NimbleType nimbleType;
 
     void readStructBegin(NimbleProtocolReader* iprot) {
       iprot->readStructBegin("");
@@ -219,21 +211,7 @@ class NimbleProtocolReader {
     void readStructEnd(NimbleProtocolReader* /*iprot*/) {}
 
     void readFieldBegin(NimbleProtocolReader* iprot) {
-      // Right now, advanceToNextField parses its field chunk on the case where
-      // it fails to match; this is the only place that parsing occurs. So we
-      // call it with dummy data in order to initialize those fields. There's an
-      // edge case where the parsing succeeds; in that case we fill in the data
-      // we care about manually.
-      //
-      // This is probably not the right division of concerns; the match-failure
-      // path should just store the field chunk into the read state, and let its
-      // caller (who is on a slow, non-inlined path) deal with the parsing
-      // logic. That's somewhat tricky to change though; in the short term, this
-      // works.
-      bool hitStop = iprot->advanceToNextField(0, 0, TType::T_STOP, *this);
-      if (hitStop) {
-        this->fieldType = TType::T_STOP;
-      }
+      iprot->advanceToNextFieldSlow(*this);
     }
 
     FOLLY_NOINLINE void readFieldBeginNoInline(
@@ -250,19 +228,36 @@ class NimbleProtocolReader {
           currFieldId, nextFieldId, nextFieldType, *this);
     }
 
+    void afterAdvanceFailure(NimbleProtocolReader* iprot) {
+      iprot->advanceToNextFieldSlow(*this);
+    }
+
+    bool atStop() {
+      // Note that this might not correspond to a fieldID of 0 (and in fact,
+      // never should); it's only safe to look at the type in this instance.
+      // This makes advanceToNextFieldSlow slightly simpler, since it lets it
+      // unconditionally set the field ID to the adjusted field ID indicated by
+      // the high bits.
+      return nimbleType == detail::nimble::NimbleType::STOP;
+    }
+
     FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
         NimbleProtocolReader* iprot,
         TType expectedFieldType) {
       return iprot->isCompatibleWithType(expectedFieldType, *this);
     }
 
-    inline void skip(NimbleProtocolReader* iprot) {
+    [[noreturn]] inline void skip(NimbleProtocolReader* iprot) {
       iprot->skip(*this);
     }
 
     std::string& fieldName() {
-      throw std::logic_error(
-          "NimbleProtocolReader doesn't support field names");
+      throw std::logic_error("NimbleProtocol doesn't support field names");
+    }
+
+    template <typename StructTraits>
+    void fillFieldTraitsFromName() {
+      throw std::logic_error("NimbleProtocol doesn't support field names");
     }
   };
 
@@ -273,17 +268,15 @@ class NimbleProtocolReader {
       TType type,
       StructReadState& state);
 
+  void advanceToNextFieldSlow(StructReadState& state);
+
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
       TType expectedFieldType,
       StructReadState& state);
   /* The actual method that does skip when there is a mismatch */
-  void skip(StructReadState& state);
+  [[noreturn]] void skip(StructReadState& state);
 
  private:
-  void checkComplexFieldData(
-      uint32_t fieldChunk,
-      detail::nimble::ComplexType complexType);
-
   detail::Decoder decoder_;
   int32_t string_limit_;
   int32_t container_limit_;
