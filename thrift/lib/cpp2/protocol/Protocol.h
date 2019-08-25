@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/CloneableIOBuf.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 
 /**
  * Protocol Readers and Writers are ducktyped in cpp2.
@@ -89,16 +90,18 @@ struct SkipNoopString {
 } // namespace detail
 
 /* forward declaration */
-template <class Protocol_>
-void skip_n(Protocol_& prot, uint32_t n, std::initializer_list<TType> types);
+template <class Protocol_, class WireType>
+void skip_n(Protocol_& prot, uint32_t n, std::initializer_list<WireType> types);
 
 /**
  * Helper template for implementing Protocol::skip().
  *
- * Templatized to avoid having to make virtual function calls.
+ * Templatized to avoid having to make virtual function calls. Protocols with
+ * their own opinions about skipping implementation can specialize, although
+ * currently only Nimble does.
  */
-template <class Protocol_>
-void skip(Protocol_& prot, TType arg_type) {
+template <class Protocol_, class WireType>
+void skip(Protocol_& prot, WireType arg_type) {
   switch (arg_type) {
     case TType::T_BOOL: {
       bool boolv;
@@ -189,9 +192,14 @@ void skip(Protocol_& prot, TType arg_type) {
 
 /*
  * Skip n tuples - used for skpping lists, sets, maps.
+ *
+ * As with skip(), protocols can specialize.
  */
-template <class Protocol_>
-void skip_n(Protocol_& prot, uint32_t n, std::initializer_list<TType> types) {
+template <class Protocol_, class WireType>
+void skip_n(
+    Protocol_& prot,
+    uint32_t n,
+    std::initializer_list<WireType> types) {
   for (uint32_t i = 0; i < n; i++) {
     for (auto type : types) {
       apache::thrift::skip(prot, type);

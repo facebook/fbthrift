@@ -95,7 +95,6 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using ProtocolWriter = CompactV1ProtocolWriter;
 
   using CompactProtocolReader::CompactProtocolReader;
-  using CompactProtocolReader::kOmitsContainerElemTypes;
   using CompactProtocolReader::kOmitsContainerSizes;
   using CompactProtocolReader::kUsesFieldNames;
   using CompactProtocolReader::protocolType;

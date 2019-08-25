@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/util/BitwiseCast.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 #include <thrift/lib/cpp2/protocol/nimble/Decoder.h>
 #include <thrift/lib/cpp2/protocol/nimble/Encoder.h>
 #include <thrift/lib/cpp2/protocol/nimble/NimbleTypes.h>
@@ -118,6 +119,8 @@ class NimbleProtocolWriter {
 };
 
 class NimbleProtocolReader {
+  using NimbleType = detail::nimble::NimbleType;
+
  public:
   using ProtocolWriter = NimbleProtocolWriter;
 
@@ -142,10 +145,6 @@ class NimbleProtocolReader {
     return false;
   }
 
-  static constexpr bool kOmitsContainerElemTypes() {
-    return true;
-  }
-
   void setInput(const folly::io::Cursor& cursor) {
     decoder_.setInput(cursor);
   }
@@ -158,13 +157,14 @@ class NimbleProtocolReader {
   void readMessageEnd();
   void readStructBegin(const std::string& name);
   void readStructEnd();
-  void readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  void
+  readFieldBegin(std::string& name, NimbleType& fieldType, int16_t& fieldId);
   void readFieldEnd();
-  void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
+  void readMapBegin(NimbleType& keyType, NimbleType& valType, uint32_t& size);
   void readMapEnd();
-  void readListBegin(TType& elemType, uint32_t& size);
+  void readListBegin(NimbleType& elemType, uint32_t& size);
   void readListEnd();
-  void readSetBegin(TType& elemType, uint32_t& size);
+  void readSetBegin(NimbleType& elemType, uint32_t& size);
   void readSetEnd();
   void readBool(bool& value);
   void readBool(std::vector<bool>::reference value);
@@ -180,7 +180,7 @@ class NimbleProtocolReader {
   void readBinary(StrType& str);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinary(folly::IOBuf& str);
-  void skip(TType /*type*/) {}
+  void skip(NimbleType /*type*/) {}
   bool peekMap() {
     return false;
   }
@@ -291,7 +291,44 @@ template <>
 struct ProtocolReaderStructReadState<NimbleProtocolReader>
     : NimbleProtocolReader::StructReadState {};
 
+template <>
+struct ProtocolReaderWireTypeInfo<NimbleProtocolReader> {
+  using WireType = nimble::NimbleType;
+
+  static WireType fromTType(apache::thrift::protocol::TType ttype) {
+    return nimble::ttypeToNimbleType(ttype);
+  }
+
+  static WireType defaultValue() {
+    return nimble::NimbleType::STOP;
+  }
+};
+
 } // namespace detail
+
+template <>
+inline void skip<NimbleProtocolReader, detail::nimble::NimbleType>(
+    NimbleProtocolReader& /* prot */,
+    detail::nimble::NimbleType /* arg_type */) {
+  // Fool the noreturn warning; we can't add the annotation without breaking
+  // interface compatibility.
+  volatile bool b = true;
+  if (b) {
+    throw std::runtime_error("Not implemented yet");
+  }
+}
+
+template <>
+inline void skip_n<NimbleProtocolReader, detail::nimble::NimbleType>(
+    NimbleProtocolReader& /* prot */,
+    std::uint32_t /* n */,
+    std::initializer_list<detail::nimble::NimbleType> /* types*/) {
+  volatile bool b = true;
+  if (b) {
+    throw std::runtime_error("Not implemented yet");
+  }
+}
+
 } // namespace thrift
 } // namespace apache
 

@@ -165,46 +165,6 @@ inline NimbleType ttypeToNimbleType(TType ttype) {
   }
 }
 
-// This is a guess at the TType corresponding to a given nimble type. This guess
-// is not correct in general (the TTypes are strictly more specific than the
-// NimbleTypes). But in the short term, it allows the Nimble code to
-// interoperate the generated code that expects that it can work with TTypes
-// everywhere. Removal coming in the next commit.
-// (Doing things in this order lets us skip having to write conversion code for
-// the old version of the Nimble protocol).
-inline TType nimbleTypeToTTypeGuess(NimbleType ntype) {
-  // It's the caller's responsibility not to give us an invalid type.
-  DCHECK(ntype != NimbleType::INVALID);
-  // *This* switch, unlike the one above, does genuinely happen on the
-  // deserialization pathways (e.g. in validating that wire map types match
-  // schema map types). That's why we want to remove this function in the next
-  // commit.
-  switch (ntype) {
-    case NimbleType::STOP:
-      return protocol::T_STOP;
-    case NimbleType::ONE_CHUNK:
-      return protocol::T_I32;
-    case NimbleType::TWO_CHUNK:
-      return protocol::T_I64;
-    case NimbleType::STRING:
-      return protocol::T_STRING;
-    case NimbleType::STRUCT:
-      return protocol::T_STRUCT;
-    case NimbleType::LIST:
-      return protocol::T_LIST;
-    case NimbleType::MAP:
-      return protocol::T_MAP;
-    case NimbleType::INVALID:
-      // It doesn't really matter what we put here, so long as it can't be
-      // confused with a real data type.
-      return protocol::T_VOID;
-  }
-}
-
-inline bool nimbleTypesMatch(TType a, TType b) {
-  return ttypeToNimbleType(a) == ttypeToNimbleType(b);
-}
-
 struct FieldBytes {
   FieldBytes() : len(0), bytes{0, 0, 0} {}
   std::size_t len;

@@ -198,10 +198,6 @@ class BinaryProtocolReader {
     return false;
   }
 
-  static constexpr bool kOmitsContainerElemTypes() {
-    return false;
-  }
-
   void setStringSizeLimit(int32_t string_limit) {
     string_limit_ = string_limit;
   }

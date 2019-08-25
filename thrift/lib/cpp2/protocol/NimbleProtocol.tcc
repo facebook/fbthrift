@@ -300,22 +300,17 @@ inline void NimbleProtocolReader::readStructEnd() {}
 
 inline void NimbleProtocolReader::readFieldBegin(
     std::string& /*name*/,
-    TType& /*fieldType*/,
+    NimbleType& /*fieldType*/,
     int16_t& /*fieldId*/) {}
 
 inline void NimbleProtocolReader::readFieldEnd() {}
 
 inline void NimbleProtocolReader::readMapBegin(
-    TType& keyType,
-    TType& valType,
+    NimbleType& keyType,
+    NimbleType& valType,
     uint32_t& size) {
   std::uint8_t byte = decoder_.nextFieldByte();
-  NimbleType nimbleKeyType;
-  NimbleType nimbleValType;
-  mapTypesFromByte(byte, nimbleKeyType, nimbleValType);
-
-  keyType = nimbleTypeToTTypeGuess(nimbleKeyType);
-  valType = nimbleTypeToTTypeGuess(nimbleValType);
+  mapTypesFromByte(byte, keyType, valType);
 
   size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
@@ -327,12 +322,10 @@ inline void NimbleProtocolReader::readMapEnd() {
 }
 
 inline void NimbleProtocolReader::readListBegin(
-    TType& elemType,
+    NimbleType& elemType,
     uint32_t& size) {
-  NimbleType nElem;
   std::uint8_t byte = decoder_.nextFieldByte();
-  listTypeFromByte(byte, nElem);
-  elemType = nimbleTypeToTTypeGuess(nElem);
+  listTypeFromByte(byte, elemType);
   size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
     TProtocolException::throwExceededSizeLimit();
@@ -343,7 +336,7 @@ inline void NimbleProtocolReader::readListEnd() {
 }
 
 inline void NimbleProtocolReader::readSetBegin(
-    TType& elemType,
+    NimbleType& elemType,
     uint32_t& size) {
   readListBegin(elemType, size);
 }

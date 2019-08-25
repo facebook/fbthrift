@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h>
 
 /**
  * Specializations of `protocol_methods` encapsulate a collection of
@@ -454,20 +455,21 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t list_size = -1;
-    protocol::TType reported_type = protocol::T_STOP;
+    using WireTypeInfo = ProtocolReaderWireTypeInfo<Protocol>;
+    using WireType = typename WireTypeInfo::WireType;
+
+    WireType reported_type = WireTypeInfo::defaultValue();
 
     protocol.readListBegin(reported_type, list_size);
     if (protocol.kOmitsContainerSizes()) {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
-      DCHECK(protocol.kOmitsContainerElemTypes());
       while (protocol.peekList()) {
         out.emplace_back();
         elem_methods::read(protocol, out.back());
       }
     } else {
-      if (!protocol.kOmitsContainerElemTypes() &&
-          reported_type != elem_methods::ttype_value) {
+      if (reported_type != WireTypeInfo::fromTType(elem_methods::ttype_value)) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
         using traits = std::iterator_traits<typename Type::iterator>;
@@ -542,7 +544,11 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t set_size = -1;
-    protocol::TType reported_type = protocol::T_STOP;
+
+    using WireTypeInfo = ProtocolReaderWireTypeInfo<Protocol>;
+    using WireType = typename WireTypeInfo::WireType;
+
+    WireType reported_type = WireTypeInfo::defaultValue();
 
     protocol.readSetBegin(reported_type, set_size);
     if (protocol.kOmitsContainerSizes()) {
@@ -550,8 +556,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         consume_elem(protocol, out);
       }
     } else {
-      if (!protocol.kOmitsContainerElemTypes() &&
-          reported_type != elem_methods::ttype_value) {
+      if (reported_type != WireTypeInfo::fromTType(elem_methods::ttype_value)) {
         apache::thrift::skip_n(protocol, set_size, {reported_type});
       } else {
         auto const vreader = [&protocol](auto& value) {
@@ -620,8 +625,11 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
     std::uint32_t map_size = -1;
-    protocol::TType rpt_key_type = protocol::T_STOP,
-                    rpt_mapped_type = protocol::T_STOP;
+    using WireTypeInfo = ProtocolReaderWireTypeInfo<Protocol>;
+    using WireType = typename WireTypeInfo::WireType;
+
+    WireType rpt_key_type = WireTypeInfo::defaultValue(),
+             rpt_mapped_type = WireTypeInfo::defaultValue();
 
     protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
     if (protocol.kOmitsContainerSizes()) {
@@ -631,9 +639,10 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     } else {
       // CompactProtocol does not transmit key/mapped types if
       // the map is empty
-      if (!protocol.kOmitsContainerElemTypes() && map_size > 0 &&
-          (key_methods::ttype_value != rpt_key_type ||
-           mapped_methods::ttype_value != rpt_mapped_type)) {
+      if (map_size > 0 &&
+          (WireTypeInfo::fromTType(key_methods::ttype_value) != rpt_key_type ||
+           WireTypeInfo::fromTType(mapped_methods::ttype_value) !=
+               rpt_mapped_type)) {
         apache::thrift::skip_n(
             protocol, map_size, {rpt_key_type, rpt_mapped_type});
       } else {
