@@ -316,6 +316,22 @@ struct ArrayLayout : public LayoutBase {
         return !(*this == other);
       }
 
+      bool operator<(const Iterator& other) const {
+        return index_ < other.index_;
+      }
+
+      bool operator<=(const Iterator& other) const {
+        return index_ <= other.index_;
+      }
+
+      bool operator>(const Iterator& other) const {
+        return index_ > other.index_;
+      }
+
+      bool operator>=(const Iterator& other) const {
+        return index_ >= other.index_;
+      }
+
      private:
       ViewPosition position() const {
         return indexPosition(outer_.data_, index_, outer_.itemLayout());

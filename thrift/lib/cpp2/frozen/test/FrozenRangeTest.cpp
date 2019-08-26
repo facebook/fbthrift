@@ -52,6 +52,80 @@ TYPED_TEST_P(FrozenRange, Iterators) {
   EXPECT_EQ(*--it, 10);
 }
 
+TYPED_TEST_P(FrozenRange, IteratorComparisons) {
+  TypeParam v{10, 11, 12, 13};
+  auto fv = freeze(v);
+  auto a = fv.begin();
+  auto b = a + 1;
+  auto c = b + 1;
+
+  // ==
+  EXPECT_EQ(1, a == a);
+  EXPECT_EQ(0, a == b);
+  EXPECT_EQ(0, a == c);
+  EXPECT_EQ(0, b == a);
+  EXPECT_EQ(1, b == b);
+  EXPECT_EQ(0, b == c);
+  EXPECT_EQ(0, c == a);
+  EXPECT_EQ(0, c == b);
+  EXPECT_EQ(1, c == c);
+
+  // !=
+  EXPECT_EQ(0, a != a);
+  EXPECT_EQ(1, a != b);
+  EXPECT_EQ(1, a != c);
+  EXPECT_EQ(1, b != a);
+  EXPECT_EQ(0, b != b);
+  EXPECT_EQ(1, b != c);
+  EXPECT_EQ(1, c != a);
+  EXPECT_EQ(1, c != b);
+  EXPECT_EQ(0, c != c);
+
+  // <
+  EXPECT_EQ(0, a < a);
+  EXPECT_EQ(1, a < b);
+  EXPECT_EQ(1, a < c);
+  EXPECT_EQ(0, b < a);
+  EXPECT_EQ(0, b < b);
+  EXPECT_EQ(1, b < c);
+  EXPECT_EQ(0, c < a);
+  EXPECT_EQ(0, c < b);
+  EXPECT_EQ(0, c < c);
+
+  // <=
+  EXPECT_EQ(1, a <= a);
+  EXPECT_EQ(1, a <= b);
+  EXPECT_EQ(1, a <= c);
+  EXPECT_EQ(0, b <= a);
+  EXPECT_EQ(1, b <= b);
+  EXPECT_EQ(1, b <= c);
+  EXPECT_EQ(0, c <= a);
+  EXPECT_EQ(0, c <= b);
+  EXPECT_EQ(1, c <= c);
+
+  // >
+  EXPECT_EQ(0, a > a);
+  EXPECT_EQ(0, a > b);
+  EXPECT_EQ(0, a > c);
+  EXPECT_EQ(1, b > a);
+  EXPECT_EQ(0, b > b);
+  EXPECT_EQ(0, b > c);
+  EXPECT_EQ(1, c > a);
+  EXPECT_EQ(1, c > b);
+  EXPECT_EQ(0, c > c);
+
+  // >=
+  EXPECT_EQ(1, a >= a);
+  EXPECT_EQ(0, a >= b);
+  EXPECT_EQ(0, a >= c);
+  EXPECT_EQ(1, b >= a);
+  EXPECT_EQ(1, b >= b);
+  EXPECT_EQ(0, b >= c);
+  EXPECT_EQ(1, c >= a);
+  EXPECT_EQ(1, c >= b);
+  EXPECT_EQ(1, c >= c);
+}
+
 TYPED_TEST_P(FrozenRange, Zeros) {
   TypeParam v(1000, 0);
   // If all the values are zero-sized, we only need space to store the count.
@@ -70,7 +144,12 @@ TYPED_TEST_P(FrozenRange, Zeros) {
   EXPECT_EQ(n, 1000);
 }
 
-REGISTER_TYPED_TEST_CASE_P(FrozenRange, ArrayLike, Iterators, Zeros);
+REGISTER_TYPED_TEST_CASE_P(
+    FrozenRange,
+    ArrayLike,
+    Iterators,
+    IteratorComparisons,
+    Zeros);
 typedef ::testing::Types<std::vector<int>, folly::fbvector<int>> MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(Ranges, FrozenRange, MyTypes);
 
