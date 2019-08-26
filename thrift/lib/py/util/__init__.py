@@ -20,7 +20,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from collections import OrderedDict, namedtuple
 
-from future.utils import iteritems
 from thrift.Thrift import TType
 
 
@@ -188,7 +187,8 @@ def __map_to_dict(amap, type_args, defaults=False):
     if not amap:
         return amap
 
-    keys, values = zip(*iteritems(amap))
+    keys, values = zip(*amap.items())
+
     keys = __list_to_dict(keys, type_args[:2], defaults=defaults)
     values = __list_to_dict(values, type_args[2:4], defaults=defaults)
 
