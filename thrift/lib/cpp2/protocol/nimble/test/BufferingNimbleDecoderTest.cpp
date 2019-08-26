@@ -153,7 +153,18 @@ TEST(BufferingNimbleDecoder, AlmostOutOfSpace) {
   EXPECT_EQ(0, dec.nextChunk());
 }
 
-TEST(BufferingNimbleDecoder, OutOfSpace) {
+TEST(BufferingNimbleDecoder, OutOfControlSpace) {
+  auto controlBuf = folly::IOBuf::create(0);
+  auto dataBuf = folly::IOBuf::create(0);
+  folly::io::Appender data(dataBuf.get(), 10);
+
+  BufferingNimbleDecoder<ChunkRepr::kRaw> dec;
+  dec.setControlInput(folly::io::Cursor{controlBuf.get()});
+  dec.setDataInput(folly::io::Cursor{dataBuf.get()});
+  EXPECT_THROW({ (void)dec.nextChunk(); }, std::exception);
+}
+
+TEST(BufferingNimbleDecoder, OutOfDataSpace) {
   auto controlBuf = folly::IOBuf::create(0);
   folly::io::Appender control(controlBuf.get(), 10);
   auto dataBuf = folly::IOBuf::create(0);

@@ -66,6 +66,14 @@ class BufferingNimbleDecoder {
   void fillBuffer() {
     nextChunkToReturn_ = 0;
     maxChunkFilled_ = 0;
+    // We were asked to produce more chunks, but can't advance in the control
+    // stream; the input is invalid. Note that a similar check on the data
+    // stream wouldn't be correct; a control byte may correspond to 0 data
+    // bytes. Instead, we check that we didn't overflow manually, in the slow
+    // path below.
+    if (!controlCursor_.canAdvance(1)) {
+      protocol::TProtocolException::throwExceededSizeLimit();
+    }
     while (maxChunkFilled_ < kChunksToBuffer && controlCursor_.canAdvance(1)) {
       ssize_t minControlBytes = controlCursor_.length();
       ssize_t minBlocks = dataCursor_.length() / kMaxBytesPerBlock;
