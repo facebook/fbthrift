@@ -2,7 +2,7 @@
   "thrift_module" : "module",
   "constants" : {
     "fortyTwo" : {
-      "lineno" : 2,
+      "lineno" : 17,
       "value" : 42,
       "type_enum" : "I64",
       "spec_args" : null
@@ -10,7 +10,7 @@
   },
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 24,
+      "lineno" : 39,
       "constants" : {
         "VALUE1" : 1,
         "VALUE2" : 2
@@ -19,14 +19,14 @@
   },
   "typedefs" : {
     "MyMapTypedef" : {
-      "lineno" : 7,
+      "lineno" : 22,
       "type_enum" : "MAP",
       "spec_args" : { "key_type" : { "type_enum" : "I64", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } 
     }
   },
   "structs" : {
     "MyStruct" : {
-      "lineno" : 13,
+      "lineno" : 28,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -45,7 +45,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 34,
+      "lineno" : 49,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {

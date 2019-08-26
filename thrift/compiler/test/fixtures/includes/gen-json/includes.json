@@ -2,13 +2,13 @@
   "thrift_module" : "includes",
   "constants" : {
     "ExampleIncluded" : {
-      "lineno" : 11,
+      "lineno" : 26,
       "value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } },
       "type_enum" : "STRUCT",
       "spec_args" : "Included"
     },
     "IncludedConstant" : {
-      "lineno" : 18,
+      "lineno" : 33,
       "value" : 42,
       "type_enum" : "I64",
       "spec_args" : null
@@ -16,19 +16,19 @@
   },
   "typedefs" : {
     "IncludedInt64" : {
-      "lineno" : 16,
+      "lineno" : 31,
       "type_enum" : "I64",
       "spec_args" : null
     },
     "TransitiveFoo" : {
-      "lineno" : 21,
+      "lineno" : 36,
       "type_enum" : "STRUCT",
       "spec_args" : "transitive.Foo"
     }
   },
   "structs" : {
     "Included" : {
-      "lineno" : 6,
+      "lineno" : 21,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

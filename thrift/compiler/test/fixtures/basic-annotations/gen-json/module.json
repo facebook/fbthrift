@@ -2,7 +2,7 @@
   "thrift_module" : "module",
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 4,
+      "lineno" : 19,
       "constants" : {
         "MyValue1" : 0,
         "MyValue2" : 1,
@@ -12,7 +12,7 @@
   },
   "structs" : {
     "MyStruct" : {
-      "lineno" : 10,
+      "lineno" : 25,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -36,7 +36,7 @@
   },
   "services" : {
     "MyService" : {
-      "lineno" : 19,
+      "lineno" : 34,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -125,7 +125,7 @@
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 29,
+      "lineno" : 44,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -150,7 +150,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 34,
+      "lineno" : 49,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {
