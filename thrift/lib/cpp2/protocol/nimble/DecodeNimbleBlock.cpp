@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/Portability.h>
 #include <folly/container/Array.h>
 
 #include <thrift/lib/cpp2/protocol/nimble/ControlBitHelpers.h>
@@ -71,10 +72,11 @@ constexpr NimbleBlockVectorDecodeData vectorDecodeDataForControlByte(
 
 } // namespace
 
-constexpr const std::array<NimbleBlockDecodeData, 256> nimbleBlockDecodeData =
-    folly::make_array_with<256>(decodeDataForControlByte);
+FOLLY_STORAGE_CONSTEXPR const std::array<NimbleBlockDecodeData, 256>
+    nimbleBlockDecodeData =
+        folly::make_array_with<256>(decodeDataForControlByte);
 
-constexpr const std::array<NimbleBlockVectorDecodeData, 256>
+FOLLY_STORAGE_CONSTEXPR const std::array<NimbleBlockVectorDecodeData, 256>
     nimbleBlockVectorDecodeData =
         folly::make_array_with<256>(vectorDecodeDataForControlByte);
 

@@ -17,6 +17,8 @@
 #include <stdexcept>
 #include <utility>
 
+#include <folly/Portability.h>
+
 #include <thrift/lib/cpp2/protocol/nimble/ControlBitHelpers.h>
 #include <thrift/lib/cpp2/protocol/nimble/EncodeNimbleBlock.h>
 
@@ -44,8 +46,9 @@ constexpr std::array<NimbleBlockEncodeData, 256> encodeDataFromIndices(
 }
 } // namespace
 
-constexpr const std::array<NimbleBlockEncodeData, 256> nimbleBlockEncodeData =
-    encodeDataFromIndices(std::make_index_sequence<256>{});
+FOLLY_STORAGE_CONSTEXPR const std::array<NimbleBlockEncodeData, 256>
+    nimbleBlockEncodeData =
+        encodeDataFromIndices(std::make_index_sequence<256>{});
 
 } // namespace detail
 } // namespace thrift
