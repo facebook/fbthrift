@@ -2219,6 +2219,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
   indent(out) << "}\n";
   out << "\n";
 
+  indent(out) << "<<__Rx>>\n";
   indent(out) << "public function __toShape(): self::TShape {\n";
   indent_up();
   indent(out) << "return shape(\n";

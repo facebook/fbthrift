@@ -52,6 +52,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'a' => $this->a,
@@ -789,6 +790,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),

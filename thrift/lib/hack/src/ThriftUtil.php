@@ -12,9 +12,11 @@
 
 abstract final class ThriftUtil {
 
+  <<__Rx, __AtMostRxAsArgs>>
   public static function mapDict<Tk as arraykey, Tv1, Tv2>(
+    <<__OnlyRxIfImpl(Rx\KeyedTraversable::class)>>
     KeyedTraversable<Tk, Tv1> $traversable,
-    (function(Tv1): Tv2) $value_func,
+    <<__AtMostRxAsFunc>> (function(Tv1): Tv2) $value_func,
   ): dict<Tk, Tv2> {
     $result = dict[];
     foreach ($traversable as $key => $value) {
@@ -23,9 +25,10 @@ abstract final class ThriftUtil {
     return $result;
   }
 
+  <<__Rx, __AtMostRxAsArgs>>
   public static function mapVec<Tv1, Tv2>(
-    Traversable<Tv1> $traversable,
-    (function(Tv1): Tv2) $value_func,
+    <<__OnlyRxIfImpl(Rx\Traversable::class)>> Traversable<Tv1> $traversable,
+    <<__AtMostRxAsFunc>> (function(Tv1): Tv2) $value_func,
   ): vec<Tv2> {
     $result = vec[];
     foreach ($traversable as $value) {
@@ -34,9 +37,10 @@ abstract final class ThriftUtil {
     return $result;
   }
 
+  <<__Rx, __AtMostRxAsArgs>>
   public static function mapKeyset<Tv1, Tv2 as arraykey>(
-    Traversable<Tv1> $traversable,
-    (function(Tv1): Tv2) $value_func,
+    <<__OnlyRxIfImpl(Rx\Traversable::class)>> Traversable<Tv1> $traversable,
+    <<__AtMostRxAsFunc>> (function(Tv1): Tv2) $value_func,
   ): keyset<Tv2> {
     $result = keyset[];
     foreach ($traversable as $value) {
@@ -45,7 +49,9 @@ abstract final class ThriftUtil {
     return $result;
   }
 
-  public static function toDArray<Tk, Tv>(
+  <<__Rx, __AtMostRxAsArgs>>
+  public static function toDArray<Tk as arraykey, Tv>(
+    <<__OnlyRxIfImpl(Rx\KeyedTraversable::class)>>
     KeyedTraversable<Tk, Tv> $traversable,
   ): darray<Tk, Tv> {
     $result = darray[];

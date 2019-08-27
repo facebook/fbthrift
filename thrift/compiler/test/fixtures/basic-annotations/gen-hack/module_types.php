@@ -96,6 +96,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'major' => $this->major,

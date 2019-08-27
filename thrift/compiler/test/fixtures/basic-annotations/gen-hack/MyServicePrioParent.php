@@ -549,6 +549,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
     );
@@ -617,6 +618,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
     );

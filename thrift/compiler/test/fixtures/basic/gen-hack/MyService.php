@@ -1410,6 +1410,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
     );
@@ -1478,6 +1479,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
     );
@@ -1568,6 +1570,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'id' => $this->id,
@@ -1662,6 +1665,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'id' => $this->id,
@@ -1769,6 +1773,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'id' => $this->id,
@@ -1871,6 +1876,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'id' => $this->id,

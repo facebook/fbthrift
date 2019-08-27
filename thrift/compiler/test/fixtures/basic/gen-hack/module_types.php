@@ -110,6 +110,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'MyIntField' => $this->MyIntField,
@@ -172,6 +173,7 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
     );
@@ -338,6 +340,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'myEnum' => $this->myEnum,

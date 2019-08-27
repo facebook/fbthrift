@@ -1286,6 +1286,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
@@ -1369,6 +1370,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
@@ -1452,6 +1454,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
@@ -1531,6 +1534,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(
@@ -1639,6 +1643,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'foo' => $this->foo->map(

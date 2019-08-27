@@ -318,6 +318,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
     );

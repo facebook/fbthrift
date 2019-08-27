@@ -78,6 +78,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'a' => $this->a,
@@ -530,6 +531,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'map_of_string_to_string' => $this->map_of_string_to_string,
@@ -1024,6 +1026,7 @@ class C implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'map_of_string_to_string' => $this->map_of_string_to_string,

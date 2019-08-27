@@ -95,6 +95,7 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
     return $me;
   }
 
+  <<__Rx>>
   public function __toShape(): self::TShape {
     return shape(
       'e' => ThriftUtil::toDArray($this->e),
