@@ -377,7 +377,7 @@ void RocketClient::sendRequestStreamChannel(
       RequestStreamFrame,
       RequestChannelFrame>;
 
-  // Sink will only expect a initial response and final response from server
+  // Sink will only expect an initial response and final response from server
   // to client, so 2 creadits will be all for client sending to server
   constexpr int32_t initialRequestN =
       std::is_same<SinkClientCallback, ClientCallback>::value ? 2 : 1;

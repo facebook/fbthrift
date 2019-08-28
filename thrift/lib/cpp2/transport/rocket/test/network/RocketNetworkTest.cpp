@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
@@ -719,35 +720,6 @@ TEST_F(RocketSinkTest, SinkBasic) {
     const auto data = "upload:";
     constexpr std::chrono::milliseconds kChunkTimeout{500};
 
-    // ClientSink will be the something similar to high level API Sink, it will
-    // do the (de)serialization work, in the real code it should be templated by
-    // sink type and final response type.
-    class ClientSink {
-     public:
-      ClientSink() = default;
-      explicit ClientSink(apache::thrift::detail::ClientSinkBridge& impl)
-          : impl_(impl) {}
-
-      folly::coro::Task<int> sink(folly::coro::AsyncGenerator<int> generator) {
-        auto finalResponse = co_await impl_.sink(folly::coro::co_invoke(
-            [generator = std::move(generator)]() mutable
-            -> folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> {
-              // TODO try catch, yeild try with exception_wrapper
-              while (auto item = co_await generator.next()) {
-                // "serialize" sink payload
-                co_yield folly::Try<StreamPayload>(StreamPayload(
-                    folly::IOBuf::copyBuffer(
-                        folly::StringPiece{folly::to<std::string>(*item)}),
-                    {}));
-              }
-            }));
-        // "deserialize" final response
-        co_return folly::to<int>(
-            folly::StringPiece{finalResponse->payload->coalesce()});
-      }
-      apache::thrift::detail::ClientSinkBridge& impl_;
-    };
-
     folly::coro::blockingWait(
         folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
           auto sinkClientCallback =
@@ -759,9 +731,27 @@ TEST_F(RocketSinkTest, SinkBasic) {
                   folly::StringPiece{
                       folly::to<std::string>(data, kNumUploadPayloads)}));
           co_await sinkClientCallback->getFirstThriftResponse();
-          ClientSink clientSink(*sinkClientCallback);
-          int finalResponse = co_await clientSink.sink(
-              folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int> {
+          auto clientSink = ClientSink<int, int>(
+              std::move(sinkClientCallback),
+              [](folly::Try<int>&& i) {
+                if (i.hasValue()) {
+                  return folly::IOBuf::copyBuffer(
+                      folly::StringPiece{folly::to<std::string>(*i)});
+                } else {
+                  return folly::IOBuf::create(0);
+                }
+              },
+              [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
+                if (payload.hasValue()) {
+                  return folly::Try<int>(folly::to<int>(
+                      folly::StringPiece{payload->payload->coalesce()}));
+                } else {
+                  return folly::Try<int>(payload.exception());
+                }
+              });
+
+          int finalResponse = co_await clientSink.sink(folly::coro::co_invoke(
+              []() -> folly::coro::AsyncGenerator<int&&> {
                 for (size_t i = 0; i < kNumUploadPayloads; i++) {
                   co_yield i;
                 }

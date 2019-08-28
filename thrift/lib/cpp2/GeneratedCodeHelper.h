@@ -18,6 +18,8 @@
 #include <type_traits>
 #include <utility>
 
+#include <folly/Portability.h>
+
 #include <fmt/core.h>
 #include <folly/Traits.h>
 #include <folly/futures/Future.h>
@@ -28,6 +30,10 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#ifdef FOLLY_HAS_COROUTINES
+#include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/Sink.h>
+#endif
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
@@ -362,6 +368,20 @@ struct ThriftPResultStream {
   StreamPresult stream;
 };
 
+template <
+    typename PResults,
+    typename SinkPresult,
+    typename FinalResponsePresult>
+struct ThriftPResultSink {
+  using SinkPResultType = SinkPresult;
+  using FieldsType = PResults;
+  using FinalResponsePResultType = FinalResponsePresult;
+
+  PResults fields;
+  SinkPresult stream;
+  FinalResponsePresult finalResponse;
+};
+
 template <bool hasIsSet, class... Args>
 class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
  public:
@@ -396,9 +416,31 @@ apache::thrift::SemiStream<T> decode_stream(
     apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream);
 
 template <typename Protocol, typename PResult, typename T>
+folly::Try<T> decode_stream_element(
+    folly::Try<apache::thrift::StreamPayload>&& payload);
+
+template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
     apache::thrift::detail::ClientStreamBridge::Ptr streamBridge,
     int32_t bufferSize);
+
+template <typename Protocol, typename PResult, typename T>
+folly::IOBufQueue encode_stream_payload(T&& _item);
+
+template <
+    typename Protocol,
+    typename PResult,
+    typename T,
+    typename ErrorMapFunc>
+folly::IOBufQueue encode_stream_exception(
+    folly::exception_wrapper ew,
+    ErrorMapFunc exceptionMap);
+
+template <typename Protocol, typename PResult, typename T>
+T decode_stream_payload(folly::IOBuf& payload);
+
+template <typename Protocol, typename PResult, typename T>
+folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew);
 
 } // namespace ap
 } // namespace detail
@@ -655,6 +697,125 @@ folly::exception_wrapper recv_wrapped(
   return ew;
 }
 
+#ifdef FOLLY_HAS_COROUTINES
+
+template <
+    typename ProtocolReader,
+    typename ProtocolWriter,
+    typename SinkPResult,
+    typename SinkType,
+    typename FinalResponsePResult,
+    typename FinalResponseType,
+    typename ErrorMapFunc>
+ClientSink<SinkType, FinalResponseType> createSink(
+    apache::thrift::detail::ClientSinkBridge::Ptr impl,
+    ErrorMapFunc exMap) {
+  return ClientSink<SinkType, FinalResponseType>(
+      std::move(impl),
+      [map = std::move(exMap)](folly::Try<SinkType>&& item) mutable {
+        if (item.hasValue()) {
+          return ap::
+              encode_stream_payload<ProtocolWriter, SinkPResult, SinkType>(
+                     std::move(item).value())
+                  .move();
+        } else {
+          return ap::
+              encode_stream_exception<ProtocolWriter, SinkPResult, SinkType>(
+                     std::move(item).exception(), map)
+                  .move();
+        }
+      },
+      detail::ap::decode_stream_element<
+          ProtocolReader,
+          FinalResponsePResult,
+          FinalResponseType>);
+}
+
+template <
+    typename PResult,
+    typename ProtocolWriter,
+    typename ProtocolReader,
+    typename Response,
+    typename Item,
+    typename FinalResponse,
+    typename ErrorMapFunc>
+folly::exception_wrapper recv_wrapped(
+    const char* method,
+    ProtocolReader* prot,
+    ClientReceiveState& state,
+    apache::thrift::detail::ClientSinkBridge::Ptr impl,
+    apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
+        _return,
+    ErrorMapFunc exMap) {
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  apache::thrift::ContextStack* ctx = state.ctx();
+
+  typename PResult::FieldsType result;
+  result.template get<0>().value = &_return.response;
+
+  auto ew = recv_wrapped_helper(method, prot, state, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<true>(result);
+  }
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+
+  if (!ew) {
+    _return.sink = createSink<
+        ProtocolReader,
+        ProtocolWriter,
+        typename PResult::SinkPResultType,
+        Item,
+        typename PResult::FinalResponsePResultType,
+        FinalResponse>(std::move(impl), exMap);
+  }
+  return ew;
+}
+
+template <
+    typename PResult,
+    typename ProtocolWriter,
+    typename ProtocolReader,
+    typename Item,
+    typename FinalResponse,
+    typename ErrorMapFunc>
+folly::exception_wrapper recv_wrapped(
+    const char* method,
+    ProtocolReader* prot,
+    ClientReceiveState& state,
+    apache::thrift::detail::ClientSinkBridge::Ptr impl,
+    apache::thrift::ClientSink<Item, FinalResponse>& _return,
+    ErrorMapFunc exMap) {
+  prot->setInput(state.buf());
+  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
+  apache::thrift::ContextStack* ctx = state.ctx();
+
+  typename PResult::FieldsType result;
+
+  auto ew = recv_wrapped_helper(method, prot, state, result);
+  if (!ew) {
+    ew = apache::thrift::detail::ac::extract_exn<false>(result);
+  }
+  if (ew) {
+    ctx->handlerErrorWrapped(ew);
+  }
+
+  if (!ew) {
+    _return = createSink<
+        ProtocolReader,
+        ProtocolWriter,
+        typename PResult::SinkPResultType,
+        Item,
+        typename PResult::FinalResponsePResultType,
+        FinalResponse>(std::move(impl), exMap);
+  }
+  return ew;
+}
+
+#endif
+
 [[noreturn]] void throw_app_exn(char const* msg);
 } // namespace ac
 } // namespace detail
@@ -809,123 +970,59 @@ bool is_oneway_method(
     const transport::THeader* header,
     const std::unordered_set<std::string>& oneways);
 
+template <typename Protocol, typename PResult, typename T>
+folly::IOBufQueue encode_stream_payload(T&& _item) {
+  PResult res;
+  res.template get<0>().value = const_cast<T*>(&_item);
+  res.setIsSet(0);
+
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  Protocol prot;
+  prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
+
+  res.write(&prot);
+  return queue;
+}
+
 template <
     typename Protocol,
     typename PResult,
     typename T,
     typename ErrorMapFunc>
-apache::thrift::Stream<folly::IOBufQueue> encode_stream(
-    apache::thrift::Stream<T>&& stream,
+folly::IOBufQueue encode_stream_exception(
+    folly::exception_wrapper ew,
     ErrorMapFunc exceptionMap) {
-  if (!stream) {
-    return {};
+  Protocol prot;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
+  PResult res;
+  if (exceptionMap(res, ew)) {
+    res.write(&prot);
+  } else {
+    TApplicationException ex(ew.what().toStdString());
+    detail::serializeExceptionBody(&prot, &ex);
   }
 
-  return std::move(stream).map(
-      [](T&& _item) mutable {
-        PResult res;
-        res.template get<0>().value = const_cast<T*>(&_item);
-        res.setIsSet(0);
-
-        folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-        Protocol prot;
-        prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
-
-        res.write(&prot);
-        return queue;
-      },
-      [map = std::move(exceptionMap)](folly::exception_wrapper&& ew) mutable {
-        Protocol prot;
-        folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-        prot.setOutput(&queue, kStreamingQueueAppenderGrowth);
-        PResult res;
-        if (map(res, ew)) {
-          res.write(&prot);
-        } else {
-          TApplicationException ex(ew.what().toStdString());
-          detail::serializeExceptionBody(&prot, &ex);
-        }
-
-        auto result = queue.move();
-        return apache::thrift::detail::EncodedError(std::move(result));
-      });
+  return queue;
 }
 
 template <typename Protocol, typename PResult, typename T>
-apache::thrift::SemiStream<T> decode_stream(
-    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream) {
-  return std::move(stream).map(
-      [](std::unique_ptr<folly::IOBuf>&& buf) mutable {
-        PResult args;
-        T res{};
-        args.template get<0>().value = &res;
-
-        Protocol prot;
-        prot.setInput(buf.get());
-        args.read(&prot);
-        return res;
-      },
-      [](folly::exception_wrapper&& ew) {
-        Protocol prot;
-        folly::exception_wrapper hijacked;
-        ew.with_exception(
-            [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
-              PResult result;
-              T res{};
-              result.template get<0>().value = &res;
-
-              prot.setInput(err.encoded.get());
-              result.read(&prot);
-
-              CHECK(!result.getIsSet(0));
-
-              ac::foreach_index<PResult::size::value - 1>([&](auto index) {
-                if (!hijacked && result.getIsSet(index.value + 1)) {
-                  auto& fdata = result.template get<index.value + 1>();
-                  hijacked = folly::exception_wrapper(std::move(fdata.ref()));
-                }
-              });
-
-              if (!hijacked) {
-                // Could not decode the error. It may be a TApplicationException
-                TApplicationException x;
-                prot.setInput(err.encoded.get());
-                deserializeExceptionBody(&prot, &x);
-                hijacked = folly::exception_wrapper(std::move(x));
-              }
-            });
-
-        if (hijacked) {
-          return hijacked;
-        }
-
-        if (ew.is_compatible_with<transport::TTransportException>()) {
-          return std::move(ew);
-        }
-
-        return folly::exception_wrapper(
-            transport::TTransportException(ew.what().toStdString()));
-      });
-}
-
-template <typename Protocol, typename PResult, typename T>
-folly::Try<T> decode_stream_element(
-    folly::Try<apache::thrift::StreamPayload>&& payload) {
-  DCHECK(payload.hasValue() || payload.hasException());
+T decode_stream_payload(folly::IOBuf& payload) {
+  PResult args;
+  T res{};
+  args.template get<0>().value = &res;
 
   Protocol prot;
-  if (payload.hasValue()) {
-    PResult args;
-    folly::Try<T> res(folly::in_place);
-    args.template get<0>().value = &(*res);
+  prot.setInput(&payload);
+  args.read(&prot);
+  return res;
+}
 
-    prot.setInput(payload->payload.get());
-    args.read(&prot);
-    return res;
-  }
-
+template <typename Protocol, typename PResult, typename T>
+folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
+  Protocol prot;
   folly::exception_wrapper hijacked;
-  payload.exception().with_exception(
+  ew.with_exception(
       [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
         PResult result;
         T res{};
@@ -953,16 +1050,67 @@ folly::Try<T> decode_stream_element(
       });
 
   if (hijacked) {
-    return folly::Try<T>(hijacked);
+    return hijacked;
   }
 
-  if (payload.exception()
-          .is_compatible_with<transport::TTransportException>()) {
-    return folly::Try<T>(std::move(payload.exception()));
+  if (ew.is_compatible_with<transport::TTransportException>()) {
+    return ew;
   }
 
-  return folly::Try<T>(folly::exception_wrapper(transport::TTransportException(
-      payload.exception().what().toStdString())));
+  return folly::exception_wrapper(
+      transport::TTransportException(ew.what().toStdString()));
+}
+
+template <
+    typename Protocol,
+    typename PResult,
+    typename T,
+    typename ErrorMapFunc>
+apache::thrift::Stream<folly::IOBufQueue> encode_stream(
+    apache::thrift::Stream<T>&& stream,
+    ErrorMapFunc exceptionMap) {
+  if (!stream) {
+    return {};
+  }
+
+  return std::move(stream).map(
+      [](T&& _item) mutable {
+        return encode_stream_payload<Protocol, PResult, T>(
+            std::forward<T>(_item));
+      },
+      [map = std::move(exceptionMap)](folly::exception_wrapper&& ew) mutable {
+        auto result =
+            encode_stream_exception<Protocol, PResult, T, ErrorMapFunc>(
+                std::move(ew), std::move(map))
+                .move();
+        return apache::thrift::detail::EncodedError(std::move(result));
+      });
+}
+
+template <typename Protocol, typename PResult, typename T>
+apache::thrift::SemiStream<T> decode_stream(
+    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream) {
+  return std::move(stream).map(
+      [](std::unique_ptr<folly::IOBuf>&& buf) mutable {
+        return decode_stream_payload<Protocol, PResult, T>(*buf.get());
+      },
+      [](folly::exception_wrapper&& ew) {
+        return decode_stream_exception<Protocol, PResult, T>(std::move(ew));
+      });
+}
+
+template <typename Protocol, typename PResult, typename T>
+folly::Try<T> decode_stream_element(
+    folly::Try<apache::thrift::StreamPayload>&& payload) {
+  DCHECK(payload.hasValue() || payload.hasException());
+
+  if (payload.hasValue()) {
+    return folly::Try<T>(
+        decode_stream_payload<Protocol, PResult, T>(*payload->payload));
+  } else {
+    return folly::Try<T>(decode_stream_exception<Protocol, PResult, T>(
+        std::move(payload).exception()));
+  }
 }
 
 template <typename Protocol, typename PResult, typename T>

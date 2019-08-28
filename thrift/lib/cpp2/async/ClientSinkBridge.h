@@ -26,8 +26,10 @@
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
 
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
+#include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 
 namespace apache {
 namespace thrift {
@@ -167,7 +169,15 @@ class ClientSinkBridge : public TwoWayBridge<
   }
 
   void onFinalResponseError(folly::exception_wrapper ew) override {
-    serverPush(folly::Try<StreamPayload>(std::move(ew)));
+    folly::exception_wrapper hijacked;
+    if (ew.with_exception([&hijacked](rocket::RocketException& rex) {
+          hijacked = folly::exception_wrapper(
+              apache::thrift::detail::EncodedError(rex.moveErrorData()));
+        })) {
+      serverPush(folly::Try<StreamPayload>(std::move(hijacked)));
+    } else {
+      serverPush(folly::Try<StreamPayload>(std::move(ew)));
+    }
     close();
   }
 
