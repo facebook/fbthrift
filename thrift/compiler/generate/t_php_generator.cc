@@ -114,6 +114,12 @@ class t_php_generator : public t_oop_generator {
   void generate_php_type_spec(std::ofstream& out, t_type* t);
   void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
   void generate_php_structural_id(std::ofstream& out, t_struct* tstruct);
+  
+  void generate_generic_field_getters_setters(std::ostream& out, t_struct* tstruct);
+  void generate_reflection_setters(ostringstream& out, string field_name, string cap_name);
+  void generate_reflection_getters(ostringstream& out, t_type* type, string field_name, string cap_name);
+
+  std::string get_cap_name(std::string name);
 
   /**
    * Service-level generation functions
@@ -1260,7 +1266,7 @@ void t_php_generator::_generate_php_struct_definition(
         !(t->is_struct() || t->is_xception())) {
       dval = render_const_value((*m_iter)->get_type(), (*m_iter)->get_value());
     }
-    indent(out) << "public $" << (*m_iter)->get_name() << " = " << dval << ";"
+    indent(out) << "private $" << (*m_iter)->get_name() << " = " << dval << ";"
                 << endl;
   }
 
@@ -1320,14 +1326,90 @@ void t_php_generator::_generate_php_struct_definition(
       << tstruct->get_name() << param << endl
       << indent() << "}" << endl
       << endl;
-
+  
+  generate_generic_field_getters_setters(out, tstruct); 
   generate_php_struct_reader(out, tstruct);
   generate_php_struct_writer(out, tstruct);
   generate_json_reader(out, tstruct);
   indent_down();
   out << indent() << "}" << endl << endl;
 }
+/**
+ * Generates necessary accessors and mutators for the private fields
+ */
+void t_php_generator::generate_generic_field_getters_setters(std::ostream& out,
+                                                              t_struct* tstruct) {
+  std::ostringstream getter_stream;
+  std::ostringstream setter_stream;
 
+  // build up the bodies of both the getter and setter at once
+  const vector<t_field*>& fields = tstruct->get_members();
+  vector<t_field*>::const_iterator f_iter;
+  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
+    t_field* field = *f_iter;
+    t_type* type = get_true_type(field->get_type());
+    std::string field_name = field->get_name();
+    std::string cap_name = get_cap_name(field_name);
+
+    indent_up();
+    generate_reflection_setters(setter_stream, type, field_name, cap_name);
+    generate_reflection_getters(getter_stream, type, field_name, cap_name);
+    indent_down();
+  }
+
+  indent(out) << endl;
+  out << getter_stream.str();
+  out << setter_stream.str();
+  indent(out) << endl;
+}
+/**
+ * Generates a getter for the generated private fields
+ */
+void t_php_generator::generate_reflection_getters(ostringstream& out,
+                                                   t_type* type,
+                                                   string field_name,
+                                                   string cap_name) {
+
+
+  out << indent() << "public function " << (type->is_bool() ? "is" : "get") << cap_name << "()" << endl
+      << indent() << "{" << endl;
+
+  indent_up();
+
+  out << indent() << "return $this->" << field_name << ";" << endl;
+
+  indent_down();
+  out << indent() << "}" << endl;
+  out << endl;
+}
+/**
+ * Generates a setter for the generated private fields
+ */
+void t_php_generator::generate_reflection_setters(ostringstream& out,
+						  string field_name,
+						  string cap_name) {
+
+  out << indent() << "public function set" << cap_name << "(" << "$" << field_name << ")" << endl
+      << indent() << "{" << endl;
+
+  indent_up();
+
+  out << indent() << "$this->" << field_name << " = $" << field_name << ";" << endl;
+
+
+  indent_down();
+  out << indent() << "}" << endl;
+  out << endl;
+}
+/**
+ * Gets the first-letter capitalized name for the field
+ *
+ * @param std::string name of the field
+ */
+std::string t_php_generator::get_cap_name(std::string name) {
+  name[0] = toupper(name[0]);
+  return name;
+}
 /**
  * Generates the read() method for a struct
  */
