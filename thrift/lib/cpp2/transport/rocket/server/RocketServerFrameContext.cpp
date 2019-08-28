@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Serializer.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 
 namespace apache {
@@ -72,6 +73,22 @@ void RocketServerFrameContext::sendError(RocketException&& rex) {
   connection_->send(std::move(writer).move());
 }
 
+void RocketServerFrameContext::sendRequestN(int32_t n) {
+  DCHECK(connection_);
+
+  Serializer writer;
+  RequestNFrame(streamId_, n).serialize(writer);
+  connection_->send(std::move(writer).move());
+}
+
+void RocketServerFrameContext::sendCancel() {
+  DCHECK(connection_);
+
+  Serializer writer;
+  CancelFrame(streamId_).serialize(writer);
+  connection_->send(std::move(writer).move());
+}
+
 void RocketServerFrameContext::onFullFrame(
     RequestResponseFrame&& fullFrame) && {
   auto& frameHandler = *connection_->frameHandler_;
@@ -92,12 +109,29 @@ void RocketServerFrameContext::onFullFrame(RequestStreamFrame&& fullFrame) && {
   frameHandler.handleRequestStreamFrame(std::move(fullFrame), clientCallback);
 }
 
+void RocketServerFrameContext::onFullFrame(RequestChannelFrame&& fullFrame) && {
+  auto& connection = *connection_;
+  if (fullFrame.initialRequestN() != 2) {
+    connection.close(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "initialRequestN of Sink must be 2"));
+  } else {
+    auto* clientCallback =
+        connection.createSinkClientCallback(std::move(*this));
+    auto& frameHandler = *connection.frameHandler_;
+    frameHandler.handleRequestChannelFrame(
+        std::move(fullFrame), clientCallback);
+  }
+}
+
 template <class RequestFrame>
 void RocketServerFrameContext::onRequestFrame(RequestFrame&& frame) && {
   if (UNLIKELY(frame.hasFollows())) {
     auto streamId = streamId_;
     auto& connection = *connection_;
-    connection.partialFrames_.emplace(
+    connection.partialRequestFrames_.emplace(
         streamId,
         RocketServerPartialFrameContext(
             std::move(*this), std::forward<RequestFrame>(frame)));
@@ -120,8 +154,14 @@ void RocketServerFrameContext::takeOwnership(
   connection_->closeIfNeeded();
 }
 
+void RocketServerFrameContext::takeOwnership(
+    RocketSinkClientCallback* callback) {
+  connection_->streams_.emplace(
+      streamId_, std::unique_ptr<RocketSinkClientCallback>(callback));
+}
+
 void RocketServerFrameContext::freeStream() {
-  connection_->streams_.erase(streamId_);
+  connection_->freeStream(streamId_);
 }
 
 namespace detail {
@@ -137,6 +177,9 @@ class OnPayloadVisitor : public boost::static_visitor<void> {
     handleNext(requestFrame);
   }
   void operator()(RequestStreamFrame& requestFrame) {
+    handleNext(requestFrame);
+  }
+  void operator()(RequestChannelFrame& requestFrame) {
     handleNext(requestFrame);
   }
 
@@ -170,6 +213,8 @@ template void RocketServerFrameContext::onRequestFrame<RequestFnfFrame>(
     RequestFnfFrame&&) &&;
 template void RocketServerFrameContext::onRequestFrame<RequestStreamFrame>(
     RequestStreamFrame&&) &&;
+template void RocketServerFrameContext::onRequestFrame<RequestChannelFrame>(
+    RequestChannelFrame&&) &&;
 
 } // namespace rocket
 } // namespace thrift

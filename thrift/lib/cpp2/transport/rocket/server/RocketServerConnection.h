@@ -22,6 +22,8 @@
 #include <unordered_map>
 #include <utility>
 
+#include <boost/variant.hpp>
+
 #include <folly/ExceptionWrapper.h>
 #include <folly/container/F14Map.h>
 #include <folly/io/IOBuf.h>
@@ -39,6 +41,7 @@
 namespace apache {
 namespace thrift {
 
+class RocketSinkClientCallback;
 class RocketStreamClientCallback;
 
 namespace rocket {
@@ -60,6 +63,9 @@ class RocketServerConnection
   static RocketStreamClientCallback* createStreamClientCallback(
       RocketServerFrameContext&& context,
       uint32_t initialRequestN);
+
+  static RocketSinkClientCallback* createSinkClientCallback(
+      RocketServerFrameContext&& context);
 
   // Parser callbacks
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
@@ -90,6 +96,9 @@ class RocketServerConnection
   }
 
  private:
+
+  void freeStream(StreamId streamId);
+
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
   folly::EventBase& evb_;
@@ -98,7 +107,9 @@ class RocketServerConnection
   Parser<RocketServerConnection> parser_{*this};
   const std::shared_ptr<RocketServerHandler> frameHandler_;
   bool setupFrameReceived_{false};
-  folly::F14NodeMap<StreamId, RocketServerPartialFrameContext> partialFrames_;
+  folly::F14NodeMap<StreamId, RocketServerPartialFrameContext>
+      partialRequestFrames_;
+  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
 
   // Total number of active Request* frames ("streams" in protocol parlance)
   size_t inflightRequests_{0};
@@ -113,8 +124,12 @@ class RocketServerConnection
   };
   ConnectionState state_{ConnectionState::ALIVE};
 
-  folly::F14FastMap<StreamId, std::unique_ptr<RocketStreamClientCallback>>
-      streams_;
+  using ClientCallbackUniquePtr = boost::variant<
+      std::unique_ptr<RocketStreamClientCallback>,
+      std::unique_ptr<RocketSinkClientCallback>>;
+  using ClientCallbackPtr =
+      boost::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
+  folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
 
   class BatchWriteLoopCallback : public folly::EventBase::LoopCallback {
@@ -161,6 +176,28 @@ class RocketServerConnection
   void closeWhenIdle() final;
   void dropConnection() final;
   void dumpConnectionState(uint8_t) final {}
+  folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
+
+  void handleUntrackedFrame(
+      std::unique_ptr<folly::IOBuf> frame,
+      StreamId streamId,
+      FrameType frameType,
+      Flags flags,
+      folly::io::Cursor cursor);
+  void handleStreamFrame(
+      std::unique_ptr<folly::IOBuf> frame,
+      StreamId streamId,
+      FrameType frameType,
+      Flags flags,
+      folly::io::Cursor cursor,
+      RocketStreamClientCallback& clientCallback);
+  void handleSinkFrame(
+      std::unique_ptr<folly::IOBuf> frame,
+      StreamId streamId,
+      FrameType frameType,
+      Flags flags,
+      folly::io::Cursor cursor,
+      RocketSinkClientCallback& clientCallback);
 
   void scheduleStreamTimeout(RocketStreamClientCallback*);
 

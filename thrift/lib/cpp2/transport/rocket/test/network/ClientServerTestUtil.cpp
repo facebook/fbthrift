@@ -697,6 +697,66 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         serverCallback);
   }
 
+  void handleRequestChannelFrame(
+      RequestChannelFrame&& frame,
+      SinkClientCallback* clientCallback) final {
+    class TestRocketSinkServerCallback final : public SinkServerCallback {
+     public:
+      TestRocketSinkServerCallback(
+          SinkClientCallback* clientCallback,
+          int32_t bufferSize)
+          : clientCallback_(clientCallback),
+            bufferSize_(bufferSize),
+            pendingPayload_(bufferSize) {}
+
+      void onSinkNext(StreamPayload&& payload) override {
+        DCHECK(pendingPayload_ > 0);
+        pendingPayload_--;
+        if (pendingPayload_ < bufferSize_ / 2) {
+          clientCallback_->onSinkRequestN(bufferSize_ - pendingPayload_);
+          pendingPayload_ = bufferSize_;
+        }
+
+        int32_t data =
+            folly::to<int32_t>(folly::StringPiece(payload.payload->coalesce()));
+        EXPECT_EQ(current_, data);
+        current_++;
+      }
+
+      void onSinkError(folly::exception_wrapper) override {
+        delete this;
+      }
+
+      void onStreamCancel() override {
+        delete this;
+      }
+
+      void onSinkComplete() override {
+        clientCallback_->onFinalResponse(StreamPayload(
+            folly::IOBuf::copyBuffer(folly::to<std::string>(current_)), {}));
+        delete this;
+      }
+
+     private:
+      SinkClientCallback* const clientCallback_;
+      int32_t bufferSize_;
+      int32_t pendingPayload_{0};
+
+      // application related
+      int32_t current_{0};
+    };
+
+    folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
+    auto* serverCallback =
+        new TestRocketSinkServerCallback(clientCallback, 10 /* buffer size */);
+
+    clientCallback->onFirstResponse(
+        FirstResponsePayload{folly::IOBuf::copyBuffer(std::to_string(0)), {}},
+        nullptr /* evb */,
+        serverCallback);
+    clientCallback->onSinkRequestN(10);
+  }
+
   void setExpectedSetupMetadata(
       MetadataOpaqueMap<std::string, std::string> md) {
     expectedSetupMetadata_ = std::move(md);

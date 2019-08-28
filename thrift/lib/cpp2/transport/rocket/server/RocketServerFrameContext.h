@@ -30,6 +30,7 @@ class IOBuf;
 namespace apache {
 namespace thrift {
 
+class RocketSinkClientCallback;
 class RocketStreamClientCallback;
 
 namespace rocket {
@@ -52,6 +53,8 @@ class RocketServerFrameContext {
 
   void sendPayload(Payload&& payload, Flags flags);
   void sendError(RocketException&& rex);
+  void sendRequestN(int32_t n);
+  void sendCancel();
 
   template <class RequestFrame>
   void onRequestFrame(RequestFrame&& frame) &&;
@@ -65,6 +68,7 @@ class RocketServerFrameContext {
   void scheduleStreamTimeout(RocketStreamClientCallback*);
   void freeStream();
   void takeOwnership(RocketStreamClientCallback* callback);
+  void takeOwnership(RocketSinkClientCallback* callback);
 
   RocketServerConnection& connection() {
     DCHECK(connection_);
@@ -80,6 +84,7 @@ class RocketServerFrameContext {
   void onFullFrame(RequestResponseFrame&& fullFrame) &&;
   void onFullFrame(RequestFnfFrame&& fullFrame) &&;
   void onFullFrame(RequestStreamFrame&& fullFrame) &&;
+  void onFullFrame(RequestChannelFrame&& fullFrame) &&;
 };
 
 class RocketServerPartialFrameContext {
@@ -94,7 +99,11 @@ class RocketServerPartialFrameContext {
 
  private:
   RocketServerFrameContext mainCtx;
-  boost::variant<RequestResponseFrame, RequestFnfFrame, RequestStreamFrame>
+  boost::variant<
+      RequestResponseFrame,
+      RequestFnfFrame,
+      RequestStreamFrame,
+      RequestChannelFrame>
       bufferedFragments_;
 };
 
@@ -104,6 +113,8 @@ extern template void RocketServerFrameContext::onRequestFrame<RequestFnfFrame>(
     RequestFnfFrame&&) &&;
 extern template void RocketServerFrameContext::onRequestFrame<
     RequestStreamFrame>(RequestStreamFrame&&) &&;
+extern template void RocketServerFrameContext::onRequestFrame<
+    RequestChannelFrame>(RequestChannelFrame&&) &&;
 
 } // namespace rocket
 } // namespace thrift
