@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <folly/Portability.h>
+
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <yarpl/Flowable.h>
 
@@ -87,7 +89,12 @@ class EagerSubscribeOnOperator
     }
 
     void onNextImpl(T value) override {
-      DCHECK(state_ == State::HAS_SUBSCRIBER);
+      if (folly::kIsDebug) {
+        const auto state = state_.load();
+        // request(n) may race with the state transition from SUBSCRIBED to
+        // HAS_SUBSCRIBER
+        DCHECK(state == State::HAS_SUBSCRIBER || state == State::SUBSCRIBED);
+      }
       SuperSubscription::subscriberOnNext(std::move(value));
     }
 
