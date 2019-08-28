@@ -1352,7 +1352,7 @@ void t_php_generator::generate_generic_field_getters_setters(std::ostream& out,
     std::string cap_name = get_cap_name(field_name);
 
     indent_up();
-    generate_reflection_setters(setter_stream, type, field_name, cap_name);
+    generate_reflection_setters(setter_stream, field_name, cap_name);
     generate_reflection_getters(getter_stream, type, field_name, cap_name);
     indent_down();
   }
