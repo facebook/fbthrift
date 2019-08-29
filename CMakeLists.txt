@@ -74,6 +74,11 @@ else()
   set(build_all ON)
 endif(compiler_only OR lib_only)
 
+set(
+  thriftpy ON
+  CACHE BOOL
+  "Install the thrift/lib/py library as an FB Python archive manifest"
+)
 option(thriftpy3
   "Include thrift-py3 library and extensions in the build, requires Cython"
   OFF
