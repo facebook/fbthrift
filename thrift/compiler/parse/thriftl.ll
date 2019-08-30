@@ -28,6 +28,7 @@
 %option yylineno
 %option nounistd
 %option never-interactive
+%option prefix="fbthrift_"
 
 %{
 
