@@ -498,8 +498,16 @@ folly::Optional<Payload> RocketServerConnection::bufferOrGetFullPayload(
 }
 
 void RocketServerConnection::freeStream(StreamId streamId) {
-  streams_.erase(streamId);
+  DestructorGuard dg(this);
+
   bufferedFragments_.erase(streamId);
+
+  auto it = streams_.find(streamId);
+  if (it != streams_.end()) {
+    // Avoid potentially erasing from streams_ map recursively via closeIfNeeded
+    auto ctx = std::move(*it);
+    streams_.erase(it);
+  }
 }
 
 } // namespace rocket
