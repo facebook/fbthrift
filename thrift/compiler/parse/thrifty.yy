@@ -197,6 +197,7 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %token tok_list
 %token tok_set
 %token tok_stream
+%token tok_sink
 
 /**
  * Function modifiers
@@ -249,6 +250,7 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_field::e_req>   FieldRequiredness
 %type<t_type*>          FieldType
 %type<t_type*>          StreamReturnType
+%type<t_type*>          SinkReturnType
 %type<t_const_value*>   FieldValue
 %type<t_struct*>        FieldList
 
@@ -1211,6 +1213,11 @@ FunctionType:
       driver.debug("FunctionType -> StreamReturnType");
       $$ = $1;
     }
+| SinkReturnType
+    {
+      driver.debug("FunctionType -> SinkReturnType");
+      $$ = $1;
+    }
 | FieldType
     {
       driver.debug("FunctionType -> FieldType");
@@ -1245,6 +1252,24 @@ StreamReturnType:
       driver.delete_at_the_end($$);
     } else {
       driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+    }
+  }
+
+SinkReturnType:
+  FieldType "," tok_sink "<" FieldType "," FieldType ">"
+  {
+    driver.debug("SinkReturnType -> FieldType, tok_sink<FieldType, FieldType>");
+    $$ = new t_sink($5, $7, $1);
+    if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
+    }
+  }
+| tok_sink "<" FieldType "," FieldType ">"
+  {
+    driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
+    $$ = new t_sink($3, $5);
+    if (driver.mode == apache::thrift::parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
     }
   }
 

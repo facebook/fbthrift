@@ -118,6 +118,10 @@ class t_function : public t_annotated {
     return returntype_->is_streamresponse();
   }
 
+  bool returns_sink() const {
+    return returntype_->is_sink();
+  }
+
  private:
   t_type* returntype_;
   std::string name_;

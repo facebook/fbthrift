@@ -29,6 +29,10 @@
 <%#service:cpp_includes%>
 #include <%cpp_include%>
 <%/service:cpp_includes%>
+<%#service:any_sinks?%>
+#include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/Sink.h>
+<%/service:any_sinks?%>
 <%#service:any_streams?%>
 <%#service:client_buffered_stream?%>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>

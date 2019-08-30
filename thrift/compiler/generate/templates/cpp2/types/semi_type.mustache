@@ -36,5 +36,21 @@
 %><%/type:streamresponse?%><%!
 
 %><%^type:streamresponse?%><%!
-%><% > types/type%><%!
+  %><%#type:sink?%><%!
+    %><%#type:sinkHasFirstResponse?%><%!
+      %>apache::thrift::ResponseAndClientSink<<%!
+      %><%#type:sinkFirstResponseType%><% >types/type%><%/type:sinkFirstResponseType%>, <%!
+      %><%#type:sinkElemType%><% >types/type%><%/type:sinkElemType%>, <%!
+      %><%#type:sinkFinalResponseType%><% >types/type%><%/type:sinkFinalResponseType%>><%!
+    %><%/type:sinkHasFirstResponse?%><%!
+
+    %><%^type:sinkHasFirstResponse?%><%!
+      %>apache::thrift::ClientSink<<%!
+      %><%#type:sinkElemType%><% >types/type%><%/type:sinkElemType%>, <%!
+      %><%#type:sinkFinalResponseType%><% >types/type%><%/type:sinkFinalResponseType%>><%!
+    %><%/type:sinkHasFirstResponse?%><%!
+  %><%/type:sink?%><%!
+  %><%^type:sink?%><%!
+    %><% > types/type%><%!
+  %><%/type:sink?%><%!
 %><%/type:streamresponse?%>

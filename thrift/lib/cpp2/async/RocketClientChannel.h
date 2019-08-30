@@ -84,6 +84,12 @@ class RocketClientChannel final : public ClientChannel {
 
   using RequestChannel::sendRequestStream;
 
+  void sendRequestSink(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      SinkClientCallback* clientCallback) override;
+
   folly::EventBase* getEventBase() const override {
     return evb_;
   }
@@ -171,6 +177,14 @@ class RocketClientChannel final : public ClientChannel {
       std::chrono::milliseconds timeout,
       std::unique_ptr<folly::IOBuf> buf,
       RequestClientCallback::Ptr cb);
+
+  template <typename ClientCallback, typename F>
+  void sendRequestStreaming(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      ClientCallback* clientCallback,
+      F method);
 
   folly::fibers::FiberManager& getFiberManager() const {
     DCHECK(evb_);

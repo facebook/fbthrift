@@ -16,7 +16,7 @@
 
 %><%#service:functions%><%#function:returnType%>
 template <typename Protocol_>
-void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::RequestClientCallback::Ptr callback<%function:comma%><% > service_common/function_param_list_const%>) {
+void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
   std::shared_ptr<apache::thrift::transport::THeader> header(ctx, &ctx->header);
   <%service:name%>_<%function:cpp_name%>_pargs args;
 <%#function:args%><%#field:type%>
@@ -31,23 +31,17 @@ void <%service:name%>AsyncClient::<%function:cpp_name%>T(Protocol_* prot, apache
 %>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-<%#function:oneway?%>
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE);
-<%/function:oneway?%><%!
-
-%><%^function:oneway?%>
-<%#function:returns_stream?%>
 <%#service:client_buffered_stream?%>
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, true);
 <%/service:client_buffered_stream?%>
 <%^service:client_buffered_stream?%>
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
+  <%#function:returns_sink?%>
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer);
+  <%/function:returns_sink?%>
+  <%^function:returns_sink?%>
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, <% > types/function_kind%>);
+  <%/function:returns_sink?%>
 <%/service:client_buffered_stream?%>
-<%/function:returns_stream?%>
-<%^function:returns_stream?%>
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "<%function:name%>", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
-<%/function:returns_stream?%>
-<%/function:oneway?%>
   ctx->reqContext.setRequestHeader(nullptr);
 }
 

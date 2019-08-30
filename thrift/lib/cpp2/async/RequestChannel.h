@@ -48,6 +48,7 @@ namespace apache {
 namespace thrift {
 
 class StreamClientCallback;
+class SinkClientCallback;
 
 /**
  * RequestChannel defines an asynchronous API for request-based I/O.
@@ -70,7 +71,14 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr,
-      RpcKind kind);
+      RpcKind kind,
+      bool useClientStreamBridge = false);
+
+  void sendRequestAsync(
+      apache::thrift::RpcOptions&,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      SinkClientCallback*);
   /**
    * ReplyCallback will be invoked when the reply to this request is
    * received.  TRequestChannel is responsible for associating requests with
@@ -114,6 +122,12 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf> buf,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback);
+
+  virtual void sendRequestSink(
+      RpcOptions& rpcOptions,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      SinkClientCallback* clientCallback);
 
   virtual void setCloseCallback(CloseCallback*) = 0;
 
@@ -212,18 +226,14 @@ inline StreamClientCallback* createStreamClientCallback(
 }
 
 template <class Protocol>
-void clientSendT(
+std::unique_ptr<folly::IOBuf> preprocessSendT(
     Protocol* prot,
     apache::thrift::RpcOptions& rpcOptions,
-    RequestClientCallback::Ptr callback,
     apache::thrift::ContextStack& ctx,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestChannel* channel,
+    std::shared_ptr<apache::thrift::transport::THeader>& header,
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
-    folly::FunctionRef<size_t(Protocol*)> sizefunc,
-    RpcKind kind,
-    bool useClientStreamBridge = false) {
+    folly::FunctionRef<size_t(Protocol*)> sizefunc) {
   size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
@@ -259,29 +269,50 @@ void clientSendT(
         apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
   }
 
-  if (useClientStreamBridge) {
-    DCHECK(kind == RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE);
-    auto eb = channel->getEventBase();
-    auto streamCallback = createStreamClientCallback(
-        std::move(callback), rpcOptions.getChunkBufferSize());
-    if (!eb || eb->isInEventBaseThread()) {
-      channel->sendRequestStream(
-          rpcOptions, queue.move(), std::move(header), streamCallback);
-    } else {
-      eb->runInEventBaseThread([channel,
-                                rpcOptions,
-                                buf = queue.move(),
-                                header = std::move(header),
-                                streamCallback]() mutable {
-        channel->sendRequestStream(
-            rpcOptions, std::move(buf), std::move(header), streamCallback);
-      });
-    }
-  } else {
-    channel->sendRequestAsync(
-        rpcOptions, queue.move(), std::move(header), std::move(callback), kind);
-  }
+  return queue.move();
 }
+
+template <class Protocol>
+void clientSendT(
+    Protocol* prot,
+    apache::thrift::RpcOptions& rpcOptions,
+    RequestClientCallback::Ptr callback,
+    apache::thrift::ContextStack& ctx,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestChannel* channel,
+    const char* methodName,
+    folly::FunctionRef<void(Protocol*)> writefunc,
+    folly::FunctionRef<size_t(Protocol*)> sizefunc,
+    RpcKind kind,
+    bool useClientStreamBridge = false) {
+  auto buf = preprocessSendT(
+      prot, rpcOptions, ctx, header, methodName, writefunc, sizefunc);
+  channel->sendRequestAsync(
+      rpcOptions,
+      std::move(buf),
+      std::move(header),
+      std::move(callback),
+      kind,
+      useClientStreamBridge);
+}
+
+template <class Protocol>
+void clientSendT(
+    Protocol* prot,
+    apache::thrift::RpcOptions& rpcOptions,
+    SinkClientCallback* callback,
+    apache::thrift::ContextStack& ctx,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    RequestChannel* channel,
+    const char* methodName,
+    folly::FunctionRef<void(Protocol*)> writefunc,
+    folly::FunctionRef<size_t(Protocol*)> sizefunc) {
+  auto buf = preprocessSendT(
+      prot, rpcOptions, ctx, header, methodName, writefunc, sizefunc);
+  channel->sendRequestAsync(
+      rpcOptions, std::move(buf), std::move(header), std::move(callback));
+}
+
 } // namespace thrift
 } // namespace apache
 

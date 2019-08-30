@@ -169,56 +169,25 @@ void RocketClientChannel::sendRequestStream(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<THeader> header,
     StreamClientCallback* clientCallback) {
-  DestructorGuard dg(this);
-
-  auto metadata = detail::makeRequestRpcMetadata(
+  sendRequestStreaming(
       rpcOptions,
-      RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
-      static_cast<ProtocolId>(protocolId_),
-      timeout_,
-      *header,
-      getPersistentWriteHeaders());
+      std::move(buf),
+      std::move(header),
+      clientCallback,
+      &rocket::RocketClient::sendRequestStream);
+}
 
-  if (!EnvelopeUtil::stripEnvelope(&metadata, buf)) {
-    return clientCallback->onFirstResponseError(
-        folly::make_exception_wrapper<TTransportException>(
-            TTransportException::CORRUPTED_DATA,
-            "Unexpected problem stripping envelope"));
-  }
-
-  // Safe to remove after all servers update.
-  metadata.seqId_ref() = 0;
-
-  if (!rclient_ || !rclient_->isAlive()) {
-    return clientCallback->onFirstResponseError(
-        folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NOT_OPEN, "Connection is not open"));
-  }
-
-  if (inflightRequestsAndStreams() >= maxInflightRequestsAndStreams_) {
-    TTransportException ex(
-        TTransportException::NETWORK_ERROR,
-        "Too many active requests on connection");
-    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-    return clientCallback->onFirstResponseError(
-        folly::exception_wrapper(std::move(ex)));
-  }
-
-  const std::chrono::milliseconds firstResponseTimeout{
-      metadata.clientTimeoutMs_ref().value_or(0)};
-  if (rpcOptions.getClientOnlyTimeouts()) {
-    metadata.clientTimeoutMs_ref().reset();
-    metadata.queueTimeoutMs_ref().reset();
-  }
-
-  getFiberManager().addTask(
-      [rclient = rclient_,
-       firstResponseTimeout,
-       clientCallback,
-       payload = rocket::makePayload(metadata, std::move(buf))]() mutable {
-        return rclient->sendRequestStream(
-            std::move(payload), firstResponseTimeout, clientCallback);
-      });
+void RocketClientChannel::sendRequestSink(
+    RpcOptions& rpcOptions,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<transport::THeader> header,
+    SinkClientCallback* clientCallback) {
+  sendRequestStreaming(
+      rpcOptions,
+      std::move(buf),
+      std::move(header),
+      clientCallback,
+      &rocket::RocketClient::sendRequestSink);
 }
 
 void RocketClientChannel::sendThriftRequest(
@@ -385,6 +354,68 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
           finallyFunc(collapseTry(std::move(arg)));
         });
   }
+}
+
+template <typename ClientCallback, typename F>
+void RocketClientChannel::sendRequestStreaming(
+    RpcOptions& rpcOptions,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<THeader> header,
+    ClientCallback* clientCallback,
+    F method) {
+  DestructorGuard dg(this);
+
+  auto metadata = detail::makeRequestRpcMetadata(
+      rpcOptions,
+      std::is_same<SinkClientCallback, ClientCallback>::value
+          ? RpcKind::SINK
+          : RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE,
+      static_cast<ProtocolId>(protocolId_),
+      timeout_,
+      *header,
+      getPersistentWriteHeaders());
+
+  if (!EnvelopeUtil::stripEnvelope(&metadata, buf)) {
+    return clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<TTransportException>(
+            TTransportException::CORRUPTED_DATA,
+            "Unexpected problem stripping envelope"));
+  }
+
+  // Safe to remove after all servers update.
+  metadata.seqId_ref() = 0;
+
+  if (!rclient_ || !rclient_->isAlive()) {
+    return clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<TTransportException>(
+            TTransportException::NOT_OPEN, "Connection is not open"));
+  }
+
+  if (inflightRequestsAndStreams() >= maxInflightRequestsAndStreams_) {
+    TTransportException ex(
+        TTransportException::NETWORK_ERROR,
+        "Too many active requests on connection");
+    ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+    return clientCallback->onFirstResponseError(
+        folly::exception_wrapper(std::move(ex)));
+  }
+
+  const std::chrono::milliseconds firstResponseTimeout{
+      metadata.clientTimeoutMs_ref().value_or(0)};
+  if (rpcOptions.getClientOnlyTimeouts()) {
+    metadata.clientTimeoutMs_ref().reset();
+    metadata.queueTimeoutMs_ref().reset();
+  }
+
+  getFiberManager().addTask(
+      [rclient = rclient_,
+       firstResponseTimeout,
+       clientCallback,
+       method,
+       payload = rocket::makePayload(metadata, std::move(buf))]() mutable {
+        return (*rclient.*method)(
+            std::move(payload), firstResponseTimeout, clientCallback);
+      });
 }
 
 ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {

@@ -29,7 +29,8 @@ void RequestChannel::sendRequestAsync(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr callback,
-    RpcKind kind) {
+    RpcKind kind,
+    bool useClientStreamBridge) {
   auto eb = getEventBase();
   if (!eb || eb->isInEventBaseThread()) {
     switch (kind) {
@@ -42,8 +43,18 @@ void RequestChannel::sendRequestAsync(
             rpcOptions, std::move(buf), std::move(header), std::move(callback));
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        sendRequestStream(
-            rpcOptions, std::move(buf), std::move(header), std::move(callback));
+        if (useClientStreamBridge) {
+          auto streamCallback = createStreamClientCallback(
+              std::move(callback), rpcOptions.getChunkBufferSize());
+          sendRequestStream(
+              rpcOptions, std::move(buf), std::move(header), streamCallback);
+        } else {
+          sendRequestStream(
+              rpcOptions,
+              std::move(buf),
+              std::move(header),
+              std::move(callback));
+        }
         break;
       default:
         folly::assume_unreachable();
@@ -55,7 +66,8 @@ void RequestChannel::sendRequestAsync(
                               buf = std::move(buf),
                               header = std::move(header),
                               callback = std::move(callback),
-                              kind]() mutable {
+                              kind,
+                              useClientStreamBridge]() mutable {
       switch (kind) {
         case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
           sendRequestNoResponse(
@@ -72,16 +84,44 @@ void RequestChannel::sendRequestAsync(
               std::move(callback));
           break;
         case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-          sendRequestStream(
-              rpcOptions,
-              std::move(buf),
-              std::move(header),
-              std::move(callback));
+          if (useClientStreamBridge) {
+            auto streamCallback = createStreamClientCallback(
+                std::move(callback), rpcOptions.getChunkBufferSize());
+            sendRequestStream(
+                rpcOptions, std::move(buf), std::move(header), streamCallback);
+          } else {
+            sendRequestStream(
+                rpcOptions,
+                std::move(buf),
+                std::move(header),
+                std::move(callback));
+          }
           break;
         default:
           folly::assume_unreachable();
           break;
       }
+    });
+  }
+}
+
+void RequestChannel::sendRequestAsync(
+    apache::thrift::RpcOptions& rpcOptions,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<apache::thrift::transport::THeader> header,
+    SinkClientCallback* callback) {
+  auto eb = getEventBase();
+  if (!eb || eb->inRunningEventBaseThread()) {
+    sendRequestSink(
+        rpcOptions, std::move(buf), std::move(header), std::move(callback));
+  } else {
+    eb->runInEventBaseThread([this,
+                              rpcOptions,
+                              buf = std::move(buf),
+                              header = std::move(header),
+                              callback = std::move(callback)]() mutable {
+      sendRequestSink(
+          rpcOptions, std::move(buf), std::move(header), std::move(callback));
     });
   }
 }
@@ -111,6 +151,16 @@ void RequestChannel::sendRequestStream(
   clientCallback->onFirstResponseError(
       folly::make_exception_wrapper<transport::TTransportException>(
           "Current channel doesn't support stream RPC"));
+}
+
+void RequestChannel::sendRequestSink(
+    RpcOptions&,
+    std::unique_ptr<folly::IOBuf>,
+    std::shared_ptr<transport::THeader>,
+    SinkClientCallback* clientCallback) {
+  clientCallback->onFirstResponseError(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          "Current channel doesn't support sink RPC"));
 }
 
 } // namespace thrift

@@ -55,6 +55,7 @@ struct t_types {
     TYPE_SERVICE,
     TYPE_PROGRAM,
     TYPE_FLOAT,
+    TYPE_SINK,
     TYPE_STREAM,
     TYPE_BINARY,
   };
@@ -150,6 +151,9 @@ class t_type : public t_annotated {
     return false;
   }
   virtual bool is_map() const {
+    return false;
+  }
+  virtual bool is_sink() const {
     return false;
   }
   virtual bool is_streamresponse() const {
