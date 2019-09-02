@@ -30,10 +30,10 @@
 #include "thrift/compiler/parse/yy_scanner.h"
 
 /**
- * Provide the custom fbthrift_lex signature to flex.
+ * Provide the custom fbthrift_compiler_parse_lex signature to flex.
  */
-#define YY_DECL                                         \
-  apache::thrift::yy::parser::symbol_type fbthrift_lex( \
+#define YY_DECL                                                        \
+  apache::thrift::yy::parser::symbol_type fbthrift_compiler_parse_lex( \
       apache::thrift::parsing_driver& driver, yyscan_t yyscanner)
 
 namespace apache {

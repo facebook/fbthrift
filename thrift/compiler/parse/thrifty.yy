@@ -49,10 +49,10 @@
 #include THRIFTY_HH
 
 /**
- * Declare fbthrift_lex() so we can use it.
+ * Declare fbthrift_compiler_parse_lex() so we can use it.
  */
 YY_DECL;
-#define yylex fbthrift_lex
+#define yylex fbthrift_compiler_parse_lex
 
 /**
  * This global variable is used for automatic numbering of field indices etc.

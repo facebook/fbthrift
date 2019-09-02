@@ -28,7 +28,7 @@
 %option yylineno
 %option nounistd
 %option never-interactive
-%option prefix="fbthrift_"
+%option prefix="fbthrift_compiler_parse_"
 
 %{
 

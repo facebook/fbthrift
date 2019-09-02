@@ -26,14 +26,14 @@ typedef void* yyscan_t;
 /**
  * These are provided by Flex.
  */
-int fbthrift_lex_init(yyscan_t* ptr_yy_globals);
-int fbthrift_lex_destroy(yyscan_t yyscanner);
+int fbthrift_compiler_parse_lex_init(yyscan_t* ptr_yy_globals);
+int fbthrift_compiler_parse_lex_destroy(yyscan_t yyscanner);
 
-void fbthrift_restart(FILE* input_file, yyscan_t yyscanner);
+void fbthrift_compiler_parse_restart(FILE* input_file, yyscan_t yyscanner);
 
-int fbthrift_get_lineno(yyscan_t scanner);
-void fbthrift_set_lineno(int line_number, yyscan_t scanner);
-char* fbthrift_get_text(yyscan_t scanner);
+int fbthrift_compiler_parse_get_lineno(yyscan_t scanner);
+void fbthrift_compiler_parse_set_lineno(int line_number, yyscan_t scanner);
+char* fbthrift_compiler_parse_get_text(yyscan_t scanner);
 
 namespace apache {
 namespace thrift {
@@ -71,7 +71,7 @@ class readonly_file {
 class yy_scanner {
  public:
   yy_scanner() {
-    if (fbthrift_lex_init(&scanner_) != 0) {
+    if (fbthrift_compiler_parse_lex_init(&scanner_) != 0) {
       throw std::system_error(errno, std::generic_category());
     }
   }
@@ -83,8 +83,8 @@ class yy_scanner {
 
   ~yy_scanner() {
     if (!!scanner_) {
-      // Why does fbthrift_lex_destroy return an int??
-      fbthrift_lex_destroy(scanner_);
+      // Why does fbthrift_compiler_parse_lex_destroy return an int??
+      fbthrift_compiler_parse_lex_destroy(scanner_);
     }
   }
 
@@ -95,22 +95,22 @@ class yy_scanner {
    */
   void start(std::string path) {
     file_ = std::make_unique<readonly_file>(path);
-    fbthrift_restart(file_->get_file(), scanner_);
+    fbthrift_compiler_parse_restart(file_->get_file(), scanner_);
   }
 
   int get_lineno() const {
     assert(!!scanner_);
-    return fbthrift_get_lineno(scanner_);
+    return fbthrift_compiler_parse_get_lineno(scanner_);
   }
 
   void set_lineno(int lineno) {
     assert(!!scanner_);
-    fbthrift_set_lineno(lineno, scanner_);
+    fbthrift_compiler_parse_set_lineno(lineno, scanner_);
   }
 
   std::string get_text() const {
     assert(!!scanner_);
-    char const* text = fbthrift_get_text(scanner_);
+    char const* text = fbthrift_compiler_parse_get_text(scanner_);
     return (!!text) ? std::string{text} : "";
   }
 
