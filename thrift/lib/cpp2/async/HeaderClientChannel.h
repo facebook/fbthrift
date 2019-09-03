@@ -208,7 +208,6 @@ class HeaderClientChannel : public ClientChannel,
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 
   uint16_t protocolId_;
-  uint16_t userProtocolId_;
 };
 
 } // namespace thrift
