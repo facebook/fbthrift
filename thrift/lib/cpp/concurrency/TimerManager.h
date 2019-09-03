@@ -22,6 +22,7 @@
 #ifndef _THRIFT_CONCURRENCY_TIMERMANAGER_H_
 #define _THRIFT_CONCURRENCY_TIMERMANAGER_H_ 1
 
+#include <atomic>
 #include <ctime>
 #include <map>
 #include <memory>
@@ -108,7 +109,7 @@ class TimerManager {
   class Task;
   friend class Task;
   std::multimap<int64_t, std::shared_ptr<Task> > taskMap_;
-  size_t taskCount_;
+  std::atomic<size_t> taskCount_;
   Monitor monitor_;
   STATE state_;
   class Dispatcher;

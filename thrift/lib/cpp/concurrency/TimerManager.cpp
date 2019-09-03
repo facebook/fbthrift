@@ -100,7 +100,9 @@ class TimerManager::Dispatcher: public Runnable {
           if (!manager_->taskMap_.empty()) {
             timeout = manager_->taskMap_.begin()->first - now;
           }
-          assert((timeout != 0 && manager_->taskCount_ > 0) || (timeout == 0 && manager_->taskCount_ == 0));
+          auto count = manager_->taskCount_.load(std::memory_order_relaxed);
+          (void)count;
+          assert((timeout != 0 && count > 0) || (timeout == 0 && count == 0));
           try {
             manager_->monitor_.wait(timeout);
           } catch (TimedOutException &e) {}
@@ -114,7 +116,8 @@ class TimerManager::Dispatcher: public Runnable {
             if (task->state_ == TimerManager::Task::WAITING) {
               task->state_ = TimerManager::Task::EXECUTING;
             }
-            manager_->taskCount_--;
+            auto count = manager_->taskCount_.load(std::memory_order_relaxed);
+            manager_->taskCount_.store(count - 1, std::memory_order_relaxed);
           }
           manager_->taskMap_.erase(manager_->taskMap_.begin(), expiredTaskEnd);
         }
@@ -221,7 +224,7 @@ void TimerManager::threadFactory(shared_ptr<const ThreadFactory>  value) {
 }
 
 size_t TimerManager::taskCount() const {
-  return taskCount_;
+  return taskCount_.load(std::memory_order_relaxed);
 }
 
 void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
@@ -237,11 +240,12 @@ void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
     // If the task map was empty, or if we have an expiration that is earlier
     // than any previously seen, kick the dispatcher so it can update its
     // timeout. Do this before inserting to limit comparisons to current tasks
-    if (taskCount_ == 0 || timeout < taskMap_.begin()->first) {
+    auto const count = taskCount_.load(std::memory_order_relaxed);
+    if (count == 0 || timeout < taskMap_.begin()->first) {
       monitor_.notify();
     }
 
-    taskCount_++;
+    taskCount_.store(count + 1, std::memory_order_relaxed);
     taskMap_.insert({timeout, std::make_shared<Task>(std::move(task))});
   }
 }
