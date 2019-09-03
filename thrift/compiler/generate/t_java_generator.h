@@ -312,6 +312,7 @@ class t_java_generator : public t_oop_generator {
   std::string constant_name(std::string name);
 
  protected:
+  std::string namespace_key_;
   bool generate_field_metadata_ = true;
   bool generate_immutable_structs_ = false;
   bool generate_boxed_primitive = false;

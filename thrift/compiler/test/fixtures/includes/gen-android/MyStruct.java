@@ -30,8 +30,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField MY_OTHER_INCLUDED_FIELD_FIELD_DESC = new TField("MyOtherIncludedField", TType.STRUCT, (short)2);
   private static final TField MY_INCLUDED_INT_FIELD_DESC = new TField("MyIncludedInt", TType.I64, (short)3);
 
-  public final Included MyIncludedField;
-  public final Included MyOtherIncludedField;
+  public final one.two.three.Included MyIncludedField;
+  public final one.two.three.Included MyOtherIncludedField;
   public final Long MyIncludedInt;
   public static final int MYINCLUDEDFIELD = 1;
   public static final int MYOTHERINCLUDEDFIELD = 2;
@@ -39,8 +39,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   public MyStruct(
-    Included MyIncludedField,
-    Included MyOtherIncludedField,
+    one.two.three.Included MyIncludedField,
+    one.two.three.Included MyOtherIncludedField,
     Long MyIncludedInt)
   {
     this.MyIncludedField = MyIncludedField;
@@ -78,7 +78,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return new MyStruct(this);
   }
 
-  public Included getMyIncludedField() {
+  public one.two.three.Included getMyIncludedField() {
     return this.MyIncludedField;
   }
 
@@ -87,7 +87,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.MyIncludedField != null;
   }
 
-  public Included getMyOtherIncludedField() {
+  public one.two.three.Included getMyOtherIncludedField() {
     return this.MyOtherIncludedField;
   }
 
@@ -195,8 +195,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   }
 
   public static MyStruct deserialize(TProtocol iprot) throws TException {
-    Included tmp_MyIncludedField = null;
-    Included tmp_MyOtherIncludedField = null;
+    one.two.three.Included tmp_MyIncludedField = null;
+    one.two.three.Included tmp_MyOtherIncludedField = null;
     Long tmp_MyIncludedInt = null;
     TField __field;
     iprot.readStructBegin();
@@ -210,14 +210,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       {
         case MYINCLUDEDFIELD:
           if (__field.type == TType.STRUCT) {
-            tmp_MyIncludedField = Included.deserialize(iprot);
+            tmp_MyIncludedField = one.two.three.Included.deserialize(iprot);
           } else { 
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
         case MYOTHERINCLUDEDFIELD:
           if (__field.type == TType.STRUCT) {
-            tmp_MyOtherIncludedField = Included.deserialize(iprot);
+            tmp_MyOtherIncludedField = one.two.three.Included.deserialize(iprot);
           } else { 
             TProtocolUtil.skip(iprot, __field.type);
           }

@@ -48,7 +48,8 @@ namespace compiler {
 void t_android_generator::init_generator() {
   // Make output directory
   boost::filesystem::create_directory(get_out_dir());
-  package_name_ = program_->get_namespace("android");
+  namespace_key_ = "android";
+  package_name_ = program_->get_namespace(namespace_key_);
 
   string dir = package_name_;
   string subdir = get_out_dir();
