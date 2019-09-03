@@ -15,11 +15,12 @@
  */
 #include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 
-#include <glog/logging.h>
 #include <numa.h>
 #ifdef LIBNUMA_API_VERSION
 #include <numacompat1.h>
 #endif
+
+#include <glog/logging.h>
 
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>

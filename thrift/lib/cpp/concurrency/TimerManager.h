@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -20,13 +22,13 @@
 #ifndef _THRIFT_CONCURRENCY_TIMERMANAGER_H_
 #define _THRIFT_CONCURRENCY_TIMERMANAGER_H_ 1
 
+#include <ctime>
+#include <map>
+#include <memory>
+
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
-
-#include <memory>
-#include <map>
-#include <time.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

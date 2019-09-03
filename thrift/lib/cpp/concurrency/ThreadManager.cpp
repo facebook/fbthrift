@@ -15,22 +15,19 @@
  */
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
-#include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-
-#include <folly/Conv.h>
-#include <folly/portability/GFlags.h>
-#include <glog/logging.h>
-
-#include <assert.h>
 #include <atomic>
+#include <cassert>
 #include <memory>
 #include <queue>
 #include <set>
 
-#if defined(DEBUG)
-#include <iostream>
-#endif //defined(DEBUG)
+#include <glog/logging.h>
+
+#include <folly/Conv.h>
+#include <folly/portability/GFlags.h>
+
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager-impl.h>
 
 DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
 

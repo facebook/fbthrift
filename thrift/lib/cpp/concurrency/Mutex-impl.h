@@ -16,8 +16,10 @@
 #ifndef THRIFT_CONCURRENCY_MUTEXIMPL_H_
 #define THRIFT_CONCURRENCY_MUTEXIMPL_H_ 1
 
-#include <folly/portability/PThread.h>
 #include <glog/logging.h>
+
+#include <folly/portability/PThread.h>
+
 #include <thrift/lib/cpp/concurrency/Mutex-portability.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 

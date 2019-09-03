@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -19,17 +21,15 @@
 
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-#include <thrift/lib/cpp/thrift_config.h>
-
-#if defined(THRIFT_HAVE_CLOCK_GETTIME)
-#include <time.h>
-#elif defined(THRIFT_HAVE_GETTIMEOFDAY)
-#include <folly/portability/SysTime.h>
-#endif // defined(THRIFT_HAVE_CLOCK_GETTIME)
-#include <errno.h>
-#include <assert.h>
+#include <cassert>
+#include <cerrno>
+#include <ctime>
 
 #include <glog/logging.h>
+
+#include <folly/portability/SysTime.h>
+
+#include <thrift/lib/cpp/thrift_config.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

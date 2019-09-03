@@ -18,19 +18,21 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
+#include <cassert>
+#include <functional>
+#include <iostream>
+#include <memory>
+#include <set>
+
 #include <folly/portability/Unistd.h>
+
 #include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/thrift_config.h>
-
-#include <assert.h>
-#include <functional>
-#include <iostream>
-#include <memory>
-#include <set>
 
 namespace apache { namespace thrift { namespace concurrency { namespace test {
 

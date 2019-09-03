@@ -21,11 +21,12 @@
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
-#include <folly/portability/GTest.h>
-#include <folly/synchronization/Baton.h>
 #include <condition_variable>
 #include <thread>
 #include <vector>
+
+#include <folly/portability/GTest.h>
+#include <folly/synchronization/Baton.h>
 
 using namespace std;
 using namespace apache::thrift::concurrency;

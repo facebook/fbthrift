@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -17,18 +19,18 @@
  * under the License.
  */
 #include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/concurrency/Exception.h>
-#include <thrift/lib/cpp/concurrency/Util.h>
-#include <glog/logging.h>
 
-#include <boost/scoped_ptr.hpp>
-
-#include <assert.h>
-#include <errno.h>
-
+#include <cassert>
+#include <cerrno>
 #include <iostream>
 
+#include <boost/scoped_ptr.hpp>
+#include <glog/logging.h>
+
 #include <folly/portability/PThread.h>
+
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

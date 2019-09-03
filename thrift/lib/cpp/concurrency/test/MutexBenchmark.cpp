@@ -19,9 +19,9 @@
 #include <chrono>
 #include <mutex>
 #include <thread>
-#include <folly/portability/GFlags.h>
 
 #include <folly/Benchmark.h>
+#include <folly/portability/GFlags.h>
 
 DEFINE_int32(num_threads, 32, "Number of threads to run concurrency "
                               "benchmarks");

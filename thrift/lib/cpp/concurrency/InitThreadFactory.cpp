@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
+
 #include <functional>
 #include <memory>
 
 #include <folly/ScopeGuard.h>
-#include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
 
 namespace apache {
 namespace thrift {

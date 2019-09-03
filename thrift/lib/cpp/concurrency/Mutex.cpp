@@ -15,11 +15,11 @@
  */
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
+#include <folly/portability/PThread.h>
+
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex-impl.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-
-#include <folly/portability/PThread.h>
 
 using std::shared_ptr;
 

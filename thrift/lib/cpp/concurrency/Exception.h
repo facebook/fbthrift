@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -21,6 +23,7 @@
 #define _THRIFT_CONCURRENCY_EXCEPTION_H_ 1
 
 #include <exception>
+
 #include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift { namespace concurrency {

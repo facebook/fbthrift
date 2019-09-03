@@ -14,19 +14,21 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/concurrency/Exception.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
-#include <thrift/lib/cpp/thrift_config.h>
 
 #include <cassert>
 #include <iostream>
+
+#include <glog/logging.h>
 
 #include <folly/String.h>
 #include <folly/portability/PThread.h>
 #include <folly/portability/SysResource.h>
 #include <folly/system/ThreadId.h>
 #include <folly/system/ThreadName.h>
-#include <glog/logging.h>
+
+#include <thrift/lib/cpp/concurrency/Exception.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/thrift_config.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

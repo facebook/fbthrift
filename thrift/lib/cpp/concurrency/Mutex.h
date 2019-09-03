@@ -16,10 +16,11 @@
 #ifndef THRIFT_CONCURRENCY_MUTEX_H_
 #define THRIFT_CONCURRENCY_MUTEX_H_ 1
 
-#include <folly/Portability.h>
 #include <chrono>
 #include <cstdint>
 #include <memory>
+
+#include <folly/Portability.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 class PthreadMutex;

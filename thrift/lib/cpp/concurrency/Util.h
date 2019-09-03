@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -20,11 +22,11 @@
 #ifndef _THRIFT_CONCURRENCY_UTIL_H_
 #define _THRIFT_CONCURRENCY_UTIL_H_ 1
 
-#include <assert.h>
-#include <stddef.h>
-#include <stdint.h>
-#include <time.h>
+#include <cassert>
 #include <chrono>
+#include <cstddef>
+#include <cstdint>
+#include <ctime>
 
 #include <folly/portability/SysTime.h>
 

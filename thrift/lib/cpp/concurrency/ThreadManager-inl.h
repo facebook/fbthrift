@@ -15,16 +15,11 @@
  */
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
-#include <assert.h>
-
+#include <atomic>
+#include <cassert>
 #include <memory>
 #include <queue>
 #include <set>
-#include <atomic>
-
-#if defined(DEBUG)
-#include <iostream>
-#endif //defined(DEBUG)
 
 #include <folly/Conv.h>
 #include <folly/DefaultKeepAliveExecutor.h>
@@ -34,6 +29,7 @@
 #include <folly/String.h>
 #include <folly/executors/Codel.h>
 #include <folly/io/async/Request.h>
+
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
