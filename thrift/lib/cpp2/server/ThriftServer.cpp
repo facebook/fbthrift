@@ -214,8 +214,6 @@ void ThriftServer::setup() {
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0);
 
-  uint32_t threadsStarted = 0;
-
   // Initialize event base for this thread, ensure event_init() is called
   serveEventBase_ = eventBaseManager_->getEventBase();
   if (idleServerTimeout_.count() > 0) {
