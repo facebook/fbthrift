@@ -60,7 +60,7 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::thawImpl(
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>
-  dst.<%field:cpp_name%> = src.<%field:cpp_name%>;
+  dst.<% > module_types_cpp/field_value_ref%> = src.<%field:cpp_name%>;
 <%/type:bool?%>
 <%^type:bool?%>
   thaw(src.<%field:cpp_name%>, dst.<% > module_types_cpp/field_value_ref%>);
