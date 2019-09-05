@@ -6,6 +6,12 @@
  *  @generated
  */
 
+type FloatFeatures = Map<int, float>;
+type DoubleMapType = Map<int, float>;
+type OldMapMap = Map<int, Map<int, float>>;
+type NewMapMap = Map<int, Map<int, float>>;
+type OldMapList = Map<int, Vector<float>>;
+type NewMapList = Map<int, Vector<float>>;
 /**
  * Original thrift struct:-
  * OldStructure

@@ -46,6 +46,7 @@ enum MyEnumA: int {
   fieldC = 4;
 }
 
+type TBinary = string;
 /**
  * Original thrift struct:-
  * decorated_struct

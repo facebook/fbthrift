@@ -6,3 +6,5 @@
  *  @generated
  */
 
+type SomeMap = Map<int, string>;
+type SomeListOfTypeMap = Vector<Map<int, string>>;

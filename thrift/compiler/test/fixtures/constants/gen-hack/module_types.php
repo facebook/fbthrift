@@ -35,6 +35,9 @@ enum Company: int {
   INSTAGRAM = 3;
 }
 
+type MyCompany = Company;
+type MyStringIdentifier = string;
+type MyIntIdentifier = int;
 /**
  * Original thrift struct:-
  * Internship
