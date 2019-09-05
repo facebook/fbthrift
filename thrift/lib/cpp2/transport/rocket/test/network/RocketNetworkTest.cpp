@@ -760,3 +760,63 @@ TEST_F(RocketSinkTest, SinkBasic) {
         }));
   });
 }
+
+TEST_F(RocketSinkTest, SinkCloseClient) {
+  this->withClient([](RocketTestClient& client) {
+    constexpr size_t kNumUploadPayloads = 200;
+    constexpr folly::StringPiece kMetadata("metadata");
+    // instruct server to append A on each payload client sents, and
+    // sends the appended payload back to client
+    const auto data = "upload:";
+
+    auto sinkClientCallback =
+        apache::thrift::detail::ClientSinkBridge::create();
+    client.sendRequestSink(
+        sinkClientCallback.get(),
+        Payload::makeFromMetadataAndData(
+            kMetadata,
+            folly::StringPiece{
+                folly::to<std::string>(data, kNumUploadPayloads)}));
+
+    folly::coro::blockingWait(
+        folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
+          co_await sinkClientCallback->getFirstThriftResponse();
+        }));
+
+    auto sink = ClientSink<int, int>(
+        std::move(sinkClientCallback),
+        [](folly::Try<int>&& i) {
+          if (i.hasValue()) {
+            return folly::IOBuf::copyBuffer(
+                folly::StringPiece{folly::to<std::string>(*i)});
+          } else {
+            return folly::IOBuf::create(0);
+          }
+        },
+        [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
+          if (payload.hasValue()) {
+            return folly::Try<int>(folly::to<int>(
+                folly::StringPiece{payload->payload->coalesce()}));
+          } else {
+            return folly::Try<int>(payload.exception());
+          }
+        });
+
+    client.disconnect();
+    bool exceptionThrows = false;
+    folly::coro::blockingWait(folly::coro::co_invoke(
+        [&, sink = std::move(sink)]() mutable -> folly::coro::Task<void> {
+          try {
+            co_await sink.sink(folly::coro::co_invoke(
+                [&]() -> folly::coro::AsyncGenerator<int&&> {
+                  for (size_t i = 0; i < kNumUploadPayloads; i++) {
+                    co_yield i;
+                  }
+                }));
+          } catch (const std::exception&) {
+            exceptionThrows = true;
+          }
+        }));
+    EXPECT_TRUE(exceptionThrows);
+  });
+}

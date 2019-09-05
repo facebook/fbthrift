@@ -103,6 +103,8 @@ class RocketTestClient {
   }
 
   void reconnect();
+  void connect();
+  void disconnect();
 
   RocketClient& getRawClient() {
     return *client_;
@@ -118,9 +120,6 @@ class RocketTestClient {
   folly::fibers::FiberManager& fm_;
   std::shared_ptr<RocketClient> client_;
   const folly::SocketAddress serverAddr_;
-
-  void connect();
-  void disconnect();
 };
 
 class RocketTestServer {

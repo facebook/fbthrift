@@ -26,6 +26,7 @@
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
 
+#include <thrift/lib/cpp2/async/SinkBridgeUtil.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
@@ -35,35 +36,11 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-using SinkClientMessage = boost::variant<folly::Try<StreamPayload>, int64_t>;
-struct StreamCancel {};
-struct SinkComplete {};
-using SinkServerMessage =
-    boost::variant<folly::Try<StreamPayload>, StreamCancel, SinkComplete>;
-
-class ClientSinkConsumer {
- public:
-  void consume() {
-    baton_.post();
-  }
-
-  [[noreturn]] void canceled() {
-    folly::assume_unreachable();
-  }
-
-  folly::coro::Task<void> wait() {
-    co_await baton_;
-  }
-
- private:
-  folly::coro::Baton baton_;
-};
-
 class ClientSinkBridge : public TwoWayBridge<
-                             ClientSinkConsumer,
-                             SinkClientMessage,
+                             CoroConsumer,
+                             ClientMessage,
                              ClientSinkBridge,
-                             SinkServerMessage,
+                             ServerMessage,
                              ClientSinkBridge>,
                          public SinkClientCallback {
  public:
@@ -89,7 +66,7 @@ class ClientSinkBridge : public TwoWayBridge<
     folly::Try<StreamPayload> finalResponse;
 
     auto waitEvent = [&]() -> folly::coro::Task<void> {
-      ClientSinkConsumer consumer;
+      CoroConsumer consumer;
       if (clientWait(&consumer)) {
         co_await consumer.wait();
       }
@@ -203,7 +180,7 @@ class ClientSinkBridge : public TwoWayBridge<
       for (auto messages = serverGetMessages(); !messages.empty();
            messages.pop()) {
         bool terminated = false;
-        SinkServerMessage message = std::move(messages.front());
+        ServerMessage message = std::move(messages.front());
         folly::variant_match(
             message,
             [&](folly::Try<StreamPayload>& payload) {

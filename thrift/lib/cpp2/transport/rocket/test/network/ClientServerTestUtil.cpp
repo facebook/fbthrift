@@ -46,6 +46,7 @@
 #include <yarpl/Flowable.h>
 #include <yarpl/Single.h>
 
+#include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
@@ -605,6 +606,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
 
 class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
  public:
+  explicit RocketTestServerHandler(folly::EventBase& ioEvb) : ioEvb_(ioEvb) {}
   void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&&) final {
     folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Thrift major/minor version
@@ -698,63 +700,37 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
   }
 
   void handleRequestChannelFrame(
-      RequestChannelFrame&& frame,
+      RequestChannelFrame&&,
       SinkClientCallback* clientCallback) final {
-    class TestRocketSinkServerCallback final : public SinkServerCallback {
-     public:
-      TestRocketSinkServerCallback(
-          SinkClientCallback* clientCallback,
-          int32_t bufferSize)
-          : clientCallback_(clientCallback),
-            bufferSize_(bufferSize),
-            pendingPayload_(bufferSize) {}
-
-      void onSinkNext(StreamPayload&& payload) override {
-        DCHECK(pendingPayload_ > 0);
-        pendingPayload_--;
-        if (pendingPayload_ < bufferSize_ / 2) {
-          clientCallback_->onSinkRequestN(bufferSize_ - pendingPayload_);
-          pendingPayload_ = bufferSize_;
-        }
-
-        int32_t data =
-            folly::to<int32_t>(folly::StringPiece(payload.payload->coalesce()));
-        EXPECT_EQ(current_, data);
-        current_++;
-      }
-
-      void onSinkError(folly::exception_wrapper) override {
-        delete this;
-      }
-
-      void onStreamCancel() override {
-        delete this;
-      }
-
-      void onSinkComplete() override {
-        clientCallback_->onFinalResponse(StreamPayload(
-            folly::IOBuf::copyBuffer(folly::to<std::string>(current_)), {}));
-        delete this;
-      }
-
-     private:
-      SinkClientCallback* const clientCallback_;
-      int32_t bufferSize_;
-      int32_t pendingPayload_{0};
-
-      // application related
-      int32_t current_{0};
-    };
-
-    folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
-    auto* serverCallback =
-        new TestRocketSinkServerCallback(clientCallback, 10 /* buffer size */);
+    apache::thrift::detail::SinkConsumerImpl impl{
+        [](folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> asyncGen)
+            -> folly::coro::Task<folly::Try<StreamPayload>> {
+          int current = 0;
+          while (auto item = co_await asyncGen.next()) {
+            auto payload = (*item).value();
+            auto data = folly::to<int32_t>(
+                folly::StringPiece(payload.payload->coalesce()));
+            EXPECT_EQ(current++, data);
+          }
+          co_return folly::Try<StreamPayload>(StreamPayload(
+              folly::IOBuf::copyBuffer(folly::to<std::string>(current)), {}));
+        },
+        10,
+        {}};
+    auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
+        std::move(impl), ioEvb_, clientCallback);
 
     clientCallback->onFirstResponse(
         FirstResponsePayload{folly::IOBuf::copyBuffer(std::to_string(0)), {}},
         nullptr /* evb */,
-        serverCallback);
-    clientCallback->onSinkRequestN(10);
+        serverCallback.get());
+    folly::coro::co_invoke(
+        [serverCallback =
+             std::move(serverCallback)]() mutable -> folly::coro::Task<void> {
+          co_return co_await serverCallback->start();
+        })
+        .scheduleOn(threadManagerThread_.getEventBase())
+        .start();
   }
 
   void setExpectedSetupMetadata(
@@ -765,12 +741,14 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
  private:
   MetadataOpaqueMap<std::string, std::string> expectedSetupMetadata_{
       {"rando_key", "setup_data"}};
+  folly::EventBase& ioEvb_;
+  folly::ScopedEventBaseThread threadManagerThread_;
 };
 
 RocketTestServer::RocketTestServer()
     : evb_(*ioThread_.getEventBase()),
       listeningSocket_(new folly::AsyncServerSocket(&evb_)),
-      handler_(std::make_shared<RocketTestServerHandler>()) {
+      handler_(std::make_shared<RocketTestServerHandler>(evb_)) {
   std::promise<void> shutdownPromise;
   shutdownFuture_ = shutdownPromise.get_future();
 

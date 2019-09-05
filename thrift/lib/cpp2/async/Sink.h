@@ -19,12 +19,14 @@
 #include <folly/Portability.h>
 
 #ifdef FOLLY_HAS_COROUTINES
+#include <folly/Function.h>
 #include <folly/Try.h>
 #include <folly/executors/SequencedExecutor.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Task.h>
 
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 
@@ -34,7 +36,7 @@ namespace thrift {
 template <typename T, typename R>
 class ClientSink {
   using PayloadSerializer =
-      std::function<std::unique_ptr<folly::IOBuf>(folly::Try<T>&&)>;
+      folly::Function<std::unique_ptr<folly::IOBuf>(folly::Try<T>&&)>;
   using FinalResponseDeserializer =
       folly::Try<R> (*)(folly::Try<StreamPayload>&&);
 
@@ -86,6 +88,14 @@ class ClientSink {
   FinalResponseDeserializer deserializer_;
 };
 
+template <typename SinkElement, typename FinalResponse>
+struct SinkConsumer {
+  using Consumer = folly::Function<folly::coro::Task<FinalResponse>(
+      folly::coro::AsyncGenerator<SinkElement&&>)>;
+  Consumer consumer;
+  uint64_t bufferSize;
+};
+
 template <typename Response, typename SinkElement, typename FinalResponse>
 class ResponseAndClientSink {
  public:
@@ -95,6 +105,17 @@ class ResponseAndClientSink {
 
   Response response;
   ClientSink<SinkElement, FinalResponse> sink;
+};
+
+template <typename Response, typename SinkElement, typename FinalResponse>
+class ResponseAndSinkConsumer {
+ public:
+  using ResponseType = Response;
+  using SinkElementType = SinkElement;
+  using FinalResponseType = FinalResponse;
+
+  Response response;
+  SinkConsumer<SinkElement, FinalResponse> sinkConsumer;
 };
 
 } // namespace thrift
