@@ -19,6 +19,8 @@
 #include <string>
 
 #include <folly/FixedString.h>
+#include <folly/Function.h>
+
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
@@ -32,7 +34,10 @@ class SingleRpcChannel : public H2Channel {
       proxygen::ResponseHandler* toHttp2,
       ThriftProcessor* processor);
 
-  explicit SingleRpcChannel(H2ClientConnection* toHttp2);
+  SingleRpcChannel(
+      folly::EventBase& evb,
+      folly::Function<proxygen::HTTPTransaction*(SingleRpcChannel*)>
+          transactionFactory);
 
   virtual ~SingleRpcChannel() override;
 
@@ -78,7 +83,10 @@ class SingleRpcChannel : public H2Channel {
   ThriftProcessor* processor_{nullptr};
 
   // Event base on which all methods in this object must be invoked.
-  folly::EventBase* evb_;
+  folly::EventBase* evb_{nullptr};
+
+  folly::Function<proxygen::HTTPTransaction*(SingleRpcChannel*)>
+      transactionFactory_;
 
   // Transaction object for use on client side to communicate with the
   // Proxygen layer.

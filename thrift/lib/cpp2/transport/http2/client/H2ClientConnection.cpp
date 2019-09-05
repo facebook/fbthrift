@@ -81,7 +81,8 @@ H2ClientConnection::~H2ClientConnection() {
 
 std::shared_ptr<ThriftChannelIf> H2ClientConnection::getChannel() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
-  return std::make_shared<SingleRpcChannel>(this);
+  return std::make_shared<SingleRpcChannel>(
+      *evb_, [this](auto* self) { return newTransaction(self); });
 }
 
 void H2ClientConnection::setMaxPendingRequests(uint32_t num) {

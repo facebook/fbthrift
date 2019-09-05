@@ -59,6 +59,7 @@ class ThriftProcessor;
  */
 class H2Channel : public ThriftChannelIf {
  public:
+  H2Channel() = default;
   virtual ~H2Channel() = default;
 
   // Called from Proxygen at the beginning of the stream.
@@ -81,7 +82,6 @@ class H2Channel : public ThriftChannelIf {
   // object.
   virtual void onH2StreamClosed(proxygen::ProxygenError /*error*/) noexcept {
     responseHandler_ = nullptr;
-    h2ClientConnection_ = nullptr;
   }
 
   void sendStreamThriftResponse(
@@ -96,14 +96,7 @@ class H2Channel : public ThriftChannelIf {
   // Constructor for server side that uses a ResponseHandler object
   // to write to the HTTP/2 stream.
   explicit H2Channel(proxygen::ResponseHandler* toHttp2)
-      : responseHandler_(toHttp2), h2ClientConnection_(nullptr) {}
-
-  // Constructor for client side that uses a HTTPTransaction object to
-  // write to the HTTP/2 stream.  The HTTPTransaction object is
-  // obtained from the H2ClientConnection object provided to this
-  // constructor just before sending the header frame to the server.
-  explicit H2Channel(H2ClientConnection* toHttp2)
-      : responseHandler_(nullptr), h2ClientConnection_(toHttp2) {}
+      : responseHandler_(toHttp2) {}
 
   // Encodes Thrift headers to be HTTP compliant.
   void encodeHeaders(
@@ -119,13 +112,7 @@ class H2Channel : public ThriftChannelIf {
   // Used to write messages to HTTP/2 on the server side.
   // Owned by H2RequestHandler.  Should not be used after
   // onH2StreamClosed() has been called.
-  proxygen::ResponseHandler* responseHandler_;
-
-  // Used to write messages to HTTP/2 on the client side.  Owned by
-  // client side framework that manages connections (e.g.,
-  // ConnectionManager).  Should not be used after onH2StreamClosed()
-  // has been called.
-  H2ClientConnection* h2ClientConnection_;
+  proxygen::ResponseHandler* responseHandler_{nullptr};
 };
 
 } // namespace thrift

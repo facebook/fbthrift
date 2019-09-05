@@ -19,7 +19,6 @@
 #include <folly/String.h>
 #include <proxygen/lib/http/codec/CodecUtil.h>
 #include <proxygen/lib/utils/Base64.h>
-#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
 namespace apache {
 namespace thrift {

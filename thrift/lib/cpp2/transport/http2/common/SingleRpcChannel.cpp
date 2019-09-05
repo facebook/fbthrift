@@ -34,7 +34,6 @@
 #include <thrift/lib/cpp2/transport/core/EnvelopeUtil.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
-#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
 namespace apache {
 namespace thrift {
@@ -64,10 +63,11 @@ SingleRpcChannel::SingleRpcChannel(
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
-SingleRpcChannel::SingleRpcChannel(H2ClientConnection* toHttp2)
-    : H2Channel(toHttp2) {
-  evb_ = toHttp2->getEventBase();
-}
+SingleRpcChannel::SingleRpcChannel(
+    folly::EventBase& evb,
+    folly::Function<proxygen::HTTPTransaction*(SingleRpcChannel*)>
+        transactionFactory)
+    : evb_(&evb), transactionFactory_(std::move(transactionFactory)) {}
 
 SingleRpcChannel::~SingleRpcChannel() {
   if (receivedH2Stream_ && receivedThriftRPC_) {
@@ -117,7 +117,7 @@ void SingleRpcChannel::sendThriftRequest(
           << IOBufPrinter::printHexFolly(payload.get(), true);
   auto callbackEvb = callback->getEventBase();
   try {
-    httpTransaction_ = h2ClientConnection_->newTransaction(this);
+    httpTransaction_ = transactionFactory_(this);
   } catch (TTransportException& te) {
     callbackEvb->runInEventBaseThread([evbCallback = std::move(callback),
                                        evbTe = std::move(te)]() mutable {
