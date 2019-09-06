@@ -60,6 +60,10 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
     thaw(self, v);
     return v;
   }
+
+  static size_t hash(const T& v) {
+    return std::hash<T>()(v);
+  }
 };
 } // namespace detail
 

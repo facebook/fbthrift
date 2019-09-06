@@ -118,3 +118,11 @@ struct VectorTest {
        aHashMap;
   6: list<i32> (cpp.template = "folly::fbvector") fbVector;
 }
+
+struct EnumAsKeyTest {
+  1: set<Gender> (cpp.template = 'std::unordered_set') enumSet,
+  2: map<Gender, i32> (cpp.template = 'std::unordered_map') enumMap,
+  3: set<Helper.Animal> (cpp.template = 'std::unordered_set') outsideEnumSet,
+  4: map<Helper.Animal, i32>
+      (cpp.template = 'std::unordered_map') outsideEnumMap,
+}
