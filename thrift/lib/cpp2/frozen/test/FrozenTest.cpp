@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
@@ -26,6 +27,7 @@ using namespace apache::thrift;
 using namespace apache::thrift::frozen;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
+using namespace testing;
 
 template <class T>
 std::string toString(const T& x) {
@@ -346,6 +348,20 @@ TEST(Frozen, Enum) {
   she.gender = Gender::Female;
   EXPECT_EQ(he, freeze(he).thaw());
   EXPECT_EQ(she, freeze(she).thaw());
+}
+
+TEST(Frozen, EnumAsKey) {
+  EnumAsKeyTest thriftObj;
+  thriftObj.enumSet.insert(Gender::Male);
+  thriftObj.enumMap.emplace(Gender::Female, 1219);
+  thriftObj.outsideEnumSet.insert(Animal::DOG);
+  thriftObj.outsideEnumMap.emplace(Animal::CAT, 7779);
+
+  auto frozenObj = freeze(thriftObj);
+  EXPECT_THAT(frozenObj.enumSet(), Contains(Gender::Male));
+  EXPECT_THAT(frozenObj.outsideEnumSet(), Contains(Animal::DOG));
+  EXPECT_EQ(frozenObj.enumMap().at(Gender::Female), 1219);
+  EXPECT_EQ(frozenObj.outsideEnumMap().at(Animal::CAT), 7779);
 }
 
 template <class T>

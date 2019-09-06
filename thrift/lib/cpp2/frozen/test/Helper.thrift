@@ -19,3 +19,8 @@ struct Ratio {
   1 : i32 num,
   2 : i32 denom,
 }
+
+enum Animal {
+  DOG = 1,
+  CAT = 2,
+}
