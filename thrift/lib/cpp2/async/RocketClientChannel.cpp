@@ -66,15 +66,6 @@ class OnWriteSuccess final : public rocket::RocketClientWriteCallback {
   RequestClientCallback& requestCallback_;
 };
 
-std::unique_ptr<folly::IOBuf> serializeMetadata(
-    const RequestRpcMetadata& requestMetadata) {
-  CompactProtocolWriter writer;
-  folly::IOBufQueue queue;
-  writer.setOutput(&queue);
-  requestMetadata.write(&writer);
-  return queue.move();
-}
-
 void deserializeMetadata(ResponseRpcMetadata& dest, const rocket::Payload& p) {
   CompactProtocolReader reader;
   reader.setInput(p.buffer());
