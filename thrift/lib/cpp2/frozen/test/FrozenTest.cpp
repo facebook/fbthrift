@@ -60,6 +60,7 @@ EveryLayout stressValue2 = [] {
 template <class T>
 Layout<T>&& layout(const T& x, Layout<T>&& layout = Layout<T>()) {
   size_t size = LayoutRoot::layout(x, layout);
+  (void)size;
   return std::move(layout);
 }
 

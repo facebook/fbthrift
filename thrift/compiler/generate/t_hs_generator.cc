@@ -541,7 +541,6 @@ string t_hs_generator::render_const_value(
   } else if (type->is_enum()) {
     t_enum* tenum = (t_enum*)type;
     vector<t_enum_value*> constants = tenum->get_enum_values();
-    vector<t_enum_value*>::iterator c_iter;
     for (auto& c_iter : constants) {
       int val = c_iter->get_value();
       if (val == value->get_integer()) {
@@ -558,10 +557,8 @@ string t_hs_generator::render_const_value(
     out << module_part(cname) << "default_" << name_part(cname) << "{";
 
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
-    vector<t_field*>::const_iterator f_iter;
 
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
-    vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
 
     bool first = true;
     for (auto& v_iter : val) {
@@ -755,7 +752,6 @@ void t_hs_generator::generate_hs_struct_arbitrary(
   string tname = unqualified_type_name(tstruct);
   string name = tstruct->get_name();
   const vector<t_field*>& members = tstruct->get_members();
-  vector<t_field*>::const_iterator m_iter;
 
   indent(out) << "instance Arbitrary.Arbitrary " << tname << " where " << nl;
   indent_up();
@@ -819,7 +815,6 @@ void t_hs_generator::generate_hs_struct_reader(
     ofstream& out,
     t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
 
   string sname = unqualified_type_name(tstruct);
   string id = tmp("_id");
@@ -903,7 +898,6 @@ void t_hs_generator::generate_hs_struct_writer(
     t_struct* tstruct) {
   string name = unqualified_type_name(tstruct);
   const vector<t_field*>& fields = tstruct->get_sorted_members();
-  vector<t_field*>::const_iterator f_iter;
   string str = tmp("_str");
   string f = tmp("_f");
   string v = tmp("_v");
@@ -1108,7 +1102,6 @@ void t_hs_generator::generate_hs_function_helpers(t_function* tfunction) {
 void t_hs_generator::generate_hs_typemap(ofstream& out, t_struct* tstruct) {
   string name = unqualified_type_name(tstruct);
   const auto& fields = tstruct->get_sorted_members();
-  vector<t_field*>::const_iterator f_iter;
 
   indent(out) << "-- | 'TypeMap' for the '" << name << "' struct" << nl;
   indent(out) << "typemap_" << name << " :: Types.TypeMap" << nl;
@@ -1136,7 +1129,6 @@ void t_hs_generator::generate_hs_default(ofstream& out, t_struct* tstruct) {
   string name = unqualified_type_name(tstruct);
   string fname = unqualified_type_name(tstruct, "default_");
   const auto& fields = tstruct->get_sorted_members();
-  vector<t_field*>::const_iterator f_iter;
 
   indent(out) << "-- | Default values for the '" << name << "' struct" << nl;
   indent(out) << fname << " :: " << name << nl;
@@ -2042,7 +2034,6 @@ string t_hs_generator::function_type(
   string result = "";
 
   const vector<t_field*>& fields = tfunc->get_arglist()->get_members();
-  vector<t_field*>::const_iterator f_iter;
   for (auto& f_iter : fields) {
     if (f_iter->get_req() == t_field::T_OPTIONAL ||
         ((t_type*)f_iter->get_type())->is_xception())

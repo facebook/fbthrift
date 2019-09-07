@@ -518,8 +518,6 @@ void t_py_generator::generate_json_container(
     t_type* ttype,
     const string& prefix_thrift,
     const string& prefix_json) {
-  t_container* tcontainer = (t_container*)ttype;
-
   if (ttype->is_list()) {
     string e = tmp("_tmp_e");
     indent(out) << prefix_thrift << " = []" << endl;
@@ -1542,7 +1540,6 @@ void t_py_generator::generate_py_string_dict(
 void t_py_generator::generate_py_annotations(
     std::ofstream& out,
     t_struct* tstruct) {
-  const vector<t_field*>& members = tstruct->get_members();
   const vector<t_field*>& sorted_members = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator m_iter;
 

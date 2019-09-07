@@ -224,7 +224,6 @@ void HTTPClientChannel::sendRequest_(
   if (timeout.count()) {
     txn->setIdleTimeout(timeout);
   }
-  auto streamId = txn->getID();
 
   setRequestHeaderOptions(header.get());
   addRpcOptionHeaders(header.get(), rpcOptions);

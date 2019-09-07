@@ -765,7 +765,6 @@ void t_hack_generator::generate_json_container(
     t_type* ttype,
     const string& prefix_thrift,
     const string& prefix_json) {
-  t_container* tcontainer = (t_container*)ttype;
   string size = namer("$_size");
   string key = namer("$_key");
   string value = namer("$_value");
@@ -856,7 +855,6 @@ void t_hack_generator::generate_json_map_element(
     const string& value,
     const string& prefix_thrift) {
   t_type* keytype = tmap->get_key_type()->get_true_type();
-  bool succ = true;
   string error_msg =
       "compiler error: Thrift Hack compiler"
       "does not support complex types as the key of a map.";
@@ -1409,7 +1407,6 @@ string t_hack_generator::render_default_value(t_type* type) {
             t_base_type::t_base_name(tbase);
     }
   } else if (type->is_enum()) {
-    t_enum* tenum = (t_enum*)type;
     dval = "null";
   } else if (type->is_struct() || type->is_xception()) {
     t_struct* tstruct = (t_struct*)type;
@@ -1479,7 +1476,6 @@ void t_hack_generator::generate_php_type_spec(ofstream& out, t_type* t) {
   if (t->is_base_type()) {
     // Noop, type is all we need
   } else if (t->is_enum()) {
-    t_enum* tenum = (t_enum*)t;
     indent(out) << "'enum' => " << hack_name(t) << "::class,\n";
   } else if (t->is_struct() || t->is_xception()) {
     indent(out) << "'class' => " << hack_name(t) << "::class,\n";
@@ -2984,7 +2980,6 @@ void t_hack_generator::generate_php_struct_writer(
     string val = namer("_val");
 
     if (type->is_enum()) {
-      t_enum* tenum = (t_enum*)type;
       indent(out) << "$" << val << " = " << hack_name(type)
                   << "::assert($this->" << (*f_iter)->get_name() << ");\n";
     } else {

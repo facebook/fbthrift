@@ -718,7 +718,6 @@ TEST_F(RocketSinkTest, SinkBasic) {
     // instruct server to append A on each payload client sents, and
     // sends the appended payload back to client
     const auto data = "upload:";
-    constexpr std::chrono::milliseconds kChunkTimeout{500};
 
     folly::coro::blockingWait(
         folly::coro::co_invoke([&]() -> folly::coro::Task<void> {

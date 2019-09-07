@@ -1950,7 +1950,6 @@ void t_go_generator::generate_service_client_method(
     string& clientTypeName,
     const vector<t_function*>::const_iterator& f_iter,
     bool isThreadsafe) {
-  vector<t_field*>::const_iterator fld_iter;
   string funname = publicize((*f_iter)->get_name());
   // Open function
   generate_go_docstring(f_service_, (*f_iter));
@@ -2296,7 +2295,6 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
              << (*f_iter)->get_name() << "(";
     t_struct* arg_struct = (*f_iter)->get_arglist();
     const std::vector<t_field*>& args = arg_struct->get_members();
-    vector<t_field*>::const_iterator a_iter;
     std::vector<t_field*>::size_type num_args = args.size();
     bool first = true;
 
@@ -2464,7 +2462,6 @@ void t_go_generator::generate_service_remote(t_service* tservice) {
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* arg_struct = (*f_iter)->get_arglist();
     const std::vector<t_field*>& args = arg_struct->get_members();
-    vector<t_field*>::const_iterator a_iter;
     std::vector<t_field*>::size_type num_args = args.size();
     string funcName((*f_iter)->get_name());
     string pubName(publicize(funcName));
@@ -2879,7 +2876,6 @@ void t_go_generator::generate_read_function(
   string argsname = publicize(tfunction->get_name() + "_args", true);
   // t_struct* xs = tfunction->get_xceptions();
   // const std::vector<t_field*>& xceptions = xs->get_members();
-  vector<t_field*>::const_iterator x_iter;
   f_service_ << indent() << "func (p *" << processorName
              << ") Read(iprot thrift.Protocol) "
              << "(thrift.Struct, thrift.Exception) {" << endl;

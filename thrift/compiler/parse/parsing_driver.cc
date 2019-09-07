@@ -144,6 +144,7 @@ void parsing_driver::parse_file() {
     parse_file();
 
     size_t num_removed = circular_deps_.erase(path);
+    (void)num_removed;
     assert(num_removed == 1);
   }
   params = old_params;

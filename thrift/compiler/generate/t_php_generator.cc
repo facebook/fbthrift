@@ -533,7 +533,6 @@ void t_php_generator::generate_json_container(
     t_type* ttype,
     const string& prefix_thrift,
     const string& prefix_json) {
-  t_container* tcontainer = (t_container*)ttype;
   string size = namer("$_size");
   string key = namer("$_key");
   string value = namer("$_value");
@@ -593,7 +592,6 @@ void t_php_generator::generate_json_map_element(
     const string& value,
     const string& prefix_thrift) {
   t_type* keytype = tmap->get_key_type()->get_true_type();
-  bool succ = true;
   string error_msg =
       "compiler error: Thrift PHP compiler"
       "does not support complex types as the key of a map.";
@@ -1173,7 +1171,6 @@ void t_php_generator::generate_php_struct_spec(
 
   indent(out) << "public static $_TFIELDMAP = array(" << endl;
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-    t_type* t = (*m_iter)->get_type()->get_true_type();
     indent(out) << "  '" << (*m_iter)->get_name() << "' => "
                 << (*m_iter)->get_key() << "," << endl;
   }

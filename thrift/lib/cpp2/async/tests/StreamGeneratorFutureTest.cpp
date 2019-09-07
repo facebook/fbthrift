@@ -426,7 +426,6 @@ TEST(StreamGeneratorFutureTest, CoroGeneratorWithCancel) {
 TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorIntType) {
   folly::ScopedEventBaseThread th;
   int length = 5;
-  int i = 0;
 
   Stream<int> stream = StreamGenerator::create(
       folly::getKeepAliveToken(th.getEventBase()),
@@ -450,7 +449,6 @@ TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorIntType) {
 TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorStringType) {
   folly::ScopedEventBaseThread th;
   int length = 5;
-  int i = 0;
 
   Stream<std::string> stream = StreamGenerator::create(
       folly::getKeepAliveToken(th.getEventBase()),
@@ -514,7 +512,6 @@ TEST(StreamGeneratorFutureTest, CoroAsyncGeneratorLambdaGaptureVariable) {
         co_return;
       });
 
-  int expected_i = 0;
   std::string result;
   std::move(stream)
       .subscribe(

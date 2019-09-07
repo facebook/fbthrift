@@ -313,14 +313,12 @@ static void expireTest(size_t numWorkers, int64_t expirationTimeMs) {
 
   // The first numWorkers tasks should have completed,
   // the remaining ones should have expired without running
-  size_t index = 0;
-  for (const auto& task : tasks) {
+  for (size_t index = 0; index < tasks.size(); ++index) {
     if (index < numWorkers) {
       EXPECT_TRUE(tasks[index]->started_);
     } else {
       EXPECT_TRUE(!tasks[index]->started_);
     }
-    ++index;
   }
 }
 
@@ -417,6 +415,7 @@ class WorkerCountChanger : public Runnable {
 
     std::uniform_int_distribution<> taskDist(1, 50);
     uint32_t tasksToAdd = taskDist(rng_);
+    (void)tasksToAdd;
 
     // Sleep for a random amount of time
     std::uniform_int_distribution<> sleepDist(1000, 5000);
@@ -687,7 +686,6 @@ TEST_F(ThreadManagerTest, NumaThreadManagerBind) {
 }
 
 TEST_F(ThreadManagerTest, ObserverTest) {
-  int64_t timeout = 1000;
   auto observer = std::make_shared<TestObserver>(1000, "foo");
   ThreadManager::setObserver(observer);
 

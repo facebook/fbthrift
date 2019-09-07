@@ -469,7 +469,6 @@ struct populator_methods<type_class::structure, Struct> {
 
       auto& got = Member::getter::ref(out);
       using member_type = folly::remove_cvref_t<decltype(got)>;
-      member_type tmp;
 
       DVLOG(3) << "populating member: "
                << fatal::z_data<typename Member::name>();

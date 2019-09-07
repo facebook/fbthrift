@@ -26,7 +26,6 @@ struct TestHeaderClientChannelFactory : public TestClientChannelFactory {
 
   apache::thrift::ClientChannel::Ptr create(
       apache::thrift::async::TAsyncTransport::UniquePtr socket) override {
-    auto eb = socket->getEventBase();
     std::shared_ptr<apache::thrift::async::TAsyncTransport> sharedSocket(
         std::move(socket));
     auto channel = apache::thrift::HeaderClientChannel::Ptr(

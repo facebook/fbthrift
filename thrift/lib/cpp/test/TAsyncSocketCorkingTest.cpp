@@ -314,6 +314,7 @@ class Capturer {
     vector<Packet> packets;
     int rc = pcap_dispatch(pcap_, max, pcapCallback,
                            reinterpret_cast<unsigned char*>(&packets));
+    CHECK_GE(rc, 0);
     return packets;
   }
 

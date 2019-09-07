@@ -172,6 +172,7 @@ uint32_t TSimpleJSONProtocol::readFieldBegin(
   fieldType = guessTypeIdFromFirstByte();
 
   bool wasPutBack = reader_.put(delimiter);
+  (void)wasPutBack;
 
   assert(wasPutBack);
 
@@ -191,6 +192,7 @@ uint32_t TSimpleJSONProtocol::readMapBegin(
 
   auto currentType = getCurrentDataType();
   bool beingSkipped = (currentType == nullptr);
+  (void)beingSkipped;
 
   // since we never guess an unknown field to have a map type
   // we should never arrive here
@@ -273,6 +275,7 @@ uint32_t TSimpleJSONProtocol::readSetBegin(
 
   auto currentType = getCurrentDataType();
   bool beingSkipped = (currentType == nullptr);
+  (void)beingSkipped;
 
   // since we never guess an unknown field to have a set type
   // we should never arrive here

@@ -73,6 +73,7 @@ TEST(Frozen, Basic) {
   EXPECT_EQ(team.projects_ref()->count("beta"), 1);
 
   size_t size = frozenSize(team);
+  (void)size;
   for (int misalign = 0; misalign < 16; ++misalign) {
     std::vector<byte> bytes(frozenSize(team) + misalign);
     byte* const freezeLocation = &bytes[misalign];

@@ -216,7 +216,7 @@ TEST(protocol2, simpleJsonExceptions) {
     SimpleJSONProtocolReader protReader;
     protReader.setInput(buf.get());
     OneOfEach ooe;
-    auto nchars = ooe.read(&protReader);
+    ooe.read(&protReader);
   };
 
   ASSERT_THROW(doDecode("}"), TProtocolException);
@@ -243,7 +243,6 @@ TEST(protocol2, simpleJsonExceptions) {
 
 namespace {
   const std::uint8_t testBytes[] = {0xFA, 0xCE, 0xB0, 0x00, 0x00, 0x0C};
-  folly::ByteRange testByteRange(testBytes, sizeof(testBytes));
   const std::uint8_t testBytes2[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xAB, 0xBA, 0x10};
   folly::ByteRange testByteRange2(testBytes2, sizeof(testBytes2));
   const std::uint8_t testBytes3[] = {0xCA, 0xFE, 0xBA, 0xBE, 0xFA, 0xBE};
