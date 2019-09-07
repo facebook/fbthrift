@@ -2,7 +2,6 @@
 # Requirements:
 # Please provide the following two variables before using these macros:
 #   ${THRIFT1} - path/to/bin/thrift1
-#   ${THRIFT_TEMPLATES} - path/to/include/thrift/templates
 #   ${THRIFTCPP2} - path/to/lib/thriftcpp2
 #
 
@@ -241,7 +240,6 @@ macro(thrift_generate
       --gen "${gen_language}:${options}${include_prefix_text}"
       -o ${output_path}
       ${thrift_include_directories}
-      --templates ${THRIFT_TEMPLATES}
       "${file_path}/${file_name}.thrift"
     DEPENDS ${THRIFT1}
     COMMENT "Generating ${file_name} files. Output: ${output_path}"

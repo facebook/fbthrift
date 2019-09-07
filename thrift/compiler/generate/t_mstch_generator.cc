@@ -26,14 +26,28 @@
 
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/templates.h>
 
 using namespace std;
+
+namespace fs = boost::filesystem;
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 namespace {
+
+fs::path from_components(
+    fs::path::const_iterator begin,
+    fs::path::const_iterator end) {
+  fs::path tmp;
+  while (begin != end) {
+    tmp /= *begin++;
+  }
+  return tmp;
+}
+
 bool is_last_char(const string& data, char c) {
   return !data.empty() && data.back() == c;
 }
@@ -43,6 +57,7 @@ void chomp_last_char(string* data, char c) {
     data->pop_back();
   }
 }
+
 } // namespace
 
 t_mstch_generator::t_mstch_generator(
@@ -52,18 +67,12 @@ t_mstch_generator::t_mstch_generator(
     std::map<std::string, std::string> parsed_options,
     bool convert_delimiter)
     : t_generator(program, std::move(context)),
-      template_dir_(g_template_dir),
       parsed_options_(std::move(parsed_options)),
       convert_delimiter_(convert_delimiter),
       generators_(std::make_shared<mstch_generators>()),
       cache_(std::make_shared<mstch_cache>()) {
   cache_->parsed_options_ = parsed_options_;
-  if (template_dir_ == "") {
-    std::string s = "Must set template directory when using mstch generator";
-    throw std::runtime_error{s};
-  }
-
-  gen_template_map(template_dir_ / template_prefix, "");
+  gen_template_map(template_prefix);
 }
 
 mstch::map t_mstch_generator::dump(const t_program& program) {
@@ -419,17 +428,19 @@ mstch::map t_mstch_generator::extend_annotation(const annotation&) {
   return {};
 }
 
-void t_mstch_generator::gen_template_map(
-    const boost::filesystem::path& root,
-    const std::string& sub_directory) {
-  for (auto itr = boost::filesystem::directory_iterator{root};
-       itr != boost::filesystem::directory_iterator{};
-       ++itr) {
-    if (boost::filesystem::is_regular_file(itr->path()) &&
-        boost::filesystem::extension(itr->path()) == ".mustache") {
-      std::ifstream ifs{itr->path().string()};
-      auto tpl = std::string{std::istreambuf_iterator<char>(ifs),
-                             std::istreambuf_iterator<char>()};
+void t_mstch_generator::gen_template_map(const boost::filesystem::path& root) {
+  for (size_t i = 0; i < templates_size; ++i) {
+    auto name = boost::filesystem::path(
+        templates_name_datas[i],
+        templates_name_datas[i] + templates_name_sizes[i]);
+    auto mm = std::mismatch(name.begin(), name.end(), root.begin(), root.end());
+    if (mm.second == root.end()) {
+      name = from_components(mm.first, name.end());
+      name = name.parent_path() / name.stem();
+
+      auto tpl = std::string(
+          templates_content_datas[i],
+          templates_content_datas[i] + templates_content_sizes[i]);
       // Remove a single '\n' or '\r\n' or '\r' at end, if present.
       chomp_last_char(&tpl, '\n');
       chomp_last_char(&tpl, '\r');
@@ -437,10 +448,7 @@ void t_mstch_generator::gen_template_map(
         tpl = "{{=<% %>=}}\n" + tpl;
       }
 
-      template_map_.emplace(
-          sub_directory + itr->path().stem().string(), std::move(tpl));
-    } else if (boost::filesystem::is_directory(itr->path())) {
-      gen_template_map(itr->path(), itr->path().filename().string() + "/");
+      template_map_.emplace(name.generic_string(), std::move(tpl));
     }
   }
 }

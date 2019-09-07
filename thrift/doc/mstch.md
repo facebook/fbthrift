@@ -336,20 +336,15 @@ builtin `dump` functions are aware of the `extend_*` functions.
 To invoke a mstch generator, run the following command
 
 ```sh
-thrift --templates $PATH_TO_TEMPLATES --gen $MY_GENERATOR -o $OUT_DIR $THRIFT_SRC
+thrift --gen $MY_GENERATOR -o $OUT_DIR $THRIFT_SRC
 ```
 
-where `PATH_TO_TEMPLATES` is the absolute path to the template root directory,
-`MY_GENERATOR` is the name of the generator as specified in the C++ driver,
+where `MY_GENERATOR` is the name of the generator as specified in the C++ driver,
 `OUT_DIR` is the desired output directory, and `THRIFT_SRC` is the Thrift IDL
 source file.
 
 Options can be specified as part of the string passed to `--gen`, for example,
 
 ```sh
-thrift --templates $HOME/git/fbthrift/thrift/compiler/generate/templates --gen mstch_swift:option=value -o $PWD $PWD/test.thrift
+thrift --gen mstch_swift:option=value -o $PWD $PWD/test.thrift
 ```
-
-Installing Thrift will also install the template root to `$PREFIX/share/thrift/templates`,
-where prefix is the install prefix chosen during installation, `/usr/local` by
-default on most systems.

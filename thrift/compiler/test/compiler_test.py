@@ -15,7 +15,6 @@ import unittest
 skip_py_generate = os.getenv("THRIFT_COMPILER_TEST_SKIP_PY_GENERATE")
 thrift = os.getenv("THRIFT_COMPILER_BIN")
 fixtures_root_dir = os.getenv("THRIFT_FIXTURES_DIR")
-templates_dir = os.getenv("THRIFT_TEMPLATES_DIR")
 
 
 def read_file(path):
@@ -134,8 +133,6 @@ class CompilerTest(unittest.TestCase):
             args = [
                 thrift,
                 "-r",
-                "--templates",
-                templates_dir,
                 "--gen",
                 args[0],
                 args[1],

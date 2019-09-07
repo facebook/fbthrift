@@ -90,18 +90,20 @@ add_library(
 )
 target_link_libraries(mustache_lib ${Boost_LIBRARIES})
 
+add_subdirectory(generate)
+
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)
-aux_source_directory(./generate/templates MSTCH_TEMPLATES)
+list(REMOVE_ITEM GENERATOR_FILES ./generate/build_templates.cc)
 add_library(
   compiler_generators
 
   ${GENERATOR_FILES}
-  ${MSTCH_TEMPLATES}
 )
 target_link_libraries(
   compiler_generators
 
+  compiler_generate_templates
   compiler_base
   compiler_lib
   mustache_lib
@@ -116,15 +118,6 @@ elseif(APPLE)
 else()
   set(GENERATE_LINKED -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
 endif(MSVC)
-
-set(TEMPLATE_DIRS
-  generate/templates/cpp2
-  generate/templates/py3
-)
-foreach(dir ${TEMPLATE_DIRS})
-  install(DIRECTORY ${dir} DESTINATION ${TEMPLATES_INSTALL_DIR}
-          FILES_MATCHING PATTERN "*.mustache")
-endforeach()
 
 # Create the thrift compiler binary
 add_executable(

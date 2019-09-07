@@ -83,21 +83,6 @@ def ascend_find_dir(path, target):
         path = parent
 
 
-def find_templates_rel(build_dir):
-    if build_dir == BUCK_OUT:
-        cmd = [
-            "buck",
-            "targets",
-            "--show-output",
-            "//thrift/compiler/generate/templates:templates",
-        ]
-        return subprocess.check_output(cmd).decode().split()[1]
-    else:
-        return os.path.join(
-            build_dir, "thrift/compiler/generate/templates/templates/templates"
-        )
-
-
 def read_lines(path):
     with open(path, "r") as f:
         return f.readlines()
@@ -107,8 +92,6 @@ args = parsed_args()
 build_dir = args.build_dir
 exe = os.path.join(os.getcwd(), sys.argv[0])
 thrift_rel = os.path.join(build_dir, "thrift/compiler/thrift")
-templates_rel = find_templates_rel(build_dir)
-templates = ascend_find_dir(exe, templates_rel)
 thrift = ascend_find_exe(exe, thrift_rel)
 
 if thrift is None:
@@ -160,7 +143,7 @@ for name, index in zip(fixture_names, range(len(fixture_names))):
         if re.match(r"^\s*#", cmd):
             continue
         args = shlex.split(cmd.strip())
-        base_args = [thrift, "-r", "--templates", templates, "--gen"]
+        base_args = [thrift, "-r", "--gen"]
         if "cpp" in args[0]:
             path = os.path.join("thrift/compiler/test/fixtures", name)
             extra = "include_prefix=" + path

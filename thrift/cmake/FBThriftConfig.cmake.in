@@ -9,7 +9,6 @@
 #
 # This also defines the following variables
 # FBTHRIFT_COMPILER - The path to the thrift compiler
-# FBTHRIFT_TEMPLATES_DIR - The path to the thrift compiler templates directory
 #
 
 @PACKAGE_INIT@
@@ -21,7 +20,6 @@ if (WIN32)
 else()
   set_and_check(FBTHRIFT_COMPILER "@PACKAGE_BIN_INSTALL_DIR@/thrift1")
 endif()
-set_and_check(FBTHRIFT_TEMPLATES_DIR "@PACKAGE_TEMPLATES_INSTALL_DIR@")
 
 if (NOT TARGET FBThrift::thriftcpp2)
   include("${FBTHRIFT_CMAKE_DIR}/FBThriftTargets.cmake")

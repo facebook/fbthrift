@@ -33,11 +33,6 @@ namespace compiler {
 std::string g_stage;
 
 /**
- * Directory containing template files
- */
-std::string g_template_dir;
-
-/**
  * Should C++ include statements use path prefixes for other thrift-generated
  * header files
  */

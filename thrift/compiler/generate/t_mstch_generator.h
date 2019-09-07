@@ -41,11 +41,6 @@ class t_mstch_generator : public t_generator {
 
  protected:
   /**
-   *  Directory containing template files for generating code
-   */
-  boost::filesystem::path template_dir_;
-
-  /**
    * Option pairs specified on command line for influencing generation behavior
    */
   const std::map<std::string, std::string> parsed_options_;
@@ -217,9 +212,7 @@ class t_mstch_generator : public t_generator {
   std::map<std::string, std::string> template_map_;
   bool convert_delimiter_;
 
-  void gen_template_map(
-      const boost::filesystem::path& root,
-      const std::string& sub_directory);
+  void gen_template_map(const boost::filesystem::path& root);
 
   /**
    * For every key in the map, prepends a prefix to that key for mstch.

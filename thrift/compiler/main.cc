@@ -68,9 +68,6 @@ bool record_genfiles = false;
   fprintf(stderr, "               (default: current directory)\n");
   fprintf(
       stderr, "  -out dir    Set the output location for generated files\n");
-  fprintf(
-      stderr,
-      "  --templates dir    Set the directory containing mstch templates\n");
   fprintf(stderr, "               (no gen-* folder will be created)\n");
   fprintf(stderr, "  -I dir      Add a directory to the list of directories\n");
   fprintf(stderr, "                searched for include directives\n");
@@ -304,13 +301,6 @@ int main(int argc, char** argv) {
       }
       // An argument of "-I\ asdf" is invalid and has unknown results
       incl_searchpath.push_back(arguments[++i]);
-      continue;
-    } else if (arguments[i] == "-templates") {
-      if (i + 1 == arguments.size() - 1) {
-        fprintf(stderr, "-templates: missing template directory");
-        usage();
-      }
-      g_template_dir = arguments[++i];
       continue;
     } else if (arguments[i] == "-o" || (arguments[i] == "-out")) {
       out_path_is_absolute = (arguments[i] == "-out") ? true : false;

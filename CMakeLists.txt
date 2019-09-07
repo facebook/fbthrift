@@ -7,8 +7,6 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set(TEMPLATES_INSTALL_DIR include/thrift/templates CACHE STRING
-    "The subdirectory where compiler template files should be installed")
 set(BIN_INSTALL_DIR bin CACHE STRING
     "The subdirectory where the compiler binary should be installed")
 set(INCLUDE_INSTALL_DIR include CACHE STRING
@@ -92,7 +90,6 @@ if(compiler_only OR build_all)
     ${OPENSSL_INCLUDE_DIR}
   )
   set(THRIFT1 thrift1)
-  set(THRIFT_TEMPLATES ${THRIFT_HOME}/thrift/compiler/generate/templates)
   set(THRIFTCPP2 thriftcpp2)
   include(ThriftLibrary.cmake)
   install(FILES ThriftLibrary.cmake DESTINATION ${INCLUDE_INSTALL_DIR}/thrift)
@@ -123,8 +120,6 @@ if(lib_only OR build_all)
   add_definitions("-DTHRIFT_HAVE_LIBSNAPPY=0")
   if(lib_only)
     find_program(THRIFT1 thrift1)
-    find_path(THRIFT_COMPILER_INCLUDE thrift/templates)
-    set(THRIFT_TEMPLATES ${THRIFT_COMPILER_INCLUDE}/thrift/templates)
     include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
   endif(lib_only)
 endif(lib_only OR build_all)

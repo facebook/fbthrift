@@ -18,7 +18,6 @@ configure_package_config_file(
     CMAKE_INSTALL_DIR
     BIN_INSTALL_DIR
     INCLUDE_INSTALL_DIR
-    TEMPLATES_INSTALL_DIR
 )
 install(
   FILES ${CMAKE_CURRENT_BINARY_DIR}/FBThriftConfig.cmake
