@@ -26,6 +26,8 @@
 
 #include <glog/logging.h>
 
+#include <folly/Portability.h>
+
 #include <folly/Optional.h>
 #include <folly/io/IOBuf.h>
 
@@ -34,6 +36,9 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#ifdef FOLLY_HAS_COROUTINES
+#include <thrift/lib/cpp2/async/Sink.h>
+#endif
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
@@ -175,6 +180,27 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
+#ifdef FOLLY_HAS_COROUTINES
+  void sendSinkReply(
+      std::unique_ptr<folly::IOBuf>&& buf,
+      apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
+      folly::Optional<uint32_t> crc32c) override final {
+    if (active_.exchange(false)) {
+      cancelTimeout();
+      auto metadata = makeResponseRpcMetadata();
+      if (crc32c) {
+        metadata.crc32c_ref() = *crc32c;
+      }
+      sendReplyInternal(
+          std::move(metadata), std::move(buf), std::move(consumerImpl));
+
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+    }
+  }
+#endif
+
   void sendErrorWrapped(
       folly::exception_wrapper ew,
       std::string exCode,
@@ -199,6 +225,15 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> response,
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
+
+#ifdef FOLLY_HAS_COROUTINES
+  virtual void sendSinkThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::detail::SinkConsumerImpl&&) noexcept {
+    LOG(FATAL) << "sendSinkThriftResponse not implemented";
+  }
+#endif
 
   virtual folly::EventBase* getEventBase() noexcept = 0;
 
@@ -245,6 +280,20 @@ class ThriftRequestCore : public ResponseChannelRequest {
       sendResponseTooBigEx();
     }
   }
+
+#ifdef FOLLY_HAS_COROUTINES
+  void sendReplyInternal(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::detail::SinkConsumerImpl sink) {
+    if (checkResponseSize(*buf)) {
+      sendSinkThriftResponse(
+          std::move(metadata), std::move(buf), std::move(sink));
+    } else {
+      sendResponseTooBigEx();
+    }
+  }
+#endif
 
   void sendResponseTooBigEx() {
     sendErrorWrappedInternal(
@@ -310,6 +359,12 @@ class ThriftRequestCore : public ResponseChannelRequest {
           sendStreamThriftResponse(
               makeResponseRpcMetadata(), std::move(exbuf), {});
           break;
+#ifdef FOLLY_HAS_COROUTINES
+        case RpcKind::SINK:
+          sendSinkThriftResponse(
+              makeResponseRpcMetadata(), std::move(exbuf), {});
+          break;
+#endif
         default: // Don't send error back for one-way.
           break;
       }

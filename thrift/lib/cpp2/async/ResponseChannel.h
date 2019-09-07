@@ -26,10 +26,15 @@
 #include <limits>
 #include <memory>
 
+#include <folly/Portability.h>
+
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
+#ifdef FOLLY_HAS_COROUTINES
+#include <thrift/lib/cpp2/async/Sink.h>
+#endif
 #include <thrift/lib/cpp2/server/AdmissionController.h>
 
 namespace folly {
@@ -80,6 +85,10 @@ class ResponseChannelRequest {
     return false;
   }
 
+  virtual bool isSink() const {
+    return false;
+  }
+
   virtual bool isReplyChecksumNeeded() const {
     return false;
   }
@@ -97,6 +106,15 @@ class ResponseChannelRequest {
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }
+
+#ifdef FOLLY_HAS_COROUTINES
+  virtual void sendSinkReply(
+      std::unique_ptr<folly::IOBuf>&&,
+      apache::thrift::detail::SinkConsumerImpl&&,
+      folly::Optional<uint32_t> = folly::none) {
+    throw std::logic_error("unimplemented");
+  }
+#endif
 
   virtual void sendErrorWrapped(
       folly::exception_wrapper ex,
