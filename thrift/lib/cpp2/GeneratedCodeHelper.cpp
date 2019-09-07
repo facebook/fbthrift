@@ -13,9 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-#include <folly/Portability.h>
-
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -86,12 +83,6 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
         [que = move(queue), request = move(req)]() mutable {
           if (request->isStream()) {
             request->sendStreamReply({que.move(), {}});
-          } else if (request->isSink()) {
-#ifdef FOLLY_HAS_COROUTINES
-            request->sendSinkReply(que.move(), {});
-#else
-            DCHECK(false);
-#endif
           } else {
             request->sendReply(que.move());
           }

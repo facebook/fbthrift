@@ -73,9 +73,6 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
       StreamClientCallback* clientCallback) final;
-  void handleRequestChannelFrame(
-      RequestChannelFrame&& frame,
-      SinkClientCallback* clientCallback) final;
 
  private:
   const std::shared_ptr<Cpp2Worker> worker_;

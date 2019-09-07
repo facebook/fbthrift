@@ -180,22 +180,6 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestStream));
 }
 
-void ThriftRocketServerHandler::handleRequestChannelFrame(
-    RequestChannelFrame&& frame,
-    SinkClientCallback* clientCallback) {
-  auto makeRequestSink = [&](RequestRpcMetadata&& md) {
-    return std::make_unique<ThriftServerRequestSink>(
-        *worker_->getEventBase(),
-        serverConfigs_,
-        std::move(md),
-        connContext_,
-        clientCallback,
-        cpp2Processor_);
-  };
-
-  handleRequestCommon(std::move(frame.payload()), std::move(makeRequestSink));
-}
-
 template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
