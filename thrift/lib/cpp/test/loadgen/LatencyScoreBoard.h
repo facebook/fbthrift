@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -20,7 +22,6 @@
 #define THRIFT_TEST_LOADGEN_LATENCYSCOREBOARD_H_ 1
 
 #include <folly/stats/Histogram.h>
-#include <folly/stats/Histogram-defs.h>
 
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h>

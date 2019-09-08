@@ -23,7 +23,7 @@
 
 #include <glog/logging.h>
 
-#include <folly/stats/BucketedTimeSeries-defs.h>
+#include <folly/stats/BucketedTimeSeries.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/AdmissionController.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>

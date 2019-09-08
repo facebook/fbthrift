@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/io/async/ScopedEventBaseThread.h>
-#include <folly/stats/Histogram-defs.h>
 #include <folly/stats/Histogram.h>
 #include <thrift/test/loadshedding/if/gen-cpp2/BackendService.h>
 
