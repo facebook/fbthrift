@@ -25,9 +25,9 @@
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
-#include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
-#include <thrift/lib/cpp/async/TUnframedAsyncChannel.tcc>
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
+#include <thrift/lib/cpp/async/TUnframedAsyncChannel.h>
 
 using apache::thrift::protocol::TBinaryProtocol;
 using apache::thrift::protocol::THeaderProtocol;
@@ -36,14 +36,6 @@ using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
 namespace apache { namespace thrift { namespace async {
-
-// Explicit instantiation of THeaderAsyncChannel's parent classes,
-// so other users don't have to include TStreamAsyncChannel.tcc
-template class TUnframedAsyncChannel<detail::THeaderACProtocolTraits>;
-template class TStreamAsyncChannel<
-  detail::TUnframedACWriteRequest,
-  detail::TUnframedACReadState<detail::THeaderACProtocolTraits> >;
-template class detail::TUnframedACReadState<detail::THeaderACProtocolTraits>;
 
 namespace detail {
 

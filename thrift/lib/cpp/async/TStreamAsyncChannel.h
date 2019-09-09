@@ -480,4 +480,6 @@ class TStreamAsyncChannelFactory {
 
 }}} // apache::thrift::async
 
+#include <thrift/lib/cpp/async/TStreamAsyncChannel-inl.h>
+
 #endif // THRIFT_ASYNC_TSTREAMASYNCCHANNEL_H_

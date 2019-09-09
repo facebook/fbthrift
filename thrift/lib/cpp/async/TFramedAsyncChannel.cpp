@@ -22,17 +22,12 @@
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 
 #include <folly/lang/Bits.h>
-#include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
 namespace apache { namespace thrift { namespace async {
-
-// Explicit instantiation of TFramedAsyncChannel's parent class,
-// so other users don't have to include TStreamAsyncChannel.tcc
-template class TStreamAsyncChannel<detail::TFramedACWriteRequest,
-                                   detail::TFramedACReadState>;
 
 namespace detail {
 

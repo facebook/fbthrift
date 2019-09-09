@@ -167,4 +167,6 @@ class TUnframedAsyncChannel :
 
 }}} // apache::thrift::async
 
+#include <thrift/lib/cpp/async/TUnframedAsyncChannel-inl.h>
+
 #endif // THRIFT_ASYNC_TUNFRAMEDASYNCCHANNEL_H_

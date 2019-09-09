@@ -16,18 +16,13 @@
 
 #include <thrift/lib/cpp/async/THttpAsyncChannel.h>
 
-#include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::util::THttpParser;
 
 namespace apache { namespace thrift { namespace async {
-
-// Explicit instantiation of THttpAsyncChannel's parent class,
-// so other users don't have to include TStreamAsyncChannel.tcc
-template class TStreamAsyncChannel<detail::THttpACWriteRequest,
-                                   detail::THttpACReadState>;
 
 namespace detail {
 

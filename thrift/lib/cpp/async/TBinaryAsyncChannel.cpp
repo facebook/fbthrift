@@ -23,8 +23,8 @@
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 
-#include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
-#include <thrift/lib/cpp/async/TUnframedAsyncChannel.tcc>
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
+#include <thrift/lib/cpp/async/TUnframedAsyncChannel.h>
 
 using apache::thrift::protocol::TBinaryProtocolT;
 using apache::thrift::transport::TBufferBase;
@@ -32,14 +32,6 @@ using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
 namespace apache { namespace thrift { namespace async {
-
-// Explicit instantiation of TBinaryAsyncChannel's parent classes,
-// so other users don't have to include TStreamAsyncChannel.tcc
-template class TUnframedAsyncChannel<detail::TBinaryACProtocolTraits>;
-template class TStreamAsyncChannel<
-  detail::TUnframedACWriteRequest,
-  detail::TUnframedACReadState<detail::TBinaryACProtocolTraits> >;
-template class detail::TUnframedACReadState<detail::TBinaryACProtocolTraits>;
 
 bool tryReadUnframed(uint8_t* buffer,
                      uint32_t bufferLength,
