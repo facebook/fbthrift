@@ -332,4 +332,4 @@ inline void skip_n<NimbleProtocolReader, detail::nimble::NimbleType>(
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp2/protocol/NimbleProtocol.tcc>
+#include <thrift/lib/cpp2/protocol/NimbleProtocol-inl.h>

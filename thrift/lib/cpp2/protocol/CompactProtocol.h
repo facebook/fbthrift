@@ -482,6 +482,6 @@ struct ProtocolReaderStructReadState<CompactProtocolReader>
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp2/protocol/CompactProtocol.tcc>
+#include <thrift/lib/cpp2/protocol/CompactProtocol-inl.h>
 
 #endif // #ifndef CPP2_PROTOCOL_COMPACTPROTOCOL_H_
