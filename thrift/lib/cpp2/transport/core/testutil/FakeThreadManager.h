@@ -148,7 +148,6 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
 
  private:
   apache::thrift::concurrency::PosixThreadFactory factory_;
-  bool throwOnAdd_{false};
 };
 
 } // namespace thrift
