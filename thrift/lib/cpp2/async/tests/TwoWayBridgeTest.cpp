@@ -79,8 +79,6 @@ TEST(AtomicQueueTest, Basic) {
     EXPECT_EQ(3, q.front());
     q.pop();
     EXPECT_TRUE(q.empty());
-    q = atomicQueue.getMessages();
-    EXPECT_TRUE(q.empty());
   }
 
   producerThread.join();
