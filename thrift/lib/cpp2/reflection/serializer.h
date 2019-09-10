@@ -639,6 +639,7 @@ struct protocol_methods<type_class::variant, Union> {
         bool const found = fatal::
             trie_find<typename enum_traits::fields, fatal::get_type::name>(
                 fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
+        (void)found;
         assert(found);
       }
 
