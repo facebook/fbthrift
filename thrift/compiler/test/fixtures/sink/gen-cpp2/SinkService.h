@@ -10,6 +10,7 @@
 
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/SinkServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp2/async/Sink.h>
 
 namespace folly {
   class IOBuf;
@@ -27,12 +28,12 @@ namespace cpp2 {
 class SinkServiceSvAsyncIf {
  public:
   virtual ~SinkServiceSvAsyncIf() {}
-  virtual void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) = 0;
-  virtual folly::Future<> future_method() = 0;
-  virtual folly::SemiFuture<> semifuture_method() = 0;
-  virtual void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) = 0;
-  virtual folly::Future<> future_methodAndReponse() = 0;
-  virtual folly::SemiFuture<> semifuture_methodAndReponse() = 0;
+  virtual void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
+  virtual folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method() = 0;
+  virtual folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_method() = 0;
+  virtual void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) = 0;
+  virtual folly::Future<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodAndReponse() = 0;
+  virtual folly::SemiFuture<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodAndReponse() = 0;
 };
 
 class SinkServiceAsyncProcessor;
@@ -41,20 +42,20 @@ class SinkServiceSvIf : public SinkServiceSvAsyncIf, public apache::thrift::Serv
  public:
   typedef SinkServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual  method();
-  folly::Future<> future_method() override;
-  folly::SemiFuture<> semifuture_method() override;
-  void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) override;
-  virtual  methodAndReponse();
-  folly::Future<> future_methodAndReponse() override;
-  folly::SemiFuture<> semifuture_methodAndReponse() override;
-  void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) override;
+  virtual apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> method();
+  folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_method() override;
+  folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_method() override;
+  void async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
+  virtual apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> methodAndReponse();
+  folly::Future<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> future_methodAndReponse() override;
+  folly::SemiFuture<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> semifuture_methodAndReponse() override;
+  void async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) override;
 };
 
 class SinkServiceSvNull : public SinkServiceSvIf {
  public:
-   method() override;
-   methodAndReponse() override;
+  apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> method() override;
+  apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> methodAndReponse() override;
 };
 
 class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -86,7 +87,7 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_method(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_method(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  const& _return);
+  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_method(apache::thrift::ContextStack* ctx, apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<folly::SequencedExecutor> executor);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_method(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -94,7 +95,7 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_methodAndReponse(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_methodAndReponse(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  const& _return);
+  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_methodAndReponse(apache::thrift::ContextStack* ctx, apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<folly::SequencedExecutor> executor);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_methodAndReponse(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:

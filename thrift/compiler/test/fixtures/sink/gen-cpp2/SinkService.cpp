@@ -14,46 +14,46 @@ std::unique_ptr<apache::thrift::AsyncProcessor> SinkServiceSvIf::getProcessor() 
   return std::make_unique<SinkServiceAsyncProcessor>(this);
 }
 
- SinkServiceSvIf::method() {
+apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::method() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("method");
 }
 
-folly::SemiFuture<> SinkServiceSvIf::semifuture_method() {
+folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_method() {
   return apache::thrift::detail::si::semifuture([&] { return method(); });
 }
 
-folly::Future<> SinkServiceSvIf::future_method() {
+folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_method() {
   return apache::thrift::detail::si::future(semifuture_method(), getThreadManager());
 }
 
 
-void SinkServiceSvIf::async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) {
+void SinkServiceSvIf::async_tm_method(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_method(); });
 }
 
- SinkServiceSvIf::methodAndReponse() {
+apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodAndReponse() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("methodAndReponse");
 }
 
-folly::SemiFuture<> SinkServiceSvIf::semifuture_methodAndReponse() {
+folly::SemiFuture<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodAndReponse() {
   return apache::thrift::detail::si::semifuture([&] { return methodAndReponse(); });
 }
 
-folly::Future<> SinkServiceSvIf::future_methodAndReponse() {
+folly::Future<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodAndReponse() {
   return apache::thrift::detail::si::future(semifuture_methodAndReponse(), getThreadManager());
 }
 
 
-void SinkServiceSvIf::async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<>> callback) {
+void SinkServiceSvIf::async_tm_methodAndReponse(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodAndReponse(); });
 }
 
- SinkServiceSvNull::method() {
-  return 0;
+apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::method() {
+  return {};
 }
 
- SinkServiceSvNull::methodAndReponse() {
-  return 0;
+apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::methodAndReponse() {
+  return {};
 }
 
 const char* SinkServiceAsyncProcessor::getServiceName() {

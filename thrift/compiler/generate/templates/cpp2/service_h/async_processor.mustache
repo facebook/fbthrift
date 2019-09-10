@@ -56,12 +56,15 @@
   static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
 <%/type:void?%>
 <%^type:void?%>
-  <%^type:streamresponse?%>
+  <%^type:streamresponse?%><%^type:sink?%>
   static folly::IOBufQueue return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
-  <%/type:streamresponse?%>
+  <%/type:sink?%><%/type:streamresponse?%>
   <%#type:streamresponse?%>
   static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> _return);
   <%/type:streamresponse?%>
+  <%#type:sink?%>
+  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_<%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<folly::SequencedExecutor> executor);
+  <%/type:sink?%>
 <%/type:void?%>
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);

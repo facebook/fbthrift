@@ -19,17 +19,7 @@
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:name%>AsyncProcessor::_processInThread_<%function:cpp_name%>(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::<%function:priority%>);
-<%^function:oneway?%>
-  <%^function:returns_stream?%>
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
-  <%/function:returns_stream?%>
-  <%#function:returns_stream?%>
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
-  <%/function:returns_stream?%>
-<%/function:oneway?%>
-<%#function:oneway?%>
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
-<%/function:oneway?%>
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, <% > types/function_kind%>, &<%service:name%>AsyncProcessor::process_<%function:cpp_name%><ProtocolIn_, ProtocolOut_>, this);
 }
 <%/function:eb%>
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -112,27 +102,19 @@ template <class ProtocolIn_, class ProtocolOut_>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
 <%/type:void?%>
 <%^type:void?%>
-    <%^type:streamresponse?%>
+    <%^type:streamresponse?%><%^type:sink?%>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return) {
-    <%/type:streamresponse?%>
+    <%/type:sink?%><%/type:streamresponse?%>
     <%#type:streamresponse?%>
 apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> _return) {
     <%/type:streamresponse?%>
+    <%#type:sink?%>
+std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service:name%>AsyncProcessor::return_<%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
+    <%/type:sink?%>
 <%/type:void?%>
   ProtocolOut_ prot;
-  <%#function:returns_stream?%>
+<%#function:returns_stream?%>
   <%service:name%>_<%function:cpp_name%>_presult::FieldsType result;
-  <%/function:returns_stream?%>
-  <%^function:returns_stream?%>
-  <%service:name%>_<%function:cpp_name%>_presult result;
-  <%/function:returns_stream?%>
-<%^type:void?%>
-    <%^function:returns_stream?%>
-  result.get<0>().value = const_cast<<% > types/type%>*>(&_return);
-  result.setIsSet(0, true);
-  return serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
-    <%/function:returns_stream?%>
-    <%#function:returns_stream?%>
   using StreamPResultType = <%service:name%>_<%function:cpp_name%>_presult::StreamPResultType;
       <%#type:streamHasFirstResponse?%>
   result.get<0>().value = const_cast<<% > types/type%>::ResponseType*>(&_return.response);
@@ -162,11 +144,43 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> <%servic
 
   auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
   return {serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
-    <%/function:returns_stream?%>
+<%/function:returns_stream?%>
+<%#function:returns_sink?%>
+  <%service:name%>_<%function:cpp_name%>_presult::FieldsType result;
+  using SinkPResultType = <%service:name%>_<%function:cpp_name%>_presult::SinkPResultType;
+  using FinalResponsePResultType = <%service:name%>_<%function:cpp_name%>_presult::FinalResponsePResultType;
+  <%#type:sinkHasFirstResponse?%>
+  result.get<0>().value = &_return.response;
+  result.setIsSet(0, true);
+  <%/type:sinkHasFirstResponse?%>
+  auto exMap = [](FinalResponsePResultType&, folly::exception_wrapper) {
+    return false;
+  };
+
+  auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
+      ProtocolIn_,
+      ProtocolOut_,
+      SinkPResultType,
+      FinalResponsePResultType>(
+  <%#type:sinkHasFirstResponse?%>
+      std::move(_return.sinkConsumer),
+  <%/type:sinkHasFirstResponse?%>
+  <%^type:sinkHasFirstResponse?%>
+      std::move(_return),
+  <%/type:sinkHasFirstResponse?%>
+      std::move(executor),
+      exMap);
+
+  return {serializeResponse("<%function:name%>", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+<%/function:returns_sink?%>
+<%^function:returns_stream?%><%^function:returns_sink?%>
+  <%service:name%>_<%function:cpp_name%>_presult result;
+<%^type:void?%>
+  result.get<0>().value = const_cast<<% > types/type%>*>(&_return);
+  result.setIsSet(0, true);
 <%/type:void?%>
-<%#type:void?%>
   return serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
-<%/type:void?%>
+<%/function:returns_sink?%><%/function:returns_stream?%>
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -185,10 +199,10 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:cpp_name%>(std::un
     result.setIsSet(<%field:index%>, true);
 <%/type:void?%>
 <%^type:void?%>
-  <%^function:returns_stream?%>
+  <%^function:returns_stream?%><%^function:returns_sink?%>
     result.get<<%field:index_plus_one%>>().ref() = e;
     result.setIsSet(<%field:index_plus_one%>, true);
-  <%/function:returns_stream?%>
+  <%/function:returns_sink?%><%/function:returns_stream?%>
   <%#function:returns_stream?%>
   <%#type:streamHasFirstResponse?%>
     result.fields.get<<%field:index_plus_one%>>().ref() = e;
@@ -199,6 +213,16 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:cpp_name%>(std::un
     result.fields.setIsSet(<%field:index%>, true);
   <%/type:streamHasFirstResponse?%>
   <%/function:returns_stream?%>
+  <%#function:returns_sink?%>
+  <%#type:sinkHasFirstResponse?%>
+    result.fields.get<<%field:index_plus_one%>>().ref() = e;
+    result.fields.setIsSet(<%field:index_plus_one%>, true);
+  <%/type:sinkHasFirstResponse?%>
+  <%^type:sinkHasFirstResponse?%>
+    result.fields.get<<%field:index%>>().ref() = e;
+    result.fields.setIsSet(<%field:index%>, true);
+  <%/type:sinkHasFirstResponse?%>
+  <%/function:returns_sink?%>
 <%/type:void?%>
   }
   )) {} else

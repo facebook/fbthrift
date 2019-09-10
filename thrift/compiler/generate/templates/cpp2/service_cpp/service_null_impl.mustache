@@ -27,9 +27,12 @@
 <%#type:streamresponse?%>
   return {};
 <%/type:streamresponse?%>
-<%^type:void?%><%^type:enum?%><%^type:streamresponse?%>
+<%#type:sink?%>
+  return {};
+<%/type:sink?%>
+<%^type:void?%><%^type:enum?%><%^type:streamresponse?%><%^type:sink?%>
   return 0;
-<%/type:streamresponse?%><%/type:enum?%><%/type:void?%>
+<%/type:sink?%><%/type:streamresponse?%><%/type:enum?%><%/type:void?%>
 }
 <%/type:resolves_to_complex_return?%>
 
