@@ -18,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 /**
  * thrift - a lightweight cross-language rpc/serialization tool
  *
@@ -39,6 +40,8 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/compiler.h>
+
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/platform.h>
@@ -58,9 +61,9 @@ ofstream genfile_file;
 bool record_genfiles = false;
 
 /**
- * Diplays the usage message and then exits with an error code.
+ * Display the usage message.
  */
-[[noreturn]] static void usage() {
+static void usage() {
   fprintf(stderr, "Usage: thrift [options] file\n");
   fprintf(stderr, "Options:\n");
   fprintf(
@@ -111,7 +114,6 @@ bool record_genfiles = false;
         iter->second->get_long_name().c_str());
     fprintf(stderr, "%s", iter->second->get_documentation().c_str());
   }
-  exit(1);
 }
 
 /**
@@ -216,19 +218,19 @@ static string get_include_path(
   return include_prefix;
 }
 
-/**
- * Parse it up.. then spit it back out, in pretty much every language. Alright
- * not that many languages, but the cool ones that we care about.
- */
-int main(int argc, char** argv) {
+namespace apache {
+namespace thrift {
+namespace compiler {
+
+int compile(std::vector<std::string> arguments) {
   std::string out_path;
   bool out_path_is_absolute = false;
-  std::vector<std::string> arguments(argv, argv + argc);
 
   // Check for necessary arguments, you gotta have at least a filename and
   // an output language flag
-  if (argc < 2) {
+  if (arguments.size() < 2) {
     usage();
+    return 1;
   }
 
   vector<std::string> generator_strings;
@@ -276,6 +278,7 @@ int main(int argc, char** argv) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
+        return 1;
       }
       genfile_file.open(arguments[++i]);
     } else if (arguments[i] == "-gen") {
@@ -286,6 +289,7 @@ int main(int argc, char** argv) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
+        return 1;
       }
       generator_strings.push_back(arguments[++i]);
     } else if (arguments[i] == "-cpp_use_include_prefix") {
@@ -298,6 +302,7 @@ int main(int argc, char** argv) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
+        return 1;
       }
       // An argument of "-I\ asdf" is invalid and has unknown results
       incl_searchpath.push_back(arguments[++i]);
@@ -311,6 +316,7 @@ int main(int argc, char** argv) {
             arguments[i].c_str(),
             arguments[i + 1].c_str());
         usage();
+        return 1;
       }
       out_path = arguments[++i];
 
@@ -347,6 +353,7 @@ int main(int argc, char** argv) {
     } else {
       fprintf(stderr, "!!! Unrecognized option: %s\n", arguments[i].c_str());
       usage();
+      return 1;
     }
   }
 
@@ -354,12 +361,14 @@ int main(int argc, char** argv) {
   if (generator_strings.empty()) {
     fprintf(stderr, "!!! No output language(s) specified\n\n");
     usage();
+    return 1;
   }
 
   // Real-pathify it
   if (arguments.size() < i) {
     fprintf(stderr, "!!! Missing file name\n");
     usage();
+    return 1;
   }
 
   std::string input_file = compute_absolute_path(arguments[i]);
@@ -379,8 +388,12 @@ int main(int argc, char** argv) {
   params.allow_neg_enum_vals = allow_neg_enum_vals;
   params.allow_64bit_consts = allow_64bit_consts;
   params.incl_searchpath = std::move(incl_searchpath);
-  auto program_bundle{
-      parse_and_dump_diagnostics(input_file, std::move(params))};
+
+  auto program = parse_and_dump_diagnostics(input_file, std::move(params));
+  if (!program) {
+    return 1;
+  }
+  auto program_bundle{std::move(program)};
 
   // Mutate it!
   apache::thrift::compiler::mutator::mutate(program_bundle->get_root_program());
@@ -425,3 +438,7 @@ int main(int argc, char** argv) {
     return 1;
   }
 }
+
+} // namespace compiler
+} // namespace thrift
+} // namespace apache

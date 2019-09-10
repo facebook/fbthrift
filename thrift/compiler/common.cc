@@ -175,12 +175,6 @@ void dump_docstrings(t_program* program) {
   }
 }
 
-/**
- * Parse with the given parameters, and dump all the diagnostic messages
- * returned.
- *
- * If the parsing fails, this function will exit(1).
- */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,
     apache::thrift::parsing_params params) {
@@ -224,10 +218,6 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
             message.message.c_str());
         break;
     }
-  }
-
-  if (!program) {
-    exit(1);
   }
 
   return program;

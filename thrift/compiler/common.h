@@ -119,7 +119,7 @@ void dump_docstrings(t_program* program);
  * Parse with the given parameters, and dump all the diagnostic messages
  * returned.
  *
- * If the parsing fails, this function will exit(1).
+ * If the parsing fails, nullptr is returned.
  */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,

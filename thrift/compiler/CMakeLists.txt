@@ -123,6 +123,7 @@ endif(MSVC)
 add_executable(
   thrift1
 
+  main.cc
   compiler.cc
   mutator/mutator.cc
   validator/validator.cc
