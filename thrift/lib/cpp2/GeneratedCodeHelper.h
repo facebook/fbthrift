@@ -37,9 +37,8 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
-
-#include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
 
 namespace apache {
 namespace thrift {

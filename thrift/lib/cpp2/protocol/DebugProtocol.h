@@ -25,8 +25,8 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
 
 namespace apache {
 namespace thrift {

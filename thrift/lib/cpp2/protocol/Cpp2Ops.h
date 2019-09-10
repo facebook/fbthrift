@@ -63,4 +63,4 @@ class Cpp2Ops {
 } // namespace thrift
 } // namespace apache
 
-#include <thrift/lib/cpp2/protocol/Cpp2Ops.tcc>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops-inl.h>
