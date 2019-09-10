@@ -45,5 +45,25 @@ void HandlerCallbackBase::sendReply(
   }
 }
 
+#ifdef FOLLY_HAS_COROUTINES
+void HandlerCallbackBase::sendReply(
+    folly::IOBufQueue queue,
+    apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) {
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
+  transform(queue);
+
+  if (getEventBase()->isInEventBaseThread()) {
+    req_->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
+  } else {
+    getEventBase()->runInEventBaseThread(
+        [req = std::move(req_),
+         queue = std::move(queue),
+         sinkConsumer = std::move(sinkConsumer),
+         crc32c]() mutable {
+          req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
+        });
+  }
+}
+#endif
 } // namespace thrift
 } // namespace apache

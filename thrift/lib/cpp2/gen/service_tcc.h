@@ -22,6 +22,8 @@
 
 #include <glog/logging.h>
 
+#include <folly/Portability.h>
+
 #include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
@@ -79,6 +81,12 @@ void process_handle_exn_deserialization(
       [buf = std::move(buf), req = std::move(req)]() mutable {
         if (req->isStream()) {
           req->sendStreamReply({std::move(buf), {}});
+        } else if (req->isSink()) {
+#ifdef FOLLY_HAS_COROUTINES
+          req->sendSinkReply(std::move(buf), {});
+#else
+          DCHECK(false);
+#endif
         } else {
           req->sendReply(std::move(buf));
         }
@@ -99,6 +107,12 @@ void process_throw_wrapped_handler_error(
   auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
   if (req->isStream()) {
     req->sendStreamReply({std::move(buf), {}});
+  } else if (req->isSink()) {
+#ifdef FOLLY_HAS_COROUTINES
+    req->sendSinkReply(std::move(buf), {});
+#else
+    DCHECK(false);
+#endif
   } else {
     req->sendReply(std::move(buf));
   }

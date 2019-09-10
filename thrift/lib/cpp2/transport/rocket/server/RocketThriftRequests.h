@@ -18,6 +18,8 @@
 
 #include <memory>
 
+#include <folly/Portability.h>
+
 #include <folly/Function.h>
 
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
@@ -32,6 +34,7 @@ namespace apache {
 namespace thrift {
 
 class AsyncProcessor;
+class SinkClientCallback;
 class StreamClientCallback;
 
 namespace rocket {
@@ -137,6 +140,56 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
  private:
   folly::EventBase& evb_;
   StreamClientCallback* clientCallback_;
+
+  // Used to keep the context alive, since ThriftRequestCore only stores a
+  // reference.
+  const std::shared_ptr<Cpp2ConnContext> connContext_;
+  const std::shared_ptr<AsyncProcessor> cpp2Processor_;
+};
+
+// Object corresponding to rsocket sink (REQUEST_CHANNEL) request (initial
+// request to establish stream) handled by Thrift server
+class ThriftServerRequestSink final : public ThriftRequestCore {
+ public:
+  ThriftServerRequestSink(
+      folly::EventBase& evb,
+      server::ServerConfigs& serverConfigs,
+      RequestRpcMetadata&& metadata,
+      std::shared_ptr<Cpp2ConnContext> connContext,
+      SinkClientCallback* clientCallback,
+      std::shared_ptr<AsyncProcessor> cpp2Processor);
+
+  void sendThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>) noexcept override;
+
+  void sendStreamThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
+
+#ifdef FOLLY_HAS_COROUTINES
+  void sendSinkThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::detail::SinkConsumerImpl&&) noexcept override;
+#endif
+
+  folly::EventBase* getEventBase() noexcept override {
+    return &evb_;
+  }
+
+  bool isSink() const override {
+    return true;
+  }
+
+  bool isReplyChecksumNeeded() const override {
+    return true;
+  }
+
+ private:
+  folly::EventBase& evb_;
+  SinkClientCallback* clientCallback_;
 
   // Used to keep the context alive, since ThriftRequestCore only stores a
   // reference.

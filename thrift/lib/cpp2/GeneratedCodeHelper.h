@@ -1122,6 +1122,72 @@ apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
       bufferSize);
 }
 
+#ifdef FOLLY_HAS_COROUTINES
+template <
+    typename ProtocolReader,
+    typename ProtocolWriter,
+    typename SinkPResult,
+    typename FinalResponsePResult,
+    typename SinkType,
+    typename FinalResponseType,
+    typename ErrorMapFunc>
+apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
+    SinkConsumer<SinkType, FinalResponseType>&& sinkConsumer,
+    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
+    ErrorMapFunc exMap) {
+  auto consumer =
+      [innerConsumer = std::move(sinkConsumer.consumer),
+       exMap = std::move(exMap)](
+          folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> gen) mutable
+      -> folly::coro::Task<folly::Try<StreamPayload>> {
+    folly::exception_wrapper ew;
+    try {
+      FinalResponseType finalResponse = co_await innerConsumer(
+          [](folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> gen)
+              -> folly::coro::AsyncGenerator<SinkType&&> {
+            while (auto item = co_await gen.next()) {
+              auto payload = std::move(*item);
+              if (payload.hasValue()) {
+                // if exception is thrown there, it will propagate to inner
+                // consumer which is intended
+                co_yield ap::decode_stream_payload<
+                    ProtocolReader,
+                    SinkPResult,
+                    SinkType>(*payload->payload);
+              } else {
+                ap::decode_stream_exception<
+                    ProtocolReader,
+                    SinkPResult,
+                    SinkType>(payload.exception())
+                    .throw_exception();
+              }
+            }
+          }(std::move(gen)));
+      co_return folly::Try<StreamPayload>(StreamPayload(
+          ap::encode_stream_payload<
+              ProtocolWriter,
+              FinalResponsePResult,
+              FinalResponseType>(std::move(finalResponse))
+              .move(),
+          {}));
+    } catch (std::exception& e) {
+      ew = folly::exception_wrapper(std::current_exception(), e);
+    } catch (...) {
+      ew = folly::exception_wrapper(std::current_exception());
+    }
+    co_return folly::Try<StreamPayload>(rocket::RocketException(
+        rocket::ErrorCode::APPLICATION_ERROR,
+        ap::encode_stream_exception<
+            ProtocolWriter,
+            FinalResponsePResult,
+            FinalResponseType>(std::move(ew), exMap)
+            .move()));
+  };
+  return apache::thrift::detail::SinkConsumerImpl{
+      std::move(consumer), sinkConsumer.bufferSize, std::move(executor)};
+}
+#endif
+
 } // namespace ap
 } // namespace detail
 

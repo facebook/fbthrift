@@ -27,6 +27,9 @@
 
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#ifdef FOLLY_HAS_COROUTINES
+#include <thrift/lib/cpp2/async/ServerSinkBridge.h>
+#endif
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -224,6 +227,64 @@ StreamServerCallback* toStreamServerCallbackPtr(
 
   return serverCallbackPtr;
 }
+
+ThriftServerRequestSink::ThriftServerRequestSink(
+    folly::EventBase& evb,
+    server::ServerConfigs& serverConfigs,
+    RequestRpcMetadata&& metadata,
+    std::shared_ptr<Cpp2ConnContext> connContext,
+    SinkClientCallback* clientCallback,
+    std::shared_ptr<AsyncProcessor> cpp2Processor)
+    : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
+      evb_(evb),
+      clientCallback_(clientCallback),
+      connContext_(std::move(connContext)),
+      cpp2Processor_(std::move(cpp2Processor)) {
+  scheduleTimeouts();
+}
+
+void ThriftServerRequestSink::sendThriftResponse(
+    ResponseRpcMetadata&&,
+    std::unique_ptr<folly::IOBuf>) noexcept {
+  LOG(FATAL) << "Sink requests must respond via sendSinkThriftResponse";
+}
+
+void ThriftServerRequestSink::sendStreamThriftResponse(
+    ResponseRpcMetadata&&,
+    std::unique_ptr<folly::IOBuf>,
+    SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
+  LOG(FATAL) << "Sink requests cannot send stream responses";
+}
+
+#ifdef FOLLY_HAS_COROUTINES
+void ThriftServerRequestSink::sendSinkThriftResponse(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) noexcept {
+  if (sinkConsumer) {
+    auto* executor = sinkConsumer.executor.get();
+    auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
+        std::move(sinkConsumer), *getEventBase(), clientCallback_);
+    clientCallback_->onFirstResponse(
+        FirstResponsePayload{std::move(data), std::move(metadata)},
+        nullptr /* evb */,
+        serverCallback.get());
+
+    folly::coro::co_invoke(
+        [serverCallback =
+             std::move(serverCallback)]() -> folly::coro::Task<void> {
+          co_return co_await serverCallback->start();
+        })
+        .scheduleOn(executor)
+        .start();
+  } else {
+    std::exchange(clientCallback_, nullptr)
+        ->onFirstResponseError(
+            folly::make_exception_wrapper<thrift::detail::EncodedError>(
+                std::move(data)));
+  }
+}
+#endif
 
 } // namespace rocket
 } // namespace thrift
