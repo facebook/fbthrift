@@ -21,6 +21,8 @@
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 
+#include <folly/Conv.h>
+
 namespace apache {
 namespace thrift {
 
@@ -29,13 +31,14 @@ namespace thrift {
       TProtocolException::BAD_VERSION, "Bad protocol identifier");
 }
 
-    [[noreturn]] void CompactProtocolReader::throwBadProtocolVersion() {
+[[noreturn]] void CompactProtocolReader::throwBadProtocolVersion() {
   throw TProtocolException(
       TProtocolException::BAD_VERSION, "Bad protocol version");
 }
 
 [[noreturn]] void CompactProtocolReader::throwBadType(uint8_t const type) {
-  throw TProtocolException("don't know what type: " + std::to_string(type));
+  throw TProtocolException(folly::to<std::string>(
+        "don't know what type: ", type));
 }
 
 void CompactProtocolReader::readFieldBeginWithStateMediumSlow(

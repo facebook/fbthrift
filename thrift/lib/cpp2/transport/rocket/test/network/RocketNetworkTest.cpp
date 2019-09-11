@@ -22,6 +22,7 @@
 
 #include <folly/portability/GTest.h>
 
+#include <folly/Conv.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/Format.h>
 #include <folly/Range.h>
@@ -585,7 +586,7 @@ class TestClientCallback : public StreamClientCallback {
     subscription_ = subscription;
     // First response does not count towards requested payloads count.
     EXPECT_EQ(
-        std::to_string(0),
+        folly::to<std::string>(0),
         folly::StringPiece{firstResponsePayload.payload->coalesce()});
     if (requested_ != 0) {
       request(requested_);
@@ -600,7 +601,7 @@ class TestClientCallback : public StreamClientCallback {
 
   void onStreamNext(StreamPayload&& payload) override {
     EXPECT_EQ(
-        std::to_string(++received_),
+        folly::to<std::string>(++received_),
         folly::StringPiece{payload.payload->coalesce()});
     EXPECT_LE(received_, requested_);
   }

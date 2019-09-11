@@ -19,6 +19,7 @@
 
 #include <gtest/gtest.h>
 
+#include <folly/Conv.h>
 #include <folly/Try.h>
 #include <folly/fibers/Baton.h>
 #include <folly/fibers/Fiber.h>
@@ -45,7 +46,7 @@ class Handler : public test::TestServiceSvIf {
     return folly::makeSemiFuture()
         .delayed(std::chrono::milliseconds(sleepDelayMsec_))
         .defer([size](auto&&) {
-          return std::make_unique<std::string>(std::to_string(size));
+          return std::make_unique<std::string>(folly::to<std::string>(size));
         });
   }
 

@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 #include <fmt/core.h>
+#include <folly/Conv.h>
 #include <folly/String.h>
 
 #include <cstdlib>
@@ -383,10 +384,10 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(unique_ptr<IOBuf> buf) {
 }
 
 unique_ptr<IOBuf> THttpClientParser::constructHeader(
-   unique_ptr<IOBuf> buf,
-   const std::map<std::string, std::string>& persistentWriteHeaders,
-   const std::map<std::string, std::string>& writeHeaders,
-   const std::map<std::string, std::string>* extraWriteHeaders) {
+    unique_ptr<IOBuf> buf,
+    const std::map<std::string, std::string>& persistentWriteHeaders,
+    const std::map<std::string, std::string>& writeHeaders,
+    const std::map<std::string, std::string>* extraWriteHeaders) {
   IOBufQueue queue;
   queue.append("POST ");
   queue.append(path_);
@@ -403,7 +404,7 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(
   queue.append(userAgent_);
   queue.append(CRLF);
   queue.append("Content-Length: ");
-  string contentLen = std::to_string(buf->computeChainDataLength());
+  string contentLen = folly::to<std::string>(buf->computeChainDataLength());
   queue.append(contentLen);
   queue.append(CRLF);
 
@@ -421,8 +422,8 @@ unique_ptr<IOBuf> THttpClientParser::constructHeader(
 }
 
 void THttpClientParser::appendHeadersToQueue(
-  folly::IOBufQueue& queue,
-  const std::map<std::string, std::string>& headersToAppend) {
+    folly::IOBufQueue& queue,
+    const std::map<std::string, std::string>& headersToAppend) {
   for (const auto& headerToAppend : headersToAppend) {
     queue.append(headerToAppend.first);
     queue.append(": ");

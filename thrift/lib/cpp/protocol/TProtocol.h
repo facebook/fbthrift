@@ -16,6 +16,7 @@
 #ifndef THRIFT_PROTOCOL_TPROTOCOL_H_
 #define THRIFT_PROTOCOL_TPROTOCOL_H_ 1
 
+#include <folly/Conv.h>
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TType.h>
@@ -209,7 +210,7 @@ uint32_t readIntegral(Protocol_& prot, TType arg_type, T& value) {
     default: {
       throw TProtocolException(
           std::string("Cannot parse integral number of ") +
-          std::to_string(arg_type) + " type");
+          folly::to<std::string>(arg_type) + " type");
     }
   }
 }
@@ -234,7 +235,7 @@ uint32_t readFloatingPoint(Protocol_& prot, TType arg_type, T& value) {
     default: {
       throw TProtocolException(
           std::string("Cannot parse floating number of ") +
-          std::to_string(arg_type) + " type");
+          folly::to<std::string>(arg_type) + " type");
     }
   }
 }

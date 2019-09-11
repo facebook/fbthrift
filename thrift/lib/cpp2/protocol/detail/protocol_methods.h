@@ -24,6 +24,7 @@
 #include <type_traits>
 #include <vector>
 
+#include <folly/Conv.h>
 #include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
 #include <folly/io/IOBuf.h>
@@ -728,7 +729,7 @@ void readIntegral(Protocol_& prot, protocol::TType arg_type, T& out) {
     default: {
       throw protocol::TProtocolException(
           std::string("Cannot parse integral number of ") +
-          std::to_string(arg_type) + " type");
+          folly::to<std::string>(arg_type) + " type");
     }
   }
 }
@@ -753,7 +754,7 @@ void readFloatingPoint(Protocol_& prot, protocol::TType arg_type, T& out) {
     default: {
       throw protocol::TProtocolException(
           std::string("Cannot parse floating number of ") +
-          std::to_string(arg_type) + " type");
+          folly::to<std::string>(arg_type) + " type");
     }
   }
 }

@@ -26,6 +26,8 @@
 #include <limits>
 #include <string>
 
+#include <folly/Conv.h>
+
 namespace apache {
 namespace thrift {
 namespace protocol {
@@ -225,7 +227,7 @@ uint32_t TBinaryProtocolT<Transport_>::readMessageBegin(
     if (version != VERSION_1) {
       throw TProtocolException(
           TProtocolException::BAD_VERSION,
-          "Bad version identifier, sz=" + std::to_string(sz));
+          "Bad version identifier, sz=" + folly::to<std::string>(sz));
     }
     messageType = (TMessageType)(sz & 0x000000ff);
     result += readString(name);
@@ -235,7 +237,7 @@ uint32_t TBinaryProtocolT<Transport_>::readMessageBegin(
       throw TProtocolException(
           TProtocolException::BAD_VERSION,
           "No version identifier... old protocol client in strict mode? sz=" +
-              std::to_string(sz));
+              folly::to<std::string>(sz));
     } else {
       // Handle pre-versioned input
       int8_t type;

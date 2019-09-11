@@ -16,8 +16,9 @@
 #ifndef _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_
 #define _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_ 1
 
+#include <folly/Conv.h>
+
 #include <thrift/lib/cpp/Thrift.h>
-#include <string>
 
 namespace apache {
 namespace thrift {
@@ -187,7 +188,7 @@ class TTransportException : public apache::thrift::TLibraryException {
     if (message.empty() &&
         static_cast<size_t>(type) >= TTransportExceptionTypeSize::value) {
       return "TTransportException: (Invalid exception type '" +
-          std::to_string(type) + "')";
+          folly::to<std::string>(type) + "')";
     } else {
       return std::move(message);
     }

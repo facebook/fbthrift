@@ -23,6 +23,7 @@
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
 
+#include <folly/Conv.h>
 #include <folly/Memory.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
@@ -360,7 +361,7 @@ void doLoadHeaderTest(MakeClientFunc&& makeClient) {
       if (loadMetric.removePrefix("custom_load_metric_")) {
         EXPECT_EQ(loadMetric, loadIter->second);
       } else if (loadMetric.empty()) {
-        EXPECT_EQ(std::to_string(kEmptyMetricLoad), loadIter->second);
+        EXPECT_EQ(folly::to<std::string>(kEmptyMetricLoad), loadIter->second);
       } else {
         FAIL() << "Unexpected load metric";
       }

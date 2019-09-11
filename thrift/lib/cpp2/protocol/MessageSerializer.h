@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ std::unique_ptr<folly::IOBuf> PargsPresultProtoSerialize(
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED,
           "PargsPresultProtoSerialize doesn't implement this protocol: " +
-              std::to_string(protocol));
+              folly::to<std::string>(protocol));
   }
 }
 
@@ -115,7 +115,7 @@ std::pair<std::string, int> PargsPresultProtoDeserialize(
       throw TProtocolException(
           TProtocolException::NOT_IMPLEMENTED,
           "PargsPresultProtoDeserialize doesn't implement this protocol: " +
-              std::to_string(protocol));
+              folly::to<std::string>(protocol));
   }
 }
 

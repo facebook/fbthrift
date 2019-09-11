@@ -661,8 +661,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
       void onStreamRequestN(uint64_t tokens) override {
         while (tokens-- && i_++ < n_) {
-          clientCallback_->onStreamNext(
-              StreamPayload{folly::IOBuf::copyBuffer(std::to_string(i_)), {}});
+          clientCallback_->onStreamNext(StreamPayload{
+              folly::IOBuf::copyBuffer(folly::to<std::string>(i_)), {}});
         }
         if (i_ == n_) {
           clientCallback_->onStreamComplete();
@@ -694,7 +694,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     auto* serverCallback =
         new TestRocketStreamServerCallback(clientCallback, n);
     clientCallback->onFirstResponse(
-        FirstResponsePayload{folly::IOBuf::copyBuffer(std::to_string(0)), {}},
+        FirstResponsePayload{
+            folly::IOBuf::copyBuffer(folly::to<std::string>(0)), {}},
         nullptr /* evb */,
         serverCallback);
   }
@@ -721,7 +722,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         std::move(impl), ioEvb_, clientCallback);
 
     clientCallback->onFirstResponse(
-        FirstResponsePayload{folly::IOBuf::copyBuffer(std::to_string(0)), {}},
+        FirstResponsePayload{
+            folly::IOBuf::copyBuffer(folly::to<std::string>(0)), {}},
         nullptr /* evb */,
         serverCallback.get());
     folly::coro::co_invoke(

@@ -20,7 +20,9 @@
 #define THRIFT_UTIL_ENUMUTILS_H_ 1
 
 #include <cstring>
-#include <string>
+
+#include <folly/Conv.h>
+
 #include <thrift/lib/cpp/Thrift.h>
 
 namespace apache { namespace thrift {
@@ -59,7 +61,7 @@ const char* enumName(EnumType value,
 template <typename EnumType>
 std::string enumNameSafe(EnumType value) {
   const char* name = enumName(value);
-  return name ? name : std::to_string(static_cast<int32_t>(value));
+  return name ? name : folly::to<std::string>(static_cast<int32_t>(value));
 }
 
 }}} // apache::thrift::util
