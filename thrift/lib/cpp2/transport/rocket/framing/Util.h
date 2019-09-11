@@ -63,6 +63,7 @@ inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
     case FrameType::CANCEL:
     case FrameType::PAYLOAD:
     case FrameType::ERROR:
+    case FrameType::METADATA_PUSH:
     case FrameType::KEEPALIVE:
       return {static_cast<FrameType>(frameType), flags};
 

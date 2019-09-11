@@ -514,6 +514,29 @@ class ErrorFrame {
   Payload payload_;
 };
 
+class MetadataPushFrame {
+ public:
+  explicit MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame);
+
+  static constexpr FrameType frameType() {
+    return FrameType::METADATA_PUSH;
+  }
+
+  static constexpr size_t frameHeaderSize() {
+    return 6;
+  }
+
+  std::unique_ptr<folly::IOBuf> metadata() && {
+    return std::move(metadata_);
+  }
+
+  void serialize(Serializer& writer) &&;
+  std::unique_ptr<folly::IOBuf> serialize() &&;
+
+ private:
+  std::unique_ptr<folly::IOBuf> metadata_;
+};
+
 class KeepAliveFrame {
  public:
   explicit KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame);

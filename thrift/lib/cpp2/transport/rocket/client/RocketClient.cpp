@@ -125,6 +125,12 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     return close(folly::make_exception_wrapper<RocketException>(
         errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
   }
+  if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
+    // constructing the METADATA_PUSH frame for validation
+    MetadataPushFrame mdPushFrame(std::move(frame));
+    LOG(WARNING) << "Dropping METADATA_PUSH frame";
+    return;
+  }
 
   if (auto* ctx = queue_.getRequestResponseContext(streamId)) {
     DCHECK(ctx->isRequestResponse());

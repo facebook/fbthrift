@@ -37,7 +37,7 @@ enum class FrameType : uint8_t {
   CANCEL = 0x09,
   PAYLOAD = 0x0A,
   ERROR = 0x0B,
-  // METADATA_PUSH = 0x0C,
+  METADATA_PUSH = 0x0C,
   // RESUME = 0x0D,
   // RESUME_OK = 0x0E,
   // EXT = 0x3F,

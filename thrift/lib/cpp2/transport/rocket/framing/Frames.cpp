@@ -525,6 +525,37 @@ void ErrorFrame::serialize(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+void MetadataPushFrame::serialize(Serializer& writer) && {
+  /**
+   *  0                   1                   2                   3
+   *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   * |                         Stream ID = 0                         |
+   * +-----------+-+-+---------------+-------------------------------+
+   * |Frame Type |0|1|     Flags     |
+   * +-------------------------------+-------------------------------+
+   *                              Metadata
+   */
+
+  // Excludes room for frame length
+  const auto frameSize =
+      frameHeaderSize() + metadata_->computeChainDataLength();
+  auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
+
+  nwritten += writer.write(StreamId{0});
+  nwritten +=
+      writer.writeFrameTypeAndFlags(frameType(), Flags::none().metadata(true));
+  nwritten += writer.write(std::move(metadata_));
+
+  DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
+std::unique_ptr<folly::IOBuf> MetadataPushFrame::serialize() && {
+  Serializer writer;
+  std::move(*this).serialize(writer);
+  return std::move(writer).move();
+}
+
 std::unique_ptr<folly::IOBuf> KeepAliveFrame::serialize() && {
   return serializeIntoIOBuf(std::move(*this));
 }
@@ -813,6 +844,25 @@ ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   // Finally, adjust the data portion of frame.
   frame->trimStart(frameHeaderSize());
   payload_ = Payload::makeFromData(std::move(frame));
+}
+
+MetadataPushFrame::MetadataPushFrame(std::unique_ptr<folly::IOBuf> frame) {
+  DCHECK(!frame->isChained());
+  DCHECK_GE(frame->length(), frameHeaderSize());
+
+  folly::io::Cursor cursor(frame.get());
+  const StreamId zero(readStreamId(cursor));
+  DCHECK_EQ(StreamId{0}, zero);
+
+  // METADATA_PUSH frame has only metadata flag.
+  FrameType type;
+  Flags flags;
+  std::tie(type, flags) = readFrameTypeAndFlags(cursor);
+  DCHECK(frameType() == type);
+  DCHECK(flags.metadata());
+
+  frame->trimStart(frameHeaderSize());
+  metadata_ = std::move(frame);
 }
 
 KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {

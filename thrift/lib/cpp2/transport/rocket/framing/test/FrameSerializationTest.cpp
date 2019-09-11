@@ -298,6 +298,34 @@ TEST(FrameSerialization, ErrorFromException) {
   validate(serializeAndDeserialize(std::move(frame)));
 }
 
+TEST(FrameSerialization, MetadataPushSanity) {
+  constexpr folly::StringPiece kMeta{"transport_version"};
+
+  auto makeMetadataPushFrame = [&] {
+    std::unique_ptr<folly::IOBuf> buf(folly::IOBuf::create(6));
+    buf->append(6);
+    folly::io::RWPrivateCursor wcursor(buf.get());
+    // write StreamId
+    wcursor.writeBE<uint32_t>(0);
+    // write frameType and flags
+    wcursor.writeBE<uint16_t>(
+        static_cast<uint8_t>(FrameType::METADATA_PUSH)
+            << Flags::frameTypeOffset() |
+        static_cast<uint16_t>(1 << 8));
+
+    wcursor.insert(folly::IOBuf::copyBuffer(kMeta));
+    buf->coalesce();
+    return MetadataPushFrame(std::move(buf));
+  };
+
+  auto validate = [=](MetadataPushFrame&& f) {
+    EXPECT_EQ(kMeta, getRange(*std::move(f).metadata()));
+  };
+
+  validate(makeMetadataPushFrame());
+  validate(serializeAndDeserialize(makeMetadataPushFrame()));
+}
+
 TEST(FrameSerialization, KeepAliveSanity) {
   constexpr folly::StringPiece kKeepAliveData{"keep_alive_data"};
 
