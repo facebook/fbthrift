@@ -103,5 +103,16 @@ TEST_F(SinkServiceTest, SinkUnimplemented) {
       });
 }
 
+TEST_F(SinkServiceTest, SinkNotCalled) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        // even though don't really call sink.sink(...),
+        // after sink get out of scope, the sink should be cancelled properly
+        co_await client.co_unSubscribedSink();
+        bool unsubscribed = co_await client.co_isSinkUnSubscribed();
+        EXPECT_TRUE(unsubscribed);
+      });
+}
+
 } // namespace thrift
 } // namespace apache

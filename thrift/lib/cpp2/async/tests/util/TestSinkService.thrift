@@ -25,4 +25,6 @@ service TestSinkService {
   sink<i32, bool> rangeFinalResponseThrow(1: i32 from, 2: i32 to);
   sink<i32, i32> rangeEarlyResponse(1: i32 from, 2: i32 to, 3: i32 early);
   sink<i32, bool> unimplemented();
+  sink<i32, bool> unSubscribedSink();
+  bool isSinkUnSubscribed();
 }

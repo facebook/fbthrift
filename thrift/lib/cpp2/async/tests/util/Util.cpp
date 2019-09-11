@@ -33,8 +33,12 @@ void TestSetup::initServer() {
   server_->setNumIOWorkerThreads(numIOThreads_);
   server_->setNumCPUWorkerThreads(numWorkerThreads_);
   server_->enableRocketServer(true);
+  server_->setQueueTimeout(std::chrono::milliseconds(0));
+  server_->setIdleTimeout(std::chrono::milliseconds(0));
+  server_->setTaskExpireTime(std::chrono::milliseconds(0));
+  server_->setStreamExpireTime(std::chrono::milliseconds(0));
 
-  auto handler_ = std::make_shared<TestSinkService>();
+  handler_ = std::make_shared<TestSinkService>();
   server_->setProcessorFactory(
       std::make_shared<ThriftServerAsyncProcessorFactory<TestSinkService>>(
           handler_));

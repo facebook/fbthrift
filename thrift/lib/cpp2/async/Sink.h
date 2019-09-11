@@ -51,6 +51,18 @@ class ClientSink {
         serializer_(std::move(serializer)),
         deserializer_(std::move(deserializer)) {}
 
+  ~ClientSink() {
+    if (impl_) {
+      impl_->drain();
+    }
+  }
+
+  ClientSink(const ClientSink&) = delete;
+  ClientSink& operator=(const ClientSink&) = delete;
+
+  ClientSink(ClientSink&&) = default;
+  ClientSink& operator=(ClientSink&&) = default;
+
   folly::coro::Task<R> sink(folly::coro::AsyncGenerator<T&&> generator) {
     folly::exception_wrapper ew;
     auto finalResponse = co_await impl_->sink(

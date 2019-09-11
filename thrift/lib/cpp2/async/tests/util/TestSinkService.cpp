@@ -16,6 +16,8 @@
 
 #include "thrift/lib/cpp2/async/tests/util/TestSinkService.h"
 
+#include <folly/ScopeGuard.h>
+
 #include <gtest/gtest.h>
 
 namespace testutil {
@@ -96,6 +98,23 @@ TestSinkService::rangeEarlyResponse(int32_t from, int32_t, int32_t early) {
       },
       10 /* buffer size */
   };
+}
+
+apache::thrift::SinkConsumer<int32_t, bool>
+TestSinkService::unSubscribedSink() {
+  return apache::thrift::SinkConsumer<int32_t, bool>{
+      [g = folly::makeGuard([this]() { sinkUnsubscribed_ = true; })](
+          folly::coro::AsyncGenerator<int32_t&&> gen) mutable
+      -> folly::coro::Task<bool> {
+        co_await gen.next();
+        co_return true;
+      },
+      10 /* buffer size */
+  };
+}
+
+bool TestSinkService::isSinkUnSubscribed() {
+  return sinkUnsubscribed_;
 }
 
 } // namespace testservice

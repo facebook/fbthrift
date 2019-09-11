@@ -74,8 +74,8 @@ class TestSetup : public testing::Test {
     }
   }
 
-  int numIOThreads_{10};
-  int numWorkerThreads_{10};
+  int numIOThreads_{1};
+  int numWorkerThreads_{1};
   int32_t serverPort_{0};
   folly::ScopedEventBaseThread clientEvbThread_;
   folly::ScopedEventBaseThread userThread_;

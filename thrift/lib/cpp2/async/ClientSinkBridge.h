@@ -62,6 +62,7 @@ class ClientSinkBridge : public TwoWayBridge<
 
   folly::coro::Task<folly::Try<StreamPayload>> sink(
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
+    sinkCalled_ = true;
     int64_t credit = 0;
     folly::Try<StreamPayload> finalResponse;
 
@@ -119,6 +120,12 @@ class ClientSinkBridge : public TwoWayBridge<
       }
     }
     co_return std::move(finalResponse);
+  }
+
+  void drain() {
+    if (!sinkCalled_) {
+      clientPush(StreamCancel{});
+    }
   }
 
   // SinkClientCallback method
@@ -210,6 +217,7 @@ class ClientSinkBridge : public TwoWayBridge<
 
   SinkServerCallback* serverCallback_{nullptr};
   folly::Executor::KeepAlive<folly::EventBase> evb_;
+  bool sinkCalled_{false};
 };
 
 } // namespace detail

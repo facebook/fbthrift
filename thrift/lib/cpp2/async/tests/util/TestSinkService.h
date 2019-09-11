@@ -36,6 +36,13 @@ class TestSinkService : public TestSinkServiceSvIf {
 
   apache::thrift::SinkConsumer<int32_t, int32_t>
   rangeEarlyResponse(int32_t from, int32_t to, int32_t early) override;
+
+  apache::thrift::SinkConsumer<int32_t, bool> unSubscribedSink() override;
+
+  bool isSinkUnSubscribed() override;
+
+ private:
+  bool sinkUnsubscribed_{false};
 };
 
 } // namespace testservice
