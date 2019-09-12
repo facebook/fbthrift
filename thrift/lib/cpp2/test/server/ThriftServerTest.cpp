@@ -592,7 +592,7 @@ TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds(5));
 
   // Run a long request.
-  client->future_sendResponse(20000);
+  auto slowRequestFuture = client->future_sendResponse(20000);
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
@@ -602,6 +602,8 @@ TEST(ThriftServer, LatencyHeader_QueueTimeout) {
   // Latency headers are set, when server throws queue timeout
   validateLatencyHeaders(
       rpcOptions.getReadHeaders(), LatencyHeaderStatus::EXPECTED);
+
+  std::move(slowRequestFuture).getVia(&base);
 }
 
 TEST(ThriftServer, ClientTimeoutTest) {
