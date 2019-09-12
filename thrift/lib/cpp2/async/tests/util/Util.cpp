@@ -19,6 +19,7 @@
 #include <folly/experimental/coro/BlockingWait.h>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
@@ -56,18 +57,20 @@ void TestSetup::initServer() {
 void TestSetup::connectToServer(
     folly::Function<folly::coro::Task<void>(
         testutil::testservice::TestSinkServiceAsyncClient&)> callMe) {
-  folly::coro::blockingWait(
-      [this, &callMe]() -> folly::coro::Task<void> {
-        CHECK_GT(serverPort_, 0) << "Check if the server has started already";
-        auto channel = apache::thrift::RocketClientChannel::newChannel(
-            apache::thrift::async::TAsyncSocket::UniquePtr(
-                new apache::thrift::async::TAsyncSocket(
-                    clientEvbThread_.getEventBase(), "::1", serverPort_)));
-        testutil::testservice::TestSinkServiceAsyncClient client(
-            std::move(channel));
-        co_await callMe(client).scheduleOn(userThread_.getEventBase());
-      }()
-                               .scheduleOn(clientEvbThread_.getEventBase()));
+  folly::coro::blockingWait([this, &callMe]() -> folly::coro::Task<void> {
+    CHECK_GT(serverPort_, 0) << "Check if the server has started already";
+    folly::Executor* executor = co_await folly::coro::co_current_executor;
+    auto channel = PooledRequestChannel::newChannel(
+        executor, ioThread_, [&](folly::EventBase& evb) {
+          return apache::thrift::RocketClientChannel::newChannel(
+              apache::thrift::async::TAsyncSocket::UniquePtr(
+                  new apache::thrift::async::TAsyncSocket(
+                      &evb, "::1", serverPort_)));
+        });
+    testutil::testservice::TestSinkServiceAsyncClient client(
+        std::move(channel));
+    co_await callMe(client);
+  }());
 }
 
 } // namespace thrift

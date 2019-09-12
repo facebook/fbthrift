@@ -79,6 +79,12 @@ class PooledRequestChannel : public RequestChannel {
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* cob) override;
 
+  void sendRequestSink(
+      RpcOptions& options,
+      std::unique_ptr<folly::IOBuf> buf,
+      std::shared_ptr<transport::THeader> header,
+      SinkClientCallback* cob) override;
+
   using RequestChannel::sendRequestStream;
 
   void setCloseCallback(CloseCallback*) override {

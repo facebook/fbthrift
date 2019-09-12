@@ -169,6 +169,19 @@ void PooledRequestChannel::sendRequestStream(
   });
 }
 
+void PooledRequestChannel::sendRequestSink(
+    RpcOptions& options,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<transport::THeader> header,
+    SinkClientCallback* cob) {
+  sendRequestImpl([options = std::move(options),
+                   buf = std::move(buf),
+                   header = std::move(header),
+                   cob](Impl& channel) mutable {
+    channel.sendRequestSink(options, std::move(buf), std::move(header), cob);
+  });
+}
+
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
   DCHECK(evb.inRunningEventBaseThread());
 

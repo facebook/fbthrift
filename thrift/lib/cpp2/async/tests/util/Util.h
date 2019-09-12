@@ -77,8 +77,8 @@ class TestSetup : public testing::Test {
   int numIOThreads_{1};
   int numWorkerThreads_{1};
   int32_t serverPort_{0};
-  folly::ScopedEventBaseThread clientEvbThread_;
-  folly::ScopedEventBaseThread userThread_;
+  std::shared_ptr<folly::IOExecutor> ioThread_{
+      std::make_shared<folly::ScopedEventBaseThread>()};
 };
 
 } // namespace thrift
