@@ -62,6 +62,22 @@ enum RpcPriority {
   N_PRIORITIES = 5,
 }
 
+// Represent the bit position of the compression algorithm that is negotiated
+// in TLS handshake
+enum CompressionAlgorithm {
+  NONE = 0,
+  ZLIB = 1,
+  ZSTD = 2,
+}
+
+// A TLS extension used for thrift parameters negotiation during TLS handshake.
+// All fields should be optional i64 bitmaps indicating feature presence.
+struct NegotiationParameters {
+  // nth (zero-based) least significant bit set if CompressionAlgorithm = n + 1
+  // is accepted. For example, 0b10 means ZSTD is accepted.
+  1: optional i64 (cpp.type = "std::uint64_t") compressionAlgos;
+}
+
 enum RequestRpcMetadataFlags {
   UNKNOWN = 0x0,
   QUERY_SERVER_LOAD = 0x1,
