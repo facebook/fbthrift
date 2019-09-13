@@ -1029,28 +1029,6 @@ TEST(ThriftServer, setIOThreadPool) {
   EXPECT_EQ(1, server->getNumIOWorkerThreads());
 }
 
-namespace {
-class ExtendedTestServiceAsyncProcessor : public TestServiceAsyncProcessor {
- public:
-  explicit ExtendedTestServiceAsyncProcessor(TestServiceSvIf* serviceInterface)
-      : TestServiceAsyncProcessor(serviceInterface) {}
-
-  folly::Optional<std::string> getCacheKeyTest() {
-    folly::IOBuf emptyBuffer;
-    return getCacheKey(
-        &emptyBuffer,
-        apache::thrift::protocol::PROTOCOL_TYPES::T_BINARY_PROTOCOL);
-  }
-};
-} // namespace
-
-TEST(ThriftServer, CacheAnnotation) {
-  // We aren't parsing anything just want this to compile
-  auto testInterface = std::unique_ptr<TestInterface>(new TestInterface);
-  ExtendedTestServiceAsyncProcessor processor(testInterface.get());
-  EXPECT_FALSE(processor.getCacheKeyTest().has_value());
-}
-
 TEST(ThriftServer, IdleServerTimeout) {
   TestThriftServerFactory<TestInterface> factory;
 

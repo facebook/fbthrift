@@ -1095,19 +1095,10 @@ class mstch_cpp2_function : public mstch_function {
     register_methods(
         this,
         {
-            {"function:cache_key?", &mstch_cpp2_function::has_cache_key},
-            {"function:cache_key_id", &mstch_cpp2_function::cache_key_id},
             {"function:coroutine?", &mstch_cpp2_function::coroutine},
             {"function:eb", &mstch_cpp2_function::event_based},
             {"function:cpp_name", &mstch_cpp2_function::cpp_name},
         });
-  }
-  mstch::node has_cache_key() {
-    return get_cache_key_arg() != nullptr;
-  }
-  mstch::node cache_key_id() {
-    auto field = get_cache_key_arg();
-    return field ? field->get_key() : 0;
   }
   mstch::node coroutine() {
     return bool(function_->annotations_.count("cpp.coroutine"));
@@ -1124,37 +1115,6 @@ class mstch_cpp2_function : public mstch_function {
   }
   mstch::node cpp_name() {
     return get_cpp_name(function_);
-  }
-
- private:
-  const t_field* get_cache_key_arg() const {
-    const t_field* result = nullptr;
-    for (auto* arg : function_->get_arglist()->get_members()) {
-      auto iter = arg->annotations_.find("cpp.cache");
-      if (iter != arg->annotations_.end()) {
-        if (!arg->get_type()->is_string_or_binary()) {
-          printf(
-              "Cache annotation is only allowed on string types, "
-              "got '%s' for argument '%s' in function '%s' at line %d",
-              arg->get_type()->get_name().data(),
-              arg->get_name().data(),
-              function_->get_name().data(),
-              arg->get_lineno());
-          exit(1);
-        }
-        if (result) {
-          printf(
-              "Multiple cache annotations are not allowed! (See argument '%s' "
-              "in function '%s' at line %d)",
-              arg->get_name().data(),
-              function_->get_name().data(),
-              arg->get_lineno());
-          exit(1);
-        }
-        result = arg;
-      }
-    }
-    return result;
   }
 };
 
@@ -1175,7 +1135,6 @@ class mstch_cpp2_service : public mstch_service {
             {"service:namespace_cpp2", &mstch_cpp2_service::namespace_cpp2},
             {"service:oneway_functions", &mstch_cpp2_service::oneway_functions},
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
-            {"service:cache_keys?", &mstch_cpp2_service::has_cache_keys},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:coroutines?", &mstch_cpp2_service::coroutines},
             {"service:client_buffered_stream?",
@@ -1229,16 +1188,6 @@ class mstch_cpp2_service : public mstch_service {
     for (auto const* function : service_->get_functions()) {
       if (function->is_oneway()) {
         return true;
-      }
-    }
-    return false;
-  }
-  mstch::node has_cache_keys() {
-    for (auto const* function : service_->get_functions()) {
-      for (auto const* arg : function->get_arglist()->get_members()) {
-        if (arg->annotations_.find("cpp.cache") != arg->annotations_.end()) {
-          return true;
-        }
       }
     }
     return false;

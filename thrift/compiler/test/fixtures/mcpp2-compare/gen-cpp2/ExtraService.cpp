@@ -172,10 +172,6 @@ const char* ExtraServiceAsyncProcessor::getServiceName() {
   return "ExtraService";
 }
 
-folly::Optional<std::string> ExtraServiceAsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
-  return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
-}
-
 void ExtraServiceAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
 }
@@ -195,7 +191,6 @@ std::unordered_set<std::string> ExtraServiceAsyncProcessor::onewayMethods_ {
   "oneway_void_ret_struct_param",
   "oneway_void_ret_listunion_param"
 };
-std::unordered_map<std::string, int16_t> ExtraServiceAsyncProcessor::cacheKeyMap_ {};
 const ExtraServiceAsyncProcessor::ProcessMap& ExtraServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

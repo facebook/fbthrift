@@ -55,7 +55,6 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   using BaseAsyncProcessor = void;
  protected:
   CSvIf* iface_;
-  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
   void process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
@@ -63,7 +62,6 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest() override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
-  static std::unordered_map<std::string, int16_t> cacheKeyMap_;
  public:
   using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<CAsyncProcessor>;
   using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;

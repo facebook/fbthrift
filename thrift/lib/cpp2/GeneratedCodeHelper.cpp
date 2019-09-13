@@ -188,60 +188,6 @@ std::string deserializeMethodName(
 }
 
 template <class ProtocolReader>
-static Optional<string> get_cache_key(
-    const IOBuf* buf,
-    const unordered_map<string, int16_t>& cache_key_map) {
-  string fname;
-  MessageType mtype;
-  int32_t protoSeqId = 0;
-  string pname;
-  TType ftype;
-  int16_t fid;
-  try {
-    ProtocolReader iprot;
-    iprot.setInput(buf);
-    iprot.readMessageBegin(fname, mtype, protoSeqId);
-    auto pfn = cache_key_map.find(fname);
-    if (pfn == cache_key_map.end()) {
-      return none;
-    }
-    auto cacheKeyParamId = pfn->second;
-    iprot.readStructBegin(pname);
-    while (true) {
-      iprot.readFieldBegin(pname, ftype, fid);
-      if (ftype == T_STOP) {
-        break;
-      }
-      if (fid == cacheKeyParamId) {
-        string cacheKey;
-        iprot.readString(cacheKey);
-        return Optional<string>(move(cacheKey));
-      }
-      iprot.skip(ftype);
-      iprot.readFieldEnd();
-    }
-    return none;
-  } catch (const exception& e) {
-    LOG(ERROR) << "Caught an exception parsing buffer:" << e.what();
-    return none;
-  }
-}
-
-Optional<string> get_cache_key(
-    const IOBuf* buf,
-    const PROTOCOL_TYPES protType,
-    const unordered_map<string, int16_t>& cache_key_map) {
-  switch (protType) {
-    case T_BINARY_PROTOCOL:
-      return get_cache_key<BinaryProtocolReader>(buf, cache_key_map);
-    case T_COMPACT_PROTOCOL:
-      return get_cache_key<CompactProtocolReader>(buf, cache_key_map);
-    default:
-      return none;
-  }
-}
-
-template <class ProtocolReader>
 static bool is_oneway_method(
     const IOBuf* buf,
     const unordered_set<string>& oneways) {

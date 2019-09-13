@@ -39,10 +39,6 @@ const char* CAsyncProcessor::getServiceName() {
   return "C";
 }
 
-folly::Optional<std::string> CAsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
-  return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
-}
-
 void CAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
 }
@@ -56,7 +52,6 @@ std::shared_ptr<folly::RequestContext> CAsyncProcessor::getBaseContextForRequest
 }
 
 std::unordered_set<std::string> CAsyncProcessor::onewayMethods_ {};
-std::unordered_map<std::string, int16_t> CAsyncProcessor::cacheKeyMap_ {};
 const CAsyncProcessor::ProcessMap& CAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

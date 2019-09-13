@@ -168,10 +168,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   using ProcessMap = folly::F14ValueMap<std::string, ProcessFunc>;
 
  protected:
-  virtual folly::Optional<std::string> getCacheKey(
-      folly::IOBuf* buf,
-      apache::thrift::protocol::PROTOCOL_TYPES protType) = 0;
-
   template <typename ProtocolIn, typename Args>
   static void deserializeRequest(
       Args& args,

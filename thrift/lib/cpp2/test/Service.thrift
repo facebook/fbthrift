@@ -63,7 +63,7 @@ struct TestUnsignedIntMapStruct {
 service TestService {
   string sendResponse(1:i64 size)
   oneway void noResponse(1:i64 size)
-  string echoRequest(1:string req (cpp.cache))
+  string echoRequest(1:string req)
   i32 echoInt(1:i32 req)
   string serializationTest(1: bool inEventBase)
   string eventBaseAsync() (thread = 'eb')

@@ -39,10 +39,6 @@ const char* MyRootAsyncProcessor::getServiceName() {
   return "MyRoot";
 }
 
-folly::Optional<std::string> MyRootAsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
-  return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
-}
-
 void MyRootAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
 }
@@ -56,7 +52,6 @@ std::shared_ptr<folly::RequestContext> MyRootAsyncProcessor::getBaseContextForRe
 }
 
 std::unordered_set<std::string> MyRootAsyncProcessor::onewayMethods_ {};
-std::unordered_map<std::string, int16_t> MyRootAsyncProcessor::cacheKeyMap_ {};
 const MyRootAsyncProcessor::ProcessMap& MyRootAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

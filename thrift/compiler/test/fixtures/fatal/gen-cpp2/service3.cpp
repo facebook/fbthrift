@@ -142,10 +142,6 @@ const char* service3AsyncProcessor::getServiceName() {
   return "service3";
 }
 
-folly::Optional<std::string> service3AsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
-  return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
-}
-
 void service3AsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
 }
@@ -159,7 +155,6 @@ std::shared_ptr<folly::RequestContext> service3AsyncProcessor::getBaseContextFor
 }
 
 std::unordered_set<std::string> service3AsyncProcessor::onewayMethods_ {};
-std::unordered_map<std::string, int16_t> service3AsyncProcessor::cacheKeyMap_ {};
 const service3AsyncProcessor::ProcessMap& service3AsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

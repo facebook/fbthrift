@@ -957,12 +957,6 @@ void process(
   }
 }
 
-//  Generated AsyncProcessor::getCacheKey just calls this.
-folly::Optional<std::string> get_cache_key(
-    const folly::IOBuf* buf,
-    const protocol::PROTOCOL_TYPES protType,
-    const std::unordered_map<std::string, int16_t>& cache_key_map);
-
 //  Generated AsyncProcessor::isOnewayMethod just calls this.
 bool is_oneway_method(
     const folly::IOBuf* buf,

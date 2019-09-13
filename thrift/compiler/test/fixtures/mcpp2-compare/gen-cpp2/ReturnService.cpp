@@ -431,10 +431,6 @@ const char* ReturnServiceAsyncProcessor::getServiceName() {
   return "ReturnService";
 }
 
-folly::Optional<std::string> ReturnServiceAsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
-  return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
-}
-
 void ReturnServiceAsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
 }
@@ -448,7 +444,6 @@ std::shared_ptr<folly::RequestContext> ReturnServiceAsyncProcessor::getBaseConte
 }
 
 std::unordered_set<std::string> ReturnServiceAsyncProcessor::onewayMethods_ {};
-std::unordered_map<std::string, int16_t> ReturnServiceAsyncProcessor::cacheKeyMap_ {};
 const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getBinaryProtocolProcessMap() {
   return binaryProcessMap_;
 }

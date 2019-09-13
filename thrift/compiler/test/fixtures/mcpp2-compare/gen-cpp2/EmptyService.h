@@ -49,7 +49,6 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   using BaseAsyncProcessor = void;
  protected:
   EmptyServiceSvIf* iface_;
-  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
   void process(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
@@ -57,7 +56,6 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest() override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
-  static std::unordered_map<std::string, int16_t> cacheKeyMap_;
  public:
   using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<EmptyServiceAsyncProcessor>;
   using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
