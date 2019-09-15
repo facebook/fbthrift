@@ -16,8 +16,6 @@
 
 #pragma once
 
-#include <gtest/gtest.h>
-
 #include <folly/SocketAddress.h>
 #include <folly/experimental/coro/Task.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
@@ -52,33 +50,23 @@ class TestEventHandler : public server::TServerEventHandler {
   int32_t port_;
 };
 
-class TestSetup : public testing::Test {
+class TestSetup {
  protected:
-  void initServer();
+  TestSetup();
+  ~TestSetup();
 
   void connectToServer(
       folly::Function<folly::coro::Task<void>(
           testutil::testservice::TestSinkServiceAsyncClient&)> callMe);
 
-  void SetUp() override {
-    initServer();
-  }
-
-  std::unique_ptr<ThriftServer> server_;
-  std::shared_ptr<testutil::testservice::TestSinkService> handler_;
-
-  void TearDown() override {
-    if (server_) {
-      server_->cleanUp();
-      server_.reset();
-    }
-  }
-
+ private:
   int numIOThreads_{1};
   int numWorkerThreads_{1};
   int32_t serverPort_{0};
   std::shared_ptr<folly::IOExecutor> ioThread_{
       std::make_shared<folly::ScopedEventBaseThread>()};
+  std::unique_ptr<ThriftServer> server_;
+  std::shared_ptr<testutil::testservice::TestSinkService> handler_;
 };
 
 } // namespace thrift

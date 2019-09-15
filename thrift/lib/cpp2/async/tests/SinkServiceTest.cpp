@@ -22,7 +22,7 @@ namespace thrift {
 
 using namespace testutil::testservice;
 
-class SinkServiceTest : public TestSetup {};
+class SinkServiceTest : public testing::Test, public TestSetup {};
 
 TEST_F(SinkServiceTest, SimpleSink) {
   connectToServer(

@@ -28,7 +28,7 @@ namespace thrift {
 
 using namespace testutil::testservice;
 
-void TestSetup::initServer() {
+TestSetup::TestSetup() {
   server_ = std::make_unique<ThriftServer>();
   server_->setPort(0);
   server_->setNumIOWorkerThreads(numIOThreads_);
@@ -52,6 +52,11 @@ void TestSetup::initServer() {
 
   // Get the port that the server has bound to
   serverPort_ = eventHandler->waitForPortAssignment();
+}
+
+TestSetup::~TestSetup() {
+  server_->cleanUp();
+  server_.reset();
 }
 
 void TestSetup::connectToServer(
