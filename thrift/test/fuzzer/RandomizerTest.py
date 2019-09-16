@@ -20,7 +20,7 @@ class TestRandomizer(object):
     iterations = 1024
 
     def get_randomizer(self, ttypes, spec_args, constraints):
-        state = randomizer.RandomizerState()
+        state = randomizer.RandomizerState({"global_constraint" : 100})
         return state.get_randomizer(ttypes, spec_args, constraints)
 
 class TestBoolRandomizer(unittest.TestCase, TestRandomizer):
@@ -819,6 +819,27 @@ class TestStructRandomizer(TestRandomizer, unittest.TestCase):
         for _ in sm.xrange(cls.iterations):
             val = gen.generate()
             self.assertIsNotNone(val)
+
+    def testSubRanomizersHaveDefaults(self):
+
+        # Have constraints with a field that is never
+        # used and won't come from the existing defaults.
+        # Then make sure that constraint for StructWithOptionals
+        # doesn't go everywhere.
+        targeted_key = "targeted_constraint"
+        constraints = {targeted_key: 100}
+        gen = self.struct_randomizer(ttypes.StructWithOptionals, constraints)
+
+        # Yes this is pretty ugly as we have
+        # to reach into a undercode field, but it
+        # does show what constraints get propagated and what don't
+        for _field_name, data in gen._field_rules.items():
+            # The targeted key will only apply to the first randomizer
+            self.assertNotIn(targeted_key, data["randomizer"].constraints.keys())
+
+            # The global one is propagated to everything.
+            self.assertIn("global_constraint", data["randomizer"].constraints)
+
 
 class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
     ttype = ttypes.IntUnion

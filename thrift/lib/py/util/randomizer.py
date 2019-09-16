@@ -127,6 +127,9 @@ class BaseRandomizer(object):
         flattened = {}
         deep_dict_update(flattened, cls.default_constraints)
 
+        # Put the default constraints of the whole stack
+        deep_dict_update(flattened, self.state.default_constraints)
+
         type_name = self.type_name
         for type_constraints in self.state.type_constraint_stacks[type_name]:
             deep_dict_update(flattened, type_constraints)
@@ -988,10 +991,11 @@ class RandomizerState(object):
     their constraint dictionaries.
     """
 
-    def __init__(self):
+    def __init__(self, default_constraints=None):
         self.randomizers = collections.defaultdict(list)
         self.recursion_trace = {}
         self.type_constraint_stacks = collections.defaultdict(list)
+        self.default_constraints = default_constraints or {}
 
     def get_randomizer(self, ttype, spec_args, constraints):
         """Get a randomizer object.
