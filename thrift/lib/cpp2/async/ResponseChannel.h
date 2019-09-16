@@ -132,7 +132,7 @@ class ResponseChannelRequest {
     }
   }
 
-  void setStartedProcessing() {
+  virtual void setStartedProcessing() {
     startedProcessing_ = true;
     if (admissionController_ != nullptr) {
       admissionController_->dequeue();
