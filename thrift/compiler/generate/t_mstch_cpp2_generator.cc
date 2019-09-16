@@ -29,6 +29,7 @@ using namespace std;
 
 namespace {
 using namespace apache::thrift;
+using namespace apache::thrift::compiler;
 std::string const& map_find_first(
     std::map<std::string, std::string> const& m,
     std::initializer_list<char const*> keys) {

@@ -177,15 +177,15 @@ void dump_docstrings(t_program* program) {
 
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,
-    apache::thrift::parsing_params params) {
-  apache::thrift::parsing_driver driver{path, std::move(params)};
+    parsing_params params) {
+  parsing_driver driver{path, std::move(params)};
 
-  std::vector<apache::thrift::diagnostic_message> diagnostic_messages;
+  std::vector<diagnostic_message> diagnostic_messages;
   auto program = driver.parse(diagnostic_messages);
 
   for (auto const& message : diagnostic_messages) {
     switch (message.level) {
-      case apache::thrift::diagnostic_level::YY_ERROR:
+      case diagnostic_level::YY_ERROR:
         fprintf(
             stderr,
             "[ERROR:%s:%d] (last token was '%s')\n%s\n",
@@ -194,7 +194,7 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
             message.last_token.c_str(),
             message.message.c_str());
         break;
-      case apache::thrift::diagnostic_level::WARNING:
+      case diagnostic_level::WARNING:
         fprintf(
             stderr,
             "[WARNING:%s:%d] %s\n",
@@ -202,14 +202,14 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
             message.lineno,
             message.message.c_str());
         break;
-      case apache::thrift::diagnostic_level::VERBOSE:
+      case diagnostic_level::VERBOSE:
         fprintf(stderr, "%s", message.message.c_str());
         break;
-      case apache::thrift::diagnostic_level::DEBUG:
+      case diagnostic_level::DEBUG:
         fprintf(
             stderr, "[PARSE:%d] %s\n", message.lineno, message.message.c_str());
         break;
-      case apache::thrift::diagnostic_level::FAILURE:
+      case diagnostic_level::FAILURE:
         fprintf(
             stderr,
             "[FAILURE:%s:%d] %s\n",

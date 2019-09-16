@@ -123,7 +123,7 @@ void dump_docstrings(t_program* program);
  */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
     std::string path,
-    apache::thrift::parsing_params params);
+    parsing_params params);
 
 void mark_file_executable(std::string const& path);
 

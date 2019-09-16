@@ -379,7 +379,7 @@ int compile(std::vector<std::string> arguments) {
   g_stage = "parse";
 
   // Parse it!
-  apache::thrift::parsing_params params{};
+  parsing_params params{};
   params.debug = (g_debug != 0);
   params.verbose = (g_verbose != 0);
   params.warn = g_warn;

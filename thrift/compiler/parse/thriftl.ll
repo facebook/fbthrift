@@ -37,7 +37,7 @@
 
 #include "thrift/compiler/parse/parsing_driver.h"
 
-using parsing_driver = apache::thrift::parsing_driver;
+using parsing_driver = apache::thrift::compiler::parsing_driver;
 
 /**
  * Note macro expansion because this is different between OSS and internal
@@ -107,7 +107,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
     service_scope = true;
   }
   ++g_scope_level;
-  return apache::thrift::yy::parser::make_tok_char_bracket_curly_l();
+  return apache::thrift::compiler::yy::parser::make_tok_char_bracket_curly_l();
 }
 "}"                  {
   --g_scope_level;
@@ -115,98 +115,98 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
     service_encountered = false;
     service_scope = false;
   }
-  return apache::thrift::yy::parser::make_tok_char_bracket_curly_r();
+  return apache::thrift::compiler::yy::parser::make_tok_char_bracket_curly_r();
 }
 {symbol}             {
   switch (yytext[0]) {
   case ',':
-    return apache::thrift::yy::parser::make_tok_char_comma();
+    return apache::thrift::compiler::yy::parser::make_tok_char_comma();
   case ';':
-    return apache::thrift::yy::parser::make_tok_char_semicolon();
+    return apache::thrift::compiler::yy::parser::make_tok_char_semicolon();
   case '{':
-    return apache::thrift::yy::parser::make_tok_char_bracket_curly_l();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_curly_l();
   case '}':
-    return apache::thrift::yy::parser::make_tok_char_bracket_curly_r();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_curly_r();
   case '=':
-    return apache::thrift::yy::parser::make_tok_char_equal();
+    return apache::thrift::compiler::yy::parser::make_tok_char_equal();
   case '[':
-    return apache::thrift::yy::parser::make_tok_char_bracket_square_l();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_square_l();
   case ']':
-    return apache::thrift::yy::parser::make_tok_char_bracket_square_r();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_square_r();
   case ':':
-    return apache::thrift::yy::parser::make_tok_char_colon();
+    return apache::thrift::compiler::yy::parser::make_tok_char_colon();
   case '(':
-    return apache::thrift::yy::parser::make_tok_char_bracket_round_l();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_round_l();
   case ')':
-    return apache::thrift::yy::parser::make_tok_char_bracket_round_r();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_round_r();
   case '<':
-    return apache::thrift::yy::parser::make_tok_char_bracket_angle_l();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_angle_l();
   case '>':
-    return apache::thrift::yy::parser::make_tok_char_bracket_angle_r();
+    return apache::thrift::compiler::yy::parser::make_tok_char_bracket_angle_r();
   }
 
   driver.failure("Invalid symbol encountered.");
 }
 
-"false"              { return apache::thrift::yy::parser::make_tok_bool_constant(0); }
-"true"               { return apache::thrift::yy::parser::make_tok_bool_constant(1); }
+"false"              { return apache::thrift::compiler::yy::parser::make_tok_bool_constant(0); }
+"true"               { return apache::thrift::compiler::yy::parser::make_tok_bool_constant(1); }
 
-"namespace"          { return apache::thrift::yy::parser::make_tok_namespace();            }
-"cpp_namespace"      { return apache::thrift::yy::parser::make_tok_cpp_namespace();        }
-"cpp_include"        { return apache::thrift::yy::parser::make_tok_cpp_include();          }
-"hs_include"         { return apache::thrift::yy::parser::make_tok_hs_include();           }
-"java_package"       { return apache::thrift::yy::parser::make_tok_java_package();         }
-"cocoa_prefix"       { return apache::thrift::yy::parser::make_tok_cocoa_prefix();         }
-"csharp_namespace"   { return apache::thrift::yy::parser::make_tok_csharp_namespace();     }
-"php_namespace"      { return apache::thrift::yy::parser::make_tok_php_namespace();        }
-"py_module"          { return apache::thrift::yy::parser::make_tok_py_module();            }
-"perl_package"       { return apache::thrift::yy::parser::make_tok_perl_package();         }
-"ruby_namespace"     { return apache::thrift::yy::parser::make_tok_ruby_namespace();       }
-"smalltalk_category" { return apache::thrift::yy::parser::make_tok_smalltalk_category();   }
-"smalltalk_prefix"   { return apache::thrift::yy::parser::make_tok_smalltalk_prefix();     }
-"include"            { return apache::thrift::yy::parser::make_tok_include();              }
-"void"               { return apache::thrift::yy::parser::make_tok_void();                 }
-"bool"               { return apache::thrift::yy::parser::make_tok_bool();                 }
-"byte"               { return apache::thrift::yy::parser::make_tok_byte();                 }
-"i16"                { return apache::thrift::yy::parser::make_tok_i16();                  }
-"i32"                { return apache::thrift::yy::parser::make_tok_i32();                  }
-"i64"                { return apache::thrift::yy::parser::make_tok_i64();                  }
-"double"             { return apache::thrift::yy::parser::make_tok_double();               }
-"float"              { return apache::thrift::yy::parser::make_tok_float();                }
-"string"             { return apache::thrift::yy::parser::make_tok_string();               }
-"binary"             { return apache::thrift::yy::parser::make_tok_binary();               }
-"map"                { return apache::thrift::yy::parser::make_tok_map();                  }
-"list"               { return apache::thrift::yy::parser::make_tok_list();                 }
-"set"                { return apache::thrift::yy::parser::make_tok_set();                  }
+"namespace"          { return apache::thrift::compiler::yy::parser::make_tok_namespace();            }
+"cpp_namespace"      { return apache::thrift::compiler::yy::parser::make_tok_cpp_namespace();        }
+"cpp_include"        { return apache::thrift::compiler::yy::parser::make_tok_cpp_include();          }
+"hs_include"         { return apache::thrift::compiler::yy::parser::make_tok_hs_include();           }
+"java_package"       { return apache::thrift::compiler::yy::parser::make_tok_java_package();         }
+"cocoa_prefix"       { return apache::thrift::compiler::yy::parser::make_tok_cocoa_prefix();         }
+"csharp_namespace"   { return apache::thrift::compiler::yy::parser::make_tok_csharp_namespace();     }
+"php_namespace"      { return apache::thrift::compiler::yy::parser::make_tok_php_namespace();        }
+"py_module"          { return apache::thrift::compiler::yy::parser::make_tok_py_module();            }
+"perl_package"       { return apache::thrift::compiler::yy::parser::make_tok_perl_package();         }
+"ruby_namespace"     { return apache::thrift::compiler::yy::parser::make_tok_ruby_namespace();       }
+"smalltalk_category" { return apache::thrift::compiler::yy::parser::make_tok_smalltalk_category();   }
+"smalltalk_prefix"   { return apache::thrift::compiler::yy::parser::make_tok_smalltalk_prefix();     }
+"include"            { return apache::thrift::compiler::yy::parser::make_tok_include();              }
+"void"               { return apache::thrift::compiler::yy::parser::make_tok_void();                 }
+"bool"               { return apache::thrift::compiler::yy::parser::make_tok_bool();                 }
+"byte"               { return apache::thrift::compiler::yy::parser::make_tok_byte();                 }
+"i16"                { return apache::thrift::compiler::yy::parser::make_tok_i16();                  }
+"i32"                { return apache::thrift::compiler::yy::parser::make_tok_i32();                  }
+"i64"                { return apache::thrift::compiler::yy::parser::make_tok_i64();                  }
+"double"             { return apache::thrift::compiler::yy::parser::make_tok_double();               }
+"float"              { return apache::thrift::compiler::yy::parser::make_tok_float();                }
+"string"             { return apache::thrift::compiler::yy::parser::make_tok_string();               }
+"binary"             { return apache::thrift::compiler::yy::parser::make_tok_binary();               }
+"map"                { return apache::thrift::compiler::yy::parser::make_tok_map();                  }
+"list"               { return apache::thrift::compiler::yy::parser::make_tok_list();                 }
+"set"                { return apache::thrift::compiler::yy::parser::make_tok_set();                  }
 "sink"               {
   if (service_scope) {
-    return apache::thrift::yy::parser::make_tok_sink();
+    return apache::thrift::compiler::yy::parser::make_tok_sink();
   } else {
-    return apache::thrift::yy::parser::make_tok_identifier(std::string{yytext});
+    return apache::thrift::compiler::yy::parser::make_tok_identifier(std::string{yytext});
   }
 }
-"stream"             { return apache::thrift::yy::parser::make_tok_stream();               }
-"oneway"             { return apache::thrift::yy::parser::make_tok_oneway();               }
-"typedef"            { return apache::thrift::yy::parser::make_tok_typedef();              }
-"struct"             { return apache::thrift::yy::parser::make_tok_struct();               }
-"union"              { return apache::thrift::yy::parser::make_tok_union();                }
-"exception"          { return apache::thrift::yy::parser::make_tok_xception();             }
-"extends"            { return apache::thrift::yy::parser::make_tok_extends();              }
+"stream"             { return apache::thrift::compiler::yy::parser::make_tok_stream();               }
+"oneway"             { return apache::thrift::compiler::yy::parser::make_tok_oneway();               }
+"typedef"            { return apache::thrift::compiler::yy::parser::make_tok_typedef();              }
+"struct"             { return apache::thrift::compiler::yy::parser::make_tok_struct();               }
+"union"              { return apache::thrift::compiler::yy::parser::make_tok_union();                }
+"exception"          { return apache::thrift::compiler::yy::parser::make_tok_xception();             }
+"extends"            { return apache::thrift::compiler::yy::parser::make_tok_extends();              }
 "stream throws"      {
   /* this is a hack; lex doesn't allow whitespace in trailing context,
    * so match entire "stream throws" as a token
    */
-  return apache::thrift::yy::parser::make_tok_streamthrows();
+  return apache::thrift::compiler::yy::parser::make_tok_streamthrows();
 }
-"throws"             { return apache::thrift::yy::parser::make_tok_throws();               }
+"throws"             { return apache::thrift::compiler::yy::parser::make_tok_throws();               }
 "service"            {
   service_encountered = true;
-  return apache::thrift::yy::parser::make_tok_service();
+  return apache::thrift::compiler::yy::parser::make_tok_service();
 }
-"enum"               { return apache::thrift::yy::parser::make_tok_enum();                 }
-"const"              { return apache::thrift::yy::parser::make_tok_const();                }
-"required"           { return apache::thrift::yy::parser::make_tok_required();             }
-"optional"           { return apache::thrift::yy::parser::make_tok_optional();             }
+"enum"               { return apache::thrift::compiler::yy::parser::make_tok_enum();                 }
+"const"              { return apache::thrift::compiler::yy::parser::make_tok_const();                }
+"required"           { return apache::thrift::compiler::yy::parser::make_tok_required();             }
+"optional"           { return apache::thrift::compiler::yy::parser::make_tok_optional();             }
 
 
 "abstract"           { thrift_reserved_keyword(driver, yytext); }
@@ -289,7 +289,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   if (errno == ERANGE) {
     integer_overflow(driver, yytext);
   }
-  return apache::thrift::yy::parser::make_tok_int_constant(val);
+  return apache::thrift::compiler::yy::parser::make_tok_int_constant(val);
 }
 
 {intconstant} {
@@ -298,7 +298,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   if (errno == ERANGE) {
     integer_overflow(driver, yytext);
   }
-  return apache::thrift::yy::parser::make_tok_int_constant(val);
+  return apache::thrift::compiler::yy::parser::make_tok_int_constant(val);
 }
 
 {hexconstant} {
@@ -307,38 +307,38 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
   if (errno == ERANGE) {
     integer_overflow(driver, yytext);
   }
-  return apache::thrift::yy::parser::make_tok_int_constant(val);
+  return apache::thrift::compiler::yy::parser::make_tok_int_constant(val);
 }
 
 {dubconstant} {
   double val = atof(yytext);
-  return apache::thrift::yy::parser::make_tok_dub_constant(val);
+  return apache::thrift::compiler::yy::parser::make_tok_dub_constant(val);
 }
 
 {identifier} {
-  return apache::thrift::yy::parser::make_tok_identifier(std::string{yytext});
+  return apache::thrift::compiler::yy::parser::make_tok_identifier(std::string{yytext});
 }
 
 {st_identifier} {
-  return apache::thrift::yy::parser::make_tok_st_identifier(std::string{yytext});
+  return apache::thrift::compiler::yy::parser::make_tok_st_identifier(std::string{yytext});
 }
 
 {dliteral} {
   std::string val{yytext + 1};
   val = val.substr(0, val.length() - 1);
-  return apache::thrift::yy::parser::make_tok_literal(std::move(val));
+  return apache::thrift::compiler::yy::parser::make_tok_literal(std::move(val));
 }
 
 {sliteral} {
   std::string val{yytext + 1};
   val = val.substr(0, val.length() - 1);
-  return apache::thrift::yy::parser::make_tok_literal(std::move(val));
+  return apache::thrift::compiler::yy::parser::make_tok_literal(std::move(val));
 }
 
 {doctext} {
  /* This does not show up in the parse tree. */
  /* Rather, the parser will grab it out of the global. */
-  if (driver.mode == apache::thrift::parsing_mode::PROGRAM) {
+  if (driver.mode == apache::thrift::compiler::parsing_mode::PROGRAM) {
     std::string doctext{yytext + 3};
     doctext = doctext.substr(0, doctext.length() - 2);
 
@@ -353,7 +353,7 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 }
 
 <<EOF>> {
-  return apache::thrift::yy::parser::make_tok_eof();
+  return apache::thrift::compiler::yy::parser::make_tok_eof();
 }
 
 %%

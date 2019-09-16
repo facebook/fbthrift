@@ -32,6 +32,7 @@
 
 namespace apache {
 namespace thrift {
+namespace compiler {
 
 namespace {
 
@@ -73,8 +74,7 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse(
     return result;
   }
 
-  parser_ = std::make_unique<apache::thrift::yy::parser>(
-      *this, scanner->get_scanner());
+  parser_ = std::make_unique<yy::parser>(*this, scanner->get_scanner());
 
   try {
     parse_file();
@@ -110,7 +110,7 @@ void parsing_driver::parse_file() {
 
   // Create new scope and scan for includes
   verbose("Scanning %s for includes\n", path.c_str());
-  mode = apache::thrift::parsing_mode::INCLUDES;
+  mode = parsing_mode::INCLUDES;
   try {
     if (parser_->parse() != 0) {
       failure("Parser error during include pass.");
@@ -158,7 +158,7 @@ void parsing_driver::parse_file() {
     failure(ex.what());
   }
 
-  mode = apache::thrift::parsing_mode::PROGRAM;
+  mode = parsing_mode::PROGRAM;
   verbose("Parsing %s for types\n", path.c_str());
   try {
     if (parser_->parse() != 0) {
@@ -541,5 +541,6 @@ boost::optional<std::string> parsing_driver::clean_up_doctext(
   return docstring;
 }
 
+} // namespace compiler
 } // namespace thrift
 } // namespace apache
