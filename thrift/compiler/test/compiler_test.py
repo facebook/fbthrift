@@ -12,7 +12,6 @@ import traceback
 import unittest
 
 
-skip_py_generate = os.getenv("THRIFT_COMPILER_TEST_SKIP_PY_GENERATE")
 thrift = os.getenv("THRIFT_COMPILER_BIN")
 fixtures_root_dir = os.getenv("THRIFT_FIXTURES_DIR")
 
@@ -113,11 +112,6 @@ class CompilerTest(unittest.TestCase):
             args = shlex.split(cmd.strip())
             # Get cmd language
             lang = args[0].rsplit(":", 1)[0] if ":" in args[0] else args[0]
-
-            # Skip in cmake test. Python generator doesn't work
-            if skip_py_generate == "True":
-                if "cpp2" in lang or "schema" in lang:
-                    continue
 
             # Add to list of generated languages
             languages.add(lang)
