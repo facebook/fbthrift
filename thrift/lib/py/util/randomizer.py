@@ -754,6 +754,7 @@ class StructRandomizer(BaseRandomizer):
         self._field_rules = field_rules
         self._is_union = is_union
         self._ttype = ttype
+        self._field_names = list(self._field_rules)
 
     def _increase_recursion_depth(self):
         """Increase the depth in the recursion trace for this struct type.
@@ -820,7 +821,7 @@ class StructRandomizer(BaseRandomizer):
             return None
 
         fields = {}
-        fields_to_randomize = list(self._field_rules)
+        fields_to_randomize = self._field_names
         p_include = self.constraints['p_include']
 
         if self._is_union:
@@ -857,6 +858,9 @@ class StructRandomizer(BaseRandomizer):
         if (fields is None) or (self._is_union and not fields):
             return None
         else:
+            if self._is_union:
+                for f in self._field_names:
+                    fields.setdefault(f, None)
             return self._ttype(**fields)
 
     def _seed_to_dict(self, seed):

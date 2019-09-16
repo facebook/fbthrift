@@ -118,3 +118,15 @@ service TestService {
 }
 
 union EmptyUnion {}
+
+
+union NumberUnion {
+  1: i32 my_integer,
+  2: float my_float,
+} (final)
+
+struct NumberUnionStruct {
+  1: NumberUnion nu = {
+    'my_integer': 100
+  }
+} (final)

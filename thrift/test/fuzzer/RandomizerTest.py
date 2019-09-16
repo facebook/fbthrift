@@ -812,6 +812,13 @@ class TestStructRandomizer(TestRandomizer, unittest.TestCase):
             # randomizer is reasonable.
             self.assertIsNone(val)
 
+    def testStructContainingDefaultUnion(self):
+        cls = self.__class__
+        constraints = {}
+        gen = self.struct_randomizer(ttypes.NumberUnionStruct, constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(val)
 
 class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
     ttype = ttypes.IntUnion
