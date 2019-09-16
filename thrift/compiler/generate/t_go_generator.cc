@@ -1152,7 +1152,7 @@ string t_go_generator::render_const_value(
     t_type* ktype = ((t_map*)type)->get_key_type();
     t_type* vtype = ((t_map*)type)->get_val_type();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
-    out << "map[" << type_to_go_type(ktype) << "]" << type_to_go_type(vtype)
+    out << "map[" << type_to_go_key_type(ktype) << "]" << type_to_go_type(vtype)
         << "{" << endl;
     indent_up();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
