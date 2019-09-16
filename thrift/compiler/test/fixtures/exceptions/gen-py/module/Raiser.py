@@ -25,7 +25,7 @@ fastproto = None
 if not '__pypy__' in sys.builtin_module_names:
   try:
     from thrift.protocol import fastproto
-  except:
+  except ImportError:
     pass
 
 all_structs = []

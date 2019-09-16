@@ -868,7 +868,7 @@ string t_py_generator::render_fastproto_includes() {
          "if not '__pypy__' in sys.builtin_module_names:\n"
          "  try:\n"
          "    from thrift.protocol import fastproto\n"
-         "  except:\n"
+         "  except ImportError:\n"
          "    pass\n";
 }
 

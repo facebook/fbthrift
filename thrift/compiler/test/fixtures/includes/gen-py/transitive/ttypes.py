@@ -24,7 +24,7 @@ fastproto = None
 if not '__pypy__' in sys.builtin_module_names:
   try:
     from thrift.protocol import fastproto
-  except:
+  except ImportError:
     pass
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
