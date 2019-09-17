@@ -258,7 +258,8 @@ class t_java_generator : public t_oop_generator {
    */
 
   std::string java_package();
-  virtual std::string java_type_imports();
+  virtual std::string java_service_imports();
+  virtual std::string java_struct_imports();
   std::string java_thrift_imports();
   std::string java_suppress_warnings_enum();
   std::string java_suppress_warnings_consts();

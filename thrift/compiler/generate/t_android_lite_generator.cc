@@ -68,7 +68,7 @@ class t_android_lite_generator : public t_java_generator {
   void init_generator() override;
   void close_generator() override;
 
-  string java_type_imports() override;
+  string java_struct_imports() override;
   const string& get_package_dir() override;
   string type_name(
       t_type* ttype,
@@ -210,7 +210,7 @@ void t_android_lite_generator::write_logger_file() {
   used_types_.insert("java.io.IOException");
   used_types_.insert("java.util.HashMap");
 
-  out_logger << java_type_imports() << endl
+  out_logger << java_struct_imports() << endl
              << android_thrift_imports() << endl
              << endl; // empty line at end
 
@@ -290,7 +290,7 @@ void t_android_lite_generator::write_class_file() {
 
   out_class << autogen_comment() << package_header() << endl;
 
-  out_class << java_type_imports() << endl
+  out_class << java_struct_imports() << endl
             << android_thrift_imports() << endl
             << endl; // empty line at end
 
@@ -379,7 +379,7 @@ void t_android_lite_generator::record_type_use(t_type* ttype) {
   }
 }
 
-string t_android_lite_generator::java_type_imports() {
+string t_android_lite_generator::java_struct_imports() {
   std::string type_imports;
   for (const string& used_type : used_types_) {
     type_imports += "import " + used_type + ";\n";
@@ -793,7 +793,7 @@ void t_android_lite_generator::generate_consts(vector<t_const*> tconsts) {
   consts_stream.open(f_consts_name.c_str());
 
   consts_stream << autogen_comment() << package_header() << endl;
-  consts_stream << java_type_imports() << endl
+  consts_stream << java_struct_imports() << endl
                 << android_thrift_imports() << endl
                 << endl; // empty line at end
   consts_stream << "public class " << program_name_ << "Constants {" << endl;

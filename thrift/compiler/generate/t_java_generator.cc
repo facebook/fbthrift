@@ -81,17 +81,26 @@ string t_java_generator::java_package() {
 }
 
 /**
- * Prints standard java imports
+ * Prints standard java imports for a thrift service
  *
  * @return List of imports for Java types that are used in here
  */
-string t_java_generator::java_type_imports() {
+string t_java_generator::java_service_imports() {
+  return java_struct_imports() +
+      "import org.slf4j.Logger;\nimport org.slf4j.LoggerFactory;\n\n";
+}
+
+/**
+ * Prints standard java imports for a thrift structure
+ *
+ * @return List of imports for Java types that are used in here
+ */
+string t_java_generator::java_struct_imports() {
   return string() + "import java.util.List;\n" +
-      "import java.util.ArrayList;\n" + "import java.util.Map;\n" +
-      "import java.util.HashMap;\n" + "import java.util.Set;\n" +
-      "import java.util.HashSet;\n" + "import java.util.Collections;\n" +
-      "import java.util.BitSet;\n" + "import java.util.Arrays;\n" +
-      "import org.slf4j.Logger;\n" + "import org.slf4j.LoggerFactory;\n\n";
+      "import java.util.ArrayList;\nimport java.util.Map;\n" +
+      "import java.util.HashMap;\nimport java.util.Set;\n" +
+      "import java.util.HashSet;\nimport java.util.Collections;\n" +
+      "import java.util.BitSet;\nimport java.util.Arrays;\n";
 }
 
 /**
@@ -267,7 +276,7 @@ void t_java_generator::generate_consts(std::vector<t_const*> consts) {
   record_genfile(f_consts_name);
 
   // Print header
-  f_consts << autogen_comment() << java_package() << java_type_imports();
+  f_consts << autogen_comment() << java_package() << java_struct_imports();
 
   f_consts << java_suppress_warnings_consts() << "public class Constants {"
            << endl
@@ -548,7 +557,7 @@ void t_java_generator::generate_java_struct(
   f_struct.open(f_struct_name.c_str());
   record_genfile(f_struct_name);
 
-  f_struct << autogen_comment() << java_package() << java_type_imports()
+  f_struct << autogen_comment() << java_package() << java_struct_imports()
            << java_thrift_imports();
 
   generate_java_struct_definition(f_struct, tstruct, is_exception);
@@ -568,7 +577,7 @@ void t_java_generator::generate_java_union(t_struct* tstruct) {
   f_struct.open(f_struct_name.c_str());
   record_genfile(f_struct_name);
 
-  f_struct << autogen_comment() << java_package() << java_type_imports()
+  f_struct << autogen_comment() << java_package() << java_struct_imports()
            << java_thrift_imports();
 
   generate_java_doc(f_struct, tstruct);
@@ -2266,7 +2275,7 @@ void t_java_generator::generate_service(t_service* tservice) {
   f_service_.open(f_service_name.c_str());
   record_genfile(f_service_name);
 
-  f_service_ << autogen_comment() << java_package() << java_type_imports()
+  f_service_ << autogen_comment() << java_package() << java_service_imports()
              << java_thrift_imports();
 
   f_service_ << java_suppress_warnings_service() << "public class "
