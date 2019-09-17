@@ -56,6 +56,16 @@ void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
+void TccStructTraits<::cpp2::SinkException>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "reason") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
 
 } // namespace detail
 } // namespace thrift
@@ -259,5 +269,55 @@ template void CompatibleWithKeywordSink::readNoXfer<>(apache::thrift::CompactPro
 template uint32_t CompatibleWithKeywordSink::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t CompatibleWithKeywordSink::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+SinkException::SinkException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
+    reason(std::move(reason__arg)) {
+  __isset.reason = true;
+}
+
+void SinkException::__clear() {
+  // clear all fields
+  reason = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool SinkException::operator==(const SinkException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reason == rhs.reason)) {
+    return false;
+  }
+  return true;
+}
+
+bool SinkException::operator<(const SinkException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reason == rhs.reason)) {
+    return lhs.reason < rhs.reason;
+  }
+  return false;
+}
+
+
+void swap(SinkException& a, SinkException& b) {
+  using ::std::swap;
+  swap(a.reason, b.reason);
+  swap(a.__isset, b.__isset);
+}
+
+template void SinkException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SinkException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SinkException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SinkException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void SinkException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SinkException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SinkException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SinkException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

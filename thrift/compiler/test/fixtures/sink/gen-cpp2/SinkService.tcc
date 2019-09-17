@@ -23,6 +23,12 @@ typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
     apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
     > SinkService_methodAndReponse_presult;
+typedef apache::thrift::ThriftPresult<false> SinkService_methodThrow_pargs;
+typedef apache::thrift::ThriftPResultSink<
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkException>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::SinkPayload*>>,
+    apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_STRUCT,  ::cpp2::FinalResponse*>>
+    > SinkService_methodThrow_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void SinkServiceAsyncProcessor::_processInThread_method(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
@@ -161,6 +167,86 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodAndReponse(std::unique_ptr<a
         ew, std::move(req), reqCtx, ctx, "methodAndReponse");
     return;
   }
+}
+
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::_processInThread_methodThrow(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf), ctx, eb, tm, pri, apache::thrift::RpcKind::SINK, &SinkServiceAsyncProcessor::process_methodThrow<ProtocolIn_, ProtocolOut_>, this);
+}
+template <typename ProtocolIn_, typename ProtocolOut_>
+void SinkServiceAsyncProcessor::process_methodThrow(std::unique_ptr<apache::thrift::ResponseChannelRequest> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  // make sure getConnectionContext is null
+  // so async calls don't accidentally use it
+  iface_->setConnectionContext(nullptr);
+  SinkService_methodThrow_pargs args;
+  std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "SinkService.methodThrow", ctx));
+  try {
+    folly::io::Cursor cursor(buf.get());
+    cursor.skip(ctx->getMessageBeginSize());
+    ProtocolIn_ iprot;
+    iprot.setInput(cursor);
+    deserializeRequest(args, buf.get(), &iprot, ctxStack.get());
+  }
+  catch (const std::exception& ex) {
+    apache::thrift::detail::ap::process_handle_exn_deserialization<ProtocolOut_>(
+        ex, std::move(req), ctx, eb, "methodThrow");
+    return;
+  }
+  req->setStartedProcessing();
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>>(std::move(req), std::move(ctxStack), return_methodThrow<ProtocolIn_,ProtocolOut_>, throw_wrapped_methodThrow<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  if (!callback->isRequestActive()) {
+    callback.release()->deleteInThread();
+    return;
+  }
+  ctx->setStartedProcessing();
+  iface_->async_tm_methodThrow(std::move(callback));
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServiceAsyncProcessor::return_methodThrow(apache::thrift::ContextStack* ctx, apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>&& _return, folly::Executor::KeepAlive<folly::SequencedExecutor> executor) {
+  ProtocolOut_ prot;
+  SinkService_methodThrow_presult::FieldsType result;
+  using SinkPResultType = SinkService_methodThrow_presult::SinkPResultType;
+  using FinalResponsePResultType = SinkService_methodThrow_presult::FinalResponsePResultType;
+  auto exMap = [](FinalResponsePResultType&, folly::exception_wrapper) {
+    return false;
+  };
+
+  auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
+      ProtocolIn_,
+      ProtocolOut_,
+      SinkPResultType,
+      FinalResponsePResultType>(
+      std::move(_return),
+      std::move(executor),
+      exMap);
+
+  return {serializeResponse("methodThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+}
+
+template <class ProtocolIn_, class ProtocolOut_>
+void SinkServiceAsyncProcessor::throw_wrapped_methodThrow(std::unique_ptr<apache::thrift::ResponseChannelRequest> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx) {
+  if (!ew) {
+    return;
+  }
+  SinkService_methodThrow_presult result;
+  if (ew.with_exception([&]( ::cpp2::SinkException& e) {
+    ctx->userExceptionWrapped(true, ew);
+    result.fields.get<0>().ref() = e;
+    result.fields.setIsSet(0, true);
+  }
+  )) {} else
+  {
+    (void)protoSeqId;
+    apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
+        ew, std::move(req), reqCtx, ctx, "methodThrow");
+    return;
+  }
+  ProtocolOut_ prot;
+  auto queue = serializeResponse("methodThrow", &prot, protoSeqId, ctx, result.fields);
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  return req->sendSinkReply(queue.move(), {});
 }
 
 } // cpp2

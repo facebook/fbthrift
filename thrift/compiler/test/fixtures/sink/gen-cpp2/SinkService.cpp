@@ -48,11 +48,32 @@ void SinkServiceSvIf::async_tm_methodAndReponse(std::unique_ptr<apache::thrift::
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodAndReponse(); });
 }
 
+apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::methodThrow() {
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodThrow");
+}
+
+folly::SemiFuture<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::semifuture_methodThrow() {
+  return apache::thrift::detail::si::semifuture([&] { return methodThrow(); });
+}
+
+folly::Future<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>> SinkServiceSvIf::future_methodThrow() {
+  return apache::thrift::detail::si::future(semifuture_methodThrow(), getThreadManager());
+}
+
+
+void SinkServiceSvIf::async_tm_methodThrow(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse>>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_methodThrow(); });
+}
+
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::method() {
   return {};
 }
 
 apache::thrift::ResponseAndSinkConsumer< ::cpp2::InitialResponse, ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::methodAndReponse() {
+  return {};
+}
+
+apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvNull::methodThrow() {
   return {};
 }
 
@@ -80,6 +101,7 @@ const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getBinar
 const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::binaryProcessMap_ {
   {"method", &SinkServiceAsyncProcessor::_processInThread_method<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodAndReponse", &SinkServiceAsyncProcessor::_processInThread_methodAndReponse<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"methodThrow", &SinkServiceAsyncProcessor::_processInThread_methodThrow<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -89,6 +111,7 @@ const SinkServiceAsyncProcessor::ProcessMap& SinkServiceAsyncProcessor::getCompa
 const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::compactProcessMap_ {
   {"method", &SinkServiceAsyncProcessor::_processInThread_method<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodAndReponse", &SinkServiceAsyncProcessor::_processInThread_methodAndReponse<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"methodThrow", &SinkServiceAsyncProcessor::_processInThread_methodThrow<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

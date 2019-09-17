@@ -117,5 +117,12 @@ bool TestSinkService::isSinkUnSubscribed() {
   return sinkUnsubscribed_;
 }
 
+apache::thrift::ResponseAndSinkConsumer<bool, int32_t, bool>
+TestSinkService::initialThrow() {
+  MyException ex;
+  ex.reason = "reason";
+  throw ex;
+}
+
 } // namespace testservice
 } // namespace testutil

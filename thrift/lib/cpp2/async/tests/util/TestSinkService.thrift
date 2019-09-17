@@ -15,6 +15,9 @@
  */
 
 namespace cpp2 testutil.testservice
+exception MyException {
+  1: string reason;
+}
 
 service TestSinkService {
   i32 test();
@@ -26,5 +29,6 @@ service TestSinkService {
   sink<i32, i32> rangeEarlyResponse(1: i32 from, 2: i32 to, 3: i32 early);
   sink<i32, bool> unimplemented();
   sink<i32, bool> unSubscribedSink();
+  bool, sink<i32, bool> initialThrow() throws (1: MyException e);
   bool isSinkUnSubscribed();
 }

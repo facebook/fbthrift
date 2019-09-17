@@ -114,5 +114,16 @@ TEST_F(SinkServiceTest, SinkNotCalled) {
       });
 }
 
+TEST_F(SinkServiceTest, SinkInitialThrows) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        try {
+          co_await client.co_initialThrow();
+        } catch (const MyException& ex) {
+          EXPECT_EQ("reason", ex.reason);
+        }
+      });
+}
+
 } // namespace thrift
 } // namespace apache

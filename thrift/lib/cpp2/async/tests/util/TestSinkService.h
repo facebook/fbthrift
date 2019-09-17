@@ -41,6 +41,9 @@ class TestSinkService : public TestSinkServiceSvIf {
 
   bool isSinkUnSubscribed() override;
 
+  apache::thrift::ResponseAndSinkConsumer<bool, int32_t, bool> initialThrow()
+      override;
+
  private:
   bool sinkUnsubscribed_{false};
 };

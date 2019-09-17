@@ -30,7 +30,12 @@ struct CompatibleWithKeywordSink {
   1: string sink;
 }
 
+exception SinkException {
+  1: string reason;
+}
+
 service SinkService {
   sink<SinkPayload, FinalResponse> method();
   InitialResponse, sink<SinkPayload, FinalResponse> methodAndReponse();
+  sink<SinkPayload, FinalResponse> methodThrow() throws (1: SinkException ex);
 }

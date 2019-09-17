@@ -58,6 +58,21 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink< ::cpp2::InitialResponse
   template <typename Protocol_>
   void methodAndReponseT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
+ private:
+  void methodThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> co_methodThrow();
+#endif // FOLLY_HAS_COROUTINES
+  static folly::exception_wrapper recv_wrapped_methodThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_methodThrow(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_instance_methodThrow(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_methodThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void methodThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
 };
 
 } // cpp2

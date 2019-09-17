@@ -22,6 +22,7 @@ class InitialResponse;
 class FinalResponse;
 class SinkPayload;
 class CompatibleWithKeywordSink;
+class SinkException;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -307,6 +308,81 @@ void swap(CompatibleWithKeywordSink& a, CompatibleWithKeywordSink& b);
 
 template <class Protocol_>
 uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class SinkException final : private apache::thrift::detail::st::ComparisonOperators<SinkException>, public apache::thrift::TException {
+ public:
+
+  SinkException() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  SinkException(apache::thrift::FragileConstructor, ::std::string reason__arg);
+  template <typename _T>
+  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
+    reason = arg.extract();
+    __isset.reason = true;
+  }
+
+  SinkException(SinkException&&) = default;
+
+  SinkException(const SinkException&) = default;
+
+  SinkException& operator=(SinkException&&) = default;
+
+  SinkException& operator=(const SinkException&) = default;
+  void __clear();
+  ::std::string reason;
+
+  struct __isset {
+    bool reason;
+  } __isset = {};
+  bool operator==(const SinkException& rhs) const;
+  bool operator<(const SinkException& rhs) const;
+
+  const ::std::string& get_reason() const& {
+    return reason;
+  }
+
+  ::std::string get_reason() && {
+    return std::move(reason);
+  }
+
+  template <typename T_SinkException_reason_struct_setter = ::std::string>
+  ::std::string& set_reason(T_SinkException_reason_struct_setter&& reason_) {
+    reason = std::forward<T_SinkException_reason_struct_setter>(reason_);
+    __isset.reason = true;
+    return reason;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return "::cpp2::SinkException";
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< SinkException >;
+};
+
+void swap(SinkException& a, SinkException& b);
+
+template <class Protocol_>
+uint32_t SinkException::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
