@@ -73,10 +73,11 @@ else()
 endif(compiler_only OR lib_only)
 
 set(
-  thriftpy ON
+  thriftpy AUTO
   CACHE BOOL
   "Install the thrift/lib/py library as an FB Python archive manifest"
 )
+set_property(CACHE thriftpy PROPERTY STRINGS ON OFF AUTO)
 option(thriftpy3
   "Include thrift-py3 library and extensions in the build, requires Cython"
   OFF
@@ -122,6 +123,24 @@ if(lib_only OR build_all)
     find_program(THRIFT1 thrift1)
     include(${THRIFT_COMPILER_INCLUDE}/thrift/ThriftLibrary.cmake)
   endif(lib_only)
+
+  find_package(python-six)
+  if("${thriftpy}" STREQUAL "AUTO")
+    if(python-six_FOUND)
+      message(STATUS
+        "Python dependencies found, enabling build of thrift/lib/py"
+      )
+    else()
+      message(STATUS
+        "Python dependencies not found, will not build thrift/lib/py"
+      )
+    endif()
+    set(thriftpy "${python-six_FOUND}")
+  elseif(thriftpy AND NOT python-six_FOUND)
+    message(FATAL_ERROR
+        "Unable to find python-six, but building thrift/lib/py was requested"
+    )
+  endif()
 endif(lib_only OR build_all)
 
 if(thriftpy3)

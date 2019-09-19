@@ -37,6 +37,7 @@ add_fb_python_library(
   thrift_py
   SOURCES ${THRIFT_PY_SRCS}
   NAMESPACE "thrift"
+  DEPENDS python-six::python-six
 )
 install_fb_python_library(
   thrift_py
