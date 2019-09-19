@@ -31,15 +31,15 @@ public final class ModuleConstants {
         .build())
         .build();
 
-    public static final double X = 1;
+    public static final double X = (double)1;
 
     public static final double Y = 1000000.0;
 
-    public static final double Z = 1000000000;
+    public static final double Z = (double)1000000000;
 
-    public static final double ZERO_DOUBLE_VALUE = 0;
+    public static final double ZERO_DOUBLE_VALUE = (double)0;
 
-    public static final double LONG_DOUBLE_VALUE = 2.59961000990301e-05;
+    public static final double LONG_DOUBLE_VALUE = (double)2.59961000990301e-05;
 
     public static final test.fixtures.constants.Company MY_COMPANY = test.fixtures.constants.Company.FACEBOOK;
 
@@ -79,19 +79,19 @@ public final class ModuleConstants {
 
     public static final test.fixtures.constants.Union1 U_1_1 = new test.fixtures.constants.Union1(97);
 
-    public static final test.fixtures.constants.Union1 U_1_2 = new test.fixtures.constants.Union1(5.6);
+    public static final test.fixtures.constants.Union1 U_1_2 = new test.fixtures.constants.Union1((double)5.6);
 
     public static final test.fixtures.constants.Union1 U_1_3 = new test.fixtures.constants.Union1();
 
     public static final test.fixtures.constants.Union2 U_2_1 = new test.fixtures.constants.Union2(51);
 
-    public static final test.fixtures.constants.Union2 U_2_2 = new test.fixtures.constants.Union2(6.7);
+    public static final test.fixtures.constants.Union2 U_2_2 = new test.fixtures.constants.Union2((double)6.7);
 
     public static final test.fixtures.constants.Union2 U_2_3 = new test.fixtures.constants.Union2(new test.fixtures.constants.Struct1.Builder().setA(8).setB("abacabb").build());
 
     public static final test.fixtures.constants.Union2 U_2_4 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1(43));
 
-    public static final test.fixtures.constants.Union2 U_2_5 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1(9.8));
+    public static final test.fixtures.constants.Union2 U_2_5 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1((double)9.8));
 
     public static final test.fixtures.constants.Union2 U_2_6 = new test.fixtures.constants.Union2(new test.fixtures.constants.Union1());
 
@@ -135,15 +135,15 @@ public final class ModuleConstants {
 
     public static final boolean TRUE_C = true;
 
-    public static final byte ZERO_BYTE = 0;
+    public static final byte ZERO_BYTE = (byte)0;
 
-    public static final short ZERO16 = 0;
+    public static final short ZERO16 = (short)0;
 
     public static final int ZERO32 = 0;
 
     public static final long ZERO64 = 0L;
 
-    public static final double ZERO_DOT_ZERO = 0;
+    public static final double ZERO_DOT_ZERO = (double)0;
 
     public static final String EMPTY_STRING = "";
 

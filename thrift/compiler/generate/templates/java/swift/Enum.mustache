@@ -22,7 +22,8 @@ package {{enum:javaPackage}};
 import com.facebook.swift.codec.*;
 
 @SwiftGenerated
-public enum {{enum:javaCapitalName}} {
+public {{#enum:skipEnumNameMap?}}class{{/enum:skipEnumNameMap?}}{{^enum:skipEnumNameMap?}}enum{{/enum:skipEnumNameMap?}} {{enum:javaCapitalName}}{{#enum:skipEnumNameMap?}} extends IntEnum{{/enum:skipEnumNameMap?}} {
+{{^enum:skipEnumNameMap?}}
 {{#enum:values}}
     {{enumValue:javaConstantName}}({{enumValue:value}}){{^last?}},{{/last?}}{{#last?}};{{/last?}}
 {{/enum:values}}
@@ -31,6 +32,7 @@ public enum {{enum:javaCapitalName}} {
 {{^enum:values}}
     ;
 {{/enum:values}}
+{{/enum:skipEnumNameMap?}}
 
     private final int value;
 
@@ -38,12 +40,19 @@ public enum {{enum:javaCapitalName}} {
         this.value = value;
     }
 
+    {{#enum:skipEnumNameMap?}}
+    @Override
+    {{/enum:skipEnumNameMap?}}
     @ThriftEnumValue
     public int getValue() {
         return value;
     }
 
+    {{#enum:skipEnumNameMap?}}
+    @ThriftIntEnumResolver
+    {{/enum:skipEnumNameMap?}}
     public static {{enum:javaCapitalName}} fromInteger(int n) {
+        {{^enum:skipEnumNameMap?}}
         switch (n) {
         {{#enum:values}}
         case {{enumValue:value}}:
@@ -52,5 +61,30 @@ public enum {{enum:javaCapitalName}} {
         default:
             return null;
         }
+        {{/enum:skipEnumNameMap?}}
+        {{#enum:skipEnumNameMap?}}
+        return new {{enum:javaCapitalName}}(n);
+        {{/enum:skipEnumNameMap?}}
     }
+{{#enum:skipEnumNameMap?}}
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        {{enum:javaCapitalName}} other = ({{enum:javaCapitalName}})o;
+
+        return this.value == other.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value;
+    }
+{{/enum:skipEnumNameMap?}}
 }

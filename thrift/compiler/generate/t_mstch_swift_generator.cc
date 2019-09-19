@@ -368,6 +368,8 @@ class mstch_swift_enum : public mstch_enum {
         {
             {"enum:javaPackage", &mstch_swift_enum::java_package},
             {"enum:javaCapitalName", &mstch_swift_enum::java_capital_name},
+            {"enum:skipEnumNameMap?",
+             &mstch_swift_enum::java_skip_enum_name_map},
         });
   }
   mstch::node java_package() {
@@ -375,6 +377,9 @@ class mstch_swift_enum : public mstch_enum {
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(enm_->get_name(), true);
+  }
+  mstch::node java_skip_enum_name_map() {
+    return enm_->annotations_.count("java.swift.skip_enum_name_map") != 0;
   }
 };
 
@@ -423,6 +428,8 @@ class mstch_swift_const : public mstch_const {
         {
             {"constant:javaCapitalName", &mstch_swift_const::java_capital_name},
             {"constant:javaFieldName", &mstch_swift_const::java_field_name},
+            {"constant:javaIgnoreConstant?",
+             &mstch_swift_const::java_ignore_constant},
         });
   }
   mstch::node java_capital_name() {
@@ -430,6 +437,32 @@ class mstch_swift_const : public mstch_const {
   }
   mstch::node java_field_name() {
     return java::mangle_java_name(field_name_, true);
+  }
+  mstch::node java_ignore_constant() {
+    // we have to ignore constants if they are enums that we handled as ints, as
+    // we don't have the constant values to work with.
+    if (cnst_->get_type()->is_map()) {
+      t_map* map = (t_map*)cnst_->get_type();
+      if (map->get_key_type()->is_enum()) {
+        return map->get_key_type()->annotations_.count(
+                   "java.swift.skip_enum_name_map") != 0;
+      }
+    }
+    if (cnst_->get_type()->is_list()) {
+      t_list* list = (t_list*)cnst_->get_type();
+      if (list->get_elem_type()->is_enum()) {
+        return list->get_elem_type()->annotations_.count(
+                   "java.swift.skip_enum_name_map") != 0;
+      }
+    }
+    if (cnst_->get_type()->is_set()) {
+      t_set* set = (t_set*)cnst_->get_type();
+      if (set->get_elem_type()->is_enum()) {
+        return set->get_elem_type()->annotations_.count(
+                   "java.swift.skip_enum_name_map") != 0;
+      }
+    }
+    return mstch::node();
   }
 };
 

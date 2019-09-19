@@ -30,8 +30,8 @@
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
     Integer constants
-  }}{{#type:byte?}}{{value:integerValue}}{{/type:byte?}}{{!
-  }}{{#type:i16?}}{{value:integerValue}}{{/type:i16?}}{{!
+  }}{{#type:byte?}}(byte){{value:integerValue}}{{/type:byte?}}{{!
+  }}{{#type:i16?}}(short){{value:integerValue}}{{/type:i16?}}{{!
   }}{{#type:i32?}}{{value:integerValue}}{{/type:i32?}}{{!
   }}{{#type:i64?}}{{value:integerValue}}L{{/type:i64?}}{{!
 
@@ -43,12 +43,12 @@
 
     Floating point constants
   }}{{#type:double?}}{{!
-    }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+  }}{{#value:double?}}(double){{value:doubleValue}}{{/value:double?}}{{!
     }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
   }}{{/type:double?}}{{!
   }}{{#type:float?}}{{!
-    }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
-    }}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
+  }}{{#value:double?}}(float){{value:doubleValue}}{{/value:double?}}{{!
+  }}{{#value:integer?}}(float){{value:integerValue}}.0{{/value:integer?}}{{!
   }}{{/type:float?}}{{!
 
     String constants

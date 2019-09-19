@@ -28,6 +28,8 @@ public final class {{program:constantClassName}} {
     private {{program:constantClassName}}() {}
     {{#program:constants}}
 
+    {{^constant:javaIgnoreConstant?}}
     public static final {{#constant:type}}{{> Type}}{{/constant:type}} {{constant:javaCapitalName}} = {{#constant:type}}{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/constant:type}};
+    {{/constant:javaIgnoreConstant?}}
     {{/program:constants}}
 }

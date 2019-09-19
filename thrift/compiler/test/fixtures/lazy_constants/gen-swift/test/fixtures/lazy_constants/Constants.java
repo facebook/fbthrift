@@ -31,11 +31,11 @@ public final class Constants {
         .build())
         .build();
 
-    public static final double X = 1;
+    public static final double X = (double)1;
 
     public static final double Y = 1000000.0;
 
-    public static final double Z = 1000000000;
+    public static final double Z = (double)1000000000;
 
     public static final test.fixtures.lazy_constants.Internship INSTAGRAM = new test.fixtures.lazy_constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.lazy_constants.Company.INSTAGRAM).build();
 
