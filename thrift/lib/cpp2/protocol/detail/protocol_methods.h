@@ -614,7 +614,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   using key_methods = protocol_methods<KeyClass, key_type>;
   using mapped_methods = protocol_methods<MappedClass, mapped_type>;
 
- private:
+ protected:
   template <typename Protocol>
   static void consume_elem(Protocol& protocol, Type& out) {
     key_type key_tmp;
@@ -821,7 +821,8 @@ struct ReadForwardCompatible<Protocol_, TypeClass_, double> {
 template <typename KeyClass, typename MappedClass, typename Type>
 struct protocol_methods<
     type_class::map_forward_compatibility<KeyClass, MappedClass>,
-    Type> {
+    Type>
+    : public protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   static_assert(
       !std::is_same<KeyClass, type_class::unknown>(),
       "Unable to serialize unknown key type in map");
@@ -837,12 +838,8 @@ struct protocol_methods<
   using mapped_methods = protocol_methods<MappedClass, mapped_type>;
 
  private:
-  template <typename Protocol>
-  static void consume_elem(Protocol& protocol, Type& out) {
-    key_type key_tmp;
-    key_methods::read(protocol, key_tmp);
-    mapped_methods::read(protocol, out[std::move(key_tmp)]);
-  }
+  using super = protocol_methods<type_class::map<KeyClass, MappedClass>, Type>;
+  using super::consume_elem;
 
   template <typename Protocol>
   static void consume_elem_forward_compatible(
@@ -893,36 +890,6 @@ struct protocol_methods<
       deserialize_known_length_map(out, map_size, kreader, vreader);
     }
     protocol.readMapEnd();
-  }
-
-  template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& out) {
-    std::size_t xfer = 0;
-
-    xfer += protocol.writeMapBegin(
-        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
-    for (auto const& elem_pair : out) {
-      xfer += key_methods::write(protocol, elem_pair.first);
-      xfer += mapped_methods::write(protocol, elem_pair.second);
-    }
-    xfer += protocol.writeMapEnd();
-    return xfer;
-  }
-
-  template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
-    std::size_t xfer = 0;
-
-    xfer += protocol.serializedSizeMapBegin(
-        key_methods::ttype_value, mapped_methods::ttype_value, out.size());
-    for (auto const& elem_pair : out) {
-      xfer += key_methods::template serializedSize<ZeroCopy>(
-          protocol, elem_pair.first);
-      xfer += mapped_methods::template serializedSize<ZeroCopy>(
-          protocol, elem_pair.second);
-    }
-    xfer += protocol.serializedSizeMapEnd();
-    return xfer;
   }
 };
 
