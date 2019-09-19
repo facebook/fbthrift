@@ -18,6 +18,7 @@
 #include <utility>
 
 #include <folly/Portability.h>
+#include <folly/container/Array.h>
 
 #include <thrift/lib/cpp2/protocol/nimble/ControlBitHelpers.h>
 #include <thrift/lib/cpp2/protocol/nimble/EncodeNimbleBlock.h>
@@ -44,11 +45,33 @@ constexpr std::array<NimbleBlockEncodeData, 256> encodeDataFromIndices(
     std::index_sequence<Indices...>) {
   return {{encodeDataForControlByte(Indices)...}};
 }
+
+constexpr NimbleBlockVectorEncodeData vectorEncodeDataForControlByte(
+    std::uint8_t byte) {
+  NimbleBlockVectorEncodeData result;
+  int vectorIdx = 0;
+  for (int i = 0; i < kChunksPerBlock; ++i) {
+    for (int j = 0; j < controlBitPairToSize(byte, i); ++j) {
+      result.shuffleVector[vectorIdx++] = 4 * i + j;
+    }
+  }
+  while (vectorIdx < kMaxBytesPerBlock) {
+    // set 7th bit to 1 to place "0" in the resulting vector,
+    // see _mm_shuffle_epi8()
+    result.shuffleVector[vectorIdx++] = 0x80;
+  }
+  return result;
+}
+
 } // namespace
 
 FOLLY_STORAGE_CONSTEXPR const std::array<NimbleBlockEncodeData, 256>
     nimbleBlockEncodeData =
         encodeDataFromIndices(std::make_index_sequence<256>{});
+
+FOLLY_STORAGE_CONSTEXPR const std::array<NimbleBlockVectorEncodeData, 256>
+    nimbleBlockVectorEncodeData =
+        folly::make_array_with<256>(vectorEncodeDataForControlByte);
 
 } // namespace detail
 } // namespace thrift

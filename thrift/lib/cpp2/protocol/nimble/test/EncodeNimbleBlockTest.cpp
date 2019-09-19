@@ -52,7 +52,31 @@ TEST(NimbleBlockEncodeData, Monotonic) {
   }
 }
 
-TEST(NimbleBlockEncodeData, ControlByteComputationSimple) {
+template <typename T>
+class NimbleBlockEncodeDataControlByteTest : public ::testing::Test {};
+
+struct NonVectorizedControlByteImpl {
+  static unsigned char controlByteFromChunksImpl(const std::uint32_t* chunks) {
+    return controlByteFromChunks<ChunkRepr::kRaw>(chunks);
+  }
+};
+
+#if NIMBLE_CAN_VECTORIZE
+struct VectorizedControlByteImpl {
+  static unsigned char controlByteFromChunksImpl(const std::uint32_t* chunks) {
+    return controlByteFromVector(loadVector<ChunkRepr::kRaw>(chunks));
+  }
+};
+
+using ControlByteParamTypes =
+    ::testing::Types<NonVectorizedControlByteImpl, VectorizedControlByteImpl>;
+#else
+using ControlByteParamTypes = ::testing::Types<NonVectorizedControlByteImpl>;
+#endif
+
+TYPED_TEST_CASE(NimbleBlockEncodeDataControlByteTest, ControlByteParamTypes);
+
+TYPED_TEST(NimbleBlockEncodeDataControlByteTest, ControlByteComputation) {
   struct TestCase {
     std::uint32_t chunk;
     std::uint8_t bitPair;
@@ -82,7 +106,7 @@ TEST(NimbleBlockEncodeData, ControlByteComputationSimple) {
           std::array<std::uint32_t, kChunksPerBlock> arr{
               p0.chunk, p1.chunk, p2.chunk, p3.chunk};
           std::uint8_t controlByte =
-              controlByteFromChunks<ChunkRepr::kRaw>(arr.data());
+              TypeParam::controlByteFromChunksImpl(arr.data());
           std::uint8_t expectedControlByte = p0.bitPair | (p1.bitPair << 2) |
               (p2.bitPair << 4) | (p3.bitPair << 6);
           EXPECT_EQ(controlByte, expectedControlByte);
@@ -108,18 +132,30 @@ void expectArrayPrefix(
 
 #define EXPECT_PREFIX(...) expectArrayPrefix(__VA_ARGS__, __LINE__)
 
-TEST(NimbleBlockEncoder, EncodesRaw) {
+template <typename T>
+class NimbleBlockEncoderTest : public ::testing::Test {};
+
+template <bool vec>
+struct NimbleBlockEncoderParam {
+  constexpr static bool vectorized = vec;
+};
+
+using EncoderParamTypes = ::testing::
+    Types<NimbleBlockEncoderParam<true>, NimbleBlockEncoderParam<false>>;
+TYPED_TEST_CASE(NimbleBlockEncoderTest, EncoderParamTypes);
+
+TYPED_TEST(NimbleBlockEncoderTest, EncodesRaw) {
   std::uint8_t control = 123;
   std::array<unsigned char, kMaxBytesPerBlock> output;
   auto content = folly::make_array<std::uint32_t>(0, 0, 0x22, 0xAB'CD);
-  int out = encodeNimbleBlock<ChunkRepr::kRaw>(
+  int out = encodeNimbleBlock<ChunkRepr::kRaw, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(3, out);
   EXPECT_EQ(0b10'01'00'00, control);
   EXPECT_PREFIX(output, folly::make_array<unsigned char>(0x22, 0xCD, 0xAB));
 
   content = folly::make_array<std::uint32_t>(0xABCDE, 0, 0x22, 0xABCD);
-  out = encodeNimbleBlock<ChunkRepr::kRaw>(
+  out = encodeNimbleBlock<ChunkRepr::kRaw, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(7, out);
   EXPECT_EQ(0b10'01'00'11, control);
@@ -129,24 +165,24 @@ TEST(NimbleBlockEncoder, EncodesRaw) {
           0xDE, 0xBC, 0x0A, 0x00, 0x22, 0xCD, 0xAB));
 
   content = folly::make_array<std::uint32_t>(0, 0, 0, 0);
-  out = encodeNimbleBlock<ChunkRepr::kRaw>(
+  out = encodeNimbleBlock<ChunkRepr::kRaw, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(0, out);
   EXPECT_EQ(0, control);
 }
 
-TEST(NimbleBlockEncoder, EncodesZigzag) {
+TYPED_TEST(NimbleBlockEncoderTest, EncodesZigzag) {
   std::uint8_t control = 123;
   std::array<unsigned char, kMaxBytesPerBlock> output;
   auto content = folly::make_array<std::uint32_t>(0, 0, 40, 0x76'54);
-  int out = encodeNimbleBlock<ChunkRepr::kZigzag>(
+  int out = encodeNimbleBlock<ChunkRepr::kZigzag, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(3, out);
   EXPECT_EQ(0b10'01'00'00, control);
   EXPECT_PREFIX(output, folly::make_array<unsigned char>(80, 0xA8, 0xEC));
 
   content = folly::make_array<std::uint32_t>(-1, 0, 30, 0x82'73);
-  out = encodeNimbleBlock<ChunkRepr::kZigzag>(
+  out = encodeNimbleBlock<ChunkRepr::kZigzag, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(6, out);
   EXPECT_EQ(0b11'01'00'01, control);
@@ -154,13 +190,13 @@ TEST(NimbleBlockEncoder, EncodesZigzag) {
       output, folly::make_array<unsigned char>(1, 60, 0xE6, 0x04, 0x01, 0x00));
 
   content = folly::make_array<std::uint32_t>(0, 0, 0, 0);
-  out = encodeNimbleBlock<ChunkRepr::kZigzag>(
+  out = encodeNimbleBlock<ChunkRepr::kZigzag, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(0, out);
   EXPECT_EQ(0, control);
 
   content = folly::make_array<std::uint32_t>(-1, -2, -0x8000, -0x8001);
-  out = encodeNimbleBlock<ChunkRepr::kZigzag>(
+  out = encodeNimbleBlock<ChunkRepr::kZigzag, TypeParam::vectorized>(
       content.data(), &control, output.data());
   EXPECT_EQ(8, out);
   EXPECT_EQ(0b11'10'01'01, control);

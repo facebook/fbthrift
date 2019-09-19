@@ -19,19 +19,11 @@
 #include <cstdint>
 
 #include <folly/GLog.h>
-#include <folly/Portability.h>
 #include <folly/Range.h>
 #include <folly/lang/Bits.h>
 
 #include <thrift/lib/cpp2/protocol/nimble/ChunkRepr.h>
-
-#if FOLLY_SSE >= 3
-#define NIMBLE_CAN_VECTORIZE 1
-#include <emmintrin.h>
-#include <tmmintrin.h>
-#else
-#define NIMBLE_CAN_VECTORIZE 0
-#endif
+#include <thrift/lib/cpp2/protocol/nimble/Vectorization.h>
 
 // See EncodeNimbleBlock.h to see why we work here in terms of "blocks" of four
 // chunks each.

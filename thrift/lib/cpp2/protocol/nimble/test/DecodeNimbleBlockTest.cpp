@@ -29,17 +29,17 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-template <ChunkRepr repr, bool vectorize>
+template <ChunkRepr repr, bool vectorizeEncoder, bool vectorizeDecoder>
 void runRoundTripTest(
     const std::array<std::uint32_t, kChunksPerBlock>& unencoded) {
   std::array<unsigned char, kMaxBytesPerBlock> encoded;
   std::array<std::uint32_t, kChunksPerBlock> decoded;
 
   unsigned char control;
-  int encodedSize =
-      encodeNimbleBlock<repr>(unencoded.data(), &control, encoded.data());
+  int encodedSize = encodeNimbleBlock<repr, vectorizeEncoder>(
+      unencoded.data(), &control, encoded.data());
   std::memset(&encoded[encodedSize], 0x99, kMaxBytesPerBlock - encodedSize);
-  int decodedSize = decodeNimbleBlock<repr, vectorize>(
+  int decodedSize = decodeNimbleBlock<repr, vectorizeDecoder>(
       control, folly::ByteRange(encoded), decoded.data());
   EXPECT_TRUE(encodedSize == decodedSize && unencoded == decoded)
       << folly::sformat(
@@ -51,7 +51,7 @@ void runRoundTripTest(
              decodedSize);
 }
 
-template <ChunkRepr repr, bool vectorize>
+template <ChunkRepr repr, bool vectorizeEncoder, bool vectorizeDecoder>
 void runHandPickedDecodeTest() {
   std::array<std::uint32_t, kChunksPerBlock> testData[] = {
       {0, 0, 0, 0},
@@ -72,7 +72,7 @@ void runHandPickedDecodeTest() {
        (std::uint32_t)-0x80000000},
   };
   for (const std::array<std::uint32_t, kChunksPerBlock>& unencoded : testData) {
-    runRoundTripTest<repr, vectorize>(unencoded);
+    runRoundTripTest<repr, vectorizeEncoder, vectorizeDecoder>(unencoded);
   }
 }
 
@@ -90,15 +90,37 @@ struct VectorizedImpl {
 using DecodeParamTypes = ::testing::Types<NonvectorizedImpl, VectorizedImpl>;
 TYPED_TEST_CASE(NimbleDecodeTest, DecodeParamTypes);
 
-TYPED_TEST(NimbleDecodeTest, DecodesHandPickedZigzag) {
-  runHandPickedDecodeTest<ChunkRepr::kZigzag, TypeParam::vectorize>();
+template <typename T>
+class NimbleEncodeDecodeTest : public ::testing::Test {};
+
+template <bool vecEnc, bool vecDec>
+struct EncodeDecodeParam {
+  constexpr static bool vectorizeEncoder = vecEnc;
+  constexpr static bool vectorizeDecoder = vecDec;
+};
+
+using EncodeDecodeParamTypes = ::testing::Types<
+    EncodeDecodeParam<false, false>,
+    EncodeDecodeParam<false, true>,
+    EncodeDecodeParam<true, false>,
+    EncodeDecodeParam<true, true>>;
+TYPED_TEST_CASE(NimbleEncodeDecodeTest, EncodeDecodeParamTypes);
+
+TYPED_TEST(NimbleEncodeDecodeTest, DecodesHandPickedZigzag) {
+  runHandPickedDecodeTest<
+      ChunkRepr::kZigzag,
+      TypeParam::vectorizeEncoder,
+      TypeParam::vectorizeDecoder>();
 }
 
-TYPED_TEST(NimbleDecodeTest, DecodesHandPickedRaw) {
-  runHandPickedDecodeTest<ChunkRepr::kRaw, TypeParam::vectorize>();
+TYPED_TEST(NimbleEncodeDecodeTest, DecodesHandPickedRaw) {
+  runHandPickedDecodeTest<
+      ChunkRepr::kRaw,
+      TypeParam::vectorizeEncoder,
+      TypeParam::vectorizeDecoder>();
 }
 
-template <ChunkRepr repr, bool vectorize>
+template <ChunkRepr repr, bool vectorizeEncoder, bool vectorizeDecoder>
 void runInterestingRoundTripTest() {
   // clang-format off
   std::vector<std::uint32_t> vec {
@@ -129,19 +151,25 @@ void runInterestingRoundTripTest() {
         for (std::uint32_t i3 : vec) {
           std::array<std::uint32_t, kChunksPerBlock> unencoded = {
               i0, i1, i2, i3};
-          runRoundTripTest<repr, vectorize>(unencoded);
+          runRoundTripTest<repr, vectorizeEncoder, vectorizeDecoder>(unencoded);
         }
       }
     }
   }
 }
 
-TYPED_TEST(NimbleDecodeTest, DecodesInterestingZigzag) {
-  runInterestingRoundTripTest<ChunkRepr::kZigzag, TypeParam::vectorize>();
+TYPED_TEST(NimbleEncodeDecodeTest, DecodesInterestingZigzag) {
+  runInterestingRoundTripTest<
+      ChunkRepr::kZigzag,
+      TypeParam::vectorizeEncoder,
+      TypeParam::vectorizeDecoder>();
 }
 
-TYPED_TEST(NimbleDecodeTest, DecodesInterestingRaw) {
-  runInterestingRoundTripTest<ChunkRepr::kRaw, TypeParam::vectorize>();
+TYPED_TEST(NimbleEncodeDecodeTest, DecodesInterestingRaw) {
+  runInterestingRoundTripTest<
+      ChunkRepr::kRaw,
+      TypeParam::vectorizeEncoder,
+      TypeParam::vectorizeDecoder>();
 }
 
 TYPED_TEST(NimbleDecodeTest, DecodesExtraZeros) {
