@@ -34,31 +34,6 @@ class FatalMergeTest : public testing::Test {};
 
 }
 
-namespace apache { namespace thrift { namespace test {
-
-static std::ostream& operator<<(std::ostream& o, const Basic& v) {
-  return o << apache::thrift::pretty_string(v);
-}
-
-static std::ostream& operator<<(std::ostream& o, const Nested& v) {
-  return o << apache::thrift::pretty_string(v);
-}
-
-static std::ostream& operator<<(std::ostream& o, const NestedRefUnique& v) {
-  return o << apache::thrift::pretty_string(v);
-}
-
-static std::ostream& operator<<(std::ostream& o, const NestedRefShared& v) {
-  return o << apache::thrift::pretty_string(v);
-}
-
-static std::ostream& operator<<(
-    std::ostream& o, const NestedRefSharedConst& v) {
-  return o << apache::thrift::pretty_string(v);
-}
-
-}}}
-
 #define TEST_GROUP(name, constant)                                  \
   TEST_F(FatalMergeTest, name##_copy) {                             \
     const auto& example = fatal_merge_constants::constant();        \

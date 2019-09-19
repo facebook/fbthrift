@@ -137,21 +137,13 @@ makeTestResponse(
 }
 
 template <class P>
-P makePayload(folly::StringPiece metadata, folly::StringPiece data);
+P makePayload(folly::StringPiece metadata, folly::StringPiece data) = delete;
 
 template <>
 rsocket::Payload makePayload<rsocket::Payload>(
     folly::StringPiece metadata,
     folly::StringPiece data) {
   return rsocket::Payload(data, metadata);
-}
-
-template <>
-apache::thrift::rocket::Payload makePayload<apache::thrift::rocket::Payload>(
-    folly::StringPiece metadata,
-    folly::StringPiece data) {
-  return apache::thrift::rocket::Payload::makeFromMetadataAndData(
-      metadata, data);
 }
 
 template <class P>
