@@ -104,6 +104,7 @@ template <typename T>
 struct sorted_unique_constructible : sorted_unique_constructible_<void, T> {};
 
 FOLLY_CREATE_MEMBER_INVOKE_TRAITS(emplace_hint_traits, emplace_hint);
+FOLLY_CREATE_HAS_MEMBER_TYPE_TRAITS(has_key_compare, key_compare);
 
 template <typename T>
 using map_emplace_hint_is_invocable = emplace_hint_traits::is_invocable<
@@ -570,12 +571,26 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   }
 
   template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& in) {
+  static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
 
-    xfer += protocol.writeSetBegin(elem_methods::ttype_value, in.size());
-    for (auto const& elem : in) {
-      xfer += elem_methods::write(protocol, elem);
+    xfer += protocol.writeSetBegin(elem_methods::ttype_value, out.size());
+
+    if (!has_key_compare<Type>::value && protocol.kSortKeys()) {
+      std::vector<typename Type::const_iterator> iters;
+      iters.reserve(out.size());
+      for (auto it = out.begin(); it != out.end(); ++it) {
+        iters.push_back(it);
+      }
+      std::sort(
+          iters.begin(), iters.end(), [](auto a, auto b) { return *a < *b; });
+      for (auto it : iters) {
+        xfer += elem_methods::write(protocol, *it);
+      }
+    } else {
+      for (auto const& elem : out) {
+        xfer += elem_methods::write(protocol, elem);
+      }
     }
     xfer += protocol.writeSetEnd();
     return xfer;
@@ -665,9 +680,25 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
 
     xfer += protocol.writeMapBegin(
         key_methods::ttype_value, mapped_methods::ttype_value, out.size());
-    for (auto const& elem_pair : out) {
-      xfer += key_methods::write(protocol, elem_pair.first);
-      xfer += mapped_methods::write(protocol, elem_pair.second);
+
+    if (!has_key_compare<Type>::value && protocol.kSortKeys()) {
+      std::vector<typename Type::const_iterator> iters;
+      iters.reserve(out.size());
+      for (auto it = out.begin(); it != out.end(); ++it) {
+        iters.push_back(it);
+      }
+      std::sort(iters.begin(), iters.end(), [](auto a, auto b) {
+        return a->first < b->first;
+      });
+      for (auto it : iters) {
+        xfer += key_methods::write(protocol, it->first);
+        xfer += mapped_methods::write(protocol, it->second);
+      }
+    } else {
+      for (auto const& elem_pair : out) {
+        xfer += key_methods::write(protocol, elem_pair.first);
+        xfer += mapped_methods::write(protocol, elem_pair.second);
+      }
     }
     xfer += protocol.writeMapEnd();
     return xfer;

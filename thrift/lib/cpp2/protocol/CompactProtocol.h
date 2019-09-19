@@ -109,6 +109,10 @@ class CompactProtocolWriter {
     return ProtocolType::T_COMPACT_PROTOCOL;
   }
 
+  static constexpr bool kSortKeys() {
+    return false;
+  }
+
   /**
    * The IOBufQueue itself is managed by the caller.
    * It must exist for the life of the CompactProtocol as well,

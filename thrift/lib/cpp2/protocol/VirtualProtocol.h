@@ -100,6 +100,8 @@ class VirtualWriterBase {
 
   virtual ProtocolType protocolType() const = 0;
 
+  virtual bool kSortKeys() const = 0;
+
   virtual void setOutput(
       folly::IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max()) = 0;
@@ -329,6 +331,10 @@ class VirtualWriter : public VirtualWriterBase {
 
   ProtocolType protocolType() const override {
     return protocol_.protocolType();
+  }
+
+  bool kSortKeys() const override {
+    return protocol_.kSortKeys();
   }
 
   void setOutput(

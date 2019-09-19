@@ -45,6 +45,10 @@ class DebugProtocolWriter {
     return ProtocolType::T_DEBUG_PROTOCOL;
   }
 
+  static constexpr bool kSortKeys() {
+    return true;
+  }
+
   void setOutput(
       folly::IOBufQueue* queue,
       size_t maxGrowth = std::numeric_limits<size_t>::max());

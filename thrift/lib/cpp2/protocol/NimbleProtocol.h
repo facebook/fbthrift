@@ -40,6 +40,10 @@ class NimbleProtocolWriter {
  public:
   using ProtocolReader = NimbleProtocolReader;
 
+  static constexpr bool kSortKeys() {
+    return false;
+  }
+
   uint32_t writeMessageBegin(
       const std::string& name,
       MessageType messageType,

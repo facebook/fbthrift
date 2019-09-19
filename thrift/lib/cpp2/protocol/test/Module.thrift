@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 namespace cpp2 apache.thrift.test
+cpp_include "folly/container/F14Map.h"
+cpp_include "folly/container/F14Set.h"
 
 struct StructWithEmptyMap {
   1: map<string, i64> myMap,
@@ -99,4 +101,16 @@ struct OneOfEach3 {
   10: set<list<i32>> mySet,
   11: SubStruct myStruct,
   12: SubUnion myUnion = kSubUnion,
+}
+
+struct DebugHashedAssociative {
+  1: map<i64, set<i64>>
+     (cpp.type = "std::map<int64_t, std::set<int64_t>>")
+     value,
+}
+
+struct DebugSortedAssociative {
+  1: map<i64, set<i64>>
+     (cpp.type = "folly::F14FastMap<int64_t, folly::F14FastSet<int64_t>>")
+     value,
 }

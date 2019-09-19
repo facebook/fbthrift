@@ -39,6 +39,10 @@ class JSONProtocolWriter : public JSONProtocolWriterCommon {
     return ProtocolType::T_JSON_PROTOCOL;
   }
 
+  static constexpr bool kSortKeys() {
+    return false;
+  }
+
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
   inline uint32_t

@@ -58,6 +58,10 @@ class BinaryProtocolWriter {
     return ProtocolType::T_BINARY_PROTOCOL;
   }
 
+  static constexpr bool kSortKeys() {
+    return false;
+  }
+
   /**
    * ...
    * The IOBuf itself is managed by the caller.
