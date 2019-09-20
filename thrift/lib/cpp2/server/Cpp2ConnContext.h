@@ -188,6 +188,15 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   }
 #endif
 
+  /**
+   * If the peer effective pid or uid are not available, it's possible
+   * retrieving the information failed. Produce an error message with the
+   * reason.
+   */
+  folly::Optional<std::string> getPeerCredError() const {
+    return peerCred_.getError();
+  }
+
  private:
   /**
    * Platform-independent representation of unix domain socket peer credentials,
@@ -198,6 +207,12 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   class PeerCred {
    public:
 #ifndef _WIN32
+    using StatusOrPid = pid_t;
+#else
+    // Even on Windows, differentiate between not initialized (not unix
+    // domain socket), and unsupported platform.
+    using StatusOrPid = int;
+#endif
     /**
      * pid_t is guaranteed to be signed, so reserve non-positive values as
      * sentinels that indicate credential validity.
@@ -206,11 +221,11 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
      * Linux and macOS allow user IDs to span the entire range of a uint32_t,
      * so sentinal values must be stored in pid_t.
      */
-    enum Validity : pid_t {
+    enum Validity : StatusOrPid {
       NotInitialized = -1,
       ErrorRetrieving = -2,
+      UnsupportedPlatform = -3,
     };
-#endif
 
     PeerCred() = default;
     PeerCred(const PeerCred&) = default;
@@ -231,17 +246,25 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
 #endif
 
-   private:
-#ifndef _WIN32
-    explicit PeerCred(Validity validity) : pid_{validity}, uid_{} {}
+    /**
+     * If retrieving the effective credentials failed, return a string
+     * containing the reason.
+     */
+    folly::Optional<std::string> getError() const;
 
+   private:
+    explicit PeerCred(Validity validity) : pid_{validity} {}
+
+#ifndef _WIN32
     explicit PeerCred(pid_t pid, uid_t uid) : pid_{pid}, uid_{uid} {}
+#endif
 
     bool hasCredentials() const {
       return pid_ >= 0;
     }
 
-    pid_t pid_ = Validity::NotInitialized;
+    StatusOrPid pid_ = Validity::NotInitialized;
+#ifndef _WIN32
     uid_t uid_ = 0;
     // If desired, adding gid_t here would be trivial, at the cost of another
     // four bytes.

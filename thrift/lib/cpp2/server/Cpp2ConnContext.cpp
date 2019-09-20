@@ -15,9 +15,27 @@
  */
 #include "thrift/lib/cpp2/server/Cpp2ConnContext.h"
 
+#include <folly/String.h>
+
 #ifdef __APPLE__
 #include <sys/ucred.h> // @manual
 #endif
+
+namespace {
+
+#ifndef _WIN32
+uid_t errnoToUid(int no) {
+  static_assert(
+      sizeof(int) <= sizeof(uid_t), "We want to stash errno in a uid_t");
+  if (no < 0) {
+    // Make up an invalid errno value - negative shouldn't happen.
+    no = std::numeric_limits<int>::max();
+  }
+  return static_cast<uid_t>(no);
+}
+#endif
+
+} // namespace
 
 namespace apache {
 namespace thrift {
@@ -28,7 +46,7 @@ Cpp2ConnContext::PeerCred Cpp2ConnContext::PeerCred::queryFromSocket(
   struct ucred cred = {};
   socklen_t len = sizeof(cred);
   if (getsockopt(socket.toFd(), SOL_SOCKET, SO_PEERCRED, &cred, &len)) {
-    return PeerCred{ErrorRetrieving};
+    return PeerCred{ErrorRetrieving, errnoToUid(errno)};
   } else {
     return PeerCred{cred.pid, cred.uid};
   }
@@ -42,21 +60,33 @@ Cpp2ConnContext::PeerCred Cpp2ConnContext::PeerCred::queryFromSocket(
           LOCAL_PEERCRED,
           &cred,
           &(len = sizeof(cred)))) {
-    return PeerCred{ErrorRetrieving};
+    return PeerCred{ErrorRetrieving, errnoToUid(errno)};
   } else if (getsockopt(
                  socket.toFd(),
                  SOL_LOCAL,
                  LOCAL_PEEREPID,
                  &epid,
                  &(len = sizeof(epid)))) {
-    return PeerCred{ErrorRetrieving};
+    return PeerCred{ErrorRetrieving, errnoToUid(errno)};
   } else {
     return PeerCred{epid, cred.cr_uid};
   }
 #else
   (void)socket;
-  return PeerCred{};
+  return PeerCred{UnsupportedPlatform};
 #endif
+}
+
+folly::Optional<std::string> Cpp2ConnContext::PeerCred::getError() const {
+  if (UnsupportedPlatform == pid_) {
+    return folly::make_optional<std::string>("unsupported platform");
+#ifndef _WIN32
+  } else if (ErrorRetrieving == pid_) {
+    return folly::to<std::string>("getsockopt failed: ", folly::errnoStr(uid_));
+#endif
+  } else {
+    return folly::none;
+  }
 }
 
 } // namespace thrift
