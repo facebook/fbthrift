@@ -18,6 +18,7 @@
 
 #include <memory>
 
+#include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
@@ -63,6 +64,13 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
         peerCert_ = cert->getX509();
       }
       securityProtocol_ = transport->getSecurityProtocol();
+
+      if (localAddress_.getFamily() == AF_UNIX) {
+        auto wrapper = transport_->getUnderlyingTransport<folly::AsyncSocket>();
+        if (wrapper) {
+          peerCred_ = PeerCred::queryFromSocket(wrapper->getNetworkSocket());
+        }
+      }
     }
 
     if (clientIdentityHook) {
@@ -157,7 +165,89 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return oldData;
   }
 
+#ifndef _WIN32
+  /**
+   * Returns the process ID of the connection when it was first created. The
+   * connection may have terminated since that time, so the PID may no
+   * longer necessarily map to the correct process.
+   * Returns pid_t for Unix domain sockets and nullopt for TCP.
+   * Also returns nullopt on Windows.
+   *
+   * On macOS, this is the effective pid. On Linux, there is no distinction.
+   */
+  folly::Optional<pid_t> getPeerEffectivePid() const {
+    return peerCred_.getEffectivePid();
+  }
+
+  /**
+   * Return the effective user ID of the process on the other end of a Unix
+   * domain socket connection. Returns nullopt for TCP connections.
+   */
+  folly::Optional<uid_t> getPeerEffectiveUid() const {
+    return peerCred_.getEffectiveUid();
+  }
+#endif
+
  private:
+  /**
+   * Platform-independent representation of unix domain socket peer credentials,
+   * e.g. ucred on Linux and xucred on macOS.
+   *
+   * Null implementation on Windows.
+   */
+  class PeerCred {
+   public:
+#ifndef _WIN32
+    /**
+     * pid_t is guaranteed to be signed, so reserve non-positive values as
+     * sentinels that indicate credential validity.
+     * While negative pid_t values are possible, they are used to refer
+     * to process groups and thus cannot occur in a process identifier.
+     * Linux and macOS allow user IDs to span the entire range of a uint32_t,
+     * so sentinal values must be stored in pid_t.
+     */
+    enum Validity : pid_t {
+      NotInitialized = -1,
+      ErrorRetrieving = -2,
+    };
+#endif
+
+    PeerCred() = default;
+    PeerCred(const PeerCred&) = default;
+    PeerCred& operator=(const PeerCred&) = default;
+
+    /**
+     * Query a socket for peer credentials.
+     */
+    static PeerCred queryFromSocket(folly::NetworkSocket socket);
+
+#ifndef _WIN32
+    folly::Optional<pid_t> getEffectivePid() const {
+      return hasCredentials() ? folly::make_optional(pid_) : folly::none;
+    }
+
+    folly::Optional<uid_t> getEffectiveUid() const {
+      return hasCredentials() ? folly::make_optional(uid_) : folly::none;
+    }
+#endif
+
+   private:
+#ifndef _WIN32
+    explicit PeerCred(Validity validity) : pid_{validity}, uid_{} {}
+
+    explicit PeerCred(pid_t pid, uid_t uid) : pid_{pid}, uid_{uid} {}
+
+    bool hasCredentials() const {
+      return pid_ >= 0;
+    }
+
+    pid_t pid_ = Validity::NotInitialized;
+    uid_t uid_ = 0;
+    // If desired, adding gid_t here would be trivial, at the cost of another
+    // four bytes.
+#endif
+  };
+
   std::unique_ptr<void, void (*)(void*)> userData_;
   folly::SocketAddress peerAddress_;
   folly::SocketAddress localAddress_;
@@ -168,6 +258,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::unique_ptr<void, void (*)(void*)> peerIdentities_;
   std::string securityProtocol_;
   const folly::AsyncTransportWrapper* transport_;
+  PeerCred peerCred_;
 
   static void no_op_destructor(void* /*ptr*/) {}
 };
