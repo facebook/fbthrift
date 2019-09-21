@@ -15,6 +15,7 @@
  */
 #include <thrift/compiler/generate/common.h>
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -39,6 +40,19 @@ std::vector<std::string> split_namespace(const std::string& s) {
 
   return output;
 }
+
+void strip_comments(std::string& s) {
+  auto fr = s.find("/*");
+  while (fr != std::string::npos) {
+    auto to = s.find("*/", fr + 2);
+    if (to == std::string::npos) {
+      throw std::runtime_error{"no matching */ for annotation comments"};
+    }
+    s.erase(fr, to - fr + 2);
+    fr = s.find("/*", fr);
+  }
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

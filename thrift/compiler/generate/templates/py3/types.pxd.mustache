@@ -43,7 +43,7 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#include
 {{/program:includeNamespaces}}
 
 {{#program:cppIncludes}}
-cdef extern from "{{path}}":
+cdef extern from "{{.}}":
   pass
 {{/program:cppIncludes}}{{!
 }}{{#program:customTemplates}}

@@ -304,6 +304,18 @@ class mstch_base : public mstch::object {
         pos_ == ELEMENT_POSITION::FIRST_AND_LAST;
   }
 
+  mstch::node annotations(t_annotated const* annotated) {
+    std::vector<t_annotation> annotations;
+    for (const auto& itr : annotated->annotations_) {
+      annotations.emplace_back(itr.first, itr.second);
+    }
+    return generate_elements(
+        annotations,
+        generators_->annotation_generator_.get(),
+        generators_,
+        cache_);
+  }
+
   static ELEMENT_POSITION element_position(size_t index, size_t length) {
     ELEMENT_POSITION pos = ELEMENT_POSITION::NONE;
     if (index == 0) {
@@ -592,6 +604,7 @@ class mstch_type : public mstch_base {
             {"type:i64?", &mstch_type::is_i64},
             {"type:double?", &mstch_type::is_double},
             {"type:float?", &mstch_type::is_float},
+            {"type:floating_point?", &mstch_type::is_floating_point},
             {"type:struct?", &mstch_type::is_struct},
             {"type:enum?", &mstch_type::is_enum},
             {"type:sink?", &mstch_type::is_sink},
@@ -657,6 +670,9 @@ class mstch_type : public mstch_base {
   }
   mstch::node is_float() {
     return resolved_type_->is_float();
+  }
+  mstch::node is_floating_point() {
+    return resolved_type_->is_floating_point();
   }
   mstch::node is_struct() {
     return resolved_type_->is_struct() || resolved_type_->is_xception();
@@ -773,7 +789,9 @@ class mstch_field : public mstch_base {
   mstch::node is_optInReqOut() {
     return field_->get_req() == t_field::e_req::T_OPT_IN_REQ_OUT;
   }
-  mstch::node annotations();
+  mstch::node annotations() {
+    return mstch_base::annotations(field_);
+  }
 
  protected:
   t_field const* field_;
@@ -938,6 +956,7 @@ class mstch_service : public mstch_base {
             {"service:extends?", &mstch_service::has_extends},
             {"service:any_streams?", &mstch_service::any_streams},
             {"service:any_sinks?", &mstch_service::any_sinks},
+            {"service:annotations", &mstch_service::annotations},
         });
   }
 
@@ -956,6 +975,10 @@ class mstch_service : public mstch_base {
   }
   mstch::node functions();
   mstch::node extends();
+
+  mstch::node annotations() {
+    return mstch_base::annotations(service_);
+  }
 
   mstch::node any_streams() {
     auto& funcs = service_->get_functions();
