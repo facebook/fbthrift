@@ -870,9 +870,20 @@ class StructRandomizer(BaseRandomizer):
         if isinstance(seed, dict):
             return seed
         res = {}
-        for key, value in vars(seed).items():
-            if value is not None:
-                res[key] = value
+        if self._is_union:
+            field = getattr(seed, 'field', None)
+            value = getattr(seed, 'value', None)
+            thrift_spec = getattr(seed, 'thrift_spec', None)
+            if not field or not thrift_spec:
+                return res
+            field_spec = thrift_spec[field]
+            if not field_spec or len(field_spec) < 3:
+                return res
+            res[field_spec[2]] = value
+        else:
+            for key, value in vars(seed).items():
+                if value is not None:
+                    res[key] = value
         return res
 
     def _fuzz(self, seed):
@@ -881,12 +892,17 @@ class StructRandomizer(BaseRandomizer):
         field_rules = self._field_rules
         seed = self._seed_to_dict(seed)
         if self._is_union:
+            if not seed:
+                # The seed could be malformed.
+                # If that's the case just return none
+                return None
             # The seed should be a single key/value pair
             field_name, seed_val = six.next(six.iteritems(seed))
             field_randomizer = field_rules[field_name]['randomizer']
             fuzzed_val = field_randomizer.generate(seed=seed_val)
             fields[field_name] = fuzzed_val
-
+            for f in self._field_names:
+                fields.setdefault(f, None)
         elif field_rules:
             # Fuzz only one field and leave the rest with the seed value
             fuzz_field_name = random.choice(list(field_rules))
@@ -917,6 +933,10 @@ class StructRandomizer(BaseRandomizer):
             field_randomizer = self._field_rules[key]['randomizer']
             val = field_randomizer.eval_seed(val)
             fields[key] = val
+
+        if self._is_union:
+            for f in self._field_names:
+                fields.setdefault(f, None)
         return self._ttype(**fields)
 
 _ttype_to_randomizer = {}

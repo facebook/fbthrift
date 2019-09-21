@@ -872,12 +872,31 @@ class TestUnionRandomizer(TestStructRandomizer, unittest.TestCase):
                 ),
             )
 
+    def testSeededFuzz(self):
+        cls = self.__class__
+        seeds = [ttypes.IntUnion(a=20), ttypes.IntUnion(b=40)]
+        constraints = {"seeds": seeds, "p_random": 0}
+        gen = self.struct_randomizer(constraints=constraints)
+        for _ in sm.xrange(cls.iterations):
+            val = gen.generate()
+            self.assertIsNotNone(
+                val,
+                (
+                    "The union should always be created. "
+                    "We don't know the expected values, "
+                    "just that they exist"
+                ),
+            )
+
+
     def testSeeded(self):
         cls = self.__class__
 
         seeds = [
             {'a': 2},
-            {'b': 4}
+            {'b': 4},
+            ttypes.IntUnion(a=2),
+            ttypes.IntUnion(b=4),
         ]
 
         constraints = {
