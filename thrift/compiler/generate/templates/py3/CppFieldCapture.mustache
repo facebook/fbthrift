@@ -22,23 +22,23 @@ a, b, and c would be written using this file. Most variables can be passed
 as themselves by value, but the complex types are unique_ptr values and
 need to be moved to the called function.
 
-}}{{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
-}}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!
-}}{{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
-}}{{#type:i32?}}{{field:name}}{{/type:i32?}}{{!
-}}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
-}}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
-}}{{#type:float?}}{{field:name}}{{/type:float?}}{{!
-}}{{#type:string?}}{{field:name}} = std::move({{field:name}}){{/type:string?}}{{!
-}}{{#type:binary?}}{{field:name}} = {{!
-    }}{{^type:iobufRef?}}std::move({{field:name}}){{/type:iobufRef?}}{{!
+}}{{#type:bool?}}{{field:py_name}}{{/type:bool?}}{{!
+}}{{#type:byte?}}{{field:py_name}}{{/type:byte?}}{{!
+}}{{#type:i16?}}{{field:py_name}}{{/type:i16?}}{{!
+}}{{#type:i32?}}{{field:py_name}}{{/type:i32?}}{{!
+}}{{#type:i64?}}{{field:py_name}}{{/type:i64?}}{{!
+}}{{#type:double?}}{{field:py_name}}{{/type:double?}}{{!
+}}{{#type:float?}}{{field:py_name}}{{/type:float?}}{{!
+}}{{#type:string?}}{{field:py_name}} = std::move({{field:py_name}}){{/type:string?}}{{!
+}}{{#type:binary?}}{{field:py_name}} = {{!
+    }}{{^type:iobufRef?}}std::move({{field:py_name}}){{/type:iobufRef?}}{{!
     }}{{#type:iobufRef?}}{{!
-        }}{{#program:stack_arguments?}}{{field:name}}->clone(){{/program:stack_arguments?}}{{!
-        }}{{^program:stack_arguments?}}std::move({{field:name}}){{/program:stack_arguments?}}{{!
+        }}{{#program:stack_arguments?}}{{field:py_name}}->clone(){{/program:stack_arguments?}}{{!
+        }}{{^program:stack_arguments?}}std::move({{field:py_name}}){{/program:stack_arguments?}}{{!
     }}{{/type:iobufRef?}}{{!
 }}{{/type:binary?}}{{!
-}}{{#type:struct?}}{{field:name}} = std::move({{field:name}}){{/type:struct?}}{{!
-}}{{#type:list?}}{{field:name}} = std::move({{field:name}}){{/type:list?}}{{!
-}}{{#type:set?}}{{field:name}} = std::move({{field:name}}){{/type:set?}}{{!
-}}{{#type:map?}}{{field:name}} = std::move({{field:name}}){{/type:map?}}{{!
-}}{{#type:enum?}}{{field:name}}{{/type:enum?}}
+}}{{#type:struct?}}{{field:py_name}} = std::move({{field:py_name}}){{/type:struct?}}{{!
+}}{{#type:list?}}{{field:py_name}} = std::move({{field:py_name}}){{/type:list?}}{{!
+}}{{#type:set?}}{{field:py_name}} = std::move({{field:py_name}}){{/type:set?}}{{!
+}}{{#type:map?}}{{field:py_name}} = std::move({{field:py_name}}){{/type:map?}}{{!
+}}{{#type:enum?}}{{field:py_name}}{{/type:enum?}}

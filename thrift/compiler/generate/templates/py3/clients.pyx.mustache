@@ -182,7 +182,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
             {{service:name}} self{{#function:args}},
             {{#field:type}}{{!
                 }}{{#type:hasCythonType?}}{{^type:integer?}}{{> types/CythonPythonType}} {{/type:integer?}}{{/type:hasCythonType?}}{{!
-                }}{{field:name}}{{#type:integer?}} not None{{/type:integer?}}{{^type:number?}} not None{{/type:number?}}{{!
+                }}{{field:py_name}}{{#type:integer?}} not None{{/type:integer?}}{{^type:number?}} not None{{/type:number?}}{{!
             }}{{/field:type}}{{/function:args}},
             __RpcOptions rpc_options=None
     ):
@@ -191,15 +191,15 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         {{#function:args}}
         {{#field:type}}
         {{#type:container?}}
-        if not isinstance({{field:name}}, {{> types/PythonType}}):
-            {{field:name}} = {{> types/PythonType}}({{field:name}})
+        if not isinstance({{field:py_name}}, {{> types/PythonType}}):
+            {{field:py_name}} = {{> types/PythonType}}({{field:py_name}})
         {{/type:container?}}
         {{#type:integer?}}
-        if not isinstance({{field:name}}, int):
-            raise TypeError(f'{{field:name}} is not a {int !r}.')
+        if not isinstance({{field:py_name}}, int):
+            raise TypeError(f'{{field:py_name}} is not a {int !r}.')
         else:
             {{! inject cython int Overflow checks }}
-            {{field:name}} = <{{> types/CythonPythonType}}> {{field:name}}
+            {{field:py_name}} = <{{> types/CythonPythonType}}> {{field:py_name}}
         {{/type:integer?}}
         {{/field:type}}
         {{/function:args}}

@@ -49,7 +49,7 @@ cdef class __{{struct:name}}_Union_TypeMeta(type):
         if name == "EMPTY":
             return __{{struct:name}}Type.EMPTY
         {{#struct:fields}}
-        elif name == "{{field:name}}":
+        elif name == "{{field:py_name}}":
             return __{{struct:name}}Type.{{field:enumSafeName}}
         {{/struct:fields}}
         raise KeyError(name)

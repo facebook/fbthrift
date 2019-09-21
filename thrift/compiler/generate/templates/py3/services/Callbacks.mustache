@@ -43,13 +43,13 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
     {{#field:type}}{{!
             }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
             }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
-        }}{{/field:type}} {{field:name}}{{/function:args}}
+        }}{{/field:type}} {{field:py_name}}{{/function:args}}
 ):{{! Gets called from a python Executor }}
     cdef {{service:name}}Interface __iface
     __iface = self
     __promise = Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}.create(move_promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}(cPromise))
     {{#function:args}}
-    arg_{{field:name}} = {{#field:type}}{{!
+    arg_{{field:py_name}} = {{#field:type}}{{!
             }}{{^program:stack_arguments?}}{{> CythonCppToPython}}{{/program:stack_arguments?}}{{!
             }}{{#program:stack_arguments?}}{{> types/CythonCppValueToPython}}{{/program:stack_arguments?}}{{!
         }}{{/field:type}}
@@ -62,7 +62,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             self,
             __context,
             __promise{{#function:args}},
-            arg_{{field:name}}{{/function:args}}
+            arg_{{field:py_name}}{{/function:args}}
         )
     )
 
@@ -75,15 +75,15 @@ async def {{service:name}}_{{function:name}}_coro(
 
 
     }} promise{{#function:args}},
-    {{field:name}}{{/function:args}}
+    {{field:py_name}}{{/function:args}}
 ):
     try:
         if ctx is not None:
             result = await self.{{function:name}}(ctx,{{#function:args}}
-                      {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
+                      {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
         else:
             result = await self.{{function:name}}({{#function:args}}
-                      {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
+                      {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
         {{#function:returnType}}
         {{#type:container?}}
         result = {{> types/CythonPythonType}}(result)

@@ -62,7 +62,7 @@ class {{service:name}}Wrapper : {{!
         {{#field:type}}{{!
                 }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
                 }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
-            }}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
+            }}{{/field:type}} {{field:py_name}}{{^last?}},{{/last?}}{{#last?}}
     {{/last?}}{{/function:args}}) override;
 {{/service:functions}}};
 

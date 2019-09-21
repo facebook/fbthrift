@@ -62,7 +62,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
         bint operator==(c{{enum:name}}&)
         bint operator!=(c{{enum:name}}&)
     {{#enum:values}}
-    c{{enum:name}} {{enum:name}}__{{enumValue:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:cppName}}"
+    c{{enum:name}} {{enum:name}}__{{enumValue:py_name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:cppName}}"
     {{/enum:values}}
 {{/program:enums}}
 
@@ -86,7 +86,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{^struct:union?}}
     cdef cppclass c{{struct:name}}__isset "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
     {{#struct:fields}}
-        bint {{field:name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
+        bint {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
     {{/struct:fields}}
     {{^struct:fields}}
         pass
@@ -96,7 +96,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     cdef enum c{{struct:name}}__type "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
         c{{struct:name}}__type___EMPTY__ "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
     {{#struct:fields}}
-        c{{struct:name}}__type_{{field:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:cppName}}",
+        c{{struct:name}}__type_{{field:py_name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:cppName}}",
     {{/struct:fields}}
     {{/struct:union?}}
 
@@ -117,10 +117,10 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{#struct:fields}}
         {{#field:has_ref_accessor?}}
         optional_field_ref[{{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}}] {{!
-            }}{{field:name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
+            }}{{field:py_name}}_ref{{#field:hasModifiedName?}} "{{field:cppName}}_ref"{{/field:hasModifiedName?}}()
         {{/field:has_ref_accessor?}}
         {{^field:has_ref_accessor?}}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
+        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:py_name}}{{#field:hasModifiedName?}} "{{field:cppName}}"{{/field:hasModifiedName?}}
         {{/field:has_ref_accessor?}}
     {{/struct:fields}}
         c{{struct:name}}__isset __isset
@@ -128,23 +128,23 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{#struct:union?}}
         c{{struct:name}}__type getType() const
     {{#struct:fields}}
-        {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:name}}{{#field:hasModifiedName?}} "get_{{field:cppName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
+        {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:py_name}}{{#field:hasModifiedName?}} "get_{{field:cppName}}"{{/field:hasModifiedName?}}() const{{/field:type}}
         {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
             but they return the appropriate ptr }}
-        {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:name}}{{#field:hasModifiedName?}} "set_{{field:cppName}}"{{/field:hasModifiedName?}}(const {{> types/CythonCppType}}&){{/field:type}}
+        {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:py_name}}{{#field:hasModifiedName?}} "set_{{field:cppName}}"{{/field:hasModifiedName?}}(const {{> types/CythonCppType}}&){{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
 
 {{/program:structs}}{{!
 
 }}{{#program:structs}}{{#struct:fields}}{{#field:reference?}}{{^field:iobuf_ref?}}{{#field:type}}
     cdef shared_ptr[{{> types/CythonCppType}}] {{!
-    }}reference_shared_ptr_{{field:name}} {{!
+    }}reference_shared_ptr_{{field:py_name}} {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
     }}shared_ptr[c{{struct:name}}]&, {{> types/CythonCppType}}&)
 {{/field:type}}{{/field:iobuf_ref?}}{{/field:reference?}}
 {{^field:reference?}}{{#field:type}}{{^type:simple?}}
     cdef shared_ptr[{{> types/CythonCppType}}] {{!
-    }}reference_shared_ptr_{{field:name}} {{!
+    }}reference_shared_ptr_{{field:py_name}} {{!
     }}"thrift::py3::reference_shared_ptr<{{> types/CppValueType}}>"({{!
     }}shared_ptr[c{{struct:name}}]&, {{> types/CythonCppType}}&)
 {{/type:simple?}}{{/field:type}}{{/field:reference?}}
@@ -182,13 +182,13 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
-    cdef {{> types/CythonPythonType}} __field_{{field:name}}
+    cdef {{> types/CythonPythonType}} __field_{{field:py_name}}
     {{/type:struct}}{{#type:container?}}
-    cdef {{> types/CythonPythonType}} __field_{{field:name}}
+    cdef {{> types/CythonPythonType}} __field_{{field:py_name}}
     {{/type:container?}}{{#type:iobuf?}}
-    cdef __iobuf.IOBuf __field_{{field:name}}
+    cdef __iobuf.IOBuf __field_{{field:py_name}}
     {{/type:iobuf?}}{{#type:iobufRef?}}
-    cdef __iobuf.IOBuf __field_{{field:name}}
+    cdef __iobuf.IOBuf __field_{{field:py_name}}
     {{/type:iobufRef?}}{{/field:type}}
     {{/struct:fields}}{{/struct:union?}}
     {{#struct:union?}}
@@ -211,7 +211,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
             }}{{^type:cythonTypeNoneable?}}{{!
                 }}object {{!
             }}{{/type:cythonTypeNoneable?}}{{!
-            }}{{field:name}}{{!
+            }}{{field:py_name}}{{!
         }}{{/field:type}}{{/struct:fields}}
     ) except *
 

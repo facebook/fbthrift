@@ -74,7 +74,7 @@ folly::Future<{{#function:returnType}}{{!
   {{#field:type}}{{!
           }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
           }}{{#program:stack_arguments?}}{{> types/CppStackArgType}}{{/program:stack_arguments?}}{{!
-      }}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
+      }}{{/field:type}} {{field:py_name}}{{^last?}},{{/last?}}{{#last?}}
 {{/last?}}{{/function:args}}) {
   {{#function:returnType}}folly::Promise<{{!
           }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!

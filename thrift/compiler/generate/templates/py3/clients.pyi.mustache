@@ -61,7 +61,7 @@ class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
     {{#service:functions}}
     async def {{function:name}}(
         self{{#function:args}},
-        {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}},
+        {{field:py_name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}},
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> {{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}: ...
 

@@ -209,7 +209,7 @@ cdef inline c{{enum:name}} {{enum:name}}_to_cpp({{enum:name}} value):
     cdef int cvalue = value.value
     {{#enum:values}}
     {{^first?}}el{{/first?}}if cvalue == {{enumValue:value}}:
-        return {{enum:name}}__{{enumValue:name}}{{! This is from cpp so not enumSafeName }}
+        return {{enum:name}}__{{enumValue:py_name}}{{! This is from cpp so not enumSafeName }}
     {{/enum:values}}
     {{^enum:values}}
     pass

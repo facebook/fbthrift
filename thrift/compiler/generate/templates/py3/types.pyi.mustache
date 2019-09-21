@@ -54,13 +54,13 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
 class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:union?}}, _typing.Iterable[_typing.Tuple[str, _typing.Any]]{{/struct:union?}}):
     def __init__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:name}}: {{^field:requireValue?}}_typing.Optional[{{/field:requireValue?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{^field:requireValue?}}]=None{{/field:requireValue?}}{{/struct:fields}}
+        {{field:py_name}}: {{^field:requireValue?}}_typing.Optional[{{/field:requireValue?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{^field:requireValue?}}]=None{{/field:requireValue?}}{{/struct:fields}}
     ) -> None: ...
 
     {{#struct:plain?}}
     def __call__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
-        {{field:name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, NOTSETTYPE{{^field:requireValue?}}, None{{/field:requireValue?}}]=NOTSET{{/struct:fields}}
+        {{field:py_name}}: _typing.Union[{{#field:type}}{{> types/PEP484Type}}{{/field:type}}, NOTSETTYPE{{^field:requireValue?}}, None{{/field:requireValue?}}]=NOTSET{{/struct:fields}}
     ) -> {{struct:name}}: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['{{struct:name}}'], bytes]]: ...
@@ -80,7 +80,7 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
 
     {{#struct:fields}}
     @__property__
-    def {{field:name}}(self) -> {{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
+    def {{field:py_name}}(self) -> {{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
         }}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{!
         }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}: ...
     {{/struct:fields}}

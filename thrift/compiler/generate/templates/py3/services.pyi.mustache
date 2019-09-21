@@ -66,7 +66,7 @@ class {{service:name}}Interface(
     @abstractmethod
     async def {{function:name}}(
         self{{#function:args}},
-        {{field:name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
+        {{field:py_name}}: {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}
     ) -> {{#function:returnType}}{{> types/PEP484Type}}{{/function:returnType}}: ...
     {{/service:functions}}
     pass

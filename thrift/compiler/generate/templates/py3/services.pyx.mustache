@@ -116,7 +116,7 @@ cdef class {{service:name}}Interface(
 
     async def {{function:name}}(
             self{{#function:args}},
-            {{field:name}}{{/function:args}}):
+            {{field:py_name}}{{/function:args}}):
         raise NotImplementedError("async def {{function:name}} is not implemented")
     {{/service:functions}}
 {{/program:services}}

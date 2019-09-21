@@ -34,7 +34,7 @@ thread that will pass data to the cython callback.
 folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}>
 {{service:name}}ClientWrapper::{{function:name}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
-    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:name}}{{/function:args}}) {
+    {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
   folly::Promise<{{#function:returnType}}{{> types/CppValueType}}{{/function:returnType}}> _promise;
   auto _future = _promise.getFuture();
   auto* client = static_cast<::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient*>(async_client_.get());
@@ -50,7 +50,7 @@ folly::Future<{{#function:returnType}}{{> types/CppValueType}}{{/function:return
   client->{{function:name}}(
     rpcOptions,
     std::move(callback){{#function:args}},
-    arg_{{field:name}}{{/function:args}}
+    arg_{{field:py_name}}{{/function:args}}
   );
   return _future;
 }

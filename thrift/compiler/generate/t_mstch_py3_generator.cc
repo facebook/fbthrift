@@ -252,8 +252,7 @@ mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
       {"follyOptional?", follyOptional},
       {"PEP484Optional?", isPEP484Optional},
       {"isset?", isset},
-      // We replace the previously-set name on the field with the modified name
-      {"name", pyName},
+      {"py_name", pyName},
       {"cppName", cppName},
       {"hasModifiedName?", (pyName != cppName)},
       {"enumSafeName", enumSafeName},
@@ -426,9 +425,7 @@ mstch::map t_mstch_py3_generator::extend_enum_value(const t_enum_value& val) {
   const auto enumSafeName = get_enumSafeName(name);
   const auto cppName = get_cppname(val);
   mstch::map result{
-      // We replace the previously-set name on the enum value with the modified
-      // name, and put the raw value in origName
-      {"name", name},
+      {"py_name", name},
       {"cppName", cppName},
       {"enumSafeName", enumSafeName},
   };
