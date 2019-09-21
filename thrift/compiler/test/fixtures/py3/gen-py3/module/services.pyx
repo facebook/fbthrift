@@ -50,77 +50,177 @@ from module.services_wrapper cimport cRederivedServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[int32_t] move_promise_int32_t "std::move"(
-        cFollyPromise[int32_t])
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
-    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
+    cdef cFollyPromise[_module_types.cAnEnum] move_promise__module_types_cAnEnum "std::move"(
+        cFollyPromise[_module_types.cAnEnum])
+    cdef cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] move_promise__module_types_cBinaryUnionStruct "std::move"(
+        cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]])
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] move_promise_vector___module_types_cAnEnum "std::move"(
+        cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]])
+    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move_promise_vector__vector__int32_t "std::move"(
+        cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
+    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move_promise_vector__cset__string "std::move"(
+        cFollyPromise[unique_ptr[vector[cset[string]]]])
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move_promise_vector__int32_t "std::move"(
+        cFollyPromise[unique_ptr[vector[int32_t]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move_promise_cmap__string_cmap__string_int32_t "std::move"(
+        cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move_promise_cmap__string_int16_t "std::move"(
+        cFollyPromise[unique_ptr[cmap[string,int16_t]]])
+    cdef cFollyPromise[unique_ptr[cset[string]]] move_promise_cset__binary "std::move"(
+        cFollyPromise[unique_ptr[cset[string]]])
+    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move_promise_cset__int32_t "std::move"(
+        cFollyPromise[unique_ptr[cset[int32_t]]])
+    cdef cFollyPromise[unique_ptr[cset[string]]] move_promise_cset__string "std::move"(
+        cFollyPromise[unique_ptr[cset[string]]])
+    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] move_promise__module_types_cSimpleStruct "std::move"(
+        cFollyPromise[unique_ptr[_module_types.cSimpleStruct]])
+    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
         cFollyPromise[unique_ptr[string]])
     cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
     cdef cFollyPromise[int8_t] move_promise_int8_t "std::move"(
         cFollyPromise[int8_t])
-    cdef cFollyPromise[int16_t] move_promise_int16_t "std::move"(
-        cFollyPromise[int16_t])
-    cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
-        cFollyPromise[int64_t])
     cdef cFollyPromise[double] move_promise_double "std::move"(
         cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] move_promise__module_types_cSimpleStruct "std::move"(
-        cFollyPromise[unique_ptr[_module_types.cSimpleStruct]])
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move_promise_vector__int32_t "std::move"(
-        cFollyPromise[unique_ptr[vector[int32_t]]])
-    cdef cFollyPromise[unique_ptr[cset[string]]] move_promise_cset__string "std::move"(
-        cFollyPromise[unique_ptr[cset[string]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move_promise_cmap__string_int16_t "std::move"(
-        cFollyPromise[unique_ptr[cmap[string,int16_t]]])
-    cdef cFollyPromise[_module_types.cAnEnum] move_promise__module_types_cAnEnum "std::move"(
-        cFollyPromise[_module_types.cAnEnum])
-    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move_promise_vector__vector__int32_t "std::move"(
-        cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move_promise_cmap__string_cmap__string_int32_t "std::move"(
-        cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
-    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move_promise_vector__cset__string "std::move"(
-        cFollyPromise[unique_ptr[vector[cset[string]]]])
-    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move_promise_cset__int32_t "std::move"(
-        cFollyPromise[unique_ptr[cset[int32_t]]])
-    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
+    cdef cFollyPromise[int16_t] move_promise_int16_t "std::move"(
+        cFollyPromise[int16_t])
+    cdef cFollyPromise[int32_t] move_promise_int32_t "std::move"(
+        cFollyPromise[int32_t])
+    cdef cFollyPromise[int64_t] move_promise_int64_t "std::move"(
+        cFollyPromise[int64_t])
+    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
         cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[unique_ptr[cset[string]]] move_promise_cset__binary "std::move"(
-        cFollyPromise[unique_ptr[cset[string]]])
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] move_promise_vector___module_types_cAnEnum "std::move"(
-        cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]])
-    cdef cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] move_promise__module_types_cBinaryUnionStruct "std::move"(
-        cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]])
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
+        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
-cdef class Promise_int32_t:
-    cdef cFollyPromise[int32_t] cPromise
+cdef class Promise__module_types_cAnEnum:
+    cdef cFollyPromise[_module_types.cAnEnum] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[int32_t] cPromise):
-        inst = <Promise_int32_t>Promise_int32_t.__new__(Promise_int32_t)
-        inst.cPromise = move_promise_int32_t(cPromise)
+    cdef create(cFollyPromise[_module_types.cAnEnum] cPromise):
+        inst = <Promise__module_types_cAnEnum>Promise__module_types_cAnEnum.__new__(Promise__module_types_cAnEnum)
+        inst.cPromise = move_promise__module_types_cAnEnum(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cFollyUnit:
-    cdef cFollyPromise[cFollyUnit] cPromise
+cdef class Promise__module_types_cBinaryUnionStruct:
+    cdef cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+    cdef create(cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise):
+        inst = <Promise__module_types_cBinaryUnionStruct>Promise__module_types_cBinaryUnionStruct.__new__(Promise__module_types_cBinaryUnionStruct)
+        inst.cPromise = move_promise__module_types_cBinaryUnionStruct(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_string:
+cdef class Promise_vector___module_types_cAnEnum:
+    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise):
+        inst = <Promise_vector___module_types_cAnEnum>Promise_vector___module_types_cAnEnum.__new__(Promise_vector___module_types_cAnEnum)
+        inst.cPromise = move_promise_vector___module_types_cAnEnum(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_vector__vector__int32_t:
+    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise):
+        inst = <Promise_vector__vector__int32_t>Promise_vector__vector__int32_t.__new__(Promise_vector__vector__int32_t)
+        inst.cPromise = move_promise_vector__vector__int32_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_vector__cset__string:
+    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise):
+        inst = <Promise_vector__cset__string>Promise_vector__cset__string.__new__(Promise_vector__cset__string)
+        inst.cPromise = move_promise_vector__cset__string(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_vector__int32_t:
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[int32_t]]] cPromise):
+        inst = <Promise_vector__int32_t>Promise_vector__int32_t.__new__(Promise_vector__int32_t)
+        inst.cPromise = move_promise_vector__int32_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cmap__string_cmap__string_int32_t:
+    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise):
+        inst = <Promise_cmap__string_cmap__string_int32_t>Promise_cmap__string_cmap__string_int32_t.__new__(Promise_cmap__string_cmap__string_int32_t)
+        inst.cPromise = move_promise_cmap__string_cmap__string_int32_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cmap__string_int16_t:
+    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise):
+        inst = <Promise_cmap__string_int16_t>Promise_cmap__string_int16_t.__new__(Promise_cmap__string_int16_t)
+        inst.cPromise = move_promise_cmap__string_int16_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cset__binary:
+    cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
+        inst = <Promise_cset__binary>Promise_cset__binary.__new__(Promise_cset__binary)
+        inst.cPromise = move_promise_cset__binary(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cset__int32_t:
+    cdef cFollyPromise[unique_ptr[cset[int32_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cset[int32_t]]] cPromise):
+        inst = <Promise_cset__int32_t>Promise_cset__int32_t.__new__(Promise_cset__int32_t)
+        inst.cPromise = move_promise_cset__int32_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cset__string:
+    cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
+        inst = <Promise_cset__string>Promise_cset__string.__new__(Promise_cset__string)
+        inst.cPromise = move_promise_cset__string(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise__module_types_cSimpleStruct:
+    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise):
+        inst = <Promise__module_types_cSimpleStruct>Promise__module_types_cSimpleStruct.__new__(Promise__module_types_cSimpleStruct)
+        inst.cPromise = move_promise__module_types_cSimpleStruct(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_binary:
     cdef cFollyPromise[unique_ptr[string]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move_promise_string(cPromise)
+        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        inst.cPromise = move_promise_binary(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -144,6 +244,16 @@ cdef class Promise_int8_t:
         return inst
 
 @cython.auto_pickle(False)
+cdef class Promise_double:
+    cdef cFollyPromise[double] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[double] cPromise):
+        inst = <Promise_double>Promise_double.__new__(Promise_double)
+        inst.cPromise = move_promise_double(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
 cdef class Promise_int16_t:
     cdef cFollyPromise[int16_t] cPromise
 
@@ -151,6 +261,16 @@ cdef class Promise_int16_t:
     cdef create(cFollyPromise[int16_t] cPromise):
         inst = <Promise_int16_t>Promise_int16_t.__new__(Promise_int16_t)
         inst.cPromise = move_promise_int16_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_int32_t:
+    cdef cFollyPromise[int32_t] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[int32_t] cPromise):
+        inst = <Promise_int32_t>Promise_int32_t.__new__(Promise_int32_t)
+        inst.cPromise = move_promise_int32_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -164,143 +284,23 @@ cdef class Promise_int64_t:
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_double:
-    cdef cFollyPromise[double] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[double] cPromise):
-        inst = <Promise_double>Promise_double.__new__(Promise_double)
-        inst.cPromise = move_promise_double(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise__module_types_cSimpleStruct:
-    cdef cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.cSimpleStruct]] cPromise):
-        inst = <Promise__module_types_cSimpleStruct>Promise__module_types_cSimpleStruct.__new__(Promise__module_types_cSimpleStruct)
-        inst.cPromise = move_promise__module_types_cSimpleStruct(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_vector__int32_t:
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[int32_t]]] cPromise):
-        inst = <Promise_vector__int32_t>Promise_vector__int32_t.__new__(Promise_vector__int32_t)
-        inst.cPromise = move_promise_vector__int32_t(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_cset__string:
-    cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
-        inst = <Promise_cset__string>Promise_cset__string.__new__(Promise_cset__string)
-        inst.cPromise = move_promise_cset__string(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_cmap__string_int16_t:
-    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise):
-        inst = <Promise_cmap__string_int16_t>Promise_cmap__string_int16_t.__new__(Promise_cmap__string_int16_t)
-        inst.cPromise = move_promise_cmap__string_int16_t(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise__module_types_cAnEnum:
-    cdef cFollyPromise[_module_types.cAnEnum] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[_module_types.cAnEnum] cPromise):
-        inst = <Promise__module_types_cAnEnum>Promise__module_types_cAnEnum.__new__(Promise__module_types_cAnEnum)
-        inst.cPromise = move_promise__module_types_cAnEnum(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_vector__vector__int32_t:
-    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise):
-        inst = <Promise_vector__vector__int32_t>Promise_vector__vector__int32_t.__new__(Promise_vector__vector__int32_t)
-        inst.cPromise = move_promise_vector__vector__int32_t(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_cmap__string_cmap__string_int32_t:
-    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise):
-        inst = <Promise_cmap__string_cmap__string_int32_t>Promise_cmap__string_cmap__string_int32_t.__new__(Promise_cmap__string_cmap__string_int32_t)
-        inst.cPromise = move_promise_cmap__string_cmap__string_int32_t(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_vector__cset__string:
-    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise):
-        inst = <Promise_vector__cset__string>Promise_vector__cset__string.__new__(Promise_vector__cset__string)
-        inst.cPromise = move_promise_vector__cset__string(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_cset__int32_t:
-    cdef cFollyPromise[unique_ptr[cset[int32_t]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cset[int32_t]]] cPromise):
-        inst = <Promise_cset__int32_t>Promise_cset__int32_t.__new__(Promise_cset__int32_t)
-        inst.cPromise = move_promise_cset__int32_t(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_binary:
+cdef class Promise_string:
     cdef cFollyPromise[unique_ptr[string]] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        inst = <Promise_string>Promise_string.__new__(Promise_string)
+        inst.cPromise = move_promise_string(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cset__binary:
-    cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
+cdef class Promise_cFollyUnit:
+    cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
-        inst = <Promise_cset__binary>Promise_cset__binary.__new__(Promise_cset__binary)
-        inst.cPromise = move_promise_cset__binary(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise_vector___module_types_cAnEnum:
-    cdef cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[vector[_module_types.cAnEnum]]] cPromise):
-        inst = <Promise_vector___module_types_cAnEnum>Promise_vector___module_types_cAnEnum.__new__(Promise_vector___module_types_cAnEnum)
-        inst.cPromise = move_promise_vector___module_types_cAnEnum(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
-cdef class Promise__module_types_cBinaryUnionStruct:
-    cdef cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.cBinaryUnionStruct]] cPromise):
-        inst = <Promise__module_types_cBinaryUnionStruct>Promise__module_types_cBinaryUnionStruct.__new__(Promise__module_types_cBinaryUnionStruct)
-        inst.cPromise = move_promise__module_types_cBinaryUnionStruct(cPromise)
+    cdef create(cFollyPromise[cFollyUnit] cPromise):
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _SimpleService_annotations = _py_types.MappingProxyType({

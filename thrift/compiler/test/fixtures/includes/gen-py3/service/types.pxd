@@ -19,8 +19,8 @@ cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.types cimport bstring, move, optional_field_ref
 from folly.optional cimport cOptional
-cimport module.types as _module_types
 cimport includes.types as _includes_types
+cimport module.types as _module_types
 cimport transitive.types as _transitive_types
 
 

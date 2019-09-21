@@ -50,20 +50,10 @@ from module.services_wrapper cimport cSomeServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] move_promise__module_types_std_unordered_map__int32_t_string "std::move"(
-        cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]])
     cdef cFollyPromise[unique_ptr[cmap[string,int64_t]]] move_promise_cmap__binary_int64_t "std::move"(
         cFollyPromise[unique_ptr[cmap[string,int64_t]]])
-
-@cython.auto_pickle(False)
-cdef class Promise__module_types_std_unordered_map__int32_t_string:
-    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise):
-        inst = <Promise__module_types_std_unordered_map__int32_t_string>Promise__module_types_std_unordered_map__int32_t_string.__new__(Promise__module_types_std_unordered_map__int32_t_string)
-        inst.cPromise = move_promise__module_types_std_unordered_map__int32_t_string(cPromise)
-        return inst
+    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] move_promise__module_types_std_unordered_map__int32_t_string "std::move"(
+        cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]])
 
 @cython.auto_pickle(False)
 cdef class Promise_cmap__binary_int64_t:
@@ -73,6 +63,16 @@ cdef class Promise_cmap__binary_int64_t:
     cdef create(cFollyPromise[unique_ptr[cmap[string,int64_t]]] cPromise):
         inst = <Promise_cmap__binary_int64_t>Promise_cmap__binary_int64_t.__new__(Promise_cmap__binary_int64_t)
         inst.cPromise = move_promise_cmap__binary_int64_t(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise__module_types_std_unordered_map__int32_t_string:
+    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[int32_t,string]]] cPromise):
+        inst = <Promise__module_types_std_unordered_map__int32_t_string>Promise__module_types_std_unordered_map__int32_t_string.__new__(Promise__module_types_std_unordered_map__int32_t_string)
+        inst.cPromise = move_promise__module_types_std_unordered_map__int32_t_string(cPromise)
         return inst
 
 cdef object _SomeService_annotations = _py_types.MappingProxyType({

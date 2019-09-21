@@ -89,7 +89,10 @@ class t_mstch_py3_generator : public t_mstch_generator {
   void generate_init_files(const t_program&);
   boost::filesystem::path package_to_path(std::string package);
   mstch::array get_return_types(const t_program&);
-  void add_per_type_data(const t_program&, mstch::map&);
+  void add_per_type_data(
+      const t_program&,
+      mstch::map&,
+      std::map<string, mstch::map>& includeNamespaces);
   void add_cpp_includes(const t_program&, mstch::map&);
   mstch::array get_cpp2_namespace(const t_program&);
   mstch::array get_py3_namespace(
@@ -111,7 +114,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     vector<const t_type*> custom_templates;
     vector<const t_type*> custom_types;
     std::set<string> seen_types;
-    mstch::array extra_namespaces;
+    std::map<string, mstch::map> extra_namespaces;
     std::set<string> extra_namespace_paths;
   };
   void visit_type(t_type* type, type_data& data);
@@ -154,7 +157,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
         return !svc->get_functions().empty();
       });
 
-  mstch::array includeNamespaces;
+  std::map<string, mstch::map> includeNamespaces;
   for (const auto included_program : program.get_included_programs()) {
     if (included_program->get_path() == program.get_path()) {
       continue;
@@ -173,7 +176,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
         {"hasServices?", hasServices},
         {"hasTypes?", hasTypes},
     };
-    includeNamespaces.push_back(include_ns);
+    includeNamespaces.emplace(included_program->get_path(), include_ns);
   }
 
   bool optionals_setting = cache_->parsed_options_.count("optionals") != 0;
@@ -183,12 +186,16 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
       {"cppNamespaces", cppNamespaces},
       {"py3Namespaces", py3Namespaces},
       {"hasServiceFunctions?", hasServiceFunctions},
-      {"includeNamespaces", includeNamespaces},
       {"optionals?", optionals_setting},
       {"stack_arguments?", stack_arguments},
   };
   add_cpp_includes(program, result);
-  add_per_type_data(program, result);
+  add_per_type_data(program, result, includeNamespaces);
+  mstch::array include_namespaces{};
+  for (const auto& p : includeNamespaces) {
+    include_namespaces.push_back(p.second);
+  }
+  result["includeNamespaces"] = std::move(include_namespaces);
   return result;
 }
 
@@ -619,17 +626,17 @@ boost::filesystem::path t_mstch_py3_generator::package_to_path(
 
 mstch::array t_mstch_py3_generator::get_return_types(const t_program& program) {
   mstch::array distinct_return_types;
-  std::set<string> visited_names;
+  std::map<string, const t_type*> return_types;
 
   for (const auto service : program.get_services()) {
     for (const auto function : service->get_functions()) {
       const auto returntype = function->get_returntype();
       string flat_name = flatten_type_name(*returntype);
-      if (!visited_names.count(flat_name)) {
-        distinct_return_types.push_back(dump(*returntype));
-        visited_names.insert(flat_name);
-      }
+      return_types.emplace(flat_name, returntype);
     }
+  }
+  for (const auto& p : return_types) {
+    distinct_return_types.push_back(dump(*p.second));
   }
   return distinct_return_types;
 }
@@ -641,7 +648,8 @@ mstch::array t_mstch_py3_generator::get_return_types(const t_program& program) {
  * definitions */
 void t_mstch_py3_generator::add_per_type_data(
     const t_program& program,
-    mstch::map& results) {
+    mstch::map& results,
+    std::map<string, mstch::map>& includeNamespaces) {
   type_data data;
 
   // Put in all the directly-referenced paths, since we don't need to repeat
@@ -687,32 +695,22 @@ void t_mstch_py3_generator::add_per_type_data(
   results.emplace("customTemplates", dump_elems(data.custom_templates));
   results.emplace("customTypes", dump_elems(data.custom_types));
 
-  // extra_namespaces gets appended to the existing includeNamespaces key:
-  auto nit = results.find("includeNamespaces");
-  if (nit == results.end()) {
-    results.emplace("includeNamespaces", data.extra_namespaces);
-  } else {
-    auto& n = boost::get<mstch::array>(nit->second);
-    n.insert(
-        n.end(),
-        std::make_move_iterator(data.extra_namespaces.begin()),
-        std::make_move_iterator(data.extra_namespaces.end()));
+  for (const auto& p : data.extra_namespaces) {
+    includeNamespaces.emplace(p.first, p.second);
   }
 
   // create second set of container types that treats strings and binaries
   // the same
-  vector<const t_type*> move_containers;
-  std::set<string> visited_names;
+  std::map<string, const t_type*> move_containers_map;
+  std::vector<const t_type*> move_containers;
 
   for (const auto type : data.containers) {
     auto flat_name = flatten_type_name(*type);
     boost::algorithm::replace_all(flat_name, "binary", "string");
-
-    if (visited_names.count(flat_name)) {
-      continue;
-    }
-    visited_names.insert(flat_name);
-    move_containers.push_back(type);
+    move_containers_map.emplace(flat_name, type);
+  }
+  for (const auto& e : move_containers_map) {
+    move_containers.push_back(e.second);
   }
   results.emplace("moveContainerTypes", dump_elems(move_containers));
 }
@@ -788,7 +786,7 @@ void t_mstch_py3_generator::visit_single_type(
             {"hasServices?", false},
             {"hasTypes?", true},
         };
-        data.extra_namespaces.push_back(extra_ns);
+        data.extra_namespaces.emplace(path, extra_ns);
       }
     }
   }

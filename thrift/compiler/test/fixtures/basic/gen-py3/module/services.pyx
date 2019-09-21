@@ -48,21 +48,21 @@ from module.services_wrapper cimport cMyServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
-    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
-        cFollyPromise[unique_ptr[string]])
     cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
         cFollyPromise[cbool])
+    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
+        cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
+        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
-cdef class Promise_cFollyUnit:
-    cdef cFollyPromise[cFollyUnit] cPromise
+cdef class Promise_cbool:
+    cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+    cdef create(cFollyPromise[cbool] cPromise):
+        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise = move_promise_cbool(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -76,13 +76,13 @@ cdef class Promise_string:
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cbool:
-    cdef cFollyPromise[cbool] cPromise
+cdef class Promise_cFollyUnit:
+    cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = move_promise_cbool(cPromise)
+    cdef create(cFollyPromise[cFollyUnit] cPromise):
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({

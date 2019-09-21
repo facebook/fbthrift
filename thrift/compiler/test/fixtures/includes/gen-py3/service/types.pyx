@@ -37,10 +37,10 @@ from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
-cimport module.types as _module_types
-import module.types as _module_types
 cimport includes.types as _includes_types
 import includes.types as _includes_types
+cimport module.types as _module_types
+import module.types as _module_types
 cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 

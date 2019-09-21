@@ -37,10 +37,10 @@ from folly.iobuf cimport move as move_iobuf
 
 cimport service.types as _service_types
 import service.types as _service_types
-import module.types as _module_types
-cimport module.types as _module_types
 import includes.types as _includes_types
 cimport includes.types as _includes_types
+import module.types as _module_types
+cimport module.types as _module_types
 import transitive.types as _transitive_types
 cimport transitive.types as _transitive_types
 

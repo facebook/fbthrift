@@ -48,20 +48,10 @@ from module.services_wrapper cimport cRaiserInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
     cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
         cFollyPromise[unique_ptr[string]])
-
-@cython.auto_pickle(False)
-cdef class Promise_cFollyUnit:
-    cdef cFollyPromise[cFollyUnit] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
-        return inst
+    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
+        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_string:
@@ -71,6 +61,16 @@ cdef class Promise_string:
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
         inst.cPromise = move_promise_string(cPromise)
+        return inst
+
+@cython.auto_pickle(False)
+cdef class Promise_cFollyUnit:
+    cdef cFollyPromise[cFollyUnit] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[cFollyUnit] cPromise):
+        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = move_promise_cFollyUnit(cPromise)
         return inst
 
 cdef object _Raiser_annotations = _py_types.MappingProxyType({

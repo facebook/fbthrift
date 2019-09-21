@@ -39,10 +39,10 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport service.types as _service_types
 import service.types as _service_types
-cimport module.types as _module_types
-import module.types as _module_types
 cimport includes.types as _includes_types
 import includes.types as _includes_types
+cimport module.types as _module_types
+import module.types as _module_types
 cimport transitive.types as _transitive_types
 import transitive.types as _transitive_types
 
