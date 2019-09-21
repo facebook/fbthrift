@@ -280,11 +280,9 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) {
   };
 
   auto const format_double_string = [](const double d) {
-    std::string d_str = std::to_string(d);
-    d_str.erase(d_str.find_last_not_of('0') + 1);
-    if (d_str.back() == '.')
-      d_str.push_back('0');
-    return d_str;
+    std::ostringstream oss;
+    oss << std::setprecision(std::numeric_limits<double>::digits10) << d;
+    return oss.str();
   };
 
   switch (type) {
