@@ -47,6 +47,33 @@ TEST(GenerateCommon, SplitNamespace) {
   EXPECT_EQ(expected, splits);
 }
 
+TEST(GenerateCommon, StripComments) {
+  std::vector<std::string> validCases{
+      {},
+      {"no comments"},
+      {"/*foo*/"},
+      {"one/*foo*/comment"},
+      {"this/*foo*/has/*bar*/three/*baz*/comments"},
+  };
+
+  const std::vector<std::string> expected{
+      {},
+      {"no comments"},
+      {""},
+      {"onecomment"},
+      {"thishasthreecomments"},
+  };
+
+  for (auto& s : validCases) {
+    strip_comments(s);
+  }
+
+  EXPECT_EQ(expected, validCases);
+
+  std::string unpaired{"unpaired/*foo*/comments/*baz* /"};
+  EXPECT_THROW(strip_comments(unpaired), std::runtime_error);
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
