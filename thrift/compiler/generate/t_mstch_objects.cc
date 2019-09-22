@@ -501,6 +501,18 @@ mstch::node mstch_field::type() {
       field_->get_type(), generators_, cache_, pos_);
 }
 
+mstch::node mstch_field::annotations() {
+  std::vector<t_annotation> annotations;
+  for (const auto& itr : field_->annotations_) {
+    annotations.emplace_back(itr.first, itr.second);
+  }
+  return generate_elements(
+      annotations,
+      generators_->annotation_generator_.get(),
+      generators_,
+      cache_);
+}
+
 mstch::node mstch_struct::fields() {
   return generate_elements(
       strct_->get_members(),

@@ -27,11 +27,6 @@ namespace compiler {
  */
 std::vector<std::string> split_namespace(const std::string& s);
 
-/**
- * strip comments off from cpp annotation text
- */
-void strip_comments(std::string& s);
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
