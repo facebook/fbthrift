@@ -606,6 +606,7 @@ class mstch_type : public mstch_base {
             {"type:float?", &mstch_type::is_float},
             {"type:floating_point?", &mstch_type::is_floating_point},
             {"type:struct?", &mstch_type::is_struct},
+            {"type:union?", &mstch_type::is_union},
             {"type:enum?", &mstch_type::is_enum},
             {"type:sink?", &mstch_type::is_sink},
             {"type:sinkHasFirstResponse?",
@@ -676,6 +677,9 @@ class mstch_type : public mstch_base {
   }
   mstch::node is_struct() {
     return resolved_type_->is_struct() || resolved_type_->is_xception();
+  }
+  mstch::node is_union() {
+    return resolved_type_->is_union();
   }
   mstch::node is_enum() {
     return resolved_type_->is_enum();
