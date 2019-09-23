@@ -138,6 +138,9 @@ class t_type : public t_annotated {
   virtual bool is_struct() const {
     return false;
   }
+  virtual bool is_union() const {
+    return false;
+  }
   virtual bool is_xception() const {
     return false;
   }

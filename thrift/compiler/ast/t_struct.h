@@ -115,10 +115,6 @@ class t_struct : public t_type {
     return members_in_id_order_;
   }
 
-  bool is_union() const {
-    return is_union_;
-  }
-
   bool is_paramlist() const {
     return is_paramlist_;
   }
@@ -137,6 +133,10 @@ class t_struct : public t_type {
 
   bool is_struct() const override {
     return !is_xception_;
+  }
+
+  bool is_union() const override {
+    return is_union_;
   }
 
   bool is_xception() const override {
