@@ -178,7 +178,12 @@ void HeaderClientChannel::sendRequestResponse(
     recvCallbackOrder_.push_back(sendSeqId_);
   }
   recvCallbacks_[sendSeqId_] = twcb;
-  setBaseReceivedCallback();
+  try {
+    setBaseReceivedCallback(); // Cpp2Channel->setReceiveCallback can throw
+  } catch (const TTransportException& ex) {
+    twcb->messageSendError(ex);
+    return;
+  }
 
   sendMessage(twcb, std::move(buf), header.get());
 }
