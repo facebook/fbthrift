@@ -291,6 +291,14 @@ class KwargsTest(unittest.TestCase):
         self.assertEqual(255, foo.field255)
         self.assertEqual(256, foo.field256)
 
+    def test_unexpected_argument(self):
+        with self.assertRaises(TypeError):
+            Foo(field257=257)
+
+    def test_default_value(self):
+        foo = Foo()
+        self.assertEqual(1024, foo.field42)
+
 
 if __name__ == "__main__":
     unittest.main()

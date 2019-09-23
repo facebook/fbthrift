@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-namespace py thrift.test.py.kwargs
-
-
 struct Foo {
   1: i32 field1,
   2: i32 field2,
