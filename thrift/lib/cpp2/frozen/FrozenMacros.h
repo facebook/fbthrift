@@ -28,6 +28,10 @@
   typename Layout<__VA_ARGS__>::View NAME() const {       \
     return this->layout_->NAME##Field.layout.view(        \
         this->position_(this->layout_->NAME##Field.pos)); \
+  }                                                       \
+  typename Layout<__VA_ARGS__>::View get_##NAME() const { \
+    return this->layout_->NAME##Field.layout.view(        \
+        this->position_(this->layout_->NAME##Field.pos)); \
   }
 #define FROZEN_VIEW_FIELD_OPT(NAME, /*TYPE*/...)                     \
   typename Layout<folly::Optional<__VA_ARGS__>>::View NAME() const { \

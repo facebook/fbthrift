@@ -25,7 +25,10 @@
 <%/program:thrift_includes%>
 namespace apache { namespace thrift { namespace frozen {
 
+
 <%#program:structs%>
+
+<%^struct:union?%>
 FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
   FROZEN_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><% > types/type%><%/field:type%>)<%!
@@ -42,6 +45,30 @@ FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
     FROZEN_LOAD_FIELD(<%field:cpp_name%>, <%field:key%>)<%!
 %><%/struct:fields%>));
+<%/struct:union?%>
+
+<%#struct:union?%>
+FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
+%>
+  FROZEN_FIELD(type_, 0, <% > common/namespace_cpp2%><%struct:name%>::Type)<%!
+%><%#struct:fields%>
+  FROZEN_FIELD(<%field:cpp_name%>, <%field:key%>, <%#field:type%><% > types/type%><%/field:type%>)<%!
+%><%/struct:fields%>
+<% > module_layouts_h/frozen_view_union%>
+  FROZEN_SAVE_INLINE(<%!
+%>
+    FROZEN_SAVE_FIELD(type_)<%!
+%><%#struct:fields%>
+    FROZEN_SAVE_FIELD(<%field:cpp_name%>)<%!
+%><%/struct:fields%>)
+  FROZEN_LOAD_INLINE(<%!
+%>
+    FROZEN_LOAD_FIELD(type_, 0)<%!
+%><%#struct:fields%>
+    FROZEN_LOAD_FIELD(<%field:cpp_name%>, <%field:key%>)<%!
+%><%/struct:fields%>));
+<%/struct:union?%>
+
 <%/program:structs%>
 
 }}} // apache::thrift::frozen

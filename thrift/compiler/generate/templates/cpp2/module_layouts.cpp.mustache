@@ -21,6 +21,8 @@
 namespace apache { namespace thrift { namespace frozen {
 
 <%#program:structs%>
+
+<%^struct:union?%>
 FROZEN_CTOR(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
   FROZEN_CTOR_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>)<%!
@@ -49,6 +51,44 @@ FROZEN_CLEAR(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
   FROZEN_CLEAR_FIELD(<%field:cpp_name%>)<%!
 %><%/struct:fields%>)
+<%/struct:union?%>
+
+<%#struct:union?%>
+FROZEN_CTOR(<% > common/namespace_cpp2%><%struct:name%>,<%!
+%>
+  FROZEN_CTOR_FIELD(type_, 0)<%!
+%><%#struct:fields%>
+  FROZEN_CTOR_FIELD(<%field:cpp_name%>, <%field:key%>)<%!
+%><%/struct:fields%>)
+
+FROZEN_MAXIMIZE(<% > common/namespace_cpp2%><%struct:name%>,<%!
+%>
+  FROZEN_MAXIMIZE_FIELD(type_)<%!
+%><%#struct:fields%>
+  FROZEN_MAXIMIZE_FIELD(<%field:cpp_name%>)<%!
+%><%/struct:fields%>)
+
+
+<% > module_layouts_cpp/frozen_layout_union%>
+
+<% > module_layouts_cpp/frozen_freeze_union%>
+
+<% > module_layouts_cpp/frozen_thaw_union%>
+
+FROZEN_DEBUG(<% > common/namespace_cpp2%><%struct:name%>,<%!
+%>
+  FROZEN_DEBUG_FIELD(type_)<%!
+%><%#struct:fields%>
+  FROZEN_DEBUG_FIELD(<%field:cpp_name%>)<%!
+%><%/struct:fields%>)
+FROZEN_CLEAR(<% > common/namespace_cpp2%><%struct:name%>,<%!
+%>
+  FROZEN_CLEAR_FIELD(type_)<%!
+%><%#struct:fields%>
+  FROZEN_CLEAR_FIELD(<%field:cpp_name%>)<%!
+%><%/struct:fields%>)
+<%/struct:union?%>
+
 <%/program:structs%>
 
 }}} // apache::thrift::frozen

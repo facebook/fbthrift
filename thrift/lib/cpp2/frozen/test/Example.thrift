@@ -126,3 +126,41 @@ struct EnumAsKeyTest {
   4: map<Helper.Animal, i32>
       (cpp.template = 'std::unordered_map') outsideEnumMap,
 }
+
+union TestUnion {
+  1: i32 aInt,
+  2: string aString,
+  3: list<i64> aList,
+  4: map<i32, i64> aMap,
+  5: set<string> aSet,
+  6: Member aStruct,
+  7: Pet1 aPet1 (cpp.ref_type = "shared"),
+  8: Tiny aTiny (cpp2.ref_type = "unique"),
+  9: Place aPlace (cpp2.ref = "true"),
+}
+
+union TestUnion2 {
+  2: string aString,
+  3: list<i64> aList,
+  4: map<i32, i64> aMap,
+  5: set<string> aSet,
+  6: Member aStruct,
+  7: Pet1 aPet1 (cpp.ref_type = "shared"),
+  8: Tiny aTiny (cpp2.ref_type = "unique"),
+  9: Place aPlace (cpp2.ref = "true"),
+  10: i32 anotherInt,
+}
+
+struct Member {
+  1: i64 adId,
+  2: string name,
+  3: optional list<i64> creativeIds,
+}
+
+struct Big {
+  1: optional string anOptionalString,
+  2: i64 anId,
+  3: optional list<i64> anOptionalList,
+  4: TestUnion aTestUnion,
+  5: string aString,
+}
