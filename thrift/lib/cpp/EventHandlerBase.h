@@ -29,8 +29,7 @@ class EventHandlerBase {
  public:
   EventHandlerBase()
       : handlers_(std::make_shared<
-                  std::vector<std::shared_ptr<TProcessorEventHandler>>>()),
-        setEventHandlerPos_(-1) {}
+                  std::vector<std::shared_ptr<TProcessorEventHandler>>>()) {}
 
   void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler) {
     handlers_->push_back(handler);
@@ -38,27 +37,10 @@ class EventHandlerBase {
 
   void clearEventHandlers() {
     handlers_->clear();
-    setEventHandlerPos_ = -1;
-    if (eventHandler_) {
-      setEventHandler(eventHandler_);
-    }
-  }
-
-  std::shared_ptr<TProcessorEventHandler> getEventHandler() {
-    return eventHandler_;
   }
 
   std::vector<std::shared_ptr<TProcessorEventHandler>>& getEventHandlers() {
     return *handlers_;
-  }
-
-  void setEventHandler(std::shared_ptr<TProcessorEventHandler> eventHandler) {
-    eventHandler_ = eventHandler;
-    if (setEventHandlerPos_ > 0) {
-      handlers_->erase(handlers_->begin() + setEventHandlerPos_);
-    }
-    setEventHandlerPos_ = handlers_->size();
-    handlers_->push_back(eventHandler);
   }
 
  protected:
@@ -70,13 +52,8 @@ class EventHandlerBase {
         handlers_, service_name, fn_name, connectionContext);
   }
 
- public:
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;
-  std::shared_ptr<TProcessorEventHandler> eventHandler_;
-
- private:
-  int setEventHandlerPos_;
 };
 
 class TProcessorEventHandlerFactory {
