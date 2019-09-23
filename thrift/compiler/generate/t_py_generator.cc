@@ -1451,16 +1451,43 @@ void t_py_generator::generate_py_thrift_spec(
   if (members.size() > 0) {
     out << indent() << "def " << rename_reserved_keywords(tstruct->get_name())
         << "__init__(self,";
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      // This fills in default values, as opposed to nulls
-      out << " "
-          << declare_argument(
-                 rename_reserved_keywords(tstruct->get_name()), *m_iter)
-          << ",";
+    if (members.size() > 255) {
+      out << " **kwargs";
+    } else {
+      for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+        // This fills in default values, as opposed to nulls
+        out << " "
+            << declare_argument(
+                   rename_reserved_keywords(tstruct->get_name()), *m_iter)
+            << ",";
+      }
     }
     out << "):" << endl;
 
     indent_up();
+
+    if (members.size() > 255) {
+      for (const auto& member : members) {
+        indent(out) << rename_reserved_keywords(member->get_name())
+                    << " = kwargs.pop(\n";
+        indent(out) << "  \"" << rename_reserved_keywords(member->get_name())
+                    << "\",\n";
+        if (member->get_value() != nullptr) {
+          indent(out) << "  " << rename_reserved_keywords(tstruct->get_name())
+                      << ".thrift_spec[" << member->get_key() << "][4],\n";
+        } else {
+          indent(out) << "  None,\n";
+        }
+        indent(out) << ")\n";
+      }
+      indent(out) << "if kwargs:\n";
+      indent(out) << "  key, _value = kwargs.popitem()\n";
+      indent(out)
+          << "  raise TypeError(\"{}() got an unexpected keyword argument '{}'\".format(\""
+          << rename_reserved_keywords(tstruct->get_name())
+          << "__init__\", key))\n";
+    }
+
     if (tstruct->is_union()) {
       indent(out) << "self.field = 0" << endl;
       indent(out) << "self.value = None" << endl;

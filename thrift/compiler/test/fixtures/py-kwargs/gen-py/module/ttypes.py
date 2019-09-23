@@ -3946,7 +3946,1034 @@ Foo.thrift_struct_annotations = {
 Foo.thrift_field_annotations = {
 }
 
-def Foo__init__(self, field1=None, field2=None, field3=None, field4=None, field5=None, field6=None, field7=None, field8=None, field9=None, field10=None, field11=None, field12=None, field13=None, field14=None, field15=None, field16=None, field17=None, field18=None, field19=None, field20=None, field21=None, field22=None, field23=None, field24=None, field25=None, field26=None, field27=None, field28=None, field29=None, field30=None, field31=None, field32=None, field33=None, field34=None, field35=None, field36=None, field37=None, field38=None, field39=None, field40=None, field41=None, field42=Foo.thrift_spec[42][4], field43=None, field44=None, field45=None, field46=None, field47=None, field48=None, field49=None, field50=None, field51=None, field52=None, field53=None, field54=None, field55=None, field56=None, field57=None, field58=None, field59=None, field60=None, field61=None, field62=None, field63=None, field64=None, field65=None, field66=None, field67=None, field68=None, field69=None, field70=None, field71=None, field72=None, field73=None, field74=None, field75=None, field76=None, field77=None, field78=None, field79=None, field80=None, field81=None, field82=None, field83=None, field84=None, field85=None, field86=None, field87=None, field88=None, field89=None, field90=None, field91=None, field92=None, field93=None, field94=None, field95=None, field96=None, field97=None, field98=None, field99=None, field100=None, field101=None, field102=None, field103=None, field104=None, field105=None, field106=None, field107=None, field108=None, field109=None, field110=None, field111=None, field112=None, field113=None, field114=None, field115=None, field116=None, field117=None, field118=None, field119=None, field120=None, field121=None, field122=None, field123=None, field124=None, field125=None, field126=None, field127=None, field128=None, field129=None, field130=None, field131=None, field132=None, field133=None, field134=None, field135=None, field136=None, field137=None, field138=None, field139=None, field140=None, field141=None, field142=None, field143=None, field144=None, field145=None, field146=None, field147=None, field148=None, field149=None, field150=None, field151=None, field152=None, field153=None, field154=None, field155=None, field156=None, field157=None, field158=None, field159=None, field160=None, field161=None, field162=None, field163=None, field164=None, field165=None, field166=None, field167=None, field168=None, field169=None, field170=None, field171=None, field172=None, field173=None, field174=None, field175=None, field176=None, field177=None, field178=None, field179=None, field180=None, field181=None, field182=None, field183=None, field184=None, field185=None, field186=None, field187=None, field188=None, field189=None, field190=None, field191=None, field192=None, field193=None, field194=None, field195=None, field196=None, field197=None, field198=None, field199=None, field200=None, field201=None, field202=None, field203=None, field204=None, field205=None, field206=None, field207=None, field208=None, field209=None, field210=None, field211=None, field212=None, field213=None, field214=None, field215=None, field216=None, field217=None, field218=None, field219=None, field220=None, field221=None, field222=None, field223=None, field224=None, field225=None, field226=None, field227=None, field228=None, field229=None, field230=None, field231=None, field232=None, field233=None, field234=None, field235=None, field236=None, field237=None, field238=None, field239=None, field240=None, field241=None, field242=None, field243=None, field244=None, field245=None, field246=None, field247=None, field248=None, field249=None, field250=None, field251=None, field252=None, field253=None, field254=None, field255=None, field256=None,):
+def Foo__init__(self, **kwargs):
+  field1 = kwargs.pop(
+    "field1",
+    None,
+  )
+  field2 = kwargs.pop(
+    "field2",
+    None,
+  )
+  field3 = kwargs.pop(
+    "field3",
+    None,
+  )
+  field4 = kwargs.pop(
+    "field4",
+    None,
+  )
+  field5 = kwargs.pop(
+    "field5",
+    None,
+  )
+  field6 = kwargs.pop(
+    "field6",
+    None,
+  )
+  field7 = kwargs.pop(
+    "field7",
+    None,
+  )
+  field8 = kwargs.pop(
+    "field8",
+    None,
+  )
+  field9 = kwargs.pop(
+    "field9",
+    None,
+  )
+  field10 = kwargs.pop(
+    "field10",
+    None,
+  )
+  field11 = kwargs.pop(
+    "field11",
+    None,
+  )
+  field12 = kwargs.pop(
+    "field12",
+    None,
+  )
+  field13 = kwargs.pop(
+    "field13",
+    None,
+  )
+  field14 = kwargs.pop(
+    "field14",
+    None,
+  )
+  field15 = kwargs.pop(
+    "field15",
+    None,
+  )
+  field16 = kwargs.pop(
+    "field16",
+    None,
+  )
+  field17 = kwargs.pop(
+    "field17",
+    None,
+  )
+  field18 = kwargs.pop(
+    "field18",
+    None,
+  )
+  field19 = kwargs.pop(
+    "field19",
+    None,
+  )
+  field20 = kwargs.pop(
+    "field20",
+    None,
+  )
+  field21 = kwargs.pop(
+    "field21",
+    None,
+  )
+  field22 = kwargs.pop(
+    "field22",
+    None,
+  )
+  field23 = kwargs.pop(
+    "field23",
+    None,
+  )
+  field24 = kwargs.pop(
+    "field24",
+    None,
+  )
+  field25 = kwargs.pop(
+    "field25",
+    None,
+  )
+  field26 = kwargs.pop(
+    "field26",
+    None,
+  )
+  field27 = kwargs.pop(
+    "field27",
+    None,
+  )
+  field28 = kwargs.pop(
+    "field28",
+    None,
+  )
+  field29 = kwargs.pop(
+    "field29",
+    None,
+  )
+  field30 = kwargs.pop(
+    "field30",
+    None,
+  )
+  field31 = kwargs.pop(
+    "field31",
+    None,
+  )
+  field32 = kwargs.pop(
+    "field32",
+    None,
+  )
+  field33 = kwargs.pop(
+    "field33",
+    None,
+  )
+  field34 = kwargs.pop(
+    "field34",
+    None,
+  )
+  field35 = kwargs.pop(
+    "field35",
+    None,
+  )
+  field36 = kwargs.pop(
+    "field36",
+    None,
+  )
+  field37 = kwargs.pop(
+    "field37",
+    None,
+  )
+  field38 = kwargs.pop(
+    "field38",
+    None,
+  )
+  field39 = kwargs.pop(
+    "field39",
+    None,
+  )
+  field40 = kwargs.pop(
+    "field40",
+    None,
+  )
+  field41 = kwargs.pop(
+    "field41",
+    None,
+  )
+  field42 = kwargs.pop(
+    "field42",
+    Foo.thrift_spec[42][4],
+  )
+  field43 = kwargs.pop(
+    "field43",
+    None,
+  )
+  field44 = kwargs.pop(
+    "field44",
+    None,
+  )
+  field45 = kwargs.pop(
+    "field45",
+    None,
+  )
+  field46 = kwargs.pop(
+    "field46",
+    None,
+  )
+  field47 = kwargs.pop(
+    "field47",
+    None,
+  )
+  field48 = kwargs.pop(
+    "field48",
+    None,
+  )
+  field49 = kwargs.pop(
+    "field49",
+    None,
+  )
+  field50 = kwargs.pop(
+    "field50",
+    None,
+  )
+  field51 = kwargs.pop(
+    "field51",
+    None,
+  )
+  field52 = kwargs.pop(
+    "field52",
+    None,
+  )
+  field53 = kwargs.pop(
+    "field53",
+    None,
+  )
+  field54 = kwargs.pop(
+    "field54",
+    None,
+  )
+  field55 = kwargs.pop(
+    "field55",
+    None,
+  )
+  field56 = kwargs.pop(
+    "field56",
+    None,
+  )
+  field57 = kwargs.pop(
+    "field57",
+    None,
+  )
+  field58 = kwargs.pop(
+    "field58",
+    None,
+  )
+  field59 = kwargs.pop(
+    "field59",
+    None,
+  )
+  field60 = kwargs.pop(
+    "field60",
+    None,
+  )
+  field61 = kwargs.pop(
+    "field61",
+    None,
+  )
+  field62 = kwargs.pop(
+    "field62",
+    None,
+  )
+  field63 = kwargs.pop(
+    "field63",
+    None,
+  )
+  field64 = kwargs.pop(
+    "field64",
+    None,
+  )
+  field65 = kwargs.pop(
+    "field65",
+    None,
+  )
+  field66 = kwargs.pop(
+    "field66",
+    None,
+  )
+  field67 = kwargs.pop(
+    "field67",
+    None,
+  )
+  field68 = kwargs.pop(
+    "field68",
+    None,
+  )
+  field69 = kwargs.pop(
+    "field69",
+    None,
+  )
+  field70 = kwargs.pop(
+    "field70",
+    None,
+  )
+  field71 = kwargs.pop(
+    "field71",
+    None,
+  )
+  field72 = kwargs.pop(
+    "field72",
+    None,
+  )
+  field73 = kwargs.pop(
+    "field73",
+    None,
+  )
+  field74 = kwargs.pop(
+    "field74",
+    None,
+  )
+  field75 = kwargs.pop(
+    "field75",
+    None,
+  )
+  field76 = kwargs.pop(
+    "field76",
+    None,
+  )
+  field77 = kwargs.pop(
+    "field77",
+    None,
+  )
+  field78 = kwargs.pop(
+    "field78",
+    None,
+  )
+  field79 = kwargs.pop(
+    "field79",
+    None,
+  )
+  field80 = kwargs.pop(
+    "field80",
+    None,
+  )
+  field81 = kwargs.pop(
+    "field81",
+    None,
+  )
+  field82 = kwargs.pop(
+    "field82",
+    None,
+  )
+  field83 = kwargs.pop(
+    "field83",
+    None,
+  )
+  field84 = kwargs.pop(
+    "field84",
+    None,
+  )
+  field85 = kwargs.pop(
+    "field85",
+    None,
+  )
+  field86 = kwargs.pop(
+    "field86",
+    None,
+  )
+  field87 = kwargs.pop(
+    "field87",
+    None,
+  )
+  field88 = kwargs.pop(
+    "field88",
+    None,
+  )
+  field89 = kwargs.pop(
+    "field89",
+    None,
+  )
+  field90 = kwargs.pop(
+    "field90",
+    None,
+  )
+  field91 = kwargs.pop(
+    "field91",
+    None,
+  )
+  field92 = kwargs.pop(
+    "field92",
+    None,
+  )
+  field93 = kwargs.pop(
+    "field93",
+    None,
+  )
+  field94 = kwargs.pop(
+    "field94",
+    None,
+  )
+  field95 = kwargs.pop(
+    "field95",
+    None,
+  )
+  field96 = kwargs.pop(
+    "field96",
+    None,
+  )
+  field97 = kwargs.pop(
+    "field97",
+    None,
+  )
+  field98 = kwargs.pop(
+    "field98",
+    None,
+  )
+  field99 = kwargs.pop(
+    "field99",
+    None,
+  )
+  field100 = kwargs.pop(
+    "field100",
+    None,
+  )
+  field101 = kwargs.pop(
+    "field101",
+    None,
+  )
+  field102 = kwargs.pop(
+    "field102",
+    None,
+  )
+  field103 = kwargs.pop(
+    "field103",
+    None,
+  )
+  field104 = kwargs.pop(
+    "field104",
+    None,
+  )
+  field105 = kwargs.pop(
+    "field105",
+    None,
+  )
+  field106 = kwargs.pop(
+    "field106",
+    None,
+  )
+  field107 = kwargs.pop(
+    "field107",
+    None,
+  )
+  field108 = kwargs.pop(
+    "field108",
+    None,
+  )
+  field109 = kwargs.pop(
+    "field109",
+    None,
+  )
+  field110 = kwargs.pop(
+    "field110",
+    None,
+  )
+  field111 = kwargs.pop(
+    "field111",
+    None,
+  )
+  field112 = kwargs.pop(
+    "field112",
+    None,
+  )
+  field113 = kwargs.pop(
+    "field113",
+    None,
+  )
+  field114 = kwargs.pop(
+    "field114",
+    None,
+  )
+  field115 = kwargs.pop(
+    "field115",
+    None,
+  )
+  field116 = kwargs.pop(
+    "field116",
+    None,
+  )
+  field117 = kwargs.pop(
+    "field117",
+    None,
+  )
+  field118 = kwargs.pop(
+    "field118",
+    None,
+  )
+  field119 = kwargs.pop(
+    "field119",
+    None,
+  )
+  field120 = kwargs.pop(
+    "field120",
+    None,
+  )
+  field121 = kwargs.pop(
+    "field121",
+    None,
+  )
+  field122 = kwargs.pop(
+    "field122",
+    None,
+  )
+  field123 = kwargs.pop(
+    "field123",
+    None,
+  )
+  field124 = kwargs.pop(
+    "field124",
+    None,
+  )
+  field125 = kwargs.pop(
+    "field125",
+    None,
+  )
+  field126 = kwargs.pop(
+    "field126",
+    None,
+  )
+  field127 = kwargs.pop(
+    "field127",
+    None,
+  )
+  field128 = kwargs.pop(
+    "field128",
+    None,
+  )
+  field129 = kwargs.pop(
+    "field129",
+    None,
+  )
+  field130 = kwargs.pop(
+    "field130",
+    None,
+  )
+  field131 = kwargs.pop(
+    "field131",
+    None,
+  )
+  field132 = kwargs.pop(
+    "field132",
+    None,
+  )
+  field133 = kwargs.pop(
+    "field133",
+    None,
+  )
+  field134 = kwargs.pop(
+    "field134",
+    None,
+  )
+  field135 = kwargs.pop(
+    "field135",
+    None,
+  )
+  field136 = kwargs.pop(
+    "field136",
+    None,
+  )
+  field137 = kwargs.pop(
+    "field137",
+    None,
+  )
+  field138 = kwargs.pop(
+    "field138",
+    None,
+  )
+  field139 = kwargs.pop(
+    "field139",
+    None,
+  )
+  field140 = kwargs.pop(
+    "field140",
+    None,
+  )
+  field141 = kwargs.pop(
+    "field141",
+    None,
+  )
+  field142 = kwargs.pop(
+    "field142",
+    None,
+  )
+  field143 = kwargs.pop(
+    "field143",
+    None,
+  )
+  field144 = kwargs.pop(
+    "field144",
+    None,
+  )
+  field145 = kwargs.pop(
+    "field145",
+    None,
+  )
+  field146 = kwargs.pop(
+    "field146",
+    None,
+  )
+  field147 = kwargs.pop(
+    "field147",
+    None,
+  )
+  field148 = kwargs.pop(
+    "field148",
+    None,
+  )
+  field149 = kwargs.pop(
+    "field149",
+    None,
+  )
+  field150 = kwargs.pop(
+    "field150",
+    None,
+  )
+  field151 = kwargs.pop(
+    "field151",
+    None,
+  )
+  field152 = kwargs.pop(
+    "field152",
+    None,
+  )
+  field153 = kwargs.pop(
+    "field153",
+    None,
+  )
+  field154 = kwargs.pop(
+    "field154",
+    None,
+  )
+  field155 = kwargs.pop(
+    "field155",
+    None,
+  )
+  field156 = kwargs.pop(
+    "field156",
+    None,
+  )
+  field157 = kwargs.pop(
+    "field157",
+    None,
+  )
+  field158 = kwargs.pop(
+    "field158",
+    None,
+  )
+  field159 = kwargs.pop(
+    "field159",
+    None,
+  )
+  field160 = kwargs.pop(
+    "field160",
+    None,
+  )
+  field161 = kwargs.pop(
+    "field161",
+    None,
+  )
+  field162 = kwargs.pop(
+    "field162",
+    None,
+  )
+  field163 = kwargs.pop(
+    "field163",
+    None,
+  )
+  field164 = kwargs.pop(
+    "field164",
+    None,
+  )
+  field165 = kwargs.pop(
+    "field165",
+    None,
+  )
+  field166 = kwargs.pop(
+    "field166",
+    None,
+  )
+  field167 = kwargs.pop(
+    "field167",
+    None,
+  )
+  field168 = kwargs.pop(
+    "field168",
+    None,
+  )
+  field169 = kwargs.pop(
+    "field169",
+    None,
+  )
+  field170 = kwargs.pop(
+    "field170",
+    None,
+  )
+  field171 = kwargs.pop(
+    "field171",
+    None,
+  )
+  field172 = kwargs.pop(
+    "field172",
+    None,
+  )
+  field173 = kwargs.pop(
+    "field173",
+    None,
+  )
+  field174 = kwargs.pop(
+    "field174",
+    None,
+  )
+  field175 = kwargs.pop(
+    "field175",
+    None,
+  )
+  field176 = kwargs.pop(
+    "field176",
+    None,
+  )
+  field177 = kwargs.pop(
+    "field177",
+    None,
+  )
+  field178 = kwargs.pop(
+    "field178",
+    None,
+  )
+  field179 = kwargs.pop(
+    "field179",
+    None,
+  )
+  field180 = kwargs.pop(
+    "field180",
+    None,
+  )
+  field181 = kwargs.pop(
+    "field181",
+    None,
+  )
+  field182 = kwargs.pop(
+    "field182",
+    None,
+  )
+  field183 = kwargs.pop(
+    "field183",
+    None,
+  )
+  field184 = kwargs.pop(
+    "field184",
+    None,
+  )
+  field185 = kwargs.pop(
+    "field185",
+    None,
+  )
+  field186 = kwargs.pop(
+    "field186",
+    None,
+  )
+  field187 = kwargs.pop(
+    "field187",
+    None,
+  )
+  field188 = kwargs.pop(
+    "field188",
+    None,
+  )
+  field189 = kwargs.pop(
+    "field189",
+    None,
+  )
+  field190 = kwargs.pop(
+    "field190",
+    None,
+  )
+  field191 = kwargs.pop(
+    "field191",
+    None,
+  )
+  field192 = kwargs.pop(
+    "field192",
+    None,
+  )
+  field193 = kwargs.pop(
+    "field193",
+    None,
+  )
+  field194 = kwargs.pop(
+    "field194",
+    None,
+  )
+  field195 = kwargs.pop(
+    "field195",
+    None,
+  )
+  field196 = kwargs.pop(
+    "field196",
+    None,
+  )
+  field197 = kwargs.pop(
+    "field197",
+    None,
+  )
+  field198 = kwargs.pop(
+    "field198",
+    None,
+  )
+  field199 = kwargs.pop(
+    "field199",
+    None,
+  )
+  field200 = kwargs.pop(
+    "field200",
+    None,
+  )
+  field201 = kwargs.pop(
+    "field201",
+    None,
+  )
+  field202 = kwargs.pop(
+    "field202",
+    None,
+  )
+  field203 = kwargs.pop(
+    "field203",
+    None,
+  )
+  field204 = kwargs.pop(
+    "field204",
+    None,
+  )
+  field205 = kwargs.pop(
+    "field205",
+    None,
+  )
+  field206 = kwargs.pop(
+    "field206",
+    None,
+  )
+  field207 = kwargs.pop(
+    "field207",
+    None,
+  )
+  field208 = kwargs.pop(
+    "field208",
+    None,
+  )
+  field209 = kwargs.pop(
+    "field209",
+    None,
+  )
+  field210 = kwargs.pop(
+    "field210",
+    None,
+  )
+  field211 = kwargs.pop(
+    "field211",
+    None,
+  )
+  field212 = kwargs.pop(
+    "field212",
+    None,
+  )
+  field213 = kwargs.pop(
+    "field213",
+    None,
+  )
+  field214 = kwargs.pop(
+    "field214",
+    None,
+  )
+  field215 = kwargs.pop(
+    "field215",
+    None,
+  )
+  field216 = kwargs.pop(
+    "field216",
+    None,
+  )
+  field217 = kwargs.pop(
+    "field217",
+    None,
+  )
+  field218 = kwargs.pop(
+    "field218",
+    None,
+  )
+  field219 = kwargs.pop(
+    "field219",
+    None,
+  )
+  field220 = kwargs.pop(
+    "field220",
+    None,
+  )
+  field221 = kwargs.pop(
+    "field221",
+    None,
+  )
+  field222 = kwargs.pop(
+    "field222",
+    None,
+  )
+  field223 = kwargs.pop(
+    "field223",
+    None,
+  )
+  field224 = kwargs.pop(
+    "field224",
+    None,
+  )
+  field225 = kwargs.pop(
+    "field225",
+    None,
+  )
+  field226 = kwargs.pop(
+    "field226",
+    None,
+  )
+  field227 = kwargs.pop(
+    "field227",
+    None,
+  )
+  field228 = kwargs.pop(
+    "field228",
+    None,
+  )
+  field229 = kwargs.pop(
+    "field229",
+    None,
+  )
+  field230 = kwargs.pop(
+    "field230",
+    None,
+  )
+  field231 = kwargs.pop(
+    "field231",
+    None,
+  )
+  field232 = kwargs.pop(
+    "field232",
+    None,
+  )
+  field233 = kwargs.pop(
+    "field233",
+    None,
+  )
+  field234 = kwargs.pop(
+    "field234",
+    None,
+  )
+  field235 = kwargs.pop(
+    "field235",
+    None,
+  )
+  field236 = kwargs.pop(
+    "field236",
+    None,
+  )
+  field237 = kwargs.pop(
+    "field237",
+    None,
+  )
+  field238 = kwargs.pop(
+    "field238",
+    None,
+  )
+  field239 = kwargs.pop(
+    "field239",
+    None,
+  )
+  field240 = kwargs.pop(
+    "field240",
+    None,
+  )
+  field241 = kwargs.pop(
+    "field241",
+    None,
+  )
+  field242 = kwargs.pop(
+    "field242",
+    None,
+  )
+  field243 = kwargs.pop(
+    "field243",
+    None,
+  )
+  field244 = kwargs.pop(
+    "field244",
+    None,
+  )
+  field245 = kwargs.pop(
+    "field245",
+    None,
+  )
+  field246 = kwargs.pop(
+    "field246",
+    None,
+  )
+  field247 = kwargs.pop(
+    "field247",
+    None,
+  )
+  field248 = kwargs.pop(
+    "field248",
+    None,
+  )
+  field249 = kwargs.pop(
+    "field249",
+    None,
+  )
+  field250 = kwargs.pop(
+    "field250",
+    None,
+  )
+  field251 = kwargs.pop(
+    "field251",
+    None,
+  )
+  field252 = kwargs.pop(
+    "field252",
+    None,
+  )
+  field253 = kwargs.pop(
+    "field253",
+    None,
+  )
+  field254 = kwargs.pop(
+    "field254",
+    None,
+  )
+  field255 = kwargs.pop(
+    "field255",
+    None,
+  )
+  field256 = kwargs.pop(
+    "field256",
+    None,
+  )
+  if kwargs:
+    key, _value = kwargs.popitem()
+    raise TypeError("{}() got an unexpected keyword argument '{}'".format("Foo__init__", key))
   self.field1 = field1
   self.field2 = field2
   self.field3 = field3
