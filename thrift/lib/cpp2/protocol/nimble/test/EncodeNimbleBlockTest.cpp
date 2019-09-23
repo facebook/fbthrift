@@ -61,7 +61,7 @@ struct NonVectorizedControlByteImpl {
   }
 };
 
-#if NIMBLE_CAN_VECTORIZE
+#if APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE
 struct VectorizedControlByteImpl {
   static unsigned char controlByteFromChunksImpl(const std::uint32_t* chunks) {
     return controlByteFromVector(loadVector<ChunkRepr::kRaw>(chunks));

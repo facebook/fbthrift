@@ -55,7 +55,7 @@ extern const std::array<NimbleBlockEncodeData, 256> nimbleBlockEncodeData;
 extern const std::array<NimbleBlockVectorEncodeData, 256>
     nimbleBlockVectorEncodeData;
 
-#if NIMBLE_CAN_VECTORIZE
+#if APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE
 // The vectorization code below is based on the reference StreamVByte
 // implementation at https://github.com/lemire/streamvbyte
 template <ChunkRepr repr>
@@ -155,7 +155,7 @@ int encodeNimbleBlock(
     const std::uint32_t chunks[kChunksPerBlock],
     std::uint8_t* controlOut,
     unsigned char* dataOut) {
-#if NIMBLE_CAN_VECTORIZE
+#if APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE
   static_assert(
       folly::kIsLittleEndian,
       "Vector shuffle output assumes little-endian order");

@@ -75,7 +75,7 @@ int decodeNimbleBlock(
     folly::ByteRange data,
     std::uint32_t chunksOut[4]) {
   DCHECK(data.size() >= 16);
-#if NIMBLE_CAN_VECTORIZE
+#if APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE
   static_assert(
       folly::kIsLittleEndian,
       "Vector shuffle output assumes little-endian order");

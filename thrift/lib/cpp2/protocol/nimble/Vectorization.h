@@ -18,9 +18,9 @@
 #include <folly/Portability.h>
 
 #if FOLLY_SSE >= 3
-#define NIMBLE_CAN_VECTORIZE 1
+#define APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE 1
 #include <emmintrin.h>
 #include <tmmintrin.h>
 #else
-#define NIMBLE_CAN_VECTORIZE 0
+#define APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE 0
 #endif
