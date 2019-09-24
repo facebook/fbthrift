@@ -550,6 +550,9 @@ class ThriftRequest final : public ThriftRequestCore {
         std::move(metadata), std::move(response), std::move(stream));
   }
 
+  // Don't allow hiding of overloaded method.
+  using ThriftRequestCore::sendStreamThriftResponse;
+
   folly::EventBase* getEventBase() noexcept override {
     return channel_->getEventBase();
   }
