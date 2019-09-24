@@ -12,6 +12,8 @@
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_layouts.h"
 namespace apache { namespace thrift { namespace frozen {
 
+
+
 FROZEN_TYPE(::some::ns::ModuleA,
   FROZEN_FIELD(i32Field, 1, int32_t)
   FROZEN_FIELD(strField, 2, ::std::string)
@@ -40,6 +42,9 @@ FROZEN_TYPE(::some::ns::ModuleA,
     FROZEN_LOAD_FIELD(mapField, 4)
     FROZEN_LOAD_FIELD(inclAField, 5)
     FROZEN_LOAD_FIELD(inclBField, 6)));
+
+
+
 FROZEN_TYPE(::some::ns::ModuleB,
   FROZEN_FIELD(i32Field, 1, int32_t)
   FROZEN_FIELD(inclEnumB, 2,  ::some::ns::EnumB)
@@ -52,5 +57,7 @@ FROZEN_TYPE(::some::ns::ModuleB,
   FROZEN_LOAD_INLINE(
     FROZEN_LOAD_FIELD(i32Field, 1)
     FROZEN_LOAD_FIELD(inclEnumB, 2)));
+
+
 
 }}} // apache::thrift::frozen
