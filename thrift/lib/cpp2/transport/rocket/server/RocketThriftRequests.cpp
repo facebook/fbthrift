@@ -174,6 +174,9 @@ StreamServerCallback* toStreamServerCallbackPtr(
         subscription->cancel();
       }
     }
+    void resetClientCallback(StreamClientCallback& clientCallback) override {
+      clientCallback_ = &clientCallback;
+    }
 
     // SubscriberIf implementation
     void onSubscribe(std::unique_ptr<SubscriptionIf> subscription) override {

@@ -33,18 +33,18 @@ void RocketStreamServerCallback::onStreamCancel() {
 void RocketStreamServerCallback::onInitialPayload(
     FirstResponsePayload&& payload,
     folly::EventBase* evb) {
-  clientCallback_.onFirstResponse(std::move(payload), evb, this);
+  clientCallback_->onFirstResponse(std::move(payload), evb, this);
 }
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
-  clientCallback_.onFirstResponseError(std::move(ew));
+  clientCallback_->onFirstResponseError(std::move(ew));
 }
 void RocketStreamServerCallback::onStreamTransportError(
     folly::exception_wrapper ew) {
-  clientCallback_.onStreamError(std::move(ew));
+  clientCallback_->onStreamError(std::move(ew));
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamPayload(
     StreamPayload&& payload) {
-  clientCallback_.onStreamNext(std::move(payload));
+  clientCallback_->onStreamNext(std::move(payload));
   return StreamChannelStatus::Alive;
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamFinalPayload(
@@ -60,16 +60,16 @@ StreamChannelStatus RocketStreamServerCallback::onStreamFinalPayload(
   return StreamChannelStatus::Alive;
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamComplete() {
-  clientCallback_.onStreamComplete();
+  clientCallback_->onStreamComplete();
   return StreamChannelStatus::Complete;
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamError(
     folly::exception_wrapper ew) {
-  clientCallback_.onStreamError(std::move(ew));
+  clientCallback_->onStreamError(std::move(ew));
   return StreamChannelStatus::Complete;
 }
 StreamChannelStatus RocketStreamServerCallback::onSinkRequestN(uint64_t) {
-  clientCallback_.onStreamError(
+  clientCallback_->onStreamError(
       folly::make_exception_wrapper<transport::TTransportException>(
           transport::TTransportException::TTransportExceptionType::
               STREAMING_CONTRACT_VIOLATION,
@@ -77,7 +77,7 @@ StreamChannelStatus RocketStreamServerCallback::onSinkRequestN(uint64_t) {
   return StreamChannelStatus::ContractViolation;
 }
 StreamChannelStatus RocketStreamServerCallback::onSinkCancel() {
-  clientCallback_.onStreamError(
+  clientCallback_->onStreamError(
       folly::make_exception_wrapper<transport::TTransportException>(
           transport::TTransportException::TTransportExceptionType::
               STREAMING_CONTRACT_VIOLATION,

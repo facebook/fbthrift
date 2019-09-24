@@ -666,8 +666,12 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         delete this;
       }
 
+      void resetClientCallback(StreamClientCallback& clientCallback) override {
+        clientCallback_ = &clientCallback;
+      }
+
      private:
-      StreamClientCallback* const clientCallback_;
+      StreamClientCallback* clientCallback_;
       size_t i_{0};
       const size_t n_;
     };

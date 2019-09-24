@@ -41,10 +41,16 @@ class RocketStreamServerCallback : public StreamServerCallback {
       rocket::StreamId streamId,
       rocket::RocketClient& client,
       StreamClientCallback& clientCallback)
-      : client_(client), clientCallback_(clientCallback), streamId_(streamId) {}
+      : client_(client),
+        clientCallback_(&clientCallback),
+        streamId_(streamId) {}
 
   void onStreamRequestN(uint64_t tokens) override;
   void onStreamCancel() override;
+
+  void resetClientCallback(StreamClientCallback& clientCallback) override {
+    clientCallback_ = &clientCallback;
+  }
 
   void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper ew);
@@ -60,7 +66,7 @@ class RocketStreamServerCallback : public StreamServerCallback {
 
  private:
   rocket::RocketClient& client_;
-  StreamClientCallback& clientCallback_;
+  StreamClientCallback* clientCallback_;
   rocket::StreamId streamId_;
 };
 

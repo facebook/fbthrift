@@ -44,12 +44,16 @@ struct StreamPayload {
   StreamPayloadMetadata metadata;
 };
 
+class StreamClientCallback;
+
 class StreamServerCallback {
  public:
   virtual ~StreamServerCallback() = default;
 
   virtual void onStreamRequestN(uint64_t) = 0;
   virtual void onStreamCancel() = 0;
+
+  virtual void resetClientCallback(StreamClientCallback&) = 0;
 };
 
 class ChannelServerCallback {
