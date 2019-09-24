@@ -162,7 +162,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&& result,
       MessageChannel::SendCallback*,
-      folly::Optional<uint32_t> crc32c) override final {
+      folly::Optional<uint32_t> crc32c) override {
     if (active_.exchange(false)) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata();
@@ -173,6 +173,32 @@ class ThriftRequestCore : public ResponseChannelRequest {
           std::move(metadata),
           std::move(result.response),
           std::move(result.stream));
+
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+    }
+  }
+
+  void sendStreamReply(
+      std::unique_ptr<folly::IOBuf> response,
+      StreamServerCallback* stream,
+      folly::Optional<uint32_t> crc32c) override final {
+    SCOPE_EXIT {
+      if (stream) {
+        stream->onStreamCancel();
+      }
+    };
+    if (active_.exchange(false)) {
+      cancelTimeout();
+      auto metadata = makeResponseRpcMetadata();
+      if (crc32c) {
+        metadata.crc32c_ref() = *crc32c;
+      }
+      sendReplyInternal(
+          std::move(metadata),
+          std::move(response),
+          std::exchange(stream, nullptr));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
@@ -226,6 +252,25 @@ class ThriftRequestCore : public ResponseChannelRequest {
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
 
+  virtual void sendStreamThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      StreamServerCallback* stream) noexcept {
+    if (stream) {
+      stream->onStreamCancel();
+    }
+    LOG(FATAL) << "sendStreamThriftResponse not implemented";
+  }
+
+  virtual void sendStreamThriftError(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> response) noexcept {
+    sendStreamThriftResponse(
+        std::move(metadata),
+        std::move(response),
+        apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>());
+  }
+
 #ifdef FOLLY_HAS_COROUTINES
   virtual void sendSinkThriftResponse(
       ResponseRpcMetadata&&,
@@ -276,6 +321,23 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (checkResponseSize(*buf)) {
       sendStreamThriftResponse(
           std::move(metadata), std::move(buf), std::move(stream));
+    } else {
+      sendResponseTooBigEx();
+    }
+  }
+
+  void sendReplyInternal(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> buf,
+      StreamServerCallback* stream) {
+    SCOPE_EXIT {
+      if (stream) {
+        stream->onStreamCancel();
+      }
+    };
+    if (checkResponseSize(*buf)) {
+      sendStreamThriftResponse(
+          std::move(metadata), std::move(buf), std::exchange(stream, nullptr));
     } else {
       sendResponseTooBigEx();
     }
@@ -356,8 +418,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
           break;
         case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
         case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
-          sendStreamThriftResponse(
-              makeResponseRpcMetadata(), std::move(exbuf), {});
+          sendStreamThriftError(makeResponseRpcMetadata(), std::move(exbuf));
           break;
 #ifdef FOLLY_HAS_COROUTINES
         case RpcKind::SINK:

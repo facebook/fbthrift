@@ -124,10 +124,30 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
+  using ThriftRequestCore::sendStreamReply;
+
+  void sendStreamReply(
+      ResponseAndSemiStream<
+          std::unique_ptr<folly::IOBuf>,
+          std::unique_ptr<folly::IOBuf>>&&,
+      MessageChannel::SendCallback*,
+      folly::Optional<uint32_t>) noexcept override;
+
   void sendStreamThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
+      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override {
+    std::terminate();
+  }
+
+  void sendStreamThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      StreamServerCallback*) noexcept override;
+
+  void sendStreamThriftError(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>) noexcept override;
 
   folly::EventBase* getEventBase() noexcept override {
     return &evb_;

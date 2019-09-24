@@ -35,6 +35,7 @@
 #ifdef FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/server/AdmissionController.h>
 
 namespace folly {
@@ -103,6 +104,13 @@ class ResponseChannelRequest {
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&&,
       MessageChannel::SendCallback* = nullptr,
+      folly::Optional<uint32_t> = folly::none) {
+    throw std::logic_error("unimplemented");
+  }
+
+  virtual void sendStreamReply(
+      std::unique_ptr<folly::IOBuf>,
+      StreamServerCallback*,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }

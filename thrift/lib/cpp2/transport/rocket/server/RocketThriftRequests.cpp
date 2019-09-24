@@ -124,41 +124,55 @@ void ThriftServerRequestStream::sendThriftResponse(
 
 StreamServerCallback* toStreamServerCallbackPtr(
     SemiStream<std::unique_ptr<folly::IOBuf>> stream,
-    StreamClientCallback* clientCallback,
     folly::EventBase& evb);
+
+void ThriftServerRequestStream::sendStreamReply(
+    ResponseAndSemiStream<
+        std::unique_ptr<folly::IOBuf>,
+        std::unique_ptr<folly::IOBuf>>&& result,
+    MessageChannel::SendCallback*,
+    folly::Optional<uint32_t> crc32c) noexcept {
+  if (result.stream) {
+    auto* serverCallback =
+        toStreamServerCallbackPtr(std::move(result.stream), *getEventBase());
+    // Note that onSubscribe will run after onFirstResponse
+    sendStreamReply(std::move(result.response), serverCallback, crc32c);
+  } else {
+    sendStreamReply(std::move(result.response), nullptr, crc32c);
+  }
+}
 
 void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
-    SemiStream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
-  if (stream) {
-    auto* serverCallback = toStreamServerCallbackPtr(
-        std::move(stream), clientCallback_, *getEventBase());
-    // Note that onSubscribe will run after onFirstResponse
-    clientCallback_->onFirstResponse(
-        FirstResponsePayload{std::move(data), std::move(metadata)},
-        nullptr /* evb */,
-        serverCallback);
-  } else {
-    std::exchange(clientCallback_, nullptr)
-        ->onFirstResponseError(
-            folly::make_exception_wrapper<thrift::detail::EncodedError>(
-                std::move(data)));
+    StreamServerCallback* stream) noexcept {
+  if (!stream) {
+    sendStreamThriftError(std::move(metadata), std::move(data));
+    return;
   }
+  stream->resetClientCallback(*clientCallback_);
+  clientCallback_->onFirstResponse(
+      FirstResponsePayload{std::move(data), std::move(metadata)},
+      nullptr /* evb */,
+      stream);
+}
+
+void ThriftServerRequestStream::sendStreamThriftError(
+    ResponseRpcMetadata&&,
+    std::unique_ptr<folly::IOBuf> data) noexcept {
+  std::exchange(clientCallback_, nullptr)
+      ->onFirstResponseError(
+          folly::make_exception_wrapper<thrift::detail::EncodedError>(
+              std::move(data)));
 }
 
 StreamServerCallback* toStreamServerCallbackPtr(
     SemiStream<std::unique_ptr<folly::IOBuf>> stream,
-    StreamClientCallback* clientCallback,
     folly::EventBase& evb) {
   class StreamServerCallbackAdaptor final
       : public StreamServerCallback,
         public SubscriberIf<std::unique_ptr<folly::IOBuf>> {
    public:
-    explicit StreamServerCallbackAdaptor(StreamClientCallback* clientCallback)
-        : clientCallback_(clientCallback) {}
-    ~StreamServerCallbackAdaptor() override = default;
-
     // StreamServerCallback implementation
     void onStreamRequestN(uint64_t tokens) override {
       if (!subscription_) {
@@ -216,14 +230,13 @@ StreamServerCallback* toStreamServerCallbackPtr(
     }
 
    private:
-    StreamClientCallback* clientCallback_;
+    StreamClientCallback* clientCallback_{nullptr};
     // TODO subscription_ and tokensBeforeSubscribe_ can be packed into a union
     std::unique_ptr<SubscriptionIf> subscription_;
     uint32_t tokensBeforeSubscribe_{0};
   };
 
-  auto serverCallback =
-      std::make_unique<StreamServerCallbackAdaptor>(clientCallback);
+  auto serverCallback = std::make_unique<StreamServerCallbackAdaptor>();
   auto* serverCallbackPtr = serverCallback.get();
 
   std::move(stream).via(&evb).subscribe(std::move(serverCallback));
