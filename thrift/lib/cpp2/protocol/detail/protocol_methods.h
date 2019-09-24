@@ -978,6 +978,15 @@ struct protocol_methods<type_class::structure, Type> {
     }
   }
 };
+
+/*
+ * Union Specialization
+ * Forwards to Cpp2Ops wrapper around member read/write/etc.
+ */
+template <typename Type>
+struct protocol_methods<type_class::variant, Type>
+    : protocol_methods<type_class::structure, Type> {};
+
 } // namespace pm
 } // namespace detail
 } // namespace thrift
