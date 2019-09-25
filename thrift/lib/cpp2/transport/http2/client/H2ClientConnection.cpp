@@ -47,17 +47,20 @@ using proxygen::WheelTimerInstance;
 using std::string;
 
 std::unique_ptr<ClientConnectionIf> H2ClientConnection::newHTTP2Connection(
-    TAsyncTransport::UniquePtr transport) {
+    TAsyncTransport::UniquePtr transport,
+    FlowControlSettings flowControlSettings) {
   std::unique_ptr<H2ClientConnection> connection(new H2ClientConnection(
       std::move(transport),
       std::make_unique<proxygen::HTTP2Codec>(
-          proxygen::TransportDirection::UPSTREAM)));
+          proxygen::TransportDirection::UPSTREAM),
+      flowControlSettings));
   return std::move(connection);
 }
 
 H2ClientConnection::H2ClientConnection(
     TAsyncTransport::UniquePtr transport,
-    std::unique_ptr<proxygen::HTTPCodec> codec)
+    std::unique_ptr<proxygen::HTTPCodec> codec,
+    FlowControlSettings flowControlSettings)
     : evb_(transport->getEventBase()) {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   auto localAddress = transport->getLocalAddress();
@@ -70,6 +73,10 @@ H2ClientConnection::H2ClientConnection(
       std::move(codec),
       wangle::TransportInfo(),
       this);
+  httpSession_->setFlowControl(
+      flowControlSettings.initialReceiveWindow,
+      flowControlSettings.receiveStreamWindowSize,
+      flowControlSettings.receiveSessionWindowSize);
   // TODO: Improve the way max outging streams is set
   setMaxPendingRequests(100000);
   httpSession_->startNow();

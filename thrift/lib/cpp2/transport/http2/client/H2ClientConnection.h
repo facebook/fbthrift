@@ -52,8 +52,27 @@ namespace thrift {
 class H2ClientConnection : public ClientConnectionIf,
                            public proxygen::HTTPSession::InfoCallback {
  public:
+  struct FlowControlSettings {
+   private:
+    // Stream and initial receive control window are 10MB
+    static constexpr size_t kStreamWindow = 10 * (1 << 20);
+    // Session (i.e connection) window is larger at 15MB
+    static constexpr size_t kSessionWindow = 1.5 * 10 * (1 << 20);
+
+   public:
+    FlowControlSettings()
+        : initialReceiveWindow(kStreamWindow),
+          receiveStreamWindowSize(kStreamWindow),
+          receiveSessionWindowSize(kSessionWindow) {}
+
+    size_t initialReceiveWindow;
+    size_t receiveStreamWindowSize;
+    size_t receiveSessionWindowSize;
+  };
+
   static std::unique_ptr<ClientConnectionIf> newHTTP2Connection(
-      async::TAsyncTransport::UniquePtr transport);
+      async::TAsyncTransport::UniquePtr transport,
+      FlowControlSettings flowControlSettings = FlowControlSettings());
 
   virtual ~H2ClientConnection() override;
 
@@ -89,7 +108,8 @@ class H2ClientConnection : public ClientConnectionIf,
  private:
   H2ClientConnection(
       async::TAsyncTransport::UniquePtr transport,
-      std::unique_ptr<proxygen::HTTPCodec> codec);
+      std::unique_ptr<proxygen::HTTPCodec> codec,
+      FlowControlSettings flowControlSettings);
 
   proxygen::HTTPUpstreamSession* httpSession_;
   folly::EventBase* evb_{nullptr};
