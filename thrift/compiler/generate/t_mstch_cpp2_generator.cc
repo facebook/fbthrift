@@ -1584,20 +1584,21 @@ class mstch_cpp2_program : public mstch_program {
     return a;
   }
   mstch::node fatal_data_member() {
-    std::vector<std::string> v;
+    std::unordered_set<std::string> fields;
+    std::vector<const std::string*> ordered_fields;
     for (const t_struct* s : program_->get_objects()) {
       if (!s->is_union()) {
         for (const t_field* f : s->get_members()) {
-          auto cpp_name = get_cpp_name(f);
-          if (std::find(v.begin(), v.end(), cpp_name) == v.end()) {
-            v.push_back(cpp_name);
+          auto result = fields.insert(get_cpp_name(f));
+          if (result.second) {
+            ordered_fields.push_back(&*result.first);
           }
         }
       }
     }
     mstch::array a;
-    for (const auto& s : v) {
-      a.push_back(s);
+    for (const auto& f : ordered_fields) {
+      a.push_back(*f);
     }
     return a;
   }
