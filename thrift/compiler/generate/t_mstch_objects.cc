@@ -466,8 +466,11 @@ mstch::node mstch_const_value::const_struct() {
         dynamic_cast<t_struct const*>(const_value_->get_ttype());
     for (auto member : const_value_->get_map()) {
       auto const field = strct->get_member(member.first->get_string());
-      constants.push_back(
-          new t_const(nullptr, field->get_type(), "", member.second->clone()));
+      constants.push_back(new t_const(
+          nullptr,
+          field->get_type(),
+          field->get_name(),
+          member.second->clone()));
       idx.push_back(field->get_key());
       field_names.push_back(field->get_name());
     }
