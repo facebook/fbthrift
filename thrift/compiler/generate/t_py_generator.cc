@@ -170,7 +170,6 @@ class t_py_generator : public t_concat_generator {
       t_field* tfield,
       std::string prefix = "",
       bool inclass = false,
-      bool forward_compatibility = false,
       std::string actual_type = "");
 
   void generate_deserialize_struct(
@@ -181,8 +180,7 @@ class t_py_generator : public t_concat_generator {
   void generate_deserialize_container(
       std::ofstream& out,
       t_type* ttype,
-      std::string prefix = "",
-      bool forward_compatibility = false);
+      std::string prefix = "");
 
   void generate_deserialize_set_element(
       std::ofstream& out,
@@ -193,7 +191,6 @@ class t_py_generator : public t_concat_generator {
       std::ofstream& out,
       t_map* tmap,
       std::string prefix = "",
-      bool forward_compatibility = false,
       std::string key_actual_type = "",
       std::string value_actual_type = "");
 
@@ -284,10 +281,6 @@ class t_py_generator : public t_concat_generator {
       const string& string_key);
 
   void generate_json_reader(std::ofstream& out, t_struct* tstruct);
-
-  bool has_forward_compatibility(
-      const t_type* ttype,
-      std::unordered_set<uint64_t>& seen);
 
   void generate_fastproto_read(std::ofstream& out, t_struct* tstruct);
   void generate_fastproto_write(std::ofstream& out, t_struct* tstruct);
@@ -1837,53 +1830,6 @@ void t_py_generator::generate_fastproto_write(
   indent_down();
 }
 
-bool t_py_generator::has_forward_compatibility(
-    const t_type* ttype,
-    std::unordered_set<uint64_t>& seen) {
-  ttype = ttype->get_true_type();
-
-  auto typeId = ttype->get_type_id();
-  if (seen.count(typeId) != 0) {
-    return false;
-  }
-  seen.insert(typeId);
-
-  if (ttype->is_struct() || ttype->is_xception()) {
-    auto tstruct = (t_struct*)ttype;
-    const auto members = tstruct->get_members();
-    for (const auto& member : members) {
-      if (has_forward_compatibility(member->get_type(), seen)) {
-        return true;
-      }
-    }
-  } else if (ttype->is_map()) {
-    auto tmap = (t_map*)ttype;
-    bool container_forward_compatibility =
-        tmap->annotations_.count("forward_compatibility") != 0;
-    if (container_forward_compatibility) {
-      return true;
-    }
-
-    if (has_forward_compatibility(tmap->get_key_type(), seen)) {
-      return true;
-    }
-
-    if (has_forward_compatibility(tmap->get_val_type(), seen)) {
-      return true;
-    }
-  } else if (ttype->is_set()) {
-    if (has_forward_compatibility(((t_set*)ttype)->get_elem_type(), seen)) {
-      return true;
-    }
-  } else if (ttype->is_list()) {
-    if (has_forward_compatibility(((t_list*)ttype)->get_elem_type(), seen)) {
-      return true;
-    }
-  }
-
-  return false;
-}
-
 void t_py_generator::generate_fastproto_read(ofstream& out, t_struct* tstruct) {
   indent(out)
       << "if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) "
@@ -1896,19 +1842,10 @@ void t_py_generator::generate_fastproto_read(ofstream& out, t_struct* tstruct) {
       << endl;
   indent_up();
 
-  std::string sForwardCompatibility;
-  std::unordered_set<uint64_t> seen;
-  if (has_forward_compatibility(tstruct, seen)) {
-    sForwardCompatibility = ", forward_compatibility=True";
-    std::cerr << "[warning] forward_compatibility is going to be deprecated"
-              << std::endl;
-  }
-
   indent(out) << "fastproto.decode(self, iprot.trans, "
               << "[self.__class__, self.thrift_spec, "
               << (tstruct->is_union() ? "True" : "False") << "], "
-              << "utf8strings=UTF8STRINGS, protoid=0" << sForwardCompatibility
-              << ")" << endl;
+              << "utf8strings=UTF8STRINGS, protoid=0)" << endl;
   indent(out) << "self.checkRequired()" << endl;
   indent(out) << "return" << endl;
   indent_down();
@@ -1927,8 +1864,7 @@ void t_py_generator::generate_fastproto_read(ofstream& out, t_struct* tstruct) {
   indent(out) << "fastproto.decode(self, iprot.trans, "
               << "[self.__class__, self.thrift_spec, "
               << (tstruct->is_union() ? "True" : "False") << "], "
-              << "utf8strings=UTF8STRINGS, protoid=2" << sForwardCompatibility
-              << ")" << endl;
+              << "utf8strings=UTF8STRINGS, protoid=2)" << endl;
   indent(out) << "self.checkRequired()" << endl;
   indent(out) << "return" << endl;
   indent_down();
@@ -3156,8 +3092,7 @@ void t_py_generator::generate_deserialize_field(
     t_field* tfield,
     string prefix,
     bool /*inclass*/,
-    bool forward_compatibility,
-    string actual_type) {
+    string /* actual_type */) {
   t_type* type = tfield->get_type()->get_true_type();
 
   if (type->is_void()) {
@@ -3170,70 +3105,47 @@ void t_py_generator::generate_deserialize_field(
   if (type->is_struct() || type->is_xception()) {
     generate_deserialize_struct(out, (t_struct*)type, name);
   } else if (type->is_container()) {
-    bool container_forward_compatibility =
-        type->annotations_.count("forward_compatibility") != 0;
-    generate_deserialize_container(
-        out, type, name, container_forward_compatibility);
+    generate_deserialize_container(out, type, name);
   } else if (type->is_base_type() || type->is_enum()) {
     indent(out) << name << " = iprot.";
 
     if (type->is_base_type()) {
       t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
-      if (!forward_compatibility) {
-        switch (tbase) {
-          case t_base_type::TYPE_VOID:
-            throw "compiler error: cannot serialize void field in a struct: " +
-                name;
-          case t_base_type::TYPE_STRING:
-            out << "readString().decode('utf-8') "
-                << "if UTF8STRINGS else iprot.readString()";
-            break;
-          case t_base_type::TYPE_BINARY:
-            out << "readString()";
-            break;
-          case t_base_type::TYPE_BOOL:
-            out << "readBool()";
-            break;
-          case t_base_type::TYPE_BYTE:
-            out << "readByte()";
-            break;
-          case t_base_type::TYPE_I16:
-            out << "readI16()";
-            break;
-          case t_base_type::TYPE_I32:
-            out << "readI32()";
-            break;
-          case t_base_type::TYPE_I64:
-            out << "readI64()";
-            break;
-          case t_base_type::TYPE_DOUBLE:
-            out << "readDouble()";
-            break;
-          case t_base_type::TYPE_FLOAT:
-            out << "readFloat()";
-            break;
-          default:
-            throw "compiler error: no Python name for base type " +
-                t_base_type::t_base_name(tbase);
-        }
-      } else {
-        switch (tbase) {
-          case t_base_type::TYPE_BOOL:
-          case t_base_type::TYPE_BYTE:
-          case t_base_type::TYPE_I16:
-          case t_base_type::TYPE_I32:
-          case t_base_type::TYPE_I64:
-            out << "readIntegral(" << actual_type << ")";
-            break;
-          case t_base_type::TYPE_FLOAT:
-          case t_base_type::TYPE_DOUBLE:
-            out << "readFloatingPoint(" << actual_type << ")";
-            break;
-          default:
-            throw "compiler error: no Python name for "
-              "base type (forward_compatibility) " +
-                t_base_type::t_base_name(tbase);
-        }
+      switch (tbase) {
+        case t_base_type::TYPE_VOID:
+          throw "compiler error: cannot serialize void field in a struct: " +
+              name;
+        case t_base_type::TYPE_STRING:
+          out << "readString().decode('utf-8') "
+              << "if UTF8STRINGS else iprot.readString()";
+          break;
+        case t_base_type::TYPE_BINARY:
+          out << "readString()";
+          break;
+        case t_base_type::TYPE_BOOL:
+          out << "readBool()";
+          break;
+        case t_base_type::TYPE_BYTE:
+          out << "readByte()";
+          break;
+        case t_base_type::TYPE_I16:
+          out << "readI16()";
+          break;
+        case t_base_type::TYPE_I32:
+          out << "readI32()";
+          break;
+        case t_base_type::TYPE_I64:
+          out << "readI64()";
+          break;
+        case t_base_type::TYPE_DOUBLE:
+          out << "readDouble()";
+          break;
+        case t_base_type::TYPE_FLOAT:
+          out << "readFloat()";
+          break;
+        default:
+          throw "compiler error: no Python name for base type " +
+              t_base_type::t_base_name(tbase);
       }
     } else if (type->is_enum()) {
       out << "readI32()";
@@ -3266,8 +3178,7 @@ void t_py_generator::generate_deserialize_struct(
 void t_py_generator::generate_deserialize_container(
     ofstream& out,
     t_type* ttype,
-    string prefix,
-    bool forward_compatibility) {
+    string prefix) {
   string size = tmp("_size");
   string ktype = tmp("_ktype");
   string vtype = tmp("_vtype");
@@ -3283,15 +3194,6 @@ void t_py_generator::generate_deserialize_container(
     out << indent() << prefix << " = {}" << endl
         << indent() << "(" << ktype << ", " << vtype << ", " << size
         << " ) = iprot.readMapBegin() " << endl;
-    if (forward_compatibility) {
-      auto tmap = (t_map*)ttype;
-      out << indent() << ktype << " = " << ktype << " if " << ktype
-          << " != TType.STOP else " << type_to_enum(tmap->get_key_type())
-          << endl;
-      out << indent() << vtype << " = " << vtype << " if " << vtype
-          << " != TType.STOP else " << type_to_enum(tmap->get_val_type())
-          << endl;
-    }
   } else if (ttype->is_set()) {
     out << indent() << prefix << " = set()" << endl
         << indent() << "(" << etype << ", " << size
@@ -3312,8 +3214,7 @@ void t_py_generator::generate_deserialize_container(
   indent_up();
 
   if (ttype->is_map()) {
-    generate_deserialize_map_element(
-        out, (t_map*)ttype, prefix, forward_compatibility, ktype, vtype);
+    generate_deserialize_map_element(out, (t_map*)ttype, prefix, ktype, vtype);
   } else if (ttype->is_set()) {
     generate_deserialize_set_element(out, (t_set*)ttype, prefix);
   } else if (ttype->is_list()) {
@@ -3336,8 +3237,7 @@ void t_py_generator::generate_deserialize_container(
   indent_up();
 
   if (ttype->is_map()) {
-    generate_deserialize_map_element(
-        out, (t_map*)ttype, prefix, forward_compatibility, ktype, vtype);
+    generate_deserialize_map_element(out, (t_map*)ttype, prefix, ktype, vtype);
   } else if (ttype->is_set()) {
     generate_deserialize_set_element(out, (t_set*)ttype, prefix);
   } else if (ttype->is_list()) {
@@ -3364,7 +3264,6 @@ void t_py_generator::generate_deserialize_map_element(
     ofstream& out,
     t_map* tmap,
     string prefix,
-    bool forward_compatibility,
     string key_actual_type,
     string value_actual_type) {
   string key = tmp("_key");
@@ -3372,10 +3271,8 @@ void t_py_generator::generate_deserialize_map_element(
   t_field fkey(tmap->get_key_type(), key);
   t_field fval(tmap->get_val_type(), val);
 
-  generate_deserialize_field(
-      out, &fkey, "", false, forward_compatibility, key_actual_type);
-  generate_deserialize_field(
-      out, &fval, "", false, forward_compatibility, value_actual_type);
+  generate_deserialize_field(out, &fkey, "", false, key_actual_type);
+  generate_deserialize_field(out, &fval, "", false, value_actual_type);
 
   indent(out) << prefix << "[" << key << "] = " << val << endl;
 }

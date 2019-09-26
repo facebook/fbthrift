@@ -137,7 +137,6 @@ typedef struct {
   PyObject* klass;
   PyObject* spec;
   bool isunion;
-  bool forward_compatibility;
 } StructTypeArgs;
 
 typedef struct {
@@ -197,10 +196,7 @@ parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
   return true;
 }
 
-static bool parse_struct_args(
-    StructTypeArgs* dest,
-    PyObject* typeargs,
-    bool forward_compatibility = false) {
+static bool parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
   if (PyList_Size(typeargs) != 3) {
     PyErr_SetString(PyExc_TypeError,
         "expecting list of size 3 for struct args");
@@ -210,7 +206,6 @@ static bool parse_struct_args(
   dest->klass = PyList_GET_ITEM(typeargs, 0);
   dest->spec = PyList_GET_ITEM(typeargs, 1);
   dest->isunion = (PyObject_IsTrue(PyList_GET_ITEM(typeargs, 2)) == 1);
-  dest->forward_compatibility = forward_compatibility;
 
   return true;
 }
@@ -851,17 +846,15 @@ static PyObject* decode_val(
       }
 
       reader->readMapBegin(ktype, vtype, len);
-      if (!args->forward_compatibility) {
-        if (ktype != parsedargs.ktype || vtype != parsedargs.vtype) {
-          if (len == 0 &&
-              std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
-            reader->readMapEnd();
-            return PyDict_New();
-          }
-          PyErr_SetString(
-              PyExc_TypeError, "got wrong ttype while reading map field");
-          return nullptr;
+      if (ktype != parsedargs.ktype || vtype != parsedargs.vtype) {
+        if (len == 0 &&
+            std::is_same<Reader, CompactProtocolReaderWithRefill>::value) {
+          reader->readMapEnd();
+          return PyDict_New();
         }
+        PyErr_SetString(
+            PyExc_TypeError, "got wrong ttype while reading map field");
+        return nullptr;
       }
 
       PyObject *ret = PyDict_New();
@@ -901,8 +894,7 @@ static PyObject* decode_val(
       StructTypeArgs parsedargs;
       PyObject *ret;
 
-      if (!parse_struct_args(
-              &parsedargs, typeargs, args->forward_compatibility)) {
+      if (!parse_struct_args(&parsedargs, typeargs)) {
         return nullptr;
       }
 
@@ -1048,7 +1040,6 @@ decode(PyObject* /*self*/, PyObject *args, PyObject *kws) {
   PyObject *spec;
   int utf8strings = 0;
   int protoid = 0;
-  int forward_compatibility = 0;
   StructTypeArgs parsedargs;
   DecodeBuffer input = {};
 
@@ -1057,24 +1048,22 @@ decode(PyObject* /*self*/, PyObject *args, PyObject *kws) {
                            (char*)"spec",
                            (char*)"utf8strings",
                            (char*)"protoid",
-                           (char*)"forward_compatibility",
                            nullptr};
 
   if (!PyArg_ParseTupleAndKeywords(
           args,
           kws,
-          "OOO|iii",
+          "OOO|ii",
           kwlist,
           &dec_obj,
           &transport,
           &spec,
           &utf8strings,
-          &protoid,
-          &forward_compatibility)) {
+          &protoid)) {
     return nullptr;
   }
 
-  if (!parse_struct_args(&parsedargs, spec, forward_compatibility)) {
+  if (!parse_struct_args(&parsedargs, spec)) {
     return nullptr;
   }
 

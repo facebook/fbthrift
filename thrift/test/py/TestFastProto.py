@@ -19,12 +19,6 @@ from thrift.transport.TTransport import TMemoryBuffer
 from FastProto.ttypes import AStruct, OneOfEach, TestUnion, StructWithUnion, \
     NegativeFieldId, Required
 
-from forward_compatibility_fastproto.ttypes import \
-    OldStructure, NewStructure, \
-    OldStructureNested, NewStructureNested, \
-    OldStructureNestedNested, NewStructureNestedNested
-
-
 class ReadOnlyBufferWithRefill(TMemoryBuffer):
 
     def __init__(self, index, value=None):
@@ -185,115 +179,6 @@ class AbstractTest():
             return TBinaryProtocol.TBinaryProtocol(trans)
         else:
             return TCompactProtocol.TCompactProtocol(trans)
-
-    def test_forward_compatibility(self):
-        obj = OldStructure()
-        obj.features = {}
-        obj.features[1] = 314
-        obj.features[2] = 271
-
-        trans = TMemoryBuffer()
-        proto = self.createProto(trans)
-        obj.write(proto)
-
-        obj_new = NewStructure()
-        trans = TMemoryBuffer(trans.getvalue())
-        proto = proto.__class__(trans)
-
-        fastproto.decode(obj_new, trans, [obj_new.__class__, obj_new.thrift_spec,
-                                          obj_new.isUnion()], utf8strings=0,
-                         protoid=self.PROTO,
-                         forward_compatibility=True)
-        self.assertAlmostEqual(obj_new.features[1], 314.0)
-        self.assertAlmostEqual(obj_new.features[2], 271.0)
-
-        trans2 = TMemoryBuffer()
-        proto2 = self.createProto(trans2)
-        obj_new.write(proto2)
-
-        obj_new2 = NewStructure()
-        trans2 = TMemoryBuffer(trans2.getvalue())
-        proto2 = proto2.__class__(trans2)
-
-        fastproto.decode(obj_new2, trans2, [obj_new2.__class__, obj_new2.thrift_spec,
-                                            obj_new2.isUnion()], utf8strings=0,
-                         protoid=self.PROTO)
-        self.assertAlmostEqual(obj_new2.features[1], 314.0)
-        self.assertAlmostEqual(obj_new2.features[2], 271.0)
-
-    def test_forward_compatibility_nested(self):
-        obj = OldStructureNested()
-        obj.features = [{}]
-        obj.features[0][1] = 314
-        obj.features[0][2] = 271
-
-        trans = TMemoryBuffer()
-        proto = self.createProto(trans)
-        obj.write(proto)
-
-        obj_new = NewStructureNested()
-        trans = TMemoryBuffer(trans.getvalue())
-        proto = proto.__class__(trans)
-
-        fastproto.decode(obj_new, trans, [obj_new.__class__, obj_new.thrift_spec,
-                                          obj_new.isUnion()], utf8strings=0,
-                         protoid=self.PROTO,
-                         forward_compatibility=True)
-        self.assertAlmostEqual(obj_new.features[0][1], 314.0)
-        self.assertAlmostEqual(obj_new.features[0][2], 271.0)
-
-        trans2 = TMemoryBuffer()
-        proto2 = self.createProto(trans2)
-        obj_new.write(proto2)
-
-        obj_new2 = NewStructureNested()
-        trans2 = TMemoryBuffer(trans2.getvalue())
-        proto2 = proto2.__class__(trans2)
-
-        fastproto.decode(obj_new2, trans2, [obj_new2.__class__, obj_new2.thrift_spec,
-                                            obj_new2.isUnion()], utf8strings=0,
-                         protoid=self.PROTO)
-        self.assertAlmostEqual(obj_new2.features[0][1], 314.0)
-        self.assertAlmostEqual(obj_new2.features[0][2], 271.0)
-
-    def test_forward_compatibility_nested_nested(self):
-        obj = OldStructureNested()
-        obj.features = [{}]
-        obj.features[0][1] = 314
-        obj.features[0][2] = 271
-
-        objN = OldStructureNestedNested()
-        objN.field = obj
-
-        trans = TMemoryBuffer()
-        proto = self.createProto(trans)
-        objN.write(proto)
-
-        obj_new = NewStructureNestedNested()
-        trans = TMemoryBuffer(trans.getvalue())
-        proto = proto.__class__(trans)
-
-        fastproto.decode(obj_new, trans, [obj_new.__class__, obj_new.thrift_spec,
-                                          obj_new.isUnion()], utf8strings=0,
-                         protoid=self.PROTO,
-                         forward_compatibility=True)
-        self.assertAlmostEqual(obj_new.field.features[0][1], 314.0)
-        self.assertAlmostEqual(obj_new.field.features[0][2], 271.0)
-
-        trans2 = TMemoryBuffer()
-        proto2 = self.createProto(trans2)
-        obj_new.write(proto2)
-
-        obj_new2 = NewStructureNestedNested()
-        trans2 = TMemoryBuffer(trans2.getvalue())
-        proto2 = proto2.__class__(trans2)
-
-        fastproto.decode(obj_new2, trans2, [obj_new2.__class__, obj_new2.thrift_spec,
-                                            obj_new2.isUnion()], utf8strings=0,
-                         protoid=self.PROTO)
-        self.assertAlmostEqual(obj_new2.field.features[0][1], 314.0)
-        self.assertAlmostEqual(obj_new2.field.features[0][2], 271.0)
-
 
 class FastBinaryTest(AbstractTest, unittest.TestCase):
     PROTO = 0

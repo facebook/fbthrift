@@ -92,13 +92,6 @@ struct set {};
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct map {};
 
-/**
- * Represents all map implementations, which are forward compatible.
- * It is a temporary struct for migration only.
- * TODO(@denpluplus, by 11/4/2017) Remove.
- */
-template <typename KeyTypeClass, typename MappedTypeClass>
-struct map_forward_compatibility {};
 } // namespace type_class
 
 namespace detail {

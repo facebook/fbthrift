@@ -39,11 +39,9 @@
   %>set<<%#type:setElemType%><% > common/type_class%><%/type:setElemType%>><%!
 %><%/type:set?%><%!
 
-%><%#type:map?%><%^type:forward_compatibility?%><%!
+%><%#type:map?%><%!
     %>map<<%#type:keyType%><% > common/type_class%><%/type:keyType%>, <%#type:valueType%><% > common/type_class%><%/type:valueType%>><%!
-%><%/type:forward_compatibility?%><%#type:forward_compatibility?%><%!
-    %>map_forward_compatibility<<%#type:keyType%><% > common/type_class%><%/type:keyType%>, <%#type:valueType%><% > common/type_class%><%/type:valueType%>><%!
-%><%/type:forward_compatibility?%><%/type:map?%><%!
+%><%/type:map?%><%!
 
 %><%#type:cpp_indirection%><%!
   %>, <% > common/type_namespace_cpp2%>apache_thrift_indirection_module_<%type:name%><%!

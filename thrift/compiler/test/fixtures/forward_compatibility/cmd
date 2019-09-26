@@ -1,5 +1,0 @@
-mstch_cpp2:json src/forward_compatibility.thrift
-mstch_py3 src/forward_compatibility.thrift
-php src/forward_compatibility.thrift
-hack:generate_legacy_read_write src/forward_compatibility.thrift
-py src/forward_compatibility.thrift

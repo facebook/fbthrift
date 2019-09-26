@@ -454,8 +454,6 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
             {"type:optionals?", &mstch_cpp2_type::optionals},
-            {"type:forward_compatibility?",
-             &mstch_cpp2_type::forward_compatibility},
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
             {"type:client_buffered_stream?",
@@ -497,9 +495,6 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node is_string_or_binary() {
     return resolved_type_->is_string_or_binary();
-  }
-  mstch::node forward_compatibility() {
-    return resolved_type_->annotations_.count("forward_compatibility") != 0;
   }
   mstch::node cpp_template() {
     return get_cpp_template(type_);
