@@ -199,7 +199,7 @@ class RocketServerConnection
       folly::io::Cursor cursor,
       RocketSinkClientCallback& clientCallback);
 
-  void scheduleStreamTimeout(RocketStreamClientCallback*);
+  void scheduleStreamTimeout(folly::HHWheelTimer::Callback*);
 
   friend class RocketServerFrameContext;
 };

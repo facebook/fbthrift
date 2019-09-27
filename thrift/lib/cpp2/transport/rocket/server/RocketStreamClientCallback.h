@@ -29,9 +29,7 @@ class EventBase;
 namespace apache {
 namespace thrift {
 
-// TODO Optimize memory footprint of per-stream timeouts
-class RocketStreamClientCallback final : public StreamClientCallback,
-                                         public folly::HHWheelTimer::Callback {
+class RocketStreamClientCallback final : public StreamClientCallback {
  public:
   RocketStreamClientCallback(
       rocket::RocketServerFrameContext&& context,
@@ -50,16 +48,17 @@ class RocketStreamClientCallback final : public StreamClientCallback,
 
   void request(uint32_t n);
 
-  void timeoutExpired() noexcept override;
-
   StreamServerCallback& getStreamServerCallback();
+  void timeoutExpired() noexcept;
 
  private:
   rocket::RocketServerFrameContext context_;
   StreamServerCallback* serverCallback_{nullptr};
   uint64_t tokens_{0};
+  std::unique_ptr<folly::HHWheelTimer::Callback> timeoutCallback_;
 
   void scheduleTimeout();
+  void cancelTimeout();
 };
 
 } // namespace thrift

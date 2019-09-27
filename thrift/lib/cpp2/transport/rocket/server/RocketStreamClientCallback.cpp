@@ -42,6 +42,18 @@
 namespace apache {
 namespace thrift {
 
+class TimeoutCallback : public folly::HHWheelTimer::Callback {
+ public:
+  explicit TimeoutCallback(RocketStreamClientCallback& parent)
+      : parent_(parent) {}
+  void timeoutExpired() noexcept override {
+    parent_.timeoutExpired();
+  }
+
+ private:
+  RocketStreamClientCallback& parent_;
+};
+
 RocketStreamClientCallback::RocketStreamClientCallback(
     rocket::RocketServerFrameContext&& context,
     uint32_t initialRequestN)
@@ -134,7 +146,14 @@ StreamServerCallback& RocketStreamClientCallback::getStreamServerCallback() {
 }
 
 void RocketStreamClientCallback::scheduleTimeout() {
-  context_.scheduleStreamTimeout(this);
+  if (!timeoutCallback_) {
+    timeoutCallback_ = std::make_unique<TimeoutCallback>(*this);
+  }
+  context_.scheduleStreamTimeout(timeoutCallback_.get());
+}
+
+void RocketStreamClientCallback::cancelTimeout() {
+  timeoutCallback_.reset();
 }
 
 } // namespace thrift

@@ -141,8 +141,8 @@ void RocketServerFrameContext::onRequestFrame(RequestFrame&& frame) && {
 }
 
 void RocketServerFrameContext::scheduleStreamTimeout(
-    RocketStreamClientCallback* clientCallback) {
-  connection_->scheduleStreamTimeout(clientCallback);
+    folly::HHWheelTimer::Callback* timeoutCallback) {
+  connection_->scheduleStreamTimeout(timeoutCallback);
 }
 
 void RocketServerFrameContext::takeOwnership(

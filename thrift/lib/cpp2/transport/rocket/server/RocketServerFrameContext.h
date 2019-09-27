@@ -17,6 +17,7 @@
 #pragma once
 
 #include <boost/variant.hpp>
+#include <folly/io/async/HHWheelTimer.h>
 
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
@@ -65,7 +66,7 @@ class RocketServerFrameContext {
     return streamId_;
   }
 
-  void scheduleStreamTimeout(RocketStreamClientCallback*);
+  void scheduleStreamTimeout(folly::HHWheelTimer::Callback* timeoutCallback);
   void freeStream();
   void takeOwnership(RocketStreamClientCallback* callback);
   void takeOwnership(RocketSinkClientCallback* callback);

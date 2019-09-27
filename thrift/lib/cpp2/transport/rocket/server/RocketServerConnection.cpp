@@ -462,9 +462,9 @@ void RocketServerConnection::writeErr(
 }
 
 void RocketServerConnection::scheduleStreamTimeout(
-    RocketStreamClientCallback* clientCallback) {
+    folly::HHWheelTimer::Callback* timeoutCallback) {
   if (streamStarvationTimeout_ != std::chrono::milliseconds::zero()) {
-    evb_.timer().scheduleTimeout(clientCallback, streamStarvationTimeout_);
+    evb_.timer().scheduleTimeout(timeoutCallback, streamStarvationTimeout_);
   }
 }
 
