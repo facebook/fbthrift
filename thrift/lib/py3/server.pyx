@@ -114,6 +114,13 @@ cdef class ThriftServer:
                 self.server.get().serve()
         try:
             await self.loop.run_in_executor(None, _serve)
+            self.address_future.cancel()
+        except asyncio.CancelledError:
+            try:
+                await self.get_address()
+            finally:
+                self.server.get().stop()
+            raise
         except Exception as e:
             self.server.get().stop()
             # If somebody is waiting on get_address and the server died
@@ -201,7 +208,6 @@ cdef class ThriftServer:
 
     def stop(self):
         self.server.get().stop()
-        self.address_future.cancel()
 
 
 cdef class ConnectionContext:
