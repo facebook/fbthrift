@@ -59,6 +59,11 @@ enum class SSLPolicy { DISABLED, PERMITTED, REQUIRED };
 typedef wangle::Pipeline<folly::IOBufQueue&, std::unique_ptr<folly::IOBuf>>
     Pipeline;
 
+class ThriftTlsConfig : public wangle::CustomConfig {
+ public:
+  bool enableThriftParamsNegotiation{false};
+};
+
 /**
  *   This is yet another thrift server.
  *   Uses cpp2 style generated code.
@@ -77,6 +82,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   folly::Optional<wangle::SSLCacheOptions> sslCacheOptions_;
   wangle::FizzConfig fizzConfig_;
+  ThriftTlsConfig thriftConfig_;
 
   // Security negotiation settings
   SSLPolicy sslPolicy_ = SSLPolicy::PERMITTED;
@@ -327,6 +333,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     fizzConfig_ = config;
   }
 
+  void setThriftConfig(ThriftTlsConfig thriftConfig) {
+    thriftConfig_ = thriftConfig;
+  }
+
   void setSSLCacheOptions(wangle::SSLCacheOptions options) {
     sslCacheOptions_ = std::move(options);
   }
@@ -432,6 +442,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     // even if cert/key is missing as it may become available later
     config.strictSSL = getStrictSSL();
     config.fizzConfig = fizzConfig_;
+    config.customConfigMap["thrift_tls_config"] =
+        std::make_shared<ThriftTlsConfig>(thriftConfig_);
     config.socketMaxReadsPerEvent = socketMaxReadsPerEvent_;
     return config;
   }

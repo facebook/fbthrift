@@ -73,6 +73,18 @@ class Cpp2Worker : public wangle::Acceptor,
       folly::AsyncServerSocket* serverSocket,
       folly::EventBase* eventBase,
       wangle::SSLStats* stats = nullptr) override {
+    if (auto thriftConfigBase =
+            folly::get_ptr(accConfig_.customConfigMap, "thrift_tls_config")) {
+      assert(static_cast<ThriftTlsConfig*>((*thriftConfigBase).get()));
+      auto thriftConfig =
+          static_cast<ThriftTlsConfig*>((*thriftConfigBase).get());
+      if (thriftConfig->enableThriftParamsNegotiation) {
+        auto thriftParametersContext =
+            std::make_shared<ThriftParametersContext>();
+        fizzPeeker_.setThriftParametersContext(
+            std::move(thriftParametersContext));
+      }
+    }
     securityProtocolCtxManager_.addPeeker(this);
     Acceptor::init(serverSocket, eventBase, stats);
   }

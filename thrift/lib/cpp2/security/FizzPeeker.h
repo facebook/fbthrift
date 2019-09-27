@@ -18,6 +18,8 @@
 #include <thrift/lib/cpp/async/TAsyncFizzServer.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
+#include <thrift/lib/cpp2/security/extensions/ThriftParametersServerExtension.h>
 #include <wangle/acceptor/FizzAcceptorHandshakeHelper.h>
 
 namespace apache {
@@ -26,19 +28,51 @@ namespace thrift {
 class ThriftFizzAcceptorHandshakeHelper
     : public wangle::FizzAcceptorHandshakeHelper {
  public:
-  using FizzAcceptorHandshakeHelper::FizzAcceptorHandshakeHelper;
+  ThriftFizzAcceptorHandshakeHelper(
+      std::shared_ptr<const fizz::server::FizzServerContext> context,
+      const folly::SocketAddress& clientAddr,
+      std::chrono::steady_clock::time_point acceptTime,
+      wangle::TransportInfo& tinfo,
+      LoggingCallback* loggingCallback,
+      const std::shared_ptr<fizz::extensions::TokenBindingContext>&
+          tokenBindingContext,
+      const std::shared_ptr<apache::thrift::ThriftParametersContext>&
+          thriftParametersContext)
+      : wangle::FizzAcceptorHandshakeHelper::FizzAcceptorHandshakeHelper(
+            context,
+            clientAddr,
+            acceptTime,
+            tinfo,
+            loggingCallback,
+            tokenBindingContext),
+        thriftParametersContext_(thriftParametersContext) {}
+
+  void start(
+      folly::AsyncSSLSocket::UniquePtr sock,
+      wangle::AcceptorHandshakeHelper::Callback* callback) noexcept override {
+    callback_ = callback;
+    sslContext_ = sock->getSSLContext();
+
+    if (thriftParametersContext_) {
+      thriftExtension_ =
+          std::make_shared<apache::thrift::ThriftParametersServerExtension>(
+              thriftParametersContext_);
+    }
+    transport_ = createFizzServer(std::move(sock), context_, thriftExtension_);
+    transport_->accept(this);
+  }
 
  protected:
   fizz::server::AsyncFizzServer::UniquePtr createFizzServer(
       folly::AsyncSSLSocket::UniquePtr sslSock,
       const std::shared_ptr<const fizz::server::FizzServerContext>& fizzContext,
-      const std::shared_ptr<fizz::ServerExtensions>& /*extensions*/) override {
+      const std::shared_ptr<fizz::ServerExtensions>& extensions) override {
     folly::AsyncSocket::UniquePtr asyncSock(
         new apache::thrift::async::TAsyncSocket(std::move(sslSock)));
     asyncSock->cacheAddresses();
     return fizz::server::AsyncFizzServer::UniquePtr(
         new apache::thrift::async::TAsyncFizzServer(
-            std::move(asyncSock), fizzContext, extension_));
+            std::move(asyncSock), fizzContext, extensions));
   }
 
   folly::AsyncSSLSocket::UniquePtr createSSLSocket(
@@ -48,6 +82,11 @@ class ThriftFizzAcceptorHandshakeHelper
     return folly::AsyncSSLSocket::UniquePtr(
         new apache::thrift::async::TAsyncSSLSocket(sslContext, evb, fd));
   }
+
+  std::shared_ptr<apache::thrift::ThriftParametersContext>
+      thriftParametersContext_;
+  std::shared_ptr<apache::thrift::ThriftParametersServerExtension>
+      thriftExtension_;
 };
 
 class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
@@ -69,8 +108,17 @@ class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
             acceptTime,
             tinfo,
             loggingCallback_,
-            tokenBindingContext_));
+            tokenBindingContext_,
+            thriftParametersContext_));
   }
+
+  void setThriftParametersContext(
+      std::shared_ptr<apache::thrift::ThriftParametersContext> context) {
+    thriftParametersContext_ = std::move(context);
+  }
+
+  std::shared_ptr<apache::thrift::ThriftParametersContext>
+      thriftParametersContext_;
 };
 } // namespace thrift
 } // namespace apache
