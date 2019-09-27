@@ -1,16 +1,12 @@
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import unittest
 
-from fuzz import TestService
+from fuzz import TestService, DerivedTestService
 from thrift.util.fuzzer import Service
 
 
 class TestServiceWrapper(unittest.TestCase):
-
     def testServiceLoadMethods(self):
         service = Service(None, None, TestService)
         service.load_methods()
@@ -46,3 +42,10 @@ class TestServiceWrapper(unittest.TestCase):
         service_methods = service.get_methods()
 
         self.assertEqual(len(service_methods), 0)
+
+    def testServiceInheritance(self):
+        service = Service(None, None, DerivedTestService)
+        service.load_methods()
+        service_methods = service.get_methods()
+
+        self.assertIn("lookup", service_methods)

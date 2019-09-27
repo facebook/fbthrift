@@ -453,11 +453,13 @@ class Service(object):
             exclude_methods.extend(inspect.getmembers(klass, predicate=pred))
 
         klass_methods = inspect.getmembers(self.service.Iface, predicate=pred)
-        module = inspect.getmodule(self.service.Iface)
 
         for method_name, method in klass_methods:
             if (method_name, method) in exclude_methods:
                 continue
+
+            module = inspect.getmodule(method)
+
             args = getattr(module, method_name + "_args", None)
             if args is None:
                 continue
