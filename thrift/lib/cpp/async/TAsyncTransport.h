@@ -17,22 +17,23 @@
 #ifndef THRIFT_ASYNC_TASYNCTRANSPORT_H_
 #define THRIFT_ASYNC_TASYNCTRANSPORT_H_ 1
 
-#include <folly/io/async/DelayedDestruction.h>
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
-#include <folly/io/async/AsyncSocket.h>
-#include <folly/portability/SysUio.h>
-
-#include <thrift/lib/cpp/thrift_config.h>
 #include <inttypes.h>
 #include <memory>
+
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/DelayedDestruction.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/portability/SysUio.h>
+#include <thrift/lib/cpp/thrift_config.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace folly {
 class IOBuf;
 class SocketAddress;
-}
+} // namespace folly
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace async {
 
@@ -47,32 +48,35 @@ class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
   class ReadCallback : public folly::AsyncSocket::ReadCallback {
    public:
     virtual void readError(
-      const transport::TTransportException& ex) noexcept = 0;
+        const transport::TTransportException& ex) noexcept = 0;
+
    private:
     void readErr(const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
-        transport::TTransportException::TTransportExceptionType(ex.getType()),
-        ex.what(), ex.getErrno());
+          transport::TTransportException::TTransportExceptionType(ex.getType()),
+          ex.what(),
+          ex.getErrno());
 
       readError(tex);
-
     }
   };
 
   class WriteCallback : public folly::AsyncSocket::WriteCallback {
    public:
     virtual void writeError(
-      size_t bytes, const transport::TTransportException& ex) noexcept = 0;
+        size_t bytes,
+        const transport::TTransportException& ex) noexcept = 0;
 
    private:
-    void writeErr(size_t bytes,
-                  const folly::AsyncSocketException& ex) noexcept override {
+    void writeErr(
+        size_t bytes,
+        const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
-        transport::TTransportException::TTransportExceptionType(ex.getType()),
-        ex.what(), ex.getErrno());
+          transport::TTransportException::TTransportExceptionType(ex.getType()),
+          ex.what(),
+          ex.getErrno());
 
       writeError(bytes, tex);
-
     }
   };
 
@@ -82,6 +86,8 @@ class TAsyncTransport : virtual public folly::AsyncTransportWrapper {
   }
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_TASYNCTRANSPORT_H_
