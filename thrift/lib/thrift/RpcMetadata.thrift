@@ -155,6 +155,8 @@ struct ResponseRpcMetadata {
   4: optional i64 load;
   // The CRC32C of the RPC response.
   5: optional i32 (cpp.type = "std::uint32_t") crc32c;
+  // The CompressionAlgorithm used to compress responses (if any)
+  6: optional CompressionAlgorithm compression;
 }
 
 struct StreamPayloadMetadata {}

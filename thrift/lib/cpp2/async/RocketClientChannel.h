@@ -197,7 +197,6 @@ class RocketClientChannel final : public ClientChannel {
     ++shared_->inflightRequests;
     return folly::makeGuard([shared = shared_] { --shared->inflightRequests; });
   }
-
 };
 
 } // namespace thrift

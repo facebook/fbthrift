@@ -22,6 +22,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
+#include <folly/compression/Compression.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
@@ -34,6 +35,8 @@
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -55,9 +58,32 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
 void ThriftServerRequestResponse::sendThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data) noexcept {
-  Payload responsePayload;
+  // transform (e.g. compress) the response if needed
+  RocketServerConnection& connection = context_.connection();
+  folly::Optional<CompressionAlgorithm> compressionAlgo =
+      connection.getNegotiatedCompressionAlgorithm();
+
+  std::unique_ptr<folly::IOBuf> compressed;
+  if (compressionAlgo.hasValue()) {
+    folly::io::CodecType compressCodec;
+    switch (*compressionAlgo) {
+      case CompressionAlgorithm::ZSTD:
+        compressCodec = folly::io::CodecType::ZSTD;
+        metadata.compression_ref() = *compressionAlgo;
+        break;
+      case CompressionAlgorithm::ZLIB:
+        compressCodec = folly::io::CodecType::ZLIB;
+        metadata.compression_ref() = *compressionAlgo;
+        break;
+      case CompressionAlgorithm::NONE:
+        compressCodec = folly::io::CodecType::NO_COMPRESSION;
+    }
+    compressed = folly::io::getCodec(compressCodec)->compress(data.get());
+  } else {
+    compressed = std::move(data);
+  }
   std::move(context_).sendPayload(
-      makePayload(metadata, std::move(data)),
+      makePayload(metadata, std::move(compressed)),
       Flags::none().next(true).complete(true));
 }
 

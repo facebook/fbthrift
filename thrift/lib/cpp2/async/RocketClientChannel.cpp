@@ -24,6 +24,7 @@
 #include <folly/Likely.h>
 #include <folly/Memory.h>
 #include <folly/Try.h>
+#include <folly/compression/Compression.h>
 #include <folly/fibers/FiberManager.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
@@ -316,11 +317,30 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     auto tHeader = std::make_unique<transport::THeader>();
     tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
 
+    std::unique_ptr<folly::IOBuf> uncompressedResponse;
     if (response.value().hasNonemptyMetadata()) {
       ResponseRpcMetadata responseMetadata;
       try {
         deserializeMetadata(responseMetadata, response.value());
         detail::fillTHeaderFromResponseRpcMetadata(responseMetadata, *tHeader);
+        if (auto compress = responseMetadata.compression_ref()) {
+          folly::io::CodecType codec;
+          switch (*compress) {
+            case CompressionAlgorithm::ZSTD:
+              codec = folly::io::CodecType::ZSTD;
+              break;
+            case CompressionAlgorithm::ZLIB:
+              codec = folly::io::CodecType::ZLIB;
+              break;
+            case CompressionAlgorithm::NONE:
+              codec = folly::io::CodecType::NO_COMPRESSION;
+              break;
+          }
+          uncompressedResponse = folly::io::getCodec(codec)->uncompress(
+              std::move(response.value()).data().get());
+        } else {
+          uncompressedResponse = std::move(response.value()).data();
+        }
       } catch (const std::exception& e) {
         FB_LOG_EVERY_MS(ERROR, 10000) << "Exception on deserializing metadata: "
                                       << folly::exceptionStr(e);
@@ -328,10 +348,14 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
             folly::exception_wrapper(std::current_exception(), e));
         return;
       }
+    } else {
+      uncompressedResponse = std::move(response.value()).data();
     }
-
     cb.release()->onResponse(ClientReceiveState(
-        -1, std::move(response.value()).data(), std::move(tHeader), nullptr));
+        static_cast<uint16_t>(-1),
+        std::move(uncompressedResponse),
+        std::move(tHeader),
+        nullptr));
   };
 
   if (cbRef.isSync() && folly::fibers::onFiber()) {
