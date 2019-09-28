@@ -20,10 +20,19 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersServerExtension.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/FizzAcceptorHandshakeHelper.h>
+#include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
 
 namespace apache {
 namespace thrift {
+
+/**
+ * A struct containing the TLS handshake negotiated parameters.
+ */
+struct NegotiatedParams {
+  CompressionAlgorithm compression{CompressionAlgorithm::NONE};
+};
 
 class ThriftFizzAcceptorHandshakeHelper
     : public wangle::FizzAcceptorHandshakeHelper {
@@ -37,7 +46,8 @@ class ThriftFizzAcceptorHandshakeHelper
       const std::shared_ptr<fizz::extensions::TokenBindingContext>&
           tokenBindingContext,
       const std::shared_ptr<apache::thrift::ThriftParametersContext>&
-          thriftParametersContext)
+          thriftParametersContext,
+      NegotiatedParams* negotiatedParams)
       : wangle::FizzAcceptorHandshakeHelper::FizzAcceptorHandshakeHelper(
             context,
             clientAddr,
@@ -45,7 +55,8 @@ class ThriftFizzAcceptorHandshakeHelper
             tinfo,
             loggingCallback,
             tokenBindingContext),
-        thriftParametersContext_(thriftParametersContext) {}
+        thriftParametersContext_(thriftParametersContext),
+        negotiatedParams_(negotiatedParams) {}
 
   void start(
       folly::AsyncSSLSocket::UniquePtr sock,
@@ -83,10 +94,85 @@ class ThriftFizzAcceptorHandshakeHelper
         new apache::thrift::async::TAsyncSSLSocket(sslContext, evb, fd));
   }
 
+  // AsyncFizzServer::HandshakeCallback API
+  void fizzHandshakeSuccess(
+      fizz::server::AsyncFizzServer* transport) noexcept override {
+    VLOG(3) << "Fizz handshake success";
+
+    tinfo_.acceptTime = acceptTime_;
+    tinfo_.secure = true;
+    tinfo_.sslVersion = 0x0304;
+    tinfo_.securityType = transport->getSecurityProtocol();
+    tinfo_.sslSetupTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - acceptTime_);
+
+    if (thriftExtension_ &&
+        thriftExtension_->getThriftCompressionAlgorithm().hasValue()) {
+      setNegotiatedCompressionAlgorithm(
+          *thriftExtension_->getThriftCompressionAlgorithm());
+    }
+
+    auto* handshakeLogging = transport->getState().handshakeLogging();
+    if (handshakeLogging && handshakeLogging->clientSni) {
+      tinfo_.sslServerName =
+          std::make_shared<std::string>(*handshakeLogging->clientSni);
+    }
+
+    auto appProto = transport->getApplicationProtocol();
+
+    if (loggingCallback_) {
+      loggingCallback_->logFizzHandshakeSuccess(*transport, &tinfo_);
+    }
+
+    callback_->connectionReady(
+        std::move(transport_),
+        std::move(appProto),
+        SecureTransportType::TLS,
+        wangle::SSLErrorEnum::NO_ERROR);
+  }
+
+  // AsyncSSLSocket::HandshakeCallback API
+  void handshakeSuc(folly::AsyncSSLSocket* sock) noexcept override {
+    auto appProto = sock->getApplicationProtocol();
+    if (!appProto.empty()) {
+      VLOG(3) << "Client selected next protocol " << appProto;
+    } else {
+      VLOG(3) << "Client did not select a next protocol";
+    }
+
+    // fill in SSL-related fields from TransportInfo
+    // the other fields like RTT are filled in the Acceptor
+    tinfo_.acceptTime = acceptTime_;
+    tinfo_.sslSetupTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+        std::chrono::steady_clock::now() - acceptTime_);
+
+    if (thriftExtension_ &&
+        thriftExtension_->getThriftCompressionAlgorithm().hasValue()) {
+      setNegotiatedCompressionAlgorithm(
+          *thriftExtension_->getThriftCompressionAlgorithm());
+    }
+    wangle::SSLAcceptorHandshakeHelper::fillSSLTransportInfoFields(
+        sock, tinfo_);
+
+    // The callback will delete this.
+    callback_->connectionReady(
+        std::move(sslSocket_),
+        std::move(appProto),
+        SecureTransportType::TLS,
+        wangle::SSLErrorEnum::NO_ERROR);
+  }
+
+  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm algo) {
+    if (algo != CompressionAlgorithm::NONE) {
+      negotiatedParams_->compression = algo;
+    }
+  }
+
   std::shared_ptr<apache::thrift::ThriftParametersContext>
       thriftParametersContext_;
   std::shared_ptr<apache::thrift::ThriftParametersServerExtension>
       thriftExtension_;
+  NegotiatedParams* negotiatedParams_;
 };
 
 class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
@@ -109,7 +195,8 @@ class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
             tinfo,
             loggingCallback_,
             tokenBindingContext_,
-            thriftParametersContext_));
+            thriftParametersContext_,
+            &negotiatedParams_));
   }
 
   void setThriftParametersContext(
@@ -117,8 +204,17 @@ class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
     thriftParametersContext_ = std::move(context);
   }
 
+  NegotiatedParams& getNegotiatedParameters() {
+    return negotiatedParams_;
+  }
+
   std::shared_ptr<apache::thrift::ThriftParametersContext>
       thriftParametersContext_;
+
+  /*
+   * Stores the parameters that was negotiatied during the TLS handshake.
+   */
+  NegotiatedParams negotiatedParams_;
 };
 } // namespace thrift
 } // namespace apache

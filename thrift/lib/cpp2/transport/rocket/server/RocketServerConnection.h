@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -95,8 +96,15 @@ class RocketServerConnection
     return streams_.size();
   }
 
- private:
+  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
+    negotiatedCompressionAlgo_ = compressionAlgo;
+  }
 
+  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm() {
+    return negotiatedCompressionAlgo_;
+  }
+
+ private:
   void freeStream(StreamId streamId);
 
   // Note that attachEventBase()/detachEventBase() are not supported in server
@@ -116,6 +124,7 @@ class RocketServerConnection
   // Total number of inflight writes to the underlying transport, i.e., writes
   // for which the writeSuccess()/writeErr() has not yet been called.
   size_t inflightWrites_{0};
+  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 
   enum class ConnectionState : uint8_t {
     ALIVE,

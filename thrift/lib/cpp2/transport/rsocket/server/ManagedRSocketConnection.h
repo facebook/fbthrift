@@ -44,6 +44,14 @@ class ManagedRSocketConnection
   void notifyPendingShutdown() override {}
   void dumpConnectionState(uint8_t) override {}
 
+  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
+    negotiatedCompressionAlgo_ = compressionAlgo;
+  }
+
+  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm() {
+    return negotiatedCompressionAlgo_;
+  }
+
  protected:
   ~ManagedRSocketConnection() = default;
 
@@ -64,6 +72,7 @@ class ManagedRSocketConnection
  private:
   std::shared_ptr<rsocket::DuplexConnection::Subscriber> setupSubscriber_;
   std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
+  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 
   class SetupSubscriber;
 };

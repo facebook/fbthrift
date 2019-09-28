@@ -30,6 +30,7 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/ManagedConnection.h>
 
 namespace apache {
@@ -99,6 +100,14 @@ class Cpp2Connection : public ResponseChannel::Callback,
     this_ = conn;
   }
 
+  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
+    negotiatedCompressionAlgo_ = compressionAlgo;
+  }
+
+  folly::Optional<CompressionAlgorithm> getNegotiatedCompressionAlgorithm() {
+    return negotiatedCompressionAlgo_;
+  }
+
  protected:
   std::unique_ptr<apache::thrift::AsyncProcessor> processor_;
   std::unique_ptr<DuplexChannel> duplexChannel_;
@@ -112,6 +121,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
 
   std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
+  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 
   /**
    * Wrap the request in our own request.  This is done for 2 reasons:

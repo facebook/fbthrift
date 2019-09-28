@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/PeekingManager.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/EvbHandshakeHelper.h>
 #include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
 #include <wangle/acceptor/UnencryptedAcceptorHandshakeHelper.h>
@@ -114,6 +115,12 @@ void Cpp2Worker::handleHeader(
       std::move(thriftTransport), addr, shared_from_this(), nullptr);
   Acceptor::addConnection(connection.get());
   connection->addConnection(connection);
+  // set compression algorithm to be used on this connection
+  auto compression = fizzPeeker_.getNegotiatedParameters().compression;
+  if (compression != CompressionAlgorithm::NONE) {
+    connection->setNegotiatedCompressionAlgorithm(compression);
+  }
+
   connection->start();
 
   VLOG(4) << "Cpp2Worker: created connection for socket " << fd;

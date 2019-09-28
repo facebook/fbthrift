@@ -93,14 +93,21 @@ void RSRoutingHandler::handleConnection(
     connection = new rocket::RocketServerConnection(
         std::move(sock),
         std::make_shared<rocket::ThriftRocketServerHandler>(
-            std::move(worker), *address, sockPtr),
+            worker, *address, sockPtr),
         server->getStreamExpireTime());
+    // set compression algorithm to be used on this connection
+    auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
+                           ->getNegotiatedParameters()
+                           .compression;
+    if (compression != CompressionAlgorithm::NONE) {
+      static_cast<rocket::RocketServerConnection*>(connection)
+          ->setNegotiatedCompressionAlgorithm(compression);
+    }
   } else {
     connection = new ManagedRSocketConnection(
         std::move(sock),
-        [sockPtr,
-         worker = std::move(worker),
-         clientAddress = folly::copy(*address)](auto&) mutable {
+        [sockPtr, worker = worker, clientAddress = folly::copy(*address)](
+            auto&) mutable {
           DCHECK(worker->getServer());
           DCHECK(worker->getServer()->getCpp2Processor());
           // RSResponder will be created per client connection. It will use
@@ -108,6 +115,14 @@ void RSRoutingHandler::handleConnection(
           return std::make_shared<RSResponder>(
               std::move(worker), clientAddress, sockPtr);
         });
+    // set compression algorithm to be used on this connection
+    auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
+                           ->getNegotiatedParameters()
+                           .compression;
+    if (compression != CompressionAlgorithm::NONE) {
+      static_cast<ManagedRSocketConnection*>(connection)
+          ->setNegotiatedCompressionAlgorithm(compression);
+    }
   }
 
   connectionManager->addConnection(connection);
