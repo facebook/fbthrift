@@ -16,9 +16,10 @@
 #pragma once
 
 #include <folly/Try.h>
-
+#include <folly/compression/Compression.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -51,8 +52,28 @@ folly::Try<T> unpack(rocket::Payload&& payload) {
       if (reader.getCursorPosition() > payload.metadataSize()) {
         folly::throw_exception<std::out_of_range>("underflow");
       }
+
+      // decompress the response if needed
+      if (auto compress = t.metadata.compression_ref()) {
+        folly::io::CodecType codecType;
+        switch (*compress) {
+          case CompressionAlgorithm::ZSTD:
+            codecType = folly::io::CodecType::ZSTD;
+            break;
+          case CompressionAlgorithm::ZLIB:
+            codecType = folly::io::CodecType::ZLIB;
+            break;
+          case CompressionAlgorithm::NONE:
+            codecType = folly::io::CodecType::NO_COMPRESSION;
+        }
+        t.payload = folly::io::getCodec(codecType)->uncompress(
+            std::move(payload).data().get());
+      } else {
+        t.payload = std::move(payload).data();
+      }
+    } else {
+      t.payload = std::move(payload).data();
     }
-    t.payload = std::move(payload).data();
     return t;
   });
 }

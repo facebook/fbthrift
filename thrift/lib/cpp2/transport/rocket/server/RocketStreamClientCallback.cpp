@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 
 namespace apache {
@@ -71,6 +72,8 @@ void RocketStreamClientCallback::onFirstResponse(
   } else {
     scheduleTimeout();
   }
+  // compress the response if needed
+  compressResponse(firstResponse);
 
   context_.sendPayload(
       rocket::pack(std::move(firstResponse)).value(),
@@ -98,9 +101,11 @@ void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
   if (!--tokens_) {
     scheduleTimeout();
   }
+  // compress the response if needed
+  compressResponse(payload);
 
   context_.sendPayload(
-      rocket::Payload::makeFromData(std::move(payload.payload)),
+      rocket::pack(std::move(payload)).value(),
       rocket::Flags::none().next(true));
 }
 
@@ -154,6 +159,32 @@ void RocketStreamClientCallback::scheduleTimeout() {
 
 void RocketStreamClientCallback::cancelTimeout() {
   timeoutCallback_.reset();
+}
+
+template <class Payload>
+void RocketStreamClientCallback::compressResponse(Payload& payload) {
+  rocket::RocketServerConnection& connection = context_.connection();
+  folly::Optional<CompressionAlgorithm> compression =
+      connection.getNegotiatedCompressionAlgorithm();
+
+  if (compression.hasValue()) {
+    folly::io::CodecType codec;
+    switch (*compression) {
+      case CompressionAlgorithm::ZSTD:
+        codec = folly::io::CodecType::ZSTD;
+        payload.metadata.compression_ref() = *compression;
+        break;
+      case CompressionAlgorithm::ZLIB:
+        codec = folly::io::CodecType::ZLIB;
+        payload.metadata.compression_ref() = *compression;
+        break;
+      case CompressionAlgorithm::NONE:
+        codec = folly::io::CodecType::NO_COMPRESSION;
+        break;
+    }
+    payload.payload =
+        folly::io::getCodec(codec)->compress(payload.payload.get());
+  }
 }
 
 } // namespace thrift

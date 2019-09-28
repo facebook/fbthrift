@@ -59,6 +59,9 @@ class RocketStreamClientCallback final : public StreamClientCallback {
 
   void scheduleTimeout();
   void cancelTimeout();
+
+  template <class Payload>
+  void compressResponse(Payload& payload);
 };
 
 } // namespace thrift

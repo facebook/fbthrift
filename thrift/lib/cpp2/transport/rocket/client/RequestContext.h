@@ -34,12 +34,6 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Serializer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
-namespace folly {
-namespace io {
-class IOBuf;
-} // namespace io
-} // namespace folly
-
 namespace apache {
 namespace thrift {
 namespace rocket {

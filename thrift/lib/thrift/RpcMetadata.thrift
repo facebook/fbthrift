@@ -159,7 +159,10 @@ struct ResponseRpcMetadata {
   6: optional CompressionAlgorithm compression;
 }
 
-struct StreamPayloadMetadata {}
+struct StreamPayloadMetadata {
+  // The CompressionAlgorithm used to compress responses (if any)
+  1: optional CompressionAlgorithm compression;
+}
 
 // Setup metadata sent from the client to the server at the time
 // of initial connection.
