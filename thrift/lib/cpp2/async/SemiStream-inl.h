@@ -150,20 +150,22 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
   std::shared_ptr<SharedState> sharedState =
       std::make_shared<SharedState>(bufferSize);
 
+  auto keepAlive = folly::getKeepAliveToken(stream.executor_);
   std::move(*(stream.impl_))
       .subscribe(std::make_unique<Subscriber>(sharedState));
 
   std::atomic<bool> cancellationRequested{false};
 
-  auto requestStreamCancellation = [&] {
-    if (cancellationRequested.exchange(true, std::memory_order_relaxed)) {
-      // Cancellation already requested
-      return;
-    }
+  auto requestStreamCancellation =
+      [&, keepAlive = std::move(keepAlive)]() mutable {
+        if (cancellationRequested.exchange(true, std::memory_order_relaxed)) {
+          // Cancellation already requested
+          return;
+        }
 
-    stream.executor_->add(
-        [keepAlive = folly::getKeepAliveToken(stream.executor_),
-         sharedStateWeak = std::weak_ptr<SharedState>(sharedState)]() {
+        stream.executor_->add([keepAlive = std::move(keepAlive),
+                               sharedStateWeak = std::weak_ptr<SharedState>(
+                                   sharedState)]() mutable {
           if (auto sharedState = sharedStateWeak.lock()) {
             sharedState->terminated_ = true;
             if (sharedState->subscription_) {
@@ -172,7 +174,7 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
             }
           }
         });
-  };
+      };
 
   SCOPE_EXIT {
     // Cancel the stream on exit.
