@@ -16,6 +16,11 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
+from thrift.py3.common import (
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -65,5 +70,17 @@ cdef class NullServiceInterface(
             <PyObject *> self,
             get_executor()
         )
+
+    
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="NullService",
+        methods=[
+    ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 

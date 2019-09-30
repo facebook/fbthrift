@@ -16,6 +16,11 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
+from thrift.py3.common import (
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -686,10 +691,713 @@ cdef class SimpleServiceInterface(
             self,
             u):
         raise NotImplementedError("async def get_binary_union_struct is not implemented")
+
+    
+    @staticmethod
+    def __get_reflection_for_get_five():
+      return __MethodSpec(
+        name="get_five",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_add_five():
+      return __MethodSpec(
+        name="add_five",
+        arguments=[
+          __ArgumentSpec(
+            name="num",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_do_nothing():
+      return __MethodSpec(
+        name="do_nothing",
+        arguments=[],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_concat():
+      return __MethodSpec(
+        name="concat",
+        arguments=[
+          __ArgumentSpec(
+            name="first",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="second",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get_value():
+      return __MethodSpec(
+        name="get_value",
+        arguments=[
+          __ArgumentSpec(
+            name="simple_struct",
+            type=_module_types.SimpleStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_negate():
+      return __MethodSpec(
+        name="negate",
+        arguments=[
+          __ArgumentSpec(
+            name="input",
+            type=bool,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_tiny():
+      return __MethodSpec(
+        name="tiny",
+        arguments=[
+          __ArgumentSpec(
+            name="input",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_small():
+      return __MethodSpec(
+        name="small",
+        arguments=[
+          __ArgumentSpec(
+            name="input",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_big():
+      return __MethodSpec(
+        name="big",
+        arguments=[
+          __ArgumentSpec(
+            name="input",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_two():
+      return __MethodSpec(
+        name="two",
+        arguments=[
+          __ArgumentSpec(
+            name="input",
+            type=float,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=float,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_expected_exception():
+      return __MethodSpec(
+        name="expected_exception",
+        arguments=[],
+        result=None,
+        exceptions=[
+          _module_types.SimpleException,
+        ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_unexpected_exception():
+      return __MethodSpec(
+        name="unexpected_exception",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_sum_i16_list():
+      return __MethodSpec(
+        name="sum_i16_list",
+        arguments=[
+          __ArgumentSpec(
+            name="numbers",
+            type=_module_types.List__i16,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_sum_i32_list():
+      return __MethodSpec(
+        name="sum_i32_list",
+        arguments=[
+          __ArgumentSpec(
+            name="numbers",
+            type=_module_types.List__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_sum_i64_list():
+      return __MethodSpec(
+        name="sum_i64_list",
+        arguments=[
+          __ArgumentSpec(
+            name="numbers",
+            type=_module_types.List__i64,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_concat_many():
+      return __MethodSpec(
+        name="concat_many",
+        arguments=[
+          __ArgumentSpec(
+            name="words",
+            type=_module_types.List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_count_structs():
+      return __MethodSpec(
+        name="count_structs",
+        arguments=[
+          __ArgumentSpec(
+            name="items",
+            type=_module_types.List__SimpleStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_sum_set():
+      return __MethodSpec(
+        name="sum_set",
+        arguments=[
+          __ArgumentSpec(
+            name="numbers",
+            type=_module_types.Set__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_contains_word():
+      return __MethodSpec(
+        name="contains_word",
+        arguments=[
+          __ArgumentSpec(
+            name="words",
+            type=_module_types.Set__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="word",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get_map_value():
+      return __MethodSpec(
+        name="get_map_value",
+        arguments=[
+          __ArgumentSpec(
+            name="words",
+            type=_module_types.Map__string_string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="key",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_map_length():
+      return __MethodSpec(
+        name="map_length",
+        arguments=[
+          __ArgumentSpec(
+            name="items",
+            type=_module_types.Map__string_SimpleStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_sum_map_values():
+      return __MethodSpec(
+        name="sum_map_values",
+        arguments=[
+          __ArgumentSpec(
+            name="items",
+            type=_module_types.Map__string_i16,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_complex_sum_i32():
+      return __MethodSpec(
+        name="complex_sum_i32",
+        arguments=[
+          __ArgumentSpec(
+            name="counter",
+            type=_module_types.ComplexStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_repeat_name():
+      return __MethodSpec(
+        name="repeat_name",
+        arguments=[
+          __ArgumentSpec(
+            name="counter",
+            type=_module_types.ComplexStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get_struct():
+      return __MethodSpec(
+        name="get_struct",
+        arguments=[],
+        result=_module_types.SimpleStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_fib():
+      return __MethodSpec(
+        name="fib",
+        arguments=[
+          __ArgumentSpec(
+            name="n",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__i32,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_unique_words():
+      return __MethodSpec(
+        name="unique_words",
+        arguments=[
+          __ArgumentSpec(
+            name="words",
+            type=_module_types.List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Set__string,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_words_count():
+      return __MethodSpec(
+        name="words_count",
+        arguments=[
+          __ArgumentSpec(
+            name="words",
+            type=_module_types.List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Map__string_i16,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_set_enum():
+      return __MethodSpec(
+        name="set_enum",
+        arguments=[
+          __ArgumentSpec(
+            name="in_enum",
+            type=_module_types.AnEnum,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.AnEnum,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_list_of_lists():
+      return __MethodSpec(
+        name="list_of_lists",
+        arguments=[
+          __ArgumentSpec(
+            name="num_lists",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="num_items",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__List__i32,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_word_character_frequency():
+      return __MethodSpec(
+        name="word_character_frequency",
+        arguments=[
+          __ArgumentSpec(
+            name="sentence",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Map__string_Map__string_i32,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_list_of_sets():
+      return __MethodSpec(
+        name="list_of_sets",
+        arguments=[
+          __ArgumentSpec(
+            name="some_words",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__Set__string,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_nested_map_argument():
+      return __MethodSpec(
+        name="nested_map_argument",
+        arguments=[
+          __ArgumentSpec(
+            name="struct_map",
+            type=_module_types.Map__string_List__SimpleStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_make_sentence():
+      return __MethodSpec(
+        name="make_sentence",
+        arguments=[
+          __ArgumentSpec(
+            name="word_chars",
+            type=_module_types.List__List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get_union():
+      return __MethodSpec(
+        name="get_union",
+        arguments=[
+          __ArgumentSpec(
+            name="sets",
+            type=_module_types.List__Set__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Set__i32,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get_keys():
+      return __MethodSpec(
+        name="get_keys",
+        arguments=[
+          __ArgumentSpec(
+            name="string_map",
+            type=_module_types.List__Map__string_string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Set__string,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_lookup_double():
+      return __MethodSpec(
+        name="lookup_double",
+        arguments=[
+          __ArgumentSpec(
+            name="key",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=float,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_retrieve_binary():
+      return __MethodSpec(
+        name="retrieve_binary",
+        arguments=[
+          __ArgumentSpec(
+            name="something",
+            type=bytes,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bytes,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_contain_binary():
+      return __MethodSpec(
+        name="contain_binary",
+        arguments=[
+          __ArgumentSpec(
+            name="binaries",
+            type=_module_types.List__binary,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Set__binary,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_contain_enum():
+      return __MethodSpec(
+        name="contain_enum",
+        arguments=[
+          __ArgumentSpec(
+            name="the_enum",
+            type=_module_types.List__AnEnum,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__AnEnum,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get_binary_union_struct():
+      return __MethodSpec(
+        name="get_binary_union_struct",
+        arguments=[
+          __ArgumentSpec(
+            name="u",
+            type=_module_types.BinaryUnion,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.BinaryUnionStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="SimpleService",
+        methods=[
+          cls.__get_reflection_for_get_five(),
+                cls.__get_reflection_for_add_five(),
+                cls.__get_reflection_for_do_nothing(),
+                cls.__get_reflection_for_concat(),
+                cls.__get_reflection_for_get_value(),
+                cls.__get_reflection_for_negate(),
+                cls.__get_reflection_for_tiny(),
+                cls.__get_reflection_for_small(),
+                cls.__get_reflection_for_big(),
+                cls.__get_reflection_for_two(),
+                cls.__get_reflection_for_expected_exception(),
+                cls.__get_reflection_for_unexpected_exception(),
+                cls.__get_reflection_for_sum_i16_list(),
+                cls.__get_reflection_for_sum_i32_list(),
+                cls.__get_reflection_for_sum_i64_list(),
+                cls.__get_reflection_for_concat_many(),
+                cls.__get_reflection_for_count_structs(),
+                cls.__get_reflection_for_sum_set(),
+                cls.__get_reflection_for_contains_word(),
+                cls.__get_reflection_for_get_map_value(),
+                cls.__get_reflection_for_map_length(),
+                cls.__get_reflection_for_sum_map_values(),
+                cls.__get_reflection_for_complex_sum_i32(),
+                cls.__get_reflection_for_repeat_name(),
+                cls.__get_reflection_for_get_struct(),
+                cls.__get_reflection_for_fib(),
+                cls.__get_reflection_for_unique_words(),
+                cls.__get_reflection_for_words_count(),
+                cls.__get_reflection_for_set_enum(),
+                cls.__get_reflection_for_list_of_lists(),
+                cls.__get_reflection_for_word_character_frequency(),
+                cls.__get_reflection_for_list_of_sets(),
+                cls.__get_reflection_for_nested_map_argument(),
+                cls.__get_reflection_for_make_sentence(),
+                cls.__get_reflection_for_get_union(),
+                cls.__get_reflection_for_get_keys(),
+                cls.__get_reflection_for_lookup_double(),
+                cls.__get_reflection_for_retrieve_binary(),
+                cls.__get_reflection_for_contain_binary(),
+                cls.__get_reflection_for_contain_enum(),
+                cls.__get_reflection_for_get_binary_union_struct(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 cdef object _DerivedService_annotations = _py_types.MappingProxyType({
-    """bar""": """1""",
-    """foo""": """\"\"\"""",
-})
+    """bar""": """1""",    """foo""": """\"\"\"""",})
 
 
 @cython.auto_pickle(False)
@@ -711,6 +1419,29 @@ SimpleServiceInterface
     async def get_six(
             self):
         raise NotImplementedError("async def get_six is not implemented")
+
+    
+    @staticmethod
+    def __get_reflection_for_get_six():
+      return __MethodSpec(
+        name="get_six",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="DerivedService",
+        methods=[
+          cls.__get_reflection_for_get_six(),
+          ],
+        annotations=_py_types.MappingProxyType({
+          """bar""": """1""",      """foo""": """\"\"\"""",    }),
+      )
 cdef object _RederivedService_annotations = _py_types.MappingProxyType({
 })
 
@@ -734,6 +1465,29 @@ DerivedServiceInterface
     async def get_seven(
             self):
         raise NotImplementedError("async def get_seven is not implemented")
+
+    
+    @staticmethod
+    def __get_reflection_for_get_seven():
+      return __MethodSpec(
+        name="get_seven",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="RederivedService",
+        methods=[
+          cls.__get_reflection_for_get_seven(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef api void call_cy_SimpleService_get_five(

@@ -16,6 +16,11 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
+from thrift.py3.common import (
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -121,6 +126,103 @@ cdef class NestedContainersInterface(
             self,
             foo):
         raise NotImplementedError("async def turtles is not implemented")
+
+    
+    @staticmethod
+    def __get_reflection_for_mapList():
+      return __MethodSpec(
+        name="mapList",
+        arguments=[
+          __ArgumentSpec(
+            name="foo",
+            type=_module_types.Map__i32_List__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_mapSet():
+      return __MethodSpec(
+        name="mapSet",
+        arguments=[
+          __ArgumentSpec(
+            name="foo",
+            type=_module_types.Map__i32_Set__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_listMap():
+      return __MethodSpec(
+        name="listMap",
+        arguments=[
+          __ArgumentSpec(
+            name="foo",
+            type=_module_types.List__Map__i32_i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_listSet():
+      return __MethodSpec(
+        name="listSet",
+        arguments=[
+          __ArgumentSpec(
+            name="foo",
+            type=_module_types.List__Set__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_turtles():
+      return __MethodSpec(
+        name="turtles",
+        arguments=[
+          __ArgumentSpec(
+            name="foo",
+            type=_module_types.List__List__Map__i32_Map__i32_Set__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="NestedContainers",
+        methods=[
+          cls.__get_reflection_for_mapList(),
+                cls.__get_reflection_for_mapSet(),
+                cls.__get_reflection_for_listMap(),
+                cls.__get_reflection_for_listSet(),
+                cls.__get_reflection_for_turtles(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef api void call_cy_NestedContainers_mapList(

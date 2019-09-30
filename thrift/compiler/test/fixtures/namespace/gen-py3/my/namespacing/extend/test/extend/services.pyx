@@ -16,6 +16,11 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
+from thrift.py3.common import (
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -89,6 +94,35 @@ cdef class ExtendTestServiceInterface(
             self,
             struct1):
         raise NotImplementedError("async def check is not implemented")
+
+    
+    @staticmethod
+    def __get_reflection_for_check():
+      return __MethodSpec(
+        name="check",
+        arguments=[
+          __ArgumentSpec(
+            name="struct1",
+            type=_hsmodule_types.HsFoo,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="ExtendTestService",
+        methods=[
+          cls.__get_reflection_for_check(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef api void call_cy_ExtendTestService_check(

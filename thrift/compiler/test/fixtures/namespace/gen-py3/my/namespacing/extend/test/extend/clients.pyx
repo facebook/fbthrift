@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -163,6 +168,34 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_check():
+      return __MethodSpec(
+        name="check",
+        arguments=[
+          __ArgumentSpec(
+            name="struct1",
+            type=_hsmodule_types.HsFoo,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="ExtendTestService",
+        methods=[
+          cls.__get_reflection_for_check(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_ExtendTestService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

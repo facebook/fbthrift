@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -160,6 +165,34 @@ cdef class HsTestService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_init():
+      return __MethodSpec(
+        name="init",
+        arguments=[
+          __ArgumentSpec(
+            name="int1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="HsTestService",
+        methods=[
+          cls.__get_reflection_for_init(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_HsTestService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

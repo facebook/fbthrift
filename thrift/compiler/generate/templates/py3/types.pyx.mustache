@@ -46,7 +46,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -61,6 +70,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -599,6 +609,8 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
         else:
             return NotImplemented
 
+    {{> reflection/Struct }}
+
     {{^struct:exception?}}
     cdef __iobuf.IOBuf _serialize({{struct:name}} self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())
@@ -879,6 +891,12 @@ cdef class {{> types/CythonPythonType}}:
     def __reduce__(self):
         return ({{> types/CythonPythonType}}, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value={{!
+          }}{{#type:listElemType}}{{> types/PythonType}}{{/type:listElemType}}{{!
+        }})
+
 
 Sequence.register({{> types/CythonPythonType}})
 {{/type:list?}}
@@ -1136,6 +1154,12 @@ Sequence.register({{> types/CythonPythonType}})
     def __reduce__(self):
         return ({{> types/CythonPythonType}}, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value={{!
+          }}{{#type:setElemType}}{{> types/PythonType}}{{/type:setElemType}}{{!
+        }})
+
 
 Set.register({{> types/CythonPythonType}})
 {{/type:set?}}
@@ -1353,6 +1377,13 @@ Set.register({{> types/CythonPythonType}})
 
     def __reduce__(self):
         return ({{> types/CythonPythonType}}, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key={{!
+          }}{{#type:keyType}}{{> types/PythonType}}{{/type:keyType}}, {{!
+          }}value={{#type:valueType}}{{> types/PythonType}}{{/type:valueType}}{{!
+        }})
 
 
 Mapping.register({{> types/CythonPythonType}})

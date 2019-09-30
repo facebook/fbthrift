@@ -17,7 +17,16 @@ from cython.operator cimport dereference as deref, preincrement as inc, address 
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
-from thrift.py3.types import NOTSET as __NOTSET
+from thrift.py3.types import (
+    NOTSET as __NOTSET,
+    StructSpec as __StructSpec,
+    ListSpec as __ListSpec,
+    SetSpec as __SetSpec,
+    MapSpec as __MapSpec,
+    FieldSpec as __FieldSpec,
+    StructType as __StructType,
+    Qualifier as __Qualifier,
+)
 from thrift.py3.types cimport (
     translate_cpp_enum_to_python,
     SetMetaClass as __SetMetaClass,
@@ -32,6 +41,7 @@ import folly.iobuf as __iobuf
 from folly.optional cimport cOptional
 
 import sys
+import types as _py_types
 import itertools
 from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
@@ -198,6 +208,10 @@ cdef class List__i32:
     def __reduce__(self):
         return (List__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=int)
+
 
 Sequence.register(List__i32)
 
@@ -334,6 +348,10 @@ cdef class Map__i32_List__i32:
 
     def __reduce__(self):
         return (Map__i32_List__i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=List__i32)
 
 
 Mapping.register(Map__i32_List__i32)
@@ -580,6 +598,10 @@ cdef class Set__i32:
     def __reduce__(self):
         return (Set__i32, (set(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __SetSpec(value=int)
+
 
 Set.register(Set__i32)
 
@@ -717,6 +739,10 @@ cdef class Map__i32_Set__i32:
     def __reduce__(self):
         return (Map__i32_Set__i32, (dict(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=Set__i32)
+
 
 Mapping.register(Map__i32_Set__i32)
 
@@ -852,6 +878,10 @@ cdef class Map__i32_i32:
 
     def __reduce__(self):
         return (Map__i32_i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=int)
 
 
 Mapping.register(Map__i32_i32)
@@ -1031,6 +1061,10 @@ cdef class List__Map__i32_i32:
     def __reduce__(self):
         return (List__Map__i32_i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__i32_i32)
+
 
 Sequence.register(List__Map__i32_i32)
 
@@ -1209,6 +1243,10 @@ cdef class List__Set__i32:
     def __reduce__(self):
         return (List__Set__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Set__i32)
+
 
 Sequence.register(List__Set__i32)
 
@@ -1345,6 +1383,10 @@ cdef class Map__i32_Map__i32_Set__i32:
 
     def __reduce__(self):
         return (Map__i32_Map__i32_Set__i32, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=int, value=Map__i32_Set__i32)
 
 
 Mapping.register(Map__i32_Map__i32_Set__i32)
@@ -1524,6 +1566,10 @@ cdef class List__Map__i32_Map__i32_Set__i32:
     def __reduce__(self):
         return (List__Map__i32_Map__i32_Set__i32, (list(self), ))
 
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=Map__i32_Map__i32_Set__i32)
+
 
 Sequence.register(List__Map__i32_Map__i32_Set__i32)
 
@@ -1701,6 +1747,10 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
 
     def __reduce__(self):
         return (List__List__Map__i32_Map__i32_Set__i32, (list(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __ListSpec(value=List__Map__i32_Map__i32_Set__i32)
 
 
 Sequence.register(List__List__Map__i32_Map__i32_Set__i32)

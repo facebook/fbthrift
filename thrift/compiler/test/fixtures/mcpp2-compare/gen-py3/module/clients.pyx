@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -775,6 +780,17 @@ cdef class EmptyService(thrift.py3.client.Client):
         deref(self._module_EmptyService_client).setPersistentHeader(ckey, cvalue)
 
 
+    
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="EmptyService",
+        methods=[
+    ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_EmptyService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -1291,6 +1307,260 @@ cdef class ReturnService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_noReturn():
+      return __MethodSpec(
+        name="noReturn",
+        arguments=[],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_boolReturn():
+      return __MethodSpec(
+        name="boolReturn",
+        arguments=[],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_i16Return():
+      return __MethodSpec(
+        name="i16Return",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_i32Return():
+      return __MethodSpec(
+        name="i32Return",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_i64Return():
+      return __MethodSpec(
+        name="i64Return",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_floatReturn():
+      return __MethodSpec(
+        name="floatReturn",
+        arguments=[],
+        result=float,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_doubleReturn():
+      return __MethodSpec(
+        name="doubleReturn",
+        arguments=[],
+        result=float,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_stringReturn():
+      return __MethodSpec(
+        name="stringReturn",
+        arguments=[],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_binaryReturn():
+      return __MethodSpec(
+        name="binaryReturn",
+        arguments=[],
+        result=bytes,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_mapReturn():
+      return __MethodSpec(
+        name="mapReturn",
+        arguments=[],
+        result=_module_types.Map__string_i64,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_simpleTypedefReturn():
+      return __MethodSpec(
+        name="simpleTypedefReturn",
+        arguments=[],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_complexTypedefReturn():
+      return __MethodSpec(
+        name="complexTypedefReturn",
+        arguments=[],
+        result=_module_types.List__Map__Empty_MyStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_list_mostComplexTypedefReturn():
+      return __MethodSpec(
+        name="list_mostComplexTypedefReturn",
+        arguments=[],
+        result=_module_types.List__List__List__Map__Empty_MyStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_enumReturn():
+      return __MethodSpec(
+        name="enumReturn",
+        arguments=[],
+        result=_module_types.MyEnumA,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_list_EnumReturn():
+      return __MethodSpec(
+        name="list_EnumReturn",
+        arguments=[],
+        result=_module_types.List__MyEnumA,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_structReturn():
+      return __MethodSpec(
+        name="structReturn",
+        arguments=[],
+        result=_module_types.MyStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_set_StructReturn():
+      return __MethodSpec(
+        name="set_StructReturn",
+        arguments=[],
+        result=_module_types.Set__MyStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_unionReturn():
+      return __MethodSpec(
+        name="unionReturn",
+        arguments=[],
+        result=_module_types.ComplexUnion,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_list_UnionReturn():
+      return __MethodSpec(
+        name="list_UnionReturn",
+        arguments=[],
+        result=_module_types.List__ComplexUnion,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_readDataEb():
+      return __MethodSpec(
+        name="readDataEb",
+        arguments=[
+          __ArgumentSpec(
+            name="size",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=__iobuf.IOBuf,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_readData():
+      return __MethodSpec(
+        name="readData",
+        arguments=[
+          __ArgumentSpec(
+            name="size",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=__iobuf.IOBuf,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="ReturnService",
+        methods=[
+          cls.__get_reflection_for_noReturn(),
+                cls.__get_reflection_for_boolReturn(),
+                cls.__get_reflection_for_i16Return(),
+                cls.__get_reflection_for_i32Return(),
+                cls.__get_reflection_for_i64Return(),
+                cls.__get_reflection_for_floatReturn(),
+                cls.__get_reflection_for_doubleReturn(),
+                cls.__get_reflection_for_stringReturn(),
+                cls.__get_reflection_for_binaryReturn(),
+                cls.__get_reflection_for_mapReturn(),
+                cls.__get_reflection_for_simpleTypedefReturn(),
+                cls.__get_reflection_for_complexTypedefReturn(),
+                cls.__get_reflection_for_list_mostComplexTypedefReturn(),
+                cls.__get_reflection_for_enumReturn(),
+                cls.__get_reflection_for_list_EnumReturn(),
+                cls.__get_reflection_for_structReturn(),
+                cls.__get_reflection_for_set_StructReturn(),
+                cls.__get_reflection_for_unionReturn(),
+                cls.__get_reflection_for_list_UnionReturn(),
+                cls.__get_reflection_for_readDataEb(),
+                cls.__get_reflection_for_readData(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_ReturnService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -2123,6 +2393,582 @@ cdef class ParamService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_void_ret_i16_param():
+      return __MethodSpec(
+        name="void_ret_i16_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_byte_i16_param():
+      return __MethodSpec(
+        name="void_ret_byte_i16_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_map_param():
+      return __MethodSpec(
+        name="void_ret_map_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Map__string_i64,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_map_setlist_param():
+      return __MethodSpec(
+        name="void_ret_map_setlist_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Map__string_i64,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=_module_types.Set__List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_map_typedef_param():
+      return __MethodSpec(
+        name="void_ret_map_typedef_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_enum_param():
+      return __MethodSpec(
+        name="void_ret_enum_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.MyEnumA,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_struct_param():
+      return __MethodSpec(
+        name="void_ret_struct_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.MyStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_void_ret_listunion_param():
+      return __MethodSpec(
+        name="void_ret_listunion_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.List__ComplexUnion,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_bool_ret_i32_i64_param():
+      return __MethodSpec(
+        name="bool_ret_i32_i64_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_bool_ret_map_param():
+      return __MethodSpec(
+        name="bool_ret_map_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Map__string_i64,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_bool_ret_union_param():
+      return __MethodSpec(
+        name="bool_ret_union_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.ComplexUnion,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_i64_ret_float_double_param():
+      return __MethodSpec(
+        name="i64_ret_float_double_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=float,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=float,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_i64_ret_string_typedef_param():
+      return __MethodSpec(
+        name="i64_ret_string_typedef_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=_module_types.Set__List__List__Map__Empty_MyStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_i64_ret_i32_i32_i32_i32_i32_param():
+      return __MethodSpec(
+        name="i64_ret_i32_i32_i32_i32_i32_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param3",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param4",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param5",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_double_ret_setstruct_param():
+      return __MethodSpec(
+        name="double_ret_setstruct_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Set__MyStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=float,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_string_ret_string_param():
+      return __MethodSpec(
+        name="string_ret_string_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_binary_ret_binary_param():
+      return __MethodSpec(
+        name="binary_ret_binary_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=bytes,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=bytes,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_map_ret_bool_param():
+      return __MethodSpec(
+        name="map_ret_bool_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=bool,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Map__string_i64,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_list_ret_map_setlist_param():
+      return __MethodSpec(
+        name="list_ret_map_setlist_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Map__i32_List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=_module_types.List__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__bool,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_mapsetlistmapliststring_ret_listlistlist_param():
+      return __MethodSpec(
+        name="mapsetlistmapliststring_ret_listlistlist_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.List__List__List__List__i32,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Map__Set__List__i32_Map__List__Set__string_string,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_typedef_ret_i32_param():
+      return __MethodSpec(
+        name="typedef_ret_i32_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=int,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_listtypedef_ret_typedef_param():
+      return __MethodSpec(
+        name="listtypedef_ret_typedef_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.List__Map__Empty_MyStruct,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__i32,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_enum_ret_double_param():
+      return __MethodSpec(
+        name="enum_ret_double_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=float,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.MyEnumA,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_enum_ret_double_enum_param():
+      return __MethodSpec(
+        name="enum_ret_double_enum_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=float,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=_module_types.MyEnumA,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.MyEnumA,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_listenum_ret_map_param():
+      return __MethodSpec(
+        name="listenum_ret_map_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Map__string_i64,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__MyEnumA,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_struct_ret_i16_param():
+      return __MethodSpec(
+        name="struct_ret_i16_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.MyStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+          """thread""": """eb""",    }),
+      )
+    @staticmethod
+    def __get_reflection_for_setstruct_ret_set_param():
+      return __MethodSpec(
+        name="setstruct_ret_set_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=_module_types.Set__string,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.Set__MyStruct,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_union_ret_i32_i32_param():
+      return __MethodSpec(
+        name="union_ret_i32_i32_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),
+          __ArgumentSpec(
+            name="param2",
+            type=int,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.ComplexUnion,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_listunion_string_param():
+      return __MethodSpec(
+        name="listunion_string_param",
+        arguments=[
+          __ArgumentSpec(
+            name="param1",
+            type=str,
+            annotations=_py_types.MappingProxyType({
+            }),
+          ),],
+        result=_module_types.List__ComplexUnion,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="ParamService",
+        methods=[
+          cls.__get_reflection_for_void_ret_i16_param(),
+                cls.__get_reflection_for_void_ret_byte_i16_param(),
+                cls.__get_reflection_for_void_ret_map_param(),
+                cls.__get_reflection_for_void_ret_map_setlist_param(),
+                cls.__get_reflection_for_void_ret_map_typedef_param(),
+                cls.__get_reflection_for_void_ret_enum_param(),
+                cls.__get_reflection_for_void_ret_struct_param(),
+                cls.__get_reflection_for_void_ret_listunion_param(),
+                cls.__get_reflection_for_bool_ret_i32_i64_param(),
+                cls.__get_reflection_for_bool_ret_map_param(),
+                cls.__get_reflection_for_bool_ret_union_param(),
+                cls.__get_reflection_for_i64_ret_float_double_param(),
+                cls.__get_reflection_for_i64_ret_string_typedef_param(),
+                cls.__get_reflection_for_i64_ret_i32_i32_i32_i32_i32_param(),
+                cls.__get_reflection_for_double_ret_setstruct_param(),
+                cls.__get_reflection_for_string_ret_string_param(),
+                cls.__get_reflection_for_binary_ret_binary_param(),
+                cls.__get_reflection_for_map_ret_bool_param(),
+                cls.__get_reflection_for_list_ret_map_setlist_param(),
+                cls.__get_reflection_for_mapsetlistmapliststring_ret_listlistlist_param(),
+                cls.__get_reflection_for_typedef_ret_i32_param(),
+                cls.__get_reflection_for_listtypedef_ret_typedef_param(),
+                cls.__get_reflection_for_enum_ret_double_param(),
+                cls.__get_reflection_for_enum_ret_double_enum_param(),
+                cls.__get_reflection_for_listenum_ret_map_param(),
+                cls.__get_reflection_for_struct_ret_i16_param(),
+                cls.__get_reflection_for_setstruct_ret_set_param(),
+                cls.__get_reflection_for_union_ret_i32_i32_param(),
+                cls.__get_reflection_for_listunion_string_param(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_ParamService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

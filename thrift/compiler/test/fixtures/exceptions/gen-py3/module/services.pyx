@@ -16,6 +16,11 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
+from thrift.py3.common import (
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 from thrift.py3.exceptions cimport (
     cTApplicationException,
     ApplicationError as __ApplicationError,
@@ -120,6 +125,74 @@ cdef class RaiserInterface(
     async def get500(
             self):
         raise NotImplementedError("async def get500 is not implemented")
+
+    
+    @staticmethod
+    def __get_reflection_for_doBland():
+      return __MethodSpec(
+        name="doBland",
+        arguments=[],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_doRaise():
+      return __MethodSpec(
+        name="doRaise",
+        arguments=[],
+        result=None,
+        exceptions=[
+          _module_types.Banal,
+        
+          _module_types.Fiery,
+        
+          _module_types.Serious,
+        ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get200():
+      return __MethodSpec(
+        name="get200",
+        arguments=[],
+        result=str,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    @staticmethod
+    def __get_reflection_for_get500():
+      return __MethodSpec(
+        name="get500",
+        arguments=[],
+        result=str,
+        exceptions=[
+          _module_types.Fiery,
+        
+          _module_types.Banal,
+        
+          _module_types.Serious,
+        ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="Raiser",
+        methods=[
+          cls.__get_reflection_for_doBland(),
+                cls.__get_reflection_for_doRaise(),
+                cls.__get_reflection_for_get200(),
+                cls.__get_reflection_for_get500(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 
 cdef api void call_cy_Raiser_doBland(

@@ -24,7 +24,12 @@ from thrift.py3.types cimport move
 import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport RpcOptions as __RpcOptions
-from thrift.py3.common import RpcOptions as __RpcOptions
+from thrift.py3.common import (
+  RpcOptions as __RpcOptions,
+  InterfaceSpec as __InterfaceSpec,
+  MethodSpec as __MethodSpec,
+  ArgumentSpec as __ArgumentSpec,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
@@ -182,6 +187,28 @@ cdef class MyRoot(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_do_root():
+      return __MethodSpec(
+        name="do_root",
+        arguments=[],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="MyRoot",
+        methods=[
+          cls.__get_reflection_for_do_root(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_MyRoot_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -288,6 +315,28 @@ cdef class MyNode(MyRoot):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_do_mid():
+      return __MethodSpec(
+        name="do_mid",
+        arguments=[],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="MyNode",
+        methods=[
+          cls.__get_reflection_for_do_mid(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_MyNode_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
@@ -394,6 +443,28 @@ cdef class MyLeaf(MyNode):
         return asyncio_shield(__future)
 
 
+    
+    @staticmethod
+    def __get_reflection_for_do_leaf():
+      return __MethodSpec(
+        name="do_leaf",
+        arguments=[],
+        result=None,
+        exceptions=[],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
+    
+    @classmethod
+    def __get_reflection__(cls):
+      return __InterfaceSpec(
+        name="MyLeaf",
+        methods=[
+          cls.__get_reflection_for_do_leaf(),
+          ],
+        annotations=_py_types.MappingProxyType({
+        }),
+      )
 
 cdef void closed_MyLeaf_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,

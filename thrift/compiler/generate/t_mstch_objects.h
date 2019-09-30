@@ -852,6 +852,7 @@ class mstch_struct : public mstch_base {
             {"struct:exception?", &mstch_struct::is_exception},
             {"struct:union?", &mstch_struct::is_union},
             {"struct:plain?", &mstch_struct::is_plain},
+            {"struct:annotations", &mstch_struct::annotations},
         });
   }
   mstch::node name() {
@@ -869,6 +870,9 @@ class mstch_struct : public mstch_base {
   }
   mstch::node is_plain() {
     return !strct_->is_xception() && !strct_->is_union();
+  }
+  mstch::node annotations() {
+    return mstch_base::annotations(strct_);
   }
 
  protected:
@@ -900,6 +904,7 @@ class mstch_function : public mstch_base {
             {"function:returns_sink?", &mstch_function::returns_sink},
             {"function:any_streams?", &mstch_function::any_streams},
             {"function:returns_stream?", &mstch_function::returns_stream},
+            {"function:annotations", &mstch_function::annotations},
         });
   }
 
@@ -929,6 +934,9 @@ class mstch_function : public mstch_base {
   }
   mstch::node returns_sink() {
     return function_->returns_sink();
+  }
+  mstch::node annotations() {
+    return mstch_base::annotations(function_);
   }
 
   mstch::node return_type();
