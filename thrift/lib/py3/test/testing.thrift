@@ -246,4 +246,4 @@ service TestingService {
     void take_it_easy(1: i32 how, 2: easy what)
     void pick_a_color(1: Color color)
     void int_sizes(1: byte one, 2: i16 two, 3: i32 three, 4: i64 four)
-} (fun_times = "yes", py3.pass_context)
+} (fun_times = "yes", single_quote = "'", double_quotes='"""', py3.pass_context)

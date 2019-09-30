@@ -1660,6 +1660,8 @@ cdef void closed_SimpleService_py3_client_callback(
     client, pyfuture = <object> userdata 
     pyfuture.set_result(None)
 cdef object _DerivedService_annotations = _py_types.MappingProxyType({
+    """bar""": """1""",
+    """foo""": """\"\"\"""",
 })
 
 

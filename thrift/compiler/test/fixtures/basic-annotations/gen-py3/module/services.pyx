@@ -165,7 +165,7 @@ cdef class MyServiceInterface(
             self):
         raise NotImplementedError("async def doNothing is not implemented")
 cdef object _MyServicePrioParent_annotations = _py_types.MappingProxyType({
-    """priority""": "HIGH",
+    """priority""": """HIGH""",
 })
 
 

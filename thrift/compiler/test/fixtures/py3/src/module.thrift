@@ -155,7 +155,7 @@ service SimpleService {
 
 service DerivedService extends SimpleService {
   i32 get_six()
-}
+} (foo='"""', bar)
 
 service RederivedService extends DerivedService {
   i32 get_seven()

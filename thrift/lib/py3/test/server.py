@@ -63,6 +63,8 @@ class ServicesTests(unittest.TestCase):
         self.assertTrue(annotations.get("py3.pass_context"))
         self.assertFalse(annotations.get("NotAnAnnotation"))
         self.assertEqual(annotations["fun_times"], "yes")
+        self.assertEqual(annotations["single_quote"], "'")
+        self.assertEqual(annotations["double_quotes"], '"""')
         with self.assertRaises(TypeError):
             # You can't set attributes on builtin/extension types
             TestingServiceInterface.annotations = {}

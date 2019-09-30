@@ -1010,11 +1010,30 @@ class mstch_py3_annotation : public mstch_annotation {
         this,
         {
             {"annotation:value?", &mstch_py3_annotation::hasValue},
+            {"annotation:py_quoted_key", &mstch_py3_annotation::pyQuotedKey},
+            {"annotation:py_quoted_value",
+             &mstch_py3_annotation::pyQuotedValue},
         });
   }
 
   mstch::node hasValue() {
     return !val_.empty();
+  }
+
+  mstch::node pyQuotedKey() {
+    return to_python_string_literal(key_);
+  }
+
+  mstch::node pyQuotedValue() {
+    return to_python_string_literal(val_);
+  }
+
+ protected:
+  std::string to_python_string_literal(std::string val) const {
+    std::string quotes = "\"\"\"";
+    boost::algorithm::replace_all(val, "\\", "\\\\");
+    boost::algorithm::replace_all(val, "\"", "\\\"");
+    return quotes + val + quotes;
   }
 };
 

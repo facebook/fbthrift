@@ -687,6 +687,8 @@ cdef class SimpleServiceInterface(
             u):
         raise NotImplementedError("async def get_binary_union_struct is not implemented")
 cdef object _DerivedService_annotations = _py_types.MappingProxyType({
+    """bar""": """1""",
+    """foo""": """\"\"\"""",
 })
 
 

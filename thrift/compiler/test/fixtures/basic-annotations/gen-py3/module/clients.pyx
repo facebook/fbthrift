@@ -429,7 +429,7 @@ cdef void closed_MyService_py3_client_callback(
     client, pyfuture = <object> userdata 
     pyfuture.set_result(None)
 cdef object _MyServicePrioParent_annotations = _py_types.MappingProxyType({
-    """priority""": "HIGH",
+    """priority""": """HIGH""",
 })
 
 
