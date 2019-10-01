@@ -12,6 +12,633 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_types.h"
 #include <folly/small_vector.h>
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_boolField
+#define APACHE_THRIFT_ACCESSOR_boolField
+APACHE_THRIFT_DEFINE_ACCESSOR(boolField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_boolField
+#define APACHE_THRIFT_ACCESSOR_boolField
+APACHE_THRIFT_DEFINE_ACCESSOR(boolField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBoolField
+#define APACHE_THRIFT_ACCESSOR_MyBoolField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBoolField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField
+#define APACHE_THRIFT_ACCESSOR_MyStringField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField2
+#define APACHE_THRIFT_ACCESSOR_MyStringField2
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField2
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField2
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField3
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField3
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField3);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryListField4
+#define APACHE_THRIFT_ACCESSOR_MyBinaryListField4
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryListField4);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyMapEnumAndInt
+#define APACHE_THRIFT_ACCESSOR_MyMapEnumAndInt
+APACHE_THRIFT_DEFINE_ACCESSOR(MyMapEnumAndInt);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intValue
+#define APACHE_THRIFT_ACCESSOR_intValue
+APACHE_THRIFT_DEFINE_ACCESSOR(intValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringValue
+#define APACHE_THRIFT_ACCESSOR_stringValue
+APACHE_THRIFT_DEFINE_ACCESSOR(stringValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intValue
+#define APACHE_THRIFT_ACCESSOR_intValue
+APACHE_THRIFT_DEFINE_ACCESSOR(intValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_intValue
+#define APACHE_THRIFT_ACCESSOR_opt_intValue
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_intValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringValue
+#define APACHE_THRIFT_ACCESSOR_stringValue
+APACHE_THRIFT_DEFINE_ACCESSOR(stringValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_stringValue
+#define APACHE_THRIFT_ACCESSOR_opt_stringValue
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_stringValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intValue2
+#define APACHE_THRIFT_ACCESSOR_intValue2
+APACHE_THRIFT_DEFINE_ACCESSOR(intValue2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intValue3
+#define APACHE_THRIFT_ACCESSOR_intValue3
+APACHE_THRIFT_DEFINE_ACCESSOR(intValue3);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_doubelValue
+#define APACHE_THRIFT_ACCESSOR_doubelValue
+APACHE_THRIFT_DEFINE_ACCESSOR(doubelValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_boolValue
+#define APACHE_THRIFT_ACCESSOR_boolValue
+APACHE_THRIFT_DEFINE_ACCESSOR(boolValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_union_list
+#define APACHE_THRIFT_ACCESSOR_union_list
+APACHE_THRIFT_DEFINE_ACCESSOR(union_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_union_set
+#define APACHE_THRIFT_ACCESSOR_union_set
+APACHE_THRIFT_DEFINE_ACCESSOR(union_set);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_union_map
+#define APACHE_THRIFT_ACCESSOR_union_map
+APACHE_THRIFT_DEFINE_ACCESSOR(union_map);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_union_map
+#define APACHE_THRIFT_ACCESSOR_opt_union_map
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_union_map);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_enum_field
+#define APACHE_THRIFT_ACCESSOR_enum_field
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_enum_container
+#define APACHE_THRIFT_ACCESSOR_enum_container
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_container);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_struct
+#define APACHE_THRIFT_ACCESSOR_a_struct
+APACHE_THRIFT_DEFINE_ACCESSOR(a_struct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_set_struct
+#define APACHE_THRIFT_ACCESSOR_a_set_struct
+APACHE_THRIFT_DEFINE_ACCESSOR(a_set_struct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_union
+#define APACHE_THRIFT_ACCESSOR_a_union
+APACHE_THRIFT_DEFINE_ACCESSOR(a_union);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_a_union
+#define APACHE_THRIFT_ACCESSOR_opt_a_union
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_a_union);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_union_list
+#define APACHE_THRIFT_ACCESSOR_a_union_list
+APACHE_THRIFT_DEFINE_ACCESSOR(a_union_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_union_typedef
+#define APACHE_THRIFT_ACCESSOR_a_union_typedef
+APACHE_THRIFT_DEFINE_ACCESSOR(a_union_typedef);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_union_typedef_list
+#define APACHE_THRIFT_ACCESSOR_a_union_typedef_list
+APACHE_THRIFT_DEFINE_ACCESSOR(a_union_typedef_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField2
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField2
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryListField4
+#define APACHE_THRIFT_ACCESSOR_MyBinaryListField4
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryListField4);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ref_field
+#define APACHE_THRIFT_ACCESSOR_ref_field
+APACHE_THRIFT_DEFINE_ACCESSOR(ref_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ref_field2
+#define APACHE_THRIFT_ACCESSOR_ref_field2
+APACHE_THRIFT_DEFINE_ACCESSOR(ref_field2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_excp_field
+#define APACHE_THRIFT_ACCESSOR_excp_field
+APACHE_THRIFT_DEFINE_ACCESSOR(excp_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_code
+#define APACHE_THRIFT_ACCESSOR_code
+APACHE_THRIFT_DEFINE_ACCESSOR(code);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_code
+#define APACHE_THRIFT_ACCESSOR_req_code
+APACHE_THRIFT_DEFINE_ACCESSOR(req_code);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_message2
+#define APACHE_THRIFT_ACCESSOR_message2
+APACHE_THRIFT_DEFINE_ACCESSOR(message2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_message
+#define APACHE_THRIFT_ACCESSOR_req_message
+APACHE_THRIFT_DEFINE_ACCESSOR(req_message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_exception_list
+#define APACHE_THRIFT_ACCESSOR_exception_list
+APACHE_THRIFT_DEFINE_ACCESSOR(exception_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_exception_set
+#define APACHE_THRIFT_ACCESSOR_exception_set
+APACHE_THRIFT_DEFINE_ACCESSOR(exception_set);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_exception_map
+#define APACHE_THRIFT_ACCESSOR_exception_map
+APACHE_THRIFT_DEFINE_ACCESSOR(exception_map);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_exception_map
+#define APACHE_THRIFT_ACCESSOR_req_exception_map
+APACHE_THRIFT_DEFINE_ACCESSOR(req_exception_map);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_enum_field
+#define APACHE_THRIFT_ACCESSOR_enum_field
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_enum_container
+#define APACHE_THRIFT_ACCESSOR_enum_container
+APACHE_THRIFT_DEFINE_ACCESSOR(enum_container);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_struct
+#define APACHE_THRIFT_ACCESSOR_a_struct
+APACHE_THRIFT_DEFINE_ACCESSOR(a_struct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_set_struct
+#define APACHE_THRIFT_ACCESSOR_a_set_struct
+APACHE_THRIFT_DEFINE_ACCESSOR(a_set_struct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_union_list
+#define APACHE_THRIFT_ACCESSOR_a_union_list
+APACHE_THRIFT_DEFINE_ACCESSOR(a_union_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_union_typedef
+#define APACHE_THRIFT_ACCESSOR_union_typedef
+APACHE_THRIFT_DEFINE_ACCESSOR(union_typedef);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a_union_typedef_list
+#define APACHE_THRIFT_ACCESSOR_a_union_typedef_list
+APACHE_THRIFT_DEFINE_ACCESSOR(a_union_typedef_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_code
+#define APACHE_THRIFT_ACCESSOR_code
+APACHE_THRIFT_DEFINE_ACCESSOR(code);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_code
+#define APACHE_THRIFT_ACCESSOR_req_code
+APACHE_THRIFT_DEFINE_ACCESSOR(req_code);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_message
+#define APACHE_THRIFT_ACCESSOR_message
+APACHE_THRIFT_DEFINE_ACCESSOR(message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldA
+#define APACHE_THRIFT_ACCESSOR_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldA
+#define APACHE_THRIFT_ACCESSOR_req_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldA
+#define APACHE_THRIFT_ACCESSOR_opt_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldB
+#define APACHE_THRIFT_ACCESSOR_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldB
+#define APACHE_THRIFT_ACCESSOR_req_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldB
+#define APACHE_THRIFT_ACCESSOR_opt_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldC
+#define APACHE_THRIFT_ACCESSOR_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldC
+#define APACHE_THRIFT_ACCESSOR_req_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldC
+#define APACHE_THRIFT_ACCESSOR_opt_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldD
+#define APACHE_THRIFT_ACCESSOR_fieldD
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldD);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldE
+#define APACHE_THRIFT_ACCESSOR_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldE
+#define APACHE_THRIFT_ACCESSOR_req_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldE
+#define APACHE_THRIFT_ACCESSOR_opt_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldF
+#define APACHE_THRIFT_ACCESSOR_fieldF
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldF);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldG
+#define APACHE_THRIFT_ACCESSOR_fieldG
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldG);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldH
+#define APACHE_THRIFT_ACCESSOR_fieldH
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldH);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldI
+#define APACHE_THRIFT_ACCESSOR_fieldI
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldI);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldJ
+#define APACHE_THRIFT_ACCESSOR_fieldJ
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldJ);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldK
+#define APACHE_THRIFT_ACCESSOR_fieldK
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldK);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldL
+#define APACHE_THRIFT_ACCESSOR_fieldL
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldL);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldM
+#define APACHE_THRIFT_ACCESSOR_fieldM
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldM);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldN
+#define APACHE_THRIFT_ACCESSOR_fieldN
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldN);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldO
+#define APACHE_THRIFT_ACCESSOR_fieldO
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldO);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldP
+#define APACHE_THRIFT_ACCESSOR_fieldP
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldP);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldQ
+#define APACHE_THRIFT_ACCESSOR_fieldQ
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldQ);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldR
+#define APACHE_THRIFT_ACCESSOR_fieldR
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldR);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldR
+#define APACHE_THRIFT_ACCESSOR_req_fieldR
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldR);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldR
+#define APACHE_THRIFT_ACCESSOR_opt_fieldR
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldR);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldS
+#define APACHE_THRIFT_ACCESSOR_fieldS
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldS);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldT
+#define APACHE_THRIFT_ACCESSOR_fieldT
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldT);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldU
+#define APACHE_THRIFT_ACCESSOR_fieldU
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldU);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldV
+#define APACHE_THRIFT_ACCESSOR_fieldV
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldV);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldV
+#define APACHE_THRIFT_ACCESSOR_req_fieldV
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldV);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldV
+#define APACHE_THRIFT_ACCESSOR_opt_fieldV
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldV);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldW
+#define APACHE_THRIFT_ACCESSOR_fieldW
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldW);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldX
+#define APACHE_THRIFT_ACCESSOR_fieldX
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldX);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldX
+#define APACHE_THRIFT_ACCESSOR_req_fieldX
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldX);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldX
+#define APACHE_THRIFT_ACCESSOR_opt_fieldX
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldX);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldY
+#define APACHE_THRIFT_ACCESSOR_fieldY
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldY);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldZ
+#define APACHE_THRIFT_ACCESSOR_fieldZ
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldZ);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldAA
+#define APACHE_THRIFT_ACCESSOR_fieldAA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldAA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldAB
+#define APACHE_THRIFT_ACCESSOR_fieldAB
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldAB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldAC
+#define APACHE_THRIFT_ACCESSOR_fieldAC
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldAC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldAD
+#define APACHE_THRIFT_ACCESSOR_fieldAD
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldAD);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldAE
+#define APACHE_THRIFT_ACCESSOR_fieldAE
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldAE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldSD
+#define APACHE_THRIFT_ACCESSOR_fieldSD
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldSD);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIncludedInt
+#define APACHE_THRIFT_ACCESSOR_MyIncludedInt
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIncludedInt);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIncludedStruct
+#define APACHE_THRIFT_ACCESSOR_MyIncludedStruct
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIncludedStruct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ARefField
+#define APACHE_THRIFT_ACCESSOR_ARefField
+APACHE_THRIFT_DEFINE_ACCESSOR(ARefField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ARequiredField
+#define APACHE_THRIFT_ACCESSOR_ARequiredField
+APACHE_THRIFT_DEFINE_ACCESSOR(ARequiredField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_no_annotation
+#define APACHE_THRIFT_ACCESSOR_no_annotation
+APACHE_THRIFT_DEFINE_ACCESSOR(no_annotation);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_cpp_unique_ref
+#define APACHE_THRIFT_ACCESSOR_cpp_unique_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(cpp_unique_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_cpp2_unique_ref
+#define APACHE_THRIFT_ACCESSOR_cpp2_unique_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(cpp2_unique_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_container_with_ref
+#define APACHE_THRIFT_ACCESSOR_container_with_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(container_with_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_cpp_unique_ref
+#define APACHE_THRIFT_ACCESSOR_req_cpp_unique_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(req_cpp_unique_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_cpp2_unique_ref
+#define APACHE_THRIFT_ACCESSOR_req_cpp2_unique_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(req_cpp2_unique_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_container_with_ref
+#define APACHE_THRIFT_ACCESSOR_req_container_with_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(req_container_with_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_cpp_unique_ref
+#define APACHE_THRIFT_ACCESSOR_opt_cpp_unique_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_cpp_unique_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_cpp2_unique_ref
+#define APACHE_THRIFT_ACCESSOR_opt_cpp2_unique_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_cpp2_unique_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_container_with_ref
+#define APACHE_THRIFT_ACCESSOR_opt_container_with_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_container_with_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ref_type_unique
+#define APACHE_THRIFT_ACCESSOR_ref_type_unique
+APACHE_THRIFT_DEFINE_ACCESSOR(ref_type_unique);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ref_type_shared
+#define APACHE_THRIFT_ACCESSOR_ref_type_shared
+APACHE_THRIFT_DEFINE_ACCESSOR(ref_type_shared);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ref_type_const
+#define APACHE_THRIFT_ACCESSOR_ref_type_const
+APACHE_THRIFT_DEFINE_ACCESSOR(ref_type_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_ref_type_shared
+#define APACHE_THRIFT_ACCESSOR_req_ref_type_shared
+APACHE_THRIFT_DEFINE_ACCESSOR(req_ref_type_shared);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_ref_type_const
+#define APACHE_THRIFT_ACCESSOR_req_ref_type_const
+APACHE_THRIFT_DEFINE_ACCESSOR(req_ref_type_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_ref_type_unique
+#define APACHE_THRIFT_ACCESSOR_req_ref_type_unique
+APACHE_THRIFT_DEFINE_ACCESSOR(req_ref_type_unique);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_ref_type_const
+#define APACHE_THRIFT_ACCESSOR_opt_ref_type_const
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_ref_type_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_ref_type_unique
+#define APACHE_THRIFT_ACCESSOR_opt_ref_type_unique
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_ref_type_unique);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_ref_type_shared
+#define APACHE_THRIFT_ACCESSOR_opt_ref_type_shared
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_ref_type_shared);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_base_type
+#define APACHE_THRIFT_ACCESSOR_base_type
+APACHE_THRIFT_DEFINE_ACCESSOR(base_type);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_type
+#define APACHE_THRIFT_ACCESSOR_list_type
+APACHE_THRIFT_DEFINE_ACCESSOR(list_type);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_set_type
+#define APACHE_THRIFT_ACCESSOR_set_type
+APACHE_THRIFT_DEFINE_ACCESSOR(set_type);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_map_type
+#define APACHE_THRIFT_ACCESSOR_map_type
+APACHE_THRIFT_DEFINE_ACCESSOR(map_type);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_map_struct_type
+#define APACHE_THRIFT_ACCESSOR_map_struct_type
+APACHE_THRIFT_DEFINE_ACCESSOR(map_struct_type);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_iobuf_type
+#define APACHE_THRIFT_ACCESSOR_iobuf_type
+APACHE_THRIFT_DEFINE_ACCESSOR(iobuf_type);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_iobuf_ptr
+#define APACHE_THRIFT_ACCESSOR_iobuf_ptr
+APACHE_THRIFT_DEFINE_ACCESSOR(iobuf_ptr);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_i32_template
+#define APACHE_THRIFT_ACCESSOR_list_i32_template
+APACHE_THRIFT_DEFINE_ACCESSOR(list_i32_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_string_template
+#define APACHE_THRIFT_ACCESSOR_list_string_template
+APACHE_THRIFT_DEFINE_ACCESSOR(list_string_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_set_template
+#define APACHE_THRIFT_ACCESSOR_set_template
+APACHE_THRIFT_DEFINE_ACCESSOR(set_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_map_template
+#define APACHE_THRIFT_ACCESSOR_map_template
+APACHE_THRIFT_DEFINE_ACCESSOR(map_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_typedef_list_template
+#define APACHE_THRIFT_ACCESSOR_typedef_list_template
+APACHE_THRIFT_DEFINE_ACCESSOR(typedef_list_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_typedef_deque_template
+#define APACHE_THRIFT_ACCESSOR_typedef_deque_template
+APACHE_THRIFT_DEFINE_ACCESSOR(typedef_deque_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_typedef_set_template
+#define APACHE_THRIFT_ACCESSOR_typedef_set_template
+APACHE_THRIFT_DEFINE_ACCESSOR(typedef_set_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_typedef_map_template
+#define APACHE_THRIFT_ACCESSOR_typedef_map_template
+APACHE_THRIFT_DEFINE_ACCESSOR(typedef_map_template);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_indirection_a
+#define APACHE_THRIFT_ACCESSOR_indirection_a
+APACHE_THRIFT_DEFINE_ACCESSOR(indirection_a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_indirection_b
+#define APACHE_THRIFT_ACCESSOR_indirection_b
+APACHE_THRIFT_DEFINE_ACCESSOR(indirection_b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_indirection_c
+#define APACHE_THRIFT_ACCESSOR_indirection_c
+APACHE_THRIFT_DEFINE_ACCESSOR(indirection_c);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_iobuf_type_val
+#define APACHE_THRIFT_ACCESSOR_iobuf_type_val
+APACHE_THRIFT_DEFINE_ACCESSOR(iobuf_type_val);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_iobuf_ptr_val
+#define APACHE_THRIFT_ACCESSOR_iobuf_ptr_val
+APACHE_THRIFT_DEFINE_ACCESSOR(iobuf_ptr_val);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_struct_struct
+#define APACHE_THRIFT_ACCESSOR_struct_struct
+APACHE_THRIFT_DEFINE_ACCESSOR(struct_struct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_map_of_iobufs
+#define APACHE_THRIFT_ACCESSOR_map_of_iobufs
+APACHE_THRIFT_DEFINE_ACCESSOR(map_of_iobufs);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_map_of_iobuf_ptrs
+#define APACHE_THRIFT_ACCESSOR_map_of_iobuf_ptrs
+APACHE_THRIFT_DEFINE_ACCESSOR(map_of_iobuf_ptrs);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_floatField
+#define APACHE_THRIFT_ACCESSOR_floatField
+APACHE_THRIFT_DEFINE_ACCESSOR(floatField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_doubleField
+#define APACHE_THRIFT_ACCESSOR_doubleField
+APACHE_THRIFT_DEFINE_ACCESSOR(doubleField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_floatSide
+#define APACHE_THRIFT_ACCESSOR_floatSide
+APACHE_THRIFT_DEFINE_ACCESSOR(floatSide);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_doubleSide
+#define APACHE_THRIFT_ACCESSOR_doubleSide
+APACHE_THRIFT_DEFINE_ACCESSOR(doubleSide);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intField
+#define APACHE_THRIFT_ACCESSOR_intField
+APACHE_THRIFT_DEFINE_ACCESSOR(intField);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace some { namespace valid { namespace ns {
 
@@ -399,11 +1026,6 @@ class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperat
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    boolField = arg.extract();
-    __isset.boolField = true;
-  }
 
   ASimpleStruct(ASimpleStruct&&) = default;
 
@@ -466,11 +1088,6 @@ class ASimpleStructNoexcept final : private apache::thrift::detail::st::Comparis
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ASimpleStructNoexcept(apache::thrift::FragileConstructor, int64_t boolField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    boolField = arg.extract();
-    __isset.boolField = true;
-  }
   ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
       boolField(std::move(other.boolField)),
       __isset(other.__isset) {}
@@ -533,50 +1150,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyBoolField = arg.extract();
-    __isset.MyBoolField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    MyStringField = arg.extract();
-    __isset.MyStringField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    MyStringField2 = arg.extract();
-    __isset.MyStringField2 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    MyBinaryField = arg.extract();
-    __isset.MyBinaryField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    MyBinaryField2 = arg.extract();
-    __isset.MyBinaryField2 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    MyBinaryField3 = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    MyBinaryListField4 = arg.extract();
-    __isset.MyBinaryListField4 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    MyMapEnumAndInt = arg.extract();
-    __isset.MyMapEnumAndInt = true;
-  }
   MyStruct(MyStruct&& other) noexcept;
 
   MyStruct(const MyStruct&) = default;
@@ -872,15 +1445,6 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    set_intValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_stringValue(arg.extract());
   }
   void __clear();
 
@@ -1623,115 +2187,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_intValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<201, _T> arg) {
-    set_opt_intValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_stringValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<203, _T> arg) {
-    set_opt_stringValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    set_intValue2(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    set_intValue3(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    set_doubelValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    set_boolValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    set_union_list(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    set_union_set(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    set_union_map(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<211, _T> arg) {
-    set_opt_union_map(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    set_enum_field(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    set_enum_container(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    set_a_struct(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    set_a_set_struct(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    set_a_union(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<216, _T> arg) {
-    set_opt_a_union(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    set_a_union_list(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    set_a_union_typedef(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    set_a_union_typedef_list(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
-    set_MyBinaryField(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
-    set_MyBinaryField2(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
-    set_MyBinaryListField4(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
-    set_ref_field(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
-    set_ref_field2(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
-    set_excp_field(arg.extract());
   }
   void __clear();
 
@@ -2678,78 +3133,6 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<int32_t> exception_list__arg, ::std::set<int64_t> exception_set__arg, ::std::map<::std::string, int32_t> exception_map__arg, ::std::map<::std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, ::std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    code = arg.extract();
-    __isset.code = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    req_code = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    message2 = arg.extract();
-    __isset.message2 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<102, _T> arg) {
-    req_message = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    exception_list = arg.extract();
-    __isset.exception_list = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    exception_set = arg.extract();
-    __isset.exception_set = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    exception_map = arg.extract();
-    __isset.exception_map = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<105, _T> arg) {
-    req_exception_map = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    enum_field = arg.extract();
-    __isset.enum_field = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    enum_container = arg.extract();
-    __isset.enum_container = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    a_struct = arg.extract();
-    __isset.a_struct = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    a_set_struct = arg.extract();
-    __isset.a_set_struct = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    a_union_list = arg.extract();
-    __isset.a_union_list = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    union_typedef = arg.extract();
-    __isset.union_typedef = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    a_union_typedef_list = arg.extract();
-    __isset.a_union_typedef_list = true;
-  }
 
   AnException(AnException&&) = default;
 
@@ -2982,20 +3365,6 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    code = arg.extract();
-    __isset.code = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    req_code = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    message = arg.extract();
-    __isset.message = true;
-  }
 
   AnotherException(AnotherException&&) = default;
 
@@ -3092,229 +3461,6 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.extract();
-    __isset.fieldA = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    req_fieldA = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<201, _T> arg) {
-    opt_fieldA = arg.extract();
-    __isset.opt_fieldA = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.extract();
-    __isset.fieldB = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<102, _T> arg) {
-    req_fieldB = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<202, _T> arg) {
-    opt_fieldB = arg.extract();
-    __isset.opt_fieldB = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.extract();
-    __isset.fieldC = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<103, _T> arg) {
-    req_fieldC = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<203, _T> arg) {
-    opt_fieldC = arg.extract();
-    __isset.opt_fieldC = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.extract();
-    __isset.fieldD = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.extract();
-    __isset.fieldE = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<105, _T> arg) {
-    req_fieldE = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<205, _T> arg) {
-    opt_fieldE = arg.extract();
-    __isset.opt_fieldE = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    fieldF = arg.extract();
-    __isset.fieldF = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    fieldG = arg.extract();
-    __isset.fieldG = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    fieldH = arg.extract();
-    __isset.fieldH = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    fieldI = arg.extract();
-    __isset.fieldI = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    fieldJ = arg.extract();
-    __isset.fieldJ = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    fieldK = arg.extract();
-    __isset.fieldK = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    fieldL = arg.extract();
-    __isset.fieldL = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    fieldM = arg.extract();
-    __isset.fieldM = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    fieldN = arg.extract();
-    __isset.fieldN = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    fieldO = arg.extract();
-    __isset.fieldO = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    fieldP = arg.extract();
-    __isset.fieldP = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    fieldQ = arg.extract();
-    __isset.fieldQ = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    fieldR = arg.extract();
-    __isset.fieldR = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<118, _T> arg) {
-    req_fieldR = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<218, _T> arg) {
-    opt_fieldR = arg.extract();
-    __isset.opt_fieldR = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    fieldS = arg.extract();
-    __isset.fieldS = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
-    fieldT = arg.extract();
-    __isset.fieldT = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
-    fieldU = arg.extract();
-    __isset.fieldU = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
-    fieldV = arg.extract();
-    __isset.fieldV = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<123, _T> arg) {
-    req_fieldV = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<223, _T> arg) {
-    opt_fieldV = arg.extract();
-    __isset.opt_fieldV = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
-    fieldW = arg.extract();
-    __isset.fieldW = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
-    fieldX = arg.extract();
-    __isset.fieldX = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<125, _T> arg) {
-    req_fieldX = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<225, _T> arg) {
-    opt_fieldX = arg.extract();
-    __isset.opt_fieldX = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
-    fieldY = arg.extract();
-    __isset.fieldY = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<27, _T> arg) {
-    fieldZ = arg.extract();
-    __isset.fieldZ = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<28, _T> arg) {
-    fieldAA = arg.extract();
-    __isset.fieldAA = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<29, _T> arg) {
-    fieldAB = arg.extract();
-    __isset.fieldAB = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<30, _T> arg) {
-    fieldAC = arg.extract();
-    __isset.fieldAC = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<31, _T> arg) {
-    fieldAD = arg.extract();
-    __isset.fieldAD = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<32, _T> arg) {
-    fieldAE = arg.extract();
-    __isset.fieldAE = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<33, _T> arg) {
-    fieldSD = arg.extract();
-    __isset.fieldSD = true;
-  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -4028,24 +4174,6 @@ class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOpe
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIncludedInt = arg.extract();
-    __isset.MyIncludedInt = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyIncludedStruct = arg.extract();
-    __isset.MyIncludedStruct = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    ARefField = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    ARequiredField = arg.extract();
-  }
 
   MyIncludedStruct(MyIncludedStruct&&) = default;
   MyIncludedStruct(const MyIncludedStruct& src);
@@ -4127,188 +4255,6 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<int64_t, ::std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    no_annotation = arg.extract();
-    __isset.no_annotation = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    cpp_unique_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    cpp2_unique_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    container_with_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    req_cpp_unique_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    req_cpp2_unique_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    req_container_with_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    opt_cpp_unique_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    opt_cpp2_unique_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    opt_container_with_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<11, _T> arg) {
-    ref_type_unique = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    ref_type_shared = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<13, _T> arg) {
-    ref_type_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    req_ref_type_shared = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<15, _T> arg) {
-    req_ref_type_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<16, _T> arg) {
-    req_ref_type_unique = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<17, _T> arg) {
-    opt_ref_type_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<18, _T> arg) {
-    opt_ref_type_unique = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<19, _T> arg) {
-    opt_ref_type_shared = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<20, _T> arg) {
-    base_type = arg.extract();
-    __isset.base_type = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<21, _T> arg) {
-    list_type = arg.extract();
-    __isset.list_type = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<22, _T> arg) {
-    set_type = arg.extract();
-    __isset.set_type = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<23, _T> arg) {
-    map_type = arg.extract();
-    __isset.map_type = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<24, _T> arg) {
-    map_struct_type = arg.extract();
-    __isset.map_struct_type = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<25, _T> arg) {
-    iobuf_type = arg.extract();
-    __isset.iobuf_type = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<26, _T> arg) {
-    iobuf_ptr = arg.extract();
-    __isset.iobuf_ptr = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<27, _T> arg) {
-    list_i32_template = arg.extract();
-    __isset.list_i32_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<28, _T> arg) {
-    list_string_template = arg.extract();
-    __isset.list_string_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<29, _T> arg) {
-    set_template = arg.extract();
-    __isset.set_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<30, _T> arg) {
-    map_template = arg.extract();
-    __isset.map_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<31, _T> arg) {
-    typedef_list_template = arg.extract();
-    __isset.typedef_list_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<32, _T> arg) {
-    typedef_deque_template = arg.extract();
-    __isset.typedef_deque_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<33, _T> arg) {
-    typedef_set_template = arg.extract();
-    __isset.typedef_set_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<34, _T> arg) {
-    typedef_map_template = arg.extract();
-    __isset.typedef_map_template = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<35, _T> arg) {
-    indirection_a = arg.extract();
-    __isset.indirection_a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<36, _T> arg) {
-    indirection_b = arg.extract();
-    __isset.indirection_b = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<37, _T> arg) {
-    indirection_c = arg.extract();
-    __isset.indirection_c = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<38, _T> arg) {
-    iobuf_type_val = arg.extract();
-    __isset.iobuf_type_val = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<39, _T> arg) {
-    iobuf_ptr_val = arg.extract();
-    __isset.iobuf_ptr_val = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<40, _T> arg) {
-    struct_struct = arg.extract();
-    __isset.struct_struct = true;
-  }
   AnnotatedStruct(AnnotatedStruct&& other) noexcept;
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
@@ -4644,16 +4590,6 @@ class ComplexContainerStruct final : private apache::thrift::detail::st::Compari
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    map_of_iobufs = arg.extract();
-    __isset.map_of_iobufs = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    map_of_iobuf_ptrs = arg.extract();
-    __isset.map_of_iobuf_ptrs = true;
-  }
 
   ComplexContainerStruct(ComplexContainerStruct&&) = default;
 
@@ -4727,16 +4663,6 @@ class FloatStruct final : private apache::thrift::detail::st::ComparisonOperator
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    floatField = arg.extract();
-    __isset.floatField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    doubleField = arg.extract();
-    __isset.doubleField = true;
-  }
 
   FloatStruct(FloatStruct&&) = default;
 
@@ -4909,15 +4835,6 @@ class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators
     }
     return *this;
   }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_floatSide(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_doubleSide(arg.extract());
-  }
   void __clear();
 
   ~FloatUnion() {
@@ -5022,10 +4939,6 @@ class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::s
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, int64_t intField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    intField = arg.extract();
-  }
   AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
       intField(std::move(other.intField)) {}
 

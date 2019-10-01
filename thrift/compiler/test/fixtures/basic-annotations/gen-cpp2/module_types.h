@@ -10,6 +10,25 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_majorVer
+#define APACHE_THRIFT_ACCESSOR_majorVer
+APACHE_THRIFT_DEFINE_ACCESSOR(majorVer);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_package
+#define APACHE_THRIFT_ACCESSOR_package
+APACHE_THRIFT_DEFINE_ACCESSOR(package);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_annotation_with_quote
+#define APACHE_THRIFT_ACCESSOR_annotation_with_quote
+APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_quote);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -85,21 +104,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    majorVer = arg.extract();
-    __isset.majorVer = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    package = arg.extract();
-    __isset.package = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    annotation_with_quote = arg.extract();
-    __isset.annotation_with_quote = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 

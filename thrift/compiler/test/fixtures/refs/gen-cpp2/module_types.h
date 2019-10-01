@@ -10,6 +10,149 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_anInteger
+#define APACHE_THRIFT_ACCESSOR_anInteger
+APACHE_THRIFT_DEFINE_ACCESSOR(anInteger);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aString
+#define APACHE_THRIFT_ACCESSOR_aString
+APACHE_THRIFT_DEFINE_ACCESSOR(aString);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_value
+#define APACHE_THRIFT_ACCESSOR_opt_value
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_value
+#define APACHE_THRIFT_ACCESSOR_value
+APACHE_THRIFT_DEFINE_ACCESSOR(value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_value
+#define APACHE_THRIFT_ACCESSOR_req_value
+APACHE_THRIFT_DEFINE_ACCESSOR(req_value);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_ref
+#define APACHE_THRIFT_ACCESSOR_opt_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ref
+#define APACHE_THRIFT_ACCESSOR_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_ref
+#define APACHE_THRIFT_ACCESSOR_req_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(req_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_u
+#define APACHE_THRIFT_ACCESSOR_u
+APACHE_THRIFT_DEFINE_ACCESSOR(u);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_aDouble
+#define APACHE_THRIFT_ACCESSOR_aDouble
+APACHE_THRIFT_DEFINE_ACCESSOR(aDouble);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_f
+#define APACHE_THRIFT_ACCESSOR_f
+APACHE_THRIFT_DEFINE_ACCESSOR(f);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_mes
+#define APACHE_THRIFT_ACCESSOR_mes
+APACHE_THRIFT_DEFINE_ACCESSOR(mes);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_ref
+#define APACHE_THRIFT_ACCESSOR_list_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(list_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_set_ref
+#define APACHE_THRIFT_ACCESSOR_set_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(set_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_map_ref
+#define APACHE_THRIFT_ACCESSOR_map_ref
+APACHE_THRIFT_DEFINE_ACCESSOR(map_ref);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_ref_unique
+#define APACHE_THRIFT_ACCESSOR_list_ref_unique
+APACHE_THRIFT_DEFINE_ACCESSOR(list_ref_unique);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_set_ref_shared
+#define APACHE_THRIFT_ACCESSOR_set_ref_shared
+APACHE_THRIFT_DEFINE_ACCESSOR(set_ref_shared);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_ref_shared_const
+#define APACHE_THRIFT_ACCESSOR_list_ref_shared_const
+APACHE_THRIFT_DEFINE_ACCESSOR(list_ref_shared_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_shared_const
+#define APACHE_THRIFT_ACCESSOR_opt_shared_const
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_shared_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_shared_const
+#define APACHE_THRIFT_ACCESSOR_shared_const
+APACHE_THRIFT_DEFINE_ACCESSOR(shared_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_shared_const
+#define APACHE_THRIFT_ACCESSOR_req_shared_const
+APACHE_THRIFT_DEFINE_ACCESSOR(req_shared_const);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_field
+#define APACHE_THRIFT_ACCESSOR_def_field
+APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_field
+#define APACHE_THRIFT_ACCESSOR_opt_field
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_field
+#define APACHE_THRIFT_ACCESSOR_req_field
+APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_field
+#define APACHE_THRIFT_ACCESSOR_def_field
+APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_field
+#define APACHE_THRIFT_ACCESSOR_opt_field
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_field
+#define APACHE_THRIFT_ACCESSOR_req_field
+APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_field
+#define APACHE_THRIFT_ACCESSOR_def_field
+APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_field
+#define APACHE_THRIFT_ACCESSOR_opt_field
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_field
+#define APACHE_THRIFT_ACCESSOR_req_field
+APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_field
+#define APACHE_THRIFT_ACCESSOR_def_field
+APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_field
+#define APACHE_THRIFT_ACCESSOR_opt_field
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_field
+#define APACHE_THRIFT_ACCESSOR_req_field
+APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_def_field
+#define APACHE_THRIFT_ACCESSOR_def_field
+APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -194,15 +337,6 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
     }
     return *this;
   }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_anInteger(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_aString(arg.extract());
-  }
   void __clear();
 
   ~MyUnion() {
@@ -323,20 +457,6 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyField(apache::thrift::FragileConstructor, int64_t opt_value__arg, int64_t value__arg, int64_t req_value__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    opt_value = arg.extract();
-    __isset.opt_value = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    value = arg.extract();
-    __isset.value = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_value = arg.extract();
-  }
 
   MyField(MyField&&) = default;
 
@@ -443,18 +563,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyField> opt_ref__arg, std::unique_ptr< ::cpp2::MyField> ref__arg, std::unique_ptr< ::cpp2::MyField> req_ref__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    opt_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
 
   MyStruct(MyStruct&&) = default;
   MyStruct(const MyStruct& src);
@@ -504,20 +612,6 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithUnion(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::MyUnion> u__arg, double aDouble__arg,  ::cpp2::MyField f__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    u = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    aDouble = arg.extract();
-    __isset.aDouble = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    f = arg.extract();
-    __isset.f = true;
-  }
 
   StructWithUnion(StructWithUnion&&) = default;
   StructWithUnion(const StructWithUnion& src);
@@ -589,11 +683,6 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector< ::cpp2::RecursiveStruct> mes__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    mes = arg.extract();
-    __isset.mes = true;
-  }
 
   RecursiveStruct(RecursiveStruct&&) = default;
 
@@ -672,30 +761,6 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<::std::vector<int32_t>> list_ref__arg, std::unique_ptr<::std::set<int32_t>> set_ref__arg, std::unique_ptr<::std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<::std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<::std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    list_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    map_ref = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    list_ref_unique = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    set_ref_shared = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    list_ref_shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
 
   StructWithContainers(StructWithContainers&&) = default;
   StructWithContainers(const StructWithContainers& src);
@@ -751,18 +816,6 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    opt_shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_shared_const = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
 
   StructWithSharedConst(StructWithSharedConst&&) = default;
 
@@ -860,18 +913,6 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithRef(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
 
   StructWithRef(StructWithRef&&) = default;
   StructWithRef(const StructWithRef& src);
@@ -921,18 +962,6 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithRefTypeUnique(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
 
   StructWithRefTypeUnique(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique(const StructWithRefTypeUnique& src);
@@ -982,18 +1011,6 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithRefTypeShared(apache::thrift::FragileConstructor, std::shared_ptr< ::cpp2::Empty> def_field__arg, std::shared_ptr< ::cpp2::Empty> opt_field__arg, std::shared_ptr< ::cpp2::Empty> req_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
 
   StructWithRefTypeShared(StructWithRefTypeShared&&) = default;
 
@@ -1045,18 +1062,6 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::Empty> def_field__arg, std::shared_ptr<const  ::cpp2::Empty> opt_field__arg, std::shared_ptr<const  ::cpp2::Empty> req_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    opt_field = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    req_field = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
 
   StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&&) = default;
 
@@ -1107,10 +1112,6 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final : private apache::thrift::d
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    def_field = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
   StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept :
       def_field(std::move(other.def_field)) {}
   StructWithRefAndAnnotCppNoexceptMoveCtor(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);

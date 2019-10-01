@@ -10,6 +10,33 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_content
+#define APACHE_THRIFT_ACCESSOR_content
+APACHE_THRIFT_DEFINE_ACCESSOR(content);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_content
+#define APACHE_THRIFT_ACCESSOR_content
+APACHE_THRIFT_DEFINE_ACCESSOR(content);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_content
+#define APACHE_THRIFT_ACCESSOR_content
+APACHE_THRIFT_DEFINE_ACCESSOR(content);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_sink
+#define APACHE_THRIFT_ACCESSOR_sink
+APACHE_THRIFT_DEFINE_ACCESSOR(sink);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_reason
+#define APACHE_THRIFT_ACCESSOR_reason
+APACHE_THRIFT_DEFINE_ACCESSOR(reason);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -38,11 +65,6 @@ class InitialResponse final : private apache::thrift::detail::st::ComparisonOper
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   InitialResponse(apache::thrift::FragileConstructor, ::std::string content__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    content = arg.extract();
-    __isset.content = true;
-  }
 
   InitialResponse(InitialResponse&&) = default;
 
@@ -109,11 +131,6 @@ class FinalResponse final : private apache::thrift::detail::st::ComparisonOperat
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   FinalResponse(apache::thrift::FragileConstructor, ::std::string content__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    content = arg.extract();
-    __isset.content = true;
-  }
 
   FinalResponse(FinalResponse&&) = default;
 
@@ -180,11 +197,6 @@ class SinkPayload final : private apache::thrift::detail::st::ComparisonOperator
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SinkPayload(apache::thrift::FragileConstructor, ::std::string content__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    content = arg.extract();
-    __isset.content = true;
-  }
 
   SinkPayload(SinkPayload&&) = default;
 
@@ -251,11 +263,6 @@ class CompatibleWithKeywordSink final : private apache::thrift::detail::st::Comp
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   CompatibleWithKeywordSink(apache::thrift::FragileConstructor, ::std::string sink__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    sink = arg.extract();
-    __isset.sink = true;
-  }
 
   CompatibleWithKeywordSink(CompatibleWithKeywordSink&&) = default;
 
@@ -322,11 +329,6 @@ class SinkException final : private apache::thrift::detail::st::ComparisonOperat
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SinkException(apache::thrift::FragileConstructor, ::std::string reason__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    reason = arg.extract();
-    __isset.reason = true;
-  }
 
   SinkException(SinkException&&) = default;
 

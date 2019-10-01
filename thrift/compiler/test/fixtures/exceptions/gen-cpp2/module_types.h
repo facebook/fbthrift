@@ -10,6 +10,21 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_message
+#define APACHE_THRIFT_ACCESSOR_message
+APACHE_THRIFT_DEFINE_ACCESSOR(message);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_sonnet
+#define APACHE_THRIFT_ACCESSOR_sonnet
+APACHE_THRIFT_DEFINE_ACCESSOR(sonnet);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -92,10 +107,6 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Fiery(apache::thrift::FragileConstructor, ::std::string message__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    message = arg.extract();
-  }
 
   Fiery(Fiery&&) = default;
 
@@ -167,11 +178,6 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    sonnet = arg.extract();
-    __isset.sonnet = true;
-  }
 
   Serious(Serious&&) = default;
 

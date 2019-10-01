@@ -11,6 +11,209 @@
 
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_field
+#define APACHE_THRIFT_ACCESSOR_field
+APACHE_THRIFT_DEFINE_ACCESSOR(field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldA
+#define APACHE_THRIFT_ACCESSOR_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldB
+#define APACHE_THRIFT_ACCESSOR_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldC
+#define APACHE_THRIFT_ACCESSOR_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldD
+#define APACHE_THRIFT_ACCESSOR_fieldD
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldD);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldE
+#define APACHE_THRIFT_ACCESSOR_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldF
+#define APACHE_THRIFT_ACCESSOR_fieldF
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldF);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldG
+#define APACHE_THRIFT_ACCESSOR_fieldG
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldG);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldH
+#define APACHE_THRIFT_ACCESSOR_fieldH
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldH);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldA
+#define APACHE_THRIFT_ACCESSOR_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_z
+#define APACHE_THRIFT_ACCESSOR_z
+APACHE_THRIFT_DEFINE_ACCESSOR(z);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_n
+#define APACHE_THRIFT_ACCESSOR_n
+APACHE_THRIFT_DEFINE_ACCESSOR(n);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_z
+#define APACHE_THRIFT_ACCESSOR_z
+APACHE_THRIFT_DEFINE_ACCESSOR(z);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_n
+#define APACHE_THRIFT_ACCESSOR_n
+APACHE_THRIFT_DEFINE_ACCESSOR(n);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_small
+#define APACHE_THRIFT_ACCESSOR_small
+APACHE_THRIFT_DEFINE_ACCESSOR(small);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_big
+#define APACHE_THRIFT_ACCESSOR_big
+APACHE_THRIFT_DEFINE_ACCESSOR(big);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_medium
+#define APACHE_THRIFT_ACCESSOR_medium
+APACHE_THRIFT_DEFINE_ACCESSOR(medium);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_biggish
+#define APACHE_THRIFT_ACCESSOR_biggish
+APACHE_THRIFT_DEFINE_ACCESSOR(biggish);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_tiny
+#define APACHE_THRIFT_ACCESSOR_tiny
+APACHE_THRIFT_DEFINE_ACCESSOR(tiny);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField
+#define APACHE_THRIFT_ACCESSOR_MyStringField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_majorVer
+#define APACHE_THRIFT_ACCESSOR_majorVer
+APACHE_THRIFT_DEFINE_ACCESSOR(majorVer);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_data
+#define APACHE_THRIFT_ACCESSOR_data
+APACHE_THRIFT_DEFINE_ACCESSOR(data);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_bar
+#define APACHE_THRIFT_ACCESSOR_bar
+APACHE_THRIFT_DEFINE_ACCESSOR(bar);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_binary_field
+#define APACHE_THRIFT_ACCESSOR_binary_field
+APACHE_THRIFT_DEFINE_ACCESSOR(binary_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_list_field
+#define APACHE_THRIFT_ACCESSOR_list_field
+APACHE_THRIFT_DEFINE_ACCESSOR(list_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_foo
+#define APACHE_THRIFT_ACCESSOR_foo
+APACHE_THRIFT_DEFINE_ACCESSOR(foo);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ForwardUsageStruct
+#define APACHE_THRIFT_ACCESSOR_ForwardUsageStruct
+APACHE_THRIFT_DEFINE_ACCESSOR(ForwardUsageStruct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_ForwardUsageByRef
+#define APACHE_THRIFT_ACCESSOR_ForwardUsageByRef
+APACHE_THRIFT_DEFINE_ACCESSOR(ForwardUsageByRef);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_foo
+#define APACHE_THRIFT_ACCESSOR_foo
+APACHE_THRIFT_DEFINE_ACCESSOR(foo);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_boolField
+#define APACHE_THRIFT_ACCESSOR_boolField
+APACHE_THRIFT_DEFINE_ACCESSOR(boolField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBoolField
+#define APACHE_THRIFT_ACCESSOR_MyBoolField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBoolField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField
+#define APACHE_THRIFT_ACCESSOR_MyStringField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField2
+#define APACHE_THRIFT_ACCESSOR_MyStringField2
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField2
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField2
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryField3
+#define APACHE_THRIFT_ACCESSOR_MyBinaryField3
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryField3);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyBinaryListField4
+#define APACHE_THRIFT_ACCESSOR_MyBinaryListField4
+APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryListField4);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyMapEnumAndInt
+#define APACHE_THRIFT_ACCESSOR_MyMapEnumAndInt
+APACHE_THRIFT_DEFINE_ACCESSOR(MyMapEnumAndInt);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_string_field
+#define APACHE_THRIFT_ACCESSOR_string_field
+APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_i32_field
+#define APACHE_THRIFT_ACCESSOR_i32_field
+APACHE_THRIFT_DEFINE_ACCESSOR(i32_field);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
@@ -250,11 +453,6 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    field = arg.extract();
-    __isset.field = true;
-  }
 
   decorated_struct(decorated_struct&&) = default;
 
@@ -322,46 +520,6 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<12, _T> arg) {
-    fieldA = arg.extract();
-    __isset.fieldA = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.extract();
-    __isset.fieldB = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.extract();
-    __isset.fieldC = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.extract();
-    __isset.fieldD = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.extract();
-    __isset.fieldE = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    fieldF = arg.extract();
-    __isset.fieldF = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    fieldG = arg.extract();
-    __isset.fieldG = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    fieldH = arg.extract();
-    __isset.fieldH = true;
-  }
 
   ContainerStruct(ContainerStruct&&) = default;
 
@@ -502,11 +660,6 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.extract();
-    __isset.fieldA = true;
-  }
 
   CppTypeStruct(CppTypeStruct&&) = default;
 
@@ -568,11 +721,6 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
 
   VirtualStruct(VirtualStruct&&) = default;
 
@@ -639,16 +787,6 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.extract();
-    __isset.a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.extract();
-    __isset.b = true;
-  }
 
   MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&&) = default;
 
@@ -724,16 +862,6 @@ class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOpera
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.extract();
-    __isset.a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.extract();
-    __isset.b = true;
-  }
 
   TrivialNumeric(TrivialNumeric&&) = default;
 
@@ -805,20 +933,10 @@ class TrivialNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   TrivialNestedWithDefault() :
       z(4),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::detail::wrap_argument<1>(3), ::apache::thrift::detail::wrap_argument<2>(true))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::b>(true))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    z = arg.extract();
-    __isset.z = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    n = arg.extract();
-    __isset.n = true;
-  }
 
   TrivialNestedWithDefault(TrivialNestedWithDefault&&) = default;
 
@@ -891,16 +1009,6 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, int32_t> b__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.extract();
-    __isset.a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.extract();
-    __isset.b = true;
-  }
 
   ComplexString(ComplexString&&) = default;
 
@@ -976,20 +1084,10 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::wrap_argument<1>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_argument<2>(std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::b>(std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    z = arg.extract();
-    __isset.z = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    n = arg.extract();
-    __isset.n = true;
-  }
 
   ComplexNestedWithDefault(ComplexNestedWithDefault&&) = default;
 
@@ -1072,26 +1170,6 @@ class MinPadding final : private apache::thrift::detail::st::ComparisonOperators
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    small = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    big = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    medium = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    biggish = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    tiny = arg.extract();
-  }
 
   MinPadding(MinPadding&&) = default;
 
@@ -1234,26 +1312,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyStringField = arg.extract();
-    __isset.MyStringField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    majorVer = arg.extract();
-    __isset.majorVer = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    data = arg.extract();
-    __isset.data = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -1354,11 +1412,6 @@ class Renaming final : private apache::thrift::detail::st::ComparisonOperators<R
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Renaming(apache::thrift::FragileConstructor, int64_t bar__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    bar = arg.extract();
-    __isset.bar = true;
-  }
 
   Renaming(Renaming&&) = default;
 
@@ -1420,16 +1473,6 @@ class AnnotatedTypes final : private apache::thrift::detail::st::ComparisonOpera
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AnnotatedTypes(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::TBinary binary_field__arg,  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    binary_field = arg.extract();
-    __isset.binary_field = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    list_field = arg.extract();
-    __isset.list_field = true;
-  }
 
   AnnotatedTypes(AnnotatedTypes&&) = default;
 
@@ -1507,11 +1550,6 @@ class ForwardUsageStruct final : private apache::thrift::detail::st::ComparisonO
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    foo = arg.extract();
-    __isset.foo = true;
-  }
 
   ForwardUsageStruct(ForwardUsageStruct&&) = default;
 
@@ -1589,15 +1627,6 @@ class ForwardUsageRoot final : private apache::thrift::detail::st::ComparisonOpe
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageRoot(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    ForwardUsageStruct = arg.extract();
-    __isset.ForwardUsageStruct = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    ForwardUsageByRef = std::make_unique<std::decay_t<_T>>(arg.extract());
-  }
 
   ForwardUsageRoot(ForwardUsageRoot&&) = default;
   ForwardUsageRoot(const ForwardUsageRoot& src);
@@ -1674,11 +1703,6 @@ class ForwardUsageByRef final : private apache::thrift::detail::st::ComparisonOp
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ForwardUsageByRef(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    foo = arg.extract();
-    __isset.foo = true;
-  }
 
   ForwardUsageByRef(ForwardUsageByRef&&) = default;
 
@@ -1802,11 +1826,6 @@ class NoexceptMoveSimpleStruct final : private apache::thrift::detail::st::Compa
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    boolField = arg.extract();
-    __isset.boolField = true;
-  }
   NoexceptMoveSimpleStruct(NoexceptMoveSimpleStruct&& other) noexcept :
       boolField(std::move(other.boolField)),
       __isset(other.__isset) {}
@@ -1869,50 +1888,6 @@ class NoexceptMoveComplexStruct final : private apache::thrift::detail::st::Comp
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyBoolField = arg.extract();
-    __isset.MyBoolField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    MyStringField = arg.extract();
-    __isset.MyStringField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    MyStringField2 = arg.extract();
-    __isset.MyStringField2 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    MyBinaryField = arg.extract();
-    __isset.MyBinaryField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    MyBinaryField2 = arg.extract();
-    __isset.MyBinaryField2 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    MyBinaryField3 = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    MyBinaryListField4 = arg.extract();
-    __isset.MyBinaryListField4 = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    MyMapEnumAndInt = arg.extract();
-    __isset.MyMapEnumAndInt = true;
-  }
   NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept;
 
   NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
@@ -2208,15 +2183,6 @@ class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOp
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_string_field(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_i32_field(arg.extract());
   }
   void __clear();
 

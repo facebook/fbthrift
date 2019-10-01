@@ -12,6 +12,29 @@
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_types.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_first
+#define APACHE_THRIFT_ACCESSOR_first
+APACHE_THRIFT_DEFINE_ACCESSOR(first);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_second
+#define APACHE_THRIFT_ACCESSOR_second
+APACHE_THRIFT_DEFINE_ACCESSOR(second);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_s
+#define APACHE_THRIFT_ACCESSOR_s
+APACHE_THRIFT_DEFINE_ACCESSOR(s);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_id
+#define APACHE_THRIFT_ACCESSOR_id
+APACHE_THRIFT_DEFINE_ACCESSOR(id);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -37,16 +60,6 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Struct(apache::thrift::FragileConstructor,  ::module0::Struct first__arg,  ::module1::Struct second__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    first = arg.extract();
-    __isset.first = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    second = arg.extract();
-    __isset.second = true;
-  }
 
   Struct(Struct&&) = default;
 
@@ -119,16 +132,6 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   BigStruct(apache::thrift::FragileConstructor,  ::module2::Struct s__arg, int32_t id__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    s = arg.extract();
-    __isset.s = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    id = arg.extract();
-    __isset.id = true;
-  }
 
   BigStruct(BigStruct&&) = default;
 

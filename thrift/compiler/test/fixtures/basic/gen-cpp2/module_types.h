@@ -10,6 +10,41 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField
+#define APACHE_THRIFT_ACCESSOR_MyStringField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyDataField
+#define APACHE_THRIFT_ACCESSOR_MyDataField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyDataField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_myEnum
+#define APACHE_THRIFT_ACCESSOR_myEnum
+APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_myEnum
+#define APACHE_THRIFT_ACCESSOR_myEnum
+APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_myStruct
+#define APACHE_THRIFT_ACCESSOR_myStruct
+APACHE_THRIFT_DEFINE_ACCESSOR(myStruct);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_myDataItem
+#define APACHE_THRIFT_ACCESSOR_myDataItem
+APACHE_THRIFT_DEFINE_ACCESSOR(myDataItem);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -133,26 +168,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyStringField = arg.extract();
-    __isset.MyStringField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    MyDataField = arg.extract();
-    __isset.MyDataField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    myEnum = arg.extract();
-    __isset.myEnum = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -373,19 +388,6 @@ class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<My
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_myEnum(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_myStruct(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_myDataItem(arg.extract());
   }
   void __clear();
 

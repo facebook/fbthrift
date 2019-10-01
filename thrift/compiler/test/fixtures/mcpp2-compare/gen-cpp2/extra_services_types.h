@@ -12,6 +12,65 @@
 
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_fieldA
+#define APACHE_THRIFT_ACCESSOR_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldA
+#define APACHE_THRIFT_ACCESSOR_req_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldA
+#define APACHE_THRIFT_ACCESSOR_opt_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldB
+#define APACHE_THRIFT_ACCESSOR_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldB
+#define APACHE_THRIFT_ACCESSOR_req_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldB
+#define APACHE_THRIFT_ACCESSOR_opt_fieldB
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldB);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldC
+#define APACHE_THRIFT_ACCESSOR_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldC
+#define APACHE_THRIFT_ACCESSOR_req_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldC
+#define APACHE_THRIFT_ACCESSOR_opt_fieldC
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldD
+#define APACHE_THRIFT_ACCESSOR_fieldD
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldD);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldE
+#define APACHE_THRIFT_ACCESSOR_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_req_fieldE
+#define APACHE_THRIFT_ACCESSOR_req_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldE);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_opt_fieldE
+#define APACHE_THRIFT_ACCESSOR_opt_fieldE
+APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldE);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -37,58 +96,6 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   containerStruct2(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<101, _T> arg) {
-    req_fieldA = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<201, _T> arg) {
-    opt_fieldA = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldB = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<102, _T> arg) {
-    req_fieldB = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<202, _T> arg) {
-    opt_fieldB = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    fieldC = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<103, _T> arg) {
-    req_fieldC = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<203, _T> arg) {
-    opt_fieldC = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    fieldD = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    fieldE = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<105, _T> arg) {
-    req_fieldE = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<205, _T> arg) {
-    opt_fieldE = arg.extract();
-  }
 
   containerStruct2(containerStruct2&&) = default;
 

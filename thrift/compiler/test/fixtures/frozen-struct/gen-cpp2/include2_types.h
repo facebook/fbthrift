@@ -10,6 +10,21 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_i32Field
+#define APACHE_THRIFT_ACCESSOR_i32Field
+APACHE_THRIFT_DEFINE_ACCESSOR(i32Field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_strField
+#define APACHE_THRIFT_ACCESSOR_strField
+APACHE_THRIFT_DEFINE_ACCESSOR(strField);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -35,16 +50,6 @@ class IncludedB final : private apache::thrift::detail::st::ComparisonOperators<
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   IncludedB(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.extract();
-    __isset.i32Field = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    strField = arg.extract();
-    __isset.strField = true;
-  }
 
   IncludedB(IncludedB&&) = default;
 

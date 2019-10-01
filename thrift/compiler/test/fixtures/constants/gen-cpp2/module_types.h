@@ -10,6 +10,97 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_weeks
+#define APACHE_THRIFT_ACCESSOR_weeks
+APACHE_THRIFT_DEFINE_ACCESSOR(weeks);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_title
+#define APACHE_THRIFT_ACCESSOR_title
+APACHE_THRIFT_DEFINE_ACCESSOR(title);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_employer
+#define APACHE_THRIFT_ACCESSOR_employer
+APACHE_THRIFT_DEFINE_ACCESSOR(employer);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_city
+#define APACHE_THRIFT_ACCESSOR_city
+APACHE_THRIFT_DEFINE_ACCESSOR(city);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_min
+#define APACHE_THRIFT_ACCESSOR_min
+APACHE_THRIFT_DEFINE_ACCESSOR(min);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_max
+#define APACHE_THRIFT_ACCESSOR_max
+APACHE_THRIFT_DEFINE_ACCESSOR(max);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_c
+#define APACHE_THRIFT_ACCESSOR_c
+APACHE_THRIFT_DEFINE_ACCESSOR(c);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_d
+#define APACHE_THRIFT_ACCESSOR_d
+APACHE_THRIFT_DEFINE_ACCESSOR(d);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_a
+#define APACHE_THRIFT_ACCESSOR_a
+APACHE_THRIFT_DEFINE_ACCESSOR(a);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_b
+#define APACHE_THRIFT_ACCESSOR_b
+APACHE_THRIFT_DEFINE_ACCESSOR(b);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_c
+#define APACHE_THRIFT_ACCESSOR_c
+APACHE_THRIFT_DEFINE_ACCESSOR(c);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_i
+#define APACHE_THRIFT_ACCESSOR_i
+APACHE_THRIFT_DEFINE_ACCESSOR(i);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_d
+#define APACHE_THRIFT_ACCESSOR_d
+APACHE_THRIFT_DEFINE_ACCESSOR(d);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_i
+#define APACHE_THRIFT_ACCESSOR_i
+APACHE_THRIFT_DEFINE_ACCESSOR(i);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_d
+#define APACHE_THRIFT_ACCESSOR_d
+APACHE_THRIFT_DEFINE_ACCESSOR(d);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_s
+#define APACHE_THRIFT_ACCESSOR_s
+APACHE_THRIFT_DEFINE_ACCESSOR(s);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_u
+#define APACHE_THRIFT_ACCESSOR_u
+APACHE_THRIFT_DEFINE_ACCESSOR(u);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -162,20 +253,6 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    weeks = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    title = arg.extract();
-    __isset.title = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    employer = arg.extract();
-    __isset.employer = true;
-  }
 
   Internship(Internship&&) = default;
 
@@ -286,11 +363,6 @@ class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperato
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   UnEnumStruct(apache::thrift::FragileConstructor,  ::cpp2::City city__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    city = arg.extract();
-    __isset.city = true;
-  }
 
   UnEnumStruct(UnEnumStruct&&) = default;
 
@@ -354,14 +426,6 @@ class Range final : private apache::thrift::detail::st::ComparisonOperators<Rang
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    min = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    max = arg.extract();
-  }
 
   Range(Range&&) = default;
 
@@ -430,16 +494,6 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct1(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.extract();
-    __isset.a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.extract();
-    __isset.b = true;
-  }
 
   struct1(struct1&&) = default;
 
@@ -519,26 +573,6 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg,  ::cpp2::struct1 c__arg, ::std::vector<int32_t> d__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.extract();
-    __isset.a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.extract();
-    __isset.b = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    c = arg.extract();
-    __isset.c = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    d = arg.extract();
-    __isset.d = true;
-  }
 
   struct2(struct2&&) = default;
 
@@ -640,21 +674,6 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    a = arg.extract();
-    __isset.a = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    b = arg.extract();
-    __isset.b = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    c = arg.extract();
-    __isset.c = true;
-  }
 
   struct3(struct3&&) = default;
 
@@ -842,15 +861,6 @@ class union1 final : private apache::thrift::detail::st::ComparisonOperators<uni
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_i(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_d(arg.extract());
   }
   void __clear();
 
@@ -1095,23 +1105,6 @@ class union2 final : private apache::thrift::detail::st::ComparisonOperators<uni
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_i(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_d(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_s(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    set_u(arg.extract());
   }
   void __clear();
 

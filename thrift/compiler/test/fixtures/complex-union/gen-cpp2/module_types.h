@@ -10,6 +10,89 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_intValue
+#define APACHE_THRIFT_ACCESSOR_intValue
+APACHE_THRIFT_DEFINE_ACCESSOR(intValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringValue
+#define APACHE_THRIFT_ACCESSOR_stringValue
+APACHE_THRIFT_DEFINE_ACCESSOR(stringValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intListValue
+#define APACHE_THRIFT_ACCESSOR_intListValue
+APACHE_THRIFT_DEFINE_ACCESSOR(intListValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringListValue
+#define APACHE_THRIFT_ACCESSOR_stringListValue
+APACHE_THRIFT_DEFINE_ACCESSOR(stringListValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_typedefValue
+#define APACHE_THRIFT_ACCESSOR_typedefValue
+APACHE_THRIFT_DEFINE_ACCESSOR(typedefValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringRef
+#define APACHE_THRIFT_ACCESSOR_stringRef
+APACHE_THRIFT_DEFINE_ACCESSOR(stringRef);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intListValue
+#define APACHE_THRIFT_ACCESSOR_intListValue
+APACHE_THRIFT_DEFINE_ACCESSOR(intListValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringListValue
+#define APACHE_THRIFT_ACCESSOR_stringListValue
+APACHE_THRIFT_DEFINE_ACCESSOR(stringListValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_binaryData
+#define APACHE_THRIFT_ACCESSOR_binaryData
+APACHE_THRIFT_DEFINE_ACCESSOR(binaryData);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_stringData
+#define APACHE_THRIFT_ACCESSOR_stringData
+APACHE_THRIFT_DEFINE_ACCESSOR(stringData);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_strVal
+#define APACHE_THRIFT_ACCESSOR_strVal
+APACHE_THRIFT_DEFINE_ACCESSOR(strVal);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_intVal
+#define APACHE_THRIFT_ACCESSOR_intVal
+APACHE_THRIFT_DEFINE_ACCESSOR(intVal);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_typedefValue
+#define APACHE_THRIFT_ACCESSOR_typedefValue
+APACHE_THRIFT_DEFINE_ACCESSOR(typedefValue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_v1
+#define APACHE_THRIFT_ACCESSOR_v1
+APACHE_THRIFT_DEFINE_ACCESSOR(v1);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_v2
+#define APACHE_THRIFT_ACCESSOR_v2
+APACHE_THRIFT_DEFINE_ACCESSOR(v2);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_thingOne
+#define APACHE_THRIFT_ACCESSOR_thingOne
+APACHE_THRIFT_DEFINE_ACCESSOR(thingOne);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_thingTwo
+#define APACHE_THRIFT_ACCESSOR_thingTwo
+APACHE_THRIFT_DEFINE_ACCESSOR(thingTwo);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_num
+#define APACHE_THRIFT_ACCESSOR_num
+APACHE_THRIFT_DEFINE_ACCESSOR(num);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_s
+#define APACHE_THRIFT_ACCESSOR_s
+APACHE_THRIFT_DEFINE_ACCESSOR(s);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -226,31 +309,6 @@ class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperato
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_intValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    set_stringValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_intListValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_stringListValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    set_typedefValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<14, _T> arg) {
-    set_stringRef(arg.extract());
   }
   void __clear();
 
@@ -616,15 +674,6 @@ class ListUnion final : private apache::thrift::detail::st::ComparisonOperators<
     }
     return *this;
   }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_intListValue(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    set_stringListValue(arg.extract());
-  }
   void __clear();
 
   ~ListUnion() {
@@ -855,15 +904,6 @@ class DataUnion final : private apache::thrift::detail::st::ComparisonOperators<
     }
     return *this;
   }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_binaryData(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_stringData(arg.extract());
-  }
   void __clear();
 
   ~DataUnion() {
@@ -996,21 +1036,6 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    strVal = arg.extract();
-    __isset.strVal = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    intVal = arg.extract();
-    __isset.intVal = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    typedefValue = arg.extract();
-    __isset.typedefValue = true;
-  }
 
   Val(Val&&) = default;
 
@@ -1198,15 +1223,6 @@ class ValUnion final : private apache::thrift::detail::st::ComparisonOperators<V
       }
     }
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_v1(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_v2(arg.extract());
   }
   void __clear();
 
@@ -1438,15 +1454,6 @@ class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperat
     }
     return *this;
   }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_thingOne(arg.extract());
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    set_thingTwo(arg.extract());
-  }
   void __clear();
 
   virtual ~VirtualComplexUnion() {
@@ -1580,11 +1587,6 @@ class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOp
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    num = arg.extract();
-    __isset.num = true;
-  }
 
   NonCopyableStruct(NonCopyableStruct&&) = default;
 
@@ -1682,11 +1684,6 @@ class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOpe
     }
     rhs.__clear();
     return *this;
-  }
-
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    set_s(arg.extract());
   }
   void __clear();
 

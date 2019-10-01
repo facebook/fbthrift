@@ -11,6 +11,33 @@
 #include <folly/Optional.h>
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_id
+#define APACHE_THRIFT_ACCESSOR_id
+APACHE_THRIFT_DEFINE_ACCESSOR(id);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_houseName
+#define APACHE_THRIFT_ACCESSOR_houseName
+APACHE_THRIFT_DEFINE_ACCESSOR(houseName);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_houseColors
+#define APACHE_THRIFT_ACCESSOR_houseColors
+APACHE_THRIFT_DEFINE_ACCESSOR(houseColors);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_id
+#define APACHE_THRIFT_ACCESSOR_id
+APACHE_THRIFT_DEFINE_ACCESSOR(id);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_fieldType
+#define APACHE_THRIFT_ACCESSOR_fieldType
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldType);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -40,18 +67,6 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, ::std::string houseName__arg, ::std::set< ::cpp2::ColorID> houseColors__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    id = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    houseName = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    houseColors = arg.extract();
-  }
 
   House(House&&) = default;
 
@@ -103,14 +118,6 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    id = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    fieldType = arg.extract();
-  }
 
   Field(Field&&) = default;
 

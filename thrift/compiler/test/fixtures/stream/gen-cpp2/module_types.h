@@ -10,6 +10,13 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums

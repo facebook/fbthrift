@@ -11,6 +11,89 @@
 #include <folly/Optional.h>
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_red
+#define APACHE_THRIFT_ACCESSOR_red
+APACHE_THRIFT_DEFINE_ACCESSOR(red);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_green
+#define APACHE_THRIFT_ACCESSOR_green
+APACHE_THRIFT_DEFINE_ACCESSOR(green);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_blue
+#define APACHE_THRIFT_ACCESSOR_blue
+APACHE_THRIFT_DEFINE_ACCESSOR(blue);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_alpha
+#define APACHE_THRIFT_ACCESSOR_alpha
+APACHE_THRIFT_DEFINE_ACCESSOR(alpha);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_color
+#define APACHE_THRIFT_ACCESSOR_color
+APACHE_THRIFT_DEFINE_ACCESSOR(color);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_licensePlate
+#define APACHE_THRIFT_ACCESSOR_licensePlate
+APACHE_THRIFT_DEFINE_ACCESSOR(licensePlate);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_description
+#define APACHE_THRIFT_ACCESSOR_description
+APACHE_THRIFT_DEFINE_ACCESSOR(description);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_name
+#define APACHE_THRIFT_ACCESSOR_name
+APACHE_THRIFT_DEFINE_ACCESSOR(name);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_hasAC
+#define APACHE_THRIFT_ACCESSOR_hasAC
+APACHE_THRIFT_DEFINE_ACCESSOR(hasAC);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_id
+#define APACHE_THRIFT_ACCESSOR_id
+APACHE_THRIFT_DEFINE_ACCESSOR(id);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_name
+#define APACHE_THRIFT_ACCESSOR_name
+APACHE_THRIFT_DEFINE_ACCESSOR(name);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_age
+#define APACHE_THRIFT_ACCESSOR_age
+APACHE_THRIFT_DEFINE_ACCESSOR(age);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_address
+#define APACHE_THRIFT_ACCESSOR_address
+APACHE_THRIFT_DEFINE_ACCESSOR(address);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_favoriteColor
+#define APACHE_THRIFT_ACCESSOR_favoriteColor
+APACHE_THRIFT_DEFINE_ACCESSOR(favoriteColor);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_friends
+#define APACHE_THRIFT_ACCESSOR_friends
+APACHE_THRIFT_DEFINE_ACCESSOR(friends);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_bestFriend
+#define APACHE_THRIFT_ACCESSOR_bestFriend
+APACHE_THRIFT_DEFINE_ACCESSOR(bestFriend);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_petNames
+#define APACHE_THRIFT_ACCESSOR_petNames
+APACHE_THRIFT_DEFINE_ACCESSOR(petNames);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_afraidOfAnimal
+#define APACHE_THRIFT_ACCESSOR_afraidOfAnimal
+APACHE_THRIFT_DEFINE_ACCESSOR(afraidOfAnimal);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_vehicles
+#define APACHE_THRIFT_ACCESSOR_vehicles
+APACHE_THRIFT_DEFINE_ACCESSOR(vehicles);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -94,22 +177,6 @@ class Color final : private apache::thrift::detail::st::ComparisonOperators<Colo
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Color(apache::thrift::FragileConstructor, double red__arg, double green__arg, double blue__arg, double alpha__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    red = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    green = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    blue = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    alpha = arg.extract();
-  }
 
   Color(Color&&) = default;
 
@@ -161,26 +228,6 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, ::std::string licensePlate__arg, ::std::string description__arg, ::std::string name__arg, bool hasAC__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    color = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    licensePlate = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    description = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    name = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    hasAC = arg.extract();
-  }
 
   Vehicle(Vehicle&&) = default;
 
@@ -236,46 +283,6 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Person(apache::thrift::FragileConstructor,  ::cpp2::PersonID id__arg, ::std::string name__arg, int16_t age__arg, ::std::string address__arg,  ::cpp2::Color favoriteColor__arg, ::std::set< ::cpp2::PersonID> friends__arg,  ::cpp2::PersonID bestFriend__arg, ::std::map< ::cpp2::Animal, ::std::string> petNames__arg,  ::cpp2::Animal afraidOfAnimal__arg, ::std::vector< ::cpp2::Vehicle> vehicles__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    id = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    name = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    age = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    address = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    favoriteColor = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    friends = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<7, _T> arg) {
-    bestFriend = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<8, _T> arg) {
-    petNames = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<9, _T> arg) {
-    afraidOfAnimal = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<10, _T> arg) {
-    vehicles = arg.extract();
-  }
 
   Person(Person&&) = default;
 

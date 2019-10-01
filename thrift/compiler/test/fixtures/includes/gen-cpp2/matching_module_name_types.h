@@ -11,6 +11,17 @@
 
 #include "other/gen-cpp2/matching_module_name_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_OtherStructField
+#define APACHE_THRIFT_ACCESSOR_OtherStructField
+APACHE_THRIFT_DEFINE_ACCESSOR(OtherStructField);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -35,11 +46,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor,  ::matching_module_name::OtherStruct OtherStructField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    OtherStructField = arg.extract();
-    __isset.OtherStructField = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 

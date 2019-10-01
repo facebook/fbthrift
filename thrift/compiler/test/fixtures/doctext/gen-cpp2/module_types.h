@@ -10,6 +10,17 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_useless_field
+#define APACHE_THRIFT_ACCESSOR_useless_field
+APACHE_THRIFT_DEFINE_ACCESSOR(useless_field);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -83,11 +94,6 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   A(apache::thrift::FragileConstructor, int32_t useless_field__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    useless_field = arg.extract();
-    __isset.useless_field = true;
-  }
 
   A(A&&) = default;
 

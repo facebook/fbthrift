@@ -33,6 +33,23 @@
 #include <%cpp_include%>
 <%/program:cpp_includes%>
 
+<%#program:structs?%>
+namespace apache {
+namespace thrift {
+namespace accessor {
+<%#program:structs%>
+<%#struct:fields%>
+#ifndef APACHE_THRIFT_ACCESSOR_<%field:cpp_name%>
+#define APACHE_THRIFT_ACCESSOR_<%field:cpp_name%>
+APACHE_THRIFT_DEFINE_ACCESSOR(<%field:cpp_name%>);
+#endif
+<%/struct:fields%>
+<%/program:structs%>
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
+<%/program:structs?%>
 <% > module_types_h/declare_enums%>
 
 <% > module_types_h/struct_indirection%>
@@ -60,8 +77,6 @@ class <%struct:name%> <%!
 <% > module_types_h/union_copy_ctor%>
 
 <% > module_types_h/union_assign_overload%>
-
-<% > module_types_h/union_tag_set_field%>
   void __clear();
 
   <%#struct:virtual%>virtual <%/struct:virtual%>~<%struct:name%>() {
@@ -120,7 +135,6 @@ class <%struct:name%> <%!
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>);
-<% > module_types_h/struct_tag_set_field%>
 <%#struct:cpp_noexcept_move_ctor%>
 <%^struct:fields?%>
   <%struct:name%>(<%struct:name%>&& other) noexcept {}

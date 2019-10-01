@@ -10,6 +10,21 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyStringField
+#define APACHE_THRIFT_ACCESSOR_MyStringField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyStringField);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace cpp2 {
 
@@ -84,16 +99,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyStringField = arg.extract();
-    __isset.MyStringField = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 

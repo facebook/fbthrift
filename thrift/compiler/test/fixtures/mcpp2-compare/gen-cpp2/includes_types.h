@@ -11,6 +11,21 @@
 
 #include "folly/sorted_vector_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_FieldA
+#define APACHE_THRIFT_ACCESSOR_FieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(FieldA);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_FieldA
+#define APACHE_THRIFT_ACCESSOR_FieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(FieldA);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace a { namespace different { namespace ns {
 
@@ -89,11 +104,6 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    FieldA = arg.extract();
-    __isset.FieldA = true;
-  }
 
   AStruct(AStruct&&) = default;
 
@@ -156,10 +166,6 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    FieldA = std::make_shared<std::decay_t<_T>>(arg.extract());
-  }
 
   AStructB(AStructB&&) = default;
 

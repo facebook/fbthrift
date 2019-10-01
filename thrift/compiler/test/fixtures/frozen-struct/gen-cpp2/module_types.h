@@ -12,6 +12,45 @@
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_types.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_i32Field
+#define APACHE_THRIFT_ACCESSOR_i32Field
+APACHE_THRIFT_DEFINE_ACCESSOR(i32Field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_strField
+#define APACHE_THRIFT_ACCESSOR_strField
+APACHE_THRIFT_DEFINE_ACCESSOR(strField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_listField
+#define APACHE_THRIFT_ACCESSOR_listField
+APACHE_THRIFT_DEFINE_ACCESSOR(listField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_mapField
+#define APACHE_THRIFT_ACCESSOR_mapField
+APACHE_THRIFT_DEFINE_ACCESSOR(mapField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_inclAField
+#define APACHE_THRIFT_ACCESSOR_inclAField
+APACHE_THRIFT_DEFINE_ACCESSOR(inclAField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_inclBField
+#define APACHE_THRIFT_ACCESSOR_inclBField
+APACHE_THRIFT_DEFINE_ACCESSOR(inclBField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_i32Field
+#define APACHE_THRIFT_ACCESSOR_i32Field
+APACHE_THRIFT_DEFINE_ACCESSOR(i32Field);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_inclEnumB
+#define APACHE_THRIFT_ACCESSOR_inclEnumB
+APACHE_THRIFT_DEFINE_ACCESSOR(inclEnumB);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace some { namespace ns {
 
@@ -86,36 +125,6 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, ::std::string strField__arg, ::std::vector<int16_t> listField__arg, ::std::map<::std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.extract();
-    __isset.i32Field = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    strField = arg.extract();
-    __isset.strField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    listField = arg.extract();
-    __isset.listField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    mapField = arg.extract();
-    __isset.mapField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<5, _T> arg) {
-    inclAField = arg.extract();
-    __isset.inclAField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<6, _T> arg) {
-    inclBField = arg.extract();
-    __isset.inclBField = true;
-  }
 
   ModuleA(ModuleA&&) = default;
 
@@ -243,16 +252,6 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ModuleB(apache::thrift::FragileConstructor, int32_t i32Field__arg,  ::some::ns::EnumB inclEnumB__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    i32Field = arg.extract();
-    __isset.i32Field = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    inclEnumB = arg.extract();
-    __isset.inclEnumB = true;
-  }
 
   ModuleB(ModuleB&&) = default;
 

@@ -10,6 +10,29 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_first
+#define APACHE_THRIFT_ACCESSOR_first
+APACHE_THRIFT_DEFINE_ACCESSOR(first);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_second
+#define APACHE_THRIFT_ACCESSOR_second
+APACHE_THRIFT_DEFINE_ACCESSOR(second);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_third
+#define APACHE_THRIFT_ACCESSOR_third
+APACHE_THRIFT_DEFINE_ACCESSOR(third);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_isTrue
+#define APACHE_THRIFT_ACCESSOR_isTrue
+APACHE_THRIFT_DEFINE_ACCESSOR(isTrue);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -38,25 +61,6 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   BasicTypes(apache::thrift::FragileConstructor, int32_t first__arg, int32_t second__arg, int64_t third__arg, bool isTrue__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    first = arg.extract();
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    second = arg.extract();
-    __isset.second = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    third = arg.extract();
-    __isset.third = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<4, _T> arg) {
-    isTrue = arg.extract();
-    __isset.isTrue = true;
-  }
 
   BasicTypes(BasicTypes&&) = default;
 

@@ -2988,7 +2988,7 @@ AnnotatedStruct::AnnotatedStruct() :
       indirection_a(0),
       iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
       iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::detail::wrap_argument<4>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_argument<9>(false))) {}
+      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::fieldD>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::fieldI>(false))) {}
 
 AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept :
     no_annotation(std::move(other.no_annotation)),

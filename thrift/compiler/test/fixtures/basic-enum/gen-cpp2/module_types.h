@@ -10,6 +10,21 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_myEnum
+#define APACHE_THRIFT_ACCESSOR_myEnum
+APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_myBigEnum
+#define APACHE_THRIFT_ACCESSOR_myBigEnum
+APACHE_THRIFT_DEFINE_ACCESSOR(myBigEnum);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace test { namespace fixtures { namespace enumstrict {
 
@@ -164,16 +179,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor,  ::test::fixtures::enumstrict::MyEnum myEnum__arg,  ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    myEnum = arg.extract();
-    __isset.myEnum = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    myBigEnum = arg.extract();
-    __isset.myBigEnum = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 

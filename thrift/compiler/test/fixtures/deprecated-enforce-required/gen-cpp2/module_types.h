@@ -10,6 +10,17 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_bar
+#define APACHE_THRIFT_ACCESSOR_bar
+APACHE_THRIFT_DEFINE_ACCESSOR(bar);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -35,10 +46,6 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Foo(apache::thrift::FragileConstructor, int32_t bar__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    bar = arg.extract();
-  }
 
   Foo(Foo&&) = default;
 

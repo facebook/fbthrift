@@ -10,6 +10,13 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -138,7 +145,6 @@ class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada>
     }
     return *this;
   }
-
   void __clear();
 
   ~Nada() {

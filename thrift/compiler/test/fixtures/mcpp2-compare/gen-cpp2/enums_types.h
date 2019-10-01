@@ -10,6 +10,17 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_fieldA
+#define APACHE_THRIFT_ACCESSOR_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 namespace facebook { namespace ns { namespace qwerty {
 
@@ -212,11 +223,6 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.extract();
-    __isset.fieldA = true;
-  }
 
   SomeStruct(SomeStruct&&) = default;
 

@@ -10,6 +10,17 @@
 
 
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_fieldA
+#define APACHE_THRIFT_ACCESSOR_fieldA
+APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -35,11 +46,6 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    fieldA = arg.extract();
-    __isset.fieldA = true;
-  }
 
   ReflectionStruct(ReflectionStruct&&) = default;
 

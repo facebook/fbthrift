@@ -11,6 +11,25 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_MyIncludedField
+#define APACHE_THRIFT_ACCESSOR_MyIncludedField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIncludedField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyOtherIncludedField
+#define APACHE_THRIFT_ACCESSOR_MyOtherIncludedField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyOtherIncludedField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyIncludedInt
+#define APACHE_THRIFT_ACCESSOR_MyIncludedInt
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIncludedInt);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -32,26 +51,11 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
  public:
 
   MyStruct() :
-      MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::detail::wrap_argument<1>(2LL), ::apache::thrift::detail::wrap_argument<2>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::detail::wrap_argument<1>(2LL))))),
+      MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::MyIntField>(2LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::MyTransitiveField>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(2LL))))),
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::Included MyOtherIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIncludedField = arg.extract();
-    __isset.MyIncludedField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyOtherIncludedField = arg.extract();
-    __isset.MyOtherIncludedField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<3, _T> arg) {
-    MyIncludedInt = arg.extract();
-    __isset.MyIncludedInt = true;
-  }
 
   MyStruct(MyStruct&&) = default;
 

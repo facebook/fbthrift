@@ -22,54 +22,124 @@
 #include <type_traits>
 
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+#include <folly/CPortability.h>
+#include <folly/Traits.h>
+
+//  all members are logically private to fbthrift; external use is deprecated
+//
+//  access_field would use decltype((static_cast<T&&>(t).name)) with the extra
+//  parens, except that clang++ -fms-extensions fails to parse it correctly
+#define APACHE_THRIFT_DEFINE_ACCESSOR(name)                                   \
+  struct name {                                                               \
+    template <typename T>                                                     \
+    FOLLY_ERASE static constexpr auto __fbthrift_access_field(T&& t) noexcept \
+        -> folly::like_t<T&&, decltype(folly::remove_cvref_t<T>::name)> {     \
+      return static_cast<T&&>(t).name;                                        \
+    }                                                                         \
+    template <typename T, typename... A>                                      \
+    FOLLY_ERASE static constexpr auto                                         \
+    __fbthrift_invoke_setter(T&& t, A&&... a) noexcept(                       \
+        noexcept(static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...)))     \
+        -> decltype(static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...)) { \
+      return static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...);          \
+    }                                                                         \
+  }
 
 namespace apache {
 namespace thrift {
 
 namespace detail {
 
-template <std::intmax_t Id, typename Ref>
-struct argument_wrapper {
-  explicit argument_wrapper(Ref ref) : ptr_(&ref) {}
+template <typename, typename S, typename A>
+struct has_isset_field_ : std::false_type {};
+template <typename S, typename A>
+struct has_isset_field_<
+    folly::void_t<decltype(
+        A::__fbthrift_access_field(std::declval<S&>().__isset))>,
+    S,
+    A> : std::true_type {};
+template <typename S, typename A>
+using has_isset_field = has_isset_field_<void, S, A>;
 
-  Ref extract() const {
-    return static_cast<Ref>(*ptr_);
-  }
-
- private:
-  std::remove_reference_t<Ref>* ptr_;
+template <typename A, typename Ref>
+struct wrapped_struct_argument {
+  static_assert(std::is_reference<Ref>::value, "not a reference");
+  Ref ref;
+  FOLLY_ERASE explicit wrapped_struct_argument(Ref ref_)
+      : ref(static_cast<Ref>(ref_)) {}
 };
 
-template <std::intmax_t Id, typename T>
-struct argument_wrapper<Id, std::initializer_list<T>> {
-  explicit argument_wrapper(std::initializer_list<T> list) : list_(list) {}
-
-  std::initializer_list<T> extract() const {
-    return list_;
-  }
-
- private:
-  std::initializer_list<T> list_;
+template <typename A, typename T>
+struct wrapped_struct_argument<A, std::initializer_list<T>> {
+  std::initializer_list<T> ref;
+  FOLLY_ERASE explicit wrapped_struct_argument(std::initializer_list<T> list)
+      : ref(list) {}
 };
 
-template <std::intmax_t Id, typename T>
-argument_wrapper<Id, std::initializer_list<T>> wrap_argument(
-    std::initializer_list<T> value) {
-  return argument_wrapper<Id, std::initializer_list<T>>(value);
+template <typename A, typename T>
+FOLLY_ERASE wrapped_struct_argument<A, std::initializer_list<T>>
+wrap_struct_argument(std::initializer_list<T> value) {
+  return wrapped_struct_argument<A, std::initializer_list<T>>(value);
 }
 
-template <std::intmax_t Id, typename T>
-argument_wrapper<Id, T&&> wrap_argument(T&& value) {
-  return argument_wrapper<Id, T&&>(static_cast<T&&>(value));
+template <typename A, typename T>
+FOLLY_ERASE wrapped_struct_argument<A, T&&> wrap_struct_argument(T&& value) {
+  return wrapped_struct_argument<A, T&&>(static_cast<T&&>(value));
 }
 
-template <typename S, std::intmax_t... Id, typename... T>
-constexpr S make_constant(argument_wrapper<Id, T>... arg) {
+template <
+    typename A,
+    typename S,
+    std::enable_if_t<!has_isset_field<S, A>::value, int> = 0>
+FOLLY_ERASE void mark_isset(S&, bool) {}
+template <
+    typename A,
+    typename S,
+    std::enable_if_t<has_isset_field<S, A>::value, int> = 0>
+FOLLY_ERASE void mark_isset(S& s, bool value) {
+  A::__fbthrift_access_field(s.__isset) = value;
+}
+
+template <typename F, typename T>
+FOLLY_ERASE void assign_struct_field(F& f, T&& t) {
+  f = static_cast<T&&>(t);
+}
+template <typename F, typename T>
+FOLLY_ERASE void assign_struct_field(std::unique_ptr<F>& f, T&& t) {
+  f = std::make_unique<folly::remove_cvref_t<T>>(static_cast<T&&>(t));
+}
+template <typename F, typename T>
+FOLLY_ERASE void assign_struct_field(std::shared_ptr<F>& f, T&& t) {
+  f = std::make_shared<folly::remove_cvref_t<T>>(static_cast<T&&>(t));
+}
+
+template <typename S, typename... A, typename... T>
+FOLLY_ERASE constexpr S make_constant(
+    type_class::structure,
+    wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
-  void(_{0, (void(s.__set_field(arg)), 0)...});
+  void(_{0, (void(mark_isset<A>(s, true)), 0)...});
+  void(_{0,
+         (void(assign_struct_field(
+              A::__fbthrift_access_field(s), static_cast<T>(arg.ref))),
+          0)...});
+  return s;
+}
+
+template <typename S, typename... A, typename... T>
+FOLLY_ERASE constexpr S make_constant(
+    type_class::variant,
+    wrapped_struct_argument<A, T>... arg) {
+  using _ = int[];
+  S s;
+  void(
+      _{0,
+        (void(A::__fbthrift_invoke_setter(s, static_cast<T>(arg.ref))), 0)...});
   return s;
 }
 

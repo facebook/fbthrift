@@ -11,6 +11,21 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/transitive_types.h"
 
+namespace apache {
+namespace thrift {
+namespace accessor {
+#ifndef APACHE_THRIFT_ACCESSOR_MyIntField
+#define APACHE_THRIFT_ACCESSOR_MyIntField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyTransitiveField
+#define APACHE_THRIFT_ACCESSOR_MyTransitiveField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyTransitiveField);
+#endif
+} // namespace accessor
+} // namespace thrift
+} // namespace apache
+
 // BEGIN declare_enums
 
 // END declare_enums
@@ -37,20 +52,10 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
 
   Included() :
       MyIntField(0LL),
-      MyTransitiveField(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::detail::wrap_argument<1>(2LL))) {}
+      MyTransitiveField(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(2LL))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg);
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<1, _T> arg) {
-    MyIntField = arg.extract();
-    __isset.MyIntField = true;
-  }
-  template <typename _T>
-  void __set_field(::apache::thrift::detail::argument_wrapper<2, _T> arg) {
-    MyTransitiveField = arg.extract();
-    __isset.MyTransitiveField = true;
-  }
 
   Included(Included&&) = default;
 

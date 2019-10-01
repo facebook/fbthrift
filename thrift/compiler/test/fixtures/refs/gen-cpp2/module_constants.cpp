@@ -13,22 +13,22 @@
 namespace cpp2 {
 
  ::cpp2::StructWithRef const& module_constants::kStructWithRef() {
-  static folly::Indestructible< ::cpp2::StructWithRef> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRef>(::apache::thrift::detail::wrap_argument<1>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<2>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::Empty>())));
+  static folly::Indestructible< ::cpp2::StructWithRef> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRef>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::def_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::opt_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::req_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{}))));
   return *instance;
 }
 
  ::cpp2::StructWithRefTypeUnique const& module_constants::kStructWithRefTypeUnique() {
-  static folly::Indestructible< ::cpp2::StructWithRefTypeUnique> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRefTypeUnique>(::apache::thrift::detail::wrap_argument<1>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<2>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::Empty>())));
+  static folly::Indestructible< ::cpp2::StructWithRefTypeUnique> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRefTypeUnique>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::def_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::opt_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::req_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{}))));
   return *instance;
 }
 
  ::cpp2::StructWithRefTypeShared const& module_constants::kStructWithRefTypeShared() {
-  static folly::Indestructible< ::cpp2::StructWithRefTypeShared> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRefTypeShared>(::apache::thrift::detail::wrap_argument<1>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<2>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::Empty>())));
+  static folly::Indestructible< ::cpp2::StructWithRefTypeShared> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRefTypeShared>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::def_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::opt_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::req_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{}))));
   return *instance;
 }
 
  ::cpp2::StructWithRefTypeSharedConst const& module_constants::kStructWithRefTypeSharedConst() {
-  static folly::Indestructible< ::cpp2::StructWithRefTypeSharedConst> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRefTypeSharedConst>(::apache::thrift::detail::wrap_argument<1>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<2>(::apache::thrift::detail::make_constant< ::cpp2::Empty>()), ::apache::thrift::detail::wrap_argument<3>(::apache::thrift::detail::make_constant< ::cpp2::Empty>())));
+  static folly::Indestructible< ::cpp2::StructWithRefTypeSharedConst> const instance(::apache::thrift::detail::make_constant< ::cpp2::StructWithRefTypeSharedConst>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::def_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::opt_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{})), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::req_field>(::apache::thrift::detail::make_constant< ::cpp2::Empty>(::apache::thrift::type_class::structure{}))));
   return *instance;
 }
 
