@@ -68,19 +68,28 @@ struct to_c_array<fatal::sequence<T, Values...>> : c_array<T, Values...> {};
 
 extern id_t get_type_id(type_t type, folly::StringPiece name);
 
+inline datatype_t* registering_datatype_prep(
+    schema_t& schema,
+    folly::StringPiece rname,
+    id_t rid) {
+  auto& dt = schema.dataTypes[rid];
+  if (!dt.name.empty()) {
+    return nullptr; // this datatype has already been registered
+  }
+  dt.name = rname.str();
+  schema.names[dt.name] = rid;
+  return &dt;
+}
+
 template <typename F>
 void registering_datatype(
     schema_t& schema,
     folly::StringPiece rname,
     id_t rid,
     F&& f) {
-  auto& dt = schema.dataTypes[rid];
-  if (!dt.name.empty()) {
-    return; // this datatype has already been registered
+  if (auto* dt = registering_datatype_prep(schema, rname, rid)) {
+    f(*dt);
   }
-  dt.name = rname.str();
-  schema.names[dt.name] = rid;
-  f(dt);
 }
 
 template <typename T>
@@ -234,6 +243,27 @@ struct impl<T, type_class::enumeration> {
   }
 };
 
+struct impl_structure_util {
+  static void init(
+      reflection::StructField& field,
+      id_t type,
+      size_t index,
+      optionality opt,
+      std::string& name,
+      size_t n_annots) {
+    field.isRequired = opt != optionality::optional;
+    field.type = type;
+    field.name = name;
+    field.order = index;
+    auto annotations = field.annotations_ref();
+    if (n_annots > 0) {
+      annotations = {};
+    } else {
+      annotations.reset();
+    }
+  }
+};
+
 template <typename T>
 struct impl<T, type_class::structure> {
   using meta = reflect_struct<T>;
@@ -252,16 +282,15 @@ struct impl<T, type_class::structure> {
       using member_annotations = typename MemberInfo::annotations::map;
       type_helper::register_into(schema);
       auto& f = (*dt.fields_ref())[MemberInfo::id::value];
-      f.isRequired = MemberInfo::optional::value != optionality::optional;
-      f.type = type_helper::id();
-      f.name = fatal::to_instance<std::string, member_name>();
-      f.order = Index;
+      std::string name = fatal::to_instance<std::string, member_name>();
+      impl_structure_util::init(
+          f,
+          type_helper::id(),
+          Index,
+          MemberInfo::optional::value,
+          name,
+          fatal::size<member_annotations>());
       auto annotations = f.annotations_ref();
-      if (fatal::size<member_annotations>() > 0) {
-        annotations = {};
-      } else {
-        annotations.reset();
-      }
       fatal::foreach<member_annotations>([&](auto tag) {
         using annotation = decltype(fatal::tag_type(tag));
         annotations->emplace(
