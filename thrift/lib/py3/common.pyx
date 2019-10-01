@@ -45,7 +45,7 @@ cdef class Headers:
 
     def __iter__(self):
         if not self:
-            raise StopIteration
+            return
 
         cdef string ckey
         it = deref(self._getMap()).const_begin()
@@ -97,7 +97,7 @@ cdef class Headers:
 
     def values(self):
         if not self:
-            raise StopIteration
+            return
 
         cdef string cvalue
         it = deref(self._getMap()).const_begin()
@@ -108,7 +108,7 @@ cdef class Headers:
 
     def items(self):
         if not self:
-            raise StopIteration
+            return
 
         cdef string ckey
         cdef string cvalue
