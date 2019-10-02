@@ -23,7 +23,6 @@
 #include <memory>
 
 #include <folly/DefaultKeepAliveExecutor.h>
-#include <folly/PriorityMPMCQueue.h>
 #include <folly/ThreadLocal.h>
 #include <folly/concurrency/PriorityUnboundedQueueSet.h>
 #include <folly/executors/Codel.h>
