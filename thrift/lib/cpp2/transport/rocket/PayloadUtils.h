@@ -90,6 +90,20 @@ folly::Try<rocket::Payload> pack(T&& payload) {
   });
 }
 
+/**
+ * Helper method to compress the request before sending to the server.
+ */
+void compressRequest(
+    RequestRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression);
+
+/**
+ * Helper method to uncompress the request on server side.
+ */
+void uncompressRequest(
+    CompressionAlgorithm compression,
+    std::unique_ptr<folly::IOBuf>& data);
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

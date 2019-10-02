@@ -232,6 +232,14 @@ void RocketClientChannel::sendThriftRequest(
     return;
   }
 
+  // compress the request if needed
+  if (autoCompressSizeLimit_.hasValue() &&
+      *autoCompressSizeLimit_ < int(buf->computeChainDataLength())) {
+    if (negotiatedCompressionAlgo_.hasValue()) {
+      rocket::compressRequest(metadata, buf, *negotiatedCompressionAlgo_);
+    }
+  }
+
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       sendSingleRequestNoResponse(metadata, std::move(buf), std::move(cb));

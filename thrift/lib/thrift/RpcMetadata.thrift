@@ -130,6 +130,8 @@ struct RequestRpcMetadata {
   11: optional i32 (cpp.type = "std::uint32_t") crc32c;
   12: optional i64 (cpp.type = "std::uint64_t") flags;
   13: optional string loadMetric;
+  // The CompressionAlgorithm used to compress requests (if any)
+  14: optional CompressionAlgorithm compression;
 }
 
 // RPC metadata sent from the server to the client.  The lifetime of

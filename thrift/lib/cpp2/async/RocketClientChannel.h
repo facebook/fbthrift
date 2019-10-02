@@ -137,6 +137,14 @@ class RocketClientChannel final : public ClientChannel {
 
   void setFlushList(FlushList* flushList);
 
+  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
+    negotiatedCompressionAlgo_ = compressionAlgo;
+  }
+
+  void setAutoCompressSizeLimit(int32_t size) {
+    autoCompressSizeLimit_ = size;
+  }
+
  private:
   static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};
 
@@ -144,6 +152,8 @@ class RocketClientChannel final : public ClientChannel {
   std::shared_ptr<rocket::RocketClient> rclient_;
   uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
+  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
+  folly::Optional<int32_t> autoCompressSizeLimit_;
 
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
   struct Shared {

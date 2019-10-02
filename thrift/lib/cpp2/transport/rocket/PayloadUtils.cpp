@@ -73,6 +73,47 @@ template Payload makePayload<>(
     const ResponseRpcMetadata&,
     std::unique_ptr<folly::IOBuf> data);
 
+/**
+ * Helper method to compress the request before sending to the server.
+ */
+void compressRequest(
+    RequestRpcMetadata& metadata,
+    std::unique_ptr<folly::IOBuf>& data,
+    CompressionAlgorithm compression) {
+  folly::io::CodecType codec;
+  switch (compression) {
+    case CompressionAlgorithm::ZSTD:
+      codec = folly::io::CodecType::ZSTD;
+      metadata.compression_ref() = compression;
+      break;
+    case CompressionAlgorithm::ZLIB:
+      codec = folly::io::CodecType::ZLIB;
+      metadata.compression_ref() = compression;
+      break;
+    case CompressionAlgorithm::NONE:
+      codec = folly::io::CodecType::NO_COMPRESSION;
+      break;
+  }
+  data = folly::io::getCodec(codec)->compress(data.get());
+}
+
+void uncompressRequest(
+    CompressionAlgorithm compression,
+    std::unique_ptr<folly::IOBuf>& data) {
+  folly::io::CodecType codec;
+  switch (compression) {
+    case CompressionAlgorithm::ZSTD:
+      codec = folly::io::CodecType::ZSTD;
+      break;
+    case CompressionAlgorithm::ZLIB:
+      codec = folly::io::CodecType::ZLIB;
+      break;
+    case CompressionAlgorithm::NONE:
+      codec = folly::io::CodecType::NO_COMPRESSION;
+      break;
+  }
+  data = folly::io::getCodec(codec)->uncompress(data.get());
+}
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

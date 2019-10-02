@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
+#include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
@@ -218,6 +219,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
       }
       handleRequestOverloadedServer(makeRequest(std::move(metadata)));
       return;
+    }
+    // uncompress the request if it's compressed
+    if (auto compression = metadata.compression_ref()) {
+      rocket::uncompressRequest(*metadata.compression_ref(), data);
     }
 
     auto request = makeRequest(std::move(metadata));
