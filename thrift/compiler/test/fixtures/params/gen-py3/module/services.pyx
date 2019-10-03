@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -235,9 +239,12 @@ cdef api void call_cy_NestedContainers_mapList(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.Map__i32_List__i32.create(_module_types.move(foo))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_mapList:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         NestedContainers_mapList_coro(
             self,
@@ -246,6 +253,8 @@ cdef api void call_cy_NestedContainers_mapList(
             arg_foo
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_mapList_coro(
     object self,
@@ -286,9 +295,12 @@ cdef api void call_cy_NestedContainers_mapSet(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.Map__i32_Set__i32.create(_module_types.move(foo))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_mapSet:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         NestedContainers_mapSet_coro(
             self,
@@ -297,6 +309,8 @@ cdef api void call_cy_NestedContainers_mapSet(
             arg_foo
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_mapSet_coro(
     object self,
@@ -337,9 +351,12 @@ cdef api void call_cy_NestedContainers_listMap(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.List__Map__i32_i32.create(_module_types.move(foo))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_listMap:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         NestedContainers_listMap_coro(
             self,
@@ -348,6 +365,8 @@ cdef api void call_cy_NestedContainers_listMap(
             arg_foo
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_listMap_coro(
     object self,
@@ -388,9 +407,12 @@ cdef api void call_cy_NestedContainers_listSet(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.List__Set__i32.create(_module_types.move(foo))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_listSet:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         NestedContainers_listSet_coro(
             self,
@@ -399,6 +421,8 @@ cdef api void call_cy_NestedContainers_listSet(
             arg_foo
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_listSet_coro(
     object self,
@@ -439,9 +463,12 @@ cdef api void call_cy_NestedContainers_turtles(
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(_module_types.move(foo))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_turtles:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         NestedContainers_turtles_coro(
             self,
@@ -450,6 +477,8 @@ cdef api void call_cy_NestedContainers_turtles(
             arg_foo
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_turtles_coro(
     object self,

@@ -54,9 +54,13 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             }}{{#program:stack_arguments?}}{{> types/CythonCppValueToPython}}{{/program:stack_arguments?}}{{!
         }}{{/field:type}}
     {{/function:args}}
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_{{function:name}}:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        {{! python 3.7 contextvars support }}
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(
             self,
@@ -65,6 +69,8 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
             arg_{{field:py_name}}{{/function:args}}
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def {{service:name}}_{{function:name}}_coro(
     object self,

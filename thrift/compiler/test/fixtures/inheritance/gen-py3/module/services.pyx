@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -216,9 +220,12 @@ cdef api void call_cy_MyRoot_do_root(
     cdef MyRootInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_do_root:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
             self,
@@ -226,6 +233,8 @@ cdef api void call_cy_MyRoot_do_root(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyRoot_do_root_coro(
     object self,
@@ -261,9 +270,12 @@ cdef api void call_cy_MyNode_do_mid(
     cdef MyNodeInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_do_mid:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
             self,
@@ -271,6 +283,8 @@ cdef api void call_cy_MyNode_do_mid(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyNode_do_mid_coro(
     object self,
@@ -306,9 +320,12 @@ cdef api void call_cy_MyLeaf_do_leaf(
     cdef MyLeafInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_do_leaf:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(
             self,
@@ -316,6 +333,8 @@ cdef api void call_cy_MyLeaf_do_leaf(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyLeaf_do_leaf_coro(
     object self,

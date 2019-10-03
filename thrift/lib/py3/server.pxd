@@ -168,3 +168,5 @@ cdef class WriteHeaders(Headers):
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cTransportRoutingHandler] move(unique_ptr[cTransportRoutingHandler])
+
+cdef object THRIFT_REQUEST_CONTEXT

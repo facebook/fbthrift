@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -135,9 +139,12 @@ cdef api void call_cy_ExtendTestService_check(
     __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_check:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(
             self,
@@ -146,6 +153,8 @@ cdef api void call_cy_ExtendTestService_check(
             arg_struct1
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ExtendTestService_check_coro(
     object self,

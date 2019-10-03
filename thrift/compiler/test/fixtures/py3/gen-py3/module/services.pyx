@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -1498,9 +1502,12 @@ cdef api void call_cy_SimpleService_get_five(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_five:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_five_coro(
             self,
@@ -1508,6 +1515,8 @@ cdef api void call_cy_SimpleService_get_five(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_five_coro(
     object self,
@@ -1545,9 +1554,12 @@ cdef api void call_cy_SimpleService_add_five(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_num = num
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_add_five:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_add_five_coro(
             self,
@@ -1556,6 +1568,8 @@ cdef api void call_cy_SimpleService_add_five(
             arg_num
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_add_five_coro(
     object self,
@@ -1594,9 +1608,12 @@ cdef api void call_cy_SimpleService_do_nothing(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_do_nothing:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_do_nothing_coro(
             self,
@@ -1604,6 +1621,8 @@ cdef api void call_cy_SimpleService_do_nothing(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_do_nothing_coro(
     object self,
@@ -1643,9 +1662,12 @@ cdef api void call_cy_SimpleService_concat(
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_first = (deref(first)).data().decode('UTF-8')
     arg_second = (deref(second)).data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_concat:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_concat_coro(
             self,
@@ -1655,6 +1677,8 @@ cdef api void call_cy_SimpleService_concat(
             arg_second
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_concat_coro(
     object self,
@@ -1698,9 +1722,12 @@ cdef api void call_cy_SimpleService_get_value(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_simple_struct = _module_types.SimpleStruct.create(shared_ptr[_module_types.cSimpleStruct](simple_struct.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_value:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_value_coro(
             self,
@@ -1709,6 +1736,8 @@ cdef api void call_cy_SimpleService_get_value(
             arg_simple_struct
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_value_coro(
     object self,
@@ -1749,9 +1778,12 @@ cdef api void call_cy_SimpleService_negate(
     __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_input = input
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_negate:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_negate_coro(
             self,
@@ -1760,6 +1792,8 @@ cdef api void call_cy_SimpleService_negate(
             arg_input
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_negate_coro(
     object self,
@@ -1800,9 +1834,12 @@ cdef api void call_cy_SimpleService_tiny(
     __iface = self
     __promise = Promise_int8_t.create(move_promise_int8_t(cPromise))
     arg_input = input
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_tiny:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_tiny_coro(
             self,
@@ -1811,6 +1848,8 @@ cdef api void call_cy_SimpleService_tiny(
             arg_input
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_tiny_coro(
     object self,
@@ -1851,9 +1890,12 @@ cdef api void call_cy_SimpleService_small(
     __iface = self
     __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     arg_input = input
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_small:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_small_coro(
             self,
@@ -1862,6 +1904,8 @@ cdef api void call_cy_SimpleService_small(
             arg_input
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_small_coro(
     object self,
@@ -1902,9 +1946,12 @@ cdef api void call_cy_SimpleService_big(
     __iface = self
     __promise = Promise_int64_t.create(move_promise_int64_t(cPromise))
     arg_input = input
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_big:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_big_coro(
             self,
@@ -1913,6 +1960,8 @@ cdef api void call_cy_SimpleService_big(
             arg_input
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_big_coro(
     object self,
@@ -1953,9 +2002,12 @@ cdef api void call_cy_SimpleService_two(
     __iface = self
     __promise = Promise_double.create(move_promise_double(cPromise))
     arg_input = input
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_two:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_two_coro(
             self,
@@ -1964,6 +2016,8 @@ cdef api void call_cy_SimpleService_two(
             arg_input
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_two_coro(
     object self,
@@ -2002,9 +2056,12 @@ cdef api void call_cy_SimpleService_expected_exception(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_expected_exception:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_expected_exception_coro(
             self,
@@ -2012,6 +2069,8 @@ cdef api void call_cy_SimpleService_expected_exception(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_expected_exception_coro(
     object self,
@@ -2049,9 +2108,12 @@ cdef api void call_cy_SimpleService_unexpected_exception(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_unexpected_exception:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_unexpected_exception_coro(
             self,
@@ -2059,6 +2121,8 @@ cdef api void call_cy_SimpleService_unexpected_exception(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_unexpected_exception_coro(
     object self,
@@ -2096,9 +2160,12 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.List__i16.create(_module_types.move(numbers))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_sum_i16_list:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i16_list_coro(
             self,
@@ -2107,6 +2174,8 @@ cdef api void call_cy_SimpleService_sum_i16_list(
             arg_numbers
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_i16_list_coro(
     object self,
@@ -2147,9 +2216,12 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.List__i32.create(_module_types.move(numbers))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_sum_i32_list:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i32_list_coro(
             self,
@@ -2158,6 +2230,8 @@ cdef api void call_cy_SimpleService_sum_i32_list(
             arg_numbers
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_i32_list_coro(
     object self,
@@ -2198,9 +2272,12 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.List__i64.create(_module_types.move(numbers))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_sum_i64_list:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i64_list_coro(
             self,
@@ -2209,6 +2286,8 @@ cdef api void call_cy_SimpleService_sum_i64_list(
             arg_numbers
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_i64_list_coro(
     object self,
@@ -2249,9 +2328,12 @@ cdef api void call_cy_SimpleService_concat_many(
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_concat_many:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_concat_many_coro(
             self,
@@ -2260,6 +2342,8 @@ cdef api void call_cy_SimpleService_concat_many(
             arg_words
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_concat_many_coro(
     object self,
@@ -2300,9 +2384,12 @@ cdef api void call_cy_SimpleService_count_structs(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_items = _module_types.List__SimpleStruct.create(_module_types.move(items))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_count_structs:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_count_structs_coro(
             self,
@@ -2311,6 +2398,8 @@ cdef api void call_cy_SimpleService_count_structs(
             arg_items
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_count_structs_coro(
     object self,
@@ -2351,9 +2440,12 @@ cdef api void call_cy_SimpleService_sum_set(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_numbers = _module_types.Set__i32.create(_module_types.move(numbers))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_sum_set:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_set_coro(
             self,
@@ -2362,6 +2454,8 @@ cdef api void call_cy_SimpleService_sum_set(
             arg_numbers
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_set_coro(
     object self,
@@ -2404,9 +2498,12 @@ cdef api void call_cy_SimpleService_contains_word(
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_words = _module_types.Set__string.create(_module_types.move(words))
     arg_word = (deref(word)).data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_contains_word:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_contains_word_coro(
             self,
@@ -2416,6 +2513,8 @@ cdef api void call_cy_SimpleService_contains_word(
             arg_word
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_contains_word_coro(
     object self,
@@ -2461,9 +2560,12 @@ cdef api void call_cy_SimpleService_get_map_value(
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_words = _module_types.Map__string_string.create(_module_types.move(words))
     arg_key = (deref(key)).data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_map_value:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_map_value_coro(
             self,
@@ -2473,6 +2575,8 @@ cdef api void call_cy_SimpleService_get_map_value(
             arg_key
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_map_value_coro(
     object self,
@@ -2516,9 +2620,12 @@ cdef api void call_cy_SimpleService_map_length(
     __iface = self
     __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     arg_items = _module_types.Map__string_SimpleStruct.create(_module_types.move(items))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_map_length:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_map_length_coro(
             self,
@@ -2527,6 +2634,8 @@ cdef api void call_cy_SimpleService_map_length(
             arg_items
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_map_length_coro(
     object self,
@@ -2567,9 +2676,12 @@ cdef api void call_cy_SimpleService_sum_map_values(
     __iface = self
     __promise = Promise_int16_t.create(move_promise_int16_t(cPromise))
     arg_items = _module_types.Map__string_i16.create(_module_types.move(items))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_sum_map_values:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_map_values_coro(
             self,
@@ -2578,6 +2690,8 @@ cdef api void call_cy_SimpleService_sum_map_values(
             arg_items
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_map_values_coro(
     object self,
@@ -2618,9 +2732,12 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_complex_sum_i32:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_complex_sum_i32_coro(
             self,
@@ -2629,6 +2746,8 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
             arg_counter
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_complex_sum_i32_coro(
     object self,
@@ -2669,9 +2788,12 @@ cdef api void call_cy_SimpleService_repeat_name(
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_repeat_name:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_repeat_name_coro(
             self,
@@ -2680,6 +2802,8 @@ cdef api void call_cy_SimpleService_repeat_name(
             arg_counter
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_repeat_name_coro(
     object self,
@@ -2718,9 +2842,12 @@ cdef api void call_cy_SimpleService_get_struct(
     cdef SimpleServiceInterface __iface
     __iface = self
     __promise = Promise__module_types_cSimpleStruct.create(move_promise__module_types_cSimpleStruct(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_struct:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_struct_coro(
             self,
@@ -2728,6 +2855,8 @@ cdef api void call_cy_SimpleService_get_struct(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_struct_coro(
     object self,
@@ -2765,9 +2894,12 @@ cdef api void call_cy_SimpleService_fib(
     __iface = self
     __promise = Promise_vector__int32_t.create(move_promise_vector__int32_t(cPromise))
     arg_n = n
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_fib:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_fib_coro(
             self,
@@ -2776,6 +2908,8 @@ cdef api void call_cy_SimpleService_fib(
             arg_n
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_fib_coro(
     object self,
@@ -2817,9 +2951,12 @@ cdef api void call_cy_SimpleService_unique_words(
     __iface = self
     __promise = Promise_cset__string.create(move_promise_cset__string(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_unique_words:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_unique_words_coro(
             self,
@@ -2828,6 +2965,8 @@ cdef api void call_cy_SimpleService_unique_words(
             arg_words
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_unique_words_coro(
     object self,
@@ -2869,9 +3008,12 @@ cdef api void call_cy_SimpleService_words_count(
     __iface = self
     __promise = Promise_cmap__string_int16_t.create(move_promise_cmap__string_int16_t(cPromise))
     arg_words = _module_types.List__string.create(_module_types.move(words))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_words_count:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_words_count_coro(
             self,
@@ -2880,6 +3022,8 @@ cdef api void call_cy_SimpleService_words_count(
             arg_words
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_words_count_coro(
     object self,
@@ -2921,9 +3065,12 @@ cdef api void call_cy_SimpleService_set_enum(
     __iface = self
     __promise = Promise__module_types_cAnEnum.create(move_promise__module_types_cAnEnum(cPromise))
     arg_in_enum = _module_types.AnEnum(<int> in_enum)
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_set_enum:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_set_enum_coro(
             self,
@@ -2932,6 +3079,8 @@ cdef api void call_cy_SimpleService_set_enum(
             arg_in_enum
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_set_enum_coro(
     object self,
@@ -2974,9 +3123,12 @@ cdef api void call_cy_SimpleService_list_of_lists(
     __promise = Promise_vector__vector__int32_t.create(move_promise_vector__vector__int32_t(cPromise))
     arg_num_lists = num_lists
     arg_num_items = num_items
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_list_of_lists:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_list_of_lists_coro(
             self,
@@ -2986,6 +3138,8 @@ cdef api void call_cy_SimpleService_list_of_lists(
             arg_num_items
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_list_of_lists_coro(
     object self,
@@ -3030,9 +3184,12 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     __iface = self
     __promise = Promise_cmap__string_cmap__string_int32_t.create(move_promise_cmap__string_cmap__string_int32_t(cPromise))
     arg_sentence = (deref(sentence)).data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_word_character_frequency:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_word_character_frequency_coro(
             self,
@@ -3041,6 +3198,8 @@ cdef api void call_cy_SimpleService_word_character_frequency(
             arg_sentence
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_word_character_frequency_coro(
     object self,
@@ -3082,9 +3241,12 @@ cdef api void call_cy_SimpleService_list_of_sets(
     __iface = self
     __promise = Promise_vector__cset__string.create(move_promise_vector__cset__string(cPromise))
     arg_some_words = (deref(some_words)).data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_list_of_sets:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_list_of_sets_coro(
             self,
@@ -3093,6 +3255,8 @@ cdef api void call_cy_SimpleService_list_of_sets(
             arg_some_words
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_list_of_sets_coro(
     object self,
@@ -3134,9 +3298,12 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
     arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(_module_types.move(struct_map))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_nested_map_argument:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_nested_map_argument_coro(
             self,
@@ -3145,6 +3312,8 @@ cdef api void call_cy_SimpleService_nested_map_argument(
             arg_struct_map
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_nested_map_argument_coro(
     object self,
@@ -3185,9 +3354,12 @@ cdef api void call_cy_SimpleService_make_sentence(
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_word_chars = _module_types.List__List__string.create(_module_types.move(word_chars))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_make_sentence:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_make_sentence_coro(
             self,
@@ -3196,6 +3368,8 @@ cdef api void call_cy_SimpleService_make_sentence(
             arg_word_chars
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_make_sentence_coro(
     object self,
@@ -3236,9 +3410,12 @@ cdef api void call_cy_SimpleService_get_union(
     __iface = self
     __promise = Promise_cset__int32_t.create(move_promise_cset__int32_t(cPromise))
     arg_sets = _module_types.List__Set__i32.create(_module_types.move(sets))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_union:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_union_coro(
             self,
@@ -3247,6 +3424,8 @@ cdef api void call_cy_SimpleService_get_union(
             arg_sets
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_union_coro(
     object self,
@@ -3288,9 +3467,12 @@ cdef api void call_cy_SimpleService_get_keys(
     __iface = self
     __promise = Promise_cset__string.create(move_promise_cset__string(cPromise))
     arg_string_map = _module_types.List__Map__string_string.create(_module_types.move(string_map))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_keys:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_keys_coro(
             self,
@@ -3299,6 +3481,8 @@ cdef api void call_cy_SimpleService_get_keys(
             arg_string_map
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_keys_coro(
     object self,
@@ -3340,9 +3524,12 @@ cdef api void call_cy_SimpleService_lookup_double(
     __iface = self
     __promise = Promise_double.create(move_promise_double(cPromise))
     arg_key = key
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_lookup_double:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_lookup_double_coro(
             self,
@@ -3351,6 +3538,8 @@ cdef api void call_cy_SimpleService_lookup_double(
             arg_key
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_lookup_double_coro(
     object self,
@@ -3391,9 +3580,12 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     __iface = self
     __promise = Promise_binary.create(move_promise_binary(cPromise))
     arg_something = (deref(something))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_retrieve_binary:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_retrieve_binary_coro(
             self,
@@ -3402,6 +3594,8 @@ cdef api void call_cy_SimpleService_retrieve_binary(
             arg_something
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_retrieve_binary_coro(
     object self,
@@ -3442,9 +3636,12 @@ cdef api void call_cy_SimpleService_contain_binary(
     __iface = self
     __promise = Promise_cset__binary.create(move_promise_cset__binary(cPromise))
     arg_binaries = _module_types.List__binary.create(_module_types.move(binaries))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_contain_binary:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_contain_binary_coro(
             self,
@@ -3453,6 +3650,8 @@ cdef api void call_cy_SimpleService_contain_binary(
             arg_binaries
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_contain_binary_coro(
     object self,
@@ -3494,9 +3693,12 @@ cdef api void call_cy_SimpleService_contain_enum(
     __iface = self
     __promise = Promise_vector___module_types_cAnEnum.create(move_promise_vector___module_types_cAnEnum(cPromise))
     arg_the_enum = _module_types.List__AnEnum.create(_module_types.move(the_enum))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_contain_enum:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_contain_enum_coro(
             self,
@@ -3505,6 +3707,8 @@ cdef api void call_cy_SimpleService_contain_enum(
             arg_the_enum
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_contain_enum_coro(
     object self,
@@ -3546,9 +3750,12 @@ cdef api void call_cy_SimpleService_get_binary_union_struct(
     __iface = self
     __promise = Promise__module_types_cBinaryUnionStruct.create(move_promise__module_types_cBinaryUnionStruct(cPromise))
     arg_u = _module_types.BinaryUnion.create(shared_ptr[_module_types.cBinaryUnion](u.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_binary_union_struct:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SimpleService_get_binary_union_struct_coro(
             self,
@@ -3557,6 +3764,8 @@ cdef api void call_cy_SimpleService_get_binary_union_struct(
             arg_u
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_binary_union_struct_coro(
     object self,
@@ -3595,9 +3804,12 @@ cdef api void call_cy_DerivedService_get_six(
     cdef DerivedServiceInterface __iface
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_six:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         DerivedService_get_six_coro(
             self,
@@ -3605,6 +3817,8 @@ cdef api void call_cy_DerivedService_get_six(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def DerivedService_get_six_coro(
     object self,
@@ -3640,9 +3854,12 @@ cdef api void call_cy_RederivedService_get_seven(
     cdef RederivedServiceInterface __iface
     __iface = self
     __promise = Promise_int32_t.create(move_promise_int32_t(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get_seven:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         RederivedService_get_seven_coro(
             self,
@@ -3650,6 +3867,8 @@ cdef api void call_cy_RederivedService_get_seven(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def RederivedService_get_seven_coro(
     object self,

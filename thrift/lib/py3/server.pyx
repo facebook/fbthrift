@@ -1,3 +1,4 @@
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport unique_ptr, shared_ptr, make_shared
 from libc.string cimport const_uchar
 from cython.operator cimport dereference as deref
@@ -18,6 +19,15 @@ from enum import Enum
 from thrift.py3.common import Priority, Headers
 
 SocketAddress = collections.namedtuple('SocketAddress', 'ip port path')
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from contextvars import ContextVar
+    # don't include in the module dict, so only cython can set it
+    THRIFT_REQUEST_CONTEXT = ContextVar('ThriftRequestContext')
+    get_context = THRIFT_REQUEST_CONTEXT.get
+else:
+    def get_context(default=None):
+        raise RuntimeError('get_context requires python >= 3.7.2')
 
 
 cdef inline _get_SocketAddress(const cfollySocketAddress* sadr):

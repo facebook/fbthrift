@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor

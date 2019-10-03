@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
 import asyncio
-from pathlib import Path
 import socket
+import sys
 import tempfile
 import unittest
+from pathlib import Path
+from typing import Optional, Sequence
 
-from testing.services import TestingServiceInterface
-from testing.types import easy, Color
-from testing.clients import TestingService
-from stack_args.services import StackServiceInterface
-from stack_args.clients import StackService
-from stack_args.types import simple
+import thrift.py3.server
 from folly.iobuf import IOBuf
+from stack_args.clients import StackService
+from stack_args.services import StackServiceInterface
+from stack_args.types import simple
+from testing.clients import TestingService
+from testing.services import TestingServiceInterface
+from testing.types import Color, easy
 from thrift.py3 import (
-    ThriftServer,
-    get_client,
-    TransportError,
+    Protocol,
     RequestContext,
     RpcOptions,
-    Protocol,
+    ThriftServer,
+    TransportError,
+    get_client,
+    get_context,
 )
-from typing import Sequence, Optional
-import thrift.py3.server
 from thrift.py3.client import ClientType
 
 
@@ -33,6 +35,9 @@ class Handler(TestingServiceInterface):
         return not value
 
     async def getName(self) -> str:
+        if sys.version_info[:2] >= (3, 7):
+            ctx = get_context()
+            ctx.set_header("contextvar", "true")
         return "Testing"
 
     async def shutdown(self) -> None:
@@ -81,6 +86,31 @@ class ClientServerTests(unittest.TestCase):
     """
     These are tests where a client and server talk to each other
     """
+
+    @unittest.skipIf(sys.version_info[:2] < (3, 7), "Requires py3.7")
+    def test_get_context(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                assert sa.ip and sa.port
+                async with get_client(
+                    TestingService, host=sa.ip, port=sa.port
+                ) as client:
+                    options = RpcOptions()
+                    self.assertEqual(
+                        "Testing", await client.getName(rpc_options=options)
+                    )
+                    self.assertEqual("true", options.read_headers["contextvar"])
+
+        loop.run_until_complete(inner_test())
+
+        async def outside_context_test() -> None:
+            handler = Handler()  # so we can call it outside the thrift server
+            with self.assertRaises(LookupError):
+                await handler.getName()
+
+        loop.run_until_complete(outside_context_test())
 
     def test_rpc_headers(self) -> None:
         loop = asyncio.get_event_loop()

@@ -4,11 +4,21 @@ import ipaddress
 import os
 import pathlib
 from enum import Enum
-from typing import Callable, ClassVar, Mapping, NamedTuple, Optional, TypeVar, Union
+from typing import (
+    Callable,
+    ClassVar,
+    Mapping,
+    NamedTuple,
+    Optional,
+    TypeVar,
+    Union,
+    overload,
+)
 
 from thrift.py3.common import Headers, Priority
 
 mT = TypeVar("mT", bound=Callable)
+T = TypeVar("T")
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 Path = Union[str, bytes, os.PathLike]
 
@@ -17,6 +27,10 @@ class SocketAddress(NamedTuple):
     port: Optional[int]
     path: Optional[pathlib.Path]
 
+@overload
+def get_context() -> RequestContext: ...
+@overload
+def get_context(default: T) -> Union[T, RequestContext]: ...
 def pass_context(func: mT) -> mT: ...
 
 class SSLPolicy(Enum):

@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -393,9 +397,12 @@ cdef api void call_cy_MyService_hasDataById(
     __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_id = id
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_hasDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
             self,
@@ -404,6 +411,8 @@ cdef api void call_cy_MyService_hasDataById(
             arg_id
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_hasDataById_coro(
     object self,
@@ -444,9 +453,12 @@ cdef api void call_cy_MyService_getDataById(
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_id = id
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_getDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
             self,
@@ -455,6 +467,8 @@ cdef api void call_cy_MyService_getDataById(
             arg_id
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_getDataById_coro(
     object self,
@@ -497,9 +511,12 @@ cdef api void call_cy_MyService_putDataById(
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_putDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
             self,
@@ -509,6 +526,8 @@ cdef api void call_cy_MyService_putDataById(
             arg_data
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_putDataById_coro(
     object self,
@@ -554,9 +573,12 @@ cdef api void call_cy_MyService_lobDataById(
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_lobDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
             self,
@@ -566,6 +588,8 @@ cdef api void call_cy_MyService_lobDataById(
             arg_data
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_lobDataById_coro(
     object self,
@@ -609,9 +633,12 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     __iface = self
     __promise = Promise_cbool.create(move_promise_cbool(cPromise))
     arg_id = id
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_hasDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyServiceFast_hasDataById_coro(
             self,
@@ -620,6 +647,8 @@ cdef api void call_cy_MyServiceFast_hasDataById(
             arg_id
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServiceFast_hasDataById_coro(
     object self,
@@ -660,9 +689,12 @@ cdef api void call_cy_MyServiceFast_getDataById(
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
     arg_id = id
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_getDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyServiceFast_getDataById_coro(
             self,
@@ -671,6 +703,8 @@ cdef api void call_cy_MyServiceFast_getDataById(
             arg_id
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServiceFast_getDataById_coro(
     object self,
@@ -713,9 +747,12 @@ cdef api void call_cy_MyServiceFast_putDataById(
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_putDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyServiceFast_putDataById_coro(
             self,
@@ -725,6 +762,8 @@ cdef api void call_cy_MyServiceFast_putDataById(
             arg_data
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServiceFast_putDataById_coro(
     object self,
@@ -770,9 +809,12 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_lobDataById:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyServiceFast_lobDataById_coro(
             self,
@@ -782,6 +824,8 @@ cdef api void call_cy_MyServiceFast_lobDataById(
             arg_data
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServiceFast_lobDataById_coro(
     object self,

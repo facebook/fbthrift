@@ -10,10 +10,12 @@ except ModuleNotFoundError:
     pass
 
 try:
-    from thrift.py3.server import (
-        ThriftServer, SSLPolicy, pass_context, RequestContext
+    from thrift.py3.server import (  # noqa: 401
+        ThriftServer, SSLPolicy, pass_context, RequestContext, get_context
     )
-    __all__.extend(['ThriftServer', 'pass_context', 'SSLPolicy', 'RequestContext'])
+    __all__.extend(
+        ['ThriftServer', 'get_context', 'pass_context', 'SSLPolicy', 'RequestContext']
+    )
 except ModuleNotFoundError:
     pass
 

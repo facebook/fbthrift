@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -179,9 +183,12 @@ cdef api void call_cy_MyService_query(
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_query:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyService_query_coro(
             self,
@@ -191,6 +198,8 @@ cdef api void call_cy_MyService_query(
             arg_i
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_query_coro(
     object self,
@@ -236,9 +245,12 @@ cdef api void call_cy_MyService_has_arg_docs(
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
     arg_s = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](s.release()))
     arg_i = _includes_types.Included.create(shared_ptr[_includes_types.cIncluded](i.release()))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_has_arg_docs:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         MyService_has_arg_docs_coro(
             self,
@@ -248,6 +260,8 @@ cdef api void call_cy_MyService_has_arg_docs(
             arg_i
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_has_arg_docs_coro(
     object self,

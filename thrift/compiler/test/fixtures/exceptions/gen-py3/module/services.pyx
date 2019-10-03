@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -203,9 +207,12 @@ cdef api void call_cy_Raiser_doBland(
     cdef RaiserInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_doBland:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
             self,
@@ -213,6 +220,8 @@ cdef api void call_cy_Raiser_doBland(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_doBland_coro(
     object self,
@@ -248,9 +257,12 @@ cdef api void call_cy_Raiser_doRaise(
     cdef RaiserInterface __iface
     __iface = self
     __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_doRaise:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
             self,
@@ -258,6 +270,8 @@ cdef api void call_cy_Raiser_doRaise(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_doRaise_coro(
     object self,
@@ -299,9 +313,12 @@ cdef api void call_cy_Raiser_get200(
     cdef RaiserInterface __iface
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get200:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
             self,
@@ -309,6 +326,8 @@ cdef api void call_cy_Raiser_get200(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_get200_coro(
     object self,
@@ -344,9 +363,12 @@ cdef api void call_cy_Raiser_get500(
     cdef RaiserInterface __iface
     __iface = self
     __promise = Promise_string.create(move_promise_string(cPromise))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_get500:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         Raiser_get500_coro(
             self,
@@ -354,6 +376,8 @@ cdef api void call_cy_Raiser_get500(
             __promise
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_get500_coro(
     object self,

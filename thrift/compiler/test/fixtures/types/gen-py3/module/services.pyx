@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from cpython.version cimport PY_VERSION_HEX
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
@@ -33,6 +34,9 @@ from folly cimport (
   c_unit
 )
 from thrift.py3.types cimport move
+
+if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -171,9 +175,12 @@ cdef api void call_cy_SomeService_bounce_map(
     __iface = self
     __promise = Promise__module_types_std_unordered_map__int32_t_string.create(move_promise__module_types_std_unordered_map__int32_t_string(cPromise))
     arg_m = _module_types.std_unordered_map__Map__i32_string.create(_module_types.move(m))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_bounce_map:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SomeService_bounce_map_coro(
             self,
@@ -182,6 +189,8 @@ cdef api void call_cy_SomeService_bounce_map(
             arg_m
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SomeService_bounce_map_coro(
     object self,
@@ -223,9 +232,12 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     __iface = self
     __promise = Promise_cmap__binary_int64_t.create(move_promise_cmap__binary_int64_t(cPromise))
     arg_r = _module_types.List__i64.create(_module_types.move(r))
+    __context_obj = RequestContext.create(ctx)
     __context = None
     if __iface._pass_context_binary_keyed_map:
-        __context = RequestContext.create(ctx)
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
     asyncio.get_event_loop().create_task(
         SomeService_binary_keyed_map_coro(
             self,
@@ -234,6 +246,8 @@ cdef api void call_cy_SomeService_binary_keyed_map(
             arg_r
         )
     )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SomeService_binary_keyed_map_coro(
     object self,
