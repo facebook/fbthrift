@@ -32,10 +32,11 @@ const DEFAULT_MAX_LENGTH = 16384000
 
 type FramedTransport struct {
 	transport Transport
-	buf       bytes.Buffer
-	reader    *bufio.Reader
-	frameSize uint32 //Current remaining size of the frame. if ==0 read next frame header
-	buffer    [4]byte
+	buf       bytes.Buffer  // buffers the writes
+	reader    *bufio.Reader // just a buffer over the underlying transport
+	frameSize uint32        //Current remaining size of the frame. if ==0 read next frame header
+	rBuffer   [4]byte       // used for reading
+	wBuffer   [4]byte       // used for writing
 	maxLength uint32
 }
 
@@ -134,7 +135,7 @@ func (p *FramedTransport) WriteString(s string) (n int, err error) {
 
 func (p *FramedTransport) Flush() error {
 	size := p.buf.Len()
-	buf := p.buffer[:4]
+	buf := p.wBuffer[:4]
 	binary.BigEndian.PutUint32(buf, uint32(size))
 	_, err := p.transport.Write(buf)
 	if err != nil {
@@ -151,7 +152,7 @@ func (p *FramedTransport) Flush() error {
 }
 
 func (p *FramedTransport) readFrameHeader() (uint32, error) {
-	buf := p.buffer[:4]
+	buf := p.rBuffer[:4]
 	if _, err := io.ReadFull(p.reader, buf); err != nil {
 		return 0, err
 	}

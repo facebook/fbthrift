@@ -93,27 +93,33 @@ type CompactProtocol struct {
 
 	// Used to keep track of the last field for the current and previous structs,
 	// so we can do the delta stuff.
-	lastField   []int
-	lastFieldId int
+	// writing
+	lastFieldWritten   []int
+	lastFieldIDWritten int
+	// reading
+	lastFieldRead   []int
+	lastFieldIDRead int
 
 	// If we encounter a boolean field begin, save the Field here so it can
-	// have the value incorporated.
+	// have the value incorporated. This is only used for writes.
 	booleanFieldName    string
-	booleanFieldId      int16
+	booleanFieldID      int16
 	booleanFieldPending bool
 
 	// If we read a field header, and it's a boolean field, save the boolean
-	// value here so that readBool can use it.
+	// value here so that readBool can use it. This is only used for reads.
 	boolValue          bool
 	boolValueIsNotNull bool
-	buffer             [64]byte
+
+	rBuffer [64]byte // reading
+	wBuffer [64]byte // writing
 
 	version int
 }
 
 // Create a CompactProtocol given a Transport
 func NewCompactProtocol(trans Transport) *CompactProtocol {
-	p := &CompactProtocol{origTransport: trans, lastField: []int{}, version: COMPACT_VERSION_BE}
+	p := &CompactProtocol{origTransport: trans, version: COMPACT_VERSION_BE}
 	if et, ok := trans.(RichTransport); ok {
 		p.trans = et
 	} else {
@@ -153,8 +159,8 @@ func (p *CompactProtocol) WriteMessageEnd() error { return nil }
 // use it as an opportunity to put special placeholder markers on the field
 // stack so we can get the field id deltas correct.
 func (p *CompactProtocol) WriteStructBegin(name string) error {
-	p.lastField = append(p.lastField, p.lastFieldId)
-	p.lastFieldId = 0
+	p.lastFieldWritten = append(p.lastFieldWritten, p.lastFieldIDWritten)
+	p.lastFieldIDWritten = 0
 	return nil
 }
 
@@ -162,15 +168,15 @@ func (p *CompactProtocol) WriteStructBegin(name string) error {
 // this as an opportunity to pop the last field from the current struct off
 // of the field stack.
 func (p *CompactProtocol) WriteStructEnd() error {
-	p.lastFieldId = p.lastField[len(p.lastField)-1]
-	p.lastField = p.lastField[:len(p.lastField)-1]
+	p.lastFieldIDWritten = p.lastFieldWritten[len(p.lastFieldWritten)-1]
+	p.lastFieldWritten = p.lastFieldWritten[:len(p.lastFieldWritten)-1]
 	return nil
 }
 
 func (p *CompactProtocol) WriteFieldBegin(name string, typeId Type, id int16) error {
 	if typeId == BOOL {
 		// we want to possibly include the value, so we'll wait.
-		p.booleanFieldName, p.booleanFieldId, p.booleanFieldPending = name, id, true
+		p.booleanFieldName, p.booleanFieldID, p.booleanFieldPending = name, id, true
 		return nil
 	}
 	_, err := p.writeFieldBeginInternal(name, typeId, id, 0xFF)
@@ -181,7 +187,7 @@ func (p *CompactProtocol) WriteFieldBegin(name string, typeId Type, id int16) er
 // 'type override' of the type header. This is used specifically in the
 // boolean field case.
 func (p *CompactProtocol) writeFieldBeginInternal(name string, typeId Type, id int16, typeOverride byte) (int, error) {
-	// short lastField = lastField_.pop();
+	// short lastFieldWritten = lastFieldWritten_.pop();
 
 	// if there's a type override, use that.
 	var typeToWrite byte
@@ -193,9 +199,9 @@ func (p *CompactProtocol) writeFieldBeginInternal(name string, typeId Type, id i
 	// check if we can use delta encoding for the field id
 	fieldId := int(id)
 	written := 0
-	if fieldId > p.lastFieldId && fieldId-p.lastFieldId <= 15 {
+	if fieldId > p.lastFieldIDWritten && fieldId-p.lastFieldIDWritten <= 15 {
 		// write them together
-		err := p.writeByteDirect(byte((fieldId-p.lastFieldId)<<4) | typeToWrite)
+		err := p.writeByteDirect(byte((fieldId-p.lastFieldIDWritten)<<4) | typeToWrite)
 		if err != nil {
 			return 0, err
 		}
@@ -212,8 +218,8 @@ func (p *CompactProtocol) writeFieldBeginInternal(name string, typeId Type, id i
 		}
 	}
 
-	p.lastFieldId = fieldId
-	// p.lastField.Push(field.id);
+	p.lastFieldIDWritten = fieldId
+	// p.lastFieldWritten.Push(field.id);
 	return written, nil
 }
 
@@ -262,7 +268,7 @@ func (p *CompactProtocol) WriteBool(value bool) error {
 	}
 	if p.booleanFieldPending {
 		// we haven't written the field header yet
-		_, err := p.writeFieldBeginInternal(p.booleanFieldName, BOOL, p.booleanFieldId, v)
+		_, err := p.writeFieldBeginInternal(p.booleanFieldName, BOOL, p.booleanFieldID, v)
 		p.booleanFieldPending = false
 		return NewProtocolException(err)
 	}
@@ -297,7 +303,7 @@ func (p *CompactProtocol) WriteI64(value int64) error {
 
 // Write a double to the wire as 8 bytes.
 func (p *CompactProtocol) WriteDouble(value float64) error {
-	buf := p.buffer[0:8]
+	buf := p.wBuffer[0:8]
 	if p.version == COMPACT_VERSION {
 		binary.LittleEndian.PutUint64(buf, math.Float64bits(value))
 	} else {
@@ -309,7 +315,7 @@ func (p *CompactProtocol) WriteDouble(value float64) error {
 
 // Write a float to the wire as 4 bytes.
 func (p *CompactProtocol) WriteFloat(value float32) error {
-	buf := p.buffer[0:4]
+	buf := p.wBuffer[0:4]
 	binary.BigEndian.PutUint32(buf, math.Float32bits(value))
 	_, err := p.trans.Write(buf)
 	return NewProtocolException(err)
@@ -385,8 +391,8 @@ func (p *CompactProtocol) ReadMessageEnd() error { return nil }
 // Read a struct begin. There's nothing on the wire for this, but it is our
 // opportunity to push a new struct begin marker onto the field stack.
 func (p *CompactProtocol) ReadStructBegin() (name string, err error) {
-	p.lastField = append(p.lastField, p.lastFieldId)
-	p.lastFieldId = 0
+	p.lastFieldRead = append(p.lastFieldRead, p.lastFieldIDRead)
+	p.lastFieldIDRead = 0
 	return
 }
 
@@ -394,8 +400,8 @@ func (p *CompactProtocol) ReadStructBegin() (name string, err error) {
 // this struct from the field stack.
 func (p *CompactProtocol) ReadStructEnd() error {
 	// consume the last field we read off the wire.
-	p.lastFieldId = p.lastField[len(p.lastField)-1]
-	p.lastField = p.lastField[:len(p.lastField)-1]
+	p.lastFieldIDRead = p.lastFieldRead[len(p.lastFieldRead)-1]
+	p.lastFieldRead = p.lastFieldRead[:len(p.lastFieldRead)-1]
 	return nil
 }
 
@@ -421,7 +427,7 @@ func (p *CompactProtocol) ReadFieldBegin() (name string, typeId Type, id int16, 
 		}
 	} else {
 		// has a delta. add the delta to the last read field id.
-		id = int16(p.lastFieldId) + modifier
+		id = int16(p.lastFieldIDRead) + modifier
 	}
 	typeId, e := p.getType(compactType(t & 0x0f))
 	if e != nil {
@@ -437,7 +443,7 @@ func (p *CompactProtocol) ReadFieldBegin() (name string, typeId Type, id int16, 
 	}
 
 	// push the new field onto the field stack so we can keep the deltas going.
-	p.lastFieldId = int(id)
+	p.lastFieldIDRead = int(id)
 	return
 }
 
@@ -563,7 +569,7 @@ func (p *CompactProtocol) ReadI64() (value int64, err error) {
 
 // No magic here - just read a double off the wire.
 func (p *CompactProtocol) ReadDouble() (value float64, err error) {
-	longBits := p.buffer[0:8]
+	longBits := p.rBuffer[0:8]
 	_, e := io.ReadFull(p.trans, longBits)
 	if e != nil {
 		return 0.0, NewProtocolException(e)
@@ -577,7 +583,7 @@ func (p *CompactProtocol) ReadDouble() (value float64, err error) {
 
 // No magic here - just read a float off the wire.
 func (p *CompactProtocol) ReadFloat() (value float32, err error) {
-	bits := p.buffer[0:4]
+	bits := p.rBuffer[0:4]
 	_, e := io.ReadFull(p.trans, bits)
 	if e != nil {
 		return 0.0, NewProtocolException(e)
@@ -602,8 +608,8 @@ func (p *CompactProtocol) ReadString() (value string, err error) {
 		return "", nil
 	}
 	var buf []byte
-	if length <= int32(len(p.buffer)) {
-		buf = p.buffer[0:length]
+	if length <= int32(len(p.rBuffer)) {
+		buf = p.rBuffer[0:length]
 	} else {
 		buf = make([]byte, length)
 	}
@@ -665,7 +671,7 @@ func (p *CompactProtocol) writeCollectionBegin(elemType Type, size int) (int, er
 // Write an i32 as a varint. Results in 1-5 bytes on the wire.
 // TODO(pomack): make a permanent buffer like writeVarint64?
 func (p *CompactProtocol) writeVarint32(n int32) (int, error) {
-	i32buf := p.buffer[0:5]
+	i32buf := p.wBuffer[0:5]
 	idx := 0
 	for {
 		if (n & ^0x7F) == 0 {
@@ -687,7 +693,7 @@ func (p *CompactProtocol) writeVarint32(n int32) (int, error) {
 
 // Write an i64 as a varint. Results in 1-10 bytes on the wire.
 func (p *CompactProtocol) writeVarint64(n int64) (int, error) {
-	varint64out := p.buffer[0:10]
+	varint64out := p.wBuffer[0:10]
 	idx := 0
 	for {
 		if (n & ^0x7F) == 0 {
