@@ -76,10 +76,6 @@ async def {{service:name}}_{{function:name}}_coro(
     object self,
     object ctx,
     Promise_{{#function:returnType}}{{> types/CythonCppTypeIdent}}{{/function:returnType}}{{!
-
-
-
-
     }} promise{{#function:args}},
     {{field:py_name}}{{/function:args}}
 ):
