@@ -35,7 +35,7 @@ from a multiplexing client.
 
 This example uses a single socket transport to invoke two services:
 
-socket := thrift.NewSocket(thrift.SocketArrd(addr), thrif.SocketTimeout(TIMEOUT))
+socket := thrift.NewSocket(thrift.SocketAddr(addr), thrif.SocketTimeout(TIMEOUT))
 transport := thrift.NewFramedTransport(socket)
 protocol := thrift.NewBinaryProtocolTransport(transport)
 

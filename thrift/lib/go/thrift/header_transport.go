@@ -43,7 +43,7 @@ func NewHeaderTransportFactory(factory TransportFactory) TransportFactory {
 }
 
 func (p *tHeaderTransportFactory) GetTransport(base Transport) Transport {
-	return NewHeaderTransport(base)
+	return NewHeaderTransport(p.factory.GetTransport(base))
 }
 
 type HeaderTransport struct {
