@@ -1,13 +1,9 @@
 #!/usr/bin/env python3
 import unittest
-from thrift.py3.common import MethodSpec, ArgumentSpec
-from thrift.py3.reflection import inspect, inspectable
-from thrift.py3.types import StructType, Qualifier
 
 from testing.clients import TestingService
 from testing.services import TestingServiceInterface
 from testing.types import (
-    easy,
     Color,
     I32List,
     Integers,
@@ -18,7 +14,11 @@ from testing.types import (
     SimpleError,
     StrI32ListMap,
     StrStrIntListMapMap,
+    easy,
 )
+from thrift.py3.common import ArgumentSpec, MethodSpec
+from thrift.py3.reflection import inspect, inspectable
+from thrift.py3.types import Qualifier, StructType
 
 
 class ReflectionTests(unittest.TestCase):
@@ -111,36 +111,82 @@ class ReflectionTests(unittest.TestCase):
         x = inspect(TestingService)
         self.assertEqual(x, inspect(TestingServiceInterface))
         self.assertEqual(x.name, "TestingService")
-        self.assertEqual(x.annotations, {"fun_times": "yes", "single_quote": "'", "double_quotes": '"""', "py3.pass_context": "1"})
+        self.assertEqual(
+            x.annotations,
+            {
+                "fun_times": "yes",
+                "single_quote": "'",
+                "double_quotes": '"""',
+                "py3.pass_context": "1",
+            },
+        )
 
         methods = [
-            MethodSpec(name="getName", arguments=[], result=str, exceptions=[], annotations={}),
-            MethodSpec(name="shutdown", arguments=[], result=None, exceptions=[], annotations={}),
-            MethodSpec(name="invert", arguments=[
-                ArgumentSpec(name="value", type=bool, annotations={}),
-            ], result=bool, exceptions=[], annotations={}),
-            MethodSpec(name="complex_action", arguments=[
-                ArgumentSpec(name="first", type=str, annotations={}),
-                ArgumentSpec(name="second", type=str, annotations={}),
-                ArgumentSpec(name="third", type=int, annotations={}),
-                ArgumentSpec(name="fourth", type=str, annotations={"iv": "4"}),
-            ], result=int, exceptions=[], annotations={}),
-            MethodSpec(name="takes_a_list", arguments=[
-                ArgumentSpec(name="ints", type=I32List, annotations={}),
-            ], result=None, exceptions=[SimpleError], annotations={}),
-            MethodSpec(name="take_it_easy", arguments=[
-                ArgumentSpec(name="how", type=int, annotations={}),
-                ArgumentSpec(name="what", type=easy, annotations={}),
-            ], result=None, exceptions=[], annotations={"a": "b.c.d"}),
-            MethodSpec(name="pick_a_color", arguments=[
-                ArgumentSpec(name="color", type=Color, annotations={}),
-            ], result=None, exceptions=[], annotations={}),
-            MethodSpec(name="int_sizes", arguments=[
-                ArgumentSpec(name="one", type=int, annotations={}),
-                ArgumentSpec(name="two", type=int, annotations={}),
-                ArgumentSpec(name="three", type=int, annotations={}),
-                ArgumentSpec(name="four", type=int, annotations={}),
-            ], result=None, exceptions=[], annotations={}),
+            MethodSpec(
+                name="getName", arguments=[], result=str, exceptions=[], annotations={}
+            ),
+            MethodSpec(
+                name="shutdown",
+                arguments=[],
+                result=None,
+                exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
+                name="invert",
+                arguments=[ArgumentSpec(name="value", type=bool, annotations={})],
+                result=bool,
+                exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
+                name="complex_action",
+                arguments=[
+                    ArgumentSpec(name="first", type=str, annotations={}),
+                    ArgumentSpec(name="second", type=str, annotations={}),
+                    ArgumentSpec(name="third", type=int, annotations={}),
+                    ArgumentSpec(name="fourth", type=str, annotations={"iv": "4"}),
+                ],
+                result=int,
+                exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
+                name="takes_a_list",
+                arguments=[ArgumentSpec(name="ints", type=I32List, annotations={})],
+                result=None,
+                exceptions=[SimpleError],
+                annotations={},
+            ),
+            MethodSpec(
+                name="take_it_easy",
+                arguments=[
+                    ArgumentSpec(name="how", type=int, annotations={}),
+                    ArgumentSpec(name="what", type=easy, annotations={}),
+                ],
+                result=None,
+                exceptions=[],
+                annotations={"a": "b.c.d"},
+            ),
+            MethodSpec(
+                name="pick_a_color",
+                arguments=[ArgumentSpec(name="color", type=Color, annotations={})],
+                result=None,
+                exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
+                name="int_sizes",
+                arguments=[
+                    ArgumentSpec(name="one", type=int, annotations={}),
+                    ArgumentSpec(name="two", type=int, annotations={}),
+                    ArgumentSpec(name="three", type=int, annotations={}),
+                    ArgumentSpec(name="four", type=int, annotations={}),
+                ],
+                result=None,
+                exceptions=[],
+                annotations={},
+            ),
         ]
         self.assertEqual(x.methods, methods)
 

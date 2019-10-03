@@ -305,10 +305,10 @@ class StackHandler(StackServiceInterface):
             raise Exception("WRONG")
 
     async def get_iobuf(self) -> IOBuf:
-        return IOBuf(b'abc')
+        return IOBuf(b"abc")
 
     async def take_iobuf(self, iobuf: IOBuf) -> None:
-        if bytes(iobuf) != b'cba':
+        if bytes(iobuf) != b"cba":
             raise Exception("WRONG")
 
     # currently unsupported by cpp backend:
@@ -316,7 +316,7 @@ class StackHandler(StackServiceInterface):
     #     return IOBuf(b'xyz')
 
     async def take_iobuf_ptr(self, iobuf_ptr: IOBuf) -> None:
-        if bytes(iobuf_ptr) != b'zyx':
+        if bytes(iobuf_ptr) != b"zyx":
             raise Exception("WRONG")
 
 
@@ -337,10 +337,10 @@ class ClientStackServerTests(unittest.TestCase):
                     )
                     self.assertEqual(66, (await client.get_simple()).val)
                     await client.take_simple(simple(val=10))
-                    self.assertEqual(b'abc', bytes(await client.get_iobuf()))
-                    await client.take_iobuf(IOBuf(b'cba'))
+                    self.assertEqual(b"abc", bytes(await client.get_iobuf()))
+                    await client.take_iobuf(IOBuf(b"cba"))
                     # currently unsupported by cpp backend:
                     # self.assertEqual(b'xyz', (await client.get_iobuf_ptr()))
-                    await client.take_iobuf_ptr(IOBuf(b'zyx'))
+                    await client.take_iobuf_ptr(IOBuf(b"zyx"))
 
         loop.run_until_complete(inner_test())

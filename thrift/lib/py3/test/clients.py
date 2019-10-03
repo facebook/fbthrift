@@ -6,30 +6,29 @@ import types
 import unittest
 
 from testing.clients import TestingService
-from testing.types import I32List, Color, easy
-from thrift.py3 import TransportError, get_client, Priority, RpcOptions
+from testing.types import Color, I32List, easy
+from thrift.py3 import Priority, RpcOptions, TransportError, get_client
 from thrift.py3.client import get_proxy_factory, install_proxy_factory
 from thrift.py3.common import WriteHeaders
 
+
 async def bad_client_connect() -> None:
     async with get_client(TestingService, port=1) as client:
-        await client.complex_action('foo', 'bar', 9, 'baz')
+        await client.complex_action("foo", "bar", 9, "baz")
 
 
 class ThriftClientTestProxy:  # noqa: B903
-
     def __init__(self, inner) -> None:  # type: ignore
         self.inner = inner
 
 
 class ClientTests(unittest.TestCase):
-
     def test_annotations(self) -> None:
         annotations = TestingService.annotations
         self.assertIsInstance(annotations, types.MappingProxyType)
-        self.assertTrue(annotations.get('py3.pass_context'))
-        self.assertFalse(annotations.get('NotAnAnnotation'))
-        self.assertEqual(annotations['fun_times'], 'yes')
+        self.assertTrue(annotations.get("py3.pass_context"))
+        self.assertFalse(annotations.get("NotAnAnnotation"))
+        self.assertEqual(annotations["fun_times"], "yes")
         with self.assertRaises(TypeError):
             # You can't set attributes on builtin/extension types
             TestingService.annotations = {}
@@ -39,10 +38,10 @@ class ClientTests(unittest.TestCase):
         client = TestingService()
         # This should not raise an exception
         with self.assertRaises(asyncio.InvalidStateError):
-            client.complex_action(first='foo', second='bar', third=9, fourth='baz')
+            client.complex_action(first="foo", second="bar", third=9, fourth="baz")
 
         with self.assertRaises(asyncio.InvalidStateError):
-            client.complex_action('foo', 'bar', 9, 'baz')
+            client.complex_action("foo", "bar", 9, "baz")
 
     def test_none_arguments(self) -> None:
         client = TestingService()
@@ -89,7 +88,7 @@ class ClientTests(unittest.TestCase):
         loop = asyncio.get_event_loop()
 
         async def test() -> None:
-            async with get_client(TestingService, port=1, headers={'foo': 'bar'}):
+            async with get_client(TestingService, port=1, headers={"foo": "bar"}):
                 pass
 
         loop.run_until_complete(test())
@@ -108,13 +107,13 @@ class ClientTests(unittest.TestCase):
             # This is safe because we do type checks before we touch
             # state checks
             loop.run_until_complete(
-                client.takes_a_list([1, 'b', 'three'])  # type: ignore
+                client.takes_a_list([1, "b", "three"])  # type: ignore
             )
 
     def test_rpc_non_container_types(self) -> None:
         client = TestingService()
         with self.assertRaises(TypeError):
-            client.complex_action(b'foo', 'bar', 'nine', fourth='baz')  # type: ignore
+            client.complex_action(b"foo", "bar", "nine", fourth="baz")  # type: ignore
 
     def test_rpc_enum_args(self) -> None:
         client = TestingService()
@@ -162,17 +161,16 @@ class ClientTests(unittest.TestCase):
 
 
 class RpcOptionsTests(unittest.TestCase):
-
     def test_write_headers(self) -> None:
         options = RpcOptions()
         headers = options.write_headers
         self.assertIsInstance(headers, WriteHeaders)
-        options.set_header('test', 'test')
+        options.set_header("test", "test")
         self.assertTrue(options.write_headers is headers)
-        self.assertIn('test', headers)
-        self.assertEqual(headers['test'], 'test')
+        self.assertIn("test", headers)
+        self.assertEqual(headers["test"], "test")
         with self.assertRaises(TypeError):
-            options.set_header('count', 1)  # type: ignore
+            options.set_header("count", 1)  # type: ignore
 
     def test_timeout(self) -> None:
         options = RpcOptions()

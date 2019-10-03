@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 import unittest
 
-from testing.types import (
-    Integers, ComplexUnion, easy, Color, ReservedUnion, IOBufUnion
-)
-from thrift.py3.types import Union
-from thrift.py3 import deserialize, Protocol
 from folly.iobuf import IOBuf
+from testing.types import Color, ComplexUnion, Integers, IOBufUnion, ReservedUnion, easy
+from thrift.py3 import Protocol, deserialize
+from thrift.py3.types import Union
 
 
 class UnionTests(unittest.TestCase):
-
     def test_hashability(self) -> None:
         hash(Integers())
 
@@ -33,11 +30,11 @@ class UnionTests(unittest.TestCase):
             self.assertIs(type, members[type.name])
 
     def test_deserialize_empty(self) -> None:
-        x = deserialize(Integers, b'{}', Protocol.JSON)
+        x = deserialize(Integers, b"{}", Protocol.JSON)
         self.assertEqual(x.type, Integers.Type.EMPTY)
 
     def test_union_usage(self) -> None:
-        value = hash('i64')
+        value = hash("i64")
         x = Integers(large=value)
         self.assertIsInstance(x, Union)
         self.assertEqual(x.type, x.get_type())

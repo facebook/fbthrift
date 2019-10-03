@@ -1,25 +1,25 @@
 #!/usr/bin/env python3
-import unittest
-import math
 import copy
+import math
+import unittest
 
 from testing.types import (
-    easy,
-    hard,
+    Color,
     Integers,
-    mixed,
+    Optionals,
     Reserved,
     Runtime,
-    numerical,
-    Color,
     SlowCompare,
-    Optionals
+    easy,
+    hard,
+    mixed,
+    numerical,
 )
 
 
 class StructTests(unittest.TestCase):
     def test_copy(self) -> None:
-        x = easy(val=1, an_int=Integers(small=300), name='foo', val_list=[1, 2, 3, 4])
+        x = easy(val=1, an_int=Integers(small=300), name="foo", val_list=[1, 2, 3, 4])
         dif_list = copy.copy(x.val_list)
         self.assertEqual(x.val_list, dif_list)
         dif_int = copy.copy(x.an_int)
@@ -64,9 +64,9 @@ class StructTests(unittest.TestCase):
         self.assertIsNotNone(x.an_int)
 
     def test_call_replace_container(self) -> None:
-        x = Optionals(values=['a', 'b', 'c'])
-        z = x(values=['b', 'c'])
-        self.assertEqual(z.values, ['b', 'c'])
+        x = Optionals(values=["a", "b", "c"])
+        z = x(values=["b", "c"])
+        self.assertEqual(z.values, ["b", "c"])
         y = z(values=None)
         self.assertIsNone(y.values)
 

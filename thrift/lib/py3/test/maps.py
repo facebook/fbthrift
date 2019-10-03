@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 import unittest
+from typing import Dict, List
 
 from testing.types import (
+    LocationMap,
+    StrI32ListMap,
     StrIntMap,
     StrStrIntListMapMap,
-    StrI32ListMap,
-    LocationMap,
     StrStrMap,
 )
-from typing import List, Dict
 
 
 class MapTests(unittest.TestCase):
@@ -29,9 +29,9 @@ class MapTests(unittest.TestCase):
         x = StrStrMap({"test": "value"})
         self.assertEqual(x["test"], "value")
         with self.assertRaises(KeyError):
-            x[5]   # type: ignore
+            x[5]  # type: ignore
         with self.assertRaises(KeyError):
-            x[x]   # type: ignore
+            x[x]  # type: ignore
 
     def test_get(self) -> None:
         x = StrStrMap({"test": "value"})

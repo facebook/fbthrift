@@ -8,7 +8,6 @@ from testing.types import customized
 
 
 class CustomTests(unittest.TestCase):
-
     def test_list_template(self) -> None:
         c = customized(list_template=[1, 2, 3])
         res = []

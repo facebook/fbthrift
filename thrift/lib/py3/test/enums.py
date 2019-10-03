@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 import pickle
 import unittest
+from typing import Type, TypeVar, cast
 
-from thrift.py3 import serialize, deserialize, Protocol, BadEnum, Enum, Flag
-from testing.types import Color, ColorGroups, Kind, Perm, File, BadMembers
-from typing import cast, Type, TypeVar
+from testing.types import BadMembers, Color, ColorGroups, File, Kind, Perm
+from thrift.py3 import BadEnum, Enum, Flag, Protocol, deserialize, serialize
+
 
 _E = TypeVar("_E", bound=Enum)
 
 
 class EnumTests(unittest.TestCase):
-
     def test_bad_member_names(self) -> None:
         self.assertIsInstance(BadMembers.name_, BadMembers)
         self.assertIsInstance(BadMembers.value_, BadMembers)
@@ -20,8 +20,8 @@ class EnumTests(unittest.TestCase):
     def test_normal_enum(self) -> None:
         with self.assertRaises(TypeError):
             # Enums are not ints
-            File(name='/etc/motd', type=8)  # type: ignore
-        x = File(name='/etc', type=Kind.DIR)
+            File(name="/etc/motd", type=8)  # type: ignore
+        x = File(name="/etc", type=Kind.DIR)
         self.assertIsInstance(x.type, Kind)
         self.assertEqual(x.type, Kind.DIR)
         self.assertNotEqual(x.type, Kind.SOCK)
@@ -179,7 +179,7 @@ class EnumTests(unittest.TestCase):
         self.assertEqual(len(lst), len(Color))
         self.assertEqual(len(Color), 3)
         self.assertEqual([Color.red, Color.blue, Color.green], lst)
-        for i, color in enumerate('red blue green'.split(), 0):
+        for i, color in enumerate("red blue green".split(), 0):
             e = Color(i)
             self.assertEqual(e, getattr(Color, color))
             self.assertEqual(e.value, i)
@@ -188,9 +188,9 @@ class EnumTests(unittest.TestCase):
             self.assertIn(e, Color)
             self.assertIs(type(e), Color)
             self.assertIsInstance(e, Color)
-            self.assertEqual(str(e), 'Color.' + color)
+            self.assertEqual(str(e), "Color." + color)
             self.assertEqual(int(e), i)
-            self.assertEqual(repr(e), f'<Color.{color}: {i}>')
+            self.assertEqual(repr(e), f"<Color.{color}: {i}>")
 
     def test_insinstance_Enum(self) -> None:
         self.assertIsInstance(Color.red, Enum)
@@ -198,22 +198,21 @@ class EnumTests(unittest.TestCase):
 
 
 class FlagTests(unittest.TestCase):
-
     def test_flag_enum(self) -> None:
         with self.assertRaises(TypeError):
             # flags are not ints
-            File(name='/etc/motd', permissions=4)  # type: ignore
-        x = File(name='/bin/sh', permissions=Perm.read | Perm.execute)
+            File(name="/etc/motd", permissions=4)  # type: ignore
+        x = File(name="/bin/sh", permissions=Perm.read | Perm.execute)
         self.assertIsInstance(x.permissions, Perm)
         self.assertEqual(x.permissions, Perm.read | Perm.execute)
         self.assertNotIsInstance(2, Perm, "Flags are not ints")
         self.assertEqual(int(x.permissions), 5)
-        x = File(name='')
+        x = File(name="")
         self.assertFalse(x.permissions)
         self.assertIsInstance(x.permissions, Perm)
 
     def test_flag_enum_serialization_roundtrip(self) -> None:
-        x = File(name='/dev/null', type=Kind.CHAR, permissions=Perm.read | Perm.write)
+        x = File(name="/dev/null", type=Kind.CHAR, permissions=Perm.read | Perm.write)
 
         y = deserialize(File, serialize(x))
         self.assertEqual(x, y)

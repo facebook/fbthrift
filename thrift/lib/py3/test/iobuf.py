@@ -7,17 +7,9 @@ from iobuf.types import Moo
 
 class IOBufTests(unittest.TestCase):
     def test_get_set_struct_field(self) -> None:
-        m = Moo(
-            val=3,
-            ptr=IOBuf(b"abcdef"),
-            buf=IOBuf(b"xyzzy"),
-            opt_ptr=IOBuf(b"pqr"),
-        )
+        m = Moo(val=3, ptr=IOBuf(b"abcdef"), buf=IOBuf(b"xyzzy"), opt_ptr=IOBuf(b"pqr"))
         m2 = Moo(
-            val=3,
-            ptr=IOBuf(b"abcdef"),
-            buf=IOBuf(b"xyzzy"),
-            opt_ptr=IOBuf(b"pqr"),
+            val=3, ptr=IOBuf(b"abcdef"), buf=IOBuf(b"xyzzy"), opt_ptr=IOBuf(b"pqr")
         )
         self.assertEqual(m, m2)
         assert m.ptr is not None

@@ -7,19 +7,19 @@
 # thrift C++ sources and, from the installation logic embedded into Python's
 # setuptools.
 
-from setuptools import setup, Extension
-from setuptools.command.build_ext import build_ext as _build_ext
 from distutils.file_util import copy_file
+
+from setuptools import Extension, setup
+from setuptools.command.build_ext import build_ext as _build_ext
 
 
 class copy_cmake_built_libs_build_ext(_build_ext):
-
     def build_extension(self, ext):
         copy_file(
             ext.sources[0],
             self.get_ext_fullpath(ext.name),
             verbose=self.verbose,
-            dry_run=self.dry_run
+            dry_run=self.dry_run,
         )
 
 
@@ -33,10 +33,12 @@ extensions = [
     Extension("thrift.py3.client", sources=["thrift/py3/client.so"]),
     Extension("thrift.py3.server", sources=["thrift/py3/server.so"]),
 ]
-setup(name="thrift",
-      cmdclass={'build_ext': copy_cmake_built_libs_build_ext},
-      version='0.0.1',
-      packages=['folly', 'thrift', 'thrift.py3'],
-      package_data={"": ['*.pxd', '*.h', '__init__.pyx']},
-      zip_safe=False,
-      ext_modules=extensions)
+setup(
+    name="thrift",
+    cmdclass={"build_ext": copy_cmake_built_libs_build_ext},
+    version="0.0.1",
+    packages=["folly", "thrift", "thrift.py3"],
+    package_data={"": ["*.pxd", "*.h", "__init__.pyx"]},
+    zip_safe=False,
+    ext_modules=extensions,
+)
