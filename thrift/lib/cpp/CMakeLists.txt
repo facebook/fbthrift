@@ -115,12 +115,11 @@ target_link_libraries(
 
 add_library(
   thrift
-
-  VirtualProfiling.cpp
+  INTERFACE
 )
 target_link_libraries(
   thrift
-  PUBLIC
+  INTERFACE
     async
     concurrency
     protocol

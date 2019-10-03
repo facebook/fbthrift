@@ -1,4 +1,6 @@
 /*
+ * Copyright 2019-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -135,44 +137,5 @@
   #define T_LOG_OPER(format_string,...)
 #endif
 
-
-/**
- * T_GLOBAL_DEBUG_VIRTUAL = 0 or unset: normal operation,
- *                                      virtual call debug messages disabled
- * T_GLOBAL_DEBUG_VIRTUAL = 1:          log a debug messages whenever an
- *                                      avoidable virtual call is made
- * T_GLOBAL_DEBUG_VIRTUAL = 2:          record detailed info that can be
- *                                      printed by calling
- *                                      apache::thrift::profile_print_info()
- */
-#ifndef T_GLOBAL_DEBUG_VIRTUAL
-#define T_GLOBAL_DEBUG_VIRTUAL 0
-#endif
-
-#if T_GLOBAL_DEBUG_VIRTUAL > 1
-  #define T_VIRTUAL_CALL()                                                \
-    ::apache::thrift::profile_virtual_call(typeid(*this))
-  #define T_GENERIC_PROTOCOL(template_class, generic_prot, specific_prot) \
-    do {                                                                  \
-      if (!(specific_prot)) {                                             \
-        ::apache::thrift::profile_generic_protocol(                       \
-            typeid(*template_class), typeid(*generic_prot));              \
-      }                                                                   \
-    } while (0)
-#elif T_GLOBAL_DEBUG_VIRTUAL == 1
-  #define T_VIRTUAL_CALL()                                                \
-    fprintf(stderr,"[%s,%d] virtual call\n", __FILE__, __LINE__)
-  #define T_GENERIC_PROTOCOL(template_class, generic_prot, specific_prot) \
-    do {                                                                  \
-      if (!(specific_prot)) {                                             \
-        fprintf(stderr,                                                   \
-                "[%s,%d] failed to cast to specific protocol type\n",     \
-                __FILE__, __LINE__);                                      \
-      }                                                                   \
-    } while (0)
-#else
-  #define T_VIRTUAL_CALL()
-  #define T_GENERIC_PROTOCOL(template_class, generic_prot, specific_prot)
-#endif
 
 #endif // #ifndef THRIFT_TLOGGING_H

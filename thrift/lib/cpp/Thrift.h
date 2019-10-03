@@ -215,16 +215,6 @@ class TLibraryException : public TException {
   std::string message_;
 };
 
-#if T_GLOBAL_DEBUG_VIRTUAL > 1
-void profile_virtual_call(const std::type_info& info);
-void profile_generic_protocol(
-    const std::type_info& template_type,
-    const std::type_info& prot_type);
-void profile_print_info(FILE* f);
-void profile_print_info();
-void profile_write_pprof(FILE* gen_calls_f, FILE* virtual_calls_f);
-#endif
-
 } // namespace thrift
 } // namespace apache
 

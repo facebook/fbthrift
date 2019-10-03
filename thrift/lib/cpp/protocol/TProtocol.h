@@ -261,14 +261,12 @@ class TProtocol {
   virtual void setVersion_virt(const int8_t version) = 0;
 
   void setVersion(const int8_t version) {
-    T_VIRTUAL_CALL();
     return setVersion_virt(version);
   }
 
   virtual ::apache::thrift::reflection::Schema* getSchema_virt() = 0;
 
   ::apache::thrift::reflection::Schema* getSchema() {
-    T_VIRTUAL_CALL();
     return getSchema_virt();
   }
 
@@ -337,22 +335,18 @@ class TProtocol {
       const std::string& name,
       const TMessageType messageType,
       const int32_t seqid) {
-    T_VIRTUAL_CALL();
     return writeMessageBegin_virt(name, messageType, seqid);
   }
 
   uint32_t writeMessageEnd() {
-    T_VIRTUAL_CALL();
     return writeMessageEnd_virt();
   }
 
   uint32_t writeStructBegin(const char* name) {
-    T_VIRTUAL_CALL();
     return writeStructBegin_virt(name);
   }
 
   uint32_t writeStructEnd() {
-    T_VIRTUAL_CALL();
     return writeStructEnd_virt();
   }
 
@@ -360,103 +354,83 @@ class TProtocol {
       const char* name,
       const TType fieldType,
       const int16_t fieldId) {
-    T_VIRTUAL_CALL();
     return writeFieldBegin_virt(name, fieldType, fieldId);
   }
 
   uint32_t writeFieldEnd() {
-    T_VIRTUAL_CALL();
     return writeFieldEnd_virt();
   }
 
   uint32_t writeFieldStop() {
-    T_VIRTUAL_CALL();
     return writeFieldStop_virt();
   }
 
   uint32_t
   writeMapBegin(const TType keyType, const TType valType, const uint32_t size) {
-    T_VIRTUAL_CALL();
     return writeMapBegin_virt(keyType, valType, size);
   }
 
   uint32_t writeMapEnd() {
-    T_VIRTUAL_CALL();
     return writeMapEnd_virt();
   }
 
   uint32_t writeListBegin(const TType elemType, const uint32_t size) {
-    T_VIRTUAL_CALL();
     return writeListBegin_virt(elemType, size);
   }
 
   uint32_t writeListEnd() {
-    T_VIRTUAL_CALL();
     return writeListEnd_virt();
   }
 
   uint32_t writeSetBegin(const TType elemType, const uint32_t size) {
-    T_VIRTUAL_CALL();
     return writeSetBegin_virt(elemType, size);
   }
 
   uint32_t writeSetEnd() {
-    T_VIRTUAL_CALL();
     return writeSetEnd_virt();
   }
 
   uint32_t writeBool(const bool value) {
-    T_VIRTUAL_CALL();
     return writeBool_virt(value);
   }
 
   uint32_t writeByte(const int8_t byte) {
-    T_VIRTUAL_CALL();
     return writeByte_virt(byte);
   }
 
   uint32_t writeI16(const int16_t i16) {
-    T_VIRTUAL_CALL();
     return writeI16_virt(i16);
   }
 
   uint32_t writeI32(const int32_t i32) {
-    T_VIRTUAL_CALL();
     return writeI32_virt(i32);
   }
 
   uint32_t writeI64(const int64_t i64) {
-    T_VIRTUAL_CALL();
     return writeI64_virt(i64);
   }
 
   uint32_t writeDouble(const double dub) {
-    T_VIRTUAL_CALL();
     return writeDouble_virt(dub);
   }
 
   uint32_t writeFloat(const float flt) {
-    T_VIRTUAL_CALL();
     return writeFloat_virt(flt);
   }
 
   uint32_t writeString(const std::string& str) {
-    T_VIRTUAL_CALL();
     return writeString_virt(str);
   }
 
   uint32_t writeString(const folly::fbstring& str) {
-    T_VIRTUAL_CALL();
     return writeString_virt(str.toStdString());
   }
 
   uint32_t writeBinary(const std::string& str) {
-    T_VIRTUAL_CALL();
     return writeBinary_virt(str);
   }
 
   uint32_t writeBinary(const folly::fbstring& str) {
-    T_VIRTUAL_CALL();
     return writeBinary_virt(str.toStdString());
   }
 
@@ -532,38 +506,31 @@ class TProtocol {
       std::string& name,
       TMessageType& messageType,
       int32_t& seqid) {
-    T_VIRTUAL_CALL();
     return readMessageBegin_virt(name, messageType, seqid);
   }
 
   uint32_t readMessageEnd() {
-    T_VIRTUAL_CALL();
     return readMessageEnd_virt();
   }
 
   void setNextStructType(uint64_t reflection_id) {
-    T_VIRTUAL_CALL();
     return setNextStructType_virt(reflection_id);
   }
 
   uint32_t readStructBegin(std::string& name) {
-    T_VIRTUAL_CALL();
     return readStructBegin_virt(name);
   }
 
   uint32_t readStructEnd() {
-    T_VIRTUAL_CALL();
     return readStructEnd_virt();
   }
 
   uint32_t
   readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId) {
-    T_VIRTUAL_CALL();
     return readFieldBegin_virt(name, fieldType, fieldId);
   }
 
   uint32_t readFieldEnd() {
-    T_VIRTUAL_CALL();
     return readFieldEnd_virt();
   }
 
@@ -572,92 +539,74 @@ class TProtocol {
       TType& valType,
       uint32_t& size,
       bool& sizeUnknown) {
-    T_VIRTUAL_CALL();
     return readMapBegin_virt(keyType, valType, size, sizeUnknown);
   }
 
   bool peekMap() {
-    T_VIRTUAL_CALL();
     return peekMap_virt();
   }
 
   uint32_t readMapEnd() {
-    T_VIRTUAL_CALL();
     return readMapEnd_virt();
   }
 
   uint32_t readListBegin(TType& elemType, uint32_t& size, bool& sizeUnknown) {
-    T_VIRTUAL_CALL();
     return readListBegin_virt(elemType, size, sizeUnknown);
   }
 
   bool peekList() {
-    T_VIRTUAL_CALL();
     return peekList_virt();
   }
 
   uint32_t readListEnd() {
-    T_VIRTUAL_CALL();
     return readListEnd_virt();
   }
 
   uint32_t readSetBegin(TType& elemType, uint32_t& size, bool& sizeUnknown) {
-    T_VIRTUAL_CALL();
     return readSetBegin_virt(elemType, size, sizeUnknown);
   }
 
   bool peekSet() {
-    T_VIRTUAL_CALL();
     return peekSet_virt();
   }
 
   uint32_t readSetEnd() {
-    T_VIRTUAL_CALL();
     return readSetEnd_virt();
   }
 
   uint32_t readBool(bool& value) {
-    T_VIRTUAL_CALL();
     return readBool_virt(value);
   }
 
   uint32_t readByte(int8_t& byte) {
-    T_VIRTUAL_CALL();
     return readByte_virt(byte);
   }
 
   uint32_t readI16(int16_t& i16) {
-    T_VIRTUAL_CALL();
     return readI16_virt(i16);
   }
 
   uint32_t readI32(int32_t& i32) {
-    T_VIRTUAL_CALL();
     return readI32_virt(i32);
   }
 
   uint32_t readI64(int64_t& i64) {
-    T_VIRTUAL_CALL();
     return readI64_virt(i64);
   }
 
   uint32_t readDouble(double& dub) {
-    T_VIRTUAL_CALL();
     return readDouble_virt(dub);
   }
 
   uint32_t readFloat(float& flt) {
-    T_VIRTUAL_CALL();
     return readFloat_virt(flt);
   }
 
   uint32_t readString(std::string& str) {
-    T_VIRTUAL_CALL();
     return readString_virt(str);
   }
 
   uint32_t readString(folly::fbstring& str) {
-    T_VIRTUAL_CALL();
     std::string data;
     uint32_t ret = readString_virt(data);
     str = data;
@@ -665,12 +614,10 @@ class TProtocol {
   }
 
   uint32_t readBinary(std::string& str) {
-    T_VIRTUAL_CALL();
     return readBinary_virt(str);
   }
 
   uint32_t readBinary(folly::fbstring& str) {
-    T_VIRTUAL_CALL();
     std::string data;
     uint32_t ret = readBinary_virt(data);
     str = data;
@@ -691,7 +638,6 @@ class TProtocol {
    * to work with std::vector<bool>.
    */
   uint32_t readBool(std::vector<bool>::reference value) {
-    T_VIRTUAL_CALL();
     return readBool_virt(value);
   }
 
@@ -699,7 +645,6 @@ class TProtocol {
    * Method to arbitrarily skip over data.
    */
   uint32_t skip(TType type) {
-    T_VIRTUAL_CALL();
     return skip_virt(type);
   }
   virtual uint32_t skip_virt(TType type) {
