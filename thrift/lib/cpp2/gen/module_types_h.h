@@ -54,17 +54,6 @@ namespace thrift {
 
 namespace detail {
 
-template <typename, typename S, typename A>
-struct has_isset_field_ : std::false_type {};
-template <typename S, typename A>
-struct has_isset_field_<
-    folly::void_t<decltype(
-        A::__fbthrift_access_field(std::declval<S&>().__isset))>,
-    S,
-    A> : std::true_type {};
-template <typename S, typename A>
-using has_isset_field = has_isset_field_<void, S, A>;
-
 template <typename A, typename Ref>
 struct wrapped_struct_argument {
   static_assert(std::is_reference<Ref>::value, "not a reference");
@@ -91,18 +80,28 @@ FOLLY_ERASE wrapped_struct_argument<A, T&&> wrap_struct_argument(T&& value) {
   return wrapped_struct_argument<A, T&&>(static_cast<T&&>(value));
 }
 
-template <
-    typename A,
-    typename S,
-    std::enable_if_t<!has_isset_field<S, A>::value, int> = 0>
-FOLLY_ERASE void mark_isset(S&, bool) {}
-template <
-    typename A,
-    typename S,
-    std::enable_if_t<has_isset_field<S, A>::value, int> = 0>
-FOLLY_ERASE void mark_isset(S& s, bool value) {
-  A::__fbthrift_access_field(s.__isset) = value;
-}
+template <typename A, bool>
+struct assign_isset_;
+template <typename A>
+struct assign_isset_<A, false> {
+  template <typename S>
+  FOLLY_ERASE constexpr bool operator()(S&, bool b) const noexcept {
+    return b;
+  }
+};
+template <typename A>
+struct assign_isset_<A, true> {
+  template <typename S>
+  FOLLY_ERASE constexpr auto operator()(S& s, bool b) const
+      noexcept(noexcept(A::__fbthrift_access_field(s.__isset) = b))
+          -> decltype(A::__fbthrift_access_field(s.__isset) = b) {
+    return A::__fbthrift_access_field(s.__isset) = b;
+  }
+};
+template <typename A, typename S>
+using assign_isset = assign_isset_<
+    A,
+    folly::is_invocable<assign_isset_<A, true>, S&, bool>::value>;
 
 template <typename F, typename T>
 FOLLY_ERASE void assign_struct_field(F& f, T&& t) {
@@ -123,7 +122,7 @@ FOLLY_ERASE constexpr S make_constant(
     wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
-  void(_{0, (void(mark_isset<A>(s, true)), 0)...});
+  void(_{0, (void(assign_isset<A, S>{}(s, true)), 0)...});
   void(_{0,
          (void(assign_struct_field(
               A::__fbthrift_access_field(s), static_cast<T>(arg.ref))),
