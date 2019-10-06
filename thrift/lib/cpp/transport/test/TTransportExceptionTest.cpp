@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/transport/TServerSocket.h>
 #include <thrift/lib/cpp/transport/TSocket.h>
 
 #include <folly/portability/GTest.h>

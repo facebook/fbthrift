@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef _THRIFT_TRANSPORT_TSOCKET_H_
 #define _THRIFT_TRANSPORT_TSOCKET_H_ 1
 
@@ -124,9 +123,6 @@ public:
 
   /**
    * Constructor to create socket from raw UNIX handle.
-   *
-   * This is used by the TServerSocket class to create a TSocket from file
-   * descriptors returned by accept().
    */
   explicit TSocket(int socket);
 
