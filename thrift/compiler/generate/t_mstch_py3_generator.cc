@@ -20,6 +20,7 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/lib/py3/util.h>
 
 namespace apache {
 namespace thrift {
@@ -42,25 +43,6 @@ mstch::array createStringArray(const std::vector<std::string>& values) {
     });
   }
   return a;
-}
-
-template <class T>
-std::string get_rename(const T& elem) {
-  // Reserved Cython / Python keywords that are not blocked by thrift grammer
-  static const std::unordered_set<std::string> keywords = {
-      "DEF",   "ELIF",  "ELSE", "False",   "IF",    "None",     "True",
-      "async", "await", "cdef", "cimport", "cpdef", "cppclass", "ctypedef",
-      "def",   "elif",  "else", "from",    "if",    "nonlocal",
-  };
-  const std::map<std::string, std::string>& annotations = elem.annotations_;
-  const auto& it = annotations.find("py3.name");
-  if (it != annotations.end()) {
-    return it->second;
-  }
-  if (keywords.find(elem.get_name()) != keywords.end()) {
-    return elem.get_name() + "_";
-  }
-  return elem.get_name();
 }
 
 template <class T>
@@ -688,7 +670,7 @@ class mstch_py3_field : public mstch_field {
       ELEMENT_POSITION const pos,
       int32_t index)
       : mstch_field(field, generators, cache, pos, index),
-        pyName_{get_rename<t_field>(*field)},
+        pyName_{py3::get_py3_name(*field)},
         cppName_{get_cppname<t_field>(*field)},
         hasOptionalsFlag_{containsInParsedOptions(cache.get(), "optionals")} {
     register_methods(
@@ -950,7 +932,7 @@ class mstch_py3_enum_value : public mstch_enum_value {
   }
 
   mstch::node pyName() {
-    return get_rename<t_enum_value>(*enm_value_);
+    return py3::get_py3_name(*enm_value_);
   }
 
   mstch::node cppName() {
@@ -958,7 +940,7 @@ class mstch_py3_enum_value : public mstch_enum_value {
   }
 
   mstch::node enumSafeName() {
-    auto pyName = get_rename<t_enum_value>(*enm_value_);
+    auto pyName = py3::get_py3_name(*enm_value_);
     if (pyName == "name" || pyName == "value") {
       return pyName + "_";
     }
