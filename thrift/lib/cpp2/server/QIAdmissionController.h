@@ -165,6 +165,9 @@ class QIAdmissionController : public AdmissionController {
       const std::string& prefix,
       const std::unordered_map<std::string, double>& metrics,
       uint32_t count) override {
+    // acquire the mutex to avoid other threads udpating them while reporting
+    std::lock_guard<std::mutex> guard(mutex_);
+
     // Except `integral_ratio`, all of the aggregations below use sum,
     // because the requests are dispatched to each admission controller, thus
     // things like max are actually computed on a per controller basis.
