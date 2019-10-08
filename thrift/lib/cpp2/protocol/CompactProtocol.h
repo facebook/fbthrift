@@ -42,10 +42,10 @@ using folly::io::QueueAppender;
 namespace detail {
 namespace compact {
 
-static const int8_t COMPACT_PROTOCOL_VERSION = static_cast<int8_t>(0x02);
+static const int8_t COMPACT_PROTOCOL_VERSION = 0x02;
 static const int32_t VERSION_2 = 0x82020000;
-static const int8_t PROTOCOL_ID = static_cast<int8_t>(0x82);
-static const int8_t TYPE_MASK = static_cast<int8_t>(0xE0);
+static const int8_t PROTOCOL_ID = int8_t(0x82);
+static const int8_t TYPE_MASK = int8_t(0xE0);
 static const int32_t TYPE_SHIFT_AMOUNT = 5;
 
 // Simple stack with an inline buffer for built-in types
