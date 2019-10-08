@@ -200,11 +200,11 @@ uint8_t writeVarint(Cursor& c, T value) {
 }
 
 inline int32_t zigzagToI32(uint32_t n) {
-  return (n >> 1) ^ -(n & 1);
+  return (n & 1) ? ~(n >> 1) : (n >> 1);
 }
 
 inline int64_t zigzagToI64(uint64_t n) {
-  return (n >> 1) ^ -(n & 1);
+  return (n & 1) ? ~(n >> 1) : (n >> 1);
 }
 
 constexpr inline uint32_t i32ToZigzag(const int32_t n) {

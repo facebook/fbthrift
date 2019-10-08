@@ -46,7 +46,7 @@ inline std::uint32_t zigzagEncode(std::uint32_t n) {
 }
 
 inline std::uint32_t zigzagDecode(std::uint32_t n) {
-  return (n >> 1) ^ -(n & 1);
+  return (n & 1) ? ~(n >> 1) : (n >> 1);
 }
 
 template <ChunkRepr repr>
