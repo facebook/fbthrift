@@ -188,13 +188,13 @@ class RocketClientChannel final : public ClientChannel {
       std::unique_ptr<folly::IOBuf> buf,
       RequestClientCallback::Ptr cb);
 
-  template <typename ClientCallback, typename F>
-  void sendRequestStreaming(
+  template <typename CallbackPtr>
+  bool preSendValidation(
+      RequestRpcMetadata& metadata,
       RpcOptions& rpcOptions,
-      std::unique_ptr<folly::IOBuf> buf,
-      std::shared_ptr<transport::THeader> header,
-      ClientCallback* clientCallback,
-      F method);
+      std::unique_ptr<folly::IOBuf>& buf,
+      CallbackPtr& cb,
+      std::chrono::milliseconds& firstResponseTimeout);
 
   folly::fibers::FiberManager& getFiberManager() const {
     DCHECK(evb_);
