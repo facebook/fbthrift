@@ -180,10 +180,14 @@ void RocketClientChannel::sendRequestStream(
   getFiberManager().addTask(
       [rclient = rclient_,
        firstResponseTimeout,
+       initialRequestN = rpcOptions.getChunkBufferSize(),
        clientCallback,
        payload = rocket::makePayload(metadata, std::move(buf))]() mutable {
         return rclient->sendRequestStream(
-            std::move(payload), firstResponseTimeout, clientCallback);
+            std::move(payload),
+            firstResponseTimeout,
+            initialRequestN,
+            clientCallback);
       });
 }
 

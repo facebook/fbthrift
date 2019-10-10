@@ -664,6 +664,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamNewApiBasic) {
       kNumRequestedPayloads));
 
   RpcOptions rpcOptions;
+  rpcOptions.setChunkBufferSize(0);
   TestClientCallback clientCallback(evb, kNumRequestedPayloads);
 
   channel->sendRequestStream(

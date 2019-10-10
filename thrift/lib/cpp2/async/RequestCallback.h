@@ -524,7 +524,7 @@ class RpcOptions {
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
-  int32_t chunkBufferSize_{0};
+  int32_t chunkBufferSize_{100};
 
   // For sending and receiving headers.
   std::map<std::string, std::string> writeHeaders_;

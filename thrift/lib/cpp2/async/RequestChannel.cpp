@@ -49,6 +49,7 @@ void RequestChannel::sendRequestAsync(
           sendRequestStream(
               rpcOptions, std::move(buf), std::move(header), streamCallback);
         } else {
+          rpcOptions.setChunkBufferSize(0);
           sendRequestStream(
               rpcOptions,
               std::move(buf),
@@ -90,6 +91,7 @@ void RequestChannel::sendRequestAsync(
             sendRequestStream(
                 rpcOptions, std::move(buf), std::move(header), streamCallback);
           } else {
+            rpcOptions.setChunkBufferSize(0);
             sendRequestStream(
                 rpcOptions,
                 std::move(buf),

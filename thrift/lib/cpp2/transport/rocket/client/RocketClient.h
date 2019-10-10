@@ -90,6 +90,7 @@ class RocketClient : public folly::DelayedDestruction,
   void sendRequestStream(
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
+      int32_t initialRequestN,
       StreamClientCallback* clientCallback);
 
   void sendRequestChannel(
@@ -280,6 +281,7 @@ class RocketClient : public folly::DelayedDestruction,
   void sendRequestStreamChannel(
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
+      int32_t initialRequestN,
       CallbackType* clientCallback);
 
   void freeStream(StreamId streamId);

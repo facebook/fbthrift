@@ -170,6 +170,19 @@ TEST_P(StreamingTest, ClientStreamBridge) {
           });
       EXPECT_EQ(10, expected);
     }
+
+    {
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setChunkBufferSize(0);
+      auto bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
+
+      size_t expected = 0;
+      std::move(bufferedStream)
+          .subscribeInline([&expected](folly::Try<int32_t>&& next) {
+            EXPECT_EQ(expected++, *next);
+          });
+      EXPECT_EQ(10, expected);
+    }
   });
 }
 

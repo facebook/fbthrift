@@ -352,9 +352,13 @@ folly::Try<void> RocketClient::sendRequestFnfSync(
 void RocketClient::sendRequestStream(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
+    int32_t initialRequestN,
     StreamClientCallback* clientCallback) {
   sendRequestStreamChannel(
-      std::move(request), firstResponseTimeout, clientCallback);
+      std::move(request),
+      firstResponseTimeout,
+      initialRequestN,
+      clientCallback);
 }
 
 void RocketClient::sendRequestChannel(
@@ -362,7 +366,7 @@ void RocketClient::sendRequestChannel(
     std::chrono::milliseconds firstResponseTimeout,
     ChannelClientCallback* clientCallback) {
   sendRequestStreamChannel(
-      std::move(request), firstResponseTimeout, clientCallback);
+      std::move(request), firstResponseTimeout, 0, clientCallback);
 }
 
 void RocketClient::sendRequestSink(
@@ -370,23 +374,24 @@ void RocketClient::sendRequestSink(
     std::chrono::milliseconds firstResponseTimeout,
     SinkClientCallback* clientCallback) {
   sendRequestStreamChannel(
-      std::move(request), firstResponseTimeout, clientCallback);
+      std::move(request), firstResponseTimeout, 1, clientCallback);
 }
 
 template <typename ClientCallback>
 void RocketClient::sendRequestStreamChannel(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
+    int32_t initialRequestN,
     ClientCallback* clientCallback) {
   using Frame = std::conditional_t<
       std::is_same<StreamClientCallback, ClientCallback>::value,
       RequestStreamFrame,
       RequestChannelFrame>;
 
-  // Sink will only expect an initial response and final response from server
-  // to client, so 2 creadits will be all for client sending to server
-  constexpr int32_t initialRequestN =
-      std::is_same<SinkClientCallback, ClientCallback>::value ? 2 : 1;
+  // One extra credit for initial response.
+  if (initialRequestN < std::numeric_limits<int32_t>::max()) {
+    initialRequestN += 1;
+  }
 
   DCHECK(folly::fibers::onFiber());
   const auto streamId = makeStreamId();

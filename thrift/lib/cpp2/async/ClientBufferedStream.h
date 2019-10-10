@@ -40,11 +40,6 @@ class ClientBufferedStream {
       streamBridge->cancel();
     };
 
-    if (!bufferSize_) {
-      bufferSize_ = std::numeric_limits<int32_t>::max();
-    }
-
-    streamBridge->requestN(bufferSize_);
     int32_t outstanding = bufferSize_;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
@@ -68,6 +63,11 @@ class ClientBufferedStream {
 
     while (true) {
       if (queue.empty()) {
+        if (outstanding == 0) {
+          streamBridge->requestN(1);
+          ++outstanding;
+        }
+
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
           callback.wait();
