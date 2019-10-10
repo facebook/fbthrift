@@ -158,7 +158,13 @@ class ping_args:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -233,7 +239,13 @@ class ping_result:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -308,7 +320,13 @@ class getRandomData_args:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -397,7 +415,13 @@ class getRandomData_result:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -505,7 +529,13 @@ class hasDataById_args:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -614,7 +644,13 @@ class hasDataById_result:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -722,7 +758,13 @@ class getDataById_args:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -831,7 +873,13 @@ class getDataById_result:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -949,7 +997,13 @@ class putDataById_args:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -1053,7 +1107,13 @@ class putDataById_result:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -1152,7 +1212,13 @@ class lobDataById_args:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)

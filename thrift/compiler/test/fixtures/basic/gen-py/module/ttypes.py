@@ -137,7 +137,13 @@ class MyStruct:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -151,7 +157,11 @@ class MyStruct:
     if 'myEnum' in json_obj and json_obj['myEnum'] is not None:
       self.myEnum = json_obj['myEnum']
       if not self.myEnum in MyEnum._VALUES_TO_NAMES:
-        raise TProtocolException(TProtocolException.INVALID_DATA, 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.myEnum)
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % self.myEnum
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
 
   def __repr__(self):
     L = []
@@ -230,7 +240,13 @@ class MyDataItem:
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     json_obj = json
     if is_text:
       json_obj = loads(json)
@@ -400,7 +416,11 @@ class MyUnion(object):
     if 'myEnum' in obj:
       myEnum = obj['myEnum']
       if not myEnum in MyEnum._VALUES_TO_NAMES:
-        raise TProtocolException(TProtocolException.INVALID_DATA, 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % myEnum)
+        msg = 'Integer value ''%s'' is not a recognized value of enum type MyEnum' % myEnum
+        if relax_enum_validation:
+            warnings.warn(msg)
+        else:
+            raise TProtocolException(TProtocolException.INVALID_DATA, msg)
       self.set_myEnum(myEnum)
     if 'myStruct' in obj:
       myStruct = MyStruct()

@@ -25,6 +25,23 @@ struct StructContainingRequiredList {
   1 : required list<i32> data;
 }
 
+enum EnumZeroToTen {
+  VALUE_0 = 0,
+  VALUE_1 = 1,
+  VALUE_2 = 2,
+  VALUE_3 = 3,
+  VALUE_5 = 5,
+  VALUE_6 = 6,
+  VALUE_7 = 7,
+  VALUE_8 = 8,
+  VALUE_9 = 9,
+  VALUE_10 = 10,
+}
+
+struct StructContainingEnum {
+  1 : EnumZeroToTen data;
+}
+
 typedef i64 int64
 struct JsonTypedefs {
  1: map<int64, int64> x,

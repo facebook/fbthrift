@@ -21,13 +21,13 @@ from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
-import json
 import unittest
 
-from thrift.transport.TTransport import TMemoryBuffer
 from JsonReaderTest.ttypes import StructContainingOptionalList
 from JsonReaderTest.ttypes import StructContainingRequiredList
+from JsonReaderTest.ttypes import StructContainingEnum
 from thrift.protocol.TProtocol import TProtocolException
+
 
 class TestJSONReader(unittest.TestCase):
 
@@ -43,6 +43,28 @@ class TestJSONReader(unittest.TestCase):
                     "Should have failed with required field missing")
         except TProtocolException:
             pass
+
+    def testUnrecognizedKwargs(self):
+        with self.assertRaises(ValueError) as ex:
+            struct = StructContainingRequiredList()
+            struct.readFromJson('{ "data" : null }', bad_kwarg=True)
+
+        self.assertIn("bad_kwarg", str(ex.exception))
+
+    def testUnrecognizedEnum(self):
+        with self.assertRaises(TProtocolException) as ex:
+            struct = StructContainingEnum()
+            struct.readFromJson('{ "data": 100}')
+
+        self.assertIn(
+            "100 is not a recognized value of enum type EnumZeroToTen",
+            str(ex.exception),
+        )
+
+    def testUnrecognizedEnumRelaxedValidation(self):
+        struct = StructContainingEnum()
+        struct.readFromJson('{ "data": 100}', relax_enum_validation=True)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -500,9 +500,13 @@ void t_py_generator::generate_json_enum(
               << "._VALUES_TO_NAMES:" << endl;
   indent_up();
   indent(out)
-      << "raise TProtocolException(TProtocolException.INVALID_DATA,"
-      << " 'Integer value ''%s'' is not a recognized value of enum type "
-      << type_name(tenum) << "' % " << prefix_thrift << ")" << endl;
+      << "msg = 'Integer value ''%s'' is not a recognized value of enum type "
+      << type_name(tenum) << "' % " << prefix_thrift << endl;
+  indent(out) << "if relax_enum_validation:" << endl;
+  indent(out) << "    warnings.warn(msg)" << endl;
+  indent(out) << "else:" << endl;
+  indent(out) << "    raise TProtocolException("
+              << "TProtocolException.INVALID_DATA, msg)" << endl;
   indent_down();
 }
 
@@ -706,8 +710,18 @@ void t_py_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) << "def readFromJson(self, json, is_text=True):" << endl;
+  indent(out) << "def readFromJson(self, json, is_text=True, **kwargs):"
+              << endl;
   indent_up();
+  indent(out)
+      << "relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))"
+      << endl;
+  indent(out) << "if kwargs:" << endl;
+  indent(out) << "    extra_kwargs = ', '.join(kwargs.keys())" << endl;
+  indent(out) << "    raise ValueError(" << endl;
+  indent(out) << "        'Unexpected keyword arguments: ' + extra_kwargs"
+              << endl;
+  indent(out) << "    )" << endl;
   indent(out) << "json_obj = json" << endl;
   indent(out) << "if is_text:" << endl;
   indent_up();
