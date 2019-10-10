@@ -42,10 +42,15 @@ cdef extern from "src/gen-cpp2/RederivedService.h" namespace "::py3::simple":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cRederivedServiceClientWrapper] move(unique_ptr[cRederivedServiceClientWrapper])
 
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+  cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+    pass
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::py3::simple":
   cdef cppclass cSimpleServiceClientWrapper "::py3::simple::SimpleServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[int32_t] get_five(cRpcOptions, )
     cFollyFuture[int32_t] add_five(cRpcOptions, 

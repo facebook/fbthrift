@@ -31,10 +31,15 @@ cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServiceClientWrapper] move(unique_ptr[cMyServiceClientWrapper])
 
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+  cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+    pass
+
 cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cMyServiceClientWrapper "::cpp2::MyServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[cFollyUnit] query(cRpcOptions, 
       _module_types.cMyStruct arg_s,

@@ -49,6 +49,11 @@ class ClientWrapper {
       headerChannel->setPersistentHeader(key, value);
     }
   }
+
+  void addEventHandler(
+      const std::shared_ptr<apache::thrift::TProcessorEventHandler>& handler) {
+    async_client_->addEventHandler(handler);
+  }
 };
 
 } // namespace py3

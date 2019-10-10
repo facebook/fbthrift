@@ -10,6 +10,9 @@ from testing.types import Color, I32List, easy
 from thrift.py3 import Priority, RpcOptions, TransportError, get_client
 from thrift.py3.client import get_proxy_factory, install_proxy_factory
 from thrift.py3.common import WriteHeaders
+from thrift.py3.test.client_event_handler.helper import (
+    TestHelper as ClientEventHandlerTestHelper,
+)
 
 
 async def bad_client_connect() -> None:
@@ -158,6 +161,21 @@ class ClientTests(unittest.TestCase):
         # Should be able to unhook a factory
         install_proxy_factory(None)
         self.assertEqual(get_proxy_factory(), None)
+
+    def test_client_event_handler(self) -> None:
+        loop = asyncio.get_event_loop()
+        test_helper = ClientEventHandlerTestHelper()
+
+        async def test() -> None:
+            self.assertFalse(test_helper.is_handler_called())
+            async with test_helper.get_client(TestingService, port=1) as cli:
+                try:
+                    await cli.getName()
+                except TransportError:
+                    pass
+                self.assertTrue(test_helper.is_handler_called())
+
+        loop.run_until_complete(test())
 
 
 class RpcOptionsTests(unittest.TestCase):

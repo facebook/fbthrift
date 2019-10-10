@@ -28,10 +28,15 @@ cdef extern from "src/gen-cpp2/Raiser.h" namespace "::cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cRaiserClientWrapper] move(unique_ptr[cRaiserClientWrapper])
 
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+  cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+    pass
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cRaiserClientWrapper "::cpp2::RaiserClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[cFollyUnit] doBland(cRpcOptions, )
     cFollyFuture[cFollyUnit] doRaise(cRpcOptions, )

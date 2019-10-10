@@ -28,10 +28,15 @@ cdef extern from "src/gen-cpp2/TestService.h" namespace "::cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cTestServiceClientWrapper] move(unique_ptr[cTestServiceClientWrapper])
 
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+  cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+    pass
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cTestServiceClientWrapper "::cpp2::TestServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[int64_t] init(cRpcOptions, 
       int64_t arg_int1,)

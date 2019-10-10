@@ -55,6 +55,12 @@ cdef class Client:
         cdef string cvalue = <bytes> value.encode('utf-8')
         deref(self._client).setPersistentHeader(ckey, cvalue)
 
+    cdef add_event_handler(Client self, const shared_ptr[cTProcessorEventHandler]& handler):
+        if not self._client:
+            self._deferred_event_handlers.push_back(handler)
+            return
+        deref(self._client).addEventHandler(handler)
+
     def __dealloc__(Client self):
         if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
@@ -70,6 +76,10 @@ cdef class Client:
         for key, value in self._deferred_headers.items():
             self.set_persistent_header(key, value)
         self._deferred_headers = None
+        for handler in self._deferred_event_handlers:
+            self.add_event_handler(handler)
+        self._deferred_headers = None
+
         return self
 
     def __aexit__(Client self, *exc):

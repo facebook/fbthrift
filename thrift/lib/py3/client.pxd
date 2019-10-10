@@ -8,10 +8,11 @@ from folly cimport (
     cFollyUnit,
 )
 from libc.stdint cimport uint16_t, uint32_t, int64_t
-from libcpp.memory cimport unique_ptr
+from libcpp.memory cimport unique_ptr, shared_ptr
 from libcpp.string cimport string
 from libcpp.typeinfo cimport type_info
 from libcpp.map cimport map
+from libcpp.vector cimport vector
 from cpython.ref cimport PyObject
 from libcpp cimport bool
 
@@ -61,13 +62,19 @@ cdef extern from "<utility>" namespace "std" nogil:
 cdef extern from "thrift/lib/py3/client_wrapper.h" namespace "thrift::py3":
     cdef cppclass cClientWrapper "thrift::py3::ClientWrapper":
         void setPersistentHeader(const string& key, const string& value)
+        void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
         cFollyFuture[cFollyUnit] disconnect()
+
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+    cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+        pass
 
 cdef class Client:
     cdef object __weakref__
     cdef object _context_entered
     cdef object _connect_future
     cdef object _deferred_headers
+    cdef vector[shared_ptr[cTProcessorEventHandler]] _deferred_event_handlers
     cdef cFollyExecutor* _executor
     cdef unique_ptr[cClientWrapper] _client
     cdef inline _check_connect_future(self):
@@ -80,6 +87,7 @@ cdef class Client:
 
     cdef const type_info* _typeid(self)
     cdef bind_client(self, cRequestChannel_ptr&& channel)
+    cdef add_event_handler(self, const shared_ptr[cTProcessorEventHandler]& handler)
 
 cdef void requestchannel_callback(
         cFollyTry[cRequestChannel_ptr]&& result,

@@ -28,10 +28,15 @@ cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "::cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cNestedContainersClientWrapper] move(unique_ptr[cNestedContainersClientWrapper])
 
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+  cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+    pass
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cNestedContainersClientWrapper "::cpp2::NestedContainersClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[cFollyUnit] mapList(cRpcOptions, 
       cmap[int32_t,vector[int32_t]] arg_foo,)

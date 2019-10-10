@@ -29,10 +29,15 @@ cdef extern from "src/gen-cpp2/SomeService.h" namespace "::apache::thrift::fixtu
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cSomeServiceClientWrapper] move(unique_ptr[cSomeServiceClientWrapper])
 
+cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::thrift":
+  cdef cppclass cTProcessorEventHandler "apache::thrift::TProcessorEventHandler":
+    pass
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::apache::thrift::fixtures::types":
   cdef cppclass cSomeServiceClientWrapper "::apache::thrift::fixtures::types::SomeServiceClientWrapper":
     cFollyFuture[cFollyUnit] disconnect()
     void setPersistentHeader(const string& key, const string& value)
+    void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     cFollyFuture[_module_types.std_unordered_map[int32_t,string]] bounce_map(cRpcOptions, 
       _module_types.std_unordered_map[int32_t,string] arg_m,)
