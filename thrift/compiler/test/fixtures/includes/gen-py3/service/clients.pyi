@@ -23,16 +23,6 @@ _MyServiceT = _typing.TypeVar('_MyServiceT', bound='MyService')
 
 class MyService(thrift.py3.client.Client):
 
-    async def __aenter__(self: _MyServiceT) -> _MyServiceT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def query(
         self,
         s: _module_types.MyStruct,

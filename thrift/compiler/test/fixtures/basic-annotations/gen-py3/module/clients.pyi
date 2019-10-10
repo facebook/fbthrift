@@ -20,16 +20,6 @@ _MyServiceT = _typing.TypeVar('_MyServiceT', bound='MyService')
 
 class MyService(thrift.py3.client.Client):
 
-    async def __aenter__(self: _MyServiceT) -> _MyServiceT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def ping(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
@@ -78,16 +68,6 @@ _MyServicePrioParentT = _typing.TypeVar('_MyServicePrioParentT', bound='MyServic
 
 class MyServicePrioParent(thrift.py3.client.Client):
 
-    async def __aenter__(self: _MyServicePrioParentT) -> _MyServicePrioParentT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def ping(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
@@ -104,16 +84,6 @@ _MyServicePrioChildT = _typing.TypeVar('_MyServicePrioChildT', bound='MyServiceP
 
 
 class MyServicePrioChild(MyServicePrioParent):
-
-    async def __aenter__(self: _MyServicePrioChildT) -> _MyServicePrioChildT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def pang(
         self,

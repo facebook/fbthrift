@@ -4,16 +4,9 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-from libcpp.memory cimport shared_ptr
 cimport thrift.py3.client
 
 
-from module.clients_wrapper cimport cSomeServiceClientWrapper
-
 cdef class SomeService(thrift.py3.client.Client):
-    cdef shared_ptr[cSomeServiceClientWrapper] _module_SomeService_client
-
-    cdef _module_SomeService_set_client(SomeService self, shared_ptr[cSomeServiceClientWrapper] c_obj)
-
-    cdef _module_SomeService_reset_client(SomeService self)
+    pass
 

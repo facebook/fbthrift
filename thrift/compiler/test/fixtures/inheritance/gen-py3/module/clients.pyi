@@ -20,16 +20,6 @@ _MyRootT = _typing.TypeVar('_MyRootT', bound='MyRoot')
 
 class MyRoot(thrift.py3.client.Client):
 
-    async def __aenter__(self: _MyRootT) -> _MyRootT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def do_root(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
@@ -42,16 +32,6 @@ _MyNodeT = _typing.TypeVar('_MyNodeT', bound='MyNode')
 
 class MyNode(MyRoot):
 
-    async def __aenter__(self: _MyNodeT) -> _MyNodeT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def do_mid(
         self,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
@@ -63,16 +43,6 @@ _MyLeafT = _typing.TypeVar('_MyLeafT', bound='MyLeaf')
 
 
 class MyLeaf(MyNode):
-
-    async def __aenter__(self: _MyLeafT) -> _MyLeafT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
 
     async def do_leaf(
         self,

@@ -1,3 +1,4 @@
+import sys
 cimport cython
 from thrift.py3.exceptions cimport create_py_exception
 from thrift.py3.common import Protocol
@@ -7,7 +8,7 @@ from libcpp.string cimport string
 from libc.stdint cimport uint64_t
 from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
-from folly cimport cFollyTry, cFollyPromise
+from folly cimport cFollyTry, cFollyPromise, cFollyUnit
 from folly.executor cimport get_executor
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
@@ -35,12 +36,67 @@ cdef class Client:
     """
     def __cinit__(Client self):
         self._executor = get_executor()
+        self._deferred_headers = {}
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
 
     cdef const type_info* _typeid(self):
         return NULL
 
     cdef bind_client(Client self, cRequestChannel_ptr&& channel):
         destroyInEventBaseThread(move(channel))
+
+    def set_persistent_header(Client self, str key, str value):
+        if not self._client:
+            self._deferred_headers[key] = value
+            return
+
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._client).setPersistentHeader(ckey, cvalue)
+
+    def __dealloc__(Client self):
+        if self._connect_future and self._connect_future.done() and not self._connect_future.exception():
+            print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
+            if self._client:
+                deref(self._client).disconnect().get()
+        self._client.reset()
+
+    async def __aenter__(Client self):
+        await asyncio.shield(self._connect_future)
+        if self._context_entered:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        self._context_entered = True
+        for key, value in self._deferred_headers.items():
+            self.set_persistent_header(key, value)
+        self._deferred_headers = None
+        return self
+
+    def __aexit__(Client self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        userdata = (self, future)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._client).disconnect(),
+            closed_client_callback,
+            <PyObject *>userdata  # So we keep client alive until disconnect
+        )
+        # To break any future usage of this client
+        # Also to prevent dealloc from trying to disconnect in a blocking way.
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        return asyncio.shield(future)
+
+cdef void closed_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata,
+):
+    client, pyfuture = <object> userdata
+    pyfuture.set_result(None)
 
 
 async def _no_op():

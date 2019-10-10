@@ -4,16 +4,9 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-from libcpp.memory cimport shared_ptr
 cimport thrift.py3.client
 
 
-from module.clients_wrapper cimport cNestedContainersClientWrapper
-
 cdef class NestedContainers(thrift.py3.client.Client):
-    cdef shared_ptr[cNestedContainersClientWrapper] _module_NestedContainers_client
-
-    cdef _module_NestedContainers_set_client(NestedContainers self, shared_ptr[cNestedContainersClientWrapper] c_obj)
-
-    cdef _module_NestedContainers_reset_client(NestedContainers self)
+    pass
 

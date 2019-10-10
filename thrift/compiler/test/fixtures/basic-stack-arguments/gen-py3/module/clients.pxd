@@ -4,24 +4,12 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-from libcpp.memory cimport shared_ptr
 cimport thrift.py3.client
 
 
-from module.clients_wrapper cimport cMyServiceClientWrapper
-from module.clients_wrapper cimport cMyServiceFastClientWrapper
-
 cdef class MyService(thrift.py3.client.Client):
-    cdef shared_ptr[cMyServiceClientWrapper] _module_MyService_client
-
-    cdef _module_MyService_set_client(MyService self, shared_ptr[cMyServiceClientWrapper] c_obj)
-
-    cdef _module_MyService_reset_client(MyService self)
+    pass
 
 cdef class MyServiceFast(thrift.py3.client.Client):
-    cdef shared_ptr[cMyServiceFastClientWrapper] _module_MyServiceFast_client
-
-    cdef _module_MyServiceFast_set_client(MyServiceFast self, shared_ptr[cMyServiceFastClientWrapper] c_obj)
-
-    cdef _module_MyServiceFast_reset_client(MyServiceFast self)
+    pass
 

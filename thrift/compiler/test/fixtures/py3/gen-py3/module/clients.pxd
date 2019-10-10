@@ -4,32 +4,15 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-from libcpp.memory cimport shared_ptr
 cimport thrift.py3.client
 
 
-from module.clients_wrapper cimport cSimpleServiceClientWrapper
-from module.clients_wrapper cimport cDerivedServiceClientWrapper
-from module.clients_wrapper cimport cRederivedServiceClientWrapper
-
 cdef class SimpleService(thrift.py3.client.Client):
-    cdef shared_ptr[cSimpleServiceClientWrapper] _module_SimpleService_client
-
-    cdef _module_SimpleService_set_client(SimpleService self, shared_ptr[cSimpleServiceClientWrapper] c_obj)
-
-    cdef _module_SimpleService_reset_client(SimpleService self)
+    pass
 
 cdef class DerivedService(SimpleService):
-    cdef shared_ptr[cDerivedServiceClientWrapper] _module_DerivedService_client
-
-    cdef _module_DerivedService_set_client(DerivedService self, shared_ptr[cDerivedServiceClientWrapper] c_obj)
-
-    cdef _module_DerivedService_reset_client(DerivedService self)
+    pass
 
 cdef class RederivedService(DerivedService):
-    cdef shared_ptr[cRederivedServiceClientWrapper] _module_RederivedService_client
-
-    cdef _module_RederivedService_set_client(RederivedService self, shared_ptr[cRederivedServiceClientWrapper] c_obj)
-
-    cdef _module_RederivedService_reset_client(RederivedService self)
+    pass
 

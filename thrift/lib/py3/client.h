@@ -26,6 +26,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/py3/client_wrapper.h>
 
 namespace thrift {
 namespace py3 {
@@ -44,10 +45,10 @@ typedef std::unique_ptr<
  * U is the py3 clientwraper class
  */
 template <class T, class U>
-std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr&& channel) {
+std::unique_ptr<ClientWrapper> makeClientWrapper(RequestChannel_ptr&& channel) {
   std::shared_ptr<apache::thrift::RequestChannel> channel_ = std::move(channel);
   auto client = std::make_unique<T>(channel_);
-  return std::make_shared<U>(std::move(client), std::move(channel_));
+  return std::make_unique<U>(std::move(client), std::move(channel_));
 }
 
 void destroyInEventBaseThread(RequestChannel_ptr&& ptr) {

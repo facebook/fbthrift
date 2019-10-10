@@ -4,10 +4,11 @@ from folly cimport (
     cFollyExceptionWrapper,
     cFollyFuture,
     cFollyExecutor,
-    cFollyTry
+    cFollyTry,
+    cFollyUnit,
 )
 from libc.stdint cimport uint16_t, uint32_t, int64_t
-from libcpp.memory cimport shared_ptr
+from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
 from libcpp.typeinfo cimport type_info
 from libcpp.map cimport map
@@ -51,11 +52,16 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
         PROTOCOL_TYPES,
     )
     cdef void destroyInEventBaseThread(cRequestChannel_ptr)
-    cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)
+    cdef unique_ptr[cClientWrapper] makeClientWrapper[T, U](cRequestChannel_ptr channel)
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef cRequestChannel_ptr move(cRequestChannel_ptr)
     cdef string move_string "std::move"(string)
+
+cdef extern from "thrift/lib/py3/client_wrapper.h" namespace "thrift::py3":
+    cdef cppclass cClientWrapper "thrift::py3::ClientWrapper":
+        void setPersistentHeader(const string& key, const string& value)
+        cFollyFuture[cFollyUnit] disconnect()
 
 cdef class Client:
     cdef object __weakref__
@@ -63,6 +69,7 @@ cdef class Client:
     cdef object _connect_future
     cdef object _deferred_headers
     cdef cFollyExecutor* _executor
+    cdef unique_ptr[cClientWrapper] _client
     cdef inline _check_connect_future(self):
         if not self._connect_future.done():
             # This is actually using the import in the generated client

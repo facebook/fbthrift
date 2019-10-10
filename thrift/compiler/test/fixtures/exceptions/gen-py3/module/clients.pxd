@@ -4,16 +4,9 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
-from libcpp.memory cimport shared_ptr
 cimport thrift.py3.client
 
 
-from module.clients_wrapper cimport cRaiserClientWrapper
-
 cdef class Raiser(thrift.py3.client.Client):
-    cdef shared_ptr[cRaiserClientWrapper] _module_Raiser_client
-
-    cdef _module_Raiser_set_client(Raiser self, shared_ptr[cRaiserClientWrapper] c_obj)
-
-    cdef _module_Raiser_reset_client(Raiser self)
+    pass
 

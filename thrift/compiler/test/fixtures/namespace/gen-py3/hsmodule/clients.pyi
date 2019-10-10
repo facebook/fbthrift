@@ -20,16 +20,6 @@ _HsTestServiceT = _typing.TypeVar('_HsTestServiceT', bound='HsTestService')
 
 class HsTestService(thrift.py3.client.Client):
 
-    async def __aenter__(self: _HsTestServiceT) -> _HsTestServiceT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def init(
         self,
         int1: int,

@@ -22,16 +22,6 @@ _ExtendTestServiceT = _typing.TypeVar('_ExtendTestServiceT', bound='ExtendTestSe
 
 class ExtendTestService(_hsmodule_clients.HsTestService):
 
-    async def __aenter__(self: _ExtendTestServiceT) -> _ExtendTestServiceT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def check(
         self,
         struct1: _hsmodule_types.HsFoo,

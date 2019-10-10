@@ -20,16 +20,6 @@ _NestedContainersT = _typing.TypeVar('_NestedContainersT', bound='NestedContaine
 
 class NestedContainers(thrift.py3.client.Client):
 
-    async def __aenter__(self: _NestedContainersT) -> _NestedContainersT: ...
-    async def __aexit__(
-        self,
-        exc_type: _typing.Optional[_typing.Type[BaseException]],
-        exc: _typing.Optional[BaseException],
-        tb: _typing.Optional[TracebackType],
-    ) -> _typing.Optional[bool]: ...
-
-    def set_persistent_header(self, key: str, value: str) -> None: ...
-
     async def mapList(
         self,
         foo: _typing.Mapping[int, _typing.Sequence[int]],
