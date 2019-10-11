@@ -186,7 +186,6 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %token tok_byte
 %token tok_string
 %token tok_binary
-%token tok_slist
 %token tok_i16
 %token tok_i32
 %token tok_i64
