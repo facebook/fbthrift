@@ -82,6 +82,7 @@ class ClientBufferedStream {
       {
         auto& payload = queue.front();
         if (!payload.hasValue() && !payload.hasException()) {
+          onNextTry({});
           break;
         }
         auto value = decode_(std::move(payload));
@@ -106,6 +107,34 @@ class ClientBufferedStream {
     return toAsyncGeneratorImpl(std::move(*this));
   }
 #endif // FOLLY_HAS_COROUTINES
+
+  template <typename Callback>
+  auto subscribeExTry(folly::Executor::KeepAlive<> e, Callback&& onNextTry) && {
+    auto c = new Continuation<std::decay_t<Callback>>(
+        e,
+        std::forward<Callback>(onNextTry),
+        std::move(streamBridge_),
+        decode_,
+        bufferSize_ ? bufferSize_ : std::numeric_limits<int32_t>::max());
+    Subscription sub(c->state_);
+    e->add([c]() { (*c)(); });
+    return sub;
+  }
+
+  template <typename Callback>
+  auto subscribeExCallback(folly::Executor::KeepAlive<> e, Callback&& cb) && {
+    return std::move(*this).subscribeExTry(
+        std::move(e),
+        [cb = std::forward<Callback>(cb)](folly::Try<T>&& t) mutable {
+          if (t.hasValue()) {
+            cb(std::move(t.value()));
+          } else if (t.hasException()) {
+            cb(std::move(t.exception()));
+          } else {
+            cb();
+          }
+        });
+  }
 
  private:
 #if FOLLY_HAS_COROUTINES
@@ -162,6 +191,145 @@ class ClientBufferedStream {
     }
   }
 #endif // FOLLY_HAS_COROUTINES
+
+  struct SharedState {
+    explicit SharedState(detail::ClientStreamBridge::Ptr sb)
+        : streamBridge(std::move(sb)) {}
+    folly::fibers::Baton baton;
+    detail::ClientStreamBridge::Ptr streamBridge;
+  };
+  class Subscription {
+    explicit Subscription(std::shared_ptr<SharedState> state)
+        : state_(std::move(state)) {}
+
+   public:
+    Subscription(Subscription&& s) {
+      state_ = std::move(s.state_);
+    }
+    ~Subscription() {
+      if (state_) {
+        LOG(FATAL) << "Subscription has to be joined/detached";
+      }
+    }
+
+    void cancel() {
+      state_->streamBridge->cancel();
+    }
+
+    void detach() && {
+      state_.reset();
+    }
+
+    void join() && {
+      std::exchange(state_, nullptr)->baton.wait();
+    }
+
+    folly::SemiFuture<folly::Unit> futureJoin() && {
+      auto* batonPtr = &state_->baton;
+      return folly::futures::wait(std::shared_ptr<folly::fibers::Baton>(
+          std::exchange(state_, nullptr), batonPtr));
+    }
+
+   private:
+    std::shared_ptr<SharedState> state_;
+    friend class ClientBufferedStream;
+  };
+
+  template <typename OnNextTry>
+  // Ownership model: caller owns until wait returns true.
+  // Argument is released ("leaked") when wait() succeeds. It is transferred
+  // to the new execution frame in consume(). If wait() returns false its
+  // argument is not released and the caller frees it as normal. If wait() is
+  // interrupted by cancel() the memory is freed in canceled()
+  class Continuation : public apache::thrift::detail::ClientStreamConsumer {
+   public:
+    Continuation(
+        folly::Executor::KeepAlive<> e,
+        OnNextTry onNextTry,
+        detail::ClientStreamBridge::Ptr streamBridge,
+        folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
+        int32_t bufferSize)
+        : e_(e),
+          onNextTry_(std::move(onNextTry)),
+          decode_(decode),
+          bufferSize_(bufferSize),
+          state_(std::make_shared<SharedState>(std::move(streamBridge))) {
+      state_->streamBridge->requestN(bufferSize_);
+      outstanding_ = bufferSize_;
+    }
+
+    ~Continuation() {
+      state_->baton.post();
+    }
+
+    // takes ownerhsip of pointer on success
+    static bool wait(std::unique_ptr<Continuation>& cb) {
+      bool ret = cb->state_->streamBridge->wait(cb.get());
+      if (ret) {
+        cb.release();
+      }
+      return ret;
+    }
+
+    void consume() override {
+      e_->add([this]() { (*this)(); });
+    }
+
+    void canceled() override {
+      delete this;
+    }
+
+    void operator()() noexcept {
+      std::unique_ptr<Continuation> cb(this);
+      apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
+
+      while (!state_->streamBridge->isCanceled()) {
+        if (queue.empty()) {
+          if (Continuation::wait(cb)) {
+            // The filler will schedule us back on the executor once the queue
+            // is refilled so we return here
+            return;
+          }
+          // Otherwise messages are now available (or we've been cancelled)
+          queue = state_->streamBridge->getMessages();
+          if (queue.empty()) {
+            // we've been cancelled
+            return;
+          }
+        }
+
+        {
+          auto& payload = queue.front();
+          if (!payload.hasValue() && !payload.hasException()) {
+            onNextTry_({});
+            return;
+          }
+          auto value = decode_(std::move(payload));
+          queue.pop();
+          const auto hasException = value.hasException();
+          onNextTry_(std::move(value));
+          if (hasException) {
+            return;
+          }
+        }
+
+        outstanding_--;
+        if (outstanding_ <= bufferSize_ / 2) {
+          state_->streamBridge->requestN(bufferSize_ - outstanding_);
+          outstanding_ = bufferSize_;
+        }
+      }
+    }
+
+   private:
+    folly::Executor::KeepAlive<> e_;
+    OnNextTry onNextTry_;
+    folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&);
+    int32_t bufferSize_;
+    int32_t outstanding_;
+    std::shared_ptr<SharedState> state_;
+    friend class ClientBufferedStream;
+  };
 
   detail::ClientStreamBridge::Ptr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;

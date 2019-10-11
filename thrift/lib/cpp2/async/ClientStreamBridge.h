@@ -69,6 +69,9 @@ class ClientStreamBridge : public TwoWayBridge<
     clientPush(-1);
     clientClose();
   }
+  bool isCanceled() {
+    return isClientClosed();
+  }
 
   void consume() {
     DCHECK(serverExecutor_);

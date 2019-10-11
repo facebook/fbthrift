@@ -166,6 +166,9 @@ class AtomicQueue {
             return true;
           }
           break;
+        case Type::CLOSED:
+          consumer->canceled();
+          return true;
         case Type::TAIL:
           return false;
         default:
@@ -193,6 +196,11 @@ class AtomicQueue {
     };
   }
 
+  bool isClosed() {
+    auto type = static_cast<Type>(storage_ & kTypeMask);
+    return type == Type::CLOSED;
+  }
+
   MessageQueue getMessages() {
     auto storage = storage_.exchange(
         static_cast<intptr_t>(Type::EMPTY), std::memory_order_acquire);
@@ -201,6 +209,8 @@ class AtomicQueue {
     switch (type) {
       case Type::TAIL:
         return makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
+      case Type::CLOSED:
+        return MessageQueue();
       default:
         folly::assume_unreachable();
     };
@@ -275,6 +285,10 @@ class TwoWayBridge {
     clientQueue_.close();
   }
 
+  bool isClientClosed() {
+    return clientQueue_.isClosed();
+  }
+
   // These should only be called from the server thread
 
   void serverPush(ClientMessage&& value) {
@@ -291,6 +305,10 @@ class TwoWayBridge {
 
   void serverClose() {
     serverQueue_.close();
+  }
+
+  bool isServerClosed() {
+    return serverQueue_.isClosed();
   }
 
  private:
