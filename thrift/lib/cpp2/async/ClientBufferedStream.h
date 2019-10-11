@@ -104,7 +104,10 @@ class ClientBufferedStream {
 
 #if FOLLY_HAS_COROUTINES
   folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
-    return toAsyncGeneratorImpl(std::move(*this));
+    return toAsyncGeneratorImpl(
+        std::move(streamBridge_),
+        bufferSize_ ? bufferSize_ : std::numeric_limits<int32_t>::max(),
+        decode_);
   }
 #endif // FOLLY_HAS_COROUTINES
 
@@ -139,14 +142,16 @@ class ClientBufferedStream {
  private:
 #if FOLLY_HAS_COROUTINES
   static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
-      ClientBufferedStream me) {
+      detail::ClientStreamBridge::Ptr streamBridge,
+      int32_t bufferSize,
+      folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
     SCOPE_EXIT {
-      me.streamBridge_->cancel();
+      if (streamBridge) {
+        streamBridge->cancel();
+      }
     };
 
-    int32_t bufferSize =
-        me.bufferSize_ ? me.bufferSize_ : std::numeric_limits<int32_t>::max();
-    me.streamBridge_->requestN(bufferSize);
+    streamBridge->requestN(bufferSize);
     int32_t outstanding = bufferSize;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
@@ -157,19 +162,30 @@ class ClientBufferedStream {
       }
 
       void canceled() override {
-        std::terminate();
+        baton.post();
       }
 
       folly::coro::Baton baton;
     };
 
     while (true) {
+      if ((co_await folly::coro::co_current_cancellation_token)
+              .isCancellationRequested()) {
+        throw folly::OperationCancelled();
+      }
       if (queue.empty()) {
         ReadyCallback callback;
-        if (me.streamBridge_->wait(&callback)) {
+        if (streamBridge->wait(&callback)) {
+          folly::CancellationCallback cb{
+              co_await folly::coro::co_current_cancellation_token,
+              [&] { std::exchange(streamBridge, nullptr)->cancel(); }};
           co_await callback.baton;
         }
-        queue = me.streamBridge_->getMessages();
+        queue = streamBridge->getMessages();
+        if (queue.empty()) {
+          // we've been cancelled
+          break;
+        }
       }
 
       {
@@ -177,7 +193,7 @@ class ClientBufferedStream {
         if (!payload.hasValue() && !payload.hasException()) {
           break;
         }
-        auto value = me.decode_(std::move(payload));
+        auto value = decode(std::move(payload));
         queue.pop();
         // yield value or rethrow exception
         co_yield std::move(value).value();
@@ -185,7 +201,7 @@ class ClientBufferedStream {
 
       outstanding--;
       if (outstanding <= bufferSize / 2) {
-        me.streamBridge_->requestN(bufferSize - outstanding);
+        streamBridge->requestN(bufferSize - outstanding);
         outstanding = bufferSize;
       }
     }

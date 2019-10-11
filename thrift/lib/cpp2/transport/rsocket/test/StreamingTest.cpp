@@ -203,6 +203,19 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       }());
       EXPECT_EQ(10, expected);
     }
+
+    // test cancellation
+    {
+      folly::CancellationSource cancelSource;
+      auto gen = bufferedClient->sync_range(0, 10).toAsyncGenerator();
+      folly::coro::blockingWait(folly::coro::co_withCancellation(
+          cancelSource.getToken(), [&]() mutable -> folly::coro::Task<void> {
+            auto next = co_await gen.next();
+            EXPECT_EQ(0, *next);
+            cancelSource.requestCancellation();
+            EXPECT_THROW(co_await gen.next(), folly::OperationCancelled);
+          }()));
+    }
 #endif // FOLLY_HAS_COROUTINES
 
     {
