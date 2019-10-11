@@ -166,25 +166,25 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   }
 
 #ifndef _WIN32
-  /**
-   * Returns the process ID of the connection when it was first created. The
-   * connection may have terminated since that time, so the PID may no
-   * longer necessarily map to the correct process.
-   * Returns pid_t for Unix domain sockets and nullopt for TCP.
-   * Also returns nullopt on Windows.
-   *
-   * On macOS, this is the effective pid. On Linux, there is no distinction.
-   */
-  folly::Optional<pid_t> getPeerEffectivePid() const {
-    return peerCred_.getEffectivePid();
-  }
+  struct PeerEffectiveCreds {
+    pid_t pid;
+    uid_t uid;
+    gid_t gid;
+  };
 
   /**
-   * Return the effective user ID of the process on the other end of a Unix
-   * domain socket connection. Returns nullopt for TCP connections.
+   * Returns the connecting process ID, effective user ID, and effective user ID
+   * of the unix socket peer. The connection may have terminated since that
+   * time, so the PID may no longer map to a running process or the same process
+   * that initially connected. Returns nullopt for TCP, on Windows, and if there
+   * was an error retrieving the peer creds. In that case, call
+   * `getPeerCredError` for the reason.
+   *
+   * On macOS, the pid field contains the effective pid. On Linux, there is no
+   * distinction.
    */
-  folly::Optional<uid_t> getPeerEffectiveUid() const {
-    return peerCred_.getEffectiveUid();
+  folly::Optional<PeerEffectiveCreds> getPeerEffectiveCreds() const {
+    return peerCred_.getPeerEffectiveCreds();
   }
 #endif
 
@@ -213,6 +213,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     // domain socket), and unsupported platform.
     using StatusOrPid = int;
 #endif
+
     /**
      * pid_t is guaranteed to be signed, so reserve non-positive values as
      * sentinels that indicate credential validity.
@@ -237,12 +238,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     static PeerCred queryFromSocket(folly::NetworkSocket socket);
 
 #ifndef _WIN32
-    folly::Optional<pid_t> getEffectivePid() const {
-      return hasCredentials() ? folly::make_optional(pid_) : folly::none;
-    }
-
-    folly::Optional<uid_t> getEffectiveUid() const {
-      return hasCredentials() ? folly::make_optional(uid_) : folly::none;
+    folly::Optional<PeerEffectiveCreds> getPeerEffectiveCreds() const {
+      return hasCredentials()
+          ? folly::make_optional(PeerEffectiveCreds{pid_, uid_, gid_})
+          : folly::none;
     }
 #endif
 
@@ -256,7 +255,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     explicit PeerCred(Validity validity) : pid_{validity} {}
 
 #ifndef _WIN32
-    explicit PeerCred(pid_t pid, uid_t uid) : pid_{pid}, uid_{uid} {}
+    explicit PeerCred(pid_t pid, uid_t uid, gid_t gid)
+        : pid_{pid}, uid_{uid}, gid_{gid} {}
 #endif
 
     bool hasCredentials() const {
@@ -266,8 +266,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     StatusOrPid pid_ = Validity::NotInitialized;
 #ifndef _WIN32
     uid_t uid_ = 0;
-    // If desired, adding gid_t here would be trivial, at the cost of another
-    // four bytes.
+    gid_t gid_ = 0;
 #endif
   };
 

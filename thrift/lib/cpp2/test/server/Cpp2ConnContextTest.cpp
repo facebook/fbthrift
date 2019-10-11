@@ -31,8 +31,7 @@ std::pair<int, int> createSocketPair() {
 
 TEST(Cpp2ConnContextTest, pid_and_uid_start_uninitialized) {
   Cpp2ConnContext ctx;
-  EXPECT_EQ(folly::none, ctx.getPeerEffectivePid());
-  EXPECT_EQ(folly::none, ctx.getPeerEffectiveUid());
+  EXPECT_EQ(folly::none, ctx.getPeerEffectiveCreds());
 }
 
 TEST(Cpp2ConnContextTest, getPeerCredentials) {
@@ -43,6 +42,8 @@ TEST(Cpp2ConnContextTest, getPeerCredentials) {
   auto socket2 =
       folly::AsyncSocket::newSocket(&evb, folly::NetworkSocket{sockets.second});
   Cpp2ConnContext ctx(/*address=*/nullptr, /*transport=*/socket1.get());
-  EXPECT_EQ(getpid(), ctx.getPeerEffectivePid());
-  EXPECT_EQ(geteuid(), ctx.getPeerEffectiveUid());
+  auto creds = ctx.getPeerEffectiveCreds().value();
+  EXPECT_EQ(getpid(), creds.pid);
+  EXPECT_EQ(geteuid(), creds.uid);
+  EXPECT_EQ(getegid(), creds.gid);
 }

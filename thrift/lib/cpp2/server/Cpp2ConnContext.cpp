@@ -46,9 +46,9 @@ Cpp2ConnContext::PeerCred Cpp2ConnContext::PeerCred::queryFromSocket(
   struct ucred cred = {};
   socklen_t len = sizeof(cred);
   if (getsockopt(socket.toFd(), SOL_SOCKET, SO_PEERCRED, &cred, &len)) {
-    return PeerCred{ErrorRetrieving, errnoToUid(errno)};
+    return PeerCred{ErrorRetrieving, errnoToUid(errno), 0};
   } else {
-    return PeerCred{cred.pid, cred.uid};
+    return PeerCred{cred.pid, cred.uid, cred.gid};
   }
 #elif defined(LOCAL_PEERCRED) // macOS
   struct xucred cred = {};
@@ -60,16 +60,16 @@ Cpp2ConnContext::PeerCred Cpp2ConnContext::PeerCred::queryFromSocket(
           LOCAL_PEERCRED,
           &cred,
           &(len = sizeof(cred)))) {
-    return PeerCred{ErrorRetrieving, errnoToUid(errno)};
+    return PeerCred{ErrorRetrieving, errnoToUid(errno), 0};
   } else if (getsockopt(
                  socket.toFd(),
                  SOL_LOCAL,
                  LOCAL_PEEREPID,
                  &epid,
                  &(len = sizeof(epid)))) {
-    return PeerCred{ErrorRetrieving, errnoToUid(errno)};
+    return PeerCred{ErrorRetrieving, errnoToUid(errno), 0};
   } else {
-    return PeerCred{epid, cred.cr_uid};
+    return PeerCred{epid, cred.cr_uid, cred.cr_gid};
   }
 #else
   (void)socket;
