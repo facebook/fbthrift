@@ -179,19 +179,6 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       EXPECT_EQ(10, expected);
     }
 
-    {
-      apache::thrift::RpcOptions rpcOptions;
-      rpcOptions.setChunkBufferSize(0);
-      auto bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
-
-      size_t expected = 0;
-      std::move(bufferedStream)
-          .subscribeInline([&expected](folly::Try<int32_t>&& next) {
-            EXPECT_EQ(expected++, *next);
-          });
-      EXPECT_EQ(10, expected);
-    }
-
 #if FOLLY_HAS_COROUTINES
     {
       size_t expected = 0;
@@ -315,6 +302,49 @@ TEST_P(StreamingTest, ClientStreamBridge) {
               })
           .detach();
       baton.wait();
+      EXPECT_EQ(10, expected);
+    }
+
+    // 0 buffersize
+    {
+      apache::thrift::RpcOptions rpcOptions;
+      rpcOptions.setChunkBufferSize(0);
+      auto bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
+
+      size_t expected = 0;
+      std::move(bufferedStream)
+          .subscribeInline([&expected](folly::Try<int32_t>&& next) {
+            if (next.hasValue()) {
+              EXPECT_EQ(expected++, *next);
+            }
+          });
+      EXPECT_EQ(10, expected);
+
+#if FOLLY_HAS_COROUTINES
+      bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
+
+      expected = 0;
+      auto gen = std::move(bufferedStream).toAsyncGenerator();
+      folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+        while (auto next = co_await gen.next()) {
+          EXPECT_EQ(expected++, *next);
+        }
+      }());
+      EXPECT_EQ(10, expected);
+#endif // FOLLY_HAS_COROUTINES
+
+      bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
+
+      expected = 0;
+      std::move(bufferedStream)
+          .subscribeExTry(
+              &executor_,
+              [&expected](folly::Try<int32_t>&& next) {
+                if (next.hasValue()) {
+                  EXPECT_EQ(expected++, *next);
+                }
+              })
+          .join();
       EXPECT_EQ(10, expected);
     }
   });
@@ -636,8 +666,8 @@ TEST_P(StreamingTest, UserCantBlockIOThread) {
                 [&failed]() { failed = false; });
     std::move(subscription).join();
     EXPECT_FALSE(failed);
-    // As there is no flow control, all of the messages will be sent from server
-    // to client without waiting the user thread.
+    // As there is no flow control, all of the messages will be sent from
+    // server to client without waiting the user thread.
     EXPECT_EQ(10, count);
   });
 }

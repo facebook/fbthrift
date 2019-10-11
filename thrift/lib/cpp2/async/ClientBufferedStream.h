@@ -104,10 +104,7 @@ class ClientBufferedStream {
 
 #if FOLLY_HAS_COROUTINES
   folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
-    return toAsyncGeneratorImpl(
-        std::move(streamBridge_),
-        bufferSize_ ? bufferSize_ : std::numeric_limits<int32_t>::max(),
-        decode_);
+    return toAsyncGeneratorImpl(std::move(streamBridge_), bufferSize_, decode_);
   }
 #endif // FOLLY_HAS_COROUTINES
 
@@ -118,7 +115,7 @@ class ClientBufferedStream {
         std::forward<Callback>(onNextTry),
         std::move(streamBridge_),
         decode_,
-        bufferSize_ ? bufferSize_ : std::numeric_limits<int32_t>::max());
+        bufferSize_);
     Subscription sub(c->state_);
     e->add([c]() { (*c)(); });
     return sub;
@@ -151,7 +148,6 @@ class ClientBufferedStream {
       }
     };
 
-    streamBridge->requestN(bufferSize);
     int32_t outstanding = bufferSize;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
@@ -174,6 +170,11 @@ class ClientBufferedStream {
         throw folly::OperationCancelled();
       }
       if (queue.empty()) {
+        if (outstanding == 0) {
+          streamBridge->requestN(1);
+          ++outstanding;
+        }
+
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
           folly::CancellationCallback cb{
@@ -270,7 +271,6 @@ class ClientBufferedStream {
           decode_(decode),
           bufferSize_(bufferSize),
           state_(std::make_shared<SharedState>(std::move(streamBridge))) {
-      state_->streamBridge->requestN(bufferSize_);
       outstanding_ = bufferSize_;
     }
 
@@ -301,6 +301,11 @@ class ClientBufferedStream {
 
       while (!state_->streamBridge->isCanceled()) {
         if (queue.empty()) {
+          if (outstanding_ == 0) {
+            state_->streamBridge->requestN(1);
+            ++outstanding_;
+          }
+
           if (Continuation::wait(cb)) {
             // The filler will schedule us back on the executor once the queue
             // is refilled so we return here
