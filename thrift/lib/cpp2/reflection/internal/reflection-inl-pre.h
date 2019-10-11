@@ -44,17 +44,6 @@ struct struct_traits_metadata_tag {};
 
 namespace reflection_impl {
 
-template <typename G, typename = folly::void_t<>>
-struct getter_direct_getter {
-  using type = G;
-};
-template <typename G>
-struct getter_direct_getter<G, folly::void_t<typename G::head>> {
-  using type = typename G::head;
-};
-template <typename G>
-using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
-
 template <typename, typename>
 struct isset;
 
@@ -67,6 +56,68 @@ struct variant_member_field_id {
   template <typename Descriptor>
   using apply = typename Descriptor::metadata::id;
 };
+
+template <typename A>
+struct data_member_accessor {
+  template <typename T>
+  FOLLY_ERASE constexpr auto operator()(T&& t) const
+      noexcept(noexcept(A::__fbthrift_access_field(static_cast<T&&>(t))))
+          -> decltype(A::__fbthrift_access_field(static_cast<T&&>(t))) {
+    return A::__fbthrift_access_field(static_cast<T&&>(t));
+  }
+};
+
+template <typename... A>
+struct chained_data_member_accessor;
+template <>
+struct chained_data_member_accessor<> {
+  template <typename T>
+  FOLLY_ERASE constexpr T&& operator()(T&& t) const noexcept {
+    return static_cast<T&&>(t);
+  }
+};
+template <typename V, typename... A>
+struct chained_data_member_accessor<V, A...> {
+  template <typename T>
+  FOLLY_ERASE constexpr auto operator()(T&& t) const noexcept(
+      noexcept(chained_data_member_accessor<A...>{}(V{}(static_cast<T&&>(t)))))
+      -> decltype(
+          chained_data_member_accessor<A...>{}(V{}(static_cast<T&&>(t)))) {
+    return chained_data_member_accessor<A...>{}(V{}(static_cast<T&&>(t)));
+  }
+};
+
+template <typename A>
+struct invoker_adaptor {
+  template <typename T>
+  using has = folly::is_invocable<A, T>;
+  template <typename T>
+  using type = folly::invoke_result_t<A, T>;
+  template <typename T>
+  using reference = type<T>&&;
+  template <typename T>
+  FOLLY_ERASE static constexpr reference<T> ref(T&& t) {
+    return A{}(static_cast<T&&>(t));
+  }
+  template <typename T>
+  FOLLY_ERASE static constexpr type<T> copy(T&& t) {
+    return A{}(static_cast<T&&>(t));
+  }
+};
+
+template <typename G>
+struct getter_direct_getter;
+template <typename G>
+struct getter_direct_getter<invoker_adaptor<G>> {
+  using type = invoker_adaptor<G>;
+};
+template <typename V, typename... A>
+struct getter_direct_getter<
+    invoker_adaptor<chained_data_member_accessor<V, A...>>> {
+  using type = invoker_adaptor<V>;
+};
+template <typename G>
+using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
 
 } // namespace reflection_impl
 } // namespace detail

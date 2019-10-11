@@ -34,7 +34,9 @@
 #include <fatal/type/traits.h>
 #include <fatal/type/transform.h>
 #include <fatal/type/variant_traits.h>
+#include <folly/CppAttributes.h>
 #include <folly/Traits.h>
+#include <folly/functional/Invoke.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <thrift/lib/cpp2/reflection/internal/reflection-inl-pre.h>

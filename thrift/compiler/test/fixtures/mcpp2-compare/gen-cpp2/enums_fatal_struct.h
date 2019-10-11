@@ -18,10 +18,6 @@ namespace facebook { namespace ns { namespace qwerty {
 
 namespace thrift_fatal_impl_detail {
 
-struct facebook_ns_qwerty_enums__struct_unique_data_member_getters_list {
-  FATAL_DATA_MEMBER_GETTER(fieldA, fieldA);
-};
-
 
 struct facebook_ns_qwerty_enums__struct_unique_member_pod_list {
   template <typename T_facebook_ns_qwerty_enums_struct_member_pod>
@@ -66,7 +62,11 @@ struct SomeStruct_facebook_ns_qwerty_enums__struct_unique_member_info_list {
     int32_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::facebook_ns_qwerty_enums__struct_unique_data_member_getters_list::fieldA,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldA
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::facebook_ns_qwerty_enums__struct_unique_member_pod_list::facebook_ns_qwerty_enums_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::SomeStruct_facebook_ns_qwerty_enums__struct_unique_annotations::members::fieldA>,

@@ -18,10 +18,6 @@ namespace cpp2 {
 
 namespace thrift_fatal_impl_detail {
 
-struct cpp2_reflection__struct_unique_data_member_getters_list {
-  FATAL_DATA_MEMBER_GETTER(fieldA, fieldA);
-};
-
 
 struct cpp2_reflection__struct_unique_member_pod_list {
   template <typename T_cpp2_reflection_struct_member_pod>
@@ -66,7 +62,11 @@ struct ReflectionStruct_cpp2_reflection__struct_unique_member_info_list {
     int32_t,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::cpp2_reflection__struct_unique_data_member_getters_list::fieldA,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldA
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::cpp2_reflection__struct_unique_member_pod_list::cpp2_reflection_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::ReflectionStruct_cpp2_reflection__struct_unique_annotations::members::fieldA>,

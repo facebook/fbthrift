@@ -115,20 +115,6 @@ struct chained_data_member_getter<> : fatal::chained_data_member_getter<> {
   using tail = void;
 };
 
-template <typename Impl>
-struct reflection_indirection_getter {
-  template <typename T>
-  using type = decltype(Impl::val(std::declval<T&&>()));
-
-  template <typename T>
-  using reference = decltype(Impl::ref(std::declval<T&&>()));
-
-  template <typename T>
-  static inline auto&& ref(T&& arg) {
-    return Impl::ref(std::forward<T>(arg));
-  }
-};
-
 template <typename Module, typename Annotations, legacy_type_id_t LegacyTypeId>
 struct type_common_metadata_impl {
   using module = Module;

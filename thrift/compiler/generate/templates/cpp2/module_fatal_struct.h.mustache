@@ -34,23 +34,15 @@
 
 namespace thrift_fatal_impl_detail {
 
-struct <% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list {
-  <%#program:fatal_data_member%>
-  FATAL_DATA_MEMBER_GETTER(<% . %>, <% . %>);
-  <%/program:fatal_data_member%>
-};
-
 <%#program:indirection_recursive?%><%#program:indirection%>
 struct <%indirection:struct_name%>_<% > fatal/fatal_prefix%>__struct_unique_indirections_list {
   <%#indirection:indirection_fields%>
   struct <%indirection:field_name%> {
     template <typename T__thrift__arg__>
-    static auto val(T__thrift__arg__ &&__thrift__arg__) {
-      return std::forward<T__thrift__arg__>(__thrift__arg__)<%indirection:indirection_name%>;
-    }
-    template <typename T__thrift__arg__>
-    static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
-      return std::forward<T__thrift__arg__>(__thrift__arg__)<%indirection:indirection_name%>;
+    constexpr auto operator()(T__thrift__arg__ &&__thrift__arg__) noexcept(noexcept(
+      static_cast<T__thrift__arg__&&>(__thrift__arg__)<%indirection:indirection_name%>))
+      -> decltype((static_cast<T__thrift__arg__&&>(__thrift__arg__)<%indirection:indirection_name%>)) {
+      return static_cast<T__thrift__arg__&&>(__thrift__arg__)<%indirection:indirection_name%>;
     }
   };
   <%/indirection:indirection_fields%>
@@ -162,15 +154,21 @@ struct <%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list
     <%field:key%>,
     ::apache::thrift::optionality::<%field:fatal_required_qualifier%>,
     <%#field:type%><%#type:cpp_indirection%>
-    ::apache::thrift::detail::chained_data_member_getter<
-      thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list::<%field:cpp_name%>,
-      ::apache::thrift::detail::reflection_indirection_getter<
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::chained_data_member_accessor<
+        ::apache::thrift::detail::reflection_impl::data_member_accessor<
+          ::apache::thrift::accessor::<%field:cpp_name%>
+        >,
         thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_indirections_list::<%field:cpp_name%>
       >
     >,
     <%/type:cpp_indirection%><%/field:type%>
     <%#field:type%><%^type:cpp_indirection%>
-    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list::<%field:cpp_name%>,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::<%field:cpp_name%>
+      >
+    >,
     <%/type:cpp_indirection%><%/field:type%>
     <%#field:type%><%type:fatal_type_class%><%/field:type%>,
     thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_member_pod_list::<% > fatal/fatal_prefix%>_struct_member_pod_<%field:cpp_name%>,
@@ -190,7 +188,11 @@ struct <%alias:name%>_<% > fatal/fatal_prefix%>__struct_unique_member_info_list 
     decltype(static_cast<<%alias:name%> *>(nullptr)-><%field:cpp_name%>),
     <%field:key%>,
     ::apache::thrift::optionality::required,
-    thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_data_member_getters_list::<%field:cpp_name%>,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::<%field:cpp_name%>
+      >
+    >,
     <%#field:type%><%type:fatal_type_class%><%/field:type%>,
     thrift_fatal_impl_detail::<% > fatal/fatal_prefix%>__struct_unique_member_pod_list::<% > fatal/fatal_prefix%>_struct_member_pod_<%field:cpp_name%>,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::<%struct:name%>_<% > fatal/fatal_prefix%>__struct_unique_annotations::members::<%field:cpp_name%>>,

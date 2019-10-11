@@ -19,22 +19,6 @@ namespace extra { namespace svc {
 
 namespace thrift_fatal_impl_detail {
 
-struct extra_svc_extra_services__struct_unique_data_member_getters_list {
-  FATAL_DATA_MEMBER_GETTER(fieldA, fieldA);
-  FATAL_DATA_MEMBER_GETTER(req_fieldA, req_fieldA);
-  FATAL_DATA_MEMBER_GETTER(opt_fieldA, opt_fieldA);
-  FATAL_DATA_MEMBER_GETTER(fieldB, fieldB);
-  FATAL_DATA_MEMBER_GETTER(req_fieldB, req_fieldB);
-  FATAL_DATA_MEMBER_GETTER(opt_fieldB, opt_fieldB);
-  FATAL_DATA_MEMBER_GETTER(fieldC, fieldC);
-  FATAL_DATA_MEMBER_GETTER(req_fieldC, req_fieldC);
-  FATAL_DATA_MEMBER_GETTER(opt_fieldC, opt_fieldC);
-  FATAL_DATA_MEMBER_GETTER(fieldD, fieldD);
-  FATAL_DATA_MEMBER_GETTER(fieldE, fieldE);
-  FATAL_DATA_MEMBER_GETTER(req_fieldE, req_fieldE);
-  FATAL_DATA_MEMBER_GETTER(opt_fieldE, opt_fieldE);
-};
-
 
 struct extra_svc_extra_services__struct_unique_member_pod_list {
   template <typename T_extra_svc_extra_services_struct_member_pod>
@@ -259,7 +243,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     bool,
     1,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldA,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldA
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldA>,
@@ -270,7 +258,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     bool,
     101,
     ::apache::thrift::optionality::required,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldA,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::req_fieldA
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldA>,
@@ -281,7 +273,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     bool,
     201,
     ::apache::thrift::optionality::optional,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldA,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::opt_fieldA
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldA,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldA>,
@@ -292,7 +288,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::map<::std::string, bool>,
     2,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldB,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldB
+      >
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldB>,
@@ -303,7 +303,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::map<::std::string, bool>,
     102,
     ::apache::thrift::optionality::required,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldB,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::req_fieldB
+      >
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldB>,
@@ -314,7 +318,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::map<::std::string, bool>,
     202,
     ::apache::thrift::optionality::optional,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldB,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::opt_fieldB
+      >
+    >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldB,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldB>,
@@ -325,7 +333,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::set<int32_t>,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldC,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldC
+      >
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldC>,
@@ -336,7 +348,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::set<int32_t>,
     103,
     ::apache::thrift::optionality::required,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldC,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::req_fieldC
+      >
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldC>,
@@ -347,7 +363,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::set<int32_t>,
     203,
     ::apache::thrift::optionality::optional,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldC,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::opt_fieldC
+      >
+    >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldC,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldC>,
@@ -358,7 +378,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::string,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldD,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldD
+      >
+    >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldD,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldD>,
@@ -369,7 +393,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::string,
     5,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::fieldE,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::fieldE
+      >
+    >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::fieldE>,
@@ -380,7 +408,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::string,
     105,
     ::apache::thrift::optionality::required,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::req_fieldE,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::req_fieldE
+      >
+    >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_req_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::req_fieldE>,
@@ -391,7 +423,11 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::std::string,
     205,
     ::apache::thrift::optionality::optional,
-    thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_data_member_getters_list::opt_fieldE,
+    ::apache::thrift::detail::reflection_impl::invoker_adaptor<
+      ::apache::thrift::detail::reflection_impl::data_member_accessor<
+        ::apache::thrift::accessor::opt_fieldE
+      >
+    >,
     ::apache::thrift::type_class::string,
     thrift_fatal_impl_detail::extra_svc_extra_services__struct_unique_member_pod_list::extra_svc_extra_services_struct_member_pod_opt_fieldE,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::containerStruct2_extra_svc_extra_services__struct_unique_annotations::members::opt_fieldE>,
