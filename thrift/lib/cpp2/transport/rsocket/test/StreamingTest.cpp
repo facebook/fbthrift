@@ -34,7 +34,11 @@
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamServiceBuffered.h>
 
+#include <folly/Portability.h>
 #include <thrift/lib/cpp2/gen/client_cpp.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/BlockingWait.h>
+#endif // FOLLY_HAS_COROUTINES
 
 namespace apache {
 namespace thrift {
@@ -183,6 +187,19 @@ TEST_P(StreamingTest, ClientStreamBridge) {
           });
       EXPECT_EQ(10, expected);
     }
+
+#if FOLLY_HAS_COROUTINES
+    {
+      size_t expected = 0;
+      auto gen = bufferedClient->sync_range(0, 10).toAsyncGenerator();
+      folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+        while (auto next = co_await gen.next()) {
+          EXPECT_EQ(expected++, *next);
+        }
+      }());
+      EXPECT_EQ(10, expected);
+    }
+#endif // FOLLY_HAS_COROUTINES
   });
 }
 

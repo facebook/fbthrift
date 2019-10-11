@@ -16,7 +16,11 @@
 
 #pragma once
 
+#include <folly/Portability.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/AsyncGenerator.h>
+#endif // FOLLY_HAS_COROUTINES
 
 namespace apache {
 namespace thrift {
@@ -50,7 +54,7 @@ class ClientBufferedStream {
       }
 
       void canceled() override {
-        folly::assume_unreachable();
+        std::terminate();
       }
 
       void wait() {
@@ -97,7 +101,68 @@ class ClientBufferedStream {
     }
   }
 
+#if FOLLY_HAS_COROUTINES
+  folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
+    return toAsyncGeneratorImpl(std::move(*this));
+  }
+#endif // FOLLY_HAS_COROUTINES
+
  private:
+#if FOLLY_HAS_COROUTINES
+  static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
+      ClientBufferedStream me) {
+    SCOPE_EXIT {
+      me.streamBridge_->cancel();
+    };
+
+    int32_t bufferSize =
+        me.bufferSize_ ? me.bufferSize_ : std::numeric_limits<int32_t>::max();
+    me.streamBridge_->requestN(bufferSize);
+    int32_t outstanding = bufferSize;
+
+    apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
+    class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
+     public:
+      void consume() override {
+        baton.post();
+      }
+
+      void canceled() override {
+        std::terminate();
+      }
+
+      folly::coro::Baton baton;
+    };
+
+    while (true) {
+      if (queue.empty()) {
+        ReadyCallback callback;
+        if (me.streamBridge_->wait(&callback)) {
+          co_await callback.baton;
+        }
+        queue = me.streamBridge_->getMessages();
+      }
+
+      {
+        auto& payload = queue.front();
+        if (!payload.hasValue() && !payload.hasException()) {
+          break;
+        }
+        auto value = me.decode_(std::move(payload));
+        queue.pop();
+        // yield value or rethrow exception
+        co_yield std::move(value).value();
+      }
+
+      outstanding--;
+      if (outstanding <= bufferSize / 2) {
+        me.streamBridge_->requestN(bufferSize - outstanding);
+        outstanding = bufferSize;
+      }
+    }
+  }
+#endif // FOLLY_HAS_COROUTINES
+
   detail::ClientStreamBridge::Ptr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
   int32_t bufferSize_{0};
