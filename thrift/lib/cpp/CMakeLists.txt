@@ -70,7 +70,6 @@ add_library(
   transport/TBufferTransports.cpp
   transport/THeader.cpp
   transport/TZlibTransport.cpp
-  util/FdUtils.cpp
   util/PausableTimer.cpp
   util/THttpParser.cpp
   util/VarintUtils.cpp
