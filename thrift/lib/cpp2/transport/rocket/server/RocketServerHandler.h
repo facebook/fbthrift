@@ -19,8 +19,8 @@
 namespace apache {
 namespace thrift {
 
-class SinkClientCallback;
-class StreamClientCallback;
+class RocketSinkClientCallback;
+class RocketStreamClientCallback;
 
 namespace rocket {
 
@@ -48,12 +48,12 @@ class RocketServerHandler {
 
   virtual void handleRequestStreamFrame(
       RequestStreamFrame&&,
-      StreamClientCallback*) = 0;
+      RocketStreamClientCallback*) = 0;
 
   virtual void handleRequestChannelFrame(
       RequestChannelFrame&&,
       // TODO current only Sink are supported by using channel
-      SinkClientCallback*) {}
+      RocketSinkClientCallback*) = 0;
 };
 
 } // namespace rocket

@@ -39,6 +39,8 @@
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketThriftRequests.h>
 
 #include <thrift/lib/cpp2/transport/rsocket/gen-cpp2/Config_types.h>
@@ -167,7 +169,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
 
 void ThriftRocketServerHandler::handleRequestStreamFrame(
     RequestStreamFrame&& frame,
-    StreamClientCallback* clientCallback) {
+    RocketStreamClientCallback* clientCallback) {
   auto makeRequestStream = [&](RequestRpcMetadata&& md) {
     return std::make_unique<ThriftServerRequestStream>(
         *worker_->getEventBase(),
@@ -183,7 +185,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
 
 void ThriftRocketServerHandler::handleRequestChannelFrame(
     RequestChannelFrame&& frame,
-    SinkClientCallback* clientCallback) {
+    RocketSinkClientCallback* clientCallback) {
   auto makeRequestSink = [&](RequestRpcMetadata&& md) {
     return std::make_unique<ThriftServerRequestSink>(
         *worker_->getEventBase(),
