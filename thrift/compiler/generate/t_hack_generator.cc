@@ -421,11 +421,10 @@ class t_hack_generator : public t_oop_generator {
   }
 
   std::string php_namespace(const t_program* p) {
-    std::string ns;
-    ns = hack_namespace(p);
+    std::string ns = hack_namespace(p);
     p->get_namespace("hack");
     if (!ns.empty()) {
-      return "";
+      return ns;
     }
     ns = p->get_namespace("php");
     if (!ns.empty()) {
