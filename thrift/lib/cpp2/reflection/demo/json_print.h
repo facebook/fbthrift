@@ -54,7 +54,7 @@ template <>
 struct printer<apache::thrift::type_class::enumeration> {
   template <typename T>
   static void print(T const& what) {
-    std::cout << '"' << fatal::enum_to_string(what) << '"';
+    std::cout << '"' << fatal::enum_to_string(what, nullptr) << '"';
   }
 };
 
@@ -135,7 +135,7 @@ struct printer<apache::thrift::type_class::structure> {
 struct variant_member_printer {
   template <typename Member, std::size_t Index, typename T>
   void operator()(fatal::indexed<Member, Index>, T const& what) const {
-    auto const name = fatal::enum_to_string(what.getType());
+    auto const name = fatal::enum_to_string(what.getType(), nullptr);
     std::cout << '"' << name << "\":";
 
     auto const& value = Member::get(what);

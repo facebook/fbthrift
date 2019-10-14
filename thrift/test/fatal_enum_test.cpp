@@ -79,10 +79,10 @@ TEST(fatal_enum, sanity_check) {
     traits::value_of<field2s>
   >();
 
-  EXPECT_EQ("field0", fatal::enum_to_string(enum1::field0));
-  EXPECT_EQ("field1", fatal::enum_to_string(enum1::field1));
-  EXPECT_EQ("field2", fatal::enum_to_string(enum1::field2));
-  EXPECT_EQ(nullptr, fatal::enum_to_string(static_cast<enum1>(99999)));
+  EXPECT_EQ("field0", fatal::try_enum_to_string(enum1::field0));
+  EXPECT_EQ("field1", fatal::try_enum_to_string(enum1::field1));
+  EXPECT_EQ("field2", fatal::try_enum_to_string(enum1::field2));
+  EXPECT_EQ(nullptr, fatal::try_enum_to_string(static_cast<enum1>(99999)));
 
   EXPECT_EQ("field0", traits::to_string(enum1::field0));
   EXPECT_EQ("field1", traits::to_string(enum1::field1));

@@ -35,7 +35,7 @@ template <>
 struct pretty_print_impl<type_class::enumeration> {
   template <typename OutputStream, typename T>
   static void print(OutputStream& out, T const& what) {
-    out << fatal::enum_to_string(what);
+    out << fatal::enum_to_string(what, nullptr);
   }
 };
 
@@ -175,7 +175,7 @@ struct pretty_print_impl<type_class::variant>
       using descriptor = decltype(fatal::tag_type(indexed));
       auto scope = out.start_scope();
       scope.newline();
-      scope << fatal::enum_to_string(what.getType()) << ": ";
+      scope << fatal::enum_to_string(what.getType(), nullptr) << ": ";
       recurse_into<typename descriptor::metadata::type_class>(
           scope, typename descriptor::getter()(what));
       scope.newline();

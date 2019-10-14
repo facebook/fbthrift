@@ -153,7 +153,7 @@ template <>
 struct serializer<type_class::enumeration> {
   template <typename T>
   static void serialize(T const& what, data_writer& writer) {
-    auto const name = fatal::enum_to_string(what);
+    auto const name = fatal::enum_to_string(what, nullptr);
     writer.write_string(name, std::strlen(name));
   }
 

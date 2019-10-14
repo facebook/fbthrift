@@ -41,7 +41,7 @@ void print_enum_info(Enum e) {
 
   std::cout << '\n';
 
-  auto const name = fatal::enum_to_string(e);
+  auto const name = fatal::enum_to_string(e, nullptr);
   std::cout << "field name: " << name << '\n';
   std::cout << "represented as a " << folly::demangle(typeid(name)) << '\n';
 

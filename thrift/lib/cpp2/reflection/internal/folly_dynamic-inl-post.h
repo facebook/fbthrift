@@ -228,7 +228,7 @@ struct dynamic_converter_impl<type_class::variant> {
         input.getType(), [&](auto indexed) {
           using descriptor = decltype(fatal::tag_type(indexed));
           dynamic_converter_impl<typename descriptor::metadata::type_class>::to(
-              out[fatal::enum_to_string(input.getType())],
+              out[fatal::enum_to_string(input.getType(), nullptr)],
               typename descriptor::getter()(input),
               format);
         });
