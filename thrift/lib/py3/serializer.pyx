@@ -22,7 +22,7 @@ def serialize_iobuf(Struct tstruct not None, protocol=Protocol.COMPACT):
     return cy_struct._serialize(protocol)
 
 
-def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
+def deserialize_with_length(structKlass, buf not None, protocol=Protocol.COMPACT):
     if not issubclass(structKlass, Struct):
         raise TypeError(f"{structKlass} Must be a py3 thrift struct class")
     if not isinstance(protocol, Protocol):
@@ -31,11 +31,13 @@ def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
 
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     try:
-        cy_struct._deserialize(iobuf._this, protocol)
-        return cy_struct
+        length = cy_struct._deserialize(iobuf._this, protocol)
+        return cy_struct, length
     except Exception as e:
         raise Error.__new__(Error, *e.args) from None
 
+def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
+    return deserialize_with_length(structKlass, buf, protocol)[0]
 
 def serialize_with_header(tstruct, protocol=Protocol.COMPACT, transform=Transform.NONE):
     return b''.join(serialize_with_header_iobuf(tstruct, protocol, transform))

@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 from enum import Enum
-from typing import TypeVar, Type, Union
+from typing import Tuple, Type, TypeVar, Union
 
-from thrift.py3.types import Struct
-from thrift.py3.common import Protocol as Protocol
 from folly.iobuf import IOBuf
+from thrift.py3.common import Protocol as Protocol
+from thrift.py3.types import Struct
 
 sT = TypeVar("sT", bound=Struct)
 
@@ -21,6 +21,11 @@ def deserialize(
     buf: Union[bytes, bytearray, IOBuf, memoryview],
     protocol: Protocol = ...,
 ) -> sT: ...
+def deserialize_with_length(
+    structKlass: Type[sT],
+    buf: Union[bytes, bytearray, IOBuf, memoryview],
+    protocol: Protocol = ...,
+) -> Tuple[sT, int]: ...
 def serialize_with_header(
     tstruct: sT, protocol: Protocol = ..., transform: Transform = ...
 ) -> bytes: ...

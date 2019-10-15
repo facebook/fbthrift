@@ -1,18 +1,19 @@
 #!/usr/bin/env python3
 import asyncio
-import unittest
 import pickle
+import unittest
+from typing import AbstractSet, Any, Mapping, Sequence, Union
 
-from typing import Mapping, Sequence, AbstractSet, Union, Any
-from thrift.py3 import serialize, deserialize, Protocol, Struct, Error
+from testing.types import Digits, I32List, Integers, SetI32, StrStrMap, easy, hard
+from thrift.py3 import Error, Protocol, Struct, deserialize, serialize
 from thrift.py3.serializer import (
+    Transform,
+    deserialize_from_header,
+    deserialize_with_length,
     serialize_iobuf,
     serialize_with_header,
     serialize_with_header_iobuf,
-    deserialize_from_header,
-    Transform,
 )
-from testing.types import easy, hard, Integers, I32List, StrStrMap, SetI32, Digits
 
 
 class SerializerTests(unittest.TestCase):
@@ -173,3 +174,14 @@ class SerializerTests(unittest.TestCase):
     def test_pickle_mapping(self) -> None:
         control = StrStrMap({"test": "test", "foo": "bar"})
         self.pickle_round_robin(control)
+
+    def test_deserialize_with_length(self) -> None:
+        control = easy(val=5, val_list=[1, 2, 3, 4, 5])
+        for proto in Protocol:
+            encoded = serialize(control, protocol=proto)
+            decoded, length = deserialize_with_length(
+                type(control), encoded, protocol=proto
+            )
+            self.assertIsInstance(decoded, type(control))
+            self.assertEqual(decoded, control)
+            self.assertEqual(length, len(encoded))
