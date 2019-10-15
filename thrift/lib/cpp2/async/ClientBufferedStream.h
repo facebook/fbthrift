@@ -212,7 +212,7 @@ class ClientBufferedStream {
   struct SharedState {
     explicit SharedState(detail::ClientStreamBridge::Ptr sb)
         : streamBridge(std::move(sb)) {}
-    folly::fibers::Baton baton;
+    folly::Promise<folly::Unit> promise;
     detail::ClientStreamBridge::Ptr streamBridge;
   };
   class Subscription {
@@ -238,13 +238,11 @@ class ClientBufferedStream {
     }
 
     void join() && {
-      std::exchange(state_, nullptr)->baton.wait();
+      std::move(*this).futureJoin().wait();
     }
 
     folly::SemiFuture<folly::Unit> futureJoin() && {
-      auto* batonPtr = &state_->baton;
-      return folly::futures::wait(std::shared_ptr<folly::fibers::Baton>(
-          std::exchange(state_, nullptr), batonPtr));
+      return std::exchange(state_, nullptr)->promise.getSemiFuture();
     }
 
    private:
@@ -275,7 +273,7 @@ class ClientBufferedStream {
     }
 
     ~Continuation() {
-      state_->baton.post();
+      state_->promise.setValue();
     }
 
     // takes ownerhsip of pointer on success
