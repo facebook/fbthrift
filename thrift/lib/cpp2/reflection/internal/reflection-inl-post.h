@@ -100,21 +100,6 @@ struct isset {
 
 } // namespace reflection_impl
 
-template <typename...>
-struct chained_data_member_getter;
-
-template <typename OuterGetter, typename... Getters>
-struct chained_data_member_getter<OuterGetter, Getters...>
-    : fatal::chained_data_member_getter<OuterGetter, Getters...> {
-  using head = OuterGetter;
-  using tail = chained_data_member_getter<Getters...>;
-};
-template <>
-struct chained_data_member_getter<> : fatal::chained_data_member_getter<> {
-  using head = void;
-  using tail = void;
-};
-
 template <typename Module, typename Annotations, legacy_type_id_t LegacyTypeId>
 struct type_common_metadata_impl {
   using module = Module;
