@@ -178,7 +178,7 @@ bool Serious::operator<(const Serious& rhs) const {
 
 void swap(Serious& a, Serious& b) {
   using ::std::swap;
-  swap(a.sonnet, b.sonnet);
+  swap(a.sonnet_ref().value_unchecked(), b.sonnet_ref().value_unchecked());
   swap(a.__isset, b.__isset);
 }
 

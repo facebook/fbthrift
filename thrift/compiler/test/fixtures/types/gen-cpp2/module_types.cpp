@@ -1426,7 +1426,7 @@ const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::
 
 void swap(ForwardUsageStruct& a, ForwardUsageStruct& b) {
   using ::std::swap;
-  swap(a.foo, b.foo);
+  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
   swap(a.__isset, b.__isset);
 }
 
@@ -1524,7 +1524,7 @@ const  ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::
 
 void swap(ForwardUsageRoot& a, ForwardUsageRoot& b) {
   using ::std::swap;
-  swap(a.ForwardUsageStruct, b.ForwardUsageStruct);
+  swap(a.ForwardUsageStruct_ref().value_unchecked(), b.ForwardUsageStruct_ref().value_unchecked());
   swap(a.ForwardUsageByRef, b.ForwardUsageByRef);
   swap(a.__isset, b.__isset);
 }
@@ -1593,7 +1593,7 @@ const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::g
 
 void swap(ForwardUsageByRef& a, ForwardUsageByRef& b) {
   using ::std::swap;
-  swap(a.foo, b.foo);
+  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
   swap(a.__isset, b.__isset);
 }
 
@@ -1854,7 +1854,7 @@ void swap(NoexceptMoveComplexStruct& a, NoexceptMoveComplexStruct& b) {
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyStringField2, b.MyStringField2);
   swap(a.MyBinaryField, b.MyBinaryField);
-  swap(a.MyBinaryField2, b.MyBinaryField2);
+  swap(a.MyBinaryField2_ref().value_unchecked(), b.MyBinaryField2_ref().value_unchecked());
   swap(a.MyBinaryField3, b.MyBinaryField3);
   swap(a.MyBinaryListField4, b.MyBinaryListField4);
   swap(a.MyMapEnumAndInt, b.MyMapEnumAndInt);

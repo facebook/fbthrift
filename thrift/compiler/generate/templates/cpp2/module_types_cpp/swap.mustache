@@ -26,7 +26,7 @@ void swap(Struct& a, Struct& b) {
 %>void swap(<%struct:name%>& a, <%struct:name%>& b) {
   using ::std::swap;
 <%#struct:fields%>
-  swap(a.<%field:cpp_name%>, b.<%field:cpp_name%>);
+  swap(a.<% > module_types_cpp/field_value_ref%>, b.<% > module_types_cpp/field_value_ref%>);
 <%/struct:fields%>
 <%#struct:isset_fields?%>
   swap(a.__isset, b.__isset);

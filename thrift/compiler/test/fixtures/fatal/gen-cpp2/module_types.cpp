@@ -2088,10 +2088,10 @@ const  ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
 void swap(struct1& a, struct1& b) {
   using ::std::swap;
   swap(a.field0, b.field0);
-  swap(a.field1, b.field1);
+  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2, b.field2);
   swap(a.field3, b.field3);
-  swap(a.field4, b.field4);
+  swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
   swap(a.field5, b.field5);
   swap(a.__isset, b.__isset);
 }
@@ -2685,7 +2685,7 @@ bool struct4::operator<(const struct4& rhs) const {
 void swap(struct4& a, struct4& b) {
   using ::std::swap;
   swap(a.field0, b.field0);
-  swap(a.field1, b.field1);
+  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2, b.field2);
   swap(a.field3, b.field3);
   swap(a.__isset, b.__isset);
@@ -2806,7 +2806,7 @@ const  ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
 void swap(struct5& a, struct5& b) {
   using ::std::swap;
   swap(a.field0, b.field0);
-  swap(a.field1, b.field1);
+  swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2, b.field2);
   swap(a.field3, b.field3);
   swap(a.field4, b.field4);

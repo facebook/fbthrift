@@ -405,7 +405,7 @@ bool MyField::operator<(const MyField& rhs) const {
 
 void swap(MyField& a, MyField& b) {
   using ::std::swap;
-  swap(a.opt_value, b.opt_value);
+  swap(a.opt_value_ref().value_unchecked(), b.opt_value_ref().value_unchecked());
   swap(a.value, b.value);
   swap(a.req_value, b.req_value);
   swap(a.__isset, b.__isset);
@@ -682,7 +682,7 @@ const ::std::vector< ::cpp2::RecursiveStruct>* RecursiveStruct::get_mes() const&
 
 void swap(RecursiveStruct& a, RecursiveStruct& b) {
   using ::std::swap;
-  swap(a.mes, b.mes);
+  swap(a.mes_ref().value_unchecked(), b.mes_ref().value_unchecked());
   swap(a.__isset, b.__isset);
 }
 

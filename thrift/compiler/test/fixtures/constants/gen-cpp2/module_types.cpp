@@ -311,7 +311,7 @@ void swap(Internship& a, Internship& b) {
   using ::std::swap;
   swap(a.weeks, b.weeks);
   swap(a.title, b.title);
-  swap(a.employer, b.employer);
+  swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
   swap(a.__isset, b.__isset);
 }
 

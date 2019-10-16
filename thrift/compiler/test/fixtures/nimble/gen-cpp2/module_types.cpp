@@ -126,8 +126,8 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
 void swap(BasicTypes& a, BasicTypes& b) {
   using ::std::swap;
   swap(a.first, b.first);
-  swap(a.second, b.second);
-  swap(a.third, b.third);
+  swap(a.second_ref().value_unchecked(), b.second_ref().value_unchecked());
+  swap(a.third_ref().value_unchecked(), b.third_ref().value_unchecked());
   swap(a.isTrue, b.isTrue);
   swap(a.__isset, b.__isset);
 }
