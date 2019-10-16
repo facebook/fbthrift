@@ -72,7 +72,7 @@ service StreamService {
   i32, stream<i32> sleepWithResponse(1: i32 timeMs);
   stream<i32> sleepWithoutResponse(1: i32 timeMs);
 
-  i32, stream<i32> streamNever();
+  i32, stream<i32> streamServerSlow();
 
   // Simple chat scenario
   void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);

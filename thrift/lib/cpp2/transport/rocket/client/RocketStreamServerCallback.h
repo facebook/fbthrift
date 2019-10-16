@@ -22,6 +22,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/Request.h>
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
@@ -40,10 +41,14 @@ class RocketStreamServerCallback : public StreamServerCallback {
   RocketStreamServerCallback(
       rocket::StreamId streamId,
       rocket::RocketClient& client,
-      StreamClientCallback& clientCallback)
+      StreamClientCallback& clientCallback,
+      const std::chrono::milliseconds& chunkTimeout,
+      uint64_t initialCredits)
       : client_(client),
         clientCallback_(&clientCallback),
-        streamId_(streamId) {}
+        streamId_(streamId),
+        chunkTimeout_(chunkTimeout),
+        credits_(initialCredits) {}
 
   void onStreamRequestN(uint64_t tokens) override;
   void onStreamCancel() override;
@@ -64,10 +69,18 @@ class RocketStreamServerCallback : public StreamServerCallback {
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
 
+  void timeoutExpired() noexcept;
+
  private:
+  void scheduleTimeout();
+  void cancelTimeout();
+
   rocket::RocketClient& client_;
   StreamClientCallback* clientCallback_;
   rocket::StreamId streamId_;
+  std::chrono::milliseconds chunkTimeout_;
+  uint64_t credits_{0};
+  std::unique_ptr<folly::HHWheelTimer::Callback> timeout_;
 };
 
 class RocketChannelServerCallback : public ChannelServerCallback {
@@ -138,27 +151,6 @@ class RocketSinkServerCallback : public SinkServerCallback {
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
 };
-
-namespace detail {
-template <typename ClientCallback>
-struct RocketServerCallbackHelper {};
-template <>
-struct RocketServerCallbackHelper<StreamClientCallback> {
-  using type = RocketStreamServerCallback;
-};
-template <>
-struct RocketServerCallbackHelper<ChannelClientCallback> {
-  using type = RocketChannelServerCallback;
-};
-template <>
-struct RocketServerCallbackHelper<SinkClientCallback> {
-  using type = RocketSinkServerCallback;
-};
-} // namespace detail
-
-template <typename ClientCallback>
-using RocketServerCallback =
-    typename detail::RocketServerCallbackHelper<ClientCallback>::type;
 
 } // namespace rocket
 } // namespace thrift

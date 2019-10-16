@@ -90,6 +90,7 @@ class RocketClient : public folly::DelayedDestruction,
   void sendRequestStream(
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
+      std::chrono::milliseconds chunkTimeout,
       int32_t initialRequestN,
       StreamClientCallback* clientCallback);
 
@@ -188,6 +189,14 @@ class RocketClient : public folly::DelayedDestruction,
     flushList_ = flushList;
   }
 
+  void scheduleTimeout(
+      folly::HHWheelTimer::Callback* callback,
+      const std::chrono::milliseconds& timeout) {
+    if (timeout != std::chrono::milliseconds::zero()) {
+      evb_->timer().scheduleTimeout(callback, timeout);
+    }
+  }
+
  private:
   folly::EventBase* evb_;
   folly::fibers::FiberManager* fm_;
@@ -277,12 +286,13 @@ class RocketClient : public folly::DelayedDestruction,
     return rid;
   }
 
-  template <typename CallbackType>
+  template <typename ServerCallback>
   void sendRequestStreamChannel(
+      const StreamId& streamId,
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
       int32_t initialRequestN,
-      CallbackType* clientCallback);
+      std::unique_ptr<ServerCallback> serverCallback);
 
   void freeStream(StreamId streamId);
 

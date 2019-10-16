@@ -623,7 +623,7 @@ TEST_P(StreamingTest, ChunkTimeout) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     RpcOptions options;
     options.setChunkTimeout(std::chrono::milliseconds{10});
-    auto result = client->sync_streamNever(options);
+    auto result = client->sync_streamServerSlow(options);
     bool failed{false};
     auto subscription =
         std::move(result.stream)
@@ -641,6 +641,7 @@ TEST_P(StreamingTest, ChunkTimeout) {
                 []() { FAIL() << "onError should be called"; });
     std::move(subscription).join();
     EXPECT_TRUE(failed);
+    waitNoLeak(client.get());
   });
 }
 

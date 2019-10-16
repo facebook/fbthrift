@@ -352,39 +352,59 @@ folly::Try<void> RocketClient::sendRequestFnfSync(
 void RocketClient::sendRequestStream(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
+    std::chrono::milliseconds chunkTimeout,
     int32_t initialRequestN,
     StreamClientCallback* clientCallback) {
+  const auto streamId = makeStreamId();
+  auto serverCallback = std::make_unique<RocketStreamServerCallback>(
+      streamId, *this, *clientCallback, chunkTimeout, initialRequestN);
   sendRequestStreamChannel(
+      streamId,
       std::move(request),
       firstResponseTimeout,
       initialRequestN,
-      clientCallback);
+      std::move(serverCallback));
 }
 
 void RocketClient::sendRequestChannel(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
     ChannelClientCallback* clientCallback) {
+  const auto streamId = makeStreamId();
+  auto serverCallback = std::make_unique<RocketChannelServerCallback>(
+      streamId, *this, *clientCallback);
   sendRequestStreamChannel(
-      std::move(request), firstResponseTimeout, 0, clientCallback);
+      streamId,
+      std::move(request),
+      firstResponseTimeout,
+      0,
+      std::move(serverCallback));
 }
 
 void RocketClient::sendRequestSink(
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
     SinkClientCallback* clientCallback) {
+  const auto streamId = makeStreamId();
+  auto serverCallback = std::make_unique<RocketSinkServerCallback>(
+      streamId, *this, *clientCallback);
   sendRequestStreamChannel(
-      std::move(request), firstResponseTimeout, 1, clientCallback);
+      streamId,
+      std::move(request),
+      firstResponseTimeout,
+      1,
+      std::move(serverCallback));
 }
 
-template <typename ClientCallback>
+template <typename ServerCallback>
 void RocketClient::sendRequestStreamChannel(
+    const StreamId& streamId,
     Payload&& request,
     std::chrono::milliseconds firstResponseTimeout,
     int32_t initialRequestN,
-    ClientCallback* clientCallback) {
+    std::unique_ptr<ServerCallback> serverCallback) {
   using Frame = std::conditional_t<
-      std::is_same<StreamClientCallback, ClientCallback>::value,
+      std::is_same<RocketStreamServerCallback, ServerCallback>::value,
       RequestStreamFrame,
       RequestChannelFrame>;
 
@@ -394,7 +414,6 @@ void RocketClient::sendRequestStreamChannel(
   }
 
   DCHECK(folly::fibers::onFiber());
-  const auto streamId = makeStreamId();
   auto setupFrame = std::move(setupFrame_);
   RequestContext ctx(
       Frame(streamId, std::move(request), initialRequestN),
@@ -402,8 +421,6 @@ void RocketClient::sendRequestStreamChannel(
       setupFrame.get(),
       nullptr /* RocketClientWriteCallback */);
 
-  auto serverCallback = std::make_unique<RocketServerCallback<ClientCallback>>(
-      streamId, *this, *clientCallback);
   auto serverCallbackPtr = serverCallback.get();
   streams_.emplace(streamId, std::move(serverCallback));
   auto g = folly::makeGuard([&] { freeStream(streamId); });

@@ -482,7 +482,11 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
   evb_.runInEventBaseThread([&] {
     fm_.addTask([&] {
       client_->sendRequestStream(
-          std::move(request), kFirstResponseTimeout, 0, clientCallback.get());
+          std::move(request),
+          kFirstResponseTimeout,
+          kChunkTimeout,
+          0,
+          clientCallback.get());
     });
   });
 

@@ -22,8 +22,26 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+namespace {
+template <typename ServerCallback>
+class TimeoutCallback : public folly::HHWheelTimer::Callback {
+ public:
+  explicit TimeoutCallback(ServerCallback& parent) : parent_(parent) {}
+  void timeoutExpired() noexcept override {
+    parent_.timeoutExpired();
+  }
+
+ private:
+  ServerCallback& parent_;
+};
+} // namespace
+
 // RocketStreamServerCallback
 void RocketStreamServerCallback::onStreamRequestN(uint64_t tokens) {
+  if (credits_ == 0) {
+    scheduleTimeout();
+  }
+  credits_ += tokens;
   client_.sendRequestN(streamId_, tokens);
 }
 void RocketStreamServerCallback::onStreamCancel() {
@@ -33,6 +51,9 @@ void RocketStreamServerCallback::onStreamCancel() {
 void RocketStreamServerCallback::onInitialPayload(
     FirstResponsePayload&& payload,
     folly::EventBase* evb) {
+  if (credits_ > 0) {
+    scheduleTimeout();
+  }
   clientCallback_->onFirstResponse(std::move(payload), evb, this);
 }
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
@@ -44,6 +65,12 @@ void RocketStreamServerCallback::onStreamTransportError(
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamPayload(
     StreamPayload&& payload) {
+  DCHECK(credits_ != 0);
+  if (--credits_ != 0) {
+    scheduleTimeout();
+  } else {
+    cancelTimeout();
+  }
   clientCallback_->onStreamNext(std::move(payload));
   return StreamChannelStatus::Alive;
 }
@@ -83,6 +110,26 @@ StreamChannelStatus RocketStreamServerCallback::onSinkCancel() {
               STREAMING_CONTRACT_VIOLATION,
           "onSinkCancel called for a stream"));
   return StreamChannelStatus::ContractViolation;
+}
+void RocketStreamServerCallback::timeoutExpired() noexcept {
+  clientCallback_->onStreamError(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          transport::TTransportException::TTransportExceptionType::TIMED_OUT,
+          "stream chunk timeout"));
+  onStreamCancel();
+}
+void RocketStreamServerCallback::scheduleTimeout() {
+  if (chunkTimeout_ == std::chrono::milliseconds::zero()) {
+    return;
+  }
+  if (!timeout_) {
+    timeout_ =
+        std::make_unique<TimeoutCallback<RocketStreamServerCallback>>(*this);
+  }
+  client_.scheduleTimeout(timeout_.get(), chunkTimeout_);
+}
+void RocketStreamServerCallback::cancelTimeout() {
+  timeout_.reset();
 }
 
 // RocketChannelServerCallback

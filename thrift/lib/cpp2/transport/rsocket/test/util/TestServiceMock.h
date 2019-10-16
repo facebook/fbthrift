@@ -44,7 +44,8 @@ class TestServiceMock : public StreamServiceSvIf {
 
   apache::thrift::Stream<int32_t> sleepWithoutResponse(int32_t timeMs) override;
 
-  apache::thrift::ResponseAndStream<int32_t, int32_t> streamNever() override;
+  apache::thrift::ResponseAndStream<int32_t, int32_t> streamServerSlow()
+      override;
 
   void sendMessage(int32_t messageId, bool complete, bool error) override;
   apache::thrift::Stream<int32_t> registerToMessages() override;

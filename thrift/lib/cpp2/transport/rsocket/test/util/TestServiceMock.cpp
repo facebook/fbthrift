@@ -127,8 +127,20 @@ apache::thrift::Stream<int32_t> TestServiceMock::sleepWithoutResponse(
 }
 
 apache::thrift::ResponseAndStream<int32_t, int32_t>
-TestServiceMock::streamNever() {
-  return {1, toStream(Flowable<int32_t>::never(), &executor_)};
+TestServiceMock::streamServerSlow() {
+  return {1,
+          apache::thrift::StreamGenerator::create(
+              folly::getKeepAliveToken(executor_.getEventBase()),
+              [detector = LeakDetector(),
+               b = true]() mutable -> folly::SemiFuture<folly::Optional<int>> {
+                if (std::exchange(b, false)) {
+                  return folly::futures::sleep(std::chrono::milliseconds(1000))
+                      .deferValue([](folly::Unit&&) {
+                        return folly::Optional<int>(1);
+                      });
+                }
+                return folly::makeSemiFuture(folly::Optional<int>(1));
+              })};
 }
 
 void TestServiceMock::sendMessage(

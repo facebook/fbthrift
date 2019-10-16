@@ -61,9 +61,8 @@ class ClientCallbackFlowable final
  public:
   ClientCallbackFlowable(
       std::unique_ptr<ThriftClientCallback> clientCallback,
-      std::chrono::milliseconds chunkTimeout)
-      : clientCallback_(std::move(clientCallback)),
-        chunkTimeout_(chunkTimeout) {}
+      std::chrono::milliseconds)
+      : clientCallback_(std::move(clientCallback)) {}
 
   void init() {
     self_ = this->ref_from_this(this);
@@ -89,16 +88,11 @@ class ClientCallbackFlowable final
       folly::EventBase* evb,
       StreamServerCallback* serverCallback) override {
     serverCallback_ = serverCallback;
-    auto self = std::move(self_);
-    self = self->timeout(*evb, chunkTimeout_, chunkTimeout_, [] {
-      return transport::TTransportException(
-          transport::TTransportException::TTransportExceptionType::TIMED_OUT);
-    });
     auto cb = std::move(clientCallback_);
     cb->onThriftResponse(
         std::move(firstPayload.metadata),
         std::move(firstPayload.payload),
-        toStream(std::move(self), evb));
+        toStream(std::move(self_), evb));
   }
 
   void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -143,7 +137,6 @@ class ClientCallbackFlowable final
   StreamServerCallback* serverCallback_{nullptr};
   std::shared_ptr<yarpl::flowable::Flowable<std::unique_ptr<folly::IOBuf>>>
       self_;
-  std::chrono::milliseconds chunkTimeout_;
   bool pendingComplete_{false};
   folly::exception_wrapper pendingError_;
 };
