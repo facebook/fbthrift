@@ -350,6 +350,41 @@ TEST_P(StreamingTest, ClientStreamBridge) {
   });
 }
 
+TEST_P(StreamingTest, ClientStreamBridgeStress) {
+  if (!GetParam().useRocketClient) {
+    GTEST_SKIP()
+        << "This test only works for transports that support low-level API.";
+  }
+  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto channel = client->getChannel();
+    auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
+        std::shared_ptr<apache::thrift::RequestChannel>(
+            channel, [client = std::move(client)](auto*) {}));
+
+    for (size_t i = 0; i < 100; ++i) {
+      std::atomic<size_t> expected = 0;
+      folly::Baton<> baton;
+      apache::thrift::RpcOptions opt;
+      opt.setChunkBufferSize(i % 10 + 1);
+      auto sub =
+          bufferedClient->sync_range(opt, 0, 1000)
+              .subscribeExTry(&executor_, [&](folly::Try<int32_t>&& next) {
+                if (next.hasValue()) {
+                  if (expected == i) {
+                    baton.post();
+                  }
+                  EXPECT_EQ(expected++, *next);
+                }
+              });
+      baton.wait();
+      sub.cancel();
+      std::move(sub).join();
+      EXPECT_LT(expected, 1000);
+      EXPECT_GE(expected, i);
+    }
+  });
+}
+
 TEST_P(StreamingTest, SimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto result = client->sync_range(0, 10).via(&executor_);
