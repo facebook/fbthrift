@@ -180,7 +180,7 @@ def get_client(
         raise ValueError('path or port must be set')
 
     # See if what we were given is an ip or hostname, if not an ip return a resolver
-    if not path and isinstance(host, str):
+    if isinstance(host, str) and host != "::1" and not path:
         try:
             ipaddress.ip_address(host)
         except ValueError:
