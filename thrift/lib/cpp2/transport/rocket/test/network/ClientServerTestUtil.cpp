@@ -460,6 +460,10 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
       }
     }
 
+    void resetServerCallback(StreamServerCallback& serverCallback) override {
+      serverCallback_ = &serverCallback;
+    }
+
    private:
     std::chrono::milliseconds chunkTimeout_;
     folly::Promise<SemiStream<Payload>> p_;

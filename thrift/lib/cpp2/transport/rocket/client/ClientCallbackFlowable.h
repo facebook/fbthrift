@@ -130,6 +130,10 @@ class ClientCallbackFlowable final
     }
   }
 
+  void resetServerCallback(StreamServerCallback& serverCallback) {
+    serverCallback_ = &serverCallback;
+  }
+
  private:
   std::unique_ptr<ThriftClientCallback> clientCallback_;
   std::shared_ptr<yarpl::flowable::Subscriber<std::unique_ptr<folly::IOBuf>>>

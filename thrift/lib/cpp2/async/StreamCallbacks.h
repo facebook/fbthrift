@@ -94,6 +94,8 @@ class StreamClientCallback {
   virtual void onStreamNext(StreamPayload&&) = 0;
   virtual void onStreamError(folly::exception_wrapper) = 0;
   virtual void onStreamComplete() = 0;
+
+  virtual void resetServerCallback(StreamServerCallback&) = 0;
 };
 
 class ChannelClientCallback {

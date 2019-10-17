@@ -127,6 +127,11 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
   context_.freeStream();
 }
 
+void RocketStreamClientCallback::resetServerCallback(
+    StreamServerCallback& serverCallback) {
+  serverCallback_ = &serverCallback;
+}
+
 void RocketStreamClientCallback::request(uint32_t tokens) {
   if (!tokens) {
     return;

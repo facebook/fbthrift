@@ -616,6 +616,10 @@ class TestClientCallback : public StreamClientCallback {
     evb_.terminateLoopSoon();
   }
 
+  void resetServerCallback(StreamServerCallback& serverCallback) override {
+    subscription_ = &serverCallback;
+  }
+
   void cancel() {
     if (auto* subscription = std::exchange(subscription_, nullptr)) {
       subscription->onStreamCancel();

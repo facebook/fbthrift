@@ -115,6 +115,10 @@ class ClientStreamBridge : public TwoWayBridge<
     close();
   }
 
+  void resetServerCallback(StreamServerCallback& serverCallback) override {
+    streamServerCallback_ = &serverCallback;
+  }
+
   void processCredits() {
     if (!streamServerCallback_) {
       return;
