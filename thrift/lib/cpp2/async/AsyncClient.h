@@ -41,6 +41,10 @@ class GeneratedAsyncClient : public TClientBase {
     return channel_.get();
   }
 
+  std::shared_ptr<RequestChannel> getChannelShared() const noexcept {
+    return channel_;
+  }
+
   HeaderChannel* getHeaderChannel() const noexcept {
     return dynamic_cast<HeaderChannel*>(channel_.get());
   }
