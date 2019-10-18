@@ -16,7 +16,6 @@ enum Animal: int {
   TARANTULA = 3;
 }
 
-type PersonID = int;
 /**
  * Original thrift struct:-
  * Color

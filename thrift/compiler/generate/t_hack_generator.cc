@@ -1018,10 +1018,7 @@ void t_hack_generator::close_generator() {
  *
  * @param ttypedef The type definition
  */
-void t_hack_generator::generate_typedef(t_typedef* ttypedef) {
-  f_types_ << "type " << ttypedef->get_symbolic() << " = "
-           << type_to_typehint(ttypedef->get_type()) << ";\n";
-}
+void t_hack_generator::generate_typedef(t_typedef* /*ttypedef*/) {}
 
 /**
  * Generates code for an enumerated type. Since define is expensive to lookup

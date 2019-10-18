@@ -6,7 +6,6 @@
  *  @generated
  */
 
-type containerTypedef = Map<int, string>;
 enum ComplexUnionEnum: int {
   _EMPTY_ = 0;
   intValue = 1;
