@@ -1,0 +1,1 @@
+mstch_cpp2:client_buffered_stream src/module.thrift
