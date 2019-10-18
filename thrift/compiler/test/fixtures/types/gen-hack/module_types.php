@@ -90,7 +90,7 @@ class decorated_struct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'field') !== null) {
-      $this->field = $parsed['field'];
+      $this->field = /* HH_FIXME[4110] */ $parsed['field'];
     }    
   }
 
@@ -293,9 +293,9 @@ class ContainerStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'fieldA') !== null) {
-      $_json3 = $parsed['fieldA'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['fieldA'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -308,9 +308,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldA = $_container4;
     }    
     if (idx($parsed, 'fieldB') !== null) {
-      $_json10 = $parsed['fieldB'];
+      $_json10 = /* HH_FIXME[4110] */ $parsed['fieldB'];
       $_container11 = Vector {};
-      foreach($_json10 as $_key8 => $_value9) {
+      foreach(/* HH_FIXME[4110] */ $_json10 as $_key8 => $_value9) {
         $_elem12 = 0;
         $_tmp13 = (int)$_value9;
         if ($_tmp13 > 0x7fffffff) {
@@ -323,9 +323,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldB = $_container11;
     }    
     if (idx($parsed, 'fieldC') !== null) {
-      $_json17 = $parsed['fieldC'];
+      $_json17 = /* HH_FIXME[4110] */ $parsed['fieldC'];
       $_container18 = Vector {};
-      foreach($_json17 as $_key15 => $_value16) {
+      foreach(/* HH_FIXME[4110] */ $_json17 as $_key15 => $_value16) {
         $_elem19 = 0;
         $_tmp20 = (int)$_value16;
         if ($_tmp20 > 0x7fffffff) {
@@ -338,9 +338,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldC = $_container18;
     }    
     if (idx($parsed, 'fieldD') !== null) {
-      $_json24 = $parsed['fieldD'];
+      $_json24 = /* HH_FIXME[4110] */ $parsed['fieldD'];
       $_container25 = Vector {};
-      foreach($_json24 as $_key22 => $_value23) {
+      foreach(/* HH_FIXME[4110] */ $_json24 as $_key22 => $_value23) {
         $_elem26 = 0;
         $_tmp27 = (int)$_value23;
         if ($_tmp27 > 0x7fffffff) {
@@ -353,9 +353,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldD = $_container25;
     }    
     if (idx($parsed, 'fieldE') !== null) {
-      $_json31 = $parsed['fieldE'];
+      $_json31 = /* HH_FIXME[4110] */ $parsed['fieldE'];
       $_container32 = Vector {};
-      foreach($_json31 as $_key29 => $_value30) {
+      foreach(/* HH_FIXME[4110] */ $_json31 as $_key29 => $_value30) {
         $_elem33 = 0;
         $_tmp34 = (int)$_value30;
         if ($_tmp34 > 0x7fffffff) {
@@ -368,9 +368,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldE = $_container32;
     }    
     if (idx($parsed, 'fieldF') !== null) {
-      $_json38 = $parsed['fieldF'];
+      $_json38 = /* HH_FIXME[4110] */ $parsed['fieldF'];
       $_container39 = Set {};
-      foreach($_json38 as $_key36 => $_value37) {
+      foreach(/* HH_FIXME[4110] */ $_json38 as $_key36 => $_value37) {
         $_elem40 = 0;
         $_tmp41 = (int)$_value37;
         if ($_tmp41 > 0x7fffffff) {
@@ -383,9 +383,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldF = $_container39;
     }    
     if (idx($parsed, 'fieldG') !== null) {
-      $_json45 = $parsed['fieldG'];
+      $_json45 = /* HH_FIXME[4110] */ $parsed['fieldG'];
       $_container46 = Map {};
-      foreach($_json45 as $_key43 => $_value44) {
+      foreach(/* HH_FIXME[4110] */ $_json45 as $_key43 => $_value44) {
         $_value47 = '';
         $_value47 = $_value44;
         $_container46[$_key43] = $_value47;
@@ -393,9 +393,9 @@ class ContainerStruct implements \IThriftStruct {
       $this->fieldG = $_container46;
     }    
     if (idx($parsed, 'fieldH') !== null) {
-      $_json51 = $parsed['fieldH'];
+      $_json51 = /* HH_FIXME[4110] */ $parsed['fieldH'];
       $_container52 = Map {};
-      foreach($_json51 as $_key49 => $_value50) {
+      foreach(/* HH_FIXME[4110] */ $_json51 as $_key49 => $_value50) {
         $_value53 = '';
         $_value53 = $_value50;
         $_container52[$_key49] = $_value53;
@@ -455,9 +455,9 @@ class CppTypeStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'fieldA') !== null) {
-      $_json3 = $parsed['fieldA'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['fieldA'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -517,7 +517,7 @@ class VirtualStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = $parsed['MyIntField'];
+      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
     }    
   }
 
@@ -584,9 +584,9 @@ class MyStructWithForwardRefEnum implements \IThriftStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $this->a = MyForwardRefEnum::coerce($parsed['a']);    }    
+      $this->a = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['a']);    }    
     if (idx($parsed, 'b') !== null) {
-      $this->b = MyForwardRefEnum::coerce($parsed['b']);    }    
+      $this->b = MyForwardRefEnum::coerce(/* HH_FIXME[4110] */ $parsed['b']);    }    
   }
 
 }
@@ -650,7 +650,7 @@ class TrivialNumeric implements \IThriftStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $_tmp0 = (int)$parsed['a'];
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['a'];
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -658,7 +658,7 @@ class TrivialNumeric implements \IThriftStruct {
       }
     }    
     if (idx($parsed, 'b') !== null) {
-      $this->b = $parsed['b'];
+      $this->b = /* HH_FIXME[4110] */ $parsed['b'];
     }    
   }
 
@@ -720,7 +720,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
     }
 
     if (idx($parsed, 'z') !== null) {
-      $_tmp0 = (int)$parsed['z'];
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['z'];
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -728,7 +728,7 @@ class TrivialNestedWithDefault implements \IThriftStruct {
       }
     }    
     if (idx($parsed, 'n') !== null) {
-      $_tmp1 = json_encode($parsed['n']);
+      $_tmp1 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
       $_tmp2 = new TrivialNumeric();
       $_tmp2->readFromJson($_tmp1);
       $this->n = $_tmp2;
@@ -805,12 +805,12 @@ class ComplexString implements \IThriftStruct {
     }
 
     if (idx($parsed, 'a') !== null) {
-      $this->a = $parsed['a'];
+      $this->a = /* HH_FIXME[4110] */ $parsed['a'];
     }    
     if (idx($parsed, 'b') !== null) {
-      $_json3 = $parsed['b'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['b'];
       $_container4 = Map {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_value5 = 0;
         $_tmp6 = (int)$_value2;
         if ($_tmp6 > 0x7fffffff) {
@@ -882,10 +882,10 @@ class ComplexNestedWithDefault implements \IThriftStruct {
     }
 
     if (idx($parsed, 'z') !== null) {
-      $this->z = $parsed['z'];
+      $this->z = /* HH_FIXME[4110] */ $parsed['z'];
     }    
     if (idx($parsed, 'n') !== null) {
-      $_tmp0 = json_encode($parsed['n']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['n']);
       $_tmp1 = new ComplexString();
       $_tmp1->readFromJson($_tmp0);
       $this->n = $_tmp1;
@@ -998,7 +998,7 @@ class MinPadding implements \IThriftStruct {
     }
 
     if (idx($parsed, 'small') !== null) {
-      $_tmp0 = (int)$parsed['small'];
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['small'];
       if ($_tmp0 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1008,12 +1008,12 @@ class MinPadding implements \IThriftStruct {
       throw new \TProtocolException("Required field small cannot be found.");
     }    
     if (idx($parsed, 'big') !== null) {
-      $this->big = $parsed['big'];
+      $this->big = /* HH_FIXME[4110] */ $parsed['big'];
     } else {
       throw new \TProtocolException("Required field big cannot be found.");
     }    
     if (idx($parsed, 'medium') !== null) {
-      $_tmp1 = (int)$parsed['medium'];
+      $_tmp1 = (int)/* HH_FIXME[4110] */ $parsed['medium'];
       if ($_tmp1 > 0x7fff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1023,7 +1023,7 @@ class MinPadding implements \IThriftStruct {
       throw new \TProtocolException("Required field medium cannot be found.");
     }    
     if (idx($parsed, 'biggish') !== null) {
-      $_tmp2 = (int)$parsed['biggish'];
+      $_tmp2 = (int)/* HH_FIXME[4110] */ $parsed['biggish'];
       if ($_tmp2 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1033,7 +1033,7 @@ class MinPadding implements \IThriftStruct {
       throw new \TProtocolException("Required field biggish cannot be found.");
     }    
     if (idx($parsed, 'tiny') !== null) {
-      $_tmp3 = (int)$parsed['tiny'];
+      $_tmp3 = (int)/* HH_FIXME[4110] */ $parsed['tiny'];
       if ($_tmp3 > 0x7f) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -1132,16 +1132,16 @@ class MyStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = $parsed['MyIntField'];
+      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
     }    
     if (idx($parsed, 'MyStringField') !== null) {
-      $this->MyStringField = $parsed['MyStringField'];
+      $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
     }    
     if (idx($parsed, 'majorVer') !== null) {
-      $this->majorVer = $parsed['majorVer'];
+      $this->majorVer = /* HH_FIXME[4110] */ $parsed['majorVer'];
     }    
     if (idx($parsed, 'data') !== null) {
-      $_tmp0 = json_encode($parsed['data']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['data']);
       $_tmp1 = new MyDataItem();
       $_tmp1->readFromJson($_tmp0);
       $this->data = $_tmp1;
@@ -1226,7 +1226,7 @@ class Renaming implements \IThriftStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $this->foo = $parsed['foo'];
+      $this->foo = /* HH_FIXME[4110] */ $parsed['foo'];
     }    
   }
 
@@ -1305,16 +1305,16 @@ class AnnotatedTypes implements \IThriftStruct {
     }
 
     if (idx($parsed, 'binary_field') !== null) {
-      $this->binary_field = $parsed['binary_field'];
+      $this->binary_field = /* HH_FIXME[4110] */ $parsed['binary_field'];
     }    
     if (idx($parsed, 'list_field') !== null) {
-      $_json3 = $parsed['list_field'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['list_field'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = Map {};
         $_json9 = $_value2;
         $_container10 = Map {};
-        foreach($_json9 as $_key7 => $_value8) {
+        foreach(/* HH_FIXME[4110] */ $_json9 as $_key7 => $_value8) {
           $_value11 = '';
           $_value11 = $_value8;
           $_container10[$_key7] = $_value11;
@@ -1381,13 +1381,13 @@ class ForwardUsageRoot implements \IThriftStruct {
     }
 
     if (idx($parsed, 'ForwardUsageStruct') !== null) {
-      $_tmp0 = json_encode($parsed['ForwardUsageStruct']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageStruct']);
       $_tmp1 = new ForwardUsageStruct();
       $_tmp1->readFromJson($_tmp0);
       $this->ForwardUsageStruct = $_tmp1;
     }    
     if (idx($parsed, 'ForwardUsageByRef') !== null) {
-      $_tmp2 = json_encode($parsed['ForwardUsageByRef']);
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['ForwardUsageByRef']);
       $_tmp3 = new ForwardUsageByRef();
       $_tmp3->readFromJson($_tmp2);
       $this->ForwardUsageByRef = $_tmp3;
@@ -1437,7 +1437,7 @@ class ForwardUsageStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $_tmp0 = json_encode($parsed['foo']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
       $_tmp1 = new ForwardUsageRoot();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
@@ -1487,7 +1487,7 @@ class ForwardUsageByRef implements \IThriftStruct {
     }
 
     if (idx($parsed, 'foo') !== null) {
-      $_tmp0 = json_encode($parsed['foo']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['foo']);
       $_tmp1 = new ForwardUsageRoot();
       $_tmp1->readFromJson($_tmp0);
       $this->foo = $_tmp1;
@@ -1572,7 +1572,7 @@ class NoexceptMoveSimpleStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'boolField') !== null) {
-      $this->boolField = $parsed['boolField'];
+      $this->boolField = /* HH_FIXME[4110] */ $parsed['boolField'];
     }    
   }
 
@@ -1756,32 +1756,32 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'MyBoolField') !== null) {
-      $this->MyBoolField = $parsed['MyBoolField'];
+      $this->MyBoolField = /* HH_FIXME[4110] */ $parsed['MyBoolField'];
     }    
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = $parsed['MyIntField'];
+      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
     }    
     if (idx($parsed, 'MyStringField') !== null) {
-      $this->MyStringField = $parsed['MyStringField'];
+      $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
     }    
     if (idx($parsed, 'MyStringField2') !== null) {
-      $this->MyStringField2 = $parsed['MyStringField2'];
+      $this->MyStringField2 = /* HH_FIXME[4110] */ $parsed['MyStringField2'];
     }    
     if (idx($parsed, 'MyBinaryField') !== null) {
-      $this->MyBinaryField = $parsed['MyBinaryField'];
+      $this->MyBinaryField = /* HH_FIXME[4110] */ $parsed['MyBinaryField'];
     }    
     if (idx($parsed, 'MyBinaryField2') !== null) {
-      $this->MyBinaryField2 = $parsed['MyBinaryField2'];
+      $this->MyBinaryField2 = /* HH_FIXME[4110] */ $parsed['MyBinaryField2'];
     }    
     if (idx($parsed, 'MyBinaryField3') !== null) {
-      $this->MyBinaryField3 = $parsed['MyBinaryField3'];
+      $this->MyBinaryField3 = /* HH_FIXME[4110] */ $parsed['MyBinaryField3'];
     } else {
       throw new \TProtocolException("Required field MyBinaryField3 cannot be found.");
     }    
     if (idx($parsed, 'MyBinaryListField4') !== null) {
-      $_json3 = $parsed['MyBinaryListField4'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['MyBinaryListField4'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = '';
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -1789,9 +1789,9 @@ class NoexceptMoveComplexStruct implements \IThriftStruct {
       $this->MyBinaryListField4 = $_container4;
     }    
     if (idx($parsed, 'MyMapEnumAndInt') !== null) {
-      $_json9 = $parsed['MyMapEnumAndInt'];
+      $_json9 = /* HH_FIXME[4110] */ $parsed['MyMapEnumAndInt'];
       $_container10 = Map {};
-      foreach($_json9 as $_key7 => $_value8) {
+      foreach(/* HH_FIXME[4110] */ $_json9 as $_key7 => $_value8) {
         $_value11 = '';
         $_value11 = $_value8;
         $_container10[$_key7] = $_value11;
@@ -1904,11 +1904,11 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
     }
 
     if (idx($parsed, 'string_field') !== null) {
-      $this->string_field = $parsed['string_field'];
+      $this->string_field = /* HH_FIXME[4110] */ $parsed['string_field'];
       $this->_type = NoExceptMoveUnionEnum::string_field;
     }    
     if (idx($parsed, 'i32_field') !== null) {
-      $_tmp0 = (int)$parsed['i32_field'];
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['i32_field'];
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {

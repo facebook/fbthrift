@@ -112,13 +112,13 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (idx($parsed, 'major') !== null) {
-      $this->major = $parsed['major'];
+      $this->major = /* HH_FIXME[4110] */ $parsed['major'];
     }    
     if (idx($parsed, 'package') !== null) {
-      $this->package = $parsed['package'];
+      $this->package = /* HH_FIXME[4110] */ $parsed['package'];
     }    
     if (idx($parsed, 'annotation_with_quote') !== null) {
-      $this->annotation_with_quote = $parsed['annotation_with_quote'];
+      $this->annotation_with_quote = /* HH_FIXME[4110] */ $parsed['annotation_with_quote'];
     }    
   }
 

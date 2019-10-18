@@ -1526,7 +1526,7 @@ class MyService_getRandomData_result implements \IThriftStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = $parsed['success'];
+      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
     }    
   }
 
@@ -1584,7 +1584,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = $parsed['id'];
+      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
     }    
   }
 
@@ -1621,7 +1621,7 @@ class MyService_hasDataById_result implements \IThriftStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = $parsed['success'];
+      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
     }    
   }
 
@@ -1679,7 +1679,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = $parsed['id'];
+      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
     }    
   }
 
@@ -1716,7 +1716,7 @@ class MyService_getDataById_result implements \IThriftStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $this->success = $parsed['success'];
+      $this->success = /* HH_FIXME[4110] */ $parsed['success'];
     }    
   }
 
@@ -1788,10 +1788,10 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = $parsed['id'];
+      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
     }    
     if (idx($parsed, 'data') !== null) {
-      $this->data = $parsed['data'];
+      $this->data = /* HH_FIXME[4110] */ $parsed['data'];
     }    
   }
 
@@ -1891,10 +1891,10 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     }
 
     if (idx($parsed, 'id') !== null) {
-      $this->id = $parsed['id'];
+      $this->id = /* HH_FIXME[4110] */ $parsed['id'];
     }    
     if (idx($parsed, 'data') !== null) {
-      $this->data = $parsed['data'];
+      $this->data = /* HH_FIXME[4110] */ $parsed['data'];
     }    
   }
 

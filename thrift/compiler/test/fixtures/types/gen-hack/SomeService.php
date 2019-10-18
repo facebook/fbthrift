@@ -391,9 +391,9 @@ class SomeService_bounce_map_args implements \IThriftStruct {
     }
 
     if (idx($parsed, 'm') !== null) {
-      $_json3 = $parsed['m'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['m'];
       $_container4 = Map {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_value5 = '';
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;
@@ -444,9 +444,9 @@ class SomeService_bounce_map_result implements \IThriftStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_json3 = $parsed['success'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['success'];
       $_container4 = Map {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_value5 = '';
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;
@@ -498,9 +498,9 @@ class SomeService_binary_keyed_map_args implements \IThriftStruct {
     }
 
     if (idx($parsed, 'r') !== null) {
-      $_json3 = $parsed['r'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['r'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -551,9 +551,9 @@ class SomeService_binary_keyed_map_result implements \IThriftStruct {
     }
 
     if (idx($parsed, 'success') !== null) {
-      $_json3 = $parsed['success'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['success'];
       $_container4 = Map {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_value5 = 0;
         $_value5 = $_value2;
         $_container4[$_key1] = $_value5;

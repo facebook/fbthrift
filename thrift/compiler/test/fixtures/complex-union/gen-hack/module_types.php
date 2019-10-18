@@ -251,17 +251,17 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     }
 
     if (idx($parsed, 'intValue') !== null) {
-      $this->intValue = $parsed['intValue'];
+      $this->intValue = /* HH_FIXME[4110] */ $parsed['intValue'];
       $this->_type = ComplexUnionEnum::intValue;
     }    
     if (idx($parsed, 'stringValue') !== null) {
-      $this->stringValue = $parsed['stringValue'];
+      $this->stringValue = /* HH_FIXME[4110] */ $parsed['stringValue'];
       $this->_type = ComplexUnionEnum::stringValue;
     }    
     if (idx($parsed, 'intListValue') !== null) {
-      $_json3 = $parsed['intListValue'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['intListValue'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -270,9 +270,9 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       $this->_type = ComplexUnionEnum::intListValue;
     }    
     if (idx($parsed, 'stringListValue') !== null) {
-      $_json9 = $parsed['stringListValue'];
+      $_json9 = /* HH_FIXME[4110] */ $parsed['stringListValue'];
       $_container10 = Vector {};
-      foreach($_json9 as $_key7 => $_value8) {
+      foreach(/* HH_FIXME[4110] */ $_json9 as $_key7 => $_value8) {
         $_elem11 = '';
         $_elem11 = $_value8;
         $_container10 []= $_elem11;
@@ -281,9 +281,9 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       $this->_type = ComplexUnionEnum::stringListValue;
     }    
     if (idx($parsed, 'typedefValue') !== null) {
-      $_json15 = $parsed['typedefValue'];
+      $_json15 = /* HH_FIXME[4110] */ $parsed['typedefValue'];
       $_container16 = Map {};
-      foreach($_json15 as $_key13 => $_value14) {
+      foreach(/* HH_FIXME[4110] */ $_json15 as $_key13 => $_value14) {
         $_value17 = '';
         $_value17 = $_value14;
         $_container16[$_key13] = $_value17;
@@ -292,7 +292,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       $this->_type = ComplexUnionEnum::typedefValue;
     }    
     if (idx($parsed, 'stringRef') !== null) {
-      $this->stringRef = $parsed['stringRef'];
+      $this->stringRef = /* HH_FIXME[4110] */ $parsed['stringRef'];
       $this->_type = ComplexUnionEnum::stringRef;
     }    
   }
@@ -411,9 +411,9 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     }
 
     if (idx($parsed, 'intListValue') !== null) {
-      $_json3 = $parsed['intListValue'];
+      $_json3 = /* HH_FIXME[4110] */ $parsed['intListValue'];
       $_container4 = Vector {};
-      foreach($_json3 as $_key1 => $_value2) {
+      foreach(/* HH_FIXME[4110] */ $_json3 as $_key1 => $_value2) {
         $_elem5 = 0;
         $_elem5 = $_value2;
         $_container4 []= $_elem5;
@@ -422,9 +422,9 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
       $this->_type = ListUnionEnum::intListValue;
     }    
     if (idx($parsed, 'stringListValue') !== null) {
-      $_json9 = $parsed['stringListValue'];
+      $_json9 = /* HH_FIXME[4110] */ $parsed['stringListValue'];
       $_container10 = Vector {};
-      foreach($_json9 as $_key7 => $_value8) {
+      foreach(/* HH_FIXME[4110] */ $_json9 as $_key7 => $_value8) {
         $_elem11 = '';
         $_elem11 = $_value8;
         $_container10 []= $_elem11;
@@ -538,11 +538,11 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     }
 
     if (idx($parsed, 'binaryData') !== null) {
-      $this->binaryData = $parsed['binaryData'];
+      $this->binaryData = /* HH_FIXME[4110] */ $parsed['binaryData'];
       $this->_type = DataUnionEnum::binaryData;
     }    
     if (idx($parsed, 'stringData') !== null) {
-      $this->stringData = $parsed['stringData'];
+      $this->stringData = /* HH_FIXME[4110] */ $parsed['stringData'];
       $this->_type = DataUnionEnum::stringData;
     }    
   }
@@ -632,10 +632,10 @@ class Val implements \IThriftStruct {
     }
 
     if (idx($parsed, 'strVal') !== null) {
-      $this->strVal = $parsed['strVal'];
+      $this->strVal = /* HH_FIXME[4110] */ $parsed['strVal'];
     }    
     if (idx($parsed, 'intVal') !== null) {
-      $_tmp0 = (int)$parsed['intVal'];
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['intVal'];
       if ($_tmp0 > 0x7fffffff) {
         throw new \TProtocolException("number exceeds limit in field");
       } else {
@@ -643,9 +643,9 @@ class Val implements \IThriftStruct {
       }
     }    
     if (idx($parsed, 'typedefValue') !== null) {
-      $_json4 = $parsed['typedefValue'];
+      $_json4 = /* HH_FIXME[4110] */ $parsed['typedefValue'];
       $_container5 = Map {};
-      foreach($_json4 as $_key2 => $_value3) {
+      foreach(/* HH_FIXME[4110] */ $_json4 as $_key2 => $_value3) {
         $_value6 = '';
         $_value6 = $_value3;
         $_container5[$_key2] = $_value6;
@@ -760,14 +760,14 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     }
 
     if (idx($parsed, 'v1') !== null) {
-      $_tmp0 = json_encode($parsed['v1']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['v1']);
       $_tmp1 = new Val();
       $_tmp1->readFromJson($_tmp0);
       $this->v1 = $_tmp1;
       $this->_type = ValUnionEnum::v1;
     }    
     if (idx($parsed, 'v2') !== null) {
-      $_tmp2 = json_encode($parsed['v2']);
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['v2']);
       $_tmp3 = new Val();
       $_tmp3->readFromJson($_tmp2);
       $this->v2 = $_tmp3;
@@ -879,11 +879,11 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     }
 
     if (idx($parsed, 'thingOne') !== null) {
-      $this->thingOne = $parsed['thingOne'];
+      $this->thingOne = /* HH_FIXME[4110] */ $parsed['thingOne'];
       $this->_type = VirtualComplexUnionEnum::thingOne;
     }    
     if (idx($parsed, 'thingTwo') !== null) {
-      $this->thingTwo = $parsed['thingTwo'];
+      $this->thingTwo = /* HH_FIXME[4110] */ $parsed['thingTwo'];
       $this->_type = VirtualComplexUnionEnum::thingTwo;
     }    
   }
@@ -934,7 +934,7 @@ class NonCopyableStruct implements \IThriftStruct {
     }
 
     if (idx($parsed, 'num') !== null) {
-      $this->num = $parsed['num'];
+      $this->num = /* HH_FIXME[4110] */ $parsed['num'];
     }    
   }
 
@@ -1012,7 +1012,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     }
 
     if (idx($parsed, 's') !== null) {
-      $_tmp0 = json_encode($parsed['s']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['s']);
       $_tmp1 = new NonCopyableStruct();
       $_tmp1->readFromJson($_tmp0);
       $this->s = $_tmp1;

@@ -127,19 +127,19 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (idx($parsed, 'MyIntField') !== null) {
-      $this->MyIntField = $parsed['MyIntField'];
+      $this->MyIntField = /* HH_FIXME[4110] */ $parsed['MyIntField'];
     }    
     if (idx($parsed, 'MyStringField') !== null) {
-      $this->MyStringField = $parsed['MyStringField'];
+      $this->MyStringField = /* HH_FIXME[4110] */ $parsed['MyStringField'];
     }    
     if (idx($parsed, 'MyDataField') !== null) {
-      $_tmp0 = json_encode($parsed['MyDataField']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['MyDataField']);
       $_tmp1 = new MyDataItem();
       $_tmp1->readFromJson($_tmp0);
       $this->MyDataField = $_tmp1;
     }    
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = MyEnum::coerce($parsed['myEnum']);    }    
+      $this->myEnum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);    }    
   }
 
 }
@@ -357,17 +357,17 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     }
 
     if (idx($parsed, 'myEnum') !== null) {
-      $this->myEnum = MyEnum::coerce($parsed['myEnum']);      $this->_type = MyUnionEnum::myEnum;
+      $this->myEnum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);      $this->_type = MyUnionEnum::myEnum;
     }    
     if (idx($parsed, 'myStruct') !== null) {
-      $_tmp0 = json_encode($parsed['myStruct']);
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['myStruct']);
       $_tmp1 = new MyStruct();
       $_tmp1->readFromJson($_tmp0);
       $this->myStruct = $_tmp1;
       $this->_type = MyUnionEnum::myStruct;
     }    
     if (idx($parsed, 'myDataItem') !== null) {
-      $_tmp2 = json_encode($parsed['myDataItem']);
+      $_tmp2 = json_encode(/* HH_FIXME[4110] */ $parsed['myDataItem']);
       $_tmp3 = new MyDataItem();
       $_tmp3->readFromJson($_tmp2);
       $this->myDataItem = $_tmp3;

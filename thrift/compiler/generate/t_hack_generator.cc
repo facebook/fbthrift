@@ -796,8 +796,8 @@ void t_hack_generator::generate_json_container(
       indent(out) << container << " = Set {};\n";
     }
   }
-  indent(out) << "foreach(" << json << " as " << key << " => " << value
-              << ") {\n";
+  indent(out) << "foreach(/* HH_FIXME[4110] */ " << json << " as " << key
+              << " => " << value << ") {\n";
   indent_up();
 
   if (ttype->is_list()) {
@@ -907,7 +907,12 @@ void t_hack_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
     indent(out) << "if (idx($parsed, '" << tf->get_name() << "') !== null) {\n";
     indent_up();
     generate_json_field(
-        out, namer, tf, "$this->", "", "$parsed['" + tf->get_name() + "']");
+        out,
+        namer,
+        tf,
+        "$this->",
+        "",
+        "/* HH_FIXME[4110] */ $parsed['" + tf->get_name() + "']");
     if (tstruct->is_union()) {
       indent(out) << "$this->_type = " << union_field_to_enum(tstruct, tf)
                   << ";\n";
