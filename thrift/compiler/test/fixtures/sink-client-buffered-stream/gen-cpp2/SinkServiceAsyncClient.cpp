@@ -35,7 +35,7 @@ void SinkServiceAsyncClient::methodT(Protocol_* prot, apache::thrift::RpcOptions
   SinkService_method_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "method", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, true);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "method", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -45,7 +45,7 @@ void SinkServiceAsyncClient::methodAndReponseT(Protocol_* prot, apache::thrift::
   SinkService_methodAndReponse_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodAndReponse", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, true);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodAndReponse", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
@@ -55,7 +55,7 @@ void SinkServiceAsyncClient::methodThrowT(Protocol_* prot, apache::thrift::RpcOp
   SinkService_methodThrow_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
-  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodThrow", writer, sizer, apache::thrift::RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE, true);
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), ctx->ctx, std::move(header), channel_.get(), "methodThrow", writer, sizer);
   ctx->reqContext.setRequestHeader(nullptr);
 }
 
