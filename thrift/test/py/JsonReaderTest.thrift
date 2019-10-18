@@ -49,3 +49,7 @@ struct JsonTypedefs {
  3: set<int64> z,
  4: int64 w,
 }
+
+struct Container {
+  1: StructContainingEnum nested_struct,
+}

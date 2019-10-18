@@ -153,7 +153,7 @@ class MyStruct:
       self.MyStringField = json_obj['MyStringField']
     if 'MyDataField' in json_obj and json_obj['MyDataField'] is not None:
       self.MyDataField = MyDataItem()
-      self.MyDataField.readFromJson(json_obj['MyDataField'], is_text=False)
+      self.MyDataField.readFromJson(json_obj['MyDataField'], is_text=False, relax_enum_validation=relax_enum_validation)
     if 'myEnum' in json_obj and json_obj['myEnum'] is not None:
       self.myEnum = json_obj['myEnum']
       if not self.myEnum in MyEnum._VALUES_TO_NAMES:
@@ -404,7 +404,13 @@ class MyUnion(object):
     oprot.writeFieldStop()
     oprot.writeUnionEnd()
   
-  def readFromJson(self, json, is_text=True):
+  def readFromJson(self, json, is_text=True, **kwargs):
+    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    if kwargs:
+        extra_kwargs = ', '.join(kwargs.keys())
+        raise ValueError(
+            'Unexpected keyword arguments: ' + extra_kwargs
+        )
     self.field = 0
     self.value = None
     obj = json
@@ -424,11 +430,11 @@ class MyUnion(object):
       self.set_myEnum(myEnum)
     if 'myStruct' in obj:
       myStruct = MyStruct()
-      myStruct.readFromJson(obj['myStruct'], is_text=False)
+      myStruct.readFromJson(obj['myStruct'], is_text=False, relax_enum_validation=relax_enum_validation)
       self.set_myStruct(myStruct)
     if 'myDataItem' in obj:
       myDataItem = MyDataItem()
-      myDataItem.readFromJson(obj['myDataItem'], is_text=False)
+      myDataItem.readFromJson(obj['myDataItem'], is_text=False, relax_enum_validation=relax_enum_validation)
       self.set_myDataItem(myDataItem)
 
   def __eq__(self, other):

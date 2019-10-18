@@ -26,6 +26,7 @@ import unittest
 from JsonReaderTest.ttypes import StructContainingOptionalList
 from JsonReaderTest.ttypes import StructContainingRequiredList
 from JsonReaderTest.ttypes import StructContainingEnum
+from JsonReaderTest.ttypes import Container
 from thrift.protocol.TProtocol import TProtocolException
 
 
@@ -64,6 +65,19 @@ class TestJSONReader(unittest.TestCase):
     def testUnrecognizedEnumRelaxedValidation(self):
         struct = StructContainingEnum()
         struct.readFromJson('{ "data": 100}', relax_enum_validation=True)
+
+    def testNestedStructWithUnrecognizedEnum(self):
+        json_data = '{"nested_struct": {"data": 100}}'
+        struct = Container()
+        with self.assertRaises(TProtocolException) as ex:
+            struct.readFromJson(json_data)
+
+        self.assertIn(
+            "100 is not a recognized value of enum type EnumZeroToTen",
+            str(ex.exception),
+        )
+
+        struct.readFromJson(json_data, relax_enum_validation=True)
 
 
 if __name__ == '__main__':

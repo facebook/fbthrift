@@ -377,6 +377,8 @@ class t_py_generator : public t_concat_generator {
   std::string package_dir_;
 
   set<string> reserved_keywords_;
+
+  void generate_json_reader_fn_signature(ofstream& out);
 };
 
 std::string t_py_generator::get_real_py_module(const t_program* program) {
@@ -487,7 +489,8 @@ void t_py_generator::generate_json_struct(
     const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << type_name(tstruct) << "()" << endl;
   indent(out) << prefix_thrift << ".readFromJson(" << prefix_json
-              << ", is_text=False)" << endl;
+              << ", is_text=False, relax_enum_validation=relax_enum_validation)"
+              << endl;
 }
 
 void t_py_generator::generate_json_enum(
@@ -702,14 +705,7 @@ void t_py_generator::generate_json_map_key(
   }
 }
 
-void t_py_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
-  if (!gen_json_) {
-    return;
-  }
-
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-
+void t_py_generator::generate_json_reader_fn_signature(ofstream& out) {
   indent(out) << "def readFromJson(self, json, is_text=True, **kwargs):"
               << endl;
   indent_up();
@@ -722,6 +718,17 @@ void t_py_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
   indent(out) << "        'Unexpected keyword arguments: ' + extra_kwargs"
               << endl;
   indent(out) << "    )" << endl;
+}
+
+void t_py_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
+  if (!gen_json_) {
+    return;
+  }
+
+  const vector<t_field*>& fields = tstruct->get_members();
+  vector<t_field*>::const_iterator f_iter;
+
+  generate_json_reader_fn_signature(out);
   indent(out) << "json_obj = json" << endl;
   indent(out) << "if is_text:" << endl;
   indent_up();
@@ -1356,8 +1363,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
 
   // Generate json reader
   if (gen_json_) {
-    indent(out) << "def readFromJson(self, json, is_text=True):" << endl;
-    indent_up();
+    generate_json_reader_fn_signature(out);
     indent(out) << "self.field = 0" << endl;
     indent(out) << "self.value = None" << endl;
     indent(out) << "obj = json" << endl;
