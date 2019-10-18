@@ -22,6 +22,8 @@
 #include <vector>
 #include <string>
 
+#include <glog/logging.h>
+
 #include <thrift/lib/cpp/concurrency/test/ThreadFactoryTests.h>
 #include <thrift/lib/cpp/concurrency/test/TimerManagerTests.h>
 
@@ -51,28 +53,28 @@ int main(int argc, char** argv) {
     size_t floodLoops =  1;
     size_t floodCount =  100000;
 
-    //assert(threadFactoryTests.helloWorldTest());
-    assert(threadFactoryTests.getCurrentThreadIdTest());
+    // DCHECK(threadFactoryTests.helloWorldTest());
+    DCHECK(threadFactoryTests.getCurrentThreadIdTest());
 
     std::cout << "\t\tThreadFactory reap N threads test: N = " << count << std::endl;
 
-    assert(threadFactoryTests.reapNThreads(count));
+    DCHECK(threadFactoryTests.reapNThreads(count));
 
     std::cout << "\t\tThreadFactory floodN threads test: N = " << floodCount << std::endl;
 
-    assert(threadFactoryTests.floodNTest(floodLoops, floodCount));
+    DCHECK(threadFactoryTests.floodNTest(floodLoops, floodCount));
 
     std::cout << "\t\tThreadFactory synchronous start test" << std::endl;
 
-    assert(threadFactoryTests.synchStartTest());
+    DCHECK(threadFactoryTests.synchStartTest());
 
     std::cout << "\t\tThreadFactory monitor timeout test" << std::endl;
 
-    assert(threadFactoryTests.monitorTimeoutTest());
+    DCHECK(threadFactoryTests.monitorTimeoutTest());
 
     std::cout << "\t\tInitThreadFactory test" << std::endl;
 
-    assert(threadFactoryTests.initThreadFactoryTest());
+    DCHECK(threadFactoryTests.initThreadFactoryTest());
   }
 
   if (runAll || args[0] == "util") {
@@ -104,6 +106,6 @@ int main(int argc, char** argv) {
 
     TimerManagerTests timerManagerTests;
 
-    assert(timerManagerTests.test00());
+    DCHECK(timerManagerTests.test00());
   }
 }

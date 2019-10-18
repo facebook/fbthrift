@@ -25,6 +25,8 @@
 #include <memory>
 #include <set>
 
+#include <glog/logging.h>
+
 #include <folly/portability/Unistd.h>
 
 #include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
@@ -123,7 +125,7 @@ public:
 
     thread->join();
 
-    assert(id == task->id);
+    DCHECK(id == task->id);
 
     std::cout << "\t\t\tSuccess!" << std::endl;
 
