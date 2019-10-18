@@ -30,7 +30,6 @@
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
@@ -199,22 +198,6 @@ void SampleServer<Service>::connectToServer(
     auto chan = HeaderClientChannel::newChannel(std::move(sock));
     chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
     callMe(std::move(chan), nullptr);
-  } else if (transport == "rsocket") {
-    std::shared_ptr<RSocketClientChannel> channel;
-    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      channel = RSocketClientChannel::newChannel(
-          TAsyncSocket::UniquePtr(new TAsyncSocketIntercepted(
-              evbThread_.getEventBase(), FLAGS_host, port_)));
-    });
-    auto channelPtr = channel.get();
-    std::shared_ptr<RSocketClientChannel> destroyInEvbChannel(
-        channelPtr,
-        [channel_ = std::move(channel),
-         eventBase = evbThread_.getEventBase()](RSocketClientChannel*) mutable {
-          eventBase->runImmediatelyOrRunInEventBaseThreadAndWait(
-              [channel__ = std::move(channel_)] {});
-        });
-    callMe(std::move(destroyInEvbChannel), nullptr);
   } else if (transport == "rocket") {
     std::shared_ptr<RocketClientChannel> channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {

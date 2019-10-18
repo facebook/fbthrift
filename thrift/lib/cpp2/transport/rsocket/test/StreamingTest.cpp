@@ -27,7 +27,6 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestServiceMock.h>
@@ -61,10 +60,9 @@ void waitNoLeak(StreamServiceAsyncClient* client) {
 } // namespace
 
 struct StreamingTestParameters {
-  StreamingTestParameters(bool rocketClient, bool rocketServer)
-      : useRocketClient(rocketClient), useRocketServer(rocketServer) {}
+  explicit StreamingTestParameters(bool rocketServer)
+      : useRocketServer(rocketServer) {}
 
-  bool useRocketClient;
   bool useRocketServer;
 };
 
@@ -94,11 +92,8 @@ class StreamingTest
       folly::Function<void(std::unique_ptr<StreamServiceAsyncClient>)> callMe,
       folly::Function<void()> onDetachable = nullptr,
       folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr) {
-    auto channel = connectToServer(
-        port_,
-        std::move(onDetachable),
-        GetParam().useRocketClient,
-        std::move(socketSetup));
+    auto channel =
+        connectToServer(port_, std::move(onDetachable), std::move(socketSetup));
     callMe(std::make_unique<StreamServiceAsyncClient>(std::move(channel)));
   }
 
@@ -141,10 +136,6 @@ class BlockStreamingTest : public StreamingTest {
 };
 
 TEST_P(StreamingTest, ClientStreamBridge) {
-  if (!GetParam().useRocketClient) {
-    GTEST_SKIP()
-        << "This test only works for transports that support low-level API.";
-  }
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto channel = client->getChannel();
     auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
@@ -351,10 +342,6 @@ TEST_P(StreamingTest, ClientStreamBridge) {
 }
 
 TEST_P(StreamingTest, ClientStreamBridgeStress) {
-  if (!GetParam().useRocketClient) {
-    GTEST_SKIP()
-        << "This test only works for transports that support low-level API.";
-  }
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto channel = client->getChannel();
     auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
@@ -907,10 +894,7 @@ TEST_P(StreamingTest, DetachAndAttachEventBase) {
   auto socket =
       TAsyncSocket::UniquePtr(new TAsyncSocket(&mainEventBase, "::1", port_));
   auto channel = [&]() -> std::shared_ptr<ClientChannel> {
-    if (GetParam().useRocketClient) {
-      return RocketClientChannel::newChannel(std::move(socket));
-    }
-    return RSocketClientChannel::newChannel(std::move(socket));
+    return RocketClientChannel::newChannel(std::move(socket));
   }();
 
   folly::Promise<folly::Unit> detachablePromise;
@@ -973,12 +957,9 @@ TEST_P(StreamingTest, DetachAndAttachEventBase) {
 TEST_P(StreamingTest, ServerCompletesFirstResponseAfterClientDisconnects) {
   folly::EventBase evb;
 
-  auto makeChannel = [&]() -> std::shared_ptr<ClientChannel> {
-    auto socket = TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port_));
-    if (GetParam().useRocketClient) {
-      return RocketClientChannel::newChannel(std::move(socket));
-    }
-    return RSocketClientChannel::newChannel(std::move(socket));
+  auto makeChannel = [&] {
+    return RocketClientChannel::newChannel(
+        TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port_)));
   };
 
   {
@@ -1012,17 +993,15 @@ INSTANTIATE_TEST_CASE_P(
     StreamingTests,
     StreamingTest,
     testing::Values(
-        StreamingTestParameters{false, false},
-        StreamingTestParameters{false, true},
-        StreamingTestParameters{true, true}));
+        StreamingTestParameters{false},
+        StreamingTestParameters{true}));
 
 INSTANTIATE_TEST_CASE_P(
     BlockingStreamingTests,
     BlockStreamingTest,
     testing::Values(
-        StreamingTestParameters{false, false},
-        StreamingTestParameters{false, true},
-        StreamingTestParameters{true, true}));
+        StreamingTestParameters{false},
+        StreamingTestParameters{true}));
 
 } // namespace thrift
 } // namespace apache

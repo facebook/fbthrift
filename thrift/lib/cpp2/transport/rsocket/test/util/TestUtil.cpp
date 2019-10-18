@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 
@@ -58,14 +57,12 @@ std::unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
 TestSetup::connectToServer(
     uint16_t port,
     folly::Function<void()> onDetachable,
-    bool useRocketClient,
     folly::Function<void(TAsyncSocketIntercepted&)> socketSetup) {
   CHECK_GT(port, 0) << "Check if the server has started already";
   return PooledRequestChannel::newChannel(
       evbThread_.getEventBase(),
       ioThread_,
       [port,
-       useRocketClient,
        onDetachable = std::move(onDetachable),
        socketSetup = std::move(socketSetup)](folly::EventBase& evb) mutable
       -> std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor> {
@@ -78,10 +75,7 @@ TestSetup::connectToServer(
         auto channel = [&]() -> std::unique_ptr<
                                  ClientChannel,
                                  folly::DelayedDestruction::Destructor> {
-          if (useRocketClient) {
-            return RocketClientChannel::newChannel(std::move(socket));
-          }
-          return RSocketClientChannel::newChannel(std::move(socket));
+          return RocketClientChannel::newChannel(std::move(socket));
         }();
 
         if (onDetachable) {

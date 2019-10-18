@@ -54,7 +54,7 @@ void ConnectionThread::maybeCreateConnection(
     const std::string& serverKey,
     const std::string& addr,
     uint16_t port) {
-  LOG_IF(FATAL, FLAGS_transport == "rsocket" || FLAGS_transport == "rocket")
+  LOG_IF(FATAL, FLAGS_transport == "rocket")
       << "Use RSocketClientChannel::newChannel() or"
          " RocketClientChannel::newChannel()";
 

@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
@@ -35,7 +34,6 @@ using apache::thrift::H2ClientConnection;
 using apache::thrift::HeaderClientChannel;
 using apache::thrift::InMemoryConnection;
 using apache::thrift::RocketClientChannel;
-using apache::thrift::RSocketClientChannel;
 using apache::thrift::ThriftClient;
 using apache::thrift::ThriftServerAsyncProcessorFactory;
 using apache::thrift::async::TAsyncSocket;
@@ -80,17 +78,6 @@ static std::unique_ptr<AsyncClient> newHTTP2Client(
 }
 
 template <typename AsyncClient>
-static std::unique_ptr<AsyncClient> newRSocketClient(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr,
-    bool encrypted) {
-  auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs"});
-  auto channel = RSocketClientChannel::newChannel(std::move(sock));
-  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-  return std::make_unique<AsyncClient>(std::move(channel));
-}
-
-template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newRocketClient(
     folly::EventBase* evb,
     folly::SocketAddress const& addr,
@@ -126,9 +113,6 @@ static std::unique_ptr<AsyncClient> newClient(
   }
   if (transport == "rocket") {
     return newRocketClient<AsyncClient>(evb, addr, encrypted);
-  }
-  if (transport == "rsocket") {
-    return newRSocketClient<AsyncClient>(evb, addr, encrypted);
   }
   if (transport == "http2") {
     return newHTTP2Client<AsyncClient>(evb, addr, encrypted);

@@ -20,7 +20,6 @@
 #include <thread>
 
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/util/ConnectionManager.h>
@@ -125,14 +124,7 @@ void TestServiceMock::onewayLogBlob(std::unique_ptr<folly::IOBuf> val) {
 IntermHeaderService::IntermHeaderService(
     std::string const& host,
     int16_t port) {
-  if (FLAGS_transport == "rsocket") {
-    RSocketClientChannel::Ptr channel;
-    evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
-      channel = RSocketClientChannel::newChannel(TAsyncSocket::UniquePtr(
-          new TAsyncSocket(evbThread_.getEventBase(), host, port)));
-    });
-    client_ = std::make_unique<TestServiceAsyncClient>(std::move(channel));
-  } else if (FLAGS_transport == "rocket") {
+  if (FLAGS_transport == "rocket") {
     RocketClientChannel::Ptr channel;
     evbThread_.getEventBase()->runInEventBaseThreadAndWait([&]() {
       channel = RocketClientChannel::newChannel(TAsyncSocket::UniquePtr(

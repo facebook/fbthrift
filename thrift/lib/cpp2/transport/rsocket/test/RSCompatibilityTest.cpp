@@ -17,7 +17,6 @@
 #include <folly/portability/GFlags.h>
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp2/async/RSocketClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
@@ -29,7 +28,6 @@ DECLARE_string(transport); // ConnectionManager depends on this flag.
 namespace apache {
 namespace thrift {
 
-using namespace rsocket;
 using namespace testutil::testservice;
 using namespace apache::thrift::transport;
 
@@ -38,7 +36,7 @@ class RSCompatibilityTest
       public testing::WithParamInterface<bool /* useRocketClient */> {
  public:
   RSCompatibilityTest() {
-    FLAGS_transport = GetParam() ? "rocket" : "rsocket"; // client's transport
+    FLAGS_transport = "rocket";
 
     compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
     compatibilityTest_->addRoutingHandler(
@@ -128,27 +126,15 @@ TEST_P(RSCompatibilityTest, RequestResponse_Saturation) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), add_(3)).Times(2);
     // note that no EXPECT_CALL for add_(5)
+    auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
+    ASSERT_NE(nullptr, channel);
 
-    if (auto* channel =
-            dynamic_cast<RSocketClientChannel*>(client->getChannel())) {
-      channel->getEventBase()->runInEventBaseThreadAndWait(
-          [&]() { channel->setMaxPendingRequests(0u); });
-      EXPECT_THROW(client->future_add(5).get(), TTransportException);
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(0u); });
+    EXPECT_THROW(client->future_add(5).get(), TTransportException);
 
-      channel->getEventBase()->runInEventBaseThreadAndWait(
-          [&]() { channel->setMaxPendingRequests(1u); });
-    } else if (
-        auto* channel =
-            dynamic_cast<RocketClientChannel*>(client->getChannel())) {
-      channel->getEventBase()->runInEventBaseThreadAndWait(
-          [&]() { channel->setMaxPendingRequests(0u); });
-      EXPECT_THROW(client->future_add(5).get(), TTransportException);
-
-      channel->getEventBase()->runInEventBaseThreadAndWait(
-          [&]() { channel->setMaxPendingRequests(1u); });
-    } else {
-      FAIL() << "Test run with unexpected channel type";
-    }
+    channel->getEventBase()->runInEventBaseThreadAndWait(
+        [&]() { channel->setMaxPendingRequests(1u); });
 
     EXPECT_EQ(3, client->future_add(3).get());
     EXPECT_EQ(6, client->future_add(3).get());
@@ -185,17 +171,6 @@ TEST_P(RSCompatibilityTest, Oneway_Saturation) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), addAfterDelay_(50, 5));
 
     if (auto* channel =
-            dynamic_cast<RSocketClientChannel*>(client->getChannel())) {
-      channel->getEventBase()->runInEventBaseThreadAndWait(
-          [&]() { channel->setMaxPendingRequests(0u); });
-      EXPECT_THROW(
-          client->future_addAfterDelay(0, 5).get(), TTransportException);
-
-      // the first call is not completed as the connection was saturated
-      channel->getEventBase()->runInEventBaseThreadAndWait(
-          [&]() { channel->setMaxPendingRequests(1u); });
-    } else if (
-        auto* channel =
             dynamic_cast<RocketClientChannel*>(client->getChannel())) {
       channel->getEventBase()->runInEventBaseThreadAndWait(
           [&]() { channel->setMaxPendingRequests(0u); });

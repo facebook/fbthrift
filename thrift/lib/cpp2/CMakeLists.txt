@@ -58,12 +58,6 @@ target_link_libraries(
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
 bypass_source_check("${rsocket-cpp2-SOURCES}")
 
-if(TARGET rsocket::ReactiveSocket)
-  list(APPEND rsocket-cpp2-SOURCES
-    async/RSocketClientChannel.cpp
-  )
-endif()
-
 add_library(
   thriftcpp2
 

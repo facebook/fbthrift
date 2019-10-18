@@ -76,7 +76,6 @@ class TestSetup : public testing::Test {
   connectToServer(
       uint16_t port,
       folly::Function<void()> onDetachable = nullptr,
-      bool useRocketClient = false,
       folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr);
 
  protected:
