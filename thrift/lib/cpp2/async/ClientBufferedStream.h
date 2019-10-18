@@ -82,7 +82,7 @@ class ClientBufferedStream {
       {
         auto& payload = queue.front();
         if (!payload.hasValue() && !payload.hasException()) {
-          onNextTry({});
+          onNextTry(folly::Try<T>());
           break;
         }
         auto value = decode_(std::move(payload));
@@ -320,7 +320,7 @@ class ClientBufferedStream {
         {
           auto& payload = queue.front();
           if (!payload.hasValue() && !payload.hasException()) {
-            onNextTry_({});
+            onNextTry_(folly::Try<T>());
             return;
           }
           auto value = decode_(std::move(payload));

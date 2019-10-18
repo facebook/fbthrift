@@ -203,7 +203,7 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       std::move(bufferedStream)
           .subscribeExTry(
               &executor_,
-              [&expected](folly::Try<int32_t>&& next) {
+              [&expected](auto&& next) {
                 if (next.hasValue()) {
                   EXPECT_EQ(expected++, *next);
                 }
@@ -219,7 +219,7 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       std::move(bufferedStream)
           .subscribeExTry(
               &executor_,
-              [&expected](folly::Try<int32_t>&& next) {
+              [&expected](auto&& next) {
                 if (next.hasValue()) {
                   EXPECT_EQ(expected++, *next);
                 }
@@ -255,19 +255,18 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       std::optional<folly::fibers::Baton> baton1;
       folly::fibers::Baton baton2;
       baton1.emplace();
-      auto sub =
-          std::move(bufferedStream)
-              .subscribeExTry(&executor_, [&](folly::Try<int32_t>&& next) {
-                if (baton1) {
-                  baton1->wait();
-                  baton1.reset();
-                  cancel();
-                  baton2.post();
-                }
-                if (next.hasValue()) {
-                  EXPECT_EQ(expected++, *next);
-                }
-              });
+      auto sub = std::move(bufferedStream)
+                     .subscribeExTry(&executor_, [&](auto&& next) {
+                       if (baton1) {
+                         baton1->wait();
+                         baton1.reset();
+                         cancel();
+                         baton2.post();
+                       }
+                       if (next.hasValue()) {
+                         EXPECT_EQ(expected++, *next);
+                       }
+                     });
       cancel = [&sub] { sub.cancel(); };
       baton1->post();
       baton2.wait();
@@ -284,7 +283,7 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       std::move(bufferedStream)
           .subscribeExTry(
               &executor_,
-              [&](folly::Try<int32_t>&& next) {
+              [&](auto&& next) {
                 if (next.hasValue()) {
                   EXPECT_EQ(expected++, *next);
                 } else {
@@ -303,12 +302,11 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       auto bufferedStream = bufferedClient->sync_range(rpcOptions, 0, 10);
 
       size_t expected = 0;
-      std::move(bufferedStream)
-          .subscribeInline([&expected](folly::Try<int32_t>&& next) {
-            if (next.hasValue()) {
-              EXPECT_EQ(expected++, *next);
-            }
-          });
+      std::move(bufferedStream).subscribeInline([&expected](auto&& next) {
+        if (next.hasValue()) {
+          EXPECT_EQ(expected++, *next);
+        }
+      });
       EXPECT_EQ(10, expected);
 
 #if FOLLY_HAS_COROUTINES
@@ -330,7 +328,7 @@ TEST_P(StreamingTest, ClientStreamBridge) {
       std::move(bufferedStream)
           .subscribeExTry(
               &executor_,
-              [&expected](folly::Try<int32_t>&& next) {
+              [&expected](auto&& next) {
                 if (next.hasValue()) {
                   EXPECT_EQ(expected++, *next);
                 }
