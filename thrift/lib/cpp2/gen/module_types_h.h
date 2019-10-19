@@ -36,9 +36,23 @@
 #define APACHE_THRIFT_DEFINE_ACCESSOR(name)                                   \
   struct name {                                                               \
     template <typename T>                                                     \
-    FOLLY_ERASE static constexpr auto __fbthrift_access_field(T&& t) noexcept \
+    FOLLY_ERASE static constexpr auto&& __fbthrift_access_field_impl(         \
+        T&& t,                                                                \
+        decltype(t.name##_ref())*) noexcept {                                 \
+      return static_cast<T&&>(t).name##_ref().value_unchecked();              \
+    }                                                                         \
+    template <typename T>                                                     \
+    FOLLY_ERASE static constexpr auto __fbthrift_access_field_impl(           \
+        T&& t,                                                                \
+        ...) noexcept                                                         \
         -> folly::like_t<T&&, decltype(folly::remove_cvref_t<T>::name)> {     \
       return static_cast<T&&>(t).name;                                        \
+    }                                                                         \
+    template <typename T>                                                     \
+    FOLLY_ERASE static constexpr auto __fbthrift_access_field(T&& t) noexcept \
+        -> decltype(                                                          \
+            name::__fbthrift_access_field_impl(static_cast<T&&>(t), 0)) {     \
+      return name::__fbthrift_access_field_impl(static_cast<T&&>(t), 0);      \
     }                                                                         \
     template <typename T, typename... A>                                      \
     FOLLY_ERASE static constexpr auto                                         \
@@ -93,9 +107,9 @@ template <typename A>
 struct assign_isset_<A, true> {
   template <typename S>
   FOLLY_ERASE constexpr auto operator()(S& s, bool b) const
-      noexcept(noexcept(A::__fbthrift_access_field(s.__isset) = b))
-          -> decltype(A::__fbthrift_access_field(s.__isset) = b) {
-    return A::__fbthrift_access_field(s.__isset) = b;
+      noexcept(noexcept(A::__fbthrift_access_field_impl(s.__isset) = b))
+          -> decltype(A::__fbthrift_access_field_impl(s.__isset) = b) {
+    return A::__fbthrift_access_field_impl(s.__isset) = b;
   }
 };
 template <typename A, typename S>
