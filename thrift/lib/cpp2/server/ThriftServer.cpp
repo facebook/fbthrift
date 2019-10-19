@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <wangle/ssl/SSLContextManager.h>
 
 DEFINE_string(
@@ -86,6 +87,7 @@ ThriftServer::ThriftServer()
   } else if (FLAGS_thrift_ssl_policy == "permitted") {
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
+  ServerInstrumentation::registerServer(*this);
 }
 
 ThriftServer::ThriftServer(
@@ -97,6 +99,7 @@ ThriftServer::ThriftServer(
 }
 
 ThriftServer::~ThriftServer() {
+  ServerInstrumentation::removeServer(*this);
   if (duplexWorker_) {
     // usually ServerBootstrap::stop drains the workers, but ServerBootstrap
     // doesn't know about duplexWorker_
