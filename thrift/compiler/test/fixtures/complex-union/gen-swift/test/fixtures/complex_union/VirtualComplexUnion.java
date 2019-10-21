@@ -17,9 +17,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("VirtualComplexUnion")
 public final class VirtualComplexUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "thingOne");
+      ID_TO_THRIFT_NAME.put((short) 2, "thingTwo");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public VirtualComplexUnion() {
@@ -29,7 +33,6 @@ public final class VirtualComplexUnion {
         VirtualComplexUnion res = new VirtualComplexUnion();
         res.value = thingOne;
         res.id = 1;
-        res.name = "thingOne";
         return res;
     }
     
@@ -37,7 +40,6 @@ public final class VirtualComplexUnion {
         VirtualComplexUnion res = new VirtualComplexUnion();
         res.value = thingTwo;
         res.id = 2;
-        res.name = "thingTwo";
         return res;
     }
     
@@ -46,14 +48,12 @@ public final class VirtualComplexUnion {
     public void setThingOne(final String thingOne) {
         this.value = thingOne;
         this.id = 1;
-        this.name = "thingOne";
     }
     @ThriftField
     @Deprecated
     public void setThingTwo(final String thingTwo) {
         this.value = thingTwo;
         this.id = 2;
-        this.name = "thingTwo";
     }
 
     @ThriftField(value=1, name="thingOne", requiredness=Requiredness.NONE)
@@ -86,7 +86,7 @@ public final class VirtualComplexUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class VirtualComplexUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -111,8 +111,7 @@ public final class VirtualComplexUnion {
         VirtualComplexUnion other = (VirtualComplexUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -120,7 +119,6 @@ public final class VirtualComplexUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

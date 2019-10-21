@@ -17,9 +17,17 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("ComplexUnion")
 public final class ComplexUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
+      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
+      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
+      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
+      ID_TO_THRIFT_NAME.put((short) 9, "typedefValue");
+      ID_TO_THRIFT_NAME.put((short) 14, "stringRef");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public ComplexUnion() {
@@ -29,7 +37,6 @@ public final class ComplexUnion {
         ComplexUnion res = new ComplexUnion();
         res.value = intValue;
         res.id = 1;
-        res.name = "intValue";
         return res;
     }
     
@@ -37,7 +44,6 @@ public final class ComplexUnion {
         ComplexUnion res = new ComplexUnion();
         res.value = stringValue;
         res.id = 5;
-        res.name = "stringValue";
         return res;
     }
     
@@ -45,7 +51,6 @@ public final class ComplexUnion {
         ComplexUnion res = new ComplexUnion();
         res.value = intListValue;
         res.id = 2;
-        res.name = "intListValue";
         return res;
     }
     
@@ -53,7 +58,6 @@ public final class ComplexUnion {
         ComplexUnion res = new ComplexUnion();
         res.value = stringListValue;
         res.id = 3;
-        res.name = "stringListValue";
         return res;
     }
     
@@ -61,7 +65,6 @@ public final class ComplexUnion {
         ComplexUnion res = new ComplexUnion();
         res.value = typedefValue;
         res.id = 9;
-        res.name = "typedefValue";
         return res;
     }
     
@@ -69,7 +72,6 @@ public final class ComplexUnion {
         ComplexUnion res = new ComplexUnion();
         res.value = stringRef;
         res.id = 14;
-        res.name = "stringRef";
         return res;
     }
     
@@ -78,42 +80,36 @@ public final class ComplexUnion {
     public void setIntValue(final long intValue) {
         this.value = intValue;
         this.id = 1;
-        this.name = "intValue";
     }
     @ThriftField
     @Deprecated
     public void setStringValue(final String stringValue) {
         this.value = stringValue;
         this.id = 5;
-        this.name = "stringValue";
     }
     @ThriftField
     @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
-        this.name = "intListValue";
     }
     @ThriftField
     @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
-        this.name = "stringListValue";
     }
     @ThriftField
     @Deprecated
     public void setTypedefValue(final Map<Short, String> typedefValue) {
         this.value = typedefValue;
         this.id = 9;
-        this.name = "typedefValue";
     }
     @ThriftField
     @Deprecated
     public void setStringRef(final String stringRef) {
         this.value = stringRef;
         this.id = 14;
-        this.name = "stringRef";
     }
 
     @ThriftField(value=1, name="intValue", requiredness=Requiredness.NONE)
@@ -194,7 +190,7 @@ public final class ComplexUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -202,7 +198,7 @@ public final class ComplexUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -219,8 +215,7 @@ public final class ComplexUnion {
         ComplexUnion other = (ComplexUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -228,7 +223,6 @@ public final class ComplexUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

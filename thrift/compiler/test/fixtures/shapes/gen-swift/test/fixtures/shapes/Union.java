@@ -17,9 +17,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("Union")
 public final class Union {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "intValue");
+      ID_TO_THRIFT_NAME.put((short) 5, "stringValue");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public Union() {
@@ -30,7 +34,6 @@ public final class Union {
     public Union(final long intValue) {
         this.value = intValue;
         this.id = 1;
-        this.name = "intValue";
     }
     
     @ThriftConstructor
@@ -38,14 +41,12 @@ public final class Union {
     public Union(final String stringValue) {
         this.value = stringValue;
         this.id = 5;
-        this.name = "stringValue";
     }
     
     public static Union fromIntValue(final long intValue) {
         Union res = new Union();
         res.value = intValue;
         res.id = 1;
-        res.name = "intValue";
         return res;
     }
     
@@ -53,7 +54,6 @@ public final class Union {
         Union res = new Union();
         res.value = stringValue;
         res.id = 5;
-        res.name = "stringValue";
         return res;
     }
     
@@ -88,7 +88,7 @@ public final class Union {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -96,7 +96,7 @@ public final class Union {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -113,8 +113,7 @@ public final class Union {
         Union other = (Union)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -122,7 +121,6 @@ public final class Union {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

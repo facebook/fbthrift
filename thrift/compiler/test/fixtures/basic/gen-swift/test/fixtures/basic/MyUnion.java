@@ -17,9 +17,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("MyUnion")
 public final class MyUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "myEnum");
+      ID_TO_THRIFT_NAME.put((short) 2, "myStruct");
+      ID_TO_THRIFT_NAME.put((short) 3, "myDataItem");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public MyUnion() {
@@ -30,7 +35,6 @@ public final class MyUnion {
     public MyUnion(final test.fixtures.basic.MyEnum myEnum) {
         this.value = myEnum;
         this.id = 1;
-        this.name = "myEnum";
     }
     
     @ThriftConstructor
@@ -38,7 +42,6 @@ public final class MyUnion {
     public MyUnion(final test.fixtures.basic.MyStruct myStruct) {
         this.value = myStruct;
         this.id = 2;
-        this.name = "myStruct";
     }
     
     @ThriftConstructor
@@ -46,14 +49,12 @@ public final class MyUnion {
     public MyUnion(final test.fixtures.basic.MyDataItem myDataItem) {
         this.value = myDataItem;
         this.id = 3;
-        this.name = "myDataItem";
     }
     
     public static MyUnion fromMyEnum(final test.fixtures.basic.MyEnum myEnum) {
         MyUnion res = new MyUnion();
         res.value = myEnum;
         res.id = 1;
-        res.name = "myEnum";
         return res;
     }
     
@@ -61,7 +62,6 @@ public final class MyUnion {
         MyUnion res = new MyUnion();
         res.value = myStruct;
         res.id = 2;
-        res.name = "myStruct";
         return res;
     }
     
@@ -69,7 +69,6 @@ public final class MyUnion {
         MyUnion res = new MyUnion();
         res.value = myDataItem;
         res.id = 3;
-        res.name = "myDataItem";
         return res;
     }
     
@@ -116,7 +115,7 @@ public final class MyUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -124,7 +123,7 @@ public final class MyUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -141,8 +140,7 @@ public final class MyUnion {
         MyUnion other = (MyUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -150,7 +148,6 @@ public final class MyUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

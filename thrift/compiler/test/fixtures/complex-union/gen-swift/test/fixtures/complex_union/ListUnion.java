@@ -17,9 +17,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("ListUnion")
 public final class ListUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 2, "intListValue");
+      ID_TO_THRIFT_NAME.put((short) 3, "stringListValue");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public ListUnion() {
@@ -29,7 +33,6 @@ public final class ListUnion {
         ListUnion res = new ListUnion();
         res.value = intListValue;
         res.id = 2;
-        res.name = "intListValue";
         return res;
     }
     
@@ -37,7 +40,6 @@ public final class ListUnion {
         ListUnion res = new ListUnion();
         res.value = stringListValue;
         res.id = 3;
-        res.name = "stringListValue";
         return res;
     }
     
@@ -46,14 +48,12 @@ public final class ListUnion {
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
-        this.name = "intListValue";
     }
     @ThriftField
     @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
-        this.name = "stringListValue";
     }
 
     @ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
@@ -86,7 +86,7 @@ public final class ListUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class ListUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -111,8 +111,7 @@ public final class ListUnion {
         ListUnion other = (ListUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -120,7 +119,6 @@ public final class ListUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

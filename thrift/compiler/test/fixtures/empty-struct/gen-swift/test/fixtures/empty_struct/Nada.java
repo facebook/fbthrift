@@ -17,9 +17,11 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("Nada")
 public final class Nada {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public Nada() {
@@ -32,7 +34,7 @@ public final class Nada {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -40,7 +42,7 @@ public final class Nada {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -57,8 +59,7 @@ public final class Nada {
         Nada other = (Nada)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -66,7 +67,6 @@ public final class Nada {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

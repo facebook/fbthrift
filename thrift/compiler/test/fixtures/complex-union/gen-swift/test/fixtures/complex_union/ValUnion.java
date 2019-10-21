@@ -17,9 +17,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("ValUnion")
 public final class ValUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "v1");
+      ID_TO_THRIFT_NAME.put((short) 2, "v2");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public ValUnion() {
@@ -29,7 +33,6 @@ public final class ValUnion {
         ValUnion res = new ValUnion();
         res.value = v1;
         res.id = 1;
-        res.name = "v1";
         return res;
     }
     
@@ -37,7 +40,6 @@ public final class ValUnion {
         ValUnion res = new ValUnion();
         res.value = v2;
         res.id = 2;
-        res.name = "v2";
         return res;
     }
     
@@ -46,14 +48,12 @@ public final class ValUnion {
     public void setV1(final test.fixtures.complex_union.Val v1) {
         this.value = v1;
         this.id = 1;
-        this.name = "v1";
     }
     @ThriftField
     @Deprecated
     public void setV2(final test.fixtures.complex_union.Val v2) {
         this.value = v2;
         this.id = 2;
-        this.name = "v2";
     }
 
     @ThriftField(value=1, name="v1", requiredness=Requiredness.NONE)
@@ -86,7 +86,7 @@ public final class ValUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -94,7 +94,7 @@ public final class ValUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -111,8 +111,7 @@ public final class ValUnion {
         ValUnion other = (ValUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -120,7 +119,6 @@ public final class ValUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

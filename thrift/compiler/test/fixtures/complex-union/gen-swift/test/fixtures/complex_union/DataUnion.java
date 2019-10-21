@@ -17,9 +17,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("DataUnion")
 public final class DataUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "binaryData");
+      ID_TO_THRIFT_NAME.put((short) 2, "stringData");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public DataUnion() {
@@ -30,7 +34,6 @@ public final class DataUnion {
     public DataUnion(final byte[] binaryData) {
         this.value = binaryData;
         this.id = 1;
-        this.name = "binaryData";
     }
     
     @ThriftConstructor
@@ -38,14 +41,12 @@ public final class DataUnion {
     public DataUnion(final String stringData) {
         this.value = stringData;
         this.id = 2;
-        this.name = "stringData";
     }
     
     public static DataUnion fromBinaryData(final byte[] binaryData) {
         DataUnion res = new DataUnion();
         res.value = binaryData;
         res.id = 1;
-        res.name = "binaryData";
         return res;
     }
     
@@ -53,7 +54,6 @@ public final class DataUnion {
         DataUnion res = new DataUnion();
         res.value = stringData;
         res.id = 2;
-        res.name = "stringData";
         return res;
     }
     
@@ -88,7 +88,7 @@ public final class DataUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -96,7 +96,7 @@ public final class DataUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -113,8 +113,7 @@ public final class DataUnion {
         DataUnion other = (DataUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -122,7 +121,6 @@ public final class DataUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

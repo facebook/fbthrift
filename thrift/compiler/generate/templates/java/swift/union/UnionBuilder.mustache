@@ -15,9 +15,14 @@
   limitations under the License.
 
 }}
+private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+static {
+{{#struct:fields}}
+  ID_TO_THRIFT_NAME.put((short) {{field:key}}, "{{field:name}}");
+{{/struct:fields}}
+}
 private Object value;
 private short id;
-private String name;
 
 @ThriftConstructor
 public {{struct:javaCapitalName}}() {
@@ -30,7 +35,6 @@ public {{struct:javaCapitalName}}() {
 public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
     this.value = {{field:javaName}};
     this.id = {{field:key}};
-    this.name = "{{field:name}}";
 }
 {{/struct:fields}}
 {{/struct:unionFieldTypeUnique?}}
@@ -40,7 +44,6 @@ public static {{struct:javaCapitalName}} from{{field:javaCapitalName}}(final {{>
     {{struct:javaCapitalName}} res = new {{struct:javaCapitalName}}();
     res.value = {{field:javaName}};
     res.id = {{field:key}};
-    res.name = "{{field:name}}";
     return res;
 }
 {{/struct:fields}}

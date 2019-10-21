@@ -17,9 +17,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 @SwiftGenerated
 @ThriftUnion("NonCopyableUnion")
 public final class NonCopyableUnion {
+    private static final Map<Short, String> ID_TO_THRIFT_NAME = new HashMap();
+    static {
+      ID_TO_THRIFT_NAME.put((short) 1, "s");
+    }
     private Object value;
     private short id;
-    private String name;
     
     @ThriftConstructor
     public NonCopyableUnion() {
@@ -30,14 +33,12 @@ public final class NonCopyableUnion {
     public NonCopyableUnion(final test.fixtures.complex_union.NonCopyableStruct s) {
         this.value = s;
         this.id = 1;
-        this.name = "s";
     }
     
     public static NonCopyableUnion fromS(final test.fixtures.complex_union.NonCopyableStruct s) {
         NonCopyableUnion res = new NonCopyableUnion();
         res.value = s;
         res.id = 1;
-        res.name = "s";
         return res;
     }
     
@@ -60,7 +61,7 @@ public final class NonCopyableUnion {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -68,7 +69,7 @@ public final class NonCopyableUnion {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -85,8 +86,7 @@ public final class NonCopyableUnion {
         NonCopyableUnion other = (NonCopyableUnion)o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -94,7 +94,6 @@ public final class NonCopyableUnion {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }

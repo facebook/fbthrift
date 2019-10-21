@@ -59,7 +59,7 @@ public final class {{struct:javaCapitalName}} {
     }
 
     public String getThriftName() {
-        return this.name;
+        return ID_TO_THRIFT_NAME.get(this.id);
     }
 
     @Override
@@ -67,7 +67,7 @@ public final class {{struct:javaCapitalName}} {
         return toStringHelper(this)
             .add("value", value)
             .add("id", id)
-            .add("name", name)
+            .add("name", getThriftName())
             .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
             .toString();
     }
@@ -84,8 +84,7 @@ public final class {{struct:javaCapitalName}} {
         {{struct:javaCapitalName}} other = ({{struct:javaCapitalName}})o;
 
         return Objects.equals(this.id, other.id)
-                && Objects.deepEquals(this.value, other.value)
-                && Objects.equals(this.name, other.name);
+                && Objects.deepEquals(this.value, other.value);
     }
 
     @Override
@@ -93,7 +92,6 @@ public final class {{struct:javaCapitalName}} {
         return Arrays.deepHashCode(new Object[] {
             id,
             value,
-            name
         });
     }
 }
