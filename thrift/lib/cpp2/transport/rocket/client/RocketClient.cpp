@@ -167,6 +167,7 @@ void RocketClient::handleStreamChannelFrame(
     std::unique_ptr<folly::IOBuf> frame) {
   auto it = streams_.find(streamId);
   if (it == streams_.end()) {
+    notifyIfDetachable();
     return;
   }
   StreamChannelStatus status = folly::variant_match(

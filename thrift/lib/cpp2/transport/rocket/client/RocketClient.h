@@ -156,7 +156,8 @@ class RocketClient : public folly::DelayedDestruction,
     // streams, and if the underlying transport is detachable, i.e., has no
     // inflight writes of its own.
     return !writeLoopCallback_.isLoopCallbackScheduled() && !requests_ &&
-        streams_.empty() && (!socket_ || socket_->isDetachable());
+        streams_.empty() && (!socket_ || socket_->isDetachable()) &&
+        parser_.getReadBuffer().empty();
   }
 
   void attachEventBase(folly::EventBase& evb);

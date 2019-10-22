@@ -91,8 +91,8 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
           totalFrameSize - Serializer::kBytesForFrameOrMetadataLength;
       std::unique_ptr<folly::IOBuf> frame;
       cursor.clone(frame, bytesToClone);
-      owner_.handleFrame(std::move(frame));
       readBuffer_.trimStart(totalFrameSize);
+      owner_.handleFrame(std::move(frame));
     }
   } catch (const std::exception& ex) {
     LOG(ERROR) << "Bad frame received, closing connection: "
