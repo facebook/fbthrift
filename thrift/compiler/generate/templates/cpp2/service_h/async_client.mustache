@@ -23,9 +23,6 @@
   }
 
 <%#service:functions%><%#function:returnType%>
-<%#service:client_buffered_stream?%>
- private:
-<%/service:client_buffered_stream?%>
 <%^function:returns_sink?%>
   virtual void <%function:cpp_name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
   virtual void <%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<%function:comma%><% > service_common/function_param_list_const%>);
