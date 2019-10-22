@@ -179,13 +179,14 @@ class ClientBufferedStream {
         if (streamBridge->wait(&callback)) {
           folly::CancellationCallback cb{
               co_await folly::coro::co_current_cancellation_token,
-              [&] { std::exchange(streamBridge, nullptr)->cancel(); }};
+              [&] { streamBridge->cancel(); }};
           co_await callback.baton;
         }
         queue = streamBridge->getMessages();
         if (queue.empty()) {
           // we've been cancelled
-          break;
+          streamBridge.reset();
+          throw folly::OperationCancelled();
         }
       }
 

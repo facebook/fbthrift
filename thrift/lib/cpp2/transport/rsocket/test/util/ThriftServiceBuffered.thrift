@@ -20,4 +20,6 @@ include "thrift/lib/cpp2/transport/rsocket/test/util/ThriftService.thrift"
 service StreamServiceBuffered {
   // Generate numbers between `from` to `to`.
   stream<i32> range(1: i32 from, 2: i32 to);
+  // ... with a sleep in between iterations
+  stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
 }

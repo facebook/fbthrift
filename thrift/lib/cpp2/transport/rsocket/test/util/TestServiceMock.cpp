@@ -69,6 +69,18 @@ Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
   });
 }
 
+Stream<int32_t>
+TestServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
+  return createStreamGenerator([=]() mutable -> folly::Optional<int> {
+    if (from >= to) {
+      return folly::none;
+    }
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds{millis});
+    return from++;
+  });
+}
+
 Stream<int32_t> TestServiceMock::slowCancellation() {
   class Slow {
    public:

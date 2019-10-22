@@ -194,6 +194,20 @@ TEST_P(StreamingTest, ClientStreamBridge) {
             EXPECT_THROW(co_await gen.next(), folly::OperationCancelled);
           }()));
     }
+
+    {
+      auto bufferedStream = bufferedClient->sync_slowRange(0, 10, 1000);
+      folly::CancellationSource cancelSource;
+      auto gen = std::move(bufferedStream).toAsyncGenerator();
+      folly::coro::blockingWait(folly::coro::co_withCancellation(
+          cancelSource.getToken(),
+          folly::coro::co_invoke([&]() mutable -> folly::coro::Task<void> {
+            (co_await folly::coro::co_current_executor)->add([&]() {
+              cancelSource.requestCancellation();
+            });
+            EXPECT_THROW(co_await gen.next(), folly::OperationCancelled);
+          })));
+    }
 #endif // FOLLY_HAS_COROUTINES
 
     {

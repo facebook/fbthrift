@@ -50,6 +50,8 @@ exception SecondEx {
 service StreamService {
   // Generate numbers between `from` to `to`.
   stream<i32> range(1: i32 from, 2: i32 to);
+  // ... with a sleep in between iterations
+  stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
 
   stream<i32> slowCancellation();
 
@@ -90,6 +92,8 @@ service StreamService {
 service StreamServiceBuffered {
   // Generate numbers between `from` to `to`.
   stream<i32> range(1: i32 from, 2: i32 to);
+  // ... with a sleep in between iterations
+  stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
 }
 
 # OldVersion and NewVersion services will be used to test the behavior
