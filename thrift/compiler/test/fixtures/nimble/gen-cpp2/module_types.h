@@ -70,11 +70,16 @@ class BasicTypes final : private apache::thrift::detail::st::ComparisonOperators
 
   BasicTypes& operator=(const BasicTypes&) = default;
   void __clear();
+ public:
   int32_t first;
+ private:
   int32_t second;
+ private:
   int64_t third;
+ public:
   bool isTrue;
 
+ public:
   struct __isset {
     bool second;
     bool third;

@@ -177,11 +177,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+ public:
   int64_t MyIntField;
+ public:
   ::std::string MyStringField;
+ public:
    ::cpp2::MyDataItem MyDataField;
+ public:
    ::cpp2::MyEnum myEnum;
 
+ public:
   struct __isset {
     bool MyIntField;
     bool MyStringField;

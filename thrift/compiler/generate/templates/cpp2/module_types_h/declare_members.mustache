@@ -15,10 +15,12 @@
   limitations under the License.
 
 %><%#struct:fields_in_layout_order%><%#field:type%>
+ <%field:visibility%>:
   <% > types/optional_type%> <%field:cpp_name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
-<%#struct:isset_fields?%>
 
+ public:
+<%#struct:isset_fields?%>
   struct __isset {
 <%#struct:isset_fields%>
     bool <%field:cpp_name%>;

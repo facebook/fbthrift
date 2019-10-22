@@ -108,19 +108,34 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
 
   ~containerStruct2();
 
+ public:
   bool fieldA;
+ public:
   bool req_fieldA;
+ public:
   folly::Optional<bool> opt_fieldA;
+ public:
   ::std::map<::std::string, bool> fieldB;
+ public:
   ::std::map<::std::string, bool> req_fieldB;
+ public:
   folly::Optional<::std::map<::std::string, bool>> opt_fieldB;
+ public:
   ::std::set<int32_t> fieldC;
+ public:
   ::std::set<int32_t> req_fieldC;
+ public:
   folly::Optional<::std::set<int32_t>> opt_fieldC;
+ public:
   ::std::string fieldD;
+ public:
   ::std::string fieldE;
+ public:
   ::std::string req_fieldE;
+ public:
   folly::Optional<::std::string> opt_fieldE;
+
+ public:
   bool operator==(const containerStruct2& rhs) const;
   bool operator<(const containerStruct2& rhs) const;
 

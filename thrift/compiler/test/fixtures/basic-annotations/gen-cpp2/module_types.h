@@ -113,10 +113,14 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+ public:
   int64_t majorVer;
+ public:
   ::std::string package;
+ public:
   ::std::string annotation_with_quote;
 
+ public:
   struct __isset {
     bool majorVer;
     bool package;

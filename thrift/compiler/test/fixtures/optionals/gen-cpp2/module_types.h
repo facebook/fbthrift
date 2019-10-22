@@ -186,10 +186,16 @@ class Color final : private apache::thrift::detail::st::ComparisonOperators<Colo
 
   Color& operator=(const Color&) = default;
   void __clear();
+ public:
   double red;
+ public:
   double green;
+ public:
   double blue;
+ public:
   double alpha;
+
+ public:
   bool operator==(const Color& rhs) const;
   bool operator<(const Color& rhs) const;
 
@@ -240,11 +246,18 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
 
   ~Vehicle();
 
+ public:
    ::cpp2::Color color;
+ public:
   folly::Optional<::std::string> licensePlate;
+ public:
   folly::Optional<::std::string> description;
+ public:
   folly::Optional<::std::string> name;
+ public:
   folly::Optional<bool> hasAC;
+
+ public:
   bool operator==(const Vehicle& rhs) const;
   bool operator<(const Vehicle& rhs) const;
 
@@ -295,16 +308,28 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
 
   ~Person();
 
+ public:
    ::cpp2::PersonID id;
+ public:
   ::std::string name;
+ public:
   folly::Optional<int16_t> age;
+ public:
   folly::Optional<::std::string> address;
+ public:
   folly::Optional< ::cpp2::Color> favoriteColor;
+ public:
   folly::Optional<::std::set< ::cpp2::PersonID>> friends;
+ public:
   folly::Optional< ::cpp2::PersonID> bestFriend;
+ public:
   folly::Optional<::std::map< ::cpp2::Animal, ::std::string>> petNames;
+ public:
   folly::Optional< ::cpp2::Animal> afraidOfAnimal;
+ public:
   folly::Optional<::std::vector< ::cpp2::Vehicle>> vehicles;
+
+ public:
   bool operator==(const Person& rhs) const;
   bool operator<(const Person& rhs) const;
 

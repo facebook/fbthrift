@@ -188,9 +188,12 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+ public:
    ::test::fixtures::enumstrict::MyEnum myEnum;
+ public:
    ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
 
+ public:
   struct __isset {
     bool myEnum;
     bool myBigEnum;

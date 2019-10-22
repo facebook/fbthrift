@@ -65,10 +65,14 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+ public:
    ::cpp2::Included MyIncludedField;
+ public:
    ::cpp2::Included MyOtherIncludedField;
+ public:
    ::cpp2::IncludedInt64 MyIncludedInt;
 
+ public:
   struct __isset {
     bool MyIncludedField;
     bool MyOtherIncludedField;

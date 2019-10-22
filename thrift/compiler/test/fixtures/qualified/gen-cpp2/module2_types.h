@@ -69,9 +69,12 @@ class Struct final : private apache::thrift::detail::st::ComparisonOperators<Str
 
   Struct& operator=(const Struct&) = default;
   void __clear();
+ public:
    ::module0::Struct first;
+ public:
    ::module1::Struct second;
 
+ public:
   struct __isset {
     bool first;
     bool second;
@@ -141,9 +144,12 @@ class BigStruct final : private apache::thrift::detail::st::ComparisonOperators<
 
   BigStruct& operator=(const BigStruct&) = default;
   void __clear();
+ public:
    ::module2::Struct s;
+ public:
   int32_t id;
 
+ public:
   struct __isset {
     bool s;
     bool id;

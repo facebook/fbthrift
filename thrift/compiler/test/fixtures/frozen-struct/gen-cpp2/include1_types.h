@@ -59,9 +59,12 @@ class IncludedA final : private apache::thrift::detail::st::ComparisonOperators<
 
   IncludedA& operator=(const IncludedA&) = default;
   void __clear();
+ public:
   int32_t i32Field;
+ public:
   ::std::string strField;
 
+ public:
   struct __isset {
     bool i32Field;
     bool strField;

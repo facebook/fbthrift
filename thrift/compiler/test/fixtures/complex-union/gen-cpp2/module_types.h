@@ -1045,10 +1045,14 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
 
   Val& operator=(const Val&) = default;
   void __clear();
+ public:
   ::std::string strVal;
+ public:
   int32_t intVal;
+ public:
    ::cpp2::containerTypedef typedefValue;
 
+ public:
   struct __isset {
     bool strVal;
     bool intVal;
@@ -1592,8 +1596,10 @@ class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOp
 
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;
   void __clear();
+ public:
   int64_t num;
 
+ public:
   struct __isset {
     bool num;
   } __isset = {};

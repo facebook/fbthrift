@@ -619,6 +619,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:fatal_annotations", &mstch_cpp2_field::fatal_annotations},
             {"field:fatal_required_qualifier",
              &mstch_cpp2_field::fatal_required_qualifier},
+            {"field:visibility", &mstch_cpp2_field::visibility},
         });
   }
   mstch::node index_plus_one() {
@@ -713,6 +714,13 @@ class mstch_cpp2_field : public mstch_field {
       default:
         throw runtime_error("unknown required qualifier");
     }
+  }
+  mstch::node visibility() {
+    bool isPrivate = field_->get_req() == t_field::e_req::T_OPTIONAL &&
+        cache_->parsed_options_.count("optionals") == 0 &&
+        cache_->parsed_options_.count("deprecated_public_fields") == 0 &&
+        !cpp2::is_cpp_ref(field_);
+    return std::string(isPrivate ? "private" : "public");
   }
 };
 

@@ -55,7 +55,10 @@ class Foo final : private apache::thrift::detail::st::ComparisonOperators<Foo> {
 
   Foo& operator=(const Foo&) = default;
   void __clear();
+ public:
   int32_t bar;
+
+ public:
   bool operator==(const Foo& rhs) const;
   bool operator<(const Foo& rhs) const;
 

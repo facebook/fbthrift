@@ -466,10 +466,14 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
 
   MyField& operator=(const MyField&) = default;
   void __clear();
+ private:
   int64_t opt_value;
+ public:
   int64_t value;
+ public:
   int64_t req_value;
 
+ public:
   struct __isset {
     bool opt_value;
     bool value;
@@ -570,9 +574,14 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   MyStruct& operator=(MyStruct&&) = default;
   MyStruct& operator=(const MyStruct& src);
   void __clear();
+ public:
   std::unique_ptr< ::cpp2::MyField> opt_ref;
+ public:
   std::unique_ptr< ::cpp2::MyField> ref;
+ public:
   std::unique_ptr< ::cpp2::MyField> req_ref;
+
+ public:
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
@@ -619,10 +628,14 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   StructWithUnion& operator=(StructWithUnion&&) = default;
   StructWithUnion& operator=(const StructWithUnion& src);
   void __clear();
+ public:
   std::unique_ptr< ::cpp2::MyUnion> u;
+ public:
   double aDouble;
+ public:
    ::cpp2::MyField f;
 
+ public:
   struct __isset {
     bool aDouble;
     bool f;
@@ -692,8 +705,10 @@ class RecursiveStruct final : private apache::thrift::detail::st::ComparisonOper
 
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
   void __clear();
+ private:
   ::std::vector< ::cpp2::RecursiveStruct> mes;
 
+ public:
   struct __isset {
     bool mes;
   } __isset = {};
@@ -771,12 +786,20 @@ class StructWithContainers final : private apache::thrift::detail::st::Compariso
 
   ~StructWithContainers();
 
+ public:
   std::unique_ptr<::std::vector<int32_t>> list_ref;
+ public:
   std::unique_ptr<::std::set<int32_t>> set_ref;
+ public:
   std::unique_ptr<::std::map<int32_t, int32_t>> map_ref;
+ public:
   std::unique_ptr<::std::vector<int32_t>> list_ref_unique;
+ public:
   std::shared_ptr<::std::set<int32_t>> set_ref_shared;
+ public:
   std::shared_ptr<const ::std::vector<int32_t>> list_ref_shared_const;
+
+ public:
   bool operator==(const StructWithContainers& rhs) const;
   bool operator<(const StructWithContainers& rhs) const;
 
@@ -825,9 +848,14 @@ class StructWithSharedConst final : private apache::thrift::detail::st::Comparis
 
   StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
   void __clear();
+ public:
   std::shared_ptr<const  ::cpp2::MyField> opt_shared_const;
+ public:
   std::shared_ptr<const  ::cpp2::MyField> shared_const;
+ public:
   std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
+
+ public:
   bool operator==(const StructWithSharedConst& rhs) const;
   bool operator<(const StructWithSharedConst& rhs) const;
 
@@ -920,9 +948,14 @@ class StructWithRef final : private apache::thrift::detail::st::ComparisonOperat
   StructWithRef& operator=(StructWithRef&&) = default;
   StructWithRef& operator=(const StructWithRef& src);
   void __clear();
+ public:
   std::unique_ptr< ::cpp2::Empty> def_field;
+ public:
   std::unique_ptr< ::cpp2::Empty> opt_field;
+ public:
   std::unique_ptr< ::cpp2::Empty> req_field;
+
+ public:
   bool operator==(const StructWithRef& rhs) const;
   bool operator<(const StructWithRef& rhs) const;
 
@@ -969,9 +1002,14 @@ class StructWithRefTypeUnique final : private apache::thrift::detail::st::Compar
   StructWithRefTypeUnique& operator=(StructWithRefTypeUnique&&) = default;
   StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
   void __clear();
+ public:
   std::unique_ptr< ::cpp2::Empty> def_field;
+ public:
   std::unique_ptr< ::cpp2::Empty> opt_field;
+ public:
   std::unique_ptr< ::cpp2::Empty> req_field;
+
+ public:
   bool operator==(const StructWithRefTypeUnique& rhs) const;
   bool operator<(const StructWithRefTypeUnique& rhs) const;
 
@@ -1020,9 +1058,14 @@ class StructWithRefTypeShared final : private apache::thrift::detail::st::Compar
 
   StructWithRefTypeShared& operator=(const StructWithRefTypeShared&) = default;
   void __clear();
+ public:
   std::shared_ptr< ::cpp2::Empty> def_field;
+ public:
   std::shared_ptr< ::cpp2::Empty> opt_field;
+ public:
   std::shared_ptr< ::cpp2::Empty> req_field;
+
+ public:
   bool operator==(const StructWithRefTypeShared& rhs) const;
   bool operator<(const StructWithRefTypeShared& rhs) const;
 
@@ -1071,9 +1114,14 @@ class StructWithRefTypeSharedConst final : private apache::thrift::detail::st::C
 
   StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
   void __clear();
+ public:
   std::shared_ptr<const  ::cpp2::Empty> def_field;
+ public:
   std::shared_ptr<const  ::cpp2::Empty> opt_field;
+ public:
   std::shared_ptr<const  ::cpp2::Empty> req_field;
+
+ public:
   bool operator==(const StructWithRefTypeSharedConst& rhs) const;
   bool operator<(const StructWithRefTypeSharedConst& rhs) const;
 
@@ -1119,7 +1167,10 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final : private apache::thrift::d
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(StructWithRefAndAnnotCppNoexceptMoveCtor&&) = default;
   StructWithRefAndAnnotCppNoexceptMoveCtor& operator=(const StructWithRefAndAnnotCppNoexceptMoveCtor& src);
   void __clear();
+ public:
   std::unique_ptr< ::cpp2::Empty> def_field;
+
+ public:
   bool operator==(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
   bool operator<(const StructWithRefAndAnnotCppNoexceptMoveCtor& rhs) const;
 

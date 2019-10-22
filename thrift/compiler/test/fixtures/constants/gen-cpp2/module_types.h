@@ -262,10 +262,14 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
 
   Internship& operator=(const Internship&) = default;
   void __clear();
+ public:
   int32_t weeks;
+ public:
   ::std::string title;
+ private:
    ::cpp2::Company employer;
 
+ public:
   struct __isset {
     bool title;
     bool employer;
@@ -372,8 +376,10 @@ class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperato
 
   UnEnumStruct& operator=(const UnEnumStruct&) = default;
   void __clear();
+ public:
    ::cpp2::City city;
 
+ public:
   struct __isset {
     bool city;
   } __isset = {};
@@ -435,8 +441,12 @@ class Range final : private apache::thrift::detail::st::ComparisonOperators<Rang
 
   Range& operator=(const Range&) = default;
   void __clear();
+ public:
   int32_t min;
+ public:
   int32_t max;
+
+ public:
   bool operator==(const Range& rhs) const;
   bool operator<(const Range& rhs) const;
 
@@ -503,9 +513,12 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   struct1& operator=(const struct1&) = default;
   void __clear();
+ public:
   int32_t a;
+ public:
   ::std::string b;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -582,11 +595,16 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   struct2& operator=(const struct2&) = default;
   void __clear();
+ public:
   int32_t a;
+ public:
   ::std::string b;
+ public:
    ::cpp2::struct1 c;
+ public:
   ::std::vector<int32_t> d;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -683,10 +701,14 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   struct3& operator=(const struct3&) = default;
   void __clear();
+ public:
   ::std::string a;
+ public:
   int32_t b;
+ public:
    ::cpp2::struct2 c;
 
+ public:
   struct __isset {
     bool a;
     bool b;

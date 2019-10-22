@@ -74,8 +74,10 @@ class InitialResponse final : private apache::thrift::detail::st::ComparisonOper
 
   InitialResponse& operator=(const InitialResponse&) = default;
   void __clear();
+ public:
   ::std::string content;
 
+ public:
   struct __isset {
     bool content;
   } __isset = {};
@@ -140,8 +142,10 @@ class FinalResponse final : private apache::thrift::detail::st::ComparisonOperat
 
   FinalResponse& operator=(const FinalResponse&) = default;
   void __clear();
+ public:
   ::std::string content;
 
+ public:
   struct __isset {
     bool content;
   } __isset = {};
@@ -206,8 +210,10 @@ class SinkPayload final : private apache::thrift::detail::st::ComparisonOperator
 
   SinkPayload& operator=(const SinkPayload&) = default;
   void __clear();
+ public:
   ::std::string content;
 
+ public:
   struct __isset {
     bool content;
   } __isset = {};
@@ -272,8 +278,10 @@ class CompatibleWithKeywordSink final : private apache::thrift::detail::st::Comp
 
   CompatibleWithKeywordSink& operator=(const CompatibleWithKeywordSink&) = default;
   void __clear();
+ public:
   ::std::string sink;
 
+ public:
   struct __isset {
     bool sink;
   } __isset = {};
@@ -338,8 +346,10 @@ class SinkException final : private apache::thrift::detail::st::ComparisonOperat
 
   SinkException& operator=(const SinkException&) = default;
   void __clear();
+ public:
   ::std::string reason;
 
+ public:
   struct __isset {
     bool reason;
   } __isset = {};

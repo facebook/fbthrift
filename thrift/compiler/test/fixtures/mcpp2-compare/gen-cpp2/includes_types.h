@@ -113,8 +113,10 @@ class AStruct final : private apache::thrift::detail::st::ComparisonOperators<AS
 
   AStruct& operator=(const AStruct&) = default;
   void __clear();
+ public:
   int32_t FieldA;
 
+ public:
   struct __isset {
     bool FieldA;
   } __isset = {};
@@ -175,7 +177,10 @@ class AStructB final : private apache::thrift::detail::st::ComparisonOperators<A
 
   AStructB& operator=(const AStructB&) = default;
   void __clear();
+ public:
   std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
+
+ public:
   bool operator==(const AStructB& rhs) const;
   bool operator<(const AStructB& rhs) const;
 

@@ -1839,9 +1839,12 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
 
   structA& operator=(const structA&) = default;
   void __clear();
+ public:
   int32_t a;
+ public:
   ::std::string b;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -2281,9 +2284,12 @@ class structB final : private apache::thrift::detail::st::ComparisonOperators<st
 
   structB& operator=(const structB&) = default;
   void __clear();
+ public:
   double c;
+ public:
   bool d;
 
+ public:
   struct __isset {
     bool c;
     bool d;
@@ -2358,37 +2364,68 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
 
   ~structC();
 
+ public:
   int32_t a;
+ public:
   ::std::string b;
+ public:
   double c;
+ public:
   bool d;
+ public:
    ::test_cpp2::cpp_reflection::enum1 e;
+ public:
    ::test_cpp2::cpp_reflection::enum2 f;
+ public:
    ::test_cpp2::cpp_reflection::union1 g;
+ public:
    ::test_cpp2::cpp_reflection::unionA h;
+ public:
    ::test_cpp2::cpp_reflection::unionA i;
+ public:
   ::std::vector<int32_t> j;
+ public:
   ::std::vector<int32_t> j1;
+ public:
   ::std::vector< ::test_cpp2::cpp_reflection::enum1> j2;
+ public:
   ::std::vector< ::test_cpp2::cpp_reflection::structA> j3;
+ public:
   ::std::set<int32_t> k;
+ public:
   ::std::set<int32_t> k1;
+ public:
   ::std::set< ::test_cpp2::cpp_reflection::enum2> k2;
+ public:
   ::std::set< ::test_cpp2::cpp_reflection::structB> k3;
+ public:
   ::std::map<int32_t, int32_t> l;
+ public:
   ::std::map<int32_t, int32_t> l1;
+ public:
   ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2;
+ public:
   ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3;
+ public:
   ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1;
+ public:
   ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2;
+ public:
   ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3;
+ public:
   ::std::map<::std::string, int32_t> n1;
+ public:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> n2;
+ public:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> n3;
+ public:
   ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1;
+ public:
   ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2;
+ public:
   ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -2752,13 +2789,20 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   ~struct1();
 
+ public:
   int32_t field0;
+ private:
   ::std::string field1;
+ public:
    ::test_cpp2::cpp_reflection::enum1 field2;
+ public:
    ::test_cpp2::cpp_reflection::enum2 field3;
+ private:
    ::test_cpp2::cpp_reflection::union1 field4;
+ public:
    ::test_cpp2::cpp_reflection::union2 field5;
 
+ public:
   struct __isset {
     bool field1;
     bool field2;
@@ -2910,14 +2954,22 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   ~struct2();
 
+ public:
   int32_t fieldA;
+ public:
   ::std::string fieldB;
+ public:
    ::test_cpp2::cpp_reflection::enum1 fieldC;
+ public:
    ::test_cpp2::cpp_reflection::enum2 fieldD;
+ public:
    ::test_cpp2::cpp_reflection::union1 fieldE;
+ public:
    ::test_cpp2::cpp_reflection::union2 fieldF;
+ public:
    ::test_cpp2::cpp_reflection::struct1 fieldG;
 
+ public:
   struct __isset {
     bool fieldA;
     bool fieldB;
@@ -3049,25 +3101,44 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   ~struct3();
 
+ public:
   int32_t fieldA;
+ public:
   ::std::string fieldB;
+ public:
    ::test_cpp2::cpp_reflection::enum1 fieldC;
+ public:
    ::test_cpp2::cpp_reflection::enum2 fieldD;
+ public:
    ::test_cpp2::cpp_reflection::union1 fieldE;
+ public:
    ::test_cpp2::cpp_reflection::union2 fieldF;
+ public:
    ::test_cpp2::cpp_reflection::struct1 fieldG;
+ public:
    ::test_cpp2::cpp_reflection::union2 fieldH;
+ public:
   ::std::vector<int32_t> fieldI;
+ public:
   ::std::vector<::std::string> fieldJ;
+ public:
   ::std::vector<::std::string> fieldK;
+ public:
   ::std::vector< ::test_cpp2::cpp_reflection::structA> fieldL;
+ public:
   ::std::set<int32_t> fieldM;
+ public:
   ::std::set<::std::string> fieldN;
+ public:
   ::std::set<::std::string> fieldO;
+ public:
   ::std::set< ::test_cpp2::cpp_reflection::structB> fieldP;
+ public:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ;
+ public:
   ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> fieldR;
 
+ public:
   struct __isset {
     bool fieldA;
     bool fieldB;
@@ -3306,11 +3377,16 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
   struct4& operator=(struct4&&) = default;
   struct4& operator=(const struct4& src);
   void __clear();
+ public:
   int32_t field0;
+ private:
   ::std::string field1;
+ public:
    ::test_cpp2::cpp_reflection::enum1 field2;
+ public:
   std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3;
 
+ public:
   struct __isset {
     bool field1;
     bool field2;
@@ -3416,12 +3492,18 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   ~struct5();
 
+ public:
   int32_t field0;
+ private:
   ::std::string field1;
+ public:
    ::test_cpp2::cpp_reflection::enum1 field2;
+ public:
    ::test_cpp2::cpp_reflection::structA field3;
+ public:
    ::test_cpp2::cpp_reflection::structB field4;
 
+ public:
   struct __isset {
     bool field1;
     bool field2;
@@ -3543,8 +3625,10 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
 
   struct_binary& operator=(const struct_binary&) = default;
   void __clear();
+ public:
   ::std::string bi;
 
+ public:
   struct __isset {
     bool bi;
   } __isset = {};
@@ -3610,10 +3694,14 @@ class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperato
 
   dep_A_struct& operator=(const dep_A_struct&) = default;
   void __clear();
+ public:
    ::test_cpp2::cpp_reflection::dep_B_struct b;
+ public:
    ::test_cpp2::cpp_reflection::dep_C_struct c;
+ public:
   int32_t i_a;
 
+ public:
   struct __isset {
     bool b;
     bool c;
@@ -3694,10 +3782,14 @@ class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperato
 
   dep_B_struct& operator=(const dep_B_struct&) = default;
   void __clear();
+ public:
    ::test_cpp2::cpp_reflection::dep_B_struct b;
+ public:
    ::test_cpp2::cpp_reflection::dep_C_struct c;
+ public:
   int32_t i_a;
 
+ public:
   struct __isset {
     bool b;
     bool c;
@@ -3778,8 +3870,10 @@ class annotated final : private apache::thrift::detail::st::ComparisonOperators<
 
   annotated& operator=(const annotated&) = default;
   void __clear();
+ public:
   int32_t a;
 
+ public:
   struct __isset {
     bool a;
   } __isset = {};
@@ -5213,35 +5307,64 @@ class struct_with_special_names final : private apache::thrift::detail::st::Comp
 
   struct_with_special_names& operator=(const struct_with_special_names&) = default;
   void __clear();
+ public:
   int32_t get;
+ public:
   int32_t getter;
+ public:
   int32_t lists;
+ public:
   int32_t maps;
+ public:
   int32_t name;
+ public:
   int32_t name_to_value;
+ public:
   int32_t names;
+ public:
   int32_t prefix_tree;
+ public:
   int32_t sets;
+ public:
   int32_t setter;
+ public:
   int32_t str;
+ public:
   int32_t strings;
+ public:
   int32_t type;
+ public:
   int32_t value;
+ public:
   int32_t value_to_name;
+ public:
   int32_t values;
+ public:
   int32_t id;
+ public:
   int32_t ids;
+ public:
   int32_t descriptor;
+ public:
   int32_t descriptors;
+ public:
   int32_t key;
+ public:
   int32_t keys;
+ public:
   int32_t annotation;
+ public:
   int32_t annotations;
+ public:
   int32_t member;
+ public:
   int32_t members;
+ public:
   int32_t field;
+ public:
   int32_t fields;
 
+ public:
   struct __isset {
     bool get;
     bool getter;
@@ -5602,12 +5725,18 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
 
   ~struct_with_indirections();
 
+ public:
   int32_t real;
+ public:
    ::test_cpp2::cpp_reflection::FakeI32 fake;
+ public:
    ::test_cpp2::cpp_reflection::HasANumber number;
+ public:
    ::test_cpp2::cpp_reflection::HasAResult result;
+ public:
    ::test_cpp2::cpp_reflection::HasAPhrase phrase;
 
+ public:
   struct __isset {
     bool real;
     bool fake;

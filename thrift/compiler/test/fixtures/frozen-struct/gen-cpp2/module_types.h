@@ -137,13 +137,20 @@ class ModuleA final : private apache::thrift::detail::st::ComparisonOperators<Mo
 
   ~ModuleA();
 
+ public:
   int32_t i32Field;
+ public:
   ::std::string strField;
+ public:
   ::std::vector<int16_t> listField;
+ public:
   ::std::map<::std::string, int32_t> mapField;
+ public:
    ::some::ns::IncludedA inclAField;
+ public:
    ::some::ns::IncludedB inclBField;
 
+ public:
   struct __isset {
     bool i32Field;
     bool strField;
@@ -261,9 +268,12 @@ class ModuleB final : private apache::thrift::detail::st::ComparisonOperators<Mo
 
   ModuleB& operator=(const ModuleB&) = default;
   void __clear();
+ public:
   int32_t i32Field;
+ public:
    ::some::ns::EnumB inclEnumB;
 
+ public:
   struct __isset {
     bool i32Field;
     bool inclEnumB;

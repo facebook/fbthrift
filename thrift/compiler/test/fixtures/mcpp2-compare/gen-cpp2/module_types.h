@@ -1035,8 +1035,10 @@ class ASimpleStruct final : private apache::thrift::detail::st::ComparisonOperat
 
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
   void __clear();
+ public:
   int64_t boolField;
 
+ public:
   struct __isset {
     bool boolField;
   } __isset = {};
@@ -1097,8 +1099,10 @@ class ASimpleStructNoexcept final : private apache::thrift::detail::st::Comparis
 
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
   void __clear();
+ public:
   int64_t boolField;
 
+ public:
   struct __isset {
     bool boolField;
   } __isset = {};
@@ -1161,16 +1165,26 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   ~MyStruct();
 
+ public:
   bool MyBoolField;
+ public:
   int64_t MyIntField;
+ public:
   ::std::string MyStringField;
+ public:
   ::std::string MyStringField2;
+ public:
   ::std::string MyBinaryField;
+ private:
   ::std::string MyBinaryField2;
+ public:
   ::std::string MyBinaryField3;
+ public:
   ::std::vector<::std::string> MyBinaryListField4;
+ public:
   ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
 
+ public:
   struct __isset {
     bool MyBoolField;
     bool MyIntField;
@@ -3145,22 +3159,38 @@ class AnException final : private apache::thrift::detail::st::ComparisonOperator
 
   ~AnException();
 
+ public:
   int32_t code;
+ public:
   int32_t req_code;
+ public:
   ::std::string message2;
+ public:
   ::std::string req_message;
+ public:
   ::std::vector<int32_t> exception_list;
+ public:
   ::std::set<int64_t> exception_set;
+ public:
   ::std::map<::std::string, int32_t> exception_map;
+ public:
   ::std::map<::std::string, int32_t> req_exception_map;
+ public:
    ::some::valid::ns::MyEnumA enum_field;
+ public:
   ::std::vector< ::some::valid::ns::MyEnumA> enum_container;
+ public:
    ::some::valid::ns::MyStruct a_struct;
+ public:
   ::std::set< ::some::valid::ns::MyStruct> a_set_struct;
+ public:
   ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
+ public:
    ::some::valid::ns::unionTypeDef union_typedef;
+ public:
   ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
+ public:
   struct __isset {
     bool code;
     bool message2;
@@ -3377,10 +3407,14 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
 
   virtual ~AnotherException() {}
 
+ public:
   int32_t code;
+ public:
   int32_t req_code;
+ public:
   ::std::string message;
 
+ public:
   struct __isset {
     bool code;
     bool message;
@@ -3469,53 +3503,100 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   ~containerStruct();
 
+ public:
   bool fieldA;
+ public:
   bool req_fieldA;
+ private:
   bool opt_fieldA;
+ public:
   ::std::map<::std::string, bool> fieldB;
+ public:
   ::std::map<::std::string, bool> req_fieldB;
+ private:
   ::std::map<::std::string, bool> opt_fieldB;
+ public:
   ::std::set<int32_t> fieldC;
+ public:
   ::std::set<int32_t> req_fieldC;
+ private:
   ::std::set<int32_t> opt_fieldC;
+ public:
   ::std::string fieldD;
+ public:
   ::std::string fieldE;
+ public:
   ::std::string req_fieldE;
+ private:
   ::std::string opt_fieldE;
+ public:
   ::std::vector<::std::vector<int32_t>> fieldF;
+ public:
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
+ public:
   ::std::vector<::std::set<int32_t>> fieldH;
+ public:
   bool fieldI;
+ public:
   ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
+ public:
   ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
+ public:
   ::std::set<::std::set<::std::set<bool>>> fieldL;
+ public:
   ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
+ public:
    ::some::valid::ns::simpleTypeDef fieldN;
+ public:
    ::some::valid::ns::complexStructTypeDef fieldO;
+ public:
   ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP;
+ public:
    ::some::valid::ns::MyEnumA fieldQ;
+ public:
    ::some::valid::ns::MyEnumA fieldR;
+ public:
    ::some::valid::ns::MyEnumA req_fieldR;
+ private:
    ::some::valid::ns::MyEnumA opt_fieldR;
+ public:
    ::some::valid::ns::MyEnumA fieldS;
+ public:
   ::std::vector< ::some::valid::ns::MyEnumA> fieldT;
+ public:
   ::std::vector< ::some::valid::ns::MyEnumA> fieldU;
+ public:
    ::some::valid::ns::MyStruct fieldV;
+ public:
    ::some::valid::ns::MyStruct req_fieldV;
+ private:
    ::some::valid::ns::MyStruct opt_fieldV;
+ public:
   ::std::set< ::some::valid::ns::MyStruct> fieldW;
+ public:
    ::some::valid::ns::ComplexUnion fieldX;
+ public:
    ::some::valid::ns::ComplexUnion req_fieldX;
+ private:
    ::some::valid::ns::ComplexUnion opt_fieldX;
+ public:
   ::std::vector< ::some::valid::ns::ComplexUnion> fieldY;
+ public:
    ::some::valid::ns::unionTypeDef fieldZ;
+ public:
   ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
+ public:
   ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB;
+ public:
    ::some::valid::ns::MyEnumB fieldAC;
+ public:
    ::a::different::ns::AnEnum fieldAD;
+ public:
   ::std::map<::std::string, int32_t> fieldAE;
+ public:
    ::some::valid::ns::IndirectionD fieldSD;
 
+ public:
   struct __isset {
     bool fieldA;
     bool opt_fieldA;
@@ -4181,11 +4262,16 @@ class MyIncludedStruct final : private apache::thrift::detail::st::ComparisonOpe
   MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
   void __clear();
+ public:
    ::a::different::ns::IncludedInt64 MyIncludedInt;
+ public:
    ::some::valid::ns::AStruct MyIncludedStruct;
+ public:
   std::unique_ptr< ::some::valid::ns::AStruct> ARefField;
+ public:
    ::some::valid::ns::AStruct ARequiredField;
 
+ public:
   struct __isset {
     bool MyIncludedInt;
     bool MyIncludedStruct;
@@ -4262,47 +4348,88 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
 
   virtual ~AnnotatedStruct();
 
+ public:
    ::some::valid::ns::containerStruct no_annotation;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref;
+ public:
   std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref;
+ public:
   std::unique_ptr<::std::vector<::std::string>> req_container_with_ref;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
+ public:
   std::unique_ptr<::std::set<int32_t>> opt_container_with_ref;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique;
+ public:
   std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared;
+ public:
   std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const;
+ public:
   std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared;
+ public:
   std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const;
+ public:
   std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique;
+ public:
   std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const;
+ public:
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
+ public:
   std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared;
+ public:
    ::some::valid::ns::CppFakeI32 base_type;
+ public:
    ::some::valid::ns::FollySmallVectorI64 list_type;
+ public:
    ::some::valid::ns::SortedVectorSetString set_type;
+ public:
    ::some::valid::ns::FakeMap map_type;
+ public:
    ::some::valid::ns::UnorderedMapStruct map_struct_type;
+ public:
    ::some::valid::ns::IOBuf iobuf_type;
+ public:
    ::some::valid::ns::IOBufPtr iobuf_ptr;
+ public:
   std::list<int32_t> list_i32_template;
+ public:
   std::deque<::std::string> list_string_template;
+ public:
   folly::sorted_vector_set<::std::string> set_template;
+ public:
   folly::sorted_vector_map<int64_t, ::std::string> map_template;
+ public:
    ::some::valid::ns::std_list typedef_list_template;
+ public:
    ::some::valid::ns::std_deque typedef_deque_template;
+ public:
    ::some::valid::ns::folly_set typedef_set_template;
+ public:
    ::some::valid::ns::folly_map typedef_map_template;
+ public:
    ::some::valid::ns::IndirectionA indirection_a;
+ public:
   ::std::vector< ::some::valid::ns::IndirectionB> indirection_b;
+ public:
   ::std::set< ::some::valid::ns::IndirectionC> indirection_c;
+ public:
    ::some::valid::ns::IOBuf iobuf_type_val;
+ public:
    ::some::valid::ns::IOBufPtr iobuf_ptr_val;
+ public:
    ::some::valid::ns::containerStruct struct_struct;
 
+ public:
   struct __isset {
     bool no_annotation;
     bool base_type;
@@ -4599,9 +4726,12 @@ class ComplexContainerStruct final : private apache::thrift::detail::st::Compari
 
   ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
   void __clear();
+ public:
   ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs;
+ public:
   ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
 
+ public:
   struct __isset {
     bool map_of_iobufs;
     bool map_of_iobuf_ptrs;
@@ -4672,9 +4802,12 @@ class FloatStruct final : private apache::thrift::detail::st::ComparisonOperator
 
   FloatStruct& operator=(const FloatStruct&) = default;
   void __clear();
+ public:
   float floatField;
+ public:
   double doubleField;
 
+ public:
   struct __isset {
     bool floatField;
     bool doubleField;
@@ -4948,7 +5081,10 @@ class AllRequiredNoExceptMoveCtrStruct final : private apache::thrift::detail::s
 
   AllRequiredNoExceptMoveCtrStruct& operator=(const AllRequiredNoExceptMoveCtrStruct&) = default;
   void __clear();
+ public:
   int64_t intField;
+
+ public:
   bool operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
   bool operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
 

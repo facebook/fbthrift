@@ -65,9 +65,12 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
 
   Included& operator=(const Included&) = default;
   void __clear();
+ public:
   int64_t MyIntField;
+ public:
    ::cpp2::Foo MyTransitiveField;
 
+ public:
   struct __isset {
     bool MyIntField;
     bool MyTransitiveField;

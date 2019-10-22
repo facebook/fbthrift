@@ -76,9 +76,14 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
 
   House& operator=(const House&) = default;
   void __clear();
+ public:
    ::cpp2::ColorID id;
+ public:
   ::std::string houseName;
+ public:
   folly::Optional<::std::set< ::cpp2::ColorID>> houseColors;
+
+ public:
   bool operator==(const House& rhs) const;
   bool operator<(const House& rhs) const;
 
@@ -127,8 +132,12 @@ class Field final : private apache::thrift::detail::st::ComparisonOperators<Fiel
 
   Field& operator=(const Field&) = default;
   void __clear();
+ public:
    ::cpp2::ColorID id;
+ public:
   int32_t fieldType;
+
+ public:
   bool operator==(const Field& rhs) const;
   bool operator<(const Field& rhs) const;
 

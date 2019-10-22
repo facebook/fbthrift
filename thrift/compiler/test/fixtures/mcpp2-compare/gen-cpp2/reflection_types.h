@@ -55,8 +55,10 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
 
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
   void __clear();
+ public:
   int32_t fieldA;
 
+ public:
   struct __isset {
     bool fieldA;
   } __isset = {};

@@ -116,7 +116,10 @@ class Fiery final : private apache::thrift::detail::st::ComparisonOperators<Fier
 
   Fiery& operator=(const Fiery&) = default;
   void __clear();
+ public:
   ::std::string message;
+
+ public:
   bool operator==(const Fiery& rhs) const;
   bool operator<(const Fiery& rhs) const;
 
@@ -187,8 +190,10 @@ class Serious final : private apache::thrift::detail::st::ComparisonOperators<Se
 
   Serious& operator=(const Serious&) = default;
   void __clear();
+ private:
   ::std::string sonnet;
 
+ public:
   struct __isset {
     bool sonnet;
   } __isset = {};

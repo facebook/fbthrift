@@ -236,9 +236,12 @@ class SmallStruct final : private apache::thrift::detail::st::ComparisonOperator
 
   SmallStruct& operator=(const SmallStruct&) = default;
   void __clear();
+ public:
   bool small_A;
+ public:
   int32_t small_B;
 
+ public:
   struct __isset {
     bool small_A;
     bool small_B;
@@ -311,29 +314,52 @@ class containerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   ~containerStruct();
 
+ public:
   bool fieldA;
+ public:
   ::std::map<::std::string, bool> fieldB;
+ public:
   ::std::set<int32_t> fieldC;
+ public:
   ::std::string fieldD;
+ public:
   ::std::string fieldE;
+ public:
   ::std::vector<::std::vector<::std::vector<int32_t>>> fieldF;
+ public:
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
+ public:
   ::std::vector<::std::set<int32_t>> fieldH;
+ public:
   bool fieldI;
+ public:
   ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
+ public:
   ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
+ public:
   ::std::set<::std::set<::std::set<bool>>> fieldL;
+ public:
   ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
+ public:
   ::std::vector< ::cpp2::IndirectionA> fieldN;
+ public:
   ::std::vector< ::cpp2::IndirectionB> fieldO;
+ public:
   ::std::vector< ::cpp2::IndirectionC> fieldP;
+ public:
    ::cpp2::MyEnumA fieldQ;
+ public:
   std::unique_ptr<::std::map<::std::string, bool>> fieldR;
+ public:
   std::unique_ptr< ::cpp2::SmallStruct> fieldS;
+ public:
   std::shared_ptr< ::cpp2::SmallStruct> fieldT;
+ public:
   std::shared_ptr<const  ::cpp2::SmallStruct> fieldU;
+ public:
   std::unique_ptr< ::cpp2::SmallStruct> fieldX;
 
+ public:
   struct __isset {
     bool fieldA;
     bool fieldB;

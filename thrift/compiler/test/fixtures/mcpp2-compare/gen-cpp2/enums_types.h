@@ -232,8 +232,10 @@ class SomeStruct final : private apache::thrift::detail::st::ComparisonOperators
 
   SomeStruct& operator=(const SomeStruct&) = default;
   void __clear();
+ public:
   int32_t fieldA;
 
+ public:
   struct __isset {
     bool fieldA;
   } __isset = {};

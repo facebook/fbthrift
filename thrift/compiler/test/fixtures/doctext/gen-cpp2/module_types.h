@@ -103,8 +103,10 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
 
   A& operator=(const A&) = default;
   void __clear();
+ public:
   int32_t useless_field;
 
+ public:
   struct __isset {
     bool useless_field;
   } __isset = {};

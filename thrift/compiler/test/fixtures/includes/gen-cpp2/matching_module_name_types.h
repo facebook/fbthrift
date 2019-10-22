@@ -55,8 +55,10 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+ public:
    ::matching_module_name::OtherStruct OtherStructField;
 
+ public:
   struct __isset {
     bool OtherStructField;
   } __isset = {};

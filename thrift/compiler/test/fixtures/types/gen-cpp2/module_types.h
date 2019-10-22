@@ -462,8 +462,10 @@ class decorated_struct final : private apache::thrift::detail::st::ComparisonOpe
 
   decorated_struct& operator=(const decorated_struct&) = default;
   void __clear();
+ public:
   ::std::string field;
 
+ public:
   struct __isset {
     bool field;
   } __isset = {};
@@ -532,15 +534,24 @@ class ContainerStruct final : private apache::thrift::detail::st::ComparisonOper
 
   ~ContainerStruct();
 
+ public:
   ::std::vector<int32_t> fieldA;
+ public:
   std::list<int32_t> fieldB;
+ public:
   std::deque<int32_t> fieldC;
+ public:
   folly::fbvector<int32_t> fieldD;
+ public:
   folly::small_vector<int32_t> fieldE;
+ public:
   folly::sorted_vector_set<int32_t> fieldF;
+ public:
   folly::sorted_vector_map<int32_t, ::std::string> fieldG;
+ public:
    ::apache::thrift::fixtures::types::SomeMap fieldH;
 
+ public:
   struct __isset {
     bool fieldA;
     bool fieldB;
@@ -669,8 +680,10 @@ class CppTypeStruct final : private apache::thrift::detail::st::ComparisonOperat
 
   CppTypeStruct& operator=(const CppTypeStruct&) = default;
   void __clear();
+ public:
   std::list<int32_t> fieldA;
 
+ public:
   struct __isset {
     bool fieldA;
   } __isset = {};
@@ -733,8 +746,10 @@ class VirtualStruct : private apache::thrift::detail::st::ComparisonOperators<Vi
 
   virtual ~VirtualStruct() {}
 
+ public:
   int64_t MyIntField;
 
+ public:
   struct __isset {
     bool MyIntField;
   } __isset = {};
@@ -796,9 +811,12 @@ class MyStructWithForwardRefEnum final : private apache::thrift::detail::st::Com
 
   MyStructWithForwardRefEnum& operator=(const MyStructWithForwardRefEnum&) = default;
   void __clear();
+ public:
    ::apache::thrift::fixtures::types::MyForwardRefEnum a;
+ public:
    ::apache::thrift::fixtures::types::MyForwardRefEnum b;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -871,9 +889,12 @@ class TrivialNumeric final : private apache::thrift::detail::st::ComparisonOpera
 
   TrivialNumeric& operator=(const TrivialNumeric&) = default;
   void __clear();
+ public:
   int32_t a;
+ public:
   bool b;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -946,9 +967,12 @@ class TrivialNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   TrivialNestedWithDefault& operator=(const TrivialNestedWithDefault&) = default;
   void __clear();
+ public:
   int32_t z;
+ public:
    ::apache::thrift::fixtures::types::TrivialNumeric n;
 
+ public:
   struct __isset {
     bool z;
     bool n;
@@ -1018,9 +1042,12 @@ class ComplexString final : private apache::thrift::detail::st::ComparisonOperat
 
   ComplexString& operator=(const ComplexString&) = default;
   void __clear();
+ public:
   ::std::string a;
+ public:
   ::std::map<::std::string, int32_t> b;
 
+ public:
   struct __isset {
     bool a;
     bool b;
@@ -1097,9 +1124,12 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   ComplexNestedWithDefault& operator=(const ComplexNestedWithDefault&) = default;
   void __clear();
+ public:
   ::std::string z;
+ public:
    ::apache::thrift::fixtures::types::ComplexString n;
 
+ public:
   struct __isset {
     bool z;
     bool n;
@@ -1179,11 +1209,18 @@ class MinPadding final : private apache::thrift::detail::st::ComparisonOperators
 
   MinPadding& operator=(const MinPadding&) = default;
   void __clear();
+ public:
   int64_t big;
+ public:
   int32_t biggish;
+ public:
   int16_t medium;
+ public:
   int8_t small;
+ public:
   int8_t tiny;
+
+ public:
   bool operator==(const MinPadding& rhs) const;
   bool operator<(const MinPadding& rhs) const;
 
@@ -1321,11 +1358,16 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
 
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
+ public:
   int64_t MyIntField;
+ public:
   ::std::string MyStringField;
+ public:
   int64_t majorVer;
+ public:
    ::apache::thrift::fixtures::types::MyDataItem data;
 
+ public:
   struct __isset {
     bool MyIntField;
     bool MyStringField;
@@ -1421,8 +1463,10 @@ class Renaming final : private apache::thrift::detail::st::ComparisonOperators<R
 
   Renaming& operator=(const Renaming&) = default;
   void __clear();
+ public:
   int64_t bar;
 
+ public:
   struct __isset {
     bool bar;
   } __isset = {};
@@ -1482,9 +1526,12 @@ class AnnotatedTypes final : private apache::thrift::detail::st::ComparisonOpera
 
   AnnotatedTypes& operator=(const AnnotatedTypes&) = default;
   void __clear();
+ public:
    ::apache::thrift::fixtures::types::TBinary binary_field;
+ public:
    ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field;
 
+ public:
   struct __isset {
     bool binary_field;
     bool list_field;
@@ -1559,8 +1606,10 @@ class ForwardUsageStruct final : private apache::thrift::detail::st::ComparisonO
 
   ForwardUsageStruct& operator=(const ForwardUsageStruct&) = default;
   void __clear();
+ private:
    ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
 
+ public:
   struct __isset {
     bool foo;
   } __isset = {};
@@ -1634,9 +1683,12 @@ class ForwardUsageRoot final : private apache::thrift::detail::st::ComparisonOpe
   ForwardUsageRoot& operator=(ForwardUsageRoot&&) = default;
   ForwardUsageRoot& operator=(const ForwardUsageRoot& src);
   void __clear();
+ private:
    ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct;
+ public:
   std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef;
 
+ public:
   struct __isset {
     bool ForwardUsageStruct;
   } __isset = {};
@@ -1712,8 +1764,10 @@ class ForwardUsageByRef final : private apache::thrift::detail::st::ComparisonOp
 
   ForwardUsageByRef& operator=(const ForwardUsageByRef&) = default;
   void __clear();
+ private:
    ::apache::thrift::fixtures::types::ForwardUsageRoot foo;
 
+ public:
   struct __isset {
     bool foo;
   } __isset = {};
@@ -1835,8 +1889,10 @@ class NoexceptMoveSimpleStruct final : private apache::thrift::detail::st::Compa
 
   NoexceptMoveSimpleStruct& operator=(const NoexceptMoveSimpleStruct&) = default;
   void __clear();
+ public:
   int64_t boolField;
 
+ public:
   struct __isset {
     bool boolField;
   } __isset = {};
@@ -1899,16 +1955,26 @@ class NoexceptMoveComplexStruct final : private apache::thrift::detail::st::Comp
 
   ~NoexceptMoveComplexStruct();
 
+ public:
   bool MyBoolField;
+ public:
   int64_t MyIntField;
+ public:
   ::std::string MyStringField;
+ public:
   ::std::string MyStringField2;
+ public:
   ::std::string MyBinaryField;
+ private:
   ::std::string MyBinaryField2;
+ public:
   ::std::string MyBinaryField3;
+ public:
   ::std::vector<::std::string> MyBinaryListField4;
+ public:
   ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt;
 
+ public:
   struct __isset {
     bool MyBoolField;
     bool MyIntField;
