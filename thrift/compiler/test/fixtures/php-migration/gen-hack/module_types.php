@@ -84,7 +84,7 @@ class Foo implements \IThriftStruct {
   public ?bool $d;
 
   <<__Rx>>
-  public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->a = idx($vals, 'a', null);
     if (C\contains_key($vals, 'b')) {
@@ -163,7 +163,7 @@ class Baz extends \TException implements \IThriftStruct {
   public int $code;
 
   <<__Rx>>
-  public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
     /* HH_FIXME[4110] previously hidden by unsafe */
@@ -203,7 +203,7 @@ class OptBaz extends \TException implements \IThriftStruct {
   public string $message;
 
   <<__Rx>>
-  public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
   }

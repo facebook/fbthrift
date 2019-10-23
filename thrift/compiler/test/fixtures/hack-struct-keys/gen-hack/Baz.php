@@ -18,7 +18,7 @@ interface BazAsyncIf extends \IThriftAsyncIf {
    *       2: list<Bar> b,
    *       3: map<Foo, string> c);
    */
-  public function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string>;
+  public function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): Awaitable<string>;
 }
 
 /**
@@ -33,7 +33,7 @@ interface BazIf extends \IThriftSyncIf {
    *       2: list<Bar> b,
    *       3: map<Foo, string> c);
    */
-  public function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): string;
+  public function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): string;
 }
 
 /**
@@ -48,7 +48,7 @@ interface BazClientIf extends \IThriftSyncIf {
    *       2: list<Bar> b,
    *       3: map<Foo, string> c);
    */
-  public function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string>;
+  public function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): Awaitable<string>;
 }
 
 class BazRest {
@@ -58,7 +58,7 @@ class BazRest {
     $this->impl_ = $impl;
   }
 
-  public function qux(\HH\KeyedContainer<string, mixed> $request): string {
+  public function qux(KeyedContainer<string, mixed> $request): string {
     $a =  idx($request, 'a');
     /* HH_FIXME[4107] */ /* HH_FIXME[2049] Previously hidden by unsafe */
     $a = json_decode($a, true);
@@ -81,7 +81,7 @@ class BazRest {
 trait BazClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): int {
+  protected function sendImpl_qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Baz_qux_args(
       $a,
@@ -196,7 +196,7 @@ class BazAsyncClient extends \ThriftClientBase implements BazAsyncIf {
    *       2: list<Bar> b,
    *       3: map<Foo, string> c);
    */
-  public async function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string> {
+  public async function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): Awaitable<string> {
     $currentseqid = $this->sendImpl_qux($a, $b, $c);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_qux($currentseqid);
@@ -214,14 +214,14 @@ class BazClient extends \ThriftClientBase implements BazClientIf {
    *       2: list<Bar> b,
    *       3: map<Foo, string> c);
    */
-  public async function qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): Awaitable<string> {
+  public async function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): Awaitable<string> {
     $currentseqid = $this->sendImpl_qux($a, $b, $c);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_qux($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_qux(Set<arraykey> $a, \HH\KeyedContainer<int, Bar> $b, \HH\KeyedContainer<arraykey, string> $c): int {
+  public function send_qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): int {
     return $this->sendImpl_qux($a, $b, $c);
   }
   public function recv_qux(?int $expectedsequenceid = null): string {

@@ -40,7 +40,7 @@ class Foo implements \IThriftStruct {
   public string $b;
 
   <<__Rx>>
-  public function __construct(<<__Soft>> \HH\KeyedContainer<string, mixed> $vals = dict[]) {
+  public function __construct(<<__Soft>> KeyedContainer<string, mixed> $vals = dict[]) {
     $this->a = (int)idx($vals, 'a', 0);
     $this->b = (string)idx($vals, 'b', '');
   }

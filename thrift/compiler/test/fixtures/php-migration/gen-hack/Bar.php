@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
+  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): string;
 }
 
 /**
@@ -54,7 +54,7 @@ interface BarClientIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
+  public function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string>;
 }
 
 /**
@@ -64,7 +64,7 @@ interface BarClientIf extends \IThriftSyncIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
+  protected function sendImpl_baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args(Map {
       'a' => $a === null ? null : $a,
@@ -185,7 +185,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -205,14 +205,14 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(?darray<int, bool> $a, ?\HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
+  public async function baz(?darray<int, bool> $a, ?KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?int $c, ?Foo $d, ?int $e): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b, $c, $d, $e);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(darray<int, bool> $a, \HH\KeyedContainer<int, \HH\KeyedContainer<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
@@ -391,7 +391,7 @@ class Bar_baz_args implements \IThriftStruct {
   public ?int $e;
 
   <<__Rx>>
-  public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
     /* HH_FIXME[4110] previously hidden by unsafe */
     $this->a = idx($vals, 'a', null);
     /* HH_FIXME[4110] previously hidden by unsafe */
@@ -426,7 +426,7 @@ class Bar_baz_result implements \IThriftStruct {
   public ?string $success;
 
   <<__Rx>>
-  public function __construct(@\HH\KeyedContainer<string, mixed> $vals = darray[]) {
+  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
   }
 
   public function getName(): string {

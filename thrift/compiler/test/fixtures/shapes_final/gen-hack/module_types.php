@@ -2528,7 +2528,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_i32 !== null) {
       $_val3 = $this->list_of_i32;
-      if (!($_val3 is \HH\KeyedContainer<_, _>) && !(($_val3 is \Iterator<_> || $_val3 is \IteratorAggregate<_>) && $_val3 is \Countable)) {
+      if (!($_val3 is KeyedContainer<_, _>) && !(($_val3 is Iterator<_> || $_val3 is \IteratorAggregate<_>) && $_val3 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_i32', \TType::LST, 3);
@@ -2545,7 +2545,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_string !== null) {
       $_val5 = $this->list_of_string;
-      if (!($_val5 is \HH\KeyedContainer<_, _>) && !(($_val5 is \Iterator<_> || $_val5 is \IteratorAggregate<_>) && $_val5 is \Countable)) {
+      if (!($_val5 is KeyedContainer<_, _>) && !(($_val5 is Iterator<_> || $_val5 is \IteratorAggregate<_>) && $_val5 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_string', \TType::LST, 4);
@@ -2562,7 +2562,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_i32 !== null) {
       $_val7 = $this->map_of_string_to_i32;
-      if (!($_val7 is \HH\KeyedContainer<_, _>) && !(($_val7 is \Iterator<_> || $_val7 is \IteratorAggregate<_>) && $_val7 is \Countable)) {
+      if (!($_val7 is KeyedContainer<_, _>) && !(($_val7 is Iterator<_> || $_val7 is \IteratorAggregate<_>) && $_val7 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_i32', \TType::MAP, 5);
@@ -2580,7 +2580,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_A !== null) {
       $_val10 = $this->map_of_string_to_A;
-      if (!($_val10 is \HH\KeyedContainer<_, _>) && !(($_val10 is \Iterator<_> || $_val10 is \IteratorAggregate<_>) && $_val10 is \Countable)) {
+      if (!($_val10 is KeyedContainer<_, _>) && !(($_val10 is Iterator<_> || $_val10 is \IteratorAggregate<_>) && $_val10 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_A', \TType::MAP, 6);
@@ -2598,7 +2598,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_list_of_i32 !== null) {
       $_val13 = $this->map_of_string_to_list_of_i32;
-      if (!($_val13 is \HH\KeyedContainer<_, _>) && !(($_val13 is \Iterator<_> || $_val13 is \IteratorAggregate<_>) && $_val13 is \Countable)) {
+      if (!($_val13 is KeyedContainer<_, _>) && !(($_val13 is Iterator<_> || $_val13 is \IteratorAggregate<_>) && $_val13 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_list_of_i32', \TType::MAP, 7);
@@ -2624,7 +2624,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_list_of_A !== null) {
       $_val17 = $this->map_of_string_to_list_of_A;
-      if (!($_val17 is \HH\KeyedContainer<_, _>) && !(($_val17 is \Iterator<_> || $_val17 is \IteratorAggregate<_>) && $_val17 is \Countable)) {
+      if (!($_val17 is KeyedContainer<_, _>) && !(($_val17 is Iterator<_> || $_val17 is \IteratorAggregate<_>) && $_val17 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_list_of_A', \TType::MAP, 8);
@@ -2650,7 +2650,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_set_of_i32 !== null) {
       $_val21 = $this->map_of_string_to_set_of_i32;
-      if (!($_val21 is \HH\KeyedContainer<_, _>) && !(($_val21 is \Iterator<_> || $_val21 is \IteratorAggregate<_>) && $_val21 is \Countable)) {
+      if (!($_val21 is KeyedContainer<_, _>) && !(($_val21 is Iterator<_> || $_val21 is \IteratorAggregate<_>) && $_val21 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_set_of_i32', \TType::MAP, 9);
@@ -2676,7 +2676,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_map_of_string_to_i32 !== null) {
       $_val25 = $this->map_of_string_to_map_of_string_to_i32;
-      if (!($_val25 is \HH\KeyedContainer<_, _>) && !(($_val25 is \Iterator<_> || $_val25 is \IteratorAggregate<_>) && $_val25 is \Countable)) {
+      if (!($_val25 is KeyedContainer<_, _>) && !(($_val25 is Iterator<_> || $_val25 is \IteratorAggregate<_>) && $_val25 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_map_of_string_to_i32', \TType::MAP, 10);
@@ -2703,7 +2703,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_map_of_string_to_A !== null) {
       $_val30 = $this->map_of_string_to_map_of_string_to_A;
-      if (!($_val30 is \HH\KeyedContainer<_, _>) && !(($_val30 is \Iterator<_> || $_val30 is \IteratorAggregate<_>) && $_val30 is \Countable)) {
+      if (!($_val30 is KeyedContainer<_, _>) && !(($_val30 is Iterator<_> || $_val30 is \IteratorAggregate<_>) && $_val30 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_map_of_string_to_A', \TType::MAP, 11);
@@ -2730,7 +2730,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_set_of_i32 !== null) {
       $_val35 = $this->list_of_set_of_i32;
-      if (!($_val35 is \HH\KeyedContainer<_, _>) && !(($_val35 is \Iterator<_> || $_val35 is \IteratorAggregate<_>) && $_val35 is \Countable)) {
+      if (!($_val35 is KeyedContainer<_, _>) && !(($_val35 is Iterator<_> || $_val35 is \IteratorAggregate<_>) && $_val35 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_set_of_i32', \TType::LST, 12);
@@ -2755,7 +2755,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_map_of_string_to_list_of_A !== null) {
       $_val38 = $this->list_of_map_of_string_to_list_of_A;
-      if (!($_val38 is \HH\KeyedContainer<_, _>) && !(($_val38 is \Iterator<_> || $_val38 is \IteratorAggregate<_>) && $_val38 is \Countable)) {
+      if (!($_val38 is KeyedContainer<_, _>) && !(($_val38 is Iterator<_> || $_val38 is \IteratorAggregate<_>) && $_val38 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_map_of_string_to_list_of_A', \TType::LST, 13);
@@ -2789,7 +2789,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_map_of_string_to_A !== null) {
       $_val43 = $this->list_of_map_of_string_to_A;
-      if (!($_val43 is \HH\KeyedContainer<_, _>) && !(($_val43 is \Iterator<_> || $_val43 is \IteratorAggregate<_>) && $_val43 is \Countable)) {
+      if (!($_val43 is KeyedContainer<_, _>) && !(($_val43 is Iterator<_> || $_val43 is \IteratorAggregate<_>) && $_val43 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_map_of_string_to_A', \TType::LST, 14);
@@ -2815,7 +2815,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_self !== null) {
       $_val47 = $this->list_of_self;
-      if (!($_val47 is \HH\KeyedContainer<_, _>) && !(($_val47 is \Iterator<_> || $_val47 is \IteratorAggregate<_>) && $_val47 is \Countable)) {
+      if (!($_val47 is KeyedContainer<_, _>) && !(($_val47 is Iterator<_> || $_val47 is \IteratorAggregate<_>) && $_val47 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_self', \TType::LST, 15);
@@ -2832,7 +2832,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_self !== null) {
       $_val49 = $this->map_of_string_to_self;
-      if (!($_val49 is \HH\KeyedContainer<_, _>) && !(($_val49 is \Iterator<_> || $_val49 is \IteratorAggregate<_>) && $_val49 is \Countable)) {
+      if (!($_val49 is KeyedContainer<_, _>) && !(($_val49 is Iterator<_> || $_val49 is \IteratorAggregate<_>) && $_val49 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_self', \TType::MAP, 16);
@@ -2891,7 +2891,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_list_of_i32 !== null) {
       $_val57 = $this->optional_list_of_i32;
-      if (!($_val57 is \HH\KeyedContainer<_, _>) && !(($_val57 is \Iterator<_> || $_val57 is \IteratorAggregate<_>) && $_val57 is \Countable)) {
+      if (!($_val57 is KeyedContainer<_, _>) && !(($_val57 is Iterator<_> || $_val57 is \IteratorAggregate<_>) && $_val57 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_list_of_i32', \TType::LST, 53);
@@ -2908,7 +2908,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_list_of_string !== null) {
       $_val59 = $this->optional_list_of_string;
-      if (!($_val59 is \HH\KeyedContainer<_, _>) && !(($_val59 is \Iterator<_> || $_val59 is \IteratorAggregate<_>) && $_val59 is \Countable)) {
+      if (!($_val59 is KeyedContainer<_, _>) && !(($_val59 is Iterator<_> || $_val59 is \IteratorAggregate<_>) && $_val59 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_list_of_string', \TType::LST, 54);
@@ -2925,7 +2925,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_i32 !== null) {
       $_val61 = $this->optional_map_of_string_to_i32;
-      if (!($_val61 is \HH\KeyedContainer<_, _>) && !(($_val61 is \Iterator<_> || $_val61 is \IteratorAggregate<_>) && $_val61 is \Countable)) {
+      if (!($_val61 is KeyedContainer<_, _>) && !(($_val61 is Iterator<_> || $_val61 is \IteratorAggregate<_>) && $_val61 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_map_of_string_to_i32', \TType::MAP, 55);
@@ -2943,7 +2943,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_A !== null) {
       $_val64 = $this->optional_map_of_string_to_A;
-      if (!($_val64 is \HH\KeyedContainer<_, _>) && !(($_val64 is \Iterator<_> || $_val64 is \IteratorAggregate<_>) && $_val64 is \Countable)) {
+      if (!($_val64 is KeyedContainer<_, _>) && !(($_val64 is Iterator<_> || $_val64 is \IteratorAggregate<_>) && $_val64 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_map_of_string_to_A', \TType::MAP, 56);
@@ -2961,7 +2961,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_list_of_i32 !== null) {
       $_val67 = $this->optional_map_of_string_to_list_of_i32;
-      if (!($_val67 is \HH\KeyedContainer<_, _>) && !(($_val67 is \Iterator<_> || $_val67 is \IteratorAggregate<_>) && $_val67 is \Countable)) {
+      if (!($_val67 is KeyedContainer<_, _>) && !(($_val67 is Iterator<_> || $_val67 is \IteratorAggregate<_>) && $_val67 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_map_of_string_to_list_of_i32', \TType::MAP, 57);
@@ -2987,7 +2987,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_list_of_A !== null) {
       $_val71 = $this->optional_map_of_string_to_list_of_A;
-      if (!($_val71 is \HH\KeyedContainer<_, _>) && !(($_val71 is \Iterator<_> || $_val71 is \IteratorAggregate<_>) && $_val71 is \Countable)) {
+      if (!($_val71 is KeyedContainer<_, _>) && !(($_val71 is Iterator<_> || $_val71 is \IteratorAggregate<_>) && $_val71 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_map_of_string_to_list_of_A', \TType::MAP, 58);
@@ -3013,7 +3013,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_set_of_i32 !== null) {
       $_val75 = $this->optional_map_of_string_to_set_of_i32;
-      if (!($_val75 is \HH\KeyedContainer<_, _>) && !(($_val75 is \Iterator<_> || $_val75 is \IteratorAggregate<_>) && $_val75 is \Countable)) {
+      if (!($_val75 is KeyedContainer<_, _>) && !(($_val75 is Iterator<_> || $_val75 is \IteratorAggregate<_>) && $_val75 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('optional_map_of_string_to_set_of_i32', \TType::MAP, 59);
@@ -3101,7 +3101,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_i32_to_string_with_default_value !== null) {
       $_val88 = $this->map_of_i32_to_string_with_default_value;
-      if (!($_val88 is \HH\KeyedContainer<_, _>) && !(($_val88 is \Iterator<_> || $_val88 is \IteratorAggregate<_>) && $_val88 is \Countable)) {
+      if (!($_val88 is KeyedContainer<_, _>) && !(($_val88 is Iterator<_> || $_val88 is \IteratorAggregate<_>) && $_val88 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_i32_to_string_with_default_value', \TType::MAP, 86);
@@ -3119,7 +3119,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->list_of_string_with_default_value !== null) {
       $_val91 = $this->list_of_string_with_default_value;
-      if (!($_val91 is \HH\KeyedContainer<_, _>) && !(($_val91 is \Iterator<_> || $_val91 is \IteratorAggregate<_>) && $_val91 is \Countable)) {
+      if (!($_val91 is KeyedContainer<_, _>) && !(($_val91 is Iterator<_> || $_val91 is \IteratorAggregate<_>) && $_val91 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('list_of_string_with_default_value', \TType::LST, 87);
@@ -3136,7 +3136,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($this->map_of_string_to_list_of_i32_with_default_value !== null) {
       $_val93 = $this->map_of_string_to_list_of_i32_with_default_value;
-      if (!($_val93 is \HH\KeyedContainer<_, _>) && !(($_val93 is \Iterator<_> || $_val93 is \IteratorAggregate<_>) && $_val93 is \Countable)) {
+      if (!($_val93 is KeyedContainer<_, _>) && !(($_val93 is Iterator<_> || $_val93 is \IteratorAggregate<_>) && $_val93 is \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('map_of_string_to_list_of_i32_with_default_value', \TType::MAP, 88);

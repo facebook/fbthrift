@@ -2623,7 +2623,7 @@ void t_hack_generator::_generate_php_struct_definition(
     } else {
       // Generate constructor from KeyedContainer
       out << (soft_attribute_ ? "<<__Soft>> " : "@")
-          << "\\HH\\KeyedContainer<string, mixed> $vals = " << array_keyword_
+          << "KeyedContainer<string, mixed> $vals = " << array_keyword_
           << "[]) {\n";
     }
   } else {
@@ -3007,8 +3007,8 @@ void t_hack_generator::generate_php_struct_writer(
           if (arrays_) {
             out << "!($" << val << " is keyset<_>)";
           } else if (arraysets_) {
-            out << "!($" << val << " is \\HH\\KeyedContainer<_, _>) && "
-                << "!(($" << val << " is \\Iterator<_> || "
+            out << "!($" << val << " is KeyedContainer<_, _>) && "
+                << "!(($" << val << " is Iterator<_> || "
                 << "$" << val << " is \\IteratorAggregate<_>) "
                 << "&& $" << val << " is \\Countable)";
           } else {
@@ -3026,8 +3026,8 @@ void t_hack_generator::generate_php_struct_writer(
             out << "!($" << val << " is Set<_>)";
           }
         } else if (type->is_container()) {
-          out << "!($" << val << " is \\HH\\KeyedContainer<_, _>) && "
-              << "!(($" << val << " is \\Iterator<_> || "
+          out << "!($" << val << " is KeyedContainer<_, _>) && "
+              << "!(($" << val << " is Iterator<_> || "
               << "$" << val << " is \\IteratorAggregate<_>) "
               << "&& $" << val << " is \\Countable)";
         } else {
@@ -3771,7 +3771,7 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
     if (strict_types_) {
       return type_to_typehint(ttype, nullable);
     } else {
-      return "\\HH\\KeyedContainer<int, " +
+      return "KeyedContainer<int, " +
           type_to_param_typehint(((t_list*)ttype)->get_elem_type()) + ">";
     }
   } else if (ttype->is_map()) {
@@ -3779,7 +3779,7 @@ string t_hack_generator::type_to_param_typehint(t_type* ttype, bool nullable) {
       return type_to_typehint(ttype, nullable);
     } else {
       auto key_type = ((t_map*)ttype)->get_key_type();
-      return "\\HH\\KeyedContainer<" +
+      return "KeyedContainer<" +
           (!is_type_arraykey(key_type) ? "arraykey"
                                        : type_to_param_typehint(key_type)) +
           ", " + type_to_param_typehint(((t_map*)ttype)->get_val_type()) + ">";
@@ -3882,7 +3882,7 @@ void t_hack_generator::generate_service_rest(t_service* tservice, bool mangle) {
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     indent(f_service_) << "public function " << (*f_iter)->get_name()
-                       << "(\\HH\\KeyedContainer<string, mixed> $request): "
+                       << "(KeyedContainer<string, mixed> $request): "
                        << type_to_typehint((*f_iter)->get_returntype())
                        << " {\n";
     indent_up();
