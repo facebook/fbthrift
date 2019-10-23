@@ -57,6 +57,10 @@ class FutureCallback : public apache::thrift::FutureCallbackBase<Result> {
       this->promise_.setValue(std::move(result));
     }
   }
+
+  bool isInlineSafe() const override {
+    return true;
+  }
 };
 
 template <>
@@ -96,6 +100,10 @@ class FutureCallback<folly::Unit>
     } else {
       promise_.setValue();
     }
+  }
+
+  bool isInlineSafe() const override {
+    return true;
   }
 };
 
