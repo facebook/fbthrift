@@ -34,6 +34,9 @@ exception SecondEx {
 }
 
 service StreamService {
+  // Echo input value
+  i32 echo(1: i32 value);
+
   // Generate numbers between `from` to `to`.
   stream<i32> range(1: i32 from, 2: i32 to);
   // ... with a sleep in between iterations
@@ -73,13 +76,6 @@ service StreamService {
       throws (1: SecondEx e) stream throws (1: FirstEx e);
 
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
-}
-
-service StreamServiceBuffered {
-  // Generate numbers between `from` to `to`.
-  stream<i32> range(1: i32 from, 2: i32 to);
-  // ... with a sleep in between iterations
-  stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
 }
 
 # OldVersion and NewVersion services will be used to test the behavior

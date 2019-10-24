@@ -19,6 +19,9 @@ namespace cpp2 testutil.testservice
 include "thrift/lib/cpp2/transport/rsocket/test/util/ThriftService.thrift"
 
 service StreamServiceBuffered {
+  // Echo input value
+  i32 echo(1: i32 value);
+
   // Generate numbers between `from` to `to`.
   stream<i32> range(1: i32 from, 2: i32 to);
   // ... with a sleep in between iterations

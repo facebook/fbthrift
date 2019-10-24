@@ -142,6 +142,8 @@ TEST_P(StreamingTest, ClientStreamBridge) {
         std::shared_ptr<apache::thrift::RequestChannel>(
             channel, [client = std::move(client)](auto*) {}));
 
+    EXPECT_EQ(42, bufferedClient->sync_echo(42));
+
     {
       auto bufferedStream = bufferedClient->sync_range(0, 10);
 

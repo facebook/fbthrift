@@ -28,6 +28,8 @@ class TestServiceMock : public StreamServiceSvIf {
  public:
   TestServiceMock() {}
 
+  int32_t echo(int32_t value) override;
+
   apache::thrift::Stream<int32_t> range(int32_t from, int32_t to) override;
   apache::thrift::Stream<int32_t>
   slowRange(int32_t from, int32_t to, int32_t millis) override;

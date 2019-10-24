@@ -60,6 +60,10 @@ class LeakDetector {
   }
 };
 
+int32_t TestServiceMock::echo(int32_t value) {
+  return value;
+}
+
 Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
   return createStreamGenerator([from, to]() mutable -> folly::Optional<int> {
     if (from >= to) {
