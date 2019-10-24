@@ -26,7 +26,7 @@ pub mod types {
         pub fieldC: Vec<i32>,
         pub fieldD: Vec<i32>,
         pub fieldE: Vec<i32>,
-        pub fieldF: std::collections::HashSet<i32>,
+        pub fieldF: std::collections::BTreeSet<i32>,
         pub fieldG: std::collections::BTreeMap<i32, String>,
         pub fieldH: std::collections::BTreeMap<i32, String>include::types::SomeMap,
     }

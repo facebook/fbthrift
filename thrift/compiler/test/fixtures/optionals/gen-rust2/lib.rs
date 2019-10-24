@@ -38,7 +38,7 @@ pub mod types {
         pub age: Option<i16>,
         pub address: Option<String>,
         pub favoriteColor: Option<module::types::Color>,
-        pub friends: Option<std::collections::HashSet<i64module::types::PersonID>>,
+        pub friends: Option<std::collections::BTreeSet<i64module::types::PersonID>>,
         pub bestFriend: Option<i64module::types::PersonID>,
         pub petNames: Option<std::collections::BTreeMap<module::types::Animal, String>>,
         pub afraidOfAnimal: Option<module::types::Animal>,

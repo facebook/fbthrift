@@ -99,9 +99,9 @@ pub mod consts {
 
     const empty_string_list: Vec<String> = btreemap!();
 
-    const empty_int_set: std::collections::HashSet<i32> = btreemap!();
+    const empty_int_set: std::collections::BTreeSet<i32> = btreemap!();
 
-    const empty_string_set: std::collections::HashSet<String> = btreemap!();
+    const empty_string_set: std::collections::BTreeSet<String> = btreemap!();
 
     const empty_int_int_map: std::collections::BTreeMap<i32, i32> = btreemap!();
 

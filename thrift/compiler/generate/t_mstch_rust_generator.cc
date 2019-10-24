@@ -462,10 +462,18 @@ class mstch_rust_type : public mstch_type {
         this,
         {
             {"type:package", &mstch_rust_type::rust_package},
+            {"type:rust", &mstch_rust_type::rust_type},
         });
   }
   mstch::node rust_package() {
     return get_import_name(type_->get_program(), cratemap_);
+  }
+  mstch::node rust_type() {
+    auto rust_type = type_->annotations_.find("rust.type");
+    if (rust_type != type_->annotations_.end()) {
+      return rust_type->second;
+    }
+    return nullptr;
   }
 
  private:

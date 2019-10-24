@@ -58,10 +58,10 @@ pub mod types {
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithContainers {
         pub list_ref: Vec<i32>,
-        pub set_ref: std::collections::HashSet<i32>,
+        pub set_ref: std::collections::BTreeSet<i32>,
         pub map_ref: std::collections::BTreeMap<i32, i32>,
         pub list_ref_unique: Vec<i32>,
-        pub set_ref_shared: std::collections::HashSet<i32>,
+        pub set_ref_shared: std::collections::BTreeSet<i32>,
         pub list_ref_shared_const: Vec<i32>,
     }
 

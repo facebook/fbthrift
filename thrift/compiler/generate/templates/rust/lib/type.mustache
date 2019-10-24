@@ -37,12 +37,18 @@
     }}compile_error!("Thrift streaming in Rust is not implemented"){{!
 }}{{/type:stream?}}{{!
 }}{{#type:set?}}{{!
-    }}std::collections::HashSet<{{!
+    }}std::collections::{{!
+    }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
+    }}{{^type:rust}}BTreeSet{{/type:rust}}{{!
+    }}<{{!
         }}{{#type:setElemType}}{{>lib/type}}{{/type:setElemType}}{{!
     }}>{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
-    }}std::collections::BTreeMap<{{!
+    }}std::collections::{{!
+    }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
+    }}{{^type:rust}}BTreeMap{{/type:rust}}{{!
+    }}<{{!
         }}{{#type:keyType}}{{>lib/type}}{{/type:keyType}}, {{!
         }}{{#type:valueType}}{{>lib/type}}{{/type:valueType}}{{!
     }}>{{!

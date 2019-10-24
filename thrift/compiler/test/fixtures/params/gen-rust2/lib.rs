@@ -571,7 +571,7 @@ pub mod client {
 
         pub fn mapSet(
             &self,
-            arg_foo: &std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> impl Future<Item = (), Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -673,7 +673,7 @@ pub mod client {
 
         pub fn listSet(
             &self,
-            arg_foo: &Vec<std::collections::HashSet<i32>>,
+            arg_foo: &Vec<std::collections::BTreeSet<i32>>,
         ) -> impl Future<Item = (), Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -724,7 +724,7 @@ pub mod client {
 
         pub fn turtles(
             &self,
-            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> impl Future<Item = (), Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -781,7 +781,7 @@ pub mod client {
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
         fn mapSet(
             &self,
-            arg_foo: &std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
         fn listMap(
             &self,
@@ -789,11 +789,11 @@ pub mod client {
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
         fn listSet(
             &self,
-            arg_foo: &Vec<std::collections::HashSet<i32>>,
+            arg_foo: &Vec<std::collections::BTreeSet<i32>>,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
         fn turtles(
             &self,
-            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
     }
 
@@ -814,7 +814,7 @@ pub mod client {
         }
         fn mapSet(
             &self,
-            arg_foo: &std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static> {
             Box::new(Self::mapSet(self, arg_foo))
         }
@@ -826,13 +826,13 @@ pub mod client {
         }
         fn listSet(
             &self,
-            arg_foo: &Vec<std::collections::HashSet<i32>>,
+            arg_foo: &Vec<std::collections::BTreeSet<i32>>,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static> {
             Box::new(Self::listSet(self, arg_foo))
         }
         fn turtles(
             &self,
-            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static> {
             Box::new(Self::turtles(self, arg_foo))
         }
@@ -933,7 +933,7 @@ pub mod client_async {
         ) -> Result<(), failure::Error>;
         async fn mapSet(
             &self,
-            arg_foo: &std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> Result<(), failure::Error>;
         async fn listMap(
             &self,
@@ -941,11 +941,11 @@ pub mod client_async {
         ) -> Result<(), failure::Error>;
         async fn listSet(
             &self,
-            arg_foo: &Vec<std::collections::HashSet<i32>>,
+            arg_foo: &Vec<std::collections::BTreeSet<i32>>,
         ) -> Result<(), failure::Error>;
         async fn turtles(
             &self,
-            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> Result<(), failure::Error>;
     }
 
@@ -1004,7 +1004,7 @@ pub mod client_async {
             }(de)
         }        async fn mapSet(
             &self,
-            arg_foo: &std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> Result<(), failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1090,7 +1090,7 @@ pub mod client_async {
             }(de)
         }        async fn listSet(
             &self,
-            arg_foo: &Vec<std::collections::HashSet<i32>>,
+            arg_foo: &Vec<std::collections::BTreeSet<i32>>,
         ) -> Result<(), failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1133,7 +1133,7 @@ pub mod client_async {
             }(de)
         }        async fn turtles(
             &self,
-            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> Result<(), failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1254,7 +1254,7 @@ pub mod server {
         }
         async fn mapSet(
             &self,
-            _foo: std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            _foo: std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> Result<(), crate::services::nested_containers::MapSetExn> {
             Err(crate::services::nested_containers::MapSetExn::ApplicationException(
                 ApplicationException::unimplemented_method(
@@ -1276,7 +1276,7 @@ pub mod server {
         }
         async fn listSet(
             &self,
-            _foo: Vec<std::collections::HashSet<i32>>,
+            _foo: Vec<std::collections::BTreeSet<i32>>,
         ) -> Result<(), crate::services::nested_containers::ListSetExn> {
             Err(crate::services::nested_containers::ListSetExn::ApplicationException(
                 ApplicationException::unimplemented_method(
@@ -1287,7 +1287,7 @@ pub mod server {
         }
         async fn turtles(
             &self,
-            _foo: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            _foo: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> Result<(), crate::services::nested_containers::TurtlesExn> {
             Err(crate::services::nested_containers::TurtlesExn::ApplicationException(
                 ApplicationException::unimplemented_method(
@@ -1790,10 +1790,10 @@ pub mod mock {
         }
         fn mapSet(
             &self,
-            arg_foo: &std::collections::BTreeMap<i32, std::collections::HashSet<i32>>,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
             let mut closure = self.mapSet.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::HashSet<i32>>) -> _ = &mut **closure;
+            let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
             let result = closure(arg_foo.clone());
             let fallible = result.map_err(|error| failure::Error::from(
                 crate::errors::ErrorKind::NestedContainersMapSetError(error),
@@ -1814,10 +1814,10 @@ pub mod mock {
         }
         fn listSet(
             &self,
-            arg_foo: &Vec<std::collections::HashSet<i32>>,
+            arg_foo: &Vec<std::collections::BTreeSet<i32>>,
         ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
             let mut closure = self.listSet.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(Vec<std::collections::HashSet<i32>>) -> _ = &mut **closure;
+            let closure: &mut dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
             let result = closure(arg_foo.clone());
             let fallible = result.map_err(|error| failure::Error::from(
                 crate::errors::ErrorKind::NestedContainersListSetError(error),
@@ -1826,10 +1826,10 @@ pub mod mock {
         }
         fn turtles(
             &self,
-            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>,
+            arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
         ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
             let mut closure = self.turtles.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>) -> _ = &mut **closure;
+            let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> _ = &mut **closure;
             let result = closure(arg_foo.clone());
             let fallible = result.map_err(|error| failure::Error::from(
                 crate::errors::ErrorKind::NestedContainersTurtlesError(error),
@@ -1882,7 +1882,7 @@ pub mod mock {
 
         pub struct mapSet<'mock> {
             pub(super) closure: Mutex<Box<
-                dyn FnMut(std::collections::BTreeMap<i32, std::collections::HashSet<i32>>) -> Result<
+                dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> Result<
                     (),
                     crate::services::nested_containers::MapSetExn,
                 > + Send + Sync + 'mock,
@@ -1892,7 +1892,7 @@ pub mod mock {
         impl<'mock> mapSet<'mock> {
             pub fn unimplemented() -> Self {
                 mapSet {
-                    closure: Mutex::new(Box::new(|_: std::collections::BTreeMap<i32, std::collections::HashSet<i32>>| panic!(
+                    closure: Mutex::new(Box::new(|_: std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>| panic!(
                         "{}::{} is not mocked",
                         "NestedContainers",
                         "mapSet",
@@ -1901,10 +1901,10 @@ pub mod mock {
             }
 
             pub fn ret(&self, value: ()) {
-                self.mock(move |_: std::collections::BTreeMap<i32, std::collections::HashSet<i32>>| value.clone());
+                self.mock(move |_: std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(std::collections::BTreeMap<i32, std::collections::HashSet<i32>>) -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> () + Send + Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
                 *closure = Box::new(move |foo| Ok(mock(foo)));
             }
@@ -1915,7 +1915,7 @@ pub mod mock {
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: std::collections::BTreeMap<i32, std::collections::HashSet<i32>>| Err(exception.clone().into()));
+                *closure = Box::new(move |_: std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>| Err(exception.clone().into()));
             }
         }
 
@@ -1960,7 +1960,7 @@ pub mod mock {
 
         pub struct listSet<'mock> {
             pub(super) closure: Mutex<Box<
-                dyn FnMut(Vec<std::collections::HashSet<i32>>) -> Result<
+                dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> Result<
                     (),
                     crate::services::nested_containers::ListSetExn,
                 > + Send + Sync + 'mock,
@@ -1970,7 +1970,7 @@ pub mod mock {
         impl<'mock> listSet<'mock> {
             pub fn unimplemented() -> Self {
                 listSet {
-                    closure: Mutex::new(Box::new(|_: Vec<std::collections::HashSet<i32>>| panic!(
+                    closure: Mutex::new(Box::new(|_: Vec<std::collections::BTreeSet<i32>>| panic!(
                         "{}::{} is not mocked",
                         "NestedContainers",
                         "listSet",
@@ -1979,10 +1979,10 @@ pub mod mock {
             }
 
             pub fn ret(&self, value: ()) {
-                self.mock(move |_: Vec<std::collections::HashSet<i32>>| value.clone());
+                self.mock(move |_: Vec<std::collections::BTreeSet<i32>>| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(Vec<std::collections::HashSet<i32>>) -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl FnMut(Vec<std::collections::BTreeSet<i32>>) -> () + Send + Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
                 *closure = Box::new(move |foo| Ok(mock(foo)));
             }
@@ -1993,13 +1993,13 @@ pub mod mock {
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: Vec<std::collections::HashSet<i32>>| Err(exception.clone().into()));
+                *closure = Box::new(move |_: Vec<std::collections::BTreeSet<i32>>| Err(exception.clone().into()));
             }
         }
 
         pub struct turtles<'mock> {
             pub(super) closure: Mutex<Box<
-                dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>) -> Result<
+                dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> Result<
                     (),
                     crate::services::nested_containers::TurtlesExn,
                 > + Send + Sync + 'mock,
@@ -2009,7 +2009,7 @@ pub mod mock {
         impl<'mock> turtles<'mock> {
             pub fn unimplemented() -> Self {
                 turtles {
-                    closure: Mutex::new(Box::new(|_: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>| panic!(
+                    closure: Mutex::new(Box::new(|_: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>| panic!(
                         "{}::{} is not mocked",
                         "NestedContainers",
                         "turtles",
@@ -2018,10 +2018,10 @@ pub mod mock {
             }
 
             pub fn ret(&self, value: ()) {
-                self.mock(move |_: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>| value.clone());
+                self.mock(move |_: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>) -> () + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> () + Send + Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
                 *closure = Box::new(move |foo| Ok(mock(foo)));
             }
@@ -2032,7 +2032,7 @@ pub mod mock {
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::HashSet<i32>>>>>| Err(exception.clone().into()));
+                *closure = Box::new(move |_: Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>| Err(exception.clone().into()));
             }
         }
     }
