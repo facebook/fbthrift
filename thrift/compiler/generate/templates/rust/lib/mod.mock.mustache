@@ -1,0 +1,159 @@
+{{!
+
+  Copyright 2019 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+
+    use std::marker::PhantomData;{{!
+}}{{#program:services}}
+
+    pub struct {{service:name}}<'mock> {{>lib/block}}{{!
+        }}{{#service:functions}}
+        pub {{function:name}}: {{service:snake}}::{{function:name}}<'mock>,{{!
+        }}{{/service:functions}}
+        _marker: PhantomData<&'mock ()>,
+    }
+
+    impl dyn super::client::{{service:name}} {
+        pub fn mock<'mock>() -> {{service:name}}<'mock> {
+            {{service:name}} {{>lib/block}}{{!
+                }}{{#service:functions}}
+                {{function:name}}: {{!
+                    }}{{service:snake}}::{{function:name}}::unimplemented(),{{!
+                }}{{/service:functions}}
+                _marker: PhantomData,
+            }
+        }
+    }
+
+    impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
+        }}{{#service:functions}}
+        fn {{function:name}}(
+            &self,{{!
+            }}{{#function:args}}
+            arg_{{field:name}}: &{{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            }}{{/function:args}}
+        ) -> Box<dyn futures::Future<Item = {{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}Error = failure::Error{{!
+        }}> + Send> {
+            let mut closure = self.{{function:name}}.closure.lock().unwrap();
+            let closure: &mut dyn FnMut({{!
+                }}{{#function:args}}{{!
+                }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                }}{{^last?}}, {{/last?}}{{!
+                }}{{/function:args}}{{!
+            }}) -> _ = &mut **closure;
+            let result = closure({{!
+                }}{{#function:args}}{{!
+                }}arg_{{field:name}}.clone(){{!
+                }}{{^last?}}, {{/last?}}{{!
+                }}{{/function:args}}{{!
+            }});
+            let fallible = result.map_err(|error| failure::Error::from(
+                crate::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(error),
+            ));
+            Box::new(futures::future::result(fallible))
+        }{{!
+        }}{{/service:functions}}
+    }
+
+    mod {{service:snake}} {
+        use std::sync::Mutex;{{!
+
+        }}{{#service:functions}}
+
+        pub struct {{function:name}}<'mock> {
+            pub(super) closure: Mutex<Box<
+                dyn FnMut({{!
+                    }}{{#function:args}}{{!
+                    }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                    }}{{^last?}}, {{/last?}}{{!
+                    }}{{/function:args}}{{!
+                }}) -> Result<
+                    {{#function:returnType}}{{>lib/type}}{{/function:returnType}},
+                    crate::services::{{service:snake}}::{{function:upcamel}}Exn,
+                > + Send + Sync + 'mock,
+            >>,
+        }
+
+        impl<'mock> {{function:name}}<'mock> {
+            pub fn unimplemented() -> Self {
+                {{function:name}} {
+                    closure: Mutex::new(Box::new(|{{!
+                        }}{{#function:args}}{{!
+                        }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                        }}{{^last?}}, {{/last?}}{{!
+                        }}{{/function:args}}{{!
+                    }}| panic!(
+                        "{}::{} is not mocked",
+                        "{{service:name}}",
+                        "{{function:name}}",
+                    ))),
+                }
+            }
+
+            pub fn ret({{!
+                }}&self, {{!
+                }}value: {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+            }}) {
+                self.mock(move |{{!
+                    }}{{#function:args}}{{!
+                    }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                    }}{{^last?}}, {{/last?}}{{!
+                    }}{{/function:args}}{{!
+                }}| value.clone());
+            }
+
+            pub fn mock(&self, mut mock: impl FnMut({{!
+                }}{{#function:args}}{{!
+                }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                }}{{^last?}}, {{/last?}}{{!
+                }}{{/function:args}}{{!
+            }}) -> {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                }} + Send + Sync + 'mock) {{!
+            }}{
+                let mut closure = self.closure.lock().unwrap();
+                *closure = Box::new(move |{{!
+                    }}{{#function:args}}{{!
+                    }}{{field:ident}}{{!
+                    }}{{^last?}}, {{/last?}}{{!
+                    }}{{/function:args}}{{!
+                }}| Ok(mock({{!
+                    }}{{#function:args}}{{!
+                    }}{{field:ident}}{{!
+                    }}{{^last?}}, {{/last?}}{{!
+                    }}{{/function:args}}{{!
+                }})));
+            }
+
+            pub fn throw<E>(&self, exception: E)
+            where
+                E: Into<crate::services::{{service:snake}}::{{function:upcamel}}Exn>,
+                E: Clone + Send + Sync + 'mock,
+            {
+                let mut closure = self.closure.lock().unwrap();
+                *closure = Box::new(move |{{!
+                    }}{{#function:args}}{{!
+                    }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                    }}{{^last?}}, {{/last?}}{{!
+                    }}{{/function:args}}{{!
+                }}| Err(exception.clone().into()));
+            }
+        }{{!
+        }}{{/service:functions}}
+    }{{!
+}}{{/program:services}}
+{{!newline}}

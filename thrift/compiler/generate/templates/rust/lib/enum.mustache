@@ -1,0 +1,104 @@
+{{!
+
+  Copyright 2019 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+
+    #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+    pub struct {{enum:name}}(pub i32);
+
+    impl {{enum:name}} {{>lib/block}}{{!
+        }}{{#enum:values}}
+        pub const {{enumValue:name}}: Self = {{!
+            }}{{enum:name}}({{enumValue:value}}i32);{{!
+        }}{{/enum:values}}
+    }
+
+    impl Default for {{enum:name}} {
+        fn default() -> Self {
+            {{enum:name}}(fbthrift::__UNKNOWN_ID)
+        }
+    }
+
+    impl<'a> From<&'a {{enum:name}}> for i32 {
+        #[inline]
+        fn from(x: &'a {{enum:name}}) -> i32 {
+            x.0
+        }
+    }
+
+    impl From<{{enum:name}}> for i32 {
+        #[inline]
+        fn from(x: {{enum:name}}) -> i32 {
+            x.0
+        }
+    }
+
+    impl From<i32> for {{enum:name}} {
+        #[inline]
+        fn from(x: i32) -> Self {
+            Self(x)
+        }
+    }
+
+    impl std::fmt::Display for {{enum:name}} {
+        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+            let s: &str = match *self {{>lib/block}}{{!
+                }}{{#enum:values}}
+                {{enum:name}}::{{enumValue:name}} => "{{enumValue:name}}",{{!
+                }}{{/enum:values}}
+                {{enum:name}}(x) => return write!(fmt, "{}", x),
+            };
+            write!(fmt, "{}", s)
+        }
+    }
+
+    impl std::fmt::Debug for {{enum:name}} {
+        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+            write!(fmt, "{}::{}", "{{enum:name}}", self)
+        }
+    }
+
+    impl std::str::FromStr for {{enum:name}} {
+        type Err = failure::Error;
+
+        fn from_str(string: &str) -> Result<Self, Self::Err> {
+            match string {{>lib/block}}{{!
+                }}{{#enum:values}}
+                "{{enumValue:name}}" => Ok({{enum:name}}::{{enumValue:name}}),{{!
+                }}{{/enum:values}}
+                _ => failure::bail!("Unable to parse {} as {}", string, "{{enum:name}}"),
+            }
+        }
+    }
+
+    impl GetTType for {{enum:name}} {
+        const TTYPE: TType = TType::I32;
+    }
+
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{enum:name}} {
+        #[inline]
+        fn write(self, p: &mut P) {
+            p.write_i32(self.into())
+        }
+    }
+
+    impl<P: ProtocolReader> Deserialize<P> for {{enum:name}} {
+        #[inline]
+        fn read(p: &mut P) -> failure::Fallible<Self> {
+            Ok({{enum:name}}::from(p.read_i32()?))
+        }
+    }
+{{!newline}}
