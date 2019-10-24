@@ -165,14 +165,14 @@ class AbstractTest():
         self.decode_helper(OneOfEach(aSet=set(), aList=[], aMap={}))
 
     def test_required(self):
-        with self.assertRaises(TProtocol.TProtocolException):
-            aStruct = AStruct(anInteger=1)
-            self.encode_and_decode(aStruct)
+        # "required" fields aren't enforced anymore and should not throw any exceptions
 
-        with self.assertRaises(TProtocol.TProtocolException):
-            aStruct = AStruct(aString="")
-            required = Required(aStruct=aStruct)
-            self.encode_and_decode(required)
+        aStruct = AStruct(anInteger=1)
+        self.encode_and_decode(aStruct)
+
+        aStruct = AStruct(aString="")
+        required = Required(aStruct=aStruct)
+        self.encode_and_decode(required)
 
     def createProto(self, trans):
         if self.PROTO == 0:

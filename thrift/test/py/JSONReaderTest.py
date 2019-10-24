@@ -37,13 +37,10 @@ class TestJSONReader(unittest.TestCase):
         struct.readFromJson('{ "data" : null }')
 
     def testReadNullRequiredList(self):
-        try:
-            struct = StructContainingRequiredList()
-            struct.readFromJson('{ "data" : null }')
-            self.assertFalse(True,
-                    "Should have failed with required field missing")
-        except TProtocolException:
-            pass
+        # "required" fields aren't enforced anymore and should not throw any exceptions
+
+        struct = StructContainingRequiredList()
+        struct.readFromJson('{ "data" : null }')
 
     def testUnrecognizedKwargs(self):
         with self.assertRaises(ValueError) as ex:

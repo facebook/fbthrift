@@ -744,15 +744,6 @@ void t_py_generator::generate_json_reader(ofstream& out, t_struct* tstruct) {
         out, *f_iter, "self.", "", "json_obj['" + (*f_iter)->get_name() + "']");
 
     indent_down();
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
-      indent(out) << "else:" << endl;
-      indent_up();
-      indent(out)
-          << "raise TProtocolException("
-          << "TProtocolException.MISSING_REQUIRED_FIELD, 'Required field "
-          << (*f_iter)->get_name() << " was not found!')" << endl;
-      indent_down();
-    }
   }
   indent_down();
   out << endl;
@@ -1866,7 +1857,6 @@ void t_py_generator::generate_fastproto_read(ofstream& out, t_struct* tstruct) {
               << "[self.__class__, self.thrift_spec, "
               << (tstruct->is_union() ? "True" : "False") << "], "
               << "utf8strings=UTF8STRINGS, protoid=0)" << endl;
-  indent(out) << "self.checkRequired()" << endl;
   indent(out) << "return" << endl;
   indent_down();
 
@@ -1885,7 +1875,6 @@ void t_py_generator::generate_fastproto_read(ofstream& out, t_struct* tstruct) {
               << "[self.__class__, self.thrift_spec, "
               << (tstruct->is_union() ? "True" : "False") << "], "
               << "utf8strings=UTF8STRINGS, protoid=2)" << endl;
-  indent(out) << "self.checkRequired()" << endl;
   indent(out) << "return" << endl;
   indent_down();
 }
@@ -1952,28 +1941,6 @@ void t_py_generator::generate_py_struct_reader(
   indent_down();
 
   indent(out) << "iprot.readStructEnd()" << endl;
-  indent(out) << "self.checkRequired()" << endl << endl;
-  indent_down();
-
-  indent(out) << "def checkRequired(self):" << endl;
-  indent_up();
-  // The code that checks for the require field
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
-      indent(out) << "if self."
-                  << rename_reserved_keywords((*f_iter)->get_name())
-                  << " == None:" << endl;
-      indent_up();
-      indent(out) << "raise TProtocolException("
-                  << "TProtocolException.MISSING_REQUIRED_FIELD"
-                  << ", \"Required field '" << (*f_iter)->get_name()
-                  << "' was not found in serialized data! Struct: "
-                  << tstruct->get_name() << "\")" << endl;
-      indent_down();
-      out << endl;
-    }
-  }
-  indent(out) << "return" << endl;
   indent_down();
 
   out << endl;

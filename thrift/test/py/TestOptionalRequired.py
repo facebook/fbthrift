@@ -48,8 +48,8 @@ class TestOptionalRequired(unittest.TestCase):
         w = Tricky3()
         r = Tricky3()
         w.im_required = None
-        with self.assertRaises(TProtocolException):
-            write_to_read(w, r)
+        write_to_read(w, r)
+        self.assertIsNone(r.im_required)
 
     def testSetDefaultDontSet(self):
         w = Tricky1()
@@ -66,8 +66,8 @@ class TestOptionalRequired(unittest.TestCase):
     def testSetRequiredDontSet(self):
         w = Tricky3()
         r = Tricky3()
-        with self.assertRaises(TProtocolException):
-            write_to_read(w, r)
+        write_to_read(w, r)
+        self.assertIsNone(r.im_required)
 
     def testMixDefaultAndOptional(self):
         w = Tricky1()
