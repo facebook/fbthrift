@@ -389,7 +389,7 @@ TYPED_TEST(RocketNetworkTest, RequestStreamError) {
     auto stream = client.sendRequestStreamSync(
         Payload::makeFromMetadataAndData(kMetadata, kData));
     EXPECT_TRUE(stream.hasException());
-    expectRocketExceptionType(ErrorCode::APPLICATION_ERROR, stream.exception());
+    expectEncodedError(stream.exception());
   });
 }
 

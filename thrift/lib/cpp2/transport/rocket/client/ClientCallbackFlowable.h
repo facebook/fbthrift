@@ -111,15 +111,7 @@ class ClientCallbackFlowable final
       return;
     }
 
-    folly::exception_wrapper hijacked;
-    if (ew.with_exception([&hijacked](rocket::RocketException& rex) {
-          hijacked = folly::exception_wrapper(
-              apache::thrift::detail::EncodedError(rex.moveErrorData()));
-        })) {
-      subscriber_->onError(std::move(hijacked));
-    } else {
-      subscriber_->onError(std::move(ew));
-    }
+    subscriber_->onError(std::move(ew));
   }
 
   void onStreamComplete() override {

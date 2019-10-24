@@ -27,6 +27,7 @@
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 
 namespace apache {
@@ -60,6 +61,12 @@ void expectRocketExceptionType(
   const auto* const rex = dynamic_cast<RocketException*>(ew.get_exception());
   ASSERT_NE(nullptr, rex);
   EXPECT_EQ(expectedCode, rex->getErrorCode());
+}
+
+void expectEncodedError(folly::exception_wrapper ew) {
+  const auto* const rex =
+      dynamic_cast<thrift::detail::EncodedError*>(ew.get_exception());
+  ASSERT_NE(nullptr, rex);
 }
 
 } // namespace test

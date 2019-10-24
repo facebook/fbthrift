@@ -352,6 +352,22 @@ TEST_P(StreamingTest, ClientStreamBridge) {
           .join();
       EXPECT_EQ(10, expected);
     }
+
+    // throw
+    {
+      bool thrown = false;
+      auto stream = bufferedClient->sync_streamThrows(1);
+      std::move(stream).subscribeInline([&thrown](auto&& next) {
+        thrown = true;
+        EXPECT_TRUE(next.hasException());
+        EXPECT_TRUE(next.template hasException<FirstEx>());
+        EXPECT_TRUE(next.exception().with_exception([](FirstEx& ex) {
+          EXPECT_EQ(1, ex.get_errCode());
+          EXPECT_STREQ("FirstEx", ex.get_errMsg().c_str());
+        }));
+      });
+      EXPECT_TRUE(thrown);
+    }
   });
 }
 

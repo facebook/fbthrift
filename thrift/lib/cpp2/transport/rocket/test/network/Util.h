@@ -44,6 +44,8 @@ void expectRocketExceptionType(
     ErrorCode expectedCode,
     folly::exception_wrapper ew);
 
+void expectEncodedError(folly::exception_wrapper ew);
+
 } // namespace test
 } // namespace rocket
 } // namespace thrift
