@@ -15,6 +15,7 @@
  */
 
 #include <cctype>
+#include <string>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
@@ -183,6 +184,22 @@ std::string quote(const std::string& data) {
 }
 } // namespace
 
+// key: package name according to Thrift
+// value: rust_crate_name to use in generated code
+using cratemap = std::map<std::string, std::string>;
+
+std::string get_import_name(
+    const t_program* program,
+    const cratemap& cratemap) {
+  auto program_name = program->get_name();
+  auto crate_name = cratemap.find(program_name);
+  if (crate_name != cratemap.end()) {
+    return mangle(crate_name->second);
+  } else {
+    return mangle(program_name);
+  }
+}
+
 class t_mstch_rust_generator : public t_mstch_generator {
  public:
   t_mstch_rust_generator(
@@ -191,6 +208,11 @@ class t_mstch_rust_generator : public t_mstch_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
       : t_mstch_generator(program, std::move(context), "rust", parsed_options) {
+    auto cratemap = parsed_options.find("cratemap");
+    if (cratemap != parsed_options.end()) {
+      load_crate_map(cratemap->second);
+    }
+
     out_dir_base_ = "gen-rust2";
   }
 
@@ -198,6 +220,8 @@ class t_mstch_rust_generator : public t_mstch_generator {
 
  private:
   void set_mstch_generators();
+  void load_crate_map(const std::string& path);
+  cratemap cratemap_;
 };
 
 class mstch_rust_program : public mstch_program {
@@ -230,8 +254,9 @@ class mstch_rust_struct : public mstch_struct {
       const t_struct* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_struct(strct, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      const cratemap& cratemap)
+      : mstch_struct(strct, generators, cache, pos), cratemap_(cratemap) {
     register_methods(
         this,
         {
@@ -242,7 +267,7 @@ class mstch_rust_struct : public mstch_struct {
         });
   }
   mstch::node rust_package() {
-    return mangle(strct_->get_program()->get_name());
+    return get_import_name(strct_->get_program(), cratemap_);
   }
   mstch::node rust_derive_eq() {
     // TODO
@@ -256,6 +281,9 @@ class mstch_rust_struct : public mstch_struct {
     // TODO
     return false;
   }
+
+ private:
+  const cratemap& cratemap_;
 };
 
 class mstch_rust_service : public mstch_service {
@@ -334,8 +362,9 @@ class mstch_rust_enum : public mstch_enum {
       const t_enum* enm,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_enum(enm, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      const cratemap& cratemap)
+      : mstch_enum(enm, generators, cache, pos), cratemap_(cratemap) {
     register_methods(
         this,
         {
@@ -343,8 +372,11 @@ class mstch_rust_enum : public mstch_enum {
         });
   }
   mstch::node rust_package() {
-    return mangle(enm_->get_program()->get_name());
+    return get_import_name(enm_->get_program(), cratemap_);
   }
+
+ private:
+  const cratemap& cratemap_;
 };
 
 class mstch_rust_const : public mstch_const {
@@ -423,8 +455,9 @@ class mstch_rust_type : public mstch_type {
       const t_type* type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_type(type, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      const cratemap& cratemap)
+      : mstch_type(type, generators, cache, pos), cratemap_(cratemap) {
     register_methods(
         this,
         {
@@ -432,8 +465,11 @@ class mstch_rust_type : public mstch_type {
         });
   }
   mstch::node rust_package() {
-    return mangle(type_->get_program()->get_name());
+    return get_import_name(type_->get_program(), cratemap_);
   }
+
+ private:
+  const cratemap& cratemap_;
 };
 
 class program_rust_generator : public program_generator {
@@ -453,7 +489,8 @@ class program_rust_generator : public program_generator {
 
 class struct_rust_generator : public struct_generator {
  public:
-  explicit struct_rust_generator() = default;
+  explicit struct_rust_generator(const cratemap& cratemap)
+      : cratemap_(cratemap) {}
   ~struct_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_struct* strct,
@@ -461,8 +498,12 @@ class struct_rust_generator : public struct_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_struct>(strct, generators, cache, pos);
+    return std::make_shared<mstch_rust_struct>(
+        strct, generators, cache, pos, cratemap_);
   }
+
+ private:
+  const cratemap& cratemap_;
 };
 
 class service_rust_generator : public service_generator {
@@ -512,7 +553,8 @@ class field_rust_generator : public field_generator {
 
 class enum_rust_generator : public enum_generator {
  public:
-  explicit enum_rust_generator() = default;
+  explicit enum_rust_generator(const cratemap& cratemap)
+      : cratemap_(cratemap) {}
   ~enum_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_enum* enm,
@@ -520,13 +562,18 @@ class enum_rust_generator : public enum_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_enum>(enm, generators, cache, pos);
+    return std::make_shared<mstch_rust_enum>(
+        enm, generators, cache, pos, cratemap_);
   }
+
+ private:
+  const cratemap& cratemap_;
 };
 
 class type_rust_generator : public type_generator {
  public:
-  type_rust_generator() = default;
+  explicit type_rust_generator(const cratemap& cratemap)
+      : cratemap_(cratemap) {}
   ~type_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_type* type,
@@ -534,8 +581,12 @@ class type_rust_generator : public type_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
-    return std::make_shared<mstch_rust_type>(type, generators, cache, pos);
+    return std::make_shared<mstch_rust_type>(
+        type, generators, cache, pos, cratemap_);
   }
+
+ private:
+  const cratemap& cratemap_;
 };
 
 class const_rust_generator : public const_generator {
@@ -605,17 +656,34 @@ void t_mstch_rust_generator::generate_program() {
 void t_mstch_rust_generator::set_mstch_generators() {
   generators_->set_program_generator(
       std::make_unique<program_rust_generator>());
-  generators_->set_struct_generator(std::make_unique<struct_rust_generator>());
+  generators_->set_struct_generator(
+      std::make_unique<struct_rust_generator>(cratemap_));
   generators_->set_service_generator(
       std::make_unique<service_rust_generator>());
   generators_->set_function_generator(
       std::make_unique<function_rust_generator>());
   generators_->set_field_generator(std::make_unique<field_rust_generator>());
-  generators_->set_enum_generator(std::make_unique<enum_rust_generator>());
-  generators_->set_type_generator(std::make_unique<type_rust_generator>());
+  generators_->set_enum_generator(
+      std::make_unique<enum_rust_generator>(cratemap_));
+  generators_->set_type_generator(
+      std::make_unique<type_rust_generator>(cratemap_));
   generators_->set_const_generator(std::make_unique<const_rust_generator>());
   generators_->set_const_value_generator(
       std::make_unique<const_value_rust_generator>());
+}
+
+void t_mstch_rust_generator::load_crate_map(const std::string& path) {
+  // Each line of the file is:
+  // thrift_path crate_name crate_alias [module]
+  auto in = std::ifstream(path);
+
+  std::string line;
+  while (std::getline(in, line)) {
+    std::istringstream iss(line);
+    std::string thrift_path, crate_name, crate_alias;
+    iss >> thrift_path >> crate_name >> crate_alias;
+    cratemap_[crate_alias] = crate_name;
+  }
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_rust, "Rust", "");
