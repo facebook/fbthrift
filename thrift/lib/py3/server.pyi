@@ -17,12 +17,14 @@ import ipaddress
 import os
 import pathlib
 from enum import Enum
+from types import TracebackType
 from typing import (
     Callable,
     ClassVar,
     Mapping,
     NamedTuple,
     Optional,
+    Type,
     TypeVar,
     Union,
     overload,
@@ -57,6 +59,13 @@ class AsyncProcessorFactory:
 
 class ServiceInterface(AsyncProcessorFactory):
     annotations: ClassVar[Mapping[str, str]] = ...
+    async def __aenter__(self: T) -> T: ...
+    async def __aexit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc: Optional[Exception],
+        tb: Optional[TracebackType],
+    ) -> Optional[bool]: ...
 
 hT = TypeVar("hT", bound=AsyncProcessorFactory)
 

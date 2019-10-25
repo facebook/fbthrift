@@ -77,6 +77,15 @@ cdef class ServiceInterface(AsyncProcessorFactory):
             if hasattr(method, 'pass_context'):
                 setattr(self, f'_pass_context_{name}', True)
 
+    async def __aenter__(self):
+        # Establish async context managers as a way for end users to async initalize
+        # internal structures used by Service Handlers.
+        return self
+
+    async def __aexit__(self, *exc_info):
+        # Same as above, but allow end users to define things to be cleaned up
+        pass
+
 
 def getServiceName(ServiceInterface svc not None):
     processor = deref(svc._cpp_obj).getProcessor()

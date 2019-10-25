@@ -25,6 +25,12 @@ from thrift.py3.server import SocketAddress, getServiceName
 
 
 class Handler(TestingServiceInterface):
+    initalized = False
+
+    async def __aenter__(self) -> "Handler":
+        self.initalized = True
+        return self
+
     @TestingServiceInterface.pass_context_invert
     async def invert(self, ctx: RequestContext, value: bool) -> bool:
         return not value
@@ -54,6 +60,15 @@ class Handler(TestingServiceInterface):
 
 
 class ServicesTests(unittest.TestCase):
+    def test_handler_acontext(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner() -> None:
+            async with Handler() as h:
+                self.assertTrue(h.initalized)
+
+        loop.run_until_complete(inner())
+
     def test_get_service_name(self) -> None:
         h = Handler()
         self.assertEqual(getServiceName(h), "TestingService")
