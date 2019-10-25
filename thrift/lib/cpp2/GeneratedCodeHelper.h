@@ -37,6 +37,7 @@
 #endif
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#include <thrift/lib/cpp2/detail/meta.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
@@ -448,38 +449,6 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew);
 //  AsyncClient helpers
 namespace detail {
 namespace ac {
-
-template <typename IntegerSequence>
-struct foreach_;
-
-template <std::size_t... I>
-struct foreach_<std::index_sequence<I...>> {
-  template <typename F, typename... O>
-  FOLLY_ERASE static void go(F&& f, O&&... o) {
-    using _ = int[];
-    void(_{
-        (void(f(std::integral_constant<std::size_t, I>{}, std::forward<O>(o))),
-         0)...,
-        0});
-  }
-};
-
-template <typename F, typename... O>
-FOLLY_ERASE void foreach(F&& f, O&&... o) {
-  using seq = std::make_index_sequence<sizeof...(O)>;
-  foreach_<seq>::go(std::forward<F>(f), std::forward<O>(o)...);
-}
-
-template <typename F, std::size_t... I>
-FOLLY_ERASE void foreach_index_(F&& f, std::index_sequence<I...>) {
-  foreach_<std::index_sequence<I...>>::go(std::forward<F>(f), I...);
-}
-
-template <std::size_t Size, typename F>
-FOLLY_ERASE void foreach_index(F&& f) {
-  using seq = std::make_index_sequence<Size>;
-  foreach_index_([&](auto _, auto) { f(_); }, seq{});
-}
 
 template <bool HasReturnType, typename PResult>
 folly::exception_wrapper extract_exn(PResult& result) {
@@ -1027,7 +996,7 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
 
         CHECK(!result.getIsSet(0));
 
-        ac::foreach_index<PResult::size::value - 1>([&](auto index) {
+        foreach_index<PResult::size::value - 1>([&](auto index) {
           if (!hijacked && result.getIsSet(index.value + 1)) {
             auto& fdata = result.template get<index.value + 1>();
             hijacked = folly::exception_wrapper(std::move(fdata.ref()));
