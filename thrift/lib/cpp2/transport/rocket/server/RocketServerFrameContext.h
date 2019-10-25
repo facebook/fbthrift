@@ -67,6 +67,9 @@ class RocketServerFrameContext {
   }
 
   void scheduleStreamTimeout(folly::HHWheelTimer::Callback* timeoutCallback);
+  void scheduleSinkTimeout(
+      folly::HHWheelTimer::Callback* timeoutCallback,
+      std::chrono::milliseconds timeout);
   void freeStream();
   void takeOwnership(RocketStreamClientCallback* callback);
   void takeOwnership(RocketSinkClientCallback* callback);

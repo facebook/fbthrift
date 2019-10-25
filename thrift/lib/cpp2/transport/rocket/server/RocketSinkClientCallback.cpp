@@ -93,19 +93,29 @@ void RocketSinkClientCallback::onFinalResponseError(
 }
 
 void RocketSinkClientCallback::onSinkRequestN(uint64_t n) {
+  if (timeout_) {
+    timeout_->incCredits(n);
+  }
   DCHECK(state_ == State::BothOpen);
   context_.sendRequestN(n);
 }
 
 bool RocketSinkClientCallback::onSinkNext(StreamPayload&& payload) {
   if (state_ != State::BothOpen) {
+    cancelTimeout();
     return false;
   }
+
+  if (timeout_) {
+    timeout_->decCredits();
+  }
+
   serverCallback_->onSinkNext(std::move(payload));
   return true;
 }
 
 bool RocketSinkClientCallback::onSinkError(folly::exception_wrapper ew) {
+  cancelTimeout();
   if (state_ != State::BothOpen) {
     return false;
   }
@@ -114,6 +124,7 @@ bool RocketSinkClientCallback::onSinkError(folly::exception_wrapper ew) {
 }
 
 bool RocketSinkClientCallback::onSinkComplete() {
+  cancelTimeout();
   if (state_ != State::BothOpen) {
     return false;
   }
@@ -124,6 +135,49 @@ bool RocketSinkClientCallback::onSinkComplete() {
 
 void RocketSinkClientCallback::onStreamCancel() {
   serverCallback_->onStreamCancel();
+}
+
+void RocketSinkClientCallback::setChunkTimeout(
+    std::chrono::milliseconds timeout) {
+  if (timeout != std::chrono::milliseconds::zero()) {
+    timeout_ = std::make_unique<TimeoutCallback>(*this, timeout);
+  }
+}
+
+void RocketSinkClientCallback::timeoutExpired() noexcept {
+  auto ew = folly::make_exception_wrapper<TApplicationException>(
+      TApplicationException::TApplicationExceptionType::TIMEOUT);
+  onSinkError(ew);
+  onFinalResponseError(std::move(ew));
+}
+
+void RocketSinkClientCallback::scheduleTimeout(
+    std::chrono::milliseconds chunkTimeout) {
+  if (timeout_) {
+    context_.scheduleSinkTimeout(timeout_.get(), chunkTimeout);
+  }
+}
+
+void RocketSinkClientCallback::cancelTimeout() {
+  if (timeout_) {
+    timeout_->cancelTimeout();
+  }
+}
+
+void RocketSinkClientCallback::TimeoutCallback::incCredits(uint64_t n) {
+  if (credits_ == 0) {
+    parent_.scheduleTimeout(chunkTimeout_);
+  }
+  credits_ += n;
+}
+
+void RocketSinkClientCallback::TimeoutCallback::decCredits() {
+  DCHECK(credits_ != 0);
+  if (--credits_ != 0) {
+    parent_.scheduleTimeout(chunkTimeout_);
+  } else {
+    parent_.cancelTimeout();
+  }
 }
 
 } // namespace thrift

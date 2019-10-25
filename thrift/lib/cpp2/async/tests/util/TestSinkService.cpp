@@ -124,5 +124,27 @@ TestSinkService::initialThrow() {
   throw ex;
 }
 
+apache::thrift::SinkConsumer<int32_t, bool>
+TestSinkService::rangeChunkTimeout() {
+  return apache::thrift::SinkConsumer<int32_t, bool>{
+      [](folly::coro::AsyncGenerator<int32_t&&> gen)
+          -> folly::coro::Task<bool> {
+        bool throwed = false;
+        try {
+          int32_t i = 0;
+          while (auto item = co_await gen.next()) {
+            EXPECT_EQ(i++, *item);
+          }
+        } catch (const std::exception& ew) {
+          throwed = true;
+        }
+        EXPECT_TRUE(throwed);
+        co_return true;
+      },
+      10 /* buffer size */
+  }
+      .setChunkTimeout(std::chrono::milliseconds(200));
+}
+
 } // namespace testservice
 } // namespace testutil

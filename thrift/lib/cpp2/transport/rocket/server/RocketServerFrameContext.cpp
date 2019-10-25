@@ -145,6 +145,12 @@ void RocketServerFrameContext::scheduleStreamTimeout(
   connection_->scheduleStreamTimeout(timeoutCallback);
 }
 
+void RocketServerFrameContext::scheduleSinkTimeout(
+    folly::HHWheelTimer::Callback* timeoutCallback,
+    std::chrono::milliseconds timeout) {
+  connection_->scheduleSinkTimeout(timeoutCallback, timeout);
+}
+
 void RocketServerFrameContext::takeOwnership(
     RocketStreamClientCallback* callback) {
   connection_->streams_.emplace(

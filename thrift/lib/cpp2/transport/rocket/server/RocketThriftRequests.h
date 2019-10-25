@@ -34,8 +34,8 @@ namespace apache {
 namespace thrift {
 
 class AsyncProcessor;
-class SinkClientCallback;
-class StreamClientCallback;
+class RocketSinkClientCallback;
+class RocketStreamClientCallback;
 
 namespace rocket {
 
@@ -117,7 +117,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
-      StreamClientCallback* clientCallback,
+      RocketStreamClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
 
   void sendThriftResponse(
@@ -159,7 +159,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
 
  private:
   folly::EventBase& evb_;
-  StreamClientCallback* clientCallback_;
+  RocketStreamClientCallback* clientCallback_;
 
   // Used to keep the context alive, since ThriftRequestCore only stores a
   // reference.
@@ -176,7 +176,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
       std::shared_ptr<Cpp2ConnContext> connContext,
-      SinkClientCallback* clientCallback,
+      RocketSinkClientCallback* clientCallback,
       std::shared_ptr<AsyncProcessor> cpp2Processor);
 
   void sendThriftResponse(
@@ -209,7 +209,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
 
  private:
   folly::EventBase& evb_;
-  SinkClientCallback* clientCallback_;
+  RocketSinkClientCallback* clientCallback_;
 
   // Used to keep the context alive, since ThriftRequestCore only stores a
   // reference.

@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include <folly/experimental/coro/Sleep.h>
 #include <thrift/lib/cpp2/async/tests/util/Util.h>
 
 namespace apache {
@@ -123,6 +124,28 @@ TEST_F(SinkServiceTest, SinkInitialThrows) {
         } catch (const MyException& ex) {
           EXPECT_EQ("reason", ex.reason);
         }
+      });
+}
+
+TEST_F(SinkServiceTest, SinkChunkTimeout) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto sink = co_await client.co_rangeChunkTimeout();
+
+        bool throwed = false;
+        try {
+          co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+            for (int i = 0; i <= 100; i++) {
+              if (i == 20) {
+                co_await folly::coro::sleep(std::chrono::milliseconds{500});
+              }
+              co_yield std::move(i);
+            }
+          }());
+        } catch (const std::exception& ex) {
+          throwed = true;
+        }
+        EXPECT_TRUE(throwed);
       });
 }
 

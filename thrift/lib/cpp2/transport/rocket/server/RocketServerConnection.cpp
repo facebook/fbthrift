@@ -468,6 +468,14 @@ void RocketServerConnection::scheduleStreamTimeout(
   }
 }
 
+void RocketServerConnection::scheduleSinkTimeout(
+    folly::HHWheelTimer::Callback* timeoutCallback,
+    std::chrono::milliseconds timeout) {
+  if (timeout != std::chrono::milliseconds::zero()) {
+    evb_.timer().scheduleTimeout(timeoutCallback, timeout);
+  }
+}
+
 folly::Optional<Payload> RocketServerConnection::bufferOrGetFullPayload(
     PayloadFrame&& payloadFrame) {
   folly::Optional<Payload> fullPayload;

@@ -31,4 +31,6 @@ service TestSinkService {
   sink<i32, bool> unSubscribedSink();
   bool, sink<i32, bool> initialThrow() throws (1: MyException e);
   bool isSinkUnSubscribed();
+
+  sink<i32, bool> rangeChunkTimeout();
 }

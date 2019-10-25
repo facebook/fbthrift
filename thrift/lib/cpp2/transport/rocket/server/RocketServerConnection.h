@@ -209,6 +209,9 @@ class RocketServerConnection
       RocketSinkClientCallback& clientCallback);
 
   void scheduleStreamTimeout(folly::HHWheelTimer::Callback*);
+  void scheduleSinkTimeout(
+      folly::HHWheelTimer::Callback*,
+      std::chrono::milliseconds timeout);
 
   friend class RocketServerFrameContext;
 };

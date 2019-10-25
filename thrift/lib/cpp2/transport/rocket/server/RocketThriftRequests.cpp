@@ -36,6 +36,8 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -132,7 +134,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
-    StreamClientCallback* clientCallback,
+    RocketStreamClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
@@ -275,7 +277,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
-    SinkClientCallback* clientCallback,
+    RocketSinkClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
@@ -305,6 +307,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) noexcept {
   if (sinkConsumer) {
     auto* executor = sinkConsumer.executor.get();
+    clientCallback_->setChunkTimeout(sinkConsumer.chunkTimeout);
     auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
         std::move(sinkConsumer), *getEventBase(), clientCallback_);
     clientCallback_->onFirstResponse(

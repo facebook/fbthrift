@@ -1179,7 +1179,10 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
             .move()));
   };
   return apache::thrift::detail::SinkConsumerImpl{
-      std::move(consumer), sinkConsumer.bufferSize, std::move(executor)};
+      std::move(consumer),
+      sinkConsumer.bufferSize,
+      sinkConsumer.sinkOptions.chunkTimeout,
+      std::move(executor)};
 }
 #endif
 

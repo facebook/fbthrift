@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <chrono>
+
 #include <folly/Portability.h>
 
 #ifdef FOLLY_HAS_COROUTINES
@@ -100,12 +102,25 @@ class ClientSink {
   FinalResponseDeserializer deserializer_;
 };
 
+struct SinkOptions {
+  std::chrono::milliseconds chunkTimeout;
+};
+
 template <typename SinkElement, typename FinalResponse>
 struct SinkConsumer {
   using Consumer = folly::Function<folly::coro::Task<FinalResponse>(
       folly::coro::AsyncGenerator<SinkElement&&>)>;
   Consumer consumer;
   uint64_t bufferSize;
+  SinkOptions sinkOptions{std::chrono::milliseconds(0)};
+  SinkConsumer&& setChunkTimeout(const std::chrono::milliseconds& timeout) && {
+    sinkOptions.chunkTimeout = timeout;
+    return std::move(*this);
+  }
+  SinkConsumer& setChunkTimeout(const std::chrono::milliseconds& timeout) & {
+    sinkOptions.chunkTimeout = timeout;
+    return this;
+  }
 };
 
 template <typename Response, typename SinkElement, typename FinalResponse>

@@ -722,6 +722,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
               folly::IOBuf::copyBuffer(folly::to<std::string>(current)), {}));
         },
         10,
+        std::chrono::milliseconds::zero(),
         {}};
     auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
         std::move(impl), ioEvb_, clientCallback);

@@ -41,6 +41,7 @@ struct SinkConsumerImpl {
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&>)>;
   Consumer consumer;
   uint64_t bufferSize;
+  std::chrono::milliseconds chunkTimeout;
   folly::Executor::KeepAlive<folly::SequencedExecutor> executor;
 
   explicit operator bool() const {

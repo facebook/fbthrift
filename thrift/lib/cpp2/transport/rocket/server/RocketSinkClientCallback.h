@@ -16,9 +16,11 @@
 
 #pragma once
 
+#include <chrono>
 #include <memory>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/async/HHWheelTimer.h>
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -47,12 +49,38 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   bool onSinkComplete();
 
   void onStreamCancel();
+  void setChunkTimeout(std::chrono::milliseconds timeout);
+  void timeoutExpired() noexcept;
 
  private:
+  class TimeoutCallback : public folly::HHWheelTimer::Callback {
+   public:
+    explicit TimeoutCallback(
+        RocketSinkClientCallback& parent,
+        std::chrono::milliseconds chunkTimeout)
+        : parent_(parent), chunkTimeout_(chunkTimeout) {
+      DCHECK(chunkTimeout != std::chrono::milliseconds::zero());
+    }
+    void timeoutExpired() noexcept override {
+      parent_.timeoutExpired();
+    }
+    void incCredits(uint64_t n);
+    void decCredits();
+
+   private:
+    RocketSinkClientCallback& parent_;
+    std::chrono::milliseconds chunkTimeout_;
+    uint64_t credits_{0};
+  };
+
+  void scheduleTimeout(std::chrono::milliseconds chunkTimeout);
+  void cancelTimeout();
+
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
   rocket::RocketServerFrameContext context_;
   SinkServerCallback* serverCallback_{nullptr};
+  std::unique_ptr<TimeoutCallback> timeout_;
 };
 
 } // namespace thrift
