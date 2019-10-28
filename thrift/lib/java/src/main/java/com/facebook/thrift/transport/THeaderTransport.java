@@ -84,7 +84,6 @@ public class THeaderTransport extends TFramedTransport {
   public enum ClientTypes {
     HEADERS(0),
     FRAMED_DEPRECATED(1),
-    UNFRAMED_DEPRECATED(2),
     HTTP(3),
     UNKNOWN(4);
 
@@ -240,10 +239,6 @@ public class THeaderTransport extends TFramedTransport {
       }
     }
 
-    if (clientType == ClientTypes.UNFRAMED_DEPRECATED) {
-      return transport_.read(buf, off, len);
-    }
-
     // Read another frame of data
     readFrame(len);
 
@@ -273,15 +268,7 @@ public class THeaderTransport extends TFramedTransport {
     int word1 = decodeWord(i32buf);
 
     if ((word1 & TBinaryProtocol.VERSION_MASK) == TBinaryProtocol.VERSION_1) {
-      clientType = ClientTypes.UNFRAMED_DEPRECATED;
-      if (reqLen <= 4) {
-        readBuffer_.reset(i32buf);
-      } else {
-        byte[] buff = new byte[reqLen];
-        System.arraycopy(i32buf, 0, buff, 0, 4);
-        transport_.readAll(buff, 4, reqLen - 4);
-        readBuffer_.reset(buff);
-      }
+      throw new THeaderException("This transport does not support Unframed");
     } else if (word1 == HTTP_SERVER_MAGIC) {
       throw new THeaderException("This transport does not support HTTP");
     } else {
@@ -540,7 +527,7 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   /* Writes the output buffer in header format, or format
-   * client responded with (framed, unframed, http)
+   * client responded with (framed, http)
    */
   @Override
   public void flush() throws TTransportException {
@@ -672,8 +659,6 @@ public class THeaderTransport extends TFramedTransport {
       out.position(0);
       transport_.write(out.array(), out.position(), out.remaining());
       transport_.write(frame.array(), frame.position(), frame.remaining());
-    } else if (clientType == ClientTypes.UNFRAMED_DEPRECATED) {
-      transport_.write(frame.array(), frame.position(), frame.remaining());
     } else if (clientType == ClientTypes.HTTP) {
       throw new TTransportException("HTTP is unimplemented in this language");
     } else {
@@ -713,15 +698,6 @@ public class THeaderTransport extends TFramedTransport {
     @Override
     public TTransport getTransport(TTransport base) {
       return new THeaderTransport(base, clientTypes);
-    }
-  }
-
-  @Override
-  public int getBytesRemainingInBuffer() {
-    if (supportedClients[ClientTypes.UNFRAMED_DEPRECATED.getValue()]) {
-      return transport_.getBytesRemainingInBuffer();
-    } else {
-      return super.getBytesRemainingInBuffer();
     }
   }
 }

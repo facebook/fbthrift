@@ -343,30 +343,26 @@ public class ClientHandlerTest extends junit.framework.TestCase {
 
   @Test
   public void testClientEventHandler() throws Exception {
-    doServerClient(ServerType.NONBLOCKING, false, true, false);
+    doServerClient(ServerType.NONBLOCKING, true, false);
   }
 
-  public void doServerClient(
-      ServerType serverType, boolean unframed, boolean framed, boolean header)
+  public void doServerClient(ServerType serverType, boolean framed, boolean header)
       throws TException, InterruptedException {
     ServerThread st = new ServerThread(serverType);
     Thread r = new Thread(st);
     r.start();
-    doTransports(unframed, framed, header);
+    doTransports(framed, header);
     st.stop();
     r.interrupt();
     r.join();
   }
 
-  public void doTransports(boolean unframed, boolean framed, boolean header) throws TException {
+  public void doTransports(boolean framed, boolean header) throws TException {
     TTransport transport;
     TSocket socket = new TSocket("localhost", TEST_PORT);
     socket.setTimeout(1000);
     transport = socket;
     TProtocol prot = new TBinaryProtocol(transport);
-    if (unframed) {
-      testClient(transport, prot); // Unframed
-    }
     List<THeaderTransport.ClientTypes> clientTypes = new ArrayList<THeaderTransport.ClientTypes>();
     prot = new THeaderProtocol(transport, clientTypes);
     if (header) {

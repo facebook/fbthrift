@@ -33,7 +33,6 @@ import com.facebook.thrift.server.TServer;
 import com.facebook.thrift.server.example.TSimpleServer;
 import com.facebook.thrift.transport.TFramedTransport;
 import com.facebook.thrift.transport.THeaderTransport;
-import com.facebook.thrift.transport.THeaderTransport.ClientTypes;
 import com.facebook.thrift.transport.TMemoryBuffer;
 import com.facebook.thrift.transport.TNonblockingServerSocket;
 import com.facebook.thrift.transport.TServerSocket;
@@ -81,13 +80,11 @@ public class THeaderJava extends junit.framework.TestCase {
     private ThriftTest.Processor testProcessor;
     TProcessorFactory pFactory;
 
-    public ServerThread(ServerType serverType, boolean allowUnframed)
-        throws IOException, TException {
-      this(serverType, new TestEventHandler(), allowUnframed);
+    public ServerThread(ServerType serverType) throws IOException, TException {
+      this(serverType, new TestEventHandler());
     }
 
-    public ServerThread(
-        ServerType serverType, TProcessorEventHandler eventHandler, boolean allowUnframed)
+    public ServerThread(ServerType serverType, TProcessorEventHandler eventHandler)
         throws IOException, TException {
       // processor
       TestHandler testHandler = new TestHandler();
@@ -101,9 +98,6 @@ public class THeaderJava extends junit.framework.TestCase {
       // Protocol factory
       List<THeaderTransport.ClientTypes> clientTypes =
           new ArrayList<THeaderTransport.ClientTypes>();
-      if (allowUnframed) {
-        clientTypes.add(ClientTypes.UNFRAMED_DEPRECATED);
-      }
       tTransportFactory = new THeaderTransport.Factory(clientTypes);
       tProtocolFactory = new THeaderProtocol.Factory();
 
@@ -403,50 +397,45 @@ public class THeaderJava extends junit.framework.TestCase {
   // Note these are all separate methods to make it easy to view in the
   // unittest runner
   @Test
-  public void testSimpleServerUnframed() throws Exception {
-    doServerClient(ServerType.SIMPLE, true, false, false);
-  }
-
-  @Test
   public void testNonblockingServerFramed() throws Exception {
-    doServerClient(ServerType.SIMPLE, false, true, false);
+    doServerClient(ServerType.SIMPLE, true, false);
   }
 
   @Test
   public void testNonblockingServerHeader() throws Exception {
-    doServerClient(ServerType.SIMPLE, false, false, true);
+    doServerClient(ServerType.SIMPLE, false, true);
   }
 
   @Test
   public void testHsHaServerFramed() throws Exception {
-    doServerClient(ServerType.HSHA, false, true, false);
+    doServerClient(ServerType.HSHA, true, false);
   }
 
   @Test
   public void testHsHaServerHeader() throws Exception {
-    doServerClient(ServerType.HSHA, false, false, true);
+    doServerClient(ServerType.HSHA, false, true);
   }
 
   // TODO: get the header tests working for TDirectServer
 
   // @Test
   // public void testDirectHsHaServerFramed() throws Exception {
-  //   doServerClient(ServerType.DIRECT_HSHA, false, true, false);
+  //   doServerClient(ServerType.DIRECT_HSHA, true, false);
   // }
 
   // @Test
   // public void testDirectHsHaServerHeader() throws Exception {
-  //   doServerClient(ServerType.DIRECT_HSHA, false, false, true);
+  //   doServerClient(ServerType.DIRECT_HSHA, false, true);
   // }
 
   // @Test
   // public void testDirectFiberServerFramed() throws Exception {
-  //   doServerClient(ServerType.DIRECT_FIBER, false, true, false);
+  //   doServerClient(ServerType.DIRECT_FIBER, true, false);
   // }
 
   // @Test
   // public void testDirectFiberServerHeader() throws Exception {
-  //   doServerClient(ServerType.DIRECT_FIBER, false, false, true);
+  //   doServerClient(ServerType.DIRECT_FIBER, false, true);
   // }
 
   @Test
@@ -489,7 +478,7 @@ public class THeaderJava extends junit.framework.TestCase {
 
   @Test
   public void testUserExceptionHandler() throws Exception {
-    ServerThread st = new ServerThread(ServerType.SIMPLE, new UserExceptionHandler(), false);
+    ServerThread st = new ServerThread(ServerType.SIMPLE, new UserExceptionHandler());
     Thread r = new Thread(st);
     r.start();
 
@@ -516,27 +505,23 @@ public class THeaderJava extends junit.framework.TestCase {
     r.join();
   }
 
-  public void doServerClient(
-      ServerType serverType, boolean unframed, boolean framed, boolean header)
+  public void doServerClient(ServerType serverType, boolean framed, boolean header)
       throws TException, IOException, InterruptedException {
-    ServerThread st = new ServerThread(serverType, unframed);
+    ServerThread st = new ServerThread(serverType);
     Thread r = new Thread(st);
     r.start();
-    doTransports(unframed, framed, header);
+    doTransports(framed, header);
     st.stop();
     r.interrupt();
     r.join();
   }
 
-  public void doTransports(boolean unframed, boolean framed, boolean header) throws TException {
+  public void doTransports(boolean framed, boolean header) throws TException {
     TTransport transport;
     TSocket socket = new TSocket("localhost", TEST_PORT);
     socket.setTimeout(1000);
     transport = socket;
     TProtocol prot = new TBinaryProtocol(transport);
-    if (unframed) {
-      testClient(transport, prot); // Unframed
-    }
     List<THeaderTransport.ClientTypes> clientTypes = new ArrayList<THeaderTransport.ClientTypes>();
     prot = new THeaderProtocol(transport, clientTypes);
     if (header) {
