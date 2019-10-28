@@ -16,11 +16,10 @@
 
 package com.facebook.thrift.transport;
 
+import com.facebook.thrift.utils.Logger;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This is the most commonly used base transport. It takes an InputStream and an OutputStream and
@@ -29,7 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 public class TIOStreamTransport extends TTransport {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TIOStreamTransport.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TIOStreamTransport.class.getName());
 
   /** Underlying inputStream */
   protected InputStream inputStream_ = null;

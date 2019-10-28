@@ -17,6 +17,7 @@
 package com.facebook.thrift.async;
 
 import com.facebook.thrift.TException;
+import com.facebook.thrift.utils.Logger;
 import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectionKey;
@@ -27,12 +28,10 @@ import java.util.Iterator;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeoutException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Contains selector thread which transitions method call objects */
 public class TAsyncClientManager {
-  private static final Logger LOGGER = LoggerFactory.getLogger(TAsyncClientManager.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TAsyncClientManager.class.getName());
 
   private final SelectThread selectThread;
   private final ConcurrentLinkedQueue<TAsyncMethodCall> pendingCalls =

@@ -16,19 +16,18 @@
 
 package com.facebook.thrift.transport;
 
+import com.facebook.thrift.utils.Logger;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Socket implementation of the TTransport interface. To be commented soon! */
 public class TSocket extends TIOStreamTransport implements TSocketIf {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TSocket.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TSocket.class.getName());
 
   /** Wrapped Socket object */
   private Socket socket_ = null;

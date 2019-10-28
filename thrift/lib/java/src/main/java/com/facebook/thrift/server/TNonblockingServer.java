@@ -30,6 +30,7 @@ import com.facebook.thrift.transport.TNonblockingServerTransport;
 import com.facebook.thrift.transport.TNonblockingTransport;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
+import com.facebook.thrift.utils.Logger;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -47,8 +48,6 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A nonblocking TServer implementation. This allows for fairness amongst all connected clients in
@@ -62,7 +61,7 @@ import org.slf4j.LoggerFactory;
  * must also use TFramedTransport.
  */
 public class TNonblockingServer extends TServer {
-  private static final Logger LOGGER = LoggerFactory.getLogger(TNonblockingServer.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TNonblockingServer.class.getName());
   private static final int selectWaitTime_ = 500;
 
   private final ExecutorService tcpWorkerPool_;

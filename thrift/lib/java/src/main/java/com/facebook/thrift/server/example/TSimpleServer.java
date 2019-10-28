@@ -28,8 +28,7 @@ import com.facebook.thrift.transport.TServerTransport;
 import com.facebook.thrift.transport.TTransport;
 import com.facebook.thrift.transport.TTransportException;
 import com.facebook.thrift.transport.TTransportFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.facebook.thrift.utils.Logger;
 
 /**
  * @deprecated "Please use Netty server instead. See https://github.com/facebook/nifty for details."
@@ -38,7 +37,7 @@ import org.slf4j.LoggerFactory;
 @Deprecated
 public class TSimpleServer extends TServer {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TSimpleServer.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TSimpleServer.class.getName());
 
   private boolean stopped_ = false;
 

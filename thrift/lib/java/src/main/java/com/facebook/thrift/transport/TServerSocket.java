@@ -16,18 +16,17 @@
 
 package com.facebook.thrift.transport;
 
+import com.facebook.thrift.utils.Logger;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Wrapper around ServerSocket for Thrift. */
 public class TServerSocket extends TServerTransport {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(TServerSocket.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(TServerSocket.class.getName());
 
   /** Underlying serversocket object */
   private ServerSocket serverSocket_ = null;
