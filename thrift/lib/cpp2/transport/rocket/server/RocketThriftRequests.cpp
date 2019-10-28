@@ -50,10 +50,12 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     Cpp2ConnContext& connContext,
+    ActiveRequestsRegistry& reqRegistry,
     RocketServerFrameContext&& context)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
-      context_(std::move(context)) {
+      context_(std::move(context)),
+      debugStub_(reqRegistry, *this, *getRequestContext()) {
   scheduleTimeouts();
 }
 
@@ -101,12 +103,14 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     Cpp2ConnContext& connContext,
+    ActiveRequestsRegistry& reqRegistry,
     RocketServerFrameContext&& context,
     folly::Function<void()> onComplete)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
-      onComplete_(std::move(onComplete)) {
+      onComplete_(std::move(onComplete)),
+      debugStub_(reqRegistry, *this, *getRequestContext()) {
   scheduleTimeouts();
 }
 
@@ -134,13 +138,15 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
+    ActiveRequestsRegistry& reqRegistry,
     RocketStreamClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
-      cpp2Processor_(std::move(cpp2Processor)) {
+      cpp2Processor_(std::move(cpp2Processor)),
+      debugStub_(reqRegistry, *this, *getRequestContext()) {
   scheduleTimeouts();
 }
 
@@ -277,13 +283,15 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
+    ActiveRequestsRegistry& reqRegistry,
     RocketSinkClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
-      cpp2Processor_(std::move(cpp2Processor)) {
+      cpp2Processor_(std::move(cpp2Processor)),
+      debugStub_(reqRegistry, *this, *getRequestContext()) {
   scheduleTimeouts();
 }
 

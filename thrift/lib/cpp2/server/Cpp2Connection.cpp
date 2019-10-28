@@ -410,7 +410,11 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
       // definition.
-      reqContext_(&connection_->context_, req_->getHeader()) {
+      reqContext_(&connection_->context_, req_->getHeader()),
+      debugStub_(
+          connection_->getWorker()->getRequestsRegistry(),
+          *this,
+          reqContext_) {
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }

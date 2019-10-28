@@ -97,6 +97,7 @@ add_library(
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
+  server/RequestDebugStub.cpp
   server/ServerInstrumentation.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp

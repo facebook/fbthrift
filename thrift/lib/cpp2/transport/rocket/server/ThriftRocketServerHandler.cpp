@@ -142,6 +142,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
         serverConfigs_,
         std::move(md),
         *connContext_,
+        worker_->getRequestsRegistry(),
         std::move(context));
   };
 
@@ -160,6 +161,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         serverConfigs_,
         std::move(md),
         *connContext_,
+        worker_->getRequestsRegistry(),
         std::move(context),
         [keepAlive = cpp2Processor_] {});
   };
@@ -176,6 +178,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         serverConfigs_,
         std::move(md),
         connContext_,
+        worker_->getRequestsRegistry(),
         clientCallback,
         cpp2Processor_);
   };
@@ -192,6 +195,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         serverConfigs_,
         std::move(md),
         connContext_,
+        worker_->getRequestsRegistry(),
         clientCallback,
         cpp2Processor_);
   };

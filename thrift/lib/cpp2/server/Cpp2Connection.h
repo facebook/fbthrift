@@ -29,6 +29,7 @@
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/RequestDebugStub.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/ManagedConnection.h>
@@ -208,6 +209,8 @@ class Cpp2Connection : public ResponseChannel::Callback,
     QueueTimeout queueTimeout_;
     TaskTimeout taskTimeout_;
 
+    // keep last
+    RequestDebugStub debugStub_;
     void cancelTimeout() {
       queueTimeout_.cancelTimeout();
       taskTimeout_.cancelTimeout();
