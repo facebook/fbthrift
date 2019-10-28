@@ -23,12 +23,7 @@
     switch (type) {
 <%#struct:fields%>
       case <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>: {
-<%#field:cpp_ref?%>
-        pos = root.layoutField(self, pos, this-><%field:cpp_name%>Field, *(x.get_<%field:cpp_name%>()));
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
         pos = root.layoutField(self, pos, this-><%field:cpp_name%>Field, x.get_<%field:cpp_name%>());
-<%/field:cpp_ref?%>
         break;
       }
 <%/struct:fields%>

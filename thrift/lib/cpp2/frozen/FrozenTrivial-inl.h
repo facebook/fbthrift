@@ -94,8 +94,8 @@ template <class T>
 struct Layout<
     T,
     typename std::enable_if<
-        detail::IsBlitType<T>::value && !detail::IsStdPair<T>::value>::type>
-    : detail::TrivialLayout<T> {};
+        detail::IsBlitType<T>::value && !detail::IsStdPair<T>::value &&
+        !std::is_pointer<T>::value>::type> : detail::TrivialLayout<T> {};
 } // namespace frozen
 } // namespace thrift
 } // namespace apache

@@ -101,12 +101,12 @@ TEST(FrozenUnion, union_contains_cpp_shared_ref) {
   max->age_ref() = 7;
   max->vegan_ref() = true;
 
-  u.set_aPet1(std::move(*max));
+  u.set_aPet1(*max);
   auto f = freeze(u);
 
-  EXPECT_EQ(f.get_aPet1().name(), "max");
-  EXPECT_EQ(f.get_aPet1().age().value(), 7);
-  EXPECT_EQ(f.get_aPet1().vegan().value(), true);
+  EXPECT_EQ(f.get_aPet1()->name(), "max");
+  EXPECT_EQ(f.get_aPet1()->age().value(), 7);
+  EXPECT_EQ(f.get_aPet1()->vegan().value(), true);
   EXPECT_EQ(f.thaw(), u);
 }
 
@@ -118,13 +118,13 @@ TEST(FrozenUnion, union_contains_cpp_unique_ref) {
   tiny.c = "ccc";
   tiny.d = "ddd";
 
-  u.set_aTiny(std::move(tiny));
+  u.set_aTiny(tiny);
   auto f = freeze(u);
 
-  EXPECT_EQ(f.get_aTiny().a(), "aaa");
-  EXPECT_EQ(f.get_aTiny().b(), "bbb");
-  EXPECT_EQ(f.get_aTiny().c(), "ccc");
-  EXPECT_EQ(f.get_aTiny().d(), "ddd");
+  EXPECT_EQ(f.get_aTiny()->a(), "aaa");
+  EXPECT_EQ(f.get_aTiny()->b(), "bbb");
+  EXPECT_EQ(f.get_aTiny()->c(), "ccc");
+  EXPECT_EQ(f.get_aTiny()->d(), "ddd");
   EXPECT_EQ(f.thaw(), u);
 }
 
@@ -137,8 +137,8 @@ TEST(FrozenUnion, union_contains_cpp_ref_true) {
   u.set_aPlace(std::move(place));
   auto f = freeze(u);
 
-  EXPECT_EQ(f.get_aPlace().name(), "somewhere");
-  EXPECT_EQ(f.get_aPlace().popularityByHour().at(37), 21);
+  EXPECT_EQ(f.get_aPlace()->name(), "somewhere");
+  EXPECT_EQ(f.get_aPlace()->popularityByHour().at(37), 21);
   EXPECT_EQ(f.thaw(), u);
 }
 

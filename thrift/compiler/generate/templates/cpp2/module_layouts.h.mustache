@@ -52,7 +52,7 @@ FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %>
   FROZEN_FIELD(type_, 0, <% > common/namespace_cpp2%><%struct:name%>::Type)<%!
 %><%#struct:fields%>
-  FROZEN_FIELD(<%field:cpp_name%>, <%field:key%>, <%#field:type%><% > types/type%><%/field:type%>)<%!
+  FROZEN_FIELD<% > common/union_field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><% > types/type%><%/field:type%>)<%!
 %><%/struct:fields%>
 <% > module_layouts_h/frozen_view_union%>
   FROZEN_SAVE_INLINE(<%!

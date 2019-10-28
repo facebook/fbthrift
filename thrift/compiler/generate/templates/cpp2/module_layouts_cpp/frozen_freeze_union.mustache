@@ -22,7 +22,7 @@
     switch (type) {
 <%#struct:fields%>
       case <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>: {
-        root.freezeField(self, this-><%field:cpp_name%>Field, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>(x.get_<%field:cpp_name%>()));
+        root.freezeField(self, this-><%field:cpp_name%>Field, x.get_<%field:cpp_name%>());
         break;
       }
 <%/struct:fields%>
