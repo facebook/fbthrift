@@ -29,9 +29,6 @@ using namespace cpp2;
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::async;
-using namespace apache::thrift::concurrency;
-using namespace apache::thrift::transport;
 
 static dynamic kDynamics[] = {
   // NULL

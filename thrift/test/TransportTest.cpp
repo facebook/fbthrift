@@ -34,7 +34,6 @@
 
 using namespace std;
 using namespace folly;
-using namespace folly::test;
 using namespace apache::thrift::transport;
 
 namespace {

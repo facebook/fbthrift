@@ -22,7 +22,6 @@
 
 using namespace thrift::test::debug::cpp2;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
 using namespace testing;
 
 template <class UnionType>

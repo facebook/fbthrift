@@ -23,9 +23,6 @@
 #include <thrift/test/gen-cpp2/CustomStruct.h>
 
 using namespace apache::thrift;
-using namespace apache::thrift::async;
-using namespace apache::thrift::concurrency;
-using namespace apache::thrift::transport;
 using namespace thrift::test;
 
 Container createContainer() {

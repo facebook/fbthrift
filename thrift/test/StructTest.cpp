@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using namespace apache::thrift::test;
-using namespace folly;
 
 class StructTest : public testing::Test {};
 

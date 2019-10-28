@@ -22,7 +22,6 @@
 #include <thrift/test/loadshedding/server/BackendServiceHandler.h>
 
 using namespace apache::thrift;
-using namespace facebook;
 using namespace facebook::thrift::test;
 using namespace std::chrono;
 

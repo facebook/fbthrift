@@ -26,7 +26,6 @@
 #include <thrift/test/gen-cpp2/fatal_legacy_reflection_types.h>
 
 using namespace apache::thrift;
-using namespace apache::thrift::reflection;
 using namespace apache::thrift::test;
 
 TEST(FatalLegacyReflectionTest, name) {

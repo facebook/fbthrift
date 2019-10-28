@@ -19,7 +19,6 @@
 #include <folly/portability/GTest.h>
 
 using namespace thrift::test::cpp2;
-using namespace testing;
 
 TEST(OrderTest, EqNotEq) {
   QQQ qqq(apache::thrift::FRAGILE, 5);

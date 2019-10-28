@@ -25,7 +25,6 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;
-using namespace apache::thrift::protocol;
 using namespace apache::thrift::util;
 using folly::EventBase;
 using thrift::test::cpp2::ExceptionThrowingServiceAsyncClient;

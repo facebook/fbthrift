@@ -24,9 +24,7 @@
 
 #include <thrift/test/gen-cpp2/ThriftTest.h>
 
-using namespace boost;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace thrift::test;
 

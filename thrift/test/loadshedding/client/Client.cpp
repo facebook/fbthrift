@@ -38,13 +38,10 @@ namespace apache {
 namespace thrift {
 namespace test {
 
-using namespace facebook;
 using namespace facebook::thrift::test;
-using namespace apache::thrift::concurrency;
 
 using apache::thrift::HeaderClientChannel;
 using apache::thrift::async::TAsyncSocket;
-using apache::thrift::test::Client;
 
 Client::Client(const std::string& addr, int port) {
   scopedEventBaseThread_.getEventBase()->runInEventBaseThreadAndWait(
