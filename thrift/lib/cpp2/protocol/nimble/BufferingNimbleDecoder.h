@@ -89,12 +89,12 @@ class BufferingNimbleDecoder {
 
   void returnState(BufferingNimbleDecoderState state) {
     DCHECK(state.nextChunkToReturn_ != -1);
+
+    nextChunkToReturn_ = state.nextChunkToReturn_;
+
     if (folly::kIsDebug) {
       DCHECK(stateBorrowed_);
       stateBorrowed_ = false;
-    }
-    nextChunkToReturn_ = state.nextChunkToReturn_;
-    if (folly::kIsDebug) {
       state.nextChunkToReturn_ = -1;
     }
   }

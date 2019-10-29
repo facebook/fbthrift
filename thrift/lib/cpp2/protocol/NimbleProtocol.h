@@ -223,14 +223,18 @@ class NimbleProtocolReader {
   struct StructReadState {
     int16_t fieldId;
     detail::nimble::NimbleType nimbleType;
+    detail::BufferingNimbleDecoderState decoderState;
 
     constexpr static bool kAcceptsContext = true;
 
     void readStructBegin(NimbleProtocolReader* iprot) {
       iprot->readStructBegin("");
+      decoderState = iprot->borrowState();
     }
 
-    void readStructEnd(NimbleProtocolReader* /*iprot*/) {}
+    void readStructEnd(NimbleProtocolReader* iprot) {
+      iprot->returnState(std::move(decoderState));
+    }
 
     void readFieldBegin(NimbleProtocolReader* iprot) {
       iprot->advanceToNextFieldSlow(*this);
@@ -254,8 +258,13 @@ class NimbleProtocolReader {
       iprot->advanceToNextFieldSlow(*this);
     }
 
-    void beforeSubobject(NimbleProtocolReader* /* iprot */) {}
-    void afterSubobject(NimbleProtocolReader* /* iprot */) {}
+    void beforeSubobject(NimbleProtocolReader* iprot) {
+      iprot->returnState(std::move(decoderState));
+    }
+
+    void afterSubobject(NimbleProtocolReader* iprot) {
+      decoderState = iprot->borrowState();
+    }
 
     bool atStop() {
       // Note that this might not correspond to a fieldID of 0 (and in fact,
@@ -302,6 +311,11 @@ class NimbleProtocolReader {
   [[noreturn]] void skip(StructReadState& state);
 
  private:
+  friend struct StructReadState;
+
+  detail::BufferingNimbleDecoderState borrowState();
+  void returnState(detail::BufferingNimbleDecoderState state);
+
   detail::Decoder decoder_;
   int32_t string_limit_;
   int32_t container_limit_;

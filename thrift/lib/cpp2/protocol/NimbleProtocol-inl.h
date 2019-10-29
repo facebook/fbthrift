@@ -351,8 +351,8 @@ inline void NimbleProtocolReader::readBool(bool& value) {
 
 inline void NimbleProtocolReader::readBoolWithContext(
     bool& value,
-    StructReadState& /* srs */) {
-  value = static_cast<bool>(decoder_.nextContentChunk());
+    StructReadState& srs) {
+  value = static_cast<bool>(decoder_.nextContentChunk(srs.decoderState));
 }
 
 inline void NimbleProtocolReader::readBool(std::vector<bool>::reference value) {
@@ -367,8 +367,8 @@ inline void NimbleProtocolReader::readByte(int8_t& byte) {
 
 inline void NimbleProtocolReader::readByteWithContext(
     int8_t& byte,
-    StructReadState& /* srs */) {
-  byte = static_cast<int8_t>(decoder_.nextContentChunk());
+    StructReadState& srs) {
+  byte = static_cast<int8_t>(decoder_.nextContentChunk(srs.decoderState));
 }
 
 inline void NimbleProtocolReader::readI16(int16_t& i16) {
@@ -377,8 +377,8 @@ inline void NimbleProtocolReader::readI16(int16_t& i16) {
 
 inline void NimbleProtocolReader::readI16WithContext(
     int16_t& i16,
-    StructReadState& /* srs */) {
-  i16 = static_cast<int16_t>(decoder_.nextContentChunk());
+    StructReadState& srs) {
+  i16 = static_cast<int16_t>(decoder_.nextContentChunk(srs.decoderState));
 }
 
 inline void NimbleProtocolReader::readI32(int32_t& i32) {
@@ -387,8 +387,8 @@ inline void NimbleProtocolReader::readI32(int32_t& i32) {
 
 inline void NimbleProtocolReader::readI32WithContext(
     int32_t& i32,
-    StructReadState& /* srs */) {
-  i32 = static_cast<int32_t>(decoder_.nextContentChunk());
+    StructReadState& srs) {
+  i32 = static_cast<int32_t>(decoder_.nextContentChunk(srs.decoderState));
 }
 
 inline void NimbleProtocolReader::readI64(int64_t& i64) {
@@ -399,9 +399,9 @@ inline void NimbleProtocolReader::readI64(int64_t& i64) {
 
 inline void NimbleProtocolReader::readI64WithContext(
     int64_t& i64,
-    StructReadState& /* srs */) {
-  auto lower = decoder_.nextContentChunk();
-  auto higher = decoder_.nextContentChunk();
+    StructReadState& srs) {
+  auto lower = decoder_.nextContentChunk(srs.decoderState);
+  auto higher = decoder_.nextContentChunk(srs.decoderState);
   i64 = static_cast<int64_t>(higher) << 32 | lower;
 }
 
@@ -416,12 +416,12 @@ inline void NimbleProtocolReader::readDouble(double& dub) {
 
 inline void NimbleProtocolReader::readDoubleWithContext(
     double& dub,
-    StructReadState& /* srs */) {
+    StructReadState& srs) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
   int64_t bits = 0;
-  readI64(bits);
+  readI64WithContext(bits, srs);
   dub = bitwise_cast<double>(bits);
 }
 
@@ -435,11 +435,11 @@ inline void NimbleProtocolReader::readFloat(float& flt) {
 
 inline void NimbleProtocolReader::readFloatWithContext(
     float& flt,
-    StructReadState& /* srs */) {
+    StructReadState& srs) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
-  uint32_t bits = decoder_.nextContentChunk();
+  uint32_t bits = decoder_.nextContentChunk(srs.decoderState);
   flt = bitwise_cast<float>(bits);
 }
 
@@ -546,6 +546,15 @@ inline void NimbleProtocolReader::advanceToNextFieldSlow(
           fieldIdFromThreeByteMetadata(firstByte, decoder_.nextFieldShort());
     }
   }
+}
+
+inline detail::BufferingNimbleDecoderState NimbleProtocolReader::borrowState() {
+  return decoder_.borrowState();
+}
+
+inline void NimbleProtocolReader::returnState(
+    detail::BufferingNimbleDecoderState state) {
+  decoder_.returnState(std::move(state));
 }
 
 bool NimbleProtocolReader::isCompatibleWithType(

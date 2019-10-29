@@ -80,6 +80,10 @@ class Decoder {
     return contentStream_.nextChunk();
   }
 
+  std::uint32_t nextContentChunk(BufferingNimbleDecoderState& state) {
+    return contentStream_.nextChunk(state);
+  }
+
   void nextBinary(unsigned char* buf, std::size_t size) {
     stringCursor_.pull(buf, size);
   }
@@ -128,6 +132,14 @@ class Decoder {
 
   std::uint16_t nextFieldShort() {
     return fieldCursor_.read<std::uint16_t>();
+  }
+
+  BufferingNimbleDecoderState borrowState() {
+    return contentStream_.borrowState();
+  }
+
+  void returnState(BufferingNimbleDecoderState state) {
+    contentStream_.returnState(std::move(state));
   }
 
  private:
