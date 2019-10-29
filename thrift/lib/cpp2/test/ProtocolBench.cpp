@@ -73,21 +73,23 @@ void readBench(size_t iters) {
   X1(proto, write, bench) \
   X1(proto, read, bench)
 
-#define X(proto)            \
-  X2(proto, Empty)          \
-  X2(proto, SmallInt)       \
-  X2(proto, BigInt)         \
-  X2(proto, SmallString)    \
-  X2(proto, BigString)      \
-  X2(proto, BigBinary)      \
-  X2(proto, LargeBinary)    \
-  X2(proto, Mixed)          \
-  X2(proto, SmallListInt)   \
-  X2(proto, BigListInt)     \
-  X2(proto, BigListMixed)   \
-  X2(proto, LargeListMixed) \
-  X2(proto, LargeMapInt)    \
-  X2(proto, NestedMap)      \
+#define X(proto)             \
+  X2(proto, Empty)           \
+  X2(proto, SmallInt)        \
+  X2(proto, BigInt)          \
+  X2(proto, SmallString)     \
+  X2(proto, BigString)       \
+  X2(proto, BigBinary)       \
+  X2(proto, LargeBinary)     \
+  X2(proto, Mixed)           \
+  X2(proto, MixedInt)        \
+  X2(proto, SmallListInt)    \
+  X2(proto, BigListInt)      \
+  X2(proto, BigListMixed)    \
+  X2(proto, BigListMixedInt) \
+  X2(proto, LargeListMixed)  \
+  X2(proto, LargeMapInt)     \
+  X2(proto, NestedMap)       \
   X2(proto, ComplexStruct)
 
 X(Binary)

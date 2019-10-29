@@ -246,6 +246,10 @@ struct MixedInt {
   12: i32 varz;
 }
 
+struct BigListMixedInt {
+  1: list<MixedInt> lst;
+}
+
 struct ComplexStruct {
   1: Empty var1;
   2: SmallInt var2;

@@ -299,6 +299,16 @@ thrift::benchmark::MixedInt create<thrift::benchmark::MixedInt>() {
 }
 
 template <>
+thrift::benchmark::BigListMixedInt
+create<thrift::benchmark::BigListMixedInt>() {
+  std::vector<thrift::benchmark::MixedInt> vec(
+      10000, create<thrift::benchmark::MixedInt>());
+  thrift::benchmark::BigListMixedInt d;
+  d.lst = std::move(vec);
+  return d;
+}
+
+template <>
 thrift::benchmark::ComplexStruct create<thrift::benchmark::ComplexStruct>() {
   thrift::benchmark::ComplexStruct d;
   d.var1 = create<thrift::benchmark::Empty>();
