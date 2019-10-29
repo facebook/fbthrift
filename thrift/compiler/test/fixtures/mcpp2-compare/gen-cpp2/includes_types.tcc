@@ -175,9 +175,11 @@ void AStructB::readNoXfer(Protocol_* iprot) {
   }
 _readField_FieldA:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::a::different::ns::AStruct> ptr = std::make_unique< ::a::different::ns::AStruct>();
     ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::read(iprot, ptr.get());
     this->FieldA = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

@@ -389,6 +389,9 @@ class CompactProtocolReader {
 
     void afterAdvanceFailure(CompactProtocolReader* /*iprot*/) {}
 
+    void beforeSubobject(CompactProtocolReader* /* iprot */) {}
+    void afterSubobject(CompactProtocolReader* /* iprot */) {}
+
     bool atStop() {
       return fieldType == apache::thrift::protocol::T_STOP;
     }

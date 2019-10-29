@@ -236,6 +236,9 @@ class NimbleProtocolReader {
       iprot->advanceToNextFieldSlow(*this);
     }
 
+    void beforeSubobject(NimbleProtocolReader* /* iprot */) {}
+    void afterSubobject(NimbleProtocolReader* /* iprot */) {}
+
     bool atStop() {
       // Note that this might not correspond to a fieldID of 0 (and in fact,
       // never should); it's only safe to look at the type in this instance.

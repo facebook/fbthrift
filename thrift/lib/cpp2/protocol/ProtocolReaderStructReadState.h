@@ -108,6 +108,9 @@ struct ProtocolReaderStructReadState {
 
   void afterAdvanceFailure(Protocol* /*iprot*/) {}
 
+  void beforeSubobject(Protocol* /* iprot */) {}
+  void afterSubobject(Protocol* /* iprot */) {}
+
   template <typename StructTraits>
   void fillFieldTraitsFromName() {
     StructTraits::translateFieldName(fieldName(), fieldId, fieldType);

@@ -60,8 +60,10 @@ _readField_MyIntField:
   }
 _readField_MyTransitiveField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Foo>::read(iprot, &this->MyTransitiveField);
     this->__isset.MyTransitiveField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

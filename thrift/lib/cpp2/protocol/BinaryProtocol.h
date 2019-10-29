@@ -332,6 +332,9 @@ class BinaryProtocolReader {
 
     void afterAdvanceFailure(BinaryProtocolReader* /*iprot*/) {}
 
+    void beforeSubobject(BinaryProtocolReader* /* iprot */) {}
+    void afterSubobject(BinaryProtocolReader* /* iprot */) {}
+
     bool atStop() {
       return fieldType == apache::thrift::protocol::T_STOP;
     }

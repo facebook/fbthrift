@@ -331,9 +331,11 @@ void ContainerStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_fieldA:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldA = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->fieldA);
     this->__isset.fieldA = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -345,9 +347,11 @@ _readField_fieldA:
   }
 _readField_fieldB:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldB = std::list<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldB);
     this->__isset.fieldB = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -359,9 +363,11 @@ _readField_fieldB:
   }
 _readField_fieldC:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldC = std::deque<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::read(*iprot, this->fieldC);
     this->__isset.fieldC = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -373,9 +379,11 @@ _readField_fieldC:
   }
 _readField_fieldD:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldD = folly::fbvector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::read(*iprot, this->fieldD);
     this->__isset.fieldD = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -387,9 +395,11 @@ _readField_fieldD:
   }
 _readField_fieldE:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldE = folly::small_vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::read(*iprot, this->fieldE);
     this->__isset.fieldE = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -401,9 +411,11 @@ _readField_fieldE:
   }
 _readField_fieldF:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldF = folly::sorted_vector_set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::read(*iprot, this->fieldF);
     this->__isset.fieldF = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -415,9 +427,11 @@ _readField_fieldF:
   }
 _readField_fieldG:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldG = folly::sorted_vector_map<int32_t, ::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, ::std::string>>::read(*iprot, this->fieldG);
     this->__isset.fieldG = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -429,9 +443,11 @@ _readField_fieldG:
   }
 _readField_fieldH:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldH =  ::apache::thrift::fixtures::types::SomeMap();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::apache::thrift::fixtures::types::SomeMap>::read(*iprot, this->fieldH);
     this->__isset.fieldH = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -643,9 +659,11 @@ void CppTypeStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_fieldA:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldA = std::list<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldA);
     this->__isset.fieldA = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1145,8 +1163,10 @@ _readField_z:
   }
 _readField_n:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::TrivialNumeric>::read(iprot, &this->n);
     this->__isset.n = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1281,9 +1301,11 @@ _readField_a:
   }
 _readField_b:
   {
+    _readState.beforeSubobject(iprot);
     this->b = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->b);
     this->__isset.b = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1418,8 +1440,10 @@ _readField_z:
   }
 _readField_n:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ComplexString>::read(iprot, &this->n);
     this->__isset.n = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1874,8 +1898,10 @@ _readField_majorVer:
   }
 _readField_data:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::MyDataItem>::read(iprot, &this->data);
     this->__isset.data = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2148,9 +2174,11 @@ _readField_binary_field:
   }
 _readField_list_field:
   {
+    _readState.beforeSubobject(iprot);
     this->list_field =  ::apache::thrift::fixtures::types::SomeListOfTypeMap();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::read(*iprot, this->list_field);
     this->__isset.list_field = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2272,8 +2300,10 @@ void ForwardUsageStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_foo:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(iprot, &this->foo);
     this->__isset.foo = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2386,8 +2416,10 @@ void ForwardUsageRoot::readNoXfer(Protocol_* iprot) {
   }
 _readField_ForwardUsageStruct:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageStruct>::read(iprot, &this->ForwardUsageStruct);
     this->__isset.ForwardUsageStruct = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2399,9 +2431,11 @@ _readField_ForwardUsageStruct:
   }
 _readField_ForwardUsageByRef:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ptr = std::make_unique< ::apache::thrift::fixtures::types::ForwardUsageByRef>();
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageByRef>::read(iprot, ptr.get());
     this->ForwardUsageByRef = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2554,8 +2588,10 @@ void ForwardUsageByRef::readNoXfer(Protocol_* iprot) {
   }
 _readField_foo:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageRoot>::read(iprot, &this->foo);
     this->__isset.foo = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2945,9 +2981,11 @@ _readField_MyBinaryField3:
   }
 _readField_MyBinaryListField4:
   {
+    _readState.beforeSubobject(iprot);
     this->MyBinaryListField4 = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::read(*iprot, this->MyBinaryListField4);
     this->__isset.MyBinaryListField4 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2959,9 +2997,11 @@ _readField_MyBinaryListField4:
   }
 _readField_MyMapEnumAndInt:
   {
+    _readState.beforeSubobject(iprot);
     this->MyMapEnumAndInt = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::read(*iprot, this->MyMapEnumAndInt);
     this->__isset.MyMapEnumAndInt = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

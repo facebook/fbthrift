@@ -54,8 +54,10 @@ void Struct::readNoXfer(Protocol_* iprot) {
   }
 _readField_first:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::module0::Struct>::read(iprot, &this->first);
     this->__isset.first = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -67,8 +69,10 @@ _readField_first:
   }
 _readField_second:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::module1::Struct>::read(iprot, &this->second);
     this->__isset.second = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -190,8 +194,10 @@ void BigStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_s:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::module2::Struct>::read(iprot, &this->s);
     this->__isset.s = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

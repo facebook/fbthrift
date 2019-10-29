@@ -84,8 +84,10 @@ _readField_opt_fieldA:
   }
 _readField_fieldB:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldB = ::std::map<::std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::read(*iprot, this->fieldB);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -97,8 +99,10 @@ _readField_fieldB:
   }
 _readField_req_fieldB:
   {
+    _readState.beforeSubobject(iprot);
     this->req_fieldB = ::std::map<::std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::read(*iprot, this->req_fieldB);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -110,8 +114,10 @@ _readField_req_fieldB:
   }
 _readField_opt_fieldB:
   {
+    _readState.beforeSubobject(iprot);
     this->opt_fieldB = ::std::map<::std::string, bool>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, bool>>::read(*iprot, this->opt_fieldB.value());
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -123,8 +129,10 @@ _readField_opt_fieldB:
   }
 _readField_fieldC:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldC = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->fieldC);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -136,8 +144,10 @@ _readField_fieldC:
   }
 _readField_req_fieldC:
   {
+    _readState.beforeSubobject(iprot);
     this->req_fieldC = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->req_fieldC);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -149,8 +159,10 @@ _readField_req_fieldC:
   }
 _readField_opt_fieldC:
   {
+    _readState.beforeSubobject(iprot);
     this->opt_fieldC = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->opt_fieldC.value());
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

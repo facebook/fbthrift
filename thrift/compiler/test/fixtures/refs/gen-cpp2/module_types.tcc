@@ -443,9 +443,11 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_opt_ref:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->opt_ref = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -457,9 +459,11 @@ _readField_opt_ref:
   }
 _readField_ref:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->ref = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -471,9 +475,11 @@ _readField_ref:
   }
 _readField_req_ref:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->req_ref = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -673,9 +679,11 @@ void StructWithUnion::readNoXfer(Protocol_* iprot) {
   }
 _readField_u:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyUnion> ptr = std::make_unique< ::cpp2::MyUnion>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::read(iprot, ptr.get());
     this->u = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -700,8 +708,10 @@ _readField_aDouble:
   }
 _readField_f:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, &this->f);
     this->__isset.f = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -857,9 +867,11 @@ void RecursiveStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_mes:
   {
+    _readState.beforeSubobject(iprot);
     this->mes = ::std::vector< ::cpp2::RecursiveStruct>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::cpp2::RecursiveStruct>>::read(*iprot, this->mes);
     this->__isset.mes = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -972,9 +984,11 @@ void StructWithContainers::readNoXfer(Protocol_* iprot) {
   }
 _readField_list_ref:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr<::std::vector<int32_t>> ptr = std::make_unique<::std::vector<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, *ptr);
     this->list_ref = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -986,9 +1000,11 @@ _readField_list_ref:
   }
 _readField_set_ref:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr<::std::set<int32_t>> ptr = std::make_unique<::std::set<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, *ptr);
     this->set_ref = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1000,9 +1016,11 @@ _readField_set_ref:
   }
 _readField_map_ref:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr<::std::map<int32_t, int32_t>> ptr = std::make_unique<::std::map<int32_t, int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, *ptr);
     this->map_ref = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1014,9 +1032,11 @@ _readField_map_ref:
   }
 _readField_list_ref_unique:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr<::std::vector<int32_t>> ptr = std::make_unique<::std::vector<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, *ptr);
     this->list_ref_unique = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1028,9 +1048,11 @@ _readField_list_ref_unique:
   }
 _readField_set_ref_shared:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr<::std::set<int32_t>> ptr = std::make_unique<::std::set<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, *ptr);
     this->set_ref_shared = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1042,9 +1064,11 @@ _readField_set_ref_shared:
   }
 _readField_list_ref_shared_const:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr<::std::vector<int32_t>> ptr = std::make_unique<::std::vector<int32_t>>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, *ptr);
     this->list_ref_shared_const = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1334,9 +1358,11 @@ void StructWithSharedConst::readNoXfer(Protocol_* iprot) {
   }
 _readField_opt_shared_const:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->opt_shared_const = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1348,9 +1374,11 @@ _readField_opt_shared_const:
   }
 _readField_shared_const:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->shared_const = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1362,9 +1390,11 @@ _readField_shared_const:
   }
 _readField_req_shared_const:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::MyField> ptr = std::make_unique< ::cpp2::MyField>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, ptr.get());
     this->req_shared_const = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1643,9 +1673,11 @@ void StructWithRef::readNoXfer(Protocol_* iprot) {
   }
 _readField_def_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->def_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1657,9 +1689,11 @@ _readField_def_field:
   }
 _readField_opt_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->opt_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1671,9 +1705,11 @@ _readField_opt_field:
   }
 _readField_req_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1873,9 +1909,11 @@ void StructWithRefTypeUnique::readNoXfer(Protocol_* iprot) {
   }
 _readField_def_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->def_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1887,9 +1925,11 @@ _readField_def_field:
   }
 _readField_opt_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->opt_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1901,9 +1941,11 @@ _readField_opt_field:
   }
 _readField_req_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2103,9 +2145,11 @@ void StructWithRefTypeShared::readNoXfer(Protocol_* iprot) {
   }
 _readField_def_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->def_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2117,9 +2161,11 @@ _readField_def_field:
   }
 _readField_opt_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->opt_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2131,9 +2177,11 @@ _readField_opt_field:
   }
 _readField_req_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2333,9 +2381,11 @@ void StructWithRefTypeSharedConst::readNoXfer(Protocol_* iprot) {
   }
 _readField_def_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->def_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2347,9 +2397,11 @@ _readField_def_field:
   }
 _readField_opt_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->opt_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2361,9 +2413,11 @@ _readField_opt_field:
   }
 _readField_req_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->req_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2563,9 +2617,11 @@ void StructWithRefAndAnnotCppNoexceptMoveCtor::readNoXfer(Protocol_* iprot) {
   }
 _readField_def_field:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::cpp2::Empty> ptr = std::make_unique< ::cpp2::Empty>();
     ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, ptr.get());
     this->def_field = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

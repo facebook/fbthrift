@@ -89,9 +89,11 @@ _readField_strField:
   }
 _readField_listField:
   {
+    _readState.beforeSubobject(iprot);
     this->listField = ::std::vector<int16_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::read(*iprot, this->listField);
     this->__isset.listField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -103,9 +105,11 @@ _readField_listField:
   }
 _readField_mapField:
   {
+    _readState.beforeSubobject(iprot);
     this->mapField = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->mapField);
     this->__isset.mapField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -117,8 +121,10 @@ _readField_mapField:
   }
 _readField_inclAField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::read(iprot, &this->inclAField);
     this->__isset.inclAField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -130,8 +136,10 @@ _readField_inclAField:
   }
 _readField_inclBField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedB>::read(iprot, &this->inclBField);
     this->__isset.inclBField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

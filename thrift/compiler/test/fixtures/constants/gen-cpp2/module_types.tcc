@@ -696,8 +696,10 @@ _readField_b:
   }
 _readField_c:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::read(iprot, &this->c);
     this->__isset.c = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -709,9 +711,11 @@ _readField_c:
   }
 _readField_d:
   {
+    _readState.beforeSubobject(iprot);
     this->d = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->d);
     this->__isset.d = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -889,8 +893,10 @@ _readField_b:
   }
 _readField_c:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::struct2>::read(iprot, &this->c);
     this->__isset.c = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

@@ -47,8 +47,10 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIncludedField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::read(iprot, &this->MyIncludedField);
     this->__isset.MyIncludedField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -60,8 +62,10 @@ _readField_MyIncludedField:
   }
 _readField_MyOtherIncludedField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::read(iprot, &this->MyOtherIncludedField);
     this->__isset.MyOtherIncludedField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

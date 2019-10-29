@@ -645,9 +645,11 @@ _readField_intVal:
   }
 _readField_typedefValue:
   {
+    _readState.beforeSubobject(iprot);
     this->typedefValue =  ::cpp2::containerTypedef();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::cpp2::containerTypedef>::read(*iprot, this->typedefValue);
     this->__isset.typedefValue = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

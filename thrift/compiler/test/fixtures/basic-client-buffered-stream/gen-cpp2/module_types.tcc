@@ -175,8 +175,10 @@ _readField_MyStringField:
   }
 _readField_MyDataField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::read(iprot, &this->MyDataField);
     this->__isset.MyDataField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

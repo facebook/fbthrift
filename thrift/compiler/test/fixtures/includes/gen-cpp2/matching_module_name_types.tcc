@@ -47,8 +47,10 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_OtherStructField:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::matching_module_name::OtherStruct>::read(iprot, &this->OtherStructField);
     this->__isset.OtherStructField = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

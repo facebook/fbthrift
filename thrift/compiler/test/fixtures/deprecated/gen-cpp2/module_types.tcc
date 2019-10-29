@@ -78,8 +78,10 @@ _readField_houseName:
   }
 _readField_houseColors:
   {
+    _readState.beforeSubobject(iprot);
     this->houseColors = ::std::set< ::cpp2::ColorID>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set< ::cpp2::ColorID>>::read(*iprot, this->houseColors.value());
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

@@ -1356,8 +1356,10 @@ _readField_f:
   }
 _readField_g:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->g);
     this->__isset.g = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1369,8 +1371,10 @@ _readField_g:
   }
 _readField_h:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::read(iprot, &this->h);
     this->__isset.h = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1382,8 +1386,10 @@ _readField_h:
   }
 _readField_i:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::read(iprot, &this->i);
     this->__isset.i = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1395,9 +1401,11 @@ _readField_i:
   }
 _readField_j:
   {
+    _readState.beforeSubobject(iprot);
     this->j = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->j);
     this->__isset.j = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1409,9 +1417,11 @@ _readField_j:
   }
 _readField_j1:
   {
+    _readState.beforeSubobject(iprot);
     this->j1 = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->j1);
     this->__isset.j1 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1423,9 +1433,11 @@ _readField_j1:
   }
 _readField_j2:
   {
+    _readState.beforeSubobject(iprot);
     this->j2 = ::std::vector< ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, ::std::vector< ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->j2);
     this->__isset.j2 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1437,9 +1449,11 @@ _readField_j2:
   }
 _readField_j3:
   {
+    _readState.beforeSubobject(iprot);
     this->j3 = ::std::vector< ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::test_cpp2::cpp_reflection::structA>>::read(*iprot, this->j3);
     this->__isset.j3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1451,9 +1465,11 @@ _readField_j3:
   }
 _readField_k:
   {
+    _readState.beforeSubobject(iprot);
     this->k = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->k);
     this->__isset.k = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1465,9 +1481,11 @@ _readField_k:
   }
 _readField_k1:
   {
+    _readState.beforeSubobject(iprot);
     this->k1 = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->k1);
     this->__isset.k1 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1479,9 +1497,11 @@ _readField_k1:
   }
 _readField_k2:
   {
+    _readState.beforeSubobject(iprot);
     this->k2 = ::std::set< ::test_cpp2::cpp_reflection::enum2>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::enumeration>, ::std::set< ::test_cpp2::cpp_reflection::enum2>>::read(*iprot, this->k2);
     this->__isset.k2 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1493,9 +1513,11 @@ _readField_k2:
   }
 _readField_k3:
   {
+    _readState.beforeSubobject(iprot);
     this->k3 = ::std::set< ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set< ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->k3);
     this->__isset.k3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1507,9 +1529,11 @@ _readField_k3:
   }
 _readField_l:
   {
+    _readState.beforeSubobject(iprot);
     this->l = ::std::map<int32_t, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, this->l);
     this->__isset.l = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1521,9 +1545,11 @@ _readField_l:
   }
 _readField_l1:
   {
+    _readState.beforeSubobject(iprot);
     this->l1 = ::std::map<int32_t, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::integral>, ::std::map<int32_t, int32_t>>::read(*iprot, this->l1);
     this->__isset.l1 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1535,9 +1561,11 @@ _readField_l1:
   }
 _readField_l2:
   {
+    _readState.beforeSubobject(iprot);
     this->l2 = ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::enumeration>, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->l2);
     this->__isset.l2 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1549,9 +1577,11 @@ _readField_l2:
   }
 _readField_l3:
   {
+    _readState.beforeSubobject(iprot);
     this->l3 = ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->l3);
     this->__isset.l3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1563,9 +1593,11 @@ _readField_l3:
   }
 _readField_m1:
   {
+    _readState.beforeSubobject(iprot);
     this->m1 = ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::integral>, ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>>::read(*iprot, this->m1);
     this->__isset.m1 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1577,9 +1609,11 @@ _readField_m1:
   }
 _readField_m2:
   {
+    _readState.beforeSubobject(iprot);
     this->m2 = ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::enumeration>, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>>::read(*iprot, this->m2);
     this->__isset.m2 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1591,9 +1625,11 @@ _readField_m2:
   }
 _readField_m3:
   {
+    _readState.beforeSubobject(iprot);
     this->m3 = ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->m3);
     this->__isset.m3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1605,9 +1641,11 @@ _readField_m3:
   }
 _readField_n1:
   {
+    _readState.beforeSubobject(iprot);
     this->n1 = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->n1);
     this->__isset.n1 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1619,9 +1657,11 @@ _readField_n1:
   }
 _readField_n2:
   {
+    _readState.beforeSubobject(iprot);
     this->n2 = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::enumeration>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->n2);
     this->__isset.n2 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1633,9 +1673,11 @@ _readField_n2:
   }
 _readField_n3:
   {
+    _readState.beforeSubobject(iprot);
     this->n3 = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->n3);
     this->__isset.n3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1647,9 +1689,11 @@ _readField_n3:
   }
 _readField_o1:
   {
+    _readState.beforeSubobject(iprot);
     this->o1 = ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>, ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>>::read(*iprot, this->o1);
     this->__isset.o1 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1661,9 +1705,11 @@ _readField_o1:
   }
 _readField_o2:
   {
+    _readState.beforeSubobject(iprot);
     this->o2 = ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>>::read(*iprot, this->o2);
     this->__isset.o2 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1675,9 +1721,11 @@ _readField_o2:
   }
 _readField_o3:
   {
+    _readState.beforeSubobject(iprot);
     this->o3 = ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->o3);
     this->__isset.o3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2269,8 +2317,10 @@ _readField_field3:
   }
 _readField_field4:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->field4);
     this->__isset.field4 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2282,8 +2332,10 @@ _readField_field4:
   }
 _readField_field5:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->field5);
     this->__isset.field5 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2529,8 +2581,10 @@ _readField_fieldD:
   }
 _readField_fieldE:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->fieldE);
     this->__isset.fieldE = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2542,8 +2596,10 @@ _readField_fieldE:
   }
 _readField_fieldF:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->fieldF);
     this->__isset.fieldF = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2555,8 +2611,10 @@ _readField_fieldF:
   }
 _readField_fieldG:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::read(iprot, &this->fieldG);
     this->__isset.fieldG = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2805,8 +2863,10 @@ _readField_fieldD:
   }
 _readField_fieldE:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::read(iprot, &this->fieldE);
     this->__isset.fieldE = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2818,8 +2878,10 @@ _readField_fieldE:
   }
 _readField_fieldF:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->fieldF);
     this->__isset.fieldF = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2831,8 +2893,10 @@ _readField_fieldF:
   }
 _readField_fieldG:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::read(iprot, &this->fieldG);
     this->__isset.fieldG = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2844,8 +2908,10 @@ _readField_fieldG:
   }
 _readField_fieldH:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::read(iprot, &this->fieldH);
     this->__isset.fieldH = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2857,9 +2923,11 @@ _readField_fieldH:
   }
 _readField_fieldI:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldI = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->fieldI);
     this->__isset.fieldI = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2871,9 +2939,11 @@ _readField_fieldI:
   }
 _readField_fieldJ:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldJ = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, this->fieldJ);
     this->__isset.fieldJ = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2885,9 +2955,11 @@ _readField_fieldJ:
   }
 _readField_fieldK:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldK = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, ::std::vector<::std::string>>::read(*iprot, this->fieldK);
     this->__isset.fieldK = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2899,9 +2971,11 @@ _readField_fieldK:
   }
 _readField_fieldL:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldL = ::std::vector< ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::test_cpp2::cpp_reflection::structA>>::read(*iprot, this->fieldL);
     this->__isset.fieldL = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2913,9 +2987,11 @@ _readField_fieldL:
   }
 _readField_fieldM:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldM = ::std::set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, ::std::set<int32_t>>::read(*iprot, this->fieldM);
     this->__isset.fieldM = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2927,9 +3003,11 @@ _readField_fieldM:
   }
 _readField_fieldN:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldN = ::std::set<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::read(*iprot, this->fieldN);
     this->__isset.fieldN = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2941,9 +3019,11 @@ _readField_fieldN:
   }
 _readField_fieldO:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldO = ::std::set<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, ::std::set<::std::string>>::read(*iprot, this->fieldO);
     this->__isset.fieldO = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2955,9 +3035,11 @@ _readField_fieldO:
   }
 _readField_fieldP:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldP = ::std::set< ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>, ::std::set< ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->fieldP);
     this->__isset.fieldP = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2969,9 +3051,11 @@ _readField_fieldP:
   }
 _readField_fieldQ:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldQ = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>>::read(*iprot, this->fieldQ);
     this->__isset.fieldQ = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -2983,9 +3067,11 @@ _readField_fieldQ:
   }
 _readField_fieldR:
   {
+    _readState.beforeSubobject(iprot);
     this->fieldR = ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>::read(*iprot, this->fieldR);
     this->__isset.fieldR = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3385,9 +3471,11 @@ _readField_field2:
   }
 _readField_field3:
   {
+    _readState.beforeSubobject(iprot);
     std::unique_ptr< ::test_cpp2::cpp_reflection::structA> ptr = std::make_unique< ::test_cpp2::cpp_reflection::structA>();
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, ptr.get());
     this->field3 = std::move(ptr);
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3602,8 +3690,10 @@ _readField_field2:
   }
 _readField_field3:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, &this->field3);
     this->__isset.field3 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3615,8 +3705,10 @@ _readField_field3:
   }
 _readField_field4:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &this->field4);
     this->__isset.field4 = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3897,8 +3989,10 @@ void dep_A_struct::readNoXfer(Protocol_* iprot) {
   }
 _readField_b:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::read(iprot, &this->b);
     this->__isset.b = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -3910,8 +4004,10 @@ _readField_b:
   }
 _readField_c:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::read(iprot, &this->c);
     this->__isset.c = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4061,8 +4157,10 @@ void dep_B_struct::readNoXfer(Protocol_* iprot) {
   }
 _readField_b:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::read(iprot, &this->b);
     this->__isset.b = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -4074,8 +4172,10 @@ _readField_b:
   }
 _readField_c:
   {
+    _readState.beforeSubobject(iprot);
     ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::read(iprot, &this->c);
     this->__isset.c = true;
+    _readState.afterSubobject(iprot);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
