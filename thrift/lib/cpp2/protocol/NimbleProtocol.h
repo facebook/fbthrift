@@ -127,6 +127,7 @@ class NimbleProtocolReader {
 
  public:
   using ProtocolWriter = NimbleProtocolWriter;
+  struct StructReadState;
 
   explicit NimbleProtocolReader(
       int32_t string_limit = FLAGS_thrift_cpp2_protocol_reader_string_limit,
@@ -171,19 +172,34 @@ class NimbleProtocolReader {
   void readSetBegin(NimbleType& elemType, uint32_t& size);
   void readSetEnd();
   void readBool(bool& value);
+  void readBoolWithContext(bool& value, StructReadState& readState);
   void readBool(std::vector<bool>::reference value);
   void readByte(int8_t& byte);
+  void readByteWithContext(int8_t& byte, StructReadState& readState);
   void readI16(int16_t& i16);
+  void readI16WithContext(int16_t& i16, StructReadState& readState);
   void readI32(int32_t& i32);
+  void readI32WithContext(int32_t& i32, StructReadState& readState);
   void readI64(int64_t& i64);
+  void readI64WithContext(int64_t& i64, StructReadState& readState);
   void readDouble(double& dub);
+  void readDoubleWithContext(double& dub, StructReadState& readState);
   void readFloat(float& flt);
+  void readFloatWithContext(float& flt, StructReadState& readState);
   template <typename StrType>
   void readString(StrType& str);
   template <typename StrType>
+  void readStringWithContext(StrType& str, StructReadState& readState);
+  template <typename StrType>
   void readBinary(StrType& str);
+  template <typename StrType>
+  void readBinaryWithContext(StrType& str, StructReadState& readState);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
+  void readBinaryWithContext(
+      std::unique_ptr<folly::IOBuf>& str,
+      StructReadState& readState);
   void readBinary(folly::IOBuf& str);
+  void readBinaryWithContext(folly::IOBuf& str, StructReadState& readState);
   void skip(NimbleType /*type*/) {}
   bool peekMap() {
     return false;
@@ -207,6 +223,8 @@ class NimbleProtocolReader {
   struct StructReadState {
     int16_t fieldId;
     detail::nimble::NimbleType nimbleType;
+
+    constexpr static bool kAcceptsContext = true;
 
     void readStructBegin(NimbleProtocolReader* iprot) {
       iprot->readStructBegin("");

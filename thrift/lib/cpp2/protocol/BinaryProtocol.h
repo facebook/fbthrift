@@ -288,6 +288,8 @@ class BinaryProtocolReader {
     int16_t fieldId;
     apache::thrift::protocol::TType fieldType;
 
+    constexpr static bool kAcceptsContext = false;
+
     void readStructBegin(BinaryProtocolReader* /*iprot*/) {}
 
     void readStructEnd(BinaryProtocolReader* /*iprot*/) {}

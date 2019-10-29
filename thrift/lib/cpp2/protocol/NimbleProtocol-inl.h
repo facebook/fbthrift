@@ -348,6 +348,13 @@ inline void NimbleProtocolReader::readSetEnd() {
 inline void NimbleProtocolReader::readBool(bool& value) {
   value = static_cast<bool>(decoder_.nextContentChunk());
 }
+
+inline void NimbleProtocolReader::readBoolWithContext(
+    bool& value,
+    StructReadState& /* srs */) {
+  value = static_cast<bool>(decoder_.nextContentChunk());
+}
+
 inline void NimbleProtocolReader::readBool(std::vector<bool>::reference value) {
   bool val;
   readBool(val);
@@ -358,7 +365,19 @@ inline void NimbleProtocolReader::readByte(int8_t& byte) {
   byte = static_cast<int8_t>(decoder_.nextContentChunk());
 }
 
+inline void NimbleProtocolReader::readByteWithContext(
+    int8_t& byte,
+    StructReadState& /* srs */) {
+  byte = static_cast<int8_t>(decoder_.nextContentChunk());
+}
+
 inline void NimbleProtocolReader::readI16(int16_t& i16) {
+  i16 = static_cast<int16_t>(decoder_.nextContentChunk());
+}
+
+inline void NimbleProtocolReader::readI16WithContext(
+    int16_t& i16,
+    StructReadState& /* srs */) {
   i16 = static_cast<int16_t>(decoder_.nextContentChunk());
 }
 
@@ -366,7 +385,21 @@ inline void NimbleProtocolReader::readI32(int32_t& i32) {
   i32 = static_cast<int32_t>(decoder_.nextContentChunk());
 }
 
+inline void NimbleProtocolReader::readI32WithContext(
+    int32_t& i32,
+    StructReadState& /* srs */) {
+  i32 = static_cast<int32_t>(decoder_.nextContentChunk());
+}
+
 inline void NimbleProtocolReader::readI64(int64_t& i64) {
+  auto lower = decoder_.nextContentChunk();
+  auto higher = decoder_.nextContentChunk();
+  i64 = static_cast<int64_t>(higher) << 32 | lower;
+}
+
+inline void NimbleProtocolReader::readI64WithContext(
+    int64_t& i64,
+    StructReadState& /* srs */) {
   auto lower = decoder_.nextContentChunk();
   auto higher = decoder_.nextContentChunk();
   i64 = static_cast<int64_t>(higher) << 32 | lower;
@@ -381,7 +414,28 @@ inline void NimbleProtocolReader::readDouble(double& dub) {
   dub = bitwise_cast<double>(bits);
 }
 
+inline void NimbleProtocolReader::readDoubleWithContext(
+    double& dub,
+    StructReadState& /* srs */) {
+  static_assert(sizeof(double) == sizeof(uint64_t), "");
+  static_assert(std::numeric_limits<double>::is_iec559, "");
+
+  int64_t bits = 0;
+  readI64(bits);
+  dub = bitwise_cast<double>(bits);
+}
+
 inline void NimbleProtocolReader::readFloat(float& flt) {
+  static_assert(sizeof(float) == sizeof(uint32_t), "");
+  static_assert(std::numeric_limits<float>::is_iec559, "");
+
+  uint32_t bits = decoder_.nextContentChunk();
+  flt = bitwise_cast<float>(bits);
+}
+
+inline void NimbleProtocolReader::readFloatWithContext(
+    float& flt,
+    StructReadState& /* srs */) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
@@ -400,7 +454,26 @@ inline void NimbleProtocolReader::readString(StrType& str) {
 }
 
 template <typename StrType>
+inline void NimbleProtocolReader::readStringWithContext(
+    StrType& str,
+    StructReadState& /* srs */) {
+  uint32_t size = decoder_.nextSizeChunk();
+  if (size > static_cast<uint32_t>(string_limit_)) {
+    TProtocolException::throwExceededSizeLimit();
+  }
+
+  decoder_.nextBinary(str, size);
+}
+
+template <typename StrType>
 inline void NimbleProtocolReader::readBinary(StrType& str) {
+  readString(str);
+}
+
+template <typename StrType>
+inline void NimbleProtocolReader::readBinaryWithContext(
+    StrType& str,
+    StructReadState& /* srs */) {
   readString(str);
 }
 
@@ -412,7 +485,27 @@ inline void NimbleProtocolReader::readBinary(
   readBinary(*str);
 }
 
+inline void NimbleProtocolReader::readBinaryWithContext(
+    std::unique_ptr<folly::IOBuf>& str,
+    StructReadState& srs) {
+  if (!str) {
+    str = std::make_unique<folly::IOBuf>();
+  }
+  readBinaryWithContext(*str, srs);
+}
+
 inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
+  uint32_t size = decoder_.nextSizeChunk();
+
+  if (size > static_cast<uint32_t>(string_limit_)) {
+    TProtocolException::throwExceededSizeLimit();
+  }
+  decoder_.nextBinary(str, size);
+}
+
+inline void NimbleProtocolReader::readBinaryWithContext(
+    folly::IOBuf& str,
+    StructReadState& /* srs */) {
   uint32_t size = decoder_.nextSizeChunk();
 
   if (size > static_cast<uint32_t>(string_limit_)) {

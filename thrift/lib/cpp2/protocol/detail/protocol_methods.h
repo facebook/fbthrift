@@ -77,6 +77,33 @@ namespace thrift {
 namespace detail {
 namespace pm {
 
+// This macro backports "if constexpr" into C++-pre-17. The idea is, we form a
+// tuple of two lambdas (one for when the condition is true, and one for when
+// it's false), and use get<> to select the lambda to actually invoke, by
+// passing the condition as the index.
+// There's a wrinkle; the body of the lambda still has to parse without errors,
+// which it won't do if we call a method that doesn't exist within its body that
+// doesn't depend on a template parameter. So we make the lambdas take an auto
+// argument, and the types of anything we need to by making them depend on that
+// argument. This is TypeHider.
+//
+// This is a fairly ugly hack. To get rid of it, we need to either:
+// - Drop support for earlier versions of C++.
+// - Teach all protocols, and dependent code, about context-taking methods.
+// Neither of these is ideal in the short term. Eventually, we should probably
+// do both.
+#define THRIFT_PROTOCOL_METHODS_UNPAREN(...) __VA_ARGS__
+#define THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR(cond, T, E) \
+  std::get<(cond) ? 0 : 1>(std::forward_as_tuple(                  \
+      [&](auto _) { THRIFT_PROTOCOL_METHODS_UNPAREN T },           \
+      [&](auto _) { THRIFT_PROTOCOL_METHODS_UNPAREN E }))(TypeHider{})
+struct TypeHider {
+  template <typename T>
+  T& operator()(T& t) {
+    return t;
+  }
+};
+
 template <typename T>
 auto reserve_if_possible(T* t, std::uint32_t size)
     -> decltype(t->reserve(size), std::true_type{}) {
@@ -249,21 +276,23 @@ deserialize_known_length_set(
 template <typename TypeClass, typename Type, typename Enable = void>
 struct protocol_methods;
 
-#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(                    \
-    Class, Type, Method, TTypeValue)                                   \
-  constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
-  template <typename Protocol>                                         \
-  static void read(Protocol& protocol, Type& out) {                    \
-    protocol.read##Method(out);                                        \
-  }                                                                    \
-  template <typename Protocol, typename Context>                       \
-  static void readWithContext(                                         \
-      Protocol& protocol, Type& out, Context& /* ctx */) {             \
-    protocol.read##Method(out);                                        \
-  }                                                                    \
-  template <typename Protocol>                                         \
-  static std::size_t write(Protocol& protocol, Type const& in) {       \
-    return protocol.write##Method(in);                                 \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON(                          \
+    Class, Type, Method, TTypeValue)                                         \
+  constexpr static protocol::TType ttype_value = protocol::TTypeValue;       \
+  template <typename Protocol>                                               \
+  static void read(Protocol& protocol, Type& out) {                          \
+    protocol.read##Method(out);                                              \
+  }                                                                          \
+  template <typename Protocol, typename Context>                             \
+  static void readWithContext(Protocol& protocol, Type& out, Context& ctx) { \
+    THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR(                          \
+        Context::kAcceptsContext,                                            \
+        (_(protocol).read##Method##WithContext(out, ctx);),                  \
+        (_(protocol).read##Method(out);));                                   \
+  }                                                                          \
+  template <typename Protocol>                                               \
+  static std::size_t write(Protocol& protocol, Type const& in) {             \
+    return protocol.write##Method(in);                                       \
   }
 
 #define THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON(                       \
@@ -299,26 +328,28 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64, T_I64);
 
 // Macros for defining protocol_methods for unsigned integers
 // Need special macros due to the casts needed
-#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(                        \
-    Class, Type, Method, TTypeValue)                                   \
-  constexpr static protocol::TType ttype_value = protocol::TTypeValue; \
-  using SignedType = std::make_signed_t<Type>;                         \
-  template <typename Protocol>                                         \
-  static void read(Protocol& protocol, Type& out) {                    \
-    SignedType tmp;                                                    \
-    protocol.read##Method(tmp);                                        \
-    out = folly::to_unsigned(tmp);                                     \
-  }                                                                    \
-  template <typename Protocol, typename Context>                       \
-  static void readWithContext(                                         \
-      Protocol& protocol, Type& out, Context& /* ctx */) {             \
-    SignedType tmp;                                                    \
-    protocol.read##Method(tmp);                                        \
-    out = folly::to_unsigned(tmp);                                     \
-  }                                                                    \
-  template <typename Protocol>                                         \
-  static std::size_t write(Protocol& protocol, Type const& in) {       \
-    return protocol.write##Method(folly::to_signed(in));               \
+#define THRIFT_PROTOCOL_METHODS_REGISTER_RW_UI(                              \
+    Class, Type, Method, TTypeValue)                                         \
+  constexpr static protocol::TType ttype_value = protocol::TTypeValue;       \
+  using SignedType = std::make_signed_t<Type>;                               \
+  template <typename Protocol>                                               \
+  static void read(Protocol& protocol, Type& out) {                          \
+    SignedType tmp;                                                          \
+    protocol.read##Method(tmp);                                              \
+    out = folly::to_unsigned(tmp);                                           \
+  }                                                                          \
+  template <typename Protocol, typename Context>                             \
+  static void readWithContext(Protocol& protocol, Type& out, Context& ctx) { \
+    SignedType tmp;                                                          \
+    THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR(                          \
+        Context::kAcceptsContext,                                            \
+        (_(protocol).read##Method##WithContext(tmp, ctx);),                  \
+        (_(protocol).read##Method(tmp);));                                   \
+    out = folly::to_unsigned(tmp);                                           \
+  }                                                                          \
+  template <typename Protocol>                                               \
+  static std::size_t write(Protocol& protocol, Type const& in) {             \
+    return protocol.write##Method(folly::to_signed(in));                     \
   }
 
 #define THRIFT_PROTOCOL_METHODS_REGISTER_SS_UI(                           \
@@ -421,6 +452,8 @@ THRIFT_PROTOCOL_METHODS_REGISTER_ZC(binary, folly::fbstring, Binary, T_STRING);
                                            // no sir
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_SS_COMMON
 #undef THRIFT_PROTOCOL_METHODS_REGISTER_RW_COMMON
+#undef THRIFT_PROTOCOL_METHODS_IF_THEN_ELSE_CONSTEXPR
+#undef THRIFT_PROTOCOL_METHODS_UNPAREN
 
 /*
  * Enum Specialization
@@ -441,10 +474,9 @@ struct protocol_methods<type_class::enumeration, Type> {
   }
 
   template <typename Protocol, typename Context>
-  static void
-  readWithContext(Protocol& protocol, Type& out, Context& /* ctx */) {
+  static void readWithContext(Protocol& protocol, Type& out, Context& ctx) {
     int_type tmp;
-    int_methods::read(protocol, tmp);
+    int_methods::readWithContext(protocol, tmp, ctx);
     out = static_cast<Type>(tmp);
   }
 
