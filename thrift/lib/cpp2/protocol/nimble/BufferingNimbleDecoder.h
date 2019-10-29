@@ -18,6 +18,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <utility>
 
 #include <folly/Likely.h>
 #include <folly/io/Cursor.h>
@@ -29,6 +30,31 @@
 namespace apache {
 namespace thrift {
 namespace detail {
+
+struct BufferingNimbleDecoderState {
+ public:
+  BufferingNimbleDecoderState() = default;
+  BufferingNimbleDecoderState(const BufferingNimbleDecoderState&) = delete;
+  BufferingNimbleDecoderState(BufferingNimbleDecoderState&& other) noexcept {
+    nextChunkToReturn_ = std::exchange(other.nextChunkToReturn_, -1);
+  }
+  BufferingNimbleDecoderState& operator=(const BufferingNimbleDecoderState&) =
+      delete;
+  BufferingNimbleDecoderState& operator=(
+      BufferingNimbleDecoderState&& other) noexcept {
+    nextChunkToReturn_ = std::exchange(other.nextChunkToReturn_, -1);
+    return *this;
+  }
+
+ private:
+  template <ChunkRepr repr>
+  friend class BufferingNimbleDecoder;
+
+  explicit BufferingNimbleDecoderState(ssize_t nextChunkToReturn) noexcept
+      : nextChunkToReturn_(nextChunkToReturn) {}
+
+  ssize_t nextChunkToReturn_ = -1;
+};
 
 // The buffering decoder serves two purposes:
 // 1. Provides chunk-at-a-time semantics. Naively, lower level decoders only
@@ -53,18 +79,48 @@ class BufferingNimbleDecoder {
     dataCursor_ = cursor;
   }
 
-  std::uint32_t nextChunk() {
-    if (UNLIKELY(nextChunkToReturn_ == maxChunkFilled_)) {
-      fillBuffer();
+  BufferingNimbleDecoderState borrowState() {
+    if (folly::kIsDebug) {
+      DCHECK(!stateBorrowed_);
+      stateBorrowed_ = true;
     }
-    std::uint32_t result = chunks_[nextChunkToReturn_];
-    ++nextChunkToReturn_;
+    return BufferingNimbleDecoderState{nextChunkToReturn_};
+  }
+
+  void returnState(BufferingNimbleDecoderState state) {
+    DCHECK(state.nextChunkToReturn_ != -1);
+    if (folly::kIsDebug) {
+      DCHECK(stateBorrowed_);
+      stateBorrowed_ = false;
+    }
+    nextChunkToReturn_ = state.nextChunkToReturn_;
+    if (folly::kIsDebug) {
+      state.nextChunkToReturn_ = -1;
+    }
+  }
+
+  std::uint32_t nextChunk() {
+    DCHECK(!stateBorrowed_);
+    auto state = borrowState();
+    std::uint32_t ret = nextChunk(state);
+    returnState(std::move(state));
+    return ret;
+  }
+
+  std::uint32_t nextChunk(BufferingNimbleDecoderState& state) {
+    DCHECK(stateBorrowed_);
+    DCHECK(state.nextChunkToReturn_ != -1);
+
+    if (UNLIKELY(state.nextChunkToReturn_ == maxChunkFilled_)) {
+      state = fillBuffer();
+    }
+    std::uint32_t result = chunks_[state.nextChunkToReturn_];
+    ++state.nextChunkToReturn_;
     return result;
   }
 
  private:
-  void fillBuffer() {
-    nextChunkToReturn_ = 0;
+  BufferingNimbleDecoderState fillBuffer() {
     maxChunkFilled_ = 0;
     // We were asked to produce more chunks, but can't advance in the control
     // stream; the input is invalid. Note that a similar check on the data
@@ -134,6 +190,7 @@ class BufferingNimbleDecoder {
         dataCursor_.skip(dataBytesConsumed);
       }
     }
+    return BufferingNimbleDecoderState{0};
   }
 
   // Low level decode works 4 chunks at a time.
@@ -143,6 +200,7 @@ class BufferingNimbleDecoder {
       "Must not have partially decoded blocks");
 
   std::uint32_t chunks_[kChunksToBuffer];
+  bool stateBorrowed_ = false;
   ssize_t nextChunkToReturn_ = 0;
   ssize_t maxChunkFilled_ = 0;
 
