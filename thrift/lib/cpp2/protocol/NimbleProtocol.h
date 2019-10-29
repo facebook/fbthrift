@@ -224,44 +224,80 @@ class NimbleProtocolReader {
     int16_t fieldId;
     detail::nimble::NimbleType nimbleType;
     detail::BufferingNimbleDecoderState decoderState;
+    const std::uint8_t* fieldCur;
+    const std::uint8_t* fieldEnd;
 
     constexpr static bool kAcceptsContext = true;
 
+    void borrowFieldPtrs(NimbleProtocolReader* iprot) {
+      folly::ByteRange curRange = iprot->decoder_.fieldRange();
+      fieldCur = curRange.begin();
+      fieldEnd = curRange.end();
+    }
+
+    void returnFieldPtrs(NimbleProtocolReader* iprot) {
+      DCHECK_GE(
+          (uintptr_t)fieldCur, (uintptr_t)iprot->decoder_.fieldRange().begin());
+      iprot->decoder_.skipFieldBytes(
+          fieldCur - iprot->decoder_.fieldRange().begin());
+    }
+
     void readStructBegin(NimbleProtocolReader* iprot) {
       iprot->readStructBegin("");
+      borrowFieldPtrs(iprot);
       decoderState = iprot->borrowState();
     }
 
     void readStructEnd(NimbleProtocolReader* iprot) {
+      returnFieldPtrs(iprot);
       iprot->returnState(std::move(decoderState));
     }
 
     void readFieldBegin(NimbleProtocolReader* iprot) {
+      returnFieldPtrs(iprot);
       iprot->advanceToNextFieldSlow(*this);
+      borrowFieldPtrs(iprot);
     }
 
     void readFieldBeginNoInline(NimbleProtocolReader* /*iprot*/) {}
 
     void readFieldEnd(NimbleProtocolReader* /*iprot*/) {}
 
+    // Failure doesn't mean that it wasn't right; spurious failures are allowed.
+    // Consumes the bytes on success
     FOLLY_ALWAYS_INLINE bool advanceToNextField(
-        NimbleProtocolReader* iprot,
-        int32_t currFieldId,
+        NimbleProtocolReader* /* iprot */,
+        int32_t /* currFieldId */,
         int32_t nextFieldId,
         TType nextFieldType) {
-      return iprot->advanceToNextField(
-          currFieldId, nextFieldId, nextFieldType, *this);
+      detail::nimble::FieldBytes expected = fieldBeginBytes(
+          detail::nimble::ttypeToNimbleType(nextFieldType), nextFieldId);
+      // This is technically UB; it's legal to form a pointer to one past the
+      // end of an array, but not two or three past.
+      // TODO(davidgoldblatt): Fix this.
+      if (LIKELY(fieldCur + expected.len < fieldEnd)) {
+        if (LIKELY(std::memcmp(fieldCur, expected.bytes, expected.len) == 0)) {
+          fieldCur += expected.len;
+          return true;
+        }
+      }
+      return false;
     }
 
+    FOLLY_ALWAYS_INLINE
     void afterAdvanceFailure(NimbleProtocolReader* iprot) {
+      returnFieldPtrs(iprot);
       iprot->advanceToNextFieldSlow(*this);
+      borrowFieldPtrs(iprot);
     }
 
     void beforeSubobject(NimbleProtocolReader* iprot) {
+      returnFieldPtrs(iprot);
       iprot->returnState(std::move(decoderState));
     }
 
     void afterSubobject(NimbleProtocolReader* iprot) {
+      borrowFieldPtrs(iprot);
       decoderState = iprot->borrowState();
     }
 
@@ -295,12 +331,6 @@ class NimbleProtocolReader {
   };
 
  protected:
-  FOLLY_ALWAYS_INLINE bool advanceToNextField(
-      int32_t currFieldId,
-      int32_t nextFieldId,
-      TType type,
-      StructReadState& state);
-
   void advanceToNextFieldSlow(StructReadState& state);
 
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(

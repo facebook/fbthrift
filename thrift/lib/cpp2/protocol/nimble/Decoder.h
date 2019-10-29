@@ -114,16 +114,12 @@ class Decoder {
     stringCursor_.clone(buf, size);
   }
 
-  // Failure doesn't mean that it wasn't right; spurious failures are allowed.
-  // Consumes the bytes on success
-  bool tryConsumeFieldBytes(std::size_t len, unsigned char* bytes) {
-    if (LIKELY(fieldCursor_.length() >= len)) {
-      if (LIKELY(std::memcmp(bytes, fieldCursor_.data(), len) == 0)) {
-        fieldCursor_.skipNoAdvance(len);
-        return true;
-      }
-    }
-    return false;
+  folly::ByteRange fieldRange() {
+    return fieldCursor_.peekBytes();
+  }
+
+  void skipFieldBytes(std::size_t size) {
+    fieldCursor_.skip(size);
   }
 
   std::uint8_t nextFieldByte() {

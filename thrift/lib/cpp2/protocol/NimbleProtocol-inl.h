@@ -524,16 +524,6 @@ inline void NimbleProtocolReader::skip(StructReadState& /*state*/) {
   }
 }
 
-bool NimbleProtocolReader::advanceToNextField(
-    int32_t /*currFieldId*/,
-    int32_t nextFieldId,
-    TType nextFieldType,
-    StructReadState& /* state */) {
-  FieldBytes expected =
-      fieldBeginBytes(ttypeToNimbleType(nextFieldType), nextFieldId);
-  return decoder_.tryConsumeFieldBytes(expected.len, expected.bytes);
-}
-
 inline void NimbleProtocolReader::advanceToNextFieldSlow(
     StructReadState& state) {
   std::uint8_t firstByte = decoder_.nextFieldByte();
