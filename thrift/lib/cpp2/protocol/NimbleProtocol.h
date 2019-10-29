@@ -240,8 +240,7 @@ class NimbleProtocolReader {
       iprot->advanceToNextFieldSlow(*this);
     }
 
-    FOLLY_NOINLINE void readFieldBeginNoInline(
-        NimbleProtocolReader* /*iprot*/) {}
+    void readFieldBeginNoInline(NimbleProtocolReader* /*iprot*/) {}
 
     void readFieldEnd(NimbleProtocolReader* /*iprot*/) {}
 
@@ -281,7 +280,7 @@ class NimbleProtocolReader {
       return iprot->isCompatibleWithType(expectedFieldType, *this);
     }
 
-    [[noreturn]] inline void skip(NimbleProtocolReader* iprot) {
+    inline void skip(NimbleProtocolReader* iprot) {
       iprot->skip(*this);
     }
 
@@ -308,7 +307,7 @@ class NimbleProtocolReader {
       TType expectedFieldType,
       StructReadState& state);
   /* The actual method that does skip when there is a mismatch */
-  [[noreturn]] void skip(StructReadState& state);
+  void skip(StructReadState& state);
 
  private:
   friend struct StructReadState;

@@ -514,9 +514,14 @@ inline void NimbleProtocolReader::readBinaryWithContext(
   decoder_.nextBinary(str, size);
 }
 
-[[noreturn]] inline void NimbleProtocolReader::skip(
-    StructReadState& /*state*/) {
-  throw std::runtime_error("Not implemented yet");
+inline void NimbleProtocolReader::skip(StructReadState& /*state*/) {
+  // Circumvent a "missing noreturn" warning. This can cause the compiler to not
+  // inline this method, which in turn will prevent readNoXfer methods from
+  // seeing that the StructReadState doesn't escape.
+  volatile bool doThrow = true;
+  if (doThrow) {
+    throw std::runtime_error("Not implemented yet");
+  }
 }
 
 bool NimbleProtocolReader::advanceToNextField(

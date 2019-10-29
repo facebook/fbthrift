@@ -112,7 +112,8 @@ class BufferingNimbleDecoder {
     DCHECK(state.nextChunkToReturn_ != -1);
 
     if (UNLIKELY(state.nextChunkToReturn_ == maxChunkFilled_)) {
-      state = fillBuffer();
+      fillBuffer();
+      state = BufferingNimbleDecoderState{0};
     }
     std::uint32_t result = chunks_[state.nextChunkToReturn_];
     ++state.nextChunkToReturn_;
@@ -120,7 +121,7 @@ class BufferingNimbleDecoder {
   }
 
  private:
-  BufferingNimbleDecoderState fillBuffer() {
+  void fillBuffer() {
     maxChunkFilled_ = 0;
     // We were asked to produce more chunks, but can't advance in the control
     // stream; the input is invalid. Note that a similar check on the data
@@ -190,7 +191,6 @@ class BufferingNimbleDecoder {
         dataCursor_.skip(dataBytesConsumed);
       }
     }
-    return BufferingNimbleDecoderState{0};
   }
 
   // Low level decode works 4 chunks at a time.
