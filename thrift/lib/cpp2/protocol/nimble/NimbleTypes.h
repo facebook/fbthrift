@@ -205,7 +205,10 @@ inline FieldBytes listBeginByte(NimbleType elem) {
   return result;
 }
 
-inline FieldBytes fieldBeginBytes(NimbleType type, std::uint16_t fieldId) {
+// This is always called with static values, in readNoXfer. It compiles out;
+// there's no code-size risk in inlining it.
+FOLLY_ALWAYS_INLINE
+FieldBytes fieldBeginBytes(NimbleType type, std::uint16_t fieldId) {
   // This is only called with trusted values, never a type off the wire; that
   // type should always be valid.
   DCHECK(type != NimbleType::INVALID);
