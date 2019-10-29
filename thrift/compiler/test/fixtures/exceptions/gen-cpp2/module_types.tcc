@@ -140,6 +140,7 @@ void Fiery::readNoXfer(Protocol_* iprot) {
   }
 _readField_message:
   {
+    
     iprot->readString(this->message);
   }
 
@@ -247,6 +248,7 @@ void Serious::readNoXfer(Protocol_* iprot) {
   }
 _readField_sonnet:
   {
+    
     iprot->readString(this->sonnet);
     this->__isset.sonnet = true;
   }

@@ -47,7 +47,7 @@ void Foo::readNoXfer(Protocol_* iprot) {
   }
 _readField_bar:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->bar);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->bar, _readState);
     this->__isset.bar = true;
   }
 

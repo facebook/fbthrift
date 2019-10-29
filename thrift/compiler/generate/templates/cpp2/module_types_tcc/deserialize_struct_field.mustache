@@ -14,41 +14,38 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%
+%><%!
 %><%#type:resolves_to_container_or_struct?%><%!
 %>_readState.beforeSubobject(iprot);
 <%/type:resolves_to_container_or_struct?%><%!
+
 %><%#field:optionals?%><%!
 %>this-><%field:cpp_name%> = <% > types/type%>();<%!
-%><%#type:resolves_to_base?%><%!
-%><%#type:resolves_to_integral?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>.value());<%!
-%><%/type:resolves_to_integral?%><%!
-%><%^type:resolves_to_integral?%>
+%><%#type:resolves_to_fixed_size?%><%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>.value(), _readState);<%
+%><%/type:resolves_to_fixed_size?%><%!
+%><%#type:string_or_binary?%>
 iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%>.value()<%type:cpp_indirection%>);<%!
-%><%/type:resolves_to_integral?%><%!
-%><%/type:resolves_to_base?%><%!
-%><%#type:resolves_to_container_or_enum?%>
+%><%/type:string_or_binary?%><%!
+%><%#type:resolves_to_container?%>
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>.value());<%!
-%><%/type:resolves_to_container_or_enum?%><%!
+%><%/type:resolves_to_container?%><%!
 %><%#type:struct?%>
 ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>.value());<%!
 %><%/type:struct?%><%!
 %><%/field:optionals?%><%!
 
-%><%#field:cpp_ref?%><%!
-%>std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<%!
-%><%#type:resolves_to_base?%><%!
-%><%#type:resolves_to_integral?%>
-::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
-%><%/type:resolves_to_integral?%><%!
-%><%^type:resolves_to_integral?%>
+%><%#field:cpp_ref?%>
+std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();<%!
+%><%#type:resolves_to_fixed_size?%><%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, *ptr, _readState);<%!
+%><%/type:resolves_to_fixed_size?%><%!
+%><%#type:string_or_binary?%>
 iprot->read<% > module_types_tcc/struct_field_type%>((*this-><%field:cpp_name%><%type:cpp_indirection%>));<%!
-%><%/type:resolves_to_integral?%><%!
-%><%/type:resolves_to_base?%><%!
-%><%#type:resolves_to_container_or_enum?%>
+%><%/type:string_or_binary?%><%!
+%><%#type:resolves_to_container?%>
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, *ptr);<%!
-%><%/type:resolves_to_container_or_enum?%><%!
+%><%/type:resolves_to_container?%><%!
 %><%#type:struct?%>
 ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, ptr.get());<%!
 %><%/type:struct?%>
@@ -56,20 +53,16 @@ this-><%field:cpp_name%> = std::move(ptr);<%!
 %><%/field:cpp_ref?%><%!
 
 %><%^field:cpp_ref?%><%^field:optionals?%><%!
-%><%#type:resolves_to_base?%><%!
-%><%#type:resolves_to_integral?%><%!
-%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
-%><%/type:resolves_to_integral?%><%!
-%><%^type:resolves_to_integral?%><%!
-%>iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%><%type:cpp_indirection%>);<%!
-%><%/type:resolves_to_integral?%><%!
-%><%/type:resolves_to_base?%><%!
-%><%#type:resolves_to_container_or_enum?%><%!
-%><%^type:enum?%><%!
-%>this-><%field:cpp_name%> = <% > types/type%>();
-<%/type:enum?%>
+%><%#type:resolves_to_fixed_size?%><%!
+%>::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this-><%field:cpp_name%>, _readState);<%!
+%><%/type:resolves_to_fixed_size?%><%!
+%><%#type:string_or_binary?%>
+iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:cpp_name%><%type:cpp_indirection%>);<%!
+%><%/type:string_or_binary?%><%!
+%><%#type:resolves_to_container?%>
+this-><%field:cpp_name%> = <% > types/type%>();
 ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, this-><%field:cpp_name%>);<%!
-%><%/type:resolves_to_container_or_enum?%><%!
+%><%/type:resolves_to_container?%><%!
 %><%#type:struct?%><%!
 %>::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, &this-><%field:cpp_name%>);<%!
 %><%/type:struct?%><%!
@@ -81,6 +74,7 @@ isset_<%field:cpp_name%> = true;<%!
 %><%^field:required?%><%^struct:optionals?%><%^field:cpp_ref?%>
 this->__isset.<%field:cpp_name%> = true;<%!
 %><%/field:cpp_ref?%><%/struct:optionals?%><%/field:required?%><%!
+
 %><%#type:resolves_to_container_or_struct?%>
 _readState.afterSubobject(iprot);<%!
 %><%/type:resolves_to_container_or_struct?%>

@@ -56,7 +56,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIntField:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
     this->__isset.MyIntField = true;
   }
 
@@ -69,6 +69,7 @@ _readField_MyIntField:
   }
 _readField_MyStringField:
   {
+    
     iprot->readString(this->MyStringField);
     this->__isset.MyStringField = true;
   }

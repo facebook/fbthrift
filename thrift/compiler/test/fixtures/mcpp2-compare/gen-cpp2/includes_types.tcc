@@ -63,7 +63,7 @@ void AStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_FieldA:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->FieldA);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->FieldA, _readState);
     this->__isset.FieldA = true;
   }
 
@@ -176,6 +176,7 @@ void AStructB::readNoXfer(Protocol_* iprot) {
 _readField_FieldA:
   {
     _readState.beforeSubobject(iprot);
+    
     std::unique_ptr< ::a::different::ns::AStruct> ptr = std::make_unique< ::a::different::ns::AStruct>();
     ::apache::thrift::Cpp2Ops<  ::a::different::ns::AStruct>::read(iprot, ptr.get());
     this->FieldA = std::move(ptr);

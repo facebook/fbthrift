@@ -70,7 +70,7 @@ void Color::readNoXfer(Protocol_* iprot) {
   }
 _readField_red:
   {
-    iprot->readDouble(this->red);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->red, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -82,7 +82,7 @@ _readField_red:
   }
 _readField_green:
   {
-    iprot->readDouble(this->green);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->green, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -94,7 +94,7 @@ _readField_green:
   }
 _readField_blue:
   {
-    iprot->readDouble(this->blue);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->blue, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -106,7 +106,7 @@ _readField_blue:
   }
 _readField_alpha:
   {
-    iprot->readDouble(this->alpha);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->alpha, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -311,8 +311,7 @@ _readField_name:
   }
 _readField_hasAC:
   {
-    this->hasAC = bool();
-    iprot->readBool(this->hasAC.value());
+    this->hasAC = bool();::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->hasAC.value(), _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -503,7 +502,7 @@ void Person::readNoXfer(Protocol_* iprot) {
   }
 _readField_id:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::read(*iprot, this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::readWithContext(*iprot, this->id, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -515,6 +514,7 @@ _readField_id:
   }
 _readField_name:
   {
+    
     iprot->readString(this->name);
   }
 
@@ -527,8 +527,7 @@ _readField_name:
   }
 _readField_age:
   {
-    this->age = int16_t();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::read(*iprot, this->age.value());
+    this->age = int16_t();::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::readWithContext(*iprot, this->age.value(), _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -583,8 +582,7 @@ _readField_friends:
   }
 _readField_bestFriend:
   {
-    this->bestFriend =  ::cpp2::PersonID();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::read(*iprot, this->bestFriend.value());
+    this->bestFriend =  ::cpp2::PersonID();::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::PersonID>::readWithContext(*iprot, this->bestFriend.value(), _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -611,8 +609,7 @@ _readField_petNames:
   }
 _readField_afraidOfAnimal:
   {
-    this->afraidOfAnimal =  ::cpp2::Animal();
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::read(*iprot, this->afraidOfAnimal.value());
+    this->afraidOfAnimal =  ::cpp2::Animal();::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::readWithContext(*iprot, this->afraidOfAnimal.value(), _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

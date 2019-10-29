@@ -256,6 +256,11 @@ struct protocol_methods;
   static void read(Protocol& protocol, Type& out) {                    \
     protocol.read##Method(out);                                        \
   }                                                                    \
+  template <typename Protocol, typename Context>                       \
+  static void readWithContext(                                         \
+      Protocol& protocol, Type& out, Context& /* ctx */) {             \
+    protocol.read##Method(out);                                        \
+  }                                                                    \
   template <typename Protocol>                                         \
   static std::size_t write(Protocol& protocol, Type const& in) {       \
     return protocol.write##Method(in);                                 \
@@ -300,6 +305,13 @@ THRIFT_PROTOCOL_METHODS_REGISTER_OVERLOAD(integral, std::int64_t, I64, T_I64);
   using SignedType = std::make_signed_t<Type>;                         \
   template <typename Protocol>                                         \
   static void read(Protocol& protocol, Type& out) {                    \
+    SignedType tmp;                                                    \
+    protocol.read##Method(tmp);                                        \
+    out = folly::to_unsigned(tmp);                                     \
+  }                                                                    \
+  template <typename Protocol, typename Context>                       \
+  static void readWithContext(                                         \
+      Protocol& protocol, Type& out, Context& /* ctx */) {             \
     SignedType tmp;                                                    \
     protocol.read##Method(tmp);                                        \
     out = folly::to_unsigned(tmp);                                     \
@@ -423,6 +435,14 @@ struct protocol_methods<type_class::enumeration, Type> {
 
   template <typename Protocol>
   static void read(Protocol& protocol, Type& out) {
+    int_type tmp;
+    int_methods::read(protocol, tmp);
+    out = static_cast<Type>(tmp);
+  }
+
+  template <typename Protocol, typename Context>
+  static void
+  readWithContext(Protocol& protocol, Type& out, Context& /* ctx */) {
     int_type tmp;
     int_methods::read(protocol, tmp);
     out = static_cast<Type>(tmp);
@@ -739,6 +759,13 @@ struct protocol_methods<indirection_tag<ElemClass, Indirection>, Type> {
   static void read(Protocol& protocol, Type& out) {
     elem_methods::read(protocol, indirection::template get<Type&>(out));
   }
+
+  template <typename Protocol, typename Context>
+  static void readWithContext(Protocol& protocol, Type& out, Context& ctx) {
+    elem_methods::readWithContext(
+        protocol, indirection::template get<Type&>(out), ctx);
+  }
+
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
     return elem_methods::write(

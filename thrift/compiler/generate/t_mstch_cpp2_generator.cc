@@ -443,6 +443,9 @@ class mstch_cpp2_type : public mstch_type {
              &mstch_cpp2_type::resolves_to_container_or_enum},
             {"type:resolves_to_complex_return?",
              &mstch_cpp2_type::resolves_to_complex_return},
+            {"type:resolves_to_fixed_size?",
+             &mstch_cpp2_type::resolves_to_fixed_size},
+            {"type:resolves_to_enum?", &mstch_cpp2_type::resolves_to_enum},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
@@ -487,6 +490,14 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->is_container() ||
         resolved_type_->is_string_or_binary() || resolved_type_->is_struct() ||
         resolved_type_->is_xception();
+  }
+  mstch::node resolves_to_fixed_size() {
+    return resolved_type_->is_bool() || resolved_type_->is_byte() ||
+        resolved_type_->is_any_int() || resolved_type_->is_enum() ||
+        resolved_type_->is_floating_point();
+  }
+  mstch::node resolves_to_enum() {
+    return resolved_type_->is_enum();
   }
   mstch::node cpp_type() {
     return cpp2::get_cpp_type(type_);

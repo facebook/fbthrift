@@ -63,7 +63,7 @@ void ModuleA::readNoXfer(Protocol_* iprot) {
   }
 _readField_i32Field:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->i32Field);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i32Field, _readState);
     this->__isset.i32Field = true;
   }
 
@@ -76,6 +76,7 @@ _readField_i32Field:
   }
 _readField_strField:
   {
+    
     iprot->readString(this->strField);
     this->__isset.strField = true;
   }
@@ -90,6 +91,7 @@ _readField_strField:
 _readField_listField:
   {
     _readState.beforeSubobject(iprot);
+    
     this->listField = ::std::vector<int16_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int16_t>>::read(*iprot, this->listField);
     this->__isset.listField = true;
@@ -106,6 +108,7 @@ _readField_listField:
 _readField_mapField:
   {
     _readState.beforeSubobject(iprot);
+    
     this->mapField = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->mapField);
     this->__isset.mapField = true;
@@ -321,7 +324,7 @@ void ModuleB::readNoXfer(Protocol_* iprot) {
   }
 _readField_i32Field:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->i32Field);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->i32Field, _readState);
     this->__isset.i32Field = true;
   }
 
@@ -334,7 +337,7 @@ _readField_i32Field:
   }
 _readField_inclEnumB:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::ns::EnumB>::read(*iprot, this->inclEnumB);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::ns::EnumB>::readWithContext(*iprot, this->inclEnumB, _readState);
     this->__isset.inclEnumB = true;
   }
 

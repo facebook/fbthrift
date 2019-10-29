@@ -149,7 +149,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIntField:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
     this->__isset.MyIntField = true;
   }
 
@@ -162,6 +162,7 @@ _readField_MyIntField:
   }
 _readField_MyStringField:
   {
+    
     iprot->readString(this->MyStringField);
     this->__isset.MyStringField = true;
   }
@@ -190,7 +191,7 @@ _readField_MyDataField:
   }
 _readField_myEnum:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::read(*iprot, this->myEnum);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::readWithContext(*iprot, this->myEnum, _readState);
     this->__isset.myEnum = true;
   }
 
@@ -344,7 +345,7 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_myEnum();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::read(*iprot, this->mutable_myEnum());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnum>::readWithContext(*iprot, this->mutable_myEnum(), _readState);
         } else {
           _readState.skip(iprot);
         }
@@ -354,7 +355,9 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_myStruct();
+          _readState.beforeSubobject(iprot);
           ::apache::thrift::Cpp2Ops<  ::cpp2::MyStruct>::read(iprot, &this->mutable_myStruct());
+          _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
         }
@@ -364,7 +367,9 @@ void MyUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_myDataItem();
+          _readState.beforeSubobject(iprot);
           ::apache::thrift::Cpp2Ops<  ::cpp2::MyDataItem>::read(iprot, &this->mutable_myDataItem());
+          _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
         }

@@ -74,7 +74,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_myEnum:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test::fixtures::enumstrict::MyEnum>::read(*iprot, this->myEnum);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test::fixtures::enumstrict::MyEnum>::readWithContext(*iprot, this->myEnum, _readState);
     this->__isset.myEnum = true;
   }
 
@@ -87,7 +87,7 @@ _readField_myEnum:
   }
 _readField_myBigEnum:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test::fixtures::enumstrict::MyBigEnum>::read(*iprot, this->myBigEnum);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test::fixtures::enumstrict::MyBigEnum>::readWithContext(*iprot, this->myBigEnum, _readState);
     this->__isset.myBigEnum = true;
   }
 

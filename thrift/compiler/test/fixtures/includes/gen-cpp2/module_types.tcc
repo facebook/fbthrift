@@ -77,7 +77,7 @@ _readField_MyOtherIncludedField:
   }
 _readField_MyIncludedInt:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::IncludedInt64>::read(*iprot, this->MyIncludedInt);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::IncludedInt64>::readWithContext(*iprot, this->MyIncludedInt, _readState);
     this->__isset.MyIncludedInt = true;
   }
 

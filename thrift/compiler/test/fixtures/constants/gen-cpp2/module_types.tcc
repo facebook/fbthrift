@@ -123,7 +123,7 @@ void Internship::readNoXfer(Protocol_* iprot) {
   }
 _readField_weeks:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->weeks);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->weeks, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -135,6 +135,7 @@ _readField_weeks:
   }
 _readField_title:
   {
+    
     iprot->readString(this->title);
     this->__isset.title = true;
   }
@@ -148,7 +149,7 @@ _readField_title:
   }
 _readField_employer:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Company>::read(*iprot, this->employer);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Company>::readWithContext(*iprot, this->employer, _readState);
     this->__isset.employer = true;
   }
 
@@ -292,7 +293,7 @@ void UnEnumStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_city:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::City>::read(*iprot, this->city);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::City>::readWithContext(*iprot, this->city, _readState);
     this->__isset.city = true;
   }
 
@@ -400,7 +401,7 @@ void Range::readNoXfer(Protocol_* iprot) {
   }
 _readField_min:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->min);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->min, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -412,7 +413,7 @@ _readField_min:
   }
 _readField_max:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->max);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->max, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -534,7 +535,7 @@ void struct1::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->a);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
     this->__isset.a = true;
   }
 
@@ -547,6 +548,7 @@ _readField_a:
   }
 _readField_b:
   {
+    
     iprot->readString(this->b);
     this->__isset.b = true;
   }
@@ -670,7 +672,7 @@ void struct2::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->a);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
     this->__isset.a = true;
   }
 
@@ -683,6 +685,7 @@ _readField_a:
   }
 _readField_b:
   {
+    
     iprot->readString(this->b);
     this->__isset.b = true;
   }
@@ -712,6 +715,7 @@ _readField_c:
 _readField_d:
   {
     _readState.beforeSubobject(iprot);
+    
     this->d = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->d);
     this->__isset.d = true;
@@ -867,6 +871,7 @@ void struct3::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
+    
     iprot->readString(this->a);
     this->__isset.a = true;
   }
@@ -880,7 +885,7 @@ _readField_a:
   }
 _readField_b:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->b);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->b, _readState);
     this->__isset.b = true;
   }
 
@@ -1034,7 +1039,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_i());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->mutable_i(), _readState);
         } else {
           _readState.skip(iprot);
         }
@@ -1044,7 +1049,7 @@ void union1::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_d();
-          iprot->readDouble(this->mutable_d());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->mutable_d(), _readState);
         } else {
           _readState.skip(iprot);
         }
@@ -1168,7 +1173,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_i());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->mutable_i(), _readState);
         } else {
           _readState.skip(iprot);
         }
@@ -1178,7 +1183,7 @@ void union2::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_DOUBLE)) {
           this->set_d();
-          iprot->readDouble(this->mutable_d());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->mutable_d(), _readState);
         } else {
           _readState.skip(iprot);
         }
@@ -1188,7 +1193,9 @@ void union2::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_s();
+          _readState.beforeSubobject(iprot);
           ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::read(iprot, &this->mutable_s());
+          _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
         }
@@ -1198,7 +1205,9 @@ void union2::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRUCT)) {
           this->set_u();
+          _readState.beforeSubobject(iprot);
           ::apache::thrift::Cpp2Ops<  ::cpp2::union1>::read(iprot, &this->mutable_u());
+          _readState.afterSubobject(iprot);
         } else {
           _readState.skip(iprot);
         }

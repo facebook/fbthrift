@@ -75,6 +75,7 @@ void InitialResponse::readNoXfer(Protocol_* iprot) {
   }
 _readField_content:
   {
+    
     iprot->readString(this->content);
     this->__isset.content = true;
   }
@@ -183,6 +184,7 @@ void FinalResponse::readNoXfer(Protocol_* iprot) {
   }
 _readField_content:
   {
+    
     iprot->readString(this->content);
     this->__isset.content = true;
   }
@@ -291,6 +293,7 @@ void SinkPayload::readNoXfer(Protocol_* iprot) {
   }
 _readField_content:
   {
+    
     iprot->readString(this->content);
     this->__isset.content = true;
   }
@@ -399,6 +402,7 @@ void CompatibleWithKeywordSink::readNoXfer(Protocol_* iprot) {
   }
 _readField_sink:
   {
+    
     iprot->readString(this->sink);
     this->__isset.sink = true;
   }
@@ -507,6 +511,7 @@ void SinkException::readNoXfer(Protocol_* iprot) {
   }
 _readField_reason:
   {
+    
     iprot->readString(this->reason);
     this->__isset.reason = true;
   }

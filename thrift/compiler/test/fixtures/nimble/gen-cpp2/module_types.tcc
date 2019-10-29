@@ -47,7 +47,7 @@ void BasicTypes::readNoXfer(Protocol_* iprot) {
   }
 _readField_first:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->first);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->first, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -59,7 +59,7 @@ _readField_first:
   }
 _readField_second:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->second);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->second, _readState);
     this->__isset.second = true;
   }
 
@@ -72,7 +72,7 @@ _readField_second:
   }
 _readField_third:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->third);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->third, _readState);
     this->__isset.third = true;
   }
 
@@ -85,7 +85,7 @@ _readField_third:
   }
 _readField_isTrue:
   {
-    iprot->readBool(this->isTrue);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->isTrue, _readState);
     this->__isset.isTrue = true;
   }
 

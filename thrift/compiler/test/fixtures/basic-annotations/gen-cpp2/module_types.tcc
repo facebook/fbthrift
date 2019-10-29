@@ -56,7 +56,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_majorVer:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->majorVer);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->majorVer, _readState);
     this->__isset.majorVer = true;
   }
 
@@ -69,6 +69,7 @@ _readField_majorVer:
   }
 _readField_package:
   {
+    
     iprot->readString(this->package);
     this->__isset.package = true;
   }
@@ -82,6 +83,7 @@ _readField_package:
   }
 _readField_annotation_with_quote:
   {
+    
     iprot->readString(this->annotation_with_quote);
     this->__isset.annotation_with_quote = true;
   }

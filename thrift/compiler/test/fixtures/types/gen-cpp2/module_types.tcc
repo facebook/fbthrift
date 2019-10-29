@@ -223,6 +223,7 @@ void decorated_struct::readNoXfer(Protocol_* iprot) {
   }
 _readField_field:
   {
+    
     iprot->readString(this->field);
     this->__isset.field = true;
   }
@@ -332,6 +333,7 @@ void ContainerStruct::readNoXfer(Protocol_* iprot) {
 _readField_fieldA:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldA = ::std::vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::read(*iprot, this->fieldA);
     this->__isset.fieldA = true;
@@ -348,6 +350,7 @@ _readField_fieldA:
 _readField_fieldB:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldB = std::list<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldB);
     this->__isset.fieldB = true;
@@ -364,6 +367,7 @@ _readField_fieldB:
 _readField_fieldC:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldC = std::deque<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::read(*iprot, this->fieldC);
     this->__isset.fieldC = true;
@@ -380,6 +384,7 @@ _readField_fieldC:
 _readField_fieldD:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldD = folly::fbvector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::read(*iprot, this->fieldD);
     this->__isset.fieldD = true;
@@ -396,6 +401,7 @@ _readField_fieldD:
 _readField_fieldE:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldE = folly::small_vector<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::read(*iprot, this->fieldE);
     this->__isset.fieldE = true;
@@ -412,6 +418,7 @@ _readField_fieldE:
 _readField_fieldF:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldF = folly::sorted_vector_set<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::read(*iprot, this->fieldF);
     this->__isset.fieldF = true;
@@ -428,6 +435,7 @@ _readField_fieldF:
 _readField_fieldG:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldG = folly::sorted_vector_map<int32_t, ::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, ::std::string>>::read(*iprot, this->fieldG);
     this->__isset.fieldG = true;
@@ -444,6 +452,7 @@ _readField_fieldG:
 _readField_fieldH:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldH =  ::apache::thrift::fixtures::types::SomeMap();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::apache::thrift::fixtures::types::SomeMap>::read(*iprot, this->fieldH);
     this->__isset.fieldH = true;
@@ -660,6 +669,7 @@ void CppTypeStruct::readNoXfer(Protocol_* iprot) {
 _readField_fieldA:
   {
     _readState.beforeSubobject(iprot);
+    
     this->fieldA = std::list<int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldA);
     this->__isset.fieldA = true;
@@ -770,7 +780,7 @@ void VirtualStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIntField:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
     this->__isset.MyIntField = true;
   }
 
@@ -878,7 +888,7 @@ void MyStructWithForwardRefEnum::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::apache::thrift::fixtures::types::MyForwardRefEnum>::read(*iprot, this->a);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::apache::thrift::fixtures::types::MyForwardRefEnum>::readWithContext(*iprot, this->a, _readState);
     this->__isset.a = true;
   }
 
@@ -891,7 +901,7 @@ _readField_a:
   }
 _readField_b:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::apache::thrift::fixtures::types::MyForwardRefEnum>::read(*iprot, this->b);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::apache::thrift::fixtures::types::MyForwardRefEnum>::readWithContext(*iprot, this->b, _readState);
     this->__isset.b = true;
   }
 
@@ -1014,7 +1024,7 @@ void TrivialNumeric::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->a);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->a, _readState);
     this->__isset.a = true;
   }
 
@@ -1027,7 +1037,7 @@ _readField_a:
   }
 _readField_b:
   {
-    iprot->readBool(this->b);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->b, _readState);
     this->__isset.b = true;
   }
 
@@ -1150,7 +1160,7 @@ void TrivialNestedWithDefault::readNoXfer(Protocol_* iprot) {
   }
 _readField_z:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->z);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->z, _readState);
     this->__isset.z = true;
   }
 
@@ -1288,6 +1298,7 @@ void ComplexString::readNoXfer(Protocol_* iprot) {
   }
 _readField_a:
   {
+    
     iprot->readString(this->a);
     this->__isset.a = true;
   }
@@ -1302,6 +1313,7 @@ _readField_a:
 _readField_b:
   {
     _readState.beforeSubobject(iprot);
+    
     this->b = ::std::map<::std::string, int32_t>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, ::std::map<::std::string, int32_t>>::read(*iprot, this->b);
     this->__isset.b = true;
@@ -1427,6 +1439,7 @@ void ComplexNestedWithDefault::readNoXfer(Protocol_* iprot) {
   }
 _readField_z:
   {
+    
     iprot->readString(this->z);
     this->__isset.z = true;
   }
@@ -1565,7 +1578,7 @@ void MinPadding::readNoXfer(Protocol_* iprot) {
   }
 _readField_small:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::read(*iprot, this->small);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::readWithContext(*iprot, this->small, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1577,7 +1590,7 @@ _readField_small:
   }
 _readField_big:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->big);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->big, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1589,7 +1602,7 @@ _readField_big:
   }
 _readField_medium:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::read(*iprot, this->medium);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int16_t>::readWithContext(*iprot, this->medium, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1601,7 +1614,7 @@ _readField_medium:
   }
 _readField_biggish:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->biggish);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->biggish, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1613,7 +1626,7 @@ _readField_biggish:
   }
 _readField_tiny:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::read(*iprot, this->tiny);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int8_t>::readWithContext(*iprot, this->tiny, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -1859,7 +1872,7 @@ void MyStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyIntField:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
     this->__isset.MyIntField = true;
   }
 
@@ -1872,6 +1885,7 @@ _readField_MyIntField:
   }
 _readField_MyStringField:
   {
+    
     iprot->readString(this->MyStringField);
     this->__isset.MyStringField = true;
   }
@@ -1885,7 +1899,7 @@ _readField_MyStringField:
   }
 _readField_majorVer:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->majorVer);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->majorVer, _readState);
     this->__isset.majorVer = true;
   }
 
@@ -2053,7 +2067,7 @@ void Renaming::readNoXfer(Protocol_* iprot) {
   }
 _readField_bar:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->bar);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->bar, _readState);
     this->__isset.bar = true;
   }
 
@@ -2161,6 +2175,7 @@ void AnnotatedTypes::readNoXfer(Protocol_* iprot) {
   }
 _readField_binary_field:
   {
+    
     iprot->readBinary(this->binary_field);
     this->__isset.binary_field = true;
   }
@@ -2175,6 +2190,7 @@ _readField_binary_field:
 _readField_list_field:
   {
     _readState.beforeSubobject(iprot);
+    
     this->list_field =  ::apache::thrift::fixtures::types::SomeListOfTypeMap();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>>,  ::apache::thrift::fixtures::types::SomeListOfTypeMap>::read(*iprot, this->list_field);
     this->__isset.list_field = true;
@@ -2432,6 +2448,7 @@ _readField_ForwardUsageStruct:
 _readField_ForwardUsageByRef:
   {
     _readState.beforeSubobject(iprot);
+    
     std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ptr = std::make_unique< ::apache::thrift::fixtures::types::ForwardUsageByRef>();
     ::apache::thrift::Cpp2Ops<  ::apache::thrift::fixtures::types::ForwardUsageByRef>::read(iprot, ptr.get());
     this->ForwardUsageByRef = std::move(ptr);
@@ -2783,7 +2800,7 @@ void NoexceptMoveSimpleStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_boolField:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->boolField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->boolField, _readState);
     this->__isset.boolField = true;
   }
 
@@ -2891,7 +2908,7 @@ void NoexceptMoveComplexStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_MyBoolField:
   {
-    iprot->readBool(this->MyBoolField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->MyBoolField, _readState);
     this->__isset.MyBoolField = true;
   }
 
@@ -2904,7 +2921,7 @@ _readField_MyBoolField:
   }
 _readField_MyIntField:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::read(*iprot, this->MyIntField);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
     this->__isset.MyIntField = true;
   }
 
@@ -2917,6 +2934,7 @@ _readField_MyIntField:
   }
 _readField_MyStringField:
   {
+    
     iprot->readString(this->MyStringField);
     this->__isset.MyStringField = true;
   }
@@ -2930,6 +2948,7 @@ _readField_MyStringField:
   }
 _readField_MyStringField2:
   {
+    
     iprot->readString(this->MyStringField2);
     this->__isset.MyStringField2 = true;
   }
@@ -2943,6 +2962,7 @@ _readField_MyStringField2:
   }
 _readField_MyBinaryField:
   {
+    
     iprot->readBinary(this->MyBinaryField);
     this->__isset.MyBinaryField = true;
   }
@@ -2956,6 +2976,7 @@ _readField_MyBinaryField:
   }
 _readField_MyBinaryField2:
   {
+    
     iprot->readBinary(this->MyBinaryField2);
     this->__isset.MyBinaryField2 = true;
   }
@@ -2969,6 +2990,7 @@ _readField_MyBinaryField2:
   }
 _readField_MyBinaryField3:
   {
+    
     iprot->readBinary(this->MyBinaryField3);
   }
 
@@ -2982,6 +3004,7 @@ _readField_MyBinaryField3:
 _readField_MyBinaryListField4:
   {
     _readState.beforeSubobject(iprot);
+    
     this->MyBinaryListField4 = ::std::vector<::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, ::std::vector<::std::string>>::read(*iprot, this->MyBinaryListField4);
     this->__isset.MyBinaryListField4 = true;
@@ -2998,6 +3021,7 @@ _readField_MyBinaryListField4:
 _readField_MyMapEnumAndInt:
   {
     _readState.beforeSubobject(iprot);
+    
     this->MyMapEnumAndInt = ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>();
     ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>::read(*iprot, this->MyMapEnumAndInt);
     this->__isset.MyMapEnumAndInt = true;
@@ -3235,7 +3259,7 @@ void NoExceptMoveUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_string_field();
-          iprot->readString(this->mutable_string_field());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->mutable_string_field(), _readState);
         } else {
           _readState.skip(iprot);
         }
@@ -3245,7 +3269,7 @@ void NoExceptMoveUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I32)) {
           this->set_i32_field();
-          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->mutable_i32_field());
+          ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->mutable_i32_field(), _readState);
         } else {
           _readState.skip(iprot);
         }

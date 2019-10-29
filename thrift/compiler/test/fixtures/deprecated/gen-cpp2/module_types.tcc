@@ -54,7 +54,7 @@ void House::readNoXfer(Protocol_* iprot) {
   }
 _readField_id:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::read(*iprot, this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::readWithContext(*iprot, this->id, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -66,6 +66,7 @@ _readField_id:
   }
 _readField_houseName:
   {
+    
     iprot->readString(this->houseName);
   }
 
@@ -224,7 +225,7 @@ void Field::readNoXfer(Protocol_* iprot) {
   }
 _readField_id:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::read(*iprot, this->id);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral,  ::cpp2::ColorID>::readWithContext(*iprot, this->id, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(
@@ -236,7 +237,7 @@ _readField_id:
   }
 _readField_fieldType:
   {
-    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::read(*iprot, this->fieldType);
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int32_t>::readWithContext(*iprot, this->fieldType, _readState);
   }
 
   if (UNLIKELY(!_readState.advanceToNextField(

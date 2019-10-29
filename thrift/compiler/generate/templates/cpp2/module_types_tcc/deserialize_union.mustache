@@ -34,16 +34,19 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::<% > module_types_tcc/struct_type%>)) {
           this->set_<%field:cpp_name%>();
+<%#type:resolves_to_container_or_struct?%>
+          _readState.beforeSubobject(iprot);
+<%/type:resolves_to_container_or_struct?%>
 <%#type:resolves_to_base?%>
 <%#type:resolves_to_integral?%>
-          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:cpp_name%>());
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this->mutable_<%field:cpp_name%>(), _readState);
 <%/type:resolves_to_integral?%>
 <%^type:resolves_to_integral?%>
 <%#field:cpp_ref?%>
-          iprot->read<% > module_types_tcc/struct_field_type%>((*this->mutable_<%field:cpp_name%>()));
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, *this->mutable_<%field:cpp_name%>(), _readState);
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-          iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:cpp_name%>());
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, this->mutable_<%field:cpp_name%>(), _readState);
 <%/field:cpp_ref?%>
 <%/type:resolves_to_integral?%>
 <%/type:resolves_to_base?%>
@@ -51,12 +54,13 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%#field:cpp_ref?%>
           std::unique_ptr<<% > types/type%>> ptr = std::make_unique<<% > types/type%>>();
 <%/field:cpp_ref?%>
-<%#type:resolves_to_container_or_enum?%>
-<%^type:enum?%>
+<%#type:resolves_to_container?%>
           this->mutable_<%field:cpp_name%>() = <% > types/type%>();
-<%/type:enum?%>
           ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>);
-<%/type:resolves_to_container_or_enum?%>
+<%/type:resolves_to_container?%>
+<%#type:resolves_to_enum?%>
+          ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::readWithContext(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>, _readState);
+<%/type:resolves_to_enum?%>
 <%#type:struct?%>
           ::apache::thrift::Cpp2Ops< <% > types/type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this->mutable_<%field:cpp_name%>()<%/field:cpp_ref?%>);
 <%/type:struct?%>
@@ -67,6 +71,9 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%#field:required?%>
           isset_<%field:cpp_name%> = true;
 <%/field:required?%>
+<%#type:resolves_to_container_or_struct?%>
+          _readState.afterSubobject(iprot);
+<%/type:resolves_to_container_or_struct?%>
         } else {
           _readState.skip(iprot);
         }
