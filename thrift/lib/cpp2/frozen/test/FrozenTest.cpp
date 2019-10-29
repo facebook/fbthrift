@@ -393,6 +393,19 @@ TEST(Frozen, Bool) {
   EXPECT_EQ(dunno, freeze(dunno).thaw());
 }
 
+TEST(Frozen, ThawPart) {
+  auto f = freeze(tom1);
+  EXPECT_EQ(f.pets()[0].name(), "max");
+  EXPECT_EQ(f.pets()[1].name(), "ed");
+
+  auto max = f.pets()[0].thaw();
+  auto ed = f.pets()[1].thaw();
+  EXPECT_EQ(typeid(max), typeid(Pet1));
+  EXPECT_EQ(typeid(ed), typeid(Pet1));
+  EXPECT_EQ(max.name, "max");
+  EXPECT_EQ(ed.name, "ed");
+}
+
 TEST(Frozen, SchemaConversion) {
   schema::MemorySchema memSchema;
   schema::Schema schema;
