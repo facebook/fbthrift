@@ -191,8 +191,10 @@ using cratemap = std::map<std::string, std::string>;
 std::string get_import_name(
     const t_program* program,
     const cratemap& cratemap) {
+  auto include_prefix = program->get_include_prefix();
   auto program_name = program->get_name();
-  auto crate_name = cratemap.find(program_name);
+  auto thrift_path = include_prefix + program_name + ".thrift";
+  auto crate_name = cratemap.find(thrift_path);
   if (crate_name != cratemap.end()) {
     return mangle(crate_name->second);
   } else {
@@ -682,15 +684,23 @@ void t_mstch_rust_generator::set_mstch_generators() {
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {
   // Each line of the file is:
-  // thrift_path crate_name crate_alias [module]
+  // thrift_path crate_root crate_name
+  //
+  // As an example of each value, we might have:
+  //   - thrift_path: facebook/demo.thrift
+  //     (this is the path used in thrift `include` statements)
+  //   - crate_root: ../../demo.thrift/gen-rust2
+  //     (this directory contains Cargo.toml for the generated crate)
+  //   - crate_name: demo_api
+  //     (the Rust code will refer to demo_api::types::WhateverType)
   auto in = std::ifstream(path);
 
   std::string line;
   while (std::getline(in, line)) {
     std::istringstream iss(line);
-    std::string thrift_path, crate_name, crate_alias;
-    iss >> thrift_path >> crate_name >> crate_alias;
-    cratemap_[crate_alias] = crate_name;
+    std::string thrift_path, crate_root, crate_name;
+    iss >> thrift_path >> crate_root >> crate_name;
+    cratemap_[thrift_path] = crate_name;
   }
 }
 
