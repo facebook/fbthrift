@@ -86,9 +86,13 @@ add_library(
   async/HeaderChannelTrait.cpp
   async/HeaderClientChannel.cpp
   async/HeaderServerChannel.cpp
+  async/HibernatingRequestChannel.cpp
   async/PcapLoggingHandler.cpp
+  async/PooledRequestChannel.cpp
+  async/ReconnectingRequestChannel.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
+  async/RetryingRequestChannel.cpp
   async/RocketClientChannel.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
