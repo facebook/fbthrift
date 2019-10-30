@@ -41,6 +41,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_query(
+      apache::thrift::RpcOptions& rpcOptions,  const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {
@@ -70,6 +73,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_has_arg_docs(
+      apache::thrift::RpcOptions& rpcOptions,  const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i) {

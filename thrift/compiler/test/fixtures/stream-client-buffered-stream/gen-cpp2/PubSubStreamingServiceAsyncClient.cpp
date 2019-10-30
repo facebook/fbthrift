@@ -150,6 +150,43 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   return recv_returnstream(_returnState);
 }
 
+folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>>
+PubSubStreamingServiceAsyncClient::sync_complete_returnstream(
+    apache::thrift::RpcOptions& rpcOptions,  int32_t i32_from, int32_t i32_to) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "PubSubStreamingService.returnstream");
+
+  returnstreamImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  i32_from, i32_to);
+
+  callback.waitUntilDone(evb);
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+
+  folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>> tryResponse;
+  if (!returnState.buf()) {
+    assert(returnState.isException());
+  	tryResponse.emplaceException(std::move(returnState.exception()));
+  } else {
+    tryResponse.emplace();
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    }
+    tryResponse->response = folly::makeTryWith([&] {
+      return recv_returnstream(returnState);
+    });
+  }
+  return tryResponse;
+}
+
+
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_returnstream(int32_t i32_from, int32_t i32_to) {
   ::apache::thrift::RpcOptions rpcOptions;
@@ -290,6 +327,43 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   }
   return recv_streamthrows(_returnState);
 }
+
+folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>>
+PubSubStreamingServiceAsyncClient::sync_complete_streamthrows(
+    apache::thrift::RpcOptions& rpcOptions,  int32_t foo) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "PubSubStreamingService.streamthrows");
+
+  streamthrowsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
+
+  callback.waitUntilDone(evb);
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+
+  folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>> tryResponse;
+  if (!returnState.buf()) {
+    assert(returnState.isException());
+  	tryResponse.emplaceException(std::move(returnState.exception()));
+  } else {
+    tryResponse.emplace();
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    }
+    tryResponse->response = folly::makeTryWith([&] {
+      return recv_streamthrows(returnState);
+    });
+  }
+  return tryResponse;
+}
+
 
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_streamthrows(int32_t foo) {
@@ -432,6 +506,43 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
   return recv_boththrows(_returnState);
 }
 
+folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>>
+PubSubStreamingServiceAsyncClient::sync_complete_boththrows(
+    apache::thrift::RpcOptions& rpcOptions,  int32_t foo) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "PubSubStreamingService.boththrows");
+
+  boththrowsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
+
+  callback.waitUntilDone(evb);
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+
+  folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>> tryResponse;
+  if (!returnState.buf()) {
+    assert(returnState.isException());
+  	tryResponse.emplaceException(std::move(returnState.exception()));
+  } else {
+    tryResponse.emplace();
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    }
+    tryResponse->response = folly::makeTryWith([&] {
+      return recv_boththrows(returnState);
+    });
+  }
+  return tryResponse;
+}
+
+
 
 folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> PubSubStreamingServiceAsyncClient::semifuture_boththrows(int32_t foo) {
   ::apache::thrift::RpcOptions rpcOptions;
@@ -572,6 +683,43 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
   }
   return recv_responseandstreamthrows(_returnState);
 }
+
+folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>>
+PubSubStreamingServiceAsyncClient::sync_complete_responseandstreamthrows(
+    apache::thrift::RpcOptions& rpcOptions,  int32_t foo) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "PubSubStreamingService.responseandstreamthrows");
+
+  responseandstreamthrowsImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
+
+  callback.waitUntilDone(evb);
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+
+  folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>> tryResponse;
+  if (!returnState.buf()) {
+    assert(returnState.isException());
+  	tryResponse.emplaceException(std::move(returnState.exception()));
+  } else {
+    tryResponse.emplace();
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    }
+    tryResponse->response = folly::makeTryWith([&] {
+      return recv_responseandstreamthrows(returnState);
+    });
+  }
+  return tryResponse;
+}
+
 
 
 folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> PubSubStreamingServiceAsyncClient::semifuture_responseandstreamthrows(int32_t foo) {

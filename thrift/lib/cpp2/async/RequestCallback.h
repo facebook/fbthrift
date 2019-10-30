@@ -20,6 +20,7 @@
 #include <map>
 #include <string>
 
+#include <folly/Try.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/ContextStack.h>
@@ -531,5 +532,18 @@ class RpcOptions {
   std::map<std::string, std::string> writeHeaders_;
   std::map<std::string, std::string> readHeaders_;
 };
+
+struct RpcResponseContext {
+  std::map<std::string, std::string> headers;
+};
+
+template <class T>
+struct RpcResponseComplete {
+  using response_type = T;
+
+  folly::Try<T> response;
+  RpcResponseContext responseContext;
+};
+
 } // namespace thrift
 } // namespace apache

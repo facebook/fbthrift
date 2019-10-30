@@ -36,6 +36,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_ping();
   virtual folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_ping(
+      apache::thrift::RpcOptions& rpcOptions );
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_ping() {
@@ -61,6 +64,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<::std::string> semifuture_getRandomData();
   virtual folly::SemiFuture<::std::string> semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_getRandomData(apache::thrift::RpcOptions& rpcOptions);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<::std::string>> sync_complete_getRandomData(
+      apache::thrift::RpcOptions& rpcOptions );
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::string> co_getRandomData() {
@@ -86,6 +92,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<bool> semifuture_hasDataById(int64_t id);
   virtual folly::SemiFuture<bool> semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<bool>> sync_complete_hasDataById(
+      apache::thrift::RpcOptions& rpcOptions,  int64_t id);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<bool> co_hasDataById(int64_t id) {
@@ -111,6 +120,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<::std::string> semifuture_getDataById(int64_t id);
   virtual folly::SemiFuture<::std::string> semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
   virtual folly::SemiFuture<std::pair<::std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<::std::string>> sync_complete_getDataById(
+      apache::thrift::RpcOptions& rpcOptions,  int64_t id);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<::std::string> co_getDataById(int64_t id) {
@@ -136,6 +148,9 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(int64_t id, const ::std::string& data);
   virtual folly::SemiFuture<folly::Unit> semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_putDataById(
+      apache::thrift::RpcOptions& rpcOptions,  int64_t id, const ::std::string& data);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_putDataById(int64_t id, const ::std::string& data) {
@@ -160,6 +175,7 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual void sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(int64_t id, const ::std::string& data);
   virtual folly::SemiFuture<folly::Unit> semifuture_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_lobDataById(int64_t id, const ::std::string& data) {

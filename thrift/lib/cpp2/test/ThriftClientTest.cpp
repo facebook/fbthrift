@@ -33,7 +33,7 @@ class ThriftClientTest : public testing::Test {};
 
 TEST_F(ThriftClientTest, FutureCapturesChannel) {
   class Handler : public TestServiceSvIf {
-  public:
+   public:
     Future<unique_ptr<string>> future_sendResponse(int64_t size) override {
       return makeFuture(make_unique<string>(to<string>(size)));
     }
@@ -106,16 +106,16 @@ TEST_F(ThriftClientTest, SemiFutureCapturesChannelOneway) {
 
 TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   class DelayHandler : public TestServiceSvIf {
-  public:
+   public:
     DelayHandler(milliseconds delay) : delay_(delay) {}
     void async_eb_eventBaseAsync(
         unique_ptr<HandlerCallback<unique_ptr<string>>> cb) override {
       auto eb = cb->getEventBase();
-      eb->runAfterDelay([cb = move(cb)] {
-        cb->result("hello world");
-      }, delay_.count());
+      eb->runAfterDelay(
+          [cb = move(cb)] { cb->result("hello world"); }, delay_.count());
     }
-  private:
+
+   private:
     milliseconds delay_;
   };
 
@@ -135,16 +135,14 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   channel->setTimeout(channelTimeout.count());
 
   auto start = steady_clock::now();
-  try {
-    RpcOptions options;
-    options.setTimeout(rpcTimeout);
-    std::string response;
-    client->sync_eventBaseAsync(options, response);
-    ADD_FAILURE() << "should have timed out";
-  } catch (const TTransportException& e) {
-    auto expected = TTransportException::TIMED_OUT;
-    EXPECT_EQ(expected, e.getType());
-  }
+  RpcOptions options;
+  options.setTimeout(rpcTimeout);
+  auto response = client->sync_complete_eventBaseAsync(options);
+  EXPECT_TRUE(response.hasException());
+  EXPECT_TRUE(response.exception().with_exception<TTransportException>(
+      [](const auto& tex) {
+        EXPECT_EQ(TTransportException::TIMED_OUT, tex.getType());
+      }));
 
   auto dur = steady_clock::now() - start;
   EXPECT_EQ(channelTimeout.count(), channel->getTimeout());
@@ -166,9 +164,11 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
   auto client = runner.newClient<TestServiceAsyncClient>(&eb);
 
   auto doSyncRPC = [&]() {
-    std::string res;
-    client->sync_sendResponse(res, 123);
-    EXPECT_EQ(res, "123");
+    RpcOptions options;
+    auto response = client->sync_complete_sendResponse(options, 123);
+    EXPECT_TRUE(response.hasValue());
+    EXPECT_TRUE(response->response.hasValue());
+    EXPECT_EQ(*response->response, "123");
   };
 
   // First test from evbase thread

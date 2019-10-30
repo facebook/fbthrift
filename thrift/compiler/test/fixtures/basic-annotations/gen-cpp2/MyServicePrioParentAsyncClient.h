@@ -39,6 +39,9 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual folly::SemiFuture<folly::Unit> semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_ping(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_ping(apache::thrift::RpcOptions& rpcOptions);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_ping(
+      apache::thrift::RpcOptions& rpcOptions );
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_ping() {
@@ -68,6 +71,9 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   virtual folly::SemiFuture<folly::Unit> semifuture_pong(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_pong(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_pong(apache::thrift::RpcOptions& rpcOptions);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_pong(
+      apache::thrift::RpcOptions& rpcOptions );
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<void> co_pong() {

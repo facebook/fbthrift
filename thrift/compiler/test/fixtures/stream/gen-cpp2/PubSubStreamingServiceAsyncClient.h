@@ -40,6 +40,9 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to);
   virtual folly::Future<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to);
   virtual folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::SemiStream<int32_t>>> sync_complete_returnstream(
+      apache::thrift::RpcOptions& rpcOptions,  int32_t i32_from, int32_t i32_to);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_returnstream(int32_t i32_from, int32_t i32_to) {
@@ -69,6 +72,9 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::Future<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::SemiStream<int32_t>>> sync_complete_streamthrows(
+      apache::thrift::RpcOptions& rpcOptions,  int32_t foo);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_streamthrows(int32_t foo) {
@@ -98,6 +104,9 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::SemiStream<int32_t>> semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::Future<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::SemiFuture<std::pair<apache::thrift::SemiStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::SemiStream<int32_t>>> sync_complete_boththrows(
+      apache::thrift::RpcOptions& rpcOptions,  int32_t foo);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_boththrows(int32_t foo) {
@@ -127,6 +136,9 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::Future<std::pair<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
+  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>>> sync_complete_responseandstreamthrows(
+      apache::thrift::RpcOptions& rpcOptions,  int32_t foo);
+
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
   folly::coro::Task<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> co_responseandstreamthrows(int32_t foo) {

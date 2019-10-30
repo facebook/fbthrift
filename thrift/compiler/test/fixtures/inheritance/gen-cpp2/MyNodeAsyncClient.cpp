@@ -97,6 +97,43 @@ void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   recv_do_mid(_returnState);
 }
 
+folly::Try<apache::thrift::RpcResponseComplete<void>>
+MyNodeAsyncClient::sync_complete_do_mid(
+    apache::thrift::RpcOptions& rpcOptions ) {
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
+  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
+  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
+  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
+      protocolId,
+      rpcOptions.releaseWriteHeaders(),
+      this->handlers_,
+      this->getServiceName(),
+      "MyNode.do_mid");
+
+  do_midImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback) );
+
+  callback.waitUntilDone(evb);
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
+
+  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
+  if (!returnState.buf()) {
+    assert(returnState.isException());
+  	tryResponse.emplaceException(std::move(returnState.exception()));
+  } else {
+    tryResponse.emplace();
+    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
+  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
+    }
+    tryResponse->response = folly::makeTryWith([&] {
+      return recv_do_mid(returnState);
+    });
+  }
+  return tryResponse;
+}
+
+
 folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid() {
   ::apache::thrift::RpcOptions rpcOptions;
   return future_do_mid(rpcOptions);
