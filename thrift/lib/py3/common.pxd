@@ -15,7 +15,7 @@
 # distutils: language=c++
 
 from libcpp.map cimport map as cmap
-from libc.stdint cimport int64_t
+from libc.stdint cimport int32_t, int64_t
 from libcpp.string cimport string
 from thrift.py3.std_libcpp cimport milliseconds
 
@@ -74,6 +74,8 @@ cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thr
         milliseconds getChunkTimeout()
         cRpcOptions& setQueueTimeout(milliseconds timeout)
         milliseconds getQueueTimeout()
+        cRpcOptions& setChunkBufferSize(int32_t chunkBufferSize)
+        int32_t getChunkBufferSize()
         void setWriteHeader(const string& key, const string value)
         const cmap[string, string]& getReadHeaders()
         const cmap[string, string]& getWriteHeaders()

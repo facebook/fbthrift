@@ -205,6 +205,16 @@ cdef class RpcOptions:
         self._cpp_obj.setWriteHeader(key.encode('utf-8'), value.encode('utf-8'))
 
     @property
+    def chunk_buffer_size(self):
+        """Get chunkBufferSize"""
+        return self._cpp_obj.getChunkBufferSize()
+
+    @chunk_buffer_size.setter
+    def chunk_buffer_size(self, int buffer_size):
+        """Set chunkBufferSize"""
+        self._cpp_obj.setChunkBufferSize(buffer_size)
+
+    @property
     def read_headers(self):
         # So we don't create a cycle
         if not self._readheaders:

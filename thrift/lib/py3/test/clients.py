@@ -221,3 +221,11 @@ class RpcOptionsTests(unittest.TestCase):
         self.assertEquals(options.priority, Priority.HIGH)
         with self.assertRaises(TypeError):
             options.priority = 1  # type: ignore
+
+    def test_chunk_buffer_size(self) -> None:
+        options = RpcOptions()
+        self.assertEquals(options.chunk_buffer_size, 100)  # default value
+        options.chunk_buffer_size = 200
+        self.assertEquals(options.chunk_buffer_size, 200)
+        with self.assertRaises(TypeError):
+            options.chunk_buffer_size = "1"  # type: ignore
