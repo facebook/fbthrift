@@ -157,6 +157,23 @@ TEST_P(RSCompatibilityTest, RequestResponse_Checksumming) {
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
+TEST_P(RSCompatibilityTest, RequestResponse_CompressRequestResponse) {
+  compatibilityTest_->connectToServer([this](auto client) {
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), hello_(testing::_));
+    auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
+    ASSERT_NE(nullptr, channel);
+
+    // set the channel to compress requests
+    channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
+    channel->setAutoCompressSizeLimit(0);
+
+    std::string name("snoopy");
+    auto result =
+        client->future_hello(RpcOptions().setEnableChecksum(true), name).get();
+    EXPECT_EQ("Hello, snoopy", result);
+  });
+}
+
 TEST_P(RSCompatibilityTest, Oneway_Simple) {
   compatibilityTest_->TestOneway_Simple();
 }

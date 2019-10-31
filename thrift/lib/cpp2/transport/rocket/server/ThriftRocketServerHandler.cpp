@@ -209,13 +209,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
     F&& makeRequest) {
   RequestRpcMetadata metadata;
   const bool parseOk = deserializeMetadata(payload, metadata);
-
-  auto data = std::move(payload).data();
   const bool validMetadata = parseOk && isMetadataValid(metadata);
-  const bool badChecksum = validMetadata && metadata.crc32c_ref() &&
-      (*metadata.crc32c_ref() != checksum::crc32c(*data));
 
-  if (validMetadata && !badChecksum) {
+  if (validMetadata) {
+    // check if server is overloaded
     if (UNLIKELY(serverConfigs_.isOverloaded(
             metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
                                          : nullptr,
@@ -226,25 +223,33 @@ void ThriftRocketServerHandler::handleRequestCommon(
       handleRequestOverloadedServer(makeRequest(std::move(metadata)));
       return;
     }
+
+    auto data = std::move(payload).data();
     // uncompress the request if it's compressed
     if (auto compression = metadata.compression_ref()) {
       rocket::uncompressRequest(*metadata.compression_ref(), data);
     }
 
-    auto request = makeRequest(std::move(metadata));
-    const auto protocolId = request->getProtoId();
-    auto* const cpp2ReqCtx = request->getRequestContext();
-    cpp2Processor_->process(
-        std::move(request),
-        std::move(data),
-        protocolId,
-        cpp2ReqCtx,
-        worker_->getEventBase(),
-        threadManager_.get());
-  } else if (!validMetadata) {
-    handleRequestWithBadMetadata(makeRequest(std::move(metadata)));
+    // check the checksum
+    const bool badChecksum = metadata.crc32c_ref() &&
+        (*metadata.crc32c_ref() != checksum::crc32c(*data));
+
+    if (!badChecksum) {
+      auto request = makeRequest(std::move(metadata));
+      const auto protocolId = request->getProtoId();
+      auto* const cpp2ReqCtx = request->getRequestContext();
+      cpp2Processor_->process(
+          std::move(request),
+          std::move(data),
+          protocolId,
+          cpp2ReqCtx,
+          worker_->getEventBase(),
+          threadManager_.get());
+    } else {
+      handleRequestWithBadChecksum(makeRequest(std::move(metadata)));
+    }
   } else {
-    handleRequestWithBadChecksum(makeRequest(std::move(metadata)));
+    handleRequestWithBadMetadata(makeRequest(std::move(metadata)));
   }
 }
 
