@@ -412,7 +412,7 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       // definition.
       reqContext_(&connection_->context_, req_->getHeader()),
       debugStub_(
-          connection_->getWorker()->getRequestsRegistry(),
+          *connection_->getWorker()->getRequestsRegistry(),
           *this,
           reqContext_) {
   queueTimeout_.request_ = this;
