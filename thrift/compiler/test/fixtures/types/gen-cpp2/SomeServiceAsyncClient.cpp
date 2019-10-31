@@ -111,43 +111,6 @@ void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOpti
   recv_bounce_map(_return, _returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete< ::apache::thrift::fixtures::types::SomeMap>>
-SomeServiceAsyncClient::sync_complete_bounce_map(
-    apache::thrift::RpcOptions& rpcOptions,  const  ::apache::thrift::fixtures::types::SomeMap& m) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "SomeService.bounce_map");
-
-  bounce_mapImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  m);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete< ::apache::thrift::fixtures::types::SomeMap>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-       ::apache::thrift::fixtures::types::SomeMap rv;
-      recv_bounce_map(rv, returnState);
-      return rv;
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future< ::apache::thrift::fixtures::types::SomeMap> SomeServiceAsyncClient::future_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
@@ -310,43 +273,6 @@ void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& r
   recv_binary_keyed_map(_return, _returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>>
-SomeServiceAsyncClient::sync_complete_binary_keyed_map(
-    apache::thrift::RpcOptions& rpcOptions,  const ::std::vector<int64_t>& r) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "SomeService.binary_keyed_map");
-
-  binary_keyed_mapImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  r);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      ::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t> rv;
-      recv_binary_keyed_map(rv, returnState);
-      return rv;
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> SomeServiceAsyncClient::future_binary_keyed_map(const ::std::vector<int64_t>& r) {

@@ -39,8 +39,6 @@ class MyRootAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<folly::Unit> semifuture_do_root(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_do_root(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_do_root(apache::thrift::RpcOptions& rpcOptions);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_do_root(
-      apache::thrift::RpcOptions& rpcOptions );
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>

@@ -37,8 +37,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to);
   virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to);
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>> sync_complete_returnstream(
-      apache::thrift::RpcOptions& rpcOptions,  int32_t i32_from, int32_t i32_to);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -65,8 +63,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_streamthrows(int32_t foo);
   virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>> sync_complete_streamthrows(
-      apache::thrift::RpcOptions& rpcOptions,  int32_t foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -93,8 +89,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_boththrows(int32_t foo);
   virtual folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ClientBufferedStream<int32_t>>> sync_complete_boththrows(
-      apache::thrift::RpcOptions& rpcOptions,  int32_t foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -121,8 +115,6 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo);
   virtual folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
   virtual folly::SemiFuture<std::pair<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>> sync_complete_responseandstreamthrows(
-      apache::thrift::RpcOptions& rpcOptions,  int32_t foo);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>

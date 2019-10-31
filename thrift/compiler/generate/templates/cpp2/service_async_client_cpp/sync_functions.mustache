@@ -73,6 +73,7 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
 <%/type:resolves_to_complex_return?%>
 }
 
+<%#type:sync_methods_return_try?%>
 <%^function:returns_sink?%>
 folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
 <%service:name%>AsyncClient::sync_complete_<%function:cpp_name%>(
@@ -117,3 +118,4 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
   return tryResponse;
 }
 <%/function:returns_sink?%>
+<%/type:sync_methods_return_try?%>

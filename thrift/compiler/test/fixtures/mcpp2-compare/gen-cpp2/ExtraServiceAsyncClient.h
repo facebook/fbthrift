@@ -41,8 +41,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<bool> semifuture_simple_function(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_simple_function(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_simple_function(apache::thrift::RpcOptions& rpcOptions);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<bool>> sync_complete_simple_function(
-      apache::thrift::RpcOptions& rpcOptions );
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -73,8 +71,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<folly::Unit> semifuture_throws_function(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_throws_function(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_throws_function(apache::thrift::RpcOptions& rpcOptions);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<void>> sync_complete_throws_function(
-      apache::thrift::RpcOptions& rpcOptions );
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -105,8 +101,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<bool> semifuture_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1);
   virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1);
   virtual folly::SemiFuture<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_throws_function2(apache::thrift::RpcOptions& rpcOptions, bool param1);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<bool>> sync_complete_throws_function2(
-      apache::thrift::RpcOptions& rpcOptions,  bool param1);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -137,8 +131,6 @@ class ExtraServiceAsyncClient : public ::some::valid::ns::ParamServiceAsyncClien
   virtual folly::SemiFuture<::std::map<int32_t, ::std::string>> semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2);
   virtual folly::Future<std::pair<::std::map<int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2);
   virtual folly::SemiFuture<std::pair<::std::map<int32_t, ::std::string>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_throws_function3(apache::thrift::RpcOptions& rpcOptions, bool param1, const ::std::string& param2);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<::std::map<int32_t, ::std::string>>> sync_complete_throws_function3(
-      apache::thrift::RpcOptions& rpcOptions,  bool param1, const ::std::string& param2);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>

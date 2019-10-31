@@ -40,8 +40,6 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture< ::apache::thrift::fixtures::types::SomeMap> semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual folly::Future<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m);
   virtual folly::SemiFuture<std::pair< ::apache::thrift::fixtures::types::SomeMap, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete< ::apache::thrift::fixtures::types::SomeMap>> sync_complete_bounce_map(
-      apache::thrift::RpcOptions& rpcOptions,  const  ::apache::thrift::fixtures::types::SomeMap& m);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -72,8 +70,6 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   virtual folly::SemiFuture<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r);
   virtual folly::Future<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r);
   virtual folly::SemiFuture<std::pair<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r);
-  FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>>> sync_complete_binary_keyed_map(
-      apache::thrift::RpcOptions& rpcOptions,  const ::std::vector<int64_t>& r);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>

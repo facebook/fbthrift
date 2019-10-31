@@ -51,8 +51,10 @@
   virtual folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/service:client_buffered_stream?%>
   virtual folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+<%#type:sync_methods_return_try?%>
   FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>> sync_complete_<%function:cpp_name%>(
       apache::thrift::RpcOptions& rpcOptions<%function:comma%> <% > service_common/function_param_list_const%>);
+<%/type:sync_methods_return_try?%>
 <%/function:oneway?%>
 
 #if FOLLY_HAS_COROUTINES

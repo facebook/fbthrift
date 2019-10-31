@@ -166,41 +166,6 @@ void service2AsyncClient::sync_methodA(apache::thrift::RpcOptions& rpcOptions) {
   recv_methodA(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-service2AsyncClient::sync_complete_methodA(
-    apache::thrift::RpcOptions& rpcOptions ) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "service2.methodA");
-
-  methodAImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback) );
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_methodA(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> service2AsyncClient::future_methodA() {
@@ -363,41 +328,6 @@ void service2AsyncClient::sync_methodB(apache::thrift::RpcOptions& rpcOptions, i
   recv_methodB(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-service2AsyncClient::sync_complete_methodB(
-    apache::thrift::RpcOptions& rpcOptions,  int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "service2.methodB");
-
-  methodBImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  x, y, z);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_methodB(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> service2AsyncClient::future_methodB(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
@@ -560,41 +490,6 @@ int32_t service2AsyncClient::sync_methodC(apache::thrift::RpcOptions& rpcOptions
   return recv_methodC(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<int32_t>>
-service2AsyncClient::sync_complete_methodC(
-    apache::thrift::RpcOptions& rpcOptions ) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "service2.methodC");
-
-  methodCImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback) );
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<int32_t>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_methodC(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<int32_t> service2AsyncClient::future_methodC() {
@@ -759,41 +654,6 @@ int32_t service2AsyncClient::sync_methodD(apache::thrift::RpcOptions& rpcOptions
   return recv_methodD(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<int32_t>>
-service2AsyncClient::sync_complete_methodD(
-    apache::thrift::RpcOptions& rpcOptions,  int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "service2.methodD");
-
-  methodDImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  i, j, k);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<int32_t>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_methodD(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<int32_t> service2AsyncClient::future_methodD(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
@@ -958,43 +818,6 @@ void service2AsyncClient::sync_methodE(apache::thrift::RpcOptions& rpcOptions,  
   recv_methodE(_return, _returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete< ::test_cpp2::cpp_reflection::struct2>>
-service2AsyncClient::sync_complete_methodE(
-    apache::thrift::RpcOptions& rpcOptions ) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "service2.methodE");
-
-  methodEImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback) );
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete< ::test_cpp2::cpp_reflection::struct2>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-       ::test_cpp2::cpp_reflection::struct2 rv;
-      recv_methodE(rv, returnState);
-      return rv;
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future< ::test_cpp2::cpp_reflection::struct2> service2AsyncClient::future_methodE() {
@@ -1157,43 +980,6 @@ void service2AsyncClient::sync_methodF(apache::thrift::RpcOptions& rpcOptions,  
   recv_methodF(_return, _returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete< ::test_cpp2::cpp_reflection::struct2>>
-service2AsyncClient::sync_complete_methodF(
-    apache::thrift::RpcOptions& rpcOptions,  int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "service2.methodF");
-
-  methodFImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  l, m, n);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete< ::test_cpp2::cpp_reflection::struct2>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-       ::test_cpp2::cpp_reflection::struct2 rv;
-      recv_methodF(rv, returnState);
-      return rv;
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future< ::test_cpp2::cpp_reflection::struct2> service2AsyncClient::future_methodF(int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {

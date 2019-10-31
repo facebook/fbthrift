@@ -150,41 +150,6 @@ void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOp
   recv_mapList(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-NestedContainersAsyncClient::sync_complete_mapList(
-    apache::thrift::RpcOptions& rpcOptions,  const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "NestedContainers.mapList");
-
-  mapListImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_mapList(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapList(const ::std::map<int32_t, ::std::vector<int32_t>>& foo) {
@@ -347,41 +312,6 @@ void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOpt
   recv_mapSet(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-NestedContainersAsyncClient::sync_complete_mapSet(
-    apache::thrift::RpcOptions& rpcOptions,  const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "NestedContainers.mapSet");
-
-  mapSetImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_mapSet(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_mapSet(const ::std::map<int32_t, ::std::set<int32_t>>& foo) {
@@ -544,41 +474,6 @@ void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOp
   recv_listMap(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-NestedContainersAsyncClient::sync_complete_listMap(
-    apache::thrift::RpcOptions& rpcOptions,  const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "NestedContainers.listMap");
-
-  listMapImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_listMap(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_listMap(const ::std::vector<::std::map<int32_t, int32_t>>& foo) {
@@ -741,41 +636,6 @@ void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOp
   recv_listSet(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-NestedContainersAsyncClient::sync_complete_listSet(
-    apache::thrift::RpcOptions& rpcOptions,  const ::std::vector<::std::set<int32_t>>& foo) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "NestedContainers.listSet");
-
-  listSetImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_listSet(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_listSet(const ::std::vector<::std::set<int32_t>>& foo) {
@@ -938,41 +798,6 @@ void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOp
   recv_turtles(_returnState);
 }
 
-folly::Try<apache::thrift::RpcResponseComplete<void>>
-NestedContainersAsyncClient::sync_complete_turtles(
-    apache::thrift::RpcOptions& rpcOptions,  const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {
-  apache::thrift::ClientReceiveState returnState;
-  apache::thrift::ClientSyncCallback<false> callback(&returnState);
-  const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
-  auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(
-      protocolId,
-      rpcOptions.releaseWriteHeaders(),
-      this->handlers_,
-      this->getServiceName(),
-      "NestedContainers.turtles");
-
-  turtlesImpl(rpcOptions, ctx, apache::thrift::RequestClientCallback::Ptr(&callback),  foo);
-
-  callback.waitUntilDone(evb);
-  returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::shared_ptr<apache::thrift::ContextStack>(ctx, &ctx->ctx));
-
-  folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
-  if (!returnState.buf()) {
-    assert(returnState.isException());
-  	tryResponse.emplaceException(std::move(returnState.exception()));
-  } else {
-    tryResponse.emplace();
-    if (returnState.header() && !returnState.header()->getHeaders().empty()) {
-  	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
-    }
-    tryResponse->response = folly::makeTryWith([&] {
-      return recv_turtles(returnState);
-    });
-  }
-  return tryResponse;
-}
 
 
 folly::Future<folly::Unit> NestedContainersAsyncClient::future_turtles(const ::std::vector<::std::vector<::std::map<int32_t, ::std::map<int32_t, ::std::set<int32_t>>>>>& foo) {

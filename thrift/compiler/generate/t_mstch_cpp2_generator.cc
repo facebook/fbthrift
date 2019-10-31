@@ -454,6 +454,8 @@ class mstch_cpp2_type : public mstch_type {
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
             {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
             {"type:stack_arguments?", &mstch_cpp2_type::stack_arguments},
+            {"type:sync_methods_return_try?",
+             &mstch_cpp2_type::sync_methods_return_try},
             {"type:cpp_declare_hash", &mstch_cpp2_type::cpp_declare_hash},
             {"type:cpp_declare_equal_to",
              &mstch_cpp2_type::cpp_declare_equal_to},
@@ -537,6 +539,9 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node stack_arguments() {
     return cache_->parsed_options_.count("stack_arguments") != 0;
+  }
+  mstch::node sync_methods_return_try() {
+    return cache_->parsed_options_.count("sync_methods_return_try") != 0;
   }
   mstch::node optionals() {
     return cache_->parsed_options_.count("optionals") != 0;
