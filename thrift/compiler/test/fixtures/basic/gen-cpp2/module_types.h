@@ -12,7 +12,16 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct MyIntField;
+struct MyStringField;
+struct MyDataField;
+struct myEnum;
+struct myEnum;
+struct myStruct;
+struct myDataItem;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_MyIntField
 #define APACHE_THRIFT_ACCESSOR_MyIntField
 APACHE_THRIFT_DEFINE_ACCESSOR(MyIntField);
@@ -41,7 +50,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(myStruct);
 #define APACHE_THRIFT_ACCESSOR_myDataItem
 APACHE_THRIFT_DEFINE_ACCESSOR(myDataItem);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

@@ -12,7 +12,12 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct majorVer;
+struct package;
+struct annotation_with_quote;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_majorVer
 #define APACHE_THRIFT_ACCESSOR_majorVer
 APACHE_THRIFT_DEFINE_ACCESSOR(majorVer);
@@ -25,7 +30,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(package);
 #define APACHE_THRIFT_ACCESSOR_annotation_with_quote
 APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_quote);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

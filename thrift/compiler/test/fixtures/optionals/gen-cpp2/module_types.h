@@ -13,7 +13,28 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct red;
+struct green;
+struct blue;
+struct alpha;
+struct color;
+struct licensePlate;
+struct description;
+struct name;
+struct hasAC;
+struct id;
+struct name;
+struct age;
+struct address;
+struct favoriteColor;
+struct friends;
+struct bestFriend;
+struct petNames;
+struct afraidOfAnimal;
+struct vehicles;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_red
 #define APACHE_THRIFT_ACCESSOR_red
 APACHE_THRIFT_DEFINE_ACCESSOR(red);
@@ -90,7 +111,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(afraidOfAnimal);
 #define APACHE_THRIFT_ACCESSOR_vehicles
 APACHE_THRIFT_DEFINE_ACCESSOR(vehicles);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

@@ -12,7 +12,11 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct myEnum;
+struct myBigEnum;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
 APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
@@ -21,7 +25,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
 #define APACHE_THRIFT_ACCESSOR_myBigEnum
 APACHE_THRIFT_DEFINE_ACCESSOR(myBigEnum);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

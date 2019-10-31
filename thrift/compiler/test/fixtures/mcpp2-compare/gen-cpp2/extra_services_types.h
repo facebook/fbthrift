@@ -14,7 +14,22 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct fieldA;
+struct req_fieldA;
+struct opt_fieldA;
+struct fieldB;
+struct req_fieldB;
+struct opt_fieldB;
+struct fieldC;
+struct req_fieldC;
+struct opt_fieldC;
+struct fieldD;
+struct fieldE;
+struct req_fieldE;
+struct opt_fieldE;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_fieldA
 #define APACHE_THRIFT_ACCESSOR_fieldA
 APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
@@ -67,7 +82,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(req_fieldE);
 #define APACHE_THRIFT_ACCESSOR_opt_fieldE
 APACHE_THRIFT_DEFINE_ACCESSOR(opt_fieldE);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

@@ -12,7 +12,14 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct content;
+struct content;
+struct content;
+struct sink;
+struct reason;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_content
 #define APACHE_THRIFT_ACCESSOR_content
 APACHE_THRIFT_DEFINE_ACCESSOR(content);
@@ -33,7 +40,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(sink);
 #define APACHE_THRIFT_ACCESSOR_reason
 APACHE_THRIFT_DEFINE_ACCESSOR(reason);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

@@ -12,8 +12,10 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
-} // namespace accessor
+namespace tag {
+} // namespace tag
+namespace detail {
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

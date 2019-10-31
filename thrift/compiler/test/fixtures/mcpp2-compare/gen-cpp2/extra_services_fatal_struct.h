@@ -245,7 +245,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required_of_writer,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::fieldA
+        ::apache::thrift::tag::fieldA
       >
     >,
     ::apache::thrift::type_class::integral,
@@ -260,7 +260,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::req_fieldA
+        ::apache::thrift::tag::req_fieldA
       >
     >,
     ::apache::thrift::type_class::integral,
@@ -275,7 +275,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::optional,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::opt_fieldA
+        ::apache::thrift::tag::opt_fieldA
       >
     >,
     ::apache::thrift::type_class::integral,
@@ -290,7 +290,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required_of_writer,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::fieldB
+        ::apache::thrift::tag::fieldB
       >
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
@@ -305,7 +305,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::req_fieldB
+        ::apache::thrift::tag::req_fieldB
       >
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
@@ -320,7 +320,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::optional,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::opt_fieldB
+        ::apache::thrift::tag::opt_fieldB
       >
     >,
     ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>,
@@ -335,7 +335,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required_of_writer,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::fieldC
+        ::apache::thrift::tag::fieldC
       >
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
@@ -350,7 +350,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::req_fieldC
+        ::apache::thrift::tag::req_fieldC
       >
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
@@ -365,7 +365,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::optional,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::opt_fieldC
+        ::apache::thrift::tag::opt_fieldC
       >
     >,
     ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>,
@@ -380,7 +380,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required_of_writer,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::fieldD
+        ::apache::thrift::tag::fieldD
       >
     >,
     ::apache::thrift::type_class::string,
@@ -395,7 +395,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required_of_writer,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::fieldE
+        ::apache::thrift::tag::fieldE
       >
     >,
     ::apache::thrift::type_class::string,
@@ -410,7 +410,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::required,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::req_fieldE
+        ::apache::thrift::tag::req_fieldE
       >
     >,
     ::apache::thrift::type_class::string,
@@ -425,7 +425,7 @@ struct containerStruct2_extra_svc_extra_services__struct_unique_member_info_list
     ::apache::thrift::optionality::optional,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::opt_fieldE
+        ::apache::thrift::tag::opt_fieldE
       >
     >,
     ::apache::thrift::type_class::string,

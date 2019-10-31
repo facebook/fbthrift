@@ -25,6 +25,9 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+template <typename Tag>
+struct invoke_reffer_thru_or_access_field;
+
 template <typename, typename, bool IsTry, typename Default = void>
 struct reflect_module_tag_selector {
   using type = Default;
@@ -59,13 +62,9 @@ struct variant_member_field_id {
 };
 
 template <typename A>
-struct data_member_accessor {
-  template <typename T>
-  FOLLY_ERASE constexpr auto operator()(T&& t) const
-      noexcept(noexcept(A::__fbthrift_access_field(static_cast<T&&>(t))))
-          -> decltype(A::__fbthrift_access_field(static_cast<T&&>(t))) {
-    return A::__fbthrift_access_field(static_cast<T&&>(t));
-  }
+struct data_member_accessor : private invoke_reffer_thru_or_access_field<A> {
+ public:
+  using invoke_reffer_thru_or_access_field<A>::operator();
 };
 
 template <typename... A>

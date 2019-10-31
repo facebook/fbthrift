@@ -34,29 +34,27 @@
 //  access_field would use decltype((static_cast<T&&>(t).name)) with the extra
 //  parens, except that clang++ -fms-extensions fails to parse it correctly
 #define APACHE_THRIFT_DEFINE_ACCESSOR(name)                                   \
-  struct name {                                                               \
+  template <>                                                                 \
+  struct access_field<::apache::thrift::tag::name> {                          \
     template <typename T>                                                     \
-    FOLLY_ERASE static constexpr auto&& __fbthrift_access_field_impl(         \
-        T&& t,                                                                \
-        decltype(t.name##_ref())*) noexcept {                                 \
-      return static_cast<T&&>(t).name##_ref().value_unchecked();              \
-    }                                                                         \
-    template <typename T>                                                     \
-    FOLLY_ERASE static constexpr auto __fbthrift_access_field_impl(           \
-        T&& t,                                                                \
-        ...) noexcept                                                         \
-        -> folly::like_t<T&&, decltype(folly::remove_cvref_t<T>::name)> {     \
+    FOLLY_ERASE constexpr auto operator()(T&& t) noexcept                     \
+        -> ::folly::like_t<T&&, decltype(::folly::remove_cvref_t<T>::name)> { \
       return static_cast<T&&>(t).name;                                        \
     }                                                                         \
-    template <typename T>                                                     \
-    FOLLY_ERASE static constexpr auto __fbthrift_access_field(T&& t) noexcept \
-        -> decltype(                                                          \
-            name::__fbthrift_access_field_impl(static_cast<T&&>(t), 0)) {     \
-      return name::__fbthrift_access_field_impl(static_cast<T&&>(t), 0);      \
-    }                                                                         \
+  };                                                                          \
+  template <>                                                                 \
+  struct invoke_reffer<::apache::thrift::tag::name> {                         \
     template <typename T, typename... A>                                      \
-    FOLLY_ERASE static constexpr auto                                         \
-    __fbthrift_invoke_setter(T&& t, A&&... a) noexcept(                       \
+    FOLLY_ERASE constexpr auto operator()(T&& t, A&&... a) noexcept(          \
+        noexcept(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)))     \
+        -> decltype(static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...)) { \
+      return static_cast<T&&>(t).name##_ref(static_cast<A&&>(a)...);          \
+    }                                                                         \
+  };                                                                          \
+  template <>                                                                 \
+  struct invoke_setter<::apache::thrift::tag::name> {                         \
+    template <typename T, typename... A>                                      \
+    FOLLY_ERASE constexpr auto operator()(T&& t, A&&... a) noexcept(          \
         noexcept(static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...)))     \
         -> decltype(static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...)) { \
       return static_cast<T&&>(t).set_##name(static_cast<A&&>(a)...);          \
@@ -67,6 +65,39 @@ namespace apache {
 namespace thrift {
 
 namespace detail {
+
+template <typename Tag>
+struct access_field;
+template <typename Tag>
+struct invoke_reffer;
+template <typename Tag>
+struct invoke_setter;
+
+template <typename Tag>
+struct invoke_reffer_thru {
+  template <typename... A>
+  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
+      noexcept(invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()))
+      -> decltype(
+          invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked()) {
+    return invoke_reffer<Tag>{}(static_cast<A&&>(a)...).value_unchecked();
+  }
+};
+
+template <typename Tag>
+struct invoke_reffer_thru_or_access_field {
+  template <typename... A>
+  using impl = folly::conditional_t<
+      folly::is_invocable_v<invoke_reffer_thru<Tag>, A...>,
+      invoke_reffer_thru<Tag>,
+      access_field<Tag>>;
+  template <typename... A>
+  FOLLY_ERASE constexpr auto operator()(A&&... a) noexcept(
+      noexcept(impl<A...>{}(static_cast<A&&>(a)...)))
+      -> decltype(impl<A...>{}(static_cast<A&&>(a)...)) {
+    return impl<A...>{}(static_cast<A&&>(a)...);
+  }
+};
 
 template <typename A, typename Ref>
 struct wrapped_struct_argument {
@@ -107,9 +138,9 @@ template <typename A>
 struct assign_isset_<A, true> {
   template <typename S>
   FOLLY_ERASE constexpr auto operator()(S& s, bool b) const
-      noexcept(noexcept(A::__fbthrift_access_field_impl(s.__isset) = b))
-          -> decltype(A::__fbthrift_access_field_impl(s.__isset) = b) {
-    return A::__fbthrift_access_field_impl(s.__isset) = b;
+      noexcept(noexcept(access_field<A>{}(s.__isset) = b))
+          -> decltype(access_field<A>{}(s.__isset) = b) {
+    return access_field<A>{}(s.__isset) = b;
   }
 };
 template <typename A, typename S>
@@ -139,7 +170,8 @@ FOLLY_ERASE constexpr S make_constant(
   void(_{0, (void(assign_isset<A, S>{}(s, true)), 0)...});
   void(_{0,
          (void(assign_struct_field(
-              A::__fbthrift_access_field(s), static_cast<T>(arg.ref))),
+              invoke_reffer_thru_or_access_field<A>{}(s),
+              static_cast<T>(arg.ref))),
           0)...});
   return s;
 }
@@ -150,9 +182,7 @@ FOLLY_ERASE constexpr S make_constant(
     wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
-  void(
-      _{0,
-        (void(A::__fbthrift_invoke_setter(s, static_cast<T>(arg.ref))), 0)...});
+  void(_{0, (void(invoke_setter<A>{}(s, static_cast<T>(arg.ref))), 0)...});
   return s;
 }
 

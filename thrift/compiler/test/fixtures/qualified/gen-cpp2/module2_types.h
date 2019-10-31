@@ -14,7 +14,13 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct first;
+struct second;
+struct s;
+struct id;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_first
 #define APACHE_THRIFT_ACCESSOR_first
 APACHE_THRIFT_DEFINE_ACCESSOR(first);
@@ -31,7 +37,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(s);
 #define APACHE_THRIFT_ACCESSOR_id
 APACHE_THRIFT_DEFINE_ACCESSOR(id);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

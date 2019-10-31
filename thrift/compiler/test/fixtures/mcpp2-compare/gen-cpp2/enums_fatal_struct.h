@@ -64,7 +64,7 @@ struct SomeStruct_facebook_ns_qwerty_enums__struct_unique_member_info_list {
     ::apache::thrift::optionality::required_of_writer,
     ::apache::thrift::detail::reflection_impl::invoker_adaptor<
       ::apache::thrift::detail::reflection_impl::data_member_accessor<
-        ::apache::thrift::accessor::fieldA
+        ::apache::thrift::tag::fieldA
       >
     >,
     ::apache::thrift::type_class::integral,

@@ -12,7 +12,33 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct small_A;
+struct small_B;
+struct fieldA;
+struct fieldB;
+struct fieldC;
+struct fieldD;
+struct fieldE;
+struct fieldF;
+struct fieldG;
+struct fieldH;
+struct fieldI;
+struct fieldJ;
+struct fieldK;
+struct fieldL;
+struct fieldM;
+struct fieldN;
+struct fieldO;
+struct fieldP;
+struct fieldQ;
+struct fieldR;
+struct fieldS;
+struct fieldT;
+struct fieldU;
+struct fieldX;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_small_A
 #define APACHE_THRIFT_ACCESSOR_small_A
 APACHE_THRIFT_DEFINE_ACCESSOR(small_A);
@@ -109,7 +135,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(fieldU);
 #define APACHE_THRIFT_ACCESSOR_fieldX
 APACHE_THRIFT_DEFINE_ACCESSOR(fieldX);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

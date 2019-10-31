@@ -12,12 +12,15 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct fieldA;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_fieldA
 #define APACHE_THRIFT_ACCESSOR_fieldA
 APACHE_THRIFT_DEFINE_ACCESSOR(fieldA);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

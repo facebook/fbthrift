@@ -13,7 +13,58 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct field;
+struct fieldA;
+struct fieldB;
+struct fieldC;
+struct fieldD;
+struct fieldE;
+struct fieldF;
+struct fieldG;
+struct fieldH;
+struct fieldA;
+struct MyIntField;
+struct a;
+struct b;
+struct a;
+struct b;
+struct z;
+struct n;
+struct a;
+struct b;
+struct z;
+struct n;
+struct small;
+struct big;
+struct medium;
+struct biggish;
+struct tiny;
+struct MyIntField;
+struct MyStringField;
+struct majorVer;
+struct data;
+struct bar;
+struct binary_field;
+struct list_field;
+struct foo;
+struct ForwardUsageStruct;
+struct ForwardUsageByRef;
+struct foo;
+struct boolField;
+struct MyBoolField;
+struct MyIntField;
+struct MyStringField;
+struct MyStringField2;
+struct MyBinaryField;
+struct MyBinaryField2;
+struct MyBinaryField3;
+struct MyBinaryListField4;
+struct MyMapEnumAndInt;
+struct string_field;
+struct i32_field;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_field
 #define APACHE_THRIFT_ACCESSOR_field
 APACHE_THRIFT_DEFINE_ACCESSOR(field);
@@ -210,7 +261,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(string_field);
 #define APACHE_THRIFT_ACCESSOR_i32_field
 APACHE_THRIFT_DEFINE_ACCESSOR(i32_field);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 
@@ -954,7 +1005,7 @@ class TrivialNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   TrivialNestedWithDefault() :
       z(4),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::b>(true))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(true))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg);
@@ -1111,7 +1162,7 @@ class ComplexNestedWithDefault final : private apache::thrift::detail::st::Compa
 
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits< std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::b>(std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
+      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits< std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("a"), 3}}))) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg);

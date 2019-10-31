@@ -13,7 +13,12 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct MyIncludedField;
+struct MyOtherIncludedField;
+struct MyIncludedInt;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_MyIncludedField
 #define APACHE_THRIFT_ACCESSOR_MyIncludedField
 APACHE_THRIFT_DEFINE_ACCESSOR(MyIncludedField);
@@ -26,7 +31,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(MyOtherIncludedField);
 #define APACHE_THRIFT_ACCESSOR_MyIncludedInt
 APACHE_THRIFT_DEFINE_ACCESSOR(MyIncludedInt);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 
@@ -51,7 +56,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
  public:
 
   MyStruct() :
-      MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::MyIntField>(2LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::MyTransitiveField>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::accessor::a>(2LL))))),
+      MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyIntField>(2LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyTransitiveField>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(2LL))))),
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

@@ -36,7 +36,14 @@
 <%#program:structs?%>
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+<%#program:structs%>
+<%#struct:fields%>
+struct <%field:cpp_name%>;
+<%/struct:fields%>
+<%/program:structs%>
+} // namespace tag
+namespace detail {
 <%#program:structs%>
 <%#struct:fields%>
 #ifndef APACHE_THRIFT_ACCESSOR_<%field:cpp_name%>
@@ -45,7 +52,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(<%field:cpp_name%>);
 #endif
 <%/struct:fields%>
 <%/program:structs%>
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

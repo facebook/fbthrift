@@ -14,7 +14,164 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct boolField;
+struct boolField;
+struct MyBoolField;
+struct MyIntField;
+struct MyStringField;
+struct MyStringField2;
+struct MyBinaryField;
+struct MyBinaryField2;
+struct MyBinaryField3;
+struct MyBinaryListField4;
+struct MyMapEnumAndInt;
+struct intValue;
+struct stringValue;
+struct intValue;
+struct opt_intValue;
+struct stringValue;
+struct opt_stringValue;
+struct intValue2;
+struct intValue3;
+struct doubelValue;
+struct boolValue;
+struct union_list;
+struct union_set;
+struct union_map;
+struct opt_union_map;
+struct enum_field;
+struct enum_container;
+struct a_struct;
+struct a_set_struct;
+struct a_union;
+struct opt_a_union;
+struct a_union_list;
+struct a_union_typedef;
+struct a_union_typedef_list;
+struct MyBinaryField;
+struct MyBinaryField2;
+struct MyBinaryListField4;
+struct ref_field;
+struct ref_field2;
+struct excp_field;
+struct code;
+struct req_code;
+struct message2;
+struct req_message;
+struct exception_list;
+struct exception_set;
+struct exception_map;
+struct req_exception_map;
+struct enum_field;
+struct enum_container;
+struct a_struct;
+struct a_set_struct;
+struct a_union_list;
+struct union_typedef;
+struct a_union_typedef_list;
+struct code;
+struct req_code;
+struct message;
+struct fieldA;
+struct req_fieldA;
+struct opt_fieldA;
+struct fieldB;
+struct req_fieldB;
+struct opt_fieldB;
+struct fieldC;
+struct req_fieldC;
+struct opt_fieldC;
+struct fieldD;
+struct fieldE;
+struct req_fieldE;
+struct opt_fieldE;
+struct fieldF;
+struct fieldG;
+struct fieldH;
+struct fieldI;
+struct fieldJ;
+struct fieldK;
+struct fieldL;
+struct fieldM;
+struct fieldN;
+struct fieldO;
+struct fieldP;
+struct fieldQ;
+struct fieldR;
+struct req_fieldR;
+struct opt_fieldR;
+struct fieldS;
+struct fieldT;
+struct fieldU;
+struct fieldV;
+struct req_fieldV;
+struct opt_fieldV;
+struct fieldW;
+struct fieldX;
+struct req_fieldX;
+struct opt_fieldX;
+struct fieldY;
+struct fieldZ;
+struct fieldAA;
+struct fieldAB;
+struct fieldAC;
+struct fieldAD;
+struct fieldAE;
+struct fieldSD;
+struct MyIncludedInt;
+struct MyIncludedStruct;
+struct ARefField;
+struct ARequiredField;
+struct no_annotation;
+struct cpp_unique_ref;
+struct cpp2_unique_ref;
+struct container_with_ref;
+struct req_cpp_unique_ref;
+struct req_cpp2_unique_ref;
+struct req_container_with_ref;
+struct opt_cpp_unique_ref;
+struct opt_cpp2_unique_ref;
+struct opt_container_with_ref;
+struct ref_type_unique;
+struct ref_type_shared;
+struct ref_type_const;
+struct req_ref_type_shared;
+struct req_ref_type_const;
+struct req_ref_type_unique;
+struct opt_ref_type_const;
+struct opt_ref_type_unique;
+struct opt_ref_type_shared;
+struct base_type;
+struct list_type;
+struct set_type;
+struct map_type;
+struct map_struct_type;
+struct iobuf_type;
+struct iobuf_ptr;
+struct list_i32_template;
+struct list_string_template;
+struct set_template;
+struct map_template;
+struct typedef_list_template;
+struct typedef_deque_template;
+struct typedef_set_template;
+struct typedef_map_template;
+struct indirection_a;
+struct indirection_b;
+struct indirection_c;
+struct iobuf_type_val;
+struct iobuf_ptr_val;
+struct struct_struct;
+struct map_of_iobufs;
+struct map_of_iobuf_ptrs;
+struct floatField;
+struct doubleField;
+struct floatSide;
+struct doubleSide;
+struct intField;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_boolField
 #define APACHE_THRIFT_ACCESSOR_boolField
 APACHE_THRIFT_DEFINE_ACCESSOR(boolField);
@@ -635,7 +792,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(doubleSide);
 #define APACHE_THRIFT_ACCESSOR_intField
 APACHE_THRIFT_DEFINE_ACCESSOR(intField);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

@@ -12,7 +12,30 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct weeks;
+struct title;
+struct employer;
+struct city;
+struct min;
+struct max;
+struct a;
+struct b;
+struct a;
+struct b;
+struct c;
+struct d;
+struct a;
+struct b;
+struct c;
+struct i;
+struct d;
+struct i;
+struct d;
+struct s;
+struct u;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_weeks
 #define APACHE_THRIFT_ACCESSOR_weeks
 APACHE_THRIFT_DEFINE_ACCESSOR(weeks);
@@ -97,7 +120,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(s);
 #define APACHE_THRIFT_ACCESSOR_u
 APACHE_THRIFT_DEFINE_ACCESSOR(u);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

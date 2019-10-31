@@ -12,7 +12,11 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct message;
+struct sonnet;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_message
 #define APACHE_THRIFT_ACCESSOR_message
 APACHE_THRIFT_DEFINE_ACCESSOR(message);
@@ -21,7 +25,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(message);
 #define APACHE_THRIFT_ACCESSOR_sonnet
 APACHE_THRIFT_DEFINE_ACCESSOR(sonnet);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

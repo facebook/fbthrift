@@ -14,7 +14,17 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct i32Field;
+struct strField;
+struct listField;
+struct mapField;
+struct inclAField;
+struct inclBField;
+struct i32Field;
+struct inclEnumB;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_i32Field
 #define APACHE_THRIFT_ACCESSOR_i32Field
 APACHE_THRIFT_DEFINE_ACCESSOR(i32Field);
@@ -47,7 +57,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(i32Field);
 #define APACHE_THRIFT_ACCESSOR_inclEnumB
 APACHE_THRIFT_DEFINE_ACCESSOR(inclEnumB);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

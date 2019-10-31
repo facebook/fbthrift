@@ -13,7 +13,14 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct id;
+struct houseName;
+struct houseColors;
+struct id;
+struct fieldType;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_id
 #define APACHE_THRIFT_ACCESSOR_id
 APACHE_THRIFT_DEFINE_ACCESSOR(id);
@@ -34,7 +41,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(id);
 #define APACHE_THRIFT_ACCESSOR_fieldType
 APACHE_THRIFT_DEFINE_ACCESSOR(fieldType);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

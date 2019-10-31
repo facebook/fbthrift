@@ -12,7 +12,43 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct anInteger;
+struct aString;
+struct opt_value;
+struct value;
+struct req_value;
+struct opt_ref;
+struct ref;
+struct req_ref;
+struct u;
+struct aDouble;
+struct f;
+struct mes;
+struct list_ref;
+struct set_ref;
+struct map_ref;
+struct list_ref_unique;
+struct set_ref_shared;
+struct list_ref_shared_const;
+struct opt_shared_const;
+struct shared_const;
+struct req_shared_const;
+struct def_field;
+struct opt_field;
+struct req_field;
+struct def_field;
+struct opt_field;
+struct req_field;
+struct def_field;
+struct opt_field;
+struct req_field;
+struct def_field;
+struct opt_field;
+struct req_field;
+struct def_field;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_anInteger
 #define APACHE_THRIFT_ACCESSOR_anInteger
 APACHE_THRIFT_DEFINE_ACCESSOR(anInteger);
@@ -149,7 +185,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(req_field);
 #define APACHE_THRIFT_ACCESSOR_def_field
 APACHE_THRIFT_DEFINE_ACCESSOR(def_field);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

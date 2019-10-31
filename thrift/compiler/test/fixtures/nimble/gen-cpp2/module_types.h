@@ -12,7 +12,13 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct first;
+struct second;
+struct third;
+struct isTrue;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_first
 #define APACHE_THRIFT_ACCESSOR_first
 APACHE_THRIFT_DEFINE_ACCESSOR(first);
@@ -29,7 +35,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(third);
 #define APACHE_THRIFT_ACCESSOR_isTrue
 APACHE_THRIFT_DEFINE_ACCESSOR(isTrue);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 

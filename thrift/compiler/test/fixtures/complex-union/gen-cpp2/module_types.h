@@ -12,7 +12,28 @@
 
 namespace apache {
 namespace thrift {
-namespace accessor {
+namespace tag {
+struct intValue;
+struct stringValue;
+struct intListValue;
+struct stringListValue;
+struct typedefValue;
+struct stringRef;
+struct intListValue;
+struct stringListValue;
+struct binaryData;
+struct stringData;
+struct strVal;
+struct intVal;
+struct typedefValue;
+struct v1;
+struct v2;
+struct thingOne;
+struct thingTwo;
+struct num;
+struct s;
+} // namespace tag
+namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_intValue
 #define APACHE_THRIFT_ACCESSOR_intValue
 APACHE_THRIFT_DEFINE_ACCESSOR(intValue);
@@ -89,7 +110,7 @@ APACHE_THRIFT_DEFINE_ACCESSOR(num);
 #define APACHE_THRIFT_ACCESSOR_s
 APACHE_THRIFT_DEFINE_ACCESSOR(s);
 #endif
-} // namespace accessor
+} // namespace detail
 } // namespace thrift
 } // namespace apache
 
