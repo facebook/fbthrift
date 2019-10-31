@@ -87,6 +87,7 @@ public final class Logger {
         | IllegalArgumentException
         | InvocationTargetException
         | NoSuchMethodException
+        | NullPointerException
         | ExceptionInInitializerError e) {
       errorFn =
           new LoggerFunction() {
