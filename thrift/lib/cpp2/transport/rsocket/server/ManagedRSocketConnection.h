@@ -53,6 +53,17 @@ class ManagedRSocketConnection
     return negotiatedCompressionAlgo_;
   }
 
+  void setMinCompressBytes(uint32_t bytes) {
+    minCompressBytes_ = bytes;
+  }
+
+  /**
+   * Get the minimum response compression size
+   */
+  uint32_t getMinCompressBytes() const {
+    return minCompressBytes_;
+  }
+
  protected:
   ~ManagedRSocketConnection() = default;
 
@@ -74,6 +85,7 @@ class ManagedRSocketConnection
   std::shared_ptr<rsocket::DuplexConnection::Subscriber> setupSubscriber_;
   std::shared_ptr<rsocket::RSocketStateMachine> stateMachine_;
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
+  uint32_t minCompressBytes_{0};
 
   class SetupSubscriber;
 };

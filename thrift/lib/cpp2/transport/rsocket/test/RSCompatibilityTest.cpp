@@ -20,6 +20,9 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/MockCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TransportCompatibilityTest.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
+#include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/ManagedRSocketConnection.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
 DECLARE_int32(num_client_connections);
@@ -157,7 +160,7 @@ TEST_P(RSCompatibilityTest, RequestResponse_Checksumming) {
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
-TEST_P(RSCompatibilityTest, RequestResponse_CompressRequestResponse) {
+TEST_P(RSCompatibilityTest, RequestResponse_CompressRequest) {
   compatibilityTest_->connectToServer([this](auto client) {
     EXPECT_CALL(*compatibilityTest_->handler_.get(), hello_(testing::_));
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
@@ -265,5 +268,105 @@ INSTANTIATE_TEST_CASE_P(
     RSCompatibilityTest,
     testing::Values(false, true));
 
+/**
+ * This is a test class with customized RoutingHandler. The main purpose is to
+ * set compression on the server-side and test the behavior.
+ */
+class RSCompatibilityTest2
+    : public testing::Test,
+      public testing::WithParamInterface<bool /* useRocketClient */> {
+  class TestRoutingHandler : public RSRoutingHandler {
+   public:
+    TestRoutingHandler() = default;
+    TestRoutingHandler(const TestRoutingHandler&) = delete;
+    TestRoutingHandler& operator=(const TestRoutingHandler&) = delete;
+    void handleConnection(
+        wangle::ConnectionManager* connectionManager,
+        folly::AsyncTransportWrapper::UniquePtr sock,
+        folly::SocketAddress const* address,
+        wangle::TransportInfo const& /*tinfo*/,
+        std::shared_ptr<Cpp2Worker> worker) override {
+      auto sockPtr = sock.get();
+
+      wangle::ManagedConnection* connection = nullptr;
+      auto* const server = worker->getServer();
+      if (server->isRocketServerEnabled()) {
+        connection = new rocket::RocketServerConnection(
+            std::move(sock),
+            std::make_shared<rocket::ThriftRocketServerHandler>(
+                worker, *address, sockPtr),
+            server->getStreamExpireTime());
+        // set compression algorithm to be used on this connection
+        static_cast<rocket::RocketServerConnection*>(connection)
+            ->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
+        // set minCompressBytes
+        static_cast<rocket::RocketServerConnection*>(connection)
+            ->setMinCompressBytes(server->getMinCompressBytes());
+      } else {
+        connection = new ManagedRSocketConnection(
+            std::move(sock),
+            [sockPtr, worker = worker, clientAddress = folly::copy(*address)](
+                auto&) mutable {
+              DCHECK(worker->getServer());
+              DCHECK(worker->getServer()->getCpp2Processor());
+              // RSResponder will be created per client connection. It will use
+              // the current Observer of the server.
+              return std::make_shared<RSResponder>(
+                  std::move(worker), clientAddress, sockPtr);
+            });
+        // set compression algorithm to be used on this connection
+        static_cast<ManagedRSocketConnection*>(connection)
+            ->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
+        // set minCompressBytes
+        static_cast<ManagedRSocketConnection*>(connection)
+            ->setMinCompressBytes(server->getMinCompressBytes());
+      }
+
+      connectionManager->addConnection(connection);
+
+      if (auto* observer = server->getObserver()) {
+        observer->connAccepted();
+        observer->activeConnections(
+            connectionManager->getNumConnections() *
+            server->getNumIOWorkerThreads());
+      }
+    }
+  };
+
+ public:
+  RSCompatibilityTest2() {
+    FLAGS_transport = "rocket";
+
+    compatibilityTest_ = std::make_unique<TransportCompatibilityTest>();
+    compatibilityTest_->addRoutingHandler(
+        std::make_unique<TestRoutingHandler>());
+    compatibilityTest_->startServer();
+  }
+
+ protected:
+  std::unique_ptr<TransportCompatibilityTest> compatibilityTest_;
+};
+
+TEST_P(RSCompatibilityTest2, RequestResponse_CompressRequestResponse) {
+  compatibilityTest_->connectToServer([this](auto client) {
+    EXPECT_CALL(*compatibilityTest_->handler_.get(), hello_(testing::_));
+    auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
+    ASSERT_NE(nullptr, channel);
+
+    // set the channel to compress requests
+    channel->setNegotiatedCompressionAlgorithm(CompressionAlgorithm::ZSTD);
+    channel->setAutoCompressSizeLimit(0);
+
+    std::string name("snoopy");
+    auto result =
+        client->future_hello(RpcOptions().setEnableChecksum(true), name).get();
+    EXPECT_EQ("Hello, snoopy", result);
+  });
+}
+
+INSTANTIATE_TEST_CASE_P(
+    RSCompatibilityTests,
+    RSCompatibilityTest2,
+    testing::Values(false, true));
 } // namespace thrift
 } // namespace apache

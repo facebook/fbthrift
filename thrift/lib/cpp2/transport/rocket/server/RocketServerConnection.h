@@ -104,6 +104,17 @@ class RocketServerConnection
     return negotiatedCompressionAlgo_;
   }
 
+  void setMinCompressBytes(uint32_t bytes) {
+    minCompressBytes_ = bytes;
+  }
+
+  /**
+   * Get the minimum response compression size
+   */
+  uint32_t getMinCompressBytes() const {
+    return minCompressBytes_;
+  }
+
  private:
   void freeStream(StreamId streamId);
 
@@ -125,6 +136,7 @@ class RocketServerConnection
   // for which the writeSuccess()/writeErr() has not yet been called.
   size_t inflightWrites_{0};
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
+  uint32_t minCompressBytes_{0};
 
   enum class ConnectionState : uint8_t {
     ALIVE,

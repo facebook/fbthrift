@@ -103,6 +103,9 @@ void RSRoutingHandler::handleConnection(
       static_cast<rocket::RocketServerConnection*>(connection)
           ->setNegotiatedCompressionAlgorithm(compression);
     }
+    // set minCompressBytes
+    static_cast<rocket::RocketServerConnection*>(connection)
+        ->setMinCompressBytes(server->getMinCompressBytes());
   } else {
     connection = new ManagedRSocketConnection(
         std::move(sock),
@@ -123,6 +126,9 @@ void RSRoutingHandler::handleConnection(
       static_cast<ManagedRSocketConnection*>(connection)
           ->setNegotiatedCompressionAlgorithm(compression);
     }
+    // set minCompressBytes
+    static_cast<ManagedRSocketConnection*>(connection)
+        ->setMinCompressBytes(server->getMinCompressBytes());
   }
 
   connectionManager->addConnection(connection);
