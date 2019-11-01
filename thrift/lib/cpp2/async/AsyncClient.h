@@ -23,8 +23,6 @@
 namespace apache {
 namespace thrift {
 
-class Cpp2ConnContext;
-
 class GeneratedAsyncClient : public TClientBase {
  public:
   using channel_ptr =

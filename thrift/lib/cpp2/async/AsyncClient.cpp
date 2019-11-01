@@ -16,8 +16,6 @@
 
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
-
 namespace apache {
 namespace thrift {
 
