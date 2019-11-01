@@ -60,7 +60,8 @@ type HeaderTransport struct {
 
 	// Negotiated
 	protoID         ProtocolID
-	seqID           uint32
+	readSeqID       uint32 // read
+	writeSeqID      uint32 // written
 	flags           uint16
 	clientType      ClientType
 	writeTransforms []TransformID
@@ -86,11 +87,11 @@ func NewHeaderTransport(transport Transport) *HeaderTransport {
 }
 
 func (t *HeaderTransport) SetSeqID(seq uint32) {
-	t.seqID = seq
+	t.writeSeqID = seq
 }
 
 func (t *HeaderTransport) SeqID() uint32 {
-	return t.seqID
+	return t.readSeqID
 }
 
 func (t *HeaderTransport) Identity() string {
@@ -223,6 +224,16 @@ func (t *HeaderTransport) applyUntransform() error {
 	return nil
 }
 
+// GetFlags returns the header flags.
+func (t *HeaderTransport) GetFlags() HeaderFlags {
+	return HeaderFlags(t.flags)
+}
+
+// SetFlags sets the header flags.
+func (t *HeaderTransport) SetFlags(flags HeaderFlags) {
+	t.flags = uint16(flags)
+}
+
 // ResetProtocol Needs to be called between every frame receive (BeginMessageRead)
 // We do this to read out the header for each frame. This contains the length of the
 // frame and protocol / metadata info.
@@ -244,7 +255,7 @@ func (t *HeaderTransport) ResetProtocol() error {
 	// Adopt the client's protocol
 	t.protoID = hdr.protoID
 	t.clientType = hdr.clientType
-	t.seqID = hdr.seq
+	t.readSeqID = hdr.seq
 	t.flags = hdr.flags
 
 	// Make sure we can't read past the current frame length
@@ -373,11 +384,17 @@ func (t *HeaderTransport) flushHeader() error {
 	hdr := tHeader{}
 	hdr.headers = t.writeInfoHeaders
 	hdr.pHeaders = t.persistentWriteInfoHeaders
+	hdr.seq = t.writeSeqID
+	hdr.transforms = t.writeTransforms
+
+	// protoID, clientType, and flags are state taken from what was recently read
+	// from ReadMessageBegin which always calls ResetProtocol.
+	// this means header protocol clients supporting out of order requests must also not change
+	// these fields dynamically between seq ids on a single transport instance.
+	// either we enforce that, or we keep around a lookup table of seq id -> these fields.
 	hdr.protoID = t.protoID
 	hdr.clientType = t.clientType
-	hdr.seq = t.seqID
 	hdr.flags = t.flags
-	hdr.transforms = t.writeTransforms
 
 	if t.identity != "" {
 		hdr.headers[IdentityHeader] = t.identity

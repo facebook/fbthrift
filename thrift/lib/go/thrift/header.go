@@ -87,7 +87,7 @@ func (c ClientType) String() string {
 	}
 }
 
-type HeaderFlags uint32
+type HeaderFlags uint16
 
 const (
 	HeaderFlagSupportOutOfOrder HeaderFlags = 0x01
