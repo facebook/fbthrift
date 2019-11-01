@@ -119,8 +119,7 @@ class RocketClientChannel final : public ClientChannel {
   void setTimeout(uint32_t timeoutMs) override;
 
   CLIENT_TYPE getClientType() override {
-    // TODO Create a new client type
-    return THRIFT_HTTP_CLIENT_TYPE;
+    return THRIFT_ROCKET_CLIENT_TYPE;
   }
 
   void setMaxPendingRequests(uint32_t n) {

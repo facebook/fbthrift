@@ -337,7 +337,7 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     }
 
     auto tHeader = std::make_unique<transport::THeader>();
-    tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+    tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
 
     std::unique_ptr<folly::IOBuf> uncompressedResponse;
     if (response.value().hasNonemptyMetadata()) {
