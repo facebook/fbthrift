@@ -2,7 +2,7 @@
   "thrift_module" : "module",
   "structs" : {
     "MyStruct" : {
-      "lineno" : 19,
+      "lineno" : 20,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

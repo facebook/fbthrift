@@ -2,7 +2,7 @@
   "thrift_module" : "transitive",
   "constants" : {
     "ExampleFoo" : {
-      "lineno" : 22,
+      "lineno" : 23,
       "value" : { "a" : 2 },
       "type_enum" : "STRUCT",
       "spec_args" : "Foo"
@@ -10,7 +10,7 @@
   },
   "structs" : {
     "Foo" : {
-      "lineno" : 18,
+      "lineno" : 19,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
