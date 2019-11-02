@@ -64,6 +64,9 @@ cimport folly.iobuf as __iobuf
 import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
 
+{{#program:has_stream?}}
+from thrift.py3.stream cimport cStream, cResponseAndStream
+{{/program:has_stream?}}
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
 {{#program:includeNamespaces}}
@@ -117,7 +120,7 @@ cdef class {{service:name}}Interface(
             <PyObject *> self,
             get_executor()
         )
-    {{#service:functions}}
+{{#service:functions}}
 
     @staticmethod
     def pass_context_{{function:name}}(fn):
@@ -127,8 +130,8 @@ cdef class {{service:name}}Interface(
             self{{#function:args}},
             {{field:py_name}}{{/function:args}}):
         raise NotImplementedError("async def {{function:name}} is not implemented")
-    {{/service:functions}}
-    {{#service:functions}}
+{{/service:functions}}
+{{#service:functions}}
 
     @staticmethod
     def __get_reflection_for_{{function:name}}():
@@ -151,9 +154,10 @@ cdef class {{service:name}}Interface(
                 {{/function:args}}
             ],
             result={{#function:returnType}}{{!
-            }}{{#type:void?}}None{{/type:void?}}{{!
-            }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
-            }}{{/function:returnType}},
+                }}{{#type:void?}}None{{/type:void?}}{{!
+                }}{{#type:streamresponse?}}{{> services/StreamResponseClassName}}{{/type:streamresponse?}}{{!
+                }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
+                }}{{/function:returnType}},
             exceptions=[
                 {{#function:exceptions}}
                 {{#field:type}}{{> types/PythonType}}{{/field:type}},
@@ -168,7 +172,7 @@ cdef class {{service:name}}Interface(
                 {{/function:annotations}}
             }),
         )
-    {{/service:functions}}
+{{/service:functions}}
 
     {{> reflection/GetReflectionMethod}}
 

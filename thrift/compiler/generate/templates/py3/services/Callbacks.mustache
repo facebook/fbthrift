@@ -36,8 +36,7 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[{{#function:returnType}}{{!
-            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
-            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+            }}{{> services/CythonReturnTypeCppType}}{{!
         }}{{/function:returnType}}]{{!
     }} cPromise{{#function:args}},
     {{#field:type}}{{!

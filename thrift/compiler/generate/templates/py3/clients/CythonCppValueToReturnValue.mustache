@@ -41,6 +41,9 @@ to a python type.
 }}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}result.value())){{/type:struct}}{{!
+}}{{#type:streamresponse?}}{{!
+  }}{{> clients/StreamResponseClassName}}.create(result.value(), options){{!
+}}{{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{> types/CythonPythonType}}.create({{!
   }}make_shared[{{> types/CythonCppType}}]({{!
   }}result.value())){{/type:container?}}{{!

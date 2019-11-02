@@ -29,13 +29,11 @@ executing.
 cdef extern from "<utility>" namespace "std":
 {{#program:returnTypes}}
     cdef cFollyPromise[{{!
-            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
-            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+            }}{{> services/CythonReturnTypeCppType}}{{!
         }}] move_promise_{{> types/CythonCppTypeIdent}} "std::move"(
         cFollyPromise[{{!
-                }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
-                }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
-            }}])
+            }}{{> services/CythonReturnTypeCppType}}{{!
+        }}])
 {{/program:returnTypes}}
 {{^program:returnTypes}}
     pass
@@ -45,14 +43,12 @@ cdef extern from "<utility>" namespace "std":
 @cython.auto_pickle(False)
 cdef class Promise_{{> types/CythonCppTypeIdent}}:
     cdef cFollyPromise[{{!
-            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
-            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+            }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[{{!
-            }}{{^program:stack_arguments?}}{{> services/CythonFieldType}}{{/program:stack_arguments?}}{{!
-            }}{{#program:stack_arguments?}}{{> types/CythonCppType}}{{/program:stack_arguments?}}{{!
+            }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise):
         inst = <Promise_{{> types/CythonCppTypeIdent}}>{{!
         }}Promise_{{> types/CythonCppTypeIdent}}.__new__({{!

@@ -28,7 +28,7 @@ executed in the asyncio loop.
 {{#program:services}}
 {{#service:functions}}
 cdef void {{service:name}}_{{function:name}}_callback(
-    cFollyTry[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}]&& result,
+    cFollyTry[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  {{! so client lives on until we exit }}

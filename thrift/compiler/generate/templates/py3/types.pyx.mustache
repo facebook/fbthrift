@@ -76,6 +76,10 @@ from collections.abc import Sequence, Set, Mapping, Iterable
 import warnings
 import weakref as __weakref
 import builtins as _builtins
+{{#program:has_stream?}}
+import asyncio
+from folly.coro cimport bridgeCoroTaskWith
+{{/program:has_stream?}}
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types as _{{#includeNamespace}}{{value}}_{{/includeNamespace}}types
@@ -1395,3 +1399,86 @@ Mapping.register({{> types/CythonPythonType}})
 }}{{#program:typedefs}}
 {{typedef:symbolic}} = {{#typedef:type}}{{> types/PythonType}}{{/typedef:type}}
 {{/program:typedefs}}
+{{#program:has_stream?}}
+
+{{#program:stream_types}}
+cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
+
+    @staticmethod
+    cdef create(cClientBufferedStream[{{ > types/CythonCppType}}]& c_obj, __RpcOptions rpc_options):
+        inst = ClientBufferedStream__{{type:flat_name}}(rpc_options)
+        inst._gen = make_unique[cClientBufferedStreamWrapper[{{> types/CythonCppType}}]](c_obj)
+        return inst
+
+    @staticmethod
+    cdef void callback(
+        cFollyTry[cOptional[{{> types/CythonCppType}}]]&& result,
+        PyObject* userdata,
+    ):
+        cdef cOptional[{{> types/CythonCppType}}] opt_val
+        cdef {{> types/CythonCppType}} _value
+        stream, pyfuture, rpc_options = <object> userdata
+        if {{#program:stream_exceptions}}{{!
+        }}result.hasException[{{> types/CythonCppType}}]():
+            pyfuture.set_exception({{!
+            }}{{> types/CythonPythonType}}.create({{!
+            }}thrift.py3.exceptions.try_make_shared_exception[{{> types/CythonCppType}}](result.exception()){{!
+            }}))
+        elif {{/program:stream_exceptions}}{{!
+        }}result.hasException():
+            pyfuture.set_exception(
+                thrift.py3.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)
+            )
+        else:
+            opt_val = result.value()
+            if opt_val.has_value():
+                try:
+                    _value = opt_val.value()
+                    pyfuture.set_result({{> stream/CythonCppValueToPythonValue}})
+                except Exception as ex:
+                    pyfuture.set_exception(ex.with_trackback(None))
+            else:
+                pyfuture.set_exception(StopAsyncIteration())
+
+    def __anext__(self):
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, self._rpc_options)
+        bridgeCoroTaskWith[cOptional[{{> types/CythonCppType}}]](
+            self._executor,
+            deref(self._gen).getNext(),
+            ClientBufferedStream__{{type:flat_name}}.callback,
+            <PyObject *>__userdata,
+        )
+        return asyncio.shield(__future)
+
+cdef class Stream__{{type:flat_name}}(Stream):
+    pass
+
+{{/program:stream_types}}
+{{#program:response_and_stream_types}}
+cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndClientBufferedStream):
+
+    @staticmethod
+    cdef create(cResponseAndClientBufferedStream[{{!
+            }}{{#type:streamFirstResponseType}}{{ > types/CythonCppType}}{{/type:streamFirstResponseType}}, {{!
+            }}{{#type:streamElemType}}{{ > types/CythonCppType}}{{/type:streamElemType}}]& c_obj, __RpcOptions rpc_options):
+        inst = ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}()
+        inst._stream = ClientBufferedStream__{{#type:streamElemType}}{{type:flat_name}}{{/type:streamElemType}}.create(
+            c_obj.stream, rpc_options,
+        )
+{{#type:streamFirstResponseType}}
+        cdef {{> types/CythonCppType}} _value = c_obj.response
+        inst._response = {{> stream/CythonCppValueToPythonValue}}
+{{/type:streamFirstResponseType}}
+        return inst
+
+    def __iter__(self):
+        yield self._response
+        yield self._stream
+
+cdef class ResponseAndStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndStream):
+    pass
+
+{{/program:response_and_stream_types}}
+{{/program:has_stream?}}

@@ -57,6 +57,9 @@ to the client.
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!
   }}{{^program:stack_arguments?}}){{/program:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
+}}{{#type:streamresponse?}}{{!
+    }}{{> services/CythonReturnTypeCppType}}() # server streaming support is not implemented yet
+{{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{!
   }}{{^program:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/program:stack_arguments?}}{{!
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!

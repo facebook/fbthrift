@@ -67,8 +67,7 @@ defined in ServicesCallbacks, along with appropriate arguments.
 
 {{#service:functions}}
 folly::Future<{{#function:returnType}}{{!
-        }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
-        }}{{#program:stack_arguments?}}{{> types/CppValueType}}{{/program:stack_arguments?}}{{!
+        }}{{> services/CppReturnType}}{{!
     }}{{/function:returnType}}>{{!
 }} {{service:name}}Wrapper::future_{{function:name}}({{#function:args}}
   {{#field:type}}{{!
@@ -77,8 +76,7 @@ folly::Future<{{#function:returnType}}{{!
       }}{{/field:type}} {{field:py_name}}{{^last?}},{{/last?}}{{#last?}}
 {{/last?}}{{/function:args}}) {
   {{#function:returnType}}folly::Promise<{{!
-          }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
-          }}{{#program:stack_arguments?}}{{> types/CppValueType}}{{/program:stack_arguments?}}{{!
+          }}{{> services/CppReturnType}}{{!
       }}{{/function:returnType}}> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();

@@ -56,8 +56,7 @@ class {{service:name}}Wrapper : {{!
 {{/service:extends?}}
     {{#service:functions}}
     folly::Future<{{#function:returnType}}{{!
-            }}{{^program:stack_arguments?}}{{> types/CppArgType}}{{/program:stack_arguments?}}{{!
-            }}{{#program:stack_arguments?}}{{> types/CppValueType}}{{/program:stack_arguments?}}{{!
+            }}{{> services/CppReturnType}}{{!
         }}{{/function:returnType}}>{{!
       }} future_{{function:name}}({{#function:args}}
         {{#field:type}}{{!

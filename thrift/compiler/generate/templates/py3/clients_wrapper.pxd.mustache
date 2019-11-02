@@ -35,6 +35,9 @@ cimport folly.iobuf as __iobuf
 from thrift.py3.common cimport cRpcOptions
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types as _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types
+{{#program:has_stream?}}
+from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
+{{/program:has_stream?}}
 
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
@@ -80,7 +83,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     {{/service:extends?}}
 
     {{#service:functions}}
-    cFollyFuture[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}] {{function:name}}(cRpcOptions, {{#function:args}}
+    cFollyFuture[{{#function:returnType}}{{> clients/CythonReturnTypeCppType}}{{/function:returnType}}] {{function:name}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/service:functions}}
     {{!

@@ -104,6 +104,16 @@ std::string get_cpp_template(const t_type& type) {
   return {};
 }
 
+const t_type* get_stream_first_response_type(const t_type& type) {
+  assert(type.is_streamresponse());
+  return dynamic_cast<const t_stream_response&>(type).get_first_response_type();
+}
+
+const t_type* get_stream_elem_type(const t_type& type) {
+  assert(type.is_streamresponse());
+  return dynamic_cast<const t_stream_response&>(type).get_elem_type();
+}
+
 class mstch_py3_type : public mstch_type {
  public:
   struct CachedProperties {
@@ -389,6 +399,12 @@ class mstch_py3_program : public mstch_program {
             {"program:moveContainerTypes",
              &mstch_py3_program::getMoveContainerTypes},
             {"program:typeContext?", &mstch_py3_program::isTypeContext},
+            {"program:has_stream?", &mstch_py3_program::hasStream},
+            {"program:stream_types", &mstch_py3_program::getStreamTypes},
+            {"program:response_and_stream_types",
+             &mstch_py3_program::getResponseAndStreamTypes},
+            {"program:stream_exceptions",
+             &mstch_py3_program::getStreamExceptions},
         });
     gather_included_program_namespaces();
     visit_types_for_services();
@@ -443,6 +459,26 @@ class mstch_py3_program : public mstch_program {
     return generate_types_array(types);
   }
 
+  mstch::node getResponseAndStreamTypes() {
+    return generate_types_array(responseAndStreamTypes_);
+  }
+
+  mstch::node getStreamExceptions() {
+    std::vector<const t_type*> types;
+    for (auto& it : streamExceptions_) {
+      types.push_back(it.second);
+    }
+    return generate_types_array(types);
+  }
+
+  mstch::node getStreamTypes() {
+    std::vector<const t_type*> types;
+    for (auto& it : streamTypes_) {
+      types.push_back(it.second);
+    }
+    return generate_types_array(types);
+  }
+
   mstch::node includeNamespaces() {
     mstch::array a;
     for (auto& it : includeNamespaces_) {
@@ -467,6 +503,10 @@ class mstch_py3_program : public mstch_program {
     return std::any_of(services.begin(), services.end(), [](const auto& s) {
       return !s->get_functions().empty();
     });
+  }
+
+  mstch::node hasStream() {
+    return !streamTypes_.empty();
   }
 
   mstch::node isTypeContext() {
@@ -526,6 +566,11 @@ class mstch_py3_program : public mstch_program {
         for (const auto field : function->get_arglist()->get_members()) {
           visit_type(field->get_type());
         }
+        for (const auto field :
+             function->get_stream_xceptions()->get_members()) {
+          const t_type* exType = field->get_type();
+          streamExceptions_.emplace(visit_type(field->get_type()), exType);
+        }
         const t_type* returnType = function->get_returntype();
         returnTypes_.emplace(
             visit_type(returnType), returnType->get_true_type());
@@ -570,6 +615,17 @@ class mstch_py3_program : public mstch_program {
             visit_type(get_map_val_type(*trueType));
       } else if (trueType->is_binary()) {
         extra = "binary";
+      } else if (trueType->is_streamresponse()) {
+        const t_type* respType = get_stream_first_response_type(*trueType);
+        const t_type* elemType = get_stream_elem_type(*trueType);
+        if (respType) {
+          extra += "ResponseAndStream__" + visit_type(respType) + "_";
+        } else {
+          extra = "Stream__";
+        }
+        const auto& elemTypeName = visit_type(elemType);
+        extra += elemTypeName;
+        streamTypes_.emplace(elemTypeName, elemType);
       } else {
         extra = trueType->get_name();
       }
@@ -595,6 +651,10 @@ class mstch_py3_program : public mstch_program {
       if (type->has_custom_cpp_type()) {
         customTypes_.push_back(trueType);
       }
+      if (trueType->is_streamresponse() &&
+          get_stream_first_response_type(*trueType)) {
+        responseAndStreamTypes_.push_back(trueType);
+      }
     }
     return flatName;
   }
@@ -607,6 +667,9 @@ class mstch_py3_program : public mstch_program {
   std::unordered_set<std::string> seenTypeNames_;
   std::map<std::string, Namespace> includeNamespaces_;
   std::map<std::string, const t_type*> returnTypes_;
+  std::vector<const t_type*> responseAndStreamTypes_;
+  std::map<std::string, const t_type*> streamTypes_;
+  std::map<std::string, const t_type*> streamExceptions_;
 };
 
 class mstch_py3_service : public mstch_service {
