@@ -12,21 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Iterator, TypeVar
+from typing import Any, AsyncIterator, Tuple, TypeVar
 
 _T = TypeVar("_T")
-sT = TypeVar("sT", bound=SemiStream)
+sT = TypeVar("sT", bound=ClientBufferedStream)
 rT = TypeVar("rT")
-rsT = TypeVar("rsT", bound=ResponseAndSemiStream)
+rsT = TypeVar("rsT", bound=ResponseAndClientBufferedStream)
 
-class SemiStream:
+class ClientBufferedStream(AsyncIterator[_T]):
     """
-    Base class for all SemiStream object
+    Base class for all ClientBufferedStream object
     """
 
-    async def __aiter__(self: sT) -> Iterator[_T]: ...
+    def __aiter__(self: sT) -> AsyncIterator[_T]: ...
     async def __anext__(self: sT) -> _T: ...
 
-class ResponseAndSemiStream:
-    def get_response(self: rsT) -> rT: ...
-    def get_stream(self: rST, buffer_size: int) -> sT: ...
+class ResponseAndClientBufferedStream:
+    def __iter__(self: rST) -> Tuple[rT, sT]: ...
+
+class Stream:
+    pass
+
+class ResponseAndStream:
+    pass

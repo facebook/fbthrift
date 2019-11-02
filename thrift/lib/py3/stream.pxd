@@ -17,30 +17,42 @@ from folly cimport cFollyExecutor
 from folly.coro cimport cFollyCoroTask
 from folly.optional cimport cOptional
 from folly.async_generator cimport cAsyncGeneratorWrapper, cAsyncGenerator
+from thrift.py3.common cimport RpcOptions
 
+cdef extern from "thrift/lib/cpp2/async/ClientBufferedStream.h" namespace "::apache::thrift":
+    cdef cppclass cClientBufferedStream "::apache::thrift::ClientBufferedStream"[T]:
+         cClientBufferedStream()
 
-cdef extern from "thrift/lib/cpp2/async/SemiStream.h" namespace "::apache::thrift":
-    cdef cppclass cSemiStream "::apache::thrift::SemiStream"[T]:
-        pass
-
-    cdef cppclass cResponseAndSemiStream "::apache::thrift::ResponseAndSemiStream"[R, S]:
+    cdef cppclass cResponseAndClientBufferedStream "::apache::thrift::ResponseAndClientBufferedStream"[R, S]:
         R response
-        cSemiStream[S] stream
+        cClientBufferedStream[S] stream
+        cResponseAndClientBufferedStream()
+
+cdef extern from "thrift/lib/cpp2/async/Stream.h" namespace "::apache::thrift":
+    cdef cppclass cStream "::apache::thrift::Stream"[T]:
+        cStream()
+
+    cdef cppclass cResponseAndStream "::apache::thrift::ResponseAndStream"[R, S]:
+        R response
+        cStream[S] stream
+        cResponseAndStream()
 
 cdef extern from "thrift/lib/py3/stream.h" namespace "::thrift::py3":
-    cdef cppclass cSemiStreamWrapper "::thrift::py3::SemiStreamWrapper"[T]:
-        cSemiStreamWrapper() except +
-        cSemiStreamWrapper(cSemiStream[T]&, int buffer_size) except +
+    cdef cppclass cClientBufferedStreamWrapper "::thrift::py3::ClientBufferedStreamWrapper"[T]:
+        cClientBufferedStreamWrapper() except +
+        cClientBufferedStreamWrapper(cClientBufferedStream[T]&, int buffer_size) except +
         cFollyCoroTask[cOptional[T]] getNext()
 
-    cdef cppclass cResponseAndSemiStreamWrapper "::thrift::py3::ResponseAndSemiStreamWrapper"[R, S]:
-        cResponseAndSemiStreamWrapper() except +
-        cResponseAndSemiStreamWrapper(cResponseAndSemiStream& rs)
-        shared_ptr[R] getResponse() except +
-        cSemiStream[S] getStream()
 
-cdef class SemiStream:
+cdef class ClientBufferedStream:
     cdef cFollyExecutor* _executor
+    cdef RpcOptions _rpc_options
 
-cdef class ResponseAndSemiStream:
+cdef class ResponseAndClientBufferedStream:
+    pass
+
+cdef class Stream:
+    pass
+
+cdef class ResponseAndStream:
     pass

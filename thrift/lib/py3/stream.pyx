@@ -17,12 +17,13 @@ from folly.executor cimport get_executor
 import asyncio
 
 
-cdef class SemiStream:
+cdef class ClientBufferedStream:
     """
-    Base class for all SemiStream object
+    Base class for all ClientBufferedStream object
     """
-    def __cinit__(SemiStream self):
+    def __cinit__(ClientBufferedStream self, RpcOptions options):
         self._executor = get_executor()
+        self._rpc_options = options
 
     def __aiter__(self):
         return self
@@ -33,11 +34,16 @@ cdef class SemiStream:
         future.set_exception(RuntimeError("Not implemented"))
         return future
 
-cdef class ResponseAndSemiStream:
-    def get_response(self):
-        pass
+cdef class ResponseAndClientBufferedStream:
+    def __iter__(self):
+        yield None  # response
+        yield None  # stream
 
-    def get_stream(self, int buffer_size):
-        pass
+cdef class Stream:
+    """
+    Base class for all Stream object
+    """
+    pass
 
-
+cdef class ResponseAndStream:
+    pass

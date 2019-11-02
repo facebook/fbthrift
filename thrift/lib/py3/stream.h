@@ -17,19 +17,18 @@
 #pragma once
 
 #include <folly/python/async_generator.h>
-#include <thrift/lib/cpp2/async/SemiStream.h>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 
 namespace thrift {
 namespace py3 {
 
 template <typename T>
-class SemiStreamWrapper {
+class ClientBufferedStreamWrapper {
  public:
-  SemiStreamWrapper() = default;
-  explicit SemiStreamWrapper(
-      apache::thrift::SemiStream<T>& s,
-      int32_t buffer_size)
-      : gen_{apache::thrift::toAsyncGenerator<T>(std::move(s), buffer_size)} {}
+  ClientBufferedStreamWrapper() = default;
+  explicit ClientBufferedStreamWrapper(
+      apache::thrift::ClientBufferedStream<T>& s)
+      : gen_{std::move(s).toAsyncGenerator()} {}
 
   folly::coro::Task<folly::Optional<T>> getNext() {
     auto res = co_await gen_.getNext();
@@ -42,27 +41,6 @@ class SemiStreamWrapper {
  private:
   folly::python::AsyncGeneratorWrapper<T&&> gen_;
 };
-
-template <typename R, typename S>
-class ResponseAndSemiStreamWrapper {
- public:
-  ResponseAndSemiStreamWrapper() = default;
-  explicit ResponseAndSemiStreamWrapper(
-      apache::thrift::ResponseAndSemiStream<R, S>& rs)
-      : response_{std::move(rs.response)}, stream_{std::move(rs.stream)} {}
-
-  std::shared_ptr<R> getResponse() {
-    return std::make_shared<R>(std::move(response_));
-  }
-
-  apache::thrift::SemiStream<S> getStream() {
-    return std::move(stream_);
-  }
-
- private:
-  R response_;
-  apache::thrift::SemiStream<S> stream_;
-}; // namespace py3
 
 } // namespace py3
 } // namespace thrift
