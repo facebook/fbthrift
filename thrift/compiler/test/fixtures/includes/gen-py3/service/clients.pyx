@@ -147,61 +147,65 @@ cdef class MyService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    
     @staticmethod
     def __get_reflection_for_query():
-      return __MethodSpec(
-        name="query",
-        arguments=[
-          __ArgumentSpec(
-            name="s",
-            type=_module_types.MyStruct,
+        return __MethodSpec(
+            name="query",
+            arguments=[
+                __ArgumentSpec(
+                    name="s",
+                    type=_module_types.MyStruct,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+                __ArgumentSpec(
+                    name="i",
+                    type=_includes_types.Included,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=None,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),
-          __ArgumentSpec(
-            name="i",
-            type=_includes_types.Included,
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),],
-        result=None,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        )
+
     @staticmethod
     def __get_reflection_for_has_arg_docs():
-      return __MethodSpec(
-        name="has_arg_docs",
-        arguments=[
-          __ArgumentSpec(
-            name="s",
-            type=_module_types.MyStruct,
+        return __MethodSpec(
+            name="has_arg_docs",
+            arguments=[
+                __ArgumentSpec(
+                    name="s",
+                    type=_module_types.MyStruct,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+                __ArgumentSpec(
+                    name="i",
+                    type=_includes_types.Included,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=None,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),
-          __ArgumentSpec(
-            name="i",
-            type=_includes_types.Included,
-            annotations=_py_types.MappingProxyType({
-            }),
-          ),],
-        result=None,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="MyService",
-        methods=[
-          cls.__get_reflection_for_query(),
+        return __InterfaceSpec(
+            name="MyService",
+            methods=[
+                cls.__get_reflection_for_query(),
                 cls.__get_reflection_for_has_arg_docs(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
 

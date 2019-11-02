@@ -93,6 +93,9 @@ from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:nam
 cdef object _{{service:name}}_annotations = _py_types.MappingProxyType({
 {{#service:annotations}}
     {{> Annotation}}
+    {{#last?}}
+
+    {{/last?}}
 {{/service:annotations}}
 })
 
@@ -125,8 +128,50 @@ cdef class {{service:name}}Interface(
             {{field:py_name}}{{/function:args}}):
         raise NotImplementedError("async def {{function:name}} is not implemented")
     {{/service:functions}}
+    {{#service:functions}}
 
-    {{> reflection/Interface }}
+    @staticmethod
+    def __get_reflection_for_{{function:name}}():
+        return __MethodSpec(
+            name="{{function:name}}",
+            arguments=[
+                {{#function:args}}
+                __ArgumentSpec(
+                    name="{{field:name}}",
+                    type={{#field:type}}{{> types/PythonType}}{{/field:type}},
+                    annotations=_py_types.MappingProxyType({
+                        {{#field:annotations}}
+                        {{> Annotation }}
+                        {{#last?}}
+
+                        {{/last?}}
+                        {{/field:annotations}}
+                    }),
+                ),
+                {{/function:args}}
+            ],
+            result={{#function:returnType}}{{!
+            }}{{#type:void?}}None{{/type:void?}}{{!
+            }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
+            }}{{/function:returnType}},
+            exceptions=[
+                {{#function:exceptions}}
+                {{#field:type}}{{> types/PythonType}}{{/field:type}},
+                {{/function:exceptions}}
+            ],
+            annotations=_py_types.MappingProxyType({
+                {{#function:annotations}}
+                {{> Annotation }}
+                {{#last?}}
+
+                {{/last?}}
+                {{/function:annotations}}
+            }),
+        )
+    {{/service:functions}}
+
+    {{> reflection/GetReflectionMethod}}
+
 
 {{/program:services}}
 

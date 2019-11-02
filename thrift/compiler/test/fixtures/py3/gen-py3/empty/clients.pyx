@@ -67,15 +67,13 @@ cdef class NullService(thrift.py3.client.Client):
         )
 
 
-    
-    
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="NullService",
-        methods=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="NullService",
+            methods=[
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
 

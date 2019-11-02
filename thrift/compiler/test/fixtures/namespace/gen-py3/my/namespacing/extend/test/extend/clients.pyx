@@ -107,32 +107,33 @@ cdef class ExtendTestService(_hsmodule_clients.HsTestService):
         return asyncio_shield(__future)
 
 
-    
     @staticmethod
     def __get_reflection_for_check():
-      return __MethodSpec(
-        name="check",
-        arguments=[
-          __ArgumentSpec(
-            name="struct1",
-            type=_hsmodule_types.HsFoo,
+        return __MethodSpec(
+            name="check",
+            arguments=[
+                __ArgumentSpec(
+                    name="struct1",
+                    type=_hsmodule_types.HsFoo,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=bool,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),],
-        result=bool,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="ExtendTestService",
-        methods=[
-          cls.__get_reflection_for_check(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="ExtendTestService",
+            methods=[
+                cls.__get_reflection_for_check(),
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
 

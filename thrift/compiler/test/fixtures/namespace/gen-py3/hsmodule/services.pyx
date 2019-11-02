@@ -95,34 +95,36 @@ cdef class HsTestServiceInterface(
             int1):
         raise NotImplementedError("async def init is not implemented")
 
-    
     @staticmethod
     def __get_reflection_for_init():
-      return __MethodSpec(
-        name="init",
-        arguments=[
-          __ArgumentSpec(
-            name="int1",
-            type=int,
+        return __MethodSpec(
+            name="init",
+            arguments=[
+                __ArgumentSpec(
+                    name="int1",
+                    type=int,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=int,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),],
-        result=int,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="HsTestService",
-        methods=[
-          cls.__get_reflection_for_init(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="HsTestService",
+            methods=[
+                cls.__get_reflection_for_init(),
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
 
 
 cdef api void call_cy_HsTestService_init(

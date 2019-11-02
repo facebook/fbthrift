@@ -75,16 +75,15 @@ cdef class NullServiceInterface(
             get_executor()
         )
 
-    
-    
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="NullService",
-        methods=[
-    ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="NullService",
+            methods=[
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
 
 

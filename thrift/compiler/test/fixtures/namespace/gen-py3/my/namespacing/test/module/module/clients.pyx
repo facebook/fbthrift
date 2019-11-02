@@ -106,32 +106,33 @@ cdef class TestService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    
     @staticmethod
     def __get_reflection_for_init():
-      return __MethodSpec(
-        name="init",
-        arguments=[
-          __ArgumentSpec(
-            name="int1",
-            type=int,
+        return __MethodSpec(
+            name="init",
+            arguments=[
+                __ArgumentSpec(
+                    name="int1",
+                    type=int,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=int,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),],
-        result=int,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="TestService",
-        methods=[
-          cls.__get_reflection_for_init(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="TestService",
+            methods=[
+                cls.__get_reflection_for_init(),
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
 

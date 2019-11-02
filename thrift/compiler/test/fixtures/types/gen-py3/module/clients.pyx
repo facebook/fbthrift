@@ -143,49 +143,53 @@ cdef class SomeService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
-    
     @staticmethod
     def __get_reflection_for_bounce_map():
-      return __MethodSpec(
-        name="bounce_map",
-        arguments=[
-          __ArgumentSpec(
-            name="m",
-            type=_module_types.std_unordered_map__Map__i32_string,
+        return __MethodSpec(
+            name="bounce_map",
+            arguments=[
+                __ArgumentSpec(
+                    name="m",
+                    type=_module_types.std_unordered_map__Map__i32_string,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=_module_types.std_unordered_map__Map__i32_string,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),],
-        result=_module_types.std_unordered_map__Map__i32_string,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        )
+
     @staticmethod
     def __get_reflection_for_binary_keyed_map():
-      return __MethodSpec(
-        name="binary_keyed_map",
-        arguments=[
-          __ArgumentSpec(
-            name="r",
-            type=_module_types.List__i64,
+        return __MethodSpec(
+            name="binary_keyed_map",
+            arguments=[
+                __ArgumentSpec(
+                    name="r",
+                    type=_module_types.List__i64,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=_module_types.Map__binary_i64,
+            exceptions=[
+            ],
             annotations=_py_types.MappingProxyType({
             }),
-          ),],
-        result=_module_types.Map__binary_i64,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="SomeService",
-        methods=[
-          cls.__get_reflection_for_bounce_map(),
+        return __InterfaceSpec(
+            name="SomeService",
+            methods=[
+                cls.__get_reflection_for_bounce_map(),
                 cls.__get_reflection_for_binary_keyed_map(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
 

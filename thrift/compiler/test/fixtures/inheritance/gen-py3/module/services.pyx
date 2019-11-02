@@ -96,28 +96,30 @@ cdef class MyRootInterface(
             self):
         raise NotImplementedError("async def do_root is not implemented")
 
-    
     @staticmethod
     def __get_reflection_for_do_root():
-      return __MethodSpec(
-        name="do_root",
-        arguments=[],
-        result=None,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        return __MethodSpec(
+            name="do_root",
+            arguments=[
+            ],
+            result=None,
+            exceptions=[
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="MyRoot",
-        methods=[
-          cls.__get_reflection_for_do_root(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="MyRoot",
+            methods=[
+                cls.__get_reflection_for_do_root(),
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
 cdef object _MyNode_annotations = _py_types.MappingProxyType({
 })
 
@@ -142,28 +144,30 @@ MyRootInterface
             self):
         raise NotImplementedError("async def do_mid is not implemented")
 
-    
     @staticmethod
     def __get_reflection_for_do_mid():
-      return __MethodSpec(
-        name="do_mid",
-        arguments=[],
-        result=None,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        return __MethodSpec(
+            name="do_mid",
+            arguments=[
+            ],
+            result=None,
+            exceptions=[
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="MyNode",
-        methods=[
-          cls.__get_reflection_for_do_mid(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="MyNode",
+            methods=[
+                cls.__get_reflection_for_do_mid(),
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
 cdef object _MyLeaf_annotations = _py_types.MappingProxyType({
 })
 
@@ -188,28 +192,30 @@ MyNodeInterface
             self):
         raise NotImplementedError("async def do_leaf is not implemented")
 
-    
     @staticmethod
     def __get_reflection_for_do_leaf():
-      return __MethodSpec(
-        name="do_leaf",
-        arguments=[],
-        result=None,
-        exceptions=[],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
-    
+        return __MethodSpec(
+            name="do_leaf",
+            arguments=[
+            ],
+            result=None,
+            exceptions=[
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
     @classmethod
     def __get_reflection__(cls):
-      return __InterfaceSpec(
-        name="MyLeaf",
-        methods=[
-          cls.__get_reflection_for_do_leaf(),
-          ],
-        annotations=_py_types.MappingProxyType({
-        }),
-      )
+        return __InterfaceSpec(
+            name="MyLeaf",
+            methods=[
+                cls.__get_reflection_for_do_leaf(),
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
 
 
 cdef api void call_cy_MyRoot_do_root(
