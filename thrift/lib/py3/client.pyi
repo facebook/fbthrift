@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import ipaddress
+import os
 from enum import Enum
 from types import TracebackType
 from typing import (
@@ -25,8 +27,7 @@ from typing import (
     TypeVar,
     Union,
 )
-import ipaddress
-import os
+
 from thrift.py3.common import Headers, Priority
 from thrift.py3.serializer import Protocol
 from thrift.py3.ssl import SSLContext
@@ -41,6 +42,7 @@ class ClientType(Enum):
     THRIFT_UNFRAMED_DEPRECATED: ClientType = ...
     THRIFT_HTTP_SERVER_TYPE: ClientType = ...
     THRIFT_HTTP_CLIENT_TYPE: ClientType = ...
+    THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
     THRIFT_FRAMED_COMPACT: ClientType = ...
     THRIFT_HTTP_GET_CLIENT_TYPE: ClientType = ...
     THRIFT_UNKNOWN_CLIENT_TYPE: ClientType = ...

@@ -41,6 +41,7 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h":
         THRIFT_UNFRAMED_DEPRECATED,
         THRIFT_HTTP_SERVER_TYPE,
         THRIFT_HTTP_CLIENT_TYPE,
+        THRIFT_ROCKET_CLIENT_TYPE,
         THRIFT_FRAMED_COMPACT,
         THRIFT_HTTP_GET_CLIENT_TYPE,
         THRIFT_UNKNOWN_CLIENT_TYPE,

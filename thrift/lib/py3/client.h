@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 namespace thrift {
@@ -89,7 +90,18 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     std::string&& endpoint) {
   auto eb = folly::getEventBase();
   return folly::via(
-      eb, [=, host{std::move(host)}, endpoint{std::move(endpoint)}] {
+      eb,
+      [=,
+       host{std::move(host)},
+       endpoint{std::move(endpoint)}]() -> RequestChannel_ptr {
+        if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
+          auto chan = apache::thrift::RocketClientChannel::newChannel(
+              apache::thrift::async::TAsyncSocket::UniquePtr(
+                  new apache::thrift::async::TAsyncSocket(
+                      eb, host, port, connect_timeout)));
+          chan->setProtocolId(proto);
+          return chan;
+        }
         auto chan = configureClientChannel(
             apache::thrift::HeaderClientChannel::newChannel(
                 apache::thrift::async::TAsyncSocket::newSocket(
