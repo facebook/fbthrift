@@ -26,12 +26,7 @@
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
 
 using std::cout;
-using namespace boost;
-using namespace apache::thrift::async;
 using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
-using namespace apache::thrift::concurrency;
 
 DEFINE_int32(port, 1234, "server port");
 DEFINE_int64(num_threads, 4, "number of worker threads");

@@ -44,7 +44,6 @@ using apache::thrift::ThriftServerAsyncProcessorFactory;
 using facebook::thrift::benchmarks::BenchmarkHandler;
 using facebook::thrift::benchmarks::QPSStats;
 using proxygen::HTTPServerOptions;
-using proxygen::RequestHandlerChain;
 using std::thread;
 using std::chrono::seconds;
 

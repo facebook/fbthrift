@@ -31,12 +31,8 @@
 
 #include <queue>
 
-using namespace boost;
-using namespace apache::thrift::protocol;
 using namespace apache::thrift::test;
-using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
-using namespace apache::thrift;
 using apache::thrift::loadgen::ScoreBoard;
 
 namespace apache {

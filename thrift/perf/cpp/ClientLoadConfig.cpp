@@ -23,7 +23,6 @@
 
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 
-using namespace boost;
 
 DEFINE_string(server, "127.0.0.1", "Name/IP address of the server to test");
 DEFINE_int32(port, 1234, "server port");

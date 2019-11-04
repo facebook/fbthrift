@@ -22,7 +22,6 @@
 
 using namespace apache::thrift::test;
 
-using folly::EventBase;
 using apache::thrift::concurrency::Util;
 
 namespace apache { namespace thrift {

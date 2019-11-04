@@ -24,11 +24,8 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 
-using namespace boost;
-using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
-using namespace apache::thrift;
 
 namespace apache { namespace thrift { namespace test {
 

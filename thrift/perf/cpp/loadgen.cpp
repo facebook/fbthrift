@@ -26,7 +26,6 @@
 
 DEFINE_double(interval, 1.0, "number of seconds between statistics output");
 
-using namespace boost;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 
