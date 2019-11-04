@@ -225,7 +225,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
     }
 
     options_.current_program = program;
-    out_dir_base_ = "gen-rust2";
+    out_dir_base_ = "gen-rust";
   }
 
   void generate_program() override;
@@ -1184,7 +1184,7 @@ void t_mstch_rust_generator::load_crate_map(const std::string& path) {
   // As an example of each value, we might have:
   //   - thrift_name: demo
   //     (this is the name by which the dependency is referred to in thrift)
-  //   - crate_root: ../../demo.thrift/gen-rust2
+  //   - crate_root: ../../demo.thrift/gen-rust
   //     (this directory contains Cargo.toml for the generated crate)
   //   - crate_name: demo_api
   //     (the Rust code will refer to demo_api::types::WhateverType)
