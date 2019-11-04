@@ -62,6 +62,7 @@ using apache::thrift::concurrency::ThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using folly::IOThreadPoolExecutor;
 using folly::NamedThreadFactory;
+using RequestSnapshot = ThriftServer::RequestSnapshot;
 using std::shared_ptr;
 using wangle::TLSCredProcessor;
 
@@ -633,6 +634,37 @@ std::string ThriftServer::getLoadInfo(int64_t load) const {
 void ThriftServer::replaceShutdownSocketSet(
     const std::shared_ptr<folly::ShutdownSocketSet>& newSSS) {
   wShutdownSocketSet_ = newSSS;
+}
+
+folly::SemiFuture<std::vector<RequestSnapshot>>
+ThriftServer::snapshotActiveRequests() {
+  std::vector<folly::SemiFuture<std::vector<RequestSnapshot>>> tasks;
+
+  forEachWorker([&tasks](wangle::Acceptor* acceptor) {
+    auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
+    if (!worker) {
+      return;
+    }
+    auto fut = folly::via(
+        worker->getEventBase(),
+        [reqRegistry = worker->getRequestsRegistry()]() {
+          std::vector<RequestSnapshot> reqSnapshots;
+          for (const auto& stub : reqRegistry->getDebugStubList()) {
+            reqSnapshots.emplace_back(stub);
+          }
+          return reqSnapshots;
+        });
+    tasks.emplace_back(std::move(fut));
+  });
+
+  return folly::collectSemiFuture(tasks.begin(), tasks.end())
+      .deferValue([](std::vector<std::vector<RequestSnapshot>> results) {
+        std::vector<RequestSnapshot> flat_result;
+        for (auto& vec : results) {
+          std::move(vec.begin(), vec.end(), std::back_inserter(flat_result));
+        }
+        return flat_result;
+      });
 }
 } // namespace thrift
 } // namespace apache

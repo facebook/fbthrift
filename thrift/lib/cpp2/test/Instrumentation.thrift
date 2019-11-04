@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-namespace cpp apache.thrift.test
+namespace cpp2 apache.thrift.test
 
 service InstrumentationTestService {
-  void sendRequest();
+  void sendRequest() (cpp.coroutine);
+  stream<i32> sendStreamingRequest() (cpp.coroutine);
 }

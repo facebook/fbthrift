@@ -41,15 +41,15 @@ class RequestDebugStub {
       const ResponseChannelRequest& req,
       const Cpp2RequestContext& reqContext);
 
-  const ResponseChannelRequest& getRequest() {
+  const ResponseChannelRequest& getRequest() const {
     return *req_;
   }
 
-  const Cpp2RequestContext& getRequestContext() {
+  const Cpp2RequestContext& getRequestContext() const {
     return *reqContext_;
   }
 
-  std::chrono::steady_clock::time_point getTimestamp() {
+  std::chrono::steady_clock::time_point getTimestamp() const {
     return timestamp_;
   }
 

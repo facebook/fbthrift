@@ -40,6 +40,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/RequestDebugStub.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -760,6 +761,30 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   // other.
   void replaceShutdownSocketSet(
       const std::shared_ptr<folly::ShutdownSocketSet>& newSSS);
+
+  /**
+   * For each request debug stub, a snapshot information can be constructed to
+   * persist some transitent states about the corresponding request.
+   */
+  class RequestSnapshot {
+   public:
+    explicit RequestSnapshot(const RequestDebugStub& stub)
+        : methodName_(stub.getRequestContext().getMethodName()),
+          creationTimestamp_(stub.getTimestamp()) {}
+
+    const std::string& getMethodName() const {
+      return methodName_;
+    }
+
+    std::chrono::steady_clock::time_point getCreationTimestamp() const {
+      return creationTimestamp_;
+    }
+
+   private:
+    std::string methodName_;
+    std::chrono::steady_clock::time_point creationTimestamp_;
+  };
+  folly::SemiFuture<std::vector<RequestSnapshot>> snapshotActiveRequests();
 };
 
 } // namespace thrift
