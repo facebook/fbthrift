@@ -19,6 +19,7 @@ import pathlib
 from enum import Enum
 from types import TracebackType
 from typing import (
+    Any,
     Callable,
     ClassVar,
     Mapping,
@@ -59,7 +60,7 @@ class AsyncProcessorFactory:
 
 class ServiceInterface(AsyncProcessorFactory):
     annotations: ClassVar[Mapping[str, str]] = ...
-    async def __aenter__(self: T) -> T: ...
+    async def __aenter__(self) -> Any: ...
     async def __aexit__(
         self,
         exc_type: Optional[Type[BaseException]],
