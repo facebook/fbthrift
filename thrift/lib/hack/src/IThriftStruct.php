@@ -49,6 +49,21 @@ interface IThriftStruct {
     ?'class' => string,
     ?'enum' => string,
   );
+  const type TGenericSpec = shape(
+    'type' => TType,
+    ?'var' => string,
+    ?'union' => bool,
+    ?'etype' => TType,
+    ?'elem' => mixed, // this::TElemSpec once hack supports recursive types
+    ?'ktype' => TType,
+    ?'vtype' => TType,
+    ?'key' => mixed, // this::TElemSpec once hack supports recursive types
+    ?'val' => mixed, // this::TElemSpec once hack supports recursive types
+    ?'format' => string,
+    ?'class' => classname<IThriftStruct>,
+    ?'enum' => string, // classname<HH\BuiltinEnum<int>>
+    ...
+  );
 
   abstract const dict<int, this::TFieldSpec> SPEC;
   abstract const dict<string, int> FIELDMAP;
