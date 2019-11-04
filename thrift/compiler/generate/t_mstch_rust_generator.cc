@@ -31,64 +31,29 @@ namespace compiler {
 
 namespace {
 std::string mangle(const std::string& name) {
-  auto reserved = {
-      // Keywords
-      "abstract",
-      "alignof",
-      "as",
-      "async",
-      "await",
-      "become",
-      "box",
-      "break",
-      "const",
-      "continue",
-      "crate",
-      "do",
-      "else",
-      "enum",
-      "extern",
-      "false",
-      "final",
-      "fn",
-      "for",
-      "if",
-      "impl",
-      "in",
-      "let",
-      "loop",
-      "macro",
-      "match",
-      "mod",
-      "move",
-      "mut",
-      "offsetof",
-      "override",
-      "priv",
-      "proc",
-      "pub",
-      "pure",
-      "ref",
-      "return",
-      "Self",
-      "self",
-      "sizeof",
-      "static",
-      "struct",
-      "super",
-      "trait",
-      "true",
-      "type",
-      "typeof",
-      "unsafe",
-      "unsized",
-      "use",
-      "virtual",
-      "where",
-      "while",
-      "yield",
+  static const char* keywords[] = {
+      "abstract", "alignof", "as",      "async",    "await",  "become",
+      "box",      "break",   "const",   "continue", "crate",  "do",
+      "else",     "enum",    "extern",  "false",    "final",  "fn",
+      "for",      "if",      "impl",    "in",       "let",    "loop",
+      "macro",    "match",   "mod",     "move",     "mut",    "offsetof",
+      "override", "priv",    "proc",    "pub",      "pure",   "ref",
+      "return",   "Self",    "self",    "sizeof",   "static", "struct",
+      "super",    "trait",   "true",    "type",     "typeof", "unsafe",
+      "unsized",  "use",     "virtual", "where",    "while",  "yield",
+  };
 
-      // Core Types
+  for (auto s : keywords) {
+    if (name == s) {
+      return name + '_';
+    }
+  }
+
+  return name;
+}
+
+std::string mangle_type(const std::string& name) {
+  static const char* primitives[] = {
       "i8",
       "u8",
       "i16",
@@ -107,13 +72,13 @@ std::string mangle(const std::string& name) {
       "bool",
   };
 
-  for (auto s : reserved) {
+  for (auto s : primitives) {
     if (name == s) {
       return name + '_';
     }
   }
 
-  return name;
+  return mangle(name);
 }
 
 // Convert CamelCase to snake_case.
@@ -182,25 +147,56 @@ std::string quote(const std::string& data) {
   quoted << '"';
   return quoted.str();
 }
-} // namespace
 
-// key: package name according to Thrift
-// value: rust_crate_name to use in generated code
-using cratemap = std::map<std::string, std::string>;
+bool can_derive_ord(const t_type* type) {
+  type = type->get_true_type();
+  if (type->is_string() || type->is_binary() || type->is_bool() ||
+      type->is_byte() || type->is_i16() || type->is_i32() || type->is_i64() ||
+      type->is_enum() || type->is_void()) {
+    return true;
+  }
+  if (type->annotations_.count("rust.ord")) {
+    return true;
+  }
+  if (type->is_list()) {
+    auto elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
+    return elem_type && can_derive_ord(elem_type);
+  }
+  return false;
+}
+
+struct rust_codegen_options {
+  // Key: package name according to Thrift.
+  // Value: rust_crate_name to use in generated code.
+  std::map<std::string, std::string> cratemap;
+
+  // Whether to emit derive(Serialize, Deserialize).
+  // Enabled by `thrift_rust_options = "add_serde_derives"` in TARGETS.
+  bool serde = false;
+
+  // True if we are generating a submodule rather than the whole crate.
+  bool multifile_mode = false;
+
+  // The current program being generated and its Rust module path.
+  const t_program* current_program;
+  std::string current_crate;
+};
 
 std::string get_import_name(
     const t_program* program,
-    const cratemap& cratemap) {
-  auto include_prefix = program->get_include_prefix();
-  auto program_name = program->get_name();
-  auto thrift_path = include_prefix + program_name + ".thrift";
-  auto crate_name = cratemap.find(thrift_path);
-  if (crate_name != cratemap.end()) {
-    return mangle(crate_name->second);
-  } else {
-    return mangle(program_name);
+    const rust_codegen_options& options) {
+  if (program == options.current_program) {
+    return options.current_crate;
   }
+
+  auto program_name = program->get_name();
+  auto crate_name = options.cratemap.find(program_name);
+  if (crate_name != options.cratemap.end()) {
+    return crate_name->second;
+  }
+  return program_name;
 }
+} // namespace
 
 class t_mstch_rust_generator : public t_mstch_generator {
  public:
@@ -210,11 +206,25 @@ class t_mstch_rust_generator : public t_mstch_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
       : t_mstch_generator(program, std::move(context), "rust", parsed_options) {
-    auto cratemap = parsed_options.find("cratemap");
-    if (cratemap != parsed_options.end()) {
-      load_crate_map(cratemap->second);
+    auto cratemap_flag = parsed_options.find("cratemap");
+    if (cratemap_flag != parsed_options.end()) {
+      load_crate_map(cratemap_flag->second);
     }
 
+    options_.serde = parsed_options.count("add_serde_derives");
+
+    auto include_prefix_flag = parsed_options.find("include_prefix");
+    if (include_prefix_flag != parsed_options.end()) {
+      program->set_include_prefix(include_prefix_flag->second);
+    }
+
+    if (options_.multifile_mode) {
+      options_.current_crate = "crate::" + mangle(program->get_name());
+    } else {
+      options_.current_crate = "crate";
+    }
+
+    options_.current_program = program;
     out_dir_base_ = "gen-rust2";
   }
 
@@ -223,7 +233,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
  private:
   void set_mstch_generators();
   void load_crate_map(const std::string& path);
-  cratemap cratemap_;
+  rust_codegen_options options_;
 };
 
 class mstch_rust_program : public mstch_program {
@@ -232,22 +242,43 @@ class mstch_rust_program : public mstch_program {
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_program(program, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      const rust_codegen_options& options)
+      : mstch_program(program, generators, cache, pos), options_(options) {
     register_methods(
         this,
         {
-            {"program:ident", &mstch_rust_program::rust_ident},
             {"program:types?", &mstch_rust_program::rust_has_types},
+            {"program:structsOrEnums?",
+             &mstch_rust_program::rust_structs_or_enums},
+            {"program:serde?", &mstch_rust_program::rust_serde},
+            {"program:multifile?", &mstch_rust_program::rust_multifile},
+            {"program:crate", &mstch_rust_program::rust_crate},
         });
-  }
-  mstch::node rust_ident() {
-    return mangle(program_->get_name());
   }
   mstch::node rust_has_types() {
     return !program_->get_structs().empty() || !program_->get_enums().empty() ||
         !program_->get_typedefs().empty() || !program_->get_xceptions().empty();
   }
+  mstch::node rust_structs_or_enums() {
+    return !program_->get_structs().empty() || !program_->get_enums().empty() ||
+        !program_->get_xceptions().empty();
+  }
+  mstch::node rust_serde() {
+    return options_.serde;
+  }
+  mstch::node rust_multifile() {
+    return options_.multifile_mode;
+  }
+  mstch::node rust_crate() {
+    if (options_.multifile_mode) {
+      return "crate::" + mangle(program_->get_name());
+    }
+    return std::string("crate");
+  }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class mstch_rust_struct : public mstch_struct {
@@ -257,35 +288,33 @@ class mstch_rust_struct : public mstch_struct {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      const cratemap& cratemap)
-      : mstch_struct(strct, generators, cache, pos), cratemap_(cratemap) {
+      const rust_codegen_options& options)
+      : mstch_struct(strct, generators, cache, pos), options_(options) {
     register_methods(
         this,
         {
             {"struct:package", &mstch_rust_struct::rust_package},
-            {"struct:derive_eq", &mstch_rust_struct::rust_derive_eq},
-            {"struct:derive_hash", &mstch_rust_struct::rust_derive_hash},
-            {"struct:derive_ord", &mstch_rust_struct::rust_derive_ord},
+            {"struct:ord?", &mstch_rust_struct::rust_is_ord},
+            {"struct:copy?", &mstch_rust_struct::rust_is_copy},
         });
   }
   mstch::node rust_package() {
-    return get_import_name(strct_->get_program(), cratemap_);
+    return get_import_name(strct_->get_program(), options_);
   }
-  mstch::node rust_derive_eq() {
-    // TODO
-    return false;
+  mstch::node rust_is_ord() {
+    for (const auto& member : strct_->get_members()) {
+      if (!can_derive_ord(member->get_type())) {
+        return false;
+      }
+    }
+    return true;
   }
-  mstch::node rust_derive_hash() {
-    // TODO
-    return false;
-  }
-  mstch::node rust_derive_ord() {
-    // TODO
-    return false;
+  mstch::node rust_is_copy() {
+    return strct_->annotations_.count("rust.copy") != 0;
   }
 
  private:
-  const cratemap& cratemap_;
+  const rust_codegen_options& options_;
 };
 
 class mstch_rust_service : public mstch_service {
@@ -294,8 +323,9 @@ class mstch_rust_service : public mstch_service {
       const t_service* service,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_service(service, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      const rust_codegen_options& options)
+      : mstch_service(service, generators, cache, pos), options_(options) {
     register_methods(
         this,
         {
@@ -304,11 +334,18 @@ class mstch_rust_service : public mstch_service {
         });
   }
   mstch::node rust_package() {
-    return mangle(service_->get_program()->get_name());
+    return get_import_name(service_->get_program(), options_);
   }
   mstch::node rust_snake() {
-    return mangle(snakecase(service_->get_name()));
+    auto module_name = service_->annotations_.find("rust.mod");
+    if (module_name != service_->annotations_.end()) {
+      return module_name->second;
+    }
+    return mangle_type(snakecase(service_->get_name()));
   }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class mstch_rust_function : public mstch_function {
@@ -325,6 +362,9 @@ class mstch_rust_function : public mstch_function {
         {
             {"function:upcamel", &mstch_rust_function::rust_upcamel},
             {"function:index", &mstch_rust_function::rust_index},
+            {"function:void?", &mstch_rust_function::rust_void},
+            {"function:uniqueExceptions",
+             &mstch_rust_function::rust_unique_exceptions},
         });
   }
   mstch::node rust_upcamel() {
@@ -333,29 +373,38 @@ class mstch_rust_function : public mstch_function {
   mstch::node rust_index() {
     return index_;
   }
+  mstch::node rust_void() {
+    return function_->get_returntype()->is_void();
+  }
+  mstch::node rust_unique_exceptions() {
+    // When generating From<> impls for an error type, we must not generate one
+    // where more than one variant contains the same type of exception. Find
+    // only those exceptions that map uniquely to a variant.
+
+    std::map<t_type*, unsigned> type_count;
+    for (const auto& field : function_->get_xceptions()->get_members()) {
+      type_count[field->get_type()] += 1;
+    }
+
+    std::vector<t_field*> unique_exceptions;
+    const auto& fields = function_->get_xceptions()->get_members();
+    std::copy_if(
+        fields.cbegin(),
+        fields.cend(),
+        std::back_inserter(unique_exceptions),
+        [&type_count](const auto& field) {
+          return type_count.at(field->get_type()) == 1;
+        });
+
+    return generate_elements(
+        unique_exceptions,
+        generators_->field_generator_.get(),
+        generators_,
+        cache_);
+  }
 
  private:
   int32_t index_;
-};
-
-class mstch_rust_field : public mstch_field {
- public:
-  mstch_rust_field(
-      const t_field* field,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      int32_t index)
-      : mstch_field(field, generators, cache, pos, index) {
-    register_methods(
-        this,
-        {
-            {"field:ident", &mstch_rust_field::rust_ident},
-        });
-  }
-  mstch::node rust_ident() {
-    return mangle(field_->get_name());
-  }
 };
 
 class mstch_rust_enum : public mstch_enum {
@@ -365,21 +414,437 @@ class mstch_rust_enum : public mstch_enum {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      const cratemap& cratemap)
-      : mstch_enum(enm, generators, cache, pos), cratemap_(cratemap) {
+      const rust_codegen_options& options)
+      : mstch_enum(enm, generators, cache, pos), options_(options) {
     register_methods(
         this,
         {
             {"enum:package", &mstch_rust_enum::rust_package},
+            {"enum:values?", &mstch_rust_enum::rust_has_values},
         });
   }
   mstch::node rust_package() {
-    return get_import_name(enm_->get_program(), cratemap_);
+    return get_import_name(enm_->get_program(), options_);
+  }
+  mstch::node rust_has_values() {
+    return !enm_->get_enum_values().empty();
   }
 
  private:
-  const cratemap& cratemap_;
+  const rust_codegen_options& options_;
 };
+
+class mstch_rust_type : public mstch_type {
+ public:
+  mstch_rust_type(
+      const t_type* type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos,
+      const rust_codegen_options& options)
+      : mstch_type(type, generators, cache, pos), options_(options) {
+    register_methods(
+        this,
+        {
+            {"type:package", &mstch_rust_type::rust_package},
+            {"type:rust", &mstch_rust_type::rust_type},
+        });
+  }
+  mstch::node rust_package() {
+    return get_import_name(type_->get_program(), options_);
+  }
+  mstch::node rust_type() {
+    auto rust_type = type_->annotations_.find("rust.type");
+    if (rust_type != type_->annotations_.end()) {
+      return rust_type->second;
+    }
+    return nullptr;
+  }
+
+ private:
+  const rust_codegen_options& options_;
+};
+
+class mstch_rust_value : public mstch_base {
+ public:
+  using value_type = t_const_value::t_const_value_type;
+  mstch_rust_value(
+      const t_const_value* const_value,
+      const t_type* type,
+      unsigned depth,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      const rust_codegen_options& options)
+      : mstch_base(generators, cache, pos),
+        const_value_(const_value),
+        type_(type->get_true_type()),
+        depth_(depth),
+        options_(options) {
+    register_methods(
+        this,
+        {
+            {"value:type", &mstch_rust_value::type},
+            {"value:bool?", &mstch_rust_value::is_bool},
+            {"value:boolValue", &mstch_rust_value::bool_value},
+            {"value:integer?", &mstch_rust_value::is_integer},
+            {"value:integerValue", &mstch_rust_value::integer_value},
+            {"value:double?", &mstch_rust_value::is_double},
+            {"value:doubleValue", &mstch_rust_value::double_value},
+            {"value:string?", &mstch_rust_value::is_string},
+            {"value:binary?", &mstch_rust_value::is_binary},
+            {"value:quoted", &mstch_rust_value::string_quoted},
+            {"value:list?", &mstch_rust_value::is_list},
+            {"value:listElements", &mstch_rust_value::list_elements},
+            {"value:set?", &mstch_rust_value::is_set},
+            {"value:setMembers", &mstch_rust_value::set_members},
+            {"value:map?", &mstch_rust_value::is_map},
+            {"value:mapEntries", &mstch_rust_value::map_entries},
+            {"value:struct?", &mstch_rust_value::is_struct},
+            {"value:structFields", &mstch_rust_value::struct_fields},
+            {"value:union?", &mstch_rust_value::is_union},
+            {"value:unionVariant", &mstch_rust_value::union_variant},
+            {"value:unionValue", &mstch_rust_value::union_value},
+            {"value:enum?", &mstch_rust_value::is_enum},
+            {"value:enumPackage", &mstch_rust_value::enum_package},
+            {"value:enumName", &mstch_rust_value::enum_name},
+            {"value:enumVariant", &mstch_rust_value::enum_variant},
+            {"value:empty?", &mstch_rust_value::is_empty},
+            {"value:indent", &mstch_rust_value::indent},
+        });
+  }
+  mstch::node type() {
+    return std::make_shared<mstch_rust_type>(
+        type_, generators_, cache_, pos_, options_);
+  }
+  mstch::node is_bool() {
+    return type_->is_bool();
+  }
+  mstch::node bool_value() {
+    if (const_value_->get_type() == value_type::CV_INTEGER) {
+      return const_value_->get_integer() != 0;
+    }
+    return const_value_->get_bool();
+  }
+  mstch::node is_integer() {
+    return type_->is_byte() || type_->is_i16() || type_->is_i32() ||
+        type_->is_i64();
+  }
+  mstch::node integer_value() {
+    return std::to_string(const_value_->get_integer());
+  }
+  mstch::node is_double() {
+    return type_->is_float() || type_->is_double();
+  }
+  mstch::node double_value() {
+    std::ostringstream oss;
+    oss << std::setprecision(std::numeric_limits<double>::digits10);
+    oss << const_value_->get_double();
+    auto digits = oss.str();
+    if (digits.find('.') == std::string::npos &&
+        digits.find('e') == std::string::npos &&
+        digits.find('E') == std::string::npos) {
+      digits += ".0";
+    }
+    return digits;
+  }
+  mstch::node is_string() {
+    return type_->is_string();
+  }
+  mstch::node is_binary() {
+    return type_->is_binary();
+  }
+  mstch::node string_quoted() {
+    return quote(const_value_->get_string());
+  }
+  mstch::node is_list() {
+    return type_->is_list() &&
+        (const_value_->get_type() == value_type::CV_LIST ||
+         (const_value_->get_type() == value_type::CV_MAP &&
+          const_value_->get_map().empty()));
+  }
+  mstch::node list_elements() {
+    const t_type* elem_type;
+    if (type_->is_set()) {
+      auto set_type = dynamic_cast<const t_set*>(type_);
+      if (!set_type) {
+        return mstch::node();
+      }
+      elem_type = set_type->get_elem_type();
+    } else {
+      auto list_type = dynamic_cast<const t_list*>(type_);
+      if (!list_type) {
+        return mstch::node();
+      }
+      elem_type = list_type->get_elem_type();
+    }
+
+    mstch::array elements;
+    for (auto elem : const_value_->get_list()) {
+      elements.push_back(std::make_shared<mstch_rust_value>(
+          elem, elem_type, depth_ + 1, generators_, cache_, pos_, options_));
+    }
+    return elements;
+  }
+  mstch::node is_set() {
+    return type_->is_set() &&
+        (const_value_->get_type() == value_type::CV_LIST ||
+         (const_value_->get_type() == value_type::CV_MAP &&
+          const_value_->get_map().empty()));
+  }
+  mstch::node set_members() {
+    return list_elements();
+  }
+  mstch::node is_map() {
+    return type_->is_map() && const_value_->get_type() == value_type::CV_MAP;
+  }
+  mstch::node map_entries();
+  mstch::node is_struct() {
+    return (type_->is_struct() || type_->is_xception()) && !type_->is_union() &&
+        const_value_->get_type() == value_type::CV_MAP;
+  }
+  mstch::node struct_fields();
+  mstch::node is_union() {
+    return type_->is_union() &&
+        const_value_->get_type() == value_type::CV_MAP &&
+        const_value_->get_map().size() == 1 &&
+        const_value_->get_map().at(0).first->get_type() ==
+        value_type::CV_STRING;
+  }
+  mstch::node union_variant() {
+    return const_value_->get_map().at(0).first->get_string();
+  }
+  mstch::node union_value() {
+    auto struct_type = dynamic_cast<const t_struct*>(type_);
+    if (!struct_type) {
+      return mstch::node();
+    }
+
+    auto entry = const_value_->get_map().at(0);
+    auto variant = entry.first->get_string();
+    auto content = entry.second;
+
+    for (const auto& member : struct_type->get_members()) {
+      if (member->get_name() == variant) {
+        return std::make_shared<mstch_rust_value>(
+            content,
+            member->get_type(),
+            depth_ + 1,
+            generators_,
+            cache_,
+            pos_,
+            options_);
+      }
+    }
+    return mstch::node();
+  }
+  mstch::node is_enum() {
+    return type_->is_enum();
+  }
+  mstch::node enum_package() {
+    if (const_value_->is_enum()) {
+      return get_import_name(const_value_->get_enum()->get_program(), options_);
+    }
+    return mstch::node();
+  }
+  mstch::node enum_name() {
+    if (const_value_->is_enum()) {
+      return mangle_type(const_value_->get_enum()->get_name());
+    }
+    return mstch::node();
+  }
+  mstch::node enum_variant() {
+    if (const_value_->is_enum()) {
+      auto enum_value = const_value_->get_enum_value();
+      if (enum_value) {
+        return mangle(enum_value->get_name());
+      }
+    }
+    return mstch::node();
+  }
+  mstch::node is_empty() {
+    auto type = const_value_->get_type();
+    if (type == value_type::CV_LIST) {
+      return const_value_->get_list().empty();
+    }
+    if (type == value_type::CV_MAP) {
+      return const_value_->get_map().empty();
+    }
+    if (type == value_type::CV_STRING) {
+      return const_value_->get_string().empty();
+    }
+    return false;
+  }
+  mstch::node indent() {
+    return std::string(4 * depth_, ' ');
+  }
+
+ private:
+  const t_const_value* const_value_;
+  const t_type* type_;
+  unsigned depth_;
+  const rust_codegen_options& options_;
+};
+
+class mstch_rust_map_entry : public mstch_base {
+ public:
+  mstch_rust_map_entry(
+      const t_const_value* key,
+      const t_type* key_type,
+      const t_const_value* value,
+      const t_type* value_type,
+      unsigned depth,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      const rust_codegen_options& options)
+      : mstch_base(generators, cache, pos),
+        key_(key),
+        key_type_(key_type->get_true_type()),
+        value_(value),
+        value_type_(value_type->get_true_type()),
+        depth_(depth),
+        options_(options) {
+    register_methods(
+        this,
+        {
+            {"entry:key", &mstch_rust_map_entry::key},
+            {"entry:value", &mstch_rust_map_entry::value},
+        });
+  }
+  mstch::node key() {
+    return std::make_shared<mstch_rust_value>(
+        key_, key_type_, depth_, generators_, cache_, pos_, options_);
+  }
+  mstch::node value() {
+    return std::make_shared<mstch_rust_value>(
+        value_, value_type_, depth_, generators_, cache_, pos_, options_);
+  }
+
+ private:
+  const t_const_value* key_;
+  const t_type* key_type_;
+  const t_const_value* value_;
+  const t_type* value_type_;
+  unsigned depth_;
+  const rust_codegen_options& options_;
+};
+
+class mstch_rust_struct_field : public mstch_base {
+ public:
+  mstch_rust_struct_field(
+      std::string name,
+      t_field::e_req req,
+      const t_const_value* value,
+      const t_type* type,
+      unsigned depth,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      const rust_codegen_options& options)
+      : mstch_base(generators, cache, pos),
+        name_(std::move(name)),
+        req_(req),
+        value_(value),
+        type_(type->get_true_type()),
+        depth_(depth),
+        options_(options) {
+    register_methods(
+        this,
+        {
+            {"field:name", &mstch_rust_struct_field::name},
+            {"field:optional?", &mstch_rust_struct_field::is_optional},
+            {"field:value", &mstch_rust_struct_field::value},
+            {"field:type", &mstch_rust_struct_field::type},
+        });
+  }
+  mstch::node name() {
+    return name_;
+  }
+  mstch::node is_optional() {
+    return req_ == t_field::e_req::T_OPTIONAL;
+  }
+  mstch::node value() {
+    if (value_) {
+      return std::make_shared<mstch_rust_value>(
+          value_, type_, depth_, generators_, cache_, pos_, options_);
+    }
+    return mstch::node();
+  }
+  mstch::node type() {
+    return std::make_shared<mstch_rust_type>(
+        type_, generators_, cache_, pos_, options_);
+  }
+
+ private:
+  std::string name_;
+  t_field::e_req req_;
+  const t_const_value* value_;
+  const t_type* type_;
+  unsigned depth_;
+  const rust_codegen_options& options_;
+};
+
+mstch::node mstch_rust_value::map_entries() {
+  auto map_type = dynamic_cast<const t_map*>(type_);
+  if (!map_type) {
+    return mstch::node();
+  }
+  auto key_type = map_type->get_key_type();
+  auto value_type = map_type->get_val_type();
+
+  mstch::array entries;
+  for (auto entry : const_value_->get_map()) {
+    entries.push_back(std::make_shared<mstch_rust_map_entry>(
+        entry.first,
+        key_type,
+        entry.second,
+        value_type,
+        depth_ + 1,
+        generators_,
+        cache_,
+        pos_,
+        options_));
+  }
+  return entries;
+}
+
+mstch::node mstch_rust_value::struct_fields() {
+  auto struct_type = dynamic_cast<const t_struct*>(type_);
+  if (!struct_type) {
+    return mstch::node();
+  }
+
+  std::map<std::string, const t_const_value*> map_entries;
+  for (auto entry : const_value_->get_map()) {
+    auto key = entry.first;
+    if (key->get_type() == value_type::CV_STRING) {
+      map_entries[key->get_string()] = entry.second;
+    }
+  }
+
+  mstch::array fields;
+  for (const auto& member : struct_type->get_members()) {
+    auto field_name = member->get_name();
+    auto field_req = member->get_req();
+    auto field_type = member->get_type();
+    auto value = map_entries[field_name];
+    if (!value) {
+      value = member->get_value();
+    }
+    fields.push_back(std::make_shared<mstch_rust_struct_field>(
+        field_name,
+        field_req,
+        value,
+        field_type,
+        depth_ + 1,
+        generators_,
+        cache_,
+        pos_,
+        options_));
+  }
+  return fields;
+}
 
 class mstch_rust_const : public mstch_const {
  public:
@@ -391,7 +856,8 @@ class mstch_rust_const : public mstch_const {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
-      const std::string& field_name)
+      const std::string& field_name,
+      const rust_codegen_options& options)
       : mstch_const(
             cnst,
             current_const,
@@ -400,91 +866,111 @@ class mstch_rust_const : public mstch_const {
             cache,
             pos,
             index,
-            field_name) {
+            field_name),
+        options_(options) {
     register_methods(
         this,
         {
-            {"const:package", &mstch_rust_const::rust_package},
+            {"constant:package", &mstch_rust_const::rust_package},
+            {"constant:lazy?", &mstch_rust_const::rust_lazy},
+            {"constant:rust", &mstch_rust_const::rust_typed_value},
         });
   }
   mstch::node rust_package() {
-    return mangle(cnst_->get_program()->get_name());
+    return get_import_name(cnst_->get_program(), options_);
   }
-};
-
-class mstch_rust_const_value : public mstch_const_value {
- public:
-  mstch_rust_const_value(
-      const t_const_value* const_value,
-      const t_const* current_const,
-      const t_type* expected_type,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos,
-      int32_t index)
-      : mstch_const_value(
-            const_value,
-            current_const,
-            expected_type,
-            generators,
-            cache,
-            pos,
-            index) {
-    register_methods(
-        this,
-        {
-            {"value:quoted", &mstch_rust_const_value::rust_quoted},
-            {"value:enum_package", &mstch_rust_const_value::rust_enum_package},
-        });
+  mstch::node rust_lazy() {
+    auto type = cnst_->get_type();
+    return type->is_list() || type->is_map() || type->is_set() ||
+        type->is_struct();
   }
-  mstch::node rust_quoted() {
-    return quote(const_value_->get_string());
-  }
-  mstch::node rust_enum_package() {
-    if (type_ == cv::CV_INTEGER && const_value_->is_enum()) {
-      return const_value_->get_enum()->get_program()->get_name();
-    }
-    return mstch::node();
-  }
-  bool same_type_as_expected() const override {
-    return true;
-  }
-};
-
-class mstch_rust_type : public mstch_type {
- public:
-  mstch_rust_type(
-      const t_type* type,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos,
-      const cratemap& cratemap)
-      : mstch_type(type, generators, cache, pos), cratemap_(cratemap) {
-    register_methods(
-        this,
-        {
-            {"type:package", &mstch_rust_type::rust_package},
-            {"type:rust", &mstch_rust_type::rust_type},
-        });
-  }
-  mstch::node rust_package() {
-    return get_import_name(type_->get_program(), cratemap_);
-  }
-  mstch::node rust_type() {
-    auto rust_type = type_->annotations_.find("rust.type");
-    if (rust_type != type_->annotations_.end()) {
-      return rust_type->second;
-    }
-    return nullptr;
+  mstch::node rust_typed_value() {
+    unsigned depth = 0;
+    return std::make_shared<mstch_rust_value>(
+        cnst_->get_value(),
+        cnst_->get_type(),
+        depth,
+        generators_,
+        cache_,
+        pos_,
+        options_);
   }
 
  private:
-  const cratemap& cratemap_;
+  const rust_codegen_options& options_;
+};
+
+class mstch_rust_field : public mstch_field {
+ public:
+  mstch_rust_field(
+      const t_field* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos,
+      int32_t index,
+      const rust_codegen_options& options)
+      : mstch_field(field, generators, cache, pos, index), options_(options) {
+    register_methods(
+        this,
+        {
+            {"field:ident", &mstch_rust_field::rust_ident},
+            {"field:primitive?", &mstch_rust_field::rust_primitive},
+            {"field:rename?", &mstch_rust_field::rust_rename},
+            {"field:default", &mstch_rust_field::rust_default},
+        });
+  }
+  mstch::node rust_ident() {
+    return mangle(field_->get_name());
+  }
+  mstch::node rust_primitive() {
+    auto type = field_->get_type();
+    return type->is_bool() || type->is_any_int() || type->is_floating_point();
+  }
+  mstch::node rust_rename() {
+    return field_->get_name() != mangle(field_->get_name());
+  }
+  mstch::node rust_default() {
+    auto value = field_->get_value();
+    if (value) {
+      unsigned depth = 2; // impl Default + fn default
+      auto type = field_->get_type();
+      return std::make_shared<mstch_rust_value>(
+          value, type, depth, generators_, cache_, pos_, options_);
+    }
+    return mstch::node();
+  }
+
+ private:
+  const rust_codegen_options& options_;
+};
+
+class mstch_rust_typedef : public mstch_typedef {
+ public:
+  mstch_rust_typedef(
+      const t_typedef* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_typedef(typedf, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"typedef:newtype?", &mstch_rust_typedef::rust_newtype},
+            {"typedef:ord?", &mstch_rust_typedef::rust_ord},
+        });
+  }
+  mstch::node rust_newtype() {
+    return typedf_->annotations_.count("rust.newtype") != 0;
+  }
+  mstch::node rust_ord() {
+    return can_derive_ord(typedf_->get_type());
+  }
 };
 
 class program_rust_generator : public program_generator {
  public:
-  program_rust_generator() = default;
+  explicit program_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~program_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       t_program const* program,
@@ -493,14 +979,17 @@ class program_rust_generator : public program_generator {
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_rust_program>(
-        program, generators, cache, pos);
+        program, generators, cache, pos, options_);
   }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class struct_rust_generator : public struct_generator {
  public:
-  explicit struct_rust_generator(const cratemap& cratemap)
-      : cratemap_(cratemap) {}
+  explicit struct_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~struct_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_struct* strct,
@@ -509,16 +998,17 @@ class struct_rust_generator : public struct_generator {
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_rust_struct>(
-        strct, generators, cache, pos, cratemap_);
+        strct, generators, cache, pos, options_);
   }
 
  private:
-  const cratemap& cratemap_;
+  const rust_codegen_options& options_;
 };
 
 class service_rust_generator : public service_generator {
  public:
-  explicit service_rust_generator() = default;
+  explicit service_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~service_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_service* service,
@@ -527,8 +1017,11 @@ class service_rust_generator : public service_generator {
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_rust_service>(
-        service, generators, cache, pos);
+        service, generators, cache, pos, options_);
   }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class function_rust_generator : public function_generator {
@@ -548,7 +1041,8 @@ class function_rust_generator : public function_generator {
 
 class field_rust_generator : public field_generator {
  public:
-  field_rust_generator() = default;
+  explicit field_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~field_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_field* field,
@@ -557,14 +1051,17 @@ class field_rust_generator : public field_generator {
       ELEMENT_POSITION pos,
       int32_t index) const override {
     return std::make_shared<mstch_rust_field>(
-        field, generators, cache, pos, index);
+        field, generators, cache, pos, index, options_);
   }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
 class enum_rust_generator : public enum_generator {
  public:
-  explicit enum_rust_generator(const cratemap& cratemap)
-      : cratemap_(cratemap) {}
+  explicit enum_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~enum_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_enum* enm,
@@ -573,17 +1070,17 @@ class enum_rust_generator : public enum_generator {
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_rust_enum>(
-        enm, generators, cache, pos, cratemap_);
+        enm, generators, cache, pos, options_);
   }
 
  private:
-  const cratemap& cratemap_;
+  const rust_codegen_options& options_;
 };
 
 class type_rust_generator : public type_generator {
  public:
-  explicit type_rust_generator(const cratemap& cratemap)
-      : cratemap_(cratemap) {}
+  explicit type_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~type_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_type* type,
@@ -592,16 +1089,17 @@ class type_rust_generator : public type_generator {
       ELEMENT_POSITION pos,
       int32_t /*index*/) const override {
     return std::make_shared<mstch_rust_type>(
-        type, generators, cache, pos, cratemap_);
+        type, generators, cache, pos, options_);
   }
 
  private:
-  const cratemap& cratemap_;
+  const rust_codegen_options& options_;
 };
 
 class const_rust_generator : public const_generator {
  public:
-  const_rust_generator() = default;
+  explicit const_rust_generator(const rust_codegen_options& options)
+      : options_(options) {}
   ~const_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
       const t_const* cnst,
@@ -620,30 +1118,25 @@ class const_rust_generator : public const_generator {
         cache,
         pos,
         index,
-        field_name);
+        field_name,
+        options_);
   }
+
+ private:
+  const rust_codegen_options& options_;
 };
 
-class const_value_rust_generator : public const_value_generator {
+class typedef_rust_generator : public typedef_generator {
  public:
-  const_value_rust_generator() = default;
-  ~const_value_rust_generator() override = default;
+  typedef_rust_generator() = default;
+  ~typedef_rust_generator() override = default;
   std::shared_ptr<mstch_base> generate(
-      const t_const_value* const_value,
+      const t_typedef* typedf,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index,
-      const t_const* current_const,
-      const t_type* expected_type) const override {
-    return std::make_shared<mstch_rust_const_value>(
-        const_value,
-        current_const,
-        expected_type,
-        generators,
-        cache,
-        pos,
-        index);
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_rust_typedef>(typedf, generators, cache, pos);
   }
 };
 
@@ -665,42 +1158,72 @@ void t_mstch_rust_generator::generate_program() {
 
 void t_mstch_rust_generator::set_mstch_generators() {
   generators_->set_program_generator(
-      std::make_unique<program_rust_generator>());
+      std::make_unique<program_rust_generator>(options_));
   generators_->set_struct_generator(
-      std::make_unique<struct_rust_generator>(cratemap_));
+      std::make_unique<struct_rust_generator>(options_));
   generators_->set_service_generator(
-      std::make_unique<service_rust_generator>());
+      std::make_unique<service_rust_generator>(options_));
   generators_->set_function_generator(
       std::make_unique<function_rust_generator>());
-  generators_->set_field_generator(std::make_unique<field_rust_generator>());
+  generators_->set_field_generator(
+      std::make_unique<field_rust_generator>(options_));
   generators_->set_enum_generator(
-      std::make_unique<enum_rust_generator>(cratemap_));
+      std::make_unique<enum_rust_generator>(options_));
   generators_->set_type_generator(
-      std::make_unique<type_rust_generator>(cratemap_));
-  generators_->set_const_generator(std::make_unique<const_rust_generator>());
-  generators_->set_const_value_generator(
-      std::make_unique<const_value_rust_generator>());
+      std::make_unique<type_rust_generator>(options_));
+  generators_->set_const_generator(
+      std::make_unique<const_rust_generator>(options_));
+  generators_->set_typedef_generator(
+      std::make_unique<typedef_rust_generator>());
 }
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {
   // Each line of the file is:
-  // thrift_path crate_root crate_name
+  // thrift_name crate_root crate_name
   //
   // As an example of each value, we might have:
-  //   - thrift_path: facebook/demo.thrift
-  //     (this is the path used in thrift `include` statements)
+  //   - thrift_name: demo
+  //     (this is the name by which the dependency is referred to in thrift)
   //   - crate_root: ../../demo.thrift/gen-rust2
   //     (this directory contains Cargo.toml for the generated crate)
   //   - crate_name: demo_api
   //     (the Rust code will refer to demo_api::types::WhateverType)
   auto in = std::ifstream(path);
 
+  // Map from crate_name to list of thrift_names. Most Thrift crates consist of
+  // a single *.thrift file but some may have multiple.
+  std::map<std::string, std::vector<std::string>> sources;
+
   std::string line;
   while (std::getline(in, line)) {
     std::istringstream iss(line);
-    std::string thrift_path, crate_root, crate_name;
-    iss >> thrift_path >> crate_root >> crate_name;
-    cratemap_[thrift_path] = crate_name;
+    std::string thrift_name, crate_root, crate_name;
+    iss >> thrift_name >> crate_root >> crate_name;
+    sources[crate_name].push_back(thrift_name);
+  }
+
+  for (auto source : sources) {
+    std::string crate_name;
+    auto thrift_names = source.second;
+    auto multifile = thrift_names.size() > 1;
+
+    // Look out for our own crate in the cratemap. It will require paths that
+    // begin with `crate::module` rather than `::depenency::module`.
+    if (source.first == "crate") {
+      crate_name = "crate";
+      options_.multifile_mode = multifile;
+    } else {
+      crate_name = "::" + mangle(source.first);
+    }
+
+    if (multifile) {
+      for (auto thrift_name : thrift_names) {
+        options_.cratemap[thrift_name] =
+            crate_name + "::" + mangle(thrift_name);
+      }
+    } else if (crate_name != "crate") {
+      options_.cratemap[thrift_names[0]] = crate_name;
+    }
   }
 }
 

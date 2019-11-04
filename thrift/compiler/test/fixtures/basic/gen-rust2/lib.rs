@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -17,19 +15,20 @@ pub mod types {
     pub struct MyStruct {
         pub MyIntField: i64,
         pub MyStringField: String,
-        pub MyDataField: module::types::MyDataItem,
-        pub myEnum: module::types::MyEnum,
+        pub MyDataField: crate::types::MyDataItem,
+        pub myEnum: crate::types::MyEnum,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyDataItem {
     }
 
     #[derive(Clone, Debug, PartialEq)]
-    pub struct MyUnion {
-        pub myEnum: module::types::MyEnum,
-        pub myStruct: module::types::MyStruct,
-        pub myDataItem: module::types::MyDataItem,
+    pub enum MyUnion {
+        myEnum(crate::types::MyEnum),
+        myStruct(crate::types::MyStruct),
+        myDataItem(crate::types::MyDataItem),
+        UnknownField(i32),
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -114,7 +113,7 @@ pub mod types {
         }
     }
 
-    impl Default for MyStruct {
+    impl Default for self::MyStruct {
         fn default() -> Self {
             Self {
                 MyIntField: Default::default(),
@@ -125,11 +124,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for MyStruct {
+    impl GetTType for self::MyStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             p.write_field_begin("MyIntField", TType::I64, 1);
@@ -149,7 +148,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_MyIntField = None;
             let mut field_MyStringField = None;
@@ -178,18 +177,19 @@ pub mod types {
         }
     }
 
-    impl Default for MyDataItem {
+
+    impl Default for self::MyDataItem {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for MyDataItem {
+    impl GetTType for self::MyDataItem {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyDataItem {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyDataItem {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyDataItem");
             p.write_field_stop();
@@ -197,7 +197,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyDataItem {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyDataItem {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -214,13 +214,11 @@ pub mod types {
         }
     }
 
+
+
     impl Default for MyUnion {
         fn default() -> Self {
-            Self {
-                myEnum: Default::default(),
-                myStruct: Default::default(),
-                myDataItem: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -231,15 +229,28 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyUnion");
-            p.write_field_begin("myEnum", TType::I32, 1);
-            Serialize::write(&self.myEnum, p);
-            p.write_field_end();
-            p.write_field_begin("myStruct", TType::Struct, 2);
-            Serialize::write(&self.myStruct, p);
-            p.write_field_end();
-            p.write_field_begin("myDataItem", TType::Struct, 3);
-            Serialize::write(&self.myDataItem, p);
-            p.write_field_end();
+            match self {
+                MyUnion::myEnum(inner) => {
+                    p.write_field_begin("myEnum", TType::I32, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::myStruct(inner) => {
+                    p.write_field_begin("myStruct", TType::Struct, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::myDataItem(inner) => {
+                    p.write_field_begin("myDataItem", TType::Struct, 3);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -247,27 +258,40 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_myEnum = None;
-            let mut field_myStruct = None;
-            let mut field_myDataItem = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_myEnum = Some(Deserialize::read(p)?),
-                    (TType::Struct, 2) => field_myStruct = Some(Deserialize::read(p)?),
-                    (TType::Struct, 3) => field_myDataItem = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::I32, 1, false) => {
+                        once = true;
+                        alt = Some(MyUnion::myEnum(Deserialize::read(p)?));
+                    }
+                    (TType::Struct, 2, false) => {
+                        once = true;
+                        alt = Some(MyUnion::myStruct(Deserialize::read(p)?));
+                    }
+                    (TType::Struct, 3, false) => {
+                        once = true;
+                        alt = Some(MyUnion::myDataItem(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "MyUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                myEnum: field_myEnum.unwrap_or_default(),
-                myStruct: field_myStruct.unwrap_or_default(),
-                myDataItem: field_myDataItem.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 }
@@ -282,7 +306,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum PingExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -335,7 +359,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = PingExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -345,7 +369,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(PingExn::Success(Deserialize::read(p)?));
+                            alt = PingExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -363,20 +387,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "Ping"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum GetRandomDataExn {
             Success(String),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -429,7 +447,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -460,7 +478,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "GetRandomData"),
+                        format!("Empty union {}", "GetRandomDataExn"),
                     )
                     .into(),
                 )
@@ -470,7 +488,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum HasDataByIdExn {
             Success(bool),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -523,7 +541,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -554,7 +572,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "HasDataById"),
+                        format!("Empty union {}", "HasDataByIdExn"),
                     )
                     .into(),
                 )
@@ -564,7 +582,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum GetDataByIdExn {
             Success(String),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -617,7 +635,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -648,7 +666,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "GetDataById"),
+                        format!("Empty union {}", "GetDataByIdExn"),
                     )
                     .into(),
                 )
@@ -658,7 +676,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum PutDataByIdExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -711,7 +729,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = PutDataByIdExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -721,7 +739,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(PutDataByIdExn::Success(Deserialize::read(p)?));
+                            alt = PutDataByIdExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -739,20 +757,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "PutDataById"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum LobDataByIdExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -805,7 +817,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = LobDataByIdExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -815,7 +827,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(LobDataByIdExn::Success(Deserialize::read(p)?));
+                            alt = LobDataByIdExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -833,13 +845,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "LobDataById"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
     }
@@ -974,7 +980,7 @@ pub mod client {
 
         pub fn hasDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> impl Future<Item = bool, Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1025,7 +1031,7 @@ pub mod client {
 
         pub fn getDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> impl Future<Item = String, Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1076,8 +1082,8 @@ pub mod client {
 
         pub fn putDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> impl Future<Item = (), Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1131,8 +1137,8 @@ pub mod client {
 
         pub fn lobDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> impl Future<Item = (), Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1194,21 +1200,21 @@ pub mod client {
         ) -> Box<dyn Future<Item = String, Error = failure::Error> + Send + 'static>;
         fn hasDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Box<dyn Future<Item = bool, Error = failure::Error> + Send + 'static>;
         fn getDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Box<dyn Future<Item = String, Error = failure::Error> + Send + 'static>;
         fn putDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
         fn lobDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static>;
     }
 
@@ -1233,27 +1239,27 @@ pub mod client {
         }
         fn hasDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Box<dyn Future<Item = bool, Error = failure::Error> + Send + 'static> {
             Box::new(Self::hasDataById(self, arg_id))
         }
         fn getDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Box<dyn Future<Item = String, Error = failure::Error> + Send + 'static> {
             Box::new(Self::getDataById(self, arg_id))
         }
         fn putDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static> {
             Box::new(Self::putDataById(self, arg_id, arg_data))
         }
         fn lobDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Box<dyn Future<Item = (), Error = failure::Error> + Send + 'static> {
             Box::new(Self::lobDataById(self, arg_id, arg_data))
         }
@@ -1356,21 +1362,21 @@ pub mod client_async {
         ) -> Result<String, failure::Error>;
         async fn hasDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Result<bool, failure::Error>;
         async fn getDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Result<String, failure::Error>;
         async fn putDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Result<(), failure::Error>;
         async fn lobDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Result<(), failure::Error>;
     }
 
@@ -1464,7 +1470,7 @@ pub mod client_async {
             }(de)
         }        async fn hasDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Result<bool, failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1507,7 +1513,7 @@ pub mod client_async {
             }(de)
         }        async fn getDataById(
             &self,
-            arg_id: &i64,
+            arg_id: i64,
         ) -> Result<String, failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1550,8 +1556,8 @@ pub mod client_async {
             }(de)
         }        async fn putDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Result<(), failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1597,8 +1603,8 @@ pub mod client_async {
             }(de)
         }        async fn lobDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
+            arg_id: i64,
+            arg_data: &str,
         ) -> Result<(), failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -2280,6 +2286,7 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
+    use async_trait::async_trait;
     use std::marker::PhantomData;
 
     pub struct MyService<'mock> {
@@ -2292,7 +2299,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::MyService {
+    impl dyn super::client_async::MyService {
         pub fn mock<'mock>() -> MyService<'mock> {
             MyService {
                 ping: my_service::ping::unimplemented(),
@@ -2306,78 +2313,73 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::MyService for MyService<'mock> {
-        fn ping(
+    #[async_trait]
+    impl<'mock> super::client_async::MyService for MyService<'mock> {
+        async fn ping(
             &self,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.ping.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyServicePingError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyServicePingError(error),
+                ))
         }
-        fn getRandomData(
+        async fn getRandomData(
             &self,
-        ) -> Box<dyn futures::Future<Item = String, Error = failure::Error> + Send> {
+        ) -> Result<String, failure::Error> {
             let mut closure = self.getRandomData.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyServiceGetRandomDataError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyServiceGetRandomDataError(error),
+                ))
         }
-        fn hasDataById(
+        async fn hasDataById(
             &self,
-            arg_id: &i64,
-        ) -> Box<dyn futures::Future<Item = bool, Error = failure::Error> + Send> {
+            arg_id: i64,
+        ) -> Result<bool, failure::Error> {
             let mut closure = self.hasDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
-            let result = closure(arg_id.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyServiceHasDataByIdError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_id.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyServiceHasDataByIdError(error),
+                ))
         }
-        fn getDataById(
+        async fn getDataById(
             &self,
-            arg_id: &i64,
-        ) -> Box<dyn futures::Future<Item = String, Error = failure::Error> + Send> {
+            arg_id: i64,
+        ) -> Result<String, failure::Error> {
             let mut closure = self.getDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
-            let result = closure(arg_id.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyServiceGetDataByIdError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_id.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyServiceGetDataByIdError(error),
+                ))
         }
-        fn putDataById(
+        async fn putDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+            arg_id: i64,
+            arg_data: &str,
+        ) -> Result<(), failure::Error> {
             let mut closure = self.putDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
-            let result = closure(arg_id.clone(), arg_data.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyServicePutDataByIdError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_id.clone(), arg_data.to_owned())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyServicePutDataByIdError(error),
+                ))
         }
-        fn lobDataById(
+        async fn lobDataById(
             &self,
-            arg_id: &i64,
-            arg_data: &String,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+            arg_id: i64,
+            arg_data: &str,
+        ) -> Result<(), failure::Error> {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
-            let result = closure(arg_id.clone(), arg_data.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyServiceLobDataByIdError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_id.clone(), arg_data.to_owned())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyServiceLobDataByIdError(error),
+                ))
         }
     }
 

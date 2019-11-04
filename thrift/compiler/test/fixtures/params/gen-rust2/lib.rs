@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 
 pub mod services {
@@ -17,7 +15,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum MapListExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -70,7 +68,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = MapListExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -80,7 +78,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(MapListExn::Success(Deserialize::read(p)?));
+                            alt = MapListExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -98,20 +96,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "MapList"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum MapSetExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -164,7 +156,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = MapSetExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -174,7 +166,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(MapSetExn::Success(Deserialize::read(p)?));
+                            alt = MapSetExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -192,20 +184,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "MapSet"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum ListMapExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -258,7 +244,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = ListMapExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -268,7 +254,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(ListMapExn::Success(Deserialize::read(p)?));
+                            alt = ListMapExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -286,20 +272,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "ListMap"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum ListSetExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -352,7 +332,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = ListSetExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -362,7 +342,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(ListSetExn::Success(Deserialize::read(p)?));
+                            alt = ListSetExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -380,20 +360,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "ListSet"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum TurtlesExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -446,7 +420,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = TurtlesExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -456,7 +430,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(TurtlesExn::Success(Deserialize::read(p)?));
+                            alt = TurtlesExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -474,13 +448,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "Turtles"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
     }
@@ -1752,6 +1720,7 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
+    use async_trait::async_trait;
     use std::marker::PhantomData;
 
     pub struct NestedContainers<'mock> {
@@ -1763,7 +1732,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::NestedContainers {
+    impl dyn super::client_async::NestedContainers {
         pub fn mock<'mock>() -> NestedContainers<'mock> {
             NestedContainers {
                 mapList: nested_containers::mapList::unimplemented(),
@@ -1776,66 +1745,62 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::NestedContainers for NestedContainers<'mock> {
-        fn mapList(
+    #[async_trait]
+    impl<'mock> super::client_async::NestedContainers for NestedContainers<'mock> {
+        async fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.mapList.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, Vec<i32>>) -> _ = &mut **closure;
-            let result = closure(arg_foo.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::NestedContainersMapListError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_foo.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::NestedContainersMapListError(error),
+                ))
         }
-        fn mapSet(
+        async fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.mapSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            let result = closure(arg_foo.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::NestedContainersMapSetError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_foo.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::NestedContainersMapSetError(error),
+                ))
         }
-        fn listMap(
+        async fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.listMap.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeMap<i32, i32>>) -> _ = &mut **closure;
-            let result = closure(arg_foo.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::NestedContainersListMapError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_foo.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::NestedContainersListMapError(error),
+                ))
         }
-        fn listSet(
+        async fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.listSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            let result = closure(arg_foo.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::NestedContainersListSetError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_foo.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::NestedContainersListSetError(error),
+                ))
         }
-        fn turtles(
+        async fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.turtles.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> _ = &mut **closure;
-            let result = closure(arg_foo.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::NestedContainersTurtlesError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_foo.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::NestedContainersTurtlesError(error),
+                ))
         }
     }
 

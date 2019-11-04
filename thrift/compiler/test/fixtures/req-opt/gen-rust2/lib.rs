@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -13,7 +11,7 @@ pub mod types {
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Foo {
         pub myInteger: i32,
         pub myString: Option<String>,
@@ -21,7 +19,7 @@ pub mod types {
         pub myNumbers: Vec<i32>,
     }
 
-    impl Default for Foo {
+    impl Default for self::Foo {
         fn default() -> Self {
             Self {
                 myInteger: Default::default(),
@@ -32,11 +30,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Foo {
+    impl GetTType for self::Foo {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Foo {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Foo {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Foo");
             p.write_field_begin("myInteger", TType::I32, 1);
@@ -58,7 +56,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Foo {
+    impl<P: ProtocolReader> Deserialize<P> for self::Foo {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_myInteger = None;
             let mut field_myString = None;
@@ -86,6 +84,7 @@ pub mod types {
             })
         }
     }
+
 }
 
 pub mod errors {

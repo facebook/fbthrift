@@ -14,11 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{#type:typedef?}}{{!
+    }}{{type:package}}::types::{{type:name}}{{!
+}}{{/type:typedef?}}{{!
+}}{{^type:typedef?}}{{!
 }}{{#type:void?}}(){{/type:void?}}{{!
 }}{{#type:string?}}String{{/type:string?}}{{!
 }}{{#type:binary?}}Vec<u8>{{/type:binary?}}{{!
 }}{{#type:bool?}}bool{{/type:bool?}}{{!
-}}{{#type:byte?}}u8{{/type:byte?}}{{!
+}}{{#type:byte?}}i8{{/type:byte?}}{{!
 }}{{#type:i16?}}i16{{/type:i16?}}{{!
 }}{{#type:i32?}}i32{{/type:i32?}}{{!
 }}{{#type:i64?}}i64{{/type:i64?}}{{!
@@ -53,7 +57,5 @@
         }}{{#type:valueType}}{{>lib/type}}{{/type:valueType}}{{!
     }}>{{!
 }}{{/type:map?}}{{!
-}}{{#type:typedef?}}{{!
-    }}{{type:package}}::types::{{type:name}}{{!
 }}{{/type:typedef?}}{{!
 }}

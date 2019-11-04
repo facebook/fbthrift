@@ -3,114 +3,271 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
 
 pub mod consts {
-    const myInt: i32 = 1337;
+    pub const myInt: i32 = 1337;
 
-    const name: String = "Mark Zuckerberg";
+    pub const name: &str = "Mark Zuckerberg";
 
-    const states: Vec<std::collections::BTreeMap<String, i32>> = vec![btreemap!("San Diego" => 3211000, "Sacramento" => 479600, "SF" => 837400), btreemap!("New York" => 8406000, "Albany" => 98400)];
+    lazy_static::lazy_static! {
+        pub static ref states: Vec<std::collections::BTreeMap<String, i32>> = vec![
+            {
+                let mut map = std::collections::BTreeMap::new();
+                map.insert("San Diego".to_owned(), 3211000);
+                map.insert("Sacramento".to_owned(), 479600);
+                map.insert("SF".to_owned(), 837400);
+                map
+            },
+            {
+                let mut map = std::collections::BTreeMap::new();
+                map.insert("New York".to_owned(), 8406000);
+                map.insert("Albany".to_owned(), 98400);
+                map
+            },
+        ];
+    }
 
-    const x: f64 = 1;
+    pub const x: f64 = 1.0;
 
-    const y: f64 = 1000000;
+    pub const y: f64 = 0.0;
 
-    const z: f64 = 1000000000;
+    pub const z: f64 = 1000000000.0;
 
-    const zeroDoubleValue: f64 = 0;
+    pub const zeroDoubleValue: f64 = 0.0;
 
-    const longDoubleValue: f64 = 2.59961000990301e-05;
+    pub const longDoubleValue: f64 = 2.59961000990301e-05;
 
-    const my_company: module::types::Companymodule::types::MyCompany = module::types::Company::FACEBOOK;
+    pub const my_company: crate::types::MyCompany = crate::types::Company::FACEBOOK;
 
-    const foo: Stringmodule::types::MyStringIdentifier = "foo";
+    pub const foo: &str = "foo";
 
-    const bar: i32module::types::MyIntIdentifier = 42;
+    pub const bar: crate::types::MyIntIdentifier = 42;
 
-    const instagram: module::types::Internship = btreemap!("weeks" => 12, "title" => "Software Engineer", "employer" => module::types::Company::INSTAGRAM);
+    lazy_static::lazy_static! {
+        pub static ref instagram: crate::types::Internship = crate::types::Internship {
+            weeks: 12,
+            title: "Software Engineer".to_owned(),
+            employer: Some(crate::types::Company::INSTAGRAM),
+        };
+    }
 
-    const partial_const: module::types::Internship = btreemap!("weeks" => 8, "title" => "Some Job");
+    lazy_static::lazy_static! {
+        pub static ref partial_const: crate::types::Internship = crate::types::Internship {
+            weeks: 8,
+            title: "Some Job".to_owned(),
+            employer: Default::default(),
+        };
+    }
 
-    const kRanges: Vec<module::types::Range> = vec![btreemap!("min" => 1, "max" => 2), btreemap!("min" => 5, "max" => 6)];
+    lazy_static::lazy_static! {
+        pub static ref kRanges: Vec<crate::types::Range> = vec![
+            crate::types::Range {
+                min: 1,
+                max: 2,
+            },
+            crate::types::Range {
+                min: 5,
+                max: 6,
+            },
+        ];
+    }
 
-    const internList: Vec<module::types::Internship> = vec![btreemap!("weeks" => 12, "title" => "Software Engineer", "employer" => module::types::Company::INSTAGRAM), btreemap!("weeks" => 10, "title" => "Sales Intern", "employer" => module::types::Company::FACEBOOK)];
+    lazy_static::lazy_static! {
+        pub static ref internList: Vec<crate::types::Internship> = vec![
+            crate::types::Internship {
+                weeks: 12,
+                title: "Software Engineer".to_owned(),
+                employer: Some(crate::types::Company::INSTAGRAM),
+            },
+            crate::types::Internship {
+                weeks: 10,
+                title: "Sales Intern".to_owned(),
+                employer: Some(crate::types::Company::FACEBOOK),
+            },
+        ];
+    }
 
-    const pod_0: module::types::struct1 = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref pod_0: crate::types::struct1 = crate::types::struct1 {
+            a: 1234567,
+            b: "<uninitialized>".to_owned(),
+        };
+    }
 
-    const pod_1: module::types::struct1 = btreemap!("a" => 10, "b" => "foo");
+    lazy_static::lazy_static! {
+        pub static ref pod_1: crate::types::struct1 = crate::types::struct1 {
+            a: 10,
+            b: "foo".to_owned(),
+        };
+    }
 
-    const pod_2: module::types::struct2 = btreemap!("a" => 98, "b" => "gaz", "c" => btreemap!("a" => 12, "b" => "bar"), "d" => vec![11, 22, 33]);
+    lazy_static::lazy_static! {
+        pub static ref pod_2: crate::types::struct2 = crate::types::struct2 {
+            a: 98,
+            b: "gaz".to_owned(),
+            c: crate::types::struct1 {
+                a: 12,
+                b: "bar".to_owned(),
+            },
+            d: vec![
+                11,
+                22,
+                33,
+            ],
+        };
+    }
 
-    const pod_3: module::types::struct3 = btreemap!("a" => "abc", "b" => 456, "c" => btreemap!("a" => 888, "c" => btreemap!("b" => "gaz"), "d" => vec![1, 2, 3]));
+    lazy_static::lazy_static! {
+        pub static ref pod_3: crate::types::struct3 = crate::types::struct3 {
+            a: "abc".to_owned(),
+            b: 456,
+            c: crate::types::struct2 {
+                a: 888,
+                b: Default::default(),
+                c: crate::types::struct1 {
+                    a: 1234567,
+                    b: "gaz".to_owned(),
+                },
+                d: vec![
+                    1,
+                    2,
+                    3,
+                ],
+            },
+        };
+    }
 
-    const u_1_1: module::types::union1 = btreemap!("i" => 97);
+    lazy_static::lazy_static! {
+        pub static ref u_1_1: crate::types::union1 = crate::types::union1::i(97);
+    }
 
-    const u_1_2: module::types::union1 = btreemap!("d" => 5.6);
+    lazy_static::lazy_static! {
+        pub static ref u_1_2: crate::types::union1 = crate::types::union1::d(5.6);
+    }
 
-    const u_1_3: module::types::union1 = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref u_1_3: crate::types::union1 = ;
+    }
 
-    const u_2_1: module::types::union2 = btreemap!("i" => 51);
+    lazy_static::lazy_static! {
+        pub static ref u_2_1: crate::types::union2 = crate::types::union2::i(51);
+    }
 
-    const u_2_2: module::types::union2 = btreemap!("d" => 6.7);
+    lazy_static::lazy_static! {
+        pub static ref u_2_2: crate::types::union2 = crate::types::union2::d(6.7);
+    }
 
-    const u_2_3: module::types::union2 = btreemap!("s" => btreemap!("a" => 8, "b" => "abacabb"));
+    lazy_static::lazy_static! {
+        pub static ref u_2_3: crate::types::union2 = crate::types::union2::s(crate::types::struct1 {
+                a: 8,
+                b: "abacabb".to_owned(),
+            });
+    }
 
-    const u_2_4: module::types::union2 = btreemap!("u" => btreemap!("i" => 43));
+    lazy_static::lazy_static! {
+        pub static ref u_2_4: crate::types::union2 = crate::types::union2::u(crate::types::union1::i(43));
+    }
 
-    const u_2_5: module::types::union2 = btreemap!("u" => btreemap!("d" => 9.8));
+    lazy_static::lazy_static! {
+        pub static ref u_2_5: crate::types::union2 = crate::types::union2::u(crate::types::union1::d(9.8));
+    }
 
-    const u_2_6: module::types::union2 = btreemap!("u" => btreemap!());
+    lazy_static::lazy_static! {
+        pub static ref u_2_6: crate::types::union2 = crate::types::union2::u();
+    }
 
-    const apostrophe: String = "'";
+    pub const apostrophe: &str = "'";
 
-    const tripleApostrophe: String = "'''";
+    pub const tripleApostrophe: &str = "'''";
 
-    const quotationMark: String = "\"";
+    pub const quotationMark: &str = "\"";
 
-    const backslash: String = "\\\\";
+    pub const backslash: &str = "\\\\";
 
-    const escaped_a: String = "\\x61";
+    pub const escaped_a: &str = "\\x61";
 
-    const char2ascii: std::collections::BTreeMap<String, i32> = btreemap!("'" => 39, "\"" => 34, "\\\\" => 92, "\\x61" => 97);
+    lazy_static::lazy_static! {
+        pub static ref char2ascii: std::collections::BTreeMap<String, i32> = {
+            let mut map = std::collections::BTreeMap::new();
+            map.insert("'".to_owned(), 39);
+            map.insert("\"".to_owned(), 34);
+            map.insert("\\\\".to_owned(), 92);
+            map.insert("\\x61".to_owned(), 97);
+            map
+        };
+    }
 
-    const escaped_strings: Vec<String> = vec!["\\x61", "\\xab", "\\x6a", "\\xa6", "\\x61yyy", "\\xabyyy", "\\x6ayyy", "\\xa6yyy", "zzz\\x61", "zzz\\xab", "zzz\\x6a", "zzz\\xa6", "zzz\\x61yyy", "zzz\\xabyyy", "zzz\\x6ayyy", "zzz\\xa6yyy"];
+    lazy_static::lazy_static! {
+        pub static ref escaped_strings: Vec<String> = vec![
+            "\\x61".to_owned(),
+            "\\xab".to_owned(),
+            "\\x6a".to_owned(),
+            "\\xa6".to_owned(),
+            "\\x61yyy".to_owned(),
+            "\\xabyyy".to_owned(),
+            "\\x6ayyy".to_owned(),
+            "\\xa6yyy".to_owned(),
+            "zzz\\x61".to_owned(),
+            "zzz\\xab".to_owned(),
+            "zzz\\x6a".to_owned(),
+            "zzz\\xa6".to_owned(),
+            "zzz\\x61yyy".to_owned(),
+            "zzz\\xabyyy".to_owned(),
+            "zzz\\x6ayyy".to_owned(),
+            "zzz\\xa6yyy".to_owned(),
+        ];
+    }
 
-    const false_c: bool = false;
+    pub const false_c: bool = false;
 
-    const true_c: bool = true;
+    pub const true_c: bool = true;
 
-    const zero_byte: u8 = 0;
+    pub const zero_byte: i8 = 0;
 
-    const zero16: i16 = 0;
+    pub const zero16: i16 = 0;
 
-    const zero32: i32 = 0;
+    pub const zero32: i32 = 0;
 
-    const zero64: i64 = 0;
+    pub const zero64: i64 = 0;
 
-    const zero_dot_zero: f64 = 0;
+    pub const zero_dot_zero: f64 = 0.0;
 
-    const empty_string: String = "";
+    pub const empty_string: &str = "";
 
-    const empty_int_list: Vec<i32> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_int_list: Vec<i32> = Vec::new();
+    }
 
-    const empty_string_list: Vec<String> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_string_list: Vec<String> = Vec::new();
+    }
 
-    const empty_int_set: std::collections::BTreeSet<i32> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_int_set: std::collections::BTreeSet<i32> = std::collections::BTreeSet::new();
+    }
 
-    const empty_string_set: std::collections::BTreeSet<String> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_string_set: std::collections::BTreeSet<String> = std::collections::BTreeSet::new();
+    }
 
-    const empty_int_int_map: std::collections::BTreeMap<i32, i32> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_int_int_map: std::collections::BTreeMap<i32, i32> = std::collections::BTreeMap::new();
+    }
 
-    const empty_int_string_map: std::collections::BTreeMap<i32, String> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_int_string_map: std::collections::BTreeMap<i32, String> = std::collections::BTreeMap::new();
+    }
 
-    const empty_string_int_map: std::collections::BTreeMap<String, i32> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_string_int_map: std::collections::BTreeMap<String, i32> = std::collections::BTreeMap::new();
+    }
 
-    const empty_string_string_map: std::collections::BTreeMap<String, String> = btreemap!();
+    lazy_static::lazy_static! {
+        pub static ref empty_string_string_map: std::collections::BTreeMap<String, String> = std::collections::BTreeMap::new();
+    }
 }
 
 pub mod types {
@@ -118,31 +275,31 @@ pub mod types {
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
 
-    pub type MyCompany = module::types::Company;
+    pub type MyCompany = crate::types::Company;
 
     pub type MyStringIdentifier = String;
 
     pub type MyIntIdentifier = i32;
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Internship {
         pub weeks: i32,
         pub title: String,
-        pub employer: Option<module::types::Company>,
+        pub employer: Option<crate::types::Company>,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct UnEnumStruct {
-        pub city: module::types::City,
+        pub city: crate::types::City,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Range {
         pub min: i32,
         pub max: i32,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct struct1 {
         pub a: i32,
         pub b: String,
@@ -152,7 +309,7 @@ pub mod types {
     pub struct struct2 {
         pub a: i32,
         pub b: String,
-        pub c: module::types::struct1,
+        pub c: crate::types::struct1,
         pub d: Vec<i32>,
     }
 
@@ -160,21 +317,23 @@ pub mod types {
     pub struct struct3 {
         pub a: String,
         pub b: i32,
-        pub c: module::types::struct2,
+        pub c: crate::types::struct2,
     }
 
     #[derive(Clone, Debug, PartialEq)]
-    pub struct union1 {
-        pub i: i32,
-        pub d: f64,
+    pub enum union1 {
+        i(i32),
+        d(f64),
+        UnknownField(i32),
     }
 
     #[derive(Clone, Debug, PartialEq)]
-    pub struct union2 {
-        pub i: i32,
-        pub d: f64,
-        pub s: module::types::struct1,
-        pub u: module::types::union1,
+    pub enum union2 {
+        i(i32),
+        d(f64),
+        s(crate::types::struct1),
+        u(crate::types::union1),
+        UnknownField(i32),
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -212,10 +371,7 @@ pub mod types {
 
     impl std::fmt::Display for EmptyEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
-                EmptyEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            write!(fmt, "{}", self.0)
         }
     }
 
@@ -429,7 +585,10 @@ pub mod types {
         }
     }
 
-    impl Default for Internship {
+
+
+
+    impl Default for self::Internship {
         fn default() -> Self {
             Self {
                 weeks: Default::default(),
@@ -439,11 +598,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Internship {
+    impl GetTType for self::Internship {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Internship {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Internship {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Internship");
             p.write_field_begin("weeks", TType::I32, 1);
@@ -462,7 +621,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Internship {
+    impl<P: ProtocolReader> Deserialize<P> for self::Internship {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_weeks = None;
             let mut field_title = None;
@@ -488,19 +647,20 @@ pub mod types {
         }
     }
 
-    impl Default for UnEnumStruct {
+
+    impl Default for self::UnEnumStruct {
         fn default() -> Self {
             Self {
-                city: Default::default(),
+                city: crate::types::City(-1),
             }
         }
     }
 
-    impl GetTType for UnEnumStruct {
+    impl GetTType for self::UnEnumStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a UnEnumStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::UnEnumStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("UnEnumStruct");
             p.write_field_begin("city", TType::I32, 1);
@@ -511,7 +671,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for UnEnumStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::UnEnumStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_city = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -526,12 +686,13 @@ pub mod types {
             }
             p.read_struct_end()?;
             Ok(Self {
-                city: field_city.unwrap_or_default(),
+                city: field_city.unwrap_or_else(|| crate::types::City(-1)),
             })
         }
     }
 
-    impl Default for Range {
+
+    impl Default for self::Range {
         fn default() -> Self {
             Self {
                 min: Default::default(),
@@ -540,11 +701,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Range {
+    impl GetTType for self::Range {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Range {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Range {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Range");
             p.write_field_begin("min", TType::I32, 1);
@@ -558,7 +719,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Range {
+    impl<P: ProtocolReader> Deserialize<P> for self::Range {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_min = None;
             let mut field_max = None;
@@ -581,20 +742,21 @@ pub mod types {
         }
     }
 
-    impl Default for struct1 {
+
+    impl Default for self::struct1 {
         fn default() -> Self {
             Self {
-                a: Default::default(),
-                b: Default::default(),
+                a: 1234567,
+                b: "<uninitialized>".to_owned(),
             }
         }
     }
 
-    impl GetTType for struct1 {
+    impl GetTType for self::struct1 {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a struct1 {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::struct1 {
         fn write(self, p: &mut P) {
             p.write_struct_begin("struct1");
             p.write_field_begin("a", TType::I32, 1);
@@ -608,7 +770,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for struct1 {
+    impl<P: ProtocolReader> Deserialize<P> for self::struct1 {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_a = None;
             let mut field_b = None;
@@ -625,13 +787,14 @@ pub mod types {
             }
             p.read_struct_end()?;
             Ok(Self {
-                a: field_a.unwrap_or_default(),
-                b: field_b.unwrap_or_default(),
+                a: field_a.unwrap_or_else(|| 1234567),
+                b: field_b.unwrap_or_else(|| "<uninitialized>".to_owned()),
             })
         }
     }
 
-    impl Default for struct2 {
+
+    impl Default for self::struct2 {
         fn default() -> Self {
             Self {
                 a: Default::default(),
@@ -642,11 +805,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for struct2 {
+    impl GetTType for self::struct2 {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a struct2 {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::struct2 {
         fn write(self, p: &mut P) {
             p.write_struct_begin("struct2");
             p.write_field_begin("a", TType::I32, 1);
@@ -666,7 +829,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for struct2 {
+    impl<P: ProtocolReader> Deserialize<P> for self::struct2 {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_a = None;
             let mut field_b = None;
@@ -695,7 +858,8 @@ pub mod types {
         }
     }
 
-    impl Default for struct3 {
+
+    impl Default for self::struct3 {
         fn default() -> Self {
             Self {
                 a: Default::default(),
@@ -705,11 +869,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for struct3 {
+    impl GetTType for self::struct3 {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a struct3 {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::struct3 {
         fn write(self, p: &mut P) {
             p.write_struct_begin("struct3");
             p.write_field_begin("a", TType::String, 1);
@@ -726,7 +890,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for struct3 {
+    impl<P: ProtocolReader> Deserialize<P> for self::struct3 {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_a = None;
             let mut field_b = None;
@@ -752,12 +916,11 @@ pub mod types {
         }
     }
 
+
+
     impl Default for union1 {
         fn default() -> Self {
-            Self {
-                i: Default::default(),
-                d: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -768,12 +931,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a union1 {
         fn write(self, p: &mut P) {
             p.write_struct_begin("union1");
-            p.write_field_begin("i", TType::I32, 1);
-            Serialize::write(&self.i, p);
-            p.write_field_end();
-            p.write_field_begin("d", TType::Double, 2);
-            Serialize::write(&self.d, p);
-            p.write_field_end();
+            match self {
+                union1::i(inner) => {
+                    p.write_field_begin("i", TType::I32, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                union1::d(inner) => {
+                    p.write_field_begin("d", TType::Double, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                union1::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -781,35 +955,43 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for union1 {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_i = None;
-            let mut field_d = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_i = Some(Deserialize::read(p)?),
-                    (TType::Double, 2) => field_d = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::I32, 1, false) => {
+                        once = true;
+                        alt = Some(union1::i(Deserialize::read(p)?));
+                    }
+                    (TType::Double, 2, false) => {
+                        once = true;
+                        alt = Some(union1::d(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "union1",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                i: field_i.unwrap_or_default(),
-                d: field_d.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
+
     impl Default for union2 {
         fn default() -> Self {
-            Self {
-                i: Default::default(),
-                d: Default::default(),
-                s: Default::default(),
-                u: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -820,18 +1002,33 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a union2 {
         fn write(self, p: &mut P) {
             p.write_struct_begin("union2");
-            p.write_field_begin("i", TType::I32, 1);
-            Serialize::write(&self.i, p);
-            p.write_field_end();
-            p.write_field_begin("d", TType::Double, 2);
-            Serialize::write(&self.d, p);
-            p.write_field_end();
-            p.write_field_begin("s", TType::Struct, 3);
-            Serialize::write(&self.s, p);
-            p.write_field_end();
-            p.write_field_begin("u", TType::Struct, 4);
-            Serialize::write(&self.u, p);
-            p.write_field_end();
+            match self {
+                union2::i(inner) => {
+                    p.write_field_begin("i", TType::I32, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                union2::d(inner) => {
+                    p.write_field_begin("d", TType::Double, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                union2::s(inner) => {
+                    p.write_field_begin("s", TType::Struct, 3);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                union2::u(inner) => {
+                    p.write_field_begin("u", TType::Struct, 4);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                union2::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -839,30 +1036,44 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for union2 {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_i = None;
-            let mut field_d = None;
-            let mut field_s = None;
-            let mut field_u = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_i = Some(Deserialize::read(p)?),
-                    (TType::Double, 2) => field_d = Some(Deserialize::read(p)?),
-                    (TType::Struct, 3) => field_s = Some(Deserialize::read(p)?),
-                    (TType::Struct, 4) => field_u = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::I32, 1, false) => {
+                        once = true;
+                        alt = Some(union2::i(Deserialize::read(p)?));
+                    }
+                    (TType::Double, 2, false) => {
+                        once = true;
+                        alt = Some(union2::d(Deserialize::read(p)?));
+                    }
+                    (TType::Struct, 3, false) => {
+                        once = true;
+                        alt = Some(union2::s(Deserialize::read(p)?));
+                    }
+                    (TType::Struct, 4, false) => {
+                        once = true;
+                        alt = Some(union2::u(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "union2",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                i: field_i.unwrap_or_default(),
-                d: field_d.unwrap_or_default(),
-                s: field_s.unwrap_or_default(),
-                u: field_u.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 }

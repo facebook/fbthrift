@@ -17,7 +17,7 @@
 }}{{#type:typedef?}}{{!
     }}{{#type:typedefType}}{{>lib/ttype}}{{/type:typedefType}}{{!
 }}{{/type:typedef?}}{{!
-}}{{^type:typedef?}}TType::{{/type:typedef?}}{{!
+}}{{^type:typedef?}}TType::{{!
 }}{{#type:void?}}Void{{/type:void?}}{{!
 }}{{#type:string?}}String{{/type:string?}}{{!
 }}{{#type:binary?}}String{{/type:binary?}}{{!
@@ -34,4 +34,5 @@
 }}{{#type:stream?}}Stream{{/type:stream?}}{{!
 }}{{#type:set?}}Set{{/type:set?}}{{!
 }}{{#type:map?}}Map{{/type:map?}}{{!
+}}{{/type:typedef?}}{{!
 }}

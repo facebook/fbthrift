@@ -16,11 +16,13 @@
 
 }}
 
-    pub mod {{service:snake}} {
+    pub mod {{service:snake}} {{>lib/block}}{{!
+        }}{{#service:functions?}}
         use fbthrift::{
             ApplicationException, ApplicationExceptionErrorCode, Deserialize, ProtocolReader,
             ProtocolWriter, Serialize, TType,
         };{{!
+        }}{{/service:functions?}}{{!
         }}{{#service:functions}}
 
         #[derive(Clone, Debug)]
@@ -29,7 +31,7 @@
             }}{{#function:exceptions}}
             {{field:ident}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -38,14 +40,14 @@
                 {{function:upcamel}}Exn::UnknownField(-1)
             }
         }{{!
-        }}{{#function:exceptions}}
+        }}{{#function:uniqueExceptions}}
 
         impl From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Exn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}Exn::{{field:ident}}(exn)
             }
         }{{!
-        }}{{/function:exceptions}}
+        }}{{/function:uniqueExceptions}}
 
         impl From<ApplicationException> for {{function:upcamel}}Exn {
             fn from(exn: ApplicationException) -> Self {
@@ -101,7 +103,12 @@
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = {{!
+                    }}{{#function:void?}}{{!
+                        }}{{function:upcamel}}Exn::Success(()){{!
+                    }}{{/function:void?}}{{!
+                    }}{{^function:void?}}None{{/function:void?}}{{!
+                }};
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -111,12 +118,20 @@
                         }
                         (({{#function:returnType}}{{>lib/ttype}}{{/function:returnType}}, 0i32), false) => {
                             once = true;
-                            alt = Some({{function:upcamel}}Exn::Success(Deserialize::read(p)?));
+                            alt = {{!
+                                }}{{^function:void?}}Some({{/function:void?}}{{!
+                                }}{{function:upcamel}}Exn::Success(Deserialize::read(p)?){{!
+                                }}{{^function:void?}}){{/function:void?}}{{!
+                            }};
                         }{{!
                         }}{{#function:exceptions}}
                         (({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}), false) => {
                             once = true;
-                            alt = Some({{function:upcamel}}Exn::{{field:ident}}(Deserialize::read(p)?));
+                            alt = {{!
+                                }}{{^function:void?}}Some({{/function:void?}}{{!
+                                }}{{function:upcamel}}Exn::{{field:ident}}(Deserialize::read(p)?){{!
+                                }}{{^function:void?}}){{/function:void?}}{{!
+                            }};
                         }{{!
                         }}{{/function:exceptions}}
                         ((ty, _id), false) => p.skip(ty)?,
@@ -134,14 +149,19 @@
                     }
                     p.read_field_end()?;
                 }
-                p.read_struct_end()?;
+                p.read_struct_end()?;{{!
+                }}{{#function:void?}}
+                Ok(alt){{!
+                }}{{/function:void?}}{{!
+                }}{{^function:void?}}
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "{{function:upcamel}}"),
+                        format!("Empty union {}", "{{function:upcamel}}Exn"),
                     )
                     .into(),
-                )
+                ){{!
+                }}{{/function:void?}}
             }
         }{{!
         }}{{/service:functions}}

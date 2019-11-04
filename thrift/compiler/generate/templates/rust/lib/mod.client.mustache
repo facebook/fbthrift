@@ -31,7 +31,8 @@
 }}{{#program:services}}
 
     pub struct {{service:name}}Impl<P, S> {
-        service: S,
+        {{^service:functions?}}_{{/service:functions?}}{{!
+        }}service: S,
         _phantom: PhantomData<P>,
     }
 
@@ -44,7 +45,8 @@
     {
         pub fn new(service: S) -> Self {
             Self {
-                service,
+                {{^service:functions?}}_service: {{/service:functions?}}{{!
+                }}service,
                 _phantom: PhantomData,
             }
         }{{!
@@ -53,7 +55,7 @@
         pub fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
-            arg_{{field:name}}: &{{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> impl Future<{{!
             }}Item = {{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
@@ -92,15 +94,15 @@
                     let (_, message_type, _) = p.read_message_begin(|_| ())?;
                     let result = match message_type {
                         MessageType::Reply => {
-                            match crate::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)? {
-                                crate::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => Ok(res),
-                                exn => Err(crate::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(exn).into()),
+                            match {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)? {
+                                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => Ok(res),
+                                exn => Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(exn).into()),
                             }
                         }
                         MessageType::Exception => {
                             let ae = ApplicationException::read(p)?;
-                            Err(crate::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(
-                                crate::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae),
+                            Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(
+                                {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae),
                             ).into())
                         }
                         MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
@@ -121,7 +123,7 @@
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
-            arg_{{field:name}}: &{{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> Box<dyn Future<{{!
             }}Item = {{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
@@ -144,7 +146,7 @@
         fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
-            arg_{{field:name}}: &{{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> Box<dyn Future<{{!
             }}Item = {{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!

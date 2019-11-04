@@ -14,29 +14,94 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{#value:type}}{{!
 }}{{#value:bool?}}{{value:boolValue}}{{/value:bool?}}{{!
-}}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
 }}{{#value:integer?}}{{value:integerValue}}{{/value:integer?}}{{!
-}}{{#value:string?}}{{value:quoted}}{{/value:string?}}{{!
+}}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+}}{{#value:string?}}{{!
+    }}{{#value:empty?}}String::new(){{/value:empty?}}{{!
+    }}{{^value:empty?}}{{value:quoted}}.to_owned(){{/value:empty?}}{{!
+}}{{/value:string?}}{{!
+}}{{#value:binary?}}{{!
+    }}{{#value:empty?}}Vec::new(){{/value:empty?}}{{!
+    }}{{^value:empty?}}{{value:quoted}}.as_bytes().to_owned(){{/value:empty?}}{{!
+}}{{/value:binary?}}{{!
 }}{{#value:list?}}{{!
-    }}vec![{{!
-        }}{{#value:listElements}}{{!
-            }}{{>lib/value}}{{!
-            }}{{^last?}}, {{/last?}}{{!
-        }}{{/value:listElements}}{{!
-    }}]{{!
+    }}{{#value:empty?}}Vec::new(){{/value:empty?}}{{!
+    }}{{^value:empty?}}{{!
+        }}vec![{{!
+        }}{{#value:listElements}}
+        {{value:indent}}{{>lib/value}},{{!
+        }}{{/value:listElements}}
+        {{value:indent}}]{{!
+    }}{{/value:empty?}}{{!
 }}{{/value:list?}}{{!
+}}{{#value:set?}}{{!
+    }}{{#value:empty?}}{{!
+        }}std::collections::{{!
+            }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
+            }}{{^type:rust}}BTreeSet{{/type:rust}}{{!
+        }}::new(){{!
+    }}{{/value:empty?}}{{!
+    }}{{^value:empty?}}{{!
+        }}{
+            {{value:indent}}let mut set = std::collections::{{!
+                }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
+                }}{{^type:rust}}BTreeSet{{/type:rust}}{{!
+            }}::new();{{!
+            }}{{#value:setMembers}}
+        {{value:indent}}set.insert({{>lib/value}});{{!
+            }}{{/value:setMembers}}
+            {{value:indent}}set
+        {{value:indent}}}{{!
+    }}{{/value:empty?}}{{!
+}}{{/value:set?}}{{!
 }}{{#value:map?}}{{!
-    }}btreemap!({{!
-        }}{{#value:mapElements}}{{!
-            }}{{#element:key}}{{>lib/value}}{{/element:key}}{{!
-            }} => {{!
-            }}{{#element:value}}{{>lib/value}}{{/element:value}}{{!
-            }}{{^last?}}, {{/last?}}{{!
-        }}{{/value:mapElements}}{{!
-    }}){{!
+    }}{{#value:empty?}}{{!
+        }}std::collections::{{!
+            }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
+            }}{{^type:rust}}BTreeMap{{/type:rust}}{{!
+        }}::new(){{!
+    }}{{/value:empty?}}{{!
+    }}{{^value:empty?}}{{!
+        }}{
+            {{value:indent}}let mut map = std::collections::{{!
+                }}{{#type:rust}}{{type:rust}}{{/type:rust}}{{!
+                }}{{^type:rust}}BTreeMap{{/type:rust}}{{!
+            }}::new();{{!
+            }}{{#value:mapEntries}}
+            {{value:indent}}map.insert({{!
+                }}{{#entry:key}}{{>lib/value}}{{/entry:key}}, {{!
+                }}{{#entry:value}}{{>lib/value}}{{/entry:value}}{{!
+            }});{{!
+            }}{{/value:mapEntries}}
+            {{value:indent}}map
+        {{value:indent}}}{{!
+    }}{{/value:empty?}}{{!
 }}{{/value:map?}}{{!
+}}{{#value:struct?}}{{!
+    }}{{>lib/type}} {{>lib/block}}{{!
+        }}{{#value:structFields}}
+            {{value:indent}}{{field:name}}: {{!
+            }}{{#field:value}}{{!
+                }}{{#field:optional?}}Some({{/field:optional?}}{{!
+                }}{{>lib/value}}{{!
+                }}{{#field:optional?}}){{/field:optional?}}{{!
+            }}{{/field:value}}{{!
+            }}{{^field:value}}Default::default(){{/field:value}}{{!
+            }},{{!
+        }}{{/value:structFields}}
+        {{value:indent}}}{{!
+}}{{/value:struct?}}{{!
+}}{{#value:union?}}{{!
+    }}{{>lib/type}}::{{value:unionVariant}}({{!
+        }}{{#value:unionValue}}{{>lib/value}}{{/value:unionValue}}{{!
+    }}){{!
+}}{{/value:union?}}{{!
 }}{{#value:enum?}}{{!
-    }}{{value:enum_package}}::types::{{value:enum_name}}::{{value:enum_value_name}}{{!
+    }}{{value:enumPackage}}::types::{{value:enumName}}{{!
+    }}{{#value:enumVariant}}::{{value:enumVariant}}{{/value:enumVariant}}{{!
+    }}{{^value:enumVariant}}({{value:integerValue}}){{/value:enumVariant}}{{!
 }}{{/value:enum?}}{{!
+}}{{/value:type}}{{!
 }}

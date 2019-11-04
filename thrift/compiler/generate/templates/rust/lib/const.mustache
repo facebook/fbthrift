@@ -16,9 +16,23 @@
 
 }}
 
-    const {{constant:name}}{{!
+{{#constant:rust}}
+{{#constant:type}}
+{{^constant:lazy?}}
+    pub const {{constant:name}}{{!
     }}: {{!
-    }}{{#constant:type}}{{>lib/type}}{{/constant:type}}{{!
-    }} = {{!
-    }}{{#constant:value}}{{>lib/value}}{{/constant:value}};
+    }}{{#type:string?}}&str = {{value:quoted}}{{/type:string?}}{{!
+    }}{{^type:string?}}{{>lib/type}} = {{>lib/value}}{{/type:string?}}{{!
+    }};
+{{/constant:lazy?}}
+{{#constant:lazy?}}
+    lazy_static::lazy_static! {
+        pub static ref {{constant:name}}{{!
+        }}: {{!
+        }}{{>lib/type}}{{!
+        }} = {{>lib/value}};
+    }
+{{/constant:lazy?}}
+{{/constant:type}}
+{{/constant:rust}}
 {{!newline}}

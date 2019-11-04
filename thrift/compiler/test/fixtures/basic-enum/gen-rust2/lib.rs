@@ -3,14 +3,12 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
 
 pub mod consts {
-    const kOne: module::types::MyEnum = module::types::MyEnum::ONE;
+    pub const kOne: crate::types::MyEnum = crate::types::MyEnum::ONE;
 }
 
 pub mod types {
@@ -18,10 +16,10 @@ pub mod types {
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStruct {
-        pub myEnum: module::types::MyEnum,
-        pub myBigEnum: module::types::MyBigEnum,
+        pub myEnum: crate::types::MyEnum,
+        pub myBigEnum: crate::types::MyBigEnum,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -59,10 +57,7 @@ pub mod types {
 
     impl std::fmt::Display for EmptyEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            let s: &str = match *self {
-                EmptyEnum(x) => return write!(fmt, "{}", x),
-            };
-            write!(fmt, "{}", s)
+            write!(fmt, "{}", self.0)
         }
     }
 
@@ -318,20 +313,20 @@ pub mod types {
         }
     }
 
-    impl Default for MyStruct {
+    impl Default for self::MyStruct {
         fn default() -> Self {
             Self {
                 myEnum: Default::default(),
-                myBigEnum: Default::default(),
+                myBigEnum: crate::types::MyBigEnum::ONE,
             }
         }
     }
 
-    impl GetTType for MyStruct {
+    impl GetTType for self::MyStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             p.write_field_begin("myEnum", TType::I32, 1);
@@ -345,7 +340,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_myEnum = None;
             let mut field_myBigEnum = None;
@@ -363,10 +358,11 @@ pub mod types {
             p.read_struct_end()?;
             Ok(Self {
                 myEnum: field_myEnum.unwrap_or_default(),
-                myBigEnum: field_myBigEnum.unwrap_or_default(),
+                myBigEnum: field_myBigEnum.unwrap_or_else(|| crate::types::MyBigEnum::ONE),
             })
         }
     }
+
 }
 
 pub mod errors {

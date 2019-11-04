@@ -3,20 +3,54 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::consts::*;
 pub use self::errors::*;
 pub use self::types::*;
 
 pub mod consts {
-    const kStructWithRef: module::types::StructWithRef = btreemap!("def_field" => btreemap!(), "opt_field" => btreemap!(), "req_field" => btreemap!());
+    lazy_static::lazy_static! {
+        pub static ref kStructWithRef: crate::types::StructWithRef = crate::types::StructWithRef {
+            def_field: crate::types::Empty {
+            },
+            opt_field: Some(crate::types::Empty {
+            }),
+            req_field: crate::types::Empty {
+            },
+        };
+    }
 
-    const kStructWithRefTypeUnique: module::types::StructWithRefTypeUnique = btreemap!("def_field" => btreemap!(), "opt_field" => btreemap!(), "req_field" => btreemap!());
+    lazy_static::lazy_static! {
+        pub static ref kStructWithRefTypeUnique: crate::types::StructWithRefTypeUnique = crate::types::StructWithRefTypeUnique {
+            def_field: crate::types::Empty {
+            },
+            opt_field: Some(crate::types::Empty {
+            }),
+            req_field: crate::types::Empty {
+            },
+        };
+    }
 
-    const kStructWithRefTypeShared: module::types::StructWithRefTypeShared = btreemap!("def_field" => btreemap!(), "opt_field" => btreemap!(), "req_field" => btreemap!());
+    lazy_static::lazy_static! {
+        pub static ref kStructWithRefTypeShared: crate::types::StructWithRefTypeShared = crate::types::StructWithRefTypeShared {
+            def_field: crate::types::Empty {
+            },
+            opt_field: Some(crate::types::Empty {
+            }),
+            req_field: crate::types::Empty {
+            },
+        };
+    }
 
-    const kStructWithRefTypeSharedConst: module::types::StructWithRefTypeSharedConst = btreemap!("def_field" => btreemap!(), "opt_field" => btreemap!(), "req_field" => btreemap!());
+    lazy_static::lazy_static! {
+        pub static ref kStructWithRefTypeSharedConst: crate::types::StructWithRefTypeSharedConst = crate::types::StructWithRefTypeSharedConst {
+            def_field: crate::types::Empty {
+            },
+            opt_field: Some(crate::types::Empty {
+            }),
+            req_field: crate::types::Empty {
+            },
+        };
+    }
 }
 
 pub mod types {
@@ -24,13 +58,14 @@ pub mod types {
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct MyUnion {
-        pub anInteger: i32,
-        pub aString: String,
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub enum MyUnion {
+        anInteger(i32),
+        aString(String),
+        UnknownField(i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyField {
         pub opt_value: Option<i64>,
         pub value: i64,
@@ -39,21 +74,21 @@ pub mod types {
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct MyStruct {
-        pub opt_ref: Option<module::types::MyField>,
-        pub ref_: module::types::MyField,
-        pub req_ref: module::types::MyField,
+        pub opt_ref: Option<crate::types::MyField>,
+        pub ref_: crate::types::MyField,
+        pub req_ref: crate::types::MyField,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithUnion {
-        pub u: module::types::MyUnion,
+        pub u: crate::types::MyUnion,
         pub aDouble: f64,
-        pub f: module::types::MyField,
+        pub f: crate::types::MyField,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct RecursiveStruct {
-        pub mes: Option<Vec<module::types::RecursiveStruct>>,
+        pub mes: Option<Vec<crate::types::RecursiveStruct>>,
     }
 
     #[derive(Clone, Debug, PartialEq)]
@@ -68,46 +103,46 @@ pub mod types {
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithSharedConst {
-        pub opt_shared_const: Option<module::types::MyField>,
-        pub shared_const: module::types::MyField,
-        pub req_shared_const: module::types::MyField,
+        pub opt_shared_const: Option<crate::types::MyField>,
+        pub shared_const: crate::types::MyField,
+        pub req_shared_const: crate::types::MyField,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Empty {
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithRef {
-        pub def_field: module::types::Empty,
-        pub opt_field: Option<module::types::Empty>,
-        pub req_field: module::types::Empty,
+        pub def_field: crate::types::Empty,
+        pub opt_field: Option<crate::types::Empty>,
+        pub req_field: crate::types::Empty,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithRefTypeUnique {
-        pub def_field: module::types::Empty,
-        pub opt_field: Option<module::types::Empty>,
-        pub req_field: module::types::Empty,
+        pub def_field: crate::types::Empty,
+        pub opt_field: Option<crate::types::Empty>,
+        pub req_field: crate::types::Empty,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithRefTypeShared {
-        pub def_field: module::types::Empty,
-        pub opt_field: Option<module::types::Empty>,
-        pub req_field: module::types::Empty,
+        pub def_field: crate::types::Empty,
+        pub opt_field: Option<crate::types::Empty>,
+        pub req_field: crate::types::Empty,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithRefTypeSharedConst {
-        pub def_field: module::types::Empty,
-        pub opt_field: Option<module::types::Empty>,
-        pub req_field: module::types::Empty,
+        pub def_field: crate::types::Empty,
+        pub opt_field: Option<crate::types::Empty>,
+        pub req_field: crate::types::Empty,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct StructWithRefAndAnnotCppNoexceptMoveCtor {
-        pub def_field: module::types::Empty,
+        pub def_field: crate::types::Empty,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -192,12 +227,10 @@ pub mod types {
         }
     }
 
+
     impl Default for MyUnion {
         fn default() -> Self {
-            Self {
-                anInteger: Default::default(),
-                aString: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -208,12 +241,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyUnion");
-            p.write_field_begin("anInteger", TType::I32, 1);
-            Serialize::write(&self.anInteger, p);
-            p.write_field_end();
-            p.write_field_begin("aString", TType::String, 2);
-            Serialize::write(&self.aString, p);
-            p.write_field_end();
+            match self {
+                MyUnion::anInteger(inner) => {
+                    p.write_field_begin("anInteger", TType::I32, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::aString(inner) => {
+                    p.write_field_begin("aString", TType::String, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                MyUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -221,28 +265,40 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_anInteger = None;
-            let mut field_aString = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I32, 1) => field_anInteger = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_aString = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::I32, 1, false) => {
+                        once = true;
+                        alt = Some(MyUnion::anInteger(Deserialize::read(p)?));
+                    }
+                    (TType::String, 2, false) => {
+                        once = true;
+                        alt = Some(MyUnion::aString(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "MyUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                anInteger: field_anInteger.unwrap_or_default(),
-                aString: field_aString.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
-    impl Default for MyField {
+    impl Default for self::MyField {
         fn default() -> Self {
             Self {
                 opt_value: None,
@@ -252,11 +308,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for MyField {
+    impl GetTType for self::MyField {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyField {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyField {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyField");
             if let Some(some) = &self.opt_value {
@@ -275,7 +331,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyField {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyField {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_opt_value = None;
             let mut field_value = None;
@@ -301,7 +357,8 @@ pub mod types {
         }
     }
 
-    impl Default for MyStruct {
+
+    impl Default for self::MyStruct {
         fn default() -> Self {
             Self {
                 opt_ref: None,
@@ -311,11 +368,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for MyStruct {
+    impl GetTType for self::MyStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             if let Some(some) = &self.opt_ref {
@@ -334,7 +391,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_opt_ref = None;
             let mut field_ref = None;
@@ -360,7 +417,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithUnion {
+
+    impl Default for self::StructWithUnion {
         fn default() -> Self {
             Self {
                 u: Default::default(),
@@ -370,11 +428,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithUnion {
+    impl GetTType for self::StructWithUnion {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithUnion {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithUnion");
             p.write_field_begin("u", TType::Struct, 1);
@@ -391,7 +449,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithUnion {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_u = None;
             let mut field_aDouble = None;
@@ -417,7 +475,8 @@ pub mod types {
         }
     }
 
-    impl Default for RecursiveStruct {
+
+    impl Default for self::RecursiveStruct {
         fn default() -> Self {
             Self {
                 mes: None,
@@ -425,11 +484,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for RecursiveStruct {
+    impl GetTType for self::RecursiveStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a RecursiveStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::RecursiveStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("RecursiveStruct");
             if let Some(some) = &self.mes {
@@ -442,7 +501,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for RecursiveStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::RecursiveStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_mes = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -462,7 +521,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithContainers {
+
+    impl Default for self::StructWithContainers {
         fn default() -> Self {
             Self {
                 list_ref: Default::default(),
@@ -475,11 +535,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithContainers {
+    impl GetTType for self::StructWithContainers {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithContainers {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithContainers {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithContainers");
             p.write_field_begin("list_ref", TType::List, 1);
@@ -505,7 +565,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithContainers {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithContainers {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_list_ref = None;
             let mut field_set_ref = None;
@@ -540,7 +600,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithSharedConst {
+
+    impl Default for self::StructWithSharedConst {
         fn default() -> Self {
             Self {
                 opt_shared_const: None,
@@ -550,11 +611,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithSharedConst {
+    impl GetTType for self::StructWithSharedConst {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithSharedConst {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithSharedConst {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithSharedConst");
             if let Some(some) = &self.opt_shared_const {
@@ -573,7 +634,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithSharedConst {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithSharedConst {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_opt_shared_const = None;
             let mut field_shared_const = None;
@@ -599,18 +660,19 @@ pub mod types {
         }
     }
 
-    impl Default for Empty {
+
+    impl Default for self::Empty {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for Empty {
+    impl GetTType for self::Empty {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Empty {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Empty {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Empty");
             p.write_field_stop();
@@ -618,7 +680,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Empty {
+    impl<P: ProtocolReader> Deserialize<P> for self::Empty {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -635,7 +697,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithRef {
+
+    impl Default for self::StructWithRef {
         fn default() -> Self {
             Self {
                 def_field: Default::default(),
@@ -645,11 +708,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithRef {
+    impl GetTType for self::StructWithRef {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithRef {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithRef {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithRef");
             p.write_field_begin("def_field", TType::Struct, 1);
@@ -668,7 +731,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithRef {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithRef {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
@@ -694,7 +757,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithRefTypeUnique {
+
+    impl Default for self::StructWithRefTypeUnique {
         fn default() -> Self {
             Self {
                 def_field: Default::default(),
@@ -704,11 +768,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithRefTypeUnique {
+    impl GetTType for self::StructWithRefTypeUnique {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithRefTypeUnique {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithRefTypeUnique {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithRefTypeUnique");
             p.write_field_begin("def_field", TType::Struct, 1);
@@ -727,7 +791,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithRefTypeUnique {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefTypeUnique {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
@@ -753,7 +817,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithRefTypeShared {
+
+    impl Default for self::StructWithRefTypeShared {
         fn default() -> Self {
             Self {
                 def_field: Default::default(),
@@ -763,11 +828,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithRefTypeShared {
+    impl GetTType for self::StructWithRefTypeShared {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithRefTypeShared {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithRefTypeShared {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithRefTypeShared");
             p.write_field_begin("def_field", TType::Struct, 1);
@@ -786,7 +851,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithRefTypeShared {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefTypeShared {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
@@ -812,7 +877,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithRefTypeSharedConst {
+
+    impl Default for self::StructWithRefTypeSharedConst {
         fn default() -> Self {
             Self {
                 def_field: Default::default(),
@@ -822,11 +888,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithRefTypeSharedConst {
+    impl GetTType for self::StructWithRefTypeSharedConst {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithRefTypeSharedConst {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithRefTypeSharedConst {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithRefTypeSharedConst");
             p.write_field_begin("def_field", TType::Struct, 1);
@@ -845,7 +911,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithRefTypeSharedConst {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefTypeSharedConst {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
@@ -871,7 +937,8 @@ pub mod types {
         }
     }
 
-    impl Default for StructWithRefAndAnnotCppNoexceptMoveCtor {
+
+    impl Default for self::StructWithRefAndAnnotCppNoexceptMoveCtor {
         fn default() -> Self {
             Self {
                 def_field: Default::default(),
@@ -879,11 +946,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for StructWithRefAndAnnotCppNoexceptMoveCtor {
+    impl GetTType for self::StructWithRefAndAnnotCppNoexceptMoveCtor {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a StructWithRefAndAnnotCppNoexceptMoveCtor {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::StructWithRefAndAnnotCppNoexceptMoveCtor {
         fn write(self, p: &mut P) {
             p.write_struct_begin("StructWithRefAndAnnotCppNoexceptMoveCtor");
             p.write_field_begin("def_field", TType::Struct, 1);
@@ -894,7 +961,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for StructWithRefAndAnnotCppNoexceptMoveCtor {
+    impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefAndAnnotCppNoexceptMoveCtor {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_def_field = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -913,6 +980,7 @@ pub mod types {
             })
         }
     }
+
 }
 
 pub mod errors {

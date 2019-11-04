@@ -16,7 +16,9 @@
 
 }}
 
-    #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
+    #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash{{!
+        }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
+    }})]
     pub struct {{enum:name}}(pub i32);
 
     impl {{enum:name}} {{>lib/block}}{{!
@@ -54,14 +56,19 @@
     }
 
     impl std::fmt::Display for {{enum:name}} {
-        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+        fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {{>lib/block}}{{!
+            }}{{#enum:values?}}
             let s: &str = match *self {{>lib/block}}{{!
                 }}{{#enum:values}}
                 {{enum:name}}::{{enumValue:name}} => "{{enumValue:name}}",{{!
                 }}{{/enum:values}}
                 {{enum:name}}(x) => return write!(fmt, "{}", x),
             };
-            write!(fmt, "{}", s)
+            write!(fmt, "{}", s){{!
+            }}{{/enum:values?}}{{!
+            }}{{^enum:values?}}
+            write!(fmt, "{}", self.0){{!
+            }}{{/enum:values?}}
         }
     }
 

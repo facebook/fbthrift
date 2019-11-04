@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -13,32 +11,32 @@ pub mod types {
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Banal {
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Fiery {
         pub message: String,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Serious {
         pub sonnet: Option<String>,
     }
 
-    impl Default for Banal {
+    impl Default for self::Banal {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for Banal {
+    impl GetTType for self::Banal {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Banal {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Banal {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Banal");
             p.write_field_stop();
@@ -46,7 +44,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Banal {
+    impl<P: ProtocolReader> Deserialize<P> for self::Banal {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -63,7 +61,8 @@ pub mod types {
         }
     }
 
-    impl Default for Fiery {
+
+    impl Default for self::Fiery {
         fn default() -> Self {
             Self {
                 message: Default::default(),
@@ -71,11 +70,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Fiery {
+    impl GetTType for self::Fiery {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Fiery {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Fiery {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Fiery");
             p.write_field_begin("message", TType::String, 1);
@@ -86,7 +85,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Fiery {
+    impl<P: ProtocolReader> Deserialize<P> for self::Fiery {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_message = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -106,7 +105,8 @@ pub mod types {
         }
     }
 
-    impl Default for Serious {
+
+    impl Default for self::Serious {
         fn default() -> Self {
             Self {
                 sonnet: None,
@@ -114,11 +114,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Serious {
+    impl GetTType for self::Serious {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Serious {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Serious {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Serious");
             if let Some(some) = &self.sonnet {
@@ -131,7 +131,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Serious {
+    impl<P: ProtocolReader> Deserialize<P> for self::Serious {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_sonnet = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -150,6 +150,7 @@ pub mod types {
             })
         }
     }
+
 }
 
 pub mod services {
@@ -162,7 +163,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum DoBlandExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -215,7 +216,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = DoBlandExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -225,7 +226,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(DoBlandExn::Success(Deserialize::read(p)?));
+                            alt = DoBlandExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -243,23 +244,17 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "DoBland"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum DoRaiseExn {
             Success(()),
-            b(module::types::Banal),
-            f(module::types::Fiery),
-            s(module::types::Serious),
-            ApplicationException(fbthrift::types::ApplicationException),
+            b(crate::types::Banal),
+            f(crate::types::Fiery),
+            s(crate::types::Serious),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -269,20 +264,20 @@ pub mod services {
             }
         }
 
-        impl From<module::types::Banal> for DoRaiseExn {
-            fn from(exn: module::types::Banal) -> Self {
+        impl From<crate::types::Banal> for DoRaiseExn {
+            fn from(exn: crate::types::Banal) -> Self {
                 DoRaiseExn::b(exn)
             }
         }
 
-        impl From<module::types::Fiery> for DoRaiseExn {
-            fn from(exn: module::types::Fiery) -> Self {
+        impl From<crate::types::Fiery> for DoRaiseExn {
+            fn from(exn: crate::types::Fiery) -> Self {
                 DoRaiseExn::f(exn)
             }
         }
 
-        impl From<module::types::Serious> for DoRaiseExn {
-            fn from(exn: module::types::Serious) -> Self {
+        impl From<crate::types::Serious> for DoRaiseExn {
+            fn from(exn: crate::types::Serious) -> Self {
                 DoRaiseExn::s(exn)
             }
         }
@@ -357,7 +352,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = DoRaiseExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -367,19 +362,19 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(DoRaiseExn::Success(Deserialize::read(p)?));
+                            alt = DoRaiseExn::Success(Deserialize::read(p)?);
                         }
                         ((TType::Struct, 1), false) => {
                             once = true;
-                            alt = Some(DoRaiseExn::b(Deserialize::read(p)?));
+                            alt = DoRaiseExn::b(Deserialize::read(p)?);
                         }
                         ((TType::Struct, 2), false) => {
                             once = true;
-                            alt = Some(DoRaiseExn::f(Deserialize::read(p)?));
+                            alt = DoRaiseExn::f(Deserialize::read(p)?);
                         }
                         ((TType::Struct, 3), false) => {
                             once = true;
-                            alt = Some(DoRaiseExn::s(Deserialize::read(p)?));
+                            alt = DoRaiseExn::s(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -397,20 +392,14 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "DoRaise"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
 
         #[derive(Clone, Debug)]
         pub enum Get200Exn {
             Success(String),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -463,7 +452,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -494,7 +483,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "Get200"),
+                        format!("Empty union {}", "Get200Exn"),
                     )
                     .into(),
                 )
@@ -504,10 +493,10 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum Get500Exn {
             Success(String),
-            f(module::types::Fiery),
-            b(module::types::Banal),
-            s(module::types::Serious),
-            ApplicationException(fbthrift::types::ApplicationException),
+            f(crate::types::Fiery),
+            b(crate::types::Banal),
+            s(crate::types::Serious),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -517,20 +506,20 @@ pub mod services {
             }
         }
 
-        impl From<module::types::Fiery> for Get500Exn {
-            fn from(exn: module::types::Fiery) -> Self {
+        impl From<crate::types::Fiery> for Get500Exn {
+            fn from(exn: crate::types::Fiery) -> Self {
                 Get500Exn::f(exn)
             }
         }
 
-        impl From<module::types::Banal> for Get500Exn {
-            fn from(exn: module::types::Banal) -> Self {
+        impl From<crate::types::Banal> for Get500Exn {
+            fn from(exn: crate::types::Banal) -> Self {
                 Get500Exn::b(exn)
             }
         }
 
-        impl From<module::types::Serious> for Get500Exn {
-            fn from(exn: module::types::Serious) -> Self {
+        impl From<crate::types::Serious> for Get500Exn {
+            fn from(exn: crate::types::Serious) -> Self {
                 Get500Exn::s(exn)
             }
         }
@@ -605,7 +594,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -648,7 +637,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "Get500"),
+                        format!("Empty union {}", "Get500Exn"),
                     )
                     .into(),
                 )
@@ -1674,6 +1663,7 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
+    use async_trait::async_trait;
     use std::marker::PhantomData;
 
     pub struct Raiser<'mock> {
@@ -1684,7 +1674,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::Raiser {
+    impl dyn super::client_async::Raiser {
         pub fn mock<'mock>() -> Raiser<'mock> {
             Raiser {
                 doBland: raiser::doBland::unimplemented(),
@@ -1696,50 +1686,47 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::Raiser for Raiser<'mock> {
-        fn doBland(
+    #[async_trait]
+    impl<'mock> super::client_async::Raiser for Raiser<'mock> {
+        async fn doBland(
             &self,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.doBland.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::RaiserDoBlandError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::RaiserDoBlandError(error),
+                ))
         }
-        fn doRaise(
+        async fn doRaise(
             &self,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.doRaise.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::RaiserDoRaiseError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::RaiserDoRaiseError(error),
+                ))
         }
-        fn get200(
+        async fn get200(
             &self,
-        ) -> Box<dyn futures::Future<Item = String, Error = failure::Error> + Send> {
+        ) -> Result<String, failure::Error> {
             let mut closure = self.get200.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::RaiserGet200Error(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::RaiserGet200Error(error),
+                ))
         }
-        fn get500(
+        async fn get500(
             &self,
-        ) -> Box<dyn futures::Future<Item = String, Error = failure::Error> + Send> {
+        ) -> Result<String, failure::Error> {
             let mut closure = self.get500.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::RaiserGet500Error(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::RaiserGet500Error(error),
+                ))
         }
     }
 

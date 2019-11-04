@@ -24,7 +24,7 @@
     }}{{#program:services}}{{!
     }}{{#service:functions}}
         #[fail(display = "{{service:name}}::{{function:name}} failed with {:?}", _0)]
-        {{service:name}}{{function:upcamel}}Error(crate::services::{{service:snake}}::{{function:upcamel}}Exn),{{!
+        {{service:name}}{{function:upcamel}}Error({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn),{{!
     }}{{/service:functions}}{{!
     }}{{/program:services}}
         #[fail(display = "Application exception: {:?}", _0)]

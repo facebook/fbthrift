@@ -14,6 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#service:extends}}{{!
-}}{{service:package}}::server::{{service:name}}{{!
-}}{{/service:extends}}
+}}{{^field:primitive?}}&{{/field:primitive?}}{{!
+}}{{#field:type}}{{!
+    }}{{#type:string?}}str{{/type:string?}}{{!
+    }}{{^type:string?}}{{>lib/type}}{{/type:string?}}{{!
+}}{{/field:type}}{{!
+}}

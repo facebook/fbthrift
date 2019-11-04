@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -15,7 +13,7 @@ pub mod types {
 
     pub type TBinary = Vec<u8>;
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct decorated_struct {
         pub field: String,
     }
@@ -29,26 +27,26 @@ pub mod types {
         pub fieldE: Vec<i32>,
         pub fieldF: std::collections::BTreeSet<i32>,
         pub fieldG: std::collections::BTreeMap<i32, String>,
-        pub fieldH: std::collections::BTreeMap<i32, String>include::types::SomeMap,
+        pub fieldH: include::types::SomeMap,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct CppTypeStruct {
         pub fieldA: Vec<i32>,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct VirtualStruct {
         pub MyIntField: i64,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyStructWithForwardRefEnum {
-        pub a: module::types::MyForwardRefEnummodule::types::MyForwardRefEnum,
-        pub b: module::types::MyForwardRefEnummodule::types::MyForwardRefEnum,
+        pub a: crate::types::MyForwardRefEnum,
+        pub b: crate::types::MyForwardRefEnum,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct TrivialNumeric {
         pub a: i32,
         pub b: bool,
@@ -57,7 +55,7 @@ pub mod types {
     #[derive(Clone, Debug, PartialEq)]
     pub struct TrivialNestedWithDefault {
         pub z: i32,
-        pub n: module::types::TrivialNumeric,
+        pub n: crate::types::TrivialNumeric,
     }
 
     #[derive(Clone, Debug, PartialEq)]
@@ -69,16 +67,16 @@ pub mod types {
     #[derive(Clone, Debug, PartialEq)]
     pub struct ComplexNestedWithDefault {
         pub z: String,
-        pub n: module::types::ComplexString,
+        pub n: crate::types::ComplexString,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MinPadding {
-        pub small: u8,
+        pub small: i8,
         pub big: i64,
         pub medium: i16,
         pub biggish: i32,
-        pub tiny: u8,
+        pub tiny: i8,
     }
 
     #[derive(Clone, Debug, PartialEq)]
@@ -86,45 +84,45 @@ pub mod types {
         pub MyIntField: i64,
         pub MyStringField: String,
         pub majorVer: i64,
-        pub data: module::types::MyDataItem,
+        pub data: crate::types::MyDataItem,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyDataItem {
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Renaming {
         pub foo: i64,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct AnnotatedTypes {
-        pub binary_field: Vec<u8>module::types::TBinary,
-        pub list_field: Vec<std::collections::BTreeMap<i32, String>include::types::SomeMap>include::types::SomeListOfTypeMap,
+        pub binary_field: crate::types::TBinary,
+        pub list_field: include::types::SomeListOfTypeMap,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct ForwardUsageRoot {
-        pub ForwardUsageStruct: Option<module::types::ForwardUsageStruct>,
-        pub ForwardUsageByRef: Option<module::types::ForwardUsageByRef>,
+        pub ForwardUsageStruct: Option<crate::types::ForwardUsageStruct>,
+        pub ForwardUsageByRef: Option<crate::types::ForwardUsageByRef>,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct ForwardUsageStruct {
-        pub foo: Option<module::types::ForwardUsageRoot>,
+        pub foo: Option<crate::types::ForwardUsageRoot>,
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct ForwardUsageByRef {
-        pub foo: Option<module::types::ForwardUsageRoot>,
+        pub foo: Option<crate::types::ForwardUsageRoot>,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NoexceptMoveEmpty {
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NoexceptMoveSimpleStruct {
         pub boolField: i64,
     }
@@ -139,13 +137,14 @@ pub mod types {
         pub MyBinaryField2: Option<Vec<u8>>,
         pub MyBinaryField3: Vec<u8>,
         pub MyBinaryListField4: Vec<Vec<u8>>,
-        pub MyMapEnumAndInt: std::collections::BTreeMap<module::types::MyEnumA, String>,
+        pub MyMapEnumAndInt: std::collections::BTreeMap<crate::types::MyEnumA, String>,
     }
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct NoExceptMoveUnion {
-        pub string_field: String,
-        pub i32_field: i32,
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub enum NoExceptMoveUnion {
+        string_field(String),
+        i32_field(i32),
+        UnknownField(i32),
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -488,7 +487,8 @@ pub mod types {
         }
     }
 
-    impl Default for decorated_struct {
+
+    impl Default for self::decorated_struct {
         fn default() -> Self {
             Self {
                 field: Default::default(),
@@ -496,11 +496,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for decorated_struct {
+    impl GetTType for self::decorated_struct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a decorated_struct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::decorated_struct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("decorated_struct");
             p.write_field_begin("field", TType::String, 1);
@@ -511,7 +511,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for decorated_struct {
+    impl<P: ProtocolReader> Deserialize<P> for self::decorated_struct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_field = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -531,7 +531,8 @@ pub mod types {
         }
     }
 
-    impl Default for ContainerStruct {
+
+    impl Default for self::ContainerStruct {
         fn default() -> Self {
             Self {
                 fieldA: Default::default(),
@@ -546,11 +547,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for ContainerStruct {
+    impl GetTType for self::ContainerStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ContainerStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ContainerStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ContainerStruct");
             p.write_field_begin("fieldA", TType::List, 12);
@@ -574,7 +575,7 @@ pub mod types {
             p.write_field_begin("fieldG", TType::Map, 7);
             Serialize::write(&self.fieldG, p);
             p.write_field_end();
-            p.write_field_begin("fieldH", TType::MapMap, 8);
+            p.write_field_begin("fieldH", TType::Map, 8);
             Serialize::write(&self.fieldH, p);
             p.write_field_end();
             p.write_field_stop();
@@ -582,7 +583,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ContainerStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::ContainerStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_fieldA = None;
             let mut field_fieldB = None;
@@ -604,7 +605,7 @@ pub mod types {
                     (TType::List, 5) => field_fieldE = Some(Deserialize::read(p)?),
                     (TType::Set, 6) => field_fieldF = Some(Deserialize::read(p)?),
                     (TType::Map, 7) => field_fieldG = Some(Deserialize::read(p)?),
-                    (TType::MapMap, 8) => field_fieldH = Some(Deserialize::read(p)?),
+                    (TType::Map, 8) => field_fieldH = Some(Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -623,7 +624,8 @@ pub mod types {
         }
     }
 
-    impl Default for CppTypeStruct {
+
+    impl Default for self::CppTypeStruct {
         fn default() -> Self {
             Self {
                 fieldA: Default::default(),
@@ -631,11 +633,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for CppTypeStruct {
+    impl GetTType for self::CppTypeStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a CppTypeStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::CppTypeStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("CppTypeStruct");
             p.write_field_begin("fieldA", TType::List, 1);
@@ -646,7 +648,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for CppTypeStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::CppTypeStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_fieldA = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -666,7 +668,8 @@ pub mod types {
         }
     }
 
-    impl Default for VirtualStruct {
+
+    impl Default for self::VirtualStruct {
         fn default() -> Self {
             Self {
                 MyIntField: Default::default(),
@@ -674,11 +677,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for VirtualStruct {
+    impl GetTType for self::VirtualStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a VirtualStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::VirtualStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("VirtualStruct");
             p.write_field_begin("MyIntField", TType::I64, 1);
@@ -689,7 +692,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for VirtualStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::VirtualStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_MyIntField = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -709,26 +712,27 @@ pub mod types {
         }
     }
 
-    impl Default for MyStructWithForwardRefEnum {
+
+    impl Default for self::MyStructWithForwardRefEnum {
         fn default() -> Self {
             Self {
-                a: Default::default(),
-                b: Default::default(),
+                a: crate::types::MyForwardRefEnum::NONZERO,
+                b: crate::types::MyForwardRefEnum::NONZERO,
             }
         }
     }
 
-    impl GetTType for MyStructWithForwardRefEnum {
+    impl GetTType for self::MyStructWithForwardRefEnum {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyStructWithForwardRefEnum {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStructWithForwardRefEnum {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyStructWithForwardRefEnum");
-            p.write_field_begin("a", TType::I32I32, 1);
+            p.write_field_begin("a", TType::I32, 1);
             Serialize::write(&self.a, p);
             p.write_field_end();
-            p.write_field_begin("b", TType::I32I32, 2);
+            p.write_field_begin("b", TType::I32, 2);
             Serialize::write(&self.b, p);
             p.write_field_end();
             p.write_field_stop();
@@ -736,7 +740,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyStructWithForwardRefEnum {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStructWithForwardRefEnum {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_a = None;
             let mut field_b = None;
@@ -745,21 +749,22 @@ pub mod types {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
                 match (fty, fid as i32) {
                     (TType::Stop, _) => break,
-                    (TType::I32I32, 1) => field_a = Some(Deserialize::read(p)?),
-                    (TType::I32I32, 2) => field_b = Some(Deserialize::read(p)?),
+                    (TType::I32, 1) => field_a = Some(Deserialize::read(p)?),
+                    (TType::I32, 2) => field_b = Some(Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
             Ok(Self {
-                a: field_a.unwrap_or_default(),
-                b: field_b.unwrap_or_default(),
+                a: field_a.unwrap_or_else(|| crate::types::MyForwardRefEnum::NONZERO),
+                b: field_b.unwrap_or_else(|| crate::types::MyForwardRefEnum::NONZERO),
             })
         }
     }
 
-    impl Default for TrivialNumeric {
+
+    impl Default for self::TrivialNumeric {
         fn default() -> Self {
             Self {
                 a: Default::default(),
@@ -768,11 +773,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for TrivialNumeric {
+    impl GetTType for self::TrivialNumeric {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a TrivialNumeric {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::TrivialNumeric {
         fn write(self, p: &mut P) {
             p.write_struct_begin("TrivialNumeric");
             p.write_field_begin("a", TType::I32, 1);
@@ -786,7 +791,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for TrivialNumeric {
+    impl<P: ProtocolReader> Deserialize<P> for self::TrivialNumeric {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_a = None;
             let mut field_b = None;
@@ -809,20 +814,24 @@ pub mod types {
         }
     }
 
-    impl Default for TrivialNestedWithDefault {
+
+    impl Default for self::TrivialNestedWithDefault {
         fn default() -> Self {
             Self {
-                z: Default::default(),
-                n: Default::default(),
+                z: 4,
+                n: crate::types::TrivialNumeric {
+                    a: 3,
+                    b: true,
+                },
             }
         }
     }
 
-    impl GetTType for TrivialNestedWithDefault {
+    impl GetTType for self::TrivialNestedWithDefault {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a TrivialNestedWithDefault {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::TrivialNestedWithDefault {
         fn write(self, p: &mut P) {
             p.write_struct_begin("TrivialNestedWithDefault");
             p.write_field_begin("z", TType::I32, 1);
@@ -836,7 +845,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for TrivialNestedWithDefault {
+    impl<P: ProtocolReader> Deserialize<P> for self::TrivialNestedWithDefault {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_z = None;
             let mut field_n = None;
@@ -853,13 +862,17 @@ pub mod types {
             }
             p.read_struct_end()?;
             Ok(Self {
-                z: field_z.unwrap_or_default(),
-                n: field_n.unwrap_or_default(),
+                z: field_z.unwrap_or_else(|| 4),
+                n: field_n.unwrap_or_else(|| crate::types::TrivialNumeric {
+                    a: 3,
+                    b: true,
+                }),
             })
         }
     }
 
-    impl Default for ComplexString {
+
+    impl Default for self::ComplexString {
         fn default() -> Self {
             Self {
                 a: Default::default(),
@@ -868,11 +881,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for ComplexString {
+    impl GetTType for self::ComplexString {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ComplexString {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ComplexString {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ComplexString");
             p.write_field_begin("a", TType::String, 1);
@@ -886,7 +899,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ComplexString {
+    impl<P: ProtocolReader> Deserialize<P> for self::ComplexString {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_a = None;
             let mut field_b = None;
@@ -909,20 +922,28 @@ pub mod types {
         }
     }
 
-    impl Default for ComplexNestedWithDefault {
+
+    impl Default for self::ComplexNestedWithDefault {
         fn default() -> Self {
             Self {
-                z: Default::default(),
-                n: Default::default(),
+                z: "4".to_owned(),
+                n: crate::types::ComplexString {
+                    a: "3".to_owned(),
+                    b: {
+                        let mut map = std::collections::BTreeMap::new();
+                        map.insert("a".to_owned(), 3);
+                        map
+                    },
+                },
             }
         }
     }
 
-    impl GetTType for ComplexNestedWithDefault {
+    impl GetTType for self::ComplexNestedWithDefault {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ComplexNestedWithDefault {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ComplexNestedWithDefault {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ComplexNestedWithDefault");
             p.write_field_begin("z", TType::String, 1);
@@ -936,7 +957,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ComplexNestedWithDefault {
+    impl<P: ProtocolReader> Deserialize<P> for self::ComplexNestedWithDefault {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_z = None;
             let mut field_n = None;
@@ -953,13 +974,21 @@ pub mod types {
             }
             p.read_struct_end()?;
             Ok(Self {
-                z: field_z.unwrap_or_default(),
-                n: field_n.unwrap_or_default(),
+                z: field_z.unwrap_or_else(|| "4".to_owned()),
+                n: field_n.unwrap_or_else(|| crate::types::ComplexString {
+                    a: "3".to_owned(),
+                    b: {
+                        let mut map = std::collections::BTreeMap::new();
+                        map.insert("a".to_owned(), 3);
+                        map
+                    },
+                }),
             })
         }
     }
 
-    impl Default for MinPadding {
+
+    impl Default for self::MinPadding {
         fn default() -> Self {
             Self {
                 small: Default::default(),
@@ -971,11 +1000,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for MinPadding {
+    impl GetTType for self::MinPadding {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MinPadding {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MinPadding {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MinPadding");
             p.write_field_begin("small", TType::Byte, 1);
@@ -998,7 +1027,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MinPadding {
+    impl<P: ProtocolReader> Deserialize<P> for self::MinPadding {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_small = None;
             let mut field_big = None;
@@ -1030,7 +1059,8 @@ pub mod types {
         }
     }
 
-    impl Default for MyStruct {
+
+    impl Default for self::MyStruct {
         fn default() -> Self {
             Self {
                 MyIntField: Default::default(),
@@ -1041,11 +1071,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for MyStruct {
+    impl GetTType for self::MyStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             p.write_field_begin("MyIntField", TType::I64, 1);
@@ -1065,7 +1095,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_MyIntField = None;
             let mut field_MyStringField = None;
@@ -1094,18 +1124,19 @@ pub mod types {
         }
     }
 
-    impl Default for MyDataItem {
+
+    impl Default for self::MyDataItem {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for MyDataItem {
+    impl GetTType for self::MyDataItem {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyDataItem {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyDataItem {
         fn write(self, p: &mut P) {
             p.write_struct_begin("MyDataItem");
             p.write_field_stop();
@@ -1113,7 +1144,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for MyDataItem {
+    impl<P: ProtocolReader> Deserialize<P> for self::MyDataItem {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1130,7 +1161,8 @@ pub mod types {
         }
     }
 
-    impl Default for Renaming {
+
+    impl Default for self::Renaming {
         fn default() -> Self {
             Self {
                 foo: Default::default(),
@@ -1138,11 +1170,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Renaming {
+    impl GetTType for self::Renaming {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Renaming {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Renaming {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Renaming");
             p.write_field_begin("foo", TType::I64, 1);
@@ -1153,7 +1185,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Renaming {
+    impl<P: ProtocolReader> Deserialize<P> for self::Renaming {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1173,7 +1205,8 @@ pub mod types {
         }
     }
 
-    impl Default for AnnotatedTypes {
+
+    impl Default for self::AnnotatedTypes {
         fn default() -> Self {
             Self {
                 binary_field: Default::default(),
@@ -1182,17 +1215,17 @@ pub mod types {
         }
     }
 
-    impl GetTType for AnnotatedTypes {
+    impl GetTType for self::AnnotatedTypes {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a AnnotatedTypes {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::AnnotatedTypes {
         fn write(self, p: &mut P) {
             p.write_struct_begin("AnnotatedTypes");
-            p.write_field_begin("binary_field", TType::StringStringString, 1);
+            p.write_field_begin("binary_field", TType::String, 1);
             Serialize::write(&self.binary_field, p);
             p.write_field_end();
-            p.write_field_begin("list_field", TType::ListListList, 2);
+            p.write_field_begin("list_field", TType::List, 2);
             Serialize::write(&self.list_field, p);
             p.write_field_end();
             p.write_field_stop();
@@ -1200,7 +1233,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for AnnotatedTypes {
+    impl<P: ProtocolReader> Deserialize<P> for self::AnnotatedTypes {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_binary_field = None;
             let mut field_list_field = None;
@@ -1209,8 +1242,8 @@ pub mod types {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
                 match (fty, fid as i32) {
                     (TType::Stop, _) => break,
-                    (TType::StringStringString, 1) => field_binary_field = Some(Deserialize::read(p)?),
-                    (TType::ListListList, 2) => field_list_field = Some(Deserialize::read(p)?),
+                    (TType::String, 1) => field_binary_field = Some(Deserialize::read(p)?),
+                    (TType::List, 2) => field_list_field = Some(Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -1223,7 +1256,8 @@ pub mod types {
         }
     }
 
-    impl Default for ForwardUsageRoot {
+
+    impl Default for self::ForwardUsageRoot {
         fn default() -> Self {
             Self {
                 ForwardUsageStruct: None,
@@ -1232,11 +1266,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for ForwardUsageRoot {
+    impl GetTType for self::ForwardUsageRoot {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ForwardUsageRoot {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ForwardUsageRoot {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ForwardUsageRoot");
             if let Some(some) = &self.ForwardUsageStruct {
@@ -1254,7 +1288,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ForwardUsageRoot {
+    impl<P: ProtocolReader> Deserialize<P> for self::ForwardUsageRoot {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_ForwardUsageStruct = None;
             let mut field_ForwardUsageByRef = None;
@@ -1277,7 +1311,8 @@ pub mod types {
         }
     }
 
-    impl Default for ForwardUsageStruct {
+
+    impl Default for self::ForwardUsageStruct {
         fn default() -> Self {
             Self {
                 foo: None,
@@ -1285,11 +1320,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for ForwardUsageStruct {
+    impl GetTType for self::ForwardUsageStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ForwardUsageStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ForwardUsageStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ForwardUsageStruct");
             if let Some(some) = &self.foo {
@@ -1302,7 +1337,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ForwardUsageStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::ForwardUsageStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1322,7 +1357,8 @@ pub mod types {
         }
     }
 
-    impl Default for ForwardUsageByRef {
+
+    impl Default for self::ForwardUsageByRef {
         fn default() -> Self {
             Self {
                 foo: None,
@@ -1330,11 +1366,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for ForwardUsageByRef {
+    impl GetTType for self::ForwardUsageByRef {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ForwardUsageByRef {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ForwardUsageByRef {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ForwardUsageByRef");
             if let Some(some) = &self.foo {
@@ -1347,7 +1383,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for ForwardUsageByRef {
+    impl<P: ProtocolReader> Deserialize<P> for self::ForwardUsageByRef {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1367,18 +1403,19 @@ pub mod types {
         }
     }
 
-    impl Default for NoexceptMoveEmpty {
+
+    impl Default for self::NoexceptMoveEmpty {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for NoexceptMoveEmpty {
+    impl GetTType for self::NoexceptMoveEmpty {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a NoexceptMoveEmpty {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NoexceptMoveEmpty {
         fn write(self, p: &mut P) {
             p.write_struct_begin("NoexceptMoveEmpty");
             p.write_field_stop();
@@ -1386,7 +1423,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for NoexceptMoveEmpty {
+    impl<P: ProtocolReader> Deserialize<P> for self::NoexceptMoveEmpty {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1403,7 +1440,8 @@ pub mod types {
         }
     }
 
-    impl Default for NoexceptMoveSimpleStruct {
+
+    impl Default for self::NoexceptMoveSimpleStruct {
         fn default() -> Self {
             Self {
                 boolField: Default::default(),
@@ -1411,11 +1449,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for NoexceptMoveSimpleStruct {
+    impl GetTType for self::NoexceptMoveSimpleStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a NoexceptMoveSimpleStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NoexceptMoveSimpleStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("NoexceptMoveSimpleStruct");
             p.write_field_begin("boolField", TType::I64, 1);
@@ -1426,7 +1464,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for NoexceptMoveSimpleStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::NoexceptMoveSimpleStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_boolField = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1446,27 +1484,33 @@ pub mod types {
         }
     }
 
-    impl Default for NoexceptMoveComplexStruct {
+
+    impl Default for self::NoexceptMoveComplexStruct {
         fn default() -> Self {
             Self {
                 MyBoolField: Default::default(),
-                MyIntField: Default::default(),
-                MyStringField: Default::default(),
+                MyIntField: 12,
+                MyStringField: "test".to_owned(),
                 MyStringField2: Default::default(),
                 MyBinaryField: Default::default(),
                 MyBinaryField2: None,
                 MyBinaryField3: Default::default(),
                 MyBinaryListField4: Default::default(),
-                MyMapEnumAndInt: Default::default(),
+                MyMapEnumAndInt: {
+                    let mut map = std::collections::BTreeMap::new();
+                    map.insert(crate::types::MyEnumA::fieldA, "fieldA".to_owned());
+                    map.insert(crate::types::MyEnumA::fieldC, "fieldC".to_owned());
+                    map
+                },
             }
         }
     }
 
-    impl GetTType for NoexceptMoveComplexStruct {
+    impl GetTType for self::NoexceptMoveComplexStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a NoexceptMoveComplexStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NoexceptMoveComplexStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("NoexceptMoveComplexStruct");
             p.write_field_begin("MyBoolField", TType::Bool, 1);
@@ -1503,7 +1547,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for NoexceptMoveComplexStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::NoexceptMoveComplexStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_MyBoolField = None;
             let mut field_MyIntField = None;
@@ -1535,24 +1579,28 @@ pub mod types {
             p.read_struct_end()?;
             Ok(Self {
                 MyBoolField: field_MyBoolField.unwrap_or_default(),
-                MyIntField: field_MyIntField.unwrap_or_default(),
-                MyStringField: field_MyStringField.unwrap_or_default(),
+                MyIntField: field_MyIntField.unwrap_or_else(|| 12),
+                MyStringField: field_MyStringField.unwrap_or_else(|| "test".to_owned()),
                 MyStringField2: field_MyStringField2.unwrap_or_default(),
                 MyBinaryField: field_MyBinaryField.unwrap_or_default(),
                 MyBinaryField2: field_MyBinaryField2,
                 MyBinaryField3: field_MyBinaryField3.unwrap_or_default(),
                 MyBinaryListField4: field_MyBinaryListField4.unwrap_or_default(),
-                MyMapEnumAndInt: field_MyMapEnumAndInt.unwrap_or_default(),
+                MyMapEnumAndInt: field_MyMapEnumAndInt.unwrap_or_else(|| {
+                    let mut map = std::collections::BTreeMap::new();
+                    map.insert(crate::types::MyEnumA::fieldA, "fieldA".to_owned());
+                    map.insert(crate::types::MyEnumA::fieldC, "fieldC".to_owned());
+                    map
+                }),
             })
         }
     }
 
+
+
     impl Default for NoExceptMoveUnion {
         fn default() -> Self {
-            Self {
-                string_field: Default::default(),
-                i32_field: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -1563,12 +1611,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a NoExceptMoveUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("NoExceptMoveUnion");
-            p.write_field_begin("string_field", TType::String, 1);
-            Serialize::write(&self.string_field, p);
-            p.write_field_end();
-            p.write_field_begin("i32_field", TType::I32, 2);
-            Serialize::write(&self.i32_field, p);
-            p.write_field_end();
+            match self {
+                NoExceptMoveUnion::string_field(inner) => {
+                    p.write_field_begin("string_field", TType::String, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                NoExceptMoveUnion::i32_field(inner) => {
+                    p.write_field_begin("i32_field", TType::I32, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                NoExceptMoveUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -1576,24 +1635,36 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for NoExceptMoveUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_string_field = None;
-            let mut field_i32_field = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::String, 1) => field_string_field = Some(Deserialize::read(p)?),
-                    (TType::I32, 2) => field_i32_field = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::String, 1, false) => {
+                        once = true;
+                        alt = Some(NoExceptMoveUnion::string_field(Deserialize::read(p)?));
+                    }
+                    (TType::I32, 2, false) => {
+                        once = true;
+                        alt = Some(NoExceptMoveUnion::i32_field(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "NoExceptMoveUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                string_field: field_string_field.unwrap_or_default(),
-                i32_field: field_i32_field.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 }
@@ -1607,8 +1678,8 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum BounceMapExn {
-            Success(std::collections::BTreeMap<i32, String>include::types::SomeMap),
-            ApplicationException(fbthrift::types::ApplicationException),
+            Success(include::types::SomeMap),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -1635,7 +1706,7 @@ pub mod services {
                     BounceMapExn::Success(inner) => {
                         p.write_field_begin(
                             "Success",
-                            TType::MapMap,
+                            TType::Map,
                             0i16,
                         );
                         inner.write(p);
@@ -1661,7 +1732,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -1669,7 +1740,7 @@ pub mod services {
                             p.read_field_end()?;
                             break;
                         }
-                        ((TType::MapMap, 0i32), false) => {
+                        ((TType::Map, 0i32), false) => {
                             once = true;
                             alt = Some(BounceMapExn::Success(Deserialize::read(p)?));
                         }
@@ -1692,7 +1763,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "BounceMap"),
+                        format!("Empty union {}", "BounceMapExn"),
                     )
                     .into(),
                 )
@@ -1701,8 +1772,8 @@ pub mod services {
 
         #[derive(Clone, Debug)]
         pub enum BinaryKeyedMapExn {
-            Success(std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>),
-            ApplicationException(fbthrift::types::ApplicationException),
+            Success(std::collections::BTreeMap<crate::types::TBinary, i64>),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -1755,7 +1826,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = None;
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -1786,7 +1857,7 @@ pub mod services {
                 alt.ok_or(
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "BinaryKeyedMap"),
+                        format!("Empty union {}", "BinaryKeyedMapExn"),
                     )
                     .into(),
                 )
@@ -1830,15 +1901,15 @@ pub mod client {
 
         pub fn bounce_map(
             &self,
-            arg_m: &std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> impl Future<Item = std::collections::BTreeMap<i32, String>include::types::SomeMap, Error = failure::Error> + Send + 'static {
+            arg_m: &include::types::SomeMap,
+        ) -> impl Future<Item = include::types::SomeMap, Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "bounce_map",
                 MessageType::Call,
                 |p| {
                     p.write_struct_begin("args");
-                    p.write_field_begin("arg_m", TType::MapMap, 1i16);
+                    p.write_field_begin("arg_m", TType::Map, 1i16);
                     arg_m.write(p);
                     p.write_field_end();
                     p.write_field_stop();
@@ -1852,7 +1923,7 @@ pub mod client {
                 .from_err();
             let result = response.and_then(move |reply| {
                 let de = P::deserializer(reply);
-                move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<i32, String>include::types::SomeMap> {
+                move |mut p: P::Deserializer| -> failure::Fallible<include::types::SomeMap> {
                     let p = &mut p;
                     let (_, message_type, _) = p.read_message_begin(|_| ())?;
                     let result = match message_type {
@@ -1882,7 +1953,7 @@ pub mod client {
         pub fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> impl Future<Item = std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, Error = failure::Error> + Send + 'static {
+        ) -> impl Future<Item = std::collections::BTreeMap<crate::types::TBinary, i64>, Error = failure::Error> + Send + 'static {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "binary_keyed_map",
@@ -1903,7 +1974,7 @@ pub mod client {
                 .from_err();
             let result = response.and_then(move |reply| {
                 let de = P::deserializer(reply);
-                move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>> {
+                move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<crate::types::TBinary, i64>> {
                     let p = &mut p;
                     let (_, message_type, _) = p.read_message_begin(|_| ())?;
                     let result = match message_type {
@@ -1934,12 +2005,12 @@ pub mod client {
     pub trait SomeService {
         fn bounce_map(
             &self,
-            arg_m: &std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> Box<dyn Future<Item = std::collections::BTreeMap<i32, String>include::types::SomeMap, Error = failure::Error> + Send + 'static>;
+            arg_m: &include::types::SomeMap,
+        ) -> Box<dyn Future<Item = include::types::SomeMap, Error = failure::Error> + Send + 'static>;
         fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Box<dyn Future<Item = std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, Error = failure::Error> + Send + 'static>;
+        ) -> Box<dyn Future<Item = std::collections::BTreeMap<crate::types::TBinary, i64>, Error = failure::Error> + Send + 'static>;
     }
 
     impl<P, S> SomeService for SomeServiceImpl<P, S>
@@ -1953,14 +2024,14 @@ pub mod client {
         S::Error: Into<failure::Error> + 'static,
     {        fn bounce_map(
             &self,
-            arg_m: &std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> Box<dyn Future<Item = std::collections::BTreeMap<i32, String>include::types::SomeMap, Error = failure::Error> + Send + 'static> {
+            arg_m: &include::types::SomeMap,
+        ) -> Box<dyn Future<Item = include::types::SomeMap, Error = failure::Error> + Send + 'static> {
             Box::new(Self::bounce_map(self, arg_m))
         }
         fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Box<dyn Future<Item = std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, Error = failure::Error> + Send + 'static> {
+        ) -> Box<dyn Future<Item = std::collections::BTreeMap<crate::types::TBinary, i64>, Error = failure::Error> + Send + 'static> {
             Box::new(Self::binary_keyed_map(self, arg_r))
         }
     }
@@ -2056,12 +2127,12 @@ pub mod client_async {
     pub trait SomeService: Send + Sync {
         async fn bounce_map(
             &self,
-            arg_m: &std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> Result<std::collections::BTreeMap<i32, String>include::types::SomeMap, failure::Error>;
+            arg_m: &include::types::SomeMap,
+        ) -> Result<include::types::SomeMap, failure::Error>;
         async fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Result<std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, failure::Error>;
+        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>;
     }
 
     #[async_trait]
@@ -2076,15 +2147,15 @@ pub mod client_async {
         S::Error: Into<failure::Error> + 'static,
     {        async fn bounce_map(
             &self,
-            arg_m: &std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> Result<std::collections::BTreeMap<i32, String>include::types::SomeMap, failure::Error> {
+            arg_m: &include::types::SomeMap,
+        ) -> Result<include::types::SomeMap, failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "bounce_map",
                 MessageType::Call,
                 |p| {
                     p.write_struct_begin("args");
-                    p.write_field_begin("arg_m", TType::MapMap, 1i16);
+                    p.write_field_begin("arg_m", TType::Map, 1i16);
                     arg_m.write(p);
                     p.write_field_end();
                     p.write_field_stop();
@@ -2094,7 +2165,7 @@ pub mod client_async {
             let fut = self.service.call(request).map_err(S::Error::into);
             let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
             let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<i32, String>include::types::SomeMap> {
+            move |mut p: P::Deserializer| -> failure::Fallible<include::types::SomeMap> {
                 let p = &mut p;
                 let (_, message_type, _) = p.read_message_begin(|_| ())?;
                 let result = match message_type {
@@ -2120,7 +2191,7 @@ pub mod client_async {
         }        async fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Result<std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, failure::Error> {
+        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error> {
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "binary_keyed_map",
@@ -2137,7 +2208,7 @@ pub mod client_async {
             let fut = self.service.call(request).map_err(S::Error::into);
             let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
             let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>> {
+            move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<crate::types::TBinary, i64>> {
                 let p = &mut p;
                 let (_, message_type, _) = p.read_message_begin(|_| ())?;
                 let result = match message_type {
@@ -2229,8 +2300,8 @@ pub mod server {
     pub trait SomeService: Send + Sync + 'static {
         async fn bounce_map(
             &self,
-            _m: std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> Result<std::collections::BTreeMap<i32, String>include::types::SomeMap, crate::services::some_service::BounceMapExn> {
+            _m: include::types::SomeMap,
+        ) -> Result<include::types::SomeMap, crate::services::some_service::BounceMapExn> {
             Err(crate::services::some_service::BounceMapExn::ApplicationException(
                 ApplicationException::unimplemented_method(
                     "SomeService",
@@ -2241,7 +2312,7 @@ pub mod server {
         async fn binary_keyed_map(
             &self,
             _r: Vec<i64>,
-        ) -> Result<std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, crate::services::some_service::BinaryKeyedMapExn> {
+        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, crate::services::some_service::BinaryKeyedMapExn> {
             Err(crate::services::some_service::BinaryKeyedMapExn::ApplicationException(
                 ApplicationException::unimplemented_method(
                     "SomeService",
@@ -2286,7 +2357,7 @@ pub mod server {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
                 match (fty, fid as i32) {
                     (TType::Stop, _) => break,
-                    (TType::MapMap, 1) => field_m = Some(Deserialize::read(p)?),
+                    (TType::Map, 1) => field_m = Some(Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -2554,6 +2625,7 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
+    use async_trait::async_trait;
     use std::marker::PhantomData;
 
     pub struct SomeService<'mock> {
@@ -2562,7 +2634,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::SomeService {
+    impl dyn super::client_async::SomeService {
         pub fn mock<'mock>() -> SomeService<'mock> {
             SomeService {
                 bounce_map: some_service::bounce_map::unimplemented(),
@@ -2572,30 +2644,29 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::SomeService for SomeService<'mock> {
-        fn bounce_map(
+    #[async_trait]
+    impl<'mock> super::client_async::SomeService for SomeService<'mock> {
+        async fn bounce_map(
             &self,
-            arg_m: &std::collections::BTreeMap<i32, String>include::types::SomeMap,
-        ) -> Box<dyn futures::Future<Item = std::collections::BTreeMap<i32, String>include::types::SomeMap, Error = failure::Error> + Send> {
+            arg_m: &include::types::SomeMap,
+        ) -> Result<include::types::SomeMap, failure::Error> {
             let mut closure = self.bounce_map.closure.lock().unwrap();
-            let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, String>include::types::SomeMap) -> _ = &mut **closure;
-            let result = closure(arg_m.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::SomeServiceBounceMapError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            let closure: &mut dyn FnMut(include::types::SomeMap) -> _ = &mut **closure;
+            closure(arg_m.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::SomeServiceBounceMapError(error),
+                ))
         }
-        fn binary_keyed_map(
+        async fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Box<dyn futures::Future<Item = std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>, Error = failure::Error> + Send> {
+        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<i64>) -> _ = &mut **closure;
-            let result = closure(arg_r.clone());
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure(arg_r.clone())
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
+                ))
         }
     }
 
@@ -2604,8 +2675,8 @@ pub mod mock {
 
         pub struct bounce_map<'mock> {
             pub(super) closure: Mutex<Box<
-                dyn FnMut(std::collections::BTreeMap<i32, String>include::types::SomeMap) -> Result<
-                    std::collections::BTreeMap<i32, String>include::types::SomeMap,
+                dyn FnMut(include::types::SomeMap) -> Result<
+                    include::types::SomeMap,
                     crate::services::some_service::BounceMapExn,
                 > + Send + Sync + 'mock,
             >>,
@@ -2614,7 +2685,7 @@ pub mod mock {
         impl<'mock> bounce_map<'mock> {
             pub fn unimplemented() -> Self {
                 bounce_map {
-                    closure: Mutex::new(Box::new(|_: std::collections::BTreeMap<i32, String>include::types::SomeMap| panic!(
+                    closure: Mutex::new(Box::new(|_: include::types::SomeMap| panic!(
                         "{}::{} is not mocked",
                         "SomeService",
                         "bounce_map",
@@ -2622,11 +2693,11 @@ pub mod mock {
                 }
             }
 
-            pub fn ret(&self, value: std::collections::BTreeMap<i32, String>include::types::SomeMap) {
-                self.mock(move |_: std::collections::BTreeMap<i32, String>include::types::SomeMap| value.clone());
+            pub fn ret(&self, value: include::types::SomeMap) {
+                self.mock(move |_: include::types::SomeMap| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(std::collections::BTreeMap<i32, String>include::types::SomeMap) -> std::collections::BTreeMap<i32, String>include::types::SomeMap + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl FnMut(include::types::SomeMap) -> include::types::SomeMap + Send + Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
                 *closure = Box::new(move |m| Ok(mock(m)));
             }
@@ -2637,14 +2708,14 @@ pub mod mock {
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();
-                *closure = Box::new(move |_: std::collections::BTreeMap<i32, String>include::types::SomeMap| Err(exception.clone().into()));
+                *closure = Box::new(move |_: include::types::SomeMap| Err(exception.clone().into()));
             }
         }
 
         pub struct binary_keyed_map<'mock> {
             pub(super) closure: Mutex<Box<
                 dyn FnMut(Vec<i64>) -> Result<
-                    std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>,
+                    std::collections::BTreeMap<crate::types::TBinary, i64>,
                     crate::services::some_service::BinaryKeyedMapExn,
                 > + Send + Sync + 'mock,
             >>,
@@ -2661,11 +2732,11 @@ pub mod mock {
                 }
             }
 
-            pub fn ret(&self, value: std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64>) {
+            pub fn ret(&self, value: std::collections::BTreeMap<crate::types::TBinary, i64>) {
                 self.mock(move |_: Vec<i64>| value.clone());
             }
 
-            pub fn mock(&self, mut mock: impl FnMut(Vec<i64>) -> std::collections::BTreeMap<Vec<u8>module::types::TBinary, i64> + Send + Sync + 'mock) {
+            pub fn mock(&self, mut mock: impl FnMut(Vec<i64>) -> std::collections::BTreeMap<crate::types::TBinary, i64> + Send + Sync + 'mock) {
                 let mut closure = self.closure.lock().unwrap();
                 *closure = Box::new(move |r| Ok(mock(r)));
             }

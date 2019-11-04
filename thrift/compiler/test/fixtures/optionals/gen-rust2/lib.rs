@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -25,7 +23,7 @@ pub mod types {
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Vehicle {
-        pub color: module::types::Color,
+        pub color: crate::types::Color,
         pub licensePlate: Option<String>,
         pub description: Option<String>,
         pub name: Option<String>,
@@ -34,16 +32,16 @@ pub mod types {
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Person {
-        pub id: i64module::types::PersonID,
+        pub id: crate::types::PersonID,
         pub name: String,
         pub age: Option<i16>,
         pub address: Option<String>,
-        pub favoriteColor: Option<module::types::Color>,
-        pub friends: Option<std::collections::BTreeSet<i64module::types::PersonID>>,
-        pub bestFriend: Option<i64module::types::PersonID>,
-        pub petNames: Option<std::collections::BTreeMap<module::types::Animal, String>>,
-        pub afraidOfAnimal: Option<module::types::Animal>,
-        pub vehicles: Option<Vec<module::types::Vehicle>>,
+        pub favoriteColor: Option<crate::types::Color>,
+        pub friends: Option<std::collections::BTreeSet<crate::types::PersonID>>,
+        pub bestFriend: Option<crate::types::PersonID>,
+        pub petNames: Option<std::collections::BTreeMap<crate::types::Animal, String>>,
+        pub afraidOfAnimal: Option<crate::types::Animal>,
+        pub vehicles: Option<Vec<crate::types::Vehicle>>,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -131,7 +129,8 @@ pub mod types {
         }
     }
 
-    impl Default for Color {
+
+    impl Default for self::Color {
         fn default() -> Self {
             Self {
                 red: Default::default(),
@@ -142,11 +141,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Color {
+    impl GetTType for self::Color {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Color {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Color {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Color");
             p.write_field_begin("red", TType::Double, 1);
@@ -166,7 +165,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Color {
+    impl<P: ProtocolReader> Deserialize<P> for self::Color {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_red = None;
             let mut field_green = None;
@@ -195,23 +194,24 @@ pub mod types {
         }
     }
 
-    impl Default for Vehicle {
+
+    impl Default for self::Vehicle {
         fn default() -> Self {
             Self {
                 color: Default::default(),
                 licensePlate: None,
                 description: None,
                 name: None,
-                hasAC: None,
+                hasAC: Some(false),
             }
         }
     }
 
-    impl GetTType for Vehicle {
+    impl GetTType for self::Vehicle {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Vehicle {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Vehicle {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Vehicle");
             p.write_field_begin("color", TType::Struct, 1);
@@ -242,7 +242,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Vehicle {
+    impl<P: ProtocolReader> Deserialize<P> for self::Vehicle {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_color = None;
             let mut field_licensePlate = None;
@@ -274,7 +274,8 @@ pub mod types {
         }
     }
 
-    impl Default for Person {
+
+    impl Default for self::Person {
         fn default() -> Self {
             Self {
                 id: Default::default(),
@@ -291,14 +292,14 @@ pub mod types {
         }
     }
 
-    impl GetTType for Person {
+    impl GetTType for self::Person {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Person {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Person {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Person");
-            p.write_field_begin("id", TType::I64I64, 1);
+            p.write_field_begin("id", TType::I64, 1);
             Serialize::write(&self.id, p);
             p.write_field_end();
             p.write_field_begin("name", TType::String, 2);
@@ -325,7 +326,7 @@ pub mod types {
                 p.write_field_end();
             }
             if let Some(some) = &self.bestFriend {
-                p.write_field_begin("bestFriend", TType::I64I64, 7);
+                p.write_field_begin("bestFriend", TType::I64, 7);
                 Serialize::write(some, p);
                 p.write_field_end();
             }
@@ -349,7 +350,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Person {
+    impl<P: ProtocolReader> Deserialize<P> for self::Person {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_id = None;
             let mut field_name = None;
@@ -366,13 +367,13 @@ pub mod types {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
                 match (fty, fid as i32) {
                     (TType::Stop, _) => break,
-                    (TType::I64I64, 1) => field_id = Some(Deserialize::read(p)?),
+                    (TType::I64, 1) => field_id = Some(Deserialize::read(p)?),
                     (TType::String, 2) => field_name = Some(Deserialize::read(p)?),
                     (TType::I16, 3) => field_age = Some(Deserialize::read(p)?),
                     (TType::String, 4) => field_address = Some(Deserialize::read(p)?),
                     (TType::Struct, 5) => field_favoriteColor = Some(Deserialize::read(p)?),
                     (TType::Set, 6) => field_friends = Some(Deserialize::read(p)?),
-                    (TType::I64I64, 7) => field_bestFriend = Some(Deserialize::read(p)?),
+                    (TType::I64, 7) => field_bestFriend = Some(Deserialize::read(p)?),
                     (TType::Map, 8) => field_petNames = Some(Deserialize::read(p)?),
                     (TType::I32, 9) => field_afraidOfAnimal = Some(Deserialize::read(p)?),
                     (TType::List, 10) => field_vehicles = Some(Deserialize::read(p)?),
@@ -395,6 +396,7 @@ pub mod types {
             })
         }
     }
+
 }
 
 pub mod errors {

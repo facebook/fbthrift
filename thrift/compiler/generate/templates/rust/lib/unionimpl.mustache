@@ -1,0 +1,89 @@
+{{!
+
+  Copyright (c) Facebook, Inc. and its affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+
+{{#struct:union?}}
+    impl Default for {{struct:name}} {
+        fn default() -> Self {
+            Self::UnknownField(-1)
+        }
+    }
+
+    impl GetTType for {{struct:name}} {
+        const TTYPE: TType = TType::Struct;
+    }
+
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{struct:name}} {
+        fn write(self, p: &mut P) {
+            p.write_struct_begin("{{struct:name}}");
+            match self {{>lib/block}}{{!
+                }}{{#struct:fields}}
+                {{struct:name}}::{{field:name}}(inner) => {
+                    p.write_field_begin({{!
+                        }}"{{field:name}}", {{!
+                        }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
+                        }}{{field:key}}{{!
+                    }});
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }{{!
+                }}{{/struct:fields}}
+                {{struct:name}}::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P: ProtocolReader> Deserialize<P> for {{struct:name}} {
+        fn read(p: &mut P) -> failure::Fallible<Self> {
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| ())?;
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,{{!
+                    }}{{#struct:fields}}
+                    ({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}, false) => {
+                        once = true;
+                        alt = Some({{struct:name}}::{{field:name}}(Deserialize::read(p)?));
+                    }{{!
+                    }}{{/struct:fields}}
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "{{struct:name}}",
+                            badty,
+                            badid,
+                        ),
+                    ))),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            Ok(alt.unwrap_or_default())
+        }
+    }
+{{/struct:union?}}
+{{!newline}}

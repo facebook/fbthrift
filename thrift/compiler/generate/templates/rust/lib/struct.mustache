@@ -16,14 +16,18 @@
 
 }}
 
-    #[derive(Clone, Debug{{!
-        }}{{#struct:derive_eq}}, Eq{{/struct:derive_eq}}{{!
-        }}, PartialEq{{!
-        }}{{#struct:derive_ord}}, Ord, PartialOrd{{/struct:derive_ord}}{{!
-        }}{{#struct:derive_hash}}, Hash{{/struct:derive_hash}}{{!
+    #[derive({{!
+        }}{{#struct:copy?}}Copy, {{/struct:copy?}}{{!
+        }}Clone, Debug, PartialEq{{!
+        }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
+        }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
     }})]
+{{^struct:union?}}
     pub struct {{struct:name}} {{>lib/block}}{{!
-    }}{{#struct:fields}}
+    }}{{#struct:fields}}{{!
+        }}{{#program:serde?}}{{#field:rename?}}
+        #[serde(rename = "{{field:name}}")]{{!
+        }}{{/field:rename?}}{{/program:serde?}}
         pub {{field:ident}}: {{!
             }}{{#field:optional?}}{{!
                 }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
@@ -34,4 +38,20 @@
         }},{{!
     }}{{/struct:fields}}
     }
+{{/struct:union?}}
+{{#struct:union?}}
+    pub enum {{struct:name}} {{>lib/block}}{{!
+    }}{{#struct:fields}}
+        {{field:ident}}({{!
+            }}{{#field:optional?}}{{!
+                }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
+            }}{{/field:optional?}}{{!
+            }}{{^field:optional?}}{{!
+                }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+            }}{{/field:optional?}}{{!
+        }}),{{!
+    }}{{/struct:fields}}
+        UnknownField(i32),
+    }
+{{/struct:union?}}
 {{!newline}}

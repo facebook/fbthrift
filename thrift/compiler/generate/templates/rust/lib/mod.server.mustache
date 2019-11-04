@@ -36,9 +36,9 @@
             }}{{/function:args}}
         ) -> Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
-            }}crate::services::{{service:snake}}::{{function:upcamel}}Exn{{!
+            }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
         }}> {
-            Err(crate::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
+            Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
                 ApplicationException::unimplemented_method(
                     "{{service:name}}",
                     "{{function:name}}",
@@ -128,12 +128,12 @@
             ).await;
             let res = match res {
                 Ok(res) => {
-                    crate::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
                 }
-                Err(crate::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
+                Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
                     return Err(aexn.into())
                 }
-                Err(crate::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
+                Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
                         "{{function:name}}",
@@ -181,7 +181,8 @@
         async fn handle_method(
             &self,
             idx: usize,
-            p: &mut P::Deserializer,
+            {{^service:functions?}}_{{/service:functions?}}{{!
+            }}p: &mut P::Deserializer,
         ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
             match idx {{>lib/block}}{{!
                 }}{{#service:functions}}

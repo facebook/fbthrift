@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -16,66 +14,67 @@ pub mod types {
     pub type containerTypedef = std::collections::BTreeMap<i16, String>;
 
     #[derive(Clone, Debug, PartialEq)]
-    pub struct ComplexUnion {
-        pub intValue: i64,
-        pub stringValue: String,
-        pub intListValue: Vec<i64>,
-        pub stringListValue: Vec<String>,
-        pub typedefValue: std::collections::BTreeMap<i16, String>module::types::containerTypedef,
-        pub stringRef: String,
+    pub enum ComplexUnion {
+        intValue(i64),
+        stringValue(String),
+        intListValue(Vec<i64>),
+        stringListValue(Vec<String>),
+        typedefValue(crate::types::containerTypedef),
+        stringRef(String),
+        UnknownField(i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct ListUnion {
-        pub intListValue: Vec<i64>,
-        pub stringListValue: Vec<String>,
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub enum ListUnion {
+        intListValue(Vec<i64>),
+        stringListValue(Vec<String>),
+        UnknownField(i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct DataUnion {
-        pub binaryData: Vec<u8>,
-        pub stringData: String,
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub enum DataUnion {
+        binaryData(Vec<u8>),
+        stringData(String),
+        UnknownField(i32),
     }
 
     #[derive(Clone, Debug, PartialEq)]
     pub struct Val {
         pub strVal: String,
         pub intVal: i32,
-        pub typedefValue: std::collections::BTreeMap<i16, String>module::types::containerTypedef,
+        pub typedefValue: crate::types::containerTypedef,
     }
 
     #[derive(Clone, Debug, PartialEq)]
-    pub struct ValUnion {
-        pub v1: module::types::Val,
-        pub v2: module::types::Val,
+    pub enum ValUnion {
+        v1(crate::types::Val),
+        v2(crate::types::Val),
+        UnknownField(i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct VirtualComplexUnion {
-        pub thingOne: String,
-        pub thingTwo: String,
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub enum VirtualComplexUnion {
+        thingOne(String),
+        thingTwo(String),
+        UnknownField(i32),
     }
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct NonCopyableStruct {
         pub num: i64,
     }
 
     #[derive(Clone, Debug, PartialEq)]
-    pub struct NonCopyableUnion {
-        pub s: module::types::NonCopyableStruct,
+    pub enum NonCopyableUnion {
+        s(crate::types::NonCopyableStruct),
+        UnknownField(i32),
     }
+
+
 
     impl Default for ComplexUnion {
         fn default() -> Self {
-            Self {
-                intValue: Default::default(),
-                stringValue: Default::default(),
-                intListValue: Default::default(),
-                stringListValue: Default::default(),
-                typedefValue: Default::default(),
-                stringRef: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -86,24 +85,43 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a ComplexUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ComplexUnion");
-            p.write_field_begin("intValue", TType::I64, 1);
-            Serialize::write(&self.intValue, p);
-            p.write_field_end();
-            p.write_field_begin("stringValue", TType::String, 5);
-            Serialize::write(&self.stringValue, p);
-            p.write_field_end();
-            p.write_field_begin("intListValue", TType::List, 2);
-            Serialize::write(&self.intListValue, p);
-            p.write_field_end();
-            p.write_field_begin("stringListValue", TType::List, 3);
-            Serialize::write(&self.stringListValue, p);
-            p.write_field_end();
-            p.write_field_begin("typedefValue", TType::MapMap, 9);
-            Serialize::write(&self.typedefValue, p);
-            p.write_field_end();
-            p.write_field_begin("stringRef", TType::String, 14);
-            Serialize::write(&self.stringRef, p);
-            p.write_field_end();
+            match self {
+                ComplexUnion::intValue(inner) => {
+                    p.write_field_begin("intValue", TType::I64, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ComplexUnion::stringValue(inner) => {
+                    p.write_field_begin("stringValue", TType::String, 5);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ComplexUnion::intListValue(inner) => {
+                    p.write_field_begin("intListValue", TType::List, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ComplexUnion::stringListValue(inner) => {
+                    p.write_field_begin("stringListValue", TType::List, 3);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ComplexUnion::typedefValue(inner) => {
+                    p.write_field_begin("typedefValue", TType::Map, 9);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ComplexUnion::stringRef(inner) => {
+                    p.write_field_begin("stringRef", TType::String, 14);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ComplexUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -111,45 +129,59 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for ComplexUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_intValue = None;
-            let mut field_stringValue = None;
-            let mut field_intListValue = None;
-            let mut field_stringListValue = None;
-            let mut field_typedefValue = None;
-            let mut field_stringRef = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::I64, 1) => field_intValue = Some(Deserialize::read(p)?),
-                    (TType::String, 5) => field_stringValue = Some(Deserialize::read(p)?),
-                    (TType::List, 2) => field_intListValue = Some(Deserialize::read(p)?),
-                    (TType::List, 3) => field_stringListValue = Some(Deserialize::read(p)?),
-                    (TType::MapMap, 9) => field_typedefValue = Some(Deserialize::read(p)?),
-                    (TType::String, 14) => field_stringRef = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::I64, 1, false) => {
+                        once = true;
+                        alt = Some(ComplexUnion::intValue(Deserialize::read(p)?));
+                    }
+                    (TType::String, 5, false) => {
+                        once = true;
+                        alt = Some(ComplexUnion::stringValue(Deserialize::read(p)?));
+                    }
+                    (TType::List, 2, false) => {
+                        once = true;
+                        alt = Some(ComplexUnion::intListValue(Deserialize::read(p)?));
+                    }
+                    (TType::List, 3, false) => {
+                        once = true;
+                        alt = Some(ComplexUnion::stringListValue(Deserialize::read(p)?));
+                    }
+                    (TType::Map, 9, false) => {
+                        once = true;
+                        alt = Some(ComplexUnion::typedefValue(Deserialize::read(p)?));
+                    }
+                    (TType::String, 14, false) => {
+                        once = true;
+                        alt = Some(ComplexUnion::stringRef(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "ComplexUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                intValue: field_intValue.unwrap_or_default(),
-                stringValue: field_stringValue.unwrap_or_default(),
-                intListValue: field_intListValue.unwrap_or_default(),
-                stringListValue: field_stringListValue.unwrap_or_default(),
-                typedefValue: field_typedefValue.unwrap_or_default(),
-                stringRef: field_stringRef.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
+
     impl Default for ListUnion {
         fn default() -> Self {
-            Self {
-                intListValue: Default::default(),
-                stringListValue: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -160,12 +192,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a ListUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ListUnion");
-            p.write_field_begin("intListValue", TType::List, 2);
-            Serialize::write(&self.intListValue, p);
-            p.write_field_end();
-            p.write_field_begin("stringListValue", TType::List, 3);
-            Serialize::write(&self.stringListValue, p);
-            p.write_field_end();
+            match self {
+                ListUnion::intListValue(inner) => {
+                    p.write_field_begin("intListValue", TType::List, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ListUnion::stringListValue(inner) => {
+                    p.write_field_begin("stringListValue", TType::List, 3);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ListUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -173,33 +216,43 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for ListUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_intListValue = None;
-            let mut field_stringListValue = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::List, 2) => field_intListValue = Some(Deserialize::read(p)?),
-                    (TType::List, 3) => field_stringListValue = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::List, 2, false) => {
+                        once = true;
+                        alt = Some(ListUnion::intListValue(Deserialize::read(p)?));
+                    }
+                    (TType::List, 3, false) => {
+                        once = true;
+                        alt = Some(ListUnion::stringListValue(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "ListUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                intListValue: field_intListValue.unwrap_or_default(),
-                stringListValue: field_stringListValue.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
+
     impl Default for DataUnion {
         fn default() -> Self {
-            Self {
-                binaryData: Default::default(),
-                stringData: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -210,12 +263,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a DataUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("DataUnion");
-            p.write_field_begin("binaryData", TType::String, 1);
-            Serialize::write(&self.binaryData, p);
-            p.write_field_end();
-            p.write_field_begin("stringData", TType::String, 2);
-            Serialize::write(&self.stringData, p);
-            p.write_field_end();
+            match self {
+                DataUnion::binaryData(inner) => {
+                    p.write_field_begin("binaryData", TType::String, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                DataUnion::stringData(inner) => {
+                    p.write_field_begin("stringData", TType::String, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                DataUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -223,28 +287,40 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for DataUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_binaryData = None;
-            let mut field_stringData = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::String, 1) => field_binaryData = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_stringData = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::String, 1, false) => {
+                        once = true;
+                        alt = Some(DataUnion::binaryData(Deserialize::read(p)?));
+                    }
+                    (TType::String, 2, false) => {
+                        once = true;
+                        alt = Some(DataUnion::stringData(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "DataUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                binaryData: field_binaryData.unwrap_or_default(),
-                stringData: field_stringData.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
-    impl Default for Val {
+    impl Default for self::Val {
         fn default() -> Self {
             Self {
                 strVal: Default::default(),
@@ -254,11 +330,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for Val {
+    impl GetTType for self::Val {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Val {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Val {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Val");
             p.write_field_begin("strVal", TType::String, 1);
@@ -267,7 +343,7 @@ pub mod types {
             p.write_field_begin("intVal", TType::I32, 2);
             Serialize::write(&self.intVal, p);
             p.write_field_end();
-            p.write_field_begin("typedefValue", TType::MapMap, 9);
+            p.write_field_begin("typedefValue", TType::Map, 9);
             Serialize::write(&self.typedefValue, p);
             p.write_field_end();
             p.write_field_stop();
@@ -275,7 +351,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Val {
+    impl<P: ProtocolReader> Deserialize<P> for self::Val {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_strVal = None;
             let mut field_intVal = None;
@@ -287,7 +363,7 @@ pub mod types {
                     (TType::Stop, _) => break,
                     (TType::String, 1) => field_strVal = Some(Deserialize::read(p)?),
                     (TType::I32, 2) => field_intVal = Some(Deserialize::read(p)?),
-                    (TType::MapMap, 9) => field_typedefValue = Some(Deserialize::read(p)?),
+                    (TType::Map, 9) => field_typedefValue = Some(Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -301,12 +377,11 @@ pub mod types {
         }
     }
 
+
+
     impl Default for ValUnion {
         fn default() -> Self {
-            Self {
-                v1: Default::default(),
-                v2: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -317,12 +392,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a ValUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("ValUnion");
-            p.write_field_begin("v1", TType::Struct, 1);
-            Serialize::write(&self.v1, p);
-            p.write_field_end();
-            p.write_field_begin("v2", TType::Struct, 2);
-            Serialize::write(&self.v2, p);
-            p.write_field_end();
+            match self {
+                ValUnion::v1(inner) => {
+                    p.write_field_begin("v1", TType::Struct, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ValUnion::v2(inner) => {
+                    p.write_field_begin("v2", TType::Struct, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                ValUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -330,33 +416,43 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for ValUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_v1 = None;
-            let mut field_v2 = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::Struct, 1) => field_v1 = Some(Deserialize::read(p)?),
-                    (TType::Struct, 2) => field_v2 = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::Struct, 1, false) => {
+                        once = true;
+                        alt = Some(ValUnion::v1(Deserialize::read(p)?));
+                    }
+                    (TType::Struct, 2, false) => {
+                        once = true;
+                        alt = Some(ValUnion::v2(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "ValUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                v1: field_v1.unwrap_or_default(),
-                v2: field_v2.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
+
     impl Default for VirtualComplexUnion {
         fn default() -> Self {
-            Self {
-                thingOne: Default::default(),
-                thingTwo: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -367,12 +463,23 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a VirtualComplexUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("VirtualComplexUnion");
-            p.write_field_begin("thingOne", TType::String, 1);
-            Serialize::write(&self.thingOne, p);
-            p.write_field_end();
-            p.write_field_begin("thingTwo", TType::String, 2);
-            Serialize::write(&self.thingTwo, p);
-            p.write_field_end();
+            match self {
+                VirtualComplexUnion::thingOne(inner) => {
+                    p.write_field_begin("thingOne", TType::String, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                VirtualComplexUnion::thingTwo(inner) => {
+                    p.write_field_begin("thingTwo", TType::String, 2);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                VirtualComplexUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -380,28 +487,40 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for VirtualComplexUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_thingOne = None;
-            let mut field_thingTwo = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::String, 1) => field_thingOne = Some(Deserialize::read(p)?),
-                    (TType::String, 2) => field_thingTwo = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::String, 1, false) => {
+                        once = true;
+                        alt = Some(VirtualComplexUnion::thingOne(Deserialize::read(p)?));
+                    }
+                    (TType::String, 2, false) => {
+                        once = true;
+                        alt = Some(VirtualComplexUnion::thingTwo(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "VirtualComplexUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                thingOne: field_thingOne.unwrap_or_default(),
-                thingTwo: field_thingTwo.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 
-    impl Default for NonCopyableStruct {
+    impl Default for self::NonCopyableStruct {
         fn default() -> Self {
             Self {
                 num: Default::default(),
@@ -409,11 +528,11 @@ pub mod types {
         }
     }
 
-    impl GetTType for NonCopyableStruct {
+    impl GetTType for self::NonCopyableStruct {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a NonCopyableStruct {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NonCopyableStruct {
         fn write(self, p: &mut P) {
             p.write_struct_begin("NonCopyableStruct");
             p.write_field_begin("num", TType::I64, 1);
@@ -424,7 +543,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for NonCopyableStruct {
+    impl<P: ProtocolReader> Deserialize<P> for self::NonCopyableStruct {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let mut field_num = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -444,11 +563,11 @@ pub mod types {
         }
     }
 
+
+
     impl Default for NonCopyableUnion {
         fn default() -> Self {
-            Self {
-                s: Default::default(),
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -459,9 +578,18 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a NonCopyableUnion {
         fn write(self, p: &mut P) {
             p.write_struct_begin("NonCopyableUnion");
-            p.write_field_begin("s", TType::Struct, 1);
-            Serialize::write(&self.s, p);
-            p.write_field_end();
+            match self {
+                NonCopyableUnion::s(inner) => {
+                    p.write_field_begin("s", TType::Struct, 1);
+                    Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                NonCopyableUnion::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -469,21 +597,32 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for NonCopyableUnion {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            let mut field_s = None;
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (TType::Struct, 1) => field_s = Some(Deserialize::read(p)?),
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (TType::Struct, 1, false) => {
+                        once = true;
+                        alt = Some(NonCopyableUnion::s(Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "NonCopyableUnion",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-                s: field_s.unwrap_or_default(),
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 }

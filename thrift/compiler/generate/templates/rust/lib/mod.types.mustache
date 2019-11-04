@@ -19,6 +19,9 @@
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
+{{#program:structsOrEnums?}}{{#program:serde?}}
+    use serde_derive::{Deserialize, Serialize};
+{{/program:serde?}}{{/program:structsOrEnums?}}
 {{!
 }}{{#program:typedefs}}{{>lib/typedef}}{{/program:typedefs}}{{!
 
@@ -26,5 +29,7 @@
 
 }}{{#program:enums}}{{>lib/enum}}{{/program:enums}}{{!
 
-}}{{#program:structs}}{{>lib/structimpl}}{{/program:structs}}
+}}{{#program:typedefs}}{{>lib/typedefimpl}}{{/program:typedefs}}{{!
+
+}}{{#program:structs}}{{>lib/structimpl}}{{>lib/unionimpl}}{{/program:structs}}
 {{!newline}}

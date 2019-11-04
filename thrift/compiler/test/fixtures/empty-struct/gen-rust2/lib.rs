@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 pub use self::types::*;
 
@@ -13,26 +11,27 @@ pub mod types {
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
 
-    #[derive(Clone, Debug, PartialEq)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Empty {
     }
 
-    #[derive(Clone, Debug, PartialEq)]
-    pub struct Nada {
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub enum Nada {
+        UnknownField(i32),
     }
 
-    impl Default for Empty {
+    impl Default for self::Empty {
         fn default() -> Self {
             Self {
             }
         }
     }
 
-    impl GetTType for Empty {
+    impl GetTType for self::Empty {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Empty {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Empty {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Empty");
             p.write_field_stop();
@@ -40,7 +39,7 @@ pub mod types {
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for Empty {
+    impl<P: ProtocolReader> Deserialize<P> for self::Empty {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -57,10 +56,11 @@ pub mod types {
         }
     }
 
+
+
     impl Default for Nada {
         fn default() -> Self {
-            Self {
-            }
+            Self::UnknownField(-1)
         }
     }
 
@@ -71,6 +71,13 @@ pub mod types {
     impl<'a, P: ProtocolWriter> Serialize<P> for &'a Nada {
         fn write(self, p: &mut P) {
             p.write_struct_begin("Nada");
+            match self {
+                Nada::UnknownField(x) => {
+                    p.write_field_begin("UnknownField", TType::I32, *x as i16);
+                    x.write(p);
+                    p.write_field_end();
+                }
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -79,17 +86,27 @@ pub mod types {
     impl<P: ProtocolReader> Deserialize<P> for Nada {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = None;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
-                match (fty, fid as i32) {
-                    (TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+                match (fty, fid as i32, once) {
+                    (TType::Stop, _, _) => break,
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return Err(From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "Nada",
+                            badty,
+                            badid,
+                        ),
+                    ))),
                 }
                 p.read_field_end()?;
             }
             p.read_struct_end()?;
-            Ok(Self {
-            })
+            Ok(alt.unwrap_or_default())
         }
     }
 }

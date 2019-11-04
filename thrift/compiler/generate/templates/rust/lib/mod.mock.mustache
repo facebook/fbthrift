@@ -16,6 +16,7 @@
 
 }}
 
+    use async_trait::async_trait;
     use std::marker::PhantomData;{{!
 }}{{#program:services}}
 
@@ -26,7 +27,7 @@
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::{{service:name}} {
+    impl dyn super::client_async::{{service:name}} {
         pub fn mock<'mock>() -> {{service:name}}<'mock> {
             {{service:name}} {{>lib/block}}{{!
                 }}{{#service:functions}}
@@ -38,17 +39,18 @@
         }
     }
 
-    impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
+    #[async_trait]
+    impl<'mock> super::client_async::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:functions}}
-        fn {{function:name}}(
+        async fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
-            arg_{{field:name}}: &{{#field:type}}{{>lib/type}}{{/field:type}},{{!
+            arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> Box<dyn futures::Future<Item = {{!
+        ) -> Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
-            }}Error = failure::Error{{!
-        }}> + Send> {
+            }}failure::Error{{!
+        }}> {
             let mut closure = self.{{function:name}}.closure.lock().unwrap();
             let closure: &mut dyn FnMut({{!
                 }}{{#function:args}}{{!
@@ -56,22 +58,26 @@
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
             }}) -> _ = &mut **closure;
-            let result = closure({{!
+            closure({{!
                 }}{{#function:args}}{{!
-                }}arg_{{field:name}}.clone(){{!
+                }}arg_{{field:name}}{{#field:type}}{{!
+                    }}{{#type:string?}}.to_owned(){{/type:string?}}{{!
+                    }}{{^type:string?}}.clone(){{/type:string?}}{{!
+                }}{{/field:type}}{{!
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
-            }});
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            }})
+                .map_err(|error| failure::Error::from(
+                    {{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(error),
+                ))
         }{{!
         }}{{/service:functions}}
     }
 
-    mod {{service:snake}} {
+    mod {{service:snake}} {{>lib/block}}{{!
+        }}{{#service:functions?}}
         use std::sync::Mutex;{{!
+        }}{{/service:functions?}}{{!
 
         }}{{#service:functions}}
 
@@ -84,7 +90,7 @@
                     }}{{/function:args}}{{!
                 }}) -> Result<
                     {{#function:returnType}}{{>lib/type}}{{/function:returnType}},
-                    crate::services::{{service:snake}}::{{function:upcamel}}Exn,
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn,
                 > + Send + Sync + 'mock,
             >>,
         }
@@ -141,7 +147,7 @@
 
             pub fn throw<E>(&self, exception: E)
             where
-                E: Into<crate::services::{{service:snake}}::{{function:upcamel}}Exn>,
+                E: Into<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn>,
                 E: Clone + Send + Sync + 'mock,
             {
                 let mut closure = self.closure.lock().unwrap();

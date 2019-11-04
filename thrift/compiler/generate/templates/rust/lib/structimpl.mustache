@@ -16,28 +16,36 @@
 
 }}
 
-    impl Default for {{struct:name}} {
+{{^struct:union?}}
+    impl Default for self::{{struct:name}} {
         fn default() -> Self {
             Self {{>lib/block}}{{!
             }}{{#struct:fields}}
                 {{field:ident}}: {{!
-                    }}{{#field:optional?}}{{!
-                        }}None{{!
-                    }}{{/field:optional?}}{{!
-                    }}{{^field:optional?}}{{!
-                        }}Default::default(){{!
-                    }}{{/field:optional?}}{{!
+                    }}{{#field:default}}{{!
+                        }}{{#field:optional?}}Some({{/field:optional?}}{{!
+                        }}{{>lib/value}}{{!
+                        }}{{#field:optional?}}){{/field:optional?}}{{!
+                    }}{{/field:default}}{{!
+                    }}{{^field:default}}{{!
+                        }}{{#field:optional?}}{{!
+                            }}None{{!
+                        }}{{/field:optional?}}{{!
+                        }}{{^field:optional?}}{{!
+                            }}Default::default(){{!
+                        }}{{/field:optional?}}{{!
+                    }}{{/field:default}}{{!
                 }},{{!
             }}{{/struct:fields}}
             }
         }
     }
 
-    impl GetTType for {{struct:name}} {
+    impl GetTType for self::{{struct:name}} {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{struct:name}} {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::{{struct:name}} {
         fn write(self, p: &mut P) {
             p.write_struct_begin("{{struct:name}}");{{!
             }}{{#struct:fields}}{{!
@@ -67,7 +75,7 @@
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for {{struct:name}} {
+    impl<P: ProtocolReader> Deserialize<P> for self::{{struct:name}} {
         fn read(p: &mut P) -> failure::Fallible<Self> {{>lib/block}}{{!
             }}{{#struct:fields}}
             let mut field_{{field:name}} = None;{{!
@@ -90,11 +98,17 @@
                 }}{{#struct:fields}}
                 {{field:ident}}: field_{{field:name}}{{!
                     }}{{^field:optional?}}{{!
-                        }}.unwrap_or_default(){{!
+                        }}{{#field:default}}{{!
+                            }}.unwrap_or_else(|| {{>lib/value}}){{!
+                        }}{{/field:default}}{{!
+                        }}{{^field:default}}{{!
+                            }}.unwrap_or_default(){{!
+                        }}{{/field:default}}{{!
                     }}{{/field:optional?}}{{!
                 }},{{!
                 }}{{/struct:fields}}
             })
         }
     }
+{{/struct:union?}}
 {{!newline}}

@@ -3,8 +3,6 @@
 #![feature(async_await)]
 #![allow(non_camel_case_types, non_snake_case, non_upper_case_globals)]
 
-extern crate self as module;
-
 pub use self::errors::*;
 
 pub mod services {
@@ -17,7 +15,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum DoRootExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -70,7 +68,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = DoRootExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -80,7 +78,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(DoRootExn::Success(Deserialize::read(p)?));
+                            alt = DoRootExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -98,13 +96,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "DoRoot"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
     }
@@ -118,7 +110,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum DoMidExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -171,7 +163,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = DoMidExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -181,7 +173,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(DoMidExn::Success(Deserialize::read(p)?));
+                            alt = DoMidExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -199,13 +191,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "DoMid"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
     }
@@ -219,7 +205,7 @@ pub mod services {
         #[derive(Clone, Debug)]
         pub enum DoLeafExn {
             Success(()),
-            ApplicationException(fbthrift::types::ApplicationException),
+            ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
         }
 
@@ -272,7 +258,7 @@ pub mod services {
             fn read(p: &mut P) -> failure::Fallible<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
-                let mut alt: Option<_> = None;
+                let mut alt = DoLeafExn::Success(());
                 loop {
                     let (_, fty, fid) = p.read_field_begin(|_| ())?;
                     match ((fty, fid as i32), once) {
@@ -282,7 +268,7 @@ pub mod services {
                         }
                         ((TType::Void, 0i32), false) => {
                             once = true;
-                            alt = Some(DoLeafExn::Success(Deserialize::read(p)?));
+                            alt = DoLeafExn::Success(Deserialize::read(p)?);
                         }
                         ((ty, _id), false) => p.skip(ty)?,
                         ((badty, badid), true) => return Err(From::from(
@@ -300,13 +286,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
-                    ApplicationException::new(
-                        ApplicationExceptionErrorCode::MissingResult,
-                        format!("Empty union {}", "DoLeaf"),
-                    )
-                    .into(),
-                )
+                Ok(alt)
             }
         }
     }
@@ -1371,7 +1351,7 @@ pub mod server {
         P::Deserializer: Send,
         H: MyNode,
         SS: ThriftService<P::Frame>,
-        SS::Handler: ::module::server::MyRoot,
+        SS::Handler: crate::server::MyRoot,
         P::Frame: Send + 'static,
     {
         pub fn new(service: H, supa: SS) -> Self {
@@ -1434,7 +1414,7 @@ pub mod server {
         P::Deserializer: Send,
         H: MyNode,
         SS: ThriftService<P::Frame>,
-        SS::Handler: ::module::server::MyRoot,
+        SS::Handler: crate::server::MyRoot,
         P::Frame: Send + 'static,
     {
         #[inline]
@@ -1469,7 +1449,7 @@ pub mod server {
         P::Frame: Send + 'static,
         H: MyNode,
         SS: ThriftService<P::Frame>,
-        SS::Handler: ::module::server::MyRoot,
+        SS::Handler: crate::server::MyRoot,
         P::Frame: Send + 'static,
     {
         type Handler = H;
@@ -1525,7 +1505,7 @@ pub mod server {
         H: MyNode,
         SMAKE: Fn(ProtocolID) -> Result<SS, ApplicationException>,
         SS: ThriftService<F>,
-        SS::Handler: ::module::server::MyRoot,
+        SS::Handler: crate::server::MyRoot,
     {
         match proto {
             ProtocolID::BinaryProtocol => {
@@ -1565,7 +1545,7 @@ pub mod server {
         P::Deserializer: Send,
         H: MyLeaf,
         SS: ThriftService<P::Frame>,
-        SS::Handler: ::module::server::MyNode,
+        SS::Handler: crate::server::MyNode,
         P::Frame: Send + 'static,
     {
         pub fn new(service: H, supa: SS) -> Self {
@@ -1628,7 +1608,7 @@ pub mod server {
         P::Deserializer: Send,
         H: MyLeaf,
         SS: ThriftService<P::Frame>,
-        SS::Handler: ::module::server::MyNode,
+        SS::Handler: crate::server::MyNode,
         P::Frame: Send + 'static,
     {
         #[inline]
@@ -1663,7 +1643,7 @@ pub mod server {
         P::Frame: Send + 'static,
         H: MyLeaf,
         SS: ThriftService<P::Frame>,
-        SS::Handler: ::module::server::MyNode,
+        SS::Handler: crate::server::MyNode,
         P::Frame: Send + 'static,
     {
         type Handler = H;
@@ -1719,7 +1699,7 @@ pub mod server {
         H: MyLeaf,
         SMAKE: Fn(ProtocolID) -> Result<SS, ApplicationException>,
         SS: ThriftService<F>,
-        SS::Handler: ::module::server::MyNode,
+        SS::Handler: crate::server::MyNode,
     {
         match proto {
             ProtocolID::BinaryProtocol => {
@@ -1810,6 +1790,7 @@ pub mod server {
 ///         client: Arc<dyn MyService + Send + Sync + 'static>,
 ///     ) -> impl Future<Item = Out> {...}
 pub mod mock {
+    use async_trait::async_trait;
     use std::marker::PhantomData;
 
     pub struct MyRoot<'mock> {
@@ -1817,7 +1798,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::MyRoot {
+    impl dyn super::client_async::MyRoot {
         pub fn mock<'mock>() -> MyRoot<'mock> {
             MyRoot {
                 do_root: my_root::do_root::unimplemented(),
@@ -1826,17 +1807,17 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::MyRoot for MyRoot<'mock> {
-        fn do_root(
+    #[async_trait]
+    impl<'mock> super::client_async::MyRoot for MyRoot<'mock> {
+        async fn do_root(
             &self,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.do_root.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyRootDoRootError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyRootDoRootError(error),
+                ))
         }
     }
 
@@ -1888,7 +1869,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::MyNode {
+    impl dyn super::client_async::MyNode {
         pub fn mock<'mock>() -> MyNode<'mock> {
             MyNode {
                 do_mid: my_node::do_mid::unimplemented(),
@@ -1897,17 +1878,17 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::MyNode for MyNode<'mock> {
-        fn do_mid(
+    #[async_trait]
+    impl<'mock> super::client_async::MyNode for MyNode<'mock> {
+        async fn do_mid(
             &self,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.do_mid.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyNodeDoMidError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyNodeDoMidError(error),
+                ))
         }
     }
 
@@ -1959,7 +1940,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client::MyLeaf {
+    impl dyn super::client_async::MyLeaf {
         pub fn mock<'mock>() -> MyLeaf<'mock> {
             MyLeaf {
                 do_leaf: my_leaf::do_leaf::unimplemented(),
@@ -1968,17 +1949,17 @@ pub mod mock {
         }
     }
 
-    impl<'mock> super::client::MyLeaf for MyLeaf<'mock> {
-        fn do_leaf(
+    #[async_trait]
+    impl<'mock> super::client_async::MyLeaf for MyLeaf<'mock> {
+        async fn do_leaf(
             &self,
-        ) -> Box<dyn futures::Future<Item = (), Error = failure::Error> + Send> {
+        ) -> Result<(), failure::Error> {
             let mut closure = self.do_leaf.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            let result = closure();
-            let fallible = result.map_err(|error| failure::Error::from(
-                crate::errors::ErrorKind::MyLeafDoLeafError(error),
-            ));
-            Box::new(futures::future::result(fallible))
+            closure()
+                .map_err(|error| failure::Error::from(
+                    crate::errors::ErrorKind::MyLeafDoLeafError(error),
+                ))
         }
     }
 
