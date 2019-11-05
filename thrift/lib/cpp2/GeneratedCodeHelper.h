@@ -30,11 +30,9 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#ifdef FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/Sink.h>
-#endif
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/detail/meta.h>
@@ -699,6 +697,7 @@ ClientSink<SinkType, FinalResponseType> createSink(
           FinalResponsePResult,
           FinalResponseType>);
 }
+#endif
 
 template <
     typename PResult,
@@ -716,6 +715,7 @@ folly::exception_wrapper recv_wrapped(
     apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
         _return,
     ErrorMapFunc exMap) {
+#ifdef FOLLY_HAS_COROUTINES
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -741,6 +741,9 @@ folly::exception_wrapper recv_wrapped(
         FinalResponse>(std::move(impl), exMap);
   }
   return ew;
+#else
+  std::terminate();
+#endif
 }
 
 template <
@@ -757,6 +760,7 @@ folly::exception_wrapper recv_wrapped(
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ClientSink<Item, FinalResponse>& _return,
     ErrorMapFunc exMap) {
+#ifdef FOLLY_HAS_COROUTINES
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -781,9 +785,11 @@ folly::exception_wrapper recv_wrapped(
         FinalResponse>(std::move(impl), exMap);
   }
   return ew;
+#else
+  std::terminate();
+#endif
 }
 
-#endif
 
 [[noreturn]] void throw_app_exn(char const* msg);
 } // namespace ac

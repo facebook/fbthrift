@@ -20,11 +20,12 @@
 
 #include <folly/Portability.h>
 
-#ifdef FOLLY_HAS_COROUTINES
 #include <folly/Overload.h>
+#ifdef FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
+#endif
 
 #include <thrift/lib/cpp2/async/SinkBridgeUtil.h>
 #include <thrift/lib/cpp2/async/Stream.h>
@@ -36,6 +37,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+#ifdef FOLLY_HAS_COROUTINES
 class ClientSinkBridge : public TwoWayBridge<
                              CoroConsumer,
                              ClientMessage,
@@ -219,9 +221,13 @@ class ClientSinkBridge : public TwoWayBridge<
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   bool sinkCalled_{false};
 };
+#else
+class ClientSinkBridge {
+ public:
+  using Ptr = std::unique_ptr<ClientSinkBridge>;
+};
+#endif
 
 } // namespace detail
 } // namespace thrift
 } // namespace apache
-
-#endif

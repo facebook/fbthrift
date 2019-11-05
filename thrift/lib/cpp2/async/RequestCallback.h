@@ -27,9 +27,7 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
-#ifdef FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
-#endif
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 
@@ -80,7 +78,6 @@ class ClientReceiveState {
         ctx_(std::move(_ctx)),
         header_(std::make_unique<apache::thrift::transport::THeader>()),
         excw_(std::move(_excw)) {}
-#ifdef FOLLY_HAS_COROUTINES
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> _buf,
@@ -92,7 +89,6 @@ class ClientReceiveState {
         buf_(std::move(_buf)),
         header_(std::move(_header)),
         sink_(std::move(sink)) {}
-#endif
 
   bool isException() const {
     return excw_ ? true : false;
@@ -126,11 +122,9 @@ class ClientReceiveState {
     return std::move(streamBridge_);
   }
 
-#ifdef FOLLY_HAS_COROUTINES
   detail::ClientSinkBridge::Ptr extractSink() {
     return std::move(sink_);
   }
-#endif
 
   int32_t chunkBufferSize() const {
     return chunkBufferSize_;
@@ -168,9 +162,7 @@ class ClientReceiveState {
   folly::exception_wrapper excw_;
   SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
   detail::ClientStreamBridge::ClientPtr streamBridge_;
-#ifdef FOLLY_HAS_COROUTINES
   detail::ClientSinkBridge::Ptr sink_;
-#endif
   int32_t chunkBufferSize_;
 };
 
