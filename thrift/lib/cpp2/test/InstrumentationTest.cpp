@@ -108,19 +108,10 @@ TEST_F(RequestInstrumentationTest, simpleRocketRequestTest) {
             std::move(socket));
       });
 
-  std::vector<folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>>>
-      streams;
   for (size_t i = 0; i < reqNum; i++) {
-    streams.emplace_back(client->semifuture_sendStreamingRequest());
+    client->semifuture_sendStreamingRequest();
     client->semifuture_sendRequest();
   }
-  // Consume streams, otherwise server thread manager can get stuck on
-  // remaining stream generators when exiting.
-  auto g = folly::makeGuard([streams = std::move(streams)]() mutable {
-    for (auto& s : streams) {
-      std::move(s).get().subscribeInline([](folly::Try<int32_t>) {});
-    }
-  });
   for (auto& reqSnapshot : getRequestSnapshots(2 * reqNum)) {
     auto methodName = reqSnapshot.getMethodName();
     EXPECT_TRUE(

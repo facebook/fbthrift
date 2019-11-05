@@ -275,6 +275,7 @@ class ThreadManager::ImplT : public ThreadManager,
       tasks_;
 
   Mutex mutex_;
+  Mutex stateUpdateMutex_;
   // monitor_ is signaled on any of the following events:
   // - a new task is added to the task queue
   // - state_ changes

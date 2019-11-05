@@ -231,6 +231,7 @@ void ThreadManager::ImplT<SemType>::workerExiting(Worker<SemType>* worker) {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::start() {
+  Guard sg(stateUpdateMutex_);
   Guard g(mutex_);
 
   if (state_ == ThreadManager::STOPPED) {
@@ -248,16 +249,18 @@ void ThreadManager::ImplT<SemType>::start() {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
-  Guard g(mutex_);
+  Guard sg(stateUpdateMutex_);
 
   if (state_ == ThreadManager::UNINITIALIZED) {
     // The thread manager was never started.  Just ignore the stop() call.
     // This will happen if the ThreadManager is destroyed without ever being
     // started.
     joinKeepAlive();
+    Guard g(mutex_);
     state_ = ThreadManager::STOPPED;
   } else if (state_ == ThreadManager::STARTED) {
     joinKeepAlive();
+    Guard g(mutex_);
     if (joinArg) {
       state_ = ThreadManager::JOINING;
       removeWorkerImpl(intendedWorkerCount_, true);
@@ -276,6 +279,7 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
     monitor_.notifyAll();
     g.release();
   } else {
+    Guard g(mutex_);
     // Another stopImpl() call is already in progress.
     // Just wait for the state to change to STOPPED
     while (state_ != ThreadManager::STOPPED) {
