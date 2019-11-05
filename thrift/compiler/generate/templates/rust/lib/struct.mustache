@@ -27,7 +27,9 @@
     }}{{#struct:fields}}{{!
         }}{{#program:serde?}}{{#field:rename?}}
         #[serde(rename = "{{field:name}}")]{{!
-        }}{{/field:rename?}}{{/program:serde?}}
+        }}{{/field:rename?}}{{^field:optional?}}
+        #[serde(default)]{{!
+        }}{{/field:optional?}}{{/program:serde?}}
         pub {{field:ident}}: {{!
             }}{{#field:optional?}}{{!
                 }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
