@@ -16,15 +16,7 @@
 
 }}
 
-    use fbthrift::{
-        framing::Framing,
-        protocol::{
-            self, Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader, ProtocolWriter,
-        },
-        serialize,
-        ttype::TType,
-        ApplicationException, ClientFactory, Deserialize, MessageType, Serialize,
-    };
+    use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
     use std::sync::Arc;{{!

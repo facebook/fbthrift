@@ -1084,15 +1084,7 @@ pub mod services {
 }
 
 pub mod client {
-    use fbthrift::{
-        framing::Framing,
-        protocol::{
-            self, Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader, ProtocolWriter,
-        },
-        serialize,
-        ttype::TType,
-        ApplicationException, ClientFactory, Deserialize, MessageType, Serialize,
-    };
+    use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
     use std::sync::Arc;
@@ -1941,15 +1933,7 @@ pub mod client {
 
 pub mod client_async {
     use async_trait::async_trait;
-    use fbthrift::{
-        framing::Framing,
-        protocol::{
-            self, Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader, ProtocolWriter,
-        },
-        serialize,
-        ttype::TType,
-        ApplicationException, ClientFactory, Deserialize, MessageType, Serialize,
-    };
+    use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
     use std::sync::Arc;
@@ -2671,12 +2655,7 @@ pub mod client_async {
 
 pub mod server {
     use async_trait::async_trait;
-    use fbthrift::{
-        self, serialize, ApplicationException, ApplicationExceptionErrorCode, BinaryProtocol,
-        BufExt, CompactProtocol, Deserialize, Framing, MessageType, Protocol, ProtocolDecoded,
-        ProtocolEncodedFinal, ProtocolID, ProtocolReader, Serialize, ServiceProcessor as _,
-        TType, ThriftService,
-    };
+    use fbthrift::*;
     use std::marker::PhantomData;
 
     #[async_trait]

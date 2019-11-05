@@ -17,12 +17,7 @@
 }}
 
     use async_trait::async_trait;
-    use fbthrift::{
-        self, serialize, ApplicationException, ApplicationExceptionErrorCode, BinaryProtocol,
-        BufExt, CompactProtocol, Deserialize, Framing, MessageType, Protocol, ProtocolDecoded,
-        ProtocolEncodedFinal, ProtocolID, ProtocolReader, Serialize, ServiceProcessor as _,
-        TType, ThriftService,
-    };
+    use fbthrift::*;
     use std::marker::PhantomData;{{!
 }}{{#program:services}}
 
