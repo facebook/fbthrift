@@ -176,7 +176,7 @@ class ClientBufferedStream {
         queue = streamBridge->getMessages();
         if (queue.empty()) {
           // we've been cancelled
-          streamBridge.reset();
+          detail::ClientStreamBridge::Ptr(streamBridge.release());
           throw folly::OperationCancelled();
         }
       }
