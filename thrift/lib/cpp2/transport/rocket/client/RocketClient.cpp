@@ -223,6 +223,7 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
   const bool complete = payloadFrame.hasComplete();
   if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
     if (firstResponseTimeouts_.count(streamId)) {
+      firstResponseTimeouts_.erase(streamId);
       if (!next) {
         serverCallback.onInitialError(
             folly::make_exception_wrapper<transport::TTransportException>(
@@ -231,7 +232,6 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
                 "Missing initial response"));
         return StreamChannelStatus::ContractViolation;
       }
-      firstResponseTimeouts_.erase(streamId);
       auto firstResponse =
           unpack<FirstResponsePayload>(std::move(*fullPayload));
       if (firstResponse.hasException()) {
@@ -240,7 +240,10 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
       }
       serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
       if (complete) {
-        return serverCallback.onStreamComplete();
+        // onInitialPayload could have resulted in canceling the stream.
+        if (streams_.find(streamId) != streams_.end()) {
+          return serverCallback.onStreamComplete();
+        }
       }
       return StreamChannelStatus::Alive;
     }
