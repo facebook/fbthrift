@@ -89,6 +89,17 @@ public final class VirtualComplexUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetThingOne()) {
+            visitor.visitThingOne(getThingOne());
+            return;
+        }
+        if (isSetThingTwo()) {
+            visitor.visitThingTwo(getThingTwo());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -120,5 +131,10 @@ public final class VirtualComplexUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitThingOne(String thingOne);
+        void visitThingTwo(String thingTwo);
     }
 }

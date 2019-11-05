@@ -91,6 +91,17 @@ public final class DataUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetBinaryData()) {
+            visitor.visitBinaryData(getBinaryData());
+            return;
+        }
+        if (isSetStringData()) {
+            visitor.visitStringData(getStringData());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -122,5 +133,10 @@ public final class DataUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitBinaryData(byte[] binaryData);
+        void visitStringData(String stringData);
     }
 }

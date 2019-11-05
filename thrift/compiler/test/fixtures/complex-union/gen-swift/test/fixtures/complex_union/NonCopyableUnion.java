@@ -64,6 +64,13 @@ public final class NonCopyableUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetS()) {
+            visitor.visitS(getS());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -95,5 +102,9 @@ public final class NonCopyableUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitS(test.fixtures.complex_union.NonCopyableStruct s);
     }
 }

@@ -89,6 +89,17 @@ public final class ListUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetIntListValue()) {
+            visitor.visitIntListValue(getIntListValue());
+            return;
+        }
+        if (isSetStringListValue()) {
+            visitor.visitStringListValue(getStringListValue());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -120,5 +131,10 @@ public final class ListUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitIntListValue(List<Long> intListValue);
+        void visitStringListValue(List<String> stringListValue);
     }
 }

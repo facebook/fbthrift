@@ -145,6 +145,25 @@ public final class Union2 {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetI()) {
+            visitor.visitI(getI());
+            return;
+        }
+        if (isSetD()) {
+            visitor.visitD(getD());
+            return;
+        }
+        if (isSetS()) {
+            visitor.visitS(getS());
+            return;
+        }
+        if (isSetU()) {
+            visitor.visitU(getU());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -176,5 +195,12 @@ public final class Union2 {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitI(int i);
+        void visitD(double d);
+        void visitS(test.fixtures.constants.Struct1 s);
+        void visitU(test.fixtures.constants.Union1 u);
     }
 }

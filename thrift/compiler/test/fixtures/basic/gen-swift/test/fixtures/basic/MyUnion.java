@@ -118,6 +118,21 @@ public final class MyUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetMyEnum()) {
+            visitor.visitMyEnum(getMyEnum());
+            return;
+        }
+        if (isSetMyStruct()) {
+            visitor.visitMyStruct(getMyStruct());
+            return;
+        }
+        if (isSetMyDataItem()) {
+            visitor.visitMyDataItem(getMyDataItem());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -149,5 +164,11 @@ public final class MyUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitMyEnum(test.fixtures.basic.MyEnum myEnum);
+        void visitMyStruct(test.fixtures.basic.MyStruct myStruct);
+        void visitMyDataItem(test.fixtures.basic.MyDataItem myDataItem);
     }
 }

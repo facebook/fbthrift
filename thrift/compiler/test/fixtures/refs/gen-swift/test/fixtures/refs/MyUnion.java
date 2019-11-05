@@ -91,6 +91,17 @@ public final class MyUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetAnInteger()) {
+            visitor.visitAnInteger(getAnInteger());
+            return;
+        }
+        if (isSetAString()) {
+            visitor.visitAString(getAString());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -122,5 +133,10 @@ public final class MyUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitAnInteger(int anInteger);
+        void visitAString(String aString);
     }
 }

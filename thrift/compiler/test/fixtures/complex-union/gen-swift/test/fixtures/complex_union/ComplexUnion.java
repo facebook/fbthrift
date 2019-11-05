@@ -193,6 +193,33 @@ public final class ComplexUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetIntValue()) {
+            visitor.visitIntValue(getIntValue());
+            return;
+        }
+        if (isSetStringValue()) {
+            visitor.visitStringValue(getStringValue());
+            return;
+        }
+        if (isSetIntListValue()) {
+            visitor.visitIntListValue(getIntListValue());
+            return;
+        }
+        if (isSetStringListValue()) {
+            visitor.visitStringListValue(getStringListValue());
+            return;
+        }
+        if (isSetTypedefValue()) {
+            visitor.visitTypedefValue(getTypedefValue());
+            return;
+        }
+        if (isSetStringRef()) {
+            visitor.visitStringRef(getStringRef());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -224,5 +251,14 @@ public final class ComplexUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitIntValue(long intValue);
+        void visitStringValue(String stringValue);
+        void visitIntListValue(List<Long> intListValue);
+        void visitStringListValue(List<String> stringListValue);
+        void visitTypedefValue(Map<Short, String> typedefValue);
+        void visitStringRef(String stringRef);
     }
 }

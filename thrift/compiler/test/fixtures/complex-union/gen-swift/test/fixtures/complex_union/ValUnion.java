@@ -89,6 +89,17 @@ public final class ValUnion {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetV1()) {
+            visitor.visitV1(getV1());
+            return;
+        }
+        if (isSetV2()) {
+            visitor.visitV2(getV2());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -120,5 +131,10 @@ public final class ValUnion {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitV1(test.fixtures.complex_union.Val v1);
+        void visitV2(test.fixtures.complex_union.Val v2);
     }
 }

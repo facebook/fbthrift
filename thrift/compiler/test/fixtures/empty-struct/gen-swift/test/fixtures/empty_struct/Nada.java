@@ -37,6 +37,9 @@ public final class Nada {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -68,5 +71,8 @@ public final class Nada {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
     }
 }

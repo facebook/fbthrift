@@ -91,6 +91,17 @@ public final class Union {
         return ID_TO_THRIFT_NAME.get(this.id);
     }
 
+    public void accept(Visitor visitor) {
+        if (isSetIntValue()) {
+            visitor.visitIntValue(getIntValue());
+            return;
+        }
+        if (isSetStringValue()) {
+            visitor.visitStringValue(getStringValue());
+            return;
+        }
+    }
+
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -122,5 +133,10 @@ public final class Union {
             id,
             value,
         });
+    }
+
+    public interface Visitor {
+        void visitIntValue(long intValue);
+        void visitStringValue(String stringValue);
     }
 }
