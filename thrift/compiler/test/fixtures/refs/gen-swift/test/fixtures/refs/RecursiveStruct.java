@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
+@ThriftStruct("RecursiveStruct")
 public final class RecursiveStruct {
     @ThriftConstructor
     public RecursiveStruct(
@@ -24,14 +24,13 @@ public final class RecursiveStruct {
         this.mes = mes;
     }
     
-    @ThriftConstructor
     protected RecursiveStruct() {
       this.mes = null;
     }
     
     public static class Builder {
         private List<test.fixtures.refs.RecursiveStruct> mes;
-        @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
+    
         public Builder setMes(List<test.fixtures.refs.RecursiveStruct> mes) {
             this.mes = mes;
             return this;
@@ -42,7 +41,6 @@ public final class RecursiveStruct {
             this.mes = other.mes;
         }
     
-        @ThriftConstructor
         public RecursiveStruct build() {
             return new RecursiveStruct (
                 this.mes

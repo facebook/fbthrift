@@ -22,7 +22,6 @@ public final class FooEx extends Exception {
     ) {
     }
     
-    @ThriftConstructor
     
     
     public static class Builder {
@@ -31,7 +30,6 @@ public final class FooEx extends Exception {
         public Builder(FooEx other) {
         }
     
-        @ThriftConstructor
         public FooEx build() {
             return new FooEx (
             );

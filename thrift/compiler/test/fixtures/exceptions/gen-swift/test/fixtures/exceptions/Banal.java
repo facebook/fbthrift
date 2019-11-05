@@ -22,7 +22,6 @@ public final class Banal extends RuntimeException {
     ) {
     }
     
-    @ThriftConstructor
     
     
     public static class Builder {
@@ -31,7 +30,6 @@ public final class Banal extends RuntimeException {
         public Builder(Banal other) {
         }
     
-        @ThriftConstructor
         public Banal build() {
             return new Banal (
             );

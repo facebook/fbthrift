@@ -18,7 +18,7 @@
 public static class Builder {
     {{#struct:fields}}
     private {{> FieldType}} {{field:javaName}};
-    {{> ThriftFieldAnnotation}}{{#field:javaAnnotation?}} @{{field:javaAnnotation}}{{/field:javaAnnotation?}}
+
     public Builder {{> SetterName}}({{> FieldType}} {{field:javaName}}) {
         this.{{field:javaName}} = {{field:javaName}};
         return this;
@@ -32,22 +32,12 @@ public static class Builder {
         {{/struct:fields}}
     }
 
-    @ThriftConstructor
     public {{struct:javaCapitalName}} build() {
-       {{^struct:isBigStruct?}}
         return new {{struct:javaCapitalName}} (
             {{#struct:fields}}
             this.{{field:javaName}}{{^last?}},{{/last?}}
             {{/struct:fields}}
         );
-        {{/struct:isBigStruct?}}
-        {{#struct:isBigStruct?}}
-        {{struct:javaCapitalName}} o{{struct:javaCapitalName}} = new {{struct:javaCapitalName}}();
-        {{#struct:fields}}
-        o{{struct:javaCapitalName}}.{{field:javaName}} = this.{{field:javaName}};
-        {{/struct:fields}}
-        return o{{struct:javaCapitalName}};
-        {{/struct:isBigStruct?}}
     }
 }
 {{! terminate with newline }}

@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Color", builder=Color.Builder.class)
+@ThriftStruct("Color")
 public final class Color {
     @ThriftConstructor
     public Color(
@@ -30,7 +30,6 @@ public final class Color {
         this.alpha = alpha;
     }
     
-    @ThriftConstructor
     protected Color() {
       this.red = 0.;
       this.green = 0.;
@@ -40,25 +39,25 @@ public final class Color {
     
     public static class Builder {
         private double red;
-        @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
+    
         public Builder setRed(double red) {
             this.red = red;
             return this;
         }
         private double green;
-        @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+    
         public Builder setGreen(double green) {
             this.green = green;
             return this;
         }
         private double blue;
-        @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+    
         public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
         }
         private double alpha;
-        @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
+    
         public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
@@ -72,7 +71,6 @@ public final class Color {
             this.alpha = other.alpha;
         }
     
-        @ThriftConstructor
         public Color build() {
             return new Color (
                 this.red,

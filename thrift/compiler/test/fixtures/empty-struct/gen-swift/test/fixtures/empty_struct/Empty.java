@@ -15,14 +15,13 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Empty", builder=Empty.Builder.class)
+@ThriftStruct("Empty")
 public final class Empty {
     @ThriftConstructor
     public Empty(
     ) {
     }
     
-    @ThriftConstructor
     
     
     public static class Builder {
@@ -31,7 +30,6 @@ public final class Empty {
         public Builder(Empty other) {
         }
     
-        @ThriftConstructor
         public Empty build() {
             return new Empty (
             );

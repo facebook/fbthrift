@@ -6,7 +6,7 @@
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-    http://www.apache.org/licenses/LICENSE-2.0
+      http://www.apache.org/licenses/LICENSE-2.0
 
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
@@ -27,14 +27,14 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="{{struct:name}}", builder={{struct:name}}.Builder.class){{> common/ObjectCustomAnnotation}}
+@ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
 public final class {{struct:javaCapitalName}} {
     {{> struct/ThriftConstructor}}
 
     {{> struct/StructBuilder}}
 
     {{#struct:fields}}
-    private {{^struct:isBigStruct?}}final {{/struct:isBigStruct?}}{{> FieldType}} {{field:javaName}};
+    private final {{> FieldType}} {{field:javaName}};
     {{/struct:fields}}
 
     {{#struct:fields}}

@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+@ThriftStruct("MyStruct")
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -30,7 +30,6 @@ public final class MyStruct {
         this.myEnum = myEnum;
     }
     
-    @ThriftConstructor
     protected MyStruct() {
       this.myIntField = 0L;
       this.myStringField = null;
@@ -40,25 +39,25 @@ public final class MyStruct {
     
     public static class Builder {
         private long myIntField;
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
         private String myStringField;
-        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
+    
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
         private test.fixtures.basic.MyDataItem myDataField;
-        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
+    
         public Builder setMyDataField(test.fixtures.basic.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
         private test.fixtures.basic.MyEnum myEnum;
-        @ThriftField(value=4, name="myEnum", requiredness=Requiredness.NONE)
+    
         public Builder setMyEnum(test.fixtures.basic.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
@@ -72,7 +71,6 @@ public final class MyStruct {
             this.myEnum = other.myEnum;
         }
     
-        @ThriftConstructor
         public MyStruct build() {
             return new MyStruct (
                 this.myIntField,

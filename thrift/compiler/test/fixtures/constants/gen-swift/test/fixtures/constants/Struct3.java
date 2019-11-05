@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="struct3", builder=struct3.Builder.class)
+@ThriftStruct("struct3")
 public final class Struct3 {
     @ThriftConstructor
     public Struct3(
@@ -28,7 +28,6 @@ public final class Struct3 {
         this.c = c;
     }
     
-    @ThriftConstructor
     protected Struct3() {
       this.a = null;
       this.b = 0;
@@ -37,19 +36,19 @@ public final class Struct3 {
     
     public static class Builder {
         private String a;
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    
         public Builder setA(String a) {
             this.a = a;
             return this;
         }
         private int b;
-        @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+    
         public Builder setB(int b) {
             this.b = b;
             return this;
         }
         private test.fixtures.constants.Struct2 c;
-        @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
+    
         public Builder setC(test.fixtures.constants.Struct2 c) {
             this.c = c;
             return this;
@@ -62,7 +61,6 @@ public final class Struct3 {
             this.c = other.c;
         }
     
-        @ThriftConstructor
         public Struct3 build() {
             return new Struct3 (
                 this.a,
