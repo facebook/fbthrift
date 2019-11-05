@@ -208,7 +208,7 @@ pub mod types {
     impl std::str::FromStr for has_bitwise_ops {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "none" => Ok(has_bitwise_ops::none),
                 "zero" => Ok(has_bitwise_ops::zero),
@@ -293,7 +293,7 @@ pub mod types {
     impl std::str::FromStr for is_unscoped {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "hello" => Ok(is_unscoped::hello),
                 "world" => Ok(is_unscoped::world),
@@ -375,7 +375,7 @@ pub mod types {
     impl std::str::FromStr for MyForwardRefEnum {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "ZERO" => Ok(MyForwardRefEnum::ZERO),
                 "NONZERO" => Ok(MyForwardRefEnum::NONZERO),
@@ -459,7 +459,7 @@ pub mod types {
     impl std::str::FromStr for MyEnumA {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "fieldA" => Ok(MyEnumA::fieldA),
                 "fieldB" => Ok(MyEnumA::fieldB),

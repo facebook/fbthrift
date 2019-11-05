@@ -384,7 +384,7 @@ pub mod types {
     impl std::str::FromStr for EmptyEnum {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 _ => failure::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
             }
@@ -468,7 +468,7 @@ pub mod types {
     impl std::str::FromStr for City {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "NYC" => Ok(City::NYC),
                 "MPK" => Ok(City::MPK),
@@ -556,7 +556,7 @@ pub mod types {
     impl std::str::FromStr for Company {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "FACEBOOK" => Ok(Company::FACEBOOK),
                 "WHATSAPP" => Ok(Company::WHATSAPP),

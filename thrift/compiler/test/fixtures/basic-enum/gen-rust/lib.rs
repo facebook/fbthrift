@@ -70,7 +70,7 @@ pub mod types {
     impl std::str::FromStr for EmptyEnum {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 _ => failure::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
             }
@@ -150,7 +150,7 @@ pub mod types {
     impl std::str::FromStr for MyEnum {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "ONE" => Ok(MyEnum::ONE),
                 "TWO" => Ok(MyEnum::TWO),
@@ -268,7 +268,7 @@ pub mod types {
     impl std::str::FromStr for MyBigEnum {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "UNKNOWN" => Ok(MyBigEnum::UNKNOWN),
                 "ONE" => Ok(MyBigEnum::ONE),

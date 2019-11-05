@@ -81,7 +81,7 @@
     impl std::str::FromStr for {{enum:rust_name}} {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {{>lib/block}}{{!
                 }}{{#enum:values}}
                 "{{enumValue:name}}" => Ok({{enum:rust_name}}::{{enumValue:rust_name}}),{{!

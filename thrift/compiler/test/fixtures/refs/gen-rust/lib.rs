@@ -200,7 +200,7 @@ pub mod types {
     impl std::str::FromStr for TypedEnum {
         type Err = failure::Error;
 
-        fn from_str(string: &str) -> Result<Self, Self::Err> {
+        fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "VAL1" => Ok(TypedEnum::VAL1),
                 "VAL2" => Ok(TypedEnum::VAL2),
