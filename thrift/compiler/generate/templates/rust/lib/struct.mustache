@@ -31,12 +31,11 @@
         #[serde(default)]{{!
         }}{{/field:optional?}}{{/program:serde?}}
         pub {{field:rust_name}}: {{!
-            }}{{#field:optional?}}{{!
-                }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
-            }}{{/field:optional?}}{{!
-            }}{{^field:optional?}}{{!
-                }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
-            }}{{/field:optional?}}{{!
+            }}{{#field:optional?}}Option<{{/field:optional?}}{{!
+                }}{{#field:box?}}Box<{{/field:box?}}{{!
+                    }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                }}{{#field:box?}}>{{/field:box?}}{{!
+            }}{{#field:optional?}}>{{/field:optional?}}{{!
         }},{{!
     }}{{/struct:fields}}
     }
@@ -45,12 +44,11 @@
     pub enum {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}
         {{field:rust_name}}({{!
-            }}{{#field:optional?}}{{!
-                }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
-            }}{{/field:optional?}}{{!
-            }}{{^field:optional?}}{{!
-                }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
-            }}{{/field:optional?}}{{!
+            }}{{#field:optional?}}Option<{{/field:optional?}}{{!
+                }}{{#field:box?}}Box<{{/field:box?}}{{!
+                    }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
+                }}{{#field:box?}}>{{/field:box?}}{{!
+            }}{{#field:optional?}}>{{/field:optional?}}{{!
         }}),{{!
     }}{{/struct:fields}}
         UnknownField(i32),

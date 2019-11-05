@@ -20,7 +20,10 @@
     pub type {{typedef:rust_name}} = {{#typedef:type}}{{>lib/type}}{{/typedef:type}};
 {{/typedef:newtype?}}
 {{#typedef:newtype?}}
-    #[derive(Default, Clone, Debug, PartialEq{{!
+    #[derive({{!
+        }}Default, {{!
+        }}{{#typedef:copy?}}Copy, {{/typedef:copy?}}{{!
+        }}Clone, Debug, PartialEq{{!
         }}{{#typedef:ord?}}, Eq, PartialOrd, Ord, Hash{{/typedef:ord?}}{{!
         }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
     }})]

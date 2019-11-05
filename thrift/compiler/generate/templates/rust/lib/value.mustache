@@ -15,6 +15,11 @@
   limitations under the License.
 
 }}{{#value:type}}{{!
+}}{{#value:newtype?}}{{!
+    }}{{type:package}}::types::{{type:rust_name}}({{!
+        }}{{#value:inner}}{{>lib/value}}{{/value:inner}}{{!
+    }}){{!
+}}{{/value:newtype?}}{{!
 }}{{#value:bool?}}{{value:boolValue}}{{/value:bool?}}{{!
 }}{{#value:integer?}}{{value:integerValue}}{{/value:integer?}}{{!
 }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
@@ -85,7 +90,9 @@
             {{value:indent}}{{field:rust_name}}: {{!
             }}{{#field:value}}{{!
                 }}{{#field:optional?}}Some({{/field:optional?}}{{!
-                }}{{>lib/value}}{{!
+                    }}{{#field:box?}}Box::new({{/field:box?}}{{!
+                        }}{{>lib/value}}{{!
+                    }}{{#field:box?}}){{/field:box?}}{{!
                 }}{{#field:optional?}}){{/field:optional?}}{{!
             }}{{/field:value}}{{!
             }}{{^field:value}}Default::default(){{/field:value}}{{!

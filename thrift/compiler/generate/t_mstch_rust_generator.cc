@@ -306,6 +306,9 @@ class mstch_rust_struct : public mstch_struct {
     return get_import_name(strct_->get_program(), options_);
   }
   mstch::node rust_is_ord() {
+    if (strct_->annotations_.count("rust.ord")) {
+      return true;
+    }
     for (const auto& member : strct_->get_members()) {
       if (!can_derive_ord(member->get_type())) {
         return false;
@@ -509,13 +512,25 @@ class mstch_rust_value : public mstch_base {
       const rust_codegen_options& options)
       : mstch_base(generators, cache, pos),
         const_value_(const_value),
-        type_(type->get_true_type()),
+        type_(type),
         depth_(depth),
         options_(options) {
+    // Step through any non-newtype typedefs.
+    while (type_->is_typedef() &&
+           type_->annotations_.count("rust.newtype") == 0) {
+      auto typedef_type = dynamic_cast<const t_typedef*>(type_);
+      if (!typedef_type) {
+        break;
+      }
+      type_ = typedef_type->get_type();
+    }
+
     register_methods(
         this,
         {
             {"value:type", &mstch_rust_value::type},
+            {"value:newtype?", &mstch_rust_value::is_newtype},
+            {"value:inner", &mstch_rust_value::inner},
             {"value:bool?", &mstch_rust_value::is_bool},
             {"value:boolValue", &mstch_rust_value::bool_value},
             {"value:integer?", &mstch_rust_value::is_integer},
@@ -547,6 +562,25 @@ class mstch_rust_value : public mstch_base {
   mstch::node type() {
     return std::make_shared<mstch_rust_type>(
         type_, generators_, cache_, pos_, options_);
+  }
+  mstch::node is_newtype() {
+    return type_->is_typedef() &&
+        type_->annotations_.count("rust.newtype") != 0;
+  }
+  mstch::node inner() {
+    auto typedef_type = dynamic_cast<const t_typedef*>(type_);
+    if (typedef_type) {
+      auto inner_type = typedef_type->get_type();
+      return std::make_shared<mstch_rust_value>(
+          const_value_,
+          inner_type,
+          depth_,
+          generators_,
+          cache_,
+          pos_,
+          options_);
+    }
+    return mstch::node();
   }
   mstch::node is_bool() {
     return type_->is_bool();
@@ -731,9 +765,9 @@ class mstch_rust_map_entry : public mstch_base {
       const rust_codegen_options& options)
       : mstch_base(generators, cache, pos),
         key_(key),
-        key_type_(key_type->get_true_type()),
+        key_type_(key_type),
         value_(value),
-        value_type_(value_type->get_true_type()),
+        value_type_(value_type),
         depth_(depth),
         options_(options) {
     register_methods(
@@ -764,20 +798,16 @@ class mstch_rust_map_entry : public mstch_base {
 class mstch_rust_struct_field : public mstch_base {
  public:
   mstch_rust_struct_field(
-      std::string name,
-      t_field::e_req req,
+      const t_field* field,
       const t_const_value* value,
-      const t_type* type,
       unsigned depth,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       const rust_codegen_options& options)
       : mstch_base(generators, cache, pos),
-        name_(std::move(name)),
-        req_(req),
+        field_(field),
         value_(value),
-        type_(type->get_true_type()),
         depth_(depth),
         options_(options) {
     register_methods(
@@ -787,31 +817,35 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:optional?", &mstch_rust_struct_field::is_optional},
             {"field:value", &mstch_rust_struct_field::value},
             {"field:type", &mstch_rust_struct_field::type},
+            {"field:box?", &mstch_rust_struct_field::is_boxed},
         });
   }
   mstch::node rust_name() {
-    return mangle(name_);
+    return mangle(field_->get_name());
   }
   mstch::node is_optional() {
-    return req_ == t_field::e_req::T_OPTIONAL;
+    return field_->get_req() == t_field::e_req::T_OPTIONAL;
   }
   mstch::node value() {
     if (value_) {
+      auto type = field_->get_type();
       return std::make_shared<mstch_rust_value>(
-          value_, type_, depth_, generators_, cache_, pos_, options_);
+          value_, type, depth_, generators_, cache_, pos_, options_);
     }
     return mstch::node();
   }
   mstch::node type() {
+    auto type = field_->get_type();
     return std::make_shared<mstch_rust_type>(
-        type_, generators_, cache_, pos_, options_);
+        type, generators_, cache_, pos_, options_);
+  }
+  mstch::node is_boxed() {
+    return field_->annotations_.count("rust.box") != 0;
   }
 
  private:
-  std::string name_;
-  t_field::e_req req_;
+  const t_field* field_;
   const t_const_value* value_;
-  const t_type* type_;
   unsigned depth_;
   const rust_codegen_options& options_;
 };
@@ -856,23 +890,12 @@ mstch::node mstch_rust_value::struct_fields() {
 
   mstch::array fields;
   for (const auto& member : struct_type->get_members()) {
-    auto field_name = member->get_name();
-    auto field_req = member->get_req();
-    auto field_type = member->get_type();
-    auto value = map_entries[field_name];
+    auto value = map_entries[member->get_name()];
     if (!value) {
       value = member->get_value();
     }
     fields.push_back(std::make_shared<mstch_rust_struct_field>(
-        field_name,
-        field_req,
-        value,
-        field_type,
-        depth_ + 1,
-        generators_,
-        cache_,
-        pos_,
-        options_));
+        member, value, depth_ + 1, generators_, cache_, pos_, options_));
   }
   return fields;
 }
@@ -948,6 +971,7 @@ class mstch_rust_field : public mstch_field {
             {"field:primitive?", &mstch_rust_field::rust_primitive},
             {"field:rename?", &mstch_rust_field::rust_rename},
             {"field:default", &mstch_rust_field::rust_default},
+            {"field:box?", &mstch_rust_field::rust_is_boxed},
         });
   }
   mstch::node rust_name() {
@@ -970,6 +994,9 @@ class mstch_rust_field : public mstch_field {
     }
     return mstch::node();
   }
+  mstch::node rust_is_boxed() {
+    return field_->annotations_.count("rust.box") != 0;
+  }
 
  private:
   const rust_codegen_options& options_;
@@ -989,6 +1016,7 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:rust_name", &mstch_rust_typedef::rust_name},
             {"typedef:newtype?", &mstch_rust_typedef::rust_newtype},
             {"typedef:ord?", &mstch_rust_typedef::rust_ord},
+            {"typedef:copy?", &mstch_rust_typedef::rust_copy},
         });
   }
   mstch::node rust_name() {
@@ -998,7 +1026,20 @@ class mstch_rust_typedef : public mstch_typedef {
     return typedf_->annotations_.count("rust.newtype") != 0;
   }
   mstch::node rust_ord() {
-    return can_derive_ord(typedf_->get_type());
+    return typedf_->annotations_.count("rust.ord") != 0 ||
+        can_derive_ord(typedf_->get_type());
+  }
+  mstch::node rust_copy() {
+    auto inner = typedf_->get_true_type();
+    if (inner->is_bool() || inner->is_byte() || inner->is_i16() ||
+        inner->is_i32() || inner->is_i64() || inner->is_enum() ||
+        inner->is_void()) {
+      return true;
+    }
+    if (typedf_->annotations_.count("rust.copy")) {
+      return true;
+    }
+    return false;
   }
 };
 

@@ -24,7 +24,9 @@
                 {{field:rust_name}}: {{!
                     }}{{#field:default}}{{!
                         }}{{#field:optional?}}Some({{/field:optional?}}{{!
-                        }}{{>lib/value}}{{!
+                            }}{{#field:box?}}Box::new({{/field:box?}}{{!
+                                }}{{>lib/value}}{{!
+                            }}{{#field:box?}}){{/field:box?}}{{!
                         }}{{#field:optional?}}){{/field:optional?}}{{!
                     }}{{/field:default}}{{!
                     }}{{^field:default}}{{!
