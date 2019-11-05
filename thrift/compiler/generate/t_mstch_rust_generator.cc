@@ -171,7 +171,7 @@ struct rust_codegen_options {
   std::map<std::string, std::string> cratemap;
 
   // Whether to emit derive(Serialize, Deserialize).
-  // Enabled by `thrift_rust_options = "add_serde_derives"` in TARGETS.
+  // Enabled by `--gen rust:serde`.
   bool serde = false;
 
   // True if we are generating a submodule rather than the whole crate.
@@ -211,7 +211,7 @@ class t_mstch_rust_generator : public t_mstch_generator {
       load_crate_map(cratemap_flag->second);
     }
 
-    options_.serde = parsed_options.count("add_serde_derives");
+    options_.serde = parsed_options.count("serde");
 
     auto include_prefix_flag = parsed_options.find("include_prefix");
     if (include_prefix_flag != parsed_options.end()) {
