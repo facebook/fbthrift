@@ -85,15 +85,19 @@ std::string mangle_type(const std::string& name) {
 std::string snakecase(const std::string& name) {
   std::ostringstream snake;
 
+  char last = '_';
   for (auto ch : name) {
     if (isupper(ch)) {
-      if (snake.tellp() > 0) {
+      if (last != '_') {
+        // Don't insert '_' after an existing one, such as in `Sample_CalcRs`.
+        // Also don't put a '_' right at the front.
         snake << '_';
       }
-      snake << (char)tolower(ch);
+      last = (char)tolower(ch);
     } else {
-      snake << ch;
+      last = ch;
     }
+    snake << last;
   }
 
   return snake.str();
