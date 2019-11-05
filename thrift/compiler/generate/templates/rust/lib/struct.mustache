@@ -23,14 +23,14 @@
         }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
     }})]
 {{^struct:union?}}
-    pub struct {{struct:name}} {{>lib/block}}{{!
+    pub struct {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}{{!
         }}{{#program:serde?}}{{#field:rename?}}
         #[serde(rename = "{{field:name}}")]{{!
         }}{{/field:rename?}}{{^field:optional?}}
         #[serde(default)]{{!
         }}{{/field:optional?}}{{/program:serde?}}
-        pub {{field:ident}}: {{!
+        pub {{field:rust_name}}: {{!
             }}{{#field:optional?}}{{!
                 }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
             }}{{/field:optional?}}{{!
@@ -42,9 +42,9 @@
     }
 {{/struct:union?}}
 {{#struct:union?}}
-    pub enum {{struct:name}} {{>lib/block}}{{!
+    pub enum {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}
-        {{field:ident}}({{!
+        {{field:rust_name}}({{!
             }}{{#field:optional?}}{{!
                 }}Option<{{#field:type}}{{>lib/type}}{{/field:type}}>{{!
             }}{{/field:optional?}}{{!

@@ -29,7 +29,7 @@
         pub enum {{function:upcamel}}Exn {
             Success({{#function:returnType}}{{>lib/type}}{{/function:returnType}}),{{!
             }}{{#function:exceptions}}
-            {{field:ident}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
+            {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),{{!
             }}{{/function:exceptions}}
             ApplicationException(::fbthrift::types::ApplicationException),
             UnknownField(i32),
@@ -44,7 +44,7 @@
 
         impl From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Exn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
-                {{function:upcamel}}Exn::{{field:ident}}(exn)
+                {{function:upcamel}}Exn::{{field:rust_name}}(exn)
             }
         }{{!
         }}{{/function:uniqueExceptions}}
@@ -73,7 +73,7 @@
                         p.write_field_end();
                     }{{!
                     }}{{#function:exceptions}}
-                    {{function:upcamel}}Exn::{{field:ident}}(inner) => {
+                    {{function:upcamel}}Exn::{{field:rust_name}}(inner) => {
                         p.write_field_begin(
                             "{{field:name}}",
                             {{#field:type}}{{>lib/ttype}}{{/field:type}},
@@ -129,7 +129,7 @@
                             once = true;
                             alt = {{!
                                 }}{{^function:void?}}Some({{/function:void?}}{{!
-                                }}{{function:upcamel}}Exn::{{field:ident}}(Deserialize::read(p)?){{!
+                                }}{{function:upcamel}}Exn::{{field:rust_name}}(Deserialize::read(p)?){{!
                                 }}{{^function:void?}}){{/function:void?}}{{!
                             }};
                         }{{!

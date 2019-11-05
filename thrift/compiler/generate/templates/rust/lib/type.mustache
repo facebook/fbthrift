@@ -15,7 +15,7 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{type:package}}::types::{{type:name}}{{!
+    }}{{type:package}}::types::{{type:rust_name}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:void?}}(){{/type:void?}}{{!
@@ -29,10 +29,10 @@
 }}{{#type:double?}}f64{{/type:double?}}{{!
 }}{{#type:float?}}f32{{/type:float?}}{{!
 }}{{#type:struct}}{{!
-    }}{{struct:package}}::types::{{struct:name}}{{!
+    }}{{struct:package}}::types::{{struct:rust_name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:enum}}{{!
-    }}{{enum:package}}::types::{{enum:name}}{{!
+    }}{{enum:package}}::types::{{enum:rust_name}}{{!
 }}{{/type:enum}}{{!
 }}{{#type:list?}}{{!
     }}Vec<{{#type:listElemType}}{{>lib/type}}{{/type:listElemType}}>{{!

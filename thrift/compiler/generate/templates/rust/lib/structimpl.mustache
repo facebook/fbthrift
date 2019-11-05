@@ -17,11 +17,11 @@
 }}
 
 {{^struct:union?}}
-    impl Default for self::{{struct:name}} {
+    impl Default for self::{{struct:rust_name}} {
         fn default() -> Self {
             Self {{>lib/block}}{{!
             }}{{#struct:fields}}
-                {{field:ident}}: {{!
+                {{field:rust_name}}: {{!
                     }}{{#field:default}}{{!
                         }}{{#field:optional?}}Some({{/field:optional?}}{{!
                         }}{{>lib/value}}{{!
@@ -41,16 +41,16 @@
         }
     }
 
-    impl GetTType for self::{{struct:name}} {
+    impl GetTType for self::{{struct:rust_name}} {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::{{struct:name}} {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::{{struct:rust_name}} {
         fn write(self, p: &mut P) {
             p.write_struct_begin("{{struct:name}}");{{!
             }}{{#struct:fields}}{{!
             }}{{#field:optional?}}
-            if let Some(some) = &self.{{field:ident}} {
+            if let Some(some) = &self.{{field:rust_name}} {
                 p.write_field_begin({{!
                     }}"{{field:name}}", {{!
                     }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
@@ -66,7 +66,7 @@
                 }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
                 }}{{field:key}}{{!
             }});
-            Serialize::write(&self.{{field:ident}}, p);
+            Serialize::write(&self.{{field:rust_name}}, p);
             p.write_field_end();{{!
             }}{{/field:optional?}}{{!
             }}{{/struct:fields}}
@@ -75,7 +75,7 @@
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for self::{{struct:name}} {
+    impl<P: ProtocolReader> Deserialize<P> for self::{{struct:rust_name}} {
         fn read(p: &mut P) -> failure::Fallible<Self> {{>lib/block}}{{!
             }}{{#struct:fields}}
             let mut field_{{field:name}} = None;{{!
@@ -96,7 +96,7 @@
             p.read_struct_end()?;
             Ok(Self {{>lib/block}}{{!
                 }}{{#struct:fields}}
-                {{field:ident}}: field_{{field:name}}{{!
+                {{field:rust_name}}: field_{{field:name}}{{!
                     }}{{^field:optional?}}{{!
                         }}{{#field:default}}{{!
                             }}.unwrap_or_else(|| {{>lib/value}}){{!

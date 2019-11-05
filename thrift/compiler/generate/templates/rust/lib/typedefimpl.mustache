@@ -17,19 +17,19 @@
 }}
 
 {{#typedef:newtype?}}
-    impl GetTType for {{typedef:symbolic}} {
+    impl GetTType for {{typedef:rust_name}} {
         const TTYPE: TType = <{{#typedef:type}}{{>lib/type}}{{/typedef:type}} as GetTType>::TTYPE;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{typedef:symbolic}} {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{typedef:rust_name}} {
         fn write(self, p: &mut P) {
             self.0.write(p)
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for {{typedef:symbolic}} {
+    impl<P: ProtocolReader> Deserialize<P> for {{typedef:rust_name}} {
         fn read(p: &mut P) -> failure::Fallible<Self> {
-            Deserialize::read(p).map({{typedef:symbolic}})
+            Deserialize::read(p).map({{typedef:rust_name}})
         }
     }
 {{/typedef:newtype?}}

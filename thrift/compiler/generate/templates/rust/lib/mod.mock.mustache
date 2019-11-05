@@ -134,12 +134,12 @@
                 let mut closure = self.closure.lock().unwrap();
                 *closure = Box::new(move |{{!
                     }}{{#function:args}}{{!
-                    }}{{field:ident}}{{!
+                    }}{{field:rust_name}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
                 }}| Ok(mock({{!
                     }}{{#function:args}}{{!
-                    }}{{field:ident}}{{!
+                    }}{{field:rust_name}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
                 }})));

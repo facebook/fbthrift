@@ -17,13 +17,13 @@
 }}
 
 {{^typedef:newtype?}}
-    pub type {{typedef:symbolic}} = {{#typedef:type}}{{>lib/type}}{{/typedef:type}};
+    pub type {{typedef:rust_name}} = {{#typedef:type}}{{>lib/type}}{{/typedef:type}};
 {{/typedef:newtype?}}
 {{#typedef:newtype?}}
     #[derive(Default, Clone, Debug, PartialEq{{!
         }}{{#typedef:ord?}}, Eq, PartialOrd, Ord, Hash{{/typedef:ord?}}{{!
         }}{{#program:serde?}}, Serialize, Deserialize{{/program:serde?}}{{!
     }})]
-    pub struct {{typedef:symbolic}}(pub {{#typedef:type}}{{>lib/type}}{{/typedef:type}});
+    pub struct {{typedef:rust_name}}(pub {{#typedef:type}}{{>lib/type}}{{/typedef:type}});
 {{/typedef:newtype?}}
 {{!newline}}

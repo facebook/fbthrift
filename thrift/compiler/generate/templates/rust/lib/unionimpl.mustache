@@ -17,22 +17,22 @@
 }}
 
 {{#struct:union?}}
-    impl Default for {{struct:name}} {
+    impl Default for {{struct:rust_name}} {
         fn default() -> Self {
             Self::UnknownField(-1)
         }
     }
 
-    impl GetTType for {{struct:name}} {
+    impl GetTType for {{struct:rust_name}} {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{struct:name}} {
+    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{struct:rust_name}} {
         fn write(self, p: &mut P) {
             p.write_struct_begin("{{struct:name}}");
             match self {{>lib/block}}{{!
                 }}{{#struct:fields}}
-                {{struct:name}}::{{field:name}}(inner) => {
+                {{struct:rust_name}}::{{field:rust_name}}(inner) => {
                     p.write_field_begin({{!
                         }}"{{field:name}}", {{!
                         }}{{#field:type}}{{>lib/ttype}}{{/field:type}}, {{!
@@ -42,7 +42,7 @@
                     p.write_field_end();
                 }{{!
                 }}{{/struct:fields}}
-                {{struct:name}}::UnknownField(x) => {
+                {{struct:rust_name}}::UnknownField(x) => {
                     p.write_field_begin("UnknownField", TType::I32, *x as i16);
                     x.write(p);
                     p.write_field_end();
@@ -53,7 +53,7 @@
         }
     }
 
-    impl<P: ProtocolReader> Deserialize<P> for {{struct:name}} {
+    impl<P: ProtocolReader> Deserialize<P> for {{struct:rust_name}} {
         fn read(p: &mut P) -> failure::Fallible<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
@@ -65,7 +65,7 @@
                     }}{{#struct:fields}}
                     ({{#field:type}}{{>lib/ttype}}{{/field:type}}, {{field:key}}, false) => {
                         once = true;
-                        alt = Some({{struct:name}}::{{field:name}}(Deserialize::read(p)?));
+                        alt = Some({{struct:rust_name}}::{{field:rust_name}}(Deserialize::read(p)?));
                     }{{!
                     }}{{/struct:fields}}
                     (fty, _, false) => p.skip(fty)?,

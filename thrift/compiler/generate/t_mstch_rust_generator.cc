@@ -293,10 +293,14 @@ class mstch_rust_struct : public mstch_struct {
     register_methods(
         this,
         {
+            {"struct:rust_name", &mstch_rust_struct::rust_name},
             {"struct:package", &mstch_rust_struct::rust_package},
             {"struct:ord?", &mstch_rust_struct::rust_is_ord},
             {"struct:copy?", &mstch_rust_struct::rust_is_copy},
         });
+  }
+  mstch::node rust_name() {
+    return mangle_type(strct_->get_name());
   }
   mstch::node rust_package() {
     return get_import_name(strct_->get_program(), options_);
@@ -407,6 +411,25 @@ class mstch_rust_function : public mstch_function {
   int32_t index_;
 };
 
+class mstch_rust_enum_value : public mstch_enum_value {
+ public:
+  mstch_rust_enum_value(
+      const t_enum_value* enm_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_enum_value(enm_value, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"enumValue:rust_name", &mstch_rust_enum_value::rust_name},
+        });
+  }
+  mstch::node rust_name() {
+    return mangle(enm_value_->get_name());
+  }
+};
+
 class mstch_rust_enum : public mstch_enum {
  public:
   mstch_rust_enum(
@@ -419,9 +442,13 @@ class mstch_rust_enum : public mstch_enum {
     register_methods(
         this,
         {
+            {"enum:rust_name", &mstch_rust_enum::rust_name},
             {"enum:package", &mstch_rust_enum::rust_package},
             {"enum:values?", &mstch_rust_enum::rust_has_values},
         });
+  }
+  mstch::node rust_name() {
+    return mangle_type(enm_->get_name());
   }
   mstch::node rust_package() {
     return get_import_name(enm_->get_program(), options_);
@@ -446,9 +473,13 @@ class mstch_rust_type : public mstch_type {
     register_methods(
         this,
         {
+            {"type:rust_name", &mstch_rust_type::rust_name},
             {"type:package", &mstch_rust_type::rust_package},
             {"type:rust", &mstch_rust_type::rust_type},
         });
+  }
+  mstch::node rust_name() {
+    return mangle_type(type_->get_name());
   }
   mstch::node rust_package() {
     return get_import_name(type_->get_program(), options_);
@@ -752,14 +783,14 @@ class mstch_rust_struct_field : public mstch_base {
     register_methods(
         this,
         {
-            {"field:name", &mstch_rust_struct_field::name},
+            {"field:rust_name", &mstch_rust_struct_field::rust_name},
             {"field:optional?", &mstch_rust_struct_field::is_optional},
             {"field:value", &mstch_rust_struct_field::value},
             {"field:type", &mstch_rust_struct_field::type},
         });
   }
-  mstch::node name() {
-    return name_;
+  mstch::node rust_name() {
+    return mangle(name_);
   }
   mstch::node is_optional() {
     return req_ == t_field::e_req::T_OPTIONAL;
@@ -913,13 +944,13 @@ class mstch_rust_field : public mstch_field {
     register_methods(
         this,
         {
-            {"field:ident", &mstch_rust_field::rust_ident},
+            {"field:rust_name", &mstch_rust_field::rust_name},
             {"field:primitive?", &mstch_rust_field::rust_primitive},
             {"field:rename?", &mstch_rust_field::rust_rename},
             {"field:default", &mstch_rust_field::rust_default},
         });
   }
-  mstch::node rust_ident() {
+  mstch::node rust_name() {
     return mangle(field_->get_name());
   }
   mstch::node rust_primitive() {
@@ -955,9 +986,13 @@ class mstch_rust_typedef : public mstch_typedef {
     register_methods(
         this,
         {
+            {"typedef:rust_name", &mstch_rust_typedef::rust_name},
             {"typedef:newtype?", &mstch_rust_typedef::rust_newtype},
             {"typedef:ord?", &mstch_rust_typedef::rust_ord},
         });
+  }
+  mstch::node rust_name() {
+    return mangle_type(typedf_->get_symbolic());
   }
   mstch::node rust_newtype() {
     return typedf_->annotations_.count("rust.newtype") != 0;
@@ -1056,6 +1091,21 @@ class field_rust_generator : public field_generator {
 
  private:
   const rust_codegen_options& options_;
+};
+
+class enum_value_rust_generator : public enum_value_generator {
+ public:
+  enum_value_rust_generator() = default;
+  ~enum_value_rust_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
+      const t_enum_value* enm_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
+    return std::make_shared<mstch_rust_enum_value>(
+        enm_value, generators, cache, pos);
+  }
 };
 
 class enum_rust_generator : public enum_generator {
@@ -1167,6 +1217,8 @@ void t_mstch_rust_generator::set_mstch_generators() {
       std::make_unique<function_rust_generator>());
   generators_->set_field_generator(
       std::make_unique<field_rust_generator>(options_));
+  generators_->set_enum_value_generator(
+      std::make_unique<enum_value_rust_generator>());
   generators_->set_enum_generator(
       std::make_unique<enum_rust_generator>(options_));
   generators_->set_type_generator(

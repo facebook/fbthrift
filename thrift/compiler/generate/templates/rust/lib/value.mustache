@@ -82,7 +82,7 @@
 }}{{#value:struct?}}{{!
     }}{{>lib/type}} {{>lib/block}}{{!
         }}{{#value:structFields}}
-            {{value:indent}}{{field:name}}: {{!
+            {{value:indent}}{{field:rust_name}}: {{!
             }}{{#field:value}}{{!
                 }}{{#field:optional?}}Some({{/field:optional?}}{{!
                 }}{{>lib/value}}{{!
