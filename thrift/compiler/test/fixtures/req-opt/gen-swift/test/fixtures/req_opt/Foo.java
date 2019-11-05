@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("Foo")
+@ThriftStruct(value="Foo", builder=Foo.Builder.class)
 public final class Foo {
     @ThriftConstructor
     public Foo(
@@ -30,6 +30,7 @@ public final class Foo {
         this.myNumbers = myNumbers;
     }
     
+    @ThriftConstructor
     protected Foo() {
       this.myInteger = 0;
       this.myString = null;
@@ -39,25 +40,25 @@ public final class Foo {
     
     public static class Builder {
         private int myInteger;
-    
+        @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
         public Builder setMyInteger(int myInteger) {
             this.myInteger = myInteger;
             return this;
         }
         private String myString;
-    
+        @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
         }
         private List<Boolean> myBools;
-    
+        @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
         public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
         }
         private List<Integer> myNumbers;
-    
+        @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
         public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
@@ -71,6 +72,7 @@ public final class Foo {
             this.myNumbers = other.myNumbers;
         }
     
+        @ThriftConstructor
         public Foo build() {
             return new Foo (
                 this.myInteger,

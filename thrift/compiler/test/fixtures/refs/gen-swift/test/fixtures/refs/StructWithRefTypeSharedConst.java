@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("StructWithRefTypeSharedConst")
+@ThriftStruct(value="StructWithRefTypeSharedConst", builder=StructWithRefTypeSharedConst.Builder.class)
 public final class StructWithRefTypeSharedConst {
     @ThriftConstructor
     public StructWithRefTypeSharedConst(
@@ -28,6 +28,7 @@ public final class StructWithRefTypeSharedConst {
         this.reqField = reqField;
     }
     
+    @ThriftConstructor
     protected StructWithRefTypeSharedConst() {
       this.defField = null;
       this.optField = null;
@@ -36,19 +37,19 @@ public final class StructWithRefTypeSharedConst {
     
     public static class Builder {
         private test.fixtures.refs.Empty defField;
-    
+        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
         public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
         }
         private test.fixtures.refs.Empty optField;
-    
+        @ThriftField(value=2, name="opt_field", requiredness=Requiredness.OPTIONAL)
         public Builder setOptField(test.fixtures.refs.Empty optField) {
             this.optField = optField;
             return this;
         }
         private test.fixtures.refs.Empty reqField;
-    
+        @ThriftField(value=3, name="req_field", requiredness=Requiredness.REQUIRED)
         public Builder setReqField(test.fixtures.refs.Empty reqField) {
             this.reqField = reqField;
             return this;
@@ -61,6 +62,7 @@ public final class StructWithRefTypeSharedConst {
             this.reqField = other.reqField;
         }
     
+        @ThriftConstructor
         public StructWithRefTypeSharedConst build() {
             return new StructWithRefTypeSharedConst (
                 this.defField,

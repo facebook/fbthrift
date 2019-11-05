@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct")
+@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -28,6 +28,7 @@ public final class MyStruct {
         this.reqRef = reqRef;
     }
     
+    @ThriftConstructor
     protected MyStruct() {
       this.optRef = null;
       this.ref = null;
@@ -36,19 +37,19 @@ public final class MyStruct {
     
     public static class Builder {
         private test.fixtures.refs.MyField optRef;
-    
+        @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
         public Builder setOptRef(test.fixtures.refs.MyField optRef) {
             this.optRef = optRef;
             return this;
         }
         private test.fixtures.refs.MyField ref;
-    
+        @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
         public Builder setRef(test.fixtures.refs.MyField ref) {
             this.ref = ref;
             return this;
         }
         private test.fixtures.refs.MyField reqRef;
-    
+        @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
         public Builder setReqRef(test.fixtures.refs.MyField reqRef) {
             this.reqRef = reqRef;
             return this;
@@ -61,6 +62,7 @@ public final class MyStruct {
             this.reqRef = other.reqRef;
         }
     
+        @ThriftConstructor
         public MyStruct build() {
             return new MyStruct (
                 this.optRef,

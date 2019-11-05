@@ -176,6 +176,12 @@ class mstch_swift_program : public mstch_program {
 };
 
 class mstch_swift_struct : public mstch_struct {
+  // A struct is a "big struct" if it contains > 127 members. The reason for
+  // this limit is that we generate exhaustive constructor for Thrift struct
+  // but Java methods are limited to 255 arguments (and since long/double
+  // types count twice, 127 is a safe threshold).
+  static constexpr uint64_t bigStructThreshold = 127;
+
  public:
   mstch_swift_struct(
       t_struct const* strct,
@@ -192,6 +198,7 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:unionFieldTypeUnique?",
              &mstch_swift_struct::is_union_field_type_unique},
             {"struct:asBean?", &mstch_swift_struct::is_as_bean},
+            {"struct:isBigStruct?", &mstch_swift_struct::is_BigStruct},
             {"struct:javaCapitalName", &mstch_swift_struct::java_capital_name},
             {"struct:javaAnnotation?",
              &mstch_swift_struct::has_java_annotation},
@@ -226,6 +233,13 @@ class mstch_swift_struct : public mstch_struct {
       return false;
     }
   }
+
+  mstch::node is_BigStruct() {
+    return (
+        strct_->is_struct() &&
+        strct_->get_members().size() > bigStructThreshold);
+  }
+
   mstch::node java_capital_name() {
     return java::mangle_java_name(strct_->get_name(), true);
   }

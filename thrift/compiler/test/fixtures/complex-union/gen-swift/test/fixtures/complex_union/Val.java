@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("Val")
+@ThriftStruct(value="Val", builder=Val.Builder.class)
 public final class Val {
     @ThriftConstructor
     public Val(
@@ -28,6 +28,7 @@ public final class Val {
         this.typedefValue = typedefValue;
     }
     
+    @ThriftConstructor
     protected Val() {
       this.strVal = null;
       this.intVal = 0;
@@ -36,19 +37,19 @@ public final class Val {
     
     public static class Builder {
         private String strVal;
-    
+        @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
         public Builder setStrVal(String strVal) {
             this.strVal = strVal;
             return this;
         }
         private int intVal;
-    
+        @ThriftField(value=2, name="intVal", requiredness=Requiredness.NONE)
         public Builder setIntVal(int intVal) {
             this.intVal = intVal;
             return this;
         }
         private Map<Short, String> typedefValue;
-    
+        @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
         public Builder setTypedefValue(Map<Short, String> typedefValue) {
             this.typedefValue = typedefValue;
             return this;
@@ -61,6 +62,7 @@ public final class Val {
             this.typedefValue = other.typedefValue;
         }
     
+        @ThriftConstructor
         public Val build() {
             return new Val (
                 this.strVal,
