@@ -7,26 +7,9 @@
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.py3.server cimport cServerInterface, cAsyncProcessorFactory
+from thrift.py3.server cimport cAsyncProcessorFactory
 from folly cimport cFollyExecutor
 
 
-
-cdef extern from "src/gen-cpp2/PubSubStreamingService.h" namespace "::cpp2":
-    cdef cppclass cPubSubStreamingServiceSvAsyncIf "::cpp2::PubSubStreamingServiceSvAsyncIf":
-      pass
-
-    cdef cppclass cPubSubStreamingServiceSvIf "::cpp2::PubSubStreamingServiceSvIf"(
-            cPubSubStreamingServiceSvAsyncIf,
-            cServerInterface):
-        pass
-
-
-
 cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "::cpp2":
-    cdef cppclass cPubSubStreamingServiceWrapper "::cpp2::PubSubStreamingServiceWrapper"(
-        cPubSubStreamingServiceSvIf
-    ):
-        pass
-
     shared_ptr[cAsyncProcessorFactory] cPubSubStreamingServiceInterface "::cpp2::PubSubStreamingServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
