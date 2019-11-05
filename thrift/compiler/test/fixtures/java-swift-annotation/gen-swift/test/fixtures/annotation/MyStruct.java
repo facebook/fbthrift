@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct") @com.foo.Enabled 
+@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled 
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -30,6 +30,7 @@ public final class MyStruct {
         this.detailMap = detailMap;
     }
     
+    @ThriftConstructor
     protected MyStruct() {
       this.intField = 0L;
       this.stringField = null;
@@ -39,25 +40,25 @@ public final class MyStruct {
     
     public static class Builder {
         private long intField;
-    
+        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
         }
         private String stringField;
-    
+        @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
         }
         private String detailField;
-    
+        @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) @com.foo.Ignored
         public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
         }
         private com.foo.FastIntLongMap detailMap;
-    
+        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) @com.foo.Ignored
         public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
@@ -71,6 +72,7 @@ public final class MyStruct {
             this.detailMap = other.detailMap;
         }
     
+        @ThriftConstructor
         public MyStruct build() {
             return new MyStruct (
                 this.intField,

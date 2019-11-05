@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("Internship")
+@ThriftStruct(value="Internship", builder=Internship.Builder.class)
 public final class Internship {
     @ThriftConstructor
     public Internship(
@@ -28,6 +28,7 @@ public final class Internship {
         this.employer = employer;
     }
     
+    @ThriftConstructor
     protected Internship() {
       this.weeks = 0;
       this.title = null;
@@ -36,19 +37,19 @@ public final class Internship {
     
     public static class Builder {
         private int weeks;
-    
+        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
         public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
         }
         private String title;
-    
+        @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
         public Builder setTitle(String title) {
             this.title = title;
             return this;
         }
         private test.fixtures.constants.Company employer;
-    
+        @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
         public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;
             return this;
@@ -61,6 +62,7 @@ public final class Internship {
             this.employer = other.employer;
         }
     
+        @ThriftConstructor
         public Internship build() {
             return new Internship (
                 this.weeks,

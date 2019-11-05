@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct1")
+@ThriftStruct(value="MyStruct1", builder=MyStruct1.Builder.class)
 public final class MyStruct1 {
     @ThriftConstructor
     public MyStruct1(
@@ -30,6 +30,7 @@ public final class MyStruct1 {
         this.major = major;
     }
     
+    @ThriftConstructor
     protected MyStruct1() {
       this.myIntField = 0L;
       this.myStringField = null;
@@ -39,25 +40,25 @@ public final class MyStruct1 {
     
     public static class Builder {
         private long myIntField;
-    
+        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
         private String myStringField;
-    
+        @ThriftField(value=2, name="MyStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
         }
         private test.fixtures.basic_swift_bean.MyDataItem myDataField;
-    
+        @ThriftField(value=3, name="MyDataField", requiredness=Requiredness.NONE)
         public Builder setMyDataField(test.fixtures.basic_swift_bean.MyDataItem myDataField) {
             this.myDataField = myDataField;
             return this;
         }
         private long major;
-    
+        @ThriftField(value=4, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;
@@ -71,6 +72,7 @@ public final class MyStruct1 {
             this.major = other.major;
         }
     
+        @ThriftConstructor
         public MyStruct1 build() {
             return new MyStruct1 (
                 this.myIntField,

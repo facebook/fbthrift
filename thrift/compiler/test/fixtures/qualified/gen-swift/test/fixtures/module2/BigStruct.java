@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("BigStruct")
+@ThriftStruct(value="BigStruct", builder=BigStruct.Builder.class)
 public final class BigStruct {
     @ThriftConstructor
     public BigStruct(
@@ -26,6 +26,7 @@ public final class BigStruct {
         this.id = id;
     }
     
+    @ThriftConstructor
     protected BigStruct() {
       this.s = null;
       this.id = 0;
@@ -33,13 +34,13 @@ public final class BigStruct {
     
     public static class Builder {
         private test.fixtures.module2.Struct s;
-    
+        @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
         public Builder setS(test.fixtures.module2.Struct s) {
             this.s = s;
             return this;
         }
         private int id;
-    
+        @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
         public Builder setId(int id) {
             this.id = id;
             return this;
@@ -51,6 +52,7 @@ public final class BigStruct {
             this.id = other.id;
         }
     
+        @ThriftConstructor
         public BigStruct build() {
             return new BigStruct (
                 this.s,

@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyField")
+@ThriftStruct(value="MyField", builder=MyField.Builder.class)
 public final class MyField {
     @ThriftConstructor
     public MyField(
@@ -28,6 +28,7 @@ public final class MyField {
         this.reqValue = reqValue;
     }
     
+    @ThriftConstructor
     protected MyField() {
       this.optValue = null;
       this.value = 0L;
@@ -36,19 +37,19 @@ public final class MyField {
     
     public static class Builder {
         private Long optValue;
-    
+        @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
         public Builder setOptValue(Long optValue) {
             this.optValue = optValue;
             return this;
         }
         private long value;
-    
+        @ThriftField(value=2, name="value", requiredness=Requiredness.NONE)
         public Builder setValue(long value) {
             this.value = value;
             return this;
         }
         private long reqValue;
-    
+        @ThriftField(value=3, name="req_value", requiredness=Requiredness.REQUIRED)
         public Builder setReqValue(long reqValue) {
             this.reqValue = reqValue;
             return this;
@@ -61,6 +62,7 @@ public final class MyField {
             this.reqValue = other.reqValue;
         }
     
+        @ThriftConstructor
         public MyField build() {
             return new MyField (
                 this.optValue,

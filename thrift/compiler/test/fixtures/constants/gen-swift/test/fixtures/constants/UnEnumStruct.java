@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("UnEnumStruct")
+@ThriftStruct(value="UnEnumStruct", builder=UnEnumStruct.Builder.class)
 public final class UnEnumStruct {
     @ThriftConstructor
     public UnEnumStruct(
@@ -24,13 +24,14 @@ public final class UnEnumStruct {
         this.city = city;
     }
     
+    @ThriftConstructor
     protected UnEnumStruct() {
       this.city = null;
     }
     
     public static class Builder {
         private test.fixtures.constants.City city;
-    
+        @ThriftField(value=1, name="city", requiredness=Requiredness.NONE)
         public Builder setCity(test.fixtures.constants.City city) {
             this.city = city;
             return this;
@@ -41,6 +42,7 @@ public final class UnEnumStruct {
             this.city = other.city;
         }
     
+        @ThriftConstructor
         public UnEnumStruct build() {
             return new UnEnumStruct (
                 this.city

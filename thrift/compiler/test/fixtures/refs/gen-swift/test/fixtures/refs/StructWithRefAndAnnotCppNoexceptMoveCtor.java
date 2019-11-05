@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("StructWithRefAndAnnotCppNoexceptMoveCtor")
+@ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
 public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
@@ -24,13 +24,14 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
         this.defField = defField;
     }
     
+    @ThriftConstructor
     protected StructWithRefAndAnnotCppNoexceptMoveCtor() {
       this.defField = null;
     }
     
     public static class Builder {
         private test.fixtures.refs.Empty defField;
-    
+        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
         public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
@@ -41,6 +42,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
             this.defField = other.defField;
         }
     
+        @ThriftConstructor
         public StructWithRefAndAnnotCppNoexceptMoveCtor build() {
             return new StructWithRefAndAnnotCppNoexceptMoveCtor (
                 this.defField

@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct")
+@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -26,6 +26,7 @@ public final class MyStruct {
         this.myBigEnum = myBigEnum;
     }
     
+    @ThriftConstructor
     protected MyStruct() {
       this.myEnum = null;
       this.myBigEnum = null;
@@ -33,13 +34,13 @@ public final class MyStruct {
     
     public static class Builder {
         private test.fixtures.swift.enumstrict.MyEnum myEnum;
-    
+        @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.swift.enumstrict.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
         }
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum;
-    
+        @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
         public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;
@@ -51,6 +52,7 @@ public final class MyStruct {
             this.myBigEnum = other.myBigEnum;
         }
     
+        @ThriftConstructor
         public MyStruct build() {
             return new MyStruct (
                 this.myEnum,

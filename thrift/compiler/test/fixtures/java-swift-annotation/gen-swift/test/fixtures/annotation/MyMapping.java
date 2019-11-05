@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyMapping")
+@ThriftStruct(value="MyMapping", builder=MyMapping.Builder.class)
 public final class MyMapping {
     @ThriftConstructor
     public MyMapping(
@@ -26,6 +26,7 @@ public final class MyMapping {
         this.ioMap = ioMap;
     }
     
+    @ThriftConstructor
     protected MyMapping() {
       this.lsMap = null;
       this.ioMap = null;
@@ -33,13 +34,13 @@ public final class MyMapping {
     
     public static class Builder {
         private com.foo.FastLongStringMap lsMap;
-    
+        @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(com.foo.FastLongStringMap lsMap) {
             this.lsMap = lsMap;
             return this;
         }
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
-    
+        @ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
         public Builder setIoMap(com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap) {
             this.ioMap = ioMap;
             return this;
@@ -51,6 +52,7 @@ public final class MyMapping {
             this.ioMap = other.ioMap;
         }
     
+        @ThriftConstructor
         public MyMapping build() {
             return new MyMapping (
                 this.lsMap,
