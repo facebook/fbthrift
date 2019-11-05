@@ -371,6 +371,43 @@ TEST_P(StreamingTest, ClientStreamBridge) {
   });
 }
 
+TEST_P(StreamingTest, ClientStreamBridgeLifeTimeTesting) {
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto channel = client->getChannel();
+    auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
+        std::shared_ptr<apache::thrift::RequestChannel>(
+            channel, [client = std::move(client)](auto*) {}));
+
+    auto waitForInstanceCount = [&](int count) {
+      auto start = std::chrono::steady_clock::now();
+      while (std::chrono::steady_clock::now() - start <
+             std::chrono::seconds{1}) {
+        if (bufferedClient->sync_instanceCount() == count) {
+          break;
+        }
+      }
+      EXPECT_EQ(count, bufferedClient->sync_instanceCount());
+    };
+
+    {
+      {
+        auto f = bufferedClient->semifuture_leakCheck(0, 1000);
+        waitForInstanceCount(1);
+      }
+
+      waitForInstanceCount(0);
+    }
+
+    {
+      auto f = bufferedClient->semifuture_leakCheck(0, 1000);
+      waitForInstanceCount(1);
+
+      std::move(f).get();
+      waitForInstanceCount(0);
+    }
+  });
+}
+
 TEST_P(StreamingTest, ClientStreamBridgeStress) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto channel = client->getChannel();

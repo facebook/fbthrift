@@ -40,12 +40,20 @@ class ClientStreamBridge : public TwoWayBridge<
                                ClientStreamBridge>,
                            private StreamClientCallback {
  public:
+  struct ClientDeleter : Deleter {
+    void operator()(ClientStreamBridge* ptr) {
+      ptr->cancel();
+      Deleter::operator()(ptr);
+    }
+  };
+  using ClientPtr = std::unique_ptr<ClientStreamBridge, ClientDeleter>;
+
   class FirstResponseCallback {
    public:
     virtual ~FirstResponseCallback() = default;
     virtual void onFirstResponse(
         FirstResponsePayload&&,
-        Ptr clientStreamBridge) = 0;
+        ClientPtr clientStreamBridge) = 0;
     virtual void onFirstResponseError(folly::exception_wrapper) = 0;
   };
 
@@ -93,7 +101,8 @@ class ClientStreamBridge : public TwoWayBridge<
     streamServerCallback_ = streamServerCallback;
     auto scheduledWait = serverWait(this);
     DCHECK(scheduledWait);
-    firstResponseCallback->onFirstResponse(std::move(payload), copy());
+    firstResponseCallback->onFirstResponse(
+        std::move(payload), ClientPtr(copy().release()));
   }
 
   void onFirstResponseError(folly::exception_wrapper ew) override {

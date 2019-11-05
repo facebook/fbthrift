@@ -30,7 +30,7 @@ class ClientBufferedStream {
  public:
   ClientBufferedStream() {}
   ClientBufferedStream(
-      detail::ClientStreamBridge::Ptr streamBridge,
+      detail::ClientStreamBridge::ClientPtr streamBridge,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
       int32_t bufferSize)
       : streamBridge_(std::move(streamBridge)),
@@ -40,9 +40,6 @@ class ClientBufferedStream {
   template <typename OnNextTry>
   void subscribeInline(OnNextTry&& onNextTry) && {
     auto streamBridge = std::move(streamBridge_);
-    SCOPE_EXIT {
-      streamBridge->cancel();
-    };
 
     int32_t outstanding = bufferSize_;
 
@@ -139,15 +136,9 @@ class ClientBufferedStream {
  private:
 #if FOLLY_HAS_COROUTINES
   static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
-      detail::ClientStreamBridge::Ptr streamBridge,
+      detail::ClientStreamBridge::ClientPtr streamBridge,
       int32_t bufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
-    SCOPE_EXIT {
-      if (streamBridge) {
-        streamBridge->cancel();
-      }
-    };
-
     int32_t outstanding = bufferSize;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
@@ -211,8 +202,8 @@ class ClientBufferedStream {
 #endif // FOLLY_HAS_COROUTINES
 
   struct SharedState {
-    explicit SharedState(detail::ClientStreamBridge::Ptr sb)
-        : streamBridge(std::move(sb)) {}
+    explicit SharedState(detail::ClientStreamBridge::ClientPtr sb)
+        : streamBridge(sb.release()) {}
     folly::Promise<folly::Unit> promise;
     detail::ClientStreamBridge::Ptr streamBridge;
   };
@@ -262,7 +253,7 @@ class ClientBufferedStream {
     Continuation(
         folly::Executor::KeepAlive<> e,
         OnNextTry onNextTry,
-        detail::ClientStreamBridge::Ptr streamBridge,
+        detail::ClientStreamBridge::ClientPtr streamBridge,
         folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
         int32_t bufferSize)
         : e_(e),
@@ -351,7 +342,7 @@ class ClientBufferedStream {
     friend class ClientBufferedStream;
   };
 
-  detail::ClientStreamBridge::Ptr streamBridge_;
+  detail::ClientStreamBridge::ClientPtr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
   int32_t bufferSize_{0};
 };

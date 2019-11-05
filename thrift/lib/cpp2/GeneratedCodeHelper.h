@@ -422,7 +422,7 @@ folly::Try<T> decode_stream_element(
 
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
-    apache::thrift::detail::ClientStreamBridge::Ptr streamBridge,
+    apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
     int32_t bufferSize);
 
 template <typename Protocol, typename PResult, typename T>
@@ -1078,7 +1078,7 @@ folly::Try<T> decode_stream_element(
 
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
-    apache::thrift::detail::ClientStreamBridge::Ptr streamBridge,
+    apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
     int32_t bufferSize) {
   return apache::thrift::ClientBufferedStream<T>(
       std::move(streamBridge),

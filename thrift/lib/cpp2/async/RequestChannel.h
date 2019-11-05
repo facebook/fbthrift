@@ -197,7 +197,7 @@ inline StreamClientCallback* createStreamClientCallback(
 
     void onFirstResponse(
         FirstResponsePayload&& firstResponse,
-        detail::ClientStreamBridge::Ptr clientStreamBridge) override {
+        detail::ClientStreamBridge::ClientPtr clientStreamBridge) override {
       auto tHeader = std::make_unique<transport::THeader>();
       tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
       detail::fillTHeaderFromResponseRpcMetadata(
