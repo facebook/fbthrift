@@ -210,6 +210,10 @@ class AtomicQueue {
       case Type::TAIL:
         return makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
       case Type::CLOSED:
+        // We accidentally re-opened the queue, so close it again.
+        // This is only safe to do because isClosed() can't be called
+        // concurrently with getMessages().
+        close();
         return MessageQueue();
       default:
         folly::assume_unreachable();

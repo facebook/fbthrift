@@ -101,8 +101,15 @@ TEST(AtomicQueueTest, Canceled) {
   EXPECT_TRUE(atomicQueue.wait(&consumer));
   atomicQueue.close();
   EXPECT_TRUE(consumer.canceledCalled);
+  EXPECT_TRUE(atomicQueue.isClosed());
+
+  EXPECT_TRUE(atomicQueue.getMessages().empty());
+  EXPECT_TRUE(atomicQueue.isClosed());
 
   atomicQueue.push(42);
+
+  EXPECT_TRUE(atomicQueue.getMessages().empty());
+  EXPECT_TRUE(atomicQueue.isClosed());
 }
 
 TEST(AtomicQueueTest, Stress) {
