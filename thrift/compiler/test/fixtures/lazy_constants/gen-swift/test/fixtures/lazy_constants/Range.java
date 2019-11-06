@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Range", builder=Range.Builder.class)
+@ThriftStruct("Range")
 public final class Range {
     @ThriftConstructor
     public Range(
@@ -26,7 +26,6 @@ public final class Range {
         this.max = max;
     }
     
-    @ThriftConstructor
     protected Range() {
       this.min = 0;
       this.max = 0;
@@ -34,13 +33,13 @@ public final class Range {
     
     public static class Builder {
         private int min;
-        @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
+    
         public Builder setMin(int min) {
             this.min = min;
             return this;
         }
         private int max;
-        @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
+    
         public Builder setMax(int max) {
             this.max = max;
             return this;
@@ -52,7 +51,6 @@ public final class Range {
             this.max = other.max;
         }
     
-        @ThriftConstructor
         public Range build() {
             return new Range (
                 this.min,

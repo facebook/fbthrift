@@ -24,14 +24,13 @@ public final class Serious extends RuntimeException {
         this.sonnet = sonnet;
     }
     
-    @ThriftConstructor
     protected Serious() {
       this.sonnet = null;
     }
     
     public static class Builder {
         private String sonnet;
-        @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
+    
         public Builder setSonnet(String sonnet) {
             this.sonnet = sonnet;
             return this;
@@ -42,7 +41,6 @@ public final class Serious extends RuntimeException {
             this.sonnet = other.sonnet;
         }
     
-        @ThriftConstructor
         public Serious build() {
             return new Serious (
                 this.sonnet

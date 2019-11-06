@@ -24,14 +24,13 @@ public final class Fiery extends RuntimeException {
         this.message = message;
     }
     
-    @ThriftConstructor
     protected Fiery() {
       this.message = null;
     }
     
     public static class Builder {
         private String message;
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+    
         public Builder setMessage(String message) {
             this.message = message;
             return this;
@@ -42,7 +41,6 @@ public final class Fiery extends RuntimeException {
             this.message = other.message;
         }
     
-        @ThriftConstructor
         public Fiery build() {
             return new Fiery (
                 this.message

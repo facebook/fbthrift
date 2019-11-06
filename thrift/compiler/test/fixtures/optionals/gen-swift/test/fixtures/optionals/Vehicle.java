@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Vehicle", builder=Vehicle.Builder.class)
+@ThriftStruct("Vehicle")
 public final class Vehicle {
     @ThriftConstructor
     public Vehicle(
@@ -32,7 +32,6 @@ public final class Vehicle {
         this.hasAC = hasAC;
     }
     
-    @ThriftConstructor
     protected Vehicle() {
       this.color = null;
       this.licensePlate = null;
@@ -43,31 +42,31 @@ public final class Vehicle {
     
     public static class Builder {
         private test.fixtures.optionals.Color color;
-        @ThriftField(value=1, name="color", requiredness=Requiredness.NONE)
+    
         public Builder setColor(test.fixtures.optionals.Color color) {
             this.color = color;
             return this;
         }
         private String licensePlate;
-        @ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL)
+    
         public Builder setLicensePlate(String licensePlate) {
             this.licensePlate = licensePlate;
             return this;
         }
         private String description;
-        @ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL)
+    
         public Builder setDescription(String description) {
             this.description = description;
             return this;
         }
         private String name;
-        @ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)
+    
         public Builder setName(String name) {
             this.name = name;
             return this;
         }
         private Boolean hasAC;
-        @ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)
+    
         public Builder setHasAC(Boolean hasAC) {
             this.hasAC = hasAC;
             return this;
@@ -82,7 +81,6 @@ public final class Vehicle {
             this.hasAC = other.hasAC;
         }
     
-        @ThriftConstructor
         public Vehicle build() {
             return new Vehicle (
                 this.color,

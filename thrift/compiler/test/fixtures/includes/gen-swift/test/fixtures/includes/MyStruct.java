@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+@ThriftStruct("MyStruct")
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -28,7 +28,6 @@ public final class MyStruct {
         this.myIncludedInt = myIncludedInt;
     }
     
-    @ThriftConstructor
     protected MyStruct() {
       this.myIncludedField = null;
       this.myOtherIncludedField = null;
@@ -37,19 +36,19 @@ public final class MyStruct {
     
     public static class Builder {
         private test.fixtures.includes.includes.Included myIncludedField;
-        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
+    
         public Builder setMyIncludedField(test.fixtures.includes.includes.Included myIncludedField) {
             this.myIncludedField = myIncludedField;
             return this;
         }
         private test.fixtures.includes.includes.Included myOtherIncludedField;
-        @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
+    
         public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
             this.myOtherIncludedField = myOtherIncludedField;
             return this;
         }
         private long myIncludedInt;
-        @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
+    
         public Builder setMyIncludedInt(long myIncludedInt) {
             this.myIncludedInt = myIncludedInt;
             return this;
@@ -62,7 +61,6 @@ public final class MyStruct {
             this.myIncludedInt = other.myIncludedInt;
         }
     
-        @ThriftConstructor
         public MyStruct build() {
             return new MyStruct (
                 this.myIncludedField,

@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
+@ThriftStruct("StructWithSharedConst")
 public final class StructWithSharedConst {
     @ThriftConstructor
     public StructWithSharedConst(
@@ -28,7 +28,6 @@ public final class StructWithSharedConst {
         this.reqSharedConst = reqSharedConst;
     }
     
-    @ThriftConstructor
     protected StructWithSharedConst() {
       this.optSharedConst = null;
       this.sharedConst = null;
@@ -37,19 +36,19 @@ public final class StructWithSharedConst {
     
     public static class Builder {
         private test.fixtures.refs.MyField optSharedConst;
-        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
+    
         public Builder setOptSharedConst(test.fixtures.refs.MyField optSharedConst) {
             this.optSharedConst = optSharedConst;
             return this;
         }
         private test.fixtures.refs.MyField sharedConst;
-        @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
+    
         public Builder setSharedConst(test.fixtures.refs.MyField sharedConst) {
             this.sharedConst = sharedConst;
             return this;
         }
         private test.fixtures.refs.MyField reqSharedConst;
-        @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
+    
         public Builder setReqSharedConst(test.fixtures.refs.MyField reqSharedConst) {
             this.reqSharedConst = reqSharedConst;
             return this;
@@ -62,7 +61,6 @@ public final class StructWithSharedConst {
             this.reqSharedConst = other.reqSharedConst;
         }
     
-        @ThriftConstructor
         public StructWithSharedConst build() {
             return new StructWithSharedConst (
                 this.optSharedConst,

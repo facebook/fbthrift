@@ -21,7 +21,6 @@ public {{struct:javaCapitalName}}() {
 }
 {{/struct:asBean?}}
 {{^struct:asBean?}}
-{{^struct:isBigStruct?}}
 @ThriftConstructor
 public {{struct:javaCapitalName}}(
     {{#struct:fields}}
@@ -33,10 +32,7 @@ public {{struct:javaCapitalName}}(
     {{/struct:fields}}
 }
 
-{{/struct:isBigStruct?}}
-{{#struct:fields?}}
-@ThriftConstructor
-protected {{struct:javaCapitalName}}() {
+{{#struct:fields?}}protected {{struct:javaCapitalName}}() {
   {{#struct:fields}}
   this.{{field:javaName}} = {{field:javaDefaultValue}};
   {{/struct:fields}}

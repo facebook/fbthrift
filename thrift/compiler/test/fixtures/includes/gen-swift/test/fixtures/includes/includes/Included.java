@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Included", builder=Included.Builder.class)
+@ThriftStruct("Included")
 public final class Included {
     @ThriftConstructor
     public Included(
@@ -26,7 +26,6 @@ public final class Included {
         this.myTransitiveField = myTransitiveField;
     }
     
-    @ThriftConstructor
     protected Included() {
       this.myIntField = 0L;
       this.myTransitiveField = null;
@@ -34,13 +33,13 @@ public final class Included {
     
     public static class Builder {
         private long myIntField;
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
         }
         private test.fixtures.includes.transitive.Foo myTransitiveField;
-        @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
+    
         public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
@@ -52,7 +51,6 @@ public final class Included {
             this.myTransitiveField = other.myTransitiveField;
         }
     
-        @ThriftConstructor
         public Included build() {
             return new Included (
                 this.myIntField,
