@@ -67,11 +67,13 @@ void RocketStreamClientCallback::onFirstResponse(
   serverCallback_ = serverCallback;
 
   DCHECK(tokens_ != 0);
+  int tokens = 0;
   if (--tokens_) {
-    request(std::exchange(tokens_, 0));
+    tokens = std::exchange(tokens_, 0);
   } else {
     scheduleTimeout();
   }
+
   // compress the response if needed
   compressResponse(firstResponse);
 
@@ -81,6 +83,9 @@ void RocketStreamClientCallback::onFirstResponse(
   // ownership of the RocketStreamClientCallback transfers to connection
   // after onFirstResponse.
   context_.takeOwnership(this);
+  if (tokens) {
+    request(tokens);
+  }
 }
 
 void RocketStreamClientCallback::onFirstResponseError(
