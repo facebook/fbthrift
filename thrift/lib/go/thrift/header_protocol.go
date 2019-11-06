@@ -80,9 +80,12 @@ func (p *HeaderProtocol) ResetProtocol() error {
 
 func (p *HeaderProtocol) WriteMessageBegin(name string, typeId MessageType, seqid int32) error {
 	p.ResetProtocol()
-	// Set the seqid in the header as well as the message.
-	// see https://github.com/apache/thrift/blob/master/doc/specs/SequenceNumbers.md
-	p.trans.SetSeqID(uint32(seqid))
+
+	// The conditions here only match on the Go client side.
+	// If we are a client, set header seq id same as msg id
+	if typeId == CALL || typeId == ONEWAY {
+		p.trans.SetSeqID(uint32(seqid))
+	}
 	return p.Protocol.WriteMessageBegin(name, typeId, seqid)
 }
 
@@ -102,18 +105,11 @@ func (p *HeaderProtocol) ReadMessageBegin() (name string, typeId MessageType, se
 		return name, EXCEPTION, seqid, err
 	}
 
-	name, typeId, seqid, err = p.Protocol.ReadMessageBegin()
-
-	if p.trans.clientType == HeaderClientType {
-		// since we are speaking a header protocol, we use seq id from the header rather
-		// than from the underlying thrift protocol message.
-		// see cpp implementation of header transport.
-		// see https://github.com/apache/thrift/blob/master/doc/specs/SequenceNumbers.md
-		// for a quite ambiguous explanation that does not clarify whether a server
-		// should prefer header seq id vs message seq id.
-		seqid = int32(p.trans.SeqID())
-	}
-	return name, typeId, seqid, err
+	// see https://github.com/apache/thrift/blob/master/doc/specs/SequenceNumbers.md
+	// TODO:  This is a bug. if we are speaking header protocol, we should be using
+	// seq id from the header. However, doing it here creates a non-backwards
+	// compatible code between client and server, since they both use this code.
+	return p.Protocol.ReadMessageBegin()
 }
 
 func (p *HeaderProtocol) Flush() (err error) {

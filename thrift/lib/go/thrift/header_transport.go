@@ -59,12 +59,13 @@ type HeaderTransport struct {
 	persistentWriteInfoHeaders map[string]string
 
 	// Negotiated
-	protoID         ProtocolID
-	readSeqID       uint32 // read
-	writeSeqID      uint32 // written
-	flags           uint16
-	clientType      ClientType
-	writeTransforms []TransformID
+	protoID            ProtocolID
+	readSeqID          uint32 // read (and written, if not set explicitly)
+	writeSeqID         uint32 // written, if set by user of transport
+	seqIDExplicitlySet bool
+	flags              uint16
+	clientType         ClientType
+	writeTransforms    []TransformID
 }
 
 // NewHeaderTransport Create a new transport with defaults.
@@ -87,6 +88,7 @@ func NewHeaderTransport(transport Transport) *HeaderTransport {
 }
 
 func (t *HeaderTransport) SetSeqID(seq uint32) {
+	t.seqIDExplicitlySet = true
 	t.writeSeqID = seq
 }
 
@@ -384,7 +386,12 @@ func (t *HeaderTransport) flushHeader() error {
 	hdr := tHeader{}
 	hdr.headers = t.writeInfoHeaders
 	hdr.pHeaders = t.persistentWriteInfoHeaders
-	hdr.seq = t.writeSeqID
+	if t.seqIDExplicitlySet {
+		t.seqIDExplicitlySet = false
+		hdr.seq = t.writeSeqID
+	} else {
+		hdr.seq = t.readSeqID
+	}
 	hdr.transforms = t.writeTransforms
 
 	// protoID, clientType, and flags are state taken from what was recently read
