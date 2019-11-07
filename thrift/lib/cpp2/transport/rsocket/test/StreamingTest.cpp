@@ -436,6 +436,19 @@ TEST_P(StreamingTest, ClientStreamBridgeStress) {
       EXPECT_LT(expected, 1000);
       EXPECT_GE(expected, i);
     }
+
+    for (size_t i = 0; i < 100; ++i) {
+      size_t expected = 0;
+      apache::thrift::RpcOptions opt;
+      opt.setChunkBufferSize(i % 10 + 1);
+      bufferedClient->sync_range(opt, 0, 20)
+          .subscribeInline([&](folly::Try<int32_t>&& next) {
+            if (next.hasValue()) {
+              EXPECT_EQ(expected++, *next);
+            }
+          });
+      EXPECT_EQ(expected, 20);
+    }
   });
 }
 

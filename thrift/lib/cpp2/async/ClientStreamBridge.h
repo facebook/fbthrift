@@ -83,10 +83,12 @@ class ClientStreamBridge : public TwoWayBridge<
 
   void consume() {
     DCHECK(serverExecutor_);
-    serverExecutor_->add([self = copy()]() { self->processCredits(); });
+    serverExecutor_->add([this]() { processCredits(); });
   }
 
-  void canceled() {}
+  void canceled() {
+    serverCleanup();
+  }
 
  private:
   explicit ClientStreamBridge(FirstResponseCallback* callback)
@@ -107,7 +109,7 @@ class ClientStreamBridge : public TwoWayBridge<
 
   void onFirstResponseError(folly::exception_wrapper ew) override {
     firstResponseCallback_->onFirstResponseError(std::move(ew));
-    close();
+    serverCleanup();
   }
 
   void onStreamNext(StreamPayload&& payload) override {
@@ -116,12 +118,12 @@ class ClientStreamBridge : public TwoWayBridge<
 
   void onStreamError(folly::exception_wrapper ew) override {
     serverPush(folly::Try<StreamPayload>(std::move(ew)));
-    close();
+    serverClose();
   }
 
   void onStreamComplete() override {
     serverPush(folly::Try<StreamPayload>());
-    close();
+    serverClose();
   }
 
   void resetServerCallback(StreamServerCallback& serverCallback) override {
@@ -129,17 +131,19 @@ class ClientStreamBridge : public TwoWayBridge<
   }
 
   void processCredits() {
-    if (!streamServerCallback_) {
+    if (isServerClosed()) {
+      serverCleanup();
       return;
     }
 
+    // serverClose() can't be called until this loop finishes
     int64_t credits = 0;
     while (!serverWait(this)) {
       for (auto messages = serverGetMessages(); !messages.empty();
            messages.pop()) {
         if (messages.front() == -1) {
           streamServerCallback_->onStreamCancel();
-          close();
+          serverCleanup();
           return;
         }
         credits += messages.front();
@@ -149,8 +153,7 @@ class ClientStreamBridge : public TwoWayBridge<
     streamServerCallback_->onStreamRequestN(credits);
   }
 
-  void close() {
-    serverClose();
+  void serverCleanup() {
     streamServerCallback_ = nullptr;
     serverExecutor_.reset();
     Ptr(this);
