@@ -41,6 +41,14 @@ func NewSerializer() *Serializer {
 	return &Serializer{transport, protocol}
 }
 
+// NewCompactSerializer creates a new serializer using the compact protocol
+func NewCompactSerializer() *Serializer {
+	transport := NewMemoryBufferLen(1024)
+	protocol := NewCompactProtocolFactory().GetProtocol(transport)
+
+	return &Serializer{transport, protocol}
+}
+
 // WriteString writes msg to the serializer and returns it as a string
 func (s *Serializer) WriteString(msg Struct) (str string, err error) {
 	s.Transport.Reset()

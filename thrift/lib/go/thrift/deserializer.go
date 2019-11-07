@@ -32,6 +32,17 @@ func NewDeserializer() *Deserializer {
 		protocol}
 }
 
+// NewCompactDeserializer creates a new deserializer using the compact protocol
+func NewCompactDeserializer() *Deserializer {
+	var transport Transport
+	transport = NewMemoryBufferLen(1024)
+	protocol := NewCompactProtocolFactory().GetProtocol(transport)
+
+	return &Deserializer{
+		transport,
+		protocol}
+}
+
 func (t *Deserializer) ReadString(msg Struct, s string) (err error) {
 	err = nil
 	if _, err = t.Transport.Write([]byte(s)); err != nil {
