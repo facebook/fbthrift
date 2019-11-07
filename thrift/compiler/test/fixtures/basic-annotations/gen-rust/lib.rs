@@ -15,6 +15,7 @@ pub mod types {
         pub major: i64,
         pub package: String,
         pub annotation_with_quote: String,
+        pub class_: String,
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]
@@ -108,6 +109,7 @@ pub mod types {
                 major: Default::default(),
                 package: Default::default(),
                 annotation_with_quote: Default::default(),
+                class_: Default::default(),
             }
         }
     }
@@ -128,6 +130,9 @@ pub mod types {
             p.write_field_begin("annotation_with_quote", TType::String, 3);
             Serialize::write(&self.annotation_with_quote, p);
             p.write_field_end();
+            p.write_field_begin("class_", TType::String, 4);
+            Serialize::write(&self.class_, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -138,6 +143,7 @@ pub mod types {
             let mut field_major = None;
             let mut field_package = None;
             let mut field_annotation_with_quote = None;
+            let mut field_class_ = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -146,6 +152,7 @@ pub mod types {
                     (TType::I64, 1) => field_major = Some(Deserialize::read(p)?),
                     (TType::String, 2) => field_package = Some(Deserialize::read(p)?),
                     (TType::String, 3) => field_annotation_with_quote = Some(Deserialize::read(p)?),
+                    (TType::String, 4) => field_class_ = Some(Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -155,6 +162,7 @@ pub mod types {
                 major: field_major.unwrap_or_default(),
                 package: field_package.unwrap_or_default(),
                 annotation_with_quote: field_annotation_with_quote.unwrap_or_default(),
+                class_: field_class_.unwrap_or_default(),
             })
         }
     }

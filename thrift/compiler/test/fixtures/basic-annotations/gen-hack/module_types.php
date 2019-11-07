@@ -36,19 +36,25 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'var' => 'annotation_with_quote',
       'type' => \TType::STRING,
     ),
+    4 => shape(
+      'var' => 'class_',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'major' => 1,
     'package' => 2,
     'annotation_with_quote' => 3,
+    'class_' => 4,
   ];
   const type TShape = shape(
     'major' => int,
     'package' => string,
     'annotation_with_quote' => string,
+    'class_' => string,
     ...
   );
-  const int STRUCTURAL_ID = 1424269378300726113;
+  const int STRUCTURAL_ID = 3316847923183484409;
   /**
    * Original thrift field:-
    * 1: i64 major
@@ -64,9 +70,14 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 3: string annotation_with_quote
    */
   public string $annotation_with_quote;
+  /**
+   * Original thrift field:-
+   * 4: string class_
+   */
+  public string $class_;
 
   <<__Rx>>
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null  ) {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null  ) {
     if ($major === null) {
       $this->major = 0;
     } else {
@@ -82,6 +93,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     } else {
       $this->annotation_with_quote = $annotation_with_quote;
     }
+    if ($class_ === null) {
+      $this->class_ = '';
+    } else {
+      $this->class_ = $class_;
+    }
   }
 
   public function getName(): string {
@@ -93,6 +109,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $me->major = $shape['major'];
     $me->package = $shape['package'];
     $me->annotation_with_quote = $shape['annotation_with_quote'];
+    $me->class_ = $shape['class_'];
     return $me;
   }
 
@@ -102,6 +119,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'major' => $this->major,
       'package' => $this->package,
       'annotation_with_quote' => $this->annotation_with_quote,
+      'class_' => $this->class_,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -119,6 +137,9 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'annotation_with_quote') !== null) {
       $this->annotation_with_quote = /* HH_FIXME[4110] */ $parsed['annotation_with_quote'];
+    }    
+    if (idx($parsed, 'class_') !== null) {
+      $this->class_ = /* HH_FIXME[4110] */ $parsed['class_'];
     }    
   }
 

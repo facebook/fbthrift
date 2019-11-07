@@ -29,7 +29,8 @@ struct MyStruct {
   # package is a reserved keyword in Java, Thrift should be able to handle this
   2: string package (java.swift.name = "_package"),
   # should generate valid code even with double quotes in an annotation
-  3: string annotation_with_quote (go.tag = 'tag:"somevalue"')
+  3: string annotation_with_quote (go.tag = 'tag:"somevalue"'),
+  4: string class_ (java.swift.name = "class_")
 }
 
 service MyService {

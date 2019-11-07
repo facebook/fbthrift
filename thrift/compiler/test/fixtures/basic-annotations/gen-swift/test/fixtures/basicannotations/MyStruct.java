@@ -21,17 +21,20 @@ public final class MyStruct {
     public MyStruct(
         @ThriftField(value=1, name="major", requiredness=Requiredness.NONE) final long major,
         @ThriftField(value=2, name="package", requiredness=Requiredness.NONE) final String _package,
-        @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote
+        @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE) final String annotationWithQuote,
+        @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE) final String class_
     ) {
         this.major = major;
         this._package = _package;
         this.annotationWithQuote = annotationWithQuote;
+        this.class_ = class_;
     }
     
     protected MyStruct() {
       this.major = 0L;
       this._package = null;
       this.annotationWithQuote = null;
+      this.class_ = null;
     }
     
     public static class Builder {
@@ -53,19 +56,27 @@ public final class MyStruct {
             this.annotationWithQuote = annotationWithQuote;
             return this;
         }
+        private String class_;
+    
+        public Builder setClass(String class_) {
+            this.class_ = class_;
+            return this;
+        }
     
         public Builder() { }
         public Builder(MyStruct other) {
             this.major = other.major;
             this._package = other._package;
             this.annotationWithQuote = other.annotationWithQuote;
+            this.class_ = other.class_;
         }
     
         public MyStruct build() {
             return new MyStruct (
                 this.major,
                 this._package,
-                this.annotationWithQuote
+                this.annotationWithQuote,
+                this.class_
             );
         }
     }
@@ -73,6 +84,7 @@ public final class MyStruct {
     private final long major;
     private final String _package;
     private final String annotationWithQuote;
+    private final String class_;
 
     
     @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
@@ -83,6 +95,9 @@ public final class MyStruct {
         
     @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
     public String getAnnotationWithQuote() { return annotationWithQuote; }
+        
+    @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
+    public String getClass() { return class_; }
     
     @Override
     public String toString() {
@@ -90,6 +105,7 @@ public final class MyStruct {
             .add("major", major)
             .add("_package", _package)
             .add("annotationWithQuote", annotationWithQuote)
+            .add("class_", class_)
             .toString();
     }
     
@@ -108,6 +124,7 @@ public final class MyStruct {
             Objects.equals(major, other.major) &&
             Objects.equals(_package, other._package) &&
             Objects.equals(annotationWithQuote, other.annotationWithQuote) &&
+            Objects.equals(class_, other.class_) &&
             true;
     }
     
@@ -116,7 +133,8 @@ public final class MyStruct {
         return Arrays.deepHashCode(new Object[] {
             major,
             _package,
-            annotationWithQuote
+            annotationWithQuote,
+            class_
         });
     }
     

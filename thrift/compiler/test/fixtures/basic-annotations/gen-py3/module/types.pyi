@@ -29,14 +29,16 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
         self, *,
         major: _typing.Optional[int]=None,
         package: _typing.Optional[str]=None,
-        annotation_with_quote: _typing.Optional[str]=None
+        annotation_with_quote: _typing.Optional[str]=None,
+        class_: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
         self, *,
         major: _typing.Union[int, NOTSETTYPE, None]=NOTSET,
         package: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
-        annotation_with_quote: _typing.Union[str, NOTSETTYPE, None]=NOTSET
+        annotation_with_quote: _typing.Union[str, NOTSETTYPE, None]=NOTSET,
+        class_: _typing.Union[str, NOTSETTYPE, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -55,5 +57,7 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def package(self) -> str: ...
     @__property__
     def annotation_with_quote(self) -> str: ...
+    @__property__
+    def class_(self) -> str: ...
 
 

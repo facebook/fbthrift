@@ -30,13 +30,18 @@
           "type_enum" : "STRING",
           "spec_args" : null,
           "required" : true
+        },
+        "class_" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
         }
       }
     }
   },
   "services" : {
     "MyService" : {
-      "lineno" : 35,
+      "lineno" : 36,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -125,7 +130,7 @@
       }
     },
     "MyServicePrioParent" : {
-      "lineno" : 45,
+      "lineno" : 46,
       "functions" : {
         "MyServicePrioParent.ping" : {
           "return_type" : {
@@ -150,7 +155,7 @@
         "type_enum" : "SERVICE",
         "spec_args" : "MyServicePrioParent"
       },
-      "lineno" : 50,
+      "lineno" : 51,
       "functions" : {
         "MyServicePrioChild.pang" : {
           "return_type" : {

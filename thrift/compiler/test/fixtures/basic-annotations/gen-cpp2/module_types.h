@@ -16,6 +16,7 @@ namespace tag {
 struct majorVer;
 struct package;
 struct annotation_with_quote;
+struct class_;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_majorVer
@@ -29,6 +30,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(package);
 #ifndef APACHE_THRIFT_ACCESSOR_annotation_with_quote
 #define APACHE_THRIFT_ACCESSOR_annotation_with_quote
 APACHE_THRIFT_DEFINE_ACCESSOR(annotation_with_quote);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_class_
+#define APACHE_THRIFT_ACCESSOR_class_
+APACHE_THRIFT_DEFINE_ACCESSOR(class_);
 #endif
 } // namespace detail
 } // namespace thrift
@@ -108,7 +113,7 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
       majorVer(0) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg);
+  MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -124,12 +129,15 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   ::std::string package;
  public:
   ::std::string annotation_with_quote;
+ public:
+  ::std::string class_;
 
  public:
   struct __isset {
     bool majorVer;
     bool package;
     bool annotation_with_quote;
+    bool class_;
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
@@ -172,6 +180,21 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
     __isset.annotation_with_quote = true;
     return annotation_with_quote;
+  }
+
+  const ::std::string& get_class_() const& {
+    return class_;
+  }
+
+  ::std::string get_class_() && {
+    return std::move(class_);
+  }
+
+  template <typename T_MyStruct_class__struct_setter = ::std::string>
+  ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
+    class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
+    __isset.class_ = true;
+    return class_;
   }
 
   template <class Protocol_>

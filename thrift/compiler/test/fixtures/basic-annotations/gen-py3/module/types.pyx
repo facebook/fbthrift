@@ -162,7 +162,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyStruct self, *,
         major=None,
         str package=None,
-        str annotation_with_quote=None
+        str annotation_with_quote=None,
+        str class_=None
     ):
         if major is not None:
             if not isinstance(major, int):
@@ -175,16 +176,18 @@ cdef class MyStruct(thrift.py3.types.Struct):
           major,
           package,
           annotation_with_quote,
+          class_,
         ))
 
     def __call__(
         MyStruct self,
         major=__NOTSET,
         package=__NOTSET,
-        annotation_with_quote=__NOTSET
+        annotation_with_quote=__NOTSET,
+        class_=__NOTSET
     ):
         ___NOTSET = __NOTSET  # Cheaper for larger structs
-        cdef bint[3] __isNOTSET  # so make_instance is typed
+        cdef bint[4] __isNOTSET  # so make_instance is typed
 
         changes = False
         if major is ___NOTSET:
@@ -208,6 +211,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
             __isNOTSET[2] = False
             changes = True
 
+        if class_ is ___NOTSET:
+            __isNOTSET[3] = True
+            class_ = None
+        else:
+            __isNOTSET[3] = False
+            changes = True
+
 
         if not changes:
             return self
@@ -225,6 +235,10 @@ cdef class MyStruct(thrift.py3.types.Struct):
             if not isinstance(annotation_with_quote, str):
                 raise TypeError(f'annotation_with_quote is not a { str !r}.')
 
+        if class_ is not None:
+            if not isinstance(class_, str):
+                raise TypeError(f'class_ is not a { str !r}.')
+
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst._cpp_obj = move(MyStruct._make_instance(
           self._cpp_obj.get(),
@@ -232,6 +246,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
           major,
           package,
           annotation_with_quote,
+          class_,
         ))
         return inst
 
@@ -241,7 +256,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         bint* __isNOTSET,
         object major ,
         str package ,
-        str annotation_with_quote 
+        str annotation_with_quote ,
+        str class_ 
     ) except *:
         cdef unique_ptr[cMyStruct] c_inst
         if base_instance:
@@ -266,6 +282,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 deref(c_inst).__isset.annotation_with_quote = False
                 pass
 
+            if not __isNOTSET[3] and class_ is None:
+                deref(c_inst).class_ = default_inst[cMyStruct]().class_
+                deref(c_inst).__isset.class_ = False
+                pass
+
         if major is not None:
             deref(c_inst).major = major
             deref(c_inst).__isset.major = True
@@ -275,6 +296,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if annotation_with_quote is not None:
             deref(c_inst).annotation_with_quote = thrift.py3.types.move(thrift.py3.types.bytes_to_string(annotation_with_quote.encode('utf-8')))
             deref(c_inst).__isset.annotation_with_quote = True
+        if class_ is not None:
+            deref(c_inst).class_ = thrift.py3.types.move(thrift.py3.types.bytes_to_string(class_.encode('utf-8')))
+            deref(c_inst).__isset.class_ = True
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -283,6 +307,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'major', self.major
         yield 'package', self.package
         yield 'annotation_with_quote', self.annotation_with_quote
+        yield 'class_', self.class_
 
     def __bool__(self):
         return True
@@ -308,6 +333,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
         return (<bytes>deref(self._cpp_obj).annotation_with_quote).decode('UTF-8')
 
+    @property
+    def class_(self):
+
+        return (<bytes>deref(self._cpp_obj).class_).decode('UTF-8')
+
 
     def __hash__(MyStruct self):
         if not self.__hash:
@@ -315,11 +345,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
             self.major,
             self.package,
             self.annotation_with_quote,
+            self.class_,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(major={repr(self.major)}, package={repr(self.package)}, annotation_with_quote={repr(self.annotation_with_quote)})'
+        return f'MyStruct(major={repr(self.major)}, package={repr(self.package)}, annotation_with_quote={repr(self.annotation_with_quote)}, class_={repr(self.class_)})'
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
             deref(self._cpp_obj)
@@ -385,6 +416,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
   default=None,
   annotations=_py_types.MappingProxyType({
     """go.tag""": """tag:\"somevalue\"""",  }),
+),
+                __FieldSpec(
+  name="class_",
+  type=str,
+  qualifier=__Qualifier.NONE,
+  default=None,
+  annotations=_py_types.MappingProxyType({
+    """java.swift.name""": """class_""",  }),
 ),
           ],
         annotations=_py_types.MappingProxyType({

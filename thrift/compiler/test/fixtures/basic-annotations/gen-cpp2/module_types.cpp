@@ -64,6 +64,10 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     fid = 3;
     _ftype = apache::thrift::protocol::T_STRING;
   }
+  else if (_fname == "class_") {
+    fid = 4;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
 }
 
 } // namespace detail
@@ -72,13 +76,15 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg) :
     majorVer(std::move(majorVer__arg)),
     package(std::move(package__arg)),
-    annotation_with_quote(std::move(annotation_with_quote__arg)) {
+    annotation_with_quote(std::move(annotation_with_quote__arg)),
+    class_(std::move(class___arg)) {
   __isset.majorVer = true;
   __isset.package = true;
   __isset.annotation_with_quote = true;
+  __isset.class_ = true;
 }
 
 void MyStruct::__clear() {
@@ -86,6 +92,7 @@ void MyStruct::__clear() {
   majorVer = 0;
   package = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   annotation_with_quote = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  class_ = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset = {};
 }
 
@@ -100,6 +107,9 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
     return false;
   }
   if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
+    return false;
+  }
+  if (!(lhs.class_ == rhs.class_)) {
     return false;
   }
   return true;
@@ -118,6 +128,9 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
     return lhs.annotation_with_quote < rhs.annotation_with_quote;
   }
+  if (!(lhs.class_ == rhs.class_)) {
+    return lhs.class_ < rhs.class_;
+  }
   return false;
 }
 
@@ -127,6 +140,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.majorVer, b.majorVer);
   swap(a.package, b.package);
   swap(a.annotation_with_quote, b.annotation_with_quote);
+  swap(a.class_, b.class_);
   swap(a.__isset, b.__isset);
 }
 

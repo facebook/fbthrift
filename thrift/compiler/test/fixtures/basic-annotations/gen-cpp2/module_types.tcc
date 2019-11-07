@@ -91,6 +91,20 @@ _readField_annotation_with_quote:
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           3,
+          4,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_class_:
+  {
+    
+    iprot->readString(this->class_);
+    this->__isset.class_ = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          4,
           0,
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
@@ -135,6 +149,14 @@ _loop:
         goto _skip;
       }
     }
+    case 4:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_class_;
+      } else {
+        goto _skip;
+      }
+    }
     default:
     {
 _skip:
@@ -156,6 +178,8 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->package);
   xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
   xfer += prot_->serializedSizeString(this->annotation_with_quote);
+  xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
+  xfer += prot_->serializedSizeString(this->class_);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -170,6 +194,8 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->package);
   xfer += prot_->serializedFieldSize("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
   xfer += prot_->serializedSizeString(this->annotation_with_quote);
+  xfer += prot_->serializedFieldSize("class_", apache::thrift::protocol::T_STRING, 4);
+  xfer += prot_->serializedSizeString(this->class_);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -186,6 +212,9 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("annotation_with_quote", apache::thrift::protocol::T_STRING, 3);
   xfer += prot_->writeString(this->annotation_with_quote);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("class_", apache::thrift::protocol::T_STRING, 4);
+  xfer += prot_->writeString(this->class_);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

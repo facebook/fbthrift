@@ -28,13 +28,16 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)1);
   private static final TField PACKAGE_FIELD_DESC = new TField("package", TType.STRING, (short)2);
   private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotation_with_quote", TType.STRING, (short)3);
+  private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
 
   public long major;
   public String package;
   public String annotation_with_quote;
+  public String class_;
   public static final int MAJOR = 1;
   public static final int PACKAGE = 2;
   public static final int ANNOTATION_WITH_QUOTE = 3;
+  public static final int CLASS_ = 4;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
@@ -50,6 +53,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(ANNOTATION_WITH_QUOTE, new FieldMetaData("annotation_with_quote", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(CLASS_, new FieldMetaData("class_", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.STRING)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -63,13 +68,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public MyStruct(
     long major,
     String package,
-    String annotation_with_quote)
+    String annotation_with_quote,
+    String class_)
   {
     this();
     this.major = major;
     setMajorIsSet(true);
     this.package = package;
     this.annotation_with_quote = annotation_with_quote;
+    this.class_ = class_;
   }
 
   /**
@@ -84,6 +91,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
     if (other.isSetAnnotation_with_quote()) {
       this.annotation_with_quote = TBaseHelper.deepCopy(other.annotation_with_quote);
+    }
+    if (other.isSetClass_()) {
+      this.class_ = TBaseHelper.deepCopy(other.class_);
     }
   }
 
@@ -167,6 +177,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public String getClass_() {
+    return this.class_;
+  }
+
+  public MyStruct setClass_(String class_) {
+    this.class_ = class_;
+    return this;
+  }
+
+  public void unsetClass_() {
+    this.class_ = null;
+  }
+
+  // Returns true if field class_ is set (has been assigned a value) and false otherwise
+  public boolean isSetClass_() {
+    return this.class_ != null;
+  }
+
+  public void setClass_IsSet(boolean __value) {
+    if (!__value) {
+      this.class_ = null;
+    }
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MAJOR:
@@ -193,6 +227,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case CLASS_:
+      if (__value == null) {
+        unsetClass_();
+      } else {
+        setClass_((String)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -209,6 +251,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     case ANNOTATION_WITH_QUOTE:
       return getAnnotation_with_quote();
 
+    case CLASS_:
+      return getClass_();
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -223,6 +268,8 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return isSetPackage();
     case ANNOTATION_WITH_QUOTE:
       return isSetAnnotation_with_quote();
+    case CLASS_:
+      return isSetClass_();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -270,12 +317,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         return false;
     }
 
+    boolean this_present_class_ = true && this.isSetClass_();
+    boolean that_present_class_ = true && that.isSetClass_();
+    if (this_present_class_ || that_present_class_) {
+      if (!(this_present_class_ && that_present_class_))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.class_, that.class_))
+        return false;
+    }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote});
+    return Arrays.deepHashCode(new Object[] {major, package, annotation_with_quote, class_});
   }
 
   @Override
@@ -311,6 +367,14 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(annotation_with_quote, other.annotation_with_quote);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetClass_()).compareTo(other.isSetClass_());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(class_, other.class_);
     if (lastComparison != 0) {
       return lastComparison;
     }
@@ -350,6 +414,13 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case CLASS_:
+          if (__field.type == TType.STRING) {
+            this.class_ = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -378,6 +449,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (this.annotation_with_quote != null) {
       oprot.writeFieldBegin(ANNOTATION_WITH_QUOTE_FIELD_DESC);
       oprot.writeString(this.annotation_with_quote);
+      oprot.writeFieldEnd();
+    }
+    if (this.class_ != null) {
+      oprot.writeFieldBegin(CLASS__FIELD_DESC);
+      oprot.writeString(this.class_);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
@@ -431,6 +507,17 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       sb.append("null");
     } else {
       sb.append(TBaseHelper.toString(this.getAnnotation_with_quote(), indent + 1, prettyPrint));
+    }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("class_");
+    sb.append(space);
+    sb.append(":").append(space);
+    if (this.getClass_() == null) {
+      sb.append("null");
+    } else {
+      sb.append(TBaseHelper.toString(this.getClass_(), indent + 1, prettyPrint));
     }
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

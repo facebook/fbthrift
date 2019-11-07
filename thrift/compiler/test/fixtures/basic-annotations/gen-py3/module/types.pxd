@@ -49,6 +49,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         bint major "majorVer"
         bint package
         bint annotation_with_quote
+        bint class_
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -62,6 +63,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
         int64_t major "majorVer"
         string package
         string annotation_with_quote
+        string class_
         cMyStruct__isset __isset
 
 
@@ -88,7 +90,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
         bint* __isNOTSET,
         object major,
         str package,
-        str annotation_with_quote
+        str annotation_with_quote,
+        str class_
     ) except *
 
     @staticmethod
