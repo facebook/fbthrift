@@ -522,6 +522,3 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
 };
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

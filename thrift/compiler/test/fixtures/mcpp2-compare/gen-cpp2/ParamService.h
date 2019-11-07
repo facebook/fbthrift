@@ -525,6 +525,3 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
 };
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

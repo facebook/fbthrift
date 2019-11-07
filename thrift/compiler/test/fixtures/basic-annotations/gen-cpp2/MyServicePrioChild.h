@@ -89,6 +89,3 @@ class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsync
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -170,6 +170,3 @@ class service2AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
 };
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

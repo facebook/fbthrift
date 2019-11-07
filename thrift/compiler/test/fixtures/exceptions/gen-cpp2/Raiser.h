@@ -135,6 +135,3 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

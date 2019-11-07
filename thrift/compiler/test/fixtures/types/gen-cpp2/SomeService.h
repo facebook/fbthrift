@@ -104,6 +104,3 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
 };
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift

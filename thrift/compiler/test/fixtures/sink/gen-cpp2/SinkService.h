@@ -120,6 +120,3 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -153,6 +153,3 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

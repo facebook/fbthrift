@@ -391,6 +391,3 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
 };
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

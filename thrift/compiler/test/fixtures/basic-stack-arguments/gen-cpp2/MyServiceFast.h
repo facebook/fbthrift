@@ -119,6 +119,3 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

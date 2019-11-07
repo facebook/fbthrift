@@ -89,6 +89,3 @@ class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -89,6 +89,3 @@ class MyLeafAsyncProcessor : public ::cpp2::MyNodeAsyncProcessor {
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

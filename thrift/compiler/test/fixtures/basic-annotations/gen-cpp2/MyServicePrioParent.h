@@ -103,6 +103,3 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -171,6 +171,3 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
 };
 
 }} // extra::svc
-namespace apache { namespace thrift {
-
-}} // apache::thrift

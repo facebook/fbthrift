@@ -151,6 +151,3 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
