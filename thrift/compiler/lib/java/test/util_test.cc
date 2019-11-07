@@ -33,6 +33,7 @@ TEST_F(JavaUtilTest, test_mangle_java_name) {
   EXPECT_EQ(java::mangle_java_name("HBase", true), "HBase");
   EXPECT_EQ(java::mangle_java_name("foo_bar_baz", true), "FooBarBaz");
   EXPECT_EQ(java::mangle_java_name("foo_bar_BAz", true), "FooBarBAz");
+  EXPECT_EQ(java::mangle_java_name("foo_", true), "Foo_");
 }
 
 TEST_F(JavaUtilTest, test_mangle_java_constant_name) {

@@ -58,7 +58,7 @@ public final class MyStruct {
         }
         private String class_;
     
-        public Builder setClass(String class_) {
+        public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;
         }
@@ -97,7 +97,7 @@ public final class MyStruct {
     public String getAnnotationWithQuote() { return annotationWithQuote; }
         
     @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
-    public String getClass() { return class_; }
+    public String getClass_() { return class_; }
     
     @Override
     public String toString() {
