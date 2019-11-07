@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#![feature(async_await)]
 #![recursion_limit = "1024"]
 #![deny(warnings)]
 
