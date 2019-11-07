@@ -17,9 +17,11 @@
 #pragma once
 
 #include <folly/Portability.h>
+#include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/Baton.h>
 #endif // FOLLY_HAS_COROUTINES
 
 namespace apache {
