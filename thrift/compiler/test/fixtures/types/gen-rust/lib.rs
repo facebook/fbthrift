@@ -2080,7 +2080,6 @@ pub mod client {
 }
 
 pub mod client_async {
-    use async_trait::async_trait;
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -2106,19 +2105,17 @@ pub mod client_async {
         }
     }
 
-    #[async_trait]
     pub trait SomeService: Send + Sync {
-        async fn bounce_map(
+        fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> Result<include::types::SomeMap, failure::Error>;
-        async fn binary_keyed_map(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<include::types::SomeMap, failure::Error>> + Send + 'static>>;
+        fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>> + Send + 'static>>;
     }
 
-    #[async_trait]
     impl<P, S> SomeService for SomeServiceImpl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -2128,10 +2125,12 @@ pub mod client_async {
             + 'static,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
-    {        async fn bounce_map(
+    {        fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> Result<include::types::SomeMap, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<include::types::SomeMap, failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "bounce_map",
@@ -2146,35 +2145,41 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<include::types::SomeMap> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::some_service::BounceMapExn::read(p)? {
-                            crate::services::some_service::BounceMapExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::SomeServiceBounceMapError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::SomeServiceBounceMapError(
-                            crate::services::some_service::BounceMapExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn binary_keyed_map(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<include::types::SomeMap> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::some_service::BounceMapExn::read(p)? {
+                                    crate::services::some_service::BounceMapExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::SomeServiceBounceMapError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::SomeServiceBounceMapError(
+                                    crate::services::some_service::BounceMapExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "binary_keyed_map",
@@ -2189,31 +2194,34 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<crate::types::TBinary, i64>> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::some_service::BinaryKeyedMapExn::read(p)? {
-                            crate::services::some_service::BinaryKeyedMapExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(
-                            crate::services::some_service::BinaryKeyedMapExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<crate::types::TBinary, i64>> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::some_service::BinaryKeyedMapExn::read(p)? {
+                                    crate::services::some_service::BinaryKeyedMapExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(
+                                    crate::services::some_service::BinaryKeyedMapExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
         }
     }
 
@@ -2624,27 +2632,27 @@ pub mod mock {
 
     #[async_trait]
     impl<'mock> super::client_async::SomeService for SomeService<'mock> {
-        async fn bounce_map(
+        fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> Result<include::types::SomeMap, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<include::types::SomeMap, failure::Error>> + Send + 'static>> {
             let mut closure = self.bounce_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(include::types::SomeMap) -> _ = &mut **closure;
-            closure(arg_m.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_m.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::SomeServiceBounceMapError(error),
-                ))
+                ))))
         }
-        async fn binary_keyed_map(
+        fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>> + Send + 'static>> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<i64>) -> _ = &mut **closure;
-            closure(arg_r.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_r.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
-                ))
+                ))))
         }
     }
 

@@ -16,7 +16,6 @@
 
 }}
 
-    use async_trait::async_trait;
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -45,22 +44,20 @@
         }
     }
 
-    #[async_trait]
     pub trait {{service:name}}: Send + Sync {{>lib/block}}{{!
         }}{{#service:functions}}
-        async fn {{function:name}}(
+        fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> Result<{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}failure::Error{{!
-        }}>;{{!
+        }}>> + Send + 'static>>;{{!
         }}{{/service:functions}}
     }
 
-    #[async_trait]
     impl<P, S> {{service:name}} for {{service:name}}Impl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -72,15 +69,17 @@
         S::Error: Into<failure::Error> + 'static,
     {{>lib/block}}{{!
         }}{{#service:functions}}
-        async fn {{function:name}}(
+        fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> Result<{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}failure::Error{{!
-        }}> {
+        }}>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "{{function:name}}",
@@ -101,35 +100,38 @@
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<{{!
-                }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
-            }}> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)? {
-                            {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => Ok(res),
-                            exn => Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(
-                            {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }{{!
-        }}{{/service:functions}}
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<{{!
+                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                    }}> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::read(p)? {
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => Ok(res),
+                                    exn => Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err({{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        {{/service:functions}}
     }
 
     pub struct make_{{service:name}};

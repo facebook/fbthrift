@@ -719,7 +719,6 @@ pub mod client {
 }
 
 pub mod client_async {
-    use async_trait::async_trait;
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -745,14 +744,12 @@ pub mod client_async {
         }
     }
 
-    #[async_trait]
     pub trait MyRoot: Send + Sync {
-        async fn do_root(
+        fn do_root(
             &self,
-        ) -> Result<(), failure::Error>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    #[async_trait]
     impl<P, S> MyRoot for MyRootImpl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -762,9 +759,11 @@ pub mod client_async {
             + 'static,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
-    {        async fn do_root(
+    {        fn do_root(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "do_root",
@@ -776,31 +775,34 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::my_root::DoRootExn::read(p)? {
-                            crate::services::my_root::DoRootExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::MyRootDoRootError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::MyRootDoRootError(
-                            crate::services::my_root::DoRootExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::my_root::DoRootExn::read(p)? {
+                                    crate::services::my_root::DoRootExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::MyRootDoRootError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::MyRootDoRootError(
+                                    crate::services::my_root::DoRootExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
         }
     }
 
@@ -875,14 +877,12 @@ pub mod client_async {
         }
     }
 
-    #[async_trait]
     pub trait MyNode: Send + Sync {
-        async fn do_mid(
+        fn do_mid(
             &self,
-        ) -> Result<(), failure::Error>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    #[async_trait]
     impl<P, S> MyNode for MyNodeImpl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -892,9 +892,11 @@ pub mod client_async {
             + 'static,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
-    {        async fn do_mid(
+    {        fn do_mid(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "do_mid",
@@ -906,31 +908,34 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::my_node::DoMidExn::read(p)? {
-                            crate::services::my_node::DoMidExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::MyNodeDoMidError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::MyNodeDoMidError(
-                            crate::services::my_node::DoMidExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::my_node::DoMidExn::read(p)? {
+                                    crate::services::my_node::DoMidExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::MyNodeDoMidError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::MyNodeDoMidError(
+                                    crate::services::my_node::DoMidExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
         }
     }
 
@@ -1005,14 +1010,12 @@ pub mod client_async {
         }
     }
 
-    #[async_trait]
     pub trait MyLeaf: Send + Sync {
-        async fn do_leaf(
+        fn do_leaf(
             &self,
-        ) -> Result<(), failure::Error>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    #[async_trait]
     impl<P, S> MyLeaf for MyLeafImpl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -1022,9 +1025,11 @@ pub mod client_async {
             + 'static,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
-    {        async fn do_leaf(
+    {        fn do_leaf(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "do_leaf",
@@ -1036,31 +1041,34 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::my_leaf::DoLeafExn::read(p)? {
-                            crate::services::my_leaf::DoLeafExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::MyLeafDoLeafError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::MyLeafDoLeafError(
-                            crate::services::my_leaf::DoLeafExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::my_leaf::DoLeafExn::read(p)? {
+                                    crate::services::my_leaf::DoLeafExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::MyLeafDoLeafError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::MyLeafDoLeafError(
+                                    crate::services::my_leaf::DoLeafExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
         }
     }
 
@@ -1787,15 +1795,15 @@ pub mod mock {
 
     #[async_trait]
     impl<'mock> super::client_async::MyRoot for MyRoot<'mock> {
-        async fn do_root(
+        fn do_root(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.do_root.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::MyRootDoRootError(error),
-                ))
+                ))))
         }
     }
 
@@ -1858,15 +1866,15 @@ pub mod mock {
 
     #[async_trait]
     impl<'mock> super::client_async::MyNode for MyNode<'mock> {
-        async fn do_mid(
+        fn do_mid(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.do_mid.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::MyNodeDoMidError(error),
-                ))
+                ))))
         }
     }
 
@@ -1929,15 +1937,15 @@ pub mod mock {
 
     #[async_trait]
     impl<'mock> super::client_async::MyLeaf for MyLeaf<'mock> {
-        async fn do_leaf(
+        fn do_leaf(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.do_leaf.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::MyLeafDoLeafError(error),
-                ))
+                ))))
         }
     }
 

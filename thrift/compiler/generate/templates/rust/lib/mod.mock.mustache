@@ -42,15 +42,15 @@
     #[async_trait]
     impl<'mock> super::client_async::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:functions}}
-        async fn {{function:name}}(
+        fn {{function:name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> Result<{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}failure::Error{{!
-        }}> {
+        }}>> + Send + 'static>> {
             let mut closure = self.{{function:name}}.closure.lock().unwrap();
             let closure: &mut dyn FnMut({{!
                 }}{{#function:args}}{{!
@@ -58,7 +58,7 @@
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
             }}) -> _ = &mut **closure;
-            closure({{!
+            Box::pin(futures_preview::future::ready(closure({{!
                 }}{{#function:args}}{{!
                 }}arg_{{field:name}}{{#field:type}}{{!
                     }}{{#type:string?}}.to_owned(){{/type:string?}}{{!
@@ -69,7 +69,7 @@
             }})
                 .map_err(|error| failure::Error::from(
                     {{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(error),
-                ))
+                ))))
         }{{!
         }}{{/service:functions}}
     }

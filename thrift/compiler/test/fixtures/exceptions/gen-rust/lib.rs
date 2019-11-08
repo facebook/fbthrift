@@ -958,7 +958,6 @@ pub mod client {
 }
 
 pub mod client_async {
-    use async_trait::async_trait;
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -984,23 +983,21 @@ pub mod client_async {
         }
     }
 
-    #[async_trait]
     pub trait Raiser: Send + Sync {
-        async fn doBland(
+        fn doBland(
             &self,
-        ) -> Result<(), failure::Error>;
-        async fn doRaise(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        fn doRaise(
             &self,
-        ) -> Result<(), failure::Error>;
-        async fn get200(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        fn get200(
             &self,
-        ) -> Result<String, failure::Error>;
-        async fn get500(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>>;
+        fn get500(
             &self,
-        ) -> Result<String, failure::Error>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>>;
     }
 
-    #[async_trait]
     impl<P, S> Raiser for RaiserImpl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -1010,9 +1007,11 @@ pub mod client_async {
             + 'static,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
-    {        async fn doBland(
+    {        fn doBland(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "doBland",
@@ -1024,34 +1023,40 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::raiser::DoBlandExn::read(p)? {
-                            crate::services::raiser::DoBlandExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::RaiserDoBlandError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::RaiserDoBlandError(
-                            crate::services::raiser::DoBlandExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn doRaise(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::raiser::DoBlandExn::read(p)? {
+                                    crate::services::raiser::DoBlandExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::RaiserDoBlandError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::RaiserDoBlandError(
+                                    crate::services::raiser::DoBlandExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn doRaise(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "doRaise",
@@ -1063,34 +1068,40 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::raiser::DoRaiseExn::read(p)? {
-                            crate::services::raiser::DoRaiseExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::RaiserDoRaiseError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::RaiserDoRaiseError(
-                            crate::services::raiser::DoRaiseExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn get200(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::raiser::DoRaiseExn::read(p)? {
+                                    crate::services::raiser::DoRaiseExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::RaiserDoRaiseError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::RaiserDoRaiseError(
+                                    crate::services::raiser::DoRaiseExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn get200(
             &self,
-        ) -> Result<String, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "get200",
@@ -1102,34 +1113,40 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<String> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::raiser::Get200Exn::read(p)? {
-                            crate::services::raiser::Get200Exn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::RaiserGet200Error(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::RaiserGet200Error(
-                            crate::services::raiser::Get200Exn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn get500(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<String> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::raiser::Get200Exn::read(p)? {
+                                    crate::services::raiser::Get200Exn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::RaiserGet200Error(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::RaiserGet200Error(
+                                    crate::services::raiser::Get200Exn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn get500(
             &self,
-        ) -> Result<String, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "get500",
@@ -1141,31 +1158,34 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<String> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::raiser::Get500Exn::read(p)? {
-                            crate::services::raiser::Get500Exn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::RaiserGet500Error(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::RaiserGet500Error(
-                            crate::services::raiser::Get500Exn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<String> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::raiser::Get500Exn::read(p)? {
+                                    crate::services::raiser::Get500Exn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::RaiserGet500Error(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::RaiserGet500Error(
+                                    crate::services::raiser::Get500Exn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
         }
     }
 
@@ -1666,45 +1686,45 @@ pub mod mock {
 
     #[async_trait]
     impl<'mock> super::client_async::Raiser for Raiser<'mock> {
-        async fn doBland(
+        fn doBland(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.doBland.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::RaiserDoBlandError(error),
-                ))
+                ))))
         }
-        async fn doRaise(
+        fn doRaise(
             &self,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.doRaise.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::RaiserDoRaiseError(error),
-                ))
+                ))))
         }
-        async fn get200(
+        fn get200(
             &self,
-        ) -> Result<String, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
             let mut closure = self.get200.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::RaiserGet200Error(error),
-                ))
+                ))))
         }
-        async fn get500(
+        fn get500(
             &self,
-        ) -> Result<String, failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
             let mut closure = self.get500.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            closure()
+            Box::pin(futures_preview::future::ready(closure()
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::RaiserGet500Error(error),
-                ))
+                ))))
         }
     }
 

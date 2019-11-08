@@ -851,7 +851,6 @@ pub mod client {
 }
 
 pub mod client_async {
-    use async_trait::async_trait;
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -877,31 +876,29 @@ pub mod client_async {
         }
     }
 
-    #[async_trait]
     pub trait NestedContainers: Send + Sync {
-        async fn mapList(
+        fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> Result<(), failure::Error>;
-        async fn mapSet(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> Result<(), failure::Error>;
-        async fn listMap(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> Result<(), failure::Error>;
-        async fn listSet(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> Result<(), failure::Error>;
-        async fn turtles(
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> Result<(), failure::Error>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    #[async_trait]
     impl<P, S> NestedContainers for NestedContainersImpl<P, S>
     where
         P: Protocol + Send + Sync + 'static,
@@ -911,10 +908,12 @@ pub mod client_async {
             + 'static,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
-    {        async fn mapList(
+    {        fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "mapList",
@@ -929,35 +928,41 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::nested_containers::MapListExn::read(p)? {
-                            crate::services::nested_containers::MapListExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::NestedContainersMapListError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::NestedContainersMapListError(
-                            crate::services::nested_containers::MapListExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn mapSet(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::nested_containers::MapListExn::read(p)? {
+                                    crate::services::nested_containers::MapListExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::NestedContainersMapListError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::NestedContainersMapListError(
+                                    crate::services::nested_containers::MapListExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "mapSet",
@@ -972,35 +977,41 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::nested_containers::MapSetExn::read(p)? {
-                            crate::services::nested_containers::MapSetExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::NestedContainersMapSetError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::NestedContainersMapSetError(
-                            crate::services::nested_containers::MapSetExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn listMap(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::nested_containers::MapSetExn::read(p)? {
+                                    crate::services::nested_containers::MapSetExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::NestedContainersMapSetError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::NestedContainersMapSetError(
+                                    crate::services::nested_containers::MapSetExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "listMap",
@@ -1015,35 +1026,41 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::nested_containers::ListMapExn::read(p)? {
-                            crate::services::nested_containers::ListMapExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::NestedContainersListMapError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::NestedContainersListMapError(
-                            crate::services::nested_containers::ListMapExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn listSet(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::nested_containers::ListMapExn::read(p)? {
+                                    crate::services::nested_containers::ListMapExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::NestedContainersListMapError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::NestedContainersListMapError(
+                                    crate::services::nested_containers::ListMapExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "listSet",
@@ -1058,35 +1075,41 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::nested_containers::ListSetExn::read(p)? {
-                            crate::services::nested_containers::ListSetExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::NestedContainersListSetError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::NestedContainersListSetError(
-                            crate::services::nested_containers::ListSetExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
-        }        async fn turtles(
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::nested_containers::ListSetExn::read(p)? {
+                                    crate::services::nested_containers::ListSetExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::NestedContainersListSetError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::NestedContainersListSetError(
+                                    crate::services::nested_containers::ListSetExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
+        }
+        fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+            use futures_preview::compat::Future01CompatExt;
+            use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "turtles",
@@ -1101,31 +1124,34 @@ pub mod client_async {
                 }
             ));
             let fut = self.service.call(request).map_err(S::Error::into);
-            let reply = futures_preview::compat::Future01CompatExt::compat(fut).await?;
-            let de = P::deserializer(reply);
-            move |mut p: P::Deserializer| -> failure::Fallible<()> {
-                let p = &mut p;
-                let (_, message_type, _) = p.read_message_begin(|_| ())?;
-                let result = match message_type {
-                    MessageType::Reply => {
-                        match crate::services::nested_containers::TurtlesExn::read(p)? {
-                            crate::services::nested_containers::TurtlesExn::Success(res) => Ok(res),
-                            exn => Err(crate::errors::ErrorKind::NestedContainersTurtlesError(exn).into()),
-                        }
-                    }
-                    MessageType::Exception => {
-                        let ae = ApplicationException::read(p)?;
-                        Err(crate::errors::ErrorKind::NestedContainersTurtlesError(
-                            crate::services::nested_containers::TurtlesExn::ApplicationException(ae),
-                        ).into())
-                    }
-                    MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                        failure::bail!("Unexpected message type {:?}", message_type)
-                    }
-                };
-                p.read_message_end()?;
-                result
-            }(de)
+            Future01CompatExt::compat(fut)
+                .and_then(|reply| futures_preview::future::ready({
+                    let de = P::deserializer(reply);
+                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                        let p = &mut p;
+                        let (_, message_type, _) = p.read_message_begin(|_| ())?;
+                        let result = match message_type {
+                            MessageType::Reply => {
+                                match crate::services::nested_containers::TurtlesExn::read(p)? {
+                                    crate::services::nested_containers::TurtlesExn::Success(res) => Ok(res),
+                                    exn => Err(crate::errors::ErrorKind::NestedContainersTurtlesError(exn).into()),
+                                }
+                            }
+                            MessageType::Exception => {
+                                let ae = ApplicationException::read(p)?;
+                                Err(crate::errors::ErrorKind::NestedContainersTurtlesError(
+                                    crate::services::nested_containers::TurtlesExn::ApplicationException(ae),
+                                ).into())
+                            }
+                            MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+                                failure::bail!("Unexpected message type {:?}", message_type)
+                            }
+                        };
+                        p.read_message_end()?;
+                        result
+                    }(de)
+                }))
+                .boxed()
         }
     }
 
@@ -1725,60 +1751,60 @@ pub mod mock {
 
     #[async_trait]
     impl<'mock> super::client_async::NestedContainers for NestedContainers<'mock> {
-        async fn mapList(
+        fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.mapList.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, Vec<i32>>) -> _ = &mut **closure;
-            closure(arg_foo.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::NestedContainersMapListError(error),
-                ))
+                ))))
         }
-        async fn mapSet(
+        fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.mapSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            closure(arg_foo.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::NestedContainersMapSetError(error),
-                ))
+                ))))
         }
-        async fn listMap(
+        fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.listMap.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeMap<i32, i32>>) -> _ = &mut **closure;
-            closure(arg_foo.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::NestedContainersListMapError(error),
-                ))
+                ))))
         }
-        async fn listSet(
+        fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.listSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            closure(arg_foo.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::NestedContainersListSetError(error),
-                ))
+                ))))
         }
-        async fn turtles(
+        fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> Result<(), failure::Error> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
             let mut closure = self.turtles.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> _ = &mut **closure;
-            closure(arg_foo.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
                 .map_err(|error| failure::Error::from(
                     crate::errors::ErrorKind::NestedContainersTurtlesError(error),
-                ))
+                ))))
         }
     }
 
