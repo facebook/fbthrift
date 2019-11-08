@@ -1873,7 +1873,7 @@ pub mod client {
 
     pub struct SomeServiceImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> SomeServiceImpl<P, S>
@@ -2046,7 +2046,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn SomeService + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2065,7 +2065,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2087,12 +2087,12 @@ pub mod client_async {
 
     pub struct SomeServiceImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> SomeServiceImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -2105,7 +2105,7 @@ pub mod client_async {
         }
     }
 
-    pub trait SomeService: Send + Sync {
+    pub trait SomeService: Send {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
@@ -2118,11 +2118,8 @@ pub mod client_async {
 
     impl<P, S> SomeService for SomeServiceImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn bounce_map(
@@ -2244,7 +2241,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn SomeService + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2263,7 +2260,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,

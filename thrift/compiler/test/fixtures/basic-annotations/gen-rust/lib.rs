@@ -1098,7 +1098,7 @@ pub mod client {
 
     pub struct MyServiceImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyServiceImpl<P, S>
@@ -1570,7 +1570,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn MyService + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1589,7 +1589,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1604,7 +1604,7 @@ pub mod client {
 
     pub struct MyServicePrioParentImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyServicePrioParentImpl<P, S>
@@ -1765,7 +1765,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn MyServicePrioParent + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1784,7 +1784,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1799,7 +1799,7 @@ pub mod client {
 
     pub struct MyServicePrioChildImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyServicePrioChildImpl<P, S>
@@ -1905,7 +1905,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn MyServicePrioChild + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1924,7 +1924,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1946,12 +1946,12 @@ pub mod client_async {
 
     pub struct MyServiceImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyServiceImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -1964,7 +1964,7 @@ pub mod client_async {
         }
     }
 
-    pub trait MyService: Send + Sync {
+    pub trait MyService: Send {
         fn ping(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
@@ -1996,11 +1996,8 @@ pub mod client_async {
 
     impl<P, S> MyService for MyServiceImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn ping(
@@ -2363,7 +2360,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn MyService + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2382,7 +2379,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2397,12 +2394,12 @@ pub mod client_async {
 
     pub struct MyServicePrioParentImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyServicePrioParentImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -2415,7 +2412,7 @@ pub mod client_async {
         }
     }
 
-    pub trait MyServicePrioParent: Send + Sync {
+    pub trait MyServicePrioParent: Send {
         fn ping(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
@@ -2426,11 +2423,8 @@ pub mod client_async {
 
     impl<P, S> MyServicePrioParent for MyServicePrioParentImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn ping(
@@ -2544,7 +2538,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn MyServicePrioParent + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2563,7 +2557,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2578,12 +2572,12 @@ pub mod client_async {
 
     pub struct MyServicePrioChildImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyServicePrioChildImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -2596,7 +2590,7 @@ pub mod client_async {
         }
     }
 
-    pub trait MyServicePrioChild: Send + Sync {
+    pub trait MyServicePrioChild: Send {
         fn pang(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
@@ -2604,11 +2598,8 @@ pub mod client_async {
 
     impl<P, S> MyServicePrioChild for MyServicePrioChildImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn pang(
@@ -2677,7 +2668,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn MyServicePrioChild + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -2696,7 +2687,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,

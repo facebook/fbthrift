@@ -299,7 +299,7 @@ pub mod client {
 
     pub struct MyRootImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyRootImpl<P, S>
@@ -405,7 +405,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn MyRoot + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -424,7 +424,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -439,7 +439,7 @@ pub mod client {
 
     pub struct MyNodeImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyNodeImpl<P, S>
@@ -545,7 +545,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn MyNode + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -564,7 +564,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -579,7 +579,7 @@ pub mod client {
 
     pub struct MyLeafImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyLeafImpl<P, S>
@@ -685,7 +685,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn MyLeaf + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -704,7 +704,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -726,12 +726,12 @@ pub mod client_async {
 
     pub struct MyRootImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyRootImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -744,7 +744,7 @@ pub mod client_async {
         }
     }
 
-    pub trait MyRoot: Send + Sync {
+    pub trait MyRoot: Send {
         fn do_root(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
@@ -752,11 +752,8 @@ pub mod client_async {
 
     impl<P, S> MyRoot for MyRootImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn do_root(
@@ -825,7 +822,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn MyRoot + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -844,7 +841,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -859,12 +856,12 @@ pub mod client_async {
 
     pub struct MyNodeImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyNodeImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -877,7 +874,7 @@ pub mod client_async {
         }
     }
 
-    pub trait MyNode: Send + Sync {
+    pub trait MyNode: Send {
         fn do_mid(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
@@ -885,11 +882,8 @@ pub mod client_async {
 
     impl<P, S> MyNode for MyNodeImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn do_mid(
@@ -958,7 +952,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn MyNode + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -977,7 +971,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -992,12 +986,12 @@ pub mod client_async {
 
     pub struct MyLeafImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> MyLeafImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -1010,7 +1004,7 @@ pub mod client_async {
         }
     }
 
-    pub trait MyLeaf: Send + Sync {
+    pub trait MyLeaf: Send {
         fn do_leaf(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
@@ -1018,11 +1012,8 @@ pub mod client_async {
 
     impl<P, S> MyLeaf for MyLeafImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn do_leaf(
@@ -1091,7 +1082,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn MyLeaf + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1110,7 +1101,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,

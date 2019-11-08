@@ -25,7 +25,7 @@
     pub struct {{service:name}}Impl<P, S> {
         {{^service:functions?}}_{{/service:functions?}}{{!
         }}service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> {{service:name}}Impl<P, S>
@@ -172,7 +172,7 @@
             transport: T,
         ) -> Arc<dyn {{service:name}} + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -191,7 +191,7 @@
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,

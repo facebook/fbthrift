@@ -25,12 +25,12 @@
     pub struct {{service:name}}Impl<P, S> {
         {{^service:functions?}}_{{/service:functions?}}{{!
         }}service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> {{service:name}}Impl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -44,7 +44,7 @@
         }
     }
 
-    pub trait {{service:name}}: Send + Sync {{>lib/block}}{{!
+    pub trait {{service:name}}: Send {{>lib/block}}{{!
         }}{{#service:functions}}
         fn {{function:name}}(
             &self,{{!
@@ -60,11 +60,8 @@
 
     impl<P, S> {{service:name}} for {{service:name}}Impl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {{>lib/block}}{{!
@@ -153,7 +150,7 @@
             transport: T,
         ) -> Arc<dyn {{service:name}} + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -172,7 +169,7 @@
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,

@@ -461,7 +461,7 @@ pub mod client {
 
     pub struct NestedContainersImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> NestedContainersImpl<P, S>
@@ -817,7 +817,7 @@ pub mod client {
             transport: T,
         ) -> Arc<dyn NestedContainers + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -836,7 +836,7 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -858,12 +858,12 @@ pub mod client_async {
 
     pub struct NestedContainersImpl<P, S> {
         service: S,
-        _phantom: PhantomData<P>,
+        _phantom: PhantomData<fn() -> P>,
     }
 
     impl<P, S> NestedContainersImpl<P, S>
     where
-        P: Protocol + Sync,
+        P: Protocol,
         S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
@@ -876,7 +876,7 @@ pub mod client_async {
         }
     }
 
-    pub trait NestedContainers: Send + Sync {
+    pub trait NestedContainers: Send {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
@@ -901,11 +901,8 @@ pub mod client_async {
 
     impl<P, S> NestedContainers for NestedContainersImpl<P, S>
     where
-        P: Protocol + Send + Sync + 'static,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Send
-            + Sync
-            + 'static,
+        P: Protocol,
+        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
         S::Future: Send + 'static,
         S::Error: Into<failure::Error> + 'static,
     {        fn mapList(
@@ -1174,7 +1171,7 @@ pub mod client_async {
             transport: T,
         ) -> Arc<dyn NestedContainers + Send + Sync + 'static>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
@@ -1193,7 +1190,7 @@ pub mod client_async {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + Send + Sync + 'static,
+            P: Protocol<Frame = T> + 'static,
             T: tokio_service::Service<
                 Request = ProtocolEncodedFinal<P>,
                 Response = ProtocolDecoded<P>,
