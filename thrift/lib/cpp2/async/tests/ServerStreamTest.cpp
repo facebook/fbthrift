@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <folly/synchronization/Baton.h>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #if FOLLY_HAS_COROUTINES
@@ -181,6 +182,30 @@ TEST(ServerStreamTest, DelayedCancel) {
   });
   clientCallback.completed.wait();
   EXPECT_EQ(clientCallback.i, 4);
+}
+
+TEST(ServerStreamTest, PropagatedCancel) {
+  folly::ScopedEventBaseThread clientEb, serverEb;
+  ClientCallback clientCallback;
+  folly::Baton<> setup, canceled;
+  ServerStreamFactory<int> factory([&]() -> folly::coro::AsyncGenerator<int&&> {
+    folly::CancellationCallback cb{
+        co_await folly::coro::co_current_cancellation_token,
+        [&] { canceled.post(); }};
+    setup.post();
+    co_await folly::coro::sleep(std::chrono::minutes(1));
+  }());
+  factory(
+      FirstResponsePayload{nullptr, {}},
+      &clientCallback,
+      clientEb.getEventBase(),
+      serverEb.getEventBase(),
+      &encode);
+  clientCallback.started.wait();
+  clientEb.getEventBase()->add([&] { clientCallback.cb->onStreamRequestN(1); });
+  setup.wait();
+  clientEb.getEventBase()->add([&] { clientCallback.cb->onStreamCancel(); });
+  ASSERT_TRUE(canceled.try_wait_for(std::chrono::seconds(1)));
 }
 
 TEST(ServerStreamTest, CancelCoro) {

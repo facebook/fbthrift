@@ -105,7 +105,8 @@ class ServerGeneratorStream : public TwoWayBridge<
               }
 
               try {
-                auto&& payload = co_await gen.next();
+                auto&& payload = co_await folly::coro::co_withCancellation(
+                    stream->cancelSource_.getToken(), gen.next());
                 if (payload) {
                   stream->publish(encode(folly::Try<T>(std::move(*payload))));
                   --credits;
@@ -162,6 +163,7 @@ class ServerGeneratorStream : public TwoWayBridge<
   }
 
   void onStreamCancel() override {
+    cancelSource_.requestCancellation();
     clientPush(-1);
     clientClose();
     streamClientCallback_ = nullptr;
@@ -195,6 +197,7 @@ class ServerGeneratorStream : public TwoWayBridge<
 
   StreamClientCallback* streamClientCallback_;
   folly::EventBase* clientEventBase_;
+  folly::CancellationSource cancelSource_;
 };
 
 } // namespace detail
