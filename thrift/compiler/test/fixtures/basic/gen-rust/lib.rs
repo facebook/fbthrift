@@ -850,7 +850,7 @@ pub mod services {
     }
 }
 
-pub mod client_async {
+pub mod client {
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -1848,7 +1848,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyService {
+    impl dyn super::client::MyService {
         pub fn mock<'mock>() -> MyService<'mock> {
             MyService {
                 ping: my_service::ping::unimplemented(),
@@ -1863,7 +1863,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyService for MyService<'mock> {
+    impl<'mock> super::client::MyService for MyService<'mock> {
         fn ping(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {

@@ -27,7 +27,7 @@
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::{{service:name}} {
+    impl dyn super::client::{{service:name}} {
         pub fn mock<'mock>() -> {{service:name}}<'mock> {
             {{service:name}} {{>lib/block}}{{!
                 }}{{#service:functions}}
@@ -40,7 +40,7 @@
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
+    impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:functions}}
         fn {{function:name}}(
             &self,{{!

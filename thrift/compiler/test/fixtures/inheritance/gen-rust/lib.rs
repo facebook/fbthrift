@@ -291,7 +291,7 @@ pub mod services {
     }
 }
 
-pub mod client_async {
+pub mod client {
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -1348,7 +1348,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyRoot {
+    impl dyn super::client::MyRoot {
         pub fn mock<'mock>() -> MyRoot<'mock> {
             MyRoot {
                 do_root: my_root::do_root::unimplemented(),
@@ -1358,7 +1358,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyRoot for MyRoot<'mock> {
+    impl<'mock> super::client::MyRoot for MyRoot<'mock> {
         fn do_root(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
@@ -1419,7 +1419,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyNode {
+    impl dyn super::client::MyNode {
         pub fn mock<'mock>() -> MyNode<'mock> {
             MyNode {
                 do_mid: my_node::do_mid::unimplemented(),
@@ -1429,7 +1429,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyNode for MyNode<'mock> {
+    impl<'mock> super::client::MyNode for MyNode<'mock> {
         fn do_mid(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
@@ -1490,7 +1490,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyLeaf {
+    impl dyn super::client::MyLeaf {
         pub fn mock<'mock>() -> MyLeaf<'mock> {
             MyLeaf {
                 do_leaf: my_leaf::do_leaf::unimplemented(),
@@ -1500,7 +1500,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyLeaf for MyLeaf<'mock> {
+    impl<'mock> super::client::MyLeaf for MyLeaf<'mock> {
         fn do_leaf(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {

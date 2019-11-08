@@ -453,7 +453,7 @@ pub mod services {
     }
 }
 
-pub mod client_async {
+pub mod client {
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -1336,7 +1336,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::NestedContainers {
+    impl dyn super::client::NestedContainers {
         pub fn mock<'mock>() -> NestedContainers<'mock> {
             NestedContainers {
                 mapList: nested_containers::mapList::unimplemented(),
@@ -1350,7 +1350,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::NestedContainers for NestedContainers<'mock> {
+    impl<'mock> super::client::NestedContainers for NestedContainers<'mock> {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,

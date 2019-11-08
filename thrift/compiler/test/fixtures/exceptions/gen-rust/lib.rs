@@ -645,7 +645,7 @@ pub mod services {
     }
 }
 
-pub mod client_async {
+pub mod client {
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -1357,7 +1357,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::Raiser {
+    impl dyn super::client::Raiser {
         pub fn mock<'mock>() -> Raiser<'mock> {
             Raiser {
                 doBland: raiser::doBland::unimplemented(),
@@ -1370,7 +1370,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::Raiser for Raiser<'mock> {
+    impl<'mock> super::client::Raiser for Raiser<'mock> {
         fn doBland(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {

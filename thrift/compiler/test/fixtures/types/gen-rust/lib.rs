@@ -1865,7 +1865,7 @@ pub mod services {
     }
 }
 
-pub mod client_async {
+pub mod client {
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -2403,7 +2403,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::SomeService {
+    impl dyn super::client::SomeService {
         pub fn mock<'mock>() -> SomeService<'mock> {
             SomeService {
                 bounce_map: some_service::bounce_map::unimplemented(),
@@ -2414,7 +2414,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::SomeService for SomeService<'mock> {
+    impl<'mock> super::client::SomeService for SomeService<'mock> {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,

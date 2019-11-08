@@ -1090,7 +1090,7 @@ pub mod services {
     }
 }
 
-pub mod client_async {
+pub mod client {
     use fbthrift::*;
     use futures::Future;
     use std::marker::PhantomData;
@@ -2924,7 +2924,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyService {
+    impl dyn super::client::MyService {
         pub fn mock<'mock>() -> MyService<'mock> {
             MyService {
                 ping: my_service::ping::unimplemented(),
@@ -2940,7 +2940,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyService for MyService<'mock> {
+    impl<'mock> super::client::MyService for MyService<'mock> {
         fn ping(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
@@ -3302,7 +3302,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyServicePrioParent {
+    impl dyn super::client::MyServicePrioParent {
         pub fn mock<'mock>() -> MyServicePrioParent<'mock> {
             MyServicePrioParent {
                 ping: my_service_prio_parent::ping::unimplemented(),
@@ -3313,7 +3313,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyServicePrioParent for MyServicePrioParent<'mock> {
+    impl<'mock> super::client::MyServicePrioParent for MyServicePrioParent<'mock> {
         fn ping(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
@@ -3423,7 +3423,7 @@ pub mod mock {
         _marker: PhantomData<&'mock ()>,
     }
 
-    impl dyn super::client_async::MyServicePrioChild {
+    impl dyn super::client::MyServicePrioChild {
         pub fn mock<'mock>() -> MyServicePrioChild<'mock> {
             MyServicePrioChild {
                 pang: my_service_prio_child::pang::unimplemented(),
@@ -3433,7 +3433,7 @@ pub mod mock {
     }
 
     #[async_trait]
-    impl<'mock> super::client_async::MyServicePrioChild for MyServicePrioChild<'mock> {
+    impl<'mock> super::client::MyServicePrioChild for MyServicePrioChild<'mock> {
         fn pang(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
