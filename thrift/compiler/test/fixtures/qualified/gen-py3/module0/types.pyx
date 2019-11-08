@@ -391,7 +391,7 @@ cdef class Struct(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class List__Enum:
+cdef class List__Enum(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__Enum):
             self._cpp_obj = (<List__Enum> items)._cpp_obj

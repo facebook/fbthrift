@@ -1288,135 +1288,105 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
     cdef create(shared_ptr[cNoExceptMoveUnion])
 
 
-cdef class std_unordered_map__Map__i32_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     cdef shared_ptr[std_unordered_map[int32_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_unordered_map[int32_t,string]])
     @staticmethod
     cdef shared_ptr[std_unordered_map[int32_t,string]] _make_instance(object items) except *
 
-cdef class List__i64:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__i64(thrift.py3.types.Container):
     cdef shared_ptr[vector[int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int64_t]])
     @staticmethod
     cdef shared_ptr[vector[int64_t]] _make_instance(object items) except *
 
-cdef class Map__binary_i64:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__binary_i64(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,int64_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,int64_t]] _make_instance(object items) except *
 
-cdef class List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
     @staticmethod
     cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *
 
-cdef class std_list__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class std_list__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[std_list[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_list[int32_t]])
     @staticmethod
     cdef shared_ptr[std_list[int32_t]] _make_instance(object items) except *
 
-cdef class std_deque__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class std_deque__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[std_deque[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_deque[int32_t]])
     @staticmethod
     cdef shared_ptr[std_deque[int32_t]] _make_instance(object items) except *
 
-cdef class folly_fbvector__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class folly_fbvector__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[folly_fbvector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_fbvector[int32_t]])
     @staticmethod
     cdef shared_ptr[folly_fbvector[int32_t]] _make_instance(object items) except *
 
-cdef class folly_small_vector__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class folly_small_vector__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[folly_small_vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_small_vector[int32_t]])
     @staticmethod
     cdef shared_ptr[folly_small_vector[int32_t]] _make_instance(object items) except *
 
-cdef class folly_sorted_vector_set__Set__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
     cdef shared_ptr[folly_sorted_vector_set[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_set[int32_t]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_set[int32_t]] _make_instance(object items) except *
 
-cdef class folly_sorted_vector_map__Map__i32_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Container):
     cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[folly_sorted_vector_map[int32_t,string]])
     @staticmethod
     cdef shared_ptr[folly_sorted_vector_map[int32_t,string]] _make_instance(object items) except *
 
-cdef class std_list_int32_t__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class std_list_int32_t__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[std_list_int32_t] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[std_list_int32_t])
     @staticmethod
     cdef shared_ptr[std_list_int32_t] _make_instance(object items) except *
 
-cdef class Map__string_i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__string_i32(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,int32_t]] _make_instance(object items) except *
 
-cdef class List__std_unordered_map__Map__i32_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[std_unordered_map[int32_t,string]]])
     @staticmethod
     cdef shared_ptr[vector[std_unordered_map[int32_t,string]]] _make_instance(object items) except *
 
-cdef class List__binary:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__binary(thrift.py3.types.Container):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
-cdef class Map__MyEnumA_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__MyEnumA_string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[cMyEnumA,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cMyEnumA,string]])

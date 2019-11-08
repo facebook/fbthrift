@@ -227,27 +227,21 @@ cdef class Person(thrift.py3.types.Struct):
     cdef create(shared_ptr[cPerson])
 
 
-cdef class Set__i64:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__i64(thrift.py3.types.Container):
     cdef shared_ptr[cset[int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]])
     @staticmethod
     cdef shared_ptr[cset[int64_t]] _make_instance(object items) except *
 
-cdef class Map__Animal_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__Animal_string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[cAnimal,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]])
     @staticmethod
     cdef shared_ptr[cmap[cAnimal,string]] _make_instance(object items) except *
 
-cdef class List__Vehicle:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Vehicle(thrift.py3.types.Container):
     cdef shared_ptr[vector[cVehicle]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cVehicle]])

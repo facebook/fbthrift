@@ -1393,7 +1393,7 @@ cdef class Person(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class Set__i64:
+cdef class Set__i64(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Set__i64):
             self._cpp_obj = (<Set__i64> items)._cpp_obj
@@ -1642,7 +1642,7 @@ cdef class Set__i64:
 Set.register(Set__i64)
 
 @__cython.auto_pickle(False)
-cdef class Map__Animal_string:
+cdef class Map__Animal_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__Animal_string):
             self._cpp_obj = (<Map__Animal_string> items)._cpp_obj
@@ -1780,7 +1780,7 @@ cdef class Map__Animal_string:
 Mapping.register(Map__Animal_string)
 
 @__cython.auto_pickle(False)
-cdef class List__Vehicle:
+cdef class List__Vehicle(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__Vehicle):
             self._cpp_obj = (<List__Vehicle> items)._cpp_obj

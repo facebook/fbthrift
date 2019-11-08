@@ -92,9 +92,7 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef create(shared_ptr[cStruct])
 
 
-cdef class List__Enum:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Enum(thrift.py3.types.Container):
     cdef shared_ptr[vector[cEnum]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]])

@@ -45,6 +45,14 @@ cdef class Union(Struct):
 
 
 @cython.auto_pickle(False)
+cdef class Container:
+    """
+    Base class for all thrift containers
+    """
+    pass
+
+
+@cython.auto_pickle(False)
 cdef class CompiledEnum:
     """
     Base class for all thrift Enum

@@ -44,6 +44,11 @@ cdef class Union(Struct):
     pass
 
 
+cdef class Container:
+    cdef object __hash
+    cdef object __weakref__
+
+
 cdef class CompiledEnum:
     cdef object __weakref__
     cdef readonly int value

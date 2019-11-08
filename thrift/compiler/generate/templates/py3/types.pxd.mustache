@@ -231,9 +231,7 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
 {{/program:structs}}
 
 {{#program:containerTypes}}
-cdef class {{> types/CythonPythonType}}:
-    cdef object __hash
-    cdef object __weakref__
+cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
     cdef shared_ptr[{{> types/CythonCppType}}] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[{{> types/CythonCppType}}])

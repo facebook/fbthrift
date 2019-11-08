@@ -50,7 +50,7 @@ import builtins as _builtins
 
 
 @__cython.auto_pickle(False)
-cdef class List__string:
+cdef class List__string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__string):
             self._cpp_obj = (<List__string> items)._cpp_obj
@@ -215,7 +215,7 @@ cdef class List__string:
 Sequence.register(List__string)
 
 @__cython.auto_pickle(False)
-cdef class Map__i64_List__string:
+cdef class Map__i64_List__string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__i64_List__string):
             self._cpp_obj = (<Map__i64_List__string> items)._cpp_obj

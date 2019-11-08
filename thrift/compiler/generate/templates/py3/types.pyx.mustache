@@ -670,7 +670,7 @@ cdef class {{struct:name}}(thrift.py3.types.Union):
 {{/program:structs}}
 {{#program:containerTypes}}
 @__cython.auto_pickle(False)
-cdef class {{> types/CythonPythonType}}:
+cdef class {{> types/CythonPythonType}}(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, {{> types/CythonPythonType}}):
             self._cpp_obj = (<{{> types/CythonPythonType}}> items)._cpp_obj

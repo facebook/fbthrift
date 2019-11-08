@@ -23,6 +23,7 @@ from testing.types import (
     StrStrIntListMapMap,
     StrStrMap,
 )
+from thrift.py3.types import Container
 
 
 class MapTests(unittest.TestCase):
@@ -102,3 +103,10 @@ class MapTests(unittest.TestCase):
         self.assertEqual(x, y)
         self.assertEqual(x, x)
         self.assertEqual(y, y)
+
+    def test_is_container(self) -> None:
+        self.assertIsInstance(LocationMap, Container)
+        self.assertIsInstance(StrI32ListMap(), Container)
+        self.assertIsInstance(StrIntMap(), Container)
+        self.assertIsInstance(StrStrIntListMapMap(), Container)
+        self.assertIsInstance(StrStrMap(), Container)

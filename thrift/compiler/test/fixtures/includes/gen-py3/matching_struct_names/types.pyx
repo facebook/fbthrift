@@ -541,7 +541,7 @@ cdef class Combo(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class List__MyStruct:
+cdef class List__MyStruct(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__MyStruct):
             self._cpp_obj = (<List__MyStruct> items)._cpp_obj
@@ -706,7 +706,7 @@ cdef class List__MyStruct:
 Sequence.register(List__MyStruct)
 
 @__cython.auto_pickle(False)
-cdef class List__List__MyStruct:
+cdef class List__List__MyStruct(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__List__MyStruct):
             self._cpp_obj = (<List__List__MyStruct> items)._cpp_obj
@@ -888,7 +888,7 @@ cdef class List__List__MyStruct:
 Sequence.register(List__List__MyStruct)
 
 @__cython.auto_pickle(False)
-cdef class List__module_MyStruct:
+cdef class List__module_MyStruct(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__module_MyStruct):
             self._cpp_obj = (<List__module_MyStruct> items)._cpp_obj
@@ -1053,7 +1053,7 @@ cdef class List__module_MyStruct:
 Sequence.register(List__module_MyStruct)
 
 @__cython.auto_pickle(False)
-cdef class List__List__module_MyStruct:
+cdef class List__List__module_MyStruct(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__List__module_MyStruct):
             self._cpp_obj = (<List__List__module_MyStruct> items)._cpp_obj

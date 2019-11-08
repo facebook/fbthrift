@@ -2596,7 +2596,7 @@ cdef class union2(thrift.py3.types.Union):
 
 
 @__cython.auto_pickle(False)
-cdef class List__i32:
+cdef class List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
@@ -2762,7 +2762,7 @@ cdef class List__i32:
 Sequence.register(List__i32)
 
 @__cython.auto_pickle(False)
-cdef class Map__string_i32:
+cdef class Map__string_i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
             self._cpp_obj = (<Map__string_i32> items)._cpp_obj
@@ -2901,7 +2901,7 @@ cdef class Map__string_i32:
 Mapping.register(Map__string_i32)
 
 @__cython.auto_pickle(False)
-cdef class List__Map__string_i32:
+cdef class List__Map__string_i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__Map__string_i32):
             self._cpp_obj = (<List__Map__string_i32> items)._cpp_obj
@@ -3083,7 +3083,7 @@ cdef class List__Map__string_i32:
 Sequence.register(List__Map__string_i32)
 
 @__cython.auto_pickle(False)
-cdef class List__Range:
+cdef class List__Range(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__Range):
             self._cpp_obj = (<List__Range> items)._cpp_obj
@@ -3248,7 +3248,7 @@ cdef class List__Range:
 Sequence.register(List__Range)
 
 @__cython.auto_pickle(False)
-cdef class List__Internship:
+cdef class List__Internship(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__Internship):
             self._cpp_obj = (<List__Internship> items)._cpp_obj
@@ -3413,7 +3413,7 @@ cdef class List__Internship:
 Sequence.register(List__Internship)
 
 @__cython.auto_pickle(False)
-cdef class List__string:
+cdef class List__string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__string):
             self._cpp_obj = (<List__string> items)._cpp_obj
@@ -3578,7 +3578,7 @@ cdef class List__string:
 Sequence.register(List__string)
 
 @__cython.auto_pickle(False)
-cdef class Set__i32:
+cdef class Set__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Set__i32):
             self._cpp_obj = (<Set__i32> items)._cpp_obj
@@ -3827,7 +3827,7 @@ cdef class Set__i32:
 Set.register(Set__i32)
 
 @__cython.auto_pickle(False)
-cdef class Set__string:
+cdef class Set__string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Set__string):
             self._cpp_obj = (<Set__string> items)._cpp_obj
@@ -4075,7 +4075,7 @@ cdef class Set__string:
 Set.register(Set__string)
 
 @__cython.auto_pickle(False)
-cdef class Map__i32_i32:
+cdef class Map__i32_i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__i32_i32):
             self._cpp_obj = (<Map__i32_i32> items)._cpp_obj
@@ -4215,7 +4215,7 @@ cdef class Map__i32_i32:
 Mapping.register(Map__i32_i32)
 
 @__cython.auto_pickle(False)
-cdef class Map__i32_string:
+cdef class Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__i32_string):
             self._cpp_obj = (<Map__i32_string> items)._cpp_obj
@@ -4354,7 +4354,7 @@ cdef class Map__i32_string:
 Mapping.register(Map__i32_string)
 
 @__cython.auto_pickle(False)
-cdef class Map__string_string:
+cdef class Map__string_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__string_string):
             self._cpp_obj = (<Map__string_string> items)._cpp_obj

@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import unittest
 import itertools
+import unittest
 
-from testing.types import int_list, I32List, StrList2D, easy
+from testing.types import I32List, StrList2D, easy, int_list
+from thrift.py3.types import Container
 
 
 class ListTests(unittest.TestCase):
@@ -106,3 +107,8 @@ class ListTests(unittest.TestCase):
         self.assertEqual(x, x2)
         self.assertLessEqual(x, x2)
         self.assertGreaterEqual(x, x2)
+
+    def test_is_container(self) -> None:
+        self.assertIsInstance(int_list, Container)
+        self.assertIsInstance(I32List([1, 2, 3]), Container)
+        self.assertIsInstance(StrList2D([["a", "b"], ["c", "d"]]), Container)

@@ -5662,7 +5662,7 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
 
 
 @__cython.auto_pickle(False)
-cdef class std_unordered_map__Map__i32_string:
+cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):
             self._cpp_obj = (<std_unordered_map__Map__i32_string> items)._cpp_obj
@@ -5801,7 +5801,7 @@ cdef class std_unordered_map__Map__i32_string:
 Mapping.register(std_unordered_map__Map__i32_string)
 
 @__cython.auto_pickle(False)
-cdef class List__i64:
+cdef class List__i64(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__i64):
             self._cpp_obj = (<List__i64> items)._cpp_obj
@@ -5967,7 +5967,7 @@ cdef class List__i64:
 Sequence.register(List__i64)
 
 @__cython.auto_pickle(False)
-cdef class Map__binary_i64:
+cdef class Map__binary_i64(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__binary_i64):
             self._cpp_obj = (<Map__binary_i64> items)._cpp_obj
@@ -6106,7 +6106,7 @@ cdef class Map__binary_i64:
 Mapping.register(Map__binary_i64)
 
 @__cython.auto_pickle(False)
-cdef class List__i32:
+cdef class List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
@@ -6272,7 +6272,7 @@ cdef class List__i32:
 Sequence.register(List__i32)
 
 @__cython.auto_pickle(False)
-cdef class std_list__List__i32:
+cdef class std_list__List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, std_list__List__i32):
             self._cpp_obj = (<std_list__List__i32> items)._cpp_obj
@@ -6438,7 +6438,7 @@ cdef class std_list__List__i32:
 Sequence.register(std_list__List__i32)
 
 @__cython.auto_pickle(False)
-cdef class std_deque__List__i32:
+cdef class std_deque__List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, std_deque__List__i32):
             self._cpp_obj = (<std_deque__List__i32> items)._cpp_obj
@@ -6604,7 +6604,7 @@ cdef class std_deque__List__i32:
 Sequence.register(std_deque__List__i32)
 
 @__cython.auto_pickle(False)
-cdef class folly_fbvector__List__i32:
+cdef class folly_fbvector__List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, folly_fbvector__List__i32):
             self._cpp_obj = (<folly_fbvector__List__i32> items)._cpp_obj
@@ -6770,7 +6770,7 @@ cdef class folly_fbvector__List__i32:
 Sequence.register(folly_fbvector__List__i32)
 
 @__cython.auto_pickle(False)
-cdef class folly_small_vector__List__i32:
+cdef class folly_small_vector__List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, folly_small_vector__List__i32):
             self._cpp_obj = (<folly_small_vector__List__i32> items)._cpp_obj
@@ -6936,7 +6936,7 @@ cdef class folly_small_vector__List__i32:
 Sequence.register(folly_small_vector__List__i32)
 
 @__cython.auto_pickle(False)
-cdef class folly_sorted_vector_set__Set__i32:
+cdef class folly_sorted_vector_set__Set__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, folly_sorted_vector_set__Set__i32):
             self._cpp_obj = (<folly_sorted_vector_set__Set__i32> items)._cpp_obj
@@ -7185,7 +7185,7 @@ cdef class folly_sorted_vector_set__Set__i32:
 Set.register(folly_sorted_vector_set__Set__i32)
 
 @__cython.auto_pickle(False)
-cdef class folly_sorted_vector_map__Map__i32_string:
+cdef class folly_sorted_vector_map__Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, folly_sorted_vector_map__Map__i32_string):
             self._cpp_obj = (<folly_sorted_vector_map__Map__i32_string> items)._cpp_obj
@@ -7324,7 +7324,7 @@ cdef class folly_sorted_vector_map__Map__i32_string:
 Mapping.register(folly_sorted_vector_map__Map__i32_string)
 
 @__cython.auto_pickle(False)
-cdef class std_list_int32_t__List__i32:
+cdef class std_list_int32_t__List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, std_list_int32_t__List__i32):
             self._cpp_obj = (<std_list_int32_t__List__i32> items)._cpp_obj
@@ -7490,7 +7490,7 @@ cdef class std_list_int32_t__List__i32:
 Sequence.register(std_list_int32_t__List__i32)
 
 @__cython.auto_pickle(False)
-cdef class Map__string_i32:
+cdef class Map__string_i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
             self._cpp_obj = (<Map__string_i32> items)._cpp_obj
@@ -7629,7 +7629,7 @@ cdef class Map__string_i32:
 Mapping.register(Map__string_i32)
 
 @__cython.auto_pickle(False)
-cdef class List__std_unordered_map__Map__i32_string:
+cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__std_unordered_map__Map__i32_string):
             self._cpp_obj = (<List__std_unordered_map__Map__i32_string> items)._cpp_obj
@@ -7811,7 +7811,7 @@ cdef class List__std_unordered_map__Map__i32_string:
 Sequence.register(List__std_unordered_map__Map__i32_string)
 
 @__cython.auto_pickle(False)
-cdef class List__binary:
+cdef class List__binary(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__binary):
             self._cpp_obj = (<List__binary> items)._cpp_obj
@@ -7976,7 +7976,7 @@ cdef class List__binary:
 Sequence.register(List__binary)
 
 @__cython.auto_pickle(False)
-cdef class Map__MyEnumA_string:
+cdef class Map__MyEnumA_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__MyEnumA_string):
             self._cpp_obj = (<Map__MyEnumA_string> items)._cpp_obj

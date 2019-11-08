@@ -14,17 +14,17 @@
 
 import enum
 from typing import (
-    TypeVar,
-    Type,
-    SupportsInt,
-    Iterator,
     Any,
-    Tuple,
-    Union as tUnion,
+    Iterator,
     Mapping,
     NamedTuple,
-    Sequence,
     Optional,
+    Sequence,
+    SupportsInt,
+    Tuple,
+    Type,
+    TypeVar,
+    Union as tUnion,
 )
 
 _T = TypeVar("_T")
@@ -39,6 +39,7 @@ class Struct:
     def __copy__(self: _T) -> _T: ...
 
 class Union(Struct): ...
+class Container: ...
 
 class EnumMeta(type):
     def __iter__(self: Type[_T]) -> Iterator[_T]: ...

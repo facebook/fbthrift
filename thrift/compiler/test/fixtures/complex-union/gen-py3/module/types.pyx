@@ -2424,7 +2424,7 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
 
 
 @__cython.auto_pickle(False)
-cdef class List__i64:
+cdef class List__i64(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__i64):
             self._cpp_obj = (<List__i64> items)._cpp_obj
@@ -2590,7 +2590,7 @@ cdef class List__i64:
 Sequence.register(List__i64)
 
 @__cython.auto_pickle(False)
-cdef class List__string:
+cdef class List__string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__string):
             self._cpp_obj = (<List__string> items)._cpp_obj
@@ -2755,7 +2755,7 @@ cdef class List__string:
 Sequence.register(List__string)
 
 @__cython.auto_pickle(False)
-cdef class Map__i16_string:
+cdef class Map__i16_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__i16_string):
             self._cpp_obj = (<Map__i16_string> items)._cpp_obj

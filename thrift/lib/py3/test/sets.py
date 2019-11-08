@@ -15,9 +15,10 @@
 
 import copy
 import unittest
+from typing import AbstractSet, Any, Sequence, Tuple
 
-from testing.types import SetI32Lists, SetSetI32Lists, SetI32
-from typing import AbstractSet, Sequence, Any, Tuple
+from testing.types import SetI32, SetI32Lists, SetSetI32Lists
+from thrift.py3.types import Container
 
 
 class SetTests(unittest.TestCase):
@@ -126,3 +127,8 @@ class SetTests(unittest.TestCase):
         hash(z)
         for sub_set in z:
             hash(sub_set)
+
+    def test_is_container(self) -> None:
+        self.assertIsInstance(SetI32Lists(), Container)
+        self.assertIsInstance(SetSetI32Lists(), Container)
+        self.assertIsInstance(SetI32(), Container)

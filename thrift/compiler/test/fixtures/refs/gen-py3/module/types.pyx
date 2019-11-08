@@ -3572,7 +3572,7 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class List__RecursiveStruct:
+cdef class List__RecursiveStruct(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__RecursiveStruct):
             self._cpp_obj = (<List__RecursiveStruct> items)._cpp_obj
@@ -3737,7 +3737,7 @@ cdef class List__RecursiveStruct:
 Sequence.register(List__RecursiveStruct)
 
 @__cython.auto_pickle(False)
-cdef class List__i32:
+cdef class List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
@@ -3903,7 +3903,7 @@ cdef class List__i32:
 Sequence.register(List__i32)
 
 @__cython.auto_pickle(False)
-cdef class Set__i32:
+cdef class Set__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Set__i32):
             self._cpp_obj = (<Set__i32> items)._cpp_obj
@@ -4152,7 +4152,7 @@ cdef class Set__i32:
 Set.register(Set__i32)
 
 @__cython.auto_pickle(False)
-cdef class Map__i32_i32:
+cdef class Map__i32_i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, Map__i32_i32):
             self._cpp_obj = (<Map__i32_i32> items)._cpp_obj

@@ -50,7 +50,7 @@ import builtins as _builtins
 
 
 @__cython.auto_pickle(False)
-cdef class std_unordered_map__Map__i32_string:
+cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, std_unordered_map__Map__i32_string):
             self._cpp_obj = (<std_unordered_map__Map__i32_string> items)._cpp_obj
@@ -189,7 +189,7 @@ cdef class std_unordered_map__Map__i32_string:
 Mapping.register(std_unordered_map__Map__i32_string)
 
 @__cython.auto_pickle(False)
-cdef class List__std_unordered_map__Map__i32_string:
+cdef class List__std_unordered_map__Map__i32_string(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__std_unordered_map__Map__i32_string):
             self._cpp_obj = (<List__std_unordered_map__Map__i32_string> items)._cpp_obj

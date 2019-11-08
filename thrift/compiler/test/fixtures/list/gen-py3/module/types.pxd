@@ -31,18 +31,14 @@ from folly.optional cimport cOptional
 
 
 
-cdef class List__string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__string(thrift.py3.types.Container):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
-cdef class Map__i64_List__string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__i64_List__string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[int64_t,vector[string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]])

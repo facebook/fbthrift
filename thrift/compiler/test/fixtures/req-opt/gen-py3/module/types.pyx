@@ -358,7 +358,7 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class List__bool:
+cdef class List__bool(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__bool):
             self._cpp_obj = (<List__bool> items)._cpp_obj
@@ -523,7 +523,7 @@ cdef class List__bool:
 Sequence.register(List__bool)
 
 @__cython.auto_pickle(False)
-cdef class List__i32:
+cdef class List__i32(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj

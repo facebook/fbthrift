@@ -235,198 +235,154 @@ cdef class containerStruct(thrift.py3.types.Struct):
     cdef create(shared_ptr[ccontainerStruct])
 
 
-cdef class Map__string_bool:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__string_bool(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,cbool]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cbool]])
     @staticmethod
     cdef shared_ptr[cmap[string,cbool]] _make_instance(object items) except *
 
-cdef class Set__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__i32(thrift.py3.types.Container):
     cdef shared_ptr[cset[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
     @staticmethod
     cdef shared_ptr[cset[int32_t]] _make_instance(object items) except *
 
-cdef class List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
     @staticmethod
     cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *
 
-cdef class List__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[vector[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[int32_t]]])
     @staticmethod
     cdef shared_ptr[vector[vector[int32_t]]] _make_instance(object items) except *
 
-cdef class List__List__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__List__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[vector[vector[int32_t]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[int32_t]]]])
     @staticmethod
     cdef shared_ptr[vector[vector[vector[int32_t]]]] _make_instance(object items) except *
 
-cdef class Map__string_i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__string_i32(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
     @staticmethod
     cdef shared_ptr[cmap[string,int32_t]] _make_instance(object items) except *
 
-cdef class Map__string_Map__string_i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__string_Map__string_i32(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]])
     @staticmethod
     cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *
 
-cdef class Map__string_Map__string_Map__string_i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__string_Map__string_Map__string_i32(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]])
     @staticmethod
     cdef shared_ptr[cmap[string,cmap[string,cmap[string,int32_t]]]] _make_instance(object items) except *
 
-cdef class List__Set__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Set__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[cset[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]])
     @staticmethod
     cdef shared_ptr[vector[cset[int32_t]]] _make_instance(object items) except *
 
-cdef class Map__string_List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__string_List__i32(thrift.py3.types.Container):
     cdef shared_ptr[cmap[string,vector[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[int32_t]]])
     @staticmethod
     cdef shared_ptr[cmap[string,vector[int32_t]]] _make_instance(object items) except *
 
-cdef class List__List__List__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__List__List__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[vector[vector[int32_t]]]]])
     @staticmethod
     cdef shared_ptr[vector[vector[vector[vector[int32_t]]]]] _make_instance(object items) except *
 
-cdef class Set__bool:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__bool(thrift.py3.types.Container):
     cdef shared_ptr[cset[cbool]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[cbool]])
     @staticmethod
     cdef shared_ptr[cset[cbool]] _make_instance(object items) except *
 
-cdef class Set__Set__bool:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__Set__bool(thrift.py3.types.Container):
     cdef shared_ptr[cset[cset[cbool]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[cset[cbool]]])
     @staticmethod
     cdef shared_ptr[cset[cset[cbool]]] _make_instance(object items) except *
 
-cdef class Set__Set__Set__bool:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__Set__Set__bool(thrift.py3.types.Container):
     cdef shared_ptr[cset[cset[cset[cbool]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[cset[cset[cbool]]]])
     @staticmethod
     cdef shared_ptr[cset[cset[cset[cbool]]]] _make_instance(object items) except *
 
-cdef class Set__List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__List__i32(thrift.py3.types.Container):
     cdef shared_ptr[cset[vector[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[vector[int32_t]]])
     @staticmethod
     cdef shared_ptr[cset[vector[int32_t]]] _make_instance(object items) except *
 
-cdef class Set__string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__string(thrift.py3.types.Container):
     cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[string]])
     @staticmethod
     cdef shared_ptr[cset[string]] _make_instance(object items) except *
 
-cdef class List__Set__string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Set__string(thrift.py3.types.Container):
     cdef shared_ptr[vector[cset[string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cset[string]]])
     @staticmethod
     cdef shared_ptr[vector[cset[string]]] _make_instance(object items) except *
 
-cdef class Map__List__Set__string_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__List__Set__string_string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[vector[cset[string]],string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[vector[cset[string]],string]])
     @staticmethod
     cdef shared_ptr[cmap[vector[cset[string]],string]] _make_instance(object items) except *
 
-cdef class Map__Set__List__i32_Map__List__Set__string_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__Set__List__i32_Map__List__Set__string_string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]])
     @staticmethod
     cdef shared_ptr[cmap[cset[vector[int32_t]],cmap[vector[cset[string]],string]]] _make_instance(object items) except *
 
-cdef class List__Foo__i64:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Foo__i64(thrift.py3.types.Container):
     cdef shared_ptr[vector[Foo]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[Foo]])
     @staticmethod
     cdef shared_ptr[vector[Foo]] _make_instance(object items) except *
 
-cdef class List__Bar__double:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Bar__double(thrift.py3.types.Container):
     cdef shared_ptr[vector[Bar]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[Bar]])
     @staticmethod
     cdef shared_ptr[vector[Bar]] _make_instance(object items) except *
 
-cdef class List__Baz__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__Baz__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[Baz]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[Baz]])

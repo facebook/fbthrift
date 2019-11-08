@@ -454,27 +454,21 @@ cdef class NonCopyableUnion(thrift.py3.types.Union):
     cdef create(shared_ptr[cNonCopyableUnion])
 
 
-cdef class List__i64:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__i64(thrift.py3.types.Container):
     cdef shared_ptr[vector[int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int64_t]])
     @staticmethod
     cdef shared_ptr[vector[int64_t]] _make_instance(object items) except *
 
-cdef class List__string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__string(thrift.py3.types.Container):
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
     @staticmethod
     cdef shared_ptr[vector[string]] _make_instance(object items) except *
 
-cdef class Map__i16_string:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__i16_string(thrift.py3.types.Container):
     cdef shared_ptr[cmap[int16_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int16_t,string]])

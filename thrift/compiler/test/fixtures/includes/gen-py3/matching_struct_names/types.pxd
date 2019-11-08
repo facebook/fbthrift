@@ -131,36 +131,28 @@ cdef class Combo(thrift.py3.types.Struct):
     cdef create(shared_ptr[cCombo])
 
 
-cdef class List__MyStruct:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__MyStruct(thrift.py3.types.Container):
     cdef shared_ptr[vector[cMyStruct]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cMyStruct]])
     @staticmethod
     cdef shared_ptr[vector[cMyStruct]] _make_instance(object items) except *
 
-cdef class List__List__MyStruct:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__List__MyStruct(thrift.py3.types.Container):
     cdef shared_ptr[vector[vector[cMyStruct]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[cMyStruct]]])
     @staticmethod
     cdef shared_ptr[vector[vector[cMyStruct]]] _make_instance(object items) except *
 
-cdef class List__module_MyStruct:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__module_MyStruct(thrift.py3.types.Container):
     cdef shared_ptr[vector[_module_types.cMyStruct]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[_module_types.cMyStruct]])
     @staticmethod
     cdef shared_ptr[vector[_module_types.cMyStruct]] _make_instance(object items) except *
 
-cdef class List__List__module_MyStruct:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__List__module_MyStruct(thrift.py3.types.Container):
     cdef shared_ptr[vector[vector[_module_types.cMyStruct]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[_module_types.cMyStruct]]])

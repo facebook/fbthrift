@@ -697,36 +697,28 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])
 
 
-cdef class List__RecursiveStruct:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__RecursiveStruct(thrift.py3.types.Container):
     cdef shared_ptr[vector[cRecursiveStruct]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cRecursiveStruct]])
     @staticmethod
     cdef shared_ptr[vector[cRecursiveStruct]] _make_instance(object items) except *
 
-cdef class List__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class List__i32(thrift.py3.types.Container):
     cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
     @staticmethod
     cdef shared_ptr[vector[int32_t]] _make_instance(object items) except *
 
-cdef class Set__i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Set__i32(thrift.py3.types.Container):
     cdef shared_ptr[cset[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
     @staticmethod
     cdef shared_ptr[cset[int32_t]] _make_instance(object items) except *
 
-cdef class Map__i32_i32:
-    cdef object __hash
-    cdef object __weakref__
+cdef class Map__i32_i32(thrift.py3.types.Container):
     cdef shared_ptr[cmap[int32_t,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]])
