@@ -93,6 +93,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       std::unique_ptr<ThriftRequestCore> request);
   FOLLY_NOINLINE void handleRequestOverloadedServer(
       std::unique_ptr<ThriftRequestCore> request);
+  FOLLY_NOINLINE void handleServerShutdown(
+      std::unique_ptr<ThriftRequestCore> request);
 };
 
 } // namespace rocket

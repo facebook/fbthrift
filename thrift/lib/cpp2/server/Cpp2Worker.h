@@ -122,6 +122,10 @@ class Cpp2Worker : public wangle::Acceptor,
     return requestsRegistry_;
   }
 
+  bool isStopping() {
+    return stopping_;
+  }
+
  protected:
   Cpp2Worker(
       ThriftServer* server,

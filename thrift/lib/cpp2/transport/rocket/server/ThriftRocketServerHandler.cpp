@@ -211,46 +211,50 @@ void ThriftRocketServerHandler::handleRequestCommon(
   const bool parseOk = deserializeMetadata(payload, metadata);
   const bool validMetadata = parseOk && isMetadataValid(metadata);
 
-  if (validMetadata) {
-    // check if server is overloaded
-    if (UNLIKELY(serverConfigs_.isOverloaded(
-            metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
-                                         : nullptr,
-            &*metadata.name_ref()))) {
-      if (auto* observer = serverConfigs_.getObserver()) {
-        observer->serverOverloaded();
-      }
-      handleRequestOverloadedServer(makeRequest(std::move(metadata)));
-      return;
-    }
-
-    auto data = std::move(payload).data();
-    // uncompress the request if it's compressed
-    if (auto compression = metadata.compression_ref()) {
-      rocket::uncompressRequest(*metadata.compression_ref(), data);
-    }
-
-    // check the checksum
-    const bool badChecksum = metadata.crc32c_ref() &&
-        (*metadata.crc32c_ref() != checksum::crc32c(*data));
-
-    if (!badChecksum) {
-      auto request = makeRequest(std::move(metadata));
-      const auto protocolId = request->getProtoId();
-      auto* const cpp2ReqCtx = request->getRequestContext();
-      cpp2Processor_->process(
-          std::move(request),
-          std::move(data),
-          protocolId,
-          cpp2ReqCtx,
-          worker_->getEventBase(),
-          threadManager_.get());
-    } else {
-      handleRequestWithBadChecksum(makeRequest(std::move(metadata)));
-    }
-  } else {
+  if (!validMetadata) {
     handleRequestWithBadMetadata(makeRequest(std::move(metadata)));
+    return;
   }
+
+  if (worker_->isStopping()) {
+    handleServerShutdown(makeRequest(std::move(metadata)));
+    return;
+  }
+
+  // check if server is overloaded
+  if (UNLIKELY(serverConfigs_.isOverloaded(
+          metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
+                                       : nullptr,
+          &*metadata.name_ref()))) {
+    handleRequestOverloadedServer(makeRequest(std::move(metadata)));
+    return;
+  }
+
+  auto data = std::move(payload).data();
+  // uncompress the request if it's compressed
+  if (auto compression = metadata.compression_ref()) {
+    rocket::uncompressRequest(*metadata.compression_ref(), data);
+  }
+
+  // check the checksum
+  const bool badChecksum = metadata.crc32c_ref() &&
+      (*metadata.crc32c_ref() != checksum::crc32c(*data));
+
+  if (badChecksum) {
+    handleRequestWithBadChecksum(makeRequest(std::move(metadata)));
+    return;
+  }
+
+  auto request = makeRequest(std::move(metadata));
+  const auto protocolId = request->getProtoId();
+  auto* const cpp2ReqCtx = request->getRequestContext();
+  cpp2Processor_->process(
+      std::move(request),
+      std::move(data),
+      protocolId,
+      cpp2ReqCtx,
+      worker_->getEventBase(),
+      threadManager_.get());
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(
@@ -272,12 +276,22 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
     std::unique_ptr<ThriftRequestCore> request) {
+  if (auto* observer = serverConfigs_.getObserver()) {
+    observer->serverOverloaded();
+  }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::LOADSHEDDING, "Loadshedding request"),
       serverConfigs_.getOverloadedErrorCode());
 }
 
+void ThriftRocketServerHandler::handleServerShutdown(
+    std::unique_ptr<ThriftRequestCore> request) {
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::INTERNAL_ERROR, "server shutting down"),
+      kQueueOverloadedErrorCode);
+}
 } // namespace rocket
 } // namespace thrift
 } // namespace apache
