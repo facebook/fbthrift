@@ -22,7 +22,7 @@
 
 #include <folly/Function.h>
 
-#include <thrift/lib/cpp2/server/RequestDebugStub.h>
+#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 
@@ -77,7 +77,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
   RocketServerFrameContext context_;
 
   // keep last
-  RequestDebugStub debugStub_;
+  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 // Object corresponding to rsocket REQUEST_FNF request (one-way request) handled
@@ -114,7 +114,7 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
   folly::Function<void()> onComplete_;
 
   // keep last
-  RequestDebugStub debugStub_;
+  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 // Object corresponding to rsocket REQUEST_STREAM request (initial request to
@@ -177,7 +177,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
 
   // keep last
-  RequestDebugStub debugStub_;
+  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 // Object corresponding to rsocket sink (REQUEST_CHANNEL) request (initial
@@ -232,7 +232,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
 
   // A tracing information embedded in request obejcts, we want to keep this
   // always as the last member of the class.
-  RequestDebugStub debugStub_;
+  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 } // namespace rocket

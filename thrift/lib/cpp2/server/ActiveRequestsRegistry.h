@@ -17,10 +17,13 @@
 #pragma once
 
 #include <folly/IntrusiveList.h>
-#include <thrift/lib/cpp2/server/RequestDebugStub.h>
+#include <chrono>
 
 namespace apache {
 namespace thrift {
+
+class Cpp2RequestContext;
+class ResponseChannelRequest;
 
 /**
  * Stores a list of request stubs in memory.
@@ -35,10 +38,48 @@ namespace thrift {
  */
 class ActiveRequestsRegistry {
  public:
-  using ActiveRequestDebugStubList = folly::IntrusiveList<
-      RequestDebugStub,
-      &RequestDebugStub::activeRequestsRegistryHook_>;
-  void addRequestDebugStub(RequestDebugStub& req) {
+  /**
+   * A piece of information which should be embedded into thrift request
+   * objects.
+   *
+   * NOTE: Place this as the last member of a request object to ensure we never
+   *       try to examine half destructed objects.
+   */
+  class DebugStub {
+    friend class ActiveRequestsRegistry;
+
+   public:
+    DebugStub(
+        ActiveRequestsRegistry& reqRegistry,
+        const ResponseChannelRequest& req,
+        const Cpp2RequestContext& reqContext)
+        : req_(&req),
+          reqContext_(&reqContext),
+          timestamp_(std::chrono::steady_clock::now()) {
+      reqRegistry.addDebugStub(*this);
+    }
+
+    const ResponseChannelRequest& getRequest() const {
+      return *req_;
+    }
+
+    const Cpp2RequestContext& getRequestContext() const {
+      return *reqContext_;
+    }
+
+    std::chrono::steady_clock::time_point getTimestamp() const {
+      return timestamp_;
+    }
+
+   private:
+    const ResponseChannelRequest* req_;
+    const Cpp2RequestContext* reqContext_;
+    std::chrono::steady_clock::time_point timestamp_;
+    folly::IntrusiveListHook activeRequestsRegistryHook_;
+  };
+  using ActiveRequestDebugStubList =
+      folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsRegistryHook_>;
+  void addDebugStub(DebugStub& req) {
     reqDebugStubList_.push_back(req);
   }
 
