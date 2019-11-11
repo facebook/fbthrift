@@ -47,15 +47,14 @@ class MyException1 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
-  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
-    $this->code = (int)idx($vals, 'code', MyEnum::MyValue1);
+    /* HH_FIXME[4110] exposed by decl fixme scope refinement */
+    $this->code = idx($vals, 'code', MyEnum::MyValue1);
   }
 
   public function getName(): string {
@@ -96,15 +95,14 @@ class MyException2 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
-  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
-    $this->code = (int)idx($vals, 'code', MyEnum::MyValue1);
+    /* HH_FIXME[4110] exposed by decl fixme scope refinement */
+    $this->code = idx($vals, 'code', MyEnum::MyValue1);
   }
 
   public function getName(): string {
@@ -145,15 +143,14 @@ class MyException3 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
-  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
-    $this->code = (int)idx($vals, 'code', MyEnum::MyValue1);
+    /* HH_FIXME[4110] exposed by decl fixme scope refinement */
+    $this->code = idx($vals, 'code', MyEnum::MyValue1);
   }
 
   public function getName(): string {
@@ -194,15 +191,14 @@ class MyException4 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  /* HH_FIXME[4110] conflicting definition with parent */
-  /* HH_FIXME[4236] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
     parent::__construct();
     $this->message = (string)idx($vals, 'message', '');
-    $this->code = (int)idx($vals, 'code', MyEnum::MyValue2);
+    /* HH_FIXME[4110] exposed by decl fixme scope refinement */
+    $this->code = idx($vals, 'code', MyEnum::MyValue2);
   }
 
   public function getName(): string {

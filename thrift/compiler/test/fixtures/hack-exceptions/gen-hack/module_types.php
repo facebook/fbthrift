@@ -49,6 +49,7 @@ class MyException1 extends \TException implements \IThriftStruct {
    */
   /* HH_FIXME[4110] conflicting definition with parent */
   /* HH_FIXME[4236] conflicting definition with parent */
+  /* HH_FIXME[4341] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
@@ -106,6 +107,7 @@ class MyException2 extends \TException implements \IThriftStruct {
    */
   /* HH_FIXME[4110] conflicting definition with parent */
   /* HH_FIXME[4236] conflicting definition with parent */
+  /* HH_FIXME[4341] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
@@ -163,6 +165,7 @@ class MyException3 extends \TException implements \IThriftStruct {
    */
   /* HH_FIXME[4110] conflicting definition with parent */
   /* HH_FIXME[4236] conflicting definition with parent */
+  /* HH_FIXME[4341] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>
@@ -220,6 +223,7 @@ class MyException4 extends \TException implements \IThriftStruct {
    */
   /* HH_FIXME[4110] conflicting definition with parent */
   /* HH_FIXME[4236] conflicting definition with parent */
+  /* HH_FIXME[4341] conflicting definition with parent */
   public MyEnum $code;
 
   <<__Rx>>

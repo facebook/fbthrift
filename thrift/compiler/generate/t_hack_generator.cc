@@ -2559,10 +2559,12 @@ void t_hack_generator::_generate_php_struct_definition(
             " is the type for the code property of " + tstruct->get_name() +
             ", but it has no values.";
       }
-      if (t->is_enum()) {
+      if (t->is_enum() && !enum_transparenttype_) {
         indent(out) << "/* HH_FIXME[4110] conflicting definition with parent */"
                     << endl;
         indent(out) << "/* HH_FIXME[4236] conflicting definition with parent */"
+                    << endl;
+        indent(out) << "/* HH_FIXME[4341] conflicting definition with parent */"
                     << endl;
       }
     }
@@ -2683,9 +2685,6 @@ void t_hack_generator::_generate_php_struct_definition(
       if (nullable_everything_ &&
           !(is_exception && is_base_exception_property(*m_iter))) {
         cast = "";
-      } else if (
-          is_exception && (*m_iter)->get_name() == "code" && t->is_enum()) {
-        cast = "(int)";
       } else {
         cast = type_to_cast(t);
       }
@@ -2712,7 +2711,10 @@ void t_hack_generator::_generate_php_struct_definition(
           indent_up();
         }
 
-        if (cast == "") {
+        if (is_exception && (*m_iter)->get_name() == "code" && t->is_enum()) {
+          out << indent()
+              << "/* HH_FIXME[4110] exposed by decl fixme scope refinement */\n";
+        } else if (cast == "") {
           out << indent()
               << "/* HH_FIXME[4110] previously hidden by unsafe */\n";
         }
