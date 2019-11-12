@@ -20,8 +20,8 @@
 #include <memory>
 #include <vector>
 
+#include <folly/SharedMutex.h>
 #include <thrift/lib/cpp/ContextStack.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 namespace apache {
 namespace thrift {
@@ -78,7 +78,7 @@ class TProcessorBase : public EventHandlerBase {
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
  private:
-  static concurrency::ReadWriteMutex& getRWMutex();
+  static folly::SharedMutex& getRWMutex();
 
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();
@@ -101,7 +101,7 @@ class TClientBase : public EventHandlerBase {
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
  private:
-  static concurrency::ReadWriteMutex& getRWMutex();
+  static folly::SharedMutex& getRWMutex();
 
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();

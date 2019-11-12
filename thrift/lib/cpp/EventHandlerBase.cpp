@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/EventHandlerBase.h>
 #include <algorithm>
 
 using std::vector;
 using std::remove;
 using std::shared_ptr;
 
+using RWMutex = folly::SharedMutex;
+using RLock = RWMutex::ReadHolder;
+using WLock = RWMutex::WriteHolder;
+
 namespace apache { namespace thrift {
 
 TProcessorBase::TProcessorBase() {
-  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_READ);
+  RLock lock{getRWMutex()};
   for (auto factory: getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
@@ -35,7 +39,7 @@ TProcessorBase::TProcessorBase() {
 
 void TProcessorBase::addProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  WLock lock{getRWMutex()};
   assert(find(getFactories().begin(),
               getFactories().end(),
               factory) ==
@@ -45,7 +49,7 @@ void TProcessorBase::addProcessorEventHandlerFactory(
 
 void TProcessorBase::removeProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  WLock lock{getRWMutex()};
   assert(find(getFactories().begin(),
               getFactories().end(),
               factory) !=
@@ -57,8 +61,8 @@ void TProcessorBase::removeProcessorEventHandlerFactory(
       getFactories().end());
 }
 
-concurrency::ReadWriteMutex& TProcessorBase::getRWMutex() {
-  static concurrency::ReadWriteMutex* mutex = new concurrency::ReadWriteMutex();
+RWMutex& TProcessorBase::getRWMutex() {
+  static auto* mutex = new RWMutex{};
   return *mutex;
 }
 
@@ -72,7 +76,7 @@ TProcessorBase::getFactories() {
 TClientBase::TClientBase() {
   // Automatically ask all registered factories to produce an event
   // handler, and attach the handlers
-  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_READ);
+  RLock lock{getRWMutex()};
   for (auto factory: getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
@@ -83,7 +87,7 @@ TClientBase::TClientBase() {
 
 void TClientBase::addClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  WLock lock{getRWMutex()};
   assert(find(getFactories().begin(),
               getFactories().end(),
               factory) ==
@@ -93,7 +97,7 @@ void TClientBase::addClientEventHandlerFactory(
 
 void TClientBase::removeClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
-  concurrency::RWGuard lock(getRWMutex(), concurrency::RW_WRITE);
+  WLock lock{getRWMutex()};
   assert(find(getFactories().begin(),
               getFactories().end(),
               factory) !=
@@ -105,8 +109,8 @@ void TClientBase::removeClientEventHandlerFactory(
       getFactories().end());
 }
 
-concurrency::ReadWriteMutex& TClientBase::getRWMutex() {
-  static concurrency::ReadWriteMutex* mutex = new concurrency::ReadWriteMutex();
+RWMutex& TClientBase::getRWMutex() {
+  static auto* mutex = new RWMutex{};
   return *mutex;
 }
 vector<shared_ptr<TProcessorEventHandlerFactory>>&
