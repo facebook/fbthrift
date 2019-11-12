@@ -72,7 +72,8 @@ class Mutex {
   std::shared_ptr<PthreadMutex> impl_;
 };
 
-class [[deprecated]] ReadWriteMutex {
+class [[deprecated(
+    "use folly::SharedMutex, std::shared_mutex, or std::shared_timed_mutex")]] ReadWriteMutex {
  public:
   ReadWriteMutex();
   virtual ~ReadWriteMutex() {}
@@ -104,8 +105,10 @@ private:
  * released it. In some operating systems, this may already be guaranteed
  * by a regular ReadWriteMutex.
  */
-class NoStarveReadWriteMutex : public ReadWriteMutex {
-public:
+class [[deprecated(
+    "use folly::SharedMutex with SharedMutexWritePriority")]] NoStarveReadWriteMutex
+    : public ReadWriteMutex {
+ public:
   NoStarveReadWriteMutex();
 
   void acquireRead() const override;
@@ -182,7 +185,8 @@ enum RWGuardType {
   RW_WRITE = 1,
 };
 
-class FOLLY_NODISCARD RWGuard {
+class FOLLY_NODISCARD
+    [[deprecated("use std::unique_lock or std::shared_lock")]] RWGuard {
  public:
   explicit RWGuard(const ReadWriteMutex& value, bool write = false,
                    std::chrono::milliseconds timeout =
