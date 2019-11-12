@@ -16,7 +16,7 @@
 
 use crate::bufext::BufMutExt;
 use crate::errors::ProtocolError;
-use crate::framing::{Framing, FramingDecoded, FramingEncodedFinal};
+use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
 use crate::thrift_protocol::{MessageType, ProtocolID};
 use crate::ttype::TType;
 use crate::Result;
@@ -24,17 +24,20 @@ use crate::Result;
 /// The maximum recursive depth the skip() function will traverse
 const DEFAULT_RECURSION_DEPTH: i32 = 64;
 
+/// Helper type alias to get the pre-finalization encoded type of a protocol frame.
+pub type ProtocolEncoded<P> = FramingEncoded<<P as Protocol>::Frame>;
+
 /// Helper type alias to get the final encoded type of a protocol frame
 pub type ProtocolEncodedFinal<P> = FramingEncodedFinal<<P as Protocol>::Frame>;
 
-/// Helper type alias to tget the buffer type for a frame to be decoded.
+/// Helper type alias to get the buffer type for a frame to be decoded.
 pub type ProtocolDecoded<P> = FramingDecoded<<P as Protocol>::Frame>;
 
 /// An instance of Protocol glues a Framing implementation to a serializer
 /// (ProtocolWriter) and deserializer (ProtocolReader). It constructs, as
 /// needed, a serializer to construct a frame with a given protocol, or a
 /// deserializer from a frame into a stream of deserialized objects.
-pub trait Protocol {
+pub trait Protocol: 'static {
     /// Type of the framing implementation
     type Frame: Framing;
 

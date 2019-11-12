@@ -51,6 +51,7 @@ pub const BINARY_VERSION_1: u32 = 0x80010000;
 /// let protocol = BinaryProtocol::<SRHeaderTransport>;
 /// ```
 #[phantom]
+#[derive(Copy, Clone)]
 pub struct BinaryProtocol<F = Bytes>;
 
 pub struct BinaryProtocolSerializer<B> {
@@ -63,7 +64,7 @@ pub struct BinaryProtocolDeserializer<B> {
 
 impl<F> Protocol for BinaryProtocol<F>
 where
-    F: Framing,
+    F: Framing + 'static,
 {
     type Frame = F;
     type Sizer = BinaryProtocolSerializer<SizeCounter>;

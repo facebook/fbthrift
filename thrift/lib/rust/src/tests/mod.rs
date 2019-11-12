@@ -69,4 +69,3 @@ const DOUBLE_VALUES: [f64; 14] = [
 
 mod binary;
 mod compact;
-mod framed;

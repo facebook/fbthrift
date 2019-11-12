@@ -17,28 +17,21 @@
 }}
 
     use fbthrift::*;
-    use futures::Future;
     use std::marker::PhantomData;
     use std::sync::Arc;{{!
 }}{{#program:services}}
 
-    pub struct {{service:name}}Impl<P, S> {
+    pub struct {{service:name}}Impl<P, T> {
         {{^service:functions?}}_{{/service:functions?}}{{!
-        }}service: S,
+        }}transport: T,
         _phantom: PhantomData<fn() -> P>,
     }
 
-    impl<P, S> {{service:name}}Impl<P, S>
-    where
-        P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
-    {
-        pub fn new(service: S) -> Self {
+    impl<P, T> {{service:name}}Impl<P, T> {
+        pub fn new(transport: T) -> Self {
             Self {
-                {{^service:functions?}}_service: {{/service:functions?}}{{!
-                }}service,
+                {{^service:functions?}}_transport: {{/service:functions?}}{{!
+                }}transport,
                 _phantom: PhantomData,
             }
         }
@@ -58,12 +51,13 @@
         }}{{/service:functions}}
     }
 
-    impl<P, S> {{service:name}} for {{service:name}}Impl<P, S>
+    impl<P, T> {{service:name}} for {{service:name}}Impl<P, T>
     where
         P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
+        T: Transport,
+        {{! require P::Frame and T to have compatible DecBuf and EncBuf::Final }}
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {{>lib/block}}{{!
         }}{{#service:functions}}
         fn {{function:name}}(
@@ -75,7 +69,6 @@
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
             }}failure::Error{{!
         }}>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -96,8 +89,8 @@
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<{{!
@@ -148,17 +141,13 @@
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<dyn {{service:name}} + Send + Sync + 'static>
+        ) -> Arc<impl {{service:name}} + Send + 'static>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport,
         {
-            make_{{service:name}}::new(protocol, transport)
+            let _ = protocol;
+            Arc::new({{service:name}}Impl::<P, T>::new(transport))
         }
     }
 
@@ -169,16 +158,10 @@
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport + Sync,
         {
-            let _ = protocol;
-            Arc::new({{service:name}}Impl::<P, T>::new(transport))
+            {{service:name}}::new(protocol, transport)
         }
     }{{!
 }}{{/program:services}}

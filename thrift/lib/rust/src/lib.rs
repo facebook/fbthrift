@@ -42,7 +42,6 @@ pub mod application_exception;
 pub mod binary_protocol;
 pub mod compact_protocol;
 pub mod deserialize;
-pub mod framed_transport;
 pub mod framing;
 pub mod processor;
 pub mod serialize;
@@ -66,15 +65,15 @@ pub mod types {
 pub use crate::application_exception::{ApplicationException, ApplicationExceptionErrorCode};
 pub use crate::binary_protocol::BinaryProtocol;
 pub use crate::bufext::{BufExt, BufMutExt};
-pub use crate::client::ClientFactory;
+pub use crate::client::{ClientFactory, Transport};
 pub use crate::compact_protocol::CompactProtocol;
 pub use crate::deserialize::Deserialize;
 pub use crate::errors::ProtocolError;
-pub use crate::framed_transport::FramedTransport;
 pub use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
 pub use crate::processor::{NullServiceProcessor, ServiceProcessor, ThriftService};
 pub use crate::protocol::{
-    Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader, ProtocolWriter,
+    Protocol, ProtocolDecoded, ProtocolEncoded, ProtocolEncodedFinal, ProtocolReader,
+    ProtocolWriter,
 };
 pub use crate::serialize::Serialize;
 pub use crate::thrift_protocol::{MessageType, ProtocolID};

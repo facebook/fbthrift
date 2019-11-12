@@ -293,25 +293,18 @@ pub mod services {
 
 pub mod client {
     use fbthrift::*;
-    use futures::Future;
     use std::marker::PhantomData;
     use std::sync::Arc;
 
-    pub struct MyRootImpl<P, S> {
-        service: S,
+    pub struct MyRootImpl<P, T> {
+        transport: T,
         _phantom: PhantomData<fn() -> P>,
     }
 
-    impl<P, S> MyRootImpl<P, S>
-    where
-        P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
-    {
-        pub fn new(service: S) -> Self {
+    impl<P, T> MyRootImpl<P, T> {
+        pub fn new(transport: T) -> Self {
             Self {
-                service,
+                transport,
                 _phantom: PhantomData,
             }
         }
@@ -323,16 +316,15 @@ pub mod client {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    impl<P, S> MyRoot for MyRootImpl<P, S>
+    impl<P, T> MyRoot for MyRootImpl<P, T>
     where
         P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_root(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -344,8 +336,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<()> {
@@ -393,17 +385,13 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<dyn MyRoot + Send + Sync + 'static>
+        ) -> Arc<impl MyRoot + Send + 'static>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport,
         {
-            make_MyRoot::new(protocol, transport)
+            let _ = protocol;
+            Arc::new(MyRootImpl::<P, T>::new(transport))
         }
     }
 
@@ -414,34 +402,22 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport + Sync,
         {
-            let _ = protocol;
-            Arc::new(MyRootImpl::<P, T>::new(transport))
+            MyRoot::new(protocol, transport)
         }
     }
 
-    pub struct MyNodeImpl<P, S> {
-        service: S,
+    pub struct MyNodeImpl<P, T> {
+        transport: T,
         _phantom: PhantomData<fn() -> P>,
     }
 
-    impl<P, S> MyNodeImpl<P, S>
-    where
-        P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
-    {
-        pub fn new(service: S) -> Self {
+    impl<P, T> MyNodeImpl<P, T> {
+        pub fn new(transport: T) -> Self {
             Self {
-                service,
+                transport,
                 _phantom: PhantomData,
             }
         }
@@ -453,16 +429,15 @@ pub mod client {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    impl<P, S> MyNode for MyNodeImpl<P, S>
+    impl<P, T> MyNode for MyNodeImpl<P, T>
     where
         P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_mid(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -474,8 +449,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<()> {
@@ -523,17 +498,13 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<dyn MyNode + Send + Sync + 'static>
+        ) -> Arc<impl MyNode + Send + 'static>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport,
         {
-            make_MyNode::new(protocol, transport)
+            let _ = protocol;
+            Arc::new(MyNodeImpl::<P, T>::new(transport))
         }
     }
 
@@ -544,34 +515,22 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport + Sync,
         {
-            let _ = protocol;
-            Arc::new(MyNodeImpl::<P, T>::new(transport))
+            MyNode::new(protocol, transport)
         }
     }
 
-    pub struct MyLeafImpl<P, S> {
-        service: S,
+    pub struct MyLeafImpl<P, T> {
+        transport: T,
         _phantom: PhantomData<fn() -> P>,
     }
 
-    impl<P, S> MyLeafImpl<P, S>
-    where
-        P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
-    {
-        pub fn new(service: S) -> Self {
+    impl<P, T> MyLeafImpl<P, T> {
+        pub fn new(transport: T) -> Self {
             Self {
-                service,
+                transport,
                 _phantom: PhantomData,
             }
         }
@@ -583,16 +542,15 @@ pub mod client {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    impl<P, S> MyLeaf for MyLeafImpl<P, S>
+    impl<P, T> MyLeaf for MyLeafImpl<P, T>
     where
         P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_leaf(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -604,8 +562,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<()> {
@@ -653,17 +611,13 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<dyn MyLeaf + Send + Sync + 'static>
+        ) -> Arc<impl MyLeaf + Send + 'static>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport,
         {
-            make_MyLeaf::new(protocol, transport)
+            let _ = protocol;
+            Arc::new(MyLeafImpl::<P, T>::new(transport))
         }
     }
 
@@ -674,16 +628,10 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport + Sync,
         {
-            let _ = protocol;
-            Arc::new(MyLeafImpl::<P, T>::new(transport))
+            MyLeaf::new(protocol, transport)
         }
     }
 }

@@ -151,6 +151,7 @@ impl From<bool> for CType {
 /// let protocol = CompactProtocol::<SRHeaderTransport>;
 /// ```
 #[phantom]
+#[derive(Copy, Clone)]
 pub struct CompactProtocol<F = Bytes>;
 
 #[derive(Debug, Clone)]
@@ -212,7 +213,7 @@ pub struct CompactProtocolDeserializer<B> {
 
 impl<F> Protocol for CompactProtocol<F>
 where
-    F: Framing,
+    F: Framing + 'static,
 {
     type Frame = F;
     type Sizer = CompactProtocolSerializer<SizeCounter>;

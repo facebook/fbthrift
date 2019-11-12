@@ -1,5 +1,5 @@
 # @autocargo from //thrift/lib/rust:fbthrift
-# Signature<<01b51ad4abd347417e5f1dc0cb6c878d67f71a3e>>
+# Signature<<69dc7dc219732d91342178ad42b101a7590c08dd>>
 [package]
 name = "fbthrift"
 edition = "2018"
@@ -13,16 +13,10 @@ bufsize = "*"
 byteorder = "*"
 bytes = { version="*", features=["serde"] }
 failure = "*"
-futures = "0.1"
 ghost = "*"
 num-derive = "*"
 num-traits = "*"
-tokio-codec = "0.1"
-tokio-io = "0.1"
-tokio-proto = "0.1"
-tokio-service = "0.1"
 
 [dev-dependencies]
 quickcheck = "0.9"
-tokio = "0.1"
-# @end of Signature<<01b51ad4abd347417e5f1dc0cb6c878d67f71a3e>>
+# @end of Signature<<69dc7dc219732d91342178ad42b101a7590c08dd>>

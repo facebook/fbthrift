@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-use crate::{Framing, Protocol, ProtocolDecoded, ProtocolEncodedFinal};
+use crate::{Framing, FramingDecoded, FramingEncodedFinal, Protocol};
+use std::future::Future;
+use std::pin::Pin;
 use std::sync::Arc;
-use tokio_service::Service;
 
 pub trait ClientFactory {
     type Api: ?Sized;
@@ -24,11 +25,12 @@ pub trait ClientFactory {
     fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
     where
         P: Protocol<Frame = T> + 'static,
-        T: Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>
-            + Framing
-            + Send
-            + Sync
-            + 'static,
-        T::Future: Send + 'static,
-        T::Error: Into<failure::Error> + 'static;
+        T: Transport + Sync;
+}
+
+pub trait Transport: Framing + Send + 'static {
+    fn call(
+        &self,
+        req: FramingEncodedFinal<Self>,
+    ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, failure::Error>> + Send + 'static>>;
 }

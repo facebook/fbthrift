@@ -852,25 +852,18 @@ pub mod services {
 
 pub mod client {
     use fbthrift::*;
-    use futures::Future;
     use std::marker::PhantomData;
     use std::sync::Arc;
 
-    pub struct MyServiceImpl<P, S> {
-        service: S,
+    pub struct MyServiceImpl<P, T> {
+        transport: T,
         _phantom: PhantomData<fn() -> P>,
     }
 
-    impl<P, S> MyServiceImpl<P, S>
-    where
-        P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>>,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
-    {
-        pub fn new(service: S) -> Self {
+    impl<P, T> MyServiceImpl<P, T> {
+        pub fn new(transport: T) -> Self {
             Self {
-                service,
+                transport,
                 _phantom: PhantomData,
             }
         }
@@ -903,16 +896,15 @@ pub mod client {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
     }
 
-    impl<P, S> MyService for MyServiceImpl<P, S>
+    impl<P, T> MyService for MyServiceImpl<P, T>
     where
         P: Protocol,
-        S: tokio_service::Service<Request = ProtocolEncodedFinal<P>, Response = ProtocolDecoded<P>> + Send,
-        S::Future: Send + 'static,
-        S::Error: Into<failure::Error> + 'static,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn ping(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -924,8 +916,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<()> {
@@ -957,7 +949,6 @@ pub mod client {
         fn getRandomData(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -969,8 +960,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<String> {
@@ -1003,7 +994,6 @@ pub mod client {
             &self,
             arg_id: i64,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<bool, failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1018,8 +1008,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<bool> {
@@ -1052,7 +1042,6 @@ pub mod client {
             &self,
             arg_id: i64,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1067,8 +1056,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<String> {
@@ -1102,7 +1091,6 @@ pub mod client {
             arg_id: i64,
             arg_data: &str,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1120,8 +1108,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<()> {
@@ -1155,7 +1143,6 @@ pub mod client {
             arg_id: i64,
             arg_data: &str,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
-            use futures_preview::compat::Future01CompatExt;
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1173,8 +1160,8 @@ pub mod client {
                     p.write_struct_end();
                 }
             ));
-            let fut = self.service.call(request).map_err(S::Error::into);
-            Future01CompatExt::compat(fut)
+            self.transport
+                .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> failure::Fallible<()> {
@@ -1222,17 +1209,13 @@ pub mod client {
         pub fn new<P, T>(
             protocol: P,
             transport: T,
-        ) -> Arc<dyn MyService + Send + Sync + 'static>
+        ) -> Arc<impl MyService + Send + 'static>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport,
         {
-            make_MyService::new(protocol, transport)
+            let _ = protocol;
+            Arc::new(MyServiceImpl::<P, T>::new(transport))
         }
     }
 
@@ -1243,16 +1226,10 @@ pub mod client {
 
         fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
         where
-            P: Protocol<Frame = T> + 'static,
-            T: tokio_service::Service<
-                Request = ProtocolEncodedFinal<P>,
-                Response = ProtocolDecoded<P>,
-            > + Framing + Send + Sync + 'static,
-            T::Future: Send + 'static,
-            T::Error: Into<failure::Error> + 'static,
+            P: Protocol<Frame = T>,
+            T: Transport + Sync,
         {
-            let _ = protocol;
-            Arc::new(MyServiceImpl::<P, T>::new(transport))
+            MyService::new(protocol, transport)
         }
     }
 }
