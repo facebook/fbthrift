@@ -39,6 +39,16 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+namespace {
+folly::exception_wrapper requestAbortedException(const folly::Try<Payload>& t) {
+  auto reason =
+      t.hasException() ? t.exception().what().toStdString() : "unknown reason";
+  return folly::make_exception_wrapper<TTransportException>(
+      TTransportException::NOT_OPEN,
+      fmt::format("Request aborted during client shutdown: {}", reason));
+}
+} // namespace
+
 folly::Try<void> RequestContext::waitForWriteToComplete() {
   baton_.wait();
 
@@ -50,10 +60,7 @@ folly::Try<void> RequestContext::waitForWriteToComplete() {
       return {};
 
     case State::REQUEST_ABORTED:
-      return folly::Try<void>(
-          folly::make_exception_wrapper<TTransportException>(
-              TTransportException::NOT_OPEN,
-              "Request aborted during client shutdown"));
+      return folly::Try<void>(requestAbortedException(responsePayload_));
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
@@ -90,10 +97,7 @@ folly::Try<Payload> RequestContext::waitForResponse(
       return std::move(responsePayload_);
 
     case State::REQUEST_ABORTED:
-      return folly::Try<Payload>(
-          folly::make_exception_wrapper<TTransportException>(
-              TTransportException::NOT_OPEN,
-              "Request aborted during client shutdown"));
+      return folly::Try<Payload>(requestAbortedException(responsePayload_));
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
