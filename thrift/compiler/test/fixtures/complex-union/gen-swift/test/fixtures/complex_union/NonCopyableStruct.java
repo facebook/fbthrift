@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("NonCopyableStruct")
+@ThriftStruct(value="NonCopyableStruct", builder=NonCopyableStruct.Builder.class)
 public final class NonCopyableStruct {
     @ThriftConstructor
     public NonCopyableStruct(
@@ -24,13 +24,14 @@ public final class NonCopyableStruct {
         this.num = num;
     }
     
+    @ThriftConstructor
     protected NonCopyableStruct() {
       this.num = 0L;
     }
     
     public static class Builder {
         private long num;
-    
+        @ThriftField(value=1, name="num", requiredness=Requiredness.NONE)
         public Builder setNum(long num) {
             this.num = num;
             return this;
@@ -41,6 +42,7 @@ public final class NonCopyableStruct {
             this.num = other.num;
         }
     
+        @ThriftConstructor
         public NonCopyableStruct build() {
             return new NonCopyableStruct (
                 this.num

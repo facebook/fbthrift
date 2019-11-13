@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyDataItem")
+@ThriftStruct(value="MyDataItem", builder=MyDataItem.Builder.class)
 public final class MyDataItem {
     @ThriftConstructor
     public MyDataItem(
@@ -30,6 +30,7 @@ public final class MyDataItem {
         public Builder(MyDataItem other) {
         }
     
+        @ThriftConstructor
         public MyDataItem build() {
             return new MyDataItem (
             );

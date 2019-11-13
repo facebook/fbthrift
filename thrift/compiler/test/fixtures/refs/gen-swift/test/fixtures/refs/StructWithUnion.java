@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("StructWithUnion")
+@ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
 public final class StructWithUnion {
     @ThriftConstructor
     public StructWithUnion(
@@ -28,6 +28,7 @@ public final class StructWithUnion {
         this.f = f;
     }
     
+    @ThriftConstructor
     protected StructWithUnion() {
       this.u = null;
       this.aDouble = 0.;
@@ -36,19 +37,19 @@ public final class StructWithUnion {
     
     public static class Builder {
         private test.fixtures.refs.MyUnion u;
-    
+        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
         public Builder setU(test.fixtures.refs.MyUnion u) {
             this.u = u;
             return this;
         }
         private double aDouble;
-    
+        @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
         public Builder setADouble(double aDouble) {
             this.aDouble = aDouble;
             return this;
         }
         private test.fixtures.refs.MyField f;
-    
+        @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
         public Builder setF(test.fixtures.refs.MyField f) {
             this.f = f;
             return this;
@@ -61,6 +62,7 @@ public final class StructWithUnion {
             this.f = other.f;
         }
     
+        @ThriftConstructor
         public StructWithUnion build() {
             return new StructWithUnion (
                 this.u,

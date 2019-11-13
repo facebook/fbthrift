@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct")
+@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -30,6 +30,7 @@ public final class MyStruct {
         this.class_ = class_;
     }
     
+    @ThriftConstructor
     protected MyStruct() {
       this.major = 0L;
       this._package = null;
@@ -39,25 +40,25 @@ public final class MyStruct {
     
     public static class Builder {
         private long major;
-    
+        @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
         public Builder setMajor(long major) {
             this.major = major;
             return this;
         }
         private String _package;
-    
+        @ThriftField(value=2, name="package", requiredness=Requiredness.NONE)
         public Builder setPackage(String _package) {
             this._package = _package;
             return this;
         }
         private String annotationWithQuote;
-    
+        @ThriftField(value=3, name="annotation_with_quote", requiredness=Requiredness.NONE)
         public Builder setAnnotationWithQuote(String annotationWithQuote) {
             this.annotationWithQuote = annotationWithQuote;
             return this;
         }
         private String class_;
-    
+        @ThriftField(value=4, name="class_", requiredness=Requiredness.NONE)
         public Builder setClass_(String class_) {
             this.class_ = class_;
             return this;
@@ -71,6 +72,7 @@ public final class MyStruct {
             this.class_ = other.class_;
         }
     
+        @ThriftConstructor
         public MyStruct build() {
             return new MyStruct (
                 this.major,
