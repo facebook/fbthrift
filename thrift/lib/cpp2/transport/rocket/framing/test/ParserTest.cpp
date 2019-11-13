@@ -45,7 +45,7 @@ TEST(ParserTest, resizeBufferTest) {
   EXPECT_EQ(parser.getReadBufferSize(), Parser<FakeOwner>::kMaxBufferSize);
 }
 
-TEST(ParserTest, noResizeBufferTest) {
+TEST(ParserTest, noResizeBufferReadBufGtMaxTest) {
   FakeOwner owner;
   Parser<FakeOwner> parser(owner, std::chrono::milliseconds(0));
   parser.setReadBufferSize(Parser<FakeOwner>::kMaxBufferSize * 2);
@@ -53,6 +53,21 @@ TEST(ParserTest, noResizeBufferTest) {
   folly::IOBuf iobuf{folly::IOBuf::CreateOp(), parser.getReadBufferSize()};
   // pretend there is something written into the buffer, but with size > max
   iobuf.append(Parser<FakeOwner>::kMaxBufferSize * 1.5);
+
+  parser.setReadBuffer(std::move(iobuf));
+  parser.resizeBuffer();
+
+  EXPECT_EQ(parser.getReadBufferSize(), Parser<FakeOwner>::kMaxBufferSize * 2);
+}
+
+TEST(ParserTest, noResizeBufferReadBufEqMaxTest) {
+  FakeOwner owner;
+  Parser<FakeOwner> parser(owner, std::chrono::milliseconds(0));
+  parser.setReadBufferSize(Parser<FakeOwner>::kMaxBufferSize * 2);
+
+  folly::IOBuf iobuf{folly::IOBuf::CreateOp(), parser.getReadBufferSize()};
+  // pretend there is something written into the buffer, but with size = max
+  iobuf.append(Parser<FakeOwner>::kMaxBufferSize);
 
   parser.setReadBuffer(std::move(iobuf));
   parser.resizeBuffer();

@@ -125,7 +125,7 @@ void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
 
 template <class T>
 void Parser<T>::resizeBuffer() {
-  if (bufferSize_ <= kMaxBufferSize || readBuffer_.length() > kMaxBufferSize) {
+  if (bufferSize_ <= kMaxBufferSize || readBuffer_.length() >= kMaxBufferSize) {
     return;
   }
 
