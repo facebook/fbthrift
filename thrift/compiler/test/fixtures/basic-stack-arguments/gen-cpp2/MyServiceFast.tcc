@@ -200,6 +200,3 @@ void MyServiceFastAsyncProcessor::process_lobDataById(std::unique_ptr<apache::th
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

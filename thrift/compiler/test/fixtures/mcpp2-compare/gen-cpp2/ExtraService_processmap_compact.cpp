@@ -10,6 +10,3 @@
 
 namespace extra { namespace svc {
 }} // extra::svc
-namespace apache { namespace thrift {
-
-}} // apache::thrift

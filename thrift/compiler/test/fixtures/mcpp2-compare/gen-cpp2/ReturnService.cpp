@@ -501,6 +501,3 @@ const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::compa
 };
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

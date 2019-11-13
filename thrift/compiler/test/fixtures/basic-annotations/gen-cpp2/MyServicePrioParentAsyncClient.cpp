@@ -362,6 +362,3 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_instance_wrapped_p
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

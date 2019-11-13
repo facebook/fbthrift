@@ -132,6 +132,3 @@ void SomeServiceAsyncProcessor::throw_wrapped_binary_keyed_map(std::unique_ptr<a
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -188,6 +188,3 @@ folly::exception_wrapper CAsyncClient::recv_instance_wrapped_f(::apache::thrift:
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -883,6 +883,3 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::semifuture_lobDataById(apac
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

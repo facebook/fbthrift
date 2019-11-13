@@ -339,6 +339,3 @@ void MyServiceAsyncProcessor::process_lobDataById(std::unique_ptr<apache::thrift
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

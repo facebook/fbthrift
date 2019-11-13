@@ -332,6 +332,3 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

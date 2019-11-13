@@ -735,6 +735,3 @@ folly::exception_wrapper PubSubStreamingServiceAsyncClient::recv_instance_wrappe
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

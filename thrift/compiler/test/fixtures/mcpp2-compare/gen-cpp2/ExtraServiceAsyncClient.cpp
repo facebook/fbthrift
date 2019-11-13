@@ -1221,6 +1221,3 @@ void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(folly::Function<vo
 }
 
 }} // extra::svc
-namespace apache { namespace thrift {
-
-}} // apache::thrift

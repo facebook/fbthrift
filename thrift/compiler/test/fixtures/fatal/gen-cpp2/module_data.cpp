@@ -16,9 +16,7 @@ constexpr const std::array<enum1, 3> _enum1EnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 3> _enum1EnumDataStorage::names;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 constexpr const std::size_t _enum2EnumDataStorage::size;
@@ -26,9 +24,7 @@ constexpr const std::array<enum2, 3> _enum2EnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 3> _enum2EnumDataStorage::names;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 constexpr const std::size_t _enum3EnumDataStorage::size;
@@ -36,9 +32,7 @@ constexpr const std::array<enum3, 2> _enum3EnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 2> _enum3EnumDataStorage::names;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
 constexpr const std::size_t _enum_with_special_namesEnumDataStorage::size;
@@ -46,7 +40,5 @@ constexpr const std::array<enum_with_special_names, 28> _enum_with_special_names
 constexpr const std::array<folly::StringPiece, 28> _enum_with_special_namesEnumDataStorage::names;
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 

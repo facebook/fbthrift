@@ -16,27 +16,21 @@ namespace test { namespace fixtures { namespace enumstrict {
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test { namespace fixtures { namespace enumstrict {
 
 }}} // test::fixtures::enumstrict
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test { namespace fixtures { namespace enumstrict {
 
 }}} // test::fixtures::enumstrict
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 
 namespace apache {
 namespace thrift {

@@ -750,6 +750,3 @@ void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::C
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

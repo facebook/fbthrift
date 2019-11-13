@@ -16,7 +16,5 @@ constexpr const std::array<B, 1> _BEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 1> _BEnumDataStorage::names;
 
 } // cpp2
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 

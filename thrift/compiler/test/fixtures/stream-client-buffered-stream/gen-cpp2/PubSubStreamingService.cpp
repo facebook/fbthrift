@@ -138,6 +138,3 @@ const PubSubStreamingServiceAsyncProcessor::ProcessMap PubSubStreamingServiceAsy
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

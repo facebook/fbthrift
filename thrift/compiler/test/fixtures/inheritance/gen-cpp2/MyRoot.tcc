@@ -68,6 +68,3 @@ void MyRootAsyncProcessor::throw_wrapped_do_root(std::unique_ptr<apache::thrift:
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

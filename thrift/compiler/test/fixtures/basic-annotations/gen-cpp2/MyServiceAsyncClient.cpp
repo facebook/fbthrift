@@ -1165,6 +1165,3 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_cppDoNothin
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

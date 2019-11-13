@@ -188,6 +188,3 @@ folly::exception_wrapper MyRootAsyncClient::recv_instance_wrapped_do_root(::apac
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

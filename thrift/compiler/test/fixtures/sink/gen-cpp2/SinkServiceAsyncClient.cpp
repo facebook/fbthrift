@@ -350,6 +350,3 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_instance_wrapped_methodThr
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

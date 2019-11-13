@@ -124,6 +124,3 @@ void MyServicePrioParentAsyncProcessor::throw_wrapped_pong(std::unique_ptr<apach
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

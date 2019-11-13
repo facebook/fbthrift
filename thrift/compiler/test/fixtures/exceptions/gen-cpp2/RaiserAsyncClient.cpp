@@ -710,6 +710,3 @@ folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_get500(::std::
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

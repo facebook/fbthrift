@@ -436,6 +436,3 @@ void ExtraServiceAsyncProcessor::process_oneway_void_ret_listunion_param(std::un
 }
 
 }} // extra::svc
-namespace apache { namespace thrift {
-
-}} // apache::thrift

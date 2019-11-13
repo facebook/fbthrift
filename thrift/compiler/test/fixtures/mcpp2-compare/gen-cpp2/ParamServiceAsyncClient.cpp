@@ -5121,6 +5121,3 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_instance_wrapped_listunio
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

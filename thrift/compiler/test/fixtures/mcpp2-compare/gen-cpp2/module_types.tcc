@@ -16,36 +16,28 @@ namespace some { namespace valid { namespace ns {
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 
 namespace apache {
 namespace thrift {

@@ -182,6 +182,3 @@ const service2AsyncProcessor::ProcessMap service2AsyncProcessor::compactProcessM
 };
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

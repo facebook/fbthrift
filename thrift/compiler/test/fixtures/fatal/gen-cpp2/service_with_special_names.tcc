@@ -1636,6 +1636,3 @@ void service_with_special_namesAsyncProcessor::throw_wrapped_fields(std::unique_
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -1724,6 +1724,3 @@ void ParamServiceAsyncProcessor::throw_wrapped_listunion_string_param(std::uniqu
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

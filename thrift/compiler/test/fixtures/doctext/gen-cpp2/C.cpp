@@ -69,6 +69,3 @@ const CAsyncProcessor::ProcessMap CAsyncProcessor::compactProcessMap_ {
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

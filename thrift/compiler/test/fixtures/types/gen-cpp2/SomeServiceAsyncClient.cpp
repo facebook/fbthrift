@@ -364,6 +364,3 @@ folly::exception_wrapper SomeServiceAsyncClient::recv_instance_wrapped_binary_ke
 }
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift

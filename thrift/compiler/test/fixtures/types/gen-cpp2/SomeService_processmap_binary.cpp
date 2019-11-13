@@ -10,6 +10,3 @@
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -690,6 +690,3 @@ const service_with_special_namesAsyncProcessor::ProcessMap service_with_special_
 };
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

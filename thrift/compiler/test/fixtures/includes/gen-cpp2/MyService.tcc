@@ -132,6 +132,3 @@ void MyServiceAsyncProcessor::throw_wrapped_has_arg_docs(std::unique_ptr<apache:
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

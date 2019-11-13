@@ -302,6 +302,3 @@ void NestedContainersAsyncProcessor::throw_wrapped_turtles(std::unique_ptr<apach
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

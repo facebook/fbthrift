@@ -3686,6 +3686,3 @@ folly::exception_wrapper ReturnServiceAsyncClient::recv_instance_wrapped_readDat
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

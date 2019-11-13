@@ -16,7 +16,5 @@ constexpr const std::array<EnumB, 1> _EnumBEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 1> _EnumBEnumDataStorage::names;
 
 }} // some::ns
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 

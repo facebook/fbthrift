@@ -297,6 +297,3 @@ void MyServiceAsyncProcessor::throw_wrapped_putDataById(std::unique_ptr<apache::
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

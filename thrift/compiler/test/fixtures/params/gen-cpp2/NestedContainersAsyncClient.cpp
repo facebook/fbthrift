@@ -889,6 +889,3 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_instance_wrapped_turt
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

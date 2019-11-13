@@ -161,6 +161,3 @@ const NestedContainersAsyncProcessor::ProcessMap NestedContainersAsyncProcessor:
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -374,6 +374,3 @@ void service1AsyncProcessor::throw_wrapped_method6(std::unique_ptr<apache::thrif
 }
 
 }} // test_cpp2::cpp_reflection
-namespace apache { namespace thrift {
-
-}} // apache::thrift

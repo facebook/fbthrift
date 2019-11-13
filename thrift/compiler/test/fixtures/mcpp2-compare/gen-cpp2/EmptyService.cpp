@@ -44,6 +44,3 @@ const EmptyServiceAsyncProcessor::ProcessMap& EmptyServiceAsyncProcessor::getCom
 const EmptyServiceAsyncProcessor::ProcessMap EmptyServiceAsyncProcessor::compactProcessMap_ {};
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

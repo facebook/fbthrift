@@ -16,9 +16,7 @@ constexpr const std::array<EmptyEnum, 0> _EmptyEnumEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 0> _EmptyEnumEnumDataStorage::names;
 
 }}} // test::fixtures::enumstrict
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test { namespace fixtures { namespace enumstrict {
 
 constexpr const std::size_t _MyEnumEnumDataStorage::size;
@@ -26,9 +24,7 @@ constexpr const std::array<MyEnum, 2> _MyEnumEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 2> _MyEnumEnumDataStorage::names;
 
 }}} // test::fixtures::enumstrict
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace test { namespace fixtures { namespace enumstrict {
 
 constexpr const std::size_t _MyBigEnumEnumDataStorage::size;
@@ -36,7 +32,5 @@ constexpr const std::array<MyBigEnum, 20> _MyBigEnumEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 20> _MyBigEnumEnumDataStorage::names;
 
 }}} // test::fixtures::enumstrict
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 

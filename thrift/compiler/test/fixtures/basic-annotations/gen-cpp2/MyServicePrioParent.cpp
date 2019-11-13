@@ -92,6 +92,3 @@ const MyServicePrioParentAsyncProcessor::ProcessMap MyServicePrioParentAsyncProc
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -115,6 +115,3 @@ const SinkServiceAsyncProcessor::ProcessMap SinkServiceAsyncProcessor::compactPr
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

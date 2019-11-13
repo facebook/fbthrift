@@ -366,6 +366,3 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_has_arg_doc
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

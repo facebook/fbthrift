@@ -16,9 +16,7 @@ namespace some { namespace ns {
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 
 namespace apache {
 namespace thrift {

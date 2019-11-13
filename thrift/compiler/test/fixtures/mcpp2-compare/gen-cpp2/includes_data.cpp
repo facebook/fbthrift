@@ -16,7 +16,5 @@ constexpr const std::array<AnEnum, 2> _AnEnumEnumDataStorage::values;
 constexpr const std::array<folly::StringPiece, 2> _AnEnumEnumDataStorage::names;
 
 }}} // a::different::ns
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 

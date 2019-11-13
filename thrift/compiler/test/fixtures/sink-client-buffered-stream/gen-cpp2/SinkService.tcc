@@ -250,6 +250,3 @@ void SinkServiceAsyncProcessor::throw_wrapped_methodThrow(std::unique_ptr<apache
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

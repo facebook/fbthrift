@@ -14,6 +14,3 @@ namespace some { namespace valid { namespace ns {
 
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

@@ -68,6 +68,3 @@ void CAsyncProcessor::throw_wrapped_f(std::unique_ptr<apache::thrift::ResponseCh
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

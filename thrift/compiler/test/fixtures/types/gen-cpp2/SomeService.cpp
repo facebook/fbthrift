@@ -90,6 +90,3 @@ const SomeServiceAsyncProcessor::ProcessMap SomeServiceAsyncProcessor::compactPr
 };
 
 }}}} // apache::thrift::fixtures::types
-namespace apache { namespace thrift {
-
-}} // apache::thrift

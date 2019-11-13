@@ -16,45 +16,35 @@ namespace facebook { namespace ns { namespace qwerty {
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace facebook { namespace ns { namespace qwerty {
 
 }}} // facebook::ns::qwerty
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace facebook { namespace ns { namespace qwerty {
 
 }}} // facebook::ns::qwerty
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace facebook { namespace ns { namespace qwerty {
 
 }}} // facebook::ns::qwerty
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 namespace facebook { namespace ns { namespace qwerty {
 
 }}} // facebook::ns::qwerty
 namespace std {
 
 } // std
-namespace apache { namespace thrift {
 
-}} // apache::thrift
 
 namespace apache {
 namespace thrift {

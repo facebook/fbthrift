@@ -237,6 +237,3 @@ const MyServiceAsyncProcessor::ProcessMap MyServiceAsyncProcessor::compactProces
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

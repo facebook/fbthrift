@@ -286,6 +286,3 @@ void RaiserAsyncProcessor::throw_wrapped_get500(std::unique_ptr<apache::thrift::
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

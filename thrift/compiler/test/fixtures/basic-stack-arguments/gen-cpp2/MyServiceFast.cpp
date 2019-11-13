@@ -125,6 +125,3 @@ const MyServiceFastAsyncProcessor::ProcessMap MyServiceFastAsyncProcessor::compa
 };
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

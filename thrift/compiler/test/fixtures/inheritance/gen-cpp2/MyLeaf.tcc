@@ -68,6 +68,3 @@ void MyLeafAsyncProcessor::throw_wrapped_do_leaf(std::unique_ptr<apache::thrift:
 }
 
 } // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift

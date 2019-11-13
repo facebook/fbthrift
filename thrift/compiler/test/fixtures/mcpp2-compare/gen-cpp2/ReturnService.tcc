@@ -1178,6 +1178,3 @@ void ReturnServiceAsyncProcessor::throw_wrapped_readData(std::unique_ptr<apache:
 }
 
 }}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift

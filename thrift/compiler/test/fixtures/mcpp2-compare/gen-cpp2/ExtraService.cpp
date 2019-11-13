@@ -224,6 +224,3 @@ const ExtraServiceAsyncProcessor::ProcessMap ExtraServiceAsyncProcessor::compact
 };
 
 }} // extra::svc
-namespace apache { namespace thrift {
-
-}} // apache::thrift
