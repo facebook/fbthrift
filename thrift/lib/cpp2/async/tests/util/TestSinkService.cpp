@@ -106,7 +106,8 @@ TestSinkService::unSubscribedSink() {
       [g = folly::makeGuard([this]() { sinkUnsubscribed_ = true; })](
           folly::coro::AsyncGenerator<int32_t&&> gen) mutable
       -> folly::coro::Task<bool> {
-        co_await gen.next();
+        EXPECT_THROW(
+            co_await gen.next(), apache::thrift::TApplicationException);
         co_return true;
       },
       10 /* buffer size */

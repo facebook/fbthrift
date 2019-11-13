@@ -54,6 +54,7 @@ class TApplicationException : public TException {
     TIMEOUT = 12,
     INJECTED_FAILURE = 13,
     CHECKSUM_MISMATCH = 14,
+    INTERRUPTION = 15,
   };
 
   TApplicationException() : type_(UNKNOWN) {}
@@ -126,6 +127,8 @@ class TApplicationException : public TException {
           return "TApplicationException: Injected failure";
         case CHECKSUM_MISMATCH:
           return "TApplicationException: Checksum mismatch";
+        case INTERRUPTION:
+          return "TApplicationException: interruption";
         default:
           return "TApplicationException: (Invalid exception type)";
       };
