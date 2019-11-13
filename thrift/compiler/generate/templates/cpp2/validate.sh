@@ -15,6 +15,8 @@
 
 set -e
 
-for x in */**.mustache; do 
-  ruby ./validate.rb "$x";
+DIR=$( dirname "${BASH_SOURCE[0]}" )
+
+for x in "$DIR"/*.mustache "$DIR"/**/*.mustache; do
+  ruby "$DIR/validate.rb" "$x" || exit;
 done
