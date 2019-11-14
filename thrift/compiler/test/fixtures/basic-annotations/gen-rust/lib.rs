@@ -1653,6 +1653,7 @@ pub mod client {
     /// let client = BuckGraphService::new(protocol, transport);
     /// ```
     impl dyn MyServicePrioParent {
+        pub const priority: &'static str = "HIGH";
         pub fn new<P, T>(
             protocol: P,
             transport: T,

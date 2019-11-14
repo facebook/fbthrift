@@ -138,6 +138,11 @@
     /// let client = BuckGraphService::new(protocol, transport);
     /// ```
     impl dyn {{service:name}} {
+        {{#service:annotations}}
+        {{#annotation:value?}}
+        pub const {{annotation:rust_name}}: &'static str = {{annotation:rust_value}};
+        {{/annotation:value?}}
+        {{/service:annotations}}
         pub fn new<P, T>(
             protocol: P,
             transport: T,

@@ -1047,6 +1047,40 @@ class mstch_rust_typedef : public mstch_typedef {
   }
 };
 
+class mstch_rust_annotation : public mstch_annotation {
+ public:
+  mstch_rust_annotation(
+      const t_annotation& annotation,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_annotation(
+            annotation.key,
+            annotation.val,
+            generators,
+            cache,
+            pos,
+            index) {
+    register_methods(
+        this,
+        {
+            {"annotation:value?", &mstch_rust_annotation::rust_has_value},
+            {"annotation:rust_name", &mstch_rust_annotation::rust_name},
+            {"annotation:rust_value", &mstch_rust_annotation::rust_value},
+        });
+  }
+  mstch::node rust_has_value() {
+    return !val_.empty();
+  }
+  mstch::node rust_name() {
+    return boost::algorithm::replace_all_copy(key_, ".", "_");
+  }
+  mstch::node rust_value() {
+    return quote(val_);
+  }
+};
+
 class program_rust_generator : public program_generator {
  public:
   explicit program_rust_generator(const rust_codegen_options& options)
@@ -1235,6 +1269,19 @@ class typedef_rust_generator : public typedef_generator {
   }
 };
 
+class annotation_rust_generator : public annotation_generator {
+ public:
+  std::shared_ptr<mstch_base> generate(
+      const t_annotation& annotation,
+      std::shared_ptr<const mstch_generators> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index) const override {
+    return std::make_shared<mstch_rust_annotation>(
+        annotation, generators, cache, pos, index);
+  }
+};
+
 void t_mstch_rust_generator::generate_program() {
   // disable mstch escaping
   mstch::config::escape = [](const std::string& s) { return s; };
@@ -1272,6 +1319,8 @@ void t_mstch_rust_generator::set_mstch_generators() {
       std::make_unique<const_rust_generator>(options_));
   generators_->set_typedef_generator(
       std::make_unique<typedef_rust_generator>());
+  generators_->set_annotation_generator(
+      std::make_unique<annotation_rust_generator>());
 }
 
 void t_mstch_rust_generator::load_crate_map(const std::string& path) {
