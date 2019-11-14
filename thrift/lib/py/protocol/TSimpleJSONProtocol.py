@@ -345,6 +345,40 @@ class TSimpleJSONProtocolBase(TProtocolBase, object):
             skipped += 1
         return skipped
 
+    def skip(self, _type):
+        self.context.read(self.reader)
+        self.skipWhitespace()
+        type = self.guessTypeIdFromFirstByte()
+        # Since self.context.read is called at the beginning of all readJSONxxx
+        # methods and we have already called it here, push an empty context so that
+        # it becomes a no-op.
+        self.pushContext(TJSONContext(protocol=self))
+        if type == TType.STRUCT:
+            self.readJSONObjectStart()
+            while True:
+                (_, ftype, _) = self.readFieldBegin()
+                if ftype == TType.STOP:
+                    break
+                self.skip(TType.VOID)
+            self.readJSONObjectEnd()
+        elif type == TType.LIST:
+            self.readJSONArrayStart()
+            while self.peekList():
+                self.skip(TType.VOID)
+            self.readJSONArrayEnd()
+        elif type == TType.STRING:
+            self.readJSONString()
+        elif type == TType.DOUBLE:
+            self.readJSONDouble()
+        elif type == TType.BOOL:
+            self.readJSONBool()
+        else:
+            raise TProtocolException(
+                TProtocolException.INVALID_DATA,
+                "Unexpected type {} guessed when skipping".format(type)
+            )
+        self.popContext()
+
     def guessTypeIdFromFirstByte(self):
         self.skipWhitespace()
         byte = self.reader.peek()
