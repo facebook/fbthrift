@@ -34,7 +34,6 @@ using apache::thrift::ThriftServerAsyncProcessorFactory;
 using example::chatroom::ChatRoomServiceHandler;
 using example::chatroom::EchoHandler;
 using proxygen::HTTPServerOptions;
-using proxygen::RequestHandlerChain;
 
 std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
     std::shared_ptr<ThriftServer> server) {

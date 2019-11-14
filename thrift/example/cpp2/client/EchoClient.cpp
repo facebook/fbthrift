@@ -29,7 +29,6 @@ DEFINE_string(
     "header",
     "Transport to use: header, rsocket, http2, or inmemory");
 
-using apache::thrift::server::ServerConfigsMock;
 using example::chatroom::EchoAsyncClient;
 using example::chatroom::EchoHandler;
 
