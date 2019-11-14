@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/IntrusiveList.h>
+#include <folly/io/IOBuf.h>
 #include <chrono>
 
 namespace apache {
@@ -52,7 +53,8 @@ class ActiveRequestsRegistry {
     DebugStub(
         ActiveRequestsRegistry& reqRegistry,
         const ResponseChannelRequest& req,
-        const Cpp2RequestContext& reqContext)
+        const Cpp2RequestContext& reqContext,
+        std::unique_ptr<folly::IOBuf> /* payload */)
         : req_(&req),
           reqContext_(&reqContext),
           timestamp_(std::chrono::steady_clock::now()) {
