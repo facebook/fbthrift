@@ -118,7 +118,7 @@ ThriftServer::~ThriftServer() {
   }
   // If the flag is false, neither i/o nor CPU workers are stopped at this
   // point. Stop them now.
-  threadManager_->join();
+  stopCPUWorkers();
   stopWorkers();
 }
 
@@ -486,15 +486,22 @@ void ThriftServer::stopListening() {
   }
 
   if (stopWorkersOnStopListening_) {
-    // Wait for any tasks currently running on the task queue workers to
-    // finish, then stop the task queue workers. Have to do this now, so
-    // there aren't tasks completing and trying to write to i/o thread
-    // workers after we've stopped the i/o workers.
-    threadManager_->join();
+    stopCPUWorkers();
   }
 }
 
 void ThriftServer::stopWorkers() {
+  if (serverChannel_) {
+    return;
+  }
+  DCHECK(!duplexWorker_);
+  ServerBootstrap::stop();
+  ServerBootstrap::join();
+  sslHandshakePool_->join();
+  configMutable_ = true;
+}
+
+void ThriftServer::stopCPUWorkers() {
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       worker->requestStop();
@@ -506,15 +513,11 @@ void ThriftServer::stopWorkers() {
       worker->waitForStop(deadline);
     }
   });
-
-  if (serverChannel_) {
-    return;
-  }
-  DCHECK(!duplexWorker_);
-  ServerBootstrap::stop();
-  ServerBootstrap::join();
-  sslHandshakePool_->join();
-  configMutable_ = true;
+  // Wait for any tasks currently running on the task queue workers to
+  // finish, then stop the task queue workers. Have to do this now, so
+  // there aren't tasks completing and trying to write to i/o thread
+  // workers after we've stopped the i/o workers.
+  threadManager_->join();
 }
 
 void ThriftServer::handleSetupFailure(void) {

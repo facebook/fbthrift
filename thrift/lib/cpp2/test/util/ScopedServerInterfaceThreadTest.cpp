@@ -126,11 +126,10 @@ TEST(ScopedServerInterfaceThread, configureCbCalled) {
 class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
  public:
   ~SlowSimpleServiceImpl() override {}
-  folly::Future<int64_t> future_add(int64_t a, int64_t b) override {
+  folly::SemiFuture<int64_t> semifuture_add(int64_t a, int64_t b) override {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(a + b))
-        .via(getEventBase())
-        .thenValue([=](auto&&) { return a + b; });
+        .deferValue([=](auto&&) { return a + b; });
   }
 
   void waitForRequest() {
@@ -212,6 +211,8 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
   ssit.reset();
 
   EXPECT_GE(timer.elapsed().count(), 2000);
+
+  EXPECT_LE(timer.elapsed().count(), 20000);
 
   stopping = true;
   schedulerThread.join();

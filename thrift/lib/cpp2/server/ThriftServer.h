@@ -567,6 +567,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void stopWorkers();
 
   /**
+   * Stop accepting new requests, finish processing outstanding requests and
+   * join the CPU thread pool.
+   */
+  void stopCPUWorkers();
+
+  /**
    * Set whether to stop io workers when stopListening() is called (we do stop
    * them by default).
    */
