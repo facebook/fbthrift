@@ -255,7 +255,9 @@ macro(thrift_generate
       -o ${output_path}
       ${thrift_include_directories}
       "${file_path}/${file_name}.thrift"
-    DEPENDS ${THRIFT1}
+    DEPENDS 
+      ${THRIFT1}
+      "${file_path}/${file_name}.thrift"
     COMMENT "Generating ${file_name} files. Output: ${output_path}"
   )
   add_custom_target(
