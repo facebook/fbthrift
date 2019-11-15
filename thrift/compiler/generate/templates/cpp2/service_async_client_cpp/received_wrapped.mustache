@@ -29,18 +29,13 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:cp
 
   using result = <%service:name%>_<%function:cpp_name%>_presult;
   constexpr auto const fname = "<%function:name%>";
-  <%#type:sink?%>
-  auto exMap = [](typename result::SinkPResultType&, folly::exception_wrapper) {
-    return false;
-  };
-  <%/type:sink?%>
   switch (state.protocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
       <%#type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>, std::move(exMap));
+          fname, &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>, apache::thrift::detail::ap::EmptyExMapType{});
       <%/type:sink?%>
       <%^type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result>(
@@ -52,7 +47,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:cp
       apache::thrift::CompactProtocolReader reader;
       <%#type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>, std::move(exMap));
+          fname, &reader, state<%^type:void?%>, state.extractSink(), _return<%/type:void?%>, apache::thrift::detail::ap::EmptyExMapType{});
       <%/type:sink?%>
       <%^type:sink?%>
       return apache::thrift::detail::ac::recv_wrapped<result>(

@@ -125,24 +125,25 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
   auto& _returnStream = _return;
       <%/type:streamHasFirstResponse?%>
 
-      <%#function:stream_exceptions?%>
-  auto exMap = [](StreamPResultType& res, folly::exception_wrapper ew) {
-      <%/function:stream_exceptions?%>
       <%^function:stream_exceptions?%>
-  auto exMap = [](StreamPResultType&, folly::exception_wrapper) {
+      using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
       <%/function:stream_exceptions?%>
+      <%#function:stream_exceptions?%>
+  struct ExMapType {
+    bool operator()(StreamPResultType& res, folly::exception_wrapper ew) {
       <%#function:stream_exceptions%>
-    if (ew.with_exception([&](<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {
-          res.get<<%field:index_plus_one%>>().ref() = e;
-          res.setIsSet(<%field:index_plus_one%>, true);
-        })) {
-      return true;
-    }
+      if (ew.with_exception([&](<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {
+            res.get<<%field:index_plus_one%>>().ref() = e;
+            res.setIsSet(<%field:index_plus_one%>, true);
+          })) {
+        return true;
+      }
       <%/function:stream_exceptions%>
-    return false;
+      return false;
+    }
   };
-
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
+      <%/function:stream_exceptions?%>
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
   return {serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 <%/function:returns_stream?%>
 <%#function:returns_sink?%>
@@ -153,23 +154,19 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
   result.get<0>().value = &_return.response;
   result.setIsSet(0, true);
   <%/type:sinkHasFirstResponse?%>
-  auto exMap = [](FinalResponsePResultType&, folly::exception_wrapper) {
-    return false;
-  };
-
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
-      FinalResponsePResultType>(
+      FinalResponsePResultType,
+      apache::thrift::detail::ap::EmptyExMapType>(
   <%#type:sinkHasFirstResponse?%>
       std::move(_return.sinkConsumer),
   <%/type:sinkHasFirstResponse?%>
   <%^type:sinkHasFirstResponse?%>
       std::move(_return),
   <%/type:sinkHasFirstResponse?%>
-      std::move(executor),
-      exMap);
+      std::move(executor));
 
   return {serializeResponse("<%function:name%>", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 <%/function:returns_sink?%>

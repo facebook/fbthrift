@@ -76,11 +76,8 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
   using StreamPResultType = PubSubStreamingService_returnstream_presult::StreamPResultType;
   auto& _returnStream = _return;
 
-  auto exMap = [](StreamPResultType&, folly::exception_wrapper) {
-    return false;
-  };
-
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
+      using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
   return {serializeResponse("returnstream", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 
@@ -140,17 +137,18 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
   using StreamPResultType = PubSubStreamingService_streamthrows_presult::StreamPResultType;
   auto& _returnStream = _return;
 
-  auto exMap = [](StreamPResultType& res, folly::exception_wrapper ew) {
-    if (ew.with_exception([&]( ::cpp2::FooEx& e) {
-          res.get<1>().ref() = e;
-          res.setIsSet(1, true);
-        })) {
-      return true;
+  struct ExMapType {
+    bool operator()(StreamPResultType& res, folly::exception_wrapper ew) {
+      if (ew.with_exception([&]( ::cpp2::FooEx& e) {
+            res.get<1>().ref() = e;
+            res.setIsSet(1, true);
+          })) {
+        return true;
+      }
+      return false;
     }
-    return false;
   };
-
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
   return {serializeResponse("streamthrows", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 
@@ -210,17 +208,18 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
   using StreamPResultType = PubSubStreamingService_boththrows_presult::StreamPResultType;
   auto& _returnStream = _return;
 
-  auto exMap = [](StreamPResultType& res, folly::exception_wrapper ew) {
-    if (ew.with_exception([&]( ::cpp2::FooEx& e) {
-          res.get<1>().ref() = e;
-          res.setIsSet(1, true);
-        })) {
-      return true;
+  struct ExMapType {
+    bool operator()(StreamPResultType& res, folly::exception_wrapper ew) {
+      if (ew.with_exception([&]( ::cpp2::FooEx& e) {
+            res.get<1>().ref() = e;
+            res.setIsSet(1, true);
+          })) {
+        return true;
+      }
+      return false;
     }
-    return false;
   };
-
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
   return {serializeResponse("boththrows", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 
@@ -293,17 +292,18 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
   result.setIsSet(0, true);
   auto& _returnStream = _return.stream;
 
-  auto exMap = [](StreamPResultType& res, folly::exception_wrapper ew) {
-    if (ew.with_exception([&]( ::cpp2::FooEx& e) {
-          res.get<1>().ref() = e;
-          res.setIsSet(1, true);
-        })) {
-      return true;
+  struct ExMapType {
+    bool operator()(StreamPResultType& res, folly::exception_wrapper ew) {
+      if (ew.with_exception([&]( ::cpp2::FooEx& e) {
+            res.get<1>().ref() = e;
+            res.setIsSet(1, true);
+          })) {
+        return true;
+      }
+      return false;
     }
-    return false;
   };
-
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType>(std::move(_returnStream), std::move(exMap));
+  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
   return {serializeResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 

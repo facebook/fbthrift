@@ -69,18 +69,14 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
   SinkService_method_presult::FieldsType result;
   using SinkPResultType = SinkService_method_presult::SinkPResultType;
   using FinalResponsePResultType = SinkService_method_presult::FinalResponsePResultType;
-  auto exMap = [](FinalResponsePResultType&, folly::exception_wrapper) {
-    return false;
-  };
-
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
-      FinalResponsePResultType>(
+      FinalResponsePResultType,
+      apache::thrift::detail::ap::EmptyExMapType>(
       std::move(_return),
-      std::move(executor),
-      exMap);
+      std::move(executor));
 
   return {serializeResponse("method", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
@@ -140,18 +136,14 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
   using FinalResponsePResultType = SinkService_methodAndReponse_presult::FinalResponsePResultType;
   result.get<0>().value = &_return.response;
   result.setIsSet(0, true);
-  auto exMap = [](FinalResponsePResultType&, folly::exception_wrapper) {
-    return false;
-  };
-
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
-      FinalResponsePResultType>(
+      FinalResponsePResultType,
+      apache::thrift::detail::ap::EmptyExMapType>(
       std::move(_return.sinkConsumer),
-      std::move(executor),
-      exMap);
+      std::move(executor));
 
   return {serializeResponse("methodAndReponse", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
@@ -209,18 +201,14 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
   SinkService_methodThrow_presult::FieldsType result;
   using SinkPResultType = SinkService_methodThrow_presult::SinkPResultType;
   using FinalResponsePResultType = SinkService_methodThrow_presult::FinalResponsePResultType;
-  auto exMap = [](FinalResponsePResultType&, folly::exception_wrapper) {
-    return false;
-  };
-
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
-      FinalResponsePResultType>(
+      FinalResponsePResultType,
+      apache::thrift::detail::ap::EmptyExMapType>(
       std::move(_return),
-      std::move(executor),
-      exMap);
+      std::move(executor));
 
   return {serializeResponse("methodThrow", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 }
