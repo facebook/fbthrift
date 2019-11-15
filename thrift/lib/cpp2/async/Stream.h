@@ -203,19 +203,19 @@ class Stream {
       OnComplete&& onComplete,
       int64_t batch = kDefaultBatchSize) &&;
 
-  FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onNextInvokeTraits, onNext);
-  FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onErrorInvokeTraits, onError);
-  FOLLY_CREATE_MEMBER_INVOKE_TRAITS(onCompleteInvokeTraits, onComplete);
+  FOLLY_CREATE_MEMBER_INVOKER(onNextInvoker, onNext);
+  FOLLY_CREATE_MEMBER_INVOKER(onErrorInvoker, onError);
+  FOLLY_CREATE_MEMBER_INVOKER(onCompleteInvoker, onComplete);
 
   template <
       typename Subscriber,
       typename = typename std::enable_if<
-          onNextInvokeTraits::template is_invocable<Subscriber, T&&>::value &&
-          onErrorInvokeTraits::template is_invocable<
+          folly::is_invocable<onNextInvoker, Subscriber, T&&>::value &&
+          folly::is_invocable<
+              onErrorInvoker,
               Subscriber,
               folly::exception_wrapper>::value &&
-          onCompleteInvokeTraits::template is_invocable<Subscriber>::value>::
-          type,
+          folly::is_invocable<onCompleteInvoker, Subscriber>::value>::type,
       typename = void>
   Subscription subscribe(
       Subscriber&& subscriber,

@@ -131,19 +131,23 @@ struct sorted_unique_constructible_<
 template <typename T>
 struct sorted_unique_constructible : sorted_unique_constructible_<void, T> {};
 
-FOLLY_CREATE_MEMBER_INVOKE_TRAITS(emplace_hint_traits, emplace_hint);
+FOLLY_CREATE_MEMBER_INVOKER(emplace_hint_invoker, emplace_hint);
 FOLLY_CREATE_HAS_MEMBER_TYPE_TRAITS(has_key_compare, key_compare);
 
 template <typename T>
-using map_emplace_hint_is_invocable = emplace_hint_traits::is_invocable<
+using map_emplace_hint_is_invocable = folly::is_invocable<
+    emplace_hint_invoker,
     T,
     typename T::iterator,
     typename T::key_type,
     typename T::mapped_type>;
 
 template <typename T>
-using set_emplace_hint_is_invocable = emplace_hint_traits::
-    is_invocable<T, typename T::iterator, typename T::value_type>;
+using set_emplace_hint_is_invocable = folly::is_invocable<
+    emplace_hint_invoker,
+    T,
+    typename T::iterator,
+    typename T::value_type>;
 
 template <typename Map, typename KeyDeserializer, typename MappedDeserializer>
 typename std::enable_if<sorted_unique_constructible<Map>::value>::type

@@ -86,12 +86,11 @@ void serializeInFragmentsSlowCommon(
   } while (!finished);
 }
 
-FOLLY_CREATE_MEMBER_INVOKE_TRAITS(
-    has_initial_request_n_traits,
-    initialRequestN);
+FOLLY_CREATE_MEMBER_INVOKER(has_initial_request_n_invoker, initialRequestN);
 
 template <typename T>
-using has_initial_request_n = has_initial_request_n_traits::is_invocable<T>;
+using has_initial_request_n =
+    folly::is_invocable<has_initial_request_n_invoker, T>;
 
 template <class Frame>
 std::enable_if_t<has_initial_request_n<Frame>::value, void>
