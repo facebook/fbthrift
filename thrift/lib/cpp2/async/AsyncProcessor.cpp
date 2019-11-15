@@ -23,8 +23,10 @@ constexpr std::chrono::seconds ServerInterface::BlockingThreadManager::kTimeout;
 thread_local RequestParams ServerInterface::requestParams_;
 
 void HandlerCallbackBase::sendReply(
-    folly::IOBufQueue queue,
-    apache::thrift::Stream<folly::IOBufQueue>&& stream) {
+    ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue>&&
+        responseAndStream) {
+  auto& queue = responseAndStream.response;
+  auto& stream = responseAndStream.stream;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
   auto stream_ =
@@ -43,8 +45,10 @@ void HandlerCallbackBase::sendReply(
 
 #ifdef FOLLY_HAS_COROUTINES
 void HandlerCallbackBase::sendReply(
-    folly::IOBufQueue queue,
-    apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) {
+    std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
+        responseAndSinkConsumer) {
+  auto& queue = responseAndSinkConsumer.first;
+  auto& sinkConsumer = responseAndSinkConsumer.second;
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
 

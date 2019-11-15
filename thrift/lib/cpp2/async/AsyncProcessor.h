@@ -282,6 +282,170 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   }
 };
 
+class AsyncProcessorFactory {
+ public:
+  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() = 0;
+  virtual ~AsyncProcessorFactory() {}
+};
+
+/**
+ * This struct encapsulates the various thrift control information of interest
+ * to request handlers; the executor on which we expect them to execute, the
+ * Cpp2RequestContext of the incoming request struct, etc.
+ */
+class RequestParams {
+ public:
+  RequestParams(
+      Cpp2RequestContext* requestContext,
+      apache::thrift::concurrency::ThreadManager* threadManager,
+      folly::EventBase* eventBase)
+      : requestContext_(requestContext),
+        threadManager_(threadManager),
+        eventBase_(eventBase) {}
+  RequestParams() : RequestParams(nullptr, nullptr, nullptr) {}
+  RequestParams(const RequestParams&) = default;
+  RequestParams& operator=(const RequestParams&) = default;
+
+  Cpp2RequestContext* getRequestContext() const {
+    return requestContext_;
+  }
+  apache::thrift::concurrency::ThreadManager* getThreadManager() const {
+    return threadManager_;
+  }
+  folly::EventBase* getEventBase() const {
+    return eventBase_;
+  }
+
+ private:
+  friend class ServerInterface;
+
+  Cpp2RequestContext* requestContext_;
+  apache::thrift::concurrency::ThreadManager* threadManager_;
+  folly::EventBase* eventBase_;
+};
+
+class ServerInterface : public AsyncProcessorFactory {
+ public:
+  ~ServerInterface() override {}
+
+  Cpp2RequestContext* getConnectionContext() {
+    return requestParams_.requestContext_;
+  }
+
+  void setConnectionContext(Cpp2RequestContext* c) {
+    requestParams_.requestContext_ = c;
+  }
+
+  void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
+    requestParams_.threadManager_ = tm;
+  }
+
+  apache::thrift::concurrency::ThreadManager* getThreadManager() {
+    return requestParams_.threadManager_;
+  }
+
+  folly::Executor::KeepAlive<> getBlockingThreadManager() {
+    return BlockingThreadManager::create(requestParams_.threadManager_);
+  }
+
+  static folly::Executor::KeepAlive<> getBlockingThreadManager(
+      concurrency::ThreadManager* threadManager) {
+    return BlockingThreadManager::create(threadManager);
+  }
+
+  void setEventBase(folly::EventBase* eb) {
+    folly::RequestEventBase::set(eb);
+    requestParams_.eventBase_ = eb;
+  }
+
+  folly::EventBase* getEventBase() {
+    return requestParams_.eventBase_;
+  }
+
+  /**
+   * Override to return a pre-initialized RequestContext.
+   * Its content will be copied in the RequestContext initialized at
+   * the beginning of each thrift request processing.
+   */
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
+    return nullptr;
+  }
+
+  virtual apache::thrift::concurrency::PRIORITY getRequestPriority(
+      apache::thrift::Cpp2RequestContext* ctx,
+      apache::thrift::concurrency::PRIORITY prio =
+          apache::thrift::concurrency::NORMAL) {
+    apache::thrift::concurrency::PRIORITY callPriority = ctx->getCallPriority();
+    if (callPriority != apache::thrift::concurrency::N_PRIORITIES) {
+      return callPriority;
+    }
+    return prio;
+  }
+
+ private:
+  class BlockingThreadManager : public folly::Executor {
+   public:
+    static folly::Executor::KeepAlive<> create(
+        concurrency::ThreadManager* executor) {
+      return makeKeepAlive(new BlockingThreadManager(executor));
+    }
+    void add(folly::Func f) override {
+      std::shared_ptr<apache::thrift::concurrency::Runnable> task =
+          concurrency::FunctionRunner::create(std::move(f));
+      try {
+        executor_->add(
+            std::move(task),
+            std::chrono::milliseconds(kTimeout).count(),
+            0,
+            false,
+            false);
+        return;
+      } catch (...) {
+        LOG(FATAL) << "Failed to schedule a task within timeout: "
+                   << folly::exceptionStr(std::current_exception());
+      }
+    }
+
+   private:
+    explicit BlockingThreadManager(concurrency::ThreadManager* executor)
+        : executor_(folly::getKeepAliveToken(executor)) {}
+
+    bool keepAliveAcquire() override {
+      auto keepAliveCount =
+          keepAliveCount_.fetch_add(1, std::memory_order_relaxed);
+      // We should never increment from 0
+      DCHECK(keepAliveCount > 0);
+      return true;
+    }
+
+    void keepAliveRelease() override {
+      auto keepAliveCount =
+          keepAliveCount_.fetch_sub(1, std::memory_order_acq_rel);
+      DCHECK(keepAliveCount >= 1);
+      if (keepAliveCount == 1) {
+        delete this;
+      }
+    }
+
+    static constexpr std::chrono::seconds kTimeout{30};
+    std::atomic<size_t> keepAliveCount_{1};
+    folly::Executor::KeepAlive<concurrency::ThreadManager> executor_;
+  };
+
+  /**
+   * This variable is only used for sync calls when in a threadpool it
+   * is threadlocal, because the threadpool will probably be
+   * processing multiple requests simultaneously, and we don't want to
+   * mix up the connection contexts.
+   *
+   * This threadlocal trick doesn't work for async requests, because
+   * multiple async calls can be running on the same thread.  Instead,
+   * use the callback->getConnectionContext() method.  This reqCtx_
+   * will be NULL for async calls.
+   */
+  static thread_local RequestParams requestParams_;
+};
+
 /**
  * HandlerCallback class for async callbacks.
  *
@@ -536,14 +700,13 @@ class HandlerCallbackBase {
     }
   }
 
-  void sendReply(
-      folly::IOBufQueue queue,
-      apache::thrift::Stream<folly::IOBufQueue>&& stream);
+  void sendReply(ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue>&&
+                     responseAndStream);
 
 #ifdef FOLLY_HAS_COROUTINES
   void sendReply(
-      folly::IOBufQueue queue,
-      apache::thrift::detail::SinkConsumerImpl&& sinkConsumer);
+      std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
+          responseAndSinkConsumer);
 #endif
 
   // Required for this call
@@ -574,18 +737,97 @@ struct inner_type<std::unique_ptr<S>> {
   typedef S type;
 };
 
+template <typename T>
+struct HandlerCallbackHelper {
+  using InputType = const typename detail::inner_type<T>::type&;
+  using CobPtr = folly::IOBufQueue (*)(
+      int32_t protoSeqId,
+      apache::thrift::ContextStack*,
+      InputType);
+  static folly::IOBufQueue call(
+      CobPtr cob,
+      int32_t protoSeqId,
+      apache::thrift::ContextStack* ctx,
+      apache::thrift::concurrency::ThreadManager*,
+      InputType input) {
+    return cob(protoSeqId, ctx, std::move(input));
+  }
+};
+
+template <typename StreamInputType>
+struct HandlerCallbackHelperStream {
+  using InputType = StreamInputType;
+  using CobPtr = ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> (*)(
+      int32_t protoSeqId,
+      apache::thrift::ContextStack*,
+      InputType);
+  static ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> call(
+      CobPtr cob,
+      int32_t protoSeqId,
+      apache::thrift::ContextStack* ctx,
+      apache::thrift::concurrency::ThreadManager*,
+      InputType input) {
+    return cob(protoSeqId, ctx, std::move(input));
+  }
+};
+
+template <typename Response, typename StreamItem>
+struct HandlerCallbackHelper<ResponseAndStream<Response, StreamItem>>
+    : public HandlerCallbackHelperStream<
+          ResponseAndStream<Response, StreamItem>> {};
+
+template <typename StreamItem>
+struct HandlerCallbackHelper<Stream<StreamItem>>
+    : public HandlerCallbackHelperStream<Stream<StreamItem>> {};
+
+#ifdef FOLLY_HAS_COROUTINES
+template <typename SinkInputType>
+struct HandlerCallbackHelperSink {
+  using InputType = SinkInputType;
+  using CobPtr = std::
+      pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> (*)(
+          ContextStack*,
+          InputType&&,
+          folly::Executor::KeepAlive<folly::SequencedExecutor>);
+  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>
+  call(
+      CobPtr cob,
+      int32_t,
+      apache::thrift::ContextStack* ctx,
+      apache::thrift::concurrency::ThreadManager* tm,
+      InputType input) {
+    return cob(
+        ctx,
+        std::move(input),
+        folly::SerialExecutor::create(
+            ServerInterface::getBlockingThreadManager(tm)));
+  }
+};
+
+template <typename Response, typename SinkElement, typename FinalResponse>
+struct HandlerCallbackHelper<
+    ResponseAndSinkConsumer<Response, SinkElement, FinalResponse>>
+    : public HandlerCallbackHelperSink<
+          ResponseAndSinkConsumer<Response, SinkElement, FinalResponse>> {};
+
+template <typename SinkElement, typename FinalResponse>
+struct HandlerCallbackHelper<SinkConsumer<SinkElement, FinalResponse>>
+    : public HandlerCallbackHelperSink<
+          SinkConsumer<SinkElement, FinalResponse>> {};
+#endif
+
 } // namespace detail
 
 template <typename T>
 class HandlerCallback : public HandlerCallbackBase {
+  using Helper = detail::HandlerCallbackHelper<T>;
+  using InputType = typename Helper::InputType;
+
  public:
-  using ResultType = typename detail::inner_type<T>::type;
+  using ResultType = std::decay_t<typename Helper::InputType>;
 
  private:
-  using cob_ptr = folly::IOBufQueue (*)(
-      int32_t protoSeqId,
-      apache::thrift::ContextStack*,
-      const ResultType&);
+  using cob_ptr = typename Helper::CobPtr;
 
  public:
   HandlerCallback() : cp_(nullptr) {}
@@ -610,18 +852,18 @@ class HandlerCallback : public HandlerCallbackBase {
     this->protoSeqId_ = protoSeqId;
   }
 
-  void result(const ResultType& r) {
-    doResult(r);
+  void result(InputType r) {
+    doResult(std::forward<InputType>(r));
   }
   void result(std::unique_ptr<ResultType> r) {
-    doResult(*r);
+    doResult(std::move(*r));
   }
-  void resultInThread(const ResultType& r) {
-    result(r);
+  void resultInThread(InputType r) {
+    result(std::forward<InputType>(r));
     delete this;
   }
   void resultInThread(std::unique_ptr<ResultType> r) {
-    result(*r);
+    result(std::move(*r));
     delete this;
   }
   void resultInThread(const std::shared_ptr<ResultType>& r) {
@@ -631,9 +873,9 @@ class HandlerCallback : public HandlerCallbackBase {
 
   static void resultInThread(
       std::unique_ptr<HandlerCallback> thisPtr,
-      const ResultType& r) {
+      InputType r) {
     DCHECK(thisPtr);
-    thisPtr.release()->resultInThread(r);
+    thisPtr.release()->resultInThread(std::forward<InputType>(r));
   }
   static void resultInThread(
       std::unique_ptr<HandlerCallback> thisPtr,
@@ -670,314 +912,20 @@ class HandlerCallback : public HandlerCallbackBase {
   }
 
  protected:
-  virtual void doResult(const ResultType& r) {
+  virtual void doResult(InputType r) {
     assert(cp_);
-    auto queue = cp_(this->protoSeqId_, this->ctx_.get(), r);
+    auto reply = Helper::call(
+        cp_,
+        this->protoSeqId_,
+        this->ctx_.get(),
+        this->tm_,
+        std::forward<InputType>(r));
     this->ctx_.reset();
-    sendReply(std::move(queue));
+    sendReply(std::move(reply));
   }
 
   cob_ptr cp_;
 };
-
-template <typename Response, typename StreamItem>
-class HandlerCallback<ResponseAndStream<Response, StreamItem>>
-    : public HandlerCallbackBase {
- protected:
-  using ResultType = ResponseAndStream<Response, StreamItem>;
-
- private:
-  using cob_ptr = ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> (*)(
-      int32_t protoSeqId,
-      ContextStack*,
-      ResultType);
-
- public:
-  HandlerCallback() : cp_(nullptr) {}
-
-  HandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
-      std::unique_ptr<ContextStack> ctx,
-      cob_ptr cp,
-      exnw_ptr ewp,
-      int32_t protoSeqId,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx)
-      : HandlerCallbackBase(
-            std::move(req),
-            std::move(ctx),
-            ewp,
-            eb,
-            tm,
-            reqCtx),
-        cp_(cp) {
-    this->protoSeqId_ = protoSeqId;
-  }
-
-  void result(ResultType r) {
-    doResult(std::move(r));
-  }
-  void resultInThread(ResultType r) {
-    result(std::move(r));
-    delete this;
-  }
-
-  void complete(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
-      result(std::move(r.value()));
-    }
-  }
-  void completeInThread(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
-      resultInThread(std::move(r.value()));
-    }
-  }
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<ResultType>&& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(std::move(r));
-  }
-
- protected:
-  void doResult(ResultType r) {
-    assert(cp_);
-    auto responseAndStream =
-        cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
-    this->ctx_.reset();
-    this->sendReply(
-        std::move(responseAndStream.response),
-        std::move(responseAndStream.stream));
-  }
-
-  cob_ptr cp_;
-};
-
-template <typename StreamItem>
-class HandlerCallback<Stream<StreamItem>> : public HandlerCallbackBase {
- public:
-  using ResultType = Stream<StreamItem>;
-
- private:
-  using cob_ptr = ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> (*)(
-      int32_t protoSeqId,
-      ContextStack*,
-      ResultType);
-
- public:
-  HandlerCallback() : cp_(nullptr) {}
-
-  HandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
-      std::unique_ptr<ContextStack> ctx,
-      cob_ptr cp,
-      exnw_ptr ewp,
-      int32_t protoSeqId,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx)
-      : HandlerCallbackBase(
-            std::move(req),
-            std::move(ctx),
-            ewp,
-            eb,
-            tm,
-            reqCtx),
-        cp_(cp) {
-    this->protoSeqId_ = protoSeqId;
-  }
-
-  void result(ResultType r) {
-    doResult(std::move(r));
-  }
-  void resultInThread(ResultType r) {
-    result(std::move(r));
-    delete this;
-  }
-
-  void complete(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
-      result(std::move(r.value()));
-    }
-  }
-  void completeInThread(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
-      resultInThread(std::move(r.value()));
-    }
-  }
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<ResultType>&& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(std::move(r));
-  }
-
- protected:
-  void doResult(ResultType r) {
-    assert(cp_);
-    auto responseAndStream =
-        cp_(this->protoSeqId_, this->ctx_.get(), std::move(r));
-    this->ctx_.reset();
-    this->sendReply(
-        std::move(responseAndStream.response),
-        std::move(responseAndStream.stream));
-  }
-
-  cob_ptr cp_;
-};
-
-#ifdef FOLLY_HAS_COROUTINES
-template <typename Response, typename SinkElement, typename FinalResponse>
-class HandlerCallback<
-    ResponseAndSinkConsumer<Response, SinkElement, FinalResponse>>
-    : public HandlerCallbackBase {
- public:
-  using ResultType =
-      ResponseAndSinkConsumer<Response, SinkElement, FinalResponse>;
-
- private:
-  using cob_ptr = std::
-      pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> (*)(
-          ContextStack*,
-          ResultType&&,
-          folly::Executor::KeepAlive<folly::SequencedExecutor>);
-
- public:
-  HandlerCallback() : cp_(nullptr) {}
-
-  HandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
-      std::unique_ptr<ContextStack> ctx,
-      cob_ptr cp,
-      exnw_ptr ewp,
-      int32_t protoSeqId,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx)
-      : HandlerCallbackBase(
-            std::move(req),
-            std::move(ctx),
-            ewp,
-            eb,
-            tm,
-            reqCtx),
-        cp_(cp) {
-    this->protoSeqId_ = protoSeqId;
-  }
-
-  void result(ResultType&& r) {
-    doResult(std::move(r));
-  }
-  void resultInThread(ResultType&& r) {
-    result(std::move(r));
-    delete this;
-  }
-
-  void complete(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
-      result(std::move(r.value()));
-    }
-  }
-  void completeInThread(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
-      resultInThread(std::move(r.value()));
-    }
-  }
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<ResultType>&& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(std::move(r));
-  }
-
- protected:
-  void doResult(ResultType&& r);
-  cob_ptr cp_;
-};
-
-template <typename SinkElement, typename FinalResponse>
-class HandlerCallback<SinkConsumer<SinkElement, FinalResponse>>
-    : public HandlerCallbackBase {
- public:
-  using ResultType = SinkConsumer<SinkElement, FinalResponse>;
-
- private:
-  using cob_ptr = std::
-      pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> (*)(
-          ContextStack*,
-          ResultType&&,
-          folly::Executor::KeepAlive<folly::SequencedExecutor>);
-
- public:
-  HandlerCallback() : cp_(nullptr) {}
-
-  HandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
-      std::unique_ptr<ContextStack> ctx,
-      cob_ptr cp,
-      exnw_ptr ewp,
-      int32_t protoSeqId,
-      folly::EventBase* eb,
-      apache::thrift::concurrency::ThreadManager* tm,
-      Cpp2RequestContext* reqCtx)
-      : HandlerCallbackBase(
-            std::move(req),
-            std::move(ctx),
-            ewp,
-            eb,
-            tm,
-            reqCtx),
-        cp_(cp) {
-    this->protoSeqId_ = protoSeqId;
-  }
-
-  void result(ResultType&& r) {
-    doResult(std::move(r));
-  }
-  void resultInThread(ResultType&& r) {
-    result(std::move(r));
-    delete this;
-  }
-
-  void complete(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exception(std::move(r.exception()));
-    } else {
-      result(std::move(r.value()));
-    }
-  }
-  void completeInThread(folly::Try<ResultType>&& r) {
-    if (r.hasException()) {
-      exceptionInThread(std::move(r.exception()));
-    } else {
-      resultInThread(std::move(r.value()));
-    }
-  }
-  static void completeInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      folly::Try<ResultType>&& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->completeInThread(std::move(r));
-  }
-
- protected:
-  void doResult(ResultType&& r);
-  cob_ptr cp_;
-};
-#endif
 
 template <>
 class HandlerCallback<void> : public HandlerCallbackBase {
@@ -1054,201 +1002,6 @@ class HandlerCallback<void> : public HandlerCallbackBase {
 
   cob_ptr cp_;
 };
-
-class AsyncProcessorFactory {
- public:
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() = 0;
-  virtual ~AsyncProcessorFactory() {}
-};
-
-/**
- * This struct encapsulates the various thrift control information of interest
- * to request handlers; the executor on which we expect them to execute, the
- * Cpp2RequestContext of the incoming request struct, etc.
- */
-class RequestParams {
- public:
-  RequestParams(
-      Cpp2RequestContext* requestContext,
-      apache::thrift::concurrency::ThreadManager* threadManager,
-      folly::EventBase* eventBase)
-      : requestContext_(requestContext),
-        threadManager_(threadManager),
-        eventBase_(eventBase) {}
-  RequestParams() : RequestParams(nullptr, nullptr, nullptr) {}
-  RequestParams(const RequestParams&) = default;
-  RequestParams& operator=(const RequestParams&) = default;
-
-  Cpp2RequestContext* getRequestContext() const {
-    return requestContext_;
-  }
-  apache::thrift::concurrency::ThreadManager* getThreadManager() const {
-    return threadManager_;
-  }
-  folly::EventBase* getEventBase() const {
-    return eventBase_;
-  }
-
- private:
-  friend class ServerInterface;
-
-  Cpp2RequestContext* requestContext_;
-  apache::thrift::concurrency::ThreadManager* threadManager_;
-  folly::EventBase* eventBase_;
-};
-
-class ServerInterface : public AsyncProcessorFactory {
- public:
-  ~ServerInterface() override {}
-
-  Cpp2RequestContext* getConnectionContext() {
-    return requestParams_.requestContext_;
-  }
-
-  void setConnectionContext(Cpp2RequestContext* c) {
-    requestParams_.requestContext_ = c;
-  }
-
-  void setThreadManager(apache::thrift::concurrency::ThreadManager* tm) {
-    requestParams_.threadManager_ = tm;
-  }
-
-  apache::thrift::concurrency::ThreadManager* getThreadManager() {
-    return requestParams_.threadManager_;
-  }
-
-  folly::Executor::KeepAlive<> getBlockingThreadManager() {
-    return BlockingThreadManager::create(requestParams_.threadManager_);
-  }
-
-  static folly::Executor::KeepAlive<> getBlockingThreadManager(
-      concurrency::ThreadManager* threadManager) {
-    return BlockingThreadManager::create(threadManager);
-  }
-
-  void setEventBase(folly::EventBase* eb) {
-    folly::RequestEventBase::set(eb);
-    requestParams_.eventBase_ = eb;
-  }
-
-  folly::EventBase* getEventBase() {
-    return requestParams_.eventBase_;
-  }
-
-  /**
-   * Override to return a pre-initialized RequestContext.
-   * Its content will be copied in the RequestContext initialized at
-   * the beginning of each thrift request processing.
-   */
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
-
-  virtual apache::thrift::concurrency::PRIORITY getRequestPriority(
-      apache::thrift::Cpp2RequestContext* ctx,
-      apache::thrift::concurrency::PRIORITY prio =
-          apache::thrift::concurrency::NORMAL) {
-    apache::thrift::concurrency::PRIORITY callPriority = ctx->getCallPriority();
-    if (callPriority != apache::thrift::concurrency::N_PRIORITIES) {
-      return callPriority;
-    }
-    return prio;
-  }
-
- private:
-  class BlockingThreadManager : public folly::Executor {
-   public:
-    static folly::Executor::KeepAlive<> create(
-        concurrency::ThreadManager* executor) {
-      return makeKeepAlive(new BlockingThreadManager(executor));
-    }
-    void add(folly::Func f) override {
-      std::shared_ptr<apache::thrift::concurrency::Runnable> task =
-          concurrency::FunctionRunner::create(std::move(f));
-      try {
-        executor_->add(
-            std::move(task),
-            std::chrono::milliseconds(kTimeout).count(),
-            0,
-            false,
-            false);
-        return;
-      } catch (...) {
-        LOG(FATAL) << "Failed to schedule a task within timeout: "
-                   << folly::exceptionStr(std::current_exception());
-      }
-    }
-
-   private:
-    explicit BlockingThreadManager(concurrency::ThreadManager* executor)
-        : executor_(folly::getKeepAliveToken(executor)) {}
-
-    bool keepAliveAcquire() override {
-      auto keepAliveCount =
-          keepAliveCount_.fetch_add(1, std::memory_order_relaxed);
-      // We should never increment from 0
-      DCHECK(keepAliveCount > 0);
-      return true;
-    }
-
-    void keepAliveRelease() override {
-      auto keepAliveCount =
-          keepAliveCount_.fetch_sub(1, std::memory_order_acq_rel);
-      DCHECK(keepAliveCount >= 1);
-      if (keepAliveCount == 1) {
-        delete this;
-      }
-    }
-
-    static constexpr std::chrono::seconds kTimeout{30};
-    std::atomic<size_t> keepAliveCount_{1};
-    folly::Executor::KeepAlive<concurrency::ThreadManager> executor_;
-  };
-
-  /**
-   * This variable is only used for sync calls when in a threadpool it
-   * is threadlocal, because the threadpool will probably be
-   * processing multiple requests simultaneously, and we don't want to
-   * mix up the connection contexts.
-   *
-   * This threadlocal trick doesn't work for async requests, because
-   * multiple async calls can be running on the same thread.  Instead,
-   * use the callback->getConnectionContext() method.  This reqCtx_
-   * will be NULL for async calls.
-   */
-  static thread_local RequestParams requestParams_;
-};
-
-#ifdef FOLLY_HAS_COROUTINES
-template <typename Response, typename SinkElement, typename FinalResponse>
-void HandlerCallback<
-    ResponseAndSinkConsumer<Response, SinkElement, FinalResponse>>::
-    doResult(HandlerCallback::ResultType&& r) {
-  assert(cp_);
-  auto responseAndSink =
-      cp_(this->ctx_.get(),
-          std::move(r),
-          folly::SerialExecutor::create(
-              ServerInterface::getBlockingThreadManager(tm_)));
-  this->ctx_.reset();
-  this->sendReply(
-      std::move(responseAndSink.first), std::move(responseAndSink.second));
-}
-
-template <typename SinkElement, typename FinalResponse>
-void HandlerCallback<SinkConsumer<SinkElement, FinalResponse>>::doResult(
-    HandlerCallback::ResultType&& r) {
-  assert(cp_);
-  auto responseAndSink =
-      cp_(this->ctx_.get(),
-          std::move(r),
-          folly::SerialExecutor::create(
-              ServerInterface::getBlockingThreadManager(tm_)));
-  this->ctx_.reset();
-  this->sendReply(
-      std::move(responseAndSink.first), std::move(responseAndSink.second));
-}
-#endif
 
 } // namespace thrift
 } // namespace apache
