@@ -15,34 +15,35 @@
  */
 
 use crate::ApplicationException;
-use failure::{Error, Fail};
+use failure::Error;
+use thiserror::Error;
 
-#[derive(Debug, Fail)]
+#[derive(Debug, Error)]
 #[allow(dead_code)]
 pub enum ProtocolError {
-    #[fail(display = "end of file reached")]
+    #[error("end of file reached")]
     EOF,
-    #[fail(display = "bad thrift version specified")]
+    #[error("bad thrift version specified")]
     BadVersion,
-    #[fail(display = "missing protocol version")]
+    #[error("missing protocol version")]
     ProtocolVersionMissing,
-    #[fail(display = "protocol skip depth exceeded")]
+    #[error("protocol skip depth exceeded")]
     SkipDepthExceeded,
-    #[fail(display = "streams unsupported")]
+    #[error("streams unsupported")]
     StreamUnsupported,
-    #[fail(display = "STOP outside of struct in skip")]
+    #[error("STOP outside of struct in skip")]
     UnexpectedStopInSkip,
-    #[fail(display = "Unknown or invalid protocol ID {}", _0)]
+    #[error("Unknown or invalid protocol ID {0}")]
     InvalidProtocolID(i16),
-    #[fail(display = "Unknown or invalid TMessage type {}", _0)]
+    #[error("Unknown or invalid TMessage type {0}")]
     InvalidMessageType(u32),
-    #[fail(display = "Unknown or invalid type tag")]
+    #[error("Unknown or invalid type tag")]
     InvalidTypeTag,
-    #[fail(display = "Unknown or invalid data length")]
+    #[error("Unknown or invalid data length")]
     InvalidDataLength,
-    #[fail(display = "Invalid value for type")]
+    #[error("Invalid value for type")]
     InvalidValue,
-    #[fail(display = "Application exception: {:?}", _0)]
+    #[error("Application exception: {0:?}")]
     ApplicationException(ApplicationException),
 }
 
