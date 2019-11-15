@@ -26,7 +26,7 @@ std::unique_ptr<AsyncClientT> ScopedServerInterfaceThread::newClient(
     ScopedServerInterfaceThread::MakeChannelFunc makeChannel) const {
   return std::make_unique<AsyncClientT>(PooledRequestChannel::newChannel(
       callbackExecutor,
-      ioExecutor_,
+      folly::getIOExecutor(),
       [makeChannel = std::move(makeChannel),
        address = getAddress()](folly::EventBase& eb) mutable {
         return makeChannel(async::TAsyncSocket::UniquePtr(

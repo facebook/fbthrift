@@ -123,9 +123,50 @@ TEST(ScopedServerInterfaceThread, configureCbCalled) {
   EXPECT_TRUE(configCalled);
 }
 
+template <typename ChannelT, typename ServiceT>
+struct ChannelAndService {
+  using Channel = ChannelT;
+  using Service = ServiceT;
+};
+
+template <typename ChannelAndServiceT>
+struct ScopedServerInterfaceThreadTest : public testing::Test {
+  using Channel = typename ChannelAndServiceT::Channel;
+  using Service = typename ChannelAndServiceT::Service;
+
+  std::shared_ptr<Service> newService() {
+    return std::make_shared<Service>();
+  }
+
+  template <typename AsyncClientT>
+  static std::unique_ptr<AsyncClientT> newClient(
+      ScopedServerInterfaceThread& ssit) {
+    return ssit.newClient<AsyncClientT>(nullptr, [](auto socket) {
+      return Channel::newChannel(std::move(socket));
+    });
+  }
+};
+
 class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
  public:
   ~SlowSimpleServiceImpl() override {}
+  folly::Future<int64_t> future_add(int64_t a, int64_t b) override {
+    requestSem_.post();
+    return folly::futures::sleepUnsafe(std::chrono::milliseconds(a + b))
+        .thenValue([=](auto&&) { return a + b; });
+  }
+
+  void waitForRequest() {
+    requestSem_.wait();
+  }
+
+ private:
+  folly::LifoSem requestSem_;
+};
+
+class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
+ public:
+  ~SlowSimpleServiceImplSemiFuture() override {}
   folly::SemiFuture<int64_t> semifuture_add(int64_t a, int64_t b) override {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(a + b))
@@ -140,26 +181,22 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   folly::LifoSem requestSem_;
 };
 
-TEST(ScopedServerInterfaceThread, joinRequests) {
-  ScopedEventBaseThread eb;
+using TestTypes = ::testing::Types<
+    ChannelAndService<HeaderClientChannel, SlowSimpleServiceImpl>,
+    ChannelAndService<HeaderClientChannel, SlowSimpleServiceImplSemiFuture>>;
+TYPED_TEST_CASE(ScopedServerInterfaceThreadTest, TestTypes);
 
-  auto serviceImpl = make_shared<SlowSimpleServiceImpl>();
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
+  auto serviceImpl = this->newService();
 
   folly::Optional<ScopedServerInterfaceThread> ssit(
       folly::in_place, serviceImpl);
 
-  auto cli =
-      via(eb.getEventBase())
-          .thenValue([&](auto&&) {
-            return ssit->newClient<SimpleServiceAsyncClient>(eb.getEventBase());
-          })
-          .get();
+  auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
 
   folly::stop_watch<std::chrono::milliseconds> timer;
 
-  auto future = via(eb.getEventBase()).thenValue([&](auto&&) {
-    return cli->future_add(6000, 0);
-  });
+  auto future = cli->semifuture_add(6000, 0);
 
   serviceImpl->waitForRequest();
   serviceImpl.reset();
@@ -168,40 +205,32 @@ TEST(ScopedServerInterfaceThread, joinRequests) {
 
   EXPECT_GE(timer.elapsed().count(), 6000);
   EXPECT_EQ(6000, std::move(future).get());
-
-  via(eb.getEventBase()).thenValue([cli = std::move(cli)](auto&&) {});
 }
 
-TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
-  ScopedEventBaseThread eb;
-
-  auto serviceImpl = make_shared<SlowSimpleServiceImpl>();
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsCancel) {
+  auto serviceImpl = this->newService();
 
   folly::Optional<ScopedServerInterfaceThread> ssit(
       folly::in_place, serviceImpl);
 
-  auto cli =
-      via(eb.getEventBase())
-          .thenValue([&](auto&&) {
-            return ssit->newClient<SimpleServiceAsyncClient>(eb.getEventBase());
-          })
-          .get();
+  auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
 
   folly::stop_watch<std::chrono::milliseconds> timer;
 
   std::atomic<bool> stopping{false};
   std::thread schedulerThread([&] {
+    ScopedEventBaseThread eb;
     while (!stopping) {
-      via(eb.getEventBase()).thenValue([&](auto&&) {
-        cli->future_add(2000, 0).thenTry([](folly::Try<int64_t> t) {
-          if (t.hasException()) {
-            LOG(INFO) << folly::exceptionStr(t.exception());
-          } else {
-            LOG(INFO) << *t;
-          }
-        });
-      });
-      std::this_thread::sleep_for(std::chrono::milliseconds{10});
+      cli->semifuture_add(2000, 0)
+          .via(eb.getEventBase())
+          .thenTry([](folly::Try<int64_t> t) {
+            if (t.hasException()) {
+              LOG(INFO) << folly::exceptionStr(t.exception());
+            } else {
+              LOG(INFO) << *t;
+            }
+          });
+      this_thread::sleep_for(std::chrono::milliseconds{10});
     }
   });
 
@@ -216,6 +245,4 @@ TEST(ScopedServerInterfaceThread, joinRequestsCancel) {
 
   stopping = true;
   schedulerThread.join();
-
-  via(eb.getEventBase()).thenValue([cli = std::move(cli)](auto&&) {});
 }

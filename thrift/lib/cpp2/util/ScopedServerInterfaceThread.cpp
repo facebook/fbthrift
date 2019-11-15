@@ -49,7 +49,6 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   }
   ts_ = ts;
   sst_.start(ts_);
-  ioExecutor_ = ts->getIOThreadPool();
 }
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
@@ -66,11 +65,6 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<BaseThriftServer> bts) {
   ts_ = bts;
   sst_.start(ts_);
-  if (auto ts = dynamic_cast<ThriftServer*>(bts.get())) {
-    ioExecutor_ = ts->getIOThreadPool();
-  } else {
-    ioExecutor_ = std::make_shared<IOThreadPoolExecutor>(1);
-  }
 }
 
 BaseThriftServer& ScopedServerInterfaceThread::getThriftServer() const {
