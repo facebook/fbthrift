@@ -164,6 +164,9 @@ void RocketServerFrameContext::takeOwnership(
     RocketSinkClientCallback* callback) {
   connection_->streams_.emplace(
       streamId_, std::unique_ptr<RocketSinkClientCallback>(callback));
+  // Client may have disconnected before onFirstResponse; in some cases, we need
+  // to trigger connection cleanup.
+  connection_->closeIfNeeded();
 }
 
 void RocketServerFrameContext::freeStream() {

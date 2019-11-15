@@ -149,5 +149,18 @@ TEST_F(SinkServiceTest, SinkChunkTimeout) {
       });
 }
 
+TEST_F(SinkServiceTest, ClientTimeoutNotLeak) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        bool throwed = false;
+        try {
+          co_await client.co_unSubscribedSinkSlowReturn();
+        } catch (const std::exception&) {
+          throwed = true;
+        }
+        EXPECT_TRUE(throwed);
+      });
+}
+
 } // namespace thrift
 } // namespace apache

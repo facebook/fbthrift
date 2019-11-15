@@ -114,6 +114,21 @@ TestSinkService::unSubscribedSink() {
   };
 }
 
+folly::SemiFuture<apache::thrift::SinkConsumer<int32_t, bool>>
+TestSinkService::semifuture_unSubscribedSinkSlowReturn() {
+  return folly::futures::sleep(std::chrono::seconds(1)).deferValue([=](auto&&) {
+    return apache::thrift::SinkConsumer<int32_t, bool>{
+        [g = folly::makeGuard([this]() { sinkUnsubscribed_ = true; })](
+            folly::coro::AsyncGenerator<int32_t&&> gen) mutable
+        -> folly::coro::Task<bool> {
+          co_await gen.next();
+          co_return true;
+        },
+        10 /* buffer size */
+    };
+  });
+}
+
 bool TestSinkService::isSinkUnSubscribed() {
   return sinkUnsubscribed_;
 }

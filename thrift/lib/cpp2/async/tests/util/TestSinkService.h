@@ -40,6 +40,10 @@ class TestSinkService : public TestSinkServiceSvIf {
 
   apache::thrift::SinkConsumer<int32_t, bool> unSubscribedSink() override;
 
+
+  folly::SemiFuture<apache::thrift::SinkConsumer<int32_t, bool>>
+  semifuture_unSubscribedSinkSlowReturn() override;
+
   bool isSinkUnSubscribed() override;
 
   apache::thrift::ResponseAndSinkConsumer<bool, int32_t, bool> initialThrow()
