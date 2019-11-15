@@ -20,13 +20,15 @@
 namespace apache {
 namespace thrift {
 namespace detail {
+
+using ServerStreamFactory = folly::Function<
+    void(FirstResponsePayload&&, StreamClientCallback*, folly::EventBase*)>;
+
 template <typename T>
-using ServerStreamFactoryFn = folly::Function<void(
-    FirstResponsePayload&&,
-    StreamClientCallback*,
-    folly::EventBase*,
+using ServerStreamFn = folly::Function<ServerStreamFactory(
     folly::Executor::KeepAlive<>,
     folly::Try<StreamPayload> (*)(folly::Try<T>&&))>;
-}
+
+} // namespace detail
 } // namespace thrift
 } // namespace apache

@@ -26,39 +26,52 @@
 
 namespace apache {
 namespace thrift {
+
 template <typename T>
-class ServerStreamFactory {
+class ServerStream {
  public:
 #if FOLLY_HAS_COROUTINES
-  /* implicit */ ServerStreamFactory(folly::coro::AsyncGenerator<T&&>&& gen)
+  /* implicit */ ServerStream(folly::coro::AsyncGenerator<T&&>&& gen)
       : fn_(detail::ServerGeneratorStream::fromAsyncGenerator(std::move(gen))) {
   }
 #endif
 
+  detail::ServerStreamFactory operator()(
+      folly::Executor::KeepAlive<> serverExecutor,
+      folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {
+    return fn_(std::move(serverExecutor), encode);
+  }
+
+  // convenience operator for tests
   void operator()(
       FirstResponsePayload&& payload,
       StreamClientCallback* callback,
       folly::EventBase* clientEb,
       folly::Executor::KeepAlive<> serverExecutor,
       folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {
-    fn_(std::move(payload),
-        callback,
-        clientEb,
-        std::move(serverExecutor),
-        encode);
+    fn_(std::move(serverExecutor), encode)(
+        std::move(payload), callback, clientEb);
   }
 
  private:
-  detail::ServerStreamFactoryFn<T> fn_;
+  detail::ServerStreamFn<T> fn_;
 };
 
+template <typename Response, typename StreamElement>
+struct ResponseAndServerStream {
+  using ResponseType = Response;
+  using StreamElementType = StreamElement;
+
+  Response response;
+  ServerStream<StreamElement> stream;
+};
 template <typename Response, typename StreamElement>
 struct ResponseAndServerStreamFactory {
   using ResponseType = Response;
   using StreamElementType = StreamElement;
 
   Response response;
-  ServerStreamFactory<StreamElement> stream;
+  detail::ServerStreamFactory stream;
 };
 
 } // namespace thrift
