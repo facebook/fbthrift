@@ -866,10 +866,6 @@ class HandlerCallback : public HandlerCallbackBase {
     result(std::move(*r));
     delete this;
   }
-  void resultInThread(const std::shared_ptr<ResultType>& r) {
-    result(*r);
-    delete this;
-  }
 
   static void resultInThread(
       std::unique_ptr<HandlerCallback> thisPtr,
@@ -882,12 +878,6 @@ class HandlerCallback : public HandlerCallbackBase {
       std::unique_ptr<ResultType> r) {
     DCHECK(thisPtr);
     thisPtr.release()->resultInThread(std::move(r));
-  }
-  static void resultInThread(
-      std::unique_ptr<HandlerCallback> thisPtr,
-      const std::shared_ptr<ResultType>& r) {
-    DCHECK(thisPtr);
-    thisPtr.release()->resultInThread(r);
   }
 
   void complete(folly::Try<T>&& r) {
