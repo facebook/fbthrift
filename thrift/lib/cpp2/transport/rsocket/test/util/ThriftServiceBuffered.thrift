@@ -30,5 +30,6 @@ service StreamServiceBuffered {
     throws (1: ThriftService.SecondEx e) stream throws (1: ThriftService.FirstEx e);
 
   i32, stream<i32> leakCheck(1: i32 from, 2: i32 to);
+  i32, stream<i32> leakCheckWithSleep(1: i32 from, 2: i32 to, 3: i32 sleepMs);
   i32 instanceCount();
 }

@@ -183,7 +183,8 @@ class RocketServerConnection
 
   ~RocketServerConnection() final;
 
-  void closeIfNeeded();
+  // return true if connection closed
+  bool closeIfNeeded();
   void flushPendingWrites() {
     ++inflightWrites_;
     auto writes = std::move(bufferedWrites_);

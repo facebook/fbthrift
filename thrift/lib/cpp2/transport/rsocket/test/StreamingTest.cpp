@@ -371,6 +371,23 @@ TEST_P(StreamingTest, ClientStreamBridge) {
   });
 }
 
+TEST_P(StreamingTest, ClientStreamBridgeClientTimeout) {
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto channel = client->getChannel();
+    auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
+        std::shared_ptr<apache::thrift::RequestChannel>(
+            channel, [client = std::move(client)](auto*) {}));
+
+    RpcOptions rpcOptions;
+    rpcOptions.setTimeout(std::chrono::milliseconds{100});
+    rpcOptions.setClientOnlyTimeouts(true);
+    rpcOptions.setChunkBufferSize(5);
+    EXPECT_THROW(
+        bufferedClient->sync_leakCheckWithSleep(rpcOptions, 0, 0, 200),
+        TTransportException);
+  });
+}
+
 TEST_P(StreamingTest, ClientStreamBridgeLifeTimeTesting) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     auto channel = client->getChannel();

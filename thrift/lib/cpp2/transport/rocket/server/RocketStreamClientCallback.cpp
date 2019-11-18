@@ -82,8 +82,8 @@ void RocketStreamClientCallback::onFirstResponse(
       rocket::Flags::none().next(true));
   // ownership of the RocketStreamClientCallback transfers to connection
   // after onFirstResponse.
-  context_.takeOwnership(this);
-  if (tokens) {
+  bool selfAlive = context_.takeOwnership(this);
+  if (selfAlive && tokens) {
     request(tokens);
   }
 }

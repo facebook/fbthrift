@@ -71,8 +71,10 @@ class RocketServerFrameContext {
       folly::HHWheelTimer::Callback* timeoutCallback,
       std::chrono::milliseconds timeout);
   void freeStream();
-  void takeOwnership(RocketStreamClientCallback* callback);
-  void takeOwnership(RocketSinkClientCallback* callback);
+
+  // return true if callback is still alive
+  bool takeOwnership(RocketStreamClientCallback* callback);
+  bool takeOwnership(RocketSinkClientCallback* callback);
 
   RocketServerConnection& connection() {
     DCHECK(connection_);

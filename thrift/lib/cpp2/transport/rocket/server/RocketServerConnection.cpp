@@ -90,10 +90,10 @@ RocketServerConnection::~RocketServerConnection() {
   DCHECK(batchWriteLoopCallback_.empty());
 }
 
-void RocketServerConnection::closeIfNeeded() {
+bool RocketServerConnection::closeIfNeeded() {
   if (state_ != ConnectionState::CLOSING ||
       inflightRequests_ != getNumStreams() || inflightWrites_ != 0) {
-    return;
+    return false;
   }
 
   DestructorGuard dg(this);
@@ -125,6 +125,7 @@ void RocketServerConnection::closeIfNeeded() {
 
   socket_.reset();
   destroy();
+  return true;
 }
 
 void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {

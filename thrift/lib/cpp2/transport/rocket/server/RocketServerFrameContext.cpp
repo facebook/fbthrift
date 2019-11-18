@@ -151,22 +151,22 @@ void RocketServerFrameContext::scheduleSinkTimeout(
   connection_->scheduleSinkTimeout(timeoutCallback, timeout);
 }
 
-void RocketServerFrameContext::takeOwnership(
+bool RocketServerFrameContext::takeOwnership(
     RocketStreamClientCallback* callback) {
   connection_->streams_.emplace(
       streamId_, std::unique_ptr<RocketStreamClientCallback>(callback));
   // Client may have disconnected before onFirstResponse; in some cases, we need
   // to trigger connection cleanup.
-  connection_->closeIfNeeded();
+  return !connection_->closeIfNeeded();
 }
 
-void RocketServerFrameContext::takeOwnership(
+bool RocketServerFrameContext::takeOwnership(
     RocketSinkClientCallback* callback) {
   connection_->streams_.emplace(
       streamId_, std::unique_ptr<RocketSinkClientCallback>(callback));
   // Client may have disconnected before onFirstResponse; in some cases, we need
   // to trigger connection cleanup.
-  connection_->closeIfNeeded();
+  return !connection_->closeIfNeeded();
 }
 
 void RocketServerFrameContext::freeStream() {
