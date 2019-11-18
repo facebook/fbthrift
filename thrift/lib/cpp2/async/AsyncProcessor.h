@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 #ifdef FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
@@ -703,6 +704,8 @@ class HandlerCallbackBase {
   void sendReply(ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue>&&
                      responseAndStream);
 
+  void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
+
 #ifdef FOLLY_HAS_COROUTINES
   void sendReply(
       std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
@@ -779,6 +782,38 @@ struct HandlerCallbackHelper<ResponseAndStream<Response, StreamItem>>
 template <typename StreamItem>
 struct HandlerCallbackHelper<Stream<StreamItem>>
     : public HandlerCallbackHelperStream<Stream<StreamItem>> {};
+
+template <typename StreamInputType>
+struct HandlerCallbackHelperServerStream {
+  using InputType = StreamInputType;
+  using CobPtr = ResponseAndServerStreamFactory (*)(
+      int32_t protoSeqId,
+      apache::thrift::ContextStack*,
+      folly::Executor::KeepAlive<folly::SequencedExecutor>,
+      InputType);
+  static ResponseAndServerStreamFactory call(
+      CobPtr cob,
+      int32_t protoSeqId,
+      apache::thrift::ContextStack* ctx,
+      apache::thrift::concurrency::ThreadManager* tm,
+      InputType input) {
+    return cob(
+        protoSeqId,
+        ctx,
+        folly::SerialExecutor::create(
+            ServerInterface::getBlockingThreadManager(tm)),
+        std::move(input));
+  }
+};
+
+template <typename Response, typename StreamItem>
+struct HandlerCallbackHelper<ResponseAndServerStream<Response, StreamItem>>
+    : public HandlerCallbackHelperServerStream<
+          ResponseAndServerStream<Response, StreamItem>> {};
+
+template <typename StreamItem>
+struct HandlerCallbackHelper<ServerStream<StreamItem>>
+    : public HandlerCallbackHelperServerStream<ServerStream<StreamItem>> {};
 
 #ifdef FOLLY_HAS_COROUTINES
 template <typename SinkInputType>

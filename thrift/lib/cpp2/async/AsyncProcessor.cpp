@@ -43,6 +43,24 @@ void HandlerCallbackBase::sendReply(
   }
 }
 
+void HandlerCallbackBase::sendReply(
+    ResponseAndServerStreamFactory&& responseAndStream) {
+  auto& queue = responseAndStream.response;
+  auto& stream = responseAndStream.stream;
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
+  transform(queue);
+  if (getEventBase()->isInEventBaseThread()) {
+    req_->sendStreamReply(queue.move(), std::move(stream), nullptr, crc32c);
+  } else {
+    getEventBase()->runInEventBaseThread([req = std::move(req_),
+                                          queue = std::move(queue),
+                                          stream = std::move(stream),
+                                          crc32c]() mutable {
+      req->sendStreamReply(queue.move(), std::move(stream), nullptr, crc32c);
+    });
+  }
+}
+
 #ifdef FOLLY_HAS_COROUTINES
 void HandlerCallbackBase::sendReply(
     std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&

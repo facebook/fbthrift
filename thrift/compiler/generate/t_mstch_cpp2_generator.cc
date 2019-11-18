@@ -1160,6 +1160,7 @@ class mstch_cpp2_service : public mstch_service {
             {"service:coroutines?", &mstch_cpp2_service::coroutines},
             {"service:client_buffered_stream?",
              &mstch_cpp2_service::client_buffered_stream},
+            {"service:server_stream?", &mstch_cpp2_service::server_stream},
         });
   }
   std::string get_service_namespace(t_program const* program) override {
@@ -1221,6 +1222,9 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node client_buffered_stream() {
     return cache_->parsed_options_.count("client_buffered_stream") != 0;
+  }
+  mstch::node server_stream() {
+    return cache_->parsed_options_.count("server_stream") != 0;
   }
 };
 

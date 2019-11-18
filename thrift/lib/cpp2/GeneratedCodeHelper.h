@@ -972,6 +972,24 @@ folly::IOBufQueue encode_stream_exception(folly::exception_wrapper ew) {
   return queue;
 }
 
+template <
+    typename Protocol,
+    typename PResult,
+    typename T,
+    typename ErrorMapFunc>
+folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
+  folly::IOBufQueue buf;
+  if (val.hasValue()) {
+    buf = encode_stream_payload<Protocol, PResult, T>(std::move(*val));
+  } else if (val.hasException()) {
+    buf = encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
+        val.exception());
+  } else {
+    std::terminate();
+  }
+  return folly::Try<StreamPayload>({buf.move(), {}});
+}
+
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload(folly::IOBuf& payload) {
   PResult args;
@@ -1049,6 +1067,19 @@ apache::thrift::Stream<folly::IOBufQueue> encode_stream(
                           .move();
         return apache::thrift::detail::EncodedError(std::move(result));
       });
+}
+
+template <
+    typename Protocol,
+    typename PResult,
+    typename ErrorMapFunc,
+    typename T>
+ServerStreamFactory encode_server_stream(
+    apache::thrift::ServerStream<T>&& stream,
+    folly::Executor::KeepAlive<> serverExecutor) {
+  return stream(
+      std::move(serverExecutor),
+      encode_server_stream_payload<Protocol, PResult, T, ErrorMapFunc>);
 }
 
 template <typename Protocol, typename PResult, typename T>

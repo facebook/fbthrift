@@ -82,22 +82,6 @@ void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_pt
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_responseandstreamthrows(foo); });
 }
 
-apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
-  return {};
-}
-
-apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::streamthrows(int32_t /*foo*/) {
-  return {};
-}
-
-apache::thrift::Stream<int32_t> PubSubStreamingServiceSvNull::boththrows(int32_t /*foo*/) {
-  return {};
-}
-
-apache::thrift::ResponseAndStream<int32_t,int32_t> PubSubStreamingServiceSvNull::responseandstreamthrows(int32_t /*foo*/) {
-  return {};
-}
-
 const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {
   return "PubSubStreamingService";
 }

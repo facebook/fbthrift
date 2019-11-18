@@ -65,12 +65,8 @@ struct ResponseAndServerStream {
   Response response;
   ServerStream<StreamElement> stream;
 };
-template <typename Response, typename StreamElement>
 struct ResponseAndServerStreamFactory {
-  using ResponseType = Response;
-  using StreamElementType = StreamElement;
-
-  Response response;
+  folly::IOBufQueue response;
   detail::ServerStreamFactory stream;
 };
 

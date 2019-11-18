@@ -54,11 +54,11 @@
     %><%/type:enum%><%/type:enum?%><%!
 
     %><%#type:streamresponse?%><%!
-      %><%#type:streamHasFirstResponse?%>apache::thrift::ResponseAndStream<<%!
+      %><%#type:streamHasFirstResponse?%><%#service:server_stream?%>apache::thrift::ResponseAndServerStream<%/service:server_stream?%><%^service:server_stream?%>apache::thrift::ResponseAndStream<%/service:server_stream?%><<%!
       %><%#type:streamFirstResponseType%><% >types/type%><%/type:streamFirstResponseType%>,<%!
       %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
       %><%/type:streamHasFirstResponse?%><%!
-      %><%^type:streamHasFirstResponse?%>apache::thrift::Stream<<%!
+      %><%^type:streamHasFirstResponse?%><%#service:server_stream?%>apache::thrift::ServerStream<%/service:server_stream?%><%^service:server_stream?%>apache::thrift::Stream<%/service:server_stream?%><<%!
       %><%#type:streamElemType%><% >types/type%><%/type:streamElemType%>><%!
       %><%/type:streamHasFirstResponse?%><%!
     %><%/type:streamresponse?%><%!

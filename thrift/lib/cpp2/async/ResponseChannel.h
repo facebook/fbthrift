@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 #ifdef FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
@@ -98,6 +99,14 @@ class ResponseChannelRequest {
       ResponseAndSemiStream<
           std::unique_ptr<folly::IOBuf>,
           std::unique_ptr<folly::IOBuf>>&&,
+      MessageChannel::SendCallback* = nullptr,
+      folly::Optional<uint32_t> = folly::none) {
+    throw std::logic_error("unimplemented");
+  }
+
+  virtual void sendStreamReply(
+      std::unique_ptr<folly::IOBuf>&&,
+      apache::thrift::detail::ServerStreamFactory&&,
       MessageChannel::SendCallback* = nullptr,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");

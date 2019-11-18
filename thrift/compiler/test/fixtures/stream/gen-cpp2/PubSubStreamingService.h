@@ -85,10 +85,6 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
 
 class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {
  public:
-  apache::thrift::Stream<int32_t> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) override;
-  apache::thrift::Stream<int32_t> streamthrows(int32_t /*foo*/) override;
-  apache::thrift::Stream<int32_t> boththrows(int32_t /*foo*/) override;
-  apache::thrift::ResponseAndStream<int32_t,int32_t> responseandstreamthrows(int32_t /*foo*/) override;
 };
 
 class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {

@@ -60,7 +60,7 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>>(std::move(req), std::move(ctxStack), return_returnstream<ProtocolIn_,ProtocolOut_>, throw_wrapped_returnstream<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -70,14 +70,14 @@ void PubSubStreamingServiceAsyncProcessor::process_returnstream(std::unique_ptr<
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubStreamingServiceAsyncProcessor::return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_returnstream_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_returnstream_presult::StreamPResultType;
   auto& _returnStream = _return;
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
+  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
   return {serializeResponse("returnstream", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 
@@ -121,7 +121,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(std::unique_ptr<
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_streamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>>(std::move(req), std::move(ctxStack), return_streamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_streamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -131,7 +131,7 @@ void PubSubStreamingServiceAsyncProcessor::process_streamthrows(std::unique_ptr<
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubStreamingServiceAsyncProcessor::return_streamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_streamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_streamthrows_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_streamthrows_presult::StreamPResultType;
@@ -148,7 +148,7 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
       return false;
     }
   };
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
+  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
   return {serializeResponse("streamthrows", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 
@@ -192,7 +192,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(std::unique_ptr<ap
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>>(std::move(req), std::move(ctxStack), return_boththrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>>(std::move(req), std::move(ctxStack), return_boththrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_boththrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -202,7 +202,7 @@ void PubSubStreamingServiceAsyncProcessor::process_boththrows(std::unique_ptr<ap
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubStreamingServiceAsyncProcessor::return_boththrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_boththrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_boththrows_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_boththrows_presult::StreamPResultType;
@@ -219,7 +219,7 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
       return false;
     }
   };
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
+  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
   return {serializeResponse("boththrows", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 
@@ -274,7 +274,7 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(std::
     return;
   }
   req->setStartedProcessing();
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>>(std::move(req), std::move(ctxStack), return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>>(std::move(req), std::move(ctxStack), return_responseandstreamthrows<ProtocolIn_,ProtocolOut_>, throw_wrapped_responseandstreamthrows<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -284,11 +284,11 @@ void PubSubStreamingServiceAsyncProcessor::process_responseandstreamthrows(std::
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubStreamingServiceAsyncProcessor::return_responseandstreamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::ResponseAndStream<int32_t,int32_t> _return) {
+apache::thrift::ResponseAndServerStreamFactory PubSubStreamingServiceAsyncProcessor::return_responseandstreamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ResponseAndServerStream<int32_t,int32_t> _return) {
   ProtocolOut_ prot;
   PubSubStreamingService_responseandstreamthrows_presult::FieldsType result;
   using StreamPResultType = PubSubStreamingService_responseandstreamthrows_presult::StreamPResultType;
-  result.get<0>().value = const_cast<apache::thrift::ResponseAndStream<int32_t,int32_t>::ResponseType*>(&_return.response);
+  result.get<0>().value = const_cast<apache::thrift::ResponseAndServerStream<int32_t,int32_t>::ResponseType*>(&_return.response);
   result.setIsSet(0, true);
   auto& _returnStream = _return.stream;
 
@@ -303,7 +303,7 @@ apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> PubSubSt
       return false;
     }
   };
-  auto _encodedStream = apache::thrift::detail::ap::encode_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream));
+  auto _encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(_returnStream), std::move(executor));
   return {serializeResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result), std::move(_encodedStream)};
 }
 

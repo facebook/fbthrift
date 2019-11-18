@@ -40,7 +40,7 @@
   void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%/function:returnType%><%/service:functions%>
-<%#service:any_streams?%>
+<%#service:any_streams?%><%^service:server_stream?%>
   template <typename T>
   std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
   createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
@@ -57,5 +57,5 @@
           getBlockingThreadManager()),
         std::forward<Generator>(generator));
   }
-<%/service:any_streams?%>
+<%/service:server_stream?%><%/service:any_streams?%>
 };

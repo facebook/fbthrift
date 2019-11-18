@@ -162,12 +162,14 @@ class ServerGeneratorStream : public TwoWayBridge<
     return serverGetMessages();
   }
 
-  void onStreamRequestN(uint64_t credits) {
+  void onStreamRequestN(uint64_t credits) override {
     clientPush(std::move(credits));
   }
 
   void onStreamCancel() override {
+#if FOLLY_HAS_COROUTINES
     cancelSource_.requestCancellation();
+#endif
     clientPush(-1);
     clientClose();
     streamClientCallback_ = nullptr;
@@ -201,7 +203,9 @@ class ServerGeneratorStream : public TwoWayBridge<
 
   StreamClientCallback* streamClientCallback_;
   folly::EventBase* clientEventBase_;
+#if FOLLY_HAS_COROUTINES
   folly::CancellationSource cancelSource_;
+#endif
 };
 
 } // namespace detail

@@ -16,9 +16,12 @@
 
 #include <folly/portability/GTest.h>
 
+#include <folly/Portability.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingServiceServerStream.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 
 using namespace ::testing;
@@ -143,3 +146,20 @@ TEST(StreamingTest, StreamPublisherNoSubscription) {
   std::exchange(streamAndPublisher.first, apache::thrift::Stream<int>());
   std::move(streamAndPublisher.second).complete();
 }
+
+#if FOLLY_HAS_COROUTINES
+class DiffTypesStreamingServiceServerStream
+    : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+ public:
+  apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
+    return []() -> folly::coro::AsyncGenerator<int32_t&&> {
+      co_yield 42;
+    }
+    ();
+  }
+};
+
+TEST(StreamingTest, DifferentStream2ServiceCompiles) {
+  DiffTypesStreamingServiceServerStream service;
+}
+#endif
