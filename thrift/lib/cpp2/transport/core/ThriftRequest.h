@@ -181,6 +181,14 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   void sendStreamReply(
+      std::unique_ptr<folly::IOBuf>&&,
+      apache::thrift::detail::ServerStreamFactory&&,
+      MessageChannel::SendCallback* = nullptr,
+      folly::Optional<uint32_t> = folly::none) override final {
+    throw std::logic_error("unimplemented");
+  }
+
+  void sendStreamReply(
       std::unique_ptr<folly::IOBuf> response,
       StreamServerCallback* stream,
       folly::Optional<uint32_t> crc32c) override final {
