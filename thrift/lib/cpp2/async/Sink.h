@@ -17,10 +17,10 @@
 #pragma once
 
 #include <chrono>
+#include <memory>
 
 #include <folly/Portability.h>
 
-#include <folly/Function.h>
 #include <folly/Try.h>
 #include <folly/executors/SequencedExecutor.h>
 #ifdef FOLLY_HAS_COROUTINES
@@ -40,8 +40,7 @@ namespace thrift {
 template <typename T, typename R>
 class ClientSink {
 #ifdef FOLLY_HAS_COROUTINES
-  using PayloadSerializer =
-      folly::Function<std::unique_ptr<folly::IOBuf>(folly::Try<T>&&)>;
+  using PayloadSerializer = std::unique_ptr<folly::IOBuf> (*)(folly::Try<T>&&);
   using FinalResponseDeserializer =
       folly::Try<R> (*)(folly::Try<StreamPayload>&&);
 
