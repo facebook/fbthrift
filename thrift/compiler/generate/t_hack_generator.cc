@@ -2559,13 +2559,8 @@ void t_hack_generator::_generate_php_struct_definition(
             " is the type for the code property of " + tstruct->get_name() +
             ", but it has no values.";
       }
-      if (t->is_enum() && !enum_transparenttype_) {
-        indent(out) << "/* HH_FIXME[4110] conflicting definition with parent */"
-                    << endl;
-        indent(out) << "/* HH_FIXME[4236] conflicting definition with parent */"
-                    << endl;
-        indent(out) << "/* HH_FIXME[4341] conflicting definition with parent */"
-                    << endl;
+      if (t->is_enum()) {
+        typehint = "/* Originally defined as " + typehint + " */ int";
       }
     }
 
@@ -2585,6 +2580,24 @@ void t_hack_generator::_generate_php_struct_definition(
 
     indent(out) << visibility << " " << typehint << " $"
                 << (*m_iter)->get_name() << ";\n";
+
+    if (is_exception && (*m_iter)->get_name() == "code" && t->is_enum()) {
+      string enum_type = type_to_typehint(t);
+      out << "\n";
+      out << indent() << "public function setCodeAsEnum(" << enum_type
+          << " $code): void {\n";
+      if (!enum_transparenttype_) {
+        out << indent() << "  /* HH_FIXME[4110] nontransparent enum */\n";
+      }
+      out << indent() << "  $this->code = $code;" << indent() << "\n"
+          << indent() << "}\n\n";
+      out << indent() << "public function getCodeAsEnum(): " << enum_type
+          << " {\n"
+          << indent()
+          << "  /* HH_FIXME[4110] retain HHVM enforcement semantics */\n"
+          << indent() << "  return $this->code;" << indent() << "\n"
+          << indent() << "}\n";
+    }
 
     if (!tstruct->is_union()) {
       bool hack_getter = (*m_iter)->annotations_.find("hack.getter") !=
@@ -2750,12 +2763,22 @@ void t_hack_generator::_generate_php_struct_definition(
         indent(out) << "$this->" << (*m_iter)->get_name() << " = $"
                     << (*m_iter)->get_name() << ";\n";
       } else {
+        bool need_enum_code_fixme = is_exception &&
+            (*m_iter)->get_name() == "code" && t->is_enum() &&
+            !enum_transparenttype_;
+
         out << indent() << "if ($" << (*m_iter)->get_name() << " === null) {"
-            << "\n"
-            << indent() << "  $this->" << (*m_iter)->get_name() << " = " << dval
+            << "\n";
+        if (need_enum_code_fixme) {
+          out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+        }
+        out << indent() << "  $this->" << (*m_iter)->get_name() << " = " << dval
             << ";\n"
-            << indent() << "} else {\n"
-            << indent() << "  $this->" << (*m_iter)->get_name() << " = $"
+            << indent() << "} else {\n";
+        if (need_enum_code_fixme) {
+          out << indent() << "  /* HH_FIXME[4110] nontransparent Enum */\n";
+        }
+        out << indent() << "  $this->" << (*m_iter)->get_name() << " = $"
             << (*m_iter)->get_name() << ";\n"
             << indent() << "}\n";
       }

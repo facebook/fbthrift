@@ -47,7 +47,16 @@ class MyException1 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public MyEnum $code;
+  public /* Originally defined as MyEnum */ int $code;
+
+  public function setCodeAsEnum(MyEnum $code): void {
+    $this->code = $code;  
+  }
+
+  public function getCodeAsEnum(): MyEnum {
+    /* HH_FIXME[4110] retain HHVM enforcement semantics */
+    return $this->code;  
+  }
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
@@ -95,7 +104,16 @@ class MyException2 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public MyEnum $code;
+  public /* Originally defined as MyEnum */ int $code;
+
+  public function setCodeAsEnum(MyEnum $code): void {
+    $this->code = $code;  
+  }
+
+  public function getCodeAsEnum(): MyEnum {
+    /* HH_FIXME[4110] retain HHVM enforcement semantics */
+    return $this->code;  
+  }
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
@@ -143,7 +161,16 @@ class MyException3 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public MyEnum $code;
+  public /* Originally defined as MyEnum */ int $code;
+
+  public function setCodeAsEnum(MyEnum $code): void {
+    $this->code = $code;  
+  }
+
+  public function getCodeAsEnum(): MyEnum {
+    /* HH_FIXME[4110] retain HHVM enforcement semantics */
+    return $this->code;  
+  }
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
@@ -191,7 +218,16 @@ class MyException4 extends \TException implements \IThriftStruct {
    * Original thrift field:-
    * 2: enum module.MyEnum code
    */
-  public MyEnum $code;
+  public /* Originally defined as MyEnum */ int $code;
+
+  public function setCodeAsEnum(MyEnum $code): void {
+    $this->code = $code;  
+  }
+
+  public function getCodeAsEnum(): MyEnum {
+    /* HH_FIXME[4110] retain HHVM enforcement semantics */
+    return $this->code;  
+  }
 
   <<__Rx>>
   public function __construct(@KeyedContainer<string, mixed> $vals = dict[]) {
