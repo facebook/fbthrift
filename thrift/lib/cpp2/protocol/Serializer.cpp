@@ -19,8 +19,10 @@
 namespace apache {
 namespace thrift {
 
-std::unique_ptr<folly::IOBuf>
-serializeError(int protId, TApplicationException obj, folly::IOBuf* buf) {
+std::unique_ptr<folly::IOBuf> serializeError(
+    int protId,
+    const TApplicationException& obj,
+    folly::IOBuf* buf) {
   switch (protId) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL: {
       return serializeErrorProtocol<BinaryProtocolReader, BinaryProtocolWriter>(
@@ -41,7 +43,7 @@ serializeError(int protId, TApplicationException obj, folly::IOBuf* buf) {
 
 std::unique_ptr<folly::IOBuf> serializeError(
     int protId,
-    TApplicationException obj,
+    const TApplicationException& obj,
     const std::string& fname,
     int32_t protoSeqId) {
   switch (protId) {

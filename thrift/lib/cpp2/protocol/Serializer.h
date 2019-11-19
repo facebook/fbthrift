@@ -218,7 +218,7 @@ typedef Serializer<NimbleProtocolReader, NimbleProtocolWriter> NimbleSerializer;
 // Serialization code specific to handling errors
 template <typename ProtIn, typename ProtOut>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
-    TApplicationException obj,
+    const TApplicationException& obj,
     folly::IOBuf* req) {
   ProtIn iprot;
   std::string fname;
@@ -240,7 +240,7 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
 
 template <typename ProtOut>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
-    TApplicationException obj,
+    const TApplicationException& obj,
     const std::string& fname,
     int32_t protoSeqId) {
   ProtOut prot;
@@ -255,11 +255,11 @@ std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
 }
 
 std::unique_ptr<folly::IOBuf>
-serializeError(int protId, TApplicationException obj, folly::IOBuf* buf);
+serializeError(int protId, const TApplicationException& obj, folly::IOBuf* buf);
 
 std::unique_ptr<folly::IOBuf> serializeError(
     int protId,
-    TApplicationException obj,
+    const TApplicationException& obj,
     const std::string& fname,
     int32_t protoSeqId);
 
