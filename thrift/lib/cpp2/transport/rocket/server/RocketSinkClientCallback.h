@@ -51,6 +51,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   void onStreamCancel();
   void setChunkTimeout(std::chrono::milliseconds timeout);
   void timeoutExpired() noexcept;
+  void setProtoId(protocol::PROTOCOL_TYPES);
 
  private:
   class TimeoutCallback : public folly::HHWheelTimer::Callback {
@@ -81,6 +82,7 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   rocket::RocketServerFrameContext context_;
   SinkServerCallback* serverCallback_{nullptr};
   std::unique_ptr<TimeoutCallback> timeout_;
+  protocol::PROTOCOL_TYPES protoId_;
 };
 
 } // namespace thrift

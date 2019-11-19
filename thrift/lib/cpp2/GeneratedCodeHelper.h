@@ -1037,12 +1037,7 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
     return hijacked;
   }
 
-  if (ew.is_compatible_with<transport::TTransportException>()) {
-    return ew;
-  }
-
-  return folly::exception_wrapper(
-      transport::TTransportException(ew.what().toStdString()));
+  return ew;
 }
 
 template <

@@ -61,5 +61,32 @@ std::unique_ptr<folly::IOBuf> serializeError(
   return nullptr;
 }
 
+std::unique_ptr<folly::IOBuf> serializeErrorStruct(
+    protocol::PROTOCOL_TYPES protId,
+    const TApplicationException& obj) {
+  auto f =
+      [](auto prot,
+         const TApplicationException& obj) -> std::unique_ptr<folly::IOBuf> {
+    size_t bufSize = obj.serializedSizeZC(&prot);
+    folly::IOBufQueue queue;
+    prot.setOutput(&queue, bufSize);
+    obj.write(&prot);
+    return queue.move();
+  };
+
+  switch (protId) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL: {
+      return f(BinaryProtocolWriter{}, obj);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
+      return f(CompactProtocolWriter{}, obj);
+    }
+    default: {
+      LOG(ERROR) << "Invalid protocol from client";
+    }
+  }
+  return nullptr;
+}
+
 } // namespace thrift
 } // namespace apache

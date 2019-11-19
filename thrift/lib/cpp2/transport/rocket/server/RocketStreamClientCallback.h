@@ -52,12 +52,14 @@ class RocketStreamClientCallback final : public StreamClientCallback {
 
   StreamServerCallback& getStreamServerCallback();
   void timeoutExpired() noexcept;
+  void setProtoId(protocol::PROTOCOL_TYPES);
 
  private:
   rocket::RocketServerFrameContext context_;
   StreamServerCallback* serverCallback_{nullptr};
   uint64_t tokens_{0};
   std::unique_ptr<folly::HHWheelTimer::Callback> timeoutCallback_;
+  protocol::PROTOCOL_TYPES protoId_;
 
   void scheduleTimeout();
   void cancelTimeout();

@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -151,8 +152,16 @@ void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0, tokens_);
 
   serverCallback_->onStreamCancel();
-  onStreamError(folly::make_exception_wrapper<TApplicationException>(
-      TApplicationException::TApplicationExceptionType::TIMEOUT));
+  onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
+      rocket::ErrorCode::APPLICATION_ERROR,
+      serializeErrorStruct(
+          protoId_,
+          TApplicationException(
+              TApplicationException::TApplicationExceptionType::TIMEOUT))));
+}
+
+void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
+  protoId_ = protoId;
 }
 
 StreamServerCallback& RocketStreamClientCallback::getStreamServerCallback() {

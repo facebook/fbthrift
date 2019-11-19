@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -145,10 +146,16 @@ void RocketSinkClientCallback::setChunkTimeout(
 }
 
 void RocketSinkClientCallback::timeoutExpired() noexcept {
-  auto ew = folly::make_exception_wrapper<TApplicationException>(
+  auto ex = TApplicationException(
       TApplicationException::TApplicationExceptionType::TIMEOUT);
-  onSinkError(ew);
-  onFinalResponseError(std::move(ew));
+  onSinkError(folly::make_exception_wrapper<TApplicationException>(ex));
+  onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
+      rocket::ErrorCode::APPLICATION_ERROR,
+      serializeErrorStruct(protoId_, ex)));
+}
+
+void RocketSinkClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
+  protoId_ = protoId;
 }
 
 void RocketSinkClientCallback::scheduleTimeout(

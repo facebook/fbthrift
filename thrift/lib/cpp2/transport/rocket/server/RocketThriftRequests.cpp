@@ -203,6 +203,7 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     return;
   }
   stream->resetClientCallback(*clientCallback_);
+  clientCallback_->setProtoId(getProtoId());
   clientCallback_->onFirstResponse(
       FirstResponsePayload{std::move(data), std::move(metadata)},
       nullptr /* evb */,
@@ -338,6 +339,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     apache::thrift::detail::SinkConsumerImpl&& sinkConsumer) noexcept {
   if (sinkConsumer) {
     auto* executor = sinkConsumer.executor.get();
+    clientCallback_->setProtoId(getProtoId());
     clientCallback_->setChunkTimeout(sinkConsumer.chunkTimeout);
     auto serverCallback = apache::thrift::detail::ServerSinkBridge::create(
         std::move(sinkConsumer), *getEventBase(), clientCallback_);

@@ -132,20 +132,18 @@ TEST_F(SinkServiceTest, SinkChunkTimeout) {
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         auto sink = co_await client.co_rangeChunkTimeout();
 
-        bool throwed = false;
-        try {
-          co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
-            for (int i = 0; i <= 100; i++) {
-              if (i == 20) {
-                co_await folly::coro::sleep(std::chrono::milliseconds{500});
-              }
-              co_yield std::move(i);
-            }
-          }());
-        } catch (const std::exception& ex) {
-          throwed = true;
-        }
-        EXPECT_TRUE(throwed);
+        EXPECT_THROW(
+            co_await[&]()->folly::coro::Task<void> {
+              co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+                for (int i = 0; i <= 100; i++) {
+                  if (i == 20) {
+                    co_await folly::coro::sleep(std::chrono::milliseconds{500});
+                  }
+                  co_yield std::move(i);
+                }
+              }());
+            }(),
+            apache::thrift::TApplicationException);
       });
 }
 

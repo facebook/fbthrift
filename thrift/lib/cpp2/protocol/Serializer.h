@@ -263,6 +263,11 @@ std::unique_ptr<folly::IOBuf> serializeError(
     const std::string& fname,
     int32_t protoSeqId);
 
+// serialize TApplicationException without a protocol message envelop
+std::unique_ptr<folly::IOBuf> serializeErrorStruct(
+    protocol::PROTOCOL_TYPES protId,
+    const TApplicationException& obj);
+
 } // namespace thrift
 } // namespace apache
 #endif

@@ -846,13 +846,25 @@ TEST_P(StreamingTest, StreamStarvationNoRequest) {
 
     bool failed{false};
     int count = 0;
-    auto subscription = std::move(result.stream)
-                            .via(&executor_)
-                            .subscribe(
-                                [&count](auto) { ++count; },
-                                [&failed](auto) mutable { failed = true; },
-                                // request no item - starvation
-                                0);
+    auto subscription =
+        std::move(result.stream)
+            .via(&executor_)
+            .subscribe(
+                [&count](auto) { ++count; },
+                [this, &failed](folly::exception_wrapper ew) mutable {
+                  if (GetParam().useRocketServer) {
+                    EXPECT_TRUE(ew.with_exception<TApplicationException>(
+                        [](const TApplicationException& ex) {
+                          EXPECT_EQ(
+                              TApplicationException::TApplicationExceptionType::
+                                  TIMEOUT,
+                              ex.getType());
+                        }));
+                  }
+                  failed = true;
+                },
+                // request no item - starvation
+                0);
     std::move(subscription).detach();
     waitNoLeak(client.get());
 
