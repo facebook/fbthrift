@@ -201,7 +201,7 @@ std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
       case diagnostic_level::VERBOSE:
         fprintf(stderr, "%s", message.message.c_str());
         break;
-      case diagnostic_level::DEBUG:
+      case diagnostic_level::DBG:
         fprintf(
             stderr, "[PARSE:%d] %s\n", message.lineno, message.message.c_str());
         break;

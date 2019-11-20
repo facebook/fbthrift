@@ -51,7 +51,7 @@ enum class diagnostic_level {
   YY_ERROR = 1,
   WARNING = 2,
   VERBOSE = 3,
-  DEBUG = 4,
+  DBG = 4,
 };
 
 struct diagnostic_message {
@@ -206,7 +206,7 @@ class parsing_driver {
     }
 
     auto message = construct_diagnostic_message(
-        diagnostic_level::DEBUG, fmt, std::forward<Arg>(arg)...);
+        diagnostic_level::DBG, fmt, std::forward<Arg>(arg)...);
     diagnostic_messages_.push_back(std::move(message));
   }
 
