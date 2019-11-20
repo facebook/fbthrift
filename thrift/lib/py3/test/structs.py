@@ -181,6 +181,13 @@ class NumericalConversionsTests(unittest.TestCase):
         x(float_val=10)
         x(float_list=[6, 7, 8])
 
+    def test_int_to_i64(self) -> None:
+        large = 2 ** 63 - 1
+        numerical(req_int_val=5, req_float_val=5, i64_val=int(large))
+        too_large = 2 ** 65 - 1
+        with self.assertRaises(OverflowError):
+            numerical(req_int_val=5, req_float_val=5, i64_val=int(too_large))
+
     def test_float_to_int_required_field(self) -> None:
         with self.assertRaises(TypeError):
             numerical(req_int_val=math.pi, req_float_val=math.pi)  # type: ignore

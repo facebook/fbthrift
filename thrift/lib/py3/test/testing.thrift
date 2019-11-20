@@ -189,6 +189,7 @@ struct numerical {
     4: required double req_float_val,
     5: I32List int_list,
     6: list<double> float_list,
+    7: i64 i64_val,
 }
 
 struct ColorGroups {
