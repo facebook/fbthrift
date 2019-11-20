@@ -44,6 +44,14 @@ struct StreamPayload {
   StreamPayloadMetadata metadata;
 };
 
+struct HeadersPayload {
+  HeadersPayload(HeadersPayloadContent p, HeadersPayloadMetadata md)
+      : payload(std::move(p)), metadata(std::move(md)) {}
+
+  HeadersPayloadContent payload;
+  HeadersPayloadMetadata metadata;
+};
+
 class StreamClientCallback;
 
 class StreamServerCallback {
@@ -94,6 +102,7 @@ class StreamClientCallback {
   virtual void onStreamNext(StreamPayload&&) = 0;
   virtual void onStreamError(folly::exception_wrapper) = 0;
   virtual void onStreamComplete() = 0;
+  virtual void onStreamHeaders(HeadersPayload&&) {}
 
   virtual void resetServerCallback(StreamServerCallback&) = 0;
 };

@@ -89,6 +89,17 @@ void RocketServerFrameContext::sendCancel() {
   connection_->send(std::move(writer).move());
 }
 
+void RocketServerFrameContext::sendExt(
+    Payload&& payload,
+    Flags flags,
+    ExtFrameType extFrameType) {
+  DCHECK(connection_);
+
+  auto buf =
+      ExtFrame(streamId_, std::move(payload), flags, extFrameType).serialize();
+  connection_->send(std::move(buf));
+}
+
 void RocketServerFrameContext::onFullFrame(
     RequestResponseFrame&& fullFrame) && {
   auto& frameHandler = *connection_->frameHandler_;

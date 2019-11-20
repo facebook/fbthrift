@@ -46,6 +46,7 @@ class RocketStreamClientCallback final : public StreamClientCallback {
   void onStreamNext(StreamPayload&& payload) override;
   void onStreamError(folly::exception_wrapper ew) override;
   void onStreamComplete() override;
+  void onStreamHeaders(HeadersPayload&& payload) override;
 
   void resetServerCallback(StreamServerCallback&) override;
 

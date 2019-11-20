@@ -693,9 +693,11 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       delete clientCallback;
       return;
     }
-
-    const size_t n =
-        data.removePrefix("generate:") ? folly::to<size_t>(data) : 500;
+    const size_t nHeaders =
+        data.removePrefix("generateheaders:") ? folly::to<size_t>(data) : 0;
+    const size_t n = nHeaders
+        ? 0
+        : (data.removePrefix("generate:") ? folly::to<size_t>(data) : 500);
     auto* serverCallback =
         new TestRocketStreamServerCallback(clientCallback, n);
     clientCallback->onFirstResponse(
@@ -703,6 +705,16 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
             folly::IOBuf::copyBuffer(folly::to<std::string>(0)), {}},
         nullptr /* evb */,
         serverCallback);
+
+    for (size_t i = 1; i <= nHeaders; ++i) {
+      HeadersPayloadContent header;
+      header.otherMetadata_ref() = {
+          {"expected_header", folly::to<std::string>(i)}};
+      clientCallback->onStreamHeaders({std::move(header), {}});
+    }
+    if (n == 0) {
+      serverCallback->onStreamRequestN(0);
+    }
   }
 
   void handleRequestChannelFrame(

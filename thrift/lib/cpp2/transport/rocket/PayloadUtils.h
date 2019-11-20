@@ -42,52 +42,82 @@ extern template Payload makePayload<>(
     const ResponseRpcMetadata&,
     std::unique_ptr<folly::IOBuf> data);
 
+template <typename T>
+size_t unpackCompact(T& output, const folly::IOBuf* buffer) {
+  CompactProtocolReader reader;
+  reader.setInput(buffer);
+  output.read(&reader);
+  return reader.getCursorPosition();
+}
+
+template <typename T>
+size_t unpackCompact(T& output, std::unique_ptr<folly::IOBuf> buffer) {
+  return unpackCompact(output, buffer.get());
+}
+
+template <>
+inline size_t unpackCompact(
+    std::unique_ptr<folly::IOBuf>& output,
+    std::unique_ptr<folly::IOBuf> buffer) {
+  output = std::move(buffer);
+  return 0;
+}
+
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
   return folly::makeTryWith([&] {
-    T t{nullptr, {}};
+    T t{{}, {}};
     if (payload.hasNonemptyMetadata()) {
-      CompactProtocolReader reader;
-      reader.setInput(payload.buffer());
-      t.metadata.read(&reader);
-      if (reader.getCursorPosition() > payload.metadataSize()) {
+      if (unpackCompact(t.metadata, payload.buffer()) >
+          payload.metadataSize()) {
         folly::throw_exception<std::out_of_range>("underflow");
       }
-
-      // decompress the response if needed
-      if (auto compress = t.metadata.compression_ref()) {
-        folly::io::CodecType codecType;
-        switch (*compress) {
-          case CompressionAlgorithm::ZSTD:
-            codecType = folly::io::CodecType::ZSTD;
-            break;
-          case CompressionAlgorithm::ZLIB:
-            codecType = folly::io::CodecType::ZLIB;
-            break;
-          case CompressionAlgorithm::NONE:
-            codecType = folly::io::CodecType::NO_COMPRESSION;
-        }
-        t.payload = folly::io::getCodec(codecType)->uncompress(
-            std::move(payload).data().get());
-      } else {
-        t.payload = std::move(payload).data();
-      }
-    } else {
-      t.payload = std::move(payload).data();
     }
+
+    auto data = std::move(payload).data();
+    // decompress the response if needed
+    if (auto compress = t.metadata.compression_ref()) {
+      folly::io::CodecType codecType;
+      switch (*compress) {
+        case CompressionAlgorithm::ZSTD:
+          codecType = folly::io::CodecType::ZSTD;
+          break;
+        case CompressionAlgorithm::ZLIB:
+          codecType = folly::io::CodecType::ZLIB;
+          break;
+        case CompressionAlgorithm::NONE:
+          codecType = folly::io::CodecType::NO_COMPRESSION;
+      }
+      data = folly::io::getCodec(codecType)->uncompress(std::move(data).get());
+    }
+
+    unpackCompact(t.payload, std::move(data));
+
     return t;
   });
+}
+
+template <typename T>
+std::unique_ptr<folly::IOBuf> packCompact(T&& data) {
+  CompactProtocolWriter writer;
+  folly::IOBufQueue queue;
+  writer.setOutput(&queue);
+  data.write(&writer);
+  return queue.move();
+}
+
+template <>
+inline std::unique_ptr<folly::IOBuf> packCompact(
+    std::unique_ptr<folly::IOBuf>&& data) {
+  return std::move(data);
 }
 
 template <class T>
 folly::Try<rocket::Payload> pack(T&& payload) {
   return folly::makeTryWith([&] {
-    CompactProtocolWriter writer;
-    folly::IOBufQueue queue;
-    writer.setOutput(&queue);
-    payload.metadata.write(&writer);
     return rocket::Payload::makeFromMetadataAndData(
-        queue.move(), std::move(payload.payload));
+        packCompact(std::forward<T>(payload).metadata),
+        packCompact(std::forward<T>(payload).payload));
   });
 }
 

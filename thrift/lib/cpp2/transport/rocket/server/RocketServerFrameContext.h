@@ -54,6 +54,7 @@ class RocketServerFrameContext {
   void sendError(RocketException&& rex);
   void sendRequestN(int32_t n);
   void sendCancel();
+  void sendExt(Payload&& payload, Flags flags, ExtFrameType extFrameType);
 
   template <class RequestFrame>
   void onRequestFrame(RequestFrame&& frame) &&;

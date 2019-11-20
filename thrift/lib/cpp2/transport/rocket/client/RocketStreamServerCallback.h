@@ -65,6 +65,7 @@ class RocketStreamServerCallback : public StreamServerCallback {
   StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
   StreamChannelStatus onStreamComplete();
   StreamChannelStatus onStreamError(folly::exception_wrapper);
+  void onStreamHeaders(HeadersPayload&&);
 
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
@@ -106,6 +107,7 @@ class RocketChannelServerCallback : public ChannelServerCallback {
   StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
   StreamChannelStatus onStreamComplete();
   StreamChannelStatus onStreamError(folly::exception_wrapper);
+  void onStreamHeaders(HeadersPayload&&);
 
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
@@ -140,6 +142,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
   StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
   StreamChannelStatus onStreamComplete();
   StreamChannelStatus onStreamError(folly::exception_wrapper);
+  void onStreamHeaders(HeadersPayload&&);
 
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();

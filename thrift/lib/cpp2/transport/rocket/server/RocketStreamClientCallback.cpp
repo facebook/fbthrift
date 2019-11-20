@@ -132,6 +132,13 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
   context_.freeStream();
 }
 
+void RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
+  context_.sendExt(
+      rocket::pack(payload).value(),
+      rocket::Flags::none().ignore(true),
+      rocket::ExtFrameType::HEADERS_PUSH);
+}
+
 void RocketStreamClientCallback::resetServerCallback(
     StreamServerCallback& serverCallback) {
   serverCallback_ = &serverCallback;

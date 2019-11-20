@@ -157,3 +157,12 @@ struct RequestSetupMetadata {
   1: optional map<string, binary>
       (cpp.template = "apache::thrift::MetadataOpaqueMap") opaque;
 }
+
+struct HeadersPayloadContent {
+  1: optional map<string, string> otherMetadata;
+}
+
+struct HeadersPayloadMetadata {
+  // The CompressionAlgorithm used to compress responses (if any)
+  1: optional CompressionAlgorithm compression;
+}

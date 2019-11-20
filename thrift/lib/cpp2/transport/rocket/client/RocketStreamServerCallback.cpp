@@ -96,6 +96,9 @@ StreamChannelStatus RocketStreamServerCallback::onStreamError(
   clientCallback_->onStreamError(std::move(ew));
   return StreamChannelStatus::Complete;
 }
+void RocketStreamServerCallback::onStreamHeaders(HeadersPayload&& payload) {
+  clientCallback_->onStreamHeaders(std::move(payload));
+}
 StreamChannelStatus RocketStreamServerCallback::onSinkRequestN(uint64_t) {
   clientCallback_->onStreamError(
       folly::make_exception_wrapper<transport::TTransportException>(
@@ -240,6 +243,7 @@ StreamChannelStatus RocketChannelServerCallback::onStreamError(
   clientCallback_.onStreamError(std::move(ew));
   return StreamChannelStatus::Complete;
 }
+void RocketChannelServerCallback::onStreamHeaders(HeadersPayload&&) {}
 StreamChannelStatus RocketChannelServerCallback::onSinkRequestN(
     uint64_t tokens) {
   switch (state_) {
@@ -339,6 +343,7 @@ StreamChannelStatus RocketSinkServerCallback::onStreamError(
   clientCallback_.onFinalResponseError(std::move(ew));
   return StreamChannelStatus::Complete;
 }
+void RocketSinkServerCallback::onStreamHeaders(HeadersPayload&&) {}
 StreamChannelStatus RocketSinkServerCallback::onSinkRequestN(uint64_t tokens) {
   switch (state_) {
     case State::BothOpen:

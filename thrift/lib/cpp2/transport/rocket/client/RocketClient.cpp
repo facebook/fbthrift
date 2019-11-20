@@ -183,6 +183,8 @@ void RocketClient::handleStreamChannelFrame(
             return this->handleRequestNFrame(serverCallback, std::move(frame));
           case FrameType::CANCEL:
             return this->handleCancelFrame(serverCallback, std::move(frame));
+          case FrameType::EXT:
+            return this->handleExtFrame(serverCallback, std::move(frame));
           default:
             this->close(
                 folly::make_exception_wrapper<transport::TTransportException>(
@@ -317,6 +319,42 @@ StreamChannelStatus RocketClient::handleCancelFrame(
     return StreamChannelStatus::ContractViolation;
   }
   return serverCallback.onSinkCancel();
+}
+
+template <typename CallbackType>
+StreamChannelStatus RocketClient::handleExtFrame(
+    CallbackType& serverCallback,
+    std::unique_ptr<folly::IOBuf> frame) {
+  ExtFrame extFrame{std::move(frame)};
+  if (firstResponseTimeouts_.count(extFrame.streamId())) {
+    serverCallback.onInitialError(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "Missing initial response: handleExtFrame"));
+    return StreamChannelStatus::ContractViolation;
+  }
+
+  if (extFrame.extFrameType() == ExtFrameType::HEADERS_PUSH) {
+    auto headersPayload = unpack<HeadersPayload>(std::move(extFrame.payload()));
+    if (headersPayload.hasException()) {
+      return serverCallback.onStreamError(
+          std::move(headersPayload.exception()));
+    }
+    serverCallback.onStreamHeaders(std::move(*headersPayload));
+    return StreamChannelStatus::Alive;
+  }
+
+  if (extFrame.hasIgnore()) {
+    return StreamChannelStatus::Alive;
+  }
+
+  serverCallback.onStreamError(
+      folly::make_exception_wrapper<transport::TTransportException>(
+          transport::TTransportException::TTransportExceptionType::
+              STREAMING_CONTRACT_VIOLATION,
+          "Unsupported frame type: handleExtFrame"));
+  return StreamChannelStatus::ContractViolation;
 }
 
 folly::Try<Payload> RocketClient::sendRequestResponseSync(

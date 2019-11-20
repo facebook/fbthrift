@@ -575,8 +575,11 @@ TYPED_TEST(RocketNetworkTest, ClientCreationAndReconnectClientOutlivesStream) {
 namespace {
 class TestClientCallback : public StreamClientCallback {
  public:
-  TestClientCallback(folly::EventBase& evb, uint64_t requested)
-      : evb_(evb), requested_(requested) {}
+  TestClientCallback(
+      folly::EventBase& evb,
+      uint64_t requested,
+      uint64_t requestedHeaders = 0)
+      : evb_(evb), requested_(requested), requestedHeaders_(requestedHeaders) {}
 
   void onFirstResponse(
       FirstResponsePayload&& firstResponsePayload,
@@ -615,6 +618,16 @@ class TestClientCallback : public StreamClientCallback {
     subscription_ = nullptr;
     evb_.terminateLoopSoon();
   }
+  void onStreamHeaders(HeadersPayload&& payload) override {
+    auto metadata_ref = payload.payload.otherMetadata_ref();
+    EXPECT_TRUE(metadata_ref);
+    if (metadata_ref) {
+      EXPECT_EQ(
+          folly::to<std::string>(++receivedHeaders_),
+          (*metadata_ref)["expected_header"]);
+    }
+    EXPECT_LE(receivedHeaders_, requestedHeaders_);
+  }
 
   void resetServerCallback(StreamServerCallback& serverCallback) override {
     subscription_ = &serverCallback;
@@ -634,6 +647,9 @@ class TestClientCallback : public StreamClientCallback {
   uint64_t payloadsReceived() const {
     return received_;
   }
+  uint64_t headersReceived() const {
+    return receivedHeaders_;
+  }
   folly::exception_wrapper getError() const {
     return ew_;
   }
@@ -643,7 +659,9 @@ class TestClientCallback : public StreamClientCallback {
   StreamServerCallback* subscription_{nullptr};
   folly::exception_wrapper ew_;
   const uint64_t requested_;
+  const uint64_t requestedHeaders_;
   uint64_t received_{0};
+  uint64_t receivedHeaders_{0};
 };
 } // namespace
 
@@ -678,6 +696,9 @@ TYPED_TEST(RocketNetworkTest, RequestStreamNewApiBasic) {
       &clientCallback);
 
   evb.loop();
+
+  EXPECT_FALSE(clientCallback.getError());
+  EXPECT_EQ(kNumRequestedPayloads, clientCallback.payloadsReceived());
 }
 
 TYPED_TEST(RocketNetworkTest, RequestStreamNewApiError) {
@@ -713,6 +734,45 @@ TYPED_TEST(RocketNetworkTest, RequestStreamNewApiError) {
 
   EXPECT_TRUE(clientCallback.getError());
   EXPECT_EQ(0, clientCallback.payloadsReceived());
+}
+
+class RocketSteamTest : public RocketNetworkTest<RocketTestServer> {};
+
+TEST_F(RocketSteamTest, RequestStreamNewApiHeadersPush) {
+  folly::EventBase evb;
+
+  this->unsetExpectedSetupMetadata();
+
+  auto socket = async::TAsyncSocket::UniquePtr(
+      new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
+  auto channel = RocketClientChannel::newChannel(std::move(socket));
+
+  constexpr uint64_t kNumRequestedHeaders = 200;
+  folly::IOBufQueue queue;
+  CompactProtocolWriter writer;
+  writer.setOutput(&queue);
+  writer.writeMessageBegin("dummy", T_CALL, 0);
+
+  auto payload = folly::IOBuf::copyBuffer(folly::sformat(
+      "{}generateheaders:{}",
+      folly::StringPiece{queue.move()->coalesce()},
+      kNumRequestedHeaders));
+
+  RpcOptions rpcOptions;
+  rpcOptions.setChunkBufferSize(0);
+  TestClientCallback clientCallback(evb, 0, kNumRequestedHeaders);
+
+  channel->sendRequestStream(
+      rpcOptions,
+      std::move(payload),
+      std::make_shared<THeader>(),
+      &clientCallback);
+
+  evb.loop();
+
+  EXPECT_FALSE(clientCallback.getError());
+  EXPECT_EQ(0, clientCallback.payloadsReceived());
+  EXPECT_EQ(kNumRequestedHeaders, clientCallback.headersReceived());
 }
 
 class RocketSinkTest : public RocketNetworkTest<RocketTestServer> {};
