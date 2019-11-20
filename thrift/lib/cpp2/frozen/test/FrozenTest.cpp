@@ -101,7 +101,7 @@ auto tom2 = [] {
 TEST(Frozen, EndToEnd) {
   auto view = freeze(tom1);
   EXPECT_EQ(tom1.name, view.name());
-  ASSERT_TRUE(view.age().hasValue());
+  ASSERT_TRUE(view.age().has_value());
   EXPECT_EQ(*tom1.age_ref(), view.age().value());
   EXPECT_EQ(tom1.height, view.height());
   EXPECT_EQ(view.pets()[0].name(), tom1.pets[0].name);
@@ -123,7 +123,7 @@ TEST(Frozen, Comparison) {
   auto view1 = freeze(tom1);
   auto view2 = freeze(tom2);
   // name is optional now, and was __isset=true, so we don't write it
-  ASSERT_TRUE(view2.age().hasValue());
+  ASSERT_TRUE(view2.age().has_value());
   EXPECT_EQ(*tom2.age_ref(), view2.age().value());
   EXPECT_EQ(tom2.name, view2.name());
   EXPECT_EQ(tom2.name.size(), view2.name().size());
@@ -196,7 +196,7 @@ TEST(Frozen, EmbeddedSchema) {
     folly::ByteRange bytes(charRange);
     auto view = person2.view({bytes.begin(), 0});
     EXPECT_EQ(tom1.name, view.name());
-    ASSERT_EQ(tom1.__isset.age, view.age().hasValue());
+    ASSERT_EQ(tom1.__isset.age, view.age().has_value());
     if (auto age = tom1.age_ref()) {
       EXPECT_EQ(*age, view.age().value());
     }
@@ -211,7 +211,9 @@ TEST(Frozen, NoLayout) {
   EXPECT_FALSE(Layout<bool>().view(null));
   EXPECT_EQ(0, Layout<int>().view(null));
   EXPECT_EQ(0.0f, Layout<float>().view(null));
-  EXPECT_EQ(folly::Optional<int>(), Layout<folly::Optional<int>>().view(null));
+  EXPECT_EQ(
+      apache::thrift::frozen::OptionalFieldView<int>(),
+      Layout<folly::Optional<int>>().view(null));
   EXPECT_EQ(std::string(), Layout<std::string>().view(null));
   EXPECT_EQ(std::vector<int>(), Layout<std::vector<int>>().view(null).thaw());
   EXPECT_EQ(Person1(), Layout<Person1>().view(null).thaw());
@@ -385,9 +387,9 @@ TEST(Frozen, Bool) {
   // vegan => Just(True) => 2 bits.
   EXPECT_LT(frozenBits(dunno), frozenBits(meat));
   EXPECT_LT(frozenBits(meat), frozenBits(vegan));
-  EXPECT_EQ(freeze(meat).vegan(), folly::make_optional<bool>(false));
-  EXPECT_EQ(freeze(vegan).vegan(), folly::make_optional<bool>(true));
-  EXPECT_EQ(freeze(dunno).vegan(), folly::Optional<bool>());
+  EXPECT_FALSE(*freeze(meat).vegan());
+  EXPECT_TRUE(*freeze(vegan).vegan());
+  EXPECT_FALSE(freeze(dunno).vegan().has_value());
   EXPECT_EQ(meat, freeze(meat).thaw());
   EXPECT_EQ(vegan, freeze(vegan).thaw());
   EXPECT_EQ(dunno, freeze(dunno).thaw());
