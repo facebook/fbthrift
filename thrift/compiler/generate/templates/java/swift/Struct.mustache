@@ -34,7 +34,7 @@ public final class {{struct:javaCapitalName}} {
     {{> struct/StructBuilder}}
 
     {{#struct:fields}}
-    private {{^struct:isBigStruct?}}final {{/struct:isBigStruct?}}{{> FieldType}} {{field:javaName}};
+    {{#field:javaAnnotations?}}{{field:javaAnnotations}} {{/field:javaAnnotations?}}private {{^struct:isBigStruct?}}final {{/struct:isBigStruct?}}{{> FieldType}} {{field:javaName}};
     {{/struct:fields}}
 
     {{#struct:fields}}

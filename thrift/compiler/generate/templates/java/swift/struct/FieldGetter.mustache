@@ -16,6 +16,7 @@
 
 }}
 
-{{> ThriftFieldAnnotation}}{{#field:javaAnnotation?}} @{{field:javaAnnotation}}{{/field:javaAnnotation?}}
+{{> ThriftFieldAnnotation}}
+
 public {{> FieldType}} {{> GetterName}}() { return {{field:javaName}}; }
 {{! terminate with newline }}

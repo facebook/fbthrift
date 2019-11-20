@@ -21,9 +21,9 @@ typedef map<i32, i64> (java.swift.type = "com.foo.FastIntLongMap") FMap
 struct MyStruct {
   1: i64 intField,
   2: string stringField,
-  3: string detailField (java.swift.annotation = "com.foo.Ignored"),
-  4: FMap detailMap (java.swift.annotation = "com.foo.Ignored"),
-} (java.swift.annotation = "com.foo.Enabled")
+  3: string detailField (java.swift.annotations = "@com.foo.Ignored"),
+  4: FMap detailMap (java.swift.annotations = "@com.foo.Ignored"),
+} (java.swift.annotations = "@com.foo.Enabled @com.bar.AnotherAnnotation(val = 1)")
 
 struct MyMapping {
   1: map<i64, string> (java.swift.type = "com.foo.FastLongStringMap") lsMap,

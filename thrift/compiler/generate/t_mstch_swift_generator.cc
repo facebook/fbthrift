@@ -74,6 +74,13 @@ const std::string get_java_swift_name(const Node* node) {
       : java::mangle_java_name(node->get_name(), false);
 }
 
+template <typename Node>
+const mstch::node get_java_annotation(const Node* node) {
+  auto jannots = node->annotations_.find("java.swift.annotations");
+  return jannots != node->annotations_.end() ? mstch::node(jannots->second)
+                                             : mstch::node();
+}
+
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
   t_mstch_swift_generator(
@@ -200,9 +207,9 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:asBean?", &mstch_swift_struct::is_as_bean},
             {"struct:isBigStruct?", &mstch_swift_struct::is_BigStruct},
             {"struct:javaCapitalName", &mstch_swift_struct::java_capital_name},
-            {"struct:javaAnnotation?",
-             &mstch_swift_struct::has_java_annotation},
-            {"struct:javaAnnotation", &mstch_swift_struct::java_annotation},
+            {"struct:javaAnnotations?",
+             &mstch_swift_struct::has_java_annotations},
+            {"struct:javaAnnotations", &mstch_swift_struct::java_annotations},
         });
   }
   mstch::node java_package() {
@@ -243,14 +250,12 @@ class mstch_swift_struct : public mstch_struct {
   mstch::node java_capital_name() {
     return java::mangle_java_name(strct_->get_name(), true);
   }
-  mstch::node has_java_annotation() {
-    return strct_->annotations_.count("java.swift.annotation") != 0;
+  mstch::node has_java_annotations() {
+    return strct_->annotations_.find("java.swift.annotations") !=
+        strct_->annotations_.end();
   }
-  mstch::node java_annotation() {
-    if (strct_->annotations_.count("java.swift.annotation")) {
-      return strct_->annotations_.at("java.swift.annotation");
-    }
-    return mstch::node();
+  mstch::node java_annotations() {
+    return get_java_annotation(strct_);
   }
 };
 
@@ -314,8 +319,9 @@ class mstch_swift_field : public mstch_field {
             {"field:javaDefaultValue", &mstch_swift_field::java_default_value},
             {"field:recursive?", &mstch_swift_field::is_recursive_reference},
             {"field:negativeId?", &mstch_swift_field::is_negative_id},
-            {"field:javaAnnotation?", &mstch_swift_field::has_java_annotation},
-            {"field:javaAnnotation", &mstch_swift_field::java_annotation},
+            {"field:javaAnnotations?",
+             &mstch_swift_field::has_java_annotations},
+            {"field:javaAnnotations", &mstch_swift_field::java_annotations},
         });
   }
   mstch::node java_name() {
@@ -359,14 +365,12 @@ class mstch_swift_field : public mstch_field {
       return "null";
     }
   }
-  mstch::node has_java_annotation() {
-    return field_->annotations_.count("java.swift.annotation") != 0;
+  mstch::node has_java_annotations() {
+    return field_->annotations_.find("java.swift.annotations") !=
+        field_->annotations_.end();
   }
-  mstch::node java_annotation() {
-    if (field_->annotations_.count("java.swift.annotation")) {
-      return field_->annotations_.at("java.swift.annotation");
-    }
-    return mstch::node();
+  mstch::node java_annotations() {
+    return get_java_annotation(field_);
   }
 };
 

@@ -15,7 +15,7 @@ import java.util.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled 
+@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
 public final class MyStruct {
     @ThriftConstructor
     public MyStruct(
@@ -52,13 +52,13 @@ public final class MyStruct {
             return this;
         }
         private String detailField;
-        @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) @com.foo.Ignored
+        @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
         public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
         }
         private com.foo.FastIntLongMap detailMap;
-        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) @com.foo.Ignored
+        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
         public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
@@ -85,8 +85,8 @@ public final class MyStruct {
     
     private final long intField;
     private final String stringField;
-    private final String detailField;
-    private final com.foo.FastIntLongMap detailMap;
+    @com.foo.Ignored private final String detailField;
+    @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
 
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -95,10 +95,10 @@ public final class MyStruct {
     @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
         
-    @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) @com.foo.Ignored
+    @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
         
-    @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) @com.foo.Ignored
+    @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
     @Override
