@@ -13,3 +13,6 @@
 # limitations under the License.
 
 # cython: c_string_type=unicode, c_string_encoding=ascii
+
+def thrift_compile(vector[string] argv):
+    return compile(argv)

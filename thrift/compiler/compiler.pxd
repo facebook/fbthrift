@@ -16,4 +16,4 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 cdef extern from "thrift/compiler/compiler.h" namespace "apache::thrift::compiler":
-    cpdef int compile(vector[string])
+    cdef int compile(vector[string]) except +
