@@ -28,11 +28,12 @@ class EventBase;
 
 namespace apache {
 namespace thrift {
+namespace rocket {
 
 class RocketStreamClientCallback final : public StreamClientCallback {
  public:
   RocketStreamClientCallback(
-      rocket::RocketServerFrameContext&& context,
+      RocketServerFrameContext&& context,
       uint32_t initialRequestN);
   ~RocketStreamClientCallback() override = default;
 
@@ -55,7 +56,7 @@ class RocketStreamClientCallback final : public StreamClientCallback {
   void setProtoId(protocol::PROTOCOL_TYPES);
 
  private:
-  rocket::RocketServerFrameContext context_;
+  RocketServerFrameContext context_;
   StreamServerCallback* serverCallback_{nullptr};
   uint64_t tokens_{0};
   std::unique_ptr<folly::HHWheelTimer::Callback> timeoutCallback_;
@@ -68,5 +69,6 @@ class RocketStreamClientCallback final : public StreamClientCallback {
   void compressResponse(Payload& payload);
 };
 
+} // namespace rocket
 } // namespace thrift
 } // namespace apache

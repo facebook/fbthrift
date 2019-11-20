@@ -18,12 +18,10 @@
 
 namespace apache {
 namespace thrift {
+namespace rocket {
 
 class RocketSinkClientCallback;
 class RocketStreamClientCallback;
-
-namespace rocket {
-
 class RequestChannelFrame;
 class RequestFnfFrame;
 class RequestResponseFrame;

@@ -28,10 +28,11 @@
 
 namespace apache {
 namespace thrift {
+namespace rocket {
 
 class RocketSinkClientCallback final : public SinkClientCallback {
  public:
-  explicit RocketSinkClientCallback(rocket::RocketServerFrameContext&& context);
+  explicit RocketSinkClientCallback(RocketServerFrameContext&& context);
   ~RocketSinkClientCallback() override = default;
   void onFirstResponse(
       FirstResponsePayload&&,
@@ -79,11 +80,12 @@ class RocketSinkClientCallback final : public SinkClientCallback {
 
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
-  rocket::RocketServerFrameContext context_;
+  RocketServerFrameContext context_;
   SinkServerCallback* serverCallback_{nullptr};
   std::unique_ptr<TimeoutCallback> timeout_;
   protocol::PROTOCOL_TYPES protoId_;
 };
 
+} // namespace rocket
 } // namespace thrift
 } // namespace apache

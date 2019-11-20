@@ -43,6 +43,7 @@
 
 namespace apache {
 namespace thrift {
+namespace rocket {
 
 class TimeoutCallback : public folly::HHWheelTimer::Callback {
  public:
@@ -57,7 +58,7 @@ class TimeoutCallback : public folly::HHWheelTimer::Callback {
 };
 
 RocketStreamClientCallback::RocketStreamClientCallback(
-    rocket::RocketServerFrameContext&& context,
+    RocketServerFrameContext&& context,
     uint32_t initialRequestN)
     : context_(std::move(context)), tokens_(initialRequestN) {}
 
@@ -79,8 +80,7 @@ void RocketStreamClientCallback::onFirstResponse(
   compressResponse(firstResponse);
 
   context_.sendPayload(
-      rocket::pack(std::move(firstResponse)).value(),
-      rocket::Flags::none().next(true));
+      pack(std::move(firstResponse)).value(), Flags::none().next(true));
   // ownership of the RocketStreamClientCallback transfers to connection
   // after onFirstResponse.
   bool selfAlive = context_.takeOwnership(this);
@@ -97,8 +97,8 @@ void RocketStreamClientCallback::onFirstResponseError(
 
   ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
     context_.sendPayload(
-        rocket::Payload::makeFromData(std::move(encodedError.encoded)),
-        rocket::Flags::none().next(true).complete(true));
+        Payload::makeFromData(std::move(encodedError.encoded)),
+        Flags::none().next(true).complete(true));
   });
 }
 
@@ -111,24 +111,23 @@ void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
   compressResponse(payload);
 
   context_.sendPayload(
-      rocket::pack(std::move(payload)).value(),
-      rocket::Flags::none().next(true));
+      pack(std::move(payload)).value(), Flags::none().next(true));
 }
 
 void RocketStreamClientCallback::onStreamComplete() {
   context_.sendPayload(
-      rocket::Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
-      rocket::Flags::none().complete(true));
+      Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
+      Flags::none().complete(true));
   context_.freeStream();
 }
 
 void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
-  if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
-        context_.sendError(rocket::RocketException(
-            rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+  if (!ew.with_exception<RocketException>([this](auto&& rex) {
+        context_.sendError(
+            RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
       })) {
-    context_.sendError(rocket::RocketException(
-        rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
+    context_.sendError(
+        RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
   }
   context_.freeStream();
 }
@@ -182,7 +181,7 @@ void RocketStreamClientCallback::cancelTimeout() {
 
 template <class Payload>
 void RocketStreamClientCallback::compressResponse(Payload& payload) {
-  rocket::RocketServerConnection& connection = context_.connection();
+  RocketServerConnection& connection = context_.connection();
   folly::Optional<CompressionAlgorithm> compression =
       connection.getNegotiatedCompressionAlgorithm();
 
@@ -206,5 +205,6 @@ void RocketStreamClientCallback::compressResponse(Payload& payload) {
   }
 }
 
+} // namespace rocket
 } // namespace thrift
 } // namespace apache

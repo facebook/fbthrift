@@ -30,14 +30,12 @@ class IOBuf;
 
 namespace apache {
 namespace thrift {
-
-class RocketSinkClientCallback;
-class RocketStreamClientCallback;
-
 namespace rocket {
 
 class RocketException;
 class RocketServerConnection;
+class RocketSinkClientCallback;
+class RocketStreamClientCallback;
 
 namespace detail {
 class OnPayloadVisitor;

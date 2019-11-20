@@ -42,10 +42,11 @@
 
 namespace apache {
 namespace thrift {
+namespace rocket {
 
 // RocketSinkClientCallback methods
 RocketSinkClientCallback::RocketSinkClientCallback(
-    rocket::RocketServerFrameContext&& context)
+    RocketServerFrameContext&& context)
     : context_(std::move(context)) {}
 
 void RocketSinkClientCallback::onFirstResponse(
@@ -54,8 +55,7 @@ void RocketSinkClientCallback::onFirstResponse(
     SinkServerCallback* serverCallback) {
   serverCallback_ = serverCallback;
   context_.sendPayload(
-      rocket::pack(std::move(firstResponse)).value(),
-      rocket::Flags::none().next(true));
+      pack(std::move(firstResponse)).value(), Flags::none().next(true));
   context_.takeOwnership(this);
 }
 
@@ -67,28 +67,28 @@ void RocketSinkClientCallback::onFirstResponseError(
 
   ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
     context_.sendPayload(
-        rocket::Payload::makeFromData(std::move(encodedError.encoded)),
-        rocket::Flags::none().next(true).complete(true));
+        Payload::makeFromData(std::move(encodedError.encoded)),
+        Flags::none().next(true).complete(true));
   });
 }
 
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& firstResponse) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
   context_.sendPayload(
-      rocket::pack(std::move(firstResponse)).value(),
-      rocket::Flags::none().next(true).complete(true));
+      pack(std::move(firstResponse)).value(),
+      Flags::none().next(true).complete(true));
   context_.freeStream();
 }
 
 void RocketSinkClientCallback::onFinalResponseError(
     folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  if (!ew.with_exception<rocket::RocketException>([this](auto&& rex) {
-        context_.sendError(rocket::RocketException(
-            rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+  if (!ew.with_exception<RocketException>([this](auto&& rex) {
+        context_.sendError(
+            RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
       })) {
-    context_.sendError(rocket::RocketException(
-        rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
+    context_.sendError(
+        RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
   }
   context_.freeStream();
 }
@@ -187,5 +187,6 @@ void RocketSinkClientCallback::TimeoutCallback::decCredits() {
   }
 }
 
+} // namespace rocket
 } // namespace thrift
 } // namespace apache
