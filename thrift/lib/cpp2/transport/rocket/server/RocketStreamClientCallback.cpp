@@ -154,6 +154,10 @@ void RocketStreamClientCallback::request(uint32_t tokens) {
   serverCallback_->onStreamRequestN(tokens);
 }
 
+void RocketStreamClientCallback::headers(HeadersPayload&& payload) {
+  serverCallback_->onSinkHeaders(std::move(payload));
+}
+
 void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0, tokens_);
 

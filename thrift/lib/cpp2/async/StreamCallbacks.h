@@ -61,6 +61,8 @@ class StreamServerCallback {
   virtual void onStreamRequestN(uint64_t) = 0;
   virtual void onStreamCancel() = 0;
 
+  virtual void onSinkHeaders(HeadersPayload&&) {}
+
   virtual void resetClientCallback(StreamClientCallback&) = 0;
 };
 

@@ -578,8 +578,12 @@ class TestClientCallback : public StreamClientCallback {
   TestClientCallback(
       folly::EventBase& evb,
       uint64_t requested,
-      uint64_t requestedHeaders = 0)
-      : evb_(evb), requested_(requested), requestedHeaders_(requestedHeaders) {}
+      uint64_t requestedHeaders = 0,
+      uint64_t echoHeaders = 0)
+      : evb_(evb),
+        requested_(requested),
+        requestedHeaders_(requestedHeaders),
+        echoHeaders_(echoHeaders) {}
 
   void onFirstResponse(
       FirstResponsePayload&& firstResponsePayload,
@@ -593,6 +597,12 @@ class TestClientCallback : public StreamClientCallback {
         folly::StringPiece{firstResponsePayload.payload->coalesce()});
     if (requested_ != 0) {
       request(requested_);
+    }
+    for (size_t i = 1; i <= echoHeaders_; ++i) {
+      HeadersPayloadContent header;
+      header.otherMetadata_ref() = {
+          {"expected_header", folly::to<std::string>(i)}};
+      subscription_->onSinkHeaders({std::move(header), {}});
     }
   }
 
@@ -660,6 +670,7 @@ class TestClientCallback : public StreamClientCallback {
   folly::exception_wrapper ew_;
   const uint64_t requested_;
   const uint64_t requestedHeaders_;
+  const uint64_t echoHeaders_;
   uint64_t received_{0};
   uint64_t receivedHeaders_{0};
 };
@@ -747,32 +758,61 @@ TEST_F(RocketSteamTest, RequestStreamNewApiHeadersPush) {
       new async::TAsyncSocket(&evb, "::1", this->server_->getListeningPort()));
   auto channel = RocketClientChannel::newChannel(std::move(socket));
 
-  constexpr uint64_t kNumRequestedHeaders = 200;
-  folly::IOBufQueue queue;
-  CompactProtocolWriter writer;
-  writer.setOutput(&queue);
-  writer.writeMessageBegin("dummy", T_CALL, 0);
+  {
+    constexpr uint64_t kNumRequestedHeaders = 200;
+    folly::IOBufQueue queue;
+    CompactProtocolWriter writer;
+    writer.setOutput(&queue);
+    writer.writeMessageBegin("dummy", T_CALL, 0);
+    auto payload = folly::IOBuf::copyBuffer(folly::sformat(
+        "{}generateheaders:{}",
+        folly::StringPiece{queue.move()->coalesce()},
+        kNumRequestedHeaders));
 
-  auto payload = folly::IOBuf::copyBuffer(folly::sformat(
-      "{}generateheaders:{}",
-      folly::StringPiece{queue.move()->coalesce()},
-      kNumRequestedHeaders));
+    RpcOptions rpcOptions;
+    rpcOptions.setChunkBufferSize(0);
+    TestClientCallback clientCallback(evb, 0, kNumRequestedHeaders);
 
-  RpcOptions rpcOptions;
-  rpcOptions.setChunkBufferSize(0);
-  TestClientCallback clientCallback(evb, 0, kNumRequestedHeaders);
+    channel->sendRequestStream(
+        rpcOptions,
+        std::move(payload),
+        std::make_shared<THeader>(),
+        &clientCallback);
 
-  channel->sendRequestStream(
-      rpcOptions,
-      std::move(payload),
-      std::make_shared<THeader>(),
-      &clientCallback);
+    evb.loop();
 
-  evb.loop();
+    EXPECT_FALSE(clientCallback.getError());
+    EXPECT_EQ(0, clientCallback.payloadsReceived());
+    EXPECT_EQ(kNumRequestedHeaders, clientCallback.headersReceived());
+  }
 
-  EXPECT_FALSE(clientCallback.getError());
-  EXPECT_EQ(0, clientCallback.payloadsReceived());
-  EXPECT_EQ(kNumRequestedHeaders, clientCallback.headersReceived());
+  {
+    constexpr uint64_t kNumEchoHeaders = 200;
+    folly::IOBufQueue queue;
+    CompactProtocolWriter writer;
+    writer.setOutput(&queue);
+    writer.writeMessageBegin("dummy", T_CALL, 0);
+    auto payload = folly::IOBuf::copyBuffer(folly::sformat(
+        "{}echoheaders:{}",
+        folly::StringPiece{queue.move()->coalesce()},
+        kNumEchoHeaders));
+
+    RpcOptions rpcOptions;
+    rpcOptions.setChunkBufferSize(0);
+    TestClientCallback clientCallback(evb, 0, kNumEchoHeaders, kNumEchoHeaders);
+
+    channel->sendRequestStream(
+        rpcOptions,
+        std::move(payload),
+        std::make_shared<THeader>(),
+        &clientCallback);
+
+    evb.loop();
+
+    EXPECT_FALSE(clientCallback.getError());
+    EXPECT_EQ(0, clientCallback.payloadsReceived());
+    EXPECT_EQ(kNumEchoHeaders, clientCallback.headersReceived());
+  }
 }
 
 class RocketSinkTest : public RocketNetworkTest<RocketTestServer> {};

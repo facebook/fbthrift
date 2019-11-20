@@ -657,15 +657,18 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
      public:
       TestRocketStreamServerCallback(
           StreamClientCallback* clientCallback,
-          size_t n)
-          : clientCallback_(clientCallback), n_(n) {}
+          size_t n,
+          size_t nEchoHeaders)
+          : clientCallback_(clientCallback),
+            n_(n),
+            nEchoHeaders_(nEchoHeaders) {}
 
       void onStreamRequestN(uint64_t tokens) override {
         while (tokens-- && i_++ < n_) {
           clientCallback_->onStreamNext(StreamPayload{
               folly::IOBuf::copyBuffer(folly::to<std::string>(i_)), {}});
         }
-        if (i_ == n_) {
+        if (i_ == n_ && iEchoHeaders_ == nEchoHeaders_) {
           clientCallback_->onStreamComplete();
           delete this;
         }
@@ -675,6 +678,21 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         delete this;
       }
 
+      void onSinkHeaders(HeadersPayload&& payload) override {
+        auto metadata_ref = payload.payload.otherMetadata_ref();
+        EXPECT_TRUE(metadata_ref);
+        if (metadata_ref) {
+          EXPECT_EQ(
+              folly::to<std::string>(++iEchoHeaders_),
+              (*metadata_ref)["expected_header"]);
+        }
+        clientCallback_->onStreamHeaders(std::move(payload));
+        if (i_ == n_ && iEchoHeaders_ == nEchoHeaders_) {
+          clientCallback_->onStreamComplete();
+          delete this;
+        }
+      }
+
       void resetClientCallback(StreamClientCallback& clientCallback) override {
         clientCallback_ = &clientCallback;
       }
@@ -682,7 +700,9 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
      private:
       StreamClientCallback* clientCallback_;
       size_t i_{0};
+      size_t iEchoHeaders_{0};
       const size_t n_;
+      const size_t nEchoHeaders_;
     };
 
     folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
@@ -695,11 +715,13 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     }
     const size_t nHeaders =
         data.removePrefix("generateheaders:") ? folly::to<size_t>(data) : 0;
-    const size_t n = nHeaders
+    const size_t nEchoHeaders =
+        data.removePrefix("echoheaders:") ? folly::to<size_t>(data) : 0;
+    const size_t n = nHeaders || nEchoHeaders
         ? 0
         : (data.removePrefix("generate:") ? folly::to<size_t>(data) : 500);
     auto* serverCallback =
-        new TestRocketStreamServerCallback(clientCallback, n);
+        new TestRocketStreamServerCallback(clientCallback, n, nEchoHeaders);
     clientCallback->onFirstResponse(
         FirstResponsePayload{
             folly::IOBuf::copyBuffer(folly::to<std::string>(0)), {}},
@@ -712,7 +734,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
           {"expected_header", folly::to<std::string>(i)}};
       clientCallback->onStreamHeaders({std::move(header), {}});
     }
-    if (n == 0) {
+    if (n == 0 && nEchoHeaders == 0) {
       serverCallback->onStreamRequestN(0);
     }
   }

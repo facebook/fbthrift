@@ -539,6 +539,20 @@ folly::Try<void> RocketClient::sendErrorSync(
   return ctx.waitForWriteToComplete();
 }
 
+folly::Try<void> RocketClient::sendExtSync(
+    StreamId streamId,
+    Payload&& payload,
+    Flags flags,
+    ExtFrameType extFrameType) {
+  RequestContext ctx(
+      ExtFrame(streamId, std::move(payload), flags, extFrameType), queue_);
+  auto swr = scheduleWrite(ctx);
+  if (swr.hasException()) {
+    return folly::Try<void>(std::move(swr.exception()));
+  }
+  return ctx.waitForWriteToComplete();
+}
+
 void RocketClient::sendRequestN(StreamId streamId, int32_t n) {
   auto g = makeRequestCountGuard();
   fm_->addTaskFinally(
@@ -627,6 +641,34 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
       streamId,
       StreamPayload(std::unique_ptr<folly::IOBuf>{}, {}),
       rocket::Flags::none().complete(true));
+}
+
+void RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
+  auto g = makeRequestCountGuard();
+  fm_->addTaskFinally(
+      [this,
+       g = std::move(g),
+       streamId,
+       payload = pack(std::move(payload))]() mutable {
+        if (payload.hasException()) {
+          return folly::Try<void>(std::move(payload).exception());
+        }
+
+        return sendExtSync(
+            streamId,
+            std::move(payload.value()),
+            rocket::Flags::none().ignore(true),
+            ExtFrameType::HEADERS_PUSH);
+      },
+      [this,
+       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
+        auto resc = collapseTry(std::move(result));
+        if (resc.hasException()) {
+          FB_LOG_EVERY_MS(ERROR, 1000) << "sendExtHeaders failed, closing now: "
+                                       << resc.exception().what();
+          closeNow(std::move(resc.exception()));
+        }
+      });
 }
 
 folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {

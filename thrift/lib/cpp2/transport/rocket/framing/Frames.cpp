@@ -940,6 +940,18 @@ ExtFrame::ExtFrame(std::unique_ptr<folly::IOBuf> frame) {
   payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
+ExtFrame::ExtFrame(
+    StreamId streamId,
+    Flags flags,
+    folly::io::Cursor& cursor,
+    std::unique_ptr<folly::IOBuf> underlyingBuffer)
+    : streamId_(streamId), flags_(flags) {
+  extFrameType_ = readExtFrameType(cursor);
+
+  payload_ =
+      readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer));
+}
+
 // Static member definition
 constexpr folly::StringPiece SetupFrame::kMimeType;
 

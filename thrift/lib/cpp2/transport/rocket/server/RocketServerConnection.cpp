@@ -275,6 +275,8 @@ void RocketServerConnection::handleUntrackedFrame(
     case FrameType::REQUEST_N:
       FOLLY_FALLTHROUGH;
     case FrameType::ERROR:
+      FOLLY_FALLTHROUGH;
+    case FrameType::EXT:
       return;
 
     default:
@@ -287,7 +289,7 @@ void RocketServerConnection::handleUntrackedFrame(
 }
 
 void RocketServerConnection::handleStreamFrame(
-    std::unique_ptr<folly::IOBuf>,
+    std::unique_ptr<folly::IOBuf> frame,
     StreamId streamId,
     FrameType frameType,
     Flags flags,
@@ -305,6 +307,34 @@ void RocketServerConnection::handleStreamFrame(
       serverCallback.onStreamCancel();
       freeStream(streamId);
       return;
+    }
+
+    case FrameType::EXT: {
+      ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
+      switch (extFrame.extFrameType()) {
+        case ExtFrameType::HEADERS_PUSH: {
+          auto& serverCallback = clientCallback.getStreamServerCallback();
+          auto headers = unpack<HeadersPayload>(std::move(extFrame.payload()));
+          if (headers.hasException()) {
+            serverCallback.onStreamCancel();
+            freeStream(streamId);
+            return;
+          }
+          serverCallback.onSinkHeaders(std::move(*headers));
+          return;
+        }
+        case ExtFrameType::UNKNOWN:
+          if (extFrame.hasIgnore()) {
+            return;
+          }
+          close(folly::make_exception_wrapper<RocketException>(
+              ErrorCode::INVALID,
+              fmt::format(
+                  "Received unhandleable EXT frame type ({}) for stream (id {})",
+                  static_cast<uint32_t>(extFrame.extFrameType()),
+                  static_cast<uint32_t>(streamId))));
+          return;
+      }
     }
 
     default:

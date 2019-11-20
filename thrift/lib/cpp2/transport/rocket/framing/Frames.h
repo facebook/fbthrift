@@ -572,6 +572,11 @@ class ExtFrame {
   explicit ExtFrame(std::unique_ptr<folly::IOBuf> frame);
   ExtFrame(
       StreamId streamId,
+      Flags flags,
+      folly::io::Cursor& cursor,
+      std::unique_ptr<folly::IOBuf> underlyingBuffer);
+  ExtFrame(
+      StreamId streamId,
       Payload&& payload,
       Flags flags,
       ExtFrameType extFrameType)

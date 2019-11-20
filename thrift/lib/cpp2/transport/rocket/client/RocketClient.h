@@ -109,6 +109,7 @@ class RocketClient : public folly::DelayedDestruction,
   void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
   void sendError(StreamId streamId, RocketException&& rex);
   void sendComplete(StreamId streamId, bool closeStream);
+  void sendExtHeaders(StreamId streamId, HeadersPayload&& payload);
 
   bool streamExists(StreamId streamId) const;
 
@@ -277,6 +278,11 @@ class RocketClient : public folly::DelayedDestruction,
   FOLLY_NODISCARD folly::Try<void> sendErrorSync(
       StreamId streamId,
       RocketException&& rex);
+  FOLLY_NODISCARD folly::Try<void> sendExtSync(
+      StreamId streamId,
+      Payload&& payload,
+      Flags flags,
+      ExtFrameType extFrameType);
 
   FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
