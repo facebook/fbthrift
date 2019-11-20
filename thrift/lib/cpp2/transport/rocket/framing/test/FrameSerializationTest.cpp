@@ -597,6 +597,77 @@ TEST(FrameSerialization, PayloadFrameSerializeAPI) {
   validate(std::make_unique<folly::IOBuf>(), folly::IOBuf::wrapBuffer(kData));
 }
 
+TEST(FrameSerialization, ExtSanity) {
+  ExtFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(kMetadata, kData),
+      Flags::none().ignore(true),
+      ExtFrameType::HEADERS_PUSH);
+
+  auto validate = [](const ExtFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_EQ(ExtFrameType::HEADERS_PUSH, f.extFrameType());
+    EXPECT_TRUE(f.hasIgnore());
+    validateMetadataAndData(f.payload());
+  };
+
+  validate(frame);
+  validate(serializeAndDeserialize(std::move(frame)));
+}
+
+TEST(FrameSerialization, ExtUnknownSanity) {
+  ExtFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(kMetadata, kData),
+      Flags::none().ignore(true),
+      static_cast<ExtFrameType>(42));
+
+  auto validate = [](const ExtFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_EQ(ExtFrameType::UNKNOWN, f.extFrameType());
+    EXPECT_TRUE(f.hasIgnore());
+    validateMetadataAndData(f.payload());
+  };
+
+  validate(serializeAndDeserialize(std::move(frame)));
+}
+
+TEST(FrameSerialization, ExtEmptyMetadataSanity) {
+  auto validate = [](const ExtFrame& f) {
+    EXPECT_EQ(kTestStreamId, f.streamId());
+    EXPECT_EQ(ExtFrameType::HEADERS_PUSH, f.extFrameType());
+    EXPECT_TRUE(f.hasIgnore());
+    EXPECT_FALSE(f.payload().hasNonemptyMetadata());
+    auto dam = splitMetadataAndData(f.payload());
+    EXPECT_EQ(kData, getRange(*dam.second));
+  };
+
+  // No metadata
+  {
+    ExtFrame frame(
+        kTestStreamId,
+        Payload::makeFromData(kData),
+        Flags::none().ignore(true),
+        ExtFrameType::HEADERS_PUSH);
+
+    validate(frame);
+    validate(serializeAndDeserialize(std::move(frame)));
+  }
+
+  // Empty metadata
+  {
+    ExtFrame frame(
+        kTestStreamId,
+        Payload::makeFromMetadataAndData(
+            folly::ByteRange{folly::StringPiece{""}}, kData),
+        Flags::none().ignore(true),
+        ExtFrameType::HEADERS_PUSH);
+
+    validate(frame);
+    validate(serializeAndDeserialize(std::move(frame)));
+  }
+}
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache

@@ -40,7 +40,12 @@ enum class FrameType : uint8_t {
   METADATA_PUSH = 0x0C,
   // RESUME = 0x0D,
   // RESUME_OK = 0x0E,
-  // EXT = 0x3F,
+  EXT = 0x3F,
+};
+
+enum class ExtFrameType : uint32_t {
+  UNKNOWN = 0x00, // Never transmitted over the wire.
+  HEADERS_PUSH = 0xFB0,
 };
 
 } // namespace rocket

@@ -590,6 +590,49 @@ void KeepAliveFrame::serialize(Serializer& writer) && {
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
 
+std::unique_ptr<folly::IOBuf> ExtFrame::serialize() && {
+  Serializer writer;
+  std::move(*this).serialize(writer);
+  return std::move(writer).move();
+}
+
+void ExtFrame::serialize(Serializer& writer) && {
+  /**
+   *  0                   1                   2                   3
+   *  0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   * +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   * |                           Stream ID                           |
+   * +-----------+-+-+---------------+-------------------------------+
+   * |Frame Type |I|M|    Flags      |
+   * +-------------------------------+-------------------------------+
+   * |0|                      Extended Type                          |
+   * +---------------------------------------------------------------+
+   *                       Depends on Extended Type...
+   */
+
+  if (payload().metadataAndDataSize() >= kMaxFragmentedPayloadSize) {
+    throw std::runtime_error("EXT frame payload too large.");
+  }
+
+  // Excludes room for frame length
+  const auto frameSize = frameHeaderSize() + payload().serializedSize();
+  auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
+
+  nwritten += writer.write(streamId());
+
+  nwritten += writer.writeFrameTypeAndFlags(
+      frameType(),
+      Flags::none()
+          .metadata(payload_.hasNonemptyMetadata())
+          .ignore(hasIgnore()));
+
+  nwritten += writer.writeBE(folly::to_underlying(extFrameType_));
+
+  nwritten += writer.writePayload(std::move(payload()));
+
+  DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
+}
+
 FOLLY_NOINLINE void RequestResponseFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
   serializeInFragmentsSlowCommon(std::move(*this), Flags::none(), writer);
@@ -880,6 +923,21 @@ KeepAliveFrame::KeepAliveFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   frame->trimStart(cursor.getCurrentPosition());
   data_ = std::move(frame);
+}
+
+ExtFrame::ExtFrame(std::unique_ptr<folly::IOBuf> frame) {
+  folly::io::Cursor cursor(frame.get());
+  DCHECK(!frame->isChained());
+
+  streamId_ = readStreamId(cursor);
+
+  FrameType type;
+  std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
+  DCHECK(frameType() == type);
+
+  extFrameType_ = readExtFrameType(cursor);
+
+  payload_ = readPayload(flags_.metadata(), cursor, std::move(frame));
 }
 
 // Static member definition

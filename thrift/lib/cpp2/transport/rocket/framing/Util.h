@@ -65,10 +65,22 @@ inline std::pair<FrameType, Flags> readFrameTypeAndFlags(
     case FrameType::ERROR:
     case FrameType::METADATA_PUSH:
     case FrameType::KEEPALIVE:
+    case FrameType::EXT:
       return {static_cast<FrameType>(frameType), flags};
 
     default:
       detail::throwUnexpectedFrameType(frameType);
+  }
+}
+
+inline ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
+  const auto extFrameType = cursor.readBE<uint32_t>();
+  switch (static_cast<ExtFrameType>(extFrameType)) {
+    case ExtFrameType::HEADERS_PUSH:
+      return static_cast<ExtFrameType>(extFrameType);
+
+    default:
+      return ExtFrameType::UNKNOWN;
   }
 }
 

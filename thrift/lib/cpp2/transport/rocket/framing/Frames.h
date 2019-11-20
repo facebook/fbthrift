@@ -567,6 +567,60 @@ class KeepAliveFrame {
   std::unique_ptr<folly::IOBuf> data_;
 };
 
+class ExtFrame {
+ public:
+  explicit ExtFrame(std::unique_ptr<folly::IOBuf> frame);
+  ExtFrame(
+      StreamId streamId,
+      Payload&& payload,
+      Flags flags,
+      ExtFrameType extFrameType)
+      : streamId_(streamId),
+        flags_(flags),
+        extFrameType_(extFrameType),
+        payload_(std::move(payload)) {}
+
+  static constexpr FrameType frameType() {
+    return FrameType::EXT;
+  }
+
+  static constexpr size_t frameHeaderSize() {
+    return 10;
+  }
+
+  StreamId streamId() const noexcept {
+    return streamId_;
+  }
+
+  const Payload& payload() const noexcept {
+    return payload_;
+  }
+  Payload& payload() noexcept {
+    return payload_;
+  }
+
+  bool hasIgnore() const noexcept {
+    return flags_.ignore();
+  }
+
+  Flags flags() const noexcept {
+    return Flags(flags_).metadata(payload().hasNonemptyMetadata());
+  }
+
+  ExtFrameType extFrameType() const noexcept {
+    return extFrameType_;
+  }
+
+  void serialize(Serializer& writer) &&;
+  std::unique_ptr<folly::IOBuf> serialize() &&;
+
+ private:
+  StreamId streamId_;
+  Flags flags_{Flags::none()};
+  ExtFrameType extFrameType_;
+  Payload payload_;
+};
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache
