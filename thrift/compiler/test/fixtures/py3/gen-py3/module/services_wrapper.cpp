@@ -16,12 +16,8 @@ SimpleServiceWrapper::SimpleServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-SimpleServiceWrapper::~SimpleServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<int32_t> SimpleServiceWrapper::future_get_five() {
   folly::Promise<int32_t> promise;
@@ -882,10 +878,7 @@ std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject
 
 
 DerivedServiceWrapper::DerivedServiceWrapper(PyObject *obj, folly::Executor* exc)
-  : ::py3::simple::SimpleServiceWrapper(obj, exc)
-  {
-    import_module__services();
-  }
+  : ::py3::simple::SimpleServiceWrapper(obj, exc) {}
 
 folly::Future<int32_t> DerivedServiceWrapper::future_get_six() {
   folly::Promise<int32_t> promise;
@@ -910,10 +903,7 @@ std::shared_ptr<apache::thrift::ServerInterface> DerivedServiceInterface(PyObjec
 
 
 RederivedServiceWrapper::RederivedServiceWrapper(PyObject *obj, folly::Executor* exc)
-  : ::py3::simple::DerivedServiceWrapper(obj, exc)
-  {
-    import_module__services();
-  }
+  : ::py3::simple::DerivedServiceWrapper(obj, exc) {}
 
 folly::Future<int32_t> RederivedServiceWrapper::future_get_seven() {
   folly::Promise<int32_t> promise;

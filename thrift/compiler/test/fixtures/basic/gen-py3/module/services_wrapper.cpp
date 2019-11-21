@@ -15,12 +15,8 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyServiceWrapper::~MyServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
   folly::Promise<folly::Unit> promise;

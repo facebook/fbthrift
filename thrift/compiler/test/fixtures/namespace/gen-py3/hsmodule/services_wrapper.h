@@ -20,7 +20,6 @@ class HsTestServiceWrapper : virtual public HsTestServiceSvIf {
     folly::Executor *executor;
   public:
     explicit HsTestServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~HsTestServiceWrapper();
     folly::Future<int64_t> future_init(
         int64_t int1
     ) override;

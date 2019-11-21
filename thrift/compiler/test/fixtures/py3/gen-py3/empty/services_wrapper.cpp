@@ -13,12 +13,8 @@ namespace cpp2 {
 NullServiceWrapper::NullServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
-    Py_XINCREF(this->if_object);
   }
 
-NullServiceWrapper::~NullServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 std::shared_ptr<apache::thrift::ServerInterface> NullServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<NullServiceWrapper>(if_object, exc);

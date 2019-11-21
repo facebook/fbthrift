@@ -17,9 +17,10 @@
 }}{{!
 
 This is a top level C++ file that generates an implementation of the C++
-Services interface. That implementation keeps a reference to a Pyobject, which
+Services interface. That implementation keeps a pointer to a Pyobject, which
 is supposed to be the Python handler for that service, as written by the end
-user. It has lightweight wrappers of each service method (which accept futures)
+user. The life cycle of the handler is managed by the thrift server.
+It has lightweight wrappers of each service method (which accept futures)
 that pass the python object and a promise return code into the functions
 defined in ServicesCallbacks, along with appropriate arguments.
 
@@ -39,7 +40,6 @@ defined in ServicesCallbacks, along with appropriate arguments.
 {{/program:cppNamespaces}}
 {{#program:services}}
 
-{{! Manage the PyObject if it's the base class }}
 {{^service:extends?}}
 {{service:name}}Wrapper::{{service:name}}Wrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
@@ -47,22 +47,12 @@ defined in ServicesCallbacks, along with appropriate arguments.
     {{#program:hasServiceFunctions?}}
     import_{{#program:py3Namespaces}}{{value}}__{{/program:py3Namespaces}}{{program:name}}__services();
     {{/program:hasServiceFunctions?}}
-    Py_XINCREF(this->if_object);
   }
 
-{{service:name}}Wrapper::~{{service:name}}Wrapper() {
-    Py_XDECREF(this->if_object);
-}
 {{/service:extends?}}
-{{! Otherwise, proxy to the parent class to do the memory management}}
 {{#service:extends?}}
 {{service:name}}Wrapper::{{service:name}}Wrapper(PyObject *obj, folly::Executor* exc)
-  : {{#service:extends}}::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper(obj, exc){{/service:extends}}
-  {
-    {{#program:hasServiceFunctions?}}
-    import_{{#program:py3Namespaces}}{{value}}__{{/program:py3Namespaces}}{{program:name}}__services();
-    {{/program:hasServiceFunctions?}}
-  }
+  : {{#service:extends}}::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper(obj, exc){{/service:extends}} {}
 {{/service:extends?}}
 
 {{#service:functions}}

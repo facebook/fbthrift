@@ -15,12 +15,8 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyServiceWrapper::~MyServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<bool> MyServiceWrapper::future_hasDataById(
   int64_t id
@@ -121,12 +117,8 @@ MyServiceFastWrapper::MyServiceFastWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyServiceFastWrapper::~MyServiceFastWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<bool> MyServiceFastWrapper::future_hasDataById(
   int64_t id

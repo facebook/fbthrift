@@ -23,7 +23,6 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Executor *executor;
   public:
     explicit SimpleServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~SimpleServiceWrapper();
     folly::Future<int32_t> future_get_five() override;
     folly::Future<int32_t> future_add_five(
         int32_t num

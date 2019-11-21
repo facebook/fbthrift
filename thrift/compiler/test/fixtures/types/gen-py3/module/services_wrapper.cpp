@@ -18,12 +18,8 @@ SomeServiceWrapper::SomeServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-SomeServiceWrapper::~SomeServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<std::unique_ptr<std::unordered_map<int32_t,std::string>>> SomeServiceWrapper::future_bounce_map(
   std::unique_ptr<std::unordered_map<int32_t,std::string>> m

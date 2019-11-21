@@ -15,12 +15,8 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyServiceWrapper::~MyServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
   folly::Promise<folly::Unit> promise;
@@ -172,12 +168,8 @@ MyServicePrioParentWrapper::MyServicePrioParentWrapper(PyObject *obj, folly::Exe
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyServicePrioParentWrapper::~MyServicePrioParentWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> MyServicePrioParentWrapper::future_ping() {
   folly::Promise<folly::Unit> promise;
@@ -219,10 +211,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(Py
 
 
 MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj, folly::Executor* exc)
-  : ::cpp2::MyServicePrioParentWrapper(obj, exc)
-  {
-    import_module__services();
-  }
+  : ::cpp2::MyServicePrioParentWrapper(obj, exc) {}
 
 folly::Future<folly::Unit> MyServicePrioChildWrapper::future_pang() {
   folly::Promise<folly::Unit> promise;

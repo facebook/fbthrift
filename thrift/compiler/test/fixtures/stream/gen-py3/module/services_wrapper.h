@@ -20,7 +20,6 @@ class PubSubStreamingServiceWrapper : virtual public PubSubStreamingServiceSvIf 
     folly::Executor *executor;
   public:
     explicit PubSubStreamingServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~PubSubStreamingServiceWrapper();
     folly::Future<apache::thrift::Stream<int32_t>> future_returnstream(
         int32_t i32_from,
         int32_t i32_to

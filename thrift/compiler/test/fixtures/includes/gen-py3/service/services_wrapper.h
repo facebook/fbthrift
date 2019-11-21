@@ -20,7 +20,6 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     folly::Executor *executor;
   public:
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServiceWrapper();
     folly::Future<folly::Unit> future_query(
         std::unique_ptr<::cpp2::MyStruct> s,
         std::unique_ptr<::cpp2::Included> i

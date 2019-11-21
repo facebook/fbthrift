@@ -15,12 +15,8 @@ HsTestServiceWrapper::HsTestServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_hsmodule__services();
-    Py_XINCREF(this->if_object);
   }
 
-HsTestServiceWrapper::~HsTestServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<int64_t> HsTestServiceWrapper::future_init(
   int64_t int1

@@ -15,12 +15,8 @@ TestServiceWrapper::TestServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_my__namespacing__test__module__module__services();
-    Py_XINCREF(this->if_object);
   }
 
-TestServiceWrapper::~TestServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<int64_t> TestServiceWrapper::future_init(
   int64_t int1

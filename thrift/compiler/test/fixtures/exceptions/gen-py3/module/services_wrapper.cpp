@@ -15,12 +15,8 @@ RaiserWrapper::RaiserWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-RaiserWrapper::~RaiserWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> RaiserWrapper::future_doBland() {
   folly::Promise<folly::Unit> promise;

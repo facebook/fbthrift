@@ -22,7 +22,6 @@ class MyRootWrapper : virtual public MyRootSvIf {
     folly::Executor *executor;
   public:
     explicit MyRootWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyRootWrapper();
     folly::Future<folly::Unit> future_do_root() override;
 };
 

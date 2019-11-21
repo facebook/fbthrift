@@ -15,12 +15,8 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_service__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyServiceWrapper::~MyServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> MyServiceWrapper::future_query(
   std::unique_ptr<::cpp2::MyStruct> s,

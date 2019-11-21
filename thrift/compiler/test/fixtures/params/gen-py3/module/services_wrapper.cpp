@@ -15,12 +15,8 @@ NestedContainersWrapper::NestedContainersWrapper(PyObject *obj, folly::Executor*
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-NestedContainersWrapper::~NestedContainersWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> NestedContainersWrapper::future_mapList(
   std::unique_ptr<std::map<int32_t,std::vector<int32_t>>> foo

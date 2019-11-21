@@ -23,7 +23,6 @@ class SomeServiceWrapper : virtual public SomeServiceSvIf {
     folly::Executor *executor;
   public:
     explicit SomeServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~SomeServiceWrapper();
     folly::Future<std::unique_ptr<std::unordered_map<int32_t,std::string>>> future_bounce_map(
         std::unique_ptr<std::unordered_map<int32_t,std::string>> m
     ) override;

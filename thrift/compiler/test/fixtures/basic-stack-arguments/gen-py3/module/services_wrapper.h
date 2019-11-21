@@ -21,7 +21,6 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     folly::Executor *executor;
   public:
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServiceWrapper();
     folly::Future<bool> future_hasDataById(
         int64_t id
     ) override;
@@ -47,7 +46,6 @@ class MyServiceFastWrapper : virtual public MyServiceFastSvIf {
     folly::Executor *executor;
   public:
     explicit MyServiceFastWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServiceFastWrapper();
     folly::Future<bool> future_hasDataById(
         int64_t id
     ) override;

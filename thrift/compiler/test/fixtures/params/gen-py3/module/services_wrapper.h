@@ -20,7 +20,6 @@ class NestedContainersWrapper : virtual public NestedContainersSvIf {
     folly::Executor *executor;
   public:
     explicit NestedContainersWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~NestedContainersWrapper();
     folly::Future<folly::Unit> future_mapList(
         std::unique_ptr<std::map<int32_t,std::vector<int32_t>>> foo
     ) override;

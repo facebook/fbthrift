@@ -15,12 +15,8 @@ PubSubStreamingServiceWrapper::PubSubStreamingServiceWrapper(PyObject *obj, foll
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-PubSubStreamingServiceWrapper::~PubSubStreamingServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceWrapper::future_returnstream(
   int32_t i32_from,

@@ -17,12 +17,8 @@ EmptyServiceWrapper::EmptyServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-EmptyServiceWrapper::~EmptyServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 std::shared_ptr<apache::thrift::ServerInterface> EmptyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<EmptyServiceWrapper>(if_object, exc);
@@ -33,12 +29,8 @@ ReturnServiceWrapper::ReturnServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-ReturnServiceWrapper::~ReturnServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> ReturnServiceWrapper::future_noReturn() {
   folly::Promise<folly::Unit> promise;
@@ -414,12 +406,8 @@ ParamServiceWrapper::ParamServiceWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-ParamServiceWrapper::~ParamServiceWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> ParamServiceWrapper::future_void_ret_i16_param(
   int16_t param1

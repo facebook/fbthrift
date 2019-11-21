@@ -15,12 +15,8 @@ MyRootWrapper::MyRootWrapper(PyObject *obj, folly::Executor* exc)
   : if_object(obj), executor(exc)
   {
     import_module__services();
-    Py_XINCREF(this->if_object);
   }
 
-MyRootWrapper::~MyRootWrapper() {
-    Py_XDECREF(this->if_object);
-}
 
 folly::Future<folly::Unit> MyRootWrapper::future_do_root() {
   folly::Promise<folly::Unit> promise;
@@ -45,10 +41,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_ob
 
 
 MyNodeWrapper::MyNodeWrapper(PyObject *obj, folly::Executor* exc)
-  : ::cpp2::MyRootWrapper(obj, exc)
-  {
-    import_module__services();
-  }
+  : ::cpp2::MyRootWrapper(obj, exc) {}
 
 folly::Future<folly::Unit> MyNodeWrapper::future_do_mid() {
   folly::Promise<folly::Unit> promise;
@@ -73,10 +66,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_ob
 
 
 MyLeafWrapper::MyLeafWrapper(PyObject *obj, folly::Executor* exc)
-  : ::cpp2::MyNodeWrapper(obj, exc)
-  {
-    import_module__services();
-  }
+  : ::cpp2::MyNodeWrapper(obj, exc) {}
 
 folly::Future<folly::Unit> MyLeafWrapper::future_do_leaf() {
   folly::Promise<folly::Unit> promise;

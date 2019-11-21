@@ -20,7 +20,6 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     folly::Executor *executor;
   public:
     explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~MyServiceWrapper();
     folly::Future<folly::Unit> future_ping() override;
     folly::Future<std::unique_ptr<std::string>> future_getRandomData() override;
     folly::Future<bool> future_hasDataById(

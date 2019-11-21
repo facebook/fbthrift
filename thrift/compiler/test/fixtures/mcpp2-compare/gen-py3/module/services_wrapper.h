@@ -24,7 +24,6 @@ class EmptyServiceWrapper : virtual public EmptyServiceSvIf {
     folly::Executor *executor;
   public:
     explicit EmptyServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~EmptyServiceWrapper();
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> EmptyServiceInterface(PyObject *if_object, folly::Executor *exc);
@@ -36,7 +35,6 @@ class ReturnServiceWrapper : virtual public ReturnServiceSvIf {
     folly::Executor *executor;
   public:
     explicit ReturnServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~ReturnServiceWrapper();
     folly::Future<folly::Unit> future_noReturn() override;
     folly::Future<bool> future_boolReturn() override;
     folly::Future<int16_t> future_i16Return() override;
@@ -73,7 +71,6 @@ class ParamServiceWrapper : virtual public ParamServiceSvIf {
     folly::Executor *executor;
   public:
     explicit ParamServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~ParamServiceWrapper();
     folly::Future<folly::Unit> future_void_ret_i16_param(
         int16_t param1
     ) override;

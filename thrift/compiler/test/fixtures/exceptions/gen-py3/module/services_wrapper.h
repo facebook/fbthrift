@@ -20,7 +20,6 @@ class RaiserWrapper : virtual public RaiserSvIf {
     folly::Executor *executor;
   public:
     explicit RaiserWrapper(PyObject *if_object, folly::Executor *exc);
-    virtual ~RaiserWrapper();
     folly::Future<folly::Unit> future_doBland() override;
     folly::Future<folly::Unit> future_doRaise() override;
     folly::Future<std::unique_ptr<std::string>> future_get200() override;
