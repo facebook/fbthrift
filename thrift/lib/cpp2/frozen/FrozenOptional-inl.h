@@ -73,32 +73,32 @@ class OptionalFieldView : private folly::Optional<T> {
 };
 
 template <typename L, typename R>
-inline bool operator==(
+bool operator==(
     const OptionalFieldView<L>& lhs,
     const OptionalFieldView<R>& rhs) {
   return lhs.toFolly() == rhs.toFolly();
 }
 template <typename L, typename R>
-inline bool operator!=(
+bool operator!=(
     const OptionalFieldView<L>& lhs,
     const OptionalFieldView<R>& rhs) {
   return lhs.toFolly() != rhs.toFolly();
 }
 
 template <typename L, typename R>
-inline bool operator==(const L& lhs, const OptionalFieldView<R>& rhs) {
+bool operator==(const L& lhs, const OptionalFieldView<R>& rhs) {
   return lhs == rhs.toFolly();
 }
 template <typename L, typename R>
-inline bool operator==(const OptionalFieldView<L>& lhs, const R& rhs) {
+bool operator==(const OptionalFieldView<L>& lhs, const R& rhs) {
   return lhs.toFolly() == rhs;
 }
 template <typename L, typename R>
-inline bool operator!=(const L& lhs, const OptionalFieldView<R>& rhs) {
+bool operator!=(const L& lhs, const OptionalFieldView<R>& rhs) {
   return lhs != rhs.toFolly();
 }
 template <typename L, typename R>
-inline bool operator!=(const OptionalFieldView<L>& lhs, const R& rhs) {
+bool operator!=(const OptionalFieldView<L>& lhs, const R& rhs) {
   return lhs.toFolly() != rhs;
 }
 
