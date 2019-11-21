@@ -209,6 +209,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   // Admission strategy use for accepting new requests
   ServerAttribute<std::shared_ptr<AdmissionStrategy>> admissionStrategy_;
 
+  /**
+   * The maximum memory usage (in bytes) by each request debug payload.
+   * Payloads larger than this value will be simply dropped by instrumentation.
+   */
+  ServerAttribute<uint64_t> maxDebugPayloadMemoryPerRequest_{0x1000000}; // 16MB
+
+  /**
+   * The maximum memory usage by each worker to keep track of debug payload.
+   * Each time a request payload is added for tracking, the tracker should check
+   * whether it's using memory beyond this value and evict payloads based on
+   * its policies.
+   */
+  ServerAttribute<uint64_t> maxDebugPayloadMemoryPerWorker_{0x1000000}; // 16MB
+
  protected:
   //! The server's listening address
   folly::SocketAddress address_;
@@ -941,6 +955,42 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void onConnectionSetup(
       std::unique_ptr<RequestSetupMetadata> setupMetadata) override;
+
+  /**
+   * Return the maximum memory usage by each debug payload.
+   */
+  uint64_t getMaxDebugPayloadMemoryPerRequest() {
+    return maxDebugPayloadMemoryPerRequest_.get();
+  }
+
+  /**
+   * Set the maximum memory usage by each debug payload.
+   */
+  void setMaxDebugPayloadMemoryPerRequest(
+      uint64_t limit,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    CHECK(configMutable());
+    maxDebugPayloadMemoryPerRequest_.set(limit, source);
+  }
+
+  /**
+   * Return the maximum memory usage by each worker to keep track of debug
+   * payloads.
+   */
+  uint64_t getMaxDebugPayloadMemoryPerWorker() {
+    return maxDebugPayloadMemoryPerWorker_.get();
+  }
+
+  /**
+   * Set the maximum memory usage by each worker to keep track of debug
+   * payloads.
+   */
+  void setMaxDebugPayloadMemoryPerWorker(
+      uint64_t limit,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    CHECK(configMutable());
+    maxDebugPayloadMemoryPerWorker_.set(limit, source);
+  }
 };
 } // namespace thrift
 } // namespace apache

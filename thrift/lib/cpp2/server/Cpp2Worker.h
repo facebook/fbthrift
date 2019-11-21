@@ -134,7 +134,9 @@ class Cpp2Worker : public wangle::Acceptor,
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
         activeRequests_(0),
-        requestsRegistry_(std::make_shared<ActiveRequestsRegistry>()) {
+        requestsRegistry_(std::make_shared<ActiveRequestsRegistry>(
+            server_->getMaxDebugPayloadMemoryPerRequest(),
+            server_->getMaxDebugPayloadMemoryPerWorker())) {
     setGracefulShutdownTimeout(server->workersJoinTimeout_);
   }
 

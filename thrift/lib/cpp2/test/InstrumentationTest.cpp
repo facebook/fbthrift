@@ -15,8 +15,10 @@
  */
 
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/Request.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -28,12 +30,58 @@
 #include <atomic>
 #include <thread>
 
+using apache::thrift::ResponseChannelRequest;
 using apache::thrift::ServerInstrumentation;
 using apache::thrift::ThriftServer;
 using apache::thrift::concurrency::PosixThreadFactory;
 using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::test::InstrumentationTestServiceAsyncClient;
+using apache::thrift::test::InstrumentationTestServiceAsyncProcessor;
 using apache::thrift::test::InstrumentationTestServiceSvIf;
+
+class RequestPayload : public folly::RequestData {
+ public:
+  static const folly::RequestToken& getRequestToken() {
+    static folly::RequestToken token("InstrumentationTest::RequestPayload");
+    return token;
+  }
+  explicit RequestPayload(std::unique_ptr<folly::IOBuf> buf)
+      : buf_(std::move(buf)) {}
+  bool hasCallback() override {
+    return false;
+  }
+  const folly::IOBuf* getPayload() {
+    return buf_.get();
+  }
+
+ private:
+  std::unique_ptr<folly::IOBuf> buf_;
+};
+
+class InstrumentationTestProcessor
+    : public InstrumentationTestServiceAsyncProcessor {
+ public:
+  explicit InstrumentationTestProcessor(InstrumentationTestServiceSvIf* iface)
+      : InstrumentationTestServiceAsyncProcessor(iface) {}
+
+  /**
+   * Intercepts and clones incoming payload buffers, then passes them down to
+   * method handlers.
+   */
+  void process(
+      std::unique_ptr<ResponseChannelRequest> req,
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::protocol::PROTOCOL_TYPES protType,
+      apache::thrift::Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm) override {
+    folly::RequestContext::get()->setContextData(
+        RequestPayload::getRequestToken(),
+        std::make_unique<RequestPayload>(buf->clone()));
+    InstrumentationTestServiceAsyncProcessor::process(
+        std::move(req), std::move(buf), protType, context, eb, tm);
+  }
+};
 
 class TestInterface : public InstrumentationTestServiceSvIf {
  public:
@@ -55,6 +103,17 @@ class TestInterface : public InstrumentationTestServiceSvIf {
         []() -> folly::coro::AsyncGenerator<int32_t> { co_yield 0; });
   }
 
+  folly::coro::Task<std::unique_ptr<apache::thrift::test::IOBuf>>
+  co_sendPayload(int32_t id, std::unique_ptr<std::string> /* str */) override {
+    auto rg = requestGuard();
+    auto payload = dynamic_cast<RequestPayload*>(
+        folly::RequestContext::get()->getContextData(
+            RequestPayload::getRequestToken()));
+    EXPECT_NE(payload, nullptr);
+    co_await finished_;
+    co_return payload->getPayload()->clone();
+  }
+
   void stopRequests() {
     finished_.post();
     while (reqCount_ > 0) {
@@ -66,6 +125,10 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     while (reqCount_ != num) {
       std::this_thread::yield();
     }
+  }
+
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    return std::make_unique<InstrumentationTestProcessor>(this);
   }
 
  private:
@@ -133,6 +196,40 @@ TEST_F(RequestInstrumentationTest, simpleHeaderRequestTest) {
 
   for (auto& reqSnapshot : getRequestSnapshots(reqNum)) {
     EXPECT_EQ(reqSnapshot.getMethodName(), "sendRequest");
+  }
+}
+
+TEST_F(RequestInstrumentationTest, requestPayloadTest) {
+  std::array<std::string, 4> strList = {
+      "apache", "thrift", "test", "InstrumentationTest"};
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>();
+
+  std::vector<folly::SemiFuture<folly::IOBuf>> tasks;
+  int32_t reqId = 0;
+  for (const auto& testStr : strList) {
+    auto task = client->semifuture_sendPayload(reqId, testStr)
+                    .deferValue([](const apache::thrift::test::IOBuf& buf) {
+                      return buf;
+                    });
+    tasks.emplace_back(std::move(task));
+    reqId++;
+  }
+  auto reqSnapshots = getRequestSnapshots(strList.size());
+
+  auto interceptedPayloadList =
+      folly::collectSemiFuture(tasks.begin(), tasks.end()).get();
+
+  std::set<const folly::IOBuf*, folly::IOBufLess> snapshotPayloadSet;
+  for (const auto& reqSnapshot : reqSnapshots) {
+    auto payload = reqSnapshot.getPayload();
+    EXPECT_NE(payload, nullptr);
+    snapshotPayloadSet.insert(payload);
+  }
+
+  EXPECT_EQ(interceptedPayloadList.size(), snapshotPayloadSet.size());
+  for (const auto& interceptedPayload : interceptedPayloadList) {
+    auto it = snapshotPayloadSet.find(&interceptedPayload);
+    EXPECT_TRUE(it != snapshotPayloadSet.end());
   }
 }
 

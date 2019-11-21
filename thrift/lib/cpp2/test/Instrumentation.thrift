@@ -16,7 +16,10 @@
 
 namespace cpp2 apache.thrift.test
 
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+
 service InstrumentationTestService {
   void sendRequest() (cpp.coroutine);
   stream<i32> sendStreamingRequest() (cpp.coroutine);
+  IOBuf sendPayload(1: i32 id, 2: string str) (cpp.coroutine);
 }
