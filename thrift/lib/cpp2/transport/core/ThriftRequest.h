@@ -121,6 +121,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
+  RpcKind kind() const {
+    return kind_;
+  }
+
   bool isOneway() const final {
     return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
         kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
