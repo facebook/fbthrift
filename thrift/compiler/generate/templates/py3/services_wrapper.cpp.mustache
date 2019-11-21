@@ -52,7 +52,12 @@ defined in ServicesCallbacks, along with appropriate arguments.
 {{/service:extends?}}
 {{#service:extends?}}
 {{service:name}}Wrapper::{{service:name}}Wrapper(PyObject *obj, folly::Executor* exc)
-  : {{#service:extends}}::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper(obj, exc){{/service:extends}} {}
+  : {{#service:extends}}::{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper(obj, exc){{/service:extends}}
+  {
+    {{#program:hasServiceFunctions?}}
+    import_{{#program:py3Namespaces}}{{value}}__{{/program:py3Namespaces}}{{program:name}}__services();
+    {{/program:hasServiceFunctions?}}
+  }
 {{/service:extends?}}
 
 {{#service:functions}}

@@ -41,7 +41,10 @@ std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_ob
 
 
 MyNodeWrapper::MyNodeWrapper(PyObject *obj, folly::Executor* exc)
-  : ::cpp2::MyRootWrapper(obj, exc) {}
+  : ::cpp2::MyRootWrapper(obj, exc)
+  {
+    import_module__services();
+  }
 
 folly::Future<folly::Unit> MyNodeWrapper::future_do_mid() {
   folly::Promise<folly::Unit> promise;
@@ -66,7 +69,10 @@ std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_ob
 
 
 MyLeafWrapper::MyLeafWrapper(PyObject *obj, folly::Executor* exc)
-  : ::cpp2::MyNodeWrapper(obj, exc) {}
+  : ::cpp2::MyNodeWrapper(obj, exc)
+  {
+    import_module__services();
+  }
 
 folly::Future<folly::Unit> MyLeafWrapper::future_do_leaf() {
   folly::Promise<folly::Unit> promise;
