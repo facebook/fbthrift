@@ -183,7 +183,7 @@ std::string HeaderServerChannel::getTransportDebugString(
     transport->getPeerAddress(&addr);
     folly::toAppend(
         ", address ", addr.getAddressStr(), ", port ", addr.getPort(), &ret);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
   }
 
   ret += ')';

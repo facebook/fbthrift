@@ -953,13 +953,7 @@ TEST_P(StreamingTest, StreamThrowsRuntimeError) {
 
 TEST_P(StreamingTest, StreamFunctionThrowsImmediately) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    bool thrown = false;
-    try {
-      client->sync_streamThrows(0);
-    } catch (const SecondEx& ex) {
-      thrown = true;
-    }
-    EXPECT_TRUE(thrown);
+    EXPECT_THROW(client->sync_streamThrows(0), SecondEx);
   });
 }
 
@@ -988,13 +982,7 @@ TEST_P(StreamingTest, ResponseAndStreamThrowsKnownException) {
 
 TEST_P(StreamingTest, ResponseAndStreamFunctionThrowsImmediately) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    bool thrown = false;
-    try {
-      client->sync_responseAndStreamThrows(0);
-    } catch (const SecondEx& ex) {
-      thrown = true;
-    }
-    EXPECT_TRUE(thrown);
+    EXPECT_THROW(client->sync_responseAndStreamThrows(0), SecondEx);
   });
 }
 

@@ -44,17 +44,13 @@ TEST_F(SinkServiceTest, SinkThrow) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         auto sink = co_await client.co_rangeThrow(0, 100);
-        bool throwed = false;
-        try {
-          co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
-            co_yield 0;
-            co_yield 1;
-            throw std::runtime_error("test");
-          }());
-        } catch (const std::exception& ex) {
-          throwed = true;
-        }
-        EXPECT_TRUE(throwed);
+        EXPECT_THROW(
+            co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+              co_yield 0;
+              co_yield 1;
+              throw std::runtime_error("test");
+            }()),
+            std::exception);
       });
 }
 
@@ -95,13 +91,7 @@ TEST_F(SinkServiceTest, SinkEarlyFinalResponse) {
 TEST_F(SinkServiceTest, SinkUnimplemented) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
-        bool throwed = true;
-        try {
-          auto sink = co_await client.co_unimplemented();
-        } catch (const std::exception&) {
-          throwed = true;
-        }
-        EXPECT_TRUE(throwed);
+        EXPECT_THROW(co_await client.co_unimplemented(), std::exception);
       });
 }
 
@@ -150,13 +140,8 @@ TEST_F(SinkServiceTest, SinkChunkTimeout) {
 TEST_F(SinkServiceTest, ClientTimeoutNotLeak) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
-        bool throwed = false;
-        try {
-          co_await client.co_unSubscribedSinkSlowReturn();
-        } catch (const std::exception&) {
-          throwed = true;
-        }
-        EXPECT_TRUE(throwed);
+        EXPECT_THROW(
+            co_await client.co_unSubscribedSinkSlowReturn(), std::exception);
       });
 }
 

@@ -71,7 +71,7 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
           ExceptionThrowingServiceAsyncClient::recv_echo(result, state);
           EXPECT_EQ(result, "Hello World");
           echoDone = true;
-        } catch (const std::exception& e) {
+        } catch (const std::exception&) {
         }
       },
       "Hello World");

@@ -211,11 +211,8 @@ TEST(SimpleJSONToThriftTest, SimpleStructMissingNonRequiredField) {
 TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
   string jsonByteTW("{\"a\":-129}");
   myByteStruct thriftByteObjW;
-  try {
-    deserializeJSON(thriftByteObjW, jsonByteTW);
-    ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
-  }
+  EXPECT_THROW(
+      deserializeJSON(thriftByteObjW, jsonByteTW), apache::thrift::TException);
 
   string jsonByteT("{\"a\":-128}");
   myByteStruct thriftByteObj;
@@ -224,11 +221,8 @@ TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
 
   string jsonI16TW("{\"a\":-32769}");
   myI16Struct thriftI16ObjW;
-  try {
-    deserializeJSON(thriftI16ObjW, jsonI16TW);
-    ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
-  }
+  EXPECT_THROW(
+      deserializeJSON(thriftI16ObjW, jsonI16TW), apache::thrift::TException);
 
   string jsonI16T("{\"a\":-32768}");
   myI16Struct thriftI16Obj;
@@ -241,7 +235,7 @@ TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
     deserializeJSON(thriftI32ObjW, jsonI32TW);
     cout << serializeJSON(thriftI32ObjW) << endl;
     ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
+  } catch (apache::thrift::TException&) {
   }
 
   string jsonI32T("{\"a\":-2147483648}");
@@ -253,11 +247,7 @@ TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
 TEST(SimpleJSONToThriftTest, PassingWrongType) {
   string jsonI32T("{\"a\":\"hello\"}");
   myI32Struct thriftI32Obj;
-  try {
-    deserializeJSON(thriftI32Obj, jsonI32T);
-    ADD_FAILURE();
-  } catch (std::exception& e) {
-  }
+  EXPECT_THROW(deserializeJSON(thriftI32Obj, jsonI32T), std::exception);
 }
 
 TEST(SimpleJSONToThriftTest, Whitespace) {
@@ -386,11 +376,8 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
 
   string jsonByteTW("{\"a\":128}");
   myByteStruct thriftByteObjW;
-  try {
-    deserializeJSON(thriftByteObjW, jsonByteTW);
-    ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
-  }
+  EXPECT_THROW(
+      deserializeJSON(thriftByteObjW, jsonByteTW), apache::thrift::TException);
 
   string jsonByteT("{\"a\":127}");
   myByteStruct thriftByteObj;
@@ -399,11 +386,8 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
 
   string jsonI16TW("{\"a\":32768}");
   myI16Struct thriftI16ObjW;
-  try {
-    deserializeJSON(thriftI16ObjW, jsonI16TW);
-    ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
-  }
+  EXPECT_THROW(
+      deserializeJSON(thriftI16ObjW, jsonI16TW), apache::thrift::TException);
 
   string jsonI16T("{\"a\":32767}");
   myI16Struct thriftI16Obj;
@@ -412,11 +396,8 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
 
   string jsonI32TW("{\"a\":2147483648}");
   myI32Struct thriftI32ObjW;
-  try {
-    deserializeJSON(thriftI32ObjW, jsonI32TW);
-    ADD_FAILURE();
-  } catch (apache::thrift::TException& e) {
-  }
+  EXPECT_THROW(
+      deserializeJSON(thriftI32ObjW, jsonI32TW), apache::thrift::TException);
 
   string jsonI32T("{\"a\":2147483647}");
   myI32Struct thriftI32Obj;
@@ -425,11 +406,7 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
 
   string jsonBoolTW("{\"a\":2}");
   myBoolStruct thriftBoolObjW;
-  try {
-    deserializeJSON(thriftBoolObjW, jsonBoolTW);
-    ADD_FAILURE();
-  } catch (std::exception& e) {
-  }
+  EXPECT_THROW(deserializeJSON(thriftBoolObjW, jsonBoolTW), std::exception);
 }
 
 TEST(SimpleJSONToThriftTest, DoubleExponents) {
@@ -450,7 +427,7 @@ TEST(SimpleJSONToThriftTest, ComplexTypeMissingRequiredFieldInMember) {
   myComplexStruct thriftComplexObj;
   try {
     deserializeJSON(thriftComplexObj, jsonComplexT);
-  } catch (apache::thrift::TException& e) {
+  } catch (apache::thrift::TException&) {
     // We don't enforce required anymore, thus shouldn't throw.
     ADD_FAILURE();
   }
@@ -609,7 +586,7 @@ TEST(SimpleJSONToThriftTest, MapKeysTests) {
   // this may be a desireable feature later on
   try {
     testSimpleJSON(mapStruct);
-  } catch (apache::thrift::TException& e) {
+  } catch (apache::thrift::TException&) {
     ADD_FAILURE();
   }
 }

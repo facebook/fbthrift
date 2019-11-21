@@ -813,7 +813,7 @@ TEST(ThriftServer, FailureInjection) {
       try {
         TestServiceAsyncClient::recv_sendResponse(response, state);
         EXPECT_EQ(NONE, *expected_);
-      } catch (const apache::thrift::TApplicationException& ex) {
+      } catch (const apache::thrift::TApplicationException&) {
         const auto& headers = state.header()->getHeaders();
         EXPECT_TRUE(
             headers.find("ex") != headers.end() &&

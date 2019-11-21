@@ -409,7 +409,7 @@ void AsyncRunner2::genericCob(LoadTestAsyncClient* client,
     case apache::thrift::test::ClientLoadConfig::OP_THROW_UNEXPECTED:
       try {
         client->recv_throwUnexpected(rstate);
-      } catch (const TApplicationException& error) {
+      } catch (const TApplicationException&) {
         // expected; do nothing
       }
       break;

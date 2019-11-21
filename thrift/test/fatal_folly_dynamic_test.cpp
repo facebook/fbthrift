@@ -52,7 +52,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(actual, json);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -69,7 +69,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(actual, pod);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -88,7 +88,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(json, to);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -109,7 +109,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -132,7 +132,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -155,7 +155,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -178,7 +178,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }
@@ -202,7 +202,7 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
       LOG(ERROR) << log.str();
     }
     EXPECT_EQ(pod, from);
-  } catch (std::exception const &e) {
+  } catch (std::exception const&) {
     LOG(ERROR) << log.str();
     throw;
   }

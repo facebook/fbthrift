@@ -905,7 +905,7 @@ uint32_t TJSONProtocol::readJSONInteger(NumberType& num) {
   result += readJSONNumericChars(str);
   try {
     num = folly::to<NumberType>(str);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     throw TProtocolException(
         TProtocolException::INVALID_DATA,
         "Expected numeric value; got \"" + str + "\"");
@@ -941,7 +941,7 @@ uint32_t TJSONProtocol::readJSONDouble(NumberType& num) {
       }
       try {
         num = folly::to<NumberType>(str);
-      } catch (const std::exception& e) {
+      } catch (const std::exception&) {
         throw TProtocolException(
             TProtocolException::INVALID_DATA,
             "Expected numeric value; got \"" + str + "\"");
@@ -955,7 +955,7 @@ uint32_t TJSONProtocol::readJSONDouble(NumberType& num) {
     result += readJSONNumericChars(str);
     try {
       num = folly::to<NumberType>(str);
-    } catch (const std::exception& e) {
+    } catch (const std::exception&) {
       throw TProtocolException(
           TProtocolException::INVALID_DATA,
           "Expected numeric value; got \"" + str + "\"");

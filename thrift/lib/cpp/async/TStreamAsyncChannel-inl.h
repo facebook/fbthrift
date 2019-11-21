@@ -94,7 +94,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendMessage(
   WriteRequest_* writeReq;
   try {
     writeReq = new WriteRequest_(cob, errorCob, message, this);
-  } catch (const std::exception& ex) {
+  } catch (const std::exception&) {
     T_ERROR("sendMessage: failed to allocate new write request object");
     errorCob();
     return;
@@ -334,7 +334,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::timeoutExpired()
     folly::SocketAddress addr;
     transport_->getPeerAddress(&addr);
     addressStr = addr.describe();
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     addressStr = "unknown";
   }
   // Close the transport.  It isn't usable anymore, since we are leaving
@@ -375,7 +375,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
       folly::SocketAddress addr;
       transport_->getPeerAddress(&addr);
       addressStr = addr.describe();
-    } catch (const std::exception& e) {
+    } catch (const std::exception&) {
       addressStr = "unknown";
     }
 

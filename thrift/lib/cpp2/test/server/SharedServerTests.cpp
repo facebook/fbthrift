@@ -176,7 +176,7 @@ TEST_P(SharedServerTests, AsyncThrift2Test) {
     std::string response;
     try {
       TestServiceAsyncClient::recv_sendResponse(response, state);
-    } catch (const std::exception& ex) {
+    } catch (const std::exception&) {
     }
     EXPECT_EQ(response, "test64");
     base->terminateLoopSoon();
@@ -318,14 +318,9 @@ TEST_P(SharedServerTests, ThriftServerSizeLimits) {
 
   std::string response;
 
-  try {
-    // make a largest possible input which should not throw an exception
-    std::string smallInput(1 << 19, '1');
-    client->sync_echoRequest(response, smallInput);
-    SUCCEED();
-  } catch (const std::exception& ex) {
-    ADD_FAILURE();
-  }
+  // make a largest possible input which should not throw an exception
+  std::string smallInput(1 << 19, '1');
+  client->sync_echoRequest(response, smallInput);
 
   // make an input that is too large by 1 byte
   std::string largeInput(1 << 21, '1');

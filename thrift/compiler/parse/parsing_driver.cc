@@ -75,7 +75,7 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse(
   try {
     parse_file();
     result = std::move(program_bundle);
-  } catch (const parsing_terminator& e) {
+  } catch (const parsing_terminator&) {
     // No need to do anything here. The purpose of the exception is simply to
     // end the parsing process by unwinding to here.
   }

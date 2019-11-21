@@ -368,7 +368,7 @@ void TSocket::local_open(){
     try {
       openConnection(res);
       break;
-    } catch (TTransportException& ttx) {
+    } catch (TTransportException&) {
       if (res->ai_next) {
         close();
       } else {

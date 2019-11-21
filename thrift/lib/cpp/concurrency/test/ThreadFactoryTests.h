@@ -280,7 +280,7 @@ public:
 
       try {
           monitor.wait(100);
-      } catch(TimedOutException& e) {
+      } catch (TimedOutException&) {
       }
 
       if (state == SynchStartTask::STARTED) {
@@ -317,7 +317,7 @@ public:
         Synchronized s(monitor);
         try {
             monitor.wait(timeout);
-        } catch(TimedOutException& e) {
+        } catch (TimedOutException&) {
         }
       }
     }

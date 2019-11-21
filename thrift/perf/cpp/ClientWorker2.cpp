@@ -183,7 +183,7 @@ void ClientWorker2::performThrowUnexpected(const std::shared_ptr<Client>& client
   try {
     client->sync_throwUnexpected(loadgen::RNG::getU32());
     T_ERROR("throwUnexpected() didn't throw any exception");
-  } catch (const TApplicationException& error) {
+  } catch (const TApplicationException&) {
     // expected; do nothing
   }
 }
