@@ -20,7 +20,9 @@
 #include <memory>
 #include <vector>
 
+#include <folly/Range.h>
 #include <folly/SharedMutex.h>
+
 #include <thrift/lib/cpp/ContextStack.h>
 
 namespace apache {
@@ -40,8 +42,12 @@ class EventHandlerBase {
     handlers_->clear();
   }
 
-  std::vector<std::shared_ptr<TProcessorEventHandler>>& getEventHandlers() {
-    return *handlers_;
+  folly::Range<std::shared_ptr<TProcessorEventHandler>*> getEventHandlers()
+      const {
+    if (!handlers_) {
+      return {};
+    }
+    return folly::range(*handlers_);
   }
 
  protected:
