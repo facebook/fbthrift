@@ -39,7 +39,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Empty {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -83,7 +83,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for Nada {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;
@@ -111,18 +111,18 @@ pub mod types {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

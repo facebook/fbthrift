@@ -67,11 +67,11 @@ pub mod types {
     }
 
     impl std::str::FromStr for EmptyEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
-                _ => failure::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
             }
         }
     }
@@ -89,7 +89,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for EmptyEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(EmptyEnum::from(p.read_i32()?))
         }
     }
@@ -147,13 +147,13 @@ pub mod types {
     }
 
     impl std::str::FromStr for MyEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "ONE" => Ok(MyEnum::ONE),
                 "TWO" => Ok(MyEnum::TWO),
-                _ => failure::bail!("Unable to parse {} as {}", string, "MyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyEnum"),
             }
         }
     }
@@ -171,7 +171,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(MyEnum::from(p.read_i32()?))
         }
     }
@@ -265,7 +265,7 @@ pub mod types {
     }
 
     impl std::str::FromStr for MyBigEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
@@ -289,7 +289,7 @@ pub mod types {
                 "SEVENTEEN" => Ok(MyBigEnum::SEVENTEEN),
                 "EIGHTEEN" => Ok(MyBigEnum::EIGHTEEN),
                 "NINETEEN" => Ok(MyBigEnum::NINETEEN),
-                _ => failure::bail!("Unable to parse {} as {}", string, "MyBigEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyBigEnum"),
             }
         }
     }
@@ -307,7 +307,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyBigEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(MyBigEnum::from(p.read_i32()?))
         }
     }
@@ -340,7 +340,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_myEnum = None;
             let mut field_myBigEnum = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -365,18 +365,18 @@ pub mod types {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

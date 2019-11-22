@@ -381,11 +381,11 @@ pub mod types {
     }
 
     impl std::str::FromStr for EmptyEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
-                _ => failure::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
             }
         }
     }
@@ -403,7 +403,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for EmptyEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(EmptyEnum::from(p.read_i32()?))
         }
     }
@@ -465,7 +465,7 @@ pub mod types {
     }
 
     impl std::str::FromStr for City {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
@@ -473,7 +473,7 @@ pub mod types {
                 "MPK" => Ok(City::MPK),
                 "SEA" => Ok(City::SEA),
                 "LON" => Ok(City::LON),
-                _ => failure::bail!("Unable to parse {} as {}", string, "City"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "City"),
             }
         }
     }
@@ -491,7 +491,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for City {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(City::from(p.read_i32()?))
         }
     }
@@ -553,7 +553,7 @@ pub mod types {
     }
 
     impl std::str::FromStr for Company {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
@@ -561,7 +561,7 @@ pub mod types {
                 "WHATSAPP" => Ok(Company::WHATSAPP),
                 "OCULUS" => Ok(Company::OCULUS),
                 "INSTAGRAM" => Ok(Company::INSTAGRAM),
-                _ => failure::bail!("Unable to parse {} as {}", string, "Company"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "Company"),
             }
         }
     }
@@ -579,7 +579,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for Company {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(Company::from(p.read_i32()?))
         }
     }
@@ -621,7 +621,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Internship {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_weeks = None;
             let mut field_title = None;
             let mut field_employer = None;
@@ -671,7 +671,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::UnEnumStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_city = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -719,7 +719,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Range {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_min = None;
             let mut field_max = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -770,7 +770,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::struct1 {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_a = None;
             let mut field_b = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -829,7 +829,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::struct2 {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_a = None;
             let mut field_b = None;
             let mut field_c = None;
@@ -890,7 +890,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::struct3 {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_a = None;
             let mut field_b = None;
             let mut field_c = None;
@@ -953,7 +953,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for union1 {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;
@@ -1034,7 +1034,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for union2 {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;
@@ -1078,18 +1078,18 @@ pub mod types {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

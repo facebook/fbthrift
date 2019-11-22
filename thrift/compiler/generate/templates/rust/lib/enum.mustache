@@ -79,14 +79,14 @@
     }
 
     impl std::str::FromStr for {{enum:rust_name}} {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {{>lib/block}}{{!
                 }}{{#enum:values}}
                 "{{enumValue:name}}" => Ok({{enum:rust_name}}::{{enumValue:rust_name}}),{{!
                 }}{{/enum:values}}
-                _ => failure::bail!("Unable to parse {} as {}", string, "{{enum:name}}"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "{{enum:name}}"),
             }
         }
     }
@@ -104,7 +104,7 @@
 
     impl<P: ProtocolReader> Deserialize<P> for {{enum:rust_name}} {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok({{enum:rust_name}}::from(p.read_i32()?))
         }
     }

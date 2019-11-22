@@ -54,7 +54,7 @@
     }
 
     impl<P: ProtocolReader> Deserialize<P> for {{struct:rust_name}} {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;

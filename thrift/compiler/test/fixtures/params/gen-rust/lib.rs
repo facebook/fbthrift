@@ -64,7 +64,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for MapListExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = MapListExn::Success(());
@@ -152,7 +152,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for MapSetExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = MapSetExn::Success(());
@@ -240,7 +240,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for ListMapExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = ListMapExn::Success(());
@@ -328,7 +328,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for ListSetExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = ListSetExn::Success(());
@@ -416,7 +416,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for TurtlesExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = TurtlesExn::Success(());
@@ -476,23 +476,23 @@ pub mod client {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
     }
 
     impl<P, T> NestedContainers for NestedContainersImpl<P, T>
@@ -504,7 +504,7 @@ pub mod client {
     {        fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -523,7 +523,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -540,7 +540,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -552,7 +552,7 @@ pub mod client {
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -571,7 +571,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -588,7 +588,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -600,7 +600,7 @@ pub mod client {
         fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -619,7 +619,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -636,7 +636,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -648,7 +648,7 @@ pub mod client {
         fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -667,7 +667,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -684,7 +684,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -696,7 +696,7 @@ pub mod client {
         fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -715,7 +715,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -732,7 +732,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -877,7 +877,7 @@ pub mod server {
         async fn handle_mapList<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -925,7 +925,7 @@ pub mod server {
         async fn handle_mapSet<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -973,7 +973,7 @@ pub mod server {
         async fn handle_listMap<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1021,7 +1021,7 @@ pub mod server {
         async fn handle_listSet<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1069,7 +1069,7 @@ pub mod server {
         async fn handle_turtles<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1138,7 +1138,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_mapList(p).await,
                 1usize => self.handle_mapSet(p).await,
@@ -1167,7 +1167,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -1332,55 +1332,55 @@ pub mod mock {
         fn mapList(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.mapList.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, Vec<i32>>) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersMapListError(error),
                 ))))
         }
         fn mapSet(
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.mapSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersMapSetError(error),
                 ))))
         }
         fn listMap(
             &self,
             arg_foo: &Vec<std::collections::BTreeMap<i32, i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.listMap.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeMap<i32, i32>>) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersListMapError(error),
                 ))))
         }
         fn listSet(
             &self,
             arg_foo: &Vec<std::collections::BTreeSet<i32>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.listSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersListSetError(error),
                 ))))
         }
         fn turtles(
             &self,
             arg_foo: &Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.turtles.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersTurtlesError(error),
                 ))))
         }
@@ -1587,28 +1587,28 @@ pub mod mock {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "NestedContainers::mapList failed with {:?}", _0)]
+        #[error("NestedContainers::mapList failed with {0:?}")]
         NestedContainersMapListError(crate::services::nested_containers::MapListExn),
-        #[fail(display = "NestedContainers::mapSet failed with {:?}", _0)]
+        #[error("NestedContainers::mapSet failed with {0:?}")]
         NestedContainersMapSetError(crate::services::nested_containers::MapSetExn),
-        #[fail(display = "NestedContainers::listMap failed with {:?}", _0)]
+        #[error("NestedContainers::listMap failed with {0:?}")]
         NestedContainersListMapError(crate::services::nested_containers::ListMapExn),
-        #[fail(display = "NestedContainers::listSet failed with {:?}", _0)]
+        #[error("NestedContainers::listSet failed with {0:?}")]
         NestedContainersListSetError(crate::services::nested_containers::ListSetExn),
-        #[fail(display = "NestedContainers::turtles failed with {:?}", _0)]
+        #[error("NestedContainers::turtles failed with {0:?}")]
         NestedContainersTurtlesError(crate::services::nested_containers::TurtlesExn),
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

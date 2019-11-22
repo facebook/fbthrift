@@ -56,7 +56,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Foo {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_myInteger = None;
             let mut field_myString = None;
             let mut field_myBools = None;
@@ -87,18 +87,18 @@ pub mod types {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

@@ -33,7 +33,7 @@ macro_rules! ensure_err {
     };
 }
 
-type Result<T> = std::result::Result<T, failure::Error>;
+use anyhow::Result;
 
 #[macro_use]
 pub mod protocol;

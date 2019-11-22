@@ -44,9 +44,8 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
-            }}failure::Error{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
         }}>> + Send + 'static>>;{{!
         }}{{/service:functions}}
     }
@@ -65,9 +64,8 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
-            }}failure::Error{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
         }}>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
@@ -93,7 +91,7 @@
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<{{!
+                    move |mut p: P::Deserializer| -> anyhow::Result<{{!
                         }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
                     }}> {
                         let p = &mut p;
@@ -112,7 +110,7 @@
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;

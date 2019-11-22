@@ -55,7 +55,7 @@ pub enum CType {
 }
 
 impl TryFrom<i8> for CType {
-    type Error = failure::Error;
+    type Error = anyhow::Error;
 
     fn try_from(v: i8) -> Result<Self> {
         let ret = match v {

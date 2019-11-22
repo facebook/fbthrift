@@ -47,9 +47,8 @@
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
-            }}failure::Error{{!
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
         }}>> + Send + 'static>> {
             let mut closure = self.{{function:name}}.closure.lock().unwrap();
             let closure: &mut dyn FnMut({{!
@@ -67,7 +66,7 @@
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
             }})
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     {{program:crate}}::errors::ErrorKind::{{service:name}}{{function:upcamel}}Error(error),
                 ))))
         }{{!

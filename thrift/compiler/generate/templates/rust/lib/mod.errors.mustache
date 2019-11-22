@@ -16,24 +16,24 @@
 
 }}
 
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {{>lib/block}}{{!
     }}{{#program:services}}{{!
     }}{{#service:functions}}
-        #[fail(display = "{{service:name}}::{{function:name}} failed with {:?}", _0)]
+        #[error("{{service:name}}::{{function:name}} failed with {0:?}")]
         {{service:name}}{{function:upcamel}}Error({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn),{{!
     }}{{/service:functions}}{{!
     }}{{/program:services}}
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 {{!newline}}

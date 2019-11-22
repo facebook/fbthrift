@@ -78,7 +78,7 @@
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::{{struct:rust_name}} {
-        fn read(p: &mut P) -> failure::Fallible<Self> {{>lib/block}}{{!
+        fn read(p: &mut P) -> anyhow::Result<Self> {{>lib/block}}{{!
             }}{{#struct:fields}}
             let mut field_{{field:name}} = None;{{!
             }}{{/struct:fields}}

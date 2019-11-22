@@ -83,13 +83,13 @@ pub mod types {
     }
 
     impl std::str::FromStr for MyEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "MyValue1" => Ok(MyEnum::MyValue1),
                 "MyValue2" => Ok(MyEnum::MyValue2),
-                _ => failure::bail!("Unable to parse {} as {}", string, "MyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyEnum"),
             }
         }
     }
@@ -107,7 +107,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(MyEnum::from(p.read_i32()?))
         }
     }
@@ -148,7 +148,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_MyIntField = None;
             let mut field_MyStringField = None;
             let mut field_MyDataField = None;
@@ -197,7 +197,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyDataItem {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -256,7 +256,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for MyUnion {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;
@@ -355,7 +355,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for PingExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = PingExn::Success(());
@@ -443,7 +443,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for GetRandomDataExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -537,7 +537,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for HasDataByIdExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -631,7 +631,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for GetDataByIdExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -725,7 +725,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for PutDataByIdExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = PutDataByIdExn::Success(());
@@ -813,7 +813,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for LobDataByIdExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = LobDataByIdExn::Success(());
@@ -872,28 +872,28 @@ pub mod client {
     pub trait MyService: Send {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<bool, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>>;
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
         fn putDataById(
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn lobDataById(
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
     }
 
     impl<P, T> MyService for MyServiceImpl<P, T>
@@ -904,7 +904,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -920,7 +920,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -937,7 +937,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -948,7 +948,7 @@ pub mod client {
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -964,7 +964,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<String> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -981,7 +981,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -993,7 +993,7 @@ pub mod client {
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<bool, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1012,7 +1012,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<bool> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<bool> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -1029,7 +1029,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -1041,7 +1041,7 @@ pub mod client {
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1060,7 +1060,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<String> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -1077,7 +1077,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -1090,7 +1090,7 @@ pub mod client {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1112,7 +1112,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -1129,7 +1129,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -1142,7 +1142,7 @@ pub mod client {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1164,7 +1164,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -1181,7 +1181,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -1337,7 +1337,7 @@ pub mod server {
         async fn handle_ping<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1377,7 +1377,7 @@ pub mod server {
         async fn handle_getRandomData<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1417,7 +1417,7 @@ pub mod server {
         async fn handle_hasDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1465,7 +1465,7 @@ pub mod server {
         async fn handle_getDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1513,7 +1513,7 @@ pub mod server {
         async fn handle_putDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1569,7 +1569,7 @@ pub mod server {
         async fn handle_lobDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1647,7 +1647,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_ping(p).await,
                 1usize => self.handle_getRandomData(p).await,
@@ -1677,7 +1677,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -1843,43 +1843,43 @@ pub mod mock {
     impl<'mock> super::client::MyService for MyService<'mock> {
         fn ping(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.ping.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServicePingError(error),
                 ))))
         }
         fn getRandomData(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             let mut closure = self.getRandomData.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServiceGetRandomDataError(error),
                 ))))
         }
         fn hasDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<bool, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
             let mut closure = self.hasDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_id.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServiceHasDataByIdError(error),
                 ))))
         }
         fn getDataById(
             &self,
             arg_id: i64,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             let mut closure = self.getDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_id.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServiceGetDataByIdError(error),
                 ))))
         }
@@ -1887,11 +1887,11 @@ pub mod mock {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.putDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_id.clone(), arg_data.to_owned())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServicePutDataByIdError(error),
                 ))))
         }
@@ -1899,11 +1899,11 @@ pub mod mock {
             &self,
             arg_id: i64,
             arg_data: &str,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.lobDataById.closure.lock().unwrap();
             let closure: &mut dyn FnMut(i64, String) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_id.clone(), arg_data.to_owned())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServiceLobDataByIdError(error),
                 ))))
         }
@@ -2149,30 +2149,30 @@ pub mod mock {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "MyService::ping failed with {:?}", _0)]
+        #[error("MyService::ping failed with {0:?}")]
         MyServicePingError(crate::services::my_service::PingExn),
-        #[fail(display = "MyService::getRandomData failed with {:?}", _0)]
+        #[error("MyService::getRandomData failed with {0:?}")]
         MyServiceGetRandomDataError(crate::services::my_service::GetRandomDataExn),
-        #[fail(display = "MyService::hasDataById failed with {:?}", _0)]
+        #[error("MyService::hasDataById failed with {0:?}")]
         MyServiceHasDataByIdError(crate::services::my_service::HasDataByIdExn),
-        #[fail(display = "MyService::getDataById failed with {:?}", _0)]
+        #[error("MyService::getDataById failed with {0:?}")]
         MyServiceGetDataByIdError(crate::services::my_service::GetDataByIdExn),
-        #[fail(display = "MyService::putDataById failed with {:?}", _0)]
+        #[error("MyService::putDataById failed with {0:?}")]
         MyServicePutDataByIdError(crate::services::my_service::PutDataByIdExn),
-        #[fail(display = "MyService::lobDataById failed with {:?}", _0)]
+        #[error("MyService::lobDataById failed with {0:?}")]
         MyServiceLobDataByIdError(crate::services::my_service::LobDataByIdExn),
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

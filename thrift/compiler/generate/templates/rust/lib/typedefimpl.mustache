@@ -28,7 +28,7 @@
     }
 
     impl<P: ProtocolReader> Deserialize<P> for {{typedef:rust_name}} {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Deserialize::read(p).map({{typedef:rust_name}})
         }
     }

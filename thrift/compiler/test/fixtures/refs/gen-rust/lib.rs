@@ -197,13 +197,13 @@ pub mod types {
     }
 
     impl std::str::FromStr for TypedEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "VAL1" => Ok(TypedEnum::VAL1),
                 "VAL2" => Ok(TypedEnum::VAL2),
-                _ => failure::bail!("Unable to parse {} as {}", string, "TypedEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "TypedEnum"),
             }
         }
     }
@@ -221,7 +221,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for TypedEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(TypedEnum::from(p.read_i32()?))
         }
     }
@@ -263,7 +263,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for MyUnion {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;
@@ -331,7 +331,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyField {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_opt_value = None;
             let mut field_value = None;
             let mut field_req_value = None;
@@ -391,7 +391,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_opt_ref = None;
             let mut field_ref = None;
             let mut field_req_ref = None;
@@ -449,7 +449,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithUnion {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_u = None;
             let mut field_aDouble = None;
             let mut field_f = None;
@@ -501,7 +501,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::RecursiveStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_mes = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -565,7 +565,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithContainers {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_list_ref = None;
             let mut field_set_ref = None;
             let mut field_map_ref = None;
@@ -634,7 +634,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithSharedConst {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_opt_shared_const = None;
             let mut field_shared_const = None;
             let mut field_req_shared_const = None;
@@ -680,7 +680,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Empty {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -731,7 +731,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithRef {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
             let mut field_req_field = None;
@@ -791,7 +791,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefTypeUnique {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
             let mut field_req_field = None;
@@ -851,7 +851,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefTypeShared {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
             let mut field_req_field = None;
@@ -911,7 +911,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefTypeSharedConst {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_def_field = None;
             let mut field_opt_field = None;
             let mut field_req_field = None;
@@ -961,7 +961,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::StructWithRefAndAnnotCppNoexceptMoveCtor {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_def_field = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -983,18 +983,18 @@ pub mod types {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

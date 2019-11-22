@@ -98,14 +98,14 @@ pub mod types {
     }
 
     impl std::str::FromStr for Animal {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "DOG" => Ok(Animal::DOG),
                 "CAT" => Ok(Animal::CAT),
                 "TARANTULA" => Ok(Animal::TARANTULA),
-                _ => failure::bail!("Unable to parse {} as {}", string, "Animal"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "Animal"),
             }
         }
     }
@@ -123,7 +123,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for Animal {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(Animal::from(p.read_i32()?))
         }
     }
@@ -165,7 +165,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Color {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_red = None;
             let mut field_green = None;
             let mut field_blue = None;
@@ -242,7 +242,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Vehicle {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_color = None;
             let mut field_licensePlate = None;
             let mut field_description = None;
@@ -350,7 +350,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Person {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_id = None;
             let mut field_name = None;
             let mut field_age = None;
@@ -399,18 +399,18 @@ pub mod types {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

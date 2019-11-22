@@ -32,5 +32,5 @@ pub trait Transport: Framing + Send + 'static {
     fn call(
         &self,
         req: FramingEncodedFinal<Self>,
-    ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, failure::Error>> + Send + 'static>>;
+    ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
 }

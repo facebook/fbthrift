@@ -19,8 +19,8 @@ use crate::framing::{Framing, FramingDecoded, FramingEncodedFinal};
 use crate::protocol::{self, Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader};
 use crate::serialize::Serialize;
 use crate::thrift_protocol::MessageType;
+use anyhow::Error;
 use async_trait::async_trait;
-use failure::Error;
 use std::marker::PhantomData;
 
 #[async_trait]

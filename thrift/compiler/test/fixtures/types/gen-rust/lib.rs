@@ -205,7 +205,7 @@ pub mod types {
     }
 
     impl std::str::FromStr for has_bitwise_ops {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
@@ -214,7 +214,7 @@ pub mod types {
                 "one" => Ok(has_bitwise_ops::one),
                 "two" => Ok(has_bitwise_ops::two),
                 "three" => Ok(has_bitwise_ops::three),
-                _ => failure::bail!("Unable to parse {} as {}", string, "has_bitwise_ops"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "has_bitwise_ops"),
             }
         }
     }
@@ -232,7 +232,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for has_bitwise_ops {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(has_bitwise_ops::from(p.read_i32()?))
         }
     }
@@ -290,13 +290,13 @@ pub mod types {
     }
 
     impl std::str::FromStr for is_unscoped {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "hello" => Ok(is_unscoped::hello),
                 "world" => Ok(is_unscoped::world),
-                _ => failure::bail!("Unable to parse {} as {}", string, "is_unscoped"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "is_unscoped"),
             }
         }
     }
@@ -314,7 +314,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for is_unscoped {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(is_unscoped::from(p.read_i32()?))
         }
     }
@@ -372,13 +372,13 @@ pub mod types {
     }
 
     impl std::str::FromStr for MyForwardRefEnum {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "ZERO" => Ok(MyForwardRefEnum::ZERO),
                 "NONZERO" => Ok(MyForwardRefEnum::NONZERO),
-                _ => failure::bail!("Unable to parse {} as {}", string, "MyForwardRefEnum"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyForwardRefEnum"),
             }
         }
     }
@@ -396,7 +396,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyForwardRefEnum {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(MyForwardRefEnum::from(p.read_i32()?))
         }
     }
@@ -456,14 +456,14 @@ pub mod types {
     }
 
     impl std::str::FromStr for MyEnumA {
-        type Err = failure::Error;
+        type Err = anyhow::Error;
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
                 "fieldA" => Ok(MyEnumA::fieldA),
                 "fieldB" => Ok(MyEnumA::fieldB),
                 "fieldC" => Ok(MyEnumA::fieldC),
-                _ => failure::bail!("Unable to parse {} as {}", string, "MyEnumA"),
+                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyEnumA"),
             }
         }
     }
@@ -481,7 +481,7 @@ pub mod types {
 
     impl<P: ProtocolReader> Deserialize<P> for MyEnumA {
         #[inline]
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             Ok(MyEnumA::from(p.read_i32()?))
         }
     }
@@ -511,7 +511,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::decorated_struct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_field = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -583,7 +583,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::ContainerStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_fieldA = None;
             let mut field_fieldB = None;
             let mut field_fieldC = None;
@@ -648,7 +648,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::CppTypeStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_fieldA = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -692,7 +692,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::VirtualStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_MyIntField = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -740,7 +740,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyStructWithForwardRefEnum {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_a = None;
             let mut field_b = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -791,7 +791,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::TrivialNumeric {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_a = None;
             let mut field_b = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -845,7 +845,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::TrivialNestedWithDefault {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_z = None;
             let mut field_n = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -899,7 +899,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::ComplexString {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_a = None;
             let mut field_b = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -957,7 +957,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::ComplexNestedWithDefault {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_z = None;
             let mut field_n = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1027,7 +1027,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MinPadding {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_small = None;
             let mut field_big = None;
             let mut field_medium = None;
@@ -1095,7 +1095,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_MyIntField = None;
             let mut field_MyStringField = None;
             let mut field_majorVer = None;
@@ -1144,7 +1144,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::MyDataItem {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1185,7 +1185,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Renaming {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1233,7 +1233,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::AnnotatedTypes {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_binary_field = None;
             let mut field_list_field = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1288,7 +1288,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::ForwardUsageRoot {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_ForwardUsageStruct = None;
             let mut field_ForwardUsageByRef = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1337,7 +1337,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::ForwardUsageStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1383,7 +1383,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::ForwardUsageByRef {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1423,7 +1423,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::NoexceptMoveEmpty {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1464,7 +1464,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::NoexceptMoveSimpleStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_boolField = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1547,7 +1547,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::NoexceptMoveComplexStruct {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_MyBoolField = None;
             let mut field_MyIntField = None;
             let mut field_MyStringField = None;
@@ -1633,7 +1633,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for NoExceptMoveUnion {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             let mut once = false;
             let mut alt = None;
@@ -1728,7 +1728,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for BounceMapExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -1822,7 +1822,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for BinaryKeyedMapExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -1888,11 +1888,11 @@ pub mod client {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<include::types::SomeMap, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>>;
         fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>>;
     }
 
     impl<P, T> SomeService for SomeServiceImpl<P, T>
@@ -1904,7 +1904,7 @@ pub mod client {
     {        fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<include::types::SomeMap, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1923,7 +1923,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<include::types::SomeMap> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<include::types::SomeMap> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -1940,7 +1940,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -1952,7 +1952,7 @@ pub mod client {
         fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -1971,7 +1971,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<std::collections::BTreeMap<crate::types::TBinary, i64>> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -1988,7 +1988,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -2100,7 +2100,7 @@ pub mod server {
         async fn handle_bounce_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_m = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -2148,7 +2148,7 @@ pub mod server {
         async fn handle_binary_keyed_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_r = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -2214,7 +2214,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_bounce_map(p).await,
                 1usize => self.handle_binary_keyed_map(p).await,
@@ -2240,7 +2240,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -2399,22 +2399,22 @@ pub mod mock {
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<include::types::SomeMap, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
             let mut closure = self.bounce_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(include::types::SomeMap) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_m.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::SomeServiceBounceMapError(error),
                 ))))
         }
         fn binary_keyed_map(
             &self,
             arg_r: &Vec<i64>,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<std::collections::BTreeMap<crate::types::TBinary, i64>, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<i64>) -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure(arg_r.clone())
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
                 ))))
         }
@@ -2504,22 +2504,22 @@ pub mod mock {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "SomeService::bounce_map failed with {:?}", _0)]
+        #[error("SomeService::bounce_map failed with {0:?}")]
         SomeServiceBounceMapError(crate::services::some_service::BounceMapExn),
-        #[fail(display = "SomeService::binary_keyed_map failed with {:?}", _0)]
+        #[error("SomeService::binary_keyed_map failed with {0:?}")]
         SomeServiceBinaryKeyedMapError(crate::services::some_service::BinaryKeyedMapExn),
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

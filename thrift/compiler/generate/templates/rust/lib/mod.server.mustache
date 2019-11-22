@@ -93,7 +93,7 @@
         async fn handle_{{function:name}}<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {{>lib/block}}{{!
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {{>lib/block}}{{!
             }}{{#function:args}}
             let mut field_{{field:name}} = None;{{!
             }}{{/function:args}}
@@ -178,7 +178,7 @@
             idx: usize,
             {{^service:functions?}}_{{/service:functions?}}{{!
             }}p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
                 }}{{#service:functions}}
                 {{function:index}}usize => self.handle_{{function:name}}(p).await,{{!
@@ -214,7 +214,7 @@
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {

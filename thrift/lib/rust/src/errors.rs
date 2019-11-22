@@ -15,7 +15,7 @@
  */
 
 use crate::ApplicationException;
-use failure::Error;
+use anyhow::Error;
 use thiserror::Error;
 
 #[derive(Debug, Error)]

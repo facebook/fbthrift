@@ -33,7 +33,7 @@ pub enum ProtocolID {
 }
 
 impl TryFrom<i16> for ProtocolID {
-    type Error = failure::Error;
+    type Error = anyhow::Error;
 
     fn try_from(val: i16) -> Result<Self> {
         match ProtocolID::from_i16(val) {
@@ -68,7 +68,7 @@ pub enum MessageType {
 }
 
 impl TryFrom<u32> for MessageType {
-    type Error = failure::Error;
+    type Error = anyhow::Error;
 
     fn try_from(val: u32) -> Result<Self> {
         match MessageType::from_u32(val) {

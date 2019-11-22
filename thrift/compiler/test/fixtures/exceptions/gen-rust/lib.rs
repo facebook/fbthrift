@@ -44,7 +44,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Banal {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -85,7 +85,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Fiery {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_message = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -131,7 +131,7 @@ pub mod types {
     }
 
     impl<P: ProtocolReader> Deserialize<P> for self::Serious {
-        fn read(p: &mut P) -> failure::Fallible<Self> {
+        fn read(p: &mut P) -> anyhow::Result<Self> {
             let mut field_sonnet = None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -212,7 +212,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for DoBlandExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoBlandExn::Success(());
@@ -348,7 +348,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for DoRaiseExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoRaiseExn::Success(());
@@ -448,7 +448,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for Get200Exn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -590,7 +590,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for Get500Exn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = None;
@@ -667,16 +667,16 @@ pub mod client {
     pub trait Raiser: Send {
         fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>>;
     }
 
     impl<P, T> Raiser for RaiserImpl<P, T>
@@ -687,7 +687,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -703,7 +703,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -720,7 +720,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -731,7 +731,7 @@ pub mod client {
         }
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -747,7 +747,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -764,7 +764,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -775,7 +775,7 @@ pub mod client {
         }
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -791,7 +791,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<String> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -808,7 +808,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -819,7 +819,7 @@ pub mod client {
         }
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -835,7 +835,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<String> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<String> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -852,7 +852,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -982,7 +982,7 @@ pub mod server {
         async fn handle_doBland<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1022,7 +1022,7 @@ pub mod server {
         async fn handle_doRaise<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1062,7 +1062,7 @@ pub mod server {
         async fn handle_get200<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1102,7 +1102,7 @@ pub mod server {
         async fn handle_get500<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1162,7 +1162,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_doBland(p).await,
                 1usize => self.handle_doRaise(p).await,
@@ -1190,7 +1190,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -1352,41 +1352,41 @@ pub mod mock {
     impl<'mock> super::client::Raiser for Raiser<'mock> {
         fn doBland(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.doBland.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserDoBlandError(error),
                 ))))
         }
         fn doRaise(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.doRaise.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserDoRaiseError(error),
                 ))))
         }
         fn get200(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             let mut closure = self.get200.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserGet200Error(error),
                 ))))
         }
         fn get500(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<String, failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             let mut closure = self.get500.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserGet500Error(error),
                 ))))
         }
@@ -1554,26 +1554,26 @@ pub mod mock {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "Raiser::doBland failed with {:?}", _0)]
+        #[error("Raiser::doBland failed with {0:?}")]
         RaiserDoBlandError(crate::services::raiser::DoBlandExn),
-        #[fail(display = "Raiser::doRaise failed with {:?}", _0)]
+        #[error("Raiser::doRaise failed with {0:?}")]
         RaiserDoRaiseError(crate::services::raiser::DoRaiseExn),
-        #[fail(display = "Raiser::get200 failed with {:?}", _0)]
+        #[error("Raiser::get200 failed with {0:?}")]
         RaiserGet200Error(crate::services::raiser::Get200Exn),
-        #[fail(display = "Raiser::get500 failed with {:?}", _0)]
+        #[error("Raiser::get500 failed with {0:?}")]
         RaiserGet500Error(crate::services::raiser::Get500Exn),
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }

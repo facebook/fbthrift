@@ -64,7 +64,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for DoRootExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoRootExn::Success(());
@@ -159,7 +159,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for DoMidExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoMidExn::Success(());
@@ -254,7 +254,7 @@ pub mod services {
         }
 
         impl<P: ProtocolReader> Deserialize<P> for DoLeafExn {
-            fn read(p: &mut P) -> failure::Fallible<Self> {
+            fn read(p: &mut P) -> anyhow::Result<Self> {
                 let _ = p.read_struct_begin(|_| ())?;
                 let mut once = false;
                 let mut alt = DoLeafExn::Success(());
@@ -313,7 +313,7 @@ pub mod client {
     pub trait MyRoot: Send {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
     }
 
     impl<P, T> MyRoot for MyRootImpl<P, T>
@@ -324,7 +324,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -340,7 +340,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -357,7 +357,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -426,7 +426,7 @@ pub mod client {
     pub trait MyNode: Send {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
     }
 
     impl<P, T> MyNode for MyNodeImpl<P, T>
@@ -437,7 +437,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -453,7 +453,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -470,7 +470,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -539,7 +539,7 @@ pub mod client {
     pub trait MyLeaf: Send {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>>;
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
     }
 
     impl<P, T> MyLeaf for MyLeafImpl<P, T>
@@ -550,7 +550,7 @@ pub mod client {
         ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
     {        fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
@@ -566,7 +566,7 @@ pub mod client {
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
-                    move |mut p: P::Deserializer| -> failure::Fallible<()> {
+                    move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
                         let (_, message_type, _) = p.read_message_begin(|_| ())?;
                         let result = match message_type {
@@ -583,7 +583,7 @@ pub mod client {
                                 ).into())
                             }
                             MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
-                                failure::bail!("Unexpected message type {:?}", message_type)
+                                anyhow::bail!("Unexpected message type {:?}", message_type)
                             }
                         };
                         p.read_message_end()?;
@@ -683,7 +683,7 @@ pub mod server {
         async fn handle_do_root<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -740,7 +740,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_do_root(p).await,
                 bad => panic!(
@@ -765,7 +765,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -867,7 +867,7 @@ pub mod server {
         async fn handle_do_mid<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -927,7 +927,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_do_mid(p).await,
                 bad => panic!(
@@ -955,7 +955,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -1061,7 +1061,7 @@ pub mod server {
         async fn handle_do_leaf<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| ())?;
@@ -1121,7 +1121,7 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
                 0usize => self.handle_do_leaf(p).await,
                 bad => panic!(
@@ -1149,7 +1149,7 @@ pub mod server {
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
-        ) -> Result<ProtocolEncodedFinal<P>, failure::Error> {
+        ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
@@ -1309,11 +1309,11 @@ pub mod mock {
     impl<'mock> super::client::MyRoot for MyRoot<'mock> {
         fn do_root(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.do_root.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyRootDoRootError(error),
                 ))))
         }
@@ -1380,11 +1380,11 @@ pub mod mock {
     impl<'mock> super::client::MyNode for MyNode<'mock> {
         fn do_mid(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.do_mid.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyNodeDoMidError(error),
                 ))))
         }
@@ -1451,11 +1451,11 @@ pub mod mock {
     impl<'mock> super::client::MyLeaf for MyLeaf<'mock> {
         fn do_leaf(
             &self,
-        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = Result<(), failure::Error>> + Send + 'static>> {
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.do_leaf.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
             Box::pin(futures_preview::future::ready(closure()
-                .map_err(|error| failure::Error::from(
+                .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyLeafDoLeafError(error),
                 ))))
         }
@@ -1506,24 +1506,24 @@ pub mod mock {
 }
 
 pub mod errors {
-    use failure::Fail;
     use fbthrift::ApplicationException;
+    use thiserror::Error;
 
-    #[derive(Debug, Fail)]
+    #[derive(Debug, Error)]
     pub enum ErrorKind {
-        #[fail(display = "MyRoot::do_root failed with {:?}", _0)]
+        #[error("MyRoot::do_root failed with {0:?}")]
         MyRootDoRootError(crate::services::my_root::DoRootExn),
-        #[fail(display = "MyNode::do_mid failed with {:?}", _0)]
+        #[error("MyNode::do_mid failed with {0:?}")]
         MyNodeDoMidError(crate::services::my_node::DoMidExn),
-        #[fail(display = "MyLeaf::do_leaf failed with {:?}", _0)]
+        #[error("MyLeaf::do_leaf failed with {0:?}")]
         MyLeafDoLeafError(crate::services::my_leaf::DoLeafExn),
-        #[fail(display = "Application exception: {:?}", _0)]
+        #[error("Application exception: {0:?}")]
         ApplicationException(ApplicationException),
     }
 
     impl From<ApplicationException> for ErrorKind {
         fn from(exn: ApplicationException) -> Self {
-            ErrorKind::ApplicationException(exn).into()
+            ErrorKind::ApplicationException(exn)
         }
     }
 }
