@@ -134,7 +134,6 @@ void RequestChannel::sendRequestStream(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr cb) {
-  DestructorGuard dg(this);
   auto chunkTimeout = rpcOptions.getChunkTimeout();
   auto callback = std::make_unique<ThriftClientCallback>(
       nullptr, false, std::move(cb), std::chrono::milliseconds::zero());
