@@ -51,7 +51,15 @@ folly::exception_wrapper requestAbortedException(const folly::Try<Payload>& t) {
 
 folly::Try<void> RequestContext::waitForWriteToComplete() {
   baton_.wait();
+  return waitForWriteToCompleteResult();
+}
 
+void RequestContext::waitForWriteToCompleteSchedule(
+    folly::fibers::Baton::Waiter* waiter) {
+  baton_.setWaiter(*waiter);
+}
+
+folly::Try<void> RequestContext::waitForWriteToCompleteResult() {
   switch (state_) {
     case State::RESPONSE_RECEIVED:
       // Even though this function should only be called for no-response

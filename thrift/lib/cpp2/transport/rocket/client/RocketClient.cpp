@@ -456,38 +456,91 @@ void RocketClient::sendRequestStreamChannel(
     initialRequestN += 1;
   }
 
-  DCHECK(folly::fibers::onFiber());
-  auto setupFrame = std::move(setupFrame_);
-  RequestContext ctx(
-      Frame(streamId, std::move(request), initialRequestN),
-      queue_,
-      setupFrame.get(),
-      nullptr /* RocketClientWriteCallback */);
+  class Context : public folly::fibers::Baton::Waiter {
+   public:
+    Context(
+        RocketClient& client,
+        StreamId streamId,
+        std::unique_ptr<SetupFrame> setupFrame,
+        Frame&& frame,
+        RequestContextQueue& queue,
+        ServerCallback& serverCallback)
+        : client_(client),
+          streamId_(streamId),
+          setupFrame_(std::move(setupFrame)),
+          ctx_(
+              std::move(frame),
+              queue,
+              setupFrame_.get(),
+              nullptr /* RocketClientWriteCallback */),
+          serverCallback_(serverCallback) {}
+
+    ~Context() {
+      if (!complete_) {
+        client_.freeStream(streamId_);
+      }
+    }
+
+    auto scheduleWrite() {
+      return client_.scheduleWrite(ctx_);
+    }
+
+    static void run(
+        std::unique_ptr<Context> self,
+        std::chrono::milliseconds firstResponseTimeout) {
+      auto writeScheduled = self->client_.scheduleWrite(self->ctx_);
+      if (writeScheduled.hasException()) {
+        return self->serverCallback_.onInitialError(
+            std::move(writeScheduled.exception()));
+      }
+
+      self->client_.scheduleFirstResponseTimeout(
+          self->streamId_, firstResponseTimeout);
+      auto& ctx = self->ctx_;
+      ctx.waitForWriteToCompleteSchedule(self.release());
+    }
+
+   private:
+    void post() override {
+      SCOPE_EXIT {
+        delete this;
+      };
+
+      auto writeCompleted = ctx_.waitForWriteToCompleteResult();
+      if (writeCompleted.hasException()) {
+        // Look up the stream in the map again. It may have already been erased,
+        // e.g., by closeNow() or an error frame that arrived before this fiber
+        // had a chance to resume, and we must guarantee that onInitialError()
+        // is not called more than once.
+        if (client_.streamExists(streamId_)) {
+          return serverCallback_.onInitialError(
+              std::move(writeCompleted.exception()));
+        }
+      }
+
+      complete_ = true;
+    }
+
+    RocketClient& client_;
+    StreamId streamId_;
+    std::unique_ptr<SetupFrame> setupFrame_;
+    RequestContext ctx_;
+    ServerCallback& serverCallback_;
+    bool complete_{false};
+  };
 
   auto serverCallbackPtr = serverCallback.get();
   streams_.emplace(streamId, std::move(serverCallback));
-  auto g = folly::makeGuard([&] { freeStream(streamId); });
 
-  auto writeScheduled = scheduleWrite(ctx);
-  if (writeScheduled.hasException()) {
-    return serverCallbackPtr->onInitialError(
-        std::move(writeScheduled.exception()));
-  }
-
-  scheduleFirstResponseTimeout(streamId, firstResponseTimeout);
-  auto writeCompleted = ctx.waitForWriteToComplete();
-  if (writeCompleted.hasException()) {
-    // Look up the stream in the map again. It may have already been erased,
-    // e.g., by closeNow() or an error frame that arrived before this fiber had
-    // a chance to resume, and we must guarantee that onInitialError() is not
-    // called more than once.
-    if (streamExists(streamId)) {
-      return serverCallbackPtr->onInitialError(
-          std::move(writeCompleted.exception()));
-    }
-  }
-
-  g.dismiss();
+  Context::run(
+      std::make_unique<Context>(
+          *this,
+          streamId,
+          std::move(setupFrame_),
+          Frame(streamId, std::move(request), initialRequestN),
+          queue_,
+          *serverCallbackPtr),
+      firstResponseTimeout);
 }
 
 folly::Try<void> RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {

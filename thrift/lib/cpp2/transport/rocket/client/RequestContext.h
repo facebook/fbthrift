@@ -81,6 +81,9 @@ class RequestContext {
   // necessarily expected, e.g., REQUEST_FNF and REQUEST_STREAM
   FOLLY_NODISCARD folly::Try<void> waitForWriteToComplete();
 
+  void waitForWriteToCompleteSchedule(folly::fibers::Baton::Waiter* waiter);
+  FOLLY_NODISCARD folly::Try<void> waitForWriteToCompleteResult();
+
   void scheduleTimeoutForResponse() {
     DCHECK(isRequestResponse());
     // In some edge cases, response may arrive before write to socket finishes.

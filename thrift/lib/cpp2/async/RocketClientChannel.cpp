@@ -177,21 +177,12 @@ void RocketClientChannel::sendRequestStream(
     return;
   }
 
-  const std::chrono::milliseconds chunkTimeout{rpcOptions.getChunkTimeout()};
-  getFiberManager().addTask(
-      [rclient = rclient_,
-       firstResponseTimeout,
-       chunkTimeout,
-       initialRequestN = rpcOptions.getChunkBufferSize(),
-       clientCallback,
-       payload = rocket::makePayload(metadata, std::move(buf))]() mutable {
-        return rclient->sendRequestStream(
-            std::move(payload),
-            firstResponseTimeout,
-            chunkTimeout,
-            initialRequestN,
-            clientCallback);
-      });
+  return rclient_->sendRequestStream(
+      rocket::makePayload(metadata, std::move(buf)),
+      firstResponseTimeout,
+      rpcOptions.getChunkTimeout(),
+      rpcOptions.getChunkBufferSize(),
+      clientCallback);
 }
 
 void RocketClientChannel::sendRequestSink(
@@ -215,14 +206,10 @@ void RocketClientChannel::sendRequestSink(
     return;
   }
 
-  getFiberManager().addTask(
-      [rclient = rclient_,
-       firstResponseTimeout,
-       clientCallback,
-       payload = rocket::makePayload(metadata, std::move(buf))]() mutable {
-        return rclient->sendRequestSink(
-            std::move(payload), firstResponseTimeout, clientCallback);
-      });
+  return rclient_->sendRequestSink(
+      rocket::makePayload(metadata, std::move(buf)),
+      firstResponseTimeout,
+      clientCallback);
 }
 
 void RocketClientChannel::sendThriftRequest(
