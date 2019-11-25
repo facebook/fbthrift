@@ -38,7 +38,6 @@ class copy_cmake_built_libs_build_ext(_build_ext):
 
 # Extension: filename created by cmake
 extensions = [
-    Extension("folly.iobuf", sources=["folly/iobuf.so"]),
     Extension("thrift.py3.common", sources=["thrift/py3/common.so"]),
     Extension("thrift.py3.types", sources=["thrift/py3/types.so"]),
     Extension("thrift.py3.exceptions", sources=["thrift/py3/exceptions.so"]),

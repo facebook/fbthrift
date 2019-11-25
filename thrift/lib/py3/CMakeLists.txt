@@ -39,8 +39,6 @@ endfunction ()
 
 
 create_cybld_tree(folly folly
-                        iobuf.pxd
-                        iobuf.pyx
                         optional.pxd )
 
 create_cybld_tree(thrift thrift/py3
@@ -66,7 +64,6 @@ file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cybld/folly/__init__.pyx)
 # named <dir>-<dir>-<module>-py3
 
 set(cpp_tgts
-  "folly/iobuf.cpp"
   "thrift/py3/common.cpp"
   "thrift/py3/types.cpp"
   "thrift/py3/exceptions.cpp"
