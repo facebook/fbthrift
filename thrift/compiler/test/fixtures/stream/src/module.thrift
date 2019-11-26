@@ -39,4 +39,7 @@ service PubSubStreamingService {
     stream throws (1: FooEx e);
   i32, stream<i32> responseandstreamthrows(1: i32 foo) throws(1: FooEx e)
     stream throws (1: FooEx e);
+  stream<i32 throws (1: FooEx e)> streamleftthrows(1: i32 foo);
+  stream<i32 throws (1: FooEx e)> bothleftthrows(1: i32 foo) throws(1: FooEx e);
+  i32, stream<i32 throws (1: FooEx e)> responseandstreamleftthrows(1: i32 foo) throws(1: FooEx e);
 }

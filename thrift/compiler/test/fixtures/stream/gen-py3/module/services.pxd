@@ -13,5 +13,8 @@ cdef class PubSubStreamingServiceInterface(ServiceInterface):
     cdef public bint _pass_context_streamthrows
     cdef public bint _pass_context_boththrows
     cdef public bint _pass_context_responseandstreamthrows
+    cdef public bint _pass_context_streamleftthrows
+    cdef public bint _pass_context_bothleftthrows
+    cdef public bint _pass_context_responseandstreamleftthrows
     pass
 

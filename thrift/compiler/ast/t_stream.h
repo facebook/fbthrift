@@ -28,8 +28,11 @@ class t_stream_response : public t_type {
  public:
   explicit t_stream_response(
       t_type* elem_type,
-      t_type* first_response_type = nullptr)
-      : first_response_type_(first_response_type), elem_type_(elem_type) {}
+      t_type* first_response_type = nullptr,
+      t_struct* throws = nullptr)
+      : first_response_type_(first_response_type),
+        elem_type_(elem_type),
+        throws_(throws) {}
 
   t_type* get_elem_type() const {
     return elem_type_;
@@ -67,9 +70,17 @@ class t_stream_response : public t_type {
     return TypeValue::TYPE_STREAM;
   }
 
+  t_struct* get_throws_struct() const {
+    return throws_;
+  }
+  bool has_throws_struct() const {
+    return (bool)throws_;
+  }
+
  private:
   t_type* first_response_type_;
   t_type* elem_type_;
+  t_struct* throws_;
 };
 
 } // namespace compiler

@@ -80,4 +80,55 @@ PubSubStreamingServiceClientWrapper::responseandstreamthrows(
   return _future;
 }
 
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+PubSubStreamingServiceClientWrapper::streamleftthrows(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_foo) {
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_streamleftthrows, channel_);
+  client->streamleftthrows(
+    rpcOptions,
+    std::move(callback),
+    arg_foo
+  );
+  return _future;
+}
+
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
+PubSubStreamingServiceClientWrapper::bothleftthrows(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_foo) {
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_bothleftthrows, channel_);
+  client->bothleftthrows(
+    rpcOptions,
+    std::move(callback),
+    arg_foo
+  );
+  return _future;
+}
+
+folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>
+PubSubStreamingServiceClientWrapper::responseandstreamleftthrows(
+    apache::thrift::RpcOptions& rpcOptions,
+    int32_t arg_foo) {
+  folly::Promise<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_responseandstreamleftthrows, channel_);
+  client->responseandstreamleftthrows(
+    rpcOptions,
+    std::move(callback),
+    arg_foo
+  );
+  return _future;
+}
+
 } // namespace cpp2

@@ -88,6 +88,57 @@ class PubSubStreamingServiceInterface(
         self,
         foo: int
     ) -> _module_types.ResponseAndtream__i32_i32: ...
+
+    @staticmethod
+    def pass_context_streamleftthrows(
+        fn: _typing.Callable[
+                [_PubSubStreamingServiceInterfaceT, RequestContext, int],
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.Stream__i32]
+        ]
+    ) -> _typing.Callable[
+        [_PubSubStreamingServiceInterfaceT, int],
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.Stream__i32]
+    ]: ...
+
+    @abstractmethod
+    async def streamleftthrows(
+        self,
+        foo: int
+    ) -> _module_types.Stream__i32: ...
+
+    @staticmethod
+    def pass_context_bothleftthrows(
+        fn: _typing.Callable[
+                [_PubSubStreamingServiceInterfaceT, RequestContext, int],
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.Stream__i32]
+        ]
+    ) -> _typing.Callable[
+        [_PubSubStreamingServiceInterfaceT, int],
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.Stream__i32]
+    ]: ...
+
+    @abstractmethod
+    async def bothleftthrows(
+        self,
+        foo: int
+    ) -> _module_types.Stream__i32: ...
+
+    @staticmethod
+    def pass_context_responseandstreamleftthrows(
+        fn: _typing.Callable[
+                [_PubSubStreamingServiceInterfaceT, RequestContext, int],
+                _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ResponseAndtream__i32_i32]
+        ]
+    ) -> _typing.Callable[
+        [_PubSubStreamingServiceInterfaceT, int],
+        _typing.Coroutine[_typing.Any, _typing.Any, _module_types.ResponseAndtream__i32_i32]
+    ]: ...
+
+    @abstractmethod
+    async def responseandstreamleftthrows(
+        self,
+        foo: int
+    ) -> _module_types.ResponseAndtream__i32_i32: ...
     pass
 
 

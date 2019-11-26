@@ -137,6 +137,33 @@ cdef class PubSubStreamingServiceInterface(
         raise NotImplementedError("async def responseandstreamthrows is not implemented")
 
     @staticmethod
+    def pass_context_streamleftthrows(fn):
+        return pass_context(fn)
+
+    async def streamleftthrows(
+            self,
+            foo):
+        raise NotImplementedError("async def streamleftthrows is not implemented")
+
+    @staticmethod
+    def pass_context_bothleftthrows(fn):
+        return pass_context(fn)
+
+    async def bothleftthrows(
+            self,
+            foo):
+        raise NotImplementedError("async def bothleftthrows is not implemented")
+
+    @staticmethod
+    def pass_context_responseandstreamleftthrows(fn):
+        return pass_context(fn)
+
+    async def responseandstreamleftthrows(
+            self,
+            foo):
+        raise NotImplementedError("async def responseandstreamleftthrows is not implemented")
+
+    @staticmethod
     def __get_reflection_for_returnstream():
         return __MethodSpec(
             name="returnstream",
@@ -220,6 +247,65 @@ cdef class PubSubStreamingServiceInterface(
             }),
         )
 
+    @staticmethod
+    def __get_reflection_for_streamleftthrows():
+        return __MethodSpec(
+            name="streamleftthrows",
+            arguments=[
+                __ArgumentSpec(
+                    name="foo",
+                    type=int,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=_module_types.Stream__i32,
+            exceptions=[
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
+    @staticmethod
+    def __get_reflection_for_bothleftthrows():
+        return __MethodSpec(
+            name="bothleftthrows",
+            arguments=[
+                __ArgumentSpec(
+                    name="foo",
+                    type=int,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=_module_types.Stream__i32,
+            exceptions=[
+                _module_types.FooEx,
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
+    @staticmethod
+    def __get_reflection_for_responseandstreamleftthrows():
+        return __MethodSpec(
+            name="responseandstreamleftthrows",
+            arguments=[
+                __ArgumentSpec(
+                    name="foo",
+                    type=int,
+                    annotations=_py_types.MappingProxyType({
+                    }),
+                ),
+            ],
+            result=_module_types.ResponseAndtream__i32_i32,
+            exceptions=[
+                _module_types.FooEx,
+            ],
+            annotations=_py_types.MappingProxyType({
+            }),
+        )
+
     @classmethod
     def __get_reflection__(cls):
         return __InterfaceSpec(
@@ -229,6 +315,9 @@ cdef class PubSubStreamingServiceInterface(
                 cls.__get_reflection_for_streamthrows(),
                 cls.__get_reflection_for_boththrows(),
                 cls.__get_reflection_for_responseandstreamthrows(),
+                cls.__get_reflection_for_streamleftthrows(),
+                cls.__get_reflection_for_bothleftthrows(),
+                cls.__get_reflection_for_responseandstreamleftthrows(),
             ],
             annotations=_py_types.MappingProxyType({
             }),
@@ -465,6 +554,181 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
     except Exception as ex:
         print(
             "Unexpected error in service handler responseandstreamthrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(cResponseAndStream[int32_t,int32_t]() # server streaming support is not implemented yet
+)
+
+cdef api void call_cy_PubSubStreamingService_streamleftthrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cStream[int32_t]] cPromise,
+    int32_t foo
+):
+    cdef PubSubStreamingServiceInterface __iface
+    __iface = self
+    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    arg_foo = foo
+    __context_obj = RequestContext.create(ctx)
+    __context = None
+    if __iface._pass_context_streamleftthrows:
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_streamleftthrows_coro(
+            self,
+            __context,
+            __promise,
+            arg_foo
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def PubSubStreamingService_streamleftthrows_coro(
+    object self,
+    object ctx,
+    Promise_cStream__int32_t promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.streamleftthrows(ctx,
+                      foo)
+        else:
+            result = await self.streamleftthrows(
+                      foo)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler streamleftthrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+)
+
+cdef api void call_cy_PubSubStreamingService_bothleftthrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cStream[int32_t]] cPromise,
+    int32_t foo
+):
+    cdef PubSubStreamingServiceInterface __iface
+    __iface = self
+    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    arg_foo = foo
+    __context_obj = RequestContext.create(ctx)
+    __context = None
+    if __iface._pass_context_bothleftthrows:
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_bothleftthrows_coro(
+            self,
+            __context,
+            __promise,
+            arg_foo
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def PubSubStreamingService_bothleftthrows_coro(
+    object self,
+    object ctx,
+    Promise_cStream__int32_t promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.bothleftthrows(ctx,
+                      foo)
+        else:
+            result = await self.bothleftthrows(
+                      foo)
+    except _module_types.FooEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler bothleftthrows:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+)
+
+cdef api void call_cy_PubSubStreamingService_responseandstreamleftthrows(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cResponseAndStream[int32_t,int32_t]] cPromise,
+    int32_t foo
+):
+    cdef PubSubStreamingServiceInterface __iface
+    __iface = self
+    __promise = Promise_cResponseAndStream__int32_t_int32_t.create(move_promise_cResponseAndStream__int32_t_int32_t(cPromise))
+    arg_foo = foo
+    __context_obj = RequestContext.create(ctx)
+    __context = None
+    if __iface._pass_context_responseandstreamleftthrows:
+        __context = __context_obj
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context_obj)
+    asyncio.get_event_loop().create_task(
+        PubSubStreamingService_responseandstreamleftthrows_coro(
+            self,
+            __context,
+            __promise,
+            arg_foo
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def PubSubStreamingService_responseandstreamleftthrows_coro(
+    object self,
+    object ctx,
+    Promise_cResponseAndStream__int32_t_int32_t promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.responseandstreamleftthrows(ctx,
+                      foo)
+        else:
+            result = await self.responseandstreamleftthrows(
+                      foo)
+    except _module_types.FooEx as ex:
+        promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler responseandstreamleftthrows:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(

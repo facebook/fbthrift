@@ -977,12 +977,20 @@ Function:
       $6->set_name(std::string($4) + "_args");
       auto* rettype = $3;
       auto* arglist = $6;
+      auto* streamthrows = $8.second;
+      if (rettype && rettype->is_streamresponse() && static_cast<t_stream_response*>(rettype)->has_throws_struct()) {
+        if (streamthrows) {
+          driver.yyerror("Function \"%s\" has multiple stream throws structs", $4.c_str());
+          driver.end_parsing();
+        }
+        streamthrows = static_cast<t_stream_response*>(rettype)->get_throws_struct();
+      }
       auto* func = new t_function(
         rettype,
         $4,
         std::unique_ptr<t_struct>(arglist),
         std::unique_ptr<t_struct>($8.first),
-        std::unique_ptr<t_struct>($8.second),
+        std::unique_ptr<t_struct>(streamthrows),
         $2
       );
       if ($9) {
@@ -1046,14 +1054,14 @@ ThrowsThrows:
 		}
 | Throws
 		{
-			$$ = std::make_pair($1, new t_struct(driver.program));
+			$$ = std::make_pair($1, nullptr);
 		}
 | StreamThrows
     {
       $$ = std::make_pair(new t_struct(driver.program), $1);
     }
 |   {
-			$$ = std::make_pair(new t_struct(driver.program), new t_struct(driver.program));
+			$$ = std::make_pair(new t_struct(driver.program), nullptr);
 		}
 
 Throws:
@@ -1249,6 +1257,30 @@ StreamReturnType:
     driver.debug("StreamReturnType -> tok_stream < FieldType >");
 
     $$ = new t_stream_response($3);
+
+    if (driver.mode == parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
+    } else {
+      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+    }
+  }
+| FieldType "," tok_stream "<" FieldType Throws ">"
+  {
+    driver.debug("StreamReturnType -> FieldType , tok_stream < FieldType Throws >");
+
+    $$ = new t_stream_response($5, $1, $6);
+
+    if (driver.mode == parsing_mode::INCLUDES) {
+      driver.delete_at_the_end($$);
+    } else {
+      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+    }
+  }
+| tok_stream "<" FieldType Throws ">"
+  {
+    driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
+
+    $$ = new t_stream_response($3, NULL, $4);
 
     if (driver.mode == parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
