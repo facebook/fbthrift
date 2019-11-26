@@ -20,6 +20,7 @@
 #include <folly/Function.h>
 #include <folly/executors/SequencedExecutor.h>
 #include <folly/executors/SerialExecutor.h>
+#include <folly/functional/Invoke.h>
 #include <folly/futures/Future.h>
 
 namespace apache {
