@@ -978,16 +978,18 @@ template <
     typename T,
     typename ErrorMapFunc>
 folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
-  folly::IOBufQueue buf;
   if (val.hasValue()) {
-    buf = encode_stream_payload<Protocol, PResult, T>(std::move(*val));
+    return folly::Try<StreamPayload>(
+        {encode_stream_payload<Protocol, PResult, T>(std::move(*val)).move(),
+         {}});
   } else if (val.hasException()) {
-    buf = encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
-        val.exception());
+    return folly::Try<StreamPayload>(folly::exception_wrapper(
+        EncodedError(encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
+                         val.exception())
+                         .move())));
   } else {
     std::terminate();
   }
-  return folly::Try<StreamPayload>({buf.move(), {}});
 }
 
 template <typename Protocol, typename PResult, typename T>

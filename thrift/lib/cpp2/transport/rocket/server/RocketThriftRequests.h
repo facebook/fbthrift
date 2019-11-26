@@ -158,6 +158,11 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf>,
       StreamServerCallback*) noexcept override;
 
+  virtual void sendStreamThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      ::apache::thrift::detail::ServerStreamFactory&&) noexcept override;
+
   void sendStreamThriftError(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;

@@ -117,11 +117,11 @@ class ServerGeneratorStream : public TwoWayBridge<
                   }
                   stream->publish({});
                 } catch (const std::exception& e) {
-                  stream->publish(folly::Try<StreamPayload>(
-                      folly::exception_wrapper(std::current_exception(), e)));
+                  stream->publish(encode(folly::Try<T>(
+                      folly::exception_wrapper(std::current_exception(), e))));
                 } catch (...) {
-                  stream->publish(folly::Try<StreamPayload>(
-                      folly::exception_wrapper(std::current_exception())));
+                  stream->publish(encode(folly::Try<T>(
+                      folly::exception_wrapper(std::current_exception()))));
                 }
                 co_return;
               }

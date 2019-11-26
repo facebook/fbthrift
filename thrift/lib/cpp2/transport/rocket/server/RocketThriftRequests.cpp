@@ -210,6 +210,17 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
       stream);
 }
 
+void ThriftServerRequestStream::sendStreamThriftResponse(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
+  stream(
+      apache::thrift::FirstResponsePayload{std::move(data),
+                                           std::move(metadata)},
+      clientCallback_,
+      &evb_);
+}
+
 void ThriftServerRequestStream::sendStreamThriftError(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf> data) noexcept {

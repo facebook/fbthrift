@@ -50,13 +50,13 @@ void HandlerCallbackBase::sendReply(
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
   transform(queue);
   if (getEventBase()->isInEventBaseThread()) {
-    req_->sendStreamReply(queue.move(), std::move(stream), nullptr, crc32c);
+    req_->sendStreamReply(queue.move(), std::move(stream), crc32c);
   } else {
     getEventBase()->runInEventBaseThread([req = std::move(req_),
                                           queue = std::move(queue),
                                           stream = std::move(stream),
                                           crc32c]() mutable {
-      req->sendStreamReply(queue.move(), std::move(stream), nullptr, crc32c);
+      req->sendStreamReply(queue.move(), std::move(stream), crc32c);
     });
   }
 }

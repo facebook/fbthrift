@@ -122,13 +122,19 @@ void RocketStreamClientCallback::onStreamComplete() {
 }
 
 void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
-  if (!ew.with_exception<RocketException>([this](auto&& rex) {
+  ew.handle(
+      [this](RocketException& rex) {
         context_.sendError(
             RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
-      })) {
-    context_.sendError(
-        RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
-  }
+      },
+      [this](::apache::thrift::detail::EncodedError& err) {
+        context_.sendError(RocketException(
+            ErrorCode::APPLICATION_ERROR, std::move(err.encoded)));
+      },
+      [this, &ew](...) {
+        context_.sendError(
+            RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
+      });
   context_.freeStream();
 }
 

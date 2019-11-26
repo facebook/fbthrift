@@ -185,14 +185,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   void sendStreamReply(
-      std::unique_ptr<folly::IOBuf>&&,
-      apache::thrift::detail::ServerStreamFactory&&,
-      MessageChannel::SendCallback* = nullptr,
-      folly::Optional<uint32_t> = folly::none) override final {
-    throw std::logic_error("unimplemented");
-  }
-
-  void sendStreamReply(
       std::unique_ptr<folly::IOBuf> response,
       StreamServerCallback* stream,
       folly::Optional<uint32_t> crc32c) override final {
@@ -211,6 +203,24 @@ class ThriftRequestCore : public ResponseChannelRequest {
           std::move(metadata),
           std::move(response),
           std::exchange(stream, nullptr));
+
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+    }
+  }
+
+  void sendStreamReply(
+      std::unique_ptr<folly::IOBuf>&& buf,
+      detail::ServerStreamFactory&& stream,
+      folly::Optional<uint32_t> crc32c) override final {
+    if (active_.exchange(false)) {
+      cancelTimeout();
+      auto metadata = makeResponseRpcMetadata();
+      if (crc32c) {
+        metadata.crc32c_ref() = *crc32c;
+      }
+      sendReplyInternal(std::move(metadata), std::move(buf), std::move(stream));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
@@ -271,6 +281,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (stream) {
       stream->onStreamCancel();
     }
+    LOG(FATAL) << "sendStreamThriftResponse not implemented";
+  }
+
+  virtual void sendStreamThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      detail::ServerStreamFactory&&) noexcept {
     LOG(FATAL) << "sendStreamThriftResponse not implemented";
   }
 
@@ -350,6 +367,18 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (checkResponseSize(*buf)) {
       sendStreamThriftResponse(
           std::move(metadata), std::move(buf), std::exchange(stream, nullptr));
+    } else {
+      sendResponseTooBigEx();
+    }
+  }
+
+  void sendReplyInternal(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> buf,
+      detail::ServerStreamFactory&& stream) {
+    if (checkResponseSize(*buf)) {
+      sendStreamThriftResponse(
+          std::move(metadata), std::move(buf), std::move(stream));
     } else {
       sendResponseTooBigEx();
     }

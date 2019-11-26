@@ -24,7 +24,9 @@ namespace thrift {
 
 using namespace testutil::testservice;
 
-class SinkServiceTest : public testing::Test, public TestSetup {};
+struct SinkServiceTest
+    : public testing::Test,
+      public TestSetup<TestSinkService, TestSinkServiceAsyncClient> {};
 
 TEST_F(SinkServiceTest, SimpleSink) {
   connectToServer(

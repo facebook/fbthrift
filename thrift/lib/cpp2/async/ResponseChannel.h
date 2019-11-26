@@ -106,8 +106,7 @@ class ResponseChannelRequest {
 
   virtual void sendStreamReply(
       std::unique_ptr<folly::IOBuf>&&,
-      apache::thrift::detail::ServerStreamFactory&&,
-      MessageChannel::SendCallback* = nullptr,
+      detail::ServerStreamFactory&&,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }
