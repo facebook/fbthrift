@@ -69,11 +69,11 @@ service StreamService {
   void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);
   stream<i32> registerToMessages();
 
-  stream<Message> streamThrows(1: i32 whichEx)
-      throws (1: SecondEx e) stream throws (1: FirstEx e);
+  stream<Message throws (1: FirstEx e)> streamThrows(1: i32 whichEx)
+      throws (1: SecondEx e);
 
-  i32, stream<Message> responseAndStreamThrows(1: i32 whichEx)
-      throws (1: SecondEx e) stream throws (1: FirstEx e);
+  i32, stream<Message throws (1: FirstEx e)>
+      responseAndStreamThrows(1: i32 whichEx) throws (1: SecondEx e);
 
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
 }

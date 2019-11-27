@@ -27,8 +27,8 @@ exception StreamEx {
 
 service StreamTestService {
   stream<i32> returnstream(1: i32 i32_from, 2: i32 i32_to);
-  stream<i32> streamthrows(1: bool t) throws(1:  FuncEx e)
-    stream throws (1: StreamEx e);
+  stream<i32 throws (1: StreamEx e)> streamthrows(1: bool t)
+    throws(1:  FuncEx e);
   included.Included, stream<included.Included> returnresponseandstream(
     1: included.Included foo);
 }

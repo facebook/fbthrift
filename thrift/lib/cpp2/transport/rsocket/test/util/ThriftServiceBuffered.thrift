@@ -26,8 +26,8 @@ service StreamServiceBuffered {
   stream<i32> range(1: i32 from, 2: i32 to);
   // ... with a sleep in between iterations
   stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
-  stream<ThriftService.Message> streamThrows(1: i32 whichEx)
-    throws (1: ThriftService.SecondEx e) stream throws (1: ThriftService.FirstEx e);
+  stream<ThriftService.Message throws (1: ThriftService.FirstEx e)>
+    streamThrows(1: i32 whichEx) throws (1: ThriftService.SecondEx e);
 
   i32, stream<i32> leakCheck(1: i32 from, 2: i32 to);
   i32, stream<i32> leakCheckWithSleep(1: i32 from, 2: i32 to, 3: i32 sleepMs);
