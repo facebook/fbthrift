@@ -1224,7 +1224,8 @@ class mstch_cpp2_service : public mstch_service {
     return cache_->parsed_options_.count("client_buffered_stream") != 0;
   }
   mstch::node server_stream() {
-    return cache_->parsed_options_.count("server_stream") != 0;
+    return cache_->parsed_options_.count("server_stream") != 0 &&
+        cache_->parsed_options_.count("deprecated_server_streams") == 0;
   }
 };
 
