@@ -78,16 +78,13 @@ void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
     return;
   }
 
-  batchWriteLoopCallback_.enqueueWrite(std::move(data));
-  if (!batchWriteLoopCallback_.isLoopCallbackScheduled()) {
-    evb_.runInLoop(&batchWriteLoopCallback_, true /* thisIteration */);
-  }
+  writeBatcher_.enqueueWrite(std::move(data));
 }
 
 RocketServerConnection::~RocketServerConnection() {
   DCHECK(inflightRequests_ == 0);
   DCHECK(inflightWrites_ == 0);
-  DCHECK(batchWriteLoopCallback_.empty());
+  DCHECK(writeBatcher_.empty());
 }
 
 bool RocketServerConnection::closeIfNeeded() {
@@ -118,10 +115,7 @@ bool RocketServerConnection::closeIfNeeded() {
     it = streams_.erase(it);
   }
 
-  if (batchWriteLoopCallback_.isLoopCallbackScheduled()) {
-    batchWriteLoopCallback_.cancelLoopCallback();
-    flushPendingWrites();
-  }
+  writeBatcher_.drain();
 
   socket_.reset();
   destroy();
@@ -451,7 +445,7 @@ void RocketServerConnection::timeoutExpired() noexcept {
 
 bool RocketServerConnection::isBusy() const {
   return inflightRequests_ != 0 || inflightWrites_ != 0 ||
-      batchWriteLoopCallback_.isLoopCallbackScheduled();
+      !writeBatcher_.empty();
 }
 
 // On graceful shutdown, ConnectionManager will first fire the

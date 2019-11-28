@@ -153,41 +153,53 @@ class RocketServerConnection
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
 
-  class BatchWriteLoopCallback : public folly::EventBase::LoopCallback {
+  class WriteBatcher : private folly::EventBase::LoopCallback {
    public:
-    explicit BatchWriteLoopCallback(RocketServerConnection& connection)
+    explicit WriteBatcher(RocketServerConnection& connection)
         : connection_(connection) {}
 
     void enqueueWrite(std::unique_ptr<folly::IOBuf> data) {
-      auto& writes = connection_.bufferedWrites_;
-      if (!writes) {
-        writes = std::move(data);
+      if (!bufferedWrites_) {
+        bufferedWrites_ = std::move(data);
+        connection_.getEventBase().runInLoop(this, true /* thisIteration */);
       } else {
-        writes->prependChain(std::move(data));
+        bufferedWrites_->prependChain(std::move(data));
       }
     }
 
-    void runLoopCallback() noexcept final {
-      connection_.flushPendingWrites();
+    void drain() noexcept {
+      if (!bufferedWrites_) {
+        return;
+      }
+      cancelLoopCallback();
+      flushPendingWrites();
     }
 
     bool empty() const {
-      return !connection_.bufferedWrites_;
+      return !bufferedWrites_;
     }
 
    private:
+    void runLoopCallback() noexcept final {
+      flushPendingWrites();
+    }
+
+    void flushPendingWrites() noexcept {
+      connection_.flushWrites(std::move(bufferedWrites_));
+    }
+
     RocketServerConnection& connection_;
+    // Callback is scheduled iff bufferedWrites_ is not empty.
+    std::unique_ptr<folly::IOBuf> bufferedWrites_;
   };
-  BatchWriteLoopCallback batchWriteLoopCallback_{*this};
-  std::unique_ptr<folly::IOBuf> bufferedWrites_;
+  WriteBatcher writeBatcher_{*this};
 
   ~RocketServerConnection() final;
 
   // return true if connection closed
   bool closeIfNeeded();
-  void flushPendingWrites() {
+  void flushWrites(std::unique_ptr<folly::IOBuf> writes) {
     ++inflightWrites_;
-    auto writes = std::move(bufferedWrites_);
     socket_->writeChain(this, std::move(writes));
   }
 
