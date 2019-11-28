@@ -408,7 +408,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   ResponseRpcMetadata makeResponseRpcMetadata() {
     ResponseRpcMetadata metadata;
-    metadata.seqId_ref() = 0;
 
     if ((requestFlags_ &
          static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) ||

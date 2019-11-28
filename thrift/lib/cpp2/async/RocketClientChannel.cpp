@@ -409,7 +409,7 @@ bool RocketClientChannel::preSendValidation(
             "Unexpected problem stripping envelope"));
     return false;
   }
-  metadata.seqId_ref() = 0;
+  metadata.seqId_ref().reset();
   DCHECK(metadata.kind_ref().has_value());
 
   if (!rclient_ || !rclient_->isAlive()) {
