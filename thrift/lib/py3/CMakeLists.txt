@@ -100,7 +100,7 @@ include_directories(${PYTHON_INCLUDE_DIRS})
 # Install Thrift Python Bindings using Python setuptools
 install(CODE "
   execute_process(COMMAND
-  python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install
+  python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py bdist_wheel install
   WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)")
 
 add_subdirectory(test)
