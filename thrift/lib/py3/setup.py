@@ -44,13 +44,14 @@ extensions = [
     Extension("thrift.py3.serializer", sources=["thrift/py3/serializer.so"]),
     Extension("thrift.py3.client", sources=["thrift/py3/client.so"]),
     Extension("thrift.py3.server", sources=["thrift/py3/server.so"]),
+    Extension("thrift.py3.ssl", sources=["thrift/py3/ssl.so"]),
 ]
 setup(
     name="thrift",
     cmdclass={"build_ext": copy_cmake_built_libs_build_ext},
     version="0.0.1",
     packages=["thrift", "thrift.py3"],
-    package_data={"": ["*.pxd", "*.h", "__init__.pyx"]},
+    package_data={"": ["*.pxd", "*.h", "__init__.pyx", "*.py"]},
     zip_safe=False,
     ext_modules=extensions,
 )

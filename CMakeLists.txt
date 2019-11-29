@@ -163,7 +163,7 @@ endif(lib_only OR build_all)
 if(thriftpy3)
   find_package(PythonInterp 3.6 REQUIRED)
   find_package(PythonLibs 3 REQUIRED)
-  find_package(Cython 0.29 REQUIRED)
+  find_package(Cython 0.28 REQUIRED)
 endif()
 
 # Add the test dependencies

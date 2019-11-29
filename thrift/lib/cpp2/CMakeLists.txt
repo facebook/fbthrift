@@ -188,7 +188,7 @@ if(thriftpy3)
     PUBLIC
       fizz::fizz
       wangle::wangle
-      Folly::folly_pic
+      Folly::folly
       sodium
       ${LIBGFLAGS_LIBRARY}
   )
