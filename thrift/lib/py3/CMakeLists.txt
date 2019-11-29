@@ -38,13 +38,12 @@ function (create_cybld_tree _extname _tre)
 endfunction ()
 
 
-create_cybld_tree(folly folly
-                        optional.pxd )
-
 create_cybld_tree(thrift thrift/py3
                          __init__.py
                          client.pxd
                          client.pyx
+                         ssl.pxd,
+                         ssl.pyx,
                          server.pxd
                          server.pyx
                          common.pxd
@@ -58,7 +57,6 @@ create_cybld_tree(thrift thrift/py3
                          serializer.pyx)
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cybld/thrift/__init__.pxd)
-file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cybld/folly/__init__.pyx)
 
 # Shared library targets for each Cython module, to avoid conficts targets
 # named <dir>-<dir>-<module>-py3
@@ -84,7 +82,7 @@ foreach(_mod ${cpp_tgts})
   add_custom_command(OUTPUT ${_cxx}
     COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
     COMMENT "Generating ${_cxx} using Cython"
-    DEPENDS folly-symlinks thrift-symlinks
+    DEPENDS thrift-symlinks
   )
 
   python_add_module(${_module_name} "${_cxx}")
@@ -98,7 +96,7 @@ endforeach()
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 
-# Install Folly Python Bindings using Python setuptools
+# Install Thrift Python Bindings using Python setuptools
 install(CODE "
   execute_process(COMMAND
   python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install

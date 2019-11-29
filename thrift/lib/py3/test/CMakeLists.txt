@@ -53,7 +53,7 @@ macro(thrift_py3_test filename services)
       COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
         -I${THRIFT_BUILD}/thrift/lib/py3/cybld/
       COMMENT "Generating ${_cxx} using Cython"
-      DEPENDS thriftcpp2_shared folly-symlinks thrift-symlinks
+      DEPENDS thriftcpp2_shared thrift-symlinks
     )
 
     if(${_src} STREQUAL "types")
@@ -125,7 +125,7 @@ foreach(_src
     COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
       -I${THRIFT_BUILD}/thrift/lib/py3/cybld/
     COMMENT "Generating ${_cxx} using Cython"
-    DEPENDS folly-symlinks thrift-symlinks py3-test-symlinks
+    DEPENDS thrift-symlinks py3-test-symlinks
   )
 
   python_add_module(${_module_name} "${_cxx}")
