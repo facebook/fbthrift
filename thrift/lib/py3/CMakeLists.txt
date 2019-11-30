@@ -42,8 +42,8 @@ create_cybld_tree(thrift thrift/py3
                          __init__.py
                          client.pxd
                          client.pyx
-                         ssl.pxd,
-                         ssl.pyx,
+                         ssl.pxd
+                         ssl.pyx
                          server.pxd
                          server.pyx
                          common.pxd
