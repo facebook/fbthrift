@@ -11,6 +11,8 @@
 #include "thrift/compiler/test/fixtures/stream-client-buffered-stream/gen-cpp2/PubSubStreamingServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/stream-client-buffered-stream/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp2/async/ServerStream.h>
+#include <thrift/lib/cpp2/async/StreamGenerator.h>
+#include <thrift/lib/cpp2/async/StreamPublisher.h>
 
 namespace folly {
   class IOBuf;
@@ -64,6 +66,22 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) override;
   folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) override;
   void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) override;
+  template <typename T>
+  std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
+  createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
+    return apache::thrift::StreamPublisher<T>::create(
+        folly::SerialExecutor::create(
+          getBlockingThreadManager()),
+        std::move(onCanceled),
+        bufferSizeLimit);
+  }
+  template <typename Generator>
+  auto createStreamGenerator(Generator&& generator) {
+    return apache::thrift::StreamGenerator::create(
+        folly::SerialExecutor::create(
+          getBlockingThreadManager()),
+        std::forward<Generator>(generator));
+  }
 };
 
 class PubSubStreamingServiceSvNull : public PubSubStreamingServiceSvIf {

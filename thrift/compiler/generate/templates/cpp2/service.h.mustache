@@ -31,13 +31,9 @@
 #include <%cpp_include%>
 <%/service:cpp_includes%>
 <%#service:any_streams?%>
-<%#service:server_stream?%>
 #include <thrift/lib/cpp2/async/ServerStream.h>
-<%/service:server_stream?%>
-<%^service:server_stream?%>
 #include <thrift/lib/cpp2/async/StreamGenerator.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
-<%/service:server_stream?%>
 <%/service:any_streams?%>
 <%#service:any_sinks?%>
 #include <thrift/lib/cpp2/async/Sink.h>

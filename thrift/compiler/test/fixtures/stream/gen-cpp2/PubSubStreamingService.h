@@ -10,6 +10,7 @@
 
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingServiceAsyncClient.h"
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_types.h"
+#include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/StreamGenerator.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
 
