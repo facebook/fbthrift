@@ -76,13 +76,6 @@ class ServerConfigs {
       const std::string* method) const = 0;
 
   /**
-   * Add ability for ThriftServer to receive setup parameters from client on
-   * connection establishment.
-   */
-  virtual void onConnectionSetup(
-      std::unique_ptr<RequestSetupMetadata> setupMetadata) = 0;
-
-  /**
    * Disables tracking of number of active requests in the server.
    *
    * This is useful for applications that do high throughput real-time work,

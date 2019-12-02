@@ -118,7 +118,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
-    serverConfigs_.onConnectionSetup(std::move(meta));
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,

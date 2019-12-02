@@ -157,9 +157,5 @@ std::string BaseThriftServer::getLoadInfo(int64_t load) const {
   return stream.str();
 }
 
-void BaseThriftServer::onConnectionSetup(
-    std::unique_ptr<RequestSetupMetadata> /*setupMetadata*/) {
-  // TODO: honor the setup metadata sent from the client
-}
 } // namespace thrift
 } // namespace apache

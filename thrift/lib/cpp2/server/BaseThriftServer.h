@@ -951,12 +951,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   }
 
   /**
-   * Reflect setup metadata sent from the client on connection establishment.
-   */
-  void onConnectionSetup(
-      std::unique_ptr<RequestSetupMetadata> setupMetadata) override;
-
-  /**
    * Return the maximum memory usage by each debug payload.
    */
   uint64_t getMaxDebugPayloadMemoryPerRequest() {
