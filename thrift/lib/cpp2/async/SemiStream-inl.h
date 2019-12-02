@@ -116,7 +116,7 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
         return;
       }
 
-      sharedState_->buffer_->emplace_back(std::move(v));
+      sharedState_->buffer_.lock()->emplace_back(std::move(v));
       sharedState_->sem_.signal();
     }
 
@@ -127,7 +127,7 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
 
       sharedState_->subscription_.reset();
       sharedState_->terminated_ = true;
-      sharedState_->buffer_->emplace_back(std::move(error));
+      sharedState_->buffer_.lock()->emplace_back(std::move(error));
       sharedState_->sem_.signal();
     }
 
@@ -138,7 +138,7 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
 
       sharedState_->subscription_.reset();
       sharedState_->terminated_ = true;
-      sharedState_->buffer_->emplace_back(
+      sharedState_->buffer_.lock()->emplace_back(
           folly::Try<std::unique_ptr<detail::ValueIf>>());
       sharedState_->sem_.signal();
     }

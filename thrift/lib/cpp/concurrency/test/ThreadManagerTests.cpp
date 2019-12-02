@@ -602,7 +602,7 @@ TEST_F(ThreadManagerTest, NumaThreadManagerTest) {
   }
 
   numa->join();
-  EXPECT_EQ(numa_num_configured_nodes(), nodes->size());
+  EXPECT_EQ(numa_num_configured_nodes(), nodes.wlock()->size());
   EXPECT_FALSE(failed);
 }
 
