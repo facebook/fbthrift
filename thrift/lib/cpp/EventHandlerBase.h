@@ -30,16 +30,18 @@ namespace thrift {
 
 class EventHandlerBase {
  public:
-  EventHandlerBase()
-      : handlers_(std::make_shared<
-                  std::vector<std::shared_ptr<TProcessorEventHandler>>>()) {}
+  EventHandlerBase() = default;
 
   void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler) {
+    if (!handlers_) {
+      handlers_ = std::make_shared<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>();
+    }
     handlers_->push_back(handler);
   }
 
   void clearEventHandlers() {
-    handlers_->clear();
+    handlers_.reset();
   }
 
   folly::Range<std::shared_ptr<TProcessorEventHandler>*> getEventHandlers()
