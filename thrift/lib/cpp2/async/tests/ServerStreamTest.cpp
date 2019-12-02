@@ -116,7 +116,7 @@ TEST(ServerStreamTest, PublishConsumeCoro) {
       clientEb.getEventBase(),
       serverEb.getEventBase(),
       &encode);
-  serverEb.getEventBase()->add([&] {
+  clientEb.add([&] {
     clientCallback.started.wait();
     clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
@@ -176,7 +176,7 @@ TEST(ServerStreamTest, DelayedCancel) {
       clientEb.getEventBase(),
       serverEb.getEventBase(),
       &encode);
-  serverEb.getEventBase()->add([&] {
+  clientEb.add([&] {
     clientCallback.started.wait();
     clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
@@ -227,16 +227,97 @@ TEST(ServerStreamTest, CancelCoro) {
         clientEb.getEventBase(),
         serverEb.getEventBase(),
         &encode);
-    serverEb.getEventBase()->add([&] {
+    clientEb.add([&] {
       clientCallback.started.wait();
       clientCallback.cb->onStreamRequestN(11); // complete costs 1
     });
     folly::coro::blockingWait(baton);
-    serverEb.getEventBase()->add([&] { clientCallback.cb->onStreamCancel(); });
+    clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
   }
   EXPECT_LT(clientCallback.i, 10);
 }
 #endif // FOLLY_HAS_COROUTINES
+
+TEST(ServerStreamTest, MustClosePublisher) {
+  EXPECT_DEATH(
+      ([] {
+        ClientCallback clientCallback;
+        folly::ScopedEventBaseThread clientEb, serverEb;
+        auto [factory, publisher] = ServerStream<int>::createPublisher([] {});
+        factory(
+            FirstResponsePayload{nullptr, {}},
+            &clientCallback,
+            clientEb.getEventBase(),
+            serverEb.getEventBase(),
+            &encode);
+        clientEb.add([&] {
+          clientCallback.started.wait();
+          clientCallback.cb->onStreamRequestN(5);
+        });
+        publisher.next(0);
+      })(),
+      "StreamPublisher has to be completed or canceled");
+}
+
+TEST(ServerStreamTest, PublishConsumePublisher) {
+  ClientCallback clientCallback;
+  folly::ScopedEventBaseThread clientEb, serverEb;
+  bool closed = false;
+  auto [factory, publisher] =
+      ServerStream<int>::createPublisher([&] { closed = true; });
+  for (int i = 0; i < 5; i++) {
+    publisher.next(i);
+  }
+  factory(
+      FirstResponsePayload{nullptr, {}},
+      &clientCallback,
+      clientEb.getEventBase(),
+      serverEb.getEventBase(),
+      &encode);
+  clientEb.add([&] {
+    clientCallback.started.wait();
+    clientCallback.cb->onStreamRequestN(11); // complete costs 1
+  });
+  for (int i = 5; i < 10; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete();
+  clientCallback.completed.wait();
+  EXPECT_EQ(clientCallback.i, 10);
+  EXPECT_TRUE(closed);
+}
+
+TEST(ServerStreamTest, CancelPublisher) {
+  ClientCallback clientCallback;
+  folly::ScopedEventBaseThread clientEb, serverEb;
+  bool closed = false;
+  auto [factory, publisher] =
+      ServerStream<int>::createPublisher([&] { closed = true; });
+  factory(
+      FirstResponsePayload{nullptr, {}},
+      &clientCallback,
+      clientEb.getEventBase(),
+      serverEb.getEventBase(),
+      &encode);
+  clientEb.add([&] {
+    clientCallback.started.wait();
+    clientCallback.cb->onStreamRequestN(11); // complete costs 1
+  });
+  std::thread([&, publisher = std::move(publisher)]() mutable {
+    for (int i = 0; i < 10; i++) {
+      if (i == 1) {
+        clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
+      }
+      /* sleep override */
+      std::this_thread::sleep_for(std::chrono::milliseconds(10));
+      publisher.next(i);
+    }
+    std::move(publisher).complete();
+  })
+      .join();
+  EXPECT_LT(clientCallback.i, 10);
+  EXPECT_TRUE(closed);
+}
 
 TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
   folly::ScopedEventBaseThread clientEb, serverEb;
@@ -255,6 +336,44 @@ TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
       clientEb.getEventBase(),
       serverEb.getEventBase(),
       &encode);
+
+  size_t expected = 0;
+  bool done = false;
+  firstResponseCallback.baton.wait();
+  ClientBufferedStream<int> clientStream(
+      std::move(firstResponseCallback.clientStreamBridge), &decode, 0);
+  std::move(clientStream).subscribeInline([&](folly::Try<int>&& next) {
+    if (next.hasValue()) {
+      EXPECT_EQ(expected++, *next);
+    } else {
+      done = true;
+    }
+  });
+  EXPECT_EQ(10, expected);
+  EXPECT_TRUE(done);
+}
+
+TEST(ServerStreamTest, ClientBufferedStreamPublisherIntegration) {
+  folly::ScopedEventBaseThread clientEb, serverEb;
+  MyFirstResponseCallback firstResponseCallback;
+  auto clientStreamBridge =
+      detail::ClientStreamBridge::create(&firstResponseCallback);
+
+  auto [factory, publisher] = ServerStream<int>::createPublisher([] {});
+  for (int i = 0; i < 5; i++) {
+    publisher.next(i);
+  }
+  factory(
+      FirstResponsePayload{nullptr, {}},
+      clientStreamBridge,
+      clientEb.getEventBase(),
+      serverEb.getEventBase(),
+      &encode);
+
+  for (int i = 5; i < 10; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete();
 
   size_t expected = 0;
   bool done = false;

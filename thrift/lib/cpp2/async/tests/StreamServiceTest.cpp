@@ -18,60 +18,63 @@
 
 #include <thrift/lib/cpp2/async/tests/util/Util.h>
 
-namespace apache {
-namespace thrift {
-
 using namespace testutil::testservice;
+using namespace apache::thrift;
 
-struct StreamServiceTest
-    : public testing::Test,
-      public TestSetup<TestStreamService, TestStreamServiceAsyncClient> {};
-
-TEST_F(StreamServiceTest, Stream) {
-  connectToServer([](auto& client) -> folly::coro::Task<void> {
-    auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
-    co_await([&]() mutable -> folly::coro::Task<void> {
-      int i = 0;
-      while (auto t = co_await gen.next()) {
-        if (i <= 100) {
-          EXPECT_EQ(i++, *t);
-        } else {
-          EXPECT_FALSE(t);
-        }
-      }
-    }());
-  });
-}
-
-TEST_F(StreamServiceTest, StreamThrow) {
-  connectToServer([](auto& client) -> folly::coro::Task<void> {
-    auto gen = (co_await client.co_rangeThrow(0, 100)).toAsyncGenerator();
-    co_await[&]() mutable->folly::coro::Task<void> {
-      for (int i = 0; i <= 101; i++) {
-        if (i <= 100) {
-          auto t = co_await gen.next();
-          EXPECT_EQ(i, *t);
-        } else {
-          EXPECT_ANY_THROW(co_await gen.next());
-        }
+auto doTest = [](auto& client) -> folly::coro::Task<void> {
+  auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
+  co_await([&]() mutable -> folly::coro::Task<void> {
+    int i = 0;
+    while (auto t = co_await gen.next()) {
+      if (i <= 100) {
+        EXPECT_EQ(i++, *t);
+      } else {
+        EXPECT_FALSE(t);
       }
     }
-    ();
+  }());
 
-    gen = (co_await client.co_rangeThrowUDE(0, 100)).toAsyncGenerator();
-    co_await[&]() mutable->folly::coro::Task<void> {
-      for (int i = 0; i <= 101; i++) {
-        if (i <= 100) {
-          auto t = co_await gen.next();
-          EXPECT_EQ(i, *t);
-        } else {
-          EXPECT_ANY_THROW(co_await gen.next());
-        }
+  gen = (co_await client.co_rangeThrow(0, 100)).toAsyncGenerator();
+  co_await[&]() mutable->folly::coro::Task<void> {
+    for (int i = 0; i <= 101; i++) {
+      if (i <= 100) {
+        auto t = co_await gen.next();
+        EXPECT_EQ(i, *t);
+      } else {
+        EXPECT_ANY_THROW(co_await gen.next());
       }
     }
-    ();
-  });
+  }
+  ();
+
+  gen = (co_await client.co_rangeThrowUDE(0, 100)).toAsyncGenerator();
+  co_await[&]() mutable->folly::coro::Task<void> {
+    for (int i = 0; i <= 101; i++) {
+      if (i <= 100) {
+        auto t = co_await gen.next();
+        EXPECT_EQ(i, *t);
+      } else {
+        EXPECT_ANY_THROW(co_await gen.next());
+      }
+    }
+  }
+  ();
+};
+
+struct StreamGeneratorServiceTest : public testing::Test,
+                                    public TestSetup<
+                                        TestStreamGeneratorService,
+                                        TestStreamServiceAsyncClient> {};
+
+struct StreamPublisherServiceTest : public testing::Test,
+                                    public TestSetup<
+                                        TestStreamPublisherService,
+                                        TestStreamServiceAsyncClient> {};
+
+TEST_F(StreamGeneratorServiceTest, Stream) {
+  connectToServer(doTest);
 }
 
-} // namespace thrift
-} // namespace apache
+TEST_F(StreamPublisherServiceTest, Stream) {
+  connectToServer(doTest);
+}

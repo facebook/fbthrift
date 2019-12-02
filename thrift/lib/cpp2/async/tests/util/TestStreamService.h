@@ -21,7 +21,19 @@
 namespace testutil {
 namespace testservice {
 
-class TestStreamService : public TestStreamServiceSvIf {
+class TestStreamGeneratorService : public TestStreamServiceSvIf {
+ public:
+  apache::thrift::ServerStream<int32_t> range(int32_t from, int32_t to)
+      override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrow(int32_t from, int32_t to)
+      override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrowUDE(int32_t from, int32_t to)
+      override;
+};
+
+class TestStreamPublisherService : public TestStreamServiceSvIf {
  public:
   apache::thrift::ServerStream<int32_t> range(int32_t from, int32_t to)
       override;

@@ -45,7 +45,17 @@ class ServerPublisherStream : private StreamServerCallback {
                 folly::Executor::KeepAlive<> serverExecutor,
                 folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
               stream->serverExecutor_ = std::move(serverExecutor);
-              stream->encode_ = encode;
+
+              {
+                std::lock_guard<std::mutex> guard(stream->encodeMutex_);
+                for (auto messages = stream->unencodedQueue_.getMessages();
+                     !messages.empty();
+                     messages.pop()) {
+                  stream->queue_.push(encode(std::move(messages.front())));
+                }
+                stream->encode_ = encode;
+              }
+
               return [stream](
                          FirstResponsePayload&& payload,
                          StreamClientCallback* callback,
@@ -59,10 +69,36 @@ class ServerPublisherStream : private StreamServerCallback {
             ServerStreamPublisher<T>(stream->copy())};
   }
 
-  void publish(folly::Try<T>&&) {}
-  bool wasCancelled() {
-    return false;
+  void publish(folly::Try<T>&& payload) {
+    bool close = !payload.hasValue();
+
+    {
+      std::unique_lock<std::mutex> guard(encodeMutex_);
+      if (encode_) {
+        guard.unlock();
+        queue_.push(encode_(std::move(payload)));
+      } else {
+        unencodedQueue_.push(std::move(payload));
+      }
+    }
+
+    if (close) {
+      std::lock_guard<std::mutex> guard(callbackMutex_);
+      if (onStreamCompleteOrCancel_) {
+        std::exchange(onStreamCompleteOrCancel_, nullptr)();
+      }
+    }
   }
+
+  bool wasCancelled() {
+    std::lock_guard<std::mutex> guard(callbackMutex_);
+    return !onStreamCompleteOrCancel_;
+  }
+
+  void consume() {
+    clientEventBase_->add([self = copy()]() { self->processPayloads(); });
+  }
+  void canceled() {}
 
  private:
   explicit ServerPublisherStream(
@@ -77,22 +113,108 @@ class ServerPublisherStream : private StreamServerCallback {
     DCHECK(refCount > 0);
     return Ptr(this);
   }
+
+  template <typename Payload>
+  using Queue = typename twowaybridge_detail::
+      AtomicQueue<ServerPublisherStream, folly::Try<Payload>>;
+
+  void onStreamRequestN(uint64_t credits) override {
+    clientEventBase_->dcheckIsInEventBaseThread();
+    credits_ += credits;
+    if (credits_ == credits) {
+      // we are responsible for waking the queue reader
+      processPayloads();
+    }
+  }
+
+  void onStreamCancel() override {
+    clientEventBase_->dcheckIsInEventBaseThread();
+    serverExecutor_->add([ex = serverExecutor_, self = copy()] {
+      std::lock_guard<std::mutex> guard(self->callbackMutex_);
+      if (self->onStreamCompleteOrCancel_) {
+        std::exchange(self->onStreamCompleteOrCancel_, nullptr)();
+      }
+    });
+    queue_.close();
+    close();
+  }
+
+  void resetClientCallback(StreamClientCallback& clientCallback) override {
+    streamClientCallback_ = &clientCallback;
+  }
+
+  // resume processing buffered requests
+  // called by onStreamRequestN when credits were previously empty,
+  // otherwise by queue on publish
+  void processPayloads() {
+    clientEventBase_->dcheckIsInEventBaseThread();
+    DCHECK(encode_);
+
+    // returns stream completion status
+    auto processQueue = [&] {
+      for (; !queue_.isClosed() && credits_ && !buffer_.empty();
+           buffer_.pop()) {
+        auto payload = std::move(buffer_.front());
+        if (payload.hasValue()) {
+          streamClientCallback_->onStreamNext(std::move(payload.value()));
+          --credits_;
+        } else if (payload.hasException()) {
+          streamClientCallback_->onStreamError(std::move(payload.exception()));
+          return true;
+        } else {
+          streamClientCallback_->onStreamComplete();
+          return true;
+        }
+      }
+      return false;
+    };
+
+    if (processQueue()) {
+      close();
+      return;
+    }
+
+    while (!queue_.isClosed() && credits_ && !queue_.wait(this)) {
+      DCHECK(buffer_.empty());
+      buffer_ = queue_.getMessages();
+      if (processQueue()) {
+        close();
+        return;
+      }
+    }
+  }
+
+  void close() {
+    serverExecutor_.reset();
+    Ptr(this);
+  }
+
   void decref() {
     if (refCount_.fetch_sub(1, std::memory_order_acq_rel) == 1) {
       delete this;
     }
   }
 
-  void onStreamRequestN(uint64_t) override {}
-  void onStreamCancel() override {}
-  void resetClientCallback(StreamClientCallback&) override {}
-
   std::atomic<int8_t> refCount_{1};
   StreamClientCallback* streamClientCallback_;
   folly::Executor::KeepAlive<> serverExecutor_;
   folly::EventBase* clientEventBase_;
+
+  Queue<StreamPayload> queue_;
+
+  // this mutex will turn into a state atomic in a future diff
   folly::Function<void()> onStreamCompleteOrCancel_;
+  std::mutex callbackMutex_;
+
+  // these will be combined into a single atomic in a future diff
+  Queue<T> unencodedQueue_;
   folly::Try<StreamPayload> (*encode_)(folly::Try<T>&&);
+  std::mutex encodeMutex_;
+
+  // these will be combined into a single atomic in a future diff
+  // must only be read/written on client thread
+  typename Queue<StreamPayload>::MessageQueue buffer_;
+  std::atomic<uint64_t> credits_{0};
 };
 
 } // namespace detail

@@ -19,7 +19,7 @@
 namespace testutil {
 namespace testservice {
 
-apache::thrift::ServerStream<int32_t> TestStreamService::range(
+apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::range(
     int32_t from,
     int32_t to) {
   return folly::coro::
@@ -30,7 +30,7 @@ apache::thrift::ServerStream<int32_t> TestStreamService::range(
       });
 }
 
-apache::thrift::ServerStream<int32_t> TestStreamService::rangeThrow(
+apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrow(
     int32_t from,
     int32_t to) {
   return folly::coro::
@@ -42,7 +42,7 @@ apache::thrift::ServerStream<int32_t> TestStreamService::rangeThrow(
       });
 }
 
-apache::thrift::ServerStream<int32_t> TestStreamService::rangeThrowUDE(
+apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrowUDE(
     int32_t from,
     int32_t to) {
   return folly::coro::
@@ -52,6 +52,48 @@ apache::thrift::ServerStream<int32_t> TestStreamService::rangeThrowUDE(
         }
         throw UserDefinedException();
       });
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamPublisherService::range(
+    int32_t from,
+    int32_t to) {
+  auto [stream, publisher] =
+      apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete();
+
+  return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrow(
+    int32_t from,
+    int32_t to) {
+  auto [stream, publisher] =
+      apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete(std::runtime_error("I am a search bar"));
+
+  return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
+    int32_t from,
+    int32_t to) {
+  auto [stream, publisher] =
+      apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete(UserDefinedException());
+
+  return std::move(stream);
 }
 
 } // namespace testservice

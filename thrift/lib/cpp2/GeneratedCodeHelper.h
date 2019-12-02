@@ -988,7 +988,7 @@ folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
                          val.exception())
                          .move())));
   } else {
-    std::terminate();
+    return folly::Try<StreamPayload>();
   }
 }
 
