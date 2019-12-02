@@ -36,6 +36,29 @@ class ServerStream {
   }
 #endif
 
+  /* implicit */ ServerStream(Stream<T>&& stream)
+      : fn_([stream = std::move(stream)](
+                folly::Executor::KeepAlive<>,
+                folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) mutable {
+          return [stream = std::move(stream).map(
+                      [encode](T&& item) mutable {
+                        return encode(folly::Try<T>(std::forward<T>(item)))
+                            .value()
+                            .payload;
+                      },
+                      [encode](folly::exception_wrapper&& ew) mutable {
+                        return encode(folly::Try<T>(std::move(ew))).exception();
+                      })](
+                     FirstResponsePayload&& payload,
+                     StreamClientCallback* callback,
+                     folly::EventBase* clientEb) mutable {
+            auto streamPtr =
+                std::move(stream).toStreamServerCallbackPtr(*clientEb);
+            streamPtr->resetClientCallback(*callback);
+            callback->onFirstResponse(std::move(payload), clientEb, streamPtr);
+          };
+        }) {}
+
   detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,
       folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {

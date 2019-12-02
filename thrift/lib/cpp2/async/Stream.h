@@ -22,6 +22,7 @@
 #include <folly/executors/SerialExecutor.h>
 #include <folly/functional/Invoke.h>
 #include <folly/futures/Future.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
 namespace thrift {
@@ -223,6 +224,10 @@ class Stream {
       int64_t batch = kDefaultBatchSize) &&;
 
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
+
+  StreamServerCallback* toStreamServerCallbackPtr(folly::EventBase& evb) && {
+    return SemiStream<T>(std::move(*this)).toStreamServerCallbackPtr(evb);
+  }
 
  private:
   template <typename U>

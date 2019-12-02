@@ -174,10 +174,6 @@ void ThriftServerRequestStream::sendThriftResponse(
   LOG(FATAL) << "Stream requests must respond via sendStreamThriftResponse";
 }
 
-StreamServerCallback* toStreamServerCallbackPtr(
-    SemiStream<std::unique_ptr<folly::IOBuf>> stream,
-    folly::EventBase& evb);
-
 void ThriftServerRequestStream::sendStreamReply(
     ResponseAndSemiStream<
         std::unique_ptr<folly::IOBuf>,
@@ -186,7 +182,7 @@ void ThriftServerRequestStream::sendStreamReply(
     folly::Optional<uint32_t> crc32c) noexcept {
   if (result.stream) {
     auto* serverCallback =
-        toStreamServerCallbackPtr(std::move(result.stream), *getEventBase());
+        std::move(result.stream).toStreamServerCallbackPtr(*getEventBase());
     // Note that onSubscribe will run after onFirstResponse
     sendStreamReply(std::move(result.response), serverCallback, crc32c);
   } else {
@@ -228,84 +224,6 @@ void ThriftServerRequestStream::sendStreamThriftError(
       ->onFirstResponseError(
           folly::make_exception_wrapper<thrift::detail::EncodedError>(
               std::move(data)));
-}
-
-StreamServerCallback* toStreamServerCallbackPtr(
-    SemiStream<std::unique_ptr<folly::IOBuf>> stream,
-    folly::EventBase& evb) {
-  class StreamServerCallbackAdaptor final
-      : public StreamServerCallback,
-        public SubscriberIf<std::unique_ptr<folly::IOBuf>> {
-   public:
-    // StreamServerCallback implementation
-    void onStreamRequestN(uint64_t tokens) override {
-      if (!subscription_) {
-        tokensBeforeSubscribe_ += tokens;
-      } else {
-        DCHECK_EQ(0, tokensBeforeSubscribe_);
-        subscription_->request(tokens);
-      }
-    }
-    void onStreamCancel() override {
-      clientCallback_ = nullptr;
-      if (auto subscription = std::move(subscription_)) {
-        subscription->cancel();
-      }
-    }
-    void resetClientCallback(StreamClientCallback& clientCallback) override {
-      clientCallback_ = &clientCallback;
-    }
-
-    // SubscriberIf implementation
-    void onSubscribe(std::unique_ptr<SubscriptionIf> subscription) override {
-      if (!clientCallback_) {
-        return subscription->cancel();
-      }
-
-      subscription_ = std::move(subscription);
-      if (auto tokens = std::exchange(tokensBeforeSubscribe_, 0)) {
-        subscription_->request(tokens);
-      }
-    }
-    void onNext(std::unique_ptr<folly::IOBuf>&& next) override {
-      if (clientCallback_) {
-        clientCallback_->onStreamNext(StreamPayload{std::move(next), {}});
-      }
-    }
-    void onError(folly::exception_wrapper ew) override {
-      if (!clientCallback_) {
-        return;
-      }
-
-      folly::exception_wrapper hijacked;
-      ew.with_exception([&hijacked](thrift::detail::EncodedError& err) {
-        hijacked = folly::make_exception_wrapper<RocketException>(
-            ErrorCode::APPLICATION_ERROR, std::move(err.encoded));
-      });
-      if (hijacked) {
-        ew = std::move(hijacked);
-      }
-      std::exchange(clientCallback_, nullptr)->onStreamError(std::move(ew));
-    }
-    void onComplete() override {
-      if (auto* clientCallback = std::exchange(clientCallback_, nullptr)) {
-        clientCallback->onStreamComplete();
-      }
-    }
-
-   private:
-    StreamClientCallback* clientCallback_{nullptr};
-    // TODO subscription_ and tokensBeforeSubscribe_ can be packed into a union
-    std::unique_ptr<SubscriptionIf> subscription_;
-    uint32_t tokensBeforeSubscribe_{0};
-  };
-
-  auto serverCallback = std::make_unique<StreamServerCallbackAdaptor>();
-  auto* serverCallbackPtr = serverCallback.get();
-
-  std::move(stream).via(&evb).subscribe(std::move(serverCallback));
-
-  return serverCallbackPtr;
 }
 
 ThriftServerRequestSink::ThriftServerRequestSink(

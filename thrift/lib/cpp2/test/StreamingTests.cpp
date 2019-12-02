@@ -32,7 +32,7 @@ class DiffTypesStreamingService
  public:
   explicit DiffTypesStreamingService(folly::EventBase& evb) : evb_(evb) {}
 
-  apache::thrift::Stream<int32_t> downloadObject(int64_t) override {
+  apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
     return toStream(yarpl::flowable::Flowable<int32_t>::just(42), &evb_);
   }
 
