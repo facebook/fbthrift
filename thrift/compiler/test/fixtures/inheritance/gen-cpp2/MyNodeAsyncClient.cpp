@@ -94,7 +94,9 @@ void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_do_mid(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_do_mid(_returnState);
+  });
 }
 
 

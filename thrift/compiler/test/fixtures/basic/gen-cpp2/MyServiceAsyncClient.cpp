@@ -159,7 +159,9 @@ void MyServiceAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_ping(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_ping(_returnState);
+  });
 }
 
 
@@ -321,7 +323,9 @@ void MyServiceAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOpt
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_getRandomData(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_getRandomData(_return, _returnState);
+  });
 }
 
 
@@ -483,7 +487,9 @@ bool MyServiceAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptio
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_hasDataById(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      return recv_hasDataById(_returnState);
+  });
 }
 
 
@@ -647,7 +653,9 @@ void MyServiceAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptio
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_getDataById(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_getDataById(_return, _returnState);
+  });
 }
 
 
@@ -809,7 +817,9 @@ void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptio
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_putDataById(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_putDataById(_returnState);
+  });
 }
 
 

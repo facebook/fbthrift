@@ -60,17 +60,19 @@ void <%service:name%>AsyncClient::sync_<%function:cpp_name%>(apache::thrift::Rpc
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-<%^type:resolves_to_complex_return?%>
-<%#type:void?%>
-  recv_<%function:cpp_name%>(_returnState);
-<%/type:void?%>
-<%^type:void?%>
-  return recv_<%function:cpp_name%>(_returnState);
-<%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-  recv_<%function:cpp_name%>(_return, _returnState);
-<%/type:resolves_to_complex_return?%>
+  return folly::fibers::runInMainContext([&] {
+    <%^type:resolves_to_complex_return?%>
+    <%#type:void?%>
+      recv_<%function:cpp_name%>(_returnState);
+    <%/type:void?%>
+    <%^type:void?%>
+      return recv_<%function:cpp_name%>(_returnState);
+    <%/type:void?%>
+    <%/type:resolves_to_complex_return?%>
+    <%#type:resolves_to_complex_return?%>
+      recv_<%function:cpp_name%>(_return, _returnState);
+    <%/type:resolves_to_complex_return?%>
+  });
 }
 
 <%#type:sync_methods_return_try?%>
@@ -105,14 +107,16 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
   	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
     }
     tryResponse->response = folly::makeTryWith([&] {
-      <%^type:resolves_to_complex_return?%>
-      return recv_<%function:cpp_name%>(returnState);
-      <%/type:resolves_to_complex_return?%>
-      <%#type:resolves_to_complex_return?%>
-      <% > types/semi_type%> rv;
-      recv_<%function:cpp_name%>(rv, returnState);
-      return rv;
-      <%/type:resolves_to_complex_return?%>
+      return folly::fibers::runInMainContext([&] {
+        <%^type:resolves_to_complex_return?%>
+        return recv_<%function:cpp_name%>(returnState);
+        <%/type:resolves_to_complex_return?%>
+        <%#type:resolves_to_complex_return?%>
+        <% > types/semi_type%> rv;
+        recv_<%function:cpp_name%>(rv, returnState);
+        return rv;
+        <%/type:resolves_to_complex_return?%>
+      });
     });
   }
   return tryResponse;

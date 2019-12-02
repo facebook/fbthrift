@@ -135,7 +135,9 @@ bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcO
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_hasDataById(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      return recv_hasDataById(_returnState);
+  });
 }
 
 folly::Try<apache::thrift::RpcResponseComplete<bool>>
@@ -168,7 +170,9 @@ MyServiceFastAsyncClient::sync_complete_hasDataById(
   	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
     }
     tryResponse->response = folly::makeTryWith([&] {
-      return recv_hasDataById(returnState);
+      return folly::fibers::runInMainContext([&] {
+        return recv_hasDataById(returnState);
+      });
     });
   }
   return tryResponse;
@@ -334,7 +338,9 @@ void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcO
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_getDataById(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_getDataById(_return, _returnState);
+  });
 }
 
 folly::Try<apache::thrift::RpcResponseComplete<::std::string>>
@@ -367,9 +373,11 @@ MyServiceFastAsyncClient::sync_complete_getDataById(
   	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
     }
     tryResponse->response = folly::makeTryWith([&] {
-      ::std::string rv;
-      recv_getDataById(rv, returnState);
-      return rv;
+      return folly::fibers::runInMainContext([&] {
+        ::std::string rv;
+        recv_getDataById(rv, returnState);
+        return rv;
+      });
     });
   }
   return tryResponse;
@@ -533,7 +541,9 @@ void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcO
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_putDataById(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_putDataById(_returnState);
+  });
 }
 
 folly::Try<apache::thrift::RpcResponseComplete<void>>
@@ -566,7 +576,9 @@ MyServiceFastAsyncClient::sync_complete_putDataById(
   	  tryResponse->responseContext.headers = returnState.header()->releaseHeaders();
     }
     tryResponse->response = folly::makeTryWith([&] {
-      return recv_putDataById(returnState);
+      return folly::fibers::runInMainContext([&] {
+        return recv_putDataById(returnState);
+      });
     });
   }
   return tryResponse;

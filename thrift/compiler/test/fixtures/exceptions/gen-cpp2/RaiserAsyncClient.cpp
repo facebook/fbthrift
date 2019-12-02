@@ -130,7 +130,9 @@ void RaiserAsyncClient::sync_doBland(apache::thrift::RpcOptions& rpcOptions) {
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_doBland(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_doBland(_returnState);
+  });
 }
 
 
@@ -292,7 +294,9 @@ void RaiserAsyncClient::sync_doRaise(apache::thrift::RpcOptions& rpcOptions) {
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_doRaise(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_doRaise(_returnState);
+  });
 }
 
 
@@ -454,7 +458,9 @@ void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, ::st
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_get200(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_get200(_return, _returnState);
+  });
 }
 
 
@@ -616,7 +622,9 @@ void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, ::st
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_get500(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_get500(_return, _returnState);
+  });
 }
 
 

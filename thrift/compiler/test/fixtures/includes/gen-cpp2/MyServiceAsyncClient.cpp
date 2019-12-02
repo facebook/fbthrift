@@ -110,7 +110,9 @@ void MyServiceAsyncClient::sync_query(apache::thrift::RpcOptions& rpcOptions, co
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_query(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_query(_returnState);
+  });
 }
 
 
@@ -272,7 +274,9 @@ void MyServiceAsyncClient::sync_has_arg_docs(apache::thrift::RpcOptions& rpcOpti
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_has_arg_docs(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_has_arg_docs(_returnState);
+  });
 }
 
 

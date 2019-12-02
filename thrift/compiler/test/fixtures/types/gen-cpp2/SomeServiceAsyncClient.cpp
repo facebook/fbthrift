@@ -108,7 +108,9 @@ void SomeServiceAsyncClient::sync_bounce_map(apache::thrift::RpcOptions& rpcOpti
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_bounce_map(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_bounce_map(_return, _returnState);
+  });
 }
 
 
@@ -270,7 +272,9 @@ void SomeServiceAsyncClient::sync_binary_keyed_map(apache::thrift::RpcOptions& r
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_binary_keyed_map(_return, _returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_binary_keyed_map(_return, _returnState);
+  });
 }
 
 

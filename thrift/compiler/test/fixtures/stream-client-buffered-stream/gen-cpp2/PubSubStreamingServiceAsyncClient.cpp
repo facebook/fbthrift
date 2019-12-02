@@ -147,7 +147,9 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_returnstream(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      return recv_returnstream(_returnState);
+  });
 }
 
 
@@ -290,7 +292,9 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_streamthrows(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      return recv_streamthrows(_returnState);
+  });
 }
 
 
@@ -433,7 +437,9 @@ apache::thrift::ClientBufferedStream<int32_t> PubSubStreamingServiceAsyncClient:
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_boththrows(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      return recv_boththrows(_returnState);
+  });
 }
 
 
@@ -576,7 +582,9 @@ apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t> PubSubStreaming
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  return recv_responseandstreamthrows(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      return recv_responseandstreamthrows(_returnState);
+  });
 }
 
 

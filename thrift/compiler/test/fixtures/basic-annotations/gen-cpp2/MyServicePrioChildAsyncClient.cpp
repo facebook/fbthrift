@@ -94,7 +94,9 @@ void MyServicePrioChildAsyncClient::sync_pang(apache::thrift::RpcOptions& rpcOpt
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_pang(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_pang(_returnState);
+  });
 }
 
 

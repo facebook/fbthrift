@@ -147,7 +147,9 @@ void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_mapList(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_mapList(_returnState);
+  });
 }
 
 
@@ -309,7 +311,9 @@ void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOpt
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_mapSet(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_mapSet(_returnState);
+  });
 }
 
 
@@ -471,7 +475,9 @@ void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_listMap(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_listMap(_returnState);
+  });
 }
 
 
@@ -633,7 +639,9 @@ void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_listSet(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_listSet(_returnState);
+  });
 }
 
 
@@ -795,7 +803,9 @@ void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_turtles(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_turtles(_returnState);
+  });
 }
 
 

@@ -106,7 +106,9 @@ void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_ping(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_ping(_returnState);
+  });
 }
 
 
@@ -268,7 +270,9 @@ void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOp
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_pong(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_pong(_returnState);
+  });
 }
 
 

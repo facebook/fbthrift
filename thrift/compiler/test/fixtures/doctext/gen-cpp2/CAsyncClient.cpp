@@ -94,7 +94,9 @@ void CAsyncClient::sync_f(apache::thrift::RpcOptions& rpcOptions) {
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_f(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_f(_returnState);
+  });
 }
 
 

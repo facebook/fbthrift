@@ -94,7 +94,9 @@ void MyLeafAsyncClient::sync_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
     assert(!!_returnState.exception());
     _returnState.exception().throw_exception();
   }
-  recv_do_leaf(_returnState);
+  return folly::fibers::runInMainContext([&] {
+      recv_do_leaf(_returnState);
+  });
 }
 
 

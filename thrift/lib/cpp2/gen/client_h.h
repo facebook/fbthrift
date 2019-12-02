@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/fibers/FiberManager.h>
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/AsyncClient.h>
