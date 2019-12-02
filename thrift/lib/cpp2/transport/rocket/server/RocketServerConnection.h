@@ -57,7 +57,10 @@ class RocketServerConnection
   RocketServerConnection(
       folly::AsyncTransportWrapper::UniquePtr socket,
       std::shared_ptr<RocketServerHandler> frameHandler,
-      std::chrono::milliseconds streamStarvationTimeout);
+      std::chrono::milliseconds streamStarvationTimeout,
+      std::chrono::milliseconds writeBatchingInterval =
+          std::chrono::milliseconds::zero(),
+      size_t writeBatchingSize = 0);
 
   void send(std::unique_ptr<folly::IOBuf> data);
 
@@ -153,17 +156,34 @@ class RocketServerConnection
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
 
-  class WriteBatcher : private folly::EventBase::LoopCallback {
+  class WriteBatcher : private folly::EventBase::LoopCallback,
+                       private folly::HHWheelTimer::Callback {
    public:
-    explicit WriteBatcher(RocketServerConnection& connection)
-        : connection_(connection) {}
+    WriteBatcher(
+        RocketServerConnection& connection,
+        std::chrono::milliseconds batchingInterval,
+        size_t batchingSize)
+        : connection_(connection),
+          batchingInterval_(batchingInterval),
+          batchingSize_(batchingSize) {}
 
     void enqueueWrite(std::unique_ptr<folly::IOBuf> data) {
       if (!bufferedWrites_) {
         bufferedWrites_ = std::move(data);
-        connection_.getEventBase().runInLoop(this, true /* thisIteration */);
+        if (batchingInterval_ != std::chrono::milliseconds::zero()) {
+          connection_.getEventBase().timer().scheduleTimeout(
+              this, batchingInterval_);
+        } else {
+          connection_.getEventBase().runInLoop(this, true /* thisIteration */);
+        }
       } else {
         bufferedWrites_->prependChain(std::move(data));
+      }
+      ++bufferedWritesCount_;
+      if (batchingInterval_ != std::chrono::milliseconds::zero() &&
+          bufferedWritesCount_ == batchingSize_) {
+        cancelTimeout();
+        connection_.getEventBase().runInLoop(this, true /* thisIteration */);
       }
     }
 
@@ -172,6 +192,7 @@ class RocketServerConnection
         return;
       }
       cancelLoopCallback();
+      cancelTimeout();
       flushPendingWrites();
     }
 
@@ -184,15 +205,23 @@ class RocketServerConnection
       flushPendingWrites();
     }
 
+    void timeoutExpired() noexcept final {
+      flushPendingWrites();
+    }
+
     void flushPendingWrites() noexcept {
+      bufferedWritesCount_ = 0;
       connection_.flushWrites(std::move(bufferedWrites_));
     }
 
     RocketServerConnection& connection_;
+    std::chrono::milliseconds batchingInterval_;
+    size_t batchingSize_;
     // Callback is scheduled iff bufferedWrites_ is not empty.
     std::unique_ptr<folly::IOBuf> bufferedWrites_;
+    size_t bufferedWritesCount_{0};
   };
-  WriteBatcher writeBatcher_{*this};
+  WriteBatcher writeBatcher_;
 
   ~RocketServerConnection() final;
 

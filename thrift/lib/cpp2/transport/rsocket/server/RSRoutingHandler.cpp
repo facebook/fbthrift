@@ -94,7 +94,9 @@ void RSRoutingHandler::handleConnection(
         std::move(sock),
         std::make_shared<rocket::ThriftRocketServerHandler>(
             worker, *address, sockPtr),
-        server->getStreamExpireTime());
+        server->getStreamExpireTime(),
+        server->getWriteBatchingInterval(),
+        server->getWriteBatchingSize());
     // set compression algorithm to be used on this connection
     auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
                            ->getNegotiatedParameters()

@@ -223,6 +223,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttribute<uint64_t> maxDebugPayloadMemoryPerWorker_{0x1000000}; // 16MB
 
+  /**
+   * Batch all writes withing given time interval.
+   * (0 == disabled)
+   */
+  ServerAttribute<std::chrono::milliseconds> writeBatchingInterval_{
+      std::chrono::milliseconds::zero()};
+
+  /**
+   * Trigger early flush when this number of writes are queued.
+   * Ignored if write batching interval is not set.
+   * (0 == disabled)
+   */
+  ServerAttribute<size_t> writeBatchingSize_{0};
+
  protected:
   //! The server's listening address
   folly::SocketAddress address_;
@@ -984,6 +998,38 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
     maxDebugPayloadMemoryPerWorker_.set(limit, source);
+  }
+
+  /**
+   * Set write batching interval
+   */
+  void setWriteBatchingInterval(
+      std::chrono::milliseconds interval,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    writeBatchingInterval_.set(interval, source);
+  }
+
+  /**
+   * Get write batching interval
+   */
+  std::chrono::milliseconds getWriteBatchingInterval() const {
+    return writeBatchingInterval_.get();
+  }
+
+  /**
+   * Set write batching size. Ignored if write batching interval is not set.
+   */
+  void setWriteBatchingSize(
+      size_t batchingSize,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    writeBatchingSize_.set(batchingSize, source);
+  }
+
+  /**
+   * Get write batching size
+   */
+  size_t getWriteBatchingSize() const {
+    return writeBatchingSize_.get();
   }
 };
 } // namespace thrift

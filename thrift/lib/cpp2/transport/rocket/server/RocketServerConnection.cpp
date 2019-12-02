@@ -48,11 +48,14 @@ namespace rocket {
 RocketServerConnection::RocketServerConnection(
     folly::AsyncTransportWrapper::UniquePtr socket,
     std::shared_ptr<RocketServerHandler> frameHandler,
-    std::chrono::milliseconds streamStarvationTimeout)
+    std::chrono::milliseconds streamStarvationTimeout,
+    std::chrono::milliseconds writeBatchingInterval,
+    size_t writeBatchingSize)
     : evb_(*socket->getEventBase()),
       socket_(std::move(socket)),
       frameHandler_(std::move(frameHandler)),
-      streamStarvationTimeout_(streamStarvationTimeout) {
+      streamStarvationTimeout_(streamStarvationTimeout),
+      writeBatcher_(*this, writeBatchingInterval, writeBatchingSize) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
