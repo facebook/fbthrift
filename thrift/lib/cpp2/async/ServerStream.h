@@ -74,18 +74,6 @@ class ServerStream {
     return fn_(std::move(serverExecutor), encode);
   }
 
-  // convenience operator for tests
-
-  void operator()(
-      FirstResponsePayload&& payload,
-      StreamClientCallback* callback,
-      folly::EventBase* clientEb,
-      folly::Executor::KeepAlive<> serverExecutor,
-      folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {
-    fn_(std::move(serverExecutor), encode)(
-        std::move(payload), callback, clientEb);
-  }
-
  private:
   explicit ServerStream(detail::ServerStreamFn<T> fn) : fn_(std::move(fn)) {}
 

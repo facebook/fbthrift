@@ -110,12 +110,10 @@ TEST(ServerStreamTest, PublishConsumeCoro) {
       co_yield std::move(i);
     }
   }());
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
     clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -143,12 +141,10 @@ TEST(ServerStreamTest, ImmediateCancel) {
     }
     EXPECT_TRUE(false);
   }());
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
   clientCallback.completed.wait();
 }
 
@@ -170,12 +166,10 @@ TEST(ServerStreamTest, DelayedCancel) {
     }
     EXPECT_TRUE(false);
   }());
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
     clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -195,12 +189,10 @@ TEST(ServerStreamTest, PropagatedCancel) {
     setup.post();
     co_await folly::coro::sleep(std::chrono::minutes(1));
   }());
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
   clientCallback.started.wait();
   clientEb.getEventBase()->add([&] { clientCallback.cb->onStreamRequestN(1); });
   setup.wait();
@@ -221,12 +213,10 @@ TEST(ServerStreamTest, CancelCoro) {
         co_yield std::move(i);
       }
     }());
-    factory(
+    factory(serverEb.getEventBase(), &encode)(
         FirstResponsePayload{nullptr, {}},
         &clientCallback,
-        clientEb.getEventBase(),
-        serverEb.getEventBase(),
-        &encode);
+        clientEb.getEventBase());
     clientEb.add([&] {
       clientCallback.started.wait();
       clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -244,12 +234,10 @@ TEST(ServerStreamTest, MustClosePublisher) {
         ClientCallback clientCallback;
         folly::ScopedEventBaseThread clientEb, serverEb;
         auto [factory, publisher] = ServerStream<int>::createPublisher([] {});
-        factory(
+        factory(serverEb.getEventBase(), &encode)(
             FirstResponsePayload{nullptr, {}},
             &clientCallback,
-            clientEb.getEventBase(),
-            serverEb.getEventBase(),
-            &encode);
+            clientEb.getEventBase());
         clientEb.add([&] {
           clientCallback.started.wait();
           clientCallback.cb->onStreamRequestN(5);
@@ -268,12 +256,10 @@ TEST(ServerStreamTest, PublishConsumePublisher) {
   for (int i = 0; i < 5; i++) {
     publisher.next(i);
   }
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
     clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -293,12 +279,10 @@ TEST(ServerStreamTest, CancelPublisher) {
   bool closed = false;
   auto [factory, publisher] =
       ServerStream<int>::createPublisher([&] { closed = true; });
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
     clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -330,12 +314,10 @@ TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
       co_yield std::move(i);
     }
   }());
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       clientStreamBridge,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
 
   size_t expected = 0;
   bool done = false;
@@ -363,12 +345,10 @@ TEST(ServerStreamTest, ClientBufferedStreamPublisherIntegration) {
   for (int i = 0; i < 5; i++) {
     publisher.next(i);
   }
-  factory(
+  factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       clientStreamBridge,
-      clientEb.getEventBase(),
-      serverEb.getEventBase(),
-      &encode);
+      clientEb.getEventBase());
 
   for (int i = 5; i < 10; i++) {
     publisher.next(i);
