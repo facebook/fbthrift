@@ -22,6 +22,7 @@
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
+#include <thrift/lib/cpp2/async/ServerPublisherStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
@@ -59,6 +60,14 @@ class ServerStream {
           };
         }) {}
 
+  static std::pair<ServerStream<T>, ServerStreamPublisher<T>> createPublisher(
+      folly::Function<void()> onStreamCompleteOrCancel) {
+    auto pair = detail::ServerPublisherStream<T>::create(
+        std::move(onStreamCompleteOrCancel));
+    return std::make_pair<ServerStream<T>, ServerStreamPublisher<T>>(
+        ServerStream<T>(std::move(pair.first)), std::move(pair.second));
+  }
+
   detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,
       folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {
@@ -66,6 +75,7 @@ class ServerStream {
   }
 
   // convenience operator for tests
+
   void operator()(
       FirstResponsePayload&& payload,
       StreamClientCallback* callback,
@@ -77,6 +87,8 @@ class ServerStream {
   }
 
  private:
+  explicit ServerStream(detail::ServerStreamFn<T> fn) : fn_(std::move(fn)) {}
+
   detail::ServerStreamFn<T> fn_;
 };
 

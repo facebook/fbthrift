@@ -148,18 +148,32 @@ TEST(StreamingTest, StreamPublisherNoSubscription) {
 }
 
 #if FOLLY_HAS_COROUTINES
-class DiffTypesStreamingServiceServerStream
-    : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
- public:
-  apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
-    return []() -> folly::coro::AsyncGenerator<int32_t&&> {
-      co_yield 42;
+TEST(StreamingTest, DiffTypesStreamingServiceServerStreamGeneratorCompiles) {
+  class DiffTypesStreamingServiceServerStream
+      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+   public:
+    apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
+      return []() -> folly::coro::AsyncGenerator<int32_t&&> {
+        co_yield 42;
+      }
+      ();
     }
-    ();
-  }
-};
-
-TEST(StreamingTest, DifferentStream2ServiceCompiles) {
+  };
   DiffTypesStreamingServiceServerStream service;
 }
 #endif
+
+TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
+  class DiffTypesStreamingServiceServerStream
+      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+   public:
+    apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
+      auto [stream, ptr] =
+          apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+      ptr.next(42);
+      std::move(ptr).complete();
+      return std::move(stream);
+    }
+  };
+  DiffTypesStreamingServiceServerStream service;
+}
