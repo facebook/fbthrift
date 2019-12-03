@@ -68,22 +68,6 @@ class ReflectionStruct final : private apache::thrift::detail::st::ComparisonOpe
   bool operator==(const ReflectionStruct& rhs) const;
   bool operator<(const ReflectionStruct& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> fieldA_ref() const& {
-    return {fieldA, __isset.fieldA};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> fieldA_ref() const&& {
-    return {std::move(fieldA), __isset.fieldA};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> fieldA_ref() & {
-    return {fieldA, __isset.fieldA};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> fieldA_ref() && {
-    return {std::move(fieldA), __isset.fieldA};
-  }
-
   int32_t get_fieldA() const {
     return fieldA;
   }

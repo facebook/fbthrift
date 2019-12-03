@@ -300,22 +300,6 @@ class Internship final : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const Internship& rhs) const;
   bool operator<(const Internship& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> title_ref() const& {
-    return {title, __isset.title};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> title_ref() const&& {
-    return {std::move(title), __isset.title};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> title_ref() & {
-    return {title, __isset.title};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> title_ref() && {
-    return {std::move(title), __isset.title};
-  }
-
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::cpp2::Company&> employer_ref() const& {
     return {employer, __isset.employer};
   }
@@ -424,22 +408,6 @@ class UnEnumStruct final : private apache::thrift::detail::st::ComparisonOperato
   } __isset = {};
   bool operator==(const UnEnumStruct& rhs) const;
   bool operator<(const UnEnumStruct& rhs) const;
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::City&> city_ref() const& {
-    return {city, __isset.city};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::City&&> city_ref() const&& {
-    return {std::move(city), __isset.city};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::City&> city_ref() & {
-    return {city, __isset.city};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::City&&> city_ref() && {
-    return {std::move(city), __isset.city};
-  }
 
    ::cpp2::City get_city() const {
     return city;
@@ -581,38 +549,6 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const struct1& rhs) const;
   bool operator<(const struct1& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> a_ref() const& {
-    return {a, __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> a_ref() const&& {
-    return {std::move(a), __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> a_ref() & {
-    return {a, __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> a_ref() && {
-    return {std::move(a), __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> b_ref() const& {
-    return {b, __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> b_ref() const&& {
-    return {std::move(b), __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> b_ref() & {
-    return {b, __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> b_ref() && {
-    return {std::move(b), __isset.b};
-  }
-
   int32_t get_a() const {
     return a;
   }
@@ -700,70 +636,6 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   } __isset = {};
   bool operator==(const struct2& rhs) const;
   bool operator<(const struct2& rhs) const;
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> a_ref() const& {
-    return {a, __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> a_ref() const&& {
-    return {std::move(a), __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> a_ref() & {
-    return {a, __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> a_ref() && {
-    return {std::move(a), __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> b_ref() const& {
-    return {b, __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> b_ref() const&& {
-    return {std::move(b), __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> b_ref() & {
-    return {b, __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> b_ref() && {
-    return {std::move(b), __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::struct1&> c_ref() const& {
-    return {c, __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::struct1&&> c_ref() const&& {
-    return {std::move(c), __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::struct1&> c_ref() & {
-    return {c, __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::struct1&&> c_ref() && {
-    return {std::move(c), __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&> d_ref() const& {
-    return {d, __isset.d};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&&> d_ref() const&& {
-    return {std::move(d), __isset.d};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&> d_ref() & {
-    return {d, __isset.d};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&&> d_ref() && {
-    return {std::move(d), __isset.d};
-  }
 
   int32_t get_a() const {
     return a;
@@ -867,54 +739,6 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   } __isset = {};
   bool operator==(const struct3& rhs) const;
   bool operator<(const struct3& rhs) const;
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> a_ref() const& {
-    return {a, __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> a_ref() const&& {
-    return {std::move(a), __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> a_ref() & {
-    return {a, __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> a_ref() && {
-    return {std::move(a), __isset.a};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> b_ref() const& {
-    return {b, __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> b_ref() const&& {
-    return {std::move(b), __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> b_ref() & {
-    return {b, __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> b_ref() && {
-    return {std::move(b), __isset.b};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::struct2&> c_ref() const& {
-    return {c, __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::struct2&&> c_ref() const&& {
-    return {std::move(c), __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::struct2&> c_ref() & {
-    return {c, __isset.c};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::struct2&&> c_ref() && {
-    return {std::move(c), __isset.c};
-  }
 
   const ::std::string& get_a() const& {
     return a;

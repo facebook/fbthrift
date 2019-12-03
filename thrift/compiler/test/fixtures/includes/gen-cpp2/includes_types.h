@@ -82,38 +82,6 @@ class Included final : private apache::thrift::detail::st::ComparisonOperators<I
   bool operator==(const Included& rhs) const;
   bool operator<(const Included& rhs) const;
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> MyIntField_ref() const& {
-    return {MyIntField, __isset.MyIntField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> MyIntField_ref() const&& {
-    return {std::move(MyIntField), __isset.MyIntField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> MyIntField_ref() & {
-    return {MyIntField, __isset.MyIntField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> MyIntField_ref() && {
-    return {std::move(MyIntField), __isset.MyIntField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Foo&> MyTransitiveField_ref() const& {
-    return {MyTransitiveField, __isset.MyTransitiveField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Foo&&> MyTransitiveField_ref() const&& {
-    return {std::move(MyTransitiveField), __isset.MyTransitiveField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Foo&> MyTransitiveField_ref() & {
-    return {MyTransitiveField, __isset.MyTransitiveField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Foo&&> MyTransitiveField_ref() && {
-    return {std::move(MyTransitiveField), __isset.MyTransitiveField};
-  }
-
   int64_t get_MyIntField() const {
     return MyIntField;
   }

@@ -533,22 +533,6 @@ class MyField final : private apache::thrift::detail::st::ComparisonOperators<My
     return {std::move(opt_value), __isset.opt_value};
   }
 
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> value_ref() const& {
-    return {value, __isset.value};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> value_ref() const&& {
-    return {std::move(value), __isset.value};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> value_ref() & {
-    return {value, __isset.value};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> value_ref() && {
-    return {std::move(value), __isset.value};
-  }
-
   const int64_t* get_opt_value() const& {
     return __isset.opt_value ? std::addressof(opt_value) : nullptr;
   }
@@ -694,38 +678,6 @@ class StructWithUnion final : private apache::thrift::detail::st::ComparisonOper
   } __isset = {};
   bool operator==(const StructWithUnion& rhs) const;
   bool operator<(const StructWithUnion& rhs) const;
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const double&> aDouble_ref() const& {
-    return {aDouble, __isset.aDouble};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const double&&> aDouble_ref() const&& {
-    return {std::move(aDouble), __isset.aDouble};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<double&> aDouble_ref() & {
-    return {aDouble, __isset.aDouble};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<double&&> aDouble_ref() && {
-    return {std::move(aDouble), __isset.aDouble};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::MyField&> f_ref() const& {
-    return {f, __isset.f};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::MyField&&> f_ref() const&& {
-    return {std::move(f), __isset.f};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::MyField&> f_ref() & {
-    return {f, __isset.f};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::MyField&&> f_ref() && {
-    return {std::move(f), __isset.f};
-  }
 
   double get_aDouble() const {
     return aDouble;

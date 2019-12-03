@@ -20,21 +20,12 @@
 
 using namespace apache::thrift::test;
 
-TEST(field_ref_codegen_test, optional_getter) {
+TEST(field_ref_codegen_test, getters) {
   test_struct s;
   apache::thrift::optional_field_ref<int64_t&> ref = s.foo_ref();
   EXPECT_FALSE(ref.has_value());
   ref = 42;
   EXPECT_TRUE(ref.has_value());
-  EXPECT_EQ(*ref, 42);
-}
-
-TEST(field_ref_codegen_test, getter) {
-  test_struct s;
-  apache::thrift::field_ref<int64_t&> ref = s.bar_ref();
-  EXPECT_FALSE(ref.is_set());
-  ref = 42;
-  EXPECT_TRUE(ref.is_set());
   EXPECT_EQ(*ref, 42);
 }
 

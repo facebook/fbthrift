@@ -67,22 +67,6 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::matching_module_name::OtherStruct&> OtherStructField_ref() const& {
-    return {OtherStructField, __isset.OtherStructField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref<const  ::matching_module_name::OtherStruct&&> OtherStructField_ref() const&& {
-    return {std::move(OtherStructField), __isset.OtherStructField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::matching_module_name::OtherStruct&> OtherStructField_ref() & {
-    return {OtherStructField, __isset.OtherStructField};
-  }
-
-  FOLLY_ERASE ::apache::thrift::field_ref< ::matching_module_name::OtherStruct&&> OtherStructField_ref() && {
-    return {std::move(OtherStructField), __isset.OtherStructField};
-  }
   const  ::matching_module_name::OtherStruct& get_OtherStructField() const&;
    ::matching_module_name::OtherStruct get_OtherStructField() &&;
 
