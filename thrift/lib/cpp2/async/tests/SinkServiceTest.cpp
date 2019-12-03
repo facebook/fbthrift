@@ -28,6 +28,17 @@ struct SinkServiceTest
     : public testing::Test,
       public TestSetup<TestSinkService, TestSinkServiceAsyncClient> {};
 
+folly::coro::Task<bool> waitNoLeak(TestSinkServiceAsyncClient& client) {
+  auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds{2};
+  do {
+    bool unsubscribed = co_await client.co_isSinkUnSubscribed();
+    if (unsubscribed) {
+      co_return true;
+    }
+  } while (std::chrono::steady_clock::now() < deadline);
+  co_return false;
+}
+
 TEST_F(SinkServiceTest, SimpleSink) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
@@ -103,8 +114,7 @@ TEST_F(SinkServiceTest, SinkNotCalled) {
         // even though don't really call sink.sink(...),
         // after sink get out of scope, the sink should be cancelled properly
         co_await client.co_unSubscribedSink();
-        bool unsubscribed = co_await client.co_isSinkUnSubscribed();
-        EXPECT_TRUE(unsubscribed);
+        EXPECT_TRUE(co_await waitNoLeak(client));
       });
 }
 
@@ -144,6 +154,7 @@ TEST_F(SinkServiceTest, ClientTimeoutNotLeak) {
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         EXPECT_THROW(
             co_await client.co_unSubscribedSinkSlowReturn(), std::exception);
+        EXPECT_TRUE(co_await waitNoLeak(client));
       });
 }
 

@@ -53,7 +53,15 @@ void RocketSinkClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
     folly::EventBase* /* unused */,
     SinkServerCallback* serverCallback) {
-  serverCallback_ = serverCallback;
+  if (UNLIKELY(serverCallbackOrCancelled_ == kCancelledFlag)) {
+    serverCallback->onStreamCancel();
+    auto& connection = connection_;
+    connection_.freeStream(streamId_);
+    connection.decInflightRequests();
+    return;
+  }
+
+  serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
   connection_.sendPayload(
       streamId_,
       pack(std::move(firstResponse)).value(),
@@ -115,7 +123,7 @@ bool RocketSinkClientCallback::onSinkNext(StreamPayload&& payload) {
     timeout_->decCredits();
   }
 
-  serverCallback_->onSinkNext(std::move(payload));
+  serverCallback()->onSinkNext(std::move(payload));
   return true;
 }
 
@@ -124,7 +132,7 @@ bool RocketSinkClientCallback::onSinkError(folly::exception_wrapper ew) {
   if (state_ != State::BothOpen) {
     return false;
   }
-  serverCallback_->onSinkError(std::move(ew));
+  serverCallback()->onSinkError(std::move(ew));
   return true;
 }
 
@@ -134,12 +142,12 @@ bool RocketSinkClientCallback::onSinkComplete() {
     return false;
   }
   state_ = State::StreamOpen;
-  serverCallback_->onSinkComplete();
+  serverCallback()->onSinkComplete();
   return true;
 }
 
 void RocketSinkClientCallback::onStreamCancel() {
-  serverCallback_->onStreamCancel();
+  serverCallback()->onStreamCancel();
 }
 
 void RocketSinkClientCallback::setChunkTimeout(

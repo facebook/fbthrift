@@ -934,7 +934,7 @@ void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
             transport::TTransportException::TIMED_OUT));
   });
 
-  client_.freeStream(streamId_);
+  client_.cancelStream(streamId_);
 }
 
 void RocketClient::attachEventBase(folly::EventBase& evb) {

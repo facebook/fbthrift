@@ -52,19 +52,29 @@ class RocketStreamClientCallback final : public StreamClientCallback {
   void resetServerCallback(StreamServerCallback&) override;
 
   void request(uint32_t n);
+  void onStreamCancel();
   void headers(HeadersPayload&& payload);
 
   StreamServerCallback& getStreamServerCallback();
   void timeoutExpired() noexcept;
   void setProtoId(protocol::PROTOCOL_TYPES);
   bool serverCallbackReady() const {
-    return serverCallback_ != nullptr;
+    return serverCallbackOrCancelled_ != kCancelledFlag && serverCallback();
+  }
+  void earlyCancelled() {
+    DCHECK(!serverCallbackReady());
+    serverCallbackOrCancelled_ = kCancelledFlag;
   }
 
  private:
+  StreamServerCallback* serverCallback() const {
+    return reinterpret_cast<StreamServerCallback*>(serverCallbackOrCancelled_);
+  }
+
   const StreamId streamId_;
   RocketServerConnection& connection_;
-  StreamServerCallback* serverCallback_{nullptr};
+  static constexpr intptr_t kCancelledFlag = 1;
+  intptr_t serverCallbackOrCancelled_{0};
   uint64_t tokens_{0};
   std::unique_ptr<folly::HHWheelTimer::Callback> timeoutCallback_;
   protocol::PROTOCOL_TYPES protoId_;

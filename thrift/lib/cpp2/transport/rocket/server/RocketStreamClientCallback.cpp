@@ -67,7 +67,15 @@ void RocketStreamClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
     folly::EventBase* /* unused */,
     StreamServerCallback* serverCallback) {
-  serverCallback_ = serverCallback;
+  if (UNLIKELY(serverCallbackOrCancelled_ == kCancelledFlag)) {
+    serverCallback->onStreamCancel();
+    auto& connection = connection_;
+    connection_.freeStream(streamId_);
+    connection.decInflightRequests();
+    return;
+  }
+
+  serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
 
   DCHECK(tokens_ != 0);
   int tokens = 0;
@@ -155,7 +163,7 @@ void RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
 
 void RocketStreamClientCallback::resetServerCallback(
     StreamServerCallback& serverCallback) {
-  serverCallback_ = &serverCallback;
+  serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(&serverCallback);
 }
 
 void RocketStreamClientCallback::request(uint32_t tokens) {
@@ -165,17 +173,21 @@ void RocketStreamClientCallback::request(uint32_t tokens) {
 
   cancelTimeout();
   tokens_ += tokens;
-  serverCallback_->onStreamRequestN(tokens);
+  serverCallback()->onStreamRequestN(tokens);
 }
 
 void RocketStreamClientCallback::headers(HeadersPayload&& payload) {
-  serverCallback_->onSinkHeaders(std::move(payload));
+  serverCallback()->onSinkHeaders(std::move(payload));
+}
+
+void RocketStreamClientCallback::onStreamCancel() {
+  serverCallback()->onStreamCancel();
 }
 
 void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0, tokens_);
 
-  serverCallback_->onStreamCancel();
+  serverCallback()->onStreamCancel();
   onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
       rocket::ErrorCode::APPLICATION_ERROR,
       serializeErrorStruct(
@@ -189,8 +201,8 @@ void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
 }
 
 StreamServerCallback& RocketStreamClientCallback::getStreamServerCallback() {
-  DCHECK(serverCallback_ != nullptr);
-  return *serverCallback_;
+  DCHECK(serverCallbackReady());
+  return *serverCallback();
 }
 
 void RocketStreamClientCallback::scheduleTimeout() {

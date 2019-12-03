@@ -280,7 +280,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     folly::coro::co_invoke(
         [serverCallback =
              std::move(serverCallback)]() -> folly::coro::Task<void> {
-          co_return co_await serverCallback->start();
+           co_return co_await serverCallback->start();
         })
         .scheduleOn(executor)
         .start();

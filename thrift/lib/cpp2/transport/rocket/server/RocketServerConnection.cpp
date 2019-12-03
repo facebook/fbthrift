@@ -117,8 +117,7 @@ bool RocketServerConnection::closeIfNeeded() {
     folly::variant_match(
         it->second,
         [](const std::unique_ptr<RocketStreamClientCallback>& callback) {
-          auto& serverCallback = callback->getStreamServerCallback();
-          serverCallback.onStreamCancel();
+          callback->onStreamCancel();
         },
         [](const std::unique_ptr<RocketSinkClientCallback>& callback) {
           callback->onStreamCancel();
@@ -274,7 +273,6 @@ void RocketServerConnection::handleUntrackedFrame(
       // final fragment.
       return std::move(frameContext).onPayloadFrame(std::move(payloadFrame));
     }
-
     case FrameType::CANCEL:
       FOLLY_FALLTHROUGH;
     case FrameType::REQUEST_N:
@@ -301,12 +299,19 @@ void RocketServerConnection::handleStreamFrame(
     folly::io::Cursor cursor,
     RocketStreamClientCallback& clientCallback) {
   if (!clientCallback.serverCallbackReady()) {
-    close(folly::make_exception_wrapper<RocketException>(
-        ErrorCode::INVALID,
-        fmt::format(
-            "Received unexpected early frame, stream id ({}) type ({})",
-            static_cast<uint32_t>(streamId),
-            static_cast<uint8_t>(frameType))));
+    switch (frameType) {
+      case FrameType::CANCEL: {
+        clientCallback.earlyCancelled();
+        return;
+      }
+      default:
+        close(folly::make_exception_wrapper<RocketException>(
+            ErrorCode::INVALID,
+            fmt::format(
+                "Received unexpected early frame, stream id ({}) type ({})",
+                static_cast<uint32_t>(streamId),
+                static_cast<uint8_t>(frameType))));
+    }
   }
 
   switch (frameType) {
@@ -317,8 +322,7 @@ void RocketServerConnection::handleStreamFrame(
     }
 
     case FrameType::CANCEL: {
-      auto& serverCallback = clientCallback.getStreamServerCallback();
-      serverCallback.onStreamCancel();
+      clientCallback.onStreamCancel();
       freeStream(streamId);
       return;
     }
@@ -369,12 +373,19 @@ void RocketServerConnection::handleSinkFrame(
     folly::io::Cursor cursor,
     RocketSinkClientCallback& clientCallback) {
   if (!clientCallback.serverCallbackReady()) {
-    close(folly::make_exception_wrapper<RocketException>(
-        ErrorCode::INVALID,
-        fmt::format(
-            "Received unexpected early frame, stream id ({}) type ({})",
-            static_cast<uint32_t>(streamId),
-            static_cast<uint8_t>(frameType))));
+    switch (frameType) {
+      case FrameType::CANCEL: {
+        clientCallback.earlyCancelled();
+        return;
+      }
+      default:
+        close(folly::make_exception_wrapper<RocketException>(
+            ErrorCode::INVALID,
+            fmt::format(
+                "Received unexpected early frame, stream id ({}) type ({})",
+                static_cast<uint32_t>(streamId),
+                static_cast<uint8_t>(frameType))));
+    }
   }
 
   switch (frameType) {

@@ -1077,6 +1077,37 @@ TEST_P(StreamingTest, ServerCompletesFirstResponseAfterClientDisconnects) {
   waitNoLeak(&client);
 }
 
+TEST_P(StreamingTest, ServerCompletesFirstResponseAfterClientTimeout) {
+  if (!GetParam().useRocketServer) {
+    GTEST_SKIP();
+  }
+  // recreate server with one worker thread for server to make sure leak check
+  // only happen after sync_leakCheckWithSleep's handler code returns.
+  numWorkerThreads_ = 1;
+  server_ = createServer(
+      std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
+          handler_),
+      port_);
+  server_->enableRocketServer(GetParam().useRocketServer);
+  folly::EventBase evb;
+
+  auto makeChannel = [&] {
+    return RocketClientChannel::newChannel(
+        TAsyncSocket::UniquePtr(new TAsyncSocket(&evb, "::1", port_)));
+  };
+
+  StreamServiceAsyncClient client{makeChannel()};
+  RpcOptions rpcOptions;
+  rpcOptions.setTimeout(std::chrono::milliseconds{100});
+  rpcOptions.setClientOnlyTimeouts(true);
+  EXPECT_THROW(
+      client.sync_leakCheckWithSleep(rpcOptions, 0, 0, 200),
+      TTransportException);
+  // Wait for the server to finish processing the first response, then check
+  // that no streams are leaked.
+  waitNoLeak(&client);
+}
+
 TEST_P(BlockStreamingTest, StreamBlockTaskQueue) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
     std::vector<apache::thrift::SemiStream<int32_t>> streams;
