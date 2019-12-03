@@ -92,6 +92,9 @@ class TestInterface : public InstrumentationTestServiceSvIf {
 
   folly::coro::Task<void> co_sendRequest() override {
     auto rg = requestGuard();
+    auto ctx = folly::RequestContext::get();
+    EXPECT_TRUE(
+        ctx->setContextDataIfAbsent("TestInterface::co_sendRequest", nullptr));
     co_await finished_;
   }
 

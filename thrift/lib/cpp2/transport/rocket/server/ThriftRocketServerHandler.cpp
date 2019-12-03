@@ -214,6 +214,12 @@ template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
+  auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
+  auto reqCtx = baseReqCtx
+      ? std::make_shared<folly::RequestContext>(*baseReqCtx)
+      : std::make_shared<folly::RequestContext>();
+  folly::RequestContextScopeGuard rctx(reqCtx);
+
   RequestRpcMetadata metadata;
   auto debugPayload = payload.buffer()->clone();
   const bool parseOk = deserializeMetadata(payload, metadata);
