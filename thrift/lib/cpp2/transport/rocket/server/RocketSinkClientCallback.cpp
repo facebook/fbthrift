@@ -38,7 +38,6 @@
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/ErrorCode.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
-#include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 
 namespace apache {
 namespace thrift {
@@ -46,51 +45,56 @@ namespace rocket {
 
 // RocketSinkClientCallback methods
 RocketSinkClientCallback::RocketSinkClientCallback(
-    RocketServerFrameContext&& context)
-    : context_(std::move(context)) {}
+    StreamId streamId,
+    RocketServerConnection& connection)
+    : streamId_(streamId), connection_(connection) {}
 
 void RocketSinkClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
     folly::EventBase* /* unused */,
     SinkServerCallback* serverCallback) {
   serverCallback_ = serverCallback;
-  context_.sendPayload(
-      pack(std::move(firstResponse)).value(), Flags::none().next(true));
-  context_.takeOwnership(this);
+  connection_.sendPayload(
+      streamId_,
+      pack(std::move(firstResponse)).value(),
+      Flags::none().next(true));
+  connection_.decInflightRequests();
 }
 
 void RocketSinkClientCallback::onFirstResponseError(
     folly::exception_wrapper ew) {
-  SCOPE_EXIT {
-    delete this;
-  };
-
   ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
-    context_.sendPayload(
+    connection_.sendPayload(
+        streamId_,
         Payload::makeFromData(std::move(encodedError.encoded)),
         Flags::none().next(true).complete(true));
   });
+  auto& connection = connection_;
+  connection_.freeStream(streamId_);
+  connection.decInflightRequests();
 }
 
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& firstResponse) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  context_.sendPayload(
+  connection_.sendPayload(
+      streamId_,
       pack(std::move(firstResponse)).value(),
       Flags::none().next(true).complete(true));
-  context_.freeStream();
+  connection_.freeStream(streamId_);
 }
 
 void RocketSinkClientCallback::onFinalResponseError(
     folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
   if (!ew.with_exception<RocketException>([this](auto&& rex) {
-        context_.sendError(
+        connection_.sendError(
+            streamId_,
             RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
       })) {
-    context_.sendError(
-        RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
+    connection_.sendError(
+        streamId_, RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
   }
-  context_.freeStream();
+  connection_.freeStream(streamId_);
 }
 
 void RocketSinkClientCallback::onSinkRequestN(uint64_t n) {
@@ -98,7 +102,7 @@ void RocketSinkClientCallback::onSinkRequestN(uint64_t n) {
     timeout_->incCredits(n);
   }
   DCHECK(state_ == State::BothOpen);
-  context_.sendRequestN(n);
+  connection_.sendRequestN(streamId_, n);
 }
 
 bool RocketSinkClientCallback::onSinkNext(StreamPayload&& payload) {
@@ -161,7 +165,7 @@ void RocketSinkClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
 void RocketSinkClientCallback::scheduleTimeout(
     std::chrono::milliseconds chunkTimeout) {
   if (timeout_) {
-    context_.scheduleSinkTimeout(timeout_.get(), chunkTimeout);
+    connection_.scheduleSinkTimeout(timeout_.get(), chunkTimeout);
   }
 }
 

@@ -61,17 +61,25 @@ RocketServerConnection::RocketServerConnection(
   socket_->setReadCB(&parser_);
 }
 
-RocketStreamClientCallback* RocketServerConnection::createStreamClientCallback(
-    RocketServerFrameContext&& context,
+RocketStreamClientCallback& RocketServerConnection::createStreamClientCallback(
+    StreamId streamId,
+    RocketServerConnection& connection,
     uint32_t initialRequestN) {
-  // RocketStreamClientCallback get owned by RocketServerConnection
-  // in streams_ map after onFirstResponse() get called.
-  return new RocketStreamClientCallback(std::move(context), initialRequestN);
+  auto callback = std::make_unique<RocketStreamClientCallback>(
+      streamId, connection, initialRequestN);
+  auto& callbackRef = *callback;
+  streams_.emplace(streamId, std::move(callback));
+  return callbackRef;
 }
 
-RocketSinkClientCallback* RocketServerConnection::createSinkClientCallback(
-    RocketServerFrameContext&& context) {
-  return new RocketSinkClientCallback(std::move(context));
+RocketSinkClientCallback& RocketServerConnection::createSinkClientCallback(
+    StreamId streamId,
+    RocketServerConnection& connection) {
+  auto callback =
+      std::make_unique<RocketSinkClientCallback>(streamId, connection);
+  auto& callbackRef = *callback;
+  streams_.emplace(streamId, std::move(callback));
+  return callbackRef;
 }
 
 void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
@@ -91,8 +99,8 @@ RocketServerConnection::~RocketServerConnection() {
 }
 
 bool RocketServerConnection::closeIfNeeded() {
-  if (state_ != ConnectionState::CLOSING ||
-      inflightRequests_ != getNumStreams() || inflightWrites_ != 0) {
+  if (state_ != ConnectionState::CLOSING || inflightWrites_ != 0 ||
+      inflightRequests_ != 0) {
     return false;
   }
 
@@ -208,7 +216,7 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
     // they are part of a streaming or sink (or channel)
     default: {
       auto iter = streams_.find(streamId);
-      if (iter == streams_.end()) {
+      if (UNLIKELY(iter == streams_.end())) {
         handleUntrackedFrame(
             std::move(frame), streamId, frameType, flags, std::move(cursor));
       } else {
@@ -292,6 +300,15 @@ void RocketServerConnection::handleStreamFrame(
     Flags flags,
     folly::io::Cursor cursor,
     RocketStreamClientCallback& clientCallback) {
+  if (!clientCallback.serverCallbackReady()) {
+    close(folly::make_exception_wrapper<RocketException>(
+        ErrorCode::INVALID,
+        fmt::format(
+            "Received unexpected early frame, stream id ({}) type ({})",
+            static_cast<uint32_t>(streamId),
+            static_cast<uint8_t>(frameType))));
+  }
+
   switch (frameType) {
     case FrameType::REQUEST_N: {
       RequestNFrame requestNFrame(streamId, flags, cursor);
@@ -351,6 +368,15 @@ void RocketServerConnection::handleSinkFrame(
     Flags flags,
     folly::io::Cursor cursor,
     RocketSinkClientCallback& clientCallback) {
+  if (!clientCallback.serverCallbackReady()) {
+    close(folly::make_exception_wrapper<RocketException>(
+        ErrorCode::INVALID,
+        fmt::format(
+            "Received unexpected early frame, stream id ({}) type ({})",
+            static_cast<uint32_t>(streamId),
+            static_cast<uint8_t>(frameType))));
+  }
+
   switch (frameType) {
     case FrameType::PAYLOAD: {
       PayloadFrame payloadFrame(streamId, flags, cursor, std::move(frame));
@@ -432,7 +458,7 @@ void RocketServerConnection::close(folly::exception_wrapper ew) {
   auto rex = ew
       ? RocketException(ErrorCode::CONNECTION_ERROR, ew.what())
       : RocketException(ErrorCode::CONNECTION_CLOSE, "Closing connection");
-  RocketServerFrameContext(*this, StreamId{0}).sendError(std::move(rex));
+  sendError(StreamId{0}, std::move(rex));
 
   state_ = ConnectionState::CLOSING;
   closeIfNeeded();
@@ -531,6 +557,35 @@ folly::Optional<Payload> RocketServerConnection::bufferOrGetFullPayload(
   }
 
   return fullPayload;
+}
+
+void RocketServerConnection::sendPayload(
+    StreamId streamId,
+    Payload&& payload,
+    Flags flags) {
+  send(PayloadFrame(streamId, std::move(payload), flags).serialize());
+}
+
+void RocketServerConnection::sendError(
+    StreamId streamId,
+    RocketException&& rex) {
+  send(ErrorFrame(streamId, std::move(rex)).serialize());
+}
+
+void RocketServerConnection::sendRequestN(StreamId streamId, int32_t n) {
+  send(RequestNFrame(streamId, n).serialize());
+}
+
+void RocketServerConnection::sendCancel(StreamId streamId) {
+  send(CancelFrame(streamId).serialize());
+}
+
+void RocketServerConnection::sendExt(
+    StreamId streamId,
+    Payload&& payload,
+    Flags flags,
+    ExtFrameType extFrameType) {
+  send(ExtFrame(streamId, std::move(payload), flags, extFrameType).serialize());
 }
 
 void RocketServerConnection::freeStream(StreamId streamId) {

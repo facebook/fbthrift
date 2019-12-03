@@ -37,7 +37,7 @@ RocketServerFrameContext::RocketServerFrameContext(
     RocketServerConnection& connection,
     StreamId streamId)
     : connection_(&connection), streamId_(streamId) {
-  connection_->onContextConstructed();
+  connection_->incInflightRequests();
 }
 
 RocketServerFrameContext::RocketServerFrameContext(
@@ -48,7 +48,7 @@ RocketServerFrameContext::RocketServerFrameContext(
 
 RocketServerFrameContext::~RocketServerFrameContext() {
   if (connection_) {
-    connection_->onContextDestroyed();
+    connection_->decInflightRequests();
   }
 }
 
@@ -60,44 +60,12 @@ folly::EventBase& RocketServerFrameContext::getEventBase() const {
 void RocketServerFrameContext::sendPayload(Payload&& payload, Flags flags) {
   DCHECK(connection_);
   DCHECK(flags.next() || flags.complete());
-
-  auto buf = PayloadFrame(streamId_, std::move(payload), flags).serialize();
-  connection_->send(std::move(buf));
+  connection_->sendPayload(streamId_, std::move(payload), flags);
 }
 
 void RocketServerFrameContext::sendError(RocketException&& rex) {
   DCHECK(connection_);
-
-  Serializer writer;
-  ErrorFrame(streamId_, std::move(rex)).serialize(writer);
-  connection_->send(std::move(writer).move());
-}
-
-void RocketServerFrameContext::sendRequestN(int32_t n) {
-  DCHECK(connection_);
-
-  Serializer writer;
-  RequestNFrame(streamId_, n).serialize(writer);
-  connection_->send(std::move(writer).move());
-}
-
-void RocketServerFrameContext::sendCancel() {
-  DCHECK(connection_);
-
-  Serializer writer;
-  CancelFrame(streamId_).serialize(writer);
-  connection_->send(std::move(writer).move());
-}
-
-void RocketServerFrameContext::sendExt(
-    Payload&& payload,
-    Flags flags,
-    ExtFrameType extFrameType) {
-  DCHECK(connection_);
-
-  auto buf =
-      ExtFrame(streamId_, std::move(payload), flags, extFrameType).serialize();
-  connection_->send(std::move(buf));
+  connection_->sendError(streamId_, std::move(rex));
 }
 
 void RocketServerFrameContext::onFullFrame(
@@ -115,9 +83,11 @@ void RocketServerFrameContext::onFullFrame(RequestFnfFrame&& fullFrame) && {
 void RocketServerFrameContext::onFullFrame(RequestStreamFrame&& fullFrame) && {
   auto& connection = *connection_;
   auto& frameHandler = *connection.frameHandler_;
-  auto* clientCallback = connection.createStreamClientCallback(
-      std::move(*this), fullFrame.initialRequestN());
-  frameHandler.handleRequestStreamFrame(std::move(fullFrame), clientCallback);
+  auto& clientCallback = connection.createStreamClientCallback(
+      streamId_,
+      *std::exchange(connection_, nullptr),
+      fullFrame.initialRequestN());
+  frameHandler.handleRequestStreamFrame(std::move(fullFrame), &clientCallback);
 }
 
 void RocketServerFrameContext::onFullFrame(RequestChannelFrame&& fullFrame) && {
@@ -129,11 +99,11 @@ void RocketServerFrameContext::onFullFrame(RequestChannelFrame&& fullFrame) && {
                 STREAMING_CONTRACT_VIOLATION,
             "initialRequestN of Sink must be 2"));
   } else {
-    auto* clientCallback =
-        connection.createSinkClientCallback(std::move(*this));
+    auto& clientCallback = connection.createSinkClientCallback(
+        streamId_, *std::exchange(connection_, nullptr));
     auto& frameHandler = *connection.frameHandler_;
     frameHandler.handleRequestChannelFrame(
-        std::move(fullFrame), clientCallback);
+        std::move(fullFrame), &clientCallback);
   }
 }
 
@@ -149,39 +119,6 @@ void RocketServerFrameContext::onRequestFrame(RequestFrame&& frame) && {
     return;
   }
   std::move(*this).onFullFrame(std::forward<RequestFrame>(frame));
-}
-
-void RocketServerFrameContext::scheduleStreamTimeout(
-    folly::HHWheelTimer::Callback* timeoutCallback) {
-  connection_->scheduleStreamTimeout(timeoutCallback);
-}
-
-void RocketServerFrameContext::scheduleSinkTimeout(
-    folly::HHWheelTimer::Callback* timeoutCallback,
-    std::chrono::milliseconds timeout) {
-  connection_->scheduleSinkTimeout(timeoutCallback, timeout);
-}
-
-bool RocketServerFrameContext::takeOwnership(
-    RocketStreamClientCallback* callback) {
-  connection_->streams_.emplace(
-      streamId_, std::unique_ptr<RocketStreamClientCallback>(callback));
-  // Client may have disconnected before onFirstResponse; in some cases, we need
-  // to trigger connection cleanup.
-  return !connection_->closeIfNeeded();
-}
-
-bool RocketServerFrameContext::takeOwnership(
-    RocketSinkClientCallback* callback) {
-  connection_->streams_.emplace(
-      streamId_, std::unique_ptr<RocketSinkClientCallback>(callback));
-  // Client may have disconnected before onFirstResponse; in some cases, we need
-  // to trigger connection cleanup.
-  return !connection_->closeIfNeeded();
-}
-
-void RocketServerFrameContext::freeStream() {
-  connection_->freeStream(streamId_);
 }
 
 namespace detail {

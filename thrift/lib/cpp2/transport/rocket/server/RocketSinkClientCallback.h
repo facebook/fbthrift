@@ -24,7 +24,7 @@
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
-#include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 
 namespace apache {
 namespace thrift {
@@ -32,7 +32,9 @@ namespace rocket {
 
 class RocketSinkClientCallback final : public SinkClientCallback {
  public:
-  explicit RocketSinkClientCallback(RocketServerFrameContext&& context);
+  explicit RocketSinkClientCallback(
+      StreamId streamId,
+      RocketServerConnection& connection);
   ~RocketSinkClientCallback() override = default;
   void onFirstResponse(
       FirstResponsePayload&&,
@@ -53,6 +55,9 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   void setChunkTimeout(std::chrono::milliseconds timeout);
   void timeoutExpired() noexcept;
   void setProtoId(protocol::PROTOCOL_TYPES);
+  bool serverCallbackReady() const {
+    return serverCallback_ != nullptr;
+  }
 
  private:
   class TimeoutCallback : public folly::HHWheelTimer::Callback {
@@ -80,7 +85,8 @@ class RocketSinkClientCallback final : public SinkClientCallback {
 
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
-  RocketServerFrameContext context_;
+  const StreamId streamId_;
+  RocketServerConnection& connection_;
   SinkServerCallback* serverCallback_{nullptr};
   std::unique_ptr<TimeoutCallback> timeout_;
   protocol::PROTOCOL_TYPES protoId_;

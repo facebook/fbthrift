@@ -431,8 +431,14 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
         return transport::TTransportException(
             transport::TTransportException::TTransportExceptionType::TIMED_OUT);
       });
-      (void)firstPayload;
-      p_.setValue(toStream(std::move(self), evb));
+      if (getRange(*firstPayload.payload) == "error:application") {
+        p_.setException(
+            folly::make_exception_wrapper<thrift::detail::EncodedError>(
+                std::move(firstPayload.payload)));
+        self_.reset();
+      } else {
+        p_.setValue(toStream(std::move(self), evb));
+      }
     }
 
     void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -707,10 +713,9 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
 
     folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
     if (data.removePrefix("error:application")) {
-      clientCallback->onStreamError(
-          folly::make_exception_wrapper<RocketException>(
-              ErrorCode::APPLICATION_ERROR, "Application error occurred"));
-      delete clientCallback;
+      clientCallback->onFirstResponseError(
+          folly::make_exception_wrapper<thrift::detail::EncodedError>(
+              folly::IOBuf::copyBuffer("error:application")));
       return;
     }
     const size_t nHeaders =

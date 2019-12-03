@@ -590,6 +590,14 @@ class TestClientCallback : public StreamClientCallback {
       folly::EventBase* evb,
       StreamServerCallback* subscription) override {
     EXPECT_EQ(&evb_, evb);
+    if (getRange(*firstResponsePayload.payload) == "error:application") {
+      ew_ = folly::make_exception_wrapper<apache::thrift::detail::EncodedError>(
+          std::move(firstResponsePayload.payload));
+      evb_.terminateLoopSoon();
+      firstResponseError_ = true;
+      return;
+    }
+
     subscription_ = subscription;
     // First response does not count towards requested payloads count.
     EXPECT_EQ(
@@ -613,6 +621,7 @@ class TestClientCallback : public StreamClientCallback {
   }
 
   void onStreamNext(StreamPayload&& payload) override {
+    DCHECK(!firstResponseError_);
     EXPECT_EQ(
         folly::to<std::string>(++received_),
         folly::StringPiece{payload.payload->coalesce()});
@@ -624,6 +633,9 @@ class TestClientCallback : public StreamClientCallback {
     evb_.terminateLoopSoon();
   }
   void onStreamComplete() override {
+    if (firstResponseError_) {
+      return;
+    }
     EXPECT_EQ(requested_, received_);
     subscription_ = nullptr;
     evb_.terminateLoopSoon();
@@ -673,6 +685,7 @@ class TestClientCallback : public StreamClientCallback {
   const uint64_t echoHeaders_;
   uint64_t received_{0};
   uint64_t receivedHeaders_{0};
+  bool firstResponseError_{false};
 };
 } // namespace
 

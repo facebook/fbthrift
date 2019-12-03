@@ -58,9 +58,10 @@ class TimeoutCallback : public folly::HHWheelTimer::Callback {
 };
 
 RocketStreamClientCallback::RocketStreamClientCallback(
-    RocketServerFrameContext&& context,
+    StreamId streamId,
+    RocketServerConnection& connection,
     uint32_t initialRequestN)
-    : context_(std::move(context)), tokens_(initialRequestN) {}
+    : streamId_(streamId), connection_(connection), tokens_(initialRequestN) {}
 
 void RocketStreamClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
@@ -79,11 +80,12 @@ void RocketStreamClientCallback::onFirstResponse(
   // compress the response if needed
   compressResponse(firstResponse);
 
-  context_.sendPayload(
-      pack(std::move(firstResponse)).value(), Flags::none().next(true));
-  // ownership of the RocketStreamClientCallback transfers to connection
-  // after onFirstResponse.
-  bool selfAlive = context_.takeOwnership(this);
+  connection_.sendPayload(
+      streamId_,
+      pack(std::move(firstResponse)).value(),
+      Flags::none().next(true));
+
+  bool selfAlive = connection_.decInflightRequests();
   if (selfAlive && tokens) {
     request(tokens);
   }
@@ -91,15 +93,16 @@ void RocketStreamClientCallback::onFirstResponse(
 
 void RocketStreamClientCallback::onFirstResponseError(
     folly::exception_wrapper ew) {
-  SCOPE_EXIT {
-    delete this;
-  };
-
   ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
-    context_.sendPayload(
+    connection_.sendPayload(
+        streamId_,
         Payload::makeFromData(std::move(encodedError.encoded)),
         Flags::none().next(true).complete(true));
   });
+
+  auto& connection = connection_;
+  connection_.freeStream(streamId_);
+  connection.decInflightRequests();
 }
 
 void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
@@ -109,40 +112,45 @@ void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
   }
   // compress the response if needed
   compressResponse(payload);
-
-  context_.sendPayload(
-      pack(std::move(payload)).value(), Flags::none().next(true));
+  connection_.sendPayload(
+      streamId_, pack(std::move(payload)).value(), Flags::none().next(true));
 }
 
 void RocketStreamClientCallback::onStreamComplete() {
-  context_.sendPayload(
+  connection_.sendPayload(
+      streamId_,
       Payload::makeFromData(std::unique_ptr<folly::IOBuf>{}),
       Flags::none().complete(true));
-  context_.freeStream();
+  connection_.freeStream(streamId_);
 }
 
 void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
   ew.handle(
       [this](RocketException& rex) {
-        context_.sendError(
+        connection_.sendError(
+            streamId_,
             RocketException(ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
       },
       [this](::apache::thrift::detail::EncodedError& err) {
-        context_.sendError(RocketException(
-            ErrorCode::APPLICATION_ERROR, std::move(err.encoded)));
+        connection_.sendError(
+            streamId_,
+            RocketException(
+                ErrorCode::APPLICATION_ERROR, std::move(err.encoded)));
       },
       [this, &ew](...) {
-        context_.sendError(
+        connection_.sendError(
+            streamId_,
             RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
       });
-  context_.freeStream();
+  connection_.freeStream(streamId_);
 }
 
 void RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
-  context_.sendExt(
-      rocket::pack(payload).value(),
-      rocket::Flags::none().ignore(true),
-      rocket::ExtFrameType::HEADERS_PUSH);
+  connection_.sendExt(
+      streamId_,
+      pack(payload).value(),
+      Flags::none().ignore(true),
+      ExtFrameType::HEADERS_PUSH);
 }
 
 void RocketStreamClientCallback::resetServerCallback(
@@ -189,7 +197,7 @@ void RocketStreamClientCallback::scheduleTimeout() {
   if (!timeoutCallback_) {
     timeoutCallback_ = std::make_unique<TimeoutCallback>(*this);
   }
-  context_.scheduleStreamTimeout(timeoutCallback_.get());
+  connection_.scheduleStreamTimeout(timeoutCallback_.get());
 }
 
 void RocketStreamClientCallback::cancelTimeout() {
@@ -198,9 +206,8 @@ void RocketStreamClientCallback::cancelTimeout() {
 
 template <class Payload>
 void RocketStreamClientCallback::compressResponse(Payload& payload) {
-  RocketServerConnection& connection = context_.connection();
   folly::Optional<CompressionAlgorithm> compression =
-      connection.getNegotiatedCompressionAlgorithm();
+      connection_.getNegotiatedCompressionAlgorithm();
 
   if (compression.hasValue()) {
     folly::io::CodecType codec;

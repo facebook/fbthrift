@@ -64,25 +64,28 @@ class RocketServerConnection
 
   void send(std::unique_ptr<folly::IOBuf> data);
 
-  static RocketStreamClientCallback* createStreamClientCallback(
-      RocketServerFrameContext&& context,
+  RocketStreamClientCallback& createStreamClientCallback(
+      StreamId streamId,
+      RocketServerConnection& connection,
       uint32_t initialRequestN);
 
-  static RocketSinkClientCallback* createSinkClientCallback(
-      RocketServerFrameContext&& context);
+  RocketSinkClientCallback& createSinkClientCallback(
+      StreamId streamId,
+      RocketServerConnection& connection);
 
   // Parser callbacks
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
   void close(folly::exception_wrapper ew);
 
-  void onContextConstructed() {
+  void incInflightRequests() {
     ++inflightRequests_;
   }
 
-  void onContextDestroyed() {
+  // return true if connection still alive (not closed)
+  bool decInflightRequests() {
     DCHECK(inflightRequests_ != 0);
     --inflightRequests_;
-    closeIfNeeded();
+    return !closeIfNeeded();
   }
 
   // AsyncTransportWrapper::WriteCallback implementation
@@ -118,9 +121,24 @@ class RocketServerConnection
     return minCompressBytes_;
   }
 
- private:
+  void sendPayload(StreamId streamId, Payload&& payload, Flags flags);
+  void sendError(StreamId streamId, RocketException&& rex);
+  void sendRequestN(StreamId streamId, int32_t n);
+  void sendCancel(StreamId streamId);
+  void sendExt(
+      StreamId streamId,
+      Payload&& payload,
+      Flags flags,
+      ExtFrameType extFrameType);
+
   void freeStream(StreamId streamId);
 
+  void scheduleStreamTimeout(folly::HHWheelTimer::Callback*);
+  void scheduleSinkTimeout(
+      folly::HHWheelTimer::Callback*,
+      std::chrono::milliseconds timeout);
+
+ private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
   folly::EventBase& evb_;
@@ -261,11 +279,6 @@ class RocketServerConnection
       Flags flags,
       folly::io::Cursor cursor,
       RocketSinkClientCallback& clientCallback);
-
-  void scheduleStreamTimeout(folly::HHWheelTimer::Callback*);
-  void scheduleSinkTimeout(
-      folly::HHWheelTimer::Callback*,
-      std::chrono::milliseconds timeout);
 
   friend class RocketServerFrameContext;
 };

@@ -20,7 +20,7 @@
 #include <folly/io/async/HHWheelTimer.h>
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 
 namespace folly {
 class EventBase;
@@ -33,7 +33,8 @@ namespace rocket {
 class RocketStreamClientCallback final : public StreamClientCallback {
  public:
   RocketStreamClientCallback(
-      RocketServerFrameContext&& context,
+      StreamId streamId,
+      RocketServerConnection& connection,
       uint32_t initialRequestN);
   ~RocketStreamClientCallback() override = default;
 
@@ -56,9 +57,13 @@ class RocketStreamClientCallback final : public StreamClientCallback {
   StreamServerCallback& getStreamServerCallback();
   void timeoutExpired() noexcept;
   void setProtoId(protocol::PROTOCOL_TYPES);
+  bool serverCallbackReady() const {
+    return serverCallback_ != nullptr;
+  }
 
  private:
-  RocketServerFrameContext context_;
+  const StreamId streamId_;
+  RocketServerConnection& connection_;
   StreamServerCallback* serverCallback_{nullptr};
   uint64_t tokens_{0};
   std::unique_ptr<folly::HHWheelTimer::Callback> timeoutCallback_;

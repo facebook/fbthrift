@@ -52,9 +52,6 @@ class RocketServerFrameContext {
 
   void sendPayload(Payload&& payload, Flags flags);
   void sendError(RocketException&& rex);
-  void sendRequestN(int32_t n);
-  void sendCancel();
-  void sendExt(Payload&& payload, Flags flags, ExtFrameType extFrameType);
 
   template <class RequestFrame>
   void onRequestFrame(RequestFrame&& frame) &&;
@@ -64,16 +61,6 @@ class RocketServerFrameContext {
   StreamId streamId() const {
     return streamId_;
   }
-
-  void scheduleStreamTimeout(folly::HHWheelTimer::Callback* timeoutCallback);
-  void scheduleSinkTimeout(
-      folly::HHWheelTimer::Callback* timeoutCallback,
-      std::chrono::milliseconds timeout);
-  void freeStream();
-
-  // return true if callback is still alive
-  bool takeOwnership(RocketStreamClientCallback* callback);
-  bool takeOwnership(RocketSinkClientCallback* callback);
 
   RocketServerConnection& connection() {
     DCHECK(connection_);
