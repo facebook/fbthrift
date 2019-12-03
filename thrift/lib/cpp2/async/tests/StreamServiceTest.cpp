@@ -21,60 +21,57 @@
 using namespace testutil::testservice;
 using namespace apache::thrift;
 
-auto doTest = [](auto& client) -> folly::coro::Task<void> {
-  auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
-  co_await([&]() mutable -> folly::coro::Task<void> {
-    int i = 0;
-    while (auto t = co_await gen.next()) {
-      if (i <= 100) {
-        EXPECT_EQ(i++, *t);
-      } else {
-        EXPECT_FALSE(t);
-      }
-    }
-  }());
+template <typename Service>
+class StreamServiceTest
+    : public testing::Test,
+      public TestSetup<Service, TestStreamServiceAsyncClient> {};
 
-  gen = (co_await client.co_rangeThrow(0, 100)).toAsyncGenerator();
-  co_await[&]() mutable->folly::coro::Task<void> {
-    for (int i = 0; i <= 101; i++) {
-      if (i <= 100) {
-        auto t = co_await gen.next();
-        EXPECT_EQ(i, *t);
-      } else {
-        EXPECT_ANY_THROW(co_await gen.next());
-      }
-    }
-  }
-  ();
+using TestTypes =
+    ::testing::Types<TestStreamGeneratorService, TestStreamPublisherService>;
+TYPED_TEST_CASE(StreamServiceTest, TestTypes);
 
-  gen = (co_await client.co_rangeThrowUDE(0, 100)).toAsyncGenerator();
-  co_await[&]() mutable->folly::coro::Task<void> {
-    for (int i = 0; i <= 101; i++) {
-      if (i <= 100) {
-        auto t = co_await gen.next();
-        EXPECT_EQ(i, *t);
-      } else {
-        EXPECT_ANY_THROW(co_await gen.next());
-      }
-    }
-  }
-  ();
-};
-
-struct StreamGeneratorServiceTest : public testing::Test,
-                                    public TestSetup<
-                                        TestStreamGeneratorService,
-                                        TestStreamServiceAsyncClient> {};
-
-struct StreamPublisherServiceTest : public testing::Test,
-                                    public TestSetup<
-                                        TestStreamPublisherService,
-                                        TestStreamServiceAsyncClient> {};
-
-TEST_F(StreamGeneratorServiceTest, Stream) {
-  connectToServer(doTest);
+TYPED_TEST(StreamServiceTest, Basic) {
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
+        int i = 0;
+        while (auto t = co_await gen.next()) {
+          if (i <= 100) {
+            EXPECT_EQ(i++, *t);
+          } else {
+            EXPECT_FALSE(t);
+          }
+        }
+      });
 }
 
-TEST_F(StreamPublisherServiceTest, Stream) {
-  connectToServer(doTest);
+TYPED_TEST(StreamServiceTest, Throw) {
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen = (co_await client.co_rangeThrow(0, 100)).toAsyncGenerator();
+        for (int i = 0; i <= 101; i++) {
+          if (i <= 100) {
+            auto t = co_await gen.next();
+            EXPECT_EQ(i, *t);
+          } else {
+            EXPECT_ANY_THROW(co_await gen.next());
+          }
+        }
+      });
+}
+
+TYPED_TEST(StreamServiceTest, ThrowUDE) {
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen =
+            (co_await client.co_rangeThrowUDE(0, 100)).toAsyncGenerator();
+        for (int i = 0; i <= 101; i++) {
+          if (i <= 100) {
+            auto t = co_await gen.next();
+            EXPECT_EQ(i, *t);
+          } else {
+            EXPECT_ANY_THROW(co_await gen.next());
+          }
+        }
+      });
 }
