@@ -15,6 +15,11 @@
 
 include(CMakeFindDependencyMacro)
 
+# Save the PACKAGE_PREFIX_DIR in a separate variable.  find_dependency() calls
+# below can replace PACKAGE_PREFIX_DIR with the prefix of the dependency that
+# was searched for.
+set(FBTHRIFT_PREFIX_DIR "${PACKAGE_PREFIX_DIR}")
+
 set_and_check(FBTHRIFT_CMAKE_DIR "@PACKAGE_CMAKE_INSTALL_DIR@")
 set_and_check(FBTHRIFT_INCLUDE_DIR "@PACKAGE_INCLUDE_INSTALL_DIR@")
 if (WIN32)
@@ -49,5 +54,5 @@ set(FBThrift_FOUND True)
 check_required_components(FBThrift)
 
 if (FBThrift_FOUND AND NOT FBThrift_FIND_QUIETLY)
-  message(STATUS "Found FBThrift: ${PACKAGE_PREFIX_DIR}")
+    message(STATUS "Found FBThrift: ${FBTHRIFT_PREFIX_DIR}")
 endif()
