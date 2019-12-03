@@ -26,6 +26,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
 #include <folly/String.h>
+#include <folly/fibers/FiberManager.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
@@ -235,42 +236,44 @@ std::unique_ptr<folly::IOBuf> preprocessSendT(
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
-  size_t bufSize = sizefunc(prot);
-  bufSize += prot->serializedMessageSize(methodName);
-  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+  return folly::fibers::runInMainContext([&] {
+    size_t bufSize = sizefunc(prot);
+    bufSize += prot->serializedMessageSize(methodName);
+    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
 
-  // Preallocate small buffer headroom for transports metadata & framing.
-  constexpr size_t kHeadroomBytes = 128;
-  auto buf = folly::IOBuf::create(kHeadroomBytes + bufSize);
-  buf->advance(kHeadroomBytes);
-  queue.append(std::move(buf));
+    // Preallocate small buffer headroom for transports metadata & framing.
+    constexpr size_t kHeadroomBytes = 128;
+    auto buf = folly::IOBuf::create(kHeadroomBytes + bufSize);
+    buf->advance(kHeadroomBytes);
+    queue.append(std::move(buf));
 
-  prot->setOutput(&queue, bufSize);
-  auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
-  size_t crcSkip = 0;
-  try {
-    ctx.preWrite();
-    prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
-    crcSkip = queue.chainLength();
-    writefunc(prot);
-    prot->writeMessageEnd();
-    ::apache::thrift::SerializedMessage smsg;
-    smsg.protocolType = prot->protocolType();
-    smsg.buffer = queue.front();
-    ctx.onWriteData(smsg);
-    ctx.postWrite(queue.chainLength());
-  } catch (const apache::thrift::TException& ex) {
-    ctx.handlerErrorWrapped(
-        folly::exception_wrapper(std::current_exception(), ex));
-    throw;
-  }
+    prot->setOutput(&queue, bufSize);
+    auto guard = folly::makeGuard([&] { prot->setOutput(nullptr); });
+    size_t crcSkip = 0;
+    try {
+      ctx.preWrite();
+      prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
+      crcSkip = queue.chainLength();
+      writefunc(prot);
+      prot->writeMessageEnd();
+      ::apache::thrift::SerializedMessage smsg;
+      smsg.protocolType = prot->protocolType();
+      smsg.buffer = queue.front();
+      ctx.onWriteData(smsg);
+      ctx.postWrite(queue.chainLength());
+    } catch (const apache::thrift::TException& ex) {
+      ctx.handlerErrorWrapped(
+          folly::exception_wrapper(std::current_exception(), ex));
+      throw;
+    }
 
-  if (rpcOptions.getEnableChecksum()) {
-    header->setCrc32c(
-        apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
-  }
+    if (rpcOptions.getEnableChecksum()) {
+      header->setCrc32c(
+          apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
+    }
 
-  return queue.move();
+    return queue.move();
+  });
 }
 
 template <class Protocol>
