@@ -76,6 +76,38 @@ class IncludedB final : private apache::thrift::detail::st::ComparisonOperators<
   bool operator==(const IncludedB& rhs) const;
   bool operator<(const IncludedB& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> i32Field_ref() const& {
+    return {i32Field, __isset.i32Field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> i32Field_ref() const&& {
+    return {std::move(i32Field), __isset.i32Field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> i32Field_ref() & {
+    return {i32Field, __isset.i32Field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> i32Field_ref() && {
+    return {std::move(i32Field), __isset.i32Field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> strField_ref() const& {
+    return {strField, __isset.strField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> strField_ref() const&& {
+    return {std::move(strField), __isset.strField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> strField_ref() & {
+    return {strField, __isset.strField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> strField_ref() && {
+    return {std::move(strField), __isset.strField};
+  }
+
   int32_t get_i32Field() const {
     return i32Field;
   }

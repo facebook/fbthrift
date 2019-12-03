@@ -205,6 +205,38 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test::fixtures::enumstrict::MyEnum&> myEnum_ref() const& {
+    return {myEnum, __isset.myEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test::fixtures::enumstrict::MyEnum&&> myEnum_ref() const&& {
+    return {std::move(myEnum), __isset.myEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test::fixtures::enumstrict::MyEnum&> myEnum_ref() & {
+    return {myEnum, __isset.myEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test::fixtures::enumstrict::MyEnum&&> myEnum_ref() && {
+    return {std::move(myEnum), __isset.myEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test::fixtures::enumstrict::MyBigEnum&> myBigEnum_ref() const& {
+    return {myBigEnum, __isset.myBigEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test::fixtures::enumstrict::MyBigEnum&&> myBigEnum_ref() const&& {
+    return {std::move(myBigEnum), __isset.myBigEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test::fixtures::enumstrict::MyBigEnum&> myBigEnum_ref() & {
+    return {myBigEnum, __isset.myBigEnum};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test::fixtures::enumstrict::MyBigEnum&&> myBigEnum_ref() && {
+    return {std::move(myBigEnum), __isset.myBigEnum};
+  }
+
    ::test::fixtures::enumstrict::MyEnum get_myEnum() const {
     return myEnum;
   }
