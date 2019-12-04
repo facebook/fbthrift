@@ -87,7 +87,7 @@ foreach(_mod ${cpp_tgts})
   )
 
   python_add_module(${_module_name} "${_cxx}")
-  target_link_libraries(${_module_name} thriftcpp2_shared)
+  target_link_libraries(${_module_name} thriftcpp2)
   set_target_properties(${_module_name}
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "cybld/${_d}"
@@ -97,10 +97,14 @@ endforeach()
 
 include_directories(${PYTHON_INCLUDE_DIRS})
 
-# Install Thrift Python Bindings using Python setuptools
+# Build and Install Thrift Python Bindings using Python setuptools
 install(CODE "
   execute_process(COMMAND
-  python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py bdist_wheel install
-  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)")
+  python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py bdist_wheel
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)
+  execute_process(COMMAND
+  python3 ${CMAKE_CURRENT_SOURCE_DIR}/setup.py install
+  WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cybld)"
+)
 
 add_subdirectory(test)

@@ -53,7 +53,7 @@ macro(thrift_py3_test filename services)
       COMMAND ${CYTHON_EXE} --fast-fail -3 --cplus ${_pyx} -o ${_cxx}
         -I${THRIFT_BUILD}/thrift/lib/py3/cybld/
       COMMENT "Generating ${_cxx} using Cython"
-      DEPENDS thriftcpp2_shared thrift-symlinks
+      DEPENDS thriftcpp2 thrift-symlinks
     )
 
     if(${_src} STREQUAL "types")
@@ -65,7 +65,7 @@ macro(thrift_py3_test filename services)
         PROPERTIES GENERATED TRUE
       )
     endif()
-    target_link_libraries(${_module_name} thriftcpp2_shared "${filename}-cpp2")
+    target_link_libraries(${_module_name} thriftcpp2 "${filename}-cpp2")
     set_target_properties(${_module_name}
       PROPERTIES
       LIBRARY_OUTPUT_DIRECTORY "gen-py3/${filename}"
@@ -135,6 +135,6 @@ foreach(_src
     LIBRARY_OUTPUT_DIRECTORY gen-py3/test
     LIBRARY_OUTPUT_NAME "${_src}")
 
-  target_link_libraries(${_module_name} iobuf-cpp2 thriftcpp2_shared)
+  target_link_libraries(${_module_name} iobuf-cpp2 thriftcpp2)
 endforeach()
 
