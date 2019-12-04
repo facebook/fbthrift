@@ -22,6 +22,8 @@ from pathlib import Path
 from typing import Optional, Sequence
 
 import thrift.py3.server
+from derived.clients import DerivedTestingService
+from derived.services import DerivedTestingServiceInterface
 from folly.iobuf import IOBuf
 from stack_args.clients import StackService
 from stack_args.services import StackServiceInterface
@@ -73,6 +75,14 @@ class Handler(TestingServiceInterface):
 
     async def int_sizes(self, one: int, two: int, three: int, four: int) -> None:
         pass
+
+
+class DerivedHandler(Handler, DerivedTestingServiceInterface):
+    async def getName(self) -> str:
+        return "DerivedTesting"
+
+    async def derived_pick_a_color(self, color: Color) -> Color:
+        return color
 
 
 class TestServer:
@@ -303,6 +313,25 @@ class ClientServerTests(unittest.TestCase):
                 get_client(TestingService, host=sa.ip, port=sa.port)
 
         # If we do not abort here then good
+
+        loop.run_until_complete(inner_test())
+
+    def test_derived_service(self) -> None:
+        """
+        This tests calling methods from a derived service
+        """
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(handler=DerivedHandler()) as sa:
+                assert sa.port and sa.ip
+                async with get_client(
+                    DerivedTestingService, host=sa.ip, port=sa.port
+                ) as client:
+                    self.assertEqual(await client.getName(), "DerivedTesting")
+                    self.assertEqual(
+                        await client.derived_pick_a_color(Color.red), Color.red
+                    )
 
         loop.run_until_complete(inner_test())
 
