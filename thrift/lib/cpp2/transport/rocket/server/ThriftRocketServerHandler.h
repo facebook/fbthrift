@@ -17,11 +17,13 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
 #include <folly/Function.h>
 #include <folly/SocketAddress.h>
 
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 
 namespace folly {
 class AsyncTransportWrapper;
@@ -59,7 +61,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   ThriftRocketServerHandler(
       std::shared_ptr<Cpp2Worker> worker,
       const folly::SocketAddress& clientAddress,
-      const folly::AsyncTransportWrapper* transport);
+      const folly::AsyncTransportWrapper* transport,
+      const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers);
 
   void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&& context)
       final;
@@ -78,15 +81,22 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
-  const std::shared_ptr<AsyncProcessor> cpp2Processor_;
-  const std::shared_ptr<concurrency::ThreadManager> threadManager_;
-  server::ServerConfigs& serverConfigs_;
   const folly::SocketAddress clientAddress_;
   const std::shared_ptr<Cpp2ConnContext> connContext_;
+  const std::vector<std::unique_ptr<SetupFrameHandler>>& setupFrameHandlers_;
+
+  std::shared_ptr<AsyncProcessor> cpp2Processor_;
+  std::shared_ptr<concurrency::ThreadManager> threadManager_;
+  server::ServerConfigs* serverConfigs_ = nullptr;
+  std::shared_ptr<ActiveRequestsRegistry> activeRequestsRegistry_;
+  folly::EventBase* eventBase_;
+  bool setupFrameValid_ = false;
 
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);
 
+  FOLLY_NOINLINE void handleRequestForInvalidConnection(
+      std::unique_ptr<ThriftRequestCore> request);
   FOLLY_NOINLINE void handleRequestWithBadMetadata(
       std::unique_ptr<ThriftRequestCore> request);
   FOLLY_NOINLINE void handleRequestWithBadChecksum(

@@ -23,3 +23,7 @@ service InstrumentationTestService {
   stream<i32> sendStreamingRequest() (cpp.coroutine);
   IOBuf sendPayload(1: i32 id, 2: string str) (cpp.coroutine);
 }
+
+service DebugTestService {
+  string echo(1: string s) (cpp.coroutine);
+}

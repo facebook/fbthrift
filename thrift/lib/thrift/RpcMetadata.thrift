@@ -153,9 +153,16 @@ struct StreamPayloadMetadata {
 
 // Setup metadata sent from the client to the server at the time
 // of initial connection.
+enum InterfaceKind {
+  USER = 0,
+  DEBUGGING = 1,
+}
+
 struct RequestSetupMetadata {
   1: optional map<string, binary>
       (cpp.template = "apache::thrift::MetadataOpaqueMap") opaque;
+  // Indicates client wants to use admin interface
+  2: optional InterfaceKind interfaceKind;
 }
 
 struct HeadersPayloadContent {

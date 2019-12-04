@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/ThreadLocal.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GTest.h>
@@ -23,21 +24,19 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DebugTestService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/InstrumentationTestService.h>
+#include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <atomic>
 #include <thread>
 
-using apache::thrift::ResponseChannelRequest;
-using apache::thrift::ServerInstrumentation;
-using apache::thrift::ThriftServer;
-using apache::thrift::concurrency::PosixThreadFactory;
-using apache::thrift::concurrency::ThreadManager;
-using apache::thrift::test::InstrumentationTestServiceAsyncClient;
-using apache::thrift::test::InstrumentationTestServiceAsyncProcessor;
-using apache::thrift::test::InstrumentationTestServiceSvIf;
+using namespace apache::thrift;
+using namespace apache::thrift::concurrency;
+using namespace apache::thrift::test;
 
 class RequestPayload : public folly::RequestData {
  public:
@@ -106,15 +105,16 @@ class TestInterface : public InstrumentationTestServiceSvIf {
         []() -> folly::coro::AsyncGenerator<int32_t> { co_yield 0; });
   }
 
-  folly::coro::Task<std::unique_ptr<apache::thrift::test::IOBuf>>
-  co_sendPayload(int32_t id, std::unique_ptr<std::string> /* str */) override {
+  folly::coro::Task<apache::thrift::test::IOBuf> co_sendPayload(
+      int32_t id,
+      const std::string& /* str */) override {
     auto rg = requestGuard();
     auto payload = dynamic_cast<RequestPayload*>(
         folly::RequestContext::get()->getContextData(
             RequestPayload::getRequestToken()));
     EXPECT_NE(payload, nullptr);
     co_await finished_;
-    co_return payload->getPayload()->clone();
+    co_return * payload->getPayload()->clone();
   }
 
   void stopRequests() {
@@ -137,6 +137,45 @@ class TestInterface : public InstrumentationTestServiceSvIf {
  private:
   folly::coro::Baton finished_;
   std::atomic<int32_t> reqCount_{0};
+};
+
+class DebugInterface : public DebugTestServiceSvIf {
+ public:
+  void echo(std::string& r, const std::string& s) override {
+    r = folly::format("{}:{}", s, folly::getCurrentThreadName().value()).str();
+  }
+};
+
+class DebuggingFrameHandler : public rocket::SetupFrameHandler {
+ public:
+  explicit DebuggingFrameHandler(ThriftServer& server)
+      : origServer_(server), reqRegistry_([] {
+          auto p = new ActiveRequestsRegistry(0, 0);
+          return new std::shared_ptr<ActiveRequestsRegistry>(p);
+        }) {
+    auto tf =
+        std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
+    tm_ = std::make_shared<SimpleThreadManager<folly::LifoSem>>(1, false);
+    tm_->setNamePrefix("DebugInterface");
+    tm_->threadFactory(move(tf));
+    tm_->start();
+  }
+  folly::Optional<rocket::ProcessorInfo> tryHandle(
+      const RequestSetupMetadata& meta) override {
+    if (meta.interfaceKind_ref().has_value() &&
+        meta.interfaceKind_ref().value() == InterfaceKind::DEBUGGING) {
+      auto info = rocket::ProcessorInfo{
+          debug_.getProcessor(), tm_, origServer_, *reqRegistry_.get()};
+      return folly::Optional<rocket::ProcessorInfo>(std::move(info));
+    }
+    return folly::Optional<rocket::ProcessorInfo>();
+  }
+
+ private:
+  ThriftServer& origServer_;
+  DebugInterface debug_;
+  std::shared_ptr<ThreadManager> tm_;
+  folly::ThreadLocal<std::shared_ptr<ActiveRequestsRegistry>> reqRegistry_;
 };
 
 class RequestInstrumentationTest : public testing::Test {
@@ -178,6 +217,48 @@ TEST_F(RequestInstrumentationTest, simpleRocketRequestTest) {
     client->semifuture_sendStreamingRequest();
     client->semifuture_sendRequest();
   }
+  for (auto& reqSnapshot : getRequestSnapshots(2 * reqNum)) {
+    auto methodName = reqSnapshot.getMethodName();
+    EXPECT_TRUE(
+        methodName == "sendRequest" || methodName == "sendStreamingRequest");
+  }
+}
+
+TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
+  size_t reqNum = 5;
+
+  // inject our setup frame handler for rocket connections
+  for (const auto& rh : *thriftServer_->getRoutingHandlers()) {
+    auto rs = dynamic_cast<RSRoutingHandler*>(rh.get());
+    if (rs != nullptr) {
+      rs->addSetupFrameHandler(
+          std::make_unique<DebuggingFrameHandler>(*thriftServer_));
+      break;
+    }
+  }
+
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket));
+      });
+  auto debugClient = server_.newClient<DebugTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        RequestSetupMetadata meta;
+        meta.set_interfaceKind(InterfaceKind::DEBUGGING);
+
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket), std::move(meta));
+      });
+
+  for (size_t i = 0; i < reqNum; i++) {
+    client->semifuture_sendStreamingRequest();
+    client->semifuture_sendRequest();
+  }
+
+  auto echoed = debugClient->semifuture_echo("echome").get();
+  EXPECT_TRUE(folly::StringPiece(echoed).startsWith("echome:DebugInterface-"));
+
   for (auto& reqSnapshot : getRequestSnapshots(2 * reqNum)) {
     auto methodName = reqSnapshot.getMethodName();
     EXPECT_TRUE(

@@ -30,6 +30,8 @@ using namespace rsocket;
 namespace apache {
 namespace thrift {
 
+RSRoutingHandler::RSRoutingHandler() {}
+
 RSRoutingHandler::~RSRoutingHandler() {
   stopListening();
 }
@@ -93,7 +95,7 @@ void RSRoutingHandler::handleConnection(
     connection = new rocket::RocketServerConnection(
         std::move(sock),
         std::make_shared<rocket::ThriftRocketServerHandler>(
-            worker, *address, sockPtr),
+            worker, *address, sockPtr, setupFrameHandlers_),
         server->getStreamExpireTime(),
         server->getWriteBatchingInterval(),
         server->getWriteBatchingSize());
@@ -141,6 +143,11 @@ void RSRoutingHandler::handleConnection(
         connectionManager->getNumConnections() *
         server->getNumIOWorkerThreads());
   }
+}
+
+void RSRoutingHandler::addSetupFrameHandler(
+    std::unique_ptr<rocket::SetupFrameHandler> handler) {
+  setupFrameHandlers_.push_back(std::move(handler));
 }
 } // namespace thrift
 } // namespace apache

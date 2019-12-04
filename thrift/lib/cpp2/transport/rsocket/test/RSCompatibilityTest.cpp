@@ -294,7 +294,7 @@ class RSCompatibilityTest2
         connection = new rocket::RocketServerConnection(
             std::move(sock),
             std::make_shared<rocket::ThriftRocketServerHandler>(
-                worker, *address, sockPtr),
+                worker, *address, sockPtr, setupFrameHandlers),
             server->getStreamExpireTime());
         // set compression algorithm to be used on this connection
         static_cast<rocket::RocketServerConnection*>(connection)
@@ -331,6 +331,8 @@ class RSCompatibilityTest2
             server->getNumIOWorkerThreads());
       }
     }
+   private:
+    std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers;
   };
 
  public:

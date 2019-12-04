@@ -72,11 +72,9 @@ bool isMetadataValid(const RequestRpcMetadata& metadata) {
 ThriftRocketServerHandler::ThriftRocketServerHandler(
     std::shared_ptr<Cpp2Worker> worker,
     const folly::SocketAddress& clientAddress,
-    const folly::AsyncTransportWrapper* transport)
+    const folly::AsyncTransportWrapper* transport,
+    const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers)
     : worker_(std::move(worker)),
-      cpp2Processor_(worker_->getServer()->getCpp2Processor()),
-      threadManager_(worker_->getServer()->getThreadManager()),
-      serverConfigs_(*worker_->getServer()),
       clientAddress_(clientAddress),
       connContext_(std::make_shared<Cpp2ConnContext>(
           &clientAddress_,
@@ -84,7 +82,8 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           nullptr, /* eventBaseManager */
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
-          worker_->getServer()->getClientIdentityHook())) {}
+          worker_->getServer()->getClientIdentityHook())),
+      setupFrameHandlers_(handlers) {}
 
 void ThriftRocketServerHandler::handleSetupFrame(
     SetupFrame&& frame,
@@ -118,6 +117,33 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
+    eventBase_ = connContext_->getTransport()->getEventBase();
+    for (const auto& h : setupFrameHandlers_) {
+      auto processorInfo = h->tryHandle(*meta);
+      if (processorInfo) {
+        bool valid = true;
+        valid &= !!(cpp2Processor_ = std::move(processorInfo->cpp2Processor_));
+        valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
+        valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
+        valid &=
+            !!(activeRequestsRegistry_ =
+                   std::move(processorInfo->activeRequestsRegistry_));
+        if (!valid) {
+          return connection.close(
+              folly::make_exception_wrapper<RocketException>(
+                  ErrorCode::INVALID_SETUP,
+                  "Error in implementation of custom connection handler."));
+        }
+        setupFrameValid_ = true;
+        return;
+      }
+    }
+    // no custom frame handler was found, do the default
+    cpp2Processor_ = worker_->getServer()->getCpp2Processor();
+    threadManager_ = worker_->getServer()->getThreadManager();
+    serverConfigs_ = worker_->getServer();
+    activeRequestsRegistry_ = worker_->getRequestsRegistry();
+    setupFrameValid_ = true;
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,
@@ -138,11 +164,11 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
     // which in turn keeps ThriftRocketServerHandler alive, which in turn keeps
     // connContext_ alive.
     return std::make_unique<ThriftServerRequestResponse>(
-        *worker_->getEventBase(),
-        serverConfigs_,
+        *eventBase_,
+        *serverConfigs_,
         std::move(md),
         *connContext_,
-        *worker_->getRequestsRegistry(),
+        *activeRequestsRegistry_,
         std::move(debugPayload),
         std::move(context));
   };
@@ -159,11 +185,11 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
     // Note, we're passing connContext by reference and rely on a complex chain
     // of ownership (see handleRequestResponseFrame for detailed explanation).
     return std::make_unique<ThriftServerRequestFnf>(
-        *worker_->getEventBase(),
-        serverConfigs_,
+        *eventBase_,
+        *serverConfigs_,
         std::move(md),
         *connContext_,
-        *worker_->getRequestsRegistry(),
+        *activeRequestsRegistry_,
         std::move(debugPayload),
         std::move(context),
         [keepAlive = cpp2Processor_] {});
@@ -178,11 +204,11 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
                                std::unique_ptr<folly::IOBuf> debugPayload) {
     return std::make_unique<ThriftServerRequestStream>(
-        *worker_->getEventBase(),
-        serverConfigs_,
+        *eventBase_,
+        *serverConfigs_,
         std::move(md),
         connContext_,
-        *worker_->getRequestsRegistry(),
+        *activeRequestsRegistry_,
         std::move(debugPayload),
         clientCallback,
         cpp2Processor_);
@@ -197,11 +223,11 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
                              std::unique_ptr<folly::IOBuf> debugPayload) {
     return std::make_unique<ThriftServerRequestSink>(
-        *worker_->getEventBase(),
-        serverConfigs_,
+        *eventBase_,
+        *serverConfigs_,
         std::move(md),
         connContext_,
-        *worker_->getRequestsRegistry(),
+        *activeRequestsRegistry_,
         std::move(debugPayload),
         clientCallback,
         cpp2Processor_);
@@ -225,6 +251,12 @@ void ThriftRocketServerHandler::handleRequestCommon(
   const bool parseOk = deserializeMetadata(payload, metadata);
   const bool validMetadata = parseOk && isMetadataValid(metadata);
 
+  if (!setupFrameValid_) {
+    handleRequestForInvalidConnection(
+        makeRequest(std::move(metadata), std::move(debugPayload)));
+    return;
+  }
+
   if (!validMetadata) {
     handleRequestWithBadMetadata(
         makeRequest(std::move(metadata), std::move(debugPayload)));
@@ -238,7 +270,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
   }
 
   // check if server is overloaded
-  if (UNLIKELY(serverConfigs_.isOverloaded(
+  if (UNLIKELY(serverConfigs_->isOverloaded(
           metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
                                        : nullptr,
           &*metadata.name_ref()))) {
@@ -271,8 +303,17 @@ void ThriftRocketServerHandler::handleRequestCommon(
       std::move(data),
       protocolId,
       cpp2ReqCtx,
-      worker_->getEventBase(),
+      eventBase_,
       threadManager_.get());
+}
+
+void ThriftRocketServerHandler::handleRequestForInvalidConnection(
+    std::unique_ptr<ThriftRequestCore> request) {
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::UNSUPPORTED_CLIENT_TYPE,
+          "Invalid connection setup"),
+      "Corrupted setup for rsocket connection setup");
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(
@@ -294,13 +335,13 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
     std::unique_ptr<ThriftRequestCore> request) {
-  if (auto* observer = serverConfigs_.getObserver()) {
+  if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
   }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::LOADSHEDDING, "Loadshedding request"),
-      serverConfigs_.getOverloadedErrorCode());
+      serverConfigs_->getOverloadedErrorCode());
 }
 
 void ThriftRocketServerHandler::handleServerShutdown(

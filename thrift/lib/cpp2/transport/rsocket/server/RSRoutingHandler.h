@@ -18,6 +18,7 @@
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 
 namespace apache {
 namespace thrift {
@@ -26,7 +27,7 @@ class Cpp2Worker;
 
 class RSRoutingHandler : public TransportRoutingHandler {
  public:
-  RSRoutingHandler() = default;
+  RSRoutingHandler();
   ~RSRoutingHandler() override;
   RSRoutingHandler(const RSRoutingHandler&) = delete;
   RSRoutingHandler& operator=(const RSRoutingHandler&) = delete;
@@ -41,8 +42,11 @@ class RSRoutingHandler : public TransportRoutingHandler {
       wangle::TransportInfo const& tinfo,
       std::shared_ptr<Cpp2Worker> worker) override;
 
+  void addSetupFrameHandler(std::unique_ptr<rocket::SetupFrameHandler> handler);
+
  private:
   std::atomic<bool> listening_{true};
+  std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers_;
 };
 } // namespace thrift
 } // namespace apache
