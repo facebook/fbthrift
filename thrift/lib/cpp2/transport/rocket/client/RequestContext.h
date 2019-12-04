@@ -121,6 +121,7 @@ class RequestContext {
   const StreamId streamId_;
   const FrameType frameType_;
   State state_{State::WRITE_NOT_SCHEDULED};
+  bool lastInWriteBatch_{false};
 
   boost::intrusive::unordered_set_member_hook<> setHook_;
   folly::fibers::Baton baton_;

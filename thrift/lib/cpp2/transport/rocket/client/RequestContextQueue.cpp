@@ -32,31 +32,31 @@ void RequestContextQueue::enqueueScheduledWrite(RequestContext& req) noexcept {
   trackIfRequestResponse(req);
 }
 
-RequestContext&
-RequestContextQueue::markNextScheduledWriteAsSending() noexcept {
-  auto& req = writeScheduledQueue_.front();
-  writeScheduledQueue_.pop_front();
+std::unique_ptr<folly::IOBuf>
+RequestContextQueue::getNextScheduledWritesBatch() noexcept {
+  std::unique_ptr<folly::IOBuf> batchBuf;
 
-  DCHECK(req.state_ == State::WRITE_SCHEDULED);
-  req.state_ = State::WRITE_SENDING;
-  writeSendingQueue_.push_back(req);
+  while (!writeScheduledQueue_.empty()) {
+    auto& req = writeScheduledQueue_.front();
+    writeScheduledQueue_.pop_front();
 
-  return req;
-}
+    DCHECK(req.state_ == State::WRITE_SCHEDULED);
+    req.state_ = State::WRITE_SENDING;
+    writeSendingQueue_.push_back(req);
 
-RequestContext& RequestContextQueue::markNextSendingAsSent() noexcept {
-  auto& req = writeSendingQueue_.front();
-  writeSendingQueue_.pop_front();
-  if (LIKELY(req.state() == State::WRITE_SENDING)) {
-    req.state_ = State::WRITE_SENT;
-    // Move req to the WRITE_SENT queue even if req is not a REQUEST_RESPONSE
-    // request.
-    writeSentQueue_.push_back(req);
-  } else {
-    DCHECK(req.state() == State::RESPONSE_RECEIVED);
-    req.baton_.post();
+    if (writeScheduledQueue_.empty()) {
+      req.lastInWriteBatch_ = true;
+    }
+
+    auto reqBuf = req.serializedChain();
+    if (!batchBuf) {
+      batchBuf = std::move(reqBuf);
+    } else {
+      batchBuf->prependChain(std::move(reqBuf));
+    }
   }
-  return req;
+
+  return batchBuf;
 }
 
 void RequestContextQueue::abortSentRequest(RequestContext& req) noexcept {

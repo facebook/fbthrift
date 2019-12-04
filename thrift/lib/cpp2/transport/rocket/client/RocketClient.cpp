@@ -761,14 +761,12 @@ void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
 void RocketClient::writeScheduledRequestsToSocket() noexcept {
   DestructorGuard dg(this);
 
-  for (size_t reqsToWrite = queue_.scheduledWriteQueueSize();
-       reqsToWrite != 0 && state_ == ConnectionState::CONNECTED;) {
-    auto& req = queue_.markNextScheduledWriteAsSending();
-    auto iobufChain = req.serializedChain();
-    socket_->writeChain(
-        this,
-        std::move(iobufChain),
-        --reqsToWrite ? folly::WriteFlags::CORK : folly::WriteFlags::NONE);
+  if (state_ == ConnectionState::CONNECTED) {
+    auto buf = queue_.getNextScheduledWritesBatch();
+
+    if (buf) {
+      socket_->writeChain(this, std::move(buf), folly::WriteFlags::NONE);
+    }
   }
 
   notifyIfDetachable();
@@ -778,13 +776,14 @@ void RocketClient::writeSuccess() noexcept {
   DestructorGuard dg(this);
   DCHECK(state_ != ConnectionState::CLOSED);
 
-  auto& req = queue_.markNextSendingAsSent();
-  req.onWriteSuccess();
-  if (req.isRequestResponse()) {
-    req.scheduleTimeoutForResponse();
-  } else {
-    queue_.markAsResponded(req);
-  }
+  queue_.markNextSendingBatchAsSent([&](auto& req) {
+    req.onWriteSuccess();
+    if (req.isRequestResponse()) {
+      req.scheduleTimeoutForResponse();
+    } else {
+      queue_.markAsResponded(req);
+    }
+  });
 
   // In some cases, a successful write may happen after writeErr() has been
   // called on a preceding request.
@@ -801,7 +800,7 @@ void RocketClient::writeErr(
   DestructorGuard dg(this);
   DCHECK(state_ != ConnectionState::CLOSED);
 
-  queue_.markNextSendingAsSent();
+  queue_.markNextSendingBatchAsSent([](auto&&) {});
 
   close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."

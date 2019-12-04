@@ -33,14 +33,25 @@ class RequestContextQueue {
 
   void enqueueScheduledWrite(RequestContext& req) noexcept;
 
-  RequestContext& markNextScheduledWriteAsSending() noexcept;
-  size_t scheduledWriteQueueSize() const noexcept {
-    return writeScheduledQueue_.size();
-  }
+  std::unique_ptr<folly::IOBuf> getNextScheduledWritesBatch() noexcept;
 
-  RequestContext& markNextSendingAsSent() noexcept;
-  RequestContext& peekNextSending() noexcept {
-    return writeSendingQueue_.front();
+  template <typename F>
+  void markNextSendingBatchAsSent(F&& foreachRequest) noexcept {
+    for (bool lastInBatch = false; !lastInBatch;) {
+      auto& req = writeSendingQueue_.front();
+      writeSendingQueue_.pop_front();
+      lastInBatch = req.lastInWriteBatch_;
+      if (LIKELY(req.state() == State::WRITE_SENDING)) {
+        req.state_ = State::WRITE_SENT;
+        // Move req to the WRITE_SENT queue even if req is not a
+        // REQUEST_RESPONSE request.
+        writeSentQueue_.push_back(req);
+      } else {
+        DCHECK(req.state() == State::RESPONSE_RECEIVED);
+        req.baton_.post();
+      }
+      foreachRequest(req);
+    }
   }
 
   void abortSentRequest(RequestContext& req) noexcept;
