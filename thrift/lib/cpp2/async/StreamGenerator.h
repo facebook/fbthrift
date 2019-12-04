@@ -76,7 +76,8 @@ class StreamGenerator {
   template <
       typename Generator,
       std::enable_if_t<
-          folly::coro::detail::is_async_generator_v<
+          folly::detail::is_instantiation_of_v<
+              folly::coro::AsyncGenerator,
               typename folly::invoke_result_t<std::decay_t<Generator>&>>,
           int> = 0>
   static auto create(
@@ -88,7 +89,8 @@ class StreamGenerator {
   template <
       typename Generator,
       std::enable_if_t<
-          folly::coro::detail::is_async_generator_v<
+          folly::detail::is_instantiation_of_v<
+              folly::coro::AsyncGenerator,
               typename folly::invoke_result_t<
                   std::decay_t<Generator>&,
                   folly::CancellationToken>>,

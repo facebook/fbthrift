@@ -21,6 +21,7 @@
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
+#include <folly/experimental/coro/Invoke.h>
 #include <folly/experimental/coro/Task.h>
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>

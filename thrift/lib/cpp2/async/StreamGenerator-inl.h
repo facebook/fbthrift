@@ -243,7 +243,8 @@ auto StreamGenerator::create(
 template <
     typename Generator,
     std::enable_if_t<
-        folly::coro::detail::is_async_generator_v<
+        folly::detail::is_instantiation_of_v<
+            folly::coro::AsyncGenerator,
             typename folly::invoke_result_t<std::decay_t<Generator>&>>,
         int>>
 auto StreamGenerator::create(
@@ -259,7 +260,8 @@ auto StreamGenerator::create(
 template <
     typename Generator,
     std::enable_if_t<
-        folly::coro::detail::is_async_generator_v<
+        folly::detail::is_instantiation_of_v<
+            folly::coro::AsyncGenerator,
             typename folly::invoke_result_t<
                 std::decay_t<Generator>&,
                 folly::CancellationToken>>,

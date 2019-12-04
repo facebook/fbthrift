@@ -19,6 +19,7 @@
 #include <folly/CancellationToken.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
+#include <folly/experimental/coro/Invoke.h>
 #include <folly/experimental/coro/Task.h>
 
 #include <thrift/lib/cpp2/async/Stream.h>
