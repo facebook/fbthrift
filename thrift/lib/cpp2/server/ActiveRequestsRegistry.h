@@ -18,6 +18,7 @@
 
 #include <folly/IntrusiveList.h>
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/server/RequestId.h>
 #include <chrono>
 
 namespace apache {
@@ -67,7 +68,8 @@ class ActiveRequestsRegistry {
           reqContext_(&reqContext),
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
-          registry_(&reqRegistry) {
+          registry_(&reqRegistry),
+          reqId_(RequestId::gen()) {
       reqRegistry.registerStub(*this);
     }
 
@@ -92,6 +94,10 @@ class ActiveRequestsRegistry {
 
     std::chrono::steady_clock::time_point getTimestamp() const {
       return timestamp_;
+    }
+
+    const RequestId& getRequestId() const {
+      return reqId_;
     }
 
     /**
@@ -123,6 +129,7 @@ class ActiveRequestsRegistry {
     std::unique_ptr<folly::IOBuf> payload_;
     std::chrono::steady_clock::time_point timestamp_;
     ActiveRequestsRegistry* registry_;
+    const RequestId reqId_;
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
   };
