@@ -1,5 +1,5 @@
 # @autocargo from //thrift/lib/rust:fbthrift
-# Signature<<692c330fb852aadf93b3bd3b6f44e93984e9a9f6>>
+# Signature<<5f19a3f17a23cab0401d42926f4e295671d44191>>
 [package]
 name = "fbthrift"
 edition = "2018"
@@ -8,16 +8,16 @@ publish = false
 include = ["src/**/*.rs"]
 
 [dependencies]
-anyhow = "*"
-async-trait = { version = "*", features = ["support_old_nightly"] }
-bufsize = "*"
-byteorder = "*"
+anyhow = "^1.0"
+async-trait = { version = "^0.1", features = ["support_old_nightly"] }
+bufsize = "^0.4"
+byteorder = "^1.3"
 bytes = { version="0.4", features=["serde"] }
-ghost = "*"
-num-derive = "*"
-num-traits = "*"
-thiserror = "*"
+ghost = "^0.1"
+num-derive = "^0.3"
+num-traits = "^0.2"
+thiserror = "^1.0"
 
 [dev-dependencies]
 quickcheck = "0.9"
-# @end of Signature<<692c330fb852aadf93b3bd3b6f44e93984e9a9f6>>
+# @end of Signature<<5f19a3f17a23cab0401d42926f4e295671d44191>>
