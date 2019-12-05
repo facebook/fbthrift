@@ -47,7 +47,7 @@ class RocketStreamClientCallback;
 
 namespace rocket {
 
-class RocketServerConnection
+class RocketServerConnection final
     : public wangle::ManagedConnection,
       private folly::AsyncTransportWrapper::WriteCallback {
  public:
@@ -241,7 +241,7 @@ class RocketServerConnection
   };
   WriteBatcher writeBatcher_;
 
-  ~RocketServerConnection() final;
+  ~RocketServerConnection();
 
   // return true if connection closed
   bool closeIfNeeded();
