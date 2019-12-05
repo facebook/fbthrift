@@ -37,6 +37,8 @@
 namespace apache {
 namespace thrift {
 
+class SinkThrew : public TApplicationException {};
+
 template <typename T, typename R>
 class ClientSink {
 #ifdef FOLLY_HAS_COROUTINES
@@ -96,7 +98,7 @@ class ClientSink {
     }());
 
     if (ew) {
-      ew.throw_exception();
+      throw SinkThrew();
     }
 
     // may throw
