@@ -26,7 +26,7 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
-public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}Exception{{/struct:extendRuntimeException?}} {
+public final class {{struct:javaCapitalName}} extends {{#struct:extendRuntimeException?}}java.lang.RuntimeException{{/struct:extendRuntimeException?}}{{^struct:extendRuntimeException?}}java.lang.Exception{{/struct:extendRuntimeException?}} {
     private static final long serialVersionUID = 1L;
 
     {{> struct/ThriftConstructor}}
