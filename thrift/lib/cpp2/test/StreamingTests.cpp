@@ -160,6 +160,19 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamGeneratorCompiles) {
     }
   };
   DiffTypesStreamingServiceServerStream service;
+
+  bool done = false;
+  service.downloadObject(0).consumeInline(
+      [first = true, &done](folly::Try<int32_t>&& t) mutable {
+        if (first) {
+          EXPECT_EQ(*t, 42);
+          first = false;
+        } else {
+          EXPECT_FALSE(t.hasValue() || t.hasException());
+          done = true;
+        }
+      });
+  EXPECT_TRUE(done);
 }
 #endif
 
@@ -176,6 +189,19 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
     }
   };
   DiffTypesStreamingServiceServerStream service;
+
+  bool done = false;
+  service.downloadObject(0).consumeInline(
+      [first = true, &done](folly::Try<int32_t>&& t) mutable {
+        if (first) {
+          EXPECT_EQ(*t, 42);
+          first = false;
+        } else {
+          EXPECT_FALSE(t.hasValue() || t.hasException());
+          done = true;
+        }
+      });
+  EXPECT_TRUE(done);
 }
 
 TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
@@ -192,4 +218,17 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
     folly::ScopedEventBaseThread executor;
   };
   DiffTypesStreamingServiceServerStream service;
+
+  bool done = false;
+  service.downloadObject(0).consumeInline(
+      [first = true, &done](folly::Try<int32_t>&& t) mutable {
+        if (first) {
+          EXPECT_EQ(*t, 42);
+          first = false;
+        } else {
+          EXPECT_FALSE(t.hasValue() || t.hasException());
+          done = true;
+        }
+      });
+  EXPECT_TRUE(done);
 }

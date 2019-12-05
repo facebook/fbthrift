@@ -21,10 +21,12 @@
 #include <folly/experimental/coro/AsyncGenerator.h>
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
+#include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
 #include <thrift/lib/cpp2/async/ServerPublisherStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache {
 namespace thrift {
@@ -68,6 +70,56 @@ class ServerStream {
         std::move(onStreamCompleteOrCancel));
     return std::make_pair<ServerStream<T>, ServerStreamPublisher<T>>(
         ServerStream<T>(std::move(pair.first)), std::move(pair.second));
+  }
+
+  // Helper for unit testing your service handler
+  // Blocks until the stream completes, calling the provided function
+  // on each value and on the error / completion event.
+  void consumeInline(folly::Function<void(folly::Try<T>&&)> consumer) && {
+    folly::EventBase eb;
+    struct : public detail::ClientStreamBridge::FirstResponseCallback {
+      void onFirstResponse(
+          FirstResponsePayload&&,
+          detail::ClientStreamBridge::ClientPtr clientStreamBridge) override {
+        ptr = std::move(clientStreamBridge);
+      }
+      void onFirstResponseError(folly::exception_wrapper) override {}
+      detail::ClientStreamBridge::ClientPtr ptr;
+    } firstResponseCallback;
+    auto streamBridge =
+        detail::ClientStreamBridge::create(&firstResponseCallback);
+
+    auto encode = [](folly::Try<T>&& in) {
+      if (in.hasValue()) {
+        folly::IOBufQueue buf;
+        apache::thrift::CompactSerializer::serialize(*in, &buf);
+        return folly::Try<StreamPayload>({buf.move(), {}});
+      } else if (in.hasException()) {
+        return folly::Try<StreamPayload>(in.exception());
+      } else {
+        return folly::Try<StreamPayload>();
+      }
+    };
+    auto decode = [](folly::Try<StreamPayload>&& in) {
+      if (in.hasValue()) {
+        T out;
+        apache::thrift::CompactSerializer::deserialize<T>(
+            in.value().payload.get(), out);
+        return folly::Try<T>(std::move(out));
+      } else if (in.hasException()) {
+        return folly::Try<T>(in.exception());
+      } else {
+        return folly::Try<T>();
+      }
+    };
+
+    (*this)(&eb, encode)({nullptr, {}}, streamBridge, &eb);
+    eb.loopOnce();
+    auto sub =
+        ClientBufferedStream<T>(std::move(firstResponseCallback.ptr), decode, 0)
+            .subscribeExTry(&eb, std::move(consumer));
+    eb.loop();
+    std::move(sub).join();
   }
 
   detail::ServerStreamFactory operator()(
