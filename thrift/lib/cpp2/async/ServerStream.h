@@ -21,6 +21,7 @@
 #include <folly/experimental/coro/AsyncGenerator.h>
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
+#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
 #include <thrift/lib/cpp2/async/ServerPublisherStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
@@ -43,7 +44,7 @@ class ServerStream {
                 folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) mutable {
           return [stream = std::move(stream).map(
                       [encode](T&& item) mutable {
-                        return encode(folly::Try<T>(std::forward<T>(item)))
+                        return encode(folly::Try<T>(std::move(item)))
                             .value()
                             .payload;
                       },
@@ -54,7 +55,8 @@ class ServerStream {
                      StreamClientCallback* callback,
                      folly::EventBase* clientEb) mutable {
             auto streamPtr =
-                std::move(stream).toStreamServerCallbackPtr(*clientEb);
+                SemiStream<std::unique_ptr<folly::IOBuf>>(std::move(stream))
+                    .toStreamServerCallbackPtr(*clientEb);
             streamPtr->resetClientCallback(*callback);
             callback->onFirstResponse(std::move(payload), clientEb, streamPtr);
           };

@@ -225,10 +225,6 @@ class Stream {
 
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
 
-  StreamServerCallback* toStreamServerCallbackPtr(folly::EventBase& evb) && {
-    return SemiStream<T>(std::move(*this)).toStreamServerCallbackPtr(evb);
-  }
-
  private:
   template <typename U>
   friend class Stream;

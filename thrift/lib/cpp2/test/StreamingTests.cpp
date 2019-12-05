@@ -177,3 +177,19 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
   };
   DiffTypesStreamingServiceServerStream service;
 }
+
+TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
+  class DiffTypesStreamingServiceServerStream
+      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+   public:
+    apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
+      auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
+          folly::getKeepAliveToken(executor), [] {});
+      streamAndPublisher.second.next(42);
+      std::move(streamAndPublisher.second).complete();
+      return std::move(streamAndPublisher.first);
+    }
+    folly::ScopedEventBaseThread executor;
+  };
+  DiffTypesStreamingServiceServerStream service;
+}
