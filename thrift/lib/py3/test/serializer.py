@@ -178,8 +178,9 @@ class SerializerTests(unittest.TestCase):
         self.pickle_round_robin(control)
 
         digits = Digits(data=[Integers(tiny=1), Integers(tiny=2), Integers(large=0)])
-        assert digits.data
-        self.pickle_round_robin(digits.data)
+        data = digits.data
+        assert data
+        self.pickle_round_robin(data)
 
     def test_pickle_set(self) -> None:
         control = SetI32({1, 2, 3, 4})

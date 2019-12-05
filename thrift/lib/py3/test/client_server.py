@@ -89,7 +89,7 @@ class TestServer:
     server: ThriftServer
     serve_task: asyncio.Task
 
-    def __init__(
+    def __init__(  # pyre-ignore[13]: late-initialization of serve_task
         self,
         ip: Optional[str] = None,
         path: Optional["thrift.py3.server.Path"] = None,
@@ -117,10 +117,9 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
-                async with get_client(
-                    TestingService, host=sa.ip, port=sa.port
-                ) as client:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(TestingService, host=ip, port=port) as client:
                     options = RpcOptions()
                     self.assertEqual(
                         "Testing", await client.getName(rpc_options=options)
@@ -141,10 +140,9 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
-                async with get_client(
-                    TestingService, host=sa.ip, port=sa.port
-                ) as client:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(TestingService, host=ip, port=port) as client:
                     options = RpcOptions()
                     options.set_header("from client", "with love")
                     self.assertFalse(await client.invert(True, rpc_options=options))
@@ -158,9 +156,10 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer() as sa:
-                assert sa.port
+                port = sa.port
+                assert port
                 async with get_client(
-                    TestingService, host=hostname, port=sa.port
+                    TestingService, host=hostname, port=port
                 ) as client:
                     self.assertTrue(await client.invert(False))
                     self.assertFalse(await client.invert(True))
@@ -172,11 +171,12 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     TestingService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_UNFRAMED_DEPRECATED,
                     protocol=Protocol.BINARY,
                 ) as client:
@@ -190,11 +190,12 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     TestingService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_FRAMED_DEPRECATED,
                 ) as client:
                     self.assertTrue(await client.invert(False))
@@ -207,11 +208,12 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     TestingService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_FRAMED_COMPACT,
                 ) as client:
                     self.assertTrue(await client.invert(False))
@@ -224,11 +226,12 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     TestingService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     path="/some/endpoint",
                     client_type=ClientType.THRIFT_HTTP_CLIENT_TYPE,
                 ) as client:
@@ -245,10 +248,9 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
-                async with get_client(
-                    TestingService, host=sa.ip, port=sa.port
-                ) as client:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(TestingService, host=ip, port=port) as client:
                     self.assertTrue(await client.invert(False))
                     self.assertFalse(await client.invert(True))
 
@@ -272,8 +274,9 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer() as sa:
-                assert sa.port and sa.ip
-                client = get_client(TestingService, host=sa.ip, port=sa.port)
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                client = get_client(TestingService, host=ip, port=port)
                 await client.__aenter__()
                 self.assertTrue(await client.invert(False))
                 self.assertFalse(await client.invert(True))
@@ -290,8 +293,9 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer() as sa:
-                assert sa.port and sa.ip
-                client = get_client(TestingService, host=sa.ip, port=sa.port)
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                client = get_client(TestingService, host=ip, port=port)
                 await client.__aenter__()
                 self.assertTrue(await client.invert(False))
                 self.assertFalse(await client.invert(True))
@@ -309,8 +313,9 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer() as sa:
-                assert sa.port and sa.ip
-                get_client(TestingService, host=sa.ip, port=sa.port)
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                get_client(TestingService, host=ip, port=port)
 
         # If we do not abort here then good
 
@@ -350,16 +355,16 @@ class StackHandler(StackServiceInterface):
     async def get_iobuf(self) -> IOBuf:
         return IOBuf(b"abc")
 
-    async def take_iobuf(self, iobuf: IOBuf) -> None:
-        if bytes(iobuf) != b"cba":
+    async def take_iobuf(self, val: IOBuf) -> None:
+        if bytes(val) != b"cba":
             raise Exception("WRONG")
 
     # currently unsupported by cpp backend:
     # async def get_iobuf_ptr(self) -> IOBuf:
     #     return IOBuf(b'xyz')
 
-    async def take_iobuf_ptr(self, iobuf_ptr: IOBuf) -> None:
-        if bytes(iobuf_ptr) != b"zyx":
+    async def take_iobuf_ptr(self, val: IOBuf) -> None:
+        if bytes(val) != b"zyx":
             raise Exception("WRONG")
 
 
@@ -373,8 +378,9 @@ class ClientStackServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(handler=StackHandler(), ip="::1") as sa:
-                assert sa.ip and sa.port
-                async with get_client(StackService, host=sa.ip, port=sa.port) as client:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(StackService, host=ip, port=port) as client:
                     self.assertEqual(
                         (3, 4, 5, 6), await client.add_to(lst=(1, 2, 3, 4), value=2)
                     )

@@ -30,11 +30,12 @@ class StreamClientTest(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     StreamTestService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 ) as client:
                     stream = await client.returnstream(10, 1024)
@@ -48,11 +49,12 @@ class StreamClientTest(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     StreamTestService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 ) as client:
                     with self.assertRaises(FuncEx):
@@ -69,13 +71,15 @@ class StreamClientTest(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     StreamTestService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 ) as client:
+                    # pyre-fixme[23]: may be a pyre bug?
                     resp, stream = await client.returnresponseandstream(
                         Included(from_=39, to=42)
                     )
@@ -95,11 +99,12 @@ class StreamClientTest(unittest.TestCase):
             options = RpcOptions()
             options.chunk_buffer_size = 64
             async with TestServer(ip="::1") as sa:
-                assert sa.ip and sa.port
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
                     StreamTestService,
-                    host=sa.ip,
-                    port=sa.port,
+                    host=ip,
+                    port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 ) as client:
                     stream = await client.returnstream(10, 1024, rpc_options=options)

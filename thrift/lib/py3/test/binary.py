@@ -94,7 +94,9 @@ class TestServer:
     server: ThriftServer
     serve_task: asyncio.Task
 
-    def __init__(self, *, ip: str, handler: thrift.py3.server.ServiceInterface) -> None:
+    def __init__(  # pyre-ignore[13]: late-initialization of serve_task
+        self, *, ip: str, handler: thrift.py3.server.ServiceInterface
+    ) -> None:
         self.server = ThriftServer(handler, ip=ip, path=None)
 
     async def __aenter__(self) -> thrift.py3.server.SocketAddress:
@@ -112,10 +114,9 @@ class ClientBinaryServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(handler=BinaryHandler(self), ip="::1") as sa:
-                assert sa.ip and sa.port
-                async with get_client(
-                    BinaryService, host=sa.ip, port=sa.port
-                ) as client:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(BinaryService, host=ip, port=port) as client:
                     val: Any
                     val = await client.sendRecvBinaries(
                         Binaries(

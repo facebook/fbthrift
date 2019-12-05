@@ -55,7 +55,10 @@ class StructTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             # None is not acceptable as a string
             hard(  # type: ignore
-                val=1, val_list=[1, 2], name=None, an_int=Integers(small=1)
+                val=1,
+                val_list=[1, 2],
+                name=None,  # pyre-ignore[6]: intentionally for test
+                an_int=Integers(small=1),
             )
 
         with self.assertRaises(TypeError):
@@ -195,7 +198,9 @@ class NumericalConversionsTests(unittest.TestCase):
     def test_float_to_int_unqualified_field(self) -> None:
         with self.assertRaises(TypeError):
             numerical(  # type: ignore
-                req_int_val=5, req_float_val=math.pi, int_val=math.pi
+                req_int_val=5,
+                req_float_val=math.pi,
+                int_val=math.pi,  # pyre-ignore[6]: intentionally for test
             )
 
     def test_float_to_int_list(self) -> None:
