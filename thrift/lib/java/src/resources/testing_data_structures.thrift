@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-namespace java com.facebook.thrift.test
+namespace java com.facebook.thrift.java.test
+namespace java.swift com.facebook.thrift.javaswift.test
 
 struct MySimpleStruct {
   1: i64 id,
@@ -48,4 +49,16 @@ enum BigEnum {
   EIGHTEEN = 18,
   NINETEEN = 19,
   TWENTY = 20,
+}
+
+struct MyListStruct {
+  1: list<i64> ids
+}
+
+struct MySetStruct {
+  1: set<i64> ids
+}
+
+struct MyMapStruct {
+  1: map<i64, string> mapping
 }

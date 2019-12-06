@@ -179,4 +179,31 @@ public abstract class TProtocol {
   public Class<? extends IScheme> getScheme() {
     return StandardScheme.class;
   }
+
+  /** Return the minimum size of a type */
+  protected int typeMinimumSize(byte type) {
+    return 1;
+  }
+
+  protected void ensureContainerHasEnough(int size, byte type) {
+    int minimumExpected = size * typeMinimumSize(type);
+    ensureHasEnoughBytes(minimumExpected);
+  }
+
+  protected void ensureMapHasEnough(int size, byte keyType, byte valueType) {
+    int minimumExpected = size * (typeMinimumSize(keyType) + typeMinimumSize(valueType));
+    ensureHasEnoughBytes(minimumExpected);
+  }
+
+  private void ensureHasEnoughBytes(int minimumExpected) {
+    int remaining = trans_.getBytesRemainingInBuffer();
+    if (remaining < 0) {
+      return; // Some transport are not buffered
+    }
+    if (remaining < minimumExpected) {
+      throw new TProtocolException(
+          TProtocolException.INVALID_DATA,
+          "Not enough bytes to read the entire message, the data appears to be truncated");
+    }
+  }
 }

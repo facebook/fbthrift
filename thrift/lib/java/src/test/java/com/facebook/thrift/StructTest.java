@@ -21,9 +21,9 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-import com.facebook.thrift.test.BigEnum;
-import com.facebook.thrift.test.MySimpleStruct;
-import com.facebook.thrift.test.SmallEnum;
+import com.facebook.thrift.java.test.BigEnum;
+import com.facebook.thrift.java.test.MySimpleStruct;
+import com.facebook.thrift.java.test.SmallEnum;
 import junit.framework.TestCase;
 import org.junit.Test;
 

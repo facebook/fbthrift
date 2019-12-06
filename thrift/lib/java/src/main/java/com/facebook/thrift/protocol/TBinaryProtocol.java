@@ -225,19 +225,29 @@ public class TBinaryProtocol extends TProtocol {
   public void readFieldEnd() {}
 
   public TMap readMapBegin() throws TException {
-    return new TMap(readByte(), readByte(), readI32());
+    byte keyType = readByte();
+    byte valueType = readByte();
+    int size = readI32();
+    ensureMapHasEnough(size, keyType, valueType);
+    return new TMap(keyType, valueType, size);
   }
 
   public void readMapEnd() {}
 
   public TList readListBegin() throws TException {
-    return new TList(readByte(), readI32());
+    byte type = readByte();
+    int size = readI32();
+    ensureContainerHasEnough(size, type);
+    return new TList(type, size);
   }
 
   public void readListEnd() {}
 
   public TSet readSetBegin() throws TException {
-    return new TSet(readByte(), readI32());
+    byte type = readByte();
+    int size = readI32();
+    ensureContainerHasEnough(size, type);
+    return new TSet(type, size);
   }
 
   public void readSetEnd() {}
@@ -366,6 +376,37 @@ public class TBinaryProtocol extends TProtocol {
       if (readLength_ < 0) {
         throw new TException("Message length exceeded: " + length);
       }
+    }
+  }
+
+  @Override
+  protected int typeMinimumSize(byte type) {
+    switch (type & 0x0f) {
+      case TType.BOOL:
+      case TType.BYTE:
+        return 1;
+      case TType.I16:
+        return 2;
+      case TType.I32:
+      case TType.FLOAT:
+        return 4;
+      case TType.DOUBLE:
+      case TType.I64:
+        return 8;
+      case TType.STRING:
+        return 4;
+      case TType.LIST:
+      case TType.SET:
+        // type (1 byte) + size (4 bytes)
+        return 1 + 4;
+      case TType.MAP:
+        // key type (1 byte) + value type (1 byte) + size (4 bytes)
+        return 1 + 1 + 4;
+      case TType.STRUCT:
+        return 1;
+      default:
+        throw new TProtocolException(
+            TProtocolException.INVALID_DATA, "Unexpected data type " + (byte) (type & 0x0f));
     }
   }
 }

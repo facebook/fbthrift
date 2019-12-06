@@ -513,8 +513,12 @@ public class TCompactProtocol extends TProtocol {
   public TMap readMapBegin() throws TException {
     int size = readVarint32();
     byte keyAndValueType = size == 0 ? 0 : readByte();
-    return new TMap(
-        getTType((byte) (keyAndValueType >> 4)), getTType((byte) (keyAndValueType & 0xf)), size);
+    byte keyType = getTType((byte) (keyAndValueType >> 4));
+    byte valueType = getTType((byte) (keyAndValueType & 0xf));
+    if (size > 0) {
+      ensureMapHasEnough(size, keyType, valueType);
+    }
+    return new TMap(keyType, valueType, size);
   }
 
   /**
@@ -529,6 +533,7 @@ public class TCompactProtocol extends TProtocol {
       size = readVarint32();
     }
     byte type = getTType(size_and_type);
+    ensureContainerHasEnough(size, type);
     return new TList(type, size);
   }
 
@@ -828,5 +833,31 @@ public class TCompactProtocol extends TProtocol {
   /** Given a TType value, find the appropriate TCompactProtocol.Types constant. */
   private byte getCompactType(byte ttype) {
     return ttypeToCompactType[ttype];
+  }
+
+  @Override
+  protected int typeMinimumSize(byte type) {
+    switch (type & 0x0f) {
+      case TType.BOOL:
+      case TType.BYTE:
+      case TType.I16: // because of variable length encoding
+      case TType.I32: // because of variable length encoding
+      case TType.I64: // because of variable length encoding
+        return 1;
+      case TType.FLOAT:
+        return 4;
+      case TType.DOUBLE:
+        return 8;
+      case TType.STRING:
+      case TType.STRUCT:
+      case TType.MAP:
+      case TType.SET:
+      case TType.LIST:
+      case TType.ENUM:
+        return 1;
+      default:
+        throw new TProtocolException(
+            TProtocolException.INVALID_DATA, "Unexpected data type " + (byte) (type & 0x0f));
+    }
   }
 }

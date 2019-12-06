@@ -217,4 +217,9 @@ public abstract class TProtocolDecorator extends TProtocol {
   public byte[] readBinary() throws TException {
     return concreteProtocol.readBinary();
   }
+
+  @Override
+  protected int typeMinimumSize(byte type) {
+    return concreteProtocol.typeMinimumSize(type);
+  }
 }
