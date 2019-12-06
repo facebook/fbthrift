@@ -171,6 +171,12 @@ TYPED_TEST(RocketNetworkTest, FlushList) {
  */
 TYPED_TEST(RocketNetworkTest, RequestResponseBasic) {
   this->withClient([](RocketTestClient& client) {
+    auto& rawClient = client.getRawClient();
+    rawClient.setOnDetachable([&rawClient]() {
+      EXPECT_TRUE(rawClient.isDetachable());
+      rawClient.detachEventBase();
+      EXPECT_FALSE(rawClient.isDetachable());
+    });
     constexpr folly::StringPiece kMetadata("metadata");
     constexpr folly::StringPiece kData("test_request");
 

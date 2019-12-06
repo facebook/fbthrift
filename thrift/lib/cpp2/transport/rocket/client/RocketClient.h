@@ -150,7 +150,9 @@ class RocketClient : public folly::DelayedDestruction,
   }
 
   bool isDetachable() const {
-    DCHECK(evb_);
+    if (!evb_) {
+      return false;
+    }
     evb_->dcheckIsInEventBaseThread();
 
     // Client is only detachable if there are no inflight requests, no active
