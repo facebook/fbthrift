@@ -110,6 +110,7 @@ class ConnectionContext:
     peer_address: SocketAddress
     is_tls: bool
     peer_common_name: str
+    security_protocol: str
     peer_certificate: bytes
 
 class RequestContext:
