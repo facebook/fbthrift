@@ -14,7 +14,7 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftStruct("FooEx")
-public final class FooEx extends Exception {
+public final class FooEx extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
 
     @ThriftConstructor

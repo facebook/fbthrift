@@ -14,7 +14,7 @@ import java.util.*;
 
 @SwiftGenerated
 @ThriftStruct("Banal")
-public final class Banal extends RuntimeException {
+public final class Banal extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
 
     @ThriftConstructor
