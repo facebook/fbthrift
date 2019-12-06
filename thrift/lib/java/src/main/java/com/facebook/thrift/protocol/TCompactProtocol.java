@@ -638,6 +638,7 @@ public class TCompactProtocol extends TProtocol {
       return new byte[0];
     }
 
+    ensureContainerHasEnough(length, TType.BYTE);
     byte[] buf = new byte[length];
     trans_.readAll(buf, 0, length);
     return buf;

@@ -62,3 +62,7 @@ struct MySetStruct {
 struct MyMapStruct {
   1: map<i64, string> mapping
 }
+
+struct MyStringStruct {
+  1: string aLongString
+}

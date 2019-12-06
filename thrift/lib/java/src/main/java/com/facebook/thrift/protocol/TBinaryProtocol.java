@@ -343,6 +343,7 @@ public class TBinaryProtocol extends TProtocol {
   }
 
   public String readStringBody(int size) throws TException {
+    ensureContainerHasEnough(size, TType.BYTE);
     checkReadLength(size);
     byte[] buf = new byte[size];
     trans_.readAll(buf, 0, size);
@@ -351,6 +352,7 @@ public class TBinaryProtocol extends TProtocol {
 
   public byte[] readBinary() throws TException {
     int size = readI32();
+    ensureContainerHasEnough(size, TType.BYTE);
     checkReadLength(size);
     byte[] buf = new byte[size];
     trans_.readAll(buf, 0, size);

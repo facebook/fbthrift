@@ -19,6 +19,7 @@ package com.facebook.thrift;
 import com.facebook.thrift.java.test.MyListStruct;
 import com.facebook.thrift.java.test.MyMapStruct;
 import com.facebook.thrift.java.test.MySetStruct;
+import com.facebook.thrift.java.test.MyStringStruct;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
 import com.facebook.thrift.protocol.TProtocol;
@@ -52,7 +53,7 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
     (byte) 0x00,
     (byte) 0x00,
     (byte) 0x00,
-    (byte) 0x01, // value = 2L
+    (byte) 0x02, // value = 2L
     (byte) 0x00,
     (byte) 0x00,
     (byte) 0x00,
@@ -60,7 +61,7 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
     (byte) 0x00,
     (byte) 0x00,
     (byte) 0x00,
-    (byte) 0x01, // value = 3L
+    (byte) 0x03, // value = 3L
     (byte) 0x00, // Stop
   };
 
@@ -139,7 +140,7 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
     (byte) 0x00,
     (byte) 0x00,
     (byte) 0x00,
-    (byte) 0x01, // value = 2L
+    (byte) 0x02, // value = 2L
     (byte) 0x00,
     (byte) 0x00,
     (byte) 0x00,
@@ -147,7 +148,7 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
     (byte) 0x00,
     (byte) 0x00,
     (byte) 0x00,
-    (byte) 0x01, // value = 3L
+    (byte) 0x03, // value = 3L
     (byte) 0x00, // Stop
   };
 
@@ -273,16 +274,61 @@ public class TruncatedFrameTest extends junit.framework.TestCase {
     testTruncated(new MyMapStruct(), iprot);
   }
 
-  private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
+  private static final byte[] kBinaryStringEncoding = {
+    TType.STRING, // Field Type = string
+    (byte) 0x00,
+    (byte) 0x01, // Field id = 1
+    (byte) 0x00,
+    (byte) 0x00,
+    (byte) 0x00,
+    (byte) 0xFF, // string length (255!)
+    (byte) 0x48,
+    (byte) 0x65,
+    (byte) 0x6C,
+    (byte) 0x6C,
+    (byte) 0x6F,
+    (byte) 0x2C,
+    (byte) 0x20,
+    (byte) 0x57,
+    (byte) 0x6F,
+    (byte) 0x72,
+    (byte) 0x6C,
+    (byte) 0x64,
+    (byte) 0x21, // string chars: "Hello, World!"
+    (byte) 0x00, // Stop
+  };
 
-  private static String bytesToHex(byte[] bytes, int length) {
-    String out = "";
-    for (int j = 0; j < length; j++) {
-      int v = bytes[j] & 0xFF;
-      out += hexArray[v >>> 4];
-      out += hexArray[v & 0x0F];
-      out += " ";
-    }
-    return out;
+  private static final byte[] kCompactStringEncoding = {
+    (byte) 0b00011000, // field id delta (0001) + type (1000) = Binary
+    (byte) 0xFF,
+    (byte) 0x0F, // string size (varint) = 0x0FFF (4095)
+    (byte) 0x48,
+    (byte) 0x65,
+    (byte) 0x6C,
+    (byte) 0x6C,
+    (byte) 0x6F,
+    (byte) 0x2C,
+    (byte) 0x20,
+    (byte) 0x57,
+    (byte) 0x6F,
+    (byte) 0x72,
+    (byte) 0x6C,
+    (byte) 0x64,
+    (byte) 0x21, // string chars: "Hello, World!"
+    (byte) 0x00, // Stop
+  };
+
+  @Test
+  public void testStringBinary() throws Exception {
+    TMemoryInputTransport buf = new TMemoryInputTransport(kBinaryStringEncoding);
+    TProtocol iprot = new TBinaryProtocol(buf);
+    testTruncated(new MyStringStruct(), iprot);
+  }
+
+  @Test
+  public void testStringCompact() throws Exception {
+    TMemoryInputTransport buf = new TMemoryInputTransport(kCompactStringEncoding);
+    TProtocol iprot = new TCompactProtocol(buf);
+    testTruncated(new MyStringStruct(), iprot);
   }
 }
