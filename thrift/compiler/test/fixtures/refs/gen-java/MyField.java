@@ -33,7 +33,6 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   public static final int OPT_VALUE = 1;
   public static final int VALUE = 2;
   public static final int REQ_VALUE = 3;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __OPT_VALUE_ISSET_ID = 0;
@@ -390,12 +389,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

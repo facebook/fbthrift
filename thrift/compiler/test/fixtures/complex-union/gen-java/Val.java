@@ -33,7 +33,6 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
   public static final int STRVAL = 1;
   public static final int INTVAL = 2;
   public static final int TYPEDEFVALUE = 9;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __INTVAL_ISSET_ID = 0;
@@ -394,12 +393,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

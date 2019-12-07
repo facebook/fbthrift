@@ -33,7 +33,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public static final int OPT_REF = 1;
   public static final int REF = 2;
   public static final int REQ_REF = 3;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
 
@@ -390,12 +389,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

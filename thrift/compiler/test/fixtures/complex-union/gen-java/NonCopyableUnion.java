@@ -22,7 +22,6 @@ import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial", "unchecked" })
 public class NonCopyableUnion extends TUnion<NonCopyableUnion> implements Comparable<NonCopyableUnion> {
-  public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
   private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
 
@@ -182,12 +181,7 @@ public class NonCopyableUnion extends TUnion<NonCopyableUnion> implements Compar
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

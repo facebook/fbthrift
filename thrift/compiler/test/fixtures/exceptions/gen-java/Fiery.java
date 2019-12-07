@@ -27,7 +27,6 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
 
   public String message;
   public static final int MESSAGE = 1;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
 
@@ -198,12 +197,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

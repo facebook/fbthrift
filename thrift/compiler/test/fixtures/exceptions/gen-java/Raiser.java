@@ -578,7 +578,6 @@ public class Raiser {
   public static class doBland_args implements TBase, java.io.Serializable, Cloneable, Comparable<doBland_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("doBland_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -693,12 +692,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -726,7 +720,6 @@ public class Raiser {
   public static class doBland_result implements TBase, java.io.Serializable, Cloneable, Comparable<doBland_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("doBland_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -840,12 +833,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -873,7 +861,6 @@ public class Raiser {
   public static class doRaise_args implements TBase, java.io.Serializable, Cloneable, Comparable<doRaise_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("doRaise_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -988,12 +975,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1030,7 +1012,6 @@ public class Raiser {
     public static final int B = 1;
     public static final int F = 2;
     public static final int S = 3;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1327,12 +1308,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1392,7 +1368,6 @@ public class Raiser {
   public static class get200_args implements TBase, java.io.Serializable, Cloneable, Comparable<get200_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("get200_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -1507,12 +1482,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1543,7 +1513,6 @@ public class Raiser {
 
     public String success;
     public static final int SUCCESS = 0;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1736,12 +1705,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1779,7 +1743,6 @@ public class Raiser {
   public static class get500_args implements TBase, java.io.Serializable, Cloneable, Comparable<get500_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("get500_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -1894,12 +1857,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1939,7 +1897,6 @@ public class Raiser {
     public static final int F = 1;
     public static final int B = 2;
     public static final int S = 3;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -2298,12 +2255,7 @@ public class Raiser {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override

@@ -629,7 +629,6 @@ public class NestedContainers {
 
     public Map<Integer,List<Integer>> foo;
     public static final int FOO = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -866,12 +865,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -909,7 +903,6 @@ public class NestedContainers {
   public static class mapList_result implements TBase, java.io.Serializable, Cloneable, Comparable<mapList_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("mapList_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -1023,12 +1016,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1059,7 +1047,6 @@ public class NestedContainers {
 
     public Map<Integer,Set<Integer>> foo;
     public static final int FOO = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1296,12 +1283,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1339,7 +1321,6 @@ public class NestedContainers {
   public static class mapSet_result implements TBase, java.io.Serializable, Cloneable, Comparable<mapSet_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("mapSet_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -1453,12 +1434,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1489,7 +1465,6 @@ public class NestedContainers {
 
     public List<Map<Integer,Integer>> foo;
     public static final int FOO = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1726,12 +1701,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1769,7 +1739,6 @@ public class NestedContainers {
   public static class listMap_result implements TBase, java.io.Serializable, Cloneable, Comparable<listMap_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("listMap_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -1883,12 +1852,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1919,7 +1883,6 @@ public class NestedContainers {
 
     public List<Set<Integer>> foo;
     public static final int FOO = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -2152,12 +2115,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -2195,7 +2153,6 @@ public class NestedContainers {
   public static class listSet_result implements TBase, java.io.Serializable, Cloneable, Comparable<listSet_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("listSet_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -2309,12 +2266,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -2345,7 +2297,6 @@ public class NestedContainers {
 
     public List<List<Map<Integer,Map<Integer,Set<Integer>>>>> foo;
     public static final int FOO = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -2643,12 +2594,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -2686,7 +2632,6 @@ public class NestedContainers {
   public static class turtles_result implements TBase, java.io.Serializable, Cloneable, Comparable<turtles_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("turtles_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -2800,12 +2745,7 @@ public class NestedContainers {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override

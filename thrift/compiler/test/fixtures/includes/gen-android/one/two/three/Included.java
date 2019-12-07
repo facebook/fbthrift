@@ -32,7 +32,6 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
   public final Foo MyTransitiveField;
   public static final int MYINTFIELD = 1;
   public static final int MYTRANSITIVEFIELD = 2;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   public Included(
     Long MyIntField,
@@ -195,12 +194,7 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

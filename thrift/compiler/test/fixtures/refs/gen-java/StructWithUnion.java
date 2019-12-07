@@ -33,7 +33,6 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
   public static final int U = 1;
   public static final int ADOUBLE = 2;
   public static final int F = 3;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __ADOUBLE_ISSET_ID = 0;
@@ -372,12 +371,7 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

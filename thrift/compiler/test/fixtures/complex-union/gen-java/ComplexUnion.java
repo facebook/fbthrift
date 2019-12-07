@@ -22,7 +22,6 @@ import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial", "unchecked" })
 public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<ComplexUnion> {
-  public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
   private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
   private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)5);
@@ -486,12 +485,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

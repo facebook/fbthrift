@@ -42,7 +42,6 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
   public static final int LIST_REF_UNIQUE = 4;
   public static final int SET_REF_SHARED = 5;
   public static final int LIST_REF_SHARED_CONST = 6;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
 
@@ -710,12 +709,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

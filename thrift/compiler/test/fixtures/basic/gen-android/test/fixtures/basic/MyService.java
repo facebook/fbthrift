@@ -708,7 +708,6 @@ public class MyService {
   public static class ping_args implements TBase, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("ping_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -801,12 +800,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -834,7 +828,6 @@ public class MyService {
   public static class ping_result implements TBase, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("ping_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -926,12 +919,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -959,7 +947,6 @@ public class MyService {
   public static class getRandomData_args implements TBase, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("getRandomData_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -1052,12 +1039,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1088,7 +1070,6 @@ public class MyService {
 
     public String success;
     public static final int SUCCESS = 0;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1241,12 +1222,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1287,7 +1263,6 @@ public class MyService {
 
     public Long id;
     public static final int ID = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1441,12 +1416,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1487,7 +1457,6 @@ public class MyService {
 
     public Boolean success;
     public static final int SUCCESS = 0;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1640,12 +1609,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1686,7 +1650,6 @@ public class MyService {
 
     public Long id;
     public static final int ID = 1;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -1840,12 +1803,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -1886,7 +1844,6 @@ public class MyService {
 
     public String success;
     public static final int SUCCESS = 0;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -2039,12 +1996,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -2088,7 +2040,6 @@ public class MyService {
     public String data;
     public static final int ID = 1;
     public static final int DATA = 2;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -2296,12 +2247,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -2350,7 +2296,6 @@ public class MyService {
   public static class putDataById_result implements TBase, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("putDataById_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -2442,12 +2387,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -2481,7 +2421,6 @@ public class MyService {
     public String data;
     public static final int ID = 1;
     public static final int DATA = 2;
-    public static boolean DEFAULT_PRETTY_PRINT = true;
 
     // isset id assignments
 
@@ -2689,12 +2628,7 @@ public class MyService {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override

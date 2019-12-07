@@ -33,7 +33,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   public static final int MYINCLUDEDFIELD = 1;
   public static final int MYOTHERINCLUDEDFIELD = 2;
   public static final int MYINCLUDEDINT = 3;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   public MyStruct(
     one.two.three.Included MyIncludedField,
@@ -235,12 +234,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

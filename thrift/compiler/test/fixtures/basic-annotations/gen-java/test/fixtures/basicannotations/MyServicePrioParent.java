@@ -320,7 +320,6 @@ public class MyServicePrioParent {
   public static class ping_args implements TBase, java.io.Serializable, Cloneable, Comparable<ping_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("ping_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -435,12 +434,7 @@ public class MyServicePrioParent {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -468,7 +462,6 @@ public class MyServicePrioParent {
   public static class ping_result implements TBase, java.io.Serializable, Cloneable, Comparable<ping_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("ping_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -582,12 +575,7 @@ public class MyServicePrioParent {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -615,7 +603,6 @@ public class MyServicePrioParent {
   public static class pong_args implements TBase, java.io.Serializable, Cloneable, Comparable<pong_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("pong_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -730,12 +717,7 @@ public class MyServicePrioParent {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -763,7 +745,6 @@ public class MyServicePrioParent {
   public static class pong_result implements TBase, java.io.Serializable, Cloneable, Comparable<pong_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("pong_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -877,12 +858,7 @@ public class MyServicePrioParent {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override

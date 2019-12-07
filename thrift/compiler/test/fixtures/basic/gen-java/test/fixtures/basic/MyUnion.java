@@ -24,7 +24,6 @@ import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial", "unchecked" })
 public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
-  public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
   private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
@@ -290,12 +289,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

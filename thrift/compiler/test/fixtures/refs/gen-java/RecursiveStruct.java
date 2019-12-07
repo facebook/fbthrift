@@ -27,7 +27,6 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
 
   public List<RecursiveStruct> mes;
   public static final int MES = 1;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
 
@@ -221,12 +220,7 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

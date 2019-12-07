@@ -24,7 +24,6 @@ import com.facebook.thrift.protocol.*;
 public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable<Empty> {
   private static final TStruct STRUCT_DESC = new TStruct("Empty");
 
-  public static boolean DEFAULT_PRETTY_PRINT = true;
   public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -139,12 +138,7 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

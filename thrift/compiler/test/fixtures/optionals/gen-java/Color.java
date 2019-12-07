@@ -36,7 +36,6 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
   public static final int GREEN = 2;
   public static final int BLUE = 3;
   public static final int ALPHA = 4;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __RED_ISSET_ID = 0;
@@ -438,12 +437,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

@@ -196,7 +196,6 @@ public class MyServicePrioChild {
   public static class pang_args implements TBase, java.io.Serializable, Cloneable, Comparable<pang_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("pang_args");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -311,12 +310,7 @@ public class MyServicePrioChild {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override
@@ -344,7 +338,6 @@ public class MyServicePrioChild {
   public static class pang_result implements TBase, java.io.Serializable, Cloneable, Comparable<pang_result>   {
     private static final TStruct STRUCT_DESC = new TStruct("pang_result");
 
-    public static boolean DEFAULT_PRETTY_PRINT = true;
     public static final Map<Integer, FieldMetaData> metaDataMap;
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
@@ -458,12 +451,7 @@ public class MyServicePrioChild {
 
     @Override
     public String toString() {
-      return toString(DEFAULT_PRETTY_PRINT);
-    }
-
-    @Override
-    public String toString(boolean prettyPrint) {
-      return toString(1, prettyPrint);
+      return toString(1, true);
     }
 
     @Override

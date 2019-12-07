@@ -39,7 +39,6 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   public static final int DESCRIPTION = 3;
   public static final int NAME = 4;
   public static final int HASAC = 5;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __HASAC_ISSET_ID = 0;
@@ -536,12 +535,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

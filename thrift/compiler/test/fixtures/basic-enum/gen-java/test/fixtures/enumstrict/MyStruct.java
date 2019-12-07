@@ -40,7 +40,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public MyBigEnum myBigEnum;
   public static final int MYENUM = 1;
   public static final int MYBIGENUM = 2;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __MYENUM_ISSET_ID = 0;
@@ -322,12 +321,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

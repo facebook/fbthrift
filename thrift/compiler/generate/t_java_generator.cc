@@ -595,9 +595,6 @@ void t_java_generator::generate_java_union(t_struct* tstruct) {
 
   scope_up(f_struct);
 
-  indent(f_struct) << "public static boolean DEFAULT_PRETTY_PRINT = true;"
-                   << endl;
-
   generate_struct_desc(f_struct, tstruct);
   generate_field_descs(f_struct, tstruct);
 
@@ -1119,8 +1116,6 @@ void t_java_generator::generate_java_struct_definition(
     out << declare_field(*m_iter, false) << endl;
   }
   generate_field_name_constants(out, tstruct);
-
-  indent(out) << "public static boolean DEFAULT_PRETTY_PRINT = true;" << endl;
 
   if (!params.gen_immutable) {
     // isset data
@@ -1956,16 +1951,7 @@ void t_java_generator::generate_default_toString(
   out << indent() << "@Override" << endl
       << indent() << "public String toString() {" << endl;
   indent_up();
-  out << indent() << "return toString(DEFAULT_PRETTY_PRINT);" << endl;
-  indent_down();
-  out << indent() << "}" << endl << endl;
-}
-
-void t_java_generator::generate_toString_prettyprint(ofstream& out) {
-  out << indent() << "@Override" << endl
-      << indent() << "public String toString(boolean prettyPrint) {" << endl;
-  indent_up();
-  out << indent() << "return toString(1, prettyPrint);" << endl;
+  out << indent() << "return toString(1, true);" << endl;
   indent_down();
   out << indent() << "}" << endl << endl;
 }
@@ -1979,7 +1965,6 @@ void t_java_generator::generate_java_struct_tostring(
     ofstream& out,
     t_struct* tstruct) {
   generate_default_toString(out, tstruct);
-  generate_toString_prettyprint(out);
   out << indent() << "@Override" << endl;
   out << indent() << "public String toString(int indent, boolean prettyPrint) {"
       << endl;

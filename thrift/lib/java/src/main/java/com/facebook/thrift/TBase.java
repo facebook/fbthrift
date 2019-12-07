@@ -50,11 +50,4 @@ public interface TBase extends Serializable {
    * @param prettyPrint Set pretty printing on/off
    */
   public String toString(int indent, boolean prettyPrint);
-
-  /**
-   * Returns a string representation of an instance
-   *
-   * @param prettyPrint Set pretty printing on/off
-   */
-  public String toString(boolean prettyPrint);
 }

@@ -42,7 +42,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
   public static final int MYENUM = 4;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
@@ -457,12 +456,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

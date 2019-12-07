@@ -27,7 +27,6 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
 
   public Empty def_field;
   public static final int DEF_FIELD = 1;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
 
@@ -222,12 +221,7 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

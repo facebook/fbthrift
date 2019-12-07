@@ -58,7 +58,6 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
   public static final int PETNAMES = 8;
   public static final int AFRAIDOFANIMAL = 9;
   public static final int VEHICLES = 10;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
   private static final int __ID_ISSET_ID = 0;
@@ -984,12 +983,7 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

@@ -33,7 +33,6 @@ public class StructWithRefTypeShared implements TBase, java.io.Serializable, Clo
   public static final int DEF_FIELD = 1;
   public static final int OPT_FIELD = 2;
   public static final int REQ_FIELD = 3;
-  public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
 
@@ -390,12 +389,7 @@ public class StructWithRefTypeShared implements TBase, java.io.Serializable, Clo
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

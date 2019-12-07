@@ -22,7 +22,6 @@ import com.facebook.thrift.protocol.*;
 
 @SuppressWarnings({ "unused", "serial", "unchecked" })
 public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion> {
-  public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
   private static final TField BINARY_DATA_FIELD_DESC = new TField("binaryData", TType.STRING, (short)1);
   private static final TField STRING_DATA_FIELD_DESC = new TField("stringData", TType.STRING, (short)2);
@@ -230,12 +229,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
 
   @Override
   public String toString() {
-    return toString(DEFAULT_PRETTY_PRINT);
-  }
-
-  @Override
-  public String toString(boolean prettyPrint) {
-    return toString(1, prettyPrint);
+    return toString(1, true);
   }
 
   @Override

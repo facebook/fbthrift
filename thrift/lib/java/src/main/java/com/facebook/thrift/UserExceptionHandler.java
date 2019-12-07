@@ -47,7 +47,7 @@ public class UserExceptionHandler extends TProcessorEventHandler {
         headerTransport.setHeader("uexw", message);
       } else {
         String str = // don't inline; see JDK-8056984
-            th.toString(/* prettyPrint */ false);
+            th.toString(1, /* prettyPrint */ false);
         headerTransport.setHeader("uexw", str);
       }
     }
