@@ -41,6 +41,14 @@ class ServerInstrumentation {
     return ServerCollection::getInstance().getServers()->size();
   }
 
+  template <typename F>
+  static void forEachServer(F&& f) {
+    auto servers = ServerCollection::getInstance().getServers();
+    for (auto server : *servers) {
+      f(*server);
+    }
+  }
+
  private:
   static void registerServer(ThriftServer& server) {
     ServerCollection::getInstance().addServer(server);
@@ -48,14 +56,6 @@ class ServerInstrumentation {
 
   static void removeServer(ThriftServer& server) {
     ServerCollection::getInstance().removeServer(server);
-  }
-
-  template <typename F>
-  static void forEachServer(F&& f) {
-    auto servers = ServerCollection::getInstance().getServers();
-    for (auto server : *servers) {
-      f(*server);
-    }
   }
 
   class ServerCollection {
