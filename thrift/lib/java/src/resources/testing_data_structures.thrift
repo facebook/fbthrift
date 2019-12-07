@@ -22,6 +22,13 @@ struct MySimpleStruct {
   2: string name,
 }
 
+struct NestedStruct {
+  1: map<i32, string> myMap,
+  2: MySimpleStruct mySimpleStruct,
+  3: set<i32> mySet,
+  4: list<string> myList,
+}
+
 enum SmallEnum {
   RED = 1,
   BLUE = 2,

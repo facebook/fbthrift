@@ -737,10 +737,6 @@ public class MyService {
       return new ping_args(this);
     }
 
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
-    }
-
     public Object getFieldValue(int fieldID) {
       switch (fieldID) {
       default:
@@ -882,10 +878,6 @@ public class MyService {
       return new ping_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
-    }
-
     public Object getFieldValue(int fieldID) {
       switch (fieldID) {
       default:
@@ -1024,10 +1016,6 @@ public class MyService {
     @Deprecated
     public getRandomData_args clone() {
       return new getRandomData_args(this);
-    }
-
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
     }
 
     public Object getFieldValue(int fieldID) {
@@ -1210,10 +1198,6 @@ public class MyService {
       if (!__value) {
         this.success = null;
       }
-    }
-
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
     }
 
     public Object getFieldValue(int fieldID) {
@@ -1433,10 +1417,6 @@ public class MyService {
       if (!__value) {
         this.id = null;
       }
-    }
-
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
     }
 
     public Object getFieldValue(int fieldID) {
@@ -1659,10 +1639,6 @@ public class MyService {
       }
     }
 
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
-    }
-
     public Object getFieldValue(int fieldID) {
       switch (fieldID) {
       case SUCCESS:
@@ -1880,10 +1856,6 @@ public class MyService {
       if (!__value) {
         this.id = null;
       }
-    }
-
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
     }
 
     public Object getFieldValue(int fieldID) {
@@ -2104,10 +2076,6 @@ public class MyService {
       if (!__value) {
         this.success = null;
       }
-    }
-
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
     }
 
     public Object getFieldValue(int fieldID) {
@@ -2363,10 +2331,6 @@ public class MyService {
       }
     }
 
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
-    }
-
     public Object getFieldValue(int fieldID) {
       switch (fieldID) {
       case ID:
@@ -2585,10 +2549,6 @@ public class MyService {
       return new putDataById_result(this);
     }
 
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
-    }
-
     public Object getFieldValue(int fieldID) {
       switch (fieldID) {
       default:
@@ -2802,10 +2762,6 @@ public class MyService {
       if (!__value) {
         this.data = null;
       }
-    }
-
-    public void setFieldValue(int fieldID, Object __value) {
-      throw new IllegalStateException("Unimplemented in android immutable structure!");
     }
 
     public Object getFieldValue(int fieldID) {

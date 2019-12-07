@@ -51,14 +51,6 @@ public interface TBase extends Serializable {
   public Object getFieldValue(int fieldId);
 
   /**
-   * Set a field's value by id. Primitive types must be "boxed" in the appropriate object wrapper
-   * type.
-   *
-   * @param fieldId The field's id tag as found in the IDL.
-   */
-  public void setFieldValue(int fieldId, Object value);
-
-  /**
    * Returns a copy of `this`. The type of the returned object should be the same as the type of
    * this; that is, <code>x.getClass() == x.deepCopy().getClass()</code> should be true for any
    * TBase.

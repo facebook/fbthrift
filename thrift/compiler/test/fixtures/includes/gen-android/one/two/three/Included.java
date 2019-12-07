@@ -85,10 +85,6 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
     return this.MyTransitiveField != null;
   }
 
-  public void setFieldValue(int fieldID, Object __value) {
-    throw new IllegalStateException("Unimplemented in android immutable structure!");
-  }
-
   public Object getFieldValue(int fieldID) {
     switch (fieldID) {
     case MYINTFIELD:

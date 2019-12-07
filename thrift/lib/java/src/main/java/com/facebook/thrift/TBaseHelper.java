@@ -16,6 +16,7 @@
 
 package com.facebook.thrift;
 
+import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +33,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 
 public final class TBaseHelper {
+
+  private static Class[] setFieldValueArgs = new Class[] {int.class, Object.class};
 
   private TBaseHelper() {}
 
@@ -1046,5 +1049,27 @@ public final class TBaseHelper {
       sb.append("Exception occured :" + re.getClass() + re.getMessage());
     }
     return sb.toString();
+  }
+
+  /**
+   * Set the value of a field based on its field id
+   *
+   * @param object The Thrift object to modified
+   * @param fieldId The ID of the field to modify
+   * @param value The value of the object to set
+   */
+  public static void setFieldValue(TBase object, short fieldId, Object value) {
+    try {
+      // For javadeprecated codegen, use the generated method
+      Method setFieldValueMethod =
+          object.getClass().getDeclaredMethod("setFieldValue", setFieldValueArgs);
+      setFieldValueMethod.invoke(object, (int) fieldId, value);
+    } catch (Exception e) {
+      // android object are immutable
+      throw new RuntimeException(
+          String.format(
+              "Failed to set the field value %s on %s (field id = %d): %s",
+              value.toString(), object.getClass().getName(), fieldId, e.getMessage()));
+    }
   }
 }

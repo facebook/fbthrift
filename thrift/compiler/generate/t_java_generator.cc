@@ -1805,17 +1805,14 @@ void t_java_generator::generate_generic_field_getters_setters(
   }
 
   // create the setter
-  if (needs_suppress_warnings)
-    indent(out) << "@SuppressWarnings(\"unchecked\")" << endl;
-  indent(out) << "public void setFieldValue(int fieldID, Object __value) {"
-              << endl;
-  indent_up();
+  if (!generate_immutable_structs_) {
+    if (needs_suppress_warnings) {
+      indent(out) << "@SuppressWarnings(\"unchecked\")" << endl;
+    }
+    indent(out) << "public void setFieldValue(int fieldID, Object __value) {"
+                << endl;
+    indent_up();
 
-  if (generate_immutable_structs_) {
-    indent(out)
-        << "throw new IllegalStateException(\"Unimplemented in android immutable structure!\");"
-        << endl;
-  } else {
     indent(out) << "switch (fieldID) {" << endl;
 
     out << setter_stream.str();
@@ -1826,10 +1823,10 @@ void t_java_generator::generate_generic_field_getters_setters(
         << endl;
 
     indent(out) << "}" << endl;
-  }
 
-  indent_down();
-  indent(out) << "}" << endl << endl;
+    indent_down();
+    indent(out) << "}" << endl << endl;
+  }
 
   // create the getter
   indent(out) << "public Object getFieldValue(int fieldID) {" << endl;
