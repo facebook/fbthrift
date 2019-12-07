@@ -41,6 +41,7 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
   public Nada(Nada other) {
     super(other);
   }
+
   public Nada deepCopy() {
     return new Nada(this);
   }
@@ -57,10 +58,9 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
   @Override
   protected Object readValue(TProtocol iprot, TField __field) throws TException {
     switch (__field.id) {
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

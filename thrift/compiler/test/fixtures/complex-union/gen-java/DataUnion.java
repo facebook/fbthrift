@@ -49,6 +49,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   public DataUnion(DataUnion other) {
     super(other);
   }
+
   public DataUnion deepCopy() {
     return new DataUnion(this);
   }
@@ -92,23 +93,18 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
           byte[] binaryData;
           binaryData = iprot.readBinary();
           return binaryData;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case STRINGDATA:
         if (__field.type == STRING_DATA_FIELD_DESC.type) {
           String stringData;
           stringData = iprot.readString();
           return stringData;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

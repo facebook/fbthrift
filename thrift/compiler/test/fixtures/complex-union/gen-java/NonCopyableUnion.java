@@ -45,6 +45,7 @@ public class NonCopyableUnion extends TUnion<NonCopyableUnion> implements Compar
   public NonCopyableUnion(NonCopyableUnion other) {
     super(other);
   }
+
   public NonCopyableUnion deepCopy() {
     return new NonCopyableUnion(this);
   }
@@ -78,14 +79,11 @@ public class NonCopyableUnion extends TUnion<NonCopyableUnion> implements Compar
           s = new NonCopyableStruct();
           s.read(iprot);
           return s;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

@@ -49,6 +49,7 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   public VirtualComplexUnion(VirtualComplexUnion other) {
     super(other);
   }
+
   public VirtualComplexUnion deepCopy() {
     return new VirtualComplexUnion(this);
   }
@@ -92,23 +93,18 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
           String thingOne;
           thingOne = iprot.readString();
           return thingOne;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case THINGTWO:
         if (__field.type == THING_TWO_FIELD_DESC.type) {
           String thingTwo;
           thingTwo = iprot.readString();
           return thingTwo;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

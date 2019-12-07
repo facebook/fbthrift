@@ -51,6 +51,7 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
   public ListUnion(ListUnion other) {
     super(other);
   }
+
   public ListUnion deepCopy() {
     return new ListUnion(this);
   }
@@ -106,10 +107,8 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
             iprot.readListEnd();
           }
           return intListValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case STRINGLISTVALUE:
         if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
           List<String> stringListValue;
@@ -127,14 +126,11 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
             iprot.readListEnd();
           }
           return stringListValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

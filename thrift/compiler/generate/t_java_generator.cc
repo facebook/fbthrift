@@ -648,7 +648,7 @@ void t_java_generator::generate_union_constructor(
   indent(out) << "public " << type_name(tstruct) << "(" << type_name(tstruct)
               << " other) {" << endl;
   indent(out) << "  super(other);" << endl;
-  indent(out) << "}" << endl;
+  indent(out) << "}" << endl << endl;
 
   indent(out) << "public " << tstruct->get_name() << " deepCopy() {" << endl;
   indent(out) << "  return new " << tstruct->get_name() << "(this);" << endl;
@@ -805,21 +805,17 @@ void t_java_generator::generate_read_value(ofstream& out, t_struct* tstruct) {
     generate_deserialize_field(out, field, "");
     indent(out) << "return " << field->get_name() << ";" << endl;
     indent_down();
-    indent(out) << "} else {" << endl;
-    indent(out) << "  TProtocolUtil.skip(iprot, __field.type);" << endl;
-    indent(out) << "  return null;" << endl;
     indent(out) << "}" << endl;
+    indent(out) << "break;" << endl;
     indent_down();
   }
 
-  indent(out) << "default:" << endl;
-  indent(out) << "  TProtocolUtil.skip(iprot, __field.type);" << endl;
-  indent(out) << "  return null;" << endl;
-
   indent_down();
   indent(out) << "}" << endl;
-
   indent_down();
+
+  indent(out) << "  TProtocolUtil.skip(iprot, __field.type);" << endl;
+  indent(out) << "  return null;" << endl;
   indent(out) << "}" << endl;
 }
 

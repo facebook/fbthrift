@@ -49,6 +49,7 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
   public ValUnion(ValUnion other) {
     super(other);
   }
+
   public ValUnion deepCopy() {
     return new ValUnion(this);
   }
@@ -93,24 +94,19 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
           v1 = new Val();
           v1.read(iprot);
           return v1;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case V2:
         if (__field.type == V2_FIELD_DESC.type) {
           Val v2;
           v2 = new Val();
           v2.read(iprot);
           return v2;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

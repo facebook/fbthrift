@@ -55,6 +55,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   public MyUnion(MyUnion other) {
     super(other);
   }
+
   public MyUnion deepCopy() {
     return new MyUnion(this);
   }
@@ -109,34 +110,27 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
           MyEnum myEnum;
           myEnum = MyEnum.findByValue(iprot.readI32());
           return myEnum;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case MYSTRUCT:
         if (__field.type == MY_STRUCT_FIELD_DESC.type) {
           MyStruct myStruct;
           myStruct = new MyStruct();
           myStruct.read(iprot);
           return myStruct;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case MYDATAITEM:
         if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
           MyDataItem myDataItem;
           myDataItem = new MyDataItem();
           myDataItem.read(iprot);
           return myDataItem;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

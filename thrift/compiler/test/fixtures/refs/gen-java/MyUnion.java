@@ -49,6 +49,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   public MyUnion(MyUnion other) {
     super(other);
   }
+
   public MyUnion deepCopy() {
     return new MyUnion(this);
   }
@@ -92,23 +93,18 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
           Integer anInteger;
           anInteger = iprot.readI32();
           return anInteger;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case ASTRING:
         if (__field.type == A_STRING_FIELD_DESC.type) {
           String aString;
           aString = iprot.readString();
           return aString;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override

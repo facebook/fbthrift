@@ -69,6 +69,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   public ComplexUnion(ComplexUnion other) {
     super(other);
   }
+
   public ComplexUnion deepCopy() {
     return new ComplexUnion(this);
   }
@@ -156,19 +157,15 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           Long intValue;
           intValue = iprot.readI64();
           return intValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case STRINGVALUE:
         if (__field.type == STRING_VALUE_FIELD_DESC.type) {
           String stringValue;
           stringValue = iprot.readString();
           return stringValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case INTLISTVALUE:
         if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
           List<Long> intListValue;
@@ -186,10 +183,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
             iprot.readListEnd();
           }
           return intListValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case STRINGLISTVALUE:
         if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
           List<String> stringListValue;
@@ -207,10 +202,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
             iprot.readListEnd();
           }
           return stringListValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case TYPEDEFVALUE:
         if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
           Map<Short,String> typedefValue;
@@ -230,23 +223,18 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
             iprot.readMapEnd();
           }
           return typedefValue;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
+        break;
       case STRINGREF:
         if (__field.type == STRING_REF_FIELD_DESC.type) {
           String stringRef;
           stringRef = iprot.readString();
           return stringRef;
-        } else {
-          TProtocolUtil.skip(iprot, __field.type);
-          return null;
         }
-      default:
-        TProtocolUtil.skip(iprot, __field.type);
-        return null;
+        break;
     }
+    TProtocolUtil.skip(iprot, __field.type);
+    return null;
   }
 
   @Override
