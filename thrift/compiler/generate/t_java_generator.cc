@@ -1825,26 +1825,26 @@ void t_java_generator::generate_generic_field_getters_setters(
 
     indent_down();
     indent(out) << "}" << endl << endl;
+
+    // create the getter
+    indent(out) << "public Object getFieldValue(int fieldID) {" << endl;
+    indent_up();
+
+    indent(out) << "switch (fieldID) {" << endl;
+
+    out << getter_stream.str();
+
+    indent(out) << "default:" << endl;
+    indent(out)
+        << "  throw new IllegalArgumentException(\"Field \" + fieldID + \" doesn't exist!\");"
+        << endl;
+
+    indent(out) << "}" << endl;
+
+    indent_down();
+
+    indent(out) << "}" << endl << endl;
   }
-
-  // create the getter
-  indent(out) << "public Object getFieldValue(int fieldID) {" << endl;
-  indent_up();
-
-  indent(out) << "switch (fieldID) {" << endl;
-
-  out << getter_stream.str();
-
-  indent(out) << "default:" << endl;
-  indent(out)
-      << "  throw new IllegalArgumentException(\"Field \" + fieldID + \" doesn't exist!\");"
-      << endl;
-
-  indent(out) << "}" << endl;
-
-  indent_down();
-
-  indent(out) << "}" << endl << endl;
 }
 
 std::string t_java_generator::get_simple_getter_name(t_field* field) {

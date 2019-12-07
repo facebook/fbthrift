@@ -102,22 +102,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.MyIncludedInt != null;
   }
 
-  public Object getFieldValue(int fieldID) {
-    switch (fieldID) {
-    case MYINCLUDEDFIELD:
-      return getMyIncludedField();
-
-    case MYOTHERINCLUDEDFIELD:
-      return getMyOtherIncludedField();
-
-    case MYINCLUDEDINT:
-      return new Long(getMyIncludedInt());
-
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

@@ -131,25 +131,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.myEnum != null;
   }
 
-  public Object getFieldValue(int fieldID) {
-    switch (fieldID) {
-    case MYINTFIELD:
-      return new Long(getMyIntField());
-
-    case MYSTRINGFIELD:
-      return getMyStringField();
-
-    case MYDATAFIELD:
-      return getMyDataField();
-
-    case MYENUM:
-      return getMyEnum();
-
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

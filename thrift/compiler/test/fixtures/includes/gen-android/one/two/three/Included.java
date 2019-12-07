@@ -85,19 +85,6 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
     return this.MyTransitiveField != null;
   }
 
-  public Object getFieldValue(int fieldID) {
-    switch (fieldID) {
-    case MYINTFIELD:
-      return new Long(getMyIntField());
-
-    case MYTRANSITIVEFIELD:
-      return getMyTransitiveField();
-
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

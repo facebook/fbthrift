@@ -737,13 +737,6 @@ public class MyService {
       return new ping_args(this);
     }
 
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -870,13 +863,6 @@ public class MyService {
       return new ping_result(this);
     }
 
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -1000,13 +986,6 @@ public class MyService {
     @Deprecated
     public getRandomData_args clone() {
       return new getRandomData_args(this);
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
     }
 
     @Override
@@ -1173,16 +1152,6 @@ public class MyService {
     public void setSuccessIsSet(boolean __value) {
       if (!__value) {
         this.success = null;
-      }
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case SUCCESS:
-        return getSuccess();
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
     }
 
@@ -1382,16 +1351,6 @@ public class MyService {
     public void setIdIsSet(boolean __value) {
       if (!__value) {
         this.id = null;
-      }
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case ID:
-        return new Long(getId());
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
     }
 
@@ -1595,16 +1554,6 @@ public class MyService {
       }
     }
 
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case SUCCESS:
-        return new Boolean(isSuccess());
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -1801,16 +1750,6 @@ public class MyService {
     public void setIdIsSet(boolean __value) {
       if (!__value) {
         this.id = null;
-      }
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case ID:
-        return new Long(getId());
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
     }
 
@@ -2011,16 +1950,6 @@ public class MyService {
     public void setSuccessIsSet(boolean __value) {
       if (!__value) {
         this.success = null;
-      }
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case SUCCESS:
-        return getSuccess();
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
     }
 
@@ -2257,19 +2186,6 @@ public class MyService {
       }
     }
 
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case ID:
-        return new Long(getId());
-
-      case DATA:
-        return getData();
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -2461,13 +2377,6 @@ public class MyService {
     @Deprecated
     public putDataById_result clone() {
       return new putDataById_result(this);
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
     }
 
     @Override
@@ -2667,19 +2576,6 @@ public class MyService {
     public void setDataIsSet(boolean __value) {
       if (!__value) {
         this.data = null;
-      }
-    }
-
-    public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      case ID:
-        return new Long(getId());
-
-      case DATA:
-        return getData();
-
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }
     }
 

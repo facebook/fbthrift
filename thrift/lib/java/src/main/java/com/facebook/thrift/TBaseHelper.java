@@ -1094,6 +1094,35 @@ public final class TBaseHelper {
     }
   }
 
+  /**
+   * Get the value of a field based on its field id
+   *
+   * @param object The Thrift object to modified
+   * @param fieldId The ID of the field to modify
+   */
+  public static Object getFieldValue(TBase object, short fieldId) {
+    try {
+      try {
+        // For javadeprecated codegen, use the generated method
+        Method getFieldValueMethod =
+            object.getClass().getDeclaredMethod("getFieldValue", int.class);
+        return getFieldValueMethod.invoke(object, (int) fieldId);
+      } catch (Exception e) {
+        // android objects don't have an `getFieldValue` method
+        TField tField = getTField(object, fieldId);
+        String getterMethodName =
+            "get" + tField.name.substring(0, 1).toUpperCase() + tField.name.substring(1);
+        Method getter = object.getClass().getDeclaredMethod(getterMethodName);
+        return getter.invoke(object);
+      }
+    } catch (Exception e) {
+      throw new RuntimeException(
+          String.format(
+              "object %s doesn't seems to be a valid TBase Thrift object: %s",
+              object.getClass().getName(), e.getMessage()));
+    }
+  }
+
   private static TField getTField(TBase object, short fieldId)
       throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
     TField tField = null;

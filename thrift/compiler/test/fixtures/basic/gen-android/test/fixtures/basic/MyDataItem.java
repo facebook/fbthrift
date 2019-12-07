@@ -48,13 +48,6 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable {
     return new MyDataItem(this);
   }
 
-  public Object getFieldValue(int fieldID) {
-    switch (fieldID) {
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

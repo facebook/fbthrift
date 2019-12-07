@@ -37,13 +37,6 @@ public interface TBase extends Serializable {
   public void write(TProtocol oprot) throws TException;
 
   /**
-   * Get a field's value by id. Primitive types will be wrapped in the appropriate "boxed" types.
-   *
-   * @param fieldId The field's id tag as found in the IDL.
-   */
-  public Object getFieldValue(int fieldId);
-
-  /**
    * Returns a copy of `this`. The type of the returned object should be the same as the type of
    * this; that is, <code>x.getClass() == x.deepCopy().getClass()</code> should be true for any
    * TBase.

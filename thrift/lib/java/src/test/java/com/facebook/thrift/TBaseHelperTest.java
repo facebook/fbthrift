@@ -128,4 +128,19 @@ public class TBaseHelperTest extends TestCase {
     assertFalse(TBaseHelper.isSet(struct2, (short) 1));
     assertTrue(TBaseHelper.isSet(struct2, (short) 2));
   }
+
+  @Test
+  public void testGetFieldValue() throws Exception {
+    MySimpleStruct struct = new MySimpleStruct(123L, "toto");
+    assertThat(TBaseHelper.getFieldValue(struct, (short) 1), equalTo(struct.getId()));
+    assertThat(TBaseHelper.getFieldValue(struct, (short) 2), equalTo(struct.getName()));
+  }
+
+  @Test
+  public void testReflectiveGetFieldValue() throws Exception {
+    com.facebook.thrift.android.test.MySimpleStruct struct =
+        new com.facebook.thrift.android.test.MySimpleStruct(123L, "toto");
+    assertThat(TBaseHelper.getFieldValue(struct, (short) 1), equalTo(struct.getId()));
+    assertThat(TBaseHelper.getFieldValue(struct, (short) 2), equalTo(struct.getName()));
+  }
 }
