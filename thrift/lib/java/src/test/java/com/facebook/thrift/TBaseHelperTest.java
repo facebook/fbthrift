@@ -167,6 +167,20 @@ public class TBaseHelperTest extends TestCase {
 
     assertThat(struct.toString(), equalTo(struct2.toString()));
     assertThat(struct.toString(1, false), equalTo(struct2.toString(1, false)));
+
+    long id = 321;
+    String name = "titi";
+
+    MySimpleStruct simpleStruct = new MySimpleStruct(id, name);
+    com.facebook.thrift.android.test.MySimpleStruct simpleStruct2 =
+        new com.facebook.thrift.android.test.MySimpleStruct(id, name);
+
+    MySimpleUnion struct3 = MySimpleUnion.caseFour(simpleStruct);
+    com.facebook.thrift.android.test.MySimpleUnion struct4 =
+        com.facebook.thrift.android.test.MySimpleUnion.caseFour(simpleStruct2);
+
+    assertThat(struct3.toString(), equalTo(struct4.toString()));
+    assertThat(struct3.toString(1, false), equalTo(struct4.toString(1, false)));
   }
 
   @Test

@@ -108,26 +108,4 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
     return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
   }
 
-  @Override
-  public String toString() {
-    return toString(1, true);
-  }
-
-  @Override
-  public String toString(int indent, boolean prettyPrint) {
-    String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-    String newLine = prettyPrint ? "\n" : "";
-    String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Nada");
-    sb.append(space);
-    sb.append("(");
-    sb.append(newLine);
-    boolean first = true;
-
-    sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-    sb.append(")");
-    return sb.toString();
-  }
-
-
 }

@@ -628,10 +628,6 @@ void t_java_generator::generate_java_union(t_struct* tstruct) {
 
   f_struct << endl;
 
-  generate_java_struct_tostring(f_struct, tstruct);
-
-  f_struct << endl;
-
   scope_down(f_struct);
 
   f_struct.close();

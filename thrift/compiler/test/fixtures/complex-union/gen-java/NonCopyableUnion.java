@@ -152,40 +152,4 @@ public class NonCopyableUnion extends TUnion<NonCopyableUnion> implements Compar
     return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
   }
 
-  @Override
-  public String toString() {
-    return toString(1, true);
-  }
-
-  @Override
-  public String toString(int indent, boolean prettyPrint) {
-    String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-    String newLine = prettyPrint ? "\n" : "";
-    String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("NonCopyableUnion");
-    sb.append(space);
-    sb.append("(");
-    sb.append(newLine);
-    boolean first = true;
-
-    // Only print this field if it is the set field
-    if (getSetField() == S)
-    {
-      sb.append(indentStr);
-      sb.append("s");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getS() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getS(), indent + 1, prettyPrint));
-      }
-      first = false;
-    }
-    sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-    sb.append(")");
-    return sb.toString();
-  }
-
-
 }

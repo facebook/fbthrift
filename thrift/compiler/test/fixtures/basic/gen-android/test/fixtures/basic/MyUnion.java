@@ -210,15 +210,4 @@ public class MyUnion extends TUnion<MyUnion> {
     return Arrays.deepHashCode(new Object[] {getSetField(), getFieldValue()});
   }
 
-  @Override
-  public String toString() {
-    return toString(1, true);
-  }
-
-  @Override
-  public String toString(int indent, boolean prettyPrint) {
-    return TBaseHelper.toStringHelper(this, indent, prettyPrint);
-  }
-
-
 }

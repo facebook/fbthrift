@@ -27,6 +27,7 @@ union MySimpleUnion {
   1: i64 caseOne,
   2: i64 caseTwo,
   3: string caseThree,
+  4: MySimpleStruct caseFour,
 }
 
 struct NestedStruct {

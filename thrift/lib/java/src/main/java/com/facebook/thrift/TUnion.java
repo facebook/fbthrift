@@ -22,8 +22,6 @@ import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.protocol.TStruct;
 import com.facebook.thrift.protocol.TType;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -236,11 +234,13 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   }
 
   @Override
-  public String toString() {
+  public String toString(int indent, boolean prettyPrint) {
     Object v = getFieldValue();
     String vStr = null;
     if (v instanceof byte[]) {
       vStr = bytesToStr((byte[]) v);
+    } else if (TBase.class.isAssignableFrom(v.getClass())) {
+      vStr = ((TBase) v).toString(indent, prettyPrint);
     } else {
       vStr = v.toString();
     }
@@ -251,6 +251,11 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
         + ":"
         + vStr
         + ">";
+  }
+
+  @Override
+  public String toString() {
+    return toString(1, true);
   }
 
   private static String bytesToStr(byte[] bytes) {
