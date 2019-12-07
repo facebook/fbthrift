@@ -16,6 +16,9 @@
 
 package com.facebook.thrift;
 
+import com.facebook.thrift.protocol.TField;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -1064,12 +1067,62 @@ public final class TBaseHelper {
       Method setFieldValueMethod =
           object.getClass().getDeclaredMethod("setFieldValue", setFieldValueArgs);
       setFieldValueMethod.invoke(object, (int) fieldId, value);
-    } catch (Exception e) {
+    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
       // android object are immutable
       throw new RuntimeException(
           String.format(
               "Failed to set the field value %s on %s (field id = %d): %s",
               value.toString(), object.getClass().getName(), fieldId, e.getMessage()));
     }
+  }
+
+  /**
+   * Check is a field is set based on its field id
+   *
+   * @param object The Thrift object to modified
+   * @param fieldId The ID of the field to modify
+   */
+  public static boolean isSet(TBase object, short fieldId) {
+    try {
+      // For javadeprecated codegen, use the generated method
+      Method isSetMethod = object.getClass().getDeclaredMethod("isSet", int.class);
+      return (boolean) isSetMethod.invoke(object, (int) fieldId);
+    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      // android object don't have an `isSet` method
+      return reflectiveIsSet(object, fieldId);
+    }
+  }
+
+  private static boolean reflectiveIsSet(TBase object, short fieldId) {
+    try {
+      TField tField = getTField(object, fieldId);
+      String issetMethodName =
+          "isSet" + tField.name.substring(0, 1).toUpperCase() + tField.name.substring(1);
+      Method isset = object.getClass().getDeclaredMethod(issetMethodName);
+      return (boolean) isset.invoke(object);
+    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      return false;
+    }
+  }
+
+  private static TField getTField(TBase object, short fieldId)
+      throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+    TField tField = null;
+    for (Field field : object.getClass().getDeclaredFields()) {
+      if (field.getType() == TField.class) {
+        field.setAccessible(true);
+        TField tf = (TField) field.get(object);
+        if (tf.id == fieldId) {
+          tField = tf;
+          break;
+        }
+      }
+    }
+
+    if (tField == null) {
+      throw new IllegalArgumentException(
+          "field #" + fieldId + " not found in Thrift object " + object.getClass().getName());
+    }
+    return tField;
   }
 }

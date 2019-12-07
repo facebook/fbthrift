@@ -1264,7 +1264,9 @@ void t_java_generator::generate_java_struct_definition(
 
   generate_generic_field_getters_setters(out, tstruct);
 
-  generate_generic_isset_method(out, tstruct);
+  if (!params.gen_immutable) {
+    generate_generic_isset_method(out, tstruct);
+  }
   generate_java_struct_equality(out, tstruct);
   if (is_comparable(tstruct)) {
     generate_java_struct_compare_to(out, tstruct);

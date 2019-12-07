@@ -16,6 +16,7 @@
 
 namespace java com.facebook.thrift.java.test
 namespace java.swift com.facebook.thrift.javaswift.test
+namespace android com.facebook.thrift.android.test
 
 struct MySimpleStruct {
   1: i64 id,

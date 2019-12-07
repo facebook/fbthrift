@@ -108,4 +108,24 @@ public class TBaseHelperTest extends TestCase {
     assertThat(nested.getMySet(), equalTo(expectedSet));
     assertThat(nested.getMyList(), equalTo(expectedList));
   }
+
+  @Test
+  public void testIsSet() throws Exception {
+    MySimpleStruct struct = new MySimpleStruct(123L, "toto");
+    assertTrue(TBaseHelper.isSet(struct, (short) 1));
+    struct.unsetId();
+    assertFalse(TBaseHelper.isSet(struct, (short) 1));
+  }
+
+  @Test
+  public void testReflectiveIsSet() throws Exception {
+    com.facebook.thrift.android.test.MySimpleStruct struct =
+        new com.facebook.thrift.android.test.MySimpleStruct(123L, "toto");
+    assertTrue(TBaseHelper.isSet(struct, (short) 1));
+
+    com.facebook.thrift.android.test.MySimpleStruct struct2 =
+        new com.facebook.thrift.android.test.MySimpleStruct(null, "toto");
+    assertFalse(TBaseHelper.isSet(struct2, (short) 1));
+    assertTrue(TBaseHelper.isSet(struct2, (short) 2));
+  }
 }
