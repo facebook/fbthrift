@@ -239,14 +239,6 @@ public class MyServicePrioChild {
       }
     }
 
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -389,14 +381,6 @@ public class MyServicePrioChild {
     }
 
     public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");

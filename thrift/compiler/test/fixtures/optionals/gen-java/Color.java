@@ -254,22 +254,6 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case RED:
-      return isSetRed();
-    case GREEN:
-      return isSetGreen();
-    case BLUE:
-      return isSetBlue();
-    case ALPHA:
-      return isSetAlpha();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

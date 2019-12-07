@@ -259,22 +259,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case MAJOR:
-      return isSetMajor();
-    case PACKAGE:
-      return isSetPackage();
-    case ANNOTATION_WITH_QUOTE:
-      return isSetAnnotation_with_quote();
-    case CLASS_:
-      return isSetClass_();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

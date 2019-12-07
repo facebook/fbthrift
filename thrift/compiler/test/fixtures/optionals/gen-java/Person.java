@@ -551,34 +551,6 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case ID:
-      return isSetId();
-    case NAME:
-      return isSetName();
-    case AGE:
-      return isSetAge();
-    case ADDRESS:
-      return isSetAddress();
-    case FAVORITECOLOR:
-      return isSetFavoriteColor();
-    case FRIENDS:
-      return isSetFriends();
-    case BESTFRIEND:
-      return isSetBestFriend();
-    case PETNAMES:
-      return isSetPetNames();
-    case AFRAIDOFANIMAL:
-      return isSetAfraidOfAnimal();
-    case VEHICLES:
-      return isSetVehicles();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

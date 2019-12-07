@@ -1264,9 +1264,6 @@ void t_java_generator::generate_java_struct_definition(
 
   generate_generic_field_getters_setters(out, tstruct);
 
-  if (!params.gen_immutable) {
-    generate_generic_isset_method(out, tstruct);
-  }
   generate_java_struct_equality(out, tstruct);
   if (is_comparable(tstruct)) {
     generate_java_struct_compare_to(out, tstruct);
@@ -1847,40 +1844,6 @@ void t_java_generator::generate_generic_field_getters_setters(
 
   indent_down();
 
-  indent(out) << "}" << endl << endl;
-}
-
-// Creates a generic isSet method that takes the field number as argument
-void t_java_generator::generate_generic_isset_method(
-    std::ofstream& out,
-    t_struct* tstruct) {
-  const vector<t_field*>& fields = tstruct->get_members();
-  vector<t_field*>::const_iterator f_iter;
-
-  // create the isSet method
-  indent(out)
-      << "// Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise"
-      << endl;
-  indent(out) << "public boolean isSet(int fieldID) {" << endl;
-  indent_up();
-  indent(out) << "switch (fieldID) {" << endl;
-
-  for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
-    t_field* field = *f_iter;
-    indent(out) << "case " << upcase_string(field->get_name()) << ":" << endl;
-    indent_up();
-    indent(out) << "return " << generate_isset_check(field) << ";" << endl;
-    indent_down();
-  }
-
-  indent(out) << "default:" << endl;
-  indent(out)
-      << "  throw new IllegalArgumentException(\"Field \" + fieldID + \" doesn't exist!\");"
-      << endl;
-
-  indent(out) << "}" << endl;
-
-  indent_down();
   indent(out) << "}" << endl << endl;
 }
 

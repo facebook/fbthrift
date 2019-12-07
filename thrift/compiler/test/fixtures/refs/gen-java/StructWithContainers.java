@@ -353,26 +353,6 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case LIST_REF:
-      return isSetList_ref();
-    case SET_REF:
-      return isSetSet_ref();
-    case MAP_REF:
-      return isSetMap_ref();
-    case LIST_REF_UNIQUE:
-      return isSetList_ref_unique();
-    case SET_REF_SHARED:
-      return isSetSet_ref_shared();
-    case LIST_REF_SHARED_CONST:
-      return isSetList_ref_shared_const();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

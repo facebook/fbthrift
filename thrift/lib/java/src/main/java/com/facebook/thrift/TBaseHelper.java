@@ -1084,17 +1084,6 @@ public final class TBaseHelper {
    */
   public static boolean isSet(TBase object, short fieldId) {
     try {
-      // For javadeprecated codegen, use the generated method
-      Method isSetMethod = object.getClass().getDeclaredMethod("isSet", int.class);
-      return (boolean) isSetMethod.invoke(object, (int) fieldId);
-    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-      // android object don't have an `isSet` method
-      return reflectiveIsSet(object, fieldId);
-    }
-  }
-
-  private static boolean reflectiveIsSet(TBase object, short fieldId) {
-    try {
       TField tField = getTField(object, fieldId);
       String issetMethodName =
           "isSet" + tField.name.substring(0, 1).toUpperCase() + tField.name.substring(1);
@@ -1121,7 +1110,8 @@ public final class TBaseHelper {
 
     if (tField == null) {
       throw new IllegalArgumentException(
-          "field #" + fieldId + " not found in Thrift object " + object.getClass().getName());
+          String.format(
+              "field #%d not found in Thrift object %s", fieldId, object.getClass().getName()));
     }
     return tField;
   }

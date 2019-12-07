@@ -311,24 +311,6 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case COLOR:
-      return isSetColor();
-    case LICENSEPLATE:
-      return isSetLicensePlate();
-    case DESCRIPTION:
-      return isSetDescription();
-    case NAME:
-      return isSetName();
-    case HASAC:
-      return isSetHasAC();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

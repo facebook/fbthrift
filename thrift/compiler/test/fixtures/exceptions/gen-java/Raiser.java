@@ -621,14 +621,6 @@ public class Raiser {
       }
     }
 
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -777,14 +769,6 @@ public class Raiser {
       }
     }
 
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -926,14 +910,6 @@ public class Raiser {
     }
 
     public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -1231,20 +1207,6 @@ public class Raiser {
       }
     }
 
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      case B:
-        return isSetB();
-      case F:
-        return isSetF();
-      case S:
-        return isSetS();
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -1473,14 +1435,6 @@ public class Raiser {
       }
     }
 
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -1682,16 +1636,6 @@ public class Raiser {
       }
     }
 
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      case SUCCESS:
-        return isSetSuccess();
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
     @Override
     public boolean equals(Object that) {
       if (that == null)
@@ -1872,14 +1816,6 @@ public class Raiser {
     }
 
     public Object getFieldValue(int fieldID) {
-      switch (fieldID) {
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
       switch (fieldID) {
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -2217,22 +2153,6 @@ public class Raiser {
       case S:
         return getS();
 
-      default:
-        throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-      }
-    }
-
-    // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-    public boolean isSet(int fieldID) {
-      switch (fieldID) {
-      case SUCCESS:
-        return isSetSuccess();
-      case F:
-        return isSetF();
-      case B:
-        return isSetB();
-      case S:
-        return isSetS();
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
       }

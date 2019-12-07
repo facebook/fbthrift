@@ -226,20 +226,6 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case OPT_SHARED_CONST:
-      return isSetOpt_shared_const();
-    case SHARED_CONST:
-      return isSetShared_const();
-    case REQ_SHARED_CONST:
-      return isSetReq_shared_const();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

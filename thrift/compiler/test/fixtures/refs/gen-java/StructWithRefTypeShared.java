@@ -226,20 +226,6 @@ public class StructWithRefTypeShared implements TBase, java.io.Serializable, Clo
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case DEF_FIELD:
-      return isSetDef_field();
-    case OPT_FIELD:
-      return isSetOpt_field();
-    case REQ_FIELD:
-      return isSetReq_field();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

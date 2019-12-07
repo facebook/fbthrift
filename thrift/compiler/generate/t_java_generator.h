@@ -129,7 +129,6 @@ class t_java_generator : public t_oop_generator {
   void generate_generic_field_getters_setters(
       std::ofstream& out,
       t_struct* tstruct);
-  void generate_generic_isset_method(std::ofstream& out, t_struct* tstruct);
   void generate_java_bean_boilerplate(
       std::ofstream& out,
       t_struct* tstruct,

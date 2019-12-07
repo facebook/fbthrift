@@ -229,20 +229,6 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
-  // Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise
-  public boolean isSet(int fieldID) {
-    switch (fieldID) {
-    case OPT_VALUE:
-      return isSetOpt_value();
-    case VALUE:
-      return isSetValue();
-    case REQ_VALUE:
-      return isSetReq_value();
-    default:
-      throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
-    }
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)
