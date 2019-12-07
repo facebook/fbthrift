@@ -31,6 +31,13 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+struct StructGenParams {
+  bool is_exception = false;
+  bool in_class = false;
+  bool is_result = false;
+  bool gen_immutable = false;
+};
+
 /**
  * Java code generator.
  *
@@ -95,9 +102,7 @@ class t_java_generator : public t_oop_generator {
   void generate_java_struct_definition(
       std::ofstream& out,
       t_struct* tstruct,
-      bool is_xception = false,
-      bool in_class = false,
-      bool is_result = false);
+      StructGenParams params);
   void construct_constant_fields(std::ofstream& out, t_struct* tstruct);
   void generate_java_struct_equality(std::ofstream& out, t_struct* tstruct);
   void generate_java_struct_compare_to(std::ofstream& out, t_struct* tstruct);
@@ -125,7 +130,10 @@ class t_java_generator : public t_oop_generator {
       std::ofstream& out,
       t_struct* tstruct);
   void generate_generic_isset_method(std::ofstream& out, t_struct* tstruct);
-  void generate_java_bean_boilerplate(std::ofstream& out, t_struct* tstruct);
+  void generate_java_bean_boilerplate(
+      std::ofstream& out,
+      t_struct* tstruct,
+      bool gen_immutable);
   std::string get_simple_getter_name(t_field* field);
 
   void generate_function_helpers(t_function* tfunction);

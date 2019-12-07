@@ -709,10 +709,17 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("ping_args");
 
     public static boolean DEFAULT_PRETTY_PRINT = true;
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
 
-    public ping_args(
-)
-    {
+    static {
+      FieldMetaData.addStructMetaDataMap(ping_args.class, metaDataMap);
+    }
+
+    public ping_args() {
     }
 
     /**
@@ -847,10 +854,17 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("ping_result");
 
     public static boolean DEFAULT_PRETTY_PRINT = true;
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
 
-    public ping_result(
-)
-    {
+    static {
+      FieldMetaData.addStructMetaDataMap(ping_result.class, metaDataMap);
+    }
+
+    public ping_result() {
     }
 
     /**
@@ -984,10 +998,17 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("getRandomData_args");
 
     public static boolean DEFAULT_PRETTY_PRINT = true;
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
 
-    public getRandomData_args(
-)
-    {
+    static {
+      FieldMetaData.addStructMetaDataMap(getRandomData_args.class, metaDataMap);
+    }
+
+    public getRandomData_args() {
     }
 
     /**
@@ -1122,9 +1143,26 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("getRandomData_result");
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRING, (short)0);
 
-    public final String success;
+    public String success;
     public static final int SUCCESS = 0;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(getRandomData_result.class, metaDataMap);
+    }
+
+    public getRandomData_result() {
+    }
 
     public getRandomData_result(
       String success)
@@ -1138,8 +1176,6 @@ public class MyService {
     public getRandomData_result(getRandomData_result other) {
       if (other.isSetSuccess()) {
         this.success = TBaseHelper.deepCopy(other.success);
-      } else {
-        this.success = null;
       }
     }
 
@@ -1156,9 +1192,24 @@ public class MyService {
       return this.success;
     }
 
+    public getRandomData_result setSuccess(String success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
     // Returns true if field success is set (has been assigned a value) and false otherwise
     public boolean isSetSuccess() {
       return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
+        this.success = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {
@@ -1315,9 +1366,26 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("hasDataById_args");
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
 
-    public final Long id;
+    public Long id;
     public static final int ID = 1;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(ID, new FieldMetaData("id", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.I64)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(hasDataById_args.class, metaDataMap);
+    }
+
+    public hasDataById_args() {
+    }
 
     public hasDataById_args(
       Long id)
@@ -1331,8 +1399,6 @@ public class MyService {
     public hasDataById_args(hasDataById_args other) {
       if (other.isSetId()) {
         this.id = TBaseHelper.deepCopy(other.id);
-      } else {
-        this.id = null;
       }
     }
 
@@ -1349,9 +1415,24 @@ public class MyService {
       return this.id;
     }
 
+    public hasDataById_args setId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public void unsetId() {
+      this.id = null;
+    }
+
     // Returns true if field id is set (has been assigned a value) and false otherwise
     public boolean isSetId() {
       return this.id != null;
+    }
+
+    public void setIdIsSet(boolean __value) {
+      if (!__value) {
+        this.id = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {
@@ -1509,9 +1590,26 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("hasDataById_result");
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.BOOL, (short)0);
 
-    public final Boolean success;
+    public Boolean success;
     public static final int SUCCESS = 0;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.BOOL)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(hasDataById_result.class, metaDataMap);
+    }
+
+    public hasDataById_result() {
+    }
 
     public hasDataById_result(
       Boolean success)
@@ -1525,8 +1623,6 @@ public class MyService {
     public hasDataById_result(hasDataById_result other) {
       if (other.isSetSuccess()) {
         this.success = TBaseHelper.deepCopy(other.success);
-      } else {
-        this.success = null;
       }
     }
 
@@ -1543,9 +1639,24 @@ public class MyService {
       return this.success;
     }
 
+    public hasDataById_result setSuccess(Boolean success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
     // Returns true if field success is set (has been assigned a value) and false otherwise
     public boolean isSetSuccess() {
       return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
+        this.success = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {
@@ -1702,9 +1813,26 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("getDataById_args");
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
 
-    public final Long id;
+    public Long id;
     public static final int ID = 1;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(ID, new FieldMetaData("id", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.I64)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(getDataById_args.class, metaDataMap);
+    }
+
+    public getDataById_args() {
+    }
 
     public getDataById_args(
       Long id)
@@ -1718,8 +1846,6 @@ public class MyService {
     public getDataById_args(getDataById_args other) {
       if (other.isSetId()) {
         this.id = TBaseHelper.deepCopy(other.id);
-      } else {
-        this.id = null;
       }
     }
 
@@ -1736,9 +1862,24 @@ public class MyService {
       return this.id;
     }
 
+    public getDataById_args setId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public void unsetId() {
+      this.id = null;
+    }
+
     // Returns true if field id is set (has been assigned a value) and false otherwise
     public boolean isSetId() {
       return this.id != null;
+    }
+
+    public void setIdIsSet(boolean __value) {
+      if (!__value) {
+        this.id = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {
@@ -1896,9 +2037,26 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("getDataById_result");
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRING, (short)0);
 
-    public final String success;
+    public String success;
     public static final int SUCCESS = 0;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(getDataById_result.class, metaDataMap);
+    }
+
+    public getDataById_result() {
+    }
 
     public getDataById_result(
       String success)
@@ -1912,8 +2070,6 @@ public class MyService {
     public getDataById_result(getDataById_result other) {
       if (other.isSetSuccess()) {
         this.success = TBaseHelper.deepCopy(other.success);
-      } else {
-        this.success = null;
       }
     }
 
@@ -1930,9 +2086,24 @@ public class MyService {
       return this.success;
     }
 
+    public getDataById_result setSuccess(String success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
     // Returns true if field success is set (has been assigned a value) and false otherwise
     public boolean isSetSuccess() {
       return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean __value) {
+      if (!__value) {
+        this.success = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {
@@ -2090,11 +2261,30 @@ public class MyService {
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
     private static final TField DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
 
-    public final Long id;
-    public final String data;
+    public Long id;
+    public String data;
     public static final int ID = 1;
     public static final int DATA = 2;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(ID, new FieldMetaData("id", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.I64)));
+      tmpMetaDataMap.put(DATA, new FieldMetaData("data", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(putDataById_args.class, metaDataMap);
+    }
+
+    public putDataById_args() {
+    }
 
     public putDataById_args(
       Long id,
@@ -2110,13 +2300,9 @@ public class MyService {
     public putDataById_args(putDataById_args other) {
       if (other.isSetId()) {
         this.id = TBaseHelper.deepCopy(other.id);
-      } else {
-        this.id = null;
       }
       if (other.isSetData()) {
         this.data = TBaseHelper.deepCopy(other.data);
-      } else {
-        this.data = null;
       }
     }
 
@@ -2133,18 +2319,48 @@ public class MyService {
       return this.id;
     }
 
+    public putDataById_args setId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public void unsetId() {
+      this.id = null;
+    }
+
     // Returns true if field id is set (has been assigned a value) and false otherwise
     public boolean isSetId() {
       return this.id != null;
+    }
+
+    public void setIdIsSet(boolean __value) {
+      if (!__value) {
+        this.id = null;
+      }
     }
 
     public String getData() {
       return this.data;
     }
 
+    public putDataById_args setData(String data) {
+      this.data = data;
+      return this;
+    }
+
+    public void unsetData() {
+      this.data = null;
+    }
+
     // Returns true if field data is set (has been assigned a value) and false otherwise
     public boolean isSetData() {
       return this.data != null;
+    }
+
+    public void setDataIsSet(boolean __value) {
+      if (!__value) {
+        this.data = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {
@@ -2341,10 +2557,17 @@ public class MyService {
     private static final TStruct STRUCT_DESC = new TStruct("putDataById_result");
 
     public static boolean DEFAULT_PRETTY_PRINT = true;
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
 
-    public putDataById_result(
-)
-    {
+    static {
+      FieldMetaData.addStructMetaDataMap(putDataById_result.class, metaDataMap);
+    }
+
+    public putDataById_result() {
     }
 
     /**
@@ -2479,11 +2702,30 @@ public class MyService {
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
     private static final TField DATA_FIELD_DESC = new TField("data", TType.STRING, (short)2);
 
-    public final Long id;
-    public final String data;
+    public Long id;
+    public String data;
     public static final int ID = 1;
     public static final int DATA = 2;
     public static boolean DEFAULT_PRETTY_PRINT = true;
+
+    // isset id assignments
+
+    public static final Map<Integer, FieldMetaData> metaDataMap;
+    static {
+      Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
+      tmpMetaDataMap.put(ID, new FieldMetaData("id", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.I64)));
+      tmpMetaDataMap.put(DATA, new FieldMetaData("data", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
+    }
+
+    static {
+      FieldMetaData.addStructMetaDataMap(lobDataById_args.class, metaDataMap);
+    }
+
+    public lobDataById_args() {
+    }
 
     public lobDataById_args(
       Long id,
@@ -2499,13 +2741,9 @@ public class MyService {
     public lobDataById_args(lobDataById_args other) {
       if (other.isSetId()) {
         this.id = TBaseHelper.deepCopy(other.id);
-      } else {
-        this.id = null;
       }
       if (other.isSetData()) {
         this.data = TBaseHelper.deepCopy(other.data);
-      } else {
-        this.data = null;
       }
     }
 
@@ -2522,18 +2760,48 @@ public class MyService {
       return this.id;
     }
 
+    public lobDataById_args setId(Long id) {
+      this.id = id;
+      return this;
+    }
+
+    public void unsetId() {
+      this.id = null;
+    }
+
     // Returns true if field id is set (has been assigned a value) and false otherwise
     public boolean isSetId() {
       return this.id != null;
+    }
+
+    public void setIdIsSet(boolean __value) {
+      if (!__value) {
+        this.id = null;
+      }
     }
 
     public String getData() {
       return this.data;
     }
 
+    public lobDataById_args setData(String data) {
+      this.data = data;
+      return this;
+    }
+
+    public void unsetData() {
+      this.data = null;
+    }
+
     // Returns true if field data is set (has been assigned a value) and false otherwise
     public boolean isSetData() {
       return this.data != null;
+    }
+
+    public void setDataIsSet(boolean __value) {
+      if (!__value) {
+        this.data = null;
+      }
     }
 
     public void setFieldValue(int fieldID, Object __value) {

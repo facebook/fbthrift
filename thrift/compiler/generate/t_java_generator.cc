@@ -556,7 +556,10 @@ void t_java_generator::generate_java_struct(
   f_struct << autogen_comment() << java_package() << java_struct_imports()
            << java_thrift_imports();
 
-  generate_java_struct_definition(f_struct, tstruct, is_exception);
+  StructGenParams params;
+  params.is_exception = is_exception;
+  params.gen_immutable = generate_immutable_structs_;
+  generate_java_struct_definition(f_struct, tstruct, params);
   f_struct.close();
 }
 
@@ -1073,20 +1076,18 @@ void t_java_generator::generate_java_constructor(
 void t_java_generator::generate_java_struct_definition(
     ofstream& out,
     t_struct* tstruct,
-    bool is_exception,
-    bool in_class,
-    bool is_result) {
+    StructGenParams params) {
   generate_java_doc(out, tstruct);
 
   bool is_final =
       (tstruct->annotations_.find("final") != tstruct->annotations_.end());
 
-  indent(out) << (in_class ? string() : java_suppress_warnings_struct())
+  indent(out) << (params.in_class ? string() : java_suppress_warnings_struct())
               << "public " << (is_final ? "final " : "")
-              << (in_class ? "static " : "") << "class " << tstruct->get_name()
-              << " ";
+              << (params.in_class ? "static " : "") << "class "
+              << tstruct->get_name() << " ";
 
-  if (is_exception) {
+  if (params.is_exception) {
     out << "extends Exception ";
   }
   out << "implements TBase, java.io.Serializable, Cloneable";
@@ -1112,7 +1113,7 @@ void t_java_generator::generate_java_struct_definition(
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     generate_java_doc(out, *m_iter);
     indent(out) << "public ";
-    if (generate_immutable_structs_) {
+    if (params.gen_immutable) {
       out << "final ";
     }
     out << declare_field(*m_iter, false) << endl;
@@ -1121,7 +1122,7 @@ void t_java_generator::generate_java_struct_definition(
 
   indent(out) << "public static boolean DEFAULT_PRETTY_PRINT = true;" << endl;
 
-  if (!generate_immutable_structs_) {
+  if (!params.gen_immutable) {
     // isset data
     if (members.size() > 0) {
       out << endl;
@@ -1168,7 +1169,7 @@ void t_java_generator::generate_java_struct_definition(
     }
   }
 
-  if (generate_immutable_structs_) {
+  if (params.gen_immutable) {
     // Constructor for all fields
     generate_java_constructor(out, tstruct, members);
   } else {
@@ -1237,7 +1238,7 @@ void t_java_generator::generate_java_struct_definition(
 
     if (can_be_null) {
       indent_down();
-      if (generate_immutable_structs_) {
+      if (params.gen_immutable) {
         indent(out) << "} else {" << endl;
         indent(out) << "  this." << field_name << " = null;" << endl;
       }
@@ -1259,7 +1260,7 @@ void t_java_generator::generate_java_struct_definition(
   indent(out) << "  return new " << tstruct->get_name() << "(this);" << endl;
   indent(out) << "}" << endl << endl;
 
-  generate_java_bean_boilerplate(out, tstruct);
+  generate_java_bean_boilerplate(out, tstruct, params.gen_immutable);
 
   generate_generic_field_getters_setters(out, tstruct);
 
@@ -1270,7 +1271,7 @@ void t_java_generator::generate_java_struct_definition(
   }
 
   generate_java_struct_reader(out, tstruct);
-  if (is_result) {
+  if (params.is_result) {
     generate_java_struct_result_writer(out, tstruct);
   } else {
     generate_java_struct_writer(out, tstruct);
@@ -1905,7 +1906,8 @@ std::string t_java_generator::get_simple_getter_name(t_field* field) {
  */
 void t_java_generator::generate_java_bean_boilerplate(
     ofstream& out,
-    t_struct* tstruct) {
+    t_struct* tstruct,
+    bool gen_immutable) {
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
@@ -1924,7 +1926,7 @@ void t_java_generator::generate_java_bean_boilerplate(
     indent_down();
     indent(out) << "}" << endl << endl;
 
-    if (!generate_immutable_structs_) {
+    if (!gen_immutable) {
       // Simple setter
       generate_java_doc(out, field);
       indent(out) << "public " << type_name(tstruct) << " set" << cap_name
@@ -1968,7 +1970,7 @@ void t_java_generator::generate_java_bean_boilerplate(
     indent_down();
     indent(out) << "}" << endl << endl;
 
-    if (!generate_immutable_structs_) {
+    if (!gen_immutable) {
       indent(out) << "public void set" << cap_name << get_cap_name("isSet")
                   << "(boolean __value) {" << endl;
       indent_up();
@@ -2357,7 +2359,9 @@ void t_java_generator::generate_service_helpers(t_service* tservice) {
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
     t_struct* ts = (*f_iter)->get_arglist();
-    generate_java_struct_definition(f_service_, ts, false, true);
+    StructGenParams params;
+    params.in_class = true;
+    generate_java_struct_definition(f_service_, ts, params);
     generate_function_helpers(*f_iter);
   }
 }
@@ -2921,7 +2925,10 @@ void t_java_generator::generate_function_helpers(t_function* tfunction) {
     result.append((*f_iter)->clone_DO_NOT_USE());
   }
 
-  generate_java_struct_definition(f_service_, &result, false, true, true);
+  StructGenParams params;
+  params.in_class = true;
+  params.is_result = true;
+  generate_java_struct_definition(f_service_, &result, params);
 }
 
 /**
