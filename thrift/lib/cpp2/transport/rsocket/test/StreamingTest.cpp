@@ -1117,6 +1117,33 @@ TEST_P(BlockStreamingTest, StreamBlockTaskQueue) {
   });
 }
 
+TEST_P(StreamingTest, CloseClientWithMultipleActiveStreams) {
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    auto channel = client->getChannel();
+    auto bufferedClient = std::make_unique<StreamServiceBufferedAsyncClient>(
+        std::shared_ptr<apache::thrift::RequestChannel>(
+            channel, [client = std::move(client)](auto*) {}));
+
+#if FOLLY_HAS_COROUTINES
+    apache::thrift::RpcOptions rpcOptions;
+    rpcOptions.setChunkBufferSize(5);
+    auto stream1 =
+        bufferedClient->sync_range(rpcOptions, 0, 10).toAsyncGenerator();
+    auto stream2 =
+        bufferedClient->sync_range(rpcOptions, 0, 10).toAsyncGenerator();
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      co_await stream1.next();
+      co_await stream2.next();
+    }());
+    bufferedClient = {};
+    folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+      EXPECT_ANY_THROW(while (co_await stream1.next()){});
+      EXPECT_ANY_THROW(while (co_await stream2.next()){});
+    }());
+#endif
+  });
+}
+
 INSTANTIATE_TEST_CASE_P(
     StreamingTests,
     StreamingTest,

@@ -829,9 +829,9 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   for (const auto& idAndCallback : streams) {
     folly::variant_match(idAndCallback.second, [&](const auto& serverCallback) {
       if (firstResponseTimeouts_.count(idAndCallback.first)) {
-        serverCallback->onInitialError(std::move(ew));
+        serverCallback->onInitialError(ew);
       } else {
-        serverCallback->onStreamTransportError(std::move(ew));
+        serverCallback->onStreamTransportError(ew);
       }
     });
   }
