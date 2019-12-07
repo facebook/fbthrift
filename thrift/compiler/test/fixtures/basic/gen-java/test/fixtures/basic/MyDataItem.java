@@ -49,11 +49,6 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
     return new MyDataItem(this);
   }
 
-  @Deprecated
-  public MyDataItem clone() {
-    return new MyDataItem(this);
-  }
-
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     default:

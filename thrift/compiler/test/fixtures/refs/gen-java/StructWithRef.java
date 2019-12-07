@@ -101,11 +101,6 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
     return new StructWithRef(this);
   }
 
-  @Deprecated
-  public StructWithRef clone() {
-    return new StructWithRef(this);
-  }
-
   public Empty getDef_field() {
     return this.def_field;
   }

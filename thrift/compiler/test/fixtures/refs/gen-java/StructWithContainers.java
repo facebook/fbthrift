@@ -122,11 +122,6 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     return new StructWithContainers(this);
   }
 
-  @Deprecated
-  public StructWithContainers clone() {
-    return new StructWithContainers(this);
-  }
-
   public List<Integer> getList_ref() {
     return this.list_ref;
   }

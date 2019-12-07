@@ -49,11 +49,6 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     return new Foo(this);
   }
 
-  @Deprecated
-  public Foo clone() {
-    return new Foo(this);
-  }
-
   public Long getA() {
     return this.a;
   }

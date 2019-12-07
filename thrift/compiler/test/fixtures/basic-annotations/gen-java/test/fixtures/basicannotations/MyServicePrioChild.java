@@ -219,11 +219,6 @@ public class MyServicePrioChild {
       return new pang_args(this);
     }
 
-    @Deprecated
-    public pang_args clone() {
-      return new pang_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -358,11 +353,6 @@ public class MyServicePrioChild {
     }
 
     public pang_result deepCopy() {
-      return new pang_result(this);
-    }
-
-    @Deprecated
-    public pang_result clone() {
       return new pang_result(this);
     }
 

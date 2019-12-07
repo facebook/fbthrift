@@ -68,11 +68,6 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
     return new NonCopyableStruct(this);
   }
 
-  @Deprecated
-  public NonCopyableStruct clone() {
-    return new NonCopyableStruct(this);
-  }
-
   public long getNum() {
     return this.num;
   }

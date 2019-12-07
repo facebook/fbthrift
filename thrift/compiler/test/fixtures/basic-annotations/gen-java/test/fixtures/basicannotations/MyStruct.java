@@ -100,11 +100,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return new MyStruct(this);
   }
 
-  @Deprecated
-  public MyStruct clone() {
-    return new MyStruct(this);
-  }
-
   public long getMajor() {
     return this.major;
   }

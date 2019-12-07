@@ -61,11 +61,6 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
     return new Included(this);
   }
 
-  @Deprecated
-  public Included clone() {
-    return new Included(this);
-  }
-
   public Long getMyIntField() {
     return this.MyIntField;
   }

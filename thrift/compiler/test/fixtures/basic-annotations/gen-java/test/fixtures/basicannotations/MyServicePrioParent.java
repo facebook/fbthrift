@@ -343,11 +343,6 @@ public class MyServicePrioParent {
       return new ping_args(this);
     }
 
-    @Deprecated
-    public ping_args clone() {
-      return new ping_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -482,11 +477,6 @@ public class MyServicePrioParent {
     }
 
     public ping_result deepCopy() {
-      return new ping_result(this);
-    }
-
-    @Deprecated
-    public ping_result clone() {
       return new ping_result(this);
     }
 
@@ -626,11 +616,6 @@ public class MyServicePrioParent {
       return new pong_args(this);
     }
 
-    @Deprecated
-    public pong_args clone() {
-      return new pong_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -765,11 +750,6 @@ public class MyServicePrioParent {
     }
 
     public pong_result deepCopy() {
-      return new pong_result(this);
-    }
-
-    @Deprecated
-    public pong_result clone() {
       return new pong_result(this);
     }
 

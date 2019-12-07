@@ -65,11 +65,6 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
     return new Serious(this);
   }
 
-  @Deprecated
-  public Serious clone() {
-    return new Serious(this);
-  }
-
   public String getSonnet() {
     return this.sonnet;
   }

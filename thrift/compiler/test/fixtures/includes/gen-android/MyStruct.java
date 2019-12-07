@@ -69,11 +69,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return new MyStruct(this);
   }
 
-  @Deprecated
-  public MyStruct clone() {
-    return new MyStruct(this);
-  }
-
   public one.two.three.Included getMyIncludedField() {
     return this.MyIncludedField;
   }

@@ -88,11 +88,6 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     return new StructWithUnion(this);
   }
 
-  @Deprecated
-  public StructWithUnion clone() {
-    return new StructWithUnion(this);
-  }
-
   public MyUnion getU() {
     return this.u;
   }

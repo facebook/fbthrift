@@ -90,11 +90,6 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     return new Val(this);
   }
 
-  @Deprecated
-  public Val clone() {
-    return new Val(this);
-  }
-
   public String getStrVal() {
     return this.strVal;
   }

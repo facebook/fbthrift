@@ -176,11 +176,6 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     return new Person(this);
   }
 
-  @Deprecated
-  public Person clone() {
-    return new Person(this);
-  }
-
   public long getId() {
     return this.id;
   }

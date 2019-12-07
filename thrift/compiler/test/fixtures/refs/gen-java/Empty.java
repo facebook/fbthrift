@@ -47,11 +47,6 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
     return new Empty(this);
   }
 
-  @Deprecated
-  public Empty clone() {
-    return new Empty(this);
-  }
-
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     default:

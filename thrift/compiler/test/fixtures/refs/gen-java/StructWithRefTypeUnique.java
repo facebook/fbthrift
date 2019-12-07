@@ -101,11 +101,6 @@ public class StructWithRefTypeUnique implements TBase, java.io.Serializable, Clo
     return new StructWithRefTypeUnique(this);
   }
 
-  @Deprecated
-  public StructWithRefTypeUnique clone() {
-    return new StructWithRefTypeUnique(this);
-  }
-
   public Empty getDef_field() {
     return this.def_field;
   }

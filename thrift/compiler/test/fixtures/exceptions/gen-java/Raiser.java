@@ -601,11 +601,6 @@ public class Raiser {
       return new doBland_args(this);
     }
 
-    @Deprecated
-    public doBland_args clone() {
-      return new doBland_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -743,11 +738,6 @@ public class Raiser {
       return new doBland_result(this);
     }
 
-    @Deprecated
-    public doBland_result clone() {
-      return new doBland_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -881,11 +871,6 @@ public class Raiser {
     }
 
     public doRaise_args deepCopy() {
-      return new doRaise_args(this);
-    }
-
-    @Deprecated
-    public doRaise_args clone() {
       return new doRaise_args(this);
     }
 
@@ -1061,11 +1046,6 @@ public class Raiser {
     }
 
     public doRaise_result deepCopy() {
-      return new doRaise_result(this);
-    }
-
-    @Deprecated
-    public doRaise_result clone() {
       return new doRaise_result(this);
     }
 
@@ -1391,11 +1371,6 @@ public class Raiser {
       return new get200_args(this);
     }
 
-    @Deprecated
-    public get200_args clone() {
-      return new get200_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -1548,11 +1523,6 @@ public class Raiser {
     }
 
     public get200_result deepCopy() {
-      return new get200_result(this);
-    }
-
-    @Deprecated
-    public get200_result clone() {
       return new get200_result(this);
     }
 
@@ -1766,11 +1736,6 @@ public class Raiser {
       return new get500_args(this);
     }
 
-    @Deprecated
-    public get500_args clone() {
-      return new get500_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -1953,11 +1918,6 @@ public class Raiser {
     }
 
     public get500_result deepCopy() {
-      return new get500_result(this);
-    }
-
-    @Deprecated
-    public get500_result clone() {
       return new get500_result(this);
     }
 

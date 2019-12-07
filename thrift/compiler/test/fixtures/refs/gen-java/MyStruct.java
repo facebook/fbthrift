@@ -101,11 +101,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     return new MyStruct(this);
   }
 
-  @Deprecated
-  public MyStruct clone() {
-    return new MyStruct(this);
-  }
-
   public MyField getOpt_ref() {
     return this.opt_ref;
   }

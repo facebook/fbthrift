@@ -47,11 +47,6 @@ public class Banal extends Exception implements TBase, java.io.Serializable, Clo
     return new Banal(this);
   }
 
-  @Deprecated
-  public Banal clone() {
-    return new Banal(this);
-  }
-
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     default:

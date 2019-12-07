@@ -65,11 +65,6 @@ public class StructWithRefAndAnnotCppNoexceptMoveCtor implements TBase, java.io.
     return new StructWithRefAndAnnotCppNoexceptMoveCtor(this);
   }
 
-  @Deprecated
-  public StructWithRefAndAnnotCppNoexceptMoveCtor clone() {
-    return new StructWithRefAndAnnotCppNoexceptMoveCtor(this);
-  }
-
   public Empty getDef_field() {
     return this.def_field;
   }

@@ -101,11 +101,6 @@ public class StructWithRefTypeSharedConst implements TBase, java.io.Serializable
     return new StructWithRefTypeSharedConst(this);
   }
 
-  @Deprecated
-  public StructWithRefTypeSharedConst clone() {
-    return new StructWithRefTypeSharedConst(this);
-  }
-
   public Empty getDef_field() {
     return this.def_field;
   }

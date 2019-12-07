@@ -98,11 +98,6 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     return new Color(this);
   }
 
-  @Deprecated
-  public Color clone() {
-    return new Color(this);
-  }
-
   public double getRed() {
     return this.red;
   }

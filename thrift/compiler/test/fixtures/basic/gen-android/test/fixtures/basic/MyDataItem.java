@@ -42,11 +42,6 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable {
     return new MyDataItem(this);
   }
 
-  @Deprecated
-  public MyDataItem clone() {
-    return new MyDataItem(this);
-  }
-
   @Override
   public boolean equals(Object that) {
     if (that == null)

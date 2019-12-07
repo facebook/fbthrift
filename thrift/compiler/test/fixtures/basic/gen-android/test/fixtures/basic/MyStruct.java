@@ -85,11 +85,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return new MyStruct(this);
   }
 
-  @Deprecated
-  public MyStruct clone() {
-    return new MyStruct(this);
-  }
-
   public Long getMyIntField() {
     return this.MyIntField;
   }

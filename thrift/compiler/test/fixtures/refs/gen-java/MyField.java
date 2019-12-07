@@ -107,11 +107,6 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     return new MyField(this);
   }
 
-  @Deprecated
-  public MyField clone() {
-    return new MyField(this);
-  }
-
   public long getOpt_value() {
     return this.opt_value;
   }

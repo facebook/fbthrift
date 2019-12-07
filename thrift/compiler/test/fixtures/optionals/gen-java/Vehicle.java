@@ -117,11 +117,6 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     return new Vehicle(this);
   }
 
-  @Deprecated
-  public Vehicle clone() {
-    return new Vehicle(this);
-  }
-
   public Color getColor() {
     return this.color;
   }

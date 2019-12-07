@@ -670,11 +670,6 @@ public class NestedContainers {
       return new mapList_args(this);
     }
 
-    @Deprecated
-    public mapList_args clone() {
-      return new mapList_args(this);
-    }
-
     public Map<Integer,List<Integer>> getFoo() {
       return this.foo;
     }
@@ -926,11 +921,6 @@ public class NestedContainers {
       return new mapList_result(this);
     }
 
-    @Deprecated
-    public mapList_result clone() {
-      return new mapList_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -1085,11 +1075,6 @@ public class NestedContainers {
     }
 
     public mapSet_args deepCopy() {
-      return new mapSet_args(this);
-    }
-
-    @Deprecated
-    public mapSet_args clone() {
       return new mapSet_args(this);
     }
 
@@ -1344,11 +1329,6 @@ public class NestedContainers {
       return new mapSet_result(this);
     }
 
-    @Deprecated
-    public mapSet_result clone() {
-      return new mapSet_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -1503,11 +1483,6 @@ public class NestedContainers {
     }
 
     public listMap_args deepCopy() {
-      return new listMap_args(this);
-    }
-
-    @Deprecated
-    public listMap_args clone() {
       return new listMap_args(this);
     }
 
@@ -1762,11 +1737,6 @@ public class NestedContainers {
       return new listMap_result(this);
     }
 
-    @Deprecated
-    public listMap_result clone() {
-      return new listMap_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -1920,11 +1890,6 @@ public class NestedContainers {
     }
 
     public listSet_args deepCopy() {
-      return new listSet_args(this);
-    }
-
-    @Deprecated
-    public listSet_args clone() {
       return new listSet_args(this);
     }
 
@@ -2176,11 +2141,6 @@ public class NestedContainers {
       return new listSet_result(this);
     }
 
-    @Deprecated
-    public listSet_result clone() {
-      return new listSet_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -2339,11 +2299,6 @@ public class NestedContainers {
     }
 
     public turtles_args deepCopy() {
-      return new turtles_args(this);
-    }
-
-    @Deprecated
-    public turtles_args clone() {
       return new turtles_args(this);
     }
 
@@ -2652,11 +2607,6 @@ public class NestedContainers {
     }
 
     public turtles_result deepCopy() {
-      return new turtles_result(this);
-    }
-
-    @Deprecated
-    public turtles_result clone() {
       return new turtles_result(this);
     }
 

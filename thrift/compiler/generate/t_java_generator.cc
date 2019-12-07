@@ -1250,11 +1250,6 @@ void t_java_generator::generate_java_struct_definition(
   indent(out) << "  return new " << tstruct->get_name() << "(this);" << endl;
   indent(out) << "}" << endl << endl;
 
-  indent(out) << "@Deprecated" << endl;
-  indent(out) << "public " << tstruct->get_name() << " clone() {" << endl;
-  indent(out) << "  return new " << tstruct->get_name() << "(this);" << endl;
-  indent(out) << "}" << endl << endl;
-
   generate_java_bean_boilerplate(out, tstruct, params.gen_immutable);
 
   generate_generic_field_getters_setters(out, tstruct);

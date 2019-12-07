@@ -65,11 +65,6 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
     return new Fiery(this);
   }
 
-  @Deprecated
-  public Fiery clone() {
-    return new Fiery(this);
-  }
-
   public String getMessage() {
     return this.message;
   }

@@ -828,11 +828,6 @@ public class MyService {
       return new ping_args(this);
     }
 
-    @Deprecated
-    public ping_args clone() {
-      return new ping_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -970,11 +965,6 @@ public class MyService {
       return new ping_result(this);
     }
 
-    @Deprecated
-    public ping_result clone() {
-      return new ping_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -1108,11 +1098,6 @@ public class MyService {
     }
 
     public getRandomData_args deepCopy() {
-      return new getRandomData_args(this);
-    }
-
-    @Deprecated
-    public getRandomData_args clone() {
       return new getRandomData_args(this);
     }
 
@@ -1268,11 +1253,6 @@ public class MyService {
     }
 
     public getRandomData_result deepCopy() {
-      return new getRandomData_result(this);
-    }
-
-    @Deprecated
-    public getRandomData_result clone() {
       return new getRandomData_result(this);
     }
 
@@ -1507,11 +1487,6 @@ public class MyService {
       return new hasDataById_args(this);
     }
 
-    @Deprecated
-    public hasDataById_args clone() {
-      return new hasDataById_args(this);
-    }
-
     public long getId() {
       return this.id;
     }
@@ -1735,11 +1710,6 @@ public class MyService {
     }
 
     public hasDataById_result deepCopy() {
-      return new hasDataById_result(this);
-    }
-
-    @Deprecated
-    public hasDataById_result clone() {
       return new hasDataById_result(this);
     }
 
@@ -1970,11 +1940,6 @@ public class MyService {
       return new getDataById_args(this);
     }
 
-    @Deprecated
-    public getDataById_args clone() {
-      return new getDataById_args(this);
-    }
-
     public long getId() {
       return this.id;
     }
@@ -2195,11 +2160,6 @@ public class MyService {
     }
 
     public getDataById_result deepCopy() {
-      return new getDataById_result(this);
-    }
-
-    @Deprecated
-    public getDataById_result clone() {
       return new getDataById_result(this);
     }
 
@@ -2441,11 +2401,6 @@ public class MyService {
     }
 
     public putDataById_args deepCopy() {
-      return new putDataById_args(this);
-    }
-
-    @Deprecated
-    public putDataById_args clone() {
       return new putDataById_args(this);
     }
 
@@ -2729,11 +2684,6 @@ public class MyService {
       return new putDataById_result(this);
     }
 
-    @Deprecated
-    public putDataById_result clone() {
-      return new putDataById_result(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -2898,11 +2848,6 @@ public class MyService {
     }
 
     public lobDataById_args deepCopy() {
-      return new lobDataById_args(this);
-    }
-
-    @Deprecated
-    public lobDataById_args clone() {
       return new lobDataById_args(this);
     }
 
@@ -3186,11 +3131,6 @@ public class MyService {
       return new doNothing_args(this);
     }
 
-    @Deprecated
-    public doNothing_args clone() {
-      return new doNothing_args(this);
-    }
-
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       default:
@@ -3325,11 +3265,6 @@ public class MyService {
     }
 
     public doNothing_result deepCopy() {
-      return new doNothing_result(this);
-    }
-
-    @Deprecated
-    public doNothing_result clone() {
       return new doNothing_result(this);
     }
 

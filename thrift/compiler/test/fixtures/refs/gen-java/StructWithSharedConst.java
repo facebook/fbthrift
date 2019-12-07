@@ -101,11 +101,6 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     return new StructWithSharedConst(this);
   }
 
-  @Deprecated
-  public StructWithSharedConst clone() {
-    return new StructWithSharedConst(this);
-  }
-
   public MyField getOpt_shared_const() {
     return this.opt_shared_const;
   }

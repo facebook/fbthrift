@@ -66,11 +66,6 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
     return new RecursiveStruct(this);
   }
 
-  @Deprecated
-  public RecursiveStruct clone() {
-    return new RecursiveStruct(this);
-  }
-
   public List<RecursiveStruct> getMes() {
     return this.mes;
   }
