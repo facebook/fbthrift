@@ -29,11 +29,15 @@ class ChannelKeepAlive : public RequestClientCallback {
  public:
   ChannelKeepAlive(
       ReconnectingRequestChannel::ImplPtr impl,
-      RequestClientCallback::Ptr cob)
-      : keepAlive_(std::move(impl)), cob_(std::move(cob)) {}
+      RequestClientCallback::Ptr cob,
+      bool oneWay)
+      : keepAlive_(std::move(impl)), cob_(std::move(cob)), oneWay_(oneWay) {}
 
   void onRequestSent() noexcept override {
     cob_->onRequestSent();
+    if (oneWay_) {
+      delete this;
+    }
   }
 
   void onResponse(ClientReceiveState&& state) noexcept override {
@@ -49,6 +53,7 @@ class ChannelKeepAlive : public RequestClientCallback {
  private:
   ReconnectingRequestChannel::ImplPtr keepAlive_;
   RequestClientCallback::Ptr cob_;
+  const bool oneWay_;
 };
 } // namespace
 
@@ -57,9 +62,22 @@ void ReconnectingRequestChannel::sendRequestResponse(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
-  cob = RequestClientCallback::Ptr(new ChannelKeepAlive(impl_, std::move(cob)));
+  cob = RequestClientCallback::Ptr(
+      new ChannelKeepAlive(impl_, std::move(cob), false));
 
   return impl().sendRequestResponse(
+      options, std::move(buf), std::move(header), std::move(cob));
+}
+
+void ReconnectingRequestChannel::sendRequestNoResponse(
+    RpcOptions& options,
+    std::unique_ptr<folly::IOBuf> buf,
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr cob) {
+  cob = RequestClientCallback::Ptr(
+      new ChannelKeepAlive(impl_, std::move(cob), true));
+
+  return impl().sendRequestNoResponse(
       options, std::move(buf), std::move(header), std::move(cob));
 }
 

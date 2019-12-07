@@ -64,9 +64,7 @@ class ReconnectingRequestChannel : public RequestChannel {
       RpcOptions&,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<transport::THeader>,
-      RequestClientCallback::Ptr) override {
-    LOG(FATAL) << "Not supported";
-  }
+      RequestClientCallback::Ptr) override;
 
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";

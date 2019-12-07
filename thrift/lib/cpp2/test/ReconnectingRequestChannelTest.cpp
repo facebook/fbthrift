@@ -34,6 +34,7 @@ using apache::thrift::transport::TTransportException;
 class TestServiceServerMock : public TestServiceSvIf {
  public:
   MOCK_METHOD1(echoInt, int32_t(int32_t));
+  MOCK_METHOD1(noResponse, void(int64_t));
 };
 
 class ReconnectingRequestChannelTest : public Test {
@@ -64,6 +65,10 @@ TEST_F(ReconnectingRequestChannelTest, reconnect) {
       .WillOnce(Return(3))
       .WillOnce(Return(4));
   EXPECT_EQ(client.sync_echoInt(1), 1);
+  EXPECT_EQ(connection_count, 1);
+
+  EXPECT_CALL(*handler, noResponse(_));
+  client.sync_noResponse(0);
   EXPECT_EQ(connection_count, 1);
 
   // bounce the server
