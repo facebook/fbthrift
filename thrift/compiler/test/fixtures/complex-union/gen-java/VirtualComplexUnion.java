@@ -29,7 +29,6 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
   public static final int THINGONE = 1;
   public static final int THINGTWO = 2;
 
-  public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(THINGONE, new FieldMetaData("thingOne", TFieldRequirementType.DEFAULT, 
@@ -83,37 +82,6 @@ public class VirtualComplexUnion extends TUnion<VirtualComplexUnion> implements 
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
-  }
-
-  @Override
-  public void read(TProtocol iprot) throws TException {
-    setField_ = 0;
-    value_ = null;
-    iprot.readStructBegin(metaDataMap);
-    TField __field = iprot.readFieldBegin();
-    if (__field.type != TType.STOP)
-    {
-      value_ = readValue(iprot, __field);
-      if (value_ != null)
-      {
-        switch (__field.id) {
-          case THINGONE:
-            if (__field.type == THING_ONE_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case THINGTWO:
-            if (__field.type == THING_TWO_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-        }
-      }
-      iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
   }
 
   @Override

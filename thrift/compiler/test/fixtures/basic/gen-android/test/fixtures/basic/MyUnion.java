@@ -68,65 +68,6 @@ public class MyUnion extends TUnion<MyUnion> {
 
 
   @Override
-  protected void checkType(short setField, Object __value) throws ClassCastException {
-    switch (setField) {
-      case MYENUM:
-        if (__value instanceof MyEnum) {
-          break;
-        }
-        throw new ClassCastException("Was expecting value of type MyEnum for field 'myEnum', but got " + __value.getClass().getSimpleName());
-      case MYSTRUCT:
-        if (__value instanceof MyStruct) {
-          break;
-        }
-        throw new ClassCastException("Was expecting value of type MyStruct for field 'myStruct', but got " + __value.getClass().getSimpleName());
-      case MYDATAITEM:
-        if (__value instanceof MyDataItem) {
-          break;
-        }
-        throw new ClassCastException("Was expecting value of type MyDataItem for field 'myDataItem', but got " + __value.getClass().getSimpleName());
-      default:
-        throw new IllegalArgumentException("Unknown field id " + setField);
-    }
-  }
-
-  @Override
-  public void read(TProtocol iprot) throws TException {
-    setField_ = 0;
-    value_ = null;
-    iprot.readStructBegin();
-    TField __field = iprot.readFieldBegin();
-    if (__field.type != TType.STOP)
-    {
-      value_ = readValue(iprot, __field);
-      if (value_ != null)
-      {
-        switch (__field.id) {
-          case MYENUM:
-            if (__field.type == MY_ENUM_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case MYSTRUCT:
-            if (__field.type == MY_STRUCT_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case MYDATAITEM:
-            if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-        }
-      }
-      iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-  }
-
-  @Override
   protected Object readValue(TProtocol iprot, TField __field) throws TException {
     switch (__field.id) {
       case MYENUM:
