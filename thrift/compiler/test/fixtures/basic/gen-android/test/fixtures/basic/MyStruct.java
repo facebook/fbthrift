@@ -286,69 +286,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public String toString(int indent, boolean prettyPrint) {
-    String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-    String newLine = prettyPrint ? "\n" : "";
-    String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("MyStruct");
-    sb.append(space);
-    sb.append("(");
-    sb.append(newLine);
-    boolean first = true;
-
-    sb.append(indentStr);
-    sb.append("MyIntField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyIntField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyIntField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("MyStringField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyStringField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyStringField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("MyDataField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyDataField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyDataField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("myEnum");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyEnum() == null) {
-      sb.append("null");
-    } else {
-      String myEnum_name = this.getMyEnum() == null ? "null" : this.getMyEnum().name();
-      if (myEnum_name != null) {
-        sb.append(myEnum_name);
-        sb.append(" (");
-      }
-      sb.append(this.getMyEnum());
-      if (myEnum_name != null) {
-        sb.append(")");
-      }
-    }
-    first = false;
-    sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-    sb.append(")");
-    return sb.toString();
+    return TBaseHelper.toStringHelper(this, indent, prettyPrint);
   }
 
   public void validate() throws TException {

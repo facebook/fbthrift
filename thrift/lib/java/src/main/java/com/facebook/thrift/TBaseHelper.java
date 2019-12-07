@@ -1054,6 +1054,124 @@ public final class TBaseHelper {
     return sb.toString();
   }
 
+  public static String toStringHelper(TUnion<?> union, int indent, boolean prettyPrint) {
+    if (union == null) {
+      return "null";
+    }
+    String indentStr = prettyPrint ? getIndentedString(indent) : "";
+    String newLine = prettyPrint ? "\n" : "";
+    String space = prettyPrint ? " " : "";
+    StringBuilder sb = new StringBuilder(union.getClass().getSimpleName());
+    sb.append(space);
+    sb.append("(");
+    sb.append(newLine);
+
+    try {
+      short fieldId = (short) union.getSetField();
+      Object fieldValue = union.getFieldValue();
+      TField tfield = getTField(union, fieldId);
+      sb.append(indentStr);
+      sb.append(tfield.name);
+      sb.append(space);
+      sb.append(":");
+      sb.append(space);
+      renderFieldValue(sb, fieldValue, indent, prettyPrint, indentStr, newLine, space);
+      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
+      sb.append(")");
+    } catch (Exception e) {
+      sb.append("Exception occured: " + e.toString());
+    }
+
+    return sb.toString();
+  }
+
+  public static String toStringHelper(TBase struct, int indent, boolean prettyPrint) {
+    if (struct == null) {
+      return "null";
+    }
+    String indentStr = prettyPrint ? getIndentedString(indent) : "";
+    String newLine = prettyPrint ? "\n" : "";
+    String space = prettyPrint ? " " : "";
+    StringBuilder sb = new StringBuilder(struct.getClass().getSimpleName());
+    sb.append(space);
+    sb.append("(");
+    sb.append(newLine);
+
+    try {
+      boolean first = true;
+      for (Field field : struct.getClass().getDeclaredFields()) {
+        if (field.getType() != TField.class) {
+          continue;
+        }
+        field.setAccessible(true);
+        TField tfield = (TField) field.get(struct);
+        Field f = struct.getClass().getDeclaredField(tfield.name);
+        Object fieldValue = f.get(struct);
+
+        if (!first) {
+          sb.append("," + newLine);
+        }
+        first = false;
+        sb.append(indentStr);
+        sb.append(tfield.name);
+        sb.append(space);
+        sb.append(":");
+        sb.append(space);
+
+        renderFieldValue(sb, fieldValue, indent, prettyPrint, indentStr, newLine, space);
+      }
+      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
+      sb.append(")");
+    } catch (Exception e) {
+      sb.append("Exception occured :" + e.getClass() + " " + e.getMessage());
+    }
+
+    return sb.toString();
+  }
+
+  private static void renderFieldValue(
+      StringBuilder sb,
+      Object fieldValue,
+      int indent,
+      boolean prettyPrint,
+      String indentStr,
+      String newLine,
+      String space) {
+    if (fieldValue == null) {
+      sb.append("null");
+    } else if (fieldValue instanceof Map) {
+      sb.append("{");
+      for (Map.Entry<?, ?> entry : (((Map<?, ?>) fieldValue).entrySet())) {
+        Object key = (Object) entry.getKey();
+        Object val = (Object) entry.getValue();
+        sb.append(newLine);
+        sb.append(indentStr);
+        sb.append(toString(key, indent + 2, prettyPrint));
+        sb.append(space);
+        sb.append(":");
+        sb.append(space);
+        sb.append(toString(val, indent + 2, prettyPrint));
+      }
+      sb.append(newLine + reduceIndent(indentStr) + "}");
+    } else if (fieldValue instanceof java.util.Collection) {
+      sb.append("[");
+      for (Object o : (java.util.Collection<?>) fieldValue) {
+        sb.append(newLine + indentStr + toString(o, indent + 2, prettyPrint));
+      }
+      sb.append(newLine + reduceIndent(indentStr) + "]");
+    } else if (fieldValue instanceof TBase) {
+      sb.append(((TBase) fieldValue).toString(indent, prettyPrint));
+    } else if (fieldValue instanceof String) {
+      if (prettyPrint) {
+        sb.append("\"" + fieldValue + "\"");
+      } else {
+        sb.append(fieldValue);
+      }
+    } else {
+      sb.append(fieldValue.toString());
+    }
+  }
+
   /**
    * Set the value of a field based on its field id
    *
@@ -1123,18 +1241,21 @@ public final class TBaseHelper {
     }
   }
 
-  private static TField getTField(TBase object, short fieldId)
-      throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+  private static TField getTField(TBase object, short fieldId) {
     TField tField = null;
-    for (Field field : object.getClass().getDeclaredFields()) {
-      if (field.getType() == TField.class) {
-        field.setAccessible(true);
-        TField tf = (TField) field.get(object);
-        if (tf.id == fieldId) {
-          tField = tf;
-          break;
+    try {
+      for (Field field : object.getClass().getDeclaredFields()) {
+        if (field.getType() == TField.class) {
+          field.setAccessible(true);
+          TField tf = (TField) field.get(object);
+          if (tf.id == fieldId) {
+            tField = tf;
+            break;
+          }
         }
       }
+    } catch (IllegalAccessException e) {
+      return null;
     }
 
     if (tField == null) {

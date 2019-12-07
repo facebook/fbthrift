@@ -23,6 +23,12 @@ struct MySimpleStruct {
   2: string name,
 }
 
+union MySimpleUnion {
+  1: i64 caseOne,
+  2: i64 caseTwo,
+  3: string caseThree,
+}
+
 struct NestedStruct {
   1: map<i32, string> myMap,
   2: MySimpleStruct mySimpleStruct,

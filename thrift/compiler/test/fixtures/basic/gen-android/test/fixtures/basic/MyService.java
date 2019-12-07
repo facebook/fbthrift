@@ -800,18 +800,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("ping_args");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -914,18 +903,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("ping_result");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -1029,18 +1007,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("getRandomData_args");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -1207,28 +1174,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("getRandomData_result");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("success");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getSuccess() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -1396,28 +1342,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("hasDataById_args");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("id");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getId() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -1584,28 +1509,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("hasDataById_result");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("success");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.isSuccess() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.isSuccess(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -1773,28 +1677,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("getDataById_args");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("id");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getId() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -1961,28 +1844,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("getDataById_result");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("success");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getSuccess() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getSuccess(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -2207,39 +2069,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("putDataById_args");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("id");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getId() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
-      }
-      first = false;
-      if (!first) sb.append("," + newLine);
-      sb.append(indentStr);
-      sb.append("data");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getData() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getData(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -2342,18 +2172,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("putDataById_result");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {
@@ -2578,39 +2397,7 @@ public class MyService {
 
     @Override
     public String toString(int indent, boolean prettyPrint) {
-      String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-      String newLine = prettyPrint ? "\n" : "";
-      String space = prettyPrint ? " " : "";
-      StringBuilder sb = new StringBuilder("lobDataById_args");
-      sb.append(space);
-      sb.append("(");
-      sb.append(newLine);
-      boolean first = true;
-
-      sb.append(indentStr);
-      sb.append("id");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getId() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getId(), indent + 1, prettyPrint));
-      }
-      first = false;
-      if (!first) sb.append("," + newLine);
-      sb.append(indentStr);
-      sb.append("data");
-      sb.append(space);
-      sb.append(":").append(space);
-      if (this.getData() == null) {
-        sb.append("null");
-      } else {
-        sb.append(TBaseHelper.toString(this.getData(), indent + 1, prettyPrint));
-      }
-      first = false;
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-      return sb.toString();
+      return TBaseHelper.toStringHelper(this, indent, prettyPrint);
     }
 
     public void validate() throws TException {

@@ -21,6 +21,8 @@ import static org.junit.Assert.assertThat;
 
 import com.facebook.thrift.java.test.MySimpleStruct;
 import com.facebook.thrift.java.test.NestedStruct;
+import com.facebook.thrift.java.test.MySimpleUnion;
+import com.facebook.thrift.java.test.NestedStruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -142,5 +144,73 @@ public class TBaseHelperTest extends TestCase {
         new com.facebook.thrift.android.test.MySimpleStruct(123L, "toto");
     assertThat(TBaseHelper.getFieldValue(struct, (short) 1), equalTo(struct.getId()));
     assertThat(TBaseHelper.getFieldValue(struct, (short) 2), equalTo(struct.getName()));
+  }
+
+  @Test
+  public void testToString() throws Exception {
+    long id = 321;
+    String name = "titi";
+
+    MySimpleStruct struct = new MySimpleStruct(id, name);
+    com.facebook.thrift.android.test.MySimpleStruct struct2 =
+        new com.facebook.thrift.android.test.MySimpleStruct(id, name);
+
+    assertThat(struct.toString(), equalTo(struct2.toString()));
+    assertThat(struct.toString(1, false), equalTo(struct2.toString(1, false)));
+  }
+
+  @Test
+  public void testToStringOfUnion() throws Exception {
+    MySimpleUnion struct = MySimpleUnion.caseOne(1L);
+    com.facebook.thrift.android.test.MySimpleUnion struct2 =
+        com.facebook.thrift.android.test.MySimpleUnion.caseOne(1L);
+
+    assertThat(struct.toString(), equalTo(struct2.toString()));
+    assertThat(struct.toString(1, false), equalTo(struct2.toString(1, false)));
+  }
+
+  @Test
+  public void testToStringWithNull() throws Exception {
+    long id = 321;
+    String name = null;
+
+    MySimpleStruct struct = new MySimpleStruct(id, name);
+    com.facebook.thrift.android.test.MySimpleStruct struct2 =
+        new com.facebook.thrift.android.test.MySimpleStruct(id, name);
+
+    assertThat(struct.toString(), equalTo(struct2.toString()));
+    assertThat(struct.toString(1, false), equalTo(struct2.toString(1, false)));
+  }
+
+  @Test
+  public void testNestedToString() throws Exception {
+    long id = 321;
+    String name = "titi";
+
+    Map<Integer, String> myMap = new HashMap<>();
+    myMap.put(1, "one");
+    myMap.put(2, "two");
+    myMap.put(3, "three");
+
+    Set<Integer> mySet = new HashSet<>();
+    mySet.add(51);
+    mySet.add(53);
+    mySet.add(57);
+
+    List<String> myList = new ArrayList<>();
+    myList.add("un");
+    myList.add("deux");
+    myList.add("trois");
+
+    MySimpleStruct struct = new MySimpleStruct(id, name);
+    NestedStruct nested = new NestedStruct(myMap, struct, mySet, myList);
+
+    com.facebook.thrift.android.test.MySimpleStruct struct2 =
+        new com.facebook.thrift.android.test.MySimpleStruct(id, name);
+    com.facebook.thrift.android.test.NestedStruct nested2 =
+        new com.facebook.thrift.android.test.NestedStruct(myMap, struct2, mySet, myList);
+
+    assertThat(struct.toString(), equalTo(struct2.toString()));
+    assertThat(struct.toString(1, false), equalTo(struct2.toString(1, false)));
   }
 }

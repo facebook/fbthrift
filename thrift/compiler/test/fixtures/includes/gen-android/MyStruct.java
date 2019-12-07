@@ -234,50 +234,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public String toString(int indent, boolean prettyPrint) {
-    String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-    String newLine = prettyPrint ? "\n" : "";
-    String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("MyStruct");
-    sb.append(space);
-    sb.append("(");
-    sb.append(newLine);
-    boolean first = true;
-
-    sb.append(indentStr);
-    sb.append("MyIncludedField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyIncludedField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyIncludedField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("MyOtherIncludedField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyOtherIncludedField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyOtherIncludedField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("MyIncludedInt");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyIncludedInt() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyIncludedInt(), indent + 1, prettyPrint));
-    }
-    first = false;
-    sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-    sb.append(")");
-    return sb.toString();
+    return TBaseHelper.toStringHelper(this, indent, prettyPrint);
   }
 
   public void validate() throws TException {

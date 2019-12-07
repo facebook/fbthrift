@@ -194,39 +194,7 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
 
   @Override
   public String toString(int indent, boolean prettyPrint) {
-    String indentStr = prettyPrint ? TBaseHelper.getIndentedString(indent) : "";
-    String newLine = prettyPrint ? "\n" : "";
-    String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder("Included");
-    sb.append(space);
-    sb.append("(");
-    sb.append(newLine);
-    boolean first = true;
-
-    sb.append(indentStr);
-    sb.append("MyIntField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyIntField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyIntField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    if (!first) sb.append("," + newLine);
-    sb.append(indentStr);
-    sb.append("MyTransitiveField");
-    sb.append(space);
-    sb.append(":").append(space);
-    if (this.getMyTransitiveField() == null) {
-      sb.append("null");
-    } else {
-      sb.append(TBaseHelper.toString(this.getMyTransitiveField(), indent + 1, prettyPrint));
-    }
-    first = false;
-    sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-    sb.append(")");
-    return sb.toString();
+    return TBaseHelper.toStringHelper(this, indent, prettyPrint);
   }
 
   public void validate() throws TException {
