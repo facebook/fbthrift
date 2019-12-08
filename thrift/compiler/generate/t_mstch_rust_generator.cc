@@ -938,7 +938,7 @@ class mstch_rust_const : public mstch_const {
     return get_import_name(cnst_->get_program(), options_);
   }
   mstch::node rust_lazy() {
-    auto type = cnst_->get_type();
+    auto type = cnst_->get_type()->get_true_type();
     return type->is_list() || type->is_map() || type->is_set() ||
         type->is_struct();
   }
