@@ -33,7 +33,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -706,7 +706,7 @@ class HandlerCallbackBase {
 
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   void sendReply(
       std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
           responseAndSinkConsumer);
@@ -815,7 +815,7 @@ template <typename StreamItem>
 struct HandlerCallbackHelper<ServerStream<StreamItem>>
     : public HandlerCallbackHelperServerStream<ServerStream<StreamItem>> {};
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
   using InputType = SinkInputType;

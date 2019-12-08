@@ -23,7 +23,7 @@
 
 #include <folly/Try.h>
 #include <folly/executors/SequencedExecutor.h>
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Task.h>
 #endif
@@ -41,7 +41,7 @@ class SinkThrew : public TApplicationException {};
 
 template <typename T, typename R>
 class ClientSink {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   using PayloadSerializer = std::unique_ptr<folly::IOBuf> (*)(folly::Try<T>&&);
   using FinalResponseDeserializer =
       folly::Try<R> (*)(folly::Try<StreamPayload>&&);
@@ -118,7 +118,7 @@ struct SinkOptions {
 
 template <typename SinkElement, typename FinalResponse>
 struct SinkConsumer {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   using Consumer = folly::Function<folly::coro::Task<FinalResponse>(
       folly::coro::AsyncGenerator<SinkElement&&>)>;
   Consumer consumer;

@@ -665,7 +665,7 @@ folly::exception_wrapper recv_wrapped(
   return ew;
 }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 
 template <
     typename ProtocolReader,
@@ -716,7 +716,7 @@ folly::exception_wrapper recv_wrapped(
     apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
         _return,
     ErrorMapFunc) {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -762,7 +762,7 @@ folly::exception_wrapper recv_wrapped(
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ClientSink<Item, FinalResponse>& _return,
     ErrorMapFunc) {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
@@ -1115,7 +1115,7 @@ apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
       bufferSize);
 }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 template <
     typename ProtocolReader,
     typename ProtocolWriter,

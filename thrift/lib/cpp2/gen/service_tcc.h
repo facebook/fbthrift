@@ -82,7 +82,7 @@ void process_handle_exn_deserialization(
         if (req->isStream()) {
           req->sendStreamReply({std::move(buf), {}});
         } else if (req->isSink()) {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
           req->sendSinkReply(std::move(buf), {});
 #else
           DCHECK(false);
@@ -108,7 +108,7 @@ void process_throw_wrapped_handler_error(
   if (req->isStream()) {
     req->sendStreamReply({std::move(buf), {}});
   } else if (req->isSink()) {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
     req->sendSinkReply(std::move(buf), {});
 #else
     DCHECK(false);

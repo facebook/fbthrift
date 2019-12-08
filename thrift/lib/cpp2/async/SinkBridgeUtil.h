@@ -18,7 +18,7 @@
 
 #include <folly/Portability.h>
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <boost/variant.hpp>
 
 #include <folly/experimental/coro/Baton.h>

@@ -239,7 +239,7 @@ auto StreamGenerator::create(
   return toStream(std::move(flowable), std::move(executor));
 }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 template <
     typename Generator,
     std::enable_if_t<

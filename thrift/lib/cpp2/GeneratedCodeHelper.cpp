@@ -88,7 +88,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
             request->sendStreamReply(
                 {que.move(), SemiStream<std::unique_ptr<folly::IOBuf>>{}});
           } else if (request->isSink()) {
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
             request->sendSinkReply(que.move(), {});
 #else
             DCHECK(false);

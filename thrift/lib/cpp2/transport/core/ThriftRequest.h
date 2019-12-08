@@ -36,7 +36,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
 #include <thrift/lib/cpp2/protocol/Serializer.h>
@@ -228,7 +228,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   void sendSinkReply(
       std::unique_ptr<folly::IOBuf>&& buf,
       apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
@@ -300,7 +300,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>());
   }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   virtual void sendSinkThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
@@ -384,7 +384,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   void sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
@@ -460,7 +460,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
           sendStreamThriftError(makeResponseRpcMetadata(), std::move(exbuf));
           break;
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
         case RpcKind::SINK:
           sendSinkThriftResponse(
               makeResponseRpcMetadata(), std::move(exbuf), {});

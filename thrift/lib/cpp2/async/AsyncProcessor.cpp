@@ -61,7 +61,7 @@ void HandlerCallbackBase::sendReply(
   }
 }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 void HandlerCallbackBase::sendReply(
     std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
         responseAndSinkConsumer) {

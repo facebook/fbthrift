@@ -21,7 +21,7 @@
 #include <folly/Portability.h>
 
 #include <folly/Overload.h>
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
@@ -37,7 +37,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 class ClientSinkBridge : public TwoWayBridge<
                              CoroConsumer,
                              ClientMessage,

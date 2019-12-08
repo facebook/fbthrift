@@ -72,7 +72,7 @@ class StreamGenerator {
       int maxBatchSize = StreamGenerator::kDefaultBatchSize)
       -> Stream<typename folly::invoke_result_t<
           std::decay_t<Generator>&>::value_type::value_type>;
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   template <
       typename Generator,
       std::enable_if_t<

@@ -28,7 +28,7 @@
 
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #endif
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -261,7 +261,7 @@ void ThriftServerRequestSink::sendStreamThriftResponse(
   LOG(FATAL) << "Sink requests cannot send stream responses";
 }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 void ThriftServerRequestSink::sendSinkThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,

@@ -28,7 +28,7 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
@@ -118,7 +118,7 @@ class ResponseChannelRequest {
     throw std::logic_error("unimplemented");
   }
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   virtual void sendSinkReply(
       std::unique_ptr<folly::IOBuf>&&,
       apache::thrift::detail::SinkConsumerImpl&&,

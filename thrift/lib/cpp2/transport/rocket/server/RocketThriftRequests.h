@@ -211,7 +211,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf>,
       SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
   void sendSinkThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,

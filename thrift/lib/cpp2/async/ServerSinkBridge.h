@@ -20,7 +20,7 @@
 
 #include <folly/Portability.h>
 
-#ifdef FOLLY_HAS_COROUTINES
+#if FOLLY_HAS_COROUTINES
 #include <folly/Function.h>
 #include <folly/Overload.h>
 #include <folly/experimental/coro/AsyncGenerator.h>
