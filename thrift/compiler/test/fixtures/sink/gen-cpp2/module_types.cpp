@@ -56,7 +56,7 @@ void TccStructTraits<::cpp2::CompatibleWithKeywordSink>::translateFieldName(
     _ftype = apache::thrift::protocol::T_STRING;
   }
 }
-void TccStructTraits<::cpp2::SinkException>::translateFieldName(
+void TccStructTraits<::cpp2::InitialException>::translateFieldName(
     FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
     FOLLY_MAYBE_UNUSED int16_t& fid,
     FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
@@ -64,6 +64,26 @@ void TccStructTraits<::cpp2::SinkException>::translateFieldName(
   else if (_fname == "reason") {
     fid = 1;
     _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits<::cpp2::SinkException1>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "reason") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_STRING;
+  }
+}
+void TccStructTraits<::cpp2::SinkException2>::translateFieldName(
+    FOLLY_MAYBE_UNUSED folly::StringPiece _fname,
+    FOLLY_MAYBE_UNUSED int16_t& fid,
+    FOLLY_MAYBE_UNUSED apache::thrift::protocol::TType& _ftype) {
+  if (false) {}
+  else if (_fname == "reason") {
+    fid = 1;
+    _ftype = apache::thrift::protocol::T_I64;
   }
 }
 
@@ -273,18 +293,18 @@ template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::thrift::
 } // cpp2
 namespace cpp2 {
 
-SinkException::SinkException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
+InitialException::InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg) :
     reason(std::move(reason__arg)) {
   __isset.reason = true;
 }
 
-void SinkException::__clear() {
+void InitialException::__clear() {
   // clear all fields
   reason = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset = {};
 }
 
-bool SinkException::operator==(const SinkException& rhs) const {
+bool InitialException::operator==(const InitialException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -294,7 +314,7 @@ bool SinkException::operator==(const SinkException& rhs) const {
   return true;
 }
 
-bool SinkException::operator<(const SinkException& rhs) const {
+bool InitialException::operator<(const InitialException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
@@ -305,19 +325,119 @@ bool SinkException::operator<(const SinkException& rhs) const {
 }
 
 
-void swap(SinkException& a, SinkException& b) {
+void swap(InitialException& a, InitialException& b) {
   using ::std::swap;
   swap(a.reason, b.reason);
   swap(a.__isset, b.__isset);
 }
 
-template void SinkException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t SinkException::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t SinkException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SinkException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void SinkException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t SinkException::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t SinkException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t SinkException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template void InitialException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t InitialException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t InitialException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t InitialException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void InitialException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t InitialException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t InitialException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t InitialException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+SinkException1::SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg) :
+    reason(std::move(reason__arg)) {
+  __isset.reason = true;
+}
+
+void SinkException1::__clear() {
+  // clear all fields
+  reason = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset = {};
+}
+
+bool SinkException1::operator==(const SinkException1& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reason == rhs.reason)) {
+    return false;
+  }
+  return true;
+}
+
+bool SinkException1::operator<(const SinkException1& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reason == rhs.reason)) {
+    return lhs.reason < rhs.reason;
+  }
+  return false;
+}
+
+
+void swap(SinkException1& a, SinkException1& b) {
+  using ::std::swap;
+  swap(a.reason, b.reason);
+  swap(a.__isset, b.__isset);
+}
+
+template void SinkException1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SinkException1::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SinkException1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void SinkException1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SinkException1::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SinkException1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+SinkException2::SinkException2(apache::thrift::FragileConstructor, int64_t reason__arg) :
+    reason(std::move(reason__arg)) {
+  __isset.reason = true;
+}
+
+void SinkException2::__clear() {
+  // clear all fields
+  reason = 0;
+  __isset = {};
+}
+
+bool SinkException2::operator==(const SinkException2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reason == rhs.reason)) {
+    return false;
+  }
+  return true;
+}
+
+bool SinkException2::operator<(const SinkException2& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.reason == rhs.reason)) {
+    return lhs.reason < rhs.reason;
+  }
+  return false;
+}
+
+
+void swap(SinkException2& a, SinkException2& b) {
+  using ::std::swap;
+  swap(a.reason, b.reason);
+  swap(a.__isset, b.__isset);
+}
+
+template void SinkException2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SinkException2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SinkException2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SinkException2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void SinkException2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SinkException2::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SinkException2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SinkException2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

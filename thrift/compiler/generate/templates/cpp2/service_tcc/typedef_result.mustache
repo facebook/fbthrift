@@ -25,16 +25,16 @@
   <%#type:sinkHasFirstResponse?%>
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true<%#type:sinkFirstResponseType%><% > service_tcc/field_data_return%><%/type:sinkFirstResponseType%><% > service_tcc/field_data_throws%>>,
-    apache::thrift::ThriftPresult<true<%#type:sinkElemType%><% > service_tcc/field_data_return%><%/type:sinkElemType%>>,
-    apache::thrift::ThriftPresult<true<%#type:sinkFinalResponseType%><% > service_tcc/field_data_return%><%/type:sinkFinalResponseType%>>
+    apache::thrift::ThriftPresult<true<%#type:sinkElemType%><% > service_tcc/field_data_return%><%/type:sinkElemType%><% > service_tcc/field_data_sink_throws%>>,
+    apache::thrift::ThriftPresult<true<%#type:sinkFinalResponseType%><% > service_tcc/field_data_return%><%/type:sinkFinalResponseType%><% > service_tcc/field_data_sink_final_throws%>>
     > <%service:name%>_<%function:cpp_name%>_presult;
   <%/type:sinkHasFirstResponse?%><%!
 
   %><%^type:sinkHasFirstResponse?%>
 typedef apache::thrift::ThriftPResultSink<
     apache::thrift::ThriftPresult<true<% > service_tcc/field_data_throws%>>,
-    apache::thrift::ThriftPresult<true<%#type:sinkElemType%><% > service_tcc/field_data_return%><%/type:sinkElemType%>>,
-    apache::thrift::ThriftPresult<true<%#type:sinkFinalResponseType%><% > service_tcc/field_data_return%><%/type:sinkFinalResponseType%>>
+    apache::thrift::ThriftPresult<true<%#type:sinkElemType%><% > service_tcc/field_data_return%><%/type:sinkElemType%><% > service_tcc/field_data_sink_throws%>>,
+    apache::thrift::ThriftPresult<true<%#type:sinkFinalResponseType%><% > service_tcc/field_data_return%><%/type:sinkFinalResponseType%><% > service_tcc/field_data_sink_final_throws%>>
     > <%service:name%>_<%function:cpp_name%>_presult;
   <%/type:sinkHasFirstResponse?%>
 <%/type:sink?%>

@@ -73,6 +73,51 @@ folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::Fina
   template <typename Protocol_>
   void methodThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
  public:
+ private:
+  void methodSinkThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> co_methodSinkThrow();
+#endif // FOLLY_HAS_COROUTINES
+  static folly::exception_wrapper recv_wrapped_methodSinkThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_methodSinkThrow(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_instance_methodSinkThrow(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_methodSinkThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void methodSinkThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+ private:
+  void methodFinalThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> co_methodFinalThrow();
+#endif // FOLLY_HAS_COROUTINES
+  static folly::exception_wrapper recv_wrapped_methodFinalThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_methodFinalThrow(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_instance_methodFinalThrow(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_methodFinalThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void methodFinalThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+ private:
+  void methodBothThrowImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
+#if FOLLY_HAS_COROUTINES
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> co_methodBothThrow();
+#endif // FOLLY_HAS_COROUTINES
+  static folly::exception_wrapper recv_wrapped_methodBothThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+  static apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_methodBothThrow(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse> recv_instance_methodBothThrow(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_methodBothThrow(apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>& _return, ::apache::thrift::ClientReceiveState& state);
+ private:
+  template <typename Protocol_>
+  void methodBothThrowT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::detail::ac::ClientRequestContext> ctx, apache::thrift::SinkClientCallback* callback);
+ public:
 };
 
 } // cpp2

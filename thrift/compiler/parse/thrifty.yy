@@ -115,6 +115,7 @@ namespace compiler {
 
 class parsing_driver;
 using t_structpair = std::pair<t_struct*, t_struct*>;
+using t_typestructpair = std::pair<t_type*, t_struct*>;
 
 } // namespace compiler
 } // namespace thrift
@@ -252,9 +253,11 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_field::e_req>   FieldRequiredness
 %type<t_type*>          FieldType
 %type<t_type*>          ResponseAndStreamReturnType
-%type<t_stream_response*>
+%type<t_type*>          ResponseAndSinkReturnType
+%type<t_stream_response*> 
                         StreamReturnType
-%type<t_type*>          SinkReturnType
+%type<t_sink*>          SinkReturnType
+%type<t_typestructpair> SinkFieldType
 %type<t_const_value*>   FieldValue
 %type<t_struct*>        FieldList
 
@@ -987,14 +990,24 @@ Function:
         }
         streamthrows = static_cast<t_stream_response*>(rettype)->get_throws_struct();
       }
-      auto* func = new t_function(
-        rettype,
-        $4,
-        std::unique_ptr<t_struct>(arglist),
-        std::unique_ptr<t_struct>($8.first),
-        std::unique_ptr<t_struct>(streamthrows),
-        $2
-      );
+      t_function* func;
+      if (rettype && rettype->is_sink()) {
+        func = new t_function(
+          static_cast<t_sink*>(rettype),
+          $4,
+          std::unique_ptr<t_struct>(arglist),
+          std::unique_ptr<t_struct>($8.first)
+        );
+      } else {
+        func = new t_function(
+          rettype,
+          $4,
+          std::unique_ptr<t_struct>(arglist),
+          std::unique_ptr<t_struct>($8.first),
+          std::unique_ptr<t_struct>(streamthrows),
+          $2
+        );
+      }
       if ($9) {
         func->annotations_ = std::move($9->annotations_);
       }
@@ -1225,9 +1238,9 @@ FunctionType:
       driver.debug("FunctionType -> ResponseAndStreamReturnType");
       $$ = $1;
     }
-| SinkReturnType
+| ResponseAndSinkReturnType
     {
-      driver.debug("FunctionType -> SinkReturnType");
+      driver.debug("FunctionType -> ResponseAndSinkReturnType");
       $$ = $1;
     }
 | FieldType
@@ -1280,23 +1293,38 @@ StreamReturnType:
     }
   }
 
+ResponseAndSinkReturnType:
+  FieldType "," SinkReturnType
+    {
+      driver.debug("ResponseAndSinkReturnType -> FieldType, SinkReturnType");
+      $3->set_first_response($1);
+      $$ = $3;    }
+| SinkReturnType
+    {
+      driver.debug("ResponseAndSinkReturnType -> SinkReturnType");
+      $$ = $1;
+    }
+
 SinkReturnType:
-  FieldType "," tok_sink "<" FieldType "," FieldType ">"
-  {
-    driver.debug("SinkReturnType -> FieldType, tok_sink<FieldType, FieldType>");
-    $$ = new t_sink($5, $7, $1);
-    if (driver.mode == parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
+  tok_sink "<" SinkFieldType "," SinkFieldType ">"
+    {
+      driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
+      $$ = new t_sink($3.first, $3.second, $5.first, $5.second);
+      if (driver.mode == parsing_mode::INCLUDES) {
+        driver.delete_at_the_end($$);
+      } else {
+        driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+      }
     }
-  }
-| tok_sink "<" FieldType "," FieldType ">"
-  {
-    driver.debug("SinkReturnType -> tok_sink<FieldType, FieldType>");
-    $$ = new t_sink($3, $5);
-    if (driver.mode == parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
+SinkFieldType:
+  FieldType
+    {
+      $$ = std::make_pair($1, nullptr);
     }
-  }
+| FieldType Throws
+    {
+      $$ = std::make_pair($1, $2);
+    }
 
 FieldType:
   tok_identifier TypeAnnotations

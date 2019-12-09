@@ -19,6 +19,7 @@
 #include <string>
 
 #include <thrift/compiler/ast/t_doc.h>
+#include <thrift/compiler/ast/t_sink.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
 
@@ -78,10 +79,39 @@ class t_function : public t_annotated {
       stream_xceptions_ = std::make_unique<t_struct>(nullptr);
     }
 
+    sink_xceptions_ = std::make_unique<t_struct>(nullptr);
+    sink_final_response_xceptions_ = std::make_unique<t_struct>(nullptr);
+
     if (!stream_xceptions_->get_members().empty()) {
       if (returntype == nullptr || !returntype->is_streamresponse()) {
         throw std::string("`stream throws` only valid on stream methods");
       }
+    }
+  }
+
+  t_function(
+      t_sink* returntype,
+      std::string name,
+      std::unique_ptr<t_struct> arglist,
+      std::unique_ptr<t_struct> xceptions)
+      : returntype_(returntype),
+        name_(name),
+        arglist_(std::move(arglist)),
+        xceptions_(std::move(xceptions)),
+        sink_xceptions_(
+            std::unique_ptr<t_struct>(returntype->get_sink_xceptions())),
+        sink_final_response_xceptions_(std::unique_ptr<t_struct>(
+            returntype->get_final_response_xceptions())),
+        oneway_(false) {
+    if (!xceptions_) {
+      xceptions_ = std::make_unique<t_struct>(nullptr);
+    }
+    stream_xceptions_ = std::make_unique<t_struct>(nullptr);
+    if (!sink_xceptions_) {
+      sink_xceptions_ = std::make_unique<t_struct>(nullptr);
+    }
+    if (!sink_final_response_xceptions_) {
+      sink_final_response_xceptions_ = std::make_unique<t_struct>(nullptr);
     }
   }
 
@@ -110,6 +140,14 @@ class t_function : public t_annotated {
     return stream_xceptions_.get();
   }
 
+  t_struct* get_sink_xceptions() const {
+    return sink_xceptions_.get();
+  }
+
+  t_struct* get_sink_final_response_xceptions() const {
+    return sink_final_response_xceptions_.get();
+  }
+
   bool is_oneway() const {
     return oneway_;
   }
@@ -129,6 +167,8 @@ class t_function : public t_annotated {
   std::unique_ptr<t_struct> arglist_;
   std::unique_ptr<t_struct> xceptions_;
   std::unique_ptr<t_struct> stream_xceptions_;
+  std::unique_ptr<t_struct> sink_xceptions_;
+  std::unique_ptr<t_struct> sink_final_response_xceptions_;
   bool oneway_;
 };
 

@@ -18,6 +18,7 @@
 
 #include <string>
 
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -33,18 +34,32 @@ class t_sink : public t_type {
  public:
   explicit t_sink(
       t_type* sink_type,
+      t_struct* sink_xceptions,
       t_type* final_response_type,
-      t_type* first_response_type = nullptr)
+      t_struct* final_response_xceptions)
       : sink_type_(sink_type),
+        sink_xceptions_(sink_xceptions),
         final_response_type_(final_response_type),
-        first_response_type_(first_response_type) {}
+        final_response_xceptions_(final_response_xceptions) {}
+
+  void set_first_response(t_type* first_response) {
+    first_response_type_ = first_response;
+  }
 
   t_type* get_sink_type() const {
     return sink_type_;
   }
 
+  t_struct* get_sink_xceptions() const {
+    return sink_xceptions_;
+  }
+
   t_type* get_final_response_type() const {
     return final_response_type_;
+  }
+
+  t_struct* get_final_response_xceptions() const {
+    return final_response_xceptions_;
   }
 
   bool is_sink() const override {
@@ -81,8 +96,10 @@ class t_sink : public t_type {
 
  private:
   t_type* sink_type_;
+  t_struct* sink_xceptions_;
   t_type* final_response_type_;
-  t_type* first_response_type_;
+  t_struct* final_response_xceptions_;
+  t_type* first_response_type_{nullptr};
 };
 
 } // namespace compiler

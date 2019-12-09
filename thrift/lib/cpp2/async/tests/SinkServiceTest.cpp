@@ -64,6 +64,24 @@ TEST_F(SinkServiceTest, SinkThrow) {
               throw std::runtime_error("test");
             }()),
             std::exception);
+        co_await client.co_purge();
+      });
+}
+
+TEST_F(SinkServiceTest, SinkThrowStruct) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto sink = co_await client.co_sinkThrow();
+        EXPECT_THROW(
+            co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+              co_yield 0;
+              co_yield 1;
+              SinkException e;
+              e.reason = "test";
+              throw e;
+            }()),
+            SinkThrew);
+        co_await client.co_purge();
       });
 }
 
@@ -81,6 +99,25 @@ TEST_F(SinkServiceTest, SinkFinalThrow) {
         } catch (const std::exception& ex) {
           throwed = true;
           EXPECT_EQ("std::runtime_error: test", std::string(ex.what()));
+        }
+        EXPECT_TRUE(throwed);
+      });
+}
+
+TEST_F(SinkServiceTest, SinkFinalThrowStruct) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto sink = co_await client.co_sinkFinalThrow();
+        bool throwed = false;
+        try {
+          co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+            for (int i = 0; i <= 100; i++) {
+              co_yield std::move(i);
+            }
+          }());
+        } catch (const FinalException& ex) {
+          throwed = true;
+          EXPECT_EQ("test", ex.reason);
         }
         EXPECT_TRUE(throwed);
       });

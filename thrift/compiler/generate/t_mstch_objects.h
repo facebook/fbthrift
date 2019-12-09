@@ -896,9 +896,15 @@ class mstch_function : public mstch_base {
             {"function:returnType", &mstch_function::return_type},
             {"function:exceptions", &mstch_function::exceptions},
             {"function:stream_exceptions", &mstch_function::stream_exceptions},
+            {"function:sink_exceptions", &mstch_function::sink_exceptions},
+            {"function:sink_final_response_exceptions",
+             &mstch_function::sink_final_response_exceptions},
             {"function:exceptions?", &mstch_function::has_exceptions},
             {"function:stream_exceptions?",
              &mstch_function::has_streamexceptions},
+            {"function:sink_exceptions?", &mstch_function::has_sinkexceptions},
+            {"function:sink_final_response_exceptions?",
+             &mstch_function::has_sink_final_response_exceptions},
             {"function:args", &mstch_function::arg_list},
             {"function:comma", &mstch_function::has_args},
             {"function:priority", &mstch_function::priority},
@@ -920,6 +926,14 @@ class mstch_function : public mstch_base {
   }
   mstch::node has_streamexceptions() {
     return !function_->get_stream_xceptions()->get_members().empty();
+  }
+  mstch::node has_sinkexceptions() {
+    return !function_->get_sink_xceptions()->get_members().empty();
+  }
+  mstch::node has_sink_final_response_exceptions() {
+    return !function_->get_sink_final_response_xceptions()
+                ->get_members()
+                .empty();
   }
   mstch::node has_args() {
     if (!function_->get_arglist()->get_members().empty()) {
@@ -943,6 +957,8 @@ class mstch_function : public mstch_base {
   mstch::node return_type();
   mstch::node exceptions();
   mstch::node stream_exceptions();
+  mstch::node sink_exceptions();
+  mstch::node sink_final_response_exceptions();
   mstch::node arg_list();
   mstch::node any_streams();
   mstch::node returns_stream();

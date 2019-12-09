@@ -52,8 +52,9 @@ apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::rangeThrow(
           while (auto item = co_await gen.next()) {
             EXPECT_EQ(i++, *item);
           }
-        } catch (const std::exception&) {
+        } catch (const std::exception& ex) {
           throwed = true;
+          EXPECT_EQ("std::runtime_error: test", std::string(ex.what()));
         }
         EXPECT_TRUE(throwed);
         co_return true;
@@ -159,6 +160,40 @@ TestSinkService::rangeChunkTimeout() {
   }
       .setChunkTimeout(std::chrono::milliseconds(200));
 }
+
+apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::sinkThrow() {
+  return apache::thrift::SinkConsumer<int32_t, bool>{
+      [](folly::coro::AsyncGenerator<int32_t&&> gen)
+          -> folly::coro::Task<bool> {
+        bool throwed = false;
+        try {
+          while (auto item = co_await gen.next()) {
+          }
+        } catch (const SinkException& ex) {
+          throwed = true;
+          EXPECT_EQ("test", ex.reason);
+        } catch (const std::exception& ex) {
+          LOG(ERROR) << "catched unexpected exception " << ex.what();
+        }
+        EXPECT_TRUE(throwed);
+        co_return true;
+      },
+      10 /* buffer size */
+  };
+}
+
+apache::thrift::SinkConsumer<int32_t, bool> TestSinkService::sinkFinalThrow() {
+  return apache::thrift::SinkConsumer<int32_t, bool>{
+      [](folly::coro::AsyncGenerator<int32_t&&>) -> folly::coro::Task<bool> {
+        FinalException ex;
+        ex.reason = "test";
+        throw ex;
+      },
+      10 /* buffer size */
+  };
+}
+
+void TestSinkService::purge() {}
 
 } // namespace testservice
 } // namespace testutil

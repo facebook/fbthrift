@@ -69,12 +69,15 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
   SinkService_method_presult::FieldsType result;
   using SinkPResultType = SinkService_method_presult::SinkPResultType;
   using FinalResponsePResultType = SinkService_method_presult::FinalResponsePResultType;
+
+  using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
+
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
       FinalResponsePResultType,
-      apache::thrift::detail::ap::EmptyExMapType>(
+      ExMapType>(
       std::move(_return),
       std::move(executor));
 
@@ -136,12 +139,15 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
   using FinalResponsePResultType = SinkService_methodAndReponse_presult::FinalResponsePResultType;
   result.get<0>().value = &_return.response;
   result.setIsSet(0, true);
+
+  using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
+
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
       FinalResponsePResultType,
-      apache::thrift::detail::ap::EmptyExMapType>(
+      ExMapType>(
       std::move(_return.sinkConsumer),
       std::move(executor));
 
@@ -201,12 +207,15 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> SinkServi
   SinkService_methodThrow_presult::FieldsType result;
   using SinkPResultType = SinkService_methodThrow_presult::SinkPResultType;
   using FinalResponsePResultType = SinkService_methodThrow_presult::FinalResponsePResultType;
+
+  using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
+
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
       FinalResponsePResultType,
-      apache::thrift::detail::ap::EmptyExMapType>(
+      ExMapType>(
       std::move(_return),
       std::move(executor));
 

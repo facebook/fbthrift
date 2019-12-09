@@ -50,6 +50,12 @@ class TestSinkService : public TestSinkServiceSvIf {
 
   apache::thrift::SinkConsumer<int32_t, bool> rangeChunkTimeout() override;
 
+  apache::thrift::SinkConsumer<int32_t, bool> sinkThrow() override;
+
+  apache::thrift::SinkConsumer<int32_t, bool> sinkFinalThrow() override;
+
+  void purge() override;
+
  private:
   bool sinkUnsubscribed_{false};
 };

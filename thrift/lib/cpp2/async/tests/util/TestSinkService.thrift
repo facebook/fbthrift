@@ -19,6 +19,14 @@ exception MyException {
   1: string reason;
 }
 
+exception SinkException {
+  1: string reason;
+}
+
+exception FinalException {
+  1: string reason
+}
+
 service TestSinkService {
   i32 test();
   // Generate numbers between `from` to `to`, return ture for the final
@@ -34,4 +42,7 @@ service TestSinkService {
   bool isSinkUnSubscribed();
 
   sink<i32, bool> rangeChunkTimeout();
+  sink<i32 throws (1: SinkException e), bool> sinkThrow();
+  sink<i32, bool throws (1: FinalException e)> sinkFinalThrow();
+  void purge();
 }

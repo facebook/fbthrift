@@ -530,6 +530,22 @@ mstch::node mstch_function::stream_exceptions() {
       cache_);
 }
 
+mstch::node mstch_function::sink_exceptions() {
+  return generate_elements(
+      function_->get_sink_xceptions()->get_members(),
+      generators_->field_generator_.get(),
+      generators_,
+      cache_);
+}
+
+mstch::node mstch_function::sink_final_response_exceptions() {
+  return generate_elements(
+      function_->get_sink_final_response_xceptions()->get_members(),
+      generators_->field_generator_.get(),
+      generators_,
+      cache_);
+}
+
 mstch::node mstch_function::arg_list() {
   return generate_elements(
       function_->get_arglist()->get_members(),

@@ -44,7 +44,21 @@ struct TccStructTraits<::cpp2::CompatibleWithKeywordSink> {
       apache::thrift::protocol::TType& _ftype);
 };
 template <>
-struct TccStructTraits<::cpp2::SinkException> {
+struct TccStructTraits<::cpp2::InitialException> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::cpp2::SinkException1> {
+  static void translateFieldName(
+      folly::StringPiece _fname,
+      int16_t& fid,
+      apache::thrift::protocol::TType& _ftype);
+};
+template <>
+struct TccStructTraits<::cpp2::SinkException2> {
   static void translateFieldName(
       folly::StringPiece _fname,
       int16_t& fid,
@@ -494,7 +508,7 @@ extern template uint32_t CompatibleWithKeywordSink::serializedSizeZC<>(apache::t
 namespace cpp2 {
 
 template <class Protocol_>
-void SinkException::readNoXfer(Protocol_* iprot) {
+void InitialException::readNoXfer(Protocol_* iprot) {
   apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
 
   _readState.readStructBegin(iprot);
@@ -535,7 +549,7 @@ _loop:
     goto _end;
   }
   if (iprot->kUsesFieldNames()) {
-    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<SinkException>>();
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<InitialException>>();
   }
 
   switch (_readState.fieldId) {
@@ -559,9 +573,9 @@ _skip:
 }
 
 template <class Protocol_>
-uint32_t SinkException::serializedSize(Protocol_ const* prot_) const {
+uint32_t InitialException::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("SinkException");
+  xfer += prot_->serializedStructSize("InitialException");
   xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
   xfer += prot_->serializedSizeString(this->reason);
   xfer += prot_->serializedSizeStop();
@@ -569,9 +583,9 @@ uint32_t SinkException::serializedSize(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t SinkException::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t InitialException::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("SinkException");
+  xfer += prot_->serializedStructSize("InitialException");
   xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
   xfer += prot_->serializedSizeString(this->reason);
   xfer += prot_->serializedSizeStop();
@@ -579,9 +593,9 @@ uint32_t SinkException::serializedSizeZC(Protocol_ const* prot_) const {
 }
 
 template <class Protocol_>
-uint32_t SinkException::write(Protocol_* prot_) const {
+uint32_t InitialException::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("SinkException");
+  xfer += prot_->writeStructBegin("InitialException");
   xfer += prot_->writeFieldBegin("reason", apache::thrift::protocol::T_STRING, 1);
   xfer += prot_->writeString(this->reason);
   xfer += prot_->writeFieldEnd();
@@ -590,13 +604,230 @@ uint32_t SinkException::write(Protocol_* prot_) const {
   return xfer;
 }
 
-extern template void SinkException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t SinkException::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t SinkException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t SinkException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template void SinkException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t SinkException::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t SinkException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t SinkException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template void InitialException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t InitialException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t InitialException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t InitialException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void InitialException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t InitialException::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t InitialException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t InitialException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void SinkException1::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_STRING))) {
+    goto _loop;
+  }
+_readField_reason:
+  {
+    
+    iprot->readString(this->reason);
+    this->__isset.reason = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<SinkException1>>();
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING))) {
+        goto _readField_reason;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t SinkException1::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SinkException1");
+  xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeString(this->reason);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SinkException1::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SinkException1");
+  xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->serializedSizeString(this->reason);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SinkException1::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("SinkException1");
+  xfer += prot_->writeFieldBegin("reason", apache::thrift::protocol::T_STRING, 1);
+  xfer += prot_->writeString(this->reason);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void SinkException1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SinkException1::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SinkException1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void SinkException1::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SinkException1::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SinkException1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SinkException1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace cpp2 {
+
+template <class Protocol_>
+void SinkException2::readNoXfer(Protocol_* iprot) {
+  apache::thrift::detail::ProtocolReaderStructReadState<Protocol_> _readState;
+
+  _readState.readStructBegin(iprot);
+
+  using apache::thrift::TProtocolException;
+
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          0,
+          1,
+          apache::thrift::protocol::T_I64))) {
+    goto _loop;
+  }
+_readField_reason:
+  {
+    ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::readWithContext(*iprot, this->reason, _readState);
+    this->__isset.reason = true;
+  }
+
+  if (UNLIKELY(!_readState.advanceToNextField(
+          iprot,
+          1,
+          0,
+          apache::thrift::protocol::T_STOP))) {
+    goto _loop;
+  }
+
+_end:
+  _readState.readStructEnd(iprot);
+
+  return;
+
+_loop:
+  _readState.afterAdvanceFailure(iprot);
+  if (_readState.atStop()) {
+    goto _end;
+  }
+  if (iprot->kUsesFieldNames()) {
+    _readState.template fillFieldTraitsFromName<apache::thrift::detail::TccStructTraits<SinkException2>>();
+  }
+
+  switch (_readState.fieldId) {
+    case 1:
+    {
+      if (LIKELY(_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_I64))) {
+        goto _readField_reason;
+      } else {
+        goto _skip;
+      }
+    }
+    default:
+    {
+_skip:
+      _readState.skip(iprot);
+      _readState.readFieldEnd(iprot);
+      _readState.readFieldBeginNoInline(iprot);
+      goto _loop;
+    }
+  }
+}
+
+template <class Protocol_>
+uint32_t SinkException2::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SinkException2");
+  xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->reason);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SinkException2::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SinkException2");
+  xfer += prot_->serializedFieldSize("reason", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::serializedSize<false>(*prot_, this->reason);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SinkException2::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("SinkException2");
+  xfer += prot_->writeFieldBegin("reason", apache::thrift::protocol::T_I64, 1);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::integral, int64_t>::write(*prot_, this->reason);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+extern template void SinkException2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SinkException2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SinkException2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SinkException2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template void SinkException2::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SinkException2::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SinkException2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SinkException2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2

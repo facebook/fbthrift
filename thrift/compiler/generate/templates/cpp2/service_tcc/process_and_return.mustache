@@ -162,12 +162,32 @@ std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> <%service
   result.get<0>().value = &_return.response;
   result.setIsSet(0, true);
   <%/type:sinkHasFirstResponse?%>
+
+  <%^function:sink_final_response_exceptions?%>
+  using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
+  <%/function:sink_final_response_exceptions?%>
+  <%#function:sink_final_response_exceptions?%>
+  struct ExMapType {
+    bool operator()(FinalResponsePResultType& res, folly::exception_wrapper ew) {
+      <%#function:sink_final_response_exceptions%>
+      if (ew.with_exception([&](<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {
+            res.get<<%field:index_plus_one%>>().ref() = e;
+            res.setIsSet(<%field:index_plus_one%>, true);
+          })) {
+        return true;
+      }
+      <%/function:sink_final_response_exceptions%>
+      return false;
+    }
+  };
+  <%/function:sink_final_response_exceptions?%>
+
   auto sinkConsumerImpl = apache::thrift::detail::ap::toSinkConsumerImpl<
       ProtocolIn_,
       ProtocolOut_,
       SinkPResultType,
       FinalResponsePResultType,
-      apache::thrift::detail::ap::EmptyExMapType>(
+      ExMapType>(
   <%#type:sinkHasFirstResponse?%>
       std::move(_return.sinkConsumer),
   <%/type:sinkHasFirstResponse?%>

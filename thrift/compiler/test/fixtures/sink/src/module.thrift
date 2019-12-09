@@ -31,12 +31,23 @@ struct CompatibleWithKeywordSink {
   1: string sink;
 }
 
-exception SinkException {
+exception InitialException {
   1: string reason;
+}
+
+exception SinkException1 {
+  1: string reason;
+}
+
+exception SinkException2 {
+  1: i64 reason;
 }
 
 service SinkService {
   sink<SinkPayload, FinalResponse> method();
   InitialResponse, sink<SinkPayload, FinalResponse> methodAndReponse();
-  sink<SinkPayload, FinalResponse> methodThrow() throws (1: SinkException ex);
+  sink<SinkPayload, FinalResponse> methodThrow() throws (1: InitialException ex);
+  sink<SinkPayload throws (1: SinkException1 ex), FinalResponse> methodSinkThrow();
+  sink<SinkPayload, FinalResponse throws (1:  SinkException2 ex)> methodFinalThrow();
+  sink<SinkPayload throws (1: SinkException1 ex), FinalResponse throws (1:  SinkException2 ex)> methodBothThrow();
 }

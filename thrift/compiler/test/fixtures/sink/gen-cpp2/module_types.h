@@ -18,6 +18,8 @@ struct content;
 struct content;
 struct sink;
 struct reason;
+struct reason;
+struct reason;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_content
@@ -40,6 +42,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(sink);
 #define APACHE_THRIFT_ACCESSOR_reason
 APACHE_THRIFT_DEFINE_ACCESSOR(reason);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_reason
+#define APACHE_THRIFT_ACCESSOR_reason
+APACHE_THRIFT_DEFINE_ACCESSOR(reason);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_reason
+#define APACHE_THRIFT_ACCESSOR_reason
+APACHE_THRIFT_DEFINE_ACCESSOR(reason);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -56,7 +66,9 @@ class InitialResponse;
 class FinalResponse;
 class SinkPayload;
 class CompatibleWithKeywordSink;
-class SinkException;
+class InitialException;
+class SinkException1;
+class SinkException2;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -337,21 +349,21 @@ uint32_t CompatibleWithKeywordSink::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class SinkException final : private apache::thrift::detail::st::ComparisonOperators<SinkException>, public apache::thrift::TException {
+class InitialException final : private apache::thrift::detail::st::ComparisonOperators<InitialException>, public apache::thrift::TException {
  public:
 
-  SinkException() {}
+  InitialException() {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SinkException(apache::thrift::FragileConstructor, ::std::string reason__arg);
+  InitialException(apache::thrift::FragileConstructor, ::std::string reason__arg);
 
-  SinkException(SinkException&&) = default;
+  InitialException(InitialException&&) = default;
 
-  SinkException(const SinkException&) = default;
+  InitialException(const InitialException&) = default;
 
-  SinkException& operator=(SinkException&&) = default;
+  InitialException& operator=(InitialException&&) = default;
 
-  SinkException& operator=(const SinkException&) = default;
+  InitialException& operator=(const InitialException&) = default;
   void __clear();
  public:
   ::std::string reason;
@@ -360,8 +372,8 @@ class SinkException final : private apache::thrift::detail::st::ComparisonOperat
   struct __isset {
     bool reason;
   } __isset = {};
-  bool operator==(const SinkException& rhs) const;
-  bool operator<(const SinkException& rhs) const;
+  bool operator==(const InitialException& rhs) const;
+  bool operator<(const InitialException& rhs) const;
 
   const ::std::string& get_reason() const& {
     return reason;
@@ -371,9 +383,9 @@ class SinkException final : private apache::thrift::detail::st::ComparisonOperat
     return std::move(reason);
   }
 
-  template <typename T_SinkException_reason_struct_setter = ::std::string>
-  ::std::string& set_reason(T_SinkException_reason_struct_setter&& reason_) {
-    reason = std::forward<T_SinkException_reason_struct_setter>(reason_);
+  template <typename T_InitialException_reason_struct_setter = ::std::string>
+  ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
+    reason = std::forward<T_InitialException_reason_struct_setter>(reason_);
     __isset.reason = true;
     return reason;
   }
@@ -388,20 +400,160 @@ class SinkException final : private apache::thrift::detail::st::ComparisonOperat
   uint32_t write(Protocol_* prot_) const;
 
   const char* what() const noexcept override {
-    return "::cpp2::SinkException";
+    return "::cpp2::InitialException";
   }
 
  private:
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SinkException >;
+  friend class ::apache::thrift::Cpp2Ops< InitialException >;
 };
 
-void swap(SinkException& a, SinkException& b);
+void swap(InitialException& a, InitialException& b);
 
 template <class Protocol_>
-uint32_t SinkException::read(Protocol_* iprot) {
+uint32_t InitialException::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class SinkException1 final : private apache::thrift::detail::st::ComparisonOperators<SinkException1>, public apache::thrift::TException {
+ public:
+
+  SinkException1() {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  SinkException1(apache::thrift::FragileConstructor, ::std::string reason__arg);
+
+  SinkException1(SinkException1&&) = default;
+
+  SinkException1(const SinkException1&) = default;
+
+  SinkException1& operator=(SinkException1&&) = default;
+
+  SinkException1& operator=(const SinkException1&) = default;
+  void __clear();
+ public:
+  ::std::string reason;
+
+ public:
+  struct __isset {
+    bool reason;
+  } __isset = {};
+  bool operator==(const SinkException1& rhs) const;
+  bool operator<(const SinkException1& rhs) const;
+
+  const ::std::string& get_reason() const& {
+    return reason;
+  }
+
+  ::std::string get_reason() && {
+    return std::move(reason);
+  }
+
+  template <typename T_SinkException1_reason_struct_setter = ::std::string>
+  ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
+    reason = std::forward<T_SinkException1_reason_struct_setter>(reason_);
+    __isset.reason = true;
+    return reason;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return "::cpp2::SinkException1";
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< SinkException1 >;
+};
+
+void swap(SinkException1& a, SinkException1& b);
+
+template <class Protocol_>
+uint32_t SinkException1::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+class SinkException2 final : private apache::thrift::detail::st::ComparisonOperators<SinkException2>, public apache::thrift::TException {
+ public:
+
+  SinkException2() :
+      reason(0) {}
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  SinkException2(apache::thrift::FragileConstructor, int64_t reason__arg);
+
+  SinkException2(SinkException2&&) = default;
+
+  SinkException2(const SinkException2&) = default;
+
+  SinkException2& operator=(SinkException2&&) = default;
+
+  SinkException2& operator=(const SinkException2&) = default;
+  void __clear();
+ public:
+  int64_t reason;
+
+ public:
+  struct __isset {
+    bool reason;
+  } __isset = {};
+  bool operator==(const SinkException2& rhs) const;
+  bool operator<(const SinkException2& rhs) const;
+
+  int64_t get_reason() const {
+    return reason;
+  }
+
+  int64_t& set_reason(int64_t reason_) {
+    reason = reason_;
+    __isset.reason = true;
+    return reason;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  const char* what() const noexcept override {
+    return "::cpp2::SinkException2";
+  }
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops< SinkException2 >;
+};
+
+void swap(SinkException2& a, SinkException2& b);
+
+template <class Protocol_>
+uint32_t SinkException2::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;
