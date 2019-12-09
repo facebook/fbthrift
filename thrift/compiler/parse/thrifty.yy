@@ -251,7 +251,9 @@ using t_structpair = std::pair<t_struct*, t_struct*>;
 %type<t_field_id>       FieldIdentifier
 %type<t_field::e_req>   FieldRequiredness
 %type<t_type*>          FieldType
-%type<t_type*>          StreamReturnType
+%type<t_type*>          ResponseAndStreamReturnType
+%type<t_stream_response*>
+                        StreamReturnType
 %type<t_type*>          SinkReturnType
 %type<t_const_value*>   FieldValue
 %type<t_struct*>        FieldList
@@ -1218,9 +1220,9 @@ FieldValue:
     }
 
 FunctionType:
-  StreamReturnType
+  ResponseAndStreamReturnType
     {
-      driver.debug("FunctionType -> StreamReturnType");
+      driver.debug("FunctionType -> ResponseAndStreamReturnType");
       $$ = $1;
     }
 | SinkReturnType
@@ -1239,20 +1241,21 @@ FunctionType:
       $$ = void_type();
     }
 
-StreamReturnType:
-  FieldType "," tok_stream "<" FieldType ">"
-  {
-    driver.debug("StreamReturnType -> FieldType , tok_stream < FieldType >");
-
-    $$ = new t_stream_response($5, $1);
-
-    if (driver.mode == parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
-    } else {
-      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
+ResponseAndStreamReturnType:
+  FieldType "," StreamReturnType
+    {
+      driver.debug("ResponseAndStreamReturnType -> FieldType, StreamReturnType");
+      $3->set_first_response_type($1);
+      $$ = $3;
     }
-  }
-| tok_stream "<" FieldType ">"
+| StreamReturnType
+    {
+      driver.debug("ResponseAndStreamReturnType -> StreamReturnType");
+      $$ = $1;
+    }
+
+StreamReturnType:
+  tok_stream "<" FieldType ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType >");
 
@@ -1264,23 +1267,11 @@ StreamReturnType:
       driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
     }
   }
-| FieldType "," tok_stream "<" FieldType Throws ">"
-  {
-    driver.debug("StreamReturnType -> FieldType , tok_stream < FieldType Throws >");
-
-    $$ = new t_stream_response($5, $1, $6);
-
-    if (driver.mode == parsing_mode::INCLUDES) {
-      driver.delete_at_the_end($$);
-    } else {
-      driver.program->add_unnamed_type(std::unique_ptr<t_type>{$$});
-    }
-  }
 | tok_stream "<" FieldType Throws ">"
   {
     driver.debug("StreamReturnType -> tok_stream < FieldType Throws >");
 
-    $$ = new t_stream_response($3, NULL, $4);
+    $$ = new t_stream_response($3, $4);
 
     if (driver.mode == parsing_mode::INCLUDES) {
       driver.delete_at_the_end($$);
