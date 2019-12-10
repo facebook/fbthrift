@@ -39,6 +39,20 @@ Primitives defaultPrimitives() {
   return result;
 }
 
+BigFieldIds defaultBigFieldIds() {
+  BigFieldIds result;
+  result.f1 = 1;
+  result.f100 = 100;
+  result.f2 = 2;
+  result.f101 = 101;
+  result.f102 = 102;
+  result.f1000 = 1000;
+  result.f1001 = 1001;
+  result.f3 = 3;
+  result.f4 = 4;
+  return result;
+}
+
 NestedStructL2 defaultNestedStructL2() {
   NestedStructL2 result;
   result.f1 = "1";
@@ -118,6 +132,14 @@ TEST(NimbleForwardCompatibilityTest, PrimitivesTypesReordered) {
   EXPECT_EQ(primitives.f7, casted.f7);
   EXPECT_EQ(primitives.f8, casted.f8);
   EXPECT_EQ(primitives.f9, casted.f9);
+}
+
+TEST(NimbleForwardCompatibilityTest, BigFieldIds) {
+  auto bigFieldIds = defaultBigFieldIds();
+  auto bigFieldIdsMissing = nimble_cast<BigFieldIdsMissing>(bigFieldIds);
+  EXPECT_EQ(1, bigFieldIdsMissing.f1);
+  EXPECT_EQ(2, bigFieldIdsMissing.f2);
+  EXPECT_EQ(4, bigFieldIdsMissing.f4);
 }
 
 TEST(NimbleForwardCompatibilityTest, NestedStruct) {

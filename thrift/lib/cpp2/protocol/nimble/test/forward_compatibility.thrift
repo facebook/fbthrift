@@ -76,6 +76,24 @@ struct PrimitivesTypesReordered {
   8: float f8;
 }
 
+struct BigFieldIds {
+  1: i32 f1;
+  100: i32 f100;
+  2: i32 f2;
+  101: i32 f101;
+  102: i32 f102;
+  1000: i32 f1000;
+  1001: i32 f1001;
+  3: i32 f3;
+  4: i32 f4;
+}
+
+struct BigFieldIdsMissing {
+  1: i32 f1;
+  2: i32 f2;
+  4: i32 f4;
+}
+
 struct NestedStructBase {
   1: i32 f1;
   2: i32 f2;
