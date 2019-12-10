@@ -329,9 +329,10 @@ class ClientServerTests(unittest.TestCase):
 
         async def inner_test() -> None:
             async with TestServer(handler=DerivedHandler()) as sa:
-                assert sa.port and sa.ip
+                ip, port = sa.ip, sa.port
+                assert ip and port
                 async with get_client(
-                    DerivedTestingService, host=sa.ip, port=sa.port
+                    DerivedTestingService, host=ip, port=port
                 ) as client:
                     self.assertEqual(await client.getName(), "DerivedTesting")
                     self.assertEqual(
