@@ -82,6 +82,19 @@ ListStruct defaultListStruct() {
   return result;
 }
 
+MapStruct defaultMapStruct() {
+  MapStructValue mapValue;
+  mapValue.f1 = "1";
+  mapValue.f2 = 2;
+
+  MapStruct result;
+  result.f1 = {{1, mapValue}, {2, mapValue}, {3, mapValue}};
+  result.f2.f1 = "abc";
+  result.f2.f2 = 123;
+  result.f5 = 5;
+  return result;
+}
+
 template <typename Dst, typename Src>
 Dst nimble_cast(Src& src) {
   NimbleProtocolWriter writer;
@@ -153,7 +166,17 @@ TEST(NimbleForwardCompatibilityTest, PrimitivesTypesReordered) {
 }
 
 TEST(NimbleForwardCompatibilityTest, BigFieldIds) {
-  auto bigFieldIds = defaultBigFieldIds();
+  BigFieldIds bigFieldIds;
+  bigFieldIds.f1 = 1;
+  bigFieldIds.f100 = 100;
+  bigFieldIds.f2 = 2;
+  bigFieldIds.f101 = 101;
+  bigFieldIds.f102 = 102;
+  bigFieldIds.f1000 = 1000;
+  bigFieldIds.f1001 = 1001;
+  bigFieldIds.f3 = 3;
+  bigFieldIds.f4 = 4;
+
   auto bigFieldIdsMissing = nimble_cast<BigFieldIdsMissing>(bigFieldIds);
   EXPECT_EQ(1, bigFieldIdsMissing.f1);
   EXPECT_EQ(2, bigFieldIdsMissing.f2);
@@ -161,7 +184,14 @@ TEST(NimbleForwardCompatibilityTest, BigFieldIds) {
 }
 
 TEST(NimbleForwardCompatibilityTest, NestedStruct) {
-  auto nested = defaultNestedStructL2();
+  NestedStructL2 nested;
+  nested.f1 = "1";
+  nested.f2.f1 = 1;
+  nested.f2.f2 = 2;
+  nested.f2.f3.f1 = 1;
+  nested.f2.f3.f2 = 2;
+  nested.f3 = 3;
+
   auto casted = nimble_cast<NestedStructMissingSubstruct>(nested);
   EXPECT_EQ("1", casted.f1);
   EXPECT_EQ(3, casted.f3);
@@ -203,6 +233,37 @@ TEST(NimbleForwardCompatibilityTest, ListElemTypeChanged) {
   std::vector<int32_t> expectedList = {1, 2, 3, 4, 5};
   EXPECT_EQ(expectedList, casted.f4);
   EXPECT_EQ(789, casted.f5);
+}
+
+TEST(NimbleForwardCompatibilityTest, Maps) {
+  auto mapStruct = defaultMapStruct();
+  auto casted = nimble_cast<MapStructMissingFields>(mapStruct);
+  EXPECT_EQ("abc", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+}
+
+TEST(NimbleForwardCompatibilityTest, MapTypeChanged) {
+  auto mapStruct = defaultMapStruct();
+  auto casted = nimble_cast<MapStructTypeChanged>(mapStruct);
+  EXPECT_EQ("abc", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+  EXPECT_EQ(5, casted.f5);
+}
+
+TEST(NimbleForwardCompatibilityTest, MapKeyTypeChanged) {
+  auto mapStruct = defaultMapStruct();
+  auto casted = nimble_cast<MapStructKeyTypeChanged>(mapStruct);
+  EXPECT_EQ("abc", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+  EXPECT_EQ(5, casted.f5);
+}
+
+TEST(NimbleForwardCompatibilityTest, MapValueTypeChanged) {
+  auto mapStruct = defaultMapStruct();
+  auto casted = nimble_cast<MapStructValueTypeChanged>(mapStruct);
+  EXPECT_EQ("abc", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+  EXPECT_EQ(5, casted.f5);
 }
 
 } // namespace detail

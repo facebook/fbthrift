@@ -566,6 +566,7 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
     case NimbleType::LIST: {
       NimbleType elemType;
       std::uint32_t size;
+      // Have to maintain borrowship precondition.
       state.returnFieldPtrs(this);
       readListBegin(elemType, size);
       state.borrowFieldPtrs(this);
@@ -576,7 +577,19 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       break;
     }
     case NimbleType::MAP: {
-      throw std::runtime_error("not implemented yet");
+      NimbleType keyType;
+      NimbleType valueType;
+      std::uint32_t size;
+      // Have to maintain borrowship precondition.
+      state.returnFieldPtrs(this);
+      readMapBegin(keyType, valueType, size);
+      state.borrowFieldPtrs(this);
+      for (std::uint32_t i = 0; i < size; ++i) {
+        state.nimbleType = keyType;
+        skip(state);
+        state.nimbleType = valueType;
+        skip(state);
+      }
       break;
     }
     case NimbleType::INVALID: {

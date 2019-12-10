@@ -158,3 +158,37 @@ struct ListStructListElemTypeChanged {
   4: list<i32> f4;
   5: i32 f5;
 }
+
+struct MapStructValue {
+  1: string f1;
+  2: i32 f2;
+}
+
+struct MapStruct {
+  1: map<i32, MapStructValue> f1;
+  2: MapStructValue f2;
+  5: i32 f5;
+}
+
+struct MapStructMissingFields {
+  2: MapStructValue f2;
+  5: i32 f5;
+}
+
+struct MapStructTypeChanged {
+  1: i32 f1;
+  2: MapStructValue f2;
+  5: i32 f5;
+}
+
+struct MapStructKeyTypeChanged {
+  1: map<i64, MapStructValue> f1;
+  2: MapStructValue f2;
+  5: i32 f5;
+}
+
+struct MapStructValueTypeChanged {
+  1: map<i32, string> f1;
+  2: MapStructValue f2;
+  5: i32 f5;
+}
