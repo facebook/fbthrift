@@ -523,14 +523,15 @@ inline void NimbleProtocolReader::skip_n(
   for (std::uint32_t i = 0; i < n; ++i) {
     for (auto type : types) {
       state.nimbleType = type;
-      skip(state);
+      state = skip(std::move(state));
     }
   }
   state.returnFieldPtrs(this);
   returnState(std::move(state.decoderState));
 }
 
-inline void NimbleProtocolReader::skip(StructReadState& state) {
+inline NimbleProtocolReader::StructReadState NimbleProtocolReader::skip(
+    StructReadState state) {
   // As a precondition, state has borrowed from the protocol. So, in cases where
   // we need to call a method that affects protocol state (like when skipping
   // containers), we need to return and borrow it again before recursing into a
@@ -541,17 +542,17 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
     }
     case NimbleType::ONE_CHUNK: {
       decoder_.nextContentChunk(state.decoderState);
-      return;
+      break;
     }
     case NimbleType::TWO_CHUNK: {
       decoder_.nextContentChunk(state.decoderState);
       decoder_.nextContentChunk(state.decoderState);
-      return;
+      break;
     }
     case NimbleType::STRING: {
       std::uint32_t size = decoder_.nextSizeChunk();
       decoder_.skipStringBytes(size);
-      return;
+      break;
     }
     case NimbleType::STRUCT: {
       while (true) {
@@ -559,9 +560,9 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
         if (state.atStop()) {
           break;
         }
-        skip(state);
+        state = skip(std::move(state));
       }
-      return;
+      break;
     }
     case NimbleType::LIST: {
       NimbleType elemType;
@@ -572,7 +573,7 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       state.borrowFieldPtrs(this);
       for (std::uint32_t i = 0; i < size; ++i) {
         state.nimbleType = elemType;
-        skip(state);
+        state = skip(std::move(state));
       }
       break;
     }
@@ -586,9 +587,9 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       state.borrowFieldPtrs(this);
       for (std::uint32_t i = 0; i < size; ++i) {
         state.nimbleType = keyType;
-        skip(state);
+        state = skip(std::move(state));
         state.nimbleType = valueType;
-        skip(state);
+        state = skip(std::move(state));
       }
       break;
     }
@@ -596,6 +597,7 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       TProtocolException::throwInvalidSkipType(protocol::T_STOP);
     }
   }
+  return state;
 }
 
 inline void NimbleProtocolReader::advanceToNextFieldSlow(

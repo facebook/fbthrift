@@ -224,6 +224,10 @@ class NimbleProtocolReader {
       std::initializer_list<detail::nimble::NimbleType> types);
 
   struct StructReadState {
+    StructReadState() = default;
+    StructReadState(StructReadState&&) = default;
+    StructReadState& operator=(StructReadState&&) = default;
+
     int16_t fieldId;
     detail::nimble::NimbleType nimbleType;
     detail::BufferingNimbleDecoderState decoderState;
@@ -320,7 +324,7 @@ class NimbleProtocolReader {
     }
 
     inline void skip(NimbleProtocolReader* iprot) {
-      iprot->skip(*this);
+      *this = iprot->skip(std::move(*this));
     }
 
     std::string& fieldName() {
@@ -340,7 +344,7 @@ class NimbleProtocolReader {
       TType expectedFieldType,
       StructReadState& state);
   /* The actual method that does skip when there is a mismatch */
-  void skip(StructReadState& state);
+  StructReadState skip(StructReadState state);
 
  private:
   friend struct StructReadState;
