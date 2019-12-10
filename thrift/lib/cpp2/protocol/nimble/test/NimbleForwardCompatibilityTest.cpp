@@ -64,6 +64,24 @@ NestedStructL2 defaultNestedStructL2() {
   return result;
 }
 
+ListStructElem defaultListStructElem() {
+  ListStructElem result;
+  result.f1 = "1";
+  result.f2 = 2;
+  return result;
+}
+
+ListStruct defaultListStruct() {
+  ListStruct result;
+  result.f1 = std::vector<ListStructElem>(10, defaultListStructElem());
+  result.f2.f1 = "unusual";
+  result.f2.f2 = 123;
+  result.f3 = 456;
+  result.f4 = {1, 2, 3, 4, 5};
+  result.f5 = 789;
+  return result;
+}
+
 template <typename Dst, typename Src>
 Dst nimble_cast(Src& src) {
   NimbleProtocolWriter writer;
@@ -154,6 +172,37 @@ TEST(NimbleForwardCompatibilityTest, NestedStructTypeChanged) {
   auto casted = nimble_cast<NestedStructTypeChanged>(nested);
   EXPECT_EQ("1", casted.f1);
   EXPECT_EQ(3, casted.f3);
+}
+
+TEST(NimbleForwardCompatabilityTest, Lists) {
+  auto listStruct = defaultListStruct();
+  auto casted = nimble_cast<ListStructMissingFields>(listStruct);
+  EXPECT_EQ("unusual", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+  EXPECT_EQ(456, casted.f3);
+  EXPECT_EQ(789, casted.f5);
+}
+
+TEST(NimbleForwardCompatibilityTest, ListTypeChanged) {
+  auto listStruct = defaultListStruct();
+  auto casted = nimble_cast<ListStructTypeChanged>(listStruct);
+  EXPECT_EQ("unusual", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+  EXPECT_EQ(456, casted.f3);
+  std::vector<int32_t> expectedList = {1, 2, 3, 4, 5};
+  EXPECT_EQ(expectedList, casted.f4);
+  EXPECT_EQ(789, casted.f5);
+}
+
+TEST(NimbleForwardCompatibilityTest, ListElemTypeChanged) {
+  auto listStruct = defaultListStruct();
+  auto casted = nimble_cast<ListStructListElemTypeChanged>(listStruct);
+  EXPECT_EQ("unusual", casted.f2.f1);
+  EXPECT_EQ(123, casted.f2.f2);
+  EXPECT_EQ(456, casted.f3);
+  std::vector<int32_t> expectedList = {1, 2, 3, 4, 5};
+  EXPECT_EQ(expectedList, casted.f4);
+  EXPECT_EQ(789, casted.f5);
 }
 
 } // namespace detail

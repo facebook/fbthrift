@@ -514,7 +514,27 @@ inline void NimbleProtocolReader::readBinaryWithContext(
   decoder_.nextBinary(str, size);
 }
 
+inline void NimbleProtocolReader::skip_n(
+    std::uint32_t n,
+    std::initializer_list<detail::nimble::NimbleType> types) {
+  StructReadState state;
+  state.borrowFieldPtrs(this);
+  state.decoderState = borrowState();
+  for (std::uint32_t i = 0; i < n; ++i) {
+    for (auto type : types) {
+      state.nimbleType = type;
+      skip(state);
+    }
+  }
+  state.returnFieldPtrs(this);
+  returnState(std::move(state.decoderState));
+}
+
 inline void NimbleProtocolReader::skip(StructReadState& state) {
+  // As a precondition, state has borrowed from the protocol. So, in cases where
+  // we need to call a method that affects protocol state (like when skipping
+  // containers), we need to return and borrow it again before recursing into a
+  // skip call.
   switch (state.nimbleType) {
     case NimbleType::STOP: {
       TProtocolException::throwInvalidSkipType(protocol::T_STOP);
@@ -529,7 +549,8 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       return;
     }
     case NimbleType::STRING: {
-      decoder_.skipStringBytes(decoder_.nextSizeChunk());
+      std::uint32_t size = decoder_.nextSizeChunk();
+      decoder_.skipStringBytes(size);
       return;
     }
     case NimbleType::STRUCT: {
@@ -543,7 +564,15 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       return;
     }
     case NimbleType::LIST: {
-      throw std::runtime_error("not implemented yet");
+      NimbleType elemType;
+      std::uint32_t size;
+      state.returnFieldPtrs(this);
+      readListBegin(elemType, size);
+      state.borrowFieldPtrs(this);
+      for (std::uint32_t i = 0; i < size; ++i) {
+        state.nimbleType = elemType;
+        skip(state);
+      }
       break;
     }
     case NimbleType::MAP: {

@@ -121,3 +121,40 @@ struct NestedStructTypeChanged {
   2: float f2;
   3: i32 f3;
 }
+
+struct ListStructElem {
+  1: string f1;
+  2: i32 f2;
+}
+
+struct ListStruct {
+  1: list<ListStructElem> f1;
+  2: ListStructElem f2;
+  3: i32 f3;
+  4: list<i32> f4;
+  5: i32 f5;
+}
+
+struct ListStructMissingFields {
+  2: ListStructElem f2;
+  3: i32 f3;
+  5: i32 f5;
+}
+
+struct ListStructTypeChanged {
+  // I.e. we have a ListStructElem, not a list of them.
+  1: ListStructElem f1;
+  2: ListStructElem f2;
+  3: i32 f3;
+  4: list<i32> f4;
+  5: i32 f5;
+}
+
+struct ListStructListElemTypeChanged {
+  // We have a list, but of a different type.
+  1: list<string> f1;
+  2: ListStructElem f2;
+  3: i32 f3;
+  4: list<i32> f4;
+  5: i32 f5;
+}

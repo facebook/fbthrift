@@ -219,6 +219,10 @@ class NimbleProtocolReader {
     return 0;
   }
 
+  void skip_n(
+      std::uint32_t n,
+      std::initializer_list<detail::nimble::NimbleType> types);
+
   struct StructReadState {
     int16_t fieldId;
     detail::nimble::NimbleType nimbleType;
@@ -387,13 +391,10 @@ inline void skip<NimbleProtocolReader, detail::nimble::NimbleType>(
 
 template <>
 inline void skip_n<NimbleProtocolReader, detail::nimble::NimbleType>(
-    NimbleProtocolReader& /* prot */,
-    std::uint32_t /* n */,
-    std::initializer_list<detail::nimble::NimbleType> /* types*/) {
-  volatile bool b = true;
-  if (b) {
-    throw std::runtime_error("Not implemented yet");
-  }
+    NimbleProtocolReader& prot,
+    std::uint32_t n,
+    std::initializer_list<detail::nimble::NimbleType> types) {
+  prot.skip_n(n, types);
 }
 
 } // namespace thrift
