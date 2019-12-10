@@ -301,11 +301,10 @@ void RocketServerConnection::handleStreamFrame(
   if (!clientCallback.serverCallbackReady()) {
     switch (frameType) {
       case FrameType::CANCEL: {
-        clientCallback.earlyCancelled();
-        return;
+        return clientCallback.earlyCancelled();
       }
       default:
-        close(folly::make_exception_wrapper<RocketException>(
+        return close(folly::make_exception_wrapper<RocketException>(
             ErrorCode::INVALID,
             fmt::format(
                 "Received unexpected early frame, stream id ({}) type ({})",
@@ -375,11 +374,10 @@ void RocketServerConnection::handleSinkFrame(
   if (!clientCallback.serverCallbackReady()) {
     switch (frameType) {
       case FrameType::CANCEL: {
-        clientCallback.earlyCancelled();
-        return;
+        return clientCallback.earlyCancelled();
       }
       default:
-        close(folly::make_exception_wrapper<RocketException>(
+        return close(folly::make_exception_wrapper<RocketException>(
             ErrorCode::INVALID,
             fmt::format(
                 "Received unexpected early frame, stream id ({}) type ({})",
