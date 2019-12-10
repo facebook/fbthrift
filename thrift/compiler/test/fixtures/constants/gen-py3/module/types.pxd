@@ -486,6 +486,13 @@ cdef class List__Map__string_i32(thrift.py3.types.Container):
     @staticmethod
     cdef shared_ptr[vector[cmap[string,int32_t]]] _make_instance(object items) except *
 
+cdef class Map__string_string(thrift.py3.types.Container):
+    cdef shared_ptr[cmap[string,string]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,string]])
+    @staticmethod
+    cdef shared_ptr[cmap[string,string]] _make_instance(object items) except *
+
 cdef class List__Range(thrift.py3.types.Container):
     cdef shared_ptr[vector[cRange]] _cpp_obj
     @staticmethod
@@ -534,13 +541,6 @@ cdef class Map__i32_string(thrift.py3.types.Container):
     cdef create(shared_ptr[cmap[int32_t,string]])
     @staticmethod
     cdef shared_ptr[cmap[int32_t,string]] _make_instance(object items) except *
-
-cdef class Map__string_string(thrift.py3.types.Container):
-    cdef shared_ptr[cmap[string,string]] _cpp_obj
-    @staticmethod
-    cdef create(shared_ptr[cmap[string,string]])
-    @staticmethod
-    cdef shared_ptr[cmap[string,string]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cInternship]] move "std::move"(unique_ptr[vector[cInternship]])
@@ -595,6 +595,7 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "::cpp2":
     cdef cCompany cmy_company "::cpp2::module_constants::my_company"()
     cdef const char* cfoo "::cpp2::module_constants::foo"()
     cdef int32_t cbar "::cpp2::module_constants::bar"
+    cdef cmap[string,string] cmymap "::cpp2::module_constants::mymap"()
     cdef cInternship cinstagram "::cpp2::module_constants::instagram"()
     cdef cInternship cpartial_const "::cpp2::module_constants::partial_const"()
     cdef vector[cRange] ckRanges "::cpp2::module_constants::kRanges"()

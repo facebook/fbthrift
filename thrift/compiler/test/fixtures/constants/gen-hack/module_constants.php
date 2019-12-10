@@ -150,6 +150,20 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * map<string, string> mymap
+   */
+  private static ?Map<string, string> $__mymap = null;
+  public static function mymap(): Map<string, string> {
+    if (self::$__mymap === null) {
+      self::$__mymap = Map {
+        "keys" => "values",
+      };
+    }
+    return self::$__mymap;
+  }
+
+  /**
+   * Original thrift constant:-
    * struct module.Internship instagram
    */
   private static ?Internship $__instagram = null;
@@ -797,6 +811,9 @@ class module_CONSTANTS {
         "my_company" => Company::FACEBOOK,
         "foo" => "foo",
         "bar" => 42,
+        "mymap" => Map {
+          "keys" => "values",
+        },
         "instagram" => new Internship(
           12,
           "Software Engineer",

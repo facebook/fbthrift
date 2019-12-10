@@ -336,3 +336,4 @@ class union2:
 MyCompany = Company
 MyStringIdentifier = str
 MyIntIdentifier = int
+MyMapIdentifier = __T.Dict[str, str]

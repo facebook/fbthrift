@@ -261,6 +261,7 @@ namespace cpp2 {
 typedef  ::cpp2::Company MyCompany;
 typedef ::std::string MyStringIdentifier;
 typedef int32_t MyIntIdentifier;
+typedef ::std::map<::std::string, ::std::string> MyMapIdentifier;
 
 } // cpp2
 // END typedefs

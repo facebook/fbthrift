@@ -56,9 +56,13 @@ struct Internship {
 
 typedef string MyStringIdentifier
 typedef i32 MyIntIdentifier
+typedef map<string, string> MyMapIdentifier
 
 const MyStringIdentifier foo = "foo"
 const MyIntIdentifier bar = 42
+const MyMapIdentifier mymap = {
+  "keys": "values"
+};
 
 const Internship instagram = {
   "weeks": 12,

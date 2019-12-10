@@ -30,6 +30,7 @@ const LongDoubleValue = 2.59961e-05
 var MyCompany MyCompany
 var Foo MyStringIdentifier
 var Bar MyIntIdentifier
+var Mymap MyMapIdentifier
 var Instagram *Internship
 var PartialConst *Internship
 var KRanges []*Range
@@ -89,6 +90,10 @@ MyCompany = 0
 Foo = "foo"
 
 Bar = 42
+
+Mymap = map[string]string{
+  "keys": "values",
+}
 
 Instagram = &Internship{
   Weeks: 12,

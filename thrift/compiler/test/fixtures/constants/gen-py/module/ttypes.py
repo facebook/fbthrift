@@ -29,7 +29,7 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range', 'struct1', 'struct2', 'struct3', 'union1', 'union2', 'MyCompany', 'MyStringIdentifier', 'MyIntIdentifier']
+__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range', 'struct1', 'struct2', 'struct3', 'union1', 'union2', 'MyCompany', 'MyStringIdentifier', 'MyIntIdentifier', 'MyMapIdentifier']
 
 class EmptyEnum:
 
@@ -943,6 +943,7 @@ class union2(object):
 MyCompany = Company
 MyStringIdentifier = UnimplementedTypedef()
 MyIntIdentifier = UnimplementedTypedef()
+MyMapIdentifier = UnimplementedTypedef()
 all_structs.append(Internship)
 Internship.thrift_spec = (
   None, # 0

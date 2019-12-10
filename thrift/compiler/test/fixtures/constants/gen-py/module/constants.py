@@ -47,6 +47,10 @@ foo = "foo"
 
 bar = 42
 
+mymap = {
+  "keys" : "values",
+}
+
 instagram = Internship(**{
   "weeks" : 12,
   "title" : "Software Engineer",

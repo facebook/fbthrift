@@ -135,6 +135,10 @@ type MyIntIdentifier = int32
 
 func MyIntIdentifierPtr(v MyIntIdentifier) *MyIntIdentifier { return &v }
 
+type MyMapIdentifier = map[string]string
+
+func MyMapIdentifierPtr(v MyMapIdentifier) *MyMapIdentifier { return &v }
+
 // Attributes:
 //  - Weeks
 //  - Title

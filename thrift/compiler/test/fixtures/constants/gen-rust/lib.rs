@@ -46,6 +46,14 @@ pub mod consts {
     pub const bar: crate::types::MyIntIdentifier = 42;
 
     lazy_static::lazy_static! {
+        pub static ref mymap: crate::types::MyMapIdentifier = {
+            let mut map = std::collections::BTreeMap::new();
+            map.insert("keys".to_owned(), "values".to_owned());
+            map
+        };
+    }
+
+    lazy_static::lazy_static! {
         pub static ref instagram: crate::types::Internship = crate::types::Internship {
             weeks: 12,
             title: "Software Engineer".to_owned(),
@@ -279,6 +287,8 @@ pub mod types {
     pub type MyStringIdentifier = String;
 
     pub type MyIntIdentifier = i32;
+
+    pub type MyMapIdentifier = std::collections::BTreeMap<String, String>;
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Internship {
@@ -583,6 +593,7 @@ pub mod types {
             Ok(Company::from(p.read_i32()?))
         }
     }
+
 
 
 

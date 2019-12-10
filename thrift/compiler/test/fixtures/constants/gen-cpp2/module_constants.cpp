@@ -41,6 +41,11 @@ constexpr char const * const module_constants::foo_;
 
 constexpr  ::cpp2::MyIntIdentifier const module_constants::bar_;
 
+ ::cpp2::MyMapIdentifier const& module_constants::mymap() {
+  static folly::Indestructible< ::cpp2::MyMapIdentifier> const instance(std::initializer_list<std::pair<const ::std::string, ::std::string>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("keys"), apache::thrift::StringTraits< std::string>::fromStringLiteral("values")}});
+  return *instance;
+}
+
  ::cpp2::Internship const& module_constants::instagram() {
   static folly::Indestructible< ::cpp2::Internship> const instance(::apache::thrift::detail::make_constant< ::cpp2::Internship>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::weeks>(12), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::title>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::employer>( ::cpp2::Company::INSTAGRAM)));
   return *instance;

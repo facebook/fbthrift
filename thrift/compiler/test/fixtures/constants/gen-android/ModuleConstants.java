@@ -47,6 +47,11 @@ public class ModuleConstants {
 
   public static final int bar = 42;
 
+  public static final Map<String,String> mymap = new HashMap<String,String>();
+  static {
+    mymap.put("keys", "values");
+  }
+
   public static final ModuleLogger instagram = new ModuleLogger(Module.EventType.Internship);
   static {
     instagram.addProperty(Module.Internship_weeks, 12);

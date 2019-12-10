@@ -3083,6 +3083,144 @@ cdef class List__Map__string_i32(thrift.py3.types.Container):
 Sequence.register(List__Map__string_i32)
 
 @__cython.auto_pickle(False)
+cdef class Map__string_string(thrift.py3.types.Container):
+    def __init__(self, items=None):
+        if isinstance(items, Map__string_string):
+            self._cpp_obj = (<Map__string_string> items)._cpp_obj
+        else:
+            self._cpp_obj = Map__string_string._make_instance(items)
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,string]] c_items):
+        inst = <Map__string_string>Map__string_string.__new__(Map__string_string)
+        inst._cpp_obj = move_shared(c_items)
+        return inst
+
+    def __copy__(Map__string_string self):
+        cdef shared_ptr[cmap[string,string]] cpp_obj = make_shared[cmap[string,string]](
+            deref(self._cpp_obj)
+        )
+        return Map__string_string.create(move_shared(cpp_obj))
+
+    @staticmethod
+    cdef shared_ptr[cmap[string,string]] _make_instance(object items) except *:
+        cdef shared_ptr[cmap[string,string]] c_inst = make_shared[cmap[string,string]]()
+        if items is not None:
+            for key, item in items.items():
+                if not isinstance(key, str):
+                    raise TypeError(f"{key!r} is not of type str")
+                if not isinstance(item, str):
+                    raise TypeError(f"{item!r} is not of type str")
+
+                deref(c_inst)[key.encode('UTF-8')] = item.encode('UTF-8')
+        return c_inst
+
+    def __getitem__(self, key):
+        err = KeyError(f'{key}')
+        if not self or key is None:
+            raise err
+        if not isinstance(key, str):
+            raise err from None
+        cdef cmap[string,string].iterator iter = deref(
+            self._cpp_obj).find(key.encode('UTF-8'))
+        if iter == deref(self._cpp_obj).end():
+            raise err
+        cdef string citem = deref(iter).second
+        return bytes(citem).decode('UTF-8')
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __iter__(self):
+        if not self:
+            return
+        cdef string citem
+        cdef cmap[string,string].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc).first
+            yield bytes(citem).decode('UTF-8')
+            inc(loc)
+
+    def __eq__(self, other):
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return False
+        if len(self) != len(other):
+            return False
+
+        for key in self:
+            if key not in other:
+                return False
+            if other[key] != self[key]:
+                return False
+
+        return True
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
+
+    def __contains__(self, key):
+        if not self or key is None:
+            return False
+        if not isinstance(key, str):
+            return False
+        cdef string ckey = key.encode('UTF-8')
+        return deref(self._cpp_obj).count(ckey) > 0
+
+    def get(self, key, default=None):
+        if not self or key is None:
+            return default
+        if not isinstance(key, str):
+            return default
+        if key not in self:
+            return default
+        return self[key]
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        if not self:
+            return
+        cdef string citem
+        cdef cmap[string,string].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            citem = deref(loc).second
+            yield bytes(citem).decode('UTF-8')
+            inc(loc)
+
+    def items(self):
+        if not self:
+            return
+        cdef string ckey
+        cdef string citem
+        cdef cmap[string,string].iterator loc = deref(self._cpp_obj).begin()
+        while loc != deref(self._cpp_obj).end():
+            ckey = deref(loc).first
+            citem = deref(loc).second
+            yield (ckey.data().decode('UTF-8'), bytes(citem).decode('UTF-8'))
+            inc(loc)
+
+    def __reduce__(self):
+        return (Map__string_string, (dict(self), ))
+
+    @staticmethod
+    def __get_reflection__():
+        return __MapSpec(key=str, value=str)
+
+
+Mapping.register(Map__string_string)
+
+@__cython.auto_pickle(False)
 cdef class List__Range(thrift.py3.types.Container):
     def __init__(self, items=None):
         if isinstance(items, List__Range):
@@ -4353,144 +4491,6 @@ cdef class Map__i32_string(thrift.py3.types.Container):
 
 Mapping.register(Map__i32_string)
 
-@__cython.auto_pickle(False)
-cdef class Map__string_string(thrift.py3.types.Container):
-    def __init__(self, items=None):
-        if isinstance(items, Map__string_string):
-            self._cpp_obj = (<Map__string_string> items)._cpp_obj
-        else:
-            self._cpp_obj = Map__string_string._make_instance(items)
-
-    @staticmethod
-    cdef create(shared_ptr[cmap[string,string]] c_items):
-        inst = <Map__string_string>Map__string_string.__new__(Map__string_string)
-        inst._cpp_obj = move_shared(c_items)
-        return inst
-
-    def __copy__(Map__string_string self):
-        cdef shared_ptr[cmap[string,string]] cpp_obj = make_shared[cmap[string,string]](
-            deref(self._cpp_obj)
-        )
-        return Map__string_string.create(move_shared(cpp_obj))
-
-    @staticmethod
-    cdef shared_ptr[cmap[string,string]] _make_instance(object items) except *:
-        cdef shared_ptr[cmap[string,string]] c_inst = make_shared[cmap[string,string]]()
-        if items is not None:
-            for key, item in items.items():
-                if not isinstance(key, str):
-                    raise TypeError(f"{key!r} is not of type str")
-                if not isinstance(item, str):
-                    raise TypeError(f"{item!r} is not of type str")
-
-                deref(c_inst)[key.encode('UTF-8')] = item.encode('UTF-8')
-        return c_inst
-
-    def __getitem__(self, key):
-        err = KeyError(f'{key}')
-        if not self or key is None:
-            raise err
-        if not isinstance(key, str):
-            raise err from None
-        cdef cmap[string,string].iterator iter = deref(
-            self._cpp_obj).find(key.encode('UTF-8'))
-        if iter == deref(self._cpp_obj).end():
-            raise err
-        cdef string citem = deref(iter).second
-        return bytes(citem).decode('UTF-8')
-
-    def __len__(self):
-        return deref(self._cpp_obj).size()
-
-    def __iter__(self):
-        if not self:
-            return
-        cdef string citem
-        cdef cmap[string,string].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = deref(loc).first
-            yield bytes(citem).decode('UTF-8')
-            inc(loc)
-
-    def __eq__(self, other):
-        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
-            return False
-        if len(self) != len(other):
-            return False
-
-        for key in self:
-            if key not in other:
-                return False
-            if other[key] != self[key]:
-                return False
-
-        return True
-
-    def __ne__(self, other):
-        return not self.__eq__(other)
-
-    def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self.items()))
-        return self.__hash
-
-    def __repr__(self):
-        if not self:
-            return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
-
-    def __contains__(self, key):
-        if not self or key is None:
-            return False
-        if not isinstance(key, str):
-            return False
-        cdef string ckey = key.encode('UTF-8')
-        return deref(self._cpp_obj).count(ckey) > 0
-
-    def get(self, key, default=None):
-        if not self or key is None:
-            return default
-        if not isinstance(key, str):
-            return default
-        if key not in self:
-            return default
-        return self[key]
-
-    def keys(self):
-        return self.__iter__()
-
-    def values(self):
-        if not self:
-            return
-        cdef string citem
-        cdef cmap[string,string].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            citem = deref(loc).second
-            yield bytes(citem).decode('UTF-8')
-            inc(loc)
-
-    def items(self):
-        if not self:
-            return
-        cdef string ckey
-        cdef string citem
-        cdef cmap[string,string].iterator loc = deref(self._cpp_obj).begin()
-        while loc != deref(self._cpp_obj).end():
-            ckey = deref(loc).first
-            citem = deref(loc).second
-            yield (ckey.data().decode('UTF-8'), bytes(citem).decode('UTF-8'))
-            inc(loc)
-
-    def __reduce__(self):
-        return (Map__string_string, (dict(self), ))
-
-    @staticmethod
-    def __get_reflection__():
-        return __MapSpec(key=str, value=str)
-
-
-Mapping.register(Map__string_string)
-
 myInt = 1337
 name = cname().decode('UTF-8')
 states = List__Map__string_i32.create(constant_shared_ptr(cstates()))
@@ -4502,6 +4502,7 @@ longDoubleValue = 2.59961000990301e-05
 my_company = Company(<int> (cmy_company()))
 foo = cfoo().decode('UTF-8')
 bar = 42
+mymap = Map__string_string.create(constant_shared_ptr(cmymap()))
 instagram = Internship.create(constant_shared_ptr(cinstagram()))
 partial_const = Internship.create(constant_shared_ptr(cpartial_const()))
 kRanges = List__Range.create(constant_shared_ptr(ckRanges()))
@@ -4545,3 +4546,4 @@ empty_string_string_map = Map__string_string.create(constant_shared_ptr(cempty_s
 MyCompany = Company
 MyStringIdentifier = str
 MyIntIdentifier = int
+MyMapIdentifier = Map__string_string

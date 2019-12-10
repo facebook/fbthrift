@@ -84,6 +84,8 @@ struct module_constants {
     return bar_;
   }
 
+  static  ::cpp2::MyMapIdentifier const& mymap();
+
   static  ::cpp2::Internship const& instagram();
 
   static  ::cpp2::Internship const& partial_const();

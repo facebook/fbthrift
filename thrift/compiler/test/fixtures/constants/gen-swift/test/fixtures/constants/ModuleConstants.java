@@ -47,6 +47,10 @@ public final class ModuleConstants {
 
     public static final int BAR = 42;
 
+    public static final Map<String, String> MYMAP = ImmutableMap.<String, String>builder()
+        .put("keys", "values")
+        .build();
+
     public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.constants.Company.INSTAGRAM).build();
 
     public static final test.fixtures.constants.Internship PARTIAL_CONST = new test.fixtures.constants.Internship.Builder().setWeeks(8).setTitle("Some Job").build();

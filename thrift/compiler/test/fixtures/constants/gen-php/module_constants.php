@@ -106,6 +106,16 @@ class module_CONSTANTS {
     return self::$__bar;
   }
 
+  private static $__mymap = null;
+  public static function mymap() {
+    if (self::$__mymap == null) {
+      self::$__mymap = array(
+        "keys" => "values",
+      );
+    }
+    return self::$__mymap;
+  }
+
   private static $__instagram = null;
   public static function instagram() {
     if (self::$__instagram == null) {
@@ -564,6 +574,9 @@ class module_CONSTANTS {
         "my_company" =>         0,
         "foo" => "foo",
         "bar" => 42,
+        "mymap" => array(
+          "keys" => "values",
+        ),
         "instagram" => new Internship(array(
           "weeks" => 12,
           "title" => "Software Engineer",

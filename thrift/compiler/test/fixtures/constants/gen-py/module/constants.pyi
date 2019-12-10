@@ -19,6 +19,7 @@ longDoubleValue: float
 my_company: Company
 foo: str
 bar: int
+mymap: __T.Dict[str, str]
 instagram: Internship
 partial_const: Internship
 kRanges: __T.List[Range]
