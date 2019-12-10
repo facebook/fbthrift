@@ -23,6 +23,9 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingServiceServerStream.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/BlockingWait.h>
+#endif
 
 using namespace ::testing;
 using namespace apache::thrift;
@@ -232,3 +235,58 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
       });
   EXPECT_TRUE(done);
 }
+
+TEST(StreamingTest, SubscribeWrapper) {
+  class DiffTypesStreamingServiceServerStream
+      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+   public:
+    apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
+      auto [stream, ptr] =
+          apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+      ptr.next(42);
+      std::move(ptr).complete();
+      return std::move(stream);
+    }
+  };
+  DiffTypesStreamingServiceServerStream service;
+
+  bool done = false, first = true;
+  service.downloadObject(0)
+      .subscribe(
+          [&first](auto&& t) mutable {
+            EXPECT_TRUE(first);
+            EXPECT_EQ(t, 42);
+            first = false;
+          },
+          [](auto&&) { FAIL(); },
+          [&first, &done]() mutable {
+            EXPECT_FALSE(first);
+            EXPECT_FALSE(done);
+            done = true;
+          })
+      .join();
+  EXPECT_TRUE(done);
+}
+
+#if FOLLY_HAS_COROUTINES
+TEST(StreamingTest, WrapperToAsyncGenerator) {
+  class DiffTypesStreamingServiceServerStream
+      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+   public:
+    apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
+      auto [stream, ptr] =
+          apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+      ptr.next(42);
+      std::move(ptr).complete();
+      return std::move(stream);
+    }
+  };
+  DiffTypesStreamingServiceServerStream service;
+  auto gen = service.downloadObject(0).toAsyncGenerator();
+  folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+    auto next = co_await gen.next();
+    EXPECT_EQ(*next, 42);
+    EXPECT_FALSE(co_await gen.next());
+  }());
+}
+#endif

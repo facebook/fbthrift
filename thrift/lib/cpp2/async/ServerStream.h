@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
 #include <thrift/lib/cpp2/async/ServerPublisherStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 
 namespace apache {
 namespace thrift {
@@ -72,54 +71,37 @@ class ServerStream {
         ServerStream<T>(std::move(pair.first)), std::move(pair.second));
   }
 
-  // Helper for unit testing your service handler
+  // Helpers for unit testing your service handler
+  ClientBufferedStream<T> toClientStream(size_t bufferSize = 100) &&;
   // Blocks until the stream completes, calling the provided function
   // on each value and on the error / completion event.
   void consumeInline(folly::Function<void(folly::Try<T>&&)> consumer) && {
-    folly::EventBase eb;
-    struct : public detail::ClientStreamBridge::FirstResponseCallback {
-      void onFirstResponse(
-          FirstResponsePayload&&,
-          detail::ClientStreamBridge::ClientPtr clientStreamBridge) override {
-        ptr = std::move(clientStreamBridge);
-      }
-      void onFirstResponseError(folly::exception_wrapper) override {}
-      detail::ClientStreamBridge::ClientPtr ptr;
-    } firstResponseCallback;
-    auto streamBridge =
-        detail::ClientStreamBridge::create(&firstResponseCallback);
-
-    auto encode = [](folly::Try<T>&& in) {
-      if (in.hasValue()) {
-        folly::IOBufQueue buf;
-        apache::thrift::CompactSerializer::serialize(*in, &buf);
-        return folly::Try<StreamPayload>({buf.move(), {}});
-      } else if (in.hasException()) {
-        return folly::Try<StreamPayload>(in.exception());
-      } else {
-        return folly::Try<StreamPayload>();
-      }
-    };
-    auto decode = [](folly::Try<StreamPayload>&& in) {
-      if (in.hasValue()) {
-        T out;
-        apache::thrift::CompactSerializer::deserialize<T>(
-            in.value().payload.get(), out);
-        return folly::Try<T>(std::move(out));
-      } else if (in.hasException()) {
-        return folly::Try<T>(in.exception());
-      } else {
-        return folly::Try<T>();
-      }
-    };
-
-    (*this)(&eb, encode)({nullptr, {}}, streamBridge, &eb);
-    eb.loopOnce();
-    auto sub =
-        ClientBufferedStream<T>(std::move(firstResponseCallback.ptr), decode, 0)
-            .subscribeExTry(&eb, std::move(consumer));
-    eb.loop();
-    std::move(sub).join();
+    std::move(*this).toClientStream().subscribeInline(std::move(consumer));
+  }
+#if FOLLY_HAS_COROUTINES
+  folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
+    return std::move(*this).toClientStream().toAsyncGenerator();
+  }
+#endif
+  // Don't add new calls to this. Helper for migration.
+  auto subscribe(
+      folly::Function<void(T&&)> onValue,
+      folly::Function<void(folly::exception_wrapper)> onError =
+          [](folly::exception_wrapper) {},
+      folly::Function<void()> onComplete = [] {}) && {
+    return std::move(*this).toClientStream().subscribeExTry(
+        folly::getEventBase(),
+        [onValue = std::move(onValue),
+         onError = std::move(onError),
+         onComplete = std::move(onComplete)](folly::Try<T>&& t) mutable {
+          if (t.hasValue()) {
+            onValue(std::move(*t));
+          } else if (t.hasException()) {
+            onError(t.exception());
+          } else {
+            onComplete();
+          }
+        });
   }
 
   detail::ServerStreamFactory operator()(
@@ -149,3 +131,4 @@ struct ResponseAndServerStreamFactory {
 
 } // namespace thrift
 } // namespace apache
+#include "thrift/lib/cpp2/async/ServerStream-inl.h"
