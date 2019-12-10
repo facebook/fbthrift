@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/async/tests/util/gen-cpp2/TestStreamService.h>
 
 namespace testutil {
@@ -43,6 +44,20 @@ class TestStreamPublisherService : public TestStreamServiceSvIf {
 
   apache::thrift::ServerStream<int32_t> rangeThrowUDE(int32_t from, int32_t to)
       override;
+};
+
+class TestStreamWrappedService : public TestStreamServiceSvIf {
+ public:
+  apache::thrift::ServerStream<int32_t> range(int32_t from, int32_t to)
+      override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrow(int32_t from, int32_t to)
+      override;
+
+  apache::thrift::ServerStream<int32_t> rangeThrowUDE(int32_t from, int32_t to)
+      override;
+
+  folly::ScopedEventBaseThread executor;
 };
 
 } // namespace testservice

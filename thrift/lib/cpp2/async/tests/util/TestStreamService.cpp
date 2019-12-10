@@ -96,5 +96,47 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
   return std::move(stream);
 }
 
+apache::thrift::ServerStream<int32_t> TestStreamWrappedService::range(
+    int32_t from,
+    int32_t to) {
+  auto [stream, publisher] = apache::thrift::StreamPublisher<int32_t>::create(
+      folly::getKeepAliveToken(executor), [] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete();
+
+  return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamWrappedService::rangeThrow(
+    int32_t from,
+    int32_t to) {
+  auto [stream, publisher] = apache::thrift::StreamPublisher<int32_t>::create(
+      folly::getKeepAliveToken(executor), [] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete(std::runtime_error("I am a search bar"));
+
+  return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t> TestStreamWrappedService::rangeThrowUDE(
+    int32_t from,
+    int32_t to) {
+  auto [stream, publisher] = apache::thrift::StreamPublisher<int32_t>::create(
+      folly::getKeepAliveToken(executor), [] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(i);
+  }
+  std::move(publisher).complete(UserDefinedException());
+
+  return std::move(stream);
+}
+
 } // namespace testservice
 } // namespace testutil
