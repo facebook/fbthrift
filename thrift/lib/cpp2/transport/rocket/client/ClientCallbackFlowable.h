@@ -122,7 +122,7 @@ class ClientCallbackFlowable final
     }
   }
 
-  void resetServerCallback(StreamServerCallback& serverCallback) {
+  void resetServerCallback(StreamServerCallback& serverCallback) override {
     serverCallback_ = &serverCallback;
   }
 

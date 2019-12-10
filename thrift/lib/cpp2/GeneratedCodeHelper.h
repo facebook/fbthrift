@@ -744,6 +744,11 @@ folly::exception_wrapper recv_wrapped(
   }
   return ew;
 #else
+  (void)method;
+  (void)prot;
+  (void)state;
+  (void)impl;
+  (void)_return;
   std::terminate();
 #endif
 }
@@ -789,6 +794,11 @@ folly::exception_wrapper recv_wrapped(
   }
   return ew;
 #else
+  (void)method;
+  (void)prot;
+  (void)state;
+  (void)impl;
+  (void)_return;
   std::terminate();
 #endif
 }

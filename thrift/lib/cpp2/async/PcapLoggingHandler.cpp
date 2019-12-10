@@ -83,6 +83,7 @@ struct PcapRecordHeader {
 
 enum class Direction { READ, WRITE };
 
+#ifdef THRIFT_PCAP_LOGGING_SUPPORTED
 PcapRecordHeader generateRecordHeader(
     clock::time_point time,
     uint32_t wireLen,
@@ -97,6 +98,7 @@ PcapRecordHeader generateRecordHeader(
 
   return recHeader;
 }
+#endif
 
 class Headers {
  public:
@@ -207,6 +209,10 @@ Headers::Headers(
 
   swap(read_.tcp.source, read_.tcp.dest);
   swap(read_.ether.ether_shost, read_.ether.ether_dhost);
+#else
+  (void)local;
+  (void)remote;
+  (void)peer;
 #endif
 }
 
@@ -237,6 +243,8 @@ void Headers::setTcpFlags(TcpFlags flags) {
 #ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   setTcpFlagsImpl(&read_.tcp, flags);
   setTcpFlagsImpl(&write_.tcp, flags);
+#else
+  (void)flags;
 #endif
 }
 
@@ -291,6 +299,13 @@ void Headers::appendToIov(
     tcpAck_ += seqNumInc;
   }
   iov->push_back({&h->tcp, sizeof(tcphdr)});
+#else
+  (void)iov;
+  (void)dir;
+  (void)time;
+  (void)capturedLen;
+  (void)dataLen;
+  (void)encryptionType;
 #endif
 }
 
@@ -730,6 +745,8 @@ void PcapLoggingHandler::transportActive(Context* ctx) {
       remote_,
       peer_);
   LoggingThread::get().addMessage(std::move(msg));
+#else
+  (void)ctx;
 #endif
 }
 
@@ -879,6 +896,8 @@ void PcapLoggingConfig::set(std::shared_ptr<const PcapLoggingConfig> config) {
   if (p) {
     *p = *config;
   }
+#else
+  (void)config;
 #endif
 }
 

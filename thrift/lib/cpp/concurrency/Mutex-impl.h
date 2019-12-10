@@ -63,6 +63,7 @@ class PthreadMutex {
     Util::toTimespec(ts, Util::currentTime() + durationMs.count());
     return 0 == pthread_mutex_timedlock(&pthread_mutex_, &ts);
 #else
+    (void)timeout_duration;
     // Some systems, notably macOS, don't have timeouts for pthreads,
     // so we fall back to just trying once.
     return try_lock();
@@ -124,6 +125,7 @@ class PthreadRWMutex {
     Util::toTimespec(ts, Util::currentTime() + durationMs.count());
     return 0 == pthread_rwlock_timedwrlock(&rw_lock_, &ts);
 #else
+    (void)timeout_duration;
     // Some systems, notably macOS, don't have timeouts for pthreads,
     // so we fall back to just trying once.
     return try_lock();
@@ -153,6 +155,7 @@ class PthreadRWMutex {
     Util::toTimespec(ts, Util::currentTime() + durationMs.count());
     return 0 == pthread_rwlock_timedrdlock(&rw_lock_, &ts);
 #else
+    (void)timeout_duration;
     // Some systems, notably macOS, don't have timeouts for pthreads,
     // so we fall back to just trying once.
     return try_lock_shared();
