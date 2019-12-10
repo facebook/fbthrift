@@ -58,6 +58,9 @@ class Encoder {
     sizeStream_.finalize();
     contentStream_.finalize();
 
+    // An enum field (with yet-to-be determined contents).
+    std::uint64_t messageFlags = 0;
+
     auto fieldData = fieldData_.move();
     auto sizeControl = sizeControl_.move();
     auto sizeData = sizeData_.move();
@@ -65,28 +68,20 @@ class Encoder {
     auto contentData = contentData_.move();
     auto binaryData = binaryData_.move();
 
-    // As a simple, naive representation, we'll start by just laying out all
-    // streams contiguously and prepending a header of each size. This will
-    // change shortly (we will want data that's close together in in-memory
-    // layout to also be close together on the wire, to add message-global
-    // metadata, etc.), but having something quick and easy done earlier allows
-    // us to make progress on the code-generation parts of protocol support in
-    // parallel with deciding the answers to these questions.
-
     auto chainLengthBytes = [](auto& iobufptr) {
       // IOBufQueue::move() can return null if no data was ever written to it.
-      return folly::Endian::little(
-          iobufptr ? iobufptr->computeChainDataLength() : 0);
+      return iobufptr ? iobufptr->computeChainDataLength() : 0;
     };
 
     auto sizeHeader = folly::IOBuf::create(0);
-    folly::io::Appender writer(sizeHeader.get(), 6 * sizeof(std::uint32_t));
-    writer.write<std::uint32_t>(chainLengthBytes(fieldData));
-    writer.write<std::uint32_t>(chainLengthBytes(sizeControl));
-    writer.write<std::uint32_t>(chainLengthBytes(sizeData));
-    writer.write<std::uint32_t>(chainLengthBytes(contentControl));
-    writer.write<std::uint32_t>(chainLengthBytes(contentData));
-    writer.write<std::uint32_t>(chainLengthBytes(binaryData));
+    folly::io::Appender writer(sizeHeader.get(), 32);
+    apache::thrift::util::writeVarint(writer, messageFlags);
+    apache::thrift::util::writeVarint(writer, chainLengthBytes(fieldData));
+    apache::thrift::util::writeVarint(writer, chainLengthBytes(sizeControl));
+    apache::thrift::util::writeVarint(writer, chainLengthBytes(sizeData));
+    apache::thrift::util::writeVarint(writer, chainLengthBytes(contentControl));
+    apache::thrift::util::writeVarint(writer, chainLengthBytes(contentData));
+    apache::thrift::util::writeVarint(writer, chainLengthBytes(binaryData));
 
     auto prependToSizeHeader = [&](auto ioBufUPtr) {
       if (ioBufUPtr != nullptr) {

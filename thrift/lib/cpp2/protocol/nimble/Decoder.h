@@ -22,6 +22,7 @@
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/protocol/nimble/BufferingNimbleDecoder.h>
 #include <thrift/lib/cpp2/protocol/nimble/NimbleTypes.h>
 
@@ -37,18 +38,32 @@ class Decoder {
   Decoder& operator=(const Decoder&) = delete;
 
   void setInput(folly::io::Cursor cursor) {
-    std::uint32_t fieldSize = cursor.readLE<std::uint32_t>();
+    // For now this is ignored; but it allows the flexibility we'll need for
+    // defining struct skipping eventually.
+    std::uint64_t messageFlags;
+    apache::thrift::util::readVarint(cursor, messageFlags);
 
-    std::uint32_t sizeControlSize = cursor.readLE<std::uint32_t>();
-    std::uint32_t sizeDataSize = cursor.readLE<std::uint32_t>();
+    std::uint64_t fieldSize;
+    apache::thrift::util::readVarint(cursor, fieldSize);
 
-    std::uint32_t contentControlSize = cursor.readLE<std::uint32_t>();
-    std::uint32_t contentDataSize = cursor.readLE<std::uint32_t>();
+    std::uint64_t sizeControlSize;
+    apache::thrift::util::readVarint(cursor, sizeControlSize);
+    std::uint64_t sizeDataSize;
+    apache::thrift::util::readVarint(cursor, sizeDataSize);
 
-    std::uint32_t stringSize = cursor.readLE<std::uint32_t>();
+    std::uint64_t contentControlSize;
+    apache::thrift::util::readVarint(cursor, contentControlSize);
+    std::uint64_t contentDataSize;
+    apache::thrift::util::readVarint(cursor, contentDataSize);
 
-    auto splice = [&](std::uint32_t size) {
-      folly::io::Cursor result{cursor, size};
+    std::uint64_t stringSize;
+    apache::thrift::util::readVarint(cursor, stringSize);
+
+    auto splice = [&](std::uint64_t size) {
+      if (size > (std::uint64_t)std::numeric_limits<std::size_t>::max()) {
+        protocol::TProtocolException::throwExceededSizeLimit();
+      }
+      folly::io::Cursor result{cursor, (std::size_t)size};
       cursor.skip(size);
       return result;
     };
