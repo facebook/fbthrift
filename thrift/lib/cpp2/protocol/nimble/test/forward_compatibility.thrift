@@ -75,3 +75,31 @@ struct PrimitivesTypesReordered {
   6: string f6;
   8: float f8;
 }
+
+struct NestedStructBase {
+  1: i32 f1;
+  2: i32 f2;
+}
+
+struct NestedStructL1 {
+  1: i32 f1;
+  2: i32 f2;
+  3: NestedStructBase f3;
+}
+
+struct NestedStructL2 {
+  1: string f1;
+  2: NestedStructL1 f2;
+  3: i32 f3;
+}
+
+struct NestedStructMissingSubstruct {
+  1: string f1;
+  3: i32 f3;
+}
+
+struct NestedStructTypeChanged {
+  1: string f1;
+  2: float f2;
+  3: i32 f3;
+}

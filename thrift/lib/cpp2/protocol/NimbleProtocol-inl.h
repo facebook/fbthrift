@@ -515,9 +515,6 @@ inline void NimbleProtocolReader::readBinaryWithContext(
 }
 
 inline void NimbleProtocolReader::skip(StructReadState& state) {
-  // Circumvent a "missing noreturn" warning. This can cause the compiler to not
-  // inline this method, which in turn will prevent readNoXfer methods from
-  // seeing that the StructReadState doesn't escape.
   switch (state.nimbleType) {
     case NimbleType::STOP: {
       TProtocolException::throwInvalidSkipType(protocol::T_STOP);
@@ -536,13 +533,22 @@ inline void NimbleProtocolReader::skip(StructReadState& state) {
       return;
     }
     case NimbleType::STRUCT: {
-      throw std::runtime_error("not implemented yet");
+      while (true) {
+        state.readFieldBegin(this);
+        if (state.atStop()) {
+          break;
+        }
+        skip(state);
+      }
+      return;
     }
     case NimbleType::LIST: {
       throw std::runtime_error("not implemented yet");
+      break;
     }
     case NimbleType::MAP: {
       throw std::runtime_error("not implemented yet");
+      break;
     }
     case NimbleType::INVALID: {
       TProtocolException::throwInvalidSkipType(protocol::T_STOP);

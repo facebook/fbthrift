@@ -26,17 +26,28 @@ namespace thrift {
 namespace detail {
 
 Primitives defaultPrimitives() {
-  Primitives primitives;
-  primitives.f1 = 1;
-  primitives.f2 = 2;
-  primitives.f3 = 3;
-  primitives.f4 = 4;
-  primitives.f5 = "5";
-  primitives.f6 = "6";
-  primitives.f7 = "7";
-  primitives.f8 = 8.0f;
-  primitives.f9 = 9.0;
-  return primitives;
+  Primitives result;
+  result.f1 = 1;
+  result.f2 = 2;
+  result.f3 = 3;
+  result.f4 = 4;
+  result.f5 = "5";
+  result.f6 = "6";
+  result.f7 = "7";
+  result.f8 = 8.0f;
+  result.f9 = 9.0;
+  return result;
+}
+
+NestedStructL2 defaultNestedStructL2() {
+  NestedStructL2 result;
+  result.f1 = "1";
+  result.f2.f1 = 1;
+  result.f2.f2 = 2;
+  result.f2.f3.f1 = 1;
+  result.f2.f3.f2 = 2;
+  result.f3 = 3;
+  return result;
 }
 
 template <typename Dst, typename Src>
@@ -107,6 +118,20 @@ TEST(NimbleForwardCompatibilityTest, PrimitivesTypesReordered) {
   EXPECT_EQ(primitives.f7, casted.f7);
   EXPECT_EQ(primitives.f8, casted.f8);
   EXPECT_EQ(primitives.f9, casted.f9);
+}
+
+TEST(NimbleForwardCompatibilityTest, NestedStruct) {
+  auto nested = defaultNestedStructL2();
+  auto casted = nimble_cast<NestedStructMissingSubstruct>(nested);
+  EXPECT_EQ("1", casted.f1);
+  EXPECT_EQ(3, casted.f3);
+}
+
+TEST(NimbleForwardCompatibilityTest, NestedStructTypeChanged) {
+  auto nested = defaultNestedStructL2();
+  auto casted = nimble_cast<NestedStructTypeChanged>(nested);
+  EXPECT_EQ("1", casted.f1);
+  EXPECT_EQ(3, casted.f3);
 }
 
 } // namespace detail
