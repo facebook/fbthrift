@@ -209,6 +209,8 @@ class ClientBufferedStream {
     folly::Promise<folly::Unit> promise;
     detail::ClientStreamBridge::Ptr streamBridge;
   };
+
+ public:
   class Subscription {
     explicit Subscription(std::shared_ptr<SharedState> state)
         : state_(std::move(state)) {}
@@ -244,6 +246,7 @@ class ClientBufferedStream {
     friend class ClientBufferedStream;
   };
 
+ private:
   template <typename OnNextTry>
   // Ownership model: caller owns until wait returns true.
   // Argument is released ("leaked") when wait() succeeds. It is transferred
