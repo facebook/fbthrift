@@ -200,7 +200,6 @@ class NimbleProtocolReader {
       StructReadState& readState);
   void readBinary(folly::IOBuf& str);
   void readBinaryWithContext(folly::IOBuf& str, StructReadState& readState);
-  void skip(NimbleType /*type*/) {}
   bool peekMap() {
     return false;
   }

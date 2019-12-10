@@ -514,13 +514,39 @@ inline void NimbleProtocolReader::readBinaryWithContext(
   decoder_.nextBinary(str, size);
 }
 
-inline void NimbleProtocolReader::skip(StructReadState& /*state*/) {
+inline void NimbleProtocolReader::skip(StructReadState& state) {
   // Circumvent a "missing noreturn" warning. This can cause the compiler to not
   // inline this method, which in turn will prevent readNoXfer methods from
   // seeing that the StructReadState doesn't escape.
-  volatile bool doThrow = true;
-  if (doThrow) {
-    throw std::runtime_error("Not implemented yet");
+  switch (state.nimbleType) {
+    case NimbleType::STOP: {
+      TProtocolException::throwInvalidSkipType(protocol::T_STOP);
+    }
+    case NimbleType::ONE_CHUNK: {
+      decoder_.nextContentChunk(state.decoderState);
+      return;
+    }
+    case NimbleType::TWO_CHUNK: {
+      decoder_.nextContentChunk(state.decoderState);
+      decoder_.nextContentChunk(state.decoderState);
+      return;
+    }
+    case NimbleType::STRING: {
+      decoder_.skipStringBytes(decoder_.nextSizeChunk());
+      return;
+    }
+    case NimbleType::STRUCT: {
+      throw std::runtime_error("not implemented yet");
+    }
+    case NimbleType::LIST: {
+      throw std::runtime_error("not implemented yet");
+    }
+    case NimbleType::MAP: {
+      throw std::runtime_error("not implemented yet");
+    }
+    case NimbleType::INVALID: {
+      TProtocolException::throwInvalidSkipType(protocol::T_STOP);
+    }
   }
 }
 

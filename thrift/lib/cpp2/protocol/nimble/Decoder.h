@@ -84,6 +84,10 @@ class Decoder {
     return contentStream_.nextChunk(state);
   }
 
+  void skipStringBytes(std::size_t size) {
+    stringCursor_.skip(size);
+  }
+
   void nextBinary(unsigned char* buf, std::size_t size) {
     stringCursor_.pull(buf, size);
   }
