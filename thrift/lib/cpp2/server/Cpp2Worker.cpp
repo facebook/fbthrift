@@ -59,6 +59,12 @@ void Cpp2Worker::onNewConnection(
     return;
   }
 
+  const auto& func = server_->getZeroCopyEnableFunc();
+  if (func && sock) {
+    sock->setZeroCopy(true);
+    sock->setZeroCopyEnableFunc(func);
+  }
+
   // Check the security protocol
   switch (secureTransportType) {
     // If no security, peek into the socket to determine type

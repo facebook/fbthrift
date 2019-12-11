@@ -163,6 +163,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   bool stopWorkersOnStopListening_ = true;
   std::chrono::seconds workersJoinTimeout_{30};
 
+  folly::AsyncWriter::ZeroCopyEnableFunc zeroCopyEnableFunc_;
+
   std::shared_ptr<folly::IOThreadPoolExecutor> acceptPool_;
   int nAcceptors_ = 1;
   uint16_t socketMaxReadsPerEvent_{16};
@@ -300,6 +302,20 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       const std::string* = nullptr) const final;
 
   std::string getLoadInfo(int64_t load) const override;
+
+  /*
+   * Use a ZeroCopyEnableFunc to decide when to use zerocopy mode
+   * Ex: use zerocopy when the IOBuf chain exceeds a certain thresold
+   * setZeroCopyEnableFunc([threshold](const std::unique_ptr<folly::IOBuf>& buf)
+   * { return (buf->computeChainDataLength() > threshold);});
+   */
+  void setZeroCopyEnableFunc(folly::AsyncWriter::ZeroCopyEnableFunc func) {
+    zeroCopyEnableFunc_ = std::move(func);
+  }
+
+  const folly::AsyncWriter::ZeroCopyEnableFunc& getZeroCopyEnableFunc() const {
+    return zeroCopyEnableFunc_;
+  }
 
   void setAcceptExecutor(std::shared_ptr<folly::IOThreadPoolExecutor> pool) {
     acceptPool_ = pool;
@@ -446,6 +462,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     config.customConfigMap["thrift_tls_config"] =
         std::make_shared<ThriftTlsConfig>(thriftConfig_);
     config.socketMaxReadsPerEvent = socketMaxReadsPerEvent_;
+
+    config.useZeroCopy = !!zeroCopyEnableFunc_;
     return config;
   }
 

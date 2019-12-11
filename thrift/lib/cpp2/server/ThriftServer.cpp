@@ -321,9 +321,14 @@ void ThriftServer::setup() {
       // the kernel.)
       ServerBootstrap::getSockets()[0]->getAddress(&address_);
 
+      // we enable zerocopy for the server socket if the
+      // zeroCopyEnableFunc_ is valid
+      bool useZeroCopy = !!zeroCopyEnableFunc_;
       for (auto& socket : getSockets()) {
         socket->setShutdownSocketSet(wShutdownSocketSet_);
         socket->setAcceptRateAdjustSpeed(acceptRateAdjustSpeed_);
+        socket->setZeroCopy(useZeroCopy);
+
         try {
           socket->setTosReflect(tosReflect_);
         } catch (std::exception const& ex) {

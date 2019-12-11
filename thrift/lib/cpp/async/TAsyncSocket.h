@@ -32,19 +32,23 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
 
   explicit TAsyncSocket(folly::EventBase* evb) : folly::AsyncSocket(evb) {}
 
-  TAsyncSocket(folly::EventBase* evb,
-               const folly::SocketAddress& address,
-               uint32_t connectTimeout = 0)
-    : folly::AsyncSocket(evb, address, connectTimeout) {}
+  TAsyncSocket(
+      folly::EventBase* evb,
+      const folly::SocketAddress& address,
+      uint32_t connectTimeout = 0,
+      bool useZeroCopy = false)
+      : folly::AsyncSocket(evb, address, connectTimeout, useZeroCopy) {}
 
   TAsyncSocket(folly::EventBase* evb, int fd)
       : folly::AsyncSocket(evb, folly::NetworkSocket::fromFd(fd)) {}
 
-  TAsyncSocket(folly::EventBase* evb,
-               const std::string& ip,
-               uint16_t port,
-                 uint32_t connectTimeout = 0)
-      : folly::AsyncSocket(evb, ip, port, connectTimeout) {}
+  TAsyncSocket(
+      folly::EventBase* evb,
+      const std::string& ip,
+      uint16_t port,
+      uint32_t connectTimeout = 0,
+      bool useZeroCopy = false)
+      : folly::AsyncSocket(evb, ip, port, connectTimeout, useZeroCopy) {}
 
   TAsyncSocket(folly::AsyncSocket::UniquePtr sock)
       : folly::AsyncSocket(std::move(sock)) {}
@@ -57,9 +61,10 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
   static std::shared_ptr<TAsyncSocket> newSocket(
       folly::EventBase* evb,
       const folly::SocketAddress& address,
-      uint32_t connectTimeout = 0) {
+      uint32_t connectTimeout = 0,
+      bool useZeroCopy = false) {
     return std::shared_ptr<TAsyncSocket>(
-        new TAsyncSocket(evb, address, connectTimeout),
+        new TAsyncSocket(evb, address, connectTimeout, useZeroCopy),
         Destructor());
   }
 
@@ -67,9 +72,10 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       folly::EventBase* evb,
       const std::string& ip,
       uint16_t port,
-      uint32_t connectTimeout = 0) {
+      uint32_t connectTimeout = 0,
+      bool useZeroCopy = false) {
     return std::shared_ptr<TAsyncSocket>(
-        new TAsyncSocket(evb, ip, port, connectTimeout),
+        new TAsyncSocket(evb, ip, port, connectTimeout, useZeroCopy),
         Destructor());
   }
 
