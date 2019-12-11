@@ -506,7 +506,9 @@ folly::exception_wrapper recv_wrapped_helper(
       prot->skip(protocol::T_STRUCT);
       prot->readMessageEnd();
       return folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME);
+          TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME,
+          folly::to<std::string>(
+              "expected method: ", method, ", actual method: ", fname));
     }
     SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
