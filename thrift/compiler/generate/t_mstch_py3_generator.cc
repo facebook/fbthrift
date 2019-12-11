@@ -1191,6 +1191,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     TYPES,
     CLIENTS,
     SERVICES,
+    BUILDERS,
   };
 
   t_mstch_py3_generator(
@@ -1214,6 +1215,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     generate_module(ModuleType::TYPES);
     generate_module(ModuleType::SERVICES);
     generate_module(ModuleType::CLIENTS);
+    generate_module(ModuleType::BUILDERS);
   }
 
  protected:
@@ -1229,6 +1231,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
         return "clients";
       case ModuleType::SERVICES:
         return "services";
+      case ModuleType::BUILDERS:
+        return "builders";
     }
     // Should not happen
     assert(false);
@@ -1300,7 +1304,8 @@ boost::filesystem::path t_mstch_py3_generator::package_to_path() {
 
 void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
   auto program = get_program();
-  if (moduleType != ModuleType::TYPES && program->get_services().empty()) {
+  if (moduleType != ModuleType::TYPES && moduleType != ModuleType::BUILDERS &&
+      program->get_services().empty()) {
     // There is no need to generate empty / broken code for non existent
     // services.
     return;
@@ -1316,7 +1321,7 @@ void t_mstch_py3_generator::generate_module(ModuleType moduleType) {
     render_to_file(
         nodePtr, module + ext, generateRootPath_ / name / (module + ext));
   }
-  if (moduleType != ModuleType::TYPES) {
+  if (moduleType != ModuleType::TYPES && moduleType != ModuleType::BUILDERS) {
     auto basename = module + "_wrapper";
     auto cpp_path = boost::filesystem::path{name};
     for (auto ext : {".h", ".cpp"}) {
