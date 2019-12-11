@@ -1054,37 +1054,6 @@ public final class TBaseHelper {
     return sb.toString();
   }
 
-  public static String toStringHelper(TUnion<?> union, int indent, boolean prettyPrint) {
-    if (union == null) {
-      return "null";
-    }
-    String indentStr = prettyPrint ? getIndentedString(indent) : "";
-    String newLine = prettyPrint ? "\n" : "";
-    String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder(union.getClass().getSimpleName());
-    sb.append(space);
-    sb.append("(");
-    sb.append(newLine);
-
-    try {
-      short fieldId = (short) union.getSetField();
-      Object fieldValue = union.getFieldValue();
-      TField tfield = getTField(union, fieldId);
-      sb.append(indentStr);
-      sb.append(tfield.name);
-      sb.append(space);
-      sb.append(":");
-      sb.append(space);
-      renderFieldValue(sb, fieldValue, indent, prettyPrint, indentStr, newLine, space);
-      sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
-      sb.append(")");
-    } catch (Exception e) {
-      sb.append("Exception occured: " + e.toString());
-    }
-
-    return sb.toString();
-  }
-
   public static String toStringHelper(TBase struct, int indent, boolean prettyPrint) {
     if (struct == null) {
       return "null";
