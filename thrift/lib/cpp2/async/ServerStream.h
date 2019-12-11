@@ -70,6 +70,10 @@ class ServerStream {
     return std::make_pair<ServerStream<T>, ServerStreamPublisher<T>>(
         ServerStream<T>(std::move(pair.first)), std::move(pair.second));
   }
+  static std::pair<ServerStream<T>, ServerStreamPublisher<T>>
+  createPublisher() {
+    return createPublisher([] {});
+  }
 
   // Helpers for unit testing your service handler
   ClientBufferedStream<T> toClientStream(size_t bufferSize = 100) &&;

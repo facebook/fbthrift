@@ -233,7 +233,7 @@ TEST(ServerStreamTest, MustClosePublisher) {
       ([] {
         ClientCallback clientCallback;
         folly::ScopedEventBaseThread clientEb, serverEb;
-        auto [factory, publisher] = ServerStream<int>::createPublisher([] {});
+        auto [factory, publisher] = ServerStream<int>::createPublisher();
         factory(serverEb.getEventBase(), &encode)(
             FirstResponsePayload{nullptr, {}},
             &clientCallback,
@@ -341,7 +341,7 @@ TEST(ServerStreamTest, ClientBufferedStreamPublisherIntegration) {
   auto clientStreamBridge =
       detail::ClientStreamBridge::create(&firstResponseCallback);
 
-  auto [factory, publisher] = ServerStream<int>::createPublisher([] {});
+  auto [factory, publisher] = ServerStream<int>::createPublisher();
   for (int i = 0; i < 5; i++) {
     publisher.next(i);
   }
