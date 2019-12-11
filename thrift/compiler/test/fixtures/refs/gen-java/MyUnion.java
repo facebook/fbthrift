@@ -29,6 +29,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   public static final int ANINTEGER = 1;
   public static final int ASTRING = 2;
 
+  public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(ANINTEGER, new FieldMetaData("anInteger", TFieldRequirementType.DEFAULT, 
@@ -83,6 +84,37 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
+  }
+
+  @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, __field);
+      if (value_ != null)
+      {
+        switch (__field.id) {
+          case ANINTEGER:
+            if (__field.type == AN_INTEGER_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case ASTRING:
+            if (__field.type == A_STRING_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
   }
 
   @Override

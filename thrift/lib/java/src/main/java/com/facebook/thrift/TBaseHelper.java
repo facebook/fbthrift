@@ -1241,7 +1241,7 @@ public final class TBaseHelper {
     }
   }
 
-  static TField getTField(TBase object, short fieldId) {
+  private static TField getTField(TBase object, short fieldId) {
     TField tField = null;
     try {
       for (Field field : object.getClass().getDeclaredFields()) {

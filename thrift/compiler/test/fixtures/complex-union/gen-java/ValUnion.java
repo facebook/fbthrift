@@ -29,6 +29,7 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
   public static final int V1 = 1;
   public static final int V2 = 2;
 
+  public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(V1, new FieldMetaData("v1", TFieldRequirementType.DEFAULT, 
@@ -83,6 +84,37 @@ public class ValUnion extends TUnion<ValUnion> implements Comparable<ValUnion> {
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
+  }
+
+  @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, __field);
+      if (value_ != null)
+      {
+        switch (__field.id) {
+          case V1:
+            if (__field.type == V1_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case V2:
+            if (__field.type == V2_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
   }
 
   @Override

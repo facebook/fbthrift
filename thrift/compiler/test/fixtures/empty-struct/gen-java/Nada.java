@@ -25,6 +25,7 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
   private static final TStruct STRUCT_DESC = new TStruct("Nada");
 
 
+  public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -53,6 +54,27 @@ public class Nada extends TUnion<Nada> implements Comparable<Nada> {
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
+  }
+
+  @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, __field);
+      if (value_ != null)
+      {
+        switch (__field.id) {
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
   }
 
   @Override

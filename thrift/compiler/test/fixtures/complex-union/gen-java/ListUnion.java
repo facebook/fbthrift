@@ -29,6 +29,7 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
   public static final int INTLISTVALUE = 2;
   public static final int STRINGLISTVALUE = 3;
 
+  public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(INTLISTVALUE, new FieldMetaData("intListValue", TFieldRequirementType.DEFAULT, 
@@ -85,6 +86,37 @@ public class ListUnion extends TUnion<ListUnion> implements Comparable<ListUnion
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
+  }
+
+  @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, __field);
+      if (value_ != null)
+      {
+        switch (__field.id) {
+          case INTLISTVALUE:
+            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case STRINGLISTVALUE:
+            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
   }
 
   @Override
