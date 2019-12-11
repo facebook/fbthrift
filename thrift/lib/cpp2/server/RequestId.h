@@ -21,27 +21,32 @@ namespace apache {
 namespace thrift {
 
 class RequestId {
- public:
-  static RequestId gen();
+  friend class ActiveRequestsRegistry;
 
+ public:
   RequestId(const RequestId&) = delete;
   RequestId& operator=(const RequestId&) = delete;
   RequestId(RequestId&&) = default;
   RequestId& operator=(RequestId&&) = default;
 
   std::string toString() const {
-    return fmt::format("{:016x}", val_);
+    return fmt::format("{:08x}.{:016x}", registry_, local_);
   }
 
-  uint64_t getVal() const {
-    return val_;
+  uint32_t getRegistryId() const {
+    return registry_;
+  }
+
+  uint64_t getLocalId() const {
+    return local_;
   }
 
  private:
-  explicit RequestId(uint64_t val) : val_(val) {}
+  explicit RequestId(uint32_t registry, uint64_t local)
+      : registry_(registry), local_(local) {}
 
-  static const uint64_t maxVal;
-  uint64_t val_;
+  uint32_t registry_;
+  uint64_t local_;
 };
 
 } // namespace thrift

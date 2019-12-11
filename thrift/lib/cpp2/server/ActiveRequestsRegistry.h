@@ -69,7 +69,7 @@ class ActiveRequestsRegistry {
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
-          reqId_(RequestId::gen()) {
+          reqId_(reqRegistry.genRequestId()) {
       reqRegistry.registerStub(*this);
     }
 
@@ -138,9 +138,7 @@ class ActiveRequestsRegistry {
   using ActiveRequestPayloadList =
       folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsPayloadHook_>;
 
-  ActiveRequestsRegistry(uint64_t requestPayloadMem, uint64_t totalPayloadMem)
-      : payloadMemoryLimitPerRequest_(requestPayloadMem),
-        payloadMemoryLimitTotal_(totalPayloadMem) {}
+  ActiveRequestsRegistry(uint64_t requestPayloadMem, uint64_t totalPayloadMem);
 
   const ActiveRequestDebugStubList& getDebugStubList() {
     return reqDebugStubList_;
@@ -176,6 +174,9 @@ class ActiveRequestsRegistry {
     DCHECK(payloadMemoryUsage_ >= payloadSize);
     payloadMemoryUsage_ -= payloadSize;
   }
+  RequestId genRequestId();
+  uint32_t registryId_;
+  uint64_t nextLocalId_{0};
   uint64_t payloadMemoryLimitPerRequest_;
   uint64_t payloadMemoryLimitTotal_;
   uint64_t payloadMemoryUsage_{0};

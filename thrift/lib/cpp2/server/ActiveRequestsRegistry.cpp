@@ -14,23 +14,32 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #include <thrift/lib/cpp2/server/RequestId.h>
 #include <atomic>
 
 namespace apache {
 namespace thrift {
 
+namespace {
 // Reserve some high bits for future use. Currently the maximum id supported
 // is 10^52, so thrift servers theoretically can generate unique request id
 // for ~12 years, assuming the QPS is ~10 million.
-const uint64_t RequestId::maxVal = 0x000fffffffffffff;
+const size_t RequestLocalIdBits = 52;
+const uint64_t RequestLocalIdMax = (1ull << RequestLocalIdBits) - 1;
 
-namespace {
-std::atomic<uint64_t> nextId{0};
-}
+std::atomic<uint32_t> nextRegistryId{0};
+} // namespace
 
-RequestId RequestId::gen() {
-  return RequestId(nextId++ & maxVal);
+ActiveRequestsRegistry::ActiveRequestsRegistry(
+    uint64_t requestPayloadMem,
+    uint64_t totalPayloadMem)
+    : registryId_(nextRegistryId++),
+      payloadMemoryLimitPerRequest_(requestPayloadMem),
+      payloadMemoryLimitTotal_(totalPayloadMem) {}
+
+RequestId ActiveRequestsRegistry::genRequestId() {
+  return RequestId(registryId_, (nextLocalId_++) & RequestLocalIdMax);
 }
 
 } // namespace thrift

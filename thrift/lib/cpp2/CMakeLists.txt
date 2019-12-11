@@ -93,11 +93,11 @@ add_library(
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp
+  server/ActiveRequestsRegistry.cpp
   server/BaseThriftServer.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
-  server/RequestId.cpp
   server/ServerInstrumentation.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp
