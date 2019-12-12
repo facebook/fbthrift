@@ -53,15 +53,16 @@ void RocketSinkClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
     folly::EventBase* /* unused */,
     SinkServerCallback* serverCallback) {
-  if (UNLIKELY(serverCallbackOrCancelled_ == kCancelledFlag)) {
-    serverCallback->onStreamCancel();
+  if (UNLIKELY(serverCallbackOrError_ == kErrorFlag)) {
+    serverCallback->onSinkError(TApplicationException(
+        TApplicationException::TApplicationExceptionType::INTERRUPTION));
     auto& connection = connection_;
     connection_.freeStream(streamId_);
     connection.decInflightRequests();
     return;
   }
 
-  serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
+  serverCallbackOrError_ = reinterpret_cast<intptr_t>(serverCallback);
   connection_.sendPayload(
       streamId_,
       pack(std::move(firstResponse)).value(),

@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/transport/rocket/client/RocketStreamServerCallback.h>
 
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 
@@ -62,6 +63,7 @@ void RocketStreamServerCallback::onInitialPayload(
 }
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_->onFirstResponseError(std::move(ew));
+  client_.cancelStream(streamId_);
 }
 void RocketStreamServerCallback::onStreamTransportError(
     folly::exception_wrapper ew) {
@@ -184,6 +186,7 @@ void RocketChannelServerCallback::onInitialPayload(
 }
 void RocketChannelServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_.onFirstResponseError(std::move(ew));
+  client_.cancelStream(streamId_);
 }
 void RocketChannelServerCallback::onStreamTransportError(
     folly::exception_wrapper ew) {
@@ -315,6 +318,8 @@ void RocketSinkServerCallback::onInitialPayload(
 }
 void RocketSinkServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_.onFirstResponseError(std::move(ew));
+  client_.sendError(
+      streamId_, rocket::RocketException(rocket::ErrorCode::CANCELED));
 }
 void RocketSinkServerCallback::onStreamTransportError(
     folly::exception_wrapper ew) {

@@ -32,6 +32,7 @@
 
 #include <wangle/acceptor/ConnectionManager.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
@@ -373,8 +374,11 @@ void RocketServerConnection::handleSinkFrame(
     RocketSinkClientCallback& clientCallback) {
   if (!clientCallback.serverCallbackReady()) {
     switch (frameType) {
-      case FrameType::CANCEL: {
-        return clientCallback.earlyCancelled();
+      case FrameType::ERROR: {
+        ErrorFrame errorFrame{std::move(frame)};
+        if (errorFrame.errorCode() == ErrorCode::CANCELED) {
+          return clientCallback.earlyCancelled();
+        }
       }
       default:
         return close(folly::make_exception_wrapper<RocketException>(
@@ -427,8 +431,16 @@ void RocketServerConnection::handleSinkFrame(
 
     case FrameType::ERROR: {
       ErrorFrame errorFrame{std::move(frame)};
-      auto ew = folly::make_exception_wrapper<RocketException>(
-          errorFrame.errorCode(), std::move(errorFrame.payload()).data());
+      auto ew = [&] {
+        if (errorFrame.errorCode() == ErrorCode::CANCELED) {
+          return folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::INTERRUPTION);
+        } else {
+          return folly::make_exception_wrapper<RocketException>(
+              errorFrame.errorCode(), std::move(errorFrame.payload()).data());
+        }
+      }();
+
       bool notViolateContract = clientCallback.onSinkError(std::move(ew));
       if (notViolateContract) {
         freeStream(streamId);

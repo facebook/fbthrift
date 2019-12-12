@@ -56,16 +56,16 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   void timeoutExpired() noexcept;
   void setProtoId(protocol::PROTOCOL_TYPES);
   bool serverCallbackReady() const {
-    return serverCallbackOrCancelled_ != kCancelledFlag && serverCallback();
+    return serverCallbackOrError_ != kErrorFlag && serverCallback();
   }
   void earlyCancelled() {
     DCHECK(!serverCallbackReady());
-    serverCallbackOrCancelled_ = kCancelledFlag;
+    serverCallbackOrError_ = kErrorFlag;
   }
 
  private:
   SinkServerCallback* serverCallback() const {
-    return reinterpret_cast<SinkServerCallback*>(serverCallbackOrCancelled_);
+    return reinterpret_cast<SinkServerCallback*>(serverCallbackOrError_);
   }
 
   class TimeoutCallback : public folly::HHWheelTimer::Callback {
@@ -95,8 +95,8 @@ class RocketSinkClientCallback final : public SinkClientCallback {
   State state_{State::BothOpen};
   const StreamId streamId_;
   RocketServerConnection& connection_;
-  static constexpr intptr_t kCancelledFlag = 1;
-  intptr_t serverCallbackOrCancelled_{0};
+  static constexpr intptr_t kErrorFlag = 1;
+  intptr_t serverCallbackOrError_{0};
   std::unique_ptr<TimeoutCallback> timeout_;
   protocol::PROTOCOL_TYPES protoId_;
 };

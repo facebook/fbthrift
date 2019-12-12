@@ -932,8 +932,6 @@ void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TIMED_OUT));
   });
-
-  client_.cancelStream(streamId_);
 }
 
 void RocketClient::attachEventBase(folly::EventBase& evb) {
