@@ -41,7 +41,7 @@ class ServerPublisherStream : private StreamServerCallback {
       folly::Function<void()> onStreamCompleteOrCancel) {
     auto stream = new detail::ServerPublisherStream<T>(
         std::move(onStreamCompleteOrCancel));
-    return {[stream](
+    return {[stream = Ptr(stream)](
                 folly::Executor::KeepAlive<> serverExecutor,
                 folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
               stream->serverExecutor_ = std::move(serverExecutor);
@@ -56,14 +56,15 @@ class ServerPublisherStream : private StreamServerCallback {
                 stream->encode_ = encode;
               }
 
-              return [stream](
+              return [stream = std::move(stream)](
                          FirstResponsePayload&& payload,
                          StreamClientCallback* callback,
                          folly::EventBase* clientEb) mutable {
                 stream->streamClientCallback_ = callback;
                 stream->clientEventBase_ = clientEb;
-                callback->onFirstResponse(std::move(payload), clientEb, stream);
-                return stream;
+                callback->onFirstResponse(
+                    std::move(payload), clientEb, stream.get());
+                return stream.release();
               };
             },
             ServerStreamPublisher<T>(stream->copy())};

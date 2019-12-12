@@ -371,5 +371,17 @@ TEST(ServerStreamTest, ClientBufferedStreamPublisherIntegration) {
   EXPECT_TRUE(done);
 }
 
+TEST(ServerStreamTest, FactoryLeak) {
+  auto [stream, publisher] = ServerStream<int>::createPublisher([] {});
+  std::move(publisher).complete();
+  stream = [&]() -> folly::coro::AsyncGenerator<int&&> {
+    for (int i = 0; i < 10; ++i) {
+      co_yield std::move(i);
+    }
+  }
+  ();
+  stream = apache::thrift::Stream<int>();
+}
+
 } // namespace thrift
 } // namespace apache
