@@ -85,6 +85,9 @@ void RocketSinkClientCallback::onFirstResponseError(
 
 void RocketSinkClientCallback::onFinalResponse(StreamPayload&& firstResponse) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
+  if (state_ == State::StreamOpen) {
+    connection_.decInflightFinalResponse();
+  }
   connection_.sendPayload(
       streamId_,
       pack(std::move(firstResponse)).value(),
@@ -95,6 +98,9 @@ void RocketSinkClientCallback::onFinalResponse(StreamPayload&& firstResponse) {
 void RocketSinkClientCallback::onFinalResponseError(
     folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
+  if (state_ == State::StreamOpen) {
+    connection_.decInflightFinalResponse();
+  }
   if (!ew.with_exception<RocketException>([this](auto&& rex) {
         connection_.sendError(
             streamId_,
@@ -143,6 +149,7 @@ bool RocketSinkClientCallback::onSinkComplete() {
     return false;
   }
   state_ = State::StreamOpen;
+  connection_.incInflightFinalResponse();
   serverCallback()->onSinkComplete();
   return true;
 }

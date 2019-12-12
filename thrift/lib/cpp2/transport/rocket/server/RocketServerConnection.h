@@ -138,6 +138,14 @@ class RocketServerConnection final
       folly::HHWheelTimer::Callback*,
       std::chrono::milliseconds timeout);
 
+  void incInflightFinalResponse() {
+    inflightSinkFinalResponses_++;
+  }
+  void decInflightFinalResponse() {
+    DCHECK(inflightSinkFinalResponses_ != 0);
+    inflightSinkFinalResponses_--;
+  }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
@@ -156,6 +164,11 @@ class RocketServerConnection final
   // Total number of inflight writes to the underlying transport, i.e., writes
   // for which the writeSuccess()/writeErr() has not yet been called.
   size_t inflightWrites_{0};
+  // Totoal number of inflight final response for sink semantic, the counter
+  // only bumps when sink is in waiting for final response state,
+  // (onSinkComplete get called)
+  size_t inflightSinkFinalResponses_{0};
+
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
   uint32_t minCompressBytes_{0};
 

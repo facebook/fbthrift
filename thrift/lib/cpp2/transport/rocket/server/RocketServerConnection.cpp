@@ -96,12 +96,13 @@ void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
 RocketServerConnection::~RocketServerConnection() {
   DCHECK(inflightRequests_ == 0);
   DCHECK(inflightWrites_ == 0);
+  DCHECK(inflightSinkFinalResponses_ == 0);
   DCHECK(writeBatcher_.empty());
 }
 
 bool RocketServerConnection::closeIfNeeded() {
   if (state_ != ConnectionState::CLOSING || inflightWrites_ != 0 ||
-      inflightRequests_ != 0) {
+      inflightRequests_ != 0 || inflightSinkFinalResponses_ != 0) {
     return false;
   }
 
@@ -121,7 +122,9 @@ bool RocketServerConnection::closeIfNeeded() {
           callback->onStreamCancel();
         },
         [](const std::unique_ptr<RocketSinkClientCallback>& callback) {
-          callback->onStreamCancel();
+          bool state = callback->onSinkError(TApplicationException(
+              TApplicationException::TApplicationExceptionType::INTERRUPTION));
+          DCHECK(state) << "onSinkError called after sink complete!";
         });
     it = streams_.erase(it);
   }
@@ -495,7 +498,7 @@ void RocketServerConnection::timeoutExpired() noexcept {
 
 bool RocketServerConnection::isBusy() const {
   return inflightRequests_ != 0 || inflightWrites_ != 0 ||
-      !writeBatcher_.empty();
+      inflightSinkFinalResponses_ != 0 || !writeBatcher_.empty();
 }
 
 // On graceful shutdown, ConnectionManager will first fire the
