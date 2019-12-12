@@ -115,3 +115,8 @@ struct DebugSortedAssociative {
      (cpp.type = "folly::F14FastMap<int64_t, folly::F14FastSet<int64_t>>")
      value,
 }
+
+struct StructWithF14VectorContainers {
+  1: map<i32, i32> (cpp.template = 'folly::F14VectorMap') m,
+  2: set<i32> (cpp.template = 'folly::F14VectorSet') s,
+}

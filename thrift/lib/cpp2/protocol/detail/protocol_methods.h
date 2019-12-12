@@ -26,6 +26,7 @@
 #include <vector>
 
 #include <folly/Conv.h>
+#include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
 #include <folly/io/IOBuf.h>
@@ -645,7 +646,9 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         xfer += elem_methods::write(protocol, *it);
       }
     } else {
-      for (auto const& elem : out) {
+      // Support containers with defined but non-FIFO iteration order.
+      using folly::order_preserving_reinsertion_view;
+      for (auto const& elem : order_preserving_reinsertion_view(out)) {
         xfer += elem_methods::write(protocol, elem);
       }
     }
@@ -752,7 +755,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
         xfer += mapped_methods::write(protocol, it->second);
       }
     } else {
-      for (auto const& elem_pair : out) {
+      // Support containers with defined but non-FIFO iteration order.
+      using folly::order_preserving_reinsertion_view;
+      for (auto const& elem_pair : order_preserving_reinsertion_view(out)) {
         xfer += key_methods::write(protocol, elem_pair.first);
         xfer += mapped_methods::write(protocol, elem_pair.second);
       }
