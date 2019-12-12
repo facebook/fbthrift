@@ -59,19 +59,19 @@ cdef class ComplexUnion_Builder(thrift.py3.builder.StructBuilder):
     cdef public dict opt_union_map
     cdef public _module_types.MyEnumA enum_field
     cdef public list enum_container
-    cdef public a_struct
+    cdef public object a_struct
     cdef public set a_set_struct
-    cdef public a_union
-    cdef public opt_a_union
+    cdef public object a_union
+    cdef public object opt_a_union
     cdef public list a_union_list
     cdef public set a_union_typedef
     cdef public list a_union_typedef_list
     cdef public bytes MyBinaryField
     cdef public bytes MyBinaryField2
     cdef public list MyBinaryListField4
-    cdef public ref_field
-    cdef public ref_field2
-    cdef public excp_field
+    cdef public object ref_field
+    cdef public object ref_field2
+    cdef public object excp_field
 
 
 cdef class AnException_Builder(thrift.py3.builder.StructBuilder):
@@ -85,7 +85,7 @@ cdef class AnException_Builder(thrift.py3.builder.StructBuilder):
     cdef public dict req_exception_map
     cdef public _module_types.MyEnumA enum_field
     cdef public list enum_container
-    cdef public a_struct
+    cdef public object a_struct
     cdef public set a_set_struct
     cdef public list a_union_list
     cdef public set union_typedef
@@ -130,13 +130,13 @@ cdef class containerStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public _module_types.MyEnumA fieldS
     cdef public list fieldT
     cdef public list fieldU
-    cdef public fieldV
-    cdef public req_fieldV
-    cdef public opt_fieldV
+    cdef public object fieldV
+    cdef public object req_fieldV
+    cdef public object opt_fieldV
     cdef public set fieldW
-    cdef public fieldX
-    cdef public req_fieldX
-    cdef public opt_fieldX
+    cdef public object fieldX
+    cdef public object req_fieldX
+    cdef public object opt_fieldX
     cdef public list fieldY
     cdef public set fieldZ
     cdef public list fieldAA
@@ -149,30 +149,30 @@ cdef class containerStruct_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class MyIncludedStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint MyIncludedInt
-    cdef public MyIncludedStruct
-    cdef public ARefField
-    cdef public ARequiredField
+    cdef public object MyIncludedStruct
+    cdef public object ARefField
+    cdef public object ARequiredField
 
 
 cdef class AnnotatedStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public no_annotation
-    cdef public cpp_unique_ref
-    cdef public cpp2_unique_ref
+    cdef public object no_annotation
+    cdef public object cpp_unique_ref
+    cdef public object cpp2_unique_ref
     cdef public dict container_with_ref
-    cdef public req_cpp_unique_ref
-    cdef public req_cpp2_unique_ref
+    cdef public object req_cpp_unique_ref
+    cdef public object req_cpp2_unique_ref
     cdef public list req_container_with_ref
-    cdef public opt_cpp_unique_ref
-    cdef public opt_cpp2_unique_ref
+    cdef public object opt_cpp_unique_ref
+    cdef public object opt_cpp2_unique_ref
     cdef public set opt_container_with_ref
-    cdef public ref_type_unique
-    cdef public ref_type_shared
+    cdef public object ref_type_unique
+    cdef public object ref_type_shared
     cdef public dict ref_type_const
-    cdef public req_ref_type_shared
-    cdef public req_ref_type_const
+    cdef public object req_ref_type_shared
+    cdef public object req_ref_type_const
     cdef public list req_ref_type_unique
-    cdef public opt_ref_type_const
-    cdef public opt_ref_type_unique
+    cdef public object opt_ref_type_const
+    cdef public object opt_ref_type_unique
     cdef public set opt_ref_type_shared
     cdef public pint base_type
     cdef public list list_type
@@ -194,7 +194,7 @@ cdef class AnnotatedStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public set indirection_c
     cdef public __iobuf.IOBuf iobuf_type_val
     cdef public __iobuf.IOBuf iobuf_ptr_val
-    cdef public struct_struct
+    cdef public object struct_struct
 
 
 cdef class ComplexContainerStruct_Builder(thrift.py3.builder.StructBuilder):

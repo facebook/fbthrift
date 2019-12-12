@@ -18,12 +18,12 @@ cimport module1.builders as _module1_builders
 cimport module2.types as _module2_types
 
 cdef class Struct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public first
-    cdef public second
+    cdef public object first
+    cdef public object second
 
 
 cdef class BigStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public s
+    cdef public object s
     cdef public pint id
 
 

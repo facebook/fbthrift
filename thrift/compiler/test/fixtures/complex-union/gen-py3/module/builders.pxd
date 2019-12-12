@@ -39,8 +39,8 @@ cdef class Val_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class ValUnion_Builder(thrift.py3.builder.StructBuilder):
-    cdef public v1
-    cdef public v2
+    cdef public object v1
+    cdef public object v2
 
 
 cdef class VirtualComplexUnion_Builder(thrift.py3.builder.StructBuilder):
@@ -53,6 +53,6 @@ cdef class NonCopyableStruct_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class NonCopyableUnion_Builder(thrift.py3.builder.StructBuilder):
-    cdef public s
+    cdef public object s
 
 

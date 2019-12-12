@@ -50,7 +50,7 @@ cdef class TrivialNumeric_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class TrivialNestedWithDefault_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint z
-    cdef public n
+    cdef public object n
 
 
 cdef class ComplexString_Builder(thrift.py3.builder.StructBuilder):
@@ -60,7 +60,7 @@ cdef class ComplexString_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class ComplexNestedWithDefault_Builder(thrift.py3.builder.StructBuilder):
     cdef public str z
-    cdef public n
+    cdef public object n
 
 
 cdef class MinPadding_Builder(thrift.py3.builder.StructBuilder):
@@ -75,7 +75,7 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint MyIntField
     cdef public str MyStringField
     cdef public pint majorVer
-    cdef public data
+    cdef public object data
 
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
@@ -92,16 +92,16 @@ cdef class AnnotatedTypes_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class ForwardUsageRoot_Builder(thrift.py3.builder.StructBuilder):
-    cdef public ForwardUsageStruct
-    cdef public ForwardUsageByRef
+    cdef public object ForwardUsageStruct
+    cdef public object ForwardUsageByRef
 
 
 cdef class ForwardUsageStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public foo
+    cdef public object foo
 
 
 cdef class ForwardUsageByRef_Builder(thrift.py3.builder.StructBuilder):
-    cdef public foo
+    cdef public object foo
 
 
 cdef class NoexceptMoveEmpty_Builder(thrift.py3.builder.StructBuilder):

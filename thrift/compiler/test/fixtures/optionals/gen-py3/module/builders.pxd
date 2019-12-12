@@ -21,7 +21,7 @@ cdef class Color_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class Vehicle_Builder(thrift.py3.builder.StructBuilder):
-    cdef public color
+    cdef public object color
     cdef public str licensePlate
     cdef public str description
     cdef public str name
@@ -33,7 +33,7 @@ cdef class Person_Builder(thrift.py3.builder.StructBuilder):
     cdef public str name
     cdef public pint age
     cdef public str address
-    cdef public favoriteColor
+    cdef public object favoriteColor
     cdef public set friends
     cdef public pint bestFriend
     cdef public dict petNames

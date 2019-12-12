@@ -37,9 +37,9 @@ cdef class containerStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public list fieldP
     cdef public _module_types.MyEnumA fieldQ
     cdef public dict fieldR
-    cdef public fieldS
-    cdef public fieldT
-    cdef public fieldU
-    cdef public fieldX
+    cdef public object fieldS
+    cdef public object fieldT
+    cdef public object fieldU
+    cdef public object fieldX
 
 

@@ -17,6 +17,6 @@ cimport includes.types as _includes_types
 
 cdef class Included_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint MyIntField
-    cdef public MyTransitiveField
+    cdef public object MyTransitiveField
 
 

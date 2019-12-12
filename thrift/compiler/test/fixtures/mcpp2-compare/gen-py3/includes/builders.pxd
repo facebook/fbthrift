@@ -18,6 +18,6 @@ cdef class AStruct_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class AStructB_Builder(thrift.py3.builder.StructBuilder):
-    cdef public FieldA
+    cdef public object FieldA
 
 

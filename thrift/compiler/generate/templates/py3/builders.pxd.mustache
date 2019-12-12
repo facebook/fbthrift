@@ -47,6 +47,7 @@ cdef class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
         }}{{#type:set?}}set {{/type:set?}}{{!
         }}{{#type:integer?}}pint {{/type:integer?}}{{!
         }}{{#type:floating_point?}}pfloat {{/type:floating_point?}}{{!
+        }}{{#type:struct?}}object {{/type:struct?}}{{!
         }}{{#type:cythonTypeNoneable?}}{{^type:struct?}}{{!
         }}{{> types/CythonPythonType}} {{!
         }}{{/type:struct?}}{{/type:cythonTypeNoneable?}}{{!

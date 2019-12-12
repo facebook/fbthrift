@@ -25,15 +25,15 @@ cdef class MyField_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public opt_ref
-    cdef public ref
-    cdef public req_ref
+    cdef public object opt_ref
+    cdef public object ref
+    cdef public object req_ref
 
 
 cdef class StructWithUnion_Builder(thrift.py3.builder.StructBuilder):
-    cdef public u
+    cdef public object u
     cdef public pfloat aDouble
-    cdef public f
+    cdef public object f
 
 
 cdef class RecursiveStruct_Builder(thrift.py3.builder.StructBuilder):
@@ -50,9 +50,9 @@ cdef class StructWithContainers_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class StructWithSharedConst_Builder(thrift.py3.builder.StructBuilder):
-    cdef public opt_shared_const
-    cdef public shared_const
-    cdef public req_shared_const
+    cdef public object opt_shared_const
+    cdef public object shared_const
+    cdef public object req_shared_const
 
 
 cdef class Empty_Builder(thrift.py3.builder.StructBuilder):
@@ -60,30 +60,30 @@ cdef class Empty_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class StructWithRef_Builder(thrift.py3.builder.StructBuilder):
-    cdef public def_field
-    cdef public opt_field
-    cdef public req_field
+    cdef public object def_field
+    cdef public object opt_field
+    cdef public object req_field
 
 
 cdef class StructWithRefTypeUnique_Builder(thrift.py3.builder.StructBuilder):
-    cdef public def_field
-    cdef public opt_field
-    cdef public req_field
+    cdef public object def_field
+    cdef public object opt_field
+    cdef public object req_field
 
 
 cdef class StructWithRefTypeShared_Builder(thrift.py3.builder.StructBuilder):
-    cdef public def_field
-    cdef public opt_field
-    cdef public req_field
+    cdef public object def_field
+    cdef public object opt_field
+    cdef public object req_field
 
 
 cdef class StructWithRefTypeSharedConst_Builder(thrift.py3.builder.StructBuilder):
-    cdef public def_field
-    cdef public opt_field
-    cdef public req_field
+    cdef public object def_field
+    cdef public object opt_field
+    cdef public object req_field
 
 
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor_Builder(thrift.py3.builder.StructBuilder):
-    cdef public def_field
+    cdef public object def_field
 
 

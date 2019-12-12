@@ -32,8 +32,8 @@ cdef class SimpleStruct_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class ComplexStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public structOne
-    cdef public structTwo
+    cdef public object structOne
+    cdef public object structTwo
     cdef public pint an_integer
     cdef public str name
     cdef public _module_types.AnEnum an_enum
@@ -48,6 +48,6 @@ cdef class BinaryUnion_Builder(thrift.py3.builder.StructBuilder):
 
 
 cdef class BinaryUnionStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public u
+    cdef public object u
 
 

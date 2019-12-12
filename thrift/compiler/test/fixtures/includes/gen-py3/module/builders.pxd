@@ -16,8 +16,8 @@ cimport includes.builders as _includes_builders
 cimport module.types as _module_types
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
-    cdef public MyIncludedField
-    cdef public MyOtherIncludedField
+    cdef public object MyIncludedField
+    cdef public object MyOtherIncludedField
     cdef public pint MyIncludedInt
 
 

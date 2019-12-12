@@ -36,14 +36,14 @@ cdef class struct1_Builder(thrift.py3.builder.StructBuilder):
 cdef class struct2_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint a
     cdef public str b
-    cdef public c
+    cdef public object c
     cdef public list d
 
 
 cdef class struct3_Builder(thrift.py3.builder.StructBuilder):
     cdef public str a
     cdef public pint b
-    cdef public c
+    cdef public object c
 
 
 cdef class union1_Builder(thrift.py3.builder.StructBuilder):
@@ -54,7 +54,7 @@ cdef class union1_Builder(thrift.py3.builder.StructBuilder):
 cdef class union2_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint i
     cdef public pfloat d
-    cdef public s
-    cdef public u
+    cdef public object s
+    cdef public object u
 
 

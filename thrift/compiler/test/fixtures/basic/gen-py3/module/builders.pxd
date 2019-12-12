@@ -16,7 +16,7 @@ cimport module.types as _module_types
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint MyIntField
     cdef public str MyStringField
-    cdef public MyDataField
+    cdef public object MyDataField
     cdef public _module_types.MyEnum myEnum
 
 
@@ -26,7 +26,7 @@ cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class MyUnion_Builder(thrift.py3.builder.StructBuilder):
     cdef public _module_types.MyEnum myEnum
-    cdef public myStruct
-    cdef public myDataItem
+    cdef public object myStruct
+    cdef public object myDataItem
 
 
