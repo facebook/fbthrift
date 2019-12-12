@@ -31,7 +31,7 @@ namespace server {
 // ThriftProcessor.
 class ServerConfigsMock : public ServerConfigs {
  public:
-  uint64_t getMaxResponseSize() const {
+  uint64_t getMaxResponseSize() const override {
     return maxResponseSize_;
   }
 
@@ -65,7 +65,7 @@ class ServerConfigsMock : public ServerConfigs {
     return 123;
   }
 
-  const std::string& getOverloadedErrorCode() const {
+  const std::string& getOverloadedErrorCode() const override {
     return kOverloadedErrorCode;
   }
 
