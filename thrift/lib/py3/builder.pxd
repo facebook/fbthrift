@@ -17,6 +17,6 @@
 cdef class StructBuilder:
 
     @staticmethod
-    cdef object from_obj(object obj)
+    cdef object __from_obj__(object obj)
 
-    cdef object build(self)
+    cdef object __build__(self)

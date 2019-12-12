@@ -19,22 +19,22 @@ cdef class StructBuilder:
     _struct_type = None
 
     @staticmethod
-    cdef object from_obj(object obj):
+    cdef object __from_obj__(object obj):
         if isinstance(obj, StructBuilder):
-            return (<StructBuilder>obj).build()
+            return (<StructBuilder>obj).__build__()
         if isinstance(obj, (list, tuple, set)):
-            return [StructBuilder.from_obj(e) for e in obj]
+            return [StructBuilder.__from_obj__(e) for e in obj]
         if isinstance(obj, dict):
-            return {k: StructBuilder.from_obj(v) for k, v in obj}
+            return {k: StructBuilder.__from_obj__(v) for k, v in obj}
         return obj
 
     def __call__(self):
-        return self.build()
+        return self.__build__()
 
     def __iter__(self):
         pass
 
-    cdef object build(self):
-        return self._struct_type(**{name: StructBuilder.from_obj(value) for name, value in self})
+    cdef object __build__(self):
+        return self._struct_type(**{name: StructBuilder.__from_obj__(value) for name, value in self})
 
 
