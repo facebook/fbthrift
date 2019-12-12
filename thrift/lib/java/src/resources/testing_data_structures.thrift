@@ -35,6 +35,7 @@ struct NestedStruct {
   2: MySimpleStruct mySimpleStruct,
   3: set<i32> mySet,
   4: list<string> myList,
+  5: MySimpleUnion myUnion,
 }
 
 enum SmallEnum {

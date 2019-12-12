@@ -20,7 +20,6 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 import com.facebook.thrift.java.test.MySimpleStruct;
-import com.facebook.thrift.java.test.NestedStruct;
 import com.facebook.thrift.java.test.MySimpleUnion;
 import com.facebook.thrift.java.test.NestedStruct;
 import java.util.ArrayList;
@@ -82,7 +81,7 @@ public class TBaseHelperTest extends TestCase {
     myList.add("trois");
 
     MySimpleStruct struct = new MySimpleStruct(123L, "toto");
-    NestedStruct nested = new NestedStruct(myMap, struct, mySet, myList);
+    NestedStruct nested = new NestedStruct(myMap, struct, mySet, myList, MySimpleUnion.caseOne(1L));
 
     Map<Integer, String> expectedMap = new HashMap<>();
     expectedMap.put(1, "un");
@@ -217,12 +216,15 @@ public class TBaseHelperTest extends TestCase {
     myList.add("trois");
 
     MySimpleStruct struct = new MySimpleStruct(id, name);
-    NestedStruct nested = new NestedStruct(myMap, struct, mySet, myList);
+    MySimpleUnion union = MySimpleUnion.caseOne(1L);
+    NestedStruct nested = new NestedStruct(myMap, struct, mySet, myList, union);
 
     com.facebook.thrift.android.test.MySimpleStruct struct2 =
         new com.facebook.thrift.android.test.MySimpleStruct(id, name);
+    com.facebook.thrift.android.test.MySimpleUnion union2 =
+        com.facebook.thrift.android.test.MySimpleUnion.caseOne(1L);
     com.facebook.thrift.android.test.NestedStruct nested2 =
-        new com.facebook.thrift.android.test.NestedStruct(myMap, struct2, mySet, myList);
+        new com.facebook.thrift.android.test.NestedStruct(myMap, struct2, mySet, myList, union2);
 
     assertThat(struct.toString(), equalTo(struct2.toString()));
     assertThat(struct.toString(1, false), equalTo(struct2.toString(1, false)));

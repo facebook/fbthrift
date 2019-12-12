@@ -1055,13 +1055,18 @@ public final class TBaseHelper {
   }
 
   public static String toStringHelper(TBase struct, int indent, boolean prettyPrint) {
+    return toStringHelper(new StringBuilder(), struct, indent, prettyPrint);
+  }
+
+  private static String toStringHelper(
+      StringBuilder sb, TBase struct, int indent, boolean prettyPrint) {
     if (struct == null) {
       return "null";
     }
     String indentStr = prettyPrint ? getIndentedString(indent) : "";
     String newLine = prettyPrint ? "\n" : "";
     String space = prettyPrint ? " " : "";
-    StringBuilder sb = new StringBuilder(struct.getClass().getSimpleName());
+    sb.append(struct.getClass().getSimpleName());
     sb.append(space);
     sb.append("(");
     sb.append(newLine);
@@ -1128,8 +1133,10 @@ public final class TBaseHelper {
         sb.append(newLine + indentStr + toString(o, indent + 2, prettyPrint));
       }
       sb.append(newLine + reduceIndent(indentStr) + "]");
+    } else if (fieldValue instanceof TUnion<?>) {
+      sb.append(((TUnion<?>) fieldValue).toString(indent, prettyPrint));
     } else if (fieldValue instanceof TBase) {
-      sb.append(((TBase) fieldValue).toString(indent, prettyPrint));
+      toStringHelper(sb, (TBase) fieldValue, indent, prettyPrint);
     } else if (fieldValue instanceof String) {
       if (prettyPrint) {
         sb.append("\"" + fieldValue + "\"");
