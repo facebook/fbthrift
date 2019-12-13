@@ -829,7 +829,6 @@ struct protocol_methods<type_class::structure, Struct> {
  public:
   template <typename Protocol>
   static void read(Protocol& protocol, Struct& out) {
-    using namespace fatal;
     std::string fname;
     apache::thrift::protocol::TType ftype = protocol::T_STOP;
     std::int16_t fid = -1;
@@ -837,7 +836,7 @@ struct protocol_methods<type_class::structure, Struct> {
 
     protocol.readStructBegin(fname);
     DVLOG(3) << "start reading struct: " << fname << " ("
-             << z_data<typename traits::name>() << ")";
+             << fatal::z_data<typename traits::name>() << ")";
 
     while (true) {
       protocol.readFieldBegin(fname, ftype, fid);
@@ -852,7 +851,7 @@ struct protocol_methods<type_class::structure, Struct> {
         // if so, look up fid via fname
         assert(fname != "");
         bool const found_ =
-            trie_find<typename traits::members, fatal::get_type::name>(
+            fatal::trie_find<typename traits::members, fatal::get_type::name>(
                 fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
         if (!found_) {
           protocol.skip(ftype);
@@ -861,9 +860,9 @@ struct protocol_methods<type_class::structure, Struct> {
         }
       }
 
-      using sorted_fids =
-          sort<transform<typename traits::members, get_type::id>>;
-      if (!sorted_search<sorted_fids>(
+      using sorted_fids = fatal::sort<
+          fatal::transform<typename traits::members, fatal::get_type::id>>;
+      if (!fatal::sorted_search<sorted_fids>(
               fid, set_member_by_fid(), ftype, protocol, out, required_isset)) {
         DVLOG(3) << "didn't find field, fid: " << fid << ", fname: " << fname;
         protocol.skip(ftype);

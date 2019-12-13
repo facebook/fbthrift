@@ -368,8 +368,7 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
   template <typename T, typename Callback>
   static bool
   equals(std::string& path, T const& lhs, T const& rhs, Callback&& callback) {
-    using namespace fatal;
-    using traits = variant_traits<T>;
+    using traits = fatal::variant_traits<T>;
     using descriptors = typename traits::descriptors;
 
     if (traits::get_id(lhs) != traits::get_id(rhs)) {
@@ -380,7 +379,8 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
 
     bool result = true;
 
-    scalar_search<descriptors, get_type::id>(lhs.getType(), [&](auto indexed) {
+    using key = fatal::get_type::id;
+    fatal::scalar_search<descriptors, key>(lhs.getType(), [&](auto indexed) {
       using descriptor = decltype(fatal::tag_type(indexed));
 
       assert(descriptor::id::value == traits::get_id(lhs));
@@ -424,10 +424,9 @@ struct debug_equals_impl<type_class::variant> : debug_equals_with_pointers {
   template <typename Change, typename T, typename Callback>
   static void
   visit_changed(std::string& path, T const& variant, Callback&& callback) {
-    using namespace fatal;
-    using traits = variant_traits<T>;
+    using traits = fatal::variant_traits<T>;
     using descriptors = typename traits::descriptors;
-    scalar_search<descriptors, get_type::id>(
+    fatal::scalar_search<descriptors, fatal::get_type::id>(
         variant.getType(), [&](auto indexed) {
           using descriptor = decltype(fatal::tag_type(indexed));
 

@@ -169,10 +169,10 @@ struct pretty_print_impl<type_class::variant>
     : pretty_print_structure_with_pointers {
   template <typename OutputStream, typename T>
   static void print(OutputStream& out, T const& what) {
-    using namespace fatal;
-    using descriptors = typename variant_traits<T>::descriptors;
+    using descriptors = typename fatal::variant_traits<T>::descriptors;
     out << "<variant>{";
-    scalar_search<descriptors, get_type::id>(what.getType(), [&](auto indexed) {
+    using key = fatal::get_type::id;
+    fatal::scalar_search<descriptors, key>(what.getType(), [&](auto indexed) {
       using descriptor = decltype(fatal::tag_type(indexed));
       auto scope = out.start_scope();
       scope.newline();
