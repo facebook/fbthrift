@@ -1,3 +1,4 @@
+# @generated
 # @autocargo from //thrift/lib/rust:fbthrift
 # Signature<<94b2fa36abfdd99209ae308df95cbd8bcecf84fd>>
 [package]
