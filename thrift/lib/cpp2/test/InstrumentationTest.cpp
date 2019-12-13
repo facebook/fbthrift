@@ -218,10 +218,10 @@ class RequestInstrumentationTest : public testing::Test {
   std::vector<intptr_t> getRootIdsOnThreads() {
     std::vector<intptr_t> results;
     for (auto& root : folly::RequestContext::getRootIdsFromAllThreads()) {
-      if (!root) {
+      if (!root.second) {
         continue;
       }
-      results.push_back(root);
+      results.push_back(root.second);
     }
     return results;
   }
@@ -279,9 +279,9 @@ TEST_F(RequestInstrumentationTest, threadSnapshot) {
 
   for (const auto& req : allReqs) {
     if (req.getMethodName() == "wait") {
-      EXPECT_EQ(req.getRootRequestContextId(), onThreadReqs.front());
+      EXPECT_EQ(req.getRootRequestContextId(), onThreadReqs[0]);
     } else {
-      EXPECT_NE(req.getRootRequestContextId(), onThreadReqs.front());
+      EXPECT_NE(req.getRootRequestContextId(), onThreadReqs[0]);
     }
   }
 }
