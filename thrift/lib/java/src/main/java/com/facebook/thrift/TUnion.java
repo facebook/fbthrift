@@ -98,6 +98,10 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   }
 
   public void setFieldValue(int fieldId, Object value) {
+    if (value == null) {
+      throw new IllegalArgumentException(
+          String.format("TUnion value for field id '%d' can't be null!", fieldId));
+    }
     checkType((short) fieldId, value);
     setField_ = (short) fieldId;
     value_ = value;
@@ -234,6 +238,10 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   public String toString(int indent, boolean prettyPrint) {
     int fieldId = getSetField();
     Object v = getFieldValue();
+    if (v == null) {
+      return String.format("<%s uninitialized>", this.getClass().getSimpleName());
+    }
+
     String vStr = null;
     if (v instanceof byte[]) {
       vStr = bytesToStr((byte[]) v);
@@ -242,13 +250,8 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     } else {
       vStr = v.toString();
     }
-    return "<"
-        + this.getClass().getSimpleName()
-        + " "
-        + getFieldDesc(getSetField()).name
-        + ":"
-        + vStr
-        + ">";
+    return String.format(
+        "<%s %s:%s>", this.getClass().getSimpleName(), getFieldDesc(getSetField()).name, vStr);
   }
 
   @Override

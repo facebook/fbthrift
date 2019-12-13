@@ -281,4 +281,24 @@ public class UnionTest extends TestCase {
 
     assertThat(androidUnion.getCaseOne(), equalTo(union.getCaseOne()));
   }
+
+  @Test
+  public static void testInvalidUnion() throws Exception {
+    try {
+      MySimpleUnion invalidUnion = new MySimpleUnion(1, null);
+      assertFalse(true);
+    } catch (IllegalArgumentException e) {
+      assertThat(e.getMessage(), equalTo("TUnion value for field id '1' can't be null!"));
+    }
+  }
+
+  @Test
+  public static void testToStringOnEmptyUnion() throws Exception {
+    MySimpleUnion union = new MySimpleUnion();
+    assertThat(union.toString(), equalTo("<MySimpleUnion uninitialized>"));
+
+    com.facebook.thrift.android.test.MySimpleUnion androidUnion =
+        new com.facebook.thrift.android.test.MySimpleUnion();
+    assertThat(union.toString(), equalTo("<MySimpleUnion uninitialized>"));
+  }
 }
