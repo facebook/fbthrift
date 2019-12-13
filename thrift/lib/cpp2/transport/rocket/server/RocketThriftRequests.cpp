@@ -216,6 +216,7 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
+  clientCallback_->setProtoId(getProtoId());
   stream(
       apache::thrift::FirstResponsePayload{std::move(data),
                                            std::move(metadata)},

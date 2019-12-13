@@ -107,7 +107,7 @@ class TestSetup {
     }());
   }
 
- private:
+ protected:
   int numIOThreads_{1};
   int numWorkerThreads_{1};
   int32_t serverPort_{0};

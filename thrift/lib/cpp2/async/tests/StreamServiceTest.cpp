@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include <folly/experimental/coro/Sleep.h>
 #include <thrift/lib/cpp2/async/tests/util/Util.h>
 
 using namespace testutil::testservice;
@@ -70,6 +71,16 @@ TYPED_TEST(StreamServiceTest, ThrowUDE) {
       });
 }
 
+TYPED_TEST(StreamServiceTest, ServerTimeout) {
+  this->server_->setStreamExpireTime(std::chrono::milliseconds(1));
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
+        co_await folly::coro::sleep(std::chrono::milliseconds(100));
+        EXPECT_THROW(while (co_await gen.next()){}, TApplicationException);
+      });
+}
+
 class StreamServiceWrapperTest
     : public testing::Test,
       public TestSetup<TestStreamWrappedService, TestStreamServiceAsyncClient> {
@@ -100,5 +111,15 @@ TEST_F(StreamServiceWrapperTest, ThrowUDE) {
         auto gen =
             (co_await client.co_rangeThrowUDE(0, 100)).toAsyncGenerator();
         EXPECT_ANY_THROW(co_await gen.next());
+      });
+}
+
+TEST_F(StreamServiceWrapperTest, ServerTimeout) {
+  this->server_->setStreamExpireTime(std::chrono::milliseconds(1));
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
+        co_await folly::coro::sleep(std::chrono::milliseconds(100));
+        EXPECT_THROW(while (co_await gen.next()){}, TApplicationException);
       });
 }
