@@ -269,6 +269,7 @@ TEST_F(RequestInstrumentationTest, threadSnapshot) {
       });
 
   client->semifuture_sendRequest();
+  handler_->waitForRequests(1);
   client->semifuture_wait(0, true, false);
 
   handler_->waitForRequests(2);
