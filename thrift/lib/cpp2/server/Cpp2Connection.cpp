@@ -215,9 +215,8 @@ void Cpp2Connection::killRequest(
 // Response Channel callbacks
 void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   auto baseReqCtx = processor_->getBaseContextForRequest();
-  auto reqCtx = baseReqCtx
-      ? std::make_shared<folly::RequestContext>(*baseReqCtx)
-      : std::make_shared<folly::RequestContext>();
+  auto reqCtx = baseReqCtx ? RequestContext::copyAsRoot(*baseReqCtx)
+                           : std::make_shared<folly::RequestContext>();
   auto handler = worker_->getServer()->getEventHandlerUnsafe();
   if (handler) {
     handler->connectionNewRequest(&context_, reqCtx.get());
