@@ -157,7 +157,8 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
     RequestResponseFrame&& frame,
     RocketServerFrameContext&& context) {
   auto makeRequestResponse = [&](RequestRpcMetadata&& md,
-                                 std::unique_ptr<folly::IOBuf> debugPayload) {
+                                 std::unique_ptr<folly::IOBuf> debugPayload,
+                                 const folly::RequestContext* ctx) {
     // Note, we're passing connContext by reference and rely on the next chain
     // of ownership to keep it alive: ThriftServerRequestResponse stores
     // RocketServerFrameContext, which keeps refcount on RocketServerConnection,
@@ -170,6 +171,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
         *connContext_,
         *activeRequestsRegistry_,
         std::move(debugPayload),
+        ctx->getRootId(),
         std::move(context));
   };
 
@@ -181,7 +183,8 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
     RequestFnfFrame&& frame,
     RocketServerFrameContext&& context) {
   auto makeRequestFnf = [&](RequestRpcMetadata&& md,
-                            std::unique_ptr<folly::IOBuf> debugPayload) {
+                            std::unique_ptr<folly::IOBuf> debugPayload,
+                            const folly::RequestContext* ctx) {
     // Note, we're passing connContext by reference and rely on a complex chain
     // of ownership (see handleRequestResponseFrame for detailed explanation).
     return std::make_unique<ThriftServerRequestFnf>(
@@ -191,6 +194,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         *connContext_,
         *activeRequestsRegistry_,
         std::move(debugPayload),
+        ctx->getRootId(),
         std::move(context),
         [keepAlive = cpp2Processor_] {});
   };
@@ -202,7 +206,8 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
     RequestStreamFrame&& frame,
     RocketStreamClientCallback* clientCallback) {
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
-                               std::unique_ptr<folly::IOBuf> debugPayload) {
+                               std::unique_ptr<folly::IOBuf> debugPayload,
+                               const folly::RequestContext* ctx) {
     return std::make_unique<ThriftServerRequestStream>(
         *eventBase_,
         *serverConfigs_,
@@ -210,6 +215,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         connContext_,
         *activeRequestsRegistry_,
         std::move(debugPayload),
+        ctx->getRootId(),
         clientCallback,
         cpp2Processor_);
   };
@@ -221,7 +227,8 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
     RequestChannelFrame&& frame,
     RocketSinkClientCallback* clientCallback) {
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
-                             std::unique_ptr<folly::IOBuf> debugPayload) {
+                             std::unique_ptr<folly::IOBuf> debugPayload,
+                             const folly::RequestContext* ctx) {
     return std::make_unique<ThriftServerRequestSink>(
         *eventBase_,
         *serverConfigs_,
@@ -229,6 +236,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         connContext_,
         *activeRequestsRegistry_,
         std::move(debugPayload),
+        ctx->getRootId(),
         clientCallback,
         cpp2Processor_);
   };
@@ -251,20 +259,20 @@ void ThriftRocketServerHandler::handleRequestCommon(
   const bool validMetadata = parseOk && isMetadataValid(metadata);
 
   if (!setupFrameValid_) {
-    handleRequestForInvalidConnection(
-        makeRequest(std::move(metadata), std::move(debugPayload)));
+    handleRequestForInvalidConnection(makeRequest(
+        std::move(metadata), std::move(debugPayload), reqCtx.get()));
     return;
   }
 
   if (!validMetadata) {
-    handleRequestWithBadMetadata(
-        makeRequest(std::move(metadata), std::move(debugPayload)));
+    handleRequestWithBadMetadata(makeRequest(
+        std::move(metadata), std::move(debugPayload), reqCtx.get()));
     return;
   }
 
   if (worker_->isStopping()) {
-    handleServerShutdown(
-        makeRequest(std::move(metadata), std::move(debugPayload)));
+    handleServerShutdown(makeRequest(
+        std::move(metadata), std::move(debugPayload), reqCtx.get()));
     return;
   }
 
@@ -273,8 +281,8 @@ void ThriftRocketServerHandler::handleRequestCommon(
           metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
                                        : nullptr,
           &*metadata.name_ref()))) {
-    handleRequestOverloadedServer(
-        makeRequest(std::move(metadata), std::move(debugPayload)));
+    handleRequestOverloadedServer(makeRequest(
+        std::move(metadata), std::move(debugPayload), reqCtx.get()));
     return;
   }
 
@@ -289,12 +297,13 @@ void ThriftRocketServerHandler::handleRequestCommon(
       (*metadata.crc32c_ref() != checksum::crc32c(*data));
 
   if (badChecksum) {
-    handleRequestWithBadChecksum(
-        makeRequest(std::move(metadata), std::move(debugPayload)));
+    handleRequestWithBadChecksum(makeRequest(
+        std::move(metadata), std::move(debugPayload), reqCtx.get()));
     return;
   }
 
-  auto request = makeRequest(std::move(metadata), std::move(debugPayload));
+  auto request =
+      makeRequest(std::move(metadata), std::move(debugPayload), reqCtx.get());
   const auto protocolId = request->getProtoId();
   auto* const cpp2ReqCtx = request->getRequestContext();
   cpp2Processor_->process(

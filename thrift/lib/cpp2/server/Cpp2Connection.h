@@ -149,7 +149,8 @@ class Cpp2Connection : public ResponseChannel::Callback,
     Cpp2Request(
         std::unique_ptr<ResponseChannelRequest> req,
         std::shared_ptr<Cpp2Connection> con,
-        std::unique_ptr<folly::IOBuf> debugPayload);
+        std::unique_ptr<folly::IOBuf> debugPayload,
+        intptr_t rootRequestContextId);
 
     // Delegates to wrapped request.
     bool isActive() const override {

@@ -52,6 +52,7 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     Cpp2ConnContext& connContext,
     ActiveRequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
+    intptr_t rootRequestContextId,
     RocketServerFrameContext&& context)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
@@ -60,7 +61,8 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
           reqRegistry,
           *this,
           *getRequestContext(),
-          std::move(debugPayload)) {
+          std::move(debugPayload),
+          rootRequestContextId) {
   scheduleTimeouts();
 }
 
@@ -113,6 +115,7 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
     Cpp2ConnContext& connContext,
     ActiveRequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
+    intptr_t rootRequestContextId,
     RocketServerFrameContext&& context,
     folly::Function<void()> onComplete)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
@@ -123,7 +126,8 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
           reqRegistry,
           *this,
           *getRequestContext(),
-          std::move(debugPayload)) {
+          std::move(debugPayload),
+          rootRequestContextId) {
   scheduleTimeouts();
 }
 
@@ -153,6 +157,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     std::shared_ptr<Cpp2ConnContext> connContext,
     ActiveRequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
+    intptr_t rootRequestContextId,
     RocketStreamClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
@@ -164,7 +169,8 @@ ThriftServerRequestStream::ThriftServerRequestStream(
           reqRegistry,
           *this,
           *getRequestContext(),
-          std::move(debugPayload)) {
+          std::move(debugPayload),
+          rootRequestContextId) {
   scheduleTimeouts();
 }
 
@@ -233,6 +239,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     std::shared_ptr<Cpp2ConnContext> connContext,
     ActiveRequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
+    intptr_t rootRequestContextId,
     RocketSinkClientCallback* clientCallback,
     std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
@@ -244,7 +251,8 @@ ThriftServerRequestSink::ThriftServerRequestSink(
           reqRegistry,
           *this,
           *getRequestContext(),
-          std::move(debugPayload)) {
+          std::move(debugPayload),
+          rootRequestContextId) {
   scheduleTimeouts();
 }
 
@@ -280,7 +288,7 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
     folly::coro::co_invoke(
         [serverCallback =
              std::move(serverCallback)]() -> folly::coro::Task<void> {
-           co_return co_await serverCallback->start();
+          co_return co_await serverCallback->start();
         })
         .scheduleOn(executor)
         .start();

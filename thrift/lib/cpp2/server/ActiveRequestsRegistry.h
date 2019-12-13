@@ -63,13 +63,15 @@ class ActiveRequestsRegistry {
         ActiveRequestsRegistry& reqRegistry,
         const ResponseChannelRequest& req,
         const Cpp2RequestContext& reqContext,
-        std::unique_ptr<folly::IOBuf> payload)
+        std::unique_ptr<folly::IOBuf> payload,
+        intptr_t rootRequestContextId)
         : req_(&req),
           reqContext_(&reqContext),
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
-          reqId_(reqRegistry.genRequestId()) {
+          reqId_(reqRegistry.genRequestId()),
+          rootRequestContextId_(rootRequestContextId) {
       reqRegistry.registerStub(*this);
     }
 
@@ -98,6 +100,10 @@ class ActiveRequestsRegistry {
 
     const RequestId& getRequestId() const {
       return reqId_;
+    }
+
+    intptr_t getRootRequestContextId() const {
+      return rootRequestContextId_;
     }
 
     /**
@@ -130,6 +136,7 @@ class ActiveRequestsRegistry {
     std::chrono::steady_clock::time_point timestamp_;
     ActiveRequestsRegistry* registry_;
     const RequestId reqId_;
+    const intptr_t rootRequestContextId_;
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
   };

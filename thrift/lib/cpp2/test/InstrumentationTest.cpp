@@ -130,6 +130,21 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     }
   }
 
+  folly::coro::Task<void> co_wait(int value, bool busyWait, bool shallowRC)
+      override {
+    std::unique_ptr<folly::ShallowCopyRequestContextScopeGuard> g;
+    if (shallowRC) {
+      g = std::make_unique<folly::ShallowCopyRequestContextScopeGuard>();
+    }
+    auto rg = requestGuard();
+    if (busyWait) {
+      while (!finished_.ready()) {
+        std::this_thread::yield();
+      }
+    }
+    co_await finished_;
+  }
+
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::make_unique<InstrumentationTestProcessor>(this);
   }
@@ -200,6 +215,17 @@ class RequestInstrumentationTest : public testing::Test {
     return serverReqSnapshots;
   }
 
+  std::vector<intptr_t> getRootIdsOnThreads() {
+    std::vector<intptr_t> results;
+    for (auto& root : folly::RequestContext::getRootIdsFromAllThreads()) {
+      if (!root) {
+        continue;
+      }
+      results.push_back(root);
+    }
+    return results;
+  }
+
   std::shared_ptr<TestInterface> handler_;
   apache::thrift::ScopedServerInterfaceThread server_;
   ThriftServer* thriftServer_;
@@ -217,10 +243,72 @@ TEST_F(RequestInstrumentationTest, simpleRocketRequestTest) {
     client->semifuture_sendStreamingRequest();
     client->semifuture_sendRequest();
   }
+  handler_->waitForRequests(2 * reqNum);
+
+  // we expect all requests to get off the thread, eventually
+  int attempt = 0;
+  while (attempt < 5 && getRootIdsOnThreads().size() > 0) {
+    sleep(1);
+    attempt++;
+  }
+  EXPECT_LT(attempt, 5);
+
   for (auto& reqSnapshot : getRequestSnapshots(2 * reqNum)) {
     auto methodName = reqSnapshot.getMethodName();
+    EXPECT_NE(reqSnapshot.getRootRequestContextId(), 0);
     EXPECT_TRUE(
         methodName == "sendRequest" || methodName == "sendStreamingRequest");
+  }
+}
+
+TEST_F(RequestInstrumentationTest, threadSnapshot) {
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket));
+      });
+
+  client->semifuture_sendRequest();
+  client->semifuture_wait(0, true, false);
+
+  handler_->waitForRequests(2);
+  auto onThreadReqs = getRootIdsOnThreads();
+  auto allReqs = getRequestSnapshots(2);
+  EXPECT_EQ(1, onThreadReqs.size());
+  EXPECT_EQ(2, allReqs.size());
+
+  for (const auto& req : allReqs) {
+    if (req.getMethodName() == "wait") {
+      EXPECT_EQ(req.getRootRequestContextId(), onThreadReqs.front());
+    } else {
+      EXPECT_NE(req.getRootRequestContextId(), onThreadReqs.front());
+    }
+  }
+}
+
+TEST_F(RequestInstrumentationTest, threadSnapshotWithShallowRC) {
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket));
+      });
+
+  client->semifuture_sendRequest();
+  handler_->waitForRequests(1);
+  client->semifuture_wait(0, true, true);
+  handler_->waitForRequests(2);
+
+  auto onThreadReqs = getRootIdsOnThreads();
+  auto allReqs = getRequestSnapshots(2);
+  EXPECT_EQ(1, onThreadReqs.size());
+  EXPECT_EQ(2, allReqs.size());
+
+  for (const auto& req : allReqs) {
+    if (req.getMethodName() == "wait") {
+      EXPECT_EQ(req.getRootRequestContextId(), onThreadReqs.front());
+    } else {
+      EXPECT_NE(req.getRootRequestContextId(), onThreadReqs.front());
+    }
   }
 }
 
@@ -280,6 +368,7 @@ TEST_F(RequestInstrumentationTest, simpleHeaderRequestTest) {
 
   for (auto& reqSnapshot : getRequestSnapshots(reqNum)) {
     EXPECT_EQ(reqSnapshot.getMethodName(), "sendRequest");
+    EXPECT_NE(reqSnapshot.getRootRequestContextId(), 0);
   }
 }
 

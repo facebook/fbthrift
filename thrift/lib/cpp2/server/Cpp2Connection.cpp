@@ -342,7 +342,8 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   // We keep a clone of the request payload buffer for debugging purposes, but
   // the lifetime of payload should not necessarily be the same as its request
   // object's.
-  Cpp2Request* t2r = new Cpp2Request(std::move(req), this_, buf->clone());
+  Cpp2Request* t2r =
+      new Cpp2Request(std::move(req), this_, buf->clone(), reqCtx->getRootId());
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }
@@ -408,7 +409,8 @@ void Cpp2Connection::removeRequest(Cpp2Request* req) {
 Cpp2Connection::Cpp2Request::Cpp2Request(
     std::unique_ptr<ResponseChannelRequest> req,
     std::shared_ptr<Cpp2Connection> con,
-    std::unique_ptr<folly::IOBuf> debugPayload)
+    std::unique_ptr<folly::IOBuf> debugPayload,
+    intptr_t rootRequestContextId)
     : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release())),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
@@ -418,7 +420,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
           *connection_->getWorker()->getRequestsRegistry(),
           *this,
           reqContext_,
-          std::move(debugPayload)) {
+          std::move(debugPayload),
+          rootRequestContextId) {
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }
