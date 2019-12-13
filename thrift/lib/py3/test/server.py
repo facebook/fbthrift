@@ -121,6 +121,7 @@ class ServicesTests(unittest.TestCase):
         NUM_CPU_WORKERS = 42
         NUM_SSL_WORKERS = 12
         IDLE_TIMEOUT = 19.84
+        QUEUE_TIMEOUT = 20.19
 
         server = ThriftServer(Handler(), port=0)
         server.set_max_requests(MAX_REQUESTS)
@@ -130,6 +131,7 @@ class ServicesTests(unittest.TestCase):
         server.set_cpu_worker_threads(NUM_CPU_WORKERS)
         server.set_ssl_handshake_worker_threads(NUM_SSL_WORKERS)
         server.set_idle_timeout(IDLE_TIMEOUT)
+        server.set_queue_timeout(QUEUE_TIMEOUT)
         self.assertEqual(server.get_max_requests(), MAX_REQUESTS)
         self.assertEqual(server.get_max_connections(), MAX_CONNECTIONS)
         self.assertEqual(server.get_listen_backlog(), LISTEN_BACKLOG)
@@ -137,6 +139,7 @@ class ServicesTests(unittest.TestCase):
         self.assertEqual(server.get_cpu_worker_threads(), NUM_CPU_WORKERS)
         self.assertEqual(server.get_ssl_handshake_worker_threads(), NUM_SSL_WORKERS)
         self.assertEqual(server.get_idle_timeout(), IDLE_TIMEOUT)
+        self.assertEqual(server.get_queue_timeout(), QUEUE_TIMEOUT)
 
         self.assertFalse(server.is_plaintext_allowed_on_loopback())
         server.set_allow_plaintext_on_loopback(True)

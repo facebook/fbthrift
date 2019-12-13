@@ -239,6 +239,12 @@ cdef class ThriftServer:
     def get_idle_timeout(self):
         return self.server.get().getIdleTimeout().count() / 1000
 
+    def set_queue_timeout(self, seconds):
+        self.server.get().setQueueTimeout(milliseconds(<int64_t>(seconds * 1000)))
+
+    def get_queue_timeout(self):
+        return self.server.get().getQueueTimeout().count() / 1000
+
     def stop(self):
         self.server.get().stop()
 

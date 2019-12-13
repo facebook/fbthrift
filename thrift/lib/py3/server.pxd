@@ -104,6 +104,8 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         cbool isPlaintextAllowedOnLoopback()
         void setIdleTimeout(milliseconds idleTimeout)
         milliseconds getIdleTimeout()
+        void setQueueTimeout(milliseconds timeout)
+        milliseconds getQueueTimeout()
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs
