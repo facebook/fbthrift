@@ -33,6 +33,7 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(NUM, new FieldMetaData("num", TFieldRequirementType.DEFAULT, 

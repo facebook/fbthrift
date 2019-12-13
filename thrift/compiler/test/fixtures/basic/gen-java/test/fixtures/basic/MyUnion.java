@@ -34,6 +34,7 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   public static final int MYDATAITEM = 3;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(MYENUM, new FieldMetaData("myEnum", TFieldRequirementType.DEFAULT, 
@@ -101,42 +102,6 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
-  }
-
-  @Override
-  public void read(TProtocol iprot) throws TException {
-    setField_ = 0;
-    value_ = null;
-    iprot.readStructBegin(metaDataMap);
-    TField __field = iprot.readFieldBegin();
-    if (__field.type != TType.STOP)
-    {
-      value_ = readValue(iprot, __field);
-      if (value_ != null)
-      {
-        switch (__field.id) {
-          case MYENUM:
-            if (__field.type == MY_ENUM_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case MYSTRUCT:
-            if (__field.type == MY_STRUCT_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case MYDATAITEM:
-            if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-        }
-      }
-      iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
   }
 
   @Override
@@ -208,6 +173,9 @@ public class MyUnion extends TUnion<MyUnion> implements Comparable<MyUnion> {
   protected TStruct getStructDesc() {
     return STRUCT_DESC;
   }
+
+  @Override
+  protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
   /**
    * 

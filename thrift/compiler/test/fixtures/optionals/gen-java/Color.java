@@ -45,6 +45,7 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
   private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(RED, new FieldMetaData("red", TFieldRequirementType.DEFAULT, 

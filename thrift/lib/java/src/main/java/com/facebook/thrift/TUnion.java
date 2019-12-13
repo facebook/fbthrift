@@ -16,10 +16,15 @@
 
 package com.facebook.thrift;
 
+import com.facebook.thrift.meta_data.FieldMetaData;
 import com.facebook.thrift.protocol.TField;
 import com.facebook.thrift.protocol.TProtocol;
 import com.facebook.thrift.protocol.TProtocolException;
 import com.facebook.thrift.protocol.TStruct;
+import com.facebook.thrift.protocol.TType;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @SuppressWarnings("serial")
 public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
@@ -32,8 +37,8 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     value_ = null;
   }
 
-  protected TUnion(int setField, Object value) {
-    setFieldValue(setField, value);
+  protected TUnion(int fieldId, Object value) {
+    setFieldValue(fieldId, value);
   }
 
   protected TUnion(TUnion<Me> other) {
@@ -75,22 +80,20 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   public void read(TProtocol iprot) throws TException {
     setField_ = 0;
     value_ = null;
-
-    iprot.readStructBegin();
-
+    iprot.readStructBegin(getMetaDataMap());
     TField field = iprot.readFieldBegin();
-
-    value_ = readValue(iprot, field);
-    if (value_ != null) {
-      setField_ = field.id;
+    if (field.type != TType.STOP) {
+      value_ = readValue(iprot, field);
+      if (value_ != null) {
+        setField_ = field.id;
+      }
+      iprot.readFieldEnd();
+      // this is so that we will eat the stop byte. we could put a check here to
+      // make sure that it actually *is* the stop byte, but it's faster to do it
+      // this way.
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
     }
-
-    iprot.readFieldEnd();
-    // this is so that we will eat the stop byte. we could put a check here to
-    // make sure that it actually *is* the stop byte, but it's faster to do it
-    // this way.
-    iprot.readFieldBegin();
-    iprot.readFieldEnd();
     iprot.readStructEnd();
   }
 
@@ -112,8 +115,55 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
     oprot.writeStructEnd();
   }
 
-  /** Implementation should be generated so that we can efficiently type check various values. */
-  protected abstract void checkType(short setField, Object value) throws ClassCastException;
+  /** Generic implementation using reflection, codegen can override this in a more efficient way. */
+  protected void checkType(short fieldId, Object value)
+      throws ClassCastException, IllegalArgumentException {
+    TField tField = TBaseHelper.getTField((TBase) value, fieldId);
+    if (tField == null) {
+      throw new IllegalArgumentException(
+          "field #" + fieldId + " not found in Thrift struct " + this.getClass().getSimpleName());
+    }
+
+    if (!validateType(value, tField.type)) {
+      throw new ClassCastException(
+          String.format(
+              "Was expecting value of type id %d for field id %d, but got %s",
+              tField.type, fieldId, value.getClass().getSimpleName()));
+    }
+  }
+
+  private static boolean validateType(Object value, short typeId) {
+    switch (typeId) {
+      case TType.BOOL:
+        return value instanceof Boolean;
+      case TType.BYTE:
+        return value instanceof Byte;
+      case TType.DOUBLE:
+        return value instanceof Double;
+      case TType.I16:
+        return value instanceof Short;
+      case TType.I32:
+        return value instanceof Integer;
+      case TType.I64:
+        return value instanceof Long;
+      case TType.STRING:
+        return value instanceof String;
+      case TType.STRUCT:
+        return value instanceof TBase;
+      case TType.MAP:
+        return value instanceof Map;
+      case TType.SET:
+        return value instanceof Set;
+      case TType.LIST:
+        return value instanceof List;
+      case TType.ENUM:
+        return value instanceof TEnum;
+      case TType.FLOAT:
+        return value instanceof Float;
+      default:
+        return false;
+    }
+  }
 
   /**
    * Implementation should be generated to read the right stuff from the wire based on the field
@@ -182,6 +232,7 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
 
   @Override
   public String toString(int indent, boolean prettyPrint) {
+    int fieldId = getSetField();
     Object v = getFieldValue();
     String vStr = null;
     if (v instanceof byte[]) {
@@ -204,6 +255,8 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   public String toString() {
     return toString(1, true);
   }
+
+  protected abstract Map<Integer, FieldMetaData> getMetaDataMap();
 
   private static String bytesToStr(byte[] bytes) {
     StringBuilder sb = new StringBuilder();

@@ -46,6 +46,7 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(LIST_REF, new FieldMetaData("list_ref", TFieldRequirementType.DEFAULT, 

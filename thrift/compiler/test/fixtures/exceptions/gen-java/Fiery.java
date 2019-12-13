@@ -31,6 +31,7 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(MESSAGE, new FieldMetaData("message", TFieldRequirementType.REQUIRED, 

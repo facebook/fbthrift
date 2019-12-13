@@ -25,6 +25,7 @@ public class Banal extends Exception implements TBase, java.io.Serializable, Clo
   private static final TStruct STRUCT_DESC = new TStruct("Banal");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);

@@ -45,6 +45,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(COLOR, new FieldMetaData("color", TFieldRequirementType.DEFAULT, 

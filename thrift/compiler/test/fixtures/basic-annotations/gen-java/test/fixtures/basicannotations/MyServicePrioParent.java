@@ -321,6 +321,7 @@ public class MyServicePrioParent {
     private static final TStruct STRUCT_DESC = new TStruct("ping_args");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -458,6 +459,7 @@ public class MyServicePrioParent {
     private static final TStruct STRUCT_DESC = new TStruct("ping_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -594,6 +596,7 @@ public class MyServicePrioParent {
     private static final TStruct STRUCT_DESC = new TStruct("pong_args");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -731,6 +734,7 @@ public class MyServicePrioParent {
     private static final TStruct STRUCT_DESC = new TStruct("pong_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);

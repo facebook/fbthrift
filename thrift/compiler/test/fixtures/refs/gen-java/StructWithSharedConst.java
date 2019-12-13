@@ -37,6 +37,7 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(OPT_SHARED_CONST, new FieldMetaData("opt_shared_const", TFieldRequirementType.OPTIONAL, 

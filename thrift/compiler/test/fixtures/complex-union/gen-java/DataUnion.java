@@ -30,6 +30,7 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   public static final int STRINGDATA = 2;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(BINARYDATA, new FieldMetaData("binaryData", TFieldRequirementType.DEFAULT, 
@@ -87,37 +88,6 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   }
 
   @Override
-  public void read(TProtocol iprot) throws TException {
-    setField_ = 0;
-    value_ = null;
-    iprot.readStructBegin(metaDataMap);
-    TField __field = iprot.readFieldBegin();
-    if (__field.type != TType.STOP)
-    {
-      value_ = readValue(iprot, __field);
-      if (value_ != null)
-      {
-        switch (__field.id) {
-          case BINARYDATA:
-            if (__field.type == BINARY_DATA_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case STRINGDATA:
-            if (__field.type == STRING_DATA_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-        }
-      }
-      iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
-  }
-
-  @Override
   protected Object readValue(TProtocol iprot, TField __field) throws TException {
     switch (__field.id) {
       case BINARYDATA:
@@ -171,6 +141,9 @@ public class DataUnion extends TUnion<DataUnion> implements Comparable<DataUnion
   protected TStruct getStructDesc() {
     return STRUCT_DESC;
   }
+
+  @Override
+  protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
   public byte[] getBinaryData() {
     if (getSetField() == BINARYDATA) {

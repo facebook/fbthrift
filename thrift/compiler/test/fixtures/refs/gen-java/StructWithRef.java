@@ -37,6 +37,7 @@ public class StructWithRef implements TBase, java.io.Serializable, Cloneable, Co
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(DEF_FIELD, new FieldMetaData("def_field", TFieldRequirementType.DEFAULT, 

@@ -31,6 +31,7 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(MES, new FieldMetaData("mes", TFieldRequirementType.OPTIONAL, 

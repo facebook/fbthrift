@@ -27,6 +27,7 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable, Compa
   private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);

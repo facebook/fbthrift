@@ -31,6 +31,7 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(SONNET, new FieldMetaData("sonnet", TFieldRequirementType.OPTIONAL, 

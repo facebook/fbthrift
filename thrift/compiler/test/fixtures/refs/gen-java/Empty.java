@@ -25,6 +25,7 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
   private static final TStruct STRUCT_DESC = new TStruct("Empty");
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);

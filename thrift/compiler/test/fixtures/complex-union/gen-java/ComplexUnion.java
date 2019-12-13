@@ -38,6 +38,7 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   public static final int STRINGREF = 14;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(INTVALUE, new FieldMetaData("intValue", TFieldRequirementType.DEFAULT, 
@@ -148,57 +149,6 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
       default:
         throw new IllegalArgumentException("Unknown field id " + setField);
     }
-  }
-
-  @Override
-  public void read(TProtocol iprot) throws TException {
-    setField_ = 0;
-    value_ = null;
-    iprot.readStructBegin(metaDataMap);
-    TField __field = iprot.readFieldBegin();
-    if (__field.type != TType.STOP)
-    {
-      value_ = readValue(iprot, __field);
-      if (value_ != null)
-      {
-        switch (__field.id) {
-          case INTVALUE:
-            if (__field.type == INT_VALUE_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case STRINGVALUE:
-            if (__field.type == STRING_VALUE_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case INTLISTVALUE:
-            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case STRINGLISTVALUE:
-            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case TYPEDEFVALUE:
-            if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-          case STRINGREF:
-            if (__field.type == STRING_REF_FIELD_DESC.type) {
-              setField_ = __field.id;
-            }
-            break;
-        }
-      }
-      iprot.readFieldEnd();
-      iprot.readFieldBegin();
-      iprot.readFieldEnd();
-    }
-    iprot.readStructEnd();
   }
 
   @Override
@@ -364,6 +314,9 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   protected TStruct getStructDesc() {
     return STRUCT_DESC;
   }
+
+  @Override
+  protected Map<Integer, FieldMetaData> getMetaDataMap() { return metaDataMap; }
 
   public long getIntValue() {
     if (getSetField() == INTVALUE) {

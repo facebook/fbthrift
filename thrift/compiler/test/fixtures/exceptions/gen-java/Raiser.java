@@ -579,6 +579,7 @@ public class Raiser {
     private static final TStruct STRUCT_DESC = new TStruct("doBland_args");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -716,6 +717,7 @@ public class Raiser {
     private static final TStruct STRUCT_DESC = new TStruct("doBland_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -852,6 +854,7 @@ public class Raiser {
     private static final TStruct STRUCT_DESC = new TStruct("doRaise_args");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -1001,6 +1004,7 @@ public class Raiser {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(B, new FieldMetaData("b", TFieldRequirementType.DEFAULT, 
@@ -1349,6 +1353,7 @@ public class Raiser {
     private static final TStruct STRUCT_DESC = new TStruct("get200_args");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -1492,6 +1497,7 @@ public class Raiser {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
@@ -1714,6 +1720,7 @@ public class Raiser {
     private static final TStruct STRUCT_DESC = new TStruct("get500_args");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -1866,6 +1873,7 @@ public class Raiser {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 

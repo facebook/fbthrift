@@ -633,6 +633,7 @@ public class NestedContainers {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(FOO, new FieldMetaData("foo", TFieldRequirementType.DEFAULT, 
@@ -899,6 +900,7 @@ public class NestedContainers {
     private static final TStruct STRUCT_DESC = new TStruct("mapList_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -1041,6 +1043,7 @@ public class NestedContainers {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(FOO, new FieldMetaData("foo", TFieldRequirementType.DEFAULT, 
@@ -1307,6 +1310,7 @@ public class NestedContainers {
     private static final TStruct STRUCT_DESC = new TStruct("mapSet_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -1449,6 +1453,7 @@ public class NestedContainers {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(FOO, new FieldMetaData("foo", TFieldRequirementType.DEFAULT, 
@@ -1715,6 +1720,7 @@ public class NestedContainers {
     private static final TStruct STRUCT_DESC = new TStruct("listMap_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -1857,6 +1863,7 @@ public class NestedContainers {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(FOO, new FieldMetaData("foo", TFieldRequirementType.DEFAULT, 
@@ -2119,6 +2126,7 @@ public class NestedContainers {
     private static final TStruct STRUCT_DESC = new TStruct("listSet_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
@@ -2261,6 +2269,7 @@ public class NestedContainers {
     // isset id assignments
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       tmpMetaDataMap.put(FOO, new FieldMetaData("foo", TFieldRequirementType.DEFAULT, 
@@ -2588,6 +2597,7 @@ public class NestedContainers {
     private static final TStruct STRUCT_DESC = new TStruct("turtles_result");
 
     public static final Map<Integer, FieldMetaData> metaDataMap;
+
     static {
       Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);

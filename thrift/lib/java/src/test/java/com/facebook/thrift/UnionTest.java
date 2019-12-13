@@ -16,6 +16,10 @@
 
 package com.facebook.thrift;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
+import com.facebook.thrift.java.test.MySimpleUnion;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactJSONProtocol;
 import com.facebook.thrift.protocol.TCompactProtocol;
@@ -26,13 +30,14 @@ import com.facebook.thrift.transport.TMemoryBuffer;
 import com.facebook.thrift.transport.TTransportException;
 import java.util.ArrayList;
 import java.util.List;
+import junit.framework.TestCase;
 import org.junit.Test;
 import thrift.test.Empty;
 import thrift.test.RandomStuff;
 import thrift.test.StructWithAUnion;
 import thrift.test.TestUnion;
 
-public class UnionTest extends junit.framework.TestCase {
+public class UnionTest extends TestCase {
 
   @Test
   public static void testBasic() throws Exception {
@@ -259,5 +264,21 @@ public class UnionTest extends junit.framework.TestCase {
     } catch (TTransportException e) {
       // If we get a TTransportException then the test passed.
     }
+  }
+
+  @Test
+  public static void testAndroidUnion() throws Exception {
+    TMemoryBuffer buf = new TMemoryBuffer(0);
+    TProtocolFactory factory = new TCompactProtocol.Factory();
+    TProtocol proto = factory.getProtocol(buf);
+
+    MySimpleUnion union = MySimpleUnion.caseOne(61753);
+    union.write(proto);
+
+    com.facebook.thrift.android.test.MySimpleUnion androidUnion =
+        new com.facebook.thrift.android.test.MySimpleUnion();
+    androidUnion.read(proto);
+
+    assertThat(androidUnion.getCaseOne(), equalTo(union.getCaseOne()));
   }
 }

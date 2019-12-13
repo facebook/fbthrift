@@ -41,6 +41,7 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
   private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(OPT_VALUE, new FieldMetaData("opt_value", TFieldRequirementType.OPTIONAL, 

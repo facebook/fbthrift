@@ -37,6 +37,7 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   // isset id assignments
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(OPT_REF, new FieldMetaData("opt_ref", TFieldRequirementType.OPTIONAL, 

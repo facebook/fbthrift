@@ -39,6 +39,7 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
   private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
+
   static {
     Map<Integer, FieldMetaData> tmpMetaDataMap = new HashMap<Integer, FieldMetaData>();
     tmpMetaDataMap.put(STRVAL, new FieldMetaData("strVal", TFieldRequirementType.DEFAULT, 
