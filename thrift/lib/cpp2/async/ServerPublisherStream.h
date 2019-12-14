@@ -131,9 +131,12 @@ class ServerPublisherStream : private StreamServerCallback {
   void onStreamCancel() override {
     clientEventBase_->dcheckIsInEventBaseThread();
     serverExecutor_->add([ex = serverExecutor_, self = copy()] {
-      std::lock_guard<std::mutex> guard(self->callbackMutex_);
-      if (self->onStreamCompleteOrCancel_) {
-        std::exchange(self->onStreamCompleteOrCancel_, nullptr)();
+      auto onStreamCompleteOrCancel = [&] {
+        std::lock_guard<std::mutex> guard(self->callbackMutex_);
+        return std::exchange(self->onStreamCompleteOrCancel_, nullptr);
+      }();
+      if (onStreamCompleteOrCancel) {
+        onStreamCompleteOrCancel();
       }
     });
     queue_.close();
