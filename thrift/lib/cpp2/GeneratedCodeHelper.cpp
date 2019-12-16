@@ -105,87 +105,88 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
 template struct helper<BinaryProtocolReader, BinaryProtocolWriter>;
 template struct helper<CompactProtocolReader, CompactProtocolWriter>;
 
-template <class ProtocolReader>
-static bool deserializeMessageBegin(
+template <typename ProtocolReader>
+static bool setupRequestContextWithMessageBegin(
+    const MessageBegin& msgBegin,
     std::unique_ptr<ResponseChannelRequest>& req,
-    folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
   using h = helper_r<ProtocolReader>;
   const char* fn = "process";
-  std::string fname;
-  MessageType mtype;
-  int32_t protoSeqId = 0;
-  ProtocolReader iprot;
-  iprot.setInput(buf);
-  try {
-    iprot.readMessageBegin(fname, mtype, protoSeqId);
-    ctx->setMessageBeginSize(iprot.getCursorPosition());
-  } catch (const TException& ex) {
-    LOG(ERROR) << "received invalid message from client: " << ex.what();
+  if (msgBegin.isValid) {
+    ctx->setMessageBeginSize(msgBegin.size);
+  } else {
+    LOG(ERROR) << "received invalid message from client: "
+               << msgBegin.errMessage;
     auto type = TApplicationException::TApplicationExceptionType::UNKNOWN;
     const char* msg = "invalid message from client";
-    h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
+    h::process_exn(fn, type, msg, std::move(req), ctx, eb, msgBegin.seqId);
     return false;
   }
-  if (mtype != T_CALL && mtype != T_ONEWAY) {
-    LOG(ERROR) << "received invalid message of type " << mtype;
+  if (msgBegin.msgType != T_CALL && msgBegin.msgType != T_ONEWAY) {
+    LOG(ERROR) << "received invalid message of type " << msgBegin.msgType;
     auto type =
         TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE;
     const char* msg = "invalid message arguments";
-    h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
+    h::process_exn(fn, type, msg, std::move(req), ctx, eb, msgBegin.seqId);
     return false;
   }
 
-  ctx->setMethodName(fname);
-  ctx->setProtoSeqId(protoSeqId);
+  ctx->setMethodName(msgBegin.methodName);
+  ctx->setProtoSeqId(msgBegin.seqId);
   return true;
 }
 
-bool deserializeMessageBegin(
+bool setupRequestContextWithMessageBegin(
+    const MessageBegin& msgBegin,
     protocol::PROTOCOL_TYPES protType,
     std::unique_ptr<ResponseChannelRequest>& req,
-    folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
-      return deserializeMessageBegin<BinaryProtocolReader>(req, buf, ctx, eb);
+      return setupRequestContextWithMessageBegin<BinaryProtocolReader>(
+          msgBegin, req, ctx, eb);
     case protocol::T_COMPACT_PROTOCOL:
-      return deserializeMessageBegin<CompactProtocolReader>(req, buf, ctx, eb);
+      return setupRequestContextWithMessageBegin<CompactProtocolReader>(
+          msgBegin, req, ctx, eb);
     default:
       LOG(ERROR) << "invalid protType: " << protType;
       return false;
   }
 }
 
-std::string deserializeMethodName(
-    std::unique_ptr<ResponseChannelRequest>& req,
+MessageBegin deserializeMessageBegin(
+    const folly::IOBuf& buf,
     protocol::PROTOCOL_TYPES protType) {
-  std::string fname;
-  apache::thrift::MessageType mtype;
-  int32_t seqid = 0;
+  MessageBegin msgBegin;
   try {
     switch (protType) {
       case protocol::T_COMPACT_PROTOCOL: {
         CompactProtocolReader iprot;
-        iprot.setInput(req->getBuf());
-        iprot.readMessageBegin(fname, mtype, seqid);
+        iprot.setInput(&buf);
+        iprot.readMessageBegin(
+            msgBegin.methodName, msgBegin.msgType, msgBegin.seqId);
+        msgBegin.size = iprot.getCursorPosition();
         break;
       }
       case protocol::T_BINARY_PROTOCOL: {
         BinaryProtocolReader iprot;
-        iprot.setInput(req->getBuf());
-        iprot.readMessageBegin(fname, mtype, seqid);
+        iprot.setInput(&buf);
+        iprot.readMessageBegin(
+            msgBegin.methodName, msgBegin.msgType, msgBegin.seqId);
+        msgBegin.size = iprot.getCursorPosition();
         break;
       }
       default:
         break;
     }
   } catch (const TException& ex) {
+    msgBegin.isValid = false;
+    msgBegin.errMessage = ex.what();
     LOG(ERROR) << "received invalid message from client: " << ex.what();
   }
-  return fname;
+  return msgBegin;
 }
 
 template <class ProtocolReader>

@@ -881,15 +881,29 @@ process_missing(
       std::move(req), std::move(buf), protType, ctx, eb, tm);
 }
 
-bool deserializeMessageBegin(
+struct MessageBegin {
+  MessageBegin() {}
+  MessageBegin(const MessageBegin&) = delete;
+  MessageBegin& operator=(const MessageBegin&) = delete;
+  MessageBegin(MessageBegin&&) = default;
+  MessageBegin& operator=(MessageBegin&&) = default;
+  bool isValid{true};
+  size_t size{0};
+  std::string methodName;
+  MessageType msgType;
+  int32_t seqId{0};
+  std::string errMessage;
+};
+
+bool setupRequestContextWithMessageBegin(
+    const MessageBegin& msgBegin,
     protocol::PROTOCOL_TYPES protType,
     std::unique_ptr<ResponseChannelRequest>& req,
-    folly::IOBuf* buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb);
 
-std::string deserializeMethodName(
-    std::unique_ptr<ResponseChannelRequest>& req,
+MessageBegin deserializeMessageBegin(
+    const folly::IOBuf& buf,
     protocol::PROTOCOL_TYPES protType);
 
 template <class ProtocolReader, class Processor>

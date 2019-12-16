@@ -139,8 +139,11 @@ void ProxygenThriftServer::ThriftRequestHandler::onEOM() noexcept {
   auto req = std::unique_ptr<apache::thrift::ResponseChannelRequest>(request_);
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       header_->getProtocolId());
-  if (!apache::thrift::detail::ap::deserializeMessageBegin(
-          protoId, req, body_.get(), reqCtx_.get(), worker_->evb_)) {
+  const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
+      *body_.get(), protoId);
+
+  if (!apache::thrift::detail::ap::setupRequestContextWithMessageBegin(
+          msgBegin, protoId, req, reqCtx_.get(), worker_->evb_)) {
     return;
   }
 

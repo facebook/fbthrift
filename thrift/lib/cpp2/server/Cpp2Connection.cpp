@@ -291,8 +291,9 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
 
   auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
       hreq->getHeader()->getProtocolId());
-  auto methodName =
-      apache::thrift::detail::ap::deserializeMethodName(req, protoId);
+  const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
+      *hreq->getBuf(), protoId);
+  const std::string& methodName = msgBegin.methodName;
   if (server->isOverloaded(&hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
         *req,
@@ -372,8 +373,8 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   reqContext->setRequestTimeout(taskTimeout);
 
   try {
-    if (!apache::thrift::detail::ap::deserializeMessageBegin(
-            protoId, up2r, buf.get(), reqContext, worker_->getEventBase())) {
+    if (!apache::thrift::detail::ap::setupRequestContextWithMessageBegin(
+            msgBegin, protoId, up2r, reqContext, worker_->getEventBase())) {
       return;
     }
 
