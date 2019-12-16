@@ -796,7 +796,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
         : methodName_(stub.getRequestContext().getMethodName()),
           creationTimestamp_(stub.getTimestamp()),
           payload_(stub.clonePayload()),
-          rootRequestContextId_(stub.getRootRequestContextId()) {}
+          rootRequestContextId_(stub.getRootRequestContextId()),
+          reqId_(stub.getRequestId().toString()) {}
 
     const std::string& getMethodName() const {
       return methodName_;
@@ -810,6 +811,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return rootRequestContextId_;
     }
 
+    const std::string& getRequestId() const {
+      return reqId_;
+    }
+
     /**
      * Return nullptr if payload is not present.
      */
@@ -818,10 +823,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     }
 
    private:
-    std::string methodName_;
-    std::chrono::steady_clock::time_point creationTimestamp_;
+    const std::string methodName_;
+    const std::chrono::steady_clock::time_point creationTimestamp_;
     std::unique_ptr<folly::IOBuf> payload_;
     intptr_t rootRequestContextId_;
+    const std::string reqId_;
   };
   folly::SemiFuture<std::vector<RequestSnapshot>> snapshotActiveRequests();
 };
