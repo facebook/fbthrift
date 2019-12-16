@@ -50,7 +50,6 @@ using proxygen::HTTPMethod;
 using proxygen::HTTPTransaction;
 using proxygen::IOBufPrinter;
 using proxygen::ProxygenError;
-using proxygen::ResponseHandler;
 using std::map;
 using std::string;
 
@@ -58,9 +57,9 @@ static constexpr folly::StringPiece RPC_KIND = "rpckind";
 static constexpr folly::StringPiece kThriftContentType = "application/x-thrift";
 
 SingleRpcChannel::SingleRpcChannel(
-    ResponseHandler* toHttp2,
+    HTTPTransaction* txn,
     ThriftProcessor* processor)
-    : H2Channel(toHttp2), processor_(processor) {
+    : processor_(processor), httpTransaction_(txn) {
   evb_ = EventBaseManager::get()->getExistingEventBase();
 }
 
@@ -89,15 +88,15 @@ void SingleRpcChannel::sendThriftResponse(
   DCHECK(evb_->isInEventBaseThread());
   VLOG(4) << "sendThriftResponse:" << std::endl
           << IOBufPrinter::printHexFolly(payload.get(), true);
-  if (responseHandler_) {
+  if (httpTransaction_) {
     HTTPMessage msg;
     msg.setStatusCode(200);
     if (auto otherMetadata = metadata.otherMetadata_ref()) {
       encodeHeaders(std::move(*otherMetadata), msg);
     }
-    responseHandler_->sendHeaders(msg);
-    responseHandler_->sendBody(std::move(payload));
-    responseHandler_->sendEOM();
+    httpTransaction_->sendHeaders(msg);
+    httpTransaction_->sendBody(std::move(payload));
+    httpTransaction_->sendEOM();
   }
   receivedThriftRPC_ = true;
 }
@@ -248,6 +247,7 @@ void SingleRpcChannel::onH2StreamClosed(ProxygenError error) noexcept {
           std::move(*evbEx)));
     });
   }
+  httpTransaction_ = nullptr;
   H2Channel::onH2StreamClosed(error);
 }
 

@@ -20,13 +20,8 @@
 
 #include <folly/portability/GFlags.h>
 
-#include <proxygen/httpserver/HTTPServerAcceptor.h>
 #include <proxygen/httpserver/HTTPServerOptions.h>
-#include <proxygen/httpserver/RequestHandler.h>
-#include <proxygen/httpserver/RequestHandlerAdaptor.h>
-#include <proxygen/lib/http/codec/HTTPCodec.h>
-#include <proxygen/lib/http/codec/HTTPSettings.h>
-#include <proxygen/lib/http/session/HTTPDefaultSessionCodecFactory.h>
+#include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <proxygen/lib/http/session/HTTPDownstreamSession.h>
 #include <proxygen/lib/http/session/HTTPSession.h>
 #include <proxygen/lib/http/session/SimpleController.h>
@@ -34,6 +29,10 @@
 #include <wangle/acceptor/ManagedConnection.h>
 
 DEFINE_uint32(stream_timeout_ms, 1000, "Stream timeout in milliseconds");
+
+namespace {
+const uint32_t kMaxConcurrentIncomingStreams = 100000;
+}
 
 namespace apache {
 namespace thrift {
@@ -45,21 +44,17 @@ namespace {
 class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
                                    public proxygen::SimpleController {
  public:
-  HTTP2RoutingSessionManager(
-      std::unique_ptr<proxygen::HTTPServerAcceptor> acceptor,
-      ThriftProcessor* processor)
+  explicit HTTP2RoutingSessionManager(ThriftProcessor* processor)
       : proxygen::HTTPSession::InfoCallback(),
-        proxygen::SimpleController(acceptor.get()),
-        processor_(processor) {
-    acceptor_ = std::move(acceptor);
-  }
+        proxygen::SimpleController(/*acceptor=*/nullptr),
+        processor_(processor) {}
 
   ~HTTP2RoutingSessionManager() override = default;
 
   proxygen::HTTPDownstreamSession* createSession(
       folly::AsyncTransportWrapper::UniquePtr sock,
       folly::SocketAddress* peerAddress,
-      std::unique_ptr<proxygen::HTTPCodec> h2codec,
+      std::unique_ptr<proxygen::HTTP2Codec> h2codec,
       wangle::TransportInfo const& tinfo) {
     // Obtain the proper routing address
     folly::SocketAddress localAddress;
@@ -93,7 +88,6 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   // so we self destroy at detachSession().
 
   // begin SimpleController methods
-
   proxygen::HTTPTransactionHandler* getRequestHandler(
       proxygen::HTTPTransaction& txn,
       proxygen::HTTPMessage* msg) override {
@@ -103,8 +97,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
     msg->setClientAddress(clientAddr);
     msg->setDstAddress(vipAddr);
 
-    proxygen::RequestHandler* handler = new ThriftRequestHandler(processor_);
-    return new proxygen::RequestHandlerAdaptor(handler);
+    return new ThriftRequestHandler(processor_);
   }
 
   void detachSession(const proxygen::HTTPSessionBase*) override {
@@ -116,8 +109,6 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   // end SimpleController methods
 
  private:
-  // Supporting objects for HTTP2 session managed by the callback.
-  std::unique_ptr<proxygen::HTTPServerAcceptor> acceptor_;
 
   ThriftProcessor* processor_;
 };
@@ -139,6 +130,9 @@ bool HTTP2RoutingHandler::canAcceptConnection(
        * For more, see: https://tools.ietf.org/html/rfc7540#section-3.5
        */
       ((bytes[0] == 0x50 && bytes[1] == 0x52 && bytes[2] == 0x49) ||
+
+       // TODO: this is not valid HTTP/2, accepting a connection like this
+       // Will just result in an error
 
        /*
         * HTTP requests start with the following sequence:
@@ -162,46 +156,27 @@ void HTTP2RoutingHandler::handleConnection(
     wangle::TransportInfo const& tinfo,
     std::shared_ptr<Cpp2Worker>) {
   // Create the DownstreamSession manager.
-  auto ipConfig = proxygen::HTTPServer::IPConfig(
-      *peerAddress, proxygen::HTTPServer::Protocol::HTTP2);
-  auto acceptorConfig =
-      proxygen::HTTPServerAcceptor::makeConfig(ipConfig, *options_);
-  auto acceptor = proxygen::HTTPServerAcceptor::make(acceptorConfig, *options_);
-  auto sessionManager =
-      new HTTP2RoutingSessionManager(std::move(acceptor), processor_);
-  // Get the HTTP2 Codec
-  auto codecFactory = proxygen::HTTPDefaultSessionCodecFactory(acceptorConfig);
-  auto h2codec = codecFactory.getCodec(
-      "h2",
-      proxygen::TransportDirection::DOWNSTREAM,
-      // a non empty security protocol is assumed to be TLS
-      !sock->getSecurityProtocol().empty());
+  auto sessionManager = new HTTP2RoutingSessionManager(processor_);
   // Create the DownstreamSession
   // A const_cast is needed to match wangle and proxygen APIs
   auto session = sessionManager->createSession(
       std::move(sock),
       const_cast<folly::SocketAddress*>(peerAddress),
-      std::move(h2codec),
+      std::make_unique<proxygen::HTTP2Codec>(
+          proxygen::TransportDirection::DOWNSTREAM),
       tinfo);
-  // Set HTTP2 priorities flag on session object.
-  session->setHTTP2PrioritiesEnabled(acceptorConfig.HTTP2PrioritiesEnabled);
-  /*
-  if (acceptorConfig.maxConcurrentIncomingStreams) {
-    session->setMaxConcurrentIncomingStreams(
-        acceptorConfig.maxConcurrentIncomingStreams);
-  }
-  */
   // TODO: Improve the way max incoming streams is set
-  session->setMaxConcurrentIncomingStreams(100000);
+  // HTTPServerOptions::maxConcurrentIncomingStreams is one option
+  session->setMaxConcurrentIncomingStreams(kMaxConcurrentIncomingStreams);
 
   // Set flow control parameters.
   session->setFlowControl(
-      acceptorConfig.initialReceiveWindow,
-      acceptorConfig.receiveStreamWindowSize,
-      acceptorConfig.receiveSessionWindowSize);
-  if (acceptorConfig.writeBufferLimit > 0) {
-    session->setWriteBufferLimit(acceptorConfig.writeBufferLimit);
-  }
+      options_->initialReceiveWindow,
+      options_->receiveStreamWindowSize,
+      options_->receiveSessionWindowSize);
+  // ThriftRequestHandler ignores egress pause/resume events, so no need to
+  // limit the session write buffer
+  session->setWriteBufferLimit(std::numeric_limits<uint32_t>::max());
 
   // Route the connection.
   connectionManager->addConnection(session);

@@ -16,8 +16,8 @@
 
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
 
-#include <glog/logging.h>
 #include <folly/portability/GTest.h>
+#include <glog/logging.h>
 
 namespace apache {
 namespace thrift {
@@ -26,29 +26,38 @@ using folly::IOBuf;
 using proxygen::HTTPMessage;
 using std::string;
 using std::unordered_map;
+using namespace testing;
 
-void FakeResponseHandler::sendHeaders(HTTPMessage& msg) noexcept {
-  EXPECT_TRUE(evb_->inRunningEventBaseThread());
-  auto copyHeaders = [&](const string& key, const string& val) {
-    headers_.insert(make_pair(key, val));
-  };
-  msg.getHeaders().forEach(copyHeaders);
-}
-
-void FakeResponseHandler::sendBody(std::unique_ptr<IOBuf> body) noexcept {
-  EXPECT_TRUE(evb_->inRunningEventBaseThread());
-  if (body_) {
-    body_->prependChain(std::move(body));
-  } else {
-    body_ = std::move(body);
-  }
-}
-
-void FakeResponseHandler::sendEOM() noexcept {
-  EXPECT_TRUE(evb_->inRunningEventBaseThread());
-  eomReceived_ = true;
-  // Tests that use this class are expected to be done at this point.
-  evb_.reset();
+FakeResponseHandler::FakeResponseHandler(folly::EventBase* evb)
+    : evb_(getKeepAliveToken(evb)),
+      txn_(
+          proxygen::TransportDirection::UPSTREAM,
+          proxygen::HTTPCodec::StreamID(1),
+          0,
+          dummyEgressQueue_) {
+  EXPECT_CALL(txn_, sendHeaders(testing::_))
+      .WillRepeatedly(Invoke([this](const HTTPMessage& msg) mutable {
+        EXPECT_TRUE(evb_->inRunningEventBaseThread());
+        auto copyHeaders = [&](const string& key, const string& val) {
+          headers_.insert(make_pair(key, val));
+        };
+        msg.getHeaders().forEach(copyHeaders);
+      }));
+  EXPECT_CALL(txn_, sendBody(testing::_))
+      .WillRepeatedly(Invoke([this](std::shared_ptr<IOBuf> body) mutable {
+        EXPECT_TRUE(evb_->inRunningEventBaseThread());
+        if (body_) {
+          body_->prependChain(body->clone());
+        } else {
+          body_ = body->clone();
+        }
+      }));
+  EXPECT_CALL(txn_, sendEOM()).WillRepeatedly(Invoke([this] {
+    EXPECT_TRUE(evb_->inRunningEventBaseThread());
+    eomReceived_ = true;
+    // Tests that use this class are expected to be done at this point.
+    evb_.reset();
+  }));
 }
 
 unordered_map<string, string>* FakeResponseHandler::getHeaders() {

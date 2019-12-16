@@ -24,7 +24,6 @@ namespace thrift {
 using folly::IOBuf;
 using proxygen::HTTPMessage;
 using proxygen::ProxygenError;
-using proxygen::RequestHandler;
 using proxygen::UpgradeProtocol;
 
 ThriftRequestHandler::ThriftRequestHandler(ThriftProcessor* processor)
@@ -32,9 +31,9 @@ ThriftRequestHandler::ThriftRequestHandler(ThriftProcessor* processor)
 
 ThriftRequestHandler::~ThriftRequestHandler() {}
 
-void ThriftRequestHandler::onRequest(
+void ThriftRequestHandler::onHeadersComplete(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  channel_ = std::make_shared<SingleRpcChannel>(downstream_, processor_);
+  channel_ = std::make_shared<SingleRpcChannel>(txn_, processor_);
   channel_->onH2StreamBegin(std::move(headers));
 }
 
@@ -48,14 +47,15 @@ void ThriftRequestHandler::onEOM() noexcept {
 
 void ThriftRequestHandler::onUpgrade(UpgradeProtocol /*prot*/) noexcept {}
 
-void ThriftRequestHandler::requestComplete() noexcept {
+void ThriftRequestHandler::detachTransaction() noexcept {
   channel_->onH2StreamClosed(ProxygenError::kErrorNone);
   delete this;
 }
 
-void ThriftRequestHandler::onError(ProxygenError error) noexcept {
+void ThriftRequestHandler::onError(
+    const proxygen::HTTPException& error) noexcept {
   if (channel_) {
-    channel_->onH2StreamClosed(error);
+    channel_->onH2StreamClosed(error.getProxygenError());
   }
   delete this;
 }

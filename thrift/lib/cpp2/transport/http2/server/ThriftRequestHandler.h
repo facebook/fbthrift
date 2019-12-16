@@ -19,10 +19,10 @@
 #include <memory>
 
 #include <folly/io/IOBuf.h>
-#include <proxygen/httpserver/RequestHandler.h>
 #include <proxygen/lib/http/HTTPConstants.h>
 #include <proxygen/lib/http/HTTPMessage.h>
 #include <proxygen/lib/http/ProxygenErrorEnum.h>
+#include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 
@@ -36,13 +36,17 @@ namespace thrift {
  * is passed on to ChannelIf objects which can support both server
  * and client code (this class is only on the server side).
  */
-class ThriftRequestHandler : public proxygen::RequestHandler {
+class ThriftRequestHandler : public proxygen::HTTPTransactionHandler {
  public:
   explicit ThriftRequestHandler(ThriftProcessor* processor);
 
   ~ThriftRequestHandler() override;
 
-  void onRequest(
+  void setTransaction(proxygen::HTTPTransaction* txn) noexcept override {
+    txn_ = txn;
+  }
+
+  void onHeadersComplete(
       std::unique_ptr<proxygen::HTTPMessage> headers) noexcept override;
 
   void onBody(std::unique_ptr<folly::IOBuf> body) noexcept override;
@@ -51,9 +55,15 @@ class ThriftRequestHandler : public proxygen::RequestHandler {
 
   void onUpgrade(proxygen::UpgradeProtocol proto) noexcept override;
 
-  void requestComplete() noexcept override;
+  void detachTransaction() noexcept override;
 
-  void onError(proxygen::ProxygenError error) noexcept override;
+  void onError(const proxygen::HTTPException& error) noexcept override;
+
+  void onTrailers(std::unique_ptr<proxygen::HTTPHeaders>) noexcept override {}
+
+  void onEgressPaused() noexcept override {}
+
+  void onEgressResumed() noexcept override {}
 
  private:
   // There is a single ThriftProcessor object which is used for all requests.
@@ -62,6 +72,8 @@ class ThriftRequestHandler : public proxygen::RequestHandler {
   // The channel used with this request handler.  The request handler
   // creates the channel object.
   std::shared_ptr<H2Channel> channel_;
+
+  proxygen::HTTPTransaction* txn_{nullptr};
 };
 
 } // namespace thrift

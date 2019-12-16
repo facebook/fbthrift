@@ -31,7 +31,7 @@ namespace thrift {
 class SingleRpcChannel : public H2Channel {
  public:
   SingleRpcChannel(
-      proxygen::ResponseHandler* toHttp2,
+      proxygen::HTTPTransaction* toHttp2,
       ThriftProcessor* processor);
 
   SingleRpcChannel(

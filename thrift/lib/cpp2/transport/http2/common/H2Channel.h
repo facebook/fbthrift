@@ -19,8 +19,8 @@
 #include <memory>
 
 #include <folly/io/IOBuf.h>
-#include <proxygen/httpserver/ResponseHandler.h>
 #include <proxygen/lib/http/HTTPMessage.h>
+#include <proxygen/lib/http/ProxygenErrorEnum.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
 namespace apache {
@@ -80,9 +80,7 @@ class H2Channel : public ThriftChannelIf {
   // more writes to the stream should be performed after this point.
   // Also, after this call Proxygen will relinquish access to this
   // object.
-  virtual void onH2StreamClosed(proxygen::ProxygenError /*error*/) noexcept {
-    responseHandler_ = nullptr;
-  }
+  virtual void onH2StreamClosed(proxygen::ProxygenError /*error*/) noexcept {}
 
   void sendStreamThriftResponse(
       ResponseRpcMetadata&&,
@@ -93,11 +91,6 @@ class H2Channel : public ThriftChannelIf {
   }
 
  protected:
-  // Constructor for server side that uses a ResponseHandler object
-  // to write to the HTTP/2 stream.
-  explicit H2Channel(proxygen::ResponseHandler* toHttp2)
-      : responseHandler_(toHttp2) {}
-
   // Encodes Thrift headers to be HTTP compliant.
   void encodeHeaders(
       const std::map<std::string, std::string>& source,
@@ -108,11 +101,6 @@ class H2Channel : public ThriftChannelIf {
   void decodeHeaders(
       const proxygen::HTTPMessage& source,
       std::map<std::string, std::string>& dest) noexcept;
-
-  // Used to write messages to HTTP/2 on the server side.
-  // Owned by H2RequestHandler.  Should not be used after
-  // onH2StreamClosed() has been called.
-  proxygen::ResponseHandler* responseHandler_{nullptr};
 };
 
 } // namespace thrift
