@@ -39,6 +39,43 @@ class ResponseChannelRequest;
  * corresponding registry belongs to, as a task.
  */
 class ActiveRequestsRegistry {
+  /**
+   * A wrapper class for request payload we are tracking, to encapsulate the
+   * details of processing and storing the real request buffer.
+   */
+  class DebugPayload {
+   public:
+    DebugPayload(std::unique_ptr<folly::IOBuf> data) : data_(std::move(data)) {}
+    DebugPayload(const DebugPayload&) = delete;
+    DebugPayload& operator=(const DebugPayload&) = delete;
+    bool hasData() const {
+      return data_ != nullptr;
+    }
+    std::unique_ptr<folly::IOBuf> cloneData() const {
+      if (!data_) {
+        return std::make_unique<folly::IOBuf>();
+      }
+      return data_->clone();
+    }
+    size_t dataSize() const {
+      if (!data_) {
+        return 0;
+      }
+      return data_->computeChainDataLength();
+    }
+    /**
+     * User must call hasData() to ensure the underlying buffer is present
+     * before releasing the buffer.
+     */
+    void releaseData() {
+      DCHECK(data_);
+      folly::IOBuf::destroy(std::move(data_));
+    }
+
+   private:
+    std::unique_ptr<folly::IOBuf> data_;
+  };
+
  public:
   /**
    * A piece of information which should be embedded into thrift request
@@ -80,7 +117,7 @@ class ActiveRequestsRegistry {
      * notify their owner registry when unlinking themselves.
      */
     ~DebugStub() {
-      if (payload_) {
+      if (payload_.hasData()) {
         DCHECK(activeRequestsPayloadHook_.is_linked());
         registry_->onStubPayloadUnlinked(*this);
       }
@@ -114,25 +151,21 @@ class ActiveRequestsRegistry {
      * ActiveRequestsRegistry.
      */
     std::unique_ptr<folly::IOBuf> clonePayload() const {
-      std::unique_ptr<folly::IOBuf> ret;
-      if (payload_) {
-        ret = payload_->clone();
-      }
-      return ret;
+      return payload_.cloneData();
     }
 
    private:
     uint64_t getPayloadSize() const {
-      DCHECK(payload_);
-      return payload_->computeChainDataLength();
+      DCHECK(payload_.hasData());
+      return payload_.dataSize();
     }
     void releasePayload() {
-      DCHECK(payload_);
-      folly::IOBuf::destroy(std::move(payload_));
+      DCHECK(payload_.hasData());
+      payload_.releaseData();
     }
     const ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
-    std::unique_ptr<folly::IOBuf> payload_;
+    DebugPayload payload_;
     std::chrono::steady_clock::time_point timestamp_;
     ActiveRequestsRegistry* registry_;
     const RequestId reqId_;

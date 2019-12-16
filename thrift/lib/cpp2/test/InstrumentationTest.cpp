@@ -74,9 +74,12 @@ class InstrumentationTestProcessor
       apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
       apache::thrift::concurrency::ThreadManager* tm) override {
+    folly::IOBufQueue queue;
+    queue.append(buf->clone());
+    queue.trimStart(context->getMessageBeginSize());
     folly::RequestContext::get()->setContextData(
         RequestPayload::getRequestToken(),
-        std::make_unique<RequestPayload>(buf->clone()));
+        std::make_unique<RequestPayload>(queue.move()));
     InstrumentationTestServiceAsyncProcessor::process(
         std::move(req), std::move(buf), protType, context, eb, tm);
   }

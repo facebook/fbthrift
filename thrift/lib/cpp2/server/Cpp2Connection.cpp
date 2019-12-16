@@ -343,8 +343,12 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   // We keep a clone of the request payload buffer for debugging purposes, but
   // the lifetime of payload should not necessarily be the same as its request
   // object's.
-  Cpp2Request* t2r =
-      new Cpp2Request(std::move(req), this_, buf->clone(), reqCtx->getRootId());
+  folly::IOBufQueue debugPayloadQueue;
+  debugPayloadQueue.append(buf->clone());
+  debugPayloadQueue.trimStart(msgBegin.size);
+
+  Cpp2Request* t2r = new Cpp2Request(
+      std::move(req), this_, debugPayloadQueue.move(), reqCtx->getRootId());
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }
