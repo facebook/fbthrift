@@ -185,8 +185,7 @@ enum RWGuardType {
   RW_WRITE = 1,
 };
 
-class FOLLY_NODISCARD
-    [[deprecated("use std::unique_lock or std::shared_lock")]] RWGuard {
+class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGuard {
  public:
   explicit RWGuard(const ReadWriteMutex& value, bool write = false,
                    std::chrono::milliseconds timeout =
