@@ -75,6 +75,12 @@ class ServerStream {
     return createPublisher([] {});
   }
 
+  static ServerStream<T> createEmpty() {
+    auto pair = createPublisher();
+    std::move(pair.second).complete();
+    return std::move(pair.first);
+  }
+
   // Helpers for unit testing your service handler
   ClientBufferedStream<T> toClientStream(size_t bufferSize = 100) &&;
   // Blocks until the stream completes, calling the provided function
