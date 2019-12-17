@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <fatal/type/cat.h>
+#include <folly/FixedString.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
@@ -141,7 +141,7 @@ struct legacy_reflection {
    *    //  Writes the log line:
    *    //    struct MyModule.MyStruct
    */
-  static constexpr folly::StringPiece name();
+  static constexpr auto name(); // folly::FixedString<char, N>
 
   /***
    *  Returns the legacy reflection id of a Thrift type `T` using Thrift's
