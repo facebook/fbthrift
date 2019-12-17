@@ -600,7 +600,7 @@ class mstch_cpp2_type : public mstch_type {
     }
   }
   mstch::node client_buffered_stream() {
-    return cache_->parsed_options_.count("client_buffered_stream") != 0;
+    return cache_->parsed_options_.count("deprecated_client_streams") == 0;
   }
 };
 
