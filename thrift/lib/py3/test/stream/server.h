@@ -30,8 +30,9 @@ class StreamTestService : public StreamTestServiceSvIf {
   static std::shared_ptr<StreamTestService> createInstance() {
     return std::make_shared<StreamTestService>();
   }
-  apache::thrift::Stream<int32_t> returnstream(int32_t i32_from, int32_t i32_to)
-      override {
+  apache::thrift::ServerStream<int32_t> returnstream(
+      int32_t i32_from,
+      int32_t i32_to) override {
     return createStreamGenerator(
         [i32_from, i32_to]() -> folly::coro::AsyncGenerator<int32_t> {
           for (auto i = i32_from; i < i32_to; ++i) {
@@ -39,7 +40,7 @@ class StreamTestService : public StreamTestServiceSvIf {
           }
         });
   }
-  apache::thrift::Stream<int32_t> streamthrows(bool t) override {
+  apache::thrift::ServerStream<int32_t> streamthrows(bool t) override {
     if (t) {
       throw FuncEx{};
     } else {
@@ -47,7 +48,9 @@ class StreamTestService : public StreamTestServiceSvIf {
           []() -> folly::coro::AsyncGenerator<int32_t&&> { throw StreamEx{}; });
     }
   }
-  apache::thrift::ResponseAndStream<included::Included, included::Included>
+  apache::thrift::ResponseAndServerStream<
+      included::Included,
+      included::Included>
   returnresponseandstream(std::unique_ptr<included::Included> foo) override {
     included::Included resp;
     resp.from = 100;
