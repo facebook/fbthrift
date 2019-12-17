@@ -221,10 +221,10 @@ class RequestInstrumentationTest : public testing::Test {
   std::vector<intptr_t> getRootIdsOnThreads() {
     std::vector<intptr_t> results;
     for (auto& root : folly::RequestContext::getRootIdsFromAllThreads()) {
-      if (!root.second) {
+      if (!root.id) {
         continue;
       }
-      results.push_back(root.second);
+      results.push_back(root.id);
     }
     return results;
   }
