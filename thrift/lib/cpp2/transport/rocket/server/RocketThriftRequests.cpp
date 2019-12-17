@@ -61,6 +61,7 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
           reqRegistry,
           *this,
           *getRequestContext(),
+          getProtoId(),
           std::move(debugPayload),
           rootRequestContextId) {
   scheduleTimeouts();
@@ -126,6 +127,7 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
           reqRegistry,
           *this,
           *getRequestContext(),
+          getProtoId(),
           std::move(debugPayload),
           rootRequestContextId) {
   scheduleTimeouts();
@@ -169,6 +171,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
           reqRegistry,
           *this,
           *getRequestContext(),
+          getProtoId(),
           std::move(debugPayload),
           rootRequestContextId) {
   scheduleTimeouts();
@@ -252,6 +255,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
           reqRegistry,
           *this,
           *getRequestContext(),
+          getProtoId(),
           std::move(debugPayload),
           rootRequestContextId) {
   scheduleTimeouts();

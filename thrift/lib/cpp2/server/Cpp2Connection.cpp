@@ -425,6 +425,7 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
           *connection_->getWorker()->getRequestsRegistry(),
           *this,
           reqContext_,
+          protocol::PROTOCOL_TYPES(req_->getHeader()->getProtocolId()),
           std::move(debugPayload),
           rootRequestContextId) {
   queueTimeout_.request_ = this;

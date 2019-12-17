@@ -795,6 +795,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     explicit RequestSnapshot(const ActiveRequestsRegistry::DebugStub& stub)
         : methodName_(stub.getRequestContext().getMethodName()),
           creationTimestamp_(stub.getTimestamp()),
+          protoId_(stub.getProtoId()),
           payload_(stub.clonePayload()),
           rootRequestContextId_(stub.getRootRequestContextId()),
           reqId_(stub.getRequestId().toString()) {}
@@ -822,9 +823,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return payload_.get();
     }
 
+    protocol::PROTOCOL_TYPES getProtoId() const {
+      return protoId_;
+    }
+
    private:
     const std::string methodName_;
     const std::chrono::steady_clock::time_point creationTimestamp_;
+    const protocol::PROTOCOL_TYPES protoId_;
     std::unique_ptr<folly::IOBuf> payload_;
     intptr_t rootRequestContextId_;
     const std::string reqId_;

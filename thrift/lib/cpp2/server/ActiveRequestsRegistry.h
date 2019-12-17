@@ -18,6 +18,8 @@
 
 #include <folly/IntrusiveList.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/Request.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/server/RequestId.h>
 #include <chrono>
 
@@ -100,10 +102,12 @@ class ActiveRequestsRegistry {
         ActiveRequestsRegistry& reqRegistry,
         const ResponseChannelRequest& req,
         const Cpp2RequestContext& reqContext,
+        protocol::PROTOCOL_TYPES protoId,
         std::unique_ptr<folly::IOBuf> payload,
         intptr_t rootRequestContextId)
         : req_(&req),
           reqContext_(&reqContext),
+          protoId_(protoId),
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
@@ -154,6 +158,10 @@ class ActiveRequestsRegistry {
       return payload_.cloneData();
     }
 
+    protocol::PROTOCOL_TYPES getProtoId() const {
+      return protoId_;
+    }
+
    private:
     uint64_t getPayloadSize() const {
       DCHECK(payload_.hasData());
@@ -165,6 +173,7 @@ class ActiveRequestsRegistry {
     }
     const ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
+    const protocol::PROTOCOL_TYPES protoId_;
     DebugPayload payload_;
     std::chrono::steady_clock::time_point timestamp_;
     ActiveRequestsRegistry* registry_;
