@@ -53,7 +53,6 @@ using proxygen::ProxygenError;
 using std::map;
 using std::string;
 
-static constexpr folly::StringPiece RPC_KIND = "rpckind";
 static constexpr folly::StringPiece kThriftContentType = "application/x-thrift";
 
 SingleRpcChannel::SingleRpcChannel(
@@ -325,7 +324,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
   auto evb = callback_->getEventBase();
   ResponseRpcMetadata metadata;
   map<string, string> headers;
-  decodeHeaders(*headers_, headers);
+  decodeHeaders(*headers_, headers, /*requestMetadata=*/nullptr);
   if (!headers.empty()) {
     metadata.otherMetadata_ref() = std::move(headers);
   }
@@ -342,49 +341,7 @@ void SingleRpcChannel::onThriftResponse() noexcept {
 void SingleRpcChannel::extractHeaderInfo(
     RequestRpcMetadata* metadata) noexcept {
   map<string, string> headers;
-  decodeHeaders(*headers_, headers);
-  auto iter = headers.find(transport::THeader::CLIENT_TIMEOUT_HEADER);
-  if (iter != headers.end()) {
-    try {
-      metadata->clientTimeoutMs_ref() = folly::to<int64_t>(iter->second);
-    } catch (const std::range_error&) {
-      LOG(INFO) << "Bad client timeout " << iter->second;
-    }
-    headers.erase(iter);
-  }
-  iter = headers.find(transport::THeader::QUEUE_TIMEOUT_HEADER);
-  if (iter != headers.end()) {
-    try {
-      metadata->queueTimeoutMs_ref() = folly::to<int64_t>(iter->second);
-    } catch (const std::range_error&) {
-      LOG(INFO) << "Bad client timeout " << iter->second;
-    }
-    headers.erase(iter);
-  }
-  iter = headers.find(transport::THeader::PRIORITY_HEADER);
-  if (iter != headers.end()) {
-    try {
-      auto pr = static_cast<RpcPriority>(folly::to<int32_t>(iter->second));
-      if (pr < RpcPriority::N_PRIORITIES) {
-        metadata->priority_ref() = pr;
-      } else {
-        LOG(INFO) << "Too large value for method priority " << iter->second;
-      }
-    } catch (const std::range_error&) {
-      LOG(INFO) << "Bad method priority " << iter->second;
-    }
-    headers.erase(iter);
-  }
-  iter = headers.find(RPC_KIND.str());
-  if (iter != headers.end()) {
-    try {
-      metadata->kind_ref() =
-          static_cast<RpcKind>(folly::to<int32_t>(iter->second));
-    } catch (const std::range_error&) {
-      LOG(INFO) << "Bad Request Kind " << iter->second;
-    }
-    headers.erase(iter);
-  }
+  decodeHeaders(*headers_, headers, metadata);
   if (!headers.empty()) {
     metadata->otherMetadata_ref() = std::move(headers);
   }

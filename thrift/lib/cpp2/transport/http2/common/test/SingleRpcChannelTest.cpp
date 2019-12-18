@@ -340,5 +340,48 @@ TEST(SingleRpcChannel, ClientExceptions) {
   evb.loopOnce();
 }
 
+TEST(H2ChannelTest, decodeHeaders) {
+  // Declare a subclass to expose decodeHeaders for testing
+  class FakeChannel : public H2Channel {
+    void onH2StreamBegin(
+        std::unique_ptr<proxygen::HTTPMessage>) noexcept override {}
+    void onH2BodyFrame(std::unique_ptr<folly::IOBuf>) noexcept override {}
+    void onH2StreamEnd() noexcept override {}
+
+   public:
+    static void decodeHeaders(
+        proxygen::HTTPMessage& message,
+        std::map<std::string, std::string>& otherMetadata,
+        RequestRpcMetadata* metadata) {
+      H2Channel::decodeHeaders(message, otherMetadata, metadata);
+    }
+  };
+
+  proxygen::HTTPMessage req;
+  req.getHeaders().set(
+      proxygen::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift");
+  req.getHeaders().set(proxygen::HTTP_HEADER_USER_AGENT, "C++/THttpClient");
+  req.getHeaders().set(proxygen::HTTP_HEADER_HOST, "graph.facebook.com");
+  req.getHeaders().set("client_timeout", "500");
+  req.getHeaders().set("rpckind", "0");
+  req.getHeaders().set("other", "metadatametadatametadatametadata");
+  req.getHeaders().set("encode_1", "ZW5jb2RlZDpPdGhlcg_aGVsbG8NCndvcmxk");
+  req.getHeaders().set(
+      proxygen::HTTP_HEADER_CONTENT_LANGUAGE,
+      "Arrgh, this be pirate tongue matey");
+  RequestRpcMetadata metadata;
+  std::map<std::string, std::string> otherMetadata;
+  FakeChannel::decodeHeaders(req, otherMetadata, &metadata);
+  EXPECT_EQ(otherMetadata.size(), 3);
+  EXPECT_EQ(
+      otherMetadata[std::string("other")], "metadatametadatametadatametadata");
+  EXPECT_EQ(otherMetadata[std::string("encoded:Other")], "hello\r\nworld");
+  EXPECT_EQ(
+      otherMetadata[std::string("Content-Language")],
+      "Arrgh, this be pirate tongue matey");
+  EXPECT_EQ(*metadata.get_clientTimeoutMs(), 500);
+  EXPECT_EQ(*metadata.get_kind(), RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+}
+
 } // namespace thrift
 } // namespace apache

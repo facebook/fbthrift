@@ -59,6 +59,8 @@ class ThriftProcessor;
  */
 class H2Channel : public ThriftChannelIf {
  public:
+  static constexpr folly::StringPiece RPC_KIND = "rpckind";
+
   H2Channel() = default;
   virtual ~H2Channel() = default;
 
@@ -98,9 +100,15 @@ class H2Channel : public ThriftChannelIf {
 
   // Decodes previously encoded HTTP compliant headers into Thrift
   // headers.
-  void decodeHeaders(
+  static void decodeHeaders(
       const proxygen::HTTPMessage& source,
-      std::map<std::string, std::string>& dest) noexcept;
+      std::map<std::string, std::string>& dest,
+      RequestRpcMetadata* metadata) noexcept;
+
+  static bool handleThriftMetadata(
+      RequestRpcMetadata* metadata,
+      const std::string& name,
+      const std::string& value) noexcept;
 };
 
 } // namespace thrift
