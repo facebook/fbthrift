@@ -342,6 +342,8 @@ class mstch_rust_service : public mstch_service {
         {
             {"service:package", &mstch_rust_service::rust_package},
             {"service:snake", &mstch_rust_service::rust_snake},
+            {"service:requestContext?",
+             &mstch_rust_service::rust_request_context},
         });
   }
   mstch::node rust_package() {
@@ -353,6 +355,9 @@ class mstch_rust_service : public mstch_service {
       return module_name->second;
     }
     return mangle_type(snakecase(service_->get_name()));
+  }
+  mstch::node rust_request_context() {
+    return service_->annotations_.count("rust.request_context") > 0;
   }
 
  private:

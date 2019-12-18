@@ -1881,13 +1881,13 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct MyServiceProcessor<P, H> {
+    pub struct MyServiceProcessor<P, H, R> {
         service: H,
-        supa: fbthrift::NullServiceProcessor<P>,
-        _phantom: PhantomData<(P, H)>,
+        supa: fbthrift::NullServiceProcessor<P, R>,
+        _phantom: PhantomData<(P, H, R)>,
     }
 
-    impl<P, H> MyServiceProcessor<P, H>
+    impl<P, H, R> MyServiceProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
@@ -1908,6 +1908,7 @@ pub mod server {
         async fn handle_ping<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1948,6 +1949,7 @@ pub mod server {
         async fn handle_getRandomData<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1988,6 +1990,7 @@ pub mod server {
         async fn handle_hasDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -2036,6 +2039,7 @@ pub mod server {
         async fn handle_getDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -2084,6 +2088,7 @@ pub mod server {
         async fn handle_putDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
@@ -2140,6 +2145,7 @@ pub mod server {
         async fn handle_lobDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
@@ -2196,6 +2202,7 @@ pub mod server {
         async fn handle_doNothing<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -2235,12 +2242,15 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H> fbthrift::ServiceProcessor<P> for MyServiceProcessor<P, H>
+    impl<P, H, R> fbthrift::ServiceProcessor<P> for MyServiceProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         H: MyService,
+        R: Send + Sync + 'static,
     {
+        type RequestContext = R;
+
         #[inline]
         fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
             match name {
@@ -2259,15 +2269,16 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
+            r: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_ping(p).await,
-                1usize => self.handle_getRandomData(p).await,
-                2usize => self.handle_hasDataById(p).await,
-                3usize => self.handle_getDataById(p).await,
-                4usize => self.handle_putDataById(p).await,
-                5usize => self.handle_lobDataById(p).await,
-                6usize => self.handle_doNothing(p).await,
+                0usize => self.handle_ping(p, r).await,
+                1usize => self.handle_getRandomData(p, r).await,
+                2usize => self.handle_hasDataById(p, r).await,
+                3usize => self.handle_getDataById(p, r).await,
+                4usize => self.handle_putDataById(p, r).await,
+                5usize => self.handle_lobDataById(p, r).await,
+                6usize => self.handle_doNothing(p, r).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyServiceProcessor",
@@ -2278,18 +2289,21 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H> ThriftService<P::Frame> for MyServiceProcessor<P, H>
+    impl<P, H, R> ThriftService<P::Frame> for MyServiceProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         P::Frame: Send + 'static,
         H: MyService,
+        R: Send + Sync + 'static,
     {
         type Handler = H;
+        type RequestContext = R;
 
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
@@ -2303,10 +2317,10 @@ pub mod server {
                 Ok(idx) => idx,
                 Err(_) => {
                     let cur = P::into_buffer(p).reset();
-                    return self.supa.call(cur).await;
+                    return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -2328,20 +2342,21 @@ pub mod server {
         }
     }
 
-    pub fn make_MyService_server<F, H>(
+    pub fn make_MyService_server<F, H, R>(
         proto: ProtocolID,
         handler: H,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H> + Send + 'static>, ApplicationException>
+    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
     where
         F: Framing + Send + Sync + 'static,
         H: MyService,
+        R: Send + Sync + 'static,
     {
         match proto {
             ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyServiceProcessor::<BinaryProtocol<F>, H>::new(handler)))
+                Ok(Box::new(MyServiceProcessor::<BinaryProtocol<F>, H, R>::new(handler)))
             }
             ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyServiceProcessor::<CompactProtocol<F>, H>::new(handler)))
+                Ok(Box::new(MyServiceProcessor::<CompactProtocol<F>, H, R>::new(handler)))
             }
             bad => Err(ApplicationException::invalid_protocol(bad)),
         }
@@ -2372,13 +2387,13 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct MyServicePrioParentProcessor<P, H> {
+    pub struct MyServicePrioParentProcessor<P, H, R> {
         service: H,
-        supa: fbthrift::NullServiceProcessor<P>,
-        _phantom: PhantomData<(P, H)>,
+        supa: fbthrift::NullServiceProcessor<P, R>,
+        _phantom: PhantomData<(P, H, R)>,
     }
 
-    impl<P, H> MyServicePrioParentProcessor<P, H>
+    impl<P, H, R> MyServicePrioParentProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
@@ -2399,6 +2414,7 @@ pub mod server {
         async fn handle_ping<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -2439,6 +2455,7 @@ pub mod server {
         async fn handle_pong<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -2478,12 +2495,15 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H> fbthrift::ServiceProcessor<P> for MyServicePrioParentProcessor<P, H>
+    impl<P, H, R> fbthrift::ServiceProcessor<P> for MyServicePrioParentProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         H: MyServicePrioParent,
+        R: Send + Sync + 'static,
     {
+        type RequestContext = R;
+
         #[inline]
         fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
             match name {
@@ -2497,10 +2517,11 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
+            r: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_ping(p).await,
-                1usize => self.handle_pong(p).await,
+                0usize => self.handle_ping(p, r).await,
+                1usize => self.handle_pong(p, r).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyServicePrioParentProcessor",
@@ -2511,18 +2532,21 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H> ThriftService<P::Frame> for MyServicePrioParentProcessor<P, H>
+    impl<P, H, R> ThriftService<P::Frame> for MyServicePrioParentProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         P::Frame: Send + 'static,
         H: MyServicePrioParent,
+        R: Send + Sync + 'static,
     {
         type Handler = H;
+        type RequestContext = R;
 
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
@@ -2536,10 +2560,10 @@ pub mod server {
                 Ok(idx) => idx,
                 Err(_) => {
                     let cur = P::into_buffer(p).reset();
-                    return self.supa.call(cur).await;
+                    return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -2561,20 +2585,21 @@ pub mod server {
         }
     }
 
-    pub fn make_MyServicePrioParent_server<F, H>(
+    pub fn make_MyServicePrioParent_server<F, H, R>(
         proto: ProtocolID,
         handler: H,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H> + Send + 'static>, ApplicationException>
+    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
     where
         F: Framing + Send + Sync + 'static,
         H: MyServicePrioParent,
+        R: Send + Sync + 'static,
     {
         match proto {
             ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyServicePrioParentProcessor::<BinaryProtocol<F>, H>::new(handler)))
+                Ok(Box::new(MyServicePrioParentProcessor::<BinaryProtocol<F>, H, R>::new(handler)))
             }
             ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyServicePrioParentProcessor::<CompactProtocol<F>, H>::new(handler)))
+                Ok(Box::new(MyServicePrioParentProcessor::<CompactProtocol<F>, H, R>::new(handler)))
             }
             bad => Err(ApplicationException::invalid_protocol(bad)),
         }
@@ -2595,13 +2620,13 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct MyServicePrioChildProcessor<P, H, SS> {
+    pub struct MyServicePrioChildProcessor<P, H, R, SS> {
         service: H,
         supa: SS,
-        _phantom: PhantomData<(P, H)>,
+        _phantom: PhantomData<(P, H, R)>,
     }
 
-    impl<P, H, SS> MyServicePrioChildProcessor<P, H, SS>
+    impl<P, H, R, SS> MyServicePrioChildProcessor<P, H, R, SS>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
@@ -2625,6 +2650,7 @@ pub mod server {
         async fn handle_pang<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -2664,7 +2690,7 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H, SS> fbthrift::ServiceProcessor<P> for MyServicePrioChildProcessor<P, H, SS>
+    impl<P, H, R, SS> fbthrift::ServiceProcessor<P> for MyServicePrioChildProcessor<P, H, R, SS>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
@@ -2672,7 +2698,10 @@ pub mod server {
         SS: ThriftService<P::Frame>,
         SS::Handler: crate::server::MyServicePrioParent,
         P::Frame: Send + 'static,
+        R: Send + Sync + 'static,
     {
+        type RequestContext = R;
+
         #[inline]
         fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
             match name {
@@ -2685,9 +2714,10 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
+            r: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_pang(p).await,
+                0usize => self.handle_pang(p, r).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyServicePrioChildProcessor",
@@ -2698,21 +2728,24 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H, SS> ThriftService<P::Frame> for MyServicePrioChildProcessor<P, H, SS>
+    impl<P, H, R, SS> ThriftService<P::Frame> for MyServicePrioChildProcessor<P, H, R, SS>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         P::Frame: Send + 'static,
         H: MyServicePrioChild,
-        SS: ThriftService<P::Frame>,
+        SS: ThriftService<P::Frame, RequestContext = R>,
         SS::Handler: crate::server::MyServicePrioParent,
         P::Frame: Send + 'static,
+        R: Send + Sync + 'static,
     {
         type Handler = H;
+        type RequestContext = R;
 
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
@@ -2726,10 +2759,10 @@ pub mod server {
                 Ok(idx) => idx,
                 Err(_) => {
                     let cur = P::into_buffer(p).reset();
-                    return self.supa.call(cur).await;
+                    return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -2751,24 +2784,25 @@ pub mod server {
         }
     }
 
-    pub fn make_MyServicePrioChild_server<F, H, SMAKE, SS>(
+    pub fn make_MyServicePrioChild_server<F, H, R, SMAKE, SS>(
         proto: ProtocolID,
         handler: H,
         supa: SMAKE,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H> + Send + 'static>, ApplicationException>
+    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
     where
         F: Framing + Send + Sync + 'static,
         H: MyServicePrioChild,
         SMAKE: Fn(ProtocolID) -> Result<SS, ApplicationException>,
-        SS: ThriftService<F>,
+        SS: ThriftService<F, RequestContext = R>,
         SS::Handler: crate::server::MyServicePrioParent,
+        R: Send + Sync + 'static,
     {
         match proto {
             ProtocolID::BinaryProtocol => {
-                Ok(Box::new(MyServicePrioChildProcessor::<BinaryProtocol<F>, H, SS>::new(handler, supa(proto)?)))
+                Ok(Box::new(MyServicePrioChildProcessor::<BinaryProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
             ProtocolID::CompactProtocol => {
-                Ok(Box::new(MyServicePrioChildProcessor::<CompactProtocol<F>, H, SS>::new(handler, supa(proto)?)))
+                Ok(Box::new(MyServicePrioChildProcessor::<CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
             bad => Err(ApplicationException::invalid_protocol(bad)),
         }

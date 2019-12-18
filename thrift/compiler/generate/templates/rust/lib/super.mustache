@@ -16,4 +16,5 @@
 
 }}{{#service:extends}}{{!
 }}{{service:package}}::server::{{service:name}}{{!
+}}{{#service:requestContext?}}<RequestContext = R>{{/service:requestContext?}}{{!
 }}{{/service:extends}}

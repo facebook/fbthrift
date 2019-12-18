@@ -29,8 +29,13 @@ where
     F: Framing + Send + 'static,
 {
     type Handler;
+    type RequestContext;
 
-    async fn call(&self, req: FramingDecoded<F>) -> Result<FramingEncodedFinal<F>, Error>;
+    async fn call(
+        &self,
+        req: FramingDecoded<F>,
+        req_ctxt: &Self::RequestContext,
+    ) -> Result<FramingEncodedFinal<F>, Error>;
 }
 
 #[async_trait]
@@ -38,11 +43,17 @@ impl<F, T> ThriftService<F> for Box<T>
 where
     T: ThriftService<F> + Send + Sync + ?Sized,
     F: Framing + Send + 'static,
+    T::RequestContext: Send + Sync + 'static,
 {
     type Handler = T::Handler;
+    type RequestContext = T::RequestContext;
 
-    async fn call(&self, req: FramingDecoded<F>) -> Result<FramingEncodedFinal<F>, Error> {
-        (**self).call(req).await
+    async fn call(
+        &self,
+        req: FramingDecoded<F>,
+        req_ctxt: &Self::RequestContext,
+    ) -> Result<FramingEncodedFinal<F>, Error> {
+        (**self).call(req, &req_ctxt).await
     }
 }
 
@@ -52,6 +63,8 @@ pub trait ServiceProcessor<P>
 where
     P: Protocol,
 {
+    type RequestContext;
+
     /// Given a method name, return a reference to the processor for that index.
     fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException>;
 
@@ -65,17 +78,18 @@ where
         idx: usize,
         //frame: &P::Frame,
         request: &mut P::Deserializer,
+        req_ctxt: &Self::RequestContext,
     ) -> Result<ProtocolEncodedFinal<P>, Error>;
 }
 
 /// Null processor which implements no methods - it acts as the super for any service
 /// which has no super-service.
 #[derive(Debug, Clone)]
-pub struct NullServiceProcessor<P> {
-    _phantom: PhantomData<P>,
+pub struct NullServiceProcessor<P, R> {
+    _phantom: PhantomData<(P, R)>,
 }
 
-impl<P> NullServiceProcessor<P> {
+impl<P, R> NullServiceProcessor<P, R> {
     pub fn new() -> Self {
         Self {
             _phantom: PhantomData,
@@ -84,10 +98,12 @@ impl<P> NullServiceProcessor<P> {
 }
 
 #[async_trait]
-impl<P> ServiceProcessor<P> for NullServiceProcessor<P>
+impl<P, R> ServiceProcessor<P> for NullServiceProcessor<P, R>
 where
     P: Protocol,
 {
+    type RequestContext = R;
+
     #[inline]
     fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
         Err(ApplicationException::new(
@@ -101,6 +117,7 @@ where
         _idx: usize,
         //_frame: &P::Frame,
         _d: &mut P::Deserializer,
+        _req_ctxt: &R,
     ) -> Result<ProtocolEncodedFinal<P>, Error> {
         // Should never be called since method_idx() always returns an error
         unimplemented!("NullServiceProcessor implements no methods")
@@ -108,14 +125,20 @@ where
 }
 
 #[async_trait]
-impl<P> ThriftService<P::Frame> for NullServiceProcessor<P>
+impl<P, R> ThriftService<P::Frame> for NullServiceProcessor<P, R>
 where
     P: Protocol + Send + Sync + 'static,
     P::Frame: Send + 'static,
+    R: Send + Sync + 'static,
 {
     type Handler = ();
+    type RequestContext = R;
 
-    async fn call(&self, req: ProtocolDecoded<P>) -> Result<ProtocolEncodedFinal<P>, Error> {
+    async fn call(
+        &self,
+        req: ProtocolDecoded<P>,
+        _ctxt: &R,
+    ) -> Result<ProtocolEncodedFinal<P>, Error> {
         let mut p = P::deserializer(req);
 
         let ((name, ae), ..) = p.read_message_begin(|name| {

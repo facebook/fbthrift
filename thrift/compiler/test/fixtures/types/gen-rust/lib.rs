@@ -2073,13 +2073,13 @@ pub mod server {
     }
 
     #[derive(Clone, Debug)]
-    pub struct SomeServiceProcessor<P, H> {
+    pub struct SomeServiceProcessor<P, H, R> {
         service: H,
-        supa: fbthrift::NullServiceProcessor<P>,
-        _phantom: PhantomData<(P, H)>,
+        supa: fbthrift::NullServiceProcessor<P, R>,
+        _phantom: PhantomData<(P, H, R)>,
     }
 
-    impl<P, H> SomeServiceProcessor<P, H>
+    impl<P, H, R> SomeServiceProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
@@ -2100,6 +2100,7 @@ pub mod server {
         async fn handle_bounce_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_m = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -2148,6 +2149,7 @@ pub mod server {
         async fn handle_binary_keyed_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
+            _req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_r = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -2195,12 +2197,15 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H> fbthrift::ServiceProcessor<P> for SomeServiceProcessor<P, H>
+    impl<P, H, R> fbthrift::ServiceProcessor<P> for SomeServiceProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         H: SomeService,
+        R: Send + Sync + 'static,
     {
+        type RequestContext = R;
+
         #[inline]
         fn method_idx(&self, name: &[u8]) -> Result<usize, ApplicationException> {
             match name {
@@ -2214,10 +2219,11 @@ pub mod server {
             &self,
             idx: usize,
             p: &mut P::Deserializer,
+            r: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_bounce_map(p).await,
-                1usize => self.handle_binary_keyed_map(p).await,
+                0usize => self.handle_bounce_map(p, r).await,
+                1usize => self.handle_binary_keyed_map(p, r).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "SomeServiceProcessor",
@@ -2228,18 +2234,21 @@ pub mod server {
     }
 
     #[async_trait]
-    impl<P, H> ThriftService<P::Frame> for SomeServiceProcessor<P, H>
+    impl<P, H, R> ThriftService<P::Frame> for SomeServiceProcessor<P, H, R>
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         P::Frame: Send + 'static,
         H: SomeService,
+        R: Send + Sync + 'static,
     {
         type Handler = H;
+        type RequestContext = R;
 
         async fn call(
             &self,
             req: ProtocolDecoded<P>,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
             let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
@@ -2253,10 +2262,10 @@ pub mod server {
                 Ok(idx) => idx,
                 Err(_) => {
                     let cur = P::into_buffer(p).reset();
-                    return self.supa.call(cur).await;
+                    return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -2278,20 +2287,21 @@ pub mod server {
         }
     }
 
-    pub fn make_SomeService_server<F, H>(
+    pub fn make_SomeService_server<F, H, R>(
         proto: ProtocolID,
         handler: H,
-    ) -> Result<Box<dyn ThriftService<F, Handler = H> + Send + 'static>, ApplicationException>
+    ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
     where
         F: Framing + Send + Sync + 'static,
         H: SomeService,
+        R: Send + Sync + 'static,
     {
         match proto {
             ProtocolID::BinaryProtocol => {
-                Ok(Box::new(SomeServiceProcessor::<BinaryProtocol<F>, H>::new(handler)))
+                Ok(Box::new(SomeServiceProcessor::<BinaryProtocol<F>, H, R>::new(handler)))
             }
             ProtocolID::CompactProtocol => {
-                Ok(Box::new(SomeServiceProcessor::<CompactProtocol<F>, H>::new(handler)))
+                Ok(Box::new(SomeServiceProcessor::<CompactProtocol<F>, H, R>::new(handler)))
             }
             bad => Err(ApplicationException::invalid_protocol(bad)),
         }

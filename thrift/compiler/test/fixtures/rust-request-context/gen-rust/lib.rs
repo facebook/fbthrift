@@ -1206,6 +1206,7 @@ pub mod client {
     /// let client = BuckGraphService::new(protocol, transport);
     /// ```
     impl dyn MyService {
+        pub const rust_request_context: &'static str = "1";
         pub fn new<P, T>(
             protocol: P,
             transport: T,
@@ -1241,8 +1242,10 @@ pub mod server {
 
     #[async_trait]
     pub trait MyService: Send + Sync + 'static {
+        type RequestContext;
         async fn ping(
             &self,
+            _request_context: &Self::RequestContext,
         ) -> Result<(), crate::services::my_service::PingExn> {
             Err(crate::services::my_service::PingExn::ApplicationException(
                 ApplicationException::unimplemented_method(
@@ -1253,6 +1256,7 @@ pub mod server {
         }
         async fn getRandomData(
             &self,
+            _request_context: &Self::RequestContext,
         ) -> Result<String, crate::services::my_service::GetRandomDataExn> {
             Err(crate::services::my_service::GetRandomDataExn::ApplicationException(
                 ApplicationException::unimplemented_method(
@@ -1263,6 +1267,7 @@ pub mod server {
         }
         async fn hasDataById(
             &self,
+            _request_context: &Self::RequestContext,
             _id: i64,
         ) -> Result<bool, crate::services::my_service::HasDataByIdExn> {
             Err(crate::services::my_service::HasDataByIdExn::ApplicationException(
@@ -1274,6 +1279,7 @@ pub mod server {
         }
         async fn getDataById(
             &self,
+            _request_context: &Self::RequestContext,
             _id: i64,
         ) -> Result<String, crate::services::my_service::GetDataByIdExn> {
             Err(crate::services::my_service::GetDataByIdExn::ApplicationException(
@@ -1285,6 +1291,7 @@ pub mod server {
         }
         async fn putDataById(
             &self,
+            _request_context: &Self::RequestContext,
             _id: i64,
             _data: String,
         ) -> Result<(), crate::services::my_service::PutDataByIdExn> {
@@ -1297,6 +1304,7 @@ pub mod server {
         }
         async fn lobDataById(
             &self,
+            _request_context: &Self::RequestContext,
             _id: i64,
             _data: String,
         ) -> Result<(), crate::services::my_service::LobDataByIdExn> {
@@ -1320,7 +1328,7 @@ pub mod server {
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
-        H: MyService,
+        H: MyService<RequestContext = R>,
     {
         pub fn new(service: H) -> Self {
             Self {
@@ -1337,7 +1345,7 @@ pub mod server {
         async fn handle_ping<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1350,6 +1358,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             let res = self.service.ping(
+                req_ctxt,
             ).await;
             let res = match res {
                 Ok(res) => {
@@ -1378,7 +1387,7 @@ pub mod server {
         async fn handle_getRandomData<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1391,6 +1400,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             let res = self.service.getRandomData(
+                req_ctxt,
             ).await;
             let res = match res {
                 Ok(res) => {
@@ -1419,7 +1429,7 @@ pub mod server {
         async fn handle_hasDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1434,6 +1444,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             let res = self.service.hasDataById(
+                req_ctxt,
                 field_id.ok_or_else(|| {
                     ApplicationException::missing_arg(
                         "hasDataById",
@@ -1468,7 +1479,7 @@ pub mod server {
         async fn handle_getDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1483,6 +1494,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             let res = self.service.getDataById(
+                req_ctxt,
                 field_id.ok_or_else(|| {
                     ApplicationException::missing_arg(
                         "getDataById",
@@ -1517,7 +1529,7 @@ pub mod server {
         async fn handle_putDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
@@ -1534,6 +1546,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             let res = self.service.putDataById(
+                req_ctxt,
                 field_id.ok_or_else(|| {
                     ApplicationException::missing_arg(
                         "putDataById",
@@ -1574,7 +1587,7 @@ pub mod server {
         async fn handle_lobDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            _req_ctxt: &R,
+            req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
@@ -1591,6 +1604,7 @@ pub mod server {
             }
             p.read_struct_end()?;
             let res = self.service.lobDataById(
+                req_ctxt,
                 field_id.ok_or_else(|| {
                     ApplicationException::missing_arg(
                         "lobDataById",
@@ -1634,7 +1648,7 @@ pub mod server {
     where
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
-        H: MyService,
+        H: MyService<RequestContext = R>,
         R: Send + Sync + 'static,
     {
         type RequestContext = R;
@@ -1680,7 +1694,7 @@ pub mod server {
         P: Protocol + Send + Sync + 'static,
         P::Deserializer: Send,
         P::Frame: Send + 'static,
-        H: MyService,
+        H: MyService<RequestContext = R>,
         R: Send + Sync + 'static,
     {
         type Handler = H;
@@ -1734,7 +1748,7 @@ pub mod server {
     ) -> Result<Box<dyn ThriftService<F, Handler = H, RequestContext = R> + Send + 'static>, ApplicationException>
     where
         F: Framing + Send + Sync + 'static,
-        H: MyService,
+        H: MyService<RequestContext = R>,
         R: Send + Sync + 'static,
     {
         match proto {
