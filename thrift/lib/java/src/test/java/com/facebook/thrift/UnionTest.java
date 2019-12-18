@@ -19,6 +19,7 @@ package com.facebook.thrift;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
+import com.facebook.thrift.java.test.MySimpleStruct;
 import com.facebook.thrift.java.test.MySimpleUnion;
 import com.facebook.thrift.protocol.TBinaryProtocol;
 import com.facebook.thrift.protocol.TCompactJSONProtocol;
@@ -29,6 +30,7 @@ import com.facebook.thrift.protocol.TProtocolFactory;
 import com.facebook.thrift.transport.TMemoryBuffer;
 import com.facebook.thrift.transport.TTransportException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -300,5 +302,20 @@ public class UnionTest extends TestCase {
     com.facebook.thrift.android.test.MySimpleUnion androidUnion =
         new com.facebook.thrift.android.test.MySimpleUnion();
     assertThat(union.toString(), equalTo("<MySimpleUnion uninitialized>"));
+  }
+
+  @Test
+  public static void testUnionConstructor() throws Exception {
+    MySimpleUnion union =
+        new MySimpleUnion(MySimpleUnion.CASEFOUR, new MySimpleStruct(1L, "blabla"));
+    com.facebook.thrift.android.test.MySimpleUnion androidUnion =
+        new com.facebook.thrift.android.test.MySimpleUnion(
+            MySimpleUnion.CASEFOUR,
+            new com.facebook.thrift.android.test.MySimpleStruct(1L, "blabla"));
+
+    MySimpleUnion union5 = new MySimpleUnion(MySimpleUnion.CASEFIVE, Arrays.asList("foo", "bar"));
+    com.facebook.thrift.android.test.MySimpleUnion androidUnion5 =
+        new com.facebook.thrift.android.test.MySimpleUnion(
+            MySimpleUnion.CASEFIVE, Arrays.asList("foo", "bar"));
   }
 }

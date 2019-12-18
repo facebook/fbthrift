@@ -122,7 +122,7 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
   /** Generic implementation using reflection, codegen can override this in a more efficient way. */
   protected void checkType(short fieldId, Object value)
       throws ClassCastException, IllegalArgumentException {
-    TField tField = TBaseHelper.getTField((TBase) value, fieldId);
+    TField tField = TBaseHelper.getTField(this, fieldId);
     if (tField == null) {
       throw new IllegalArgumentException(
           "field #" + fieldId + " not found in Thrift struct " + this.getClass().getSimpleName());
