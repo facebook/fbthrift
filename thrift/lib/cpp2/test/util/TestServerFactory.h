@@ -29,8 +29,9 @@ struct TestServerFactory {
   virtual TestServerFactory& useThreadManager(
       std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe) = 0;
 
-  TestServerFactory& setServerEventHandler(std::shared_ptr<
-      apache::thrift::server::TServerEventHandler> serverEventHandler) {
+  TestServerFactory& setServerEventHandler(
+      std::shared_ptr<apache::thrift::server::TServerEventHandler>
+          serverEventHandler) {
     serverEventHandler_ = serverEventHandler;
     return *this;
   }

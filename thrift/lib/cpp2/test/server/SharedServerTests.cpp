@@ -16,10 +16,10 @@
 
 #include <folly/portability/GTest.h>
 
-#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -29,11 +29,11 @@
 
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
-#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 #include <thrift/lib/cpp2/test/util/TestProxygenThriftServerFactory.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
-#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 #include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
+#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/fibers/FiberManagerMap.h>
@@ -79,8 +79,8 @@ class SharedServerTests
         break;
       }
       case PROXYGEN: {
-        serverFactory = std::make_unique<
-            TestProxygenThriftServerFactory<TestInterface>>();
+        serverFactory =
+            std::make_unique<TestProxygenThriftServerFactory<TestInterface>>();
         break;
       }
       default:
@@ -105,7 +105,9 @@ class SharedServerTests
     }
   }
 
-  void createServer() { server = serverFactory->create(); }
+  void createServer() {
+    server = serverFactory->create();
+  }
 
   void startServer() {
     if (!server) {
@@ -167,20 +169,22 @@ class SharedServerTests
   apache::thrift::ClientChannel::Ptr channel{nullptr};
   std::unique_ptr<TestServiceAsyncClient> client{nullptr};
 };
-}
+} // namespace
 
 TEST_P(SharedServerTests, AsyncThrift2Test) {
   init();
 
-  client->sendResponse([&](ClientReceiveState&& state) {
-    std::string response;
-    try {
-      TestServiceAsyncClient::recv_sendResponse(response, state);
-    } catch (const std::exception&) {
-    }
-    EXPECT_EQ(response, "test64");
-    base->terminateLoopSoon();
-  }, 64);
+  client->sendResponse(
+      [&](ClientReceiveState&& state) {
+        std::string response;
+        try {
+          TestServiceAsyncClient::recv_sendResponse(response, state);
+        } catch (const std::exception&) {
+        }
+        EXPECT_EQ(response, "test64");
+        base->terminateLoopSoon();
+      },
+      64);
   base->loop();
 }
 
@@ -294,8 +298,9 @@ TEST_P(SharedServerTests, LargeSendTest) {
   ASSERT_EQ(request->computeChainDataLength(), hugeSize);
 
   client->sync_echoIOBuf(response, *request);
-  ASSERT_EQ(request->computeChainDataLength() + kEchoSuffix.size(),
-            response->computeChainDataLength());
+  ASSERT_EQ(
+      request->computeChainDataLength() + kEchoSuffix.size(),
+      response->computeChainDataLength());
 
   // response = request + kEchoSuffix. Make sure it's so
   request->prependChain(
@@ -337,12 +342,12 @@ class MyExecutor : public folly::Executor {
 
   std::atomic<int> calls{0};
 };
-}
+} // namespace
 
 TEST_P(SharedServerTests, PoolExecutorTest) {
   auto exe = std::make_shared<MyExecutor>();
-  serverFactory->useSimpleThreadManager(false)
-      .useThreadManager(std::make_shared<
+  serverFactory->useSimpleThreadManager(false).useThreadManager(
+      std::make_shared<
           apache::thrift::concurrency::ThreadManagerExecutorAdapter>(exe));
 
   init();
@@ -360,7 +365,7 @@ class FiberExecutor : public folly::Executor {
     folly::fibers::getFiberManager(*folly::getEventBase()).add(std::move(f));
   }
 };
-}
+} // namespace
 
 TEST_P(SharedServerTests, FiberExecutorTest) {
   auto exe = std::make_shared<
@@ -403,9 +408,15 @@ class TestServerEventHandler
     return shared_from_this();
   }
 
-  void check() { EXPECT_EQ(8, count); }
-  void preServe(const folly::SocketAddress*) override { EXPECT_EQ(0, count++); }
-  void newConnection(TConnectionContext*) override { EXPECT_EQ(1, count++); }
+  void check() {
+    EXPECT_EQ(8, count);
+  }
+  void preServe(const folly::SocketAddress*) override {
+    EXPECT_EQ(0, count++);
+  }
+  void newConnection(TConnectionContext*) override {
+    EXPECT_EQ(1, count++);
+  }
   void connectionDestroyed(TConnectionContext*) override {
     EXPECT_EQ(7, count++);
   }
@@ -414,8 +425,12 @@ class TestServerEventHandler
     EXPECT_EQ(2, count++);
     return nullptr;
   }
-  void freeContext(void*, const char*) override { EXPECT_EQ(6, count++); }
-  void preRead(void*, const char*) override { EXPECT_EQ(3, count++); }
+  void freeContext(void*, const char*) override {
+    EXPECT_EQ(6, count++);
+  }
+  void preRead(void*, const char*) override {
+    EXPECT_EQ(3, count++);
+  }
   void onReadData(void*, const char*, const SerializedMessage&) override {
     EXPECT_EQ(4, count++);
   }
@@ -427,7 +442,7 @@ class TestServerEventHandler
  private:
   std::atomic<int> count{0};
 };
-}
+} // namespace
 
 TEST_P(SharedServerTests, CallbackOrderingTest) {
   auto serverHandler = std::make_shared<TestServerEventHandler>();

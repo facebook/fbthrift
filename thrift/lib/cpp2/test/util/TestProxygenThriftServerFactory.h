@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <memory>
 #include <chrono>
+#include <memory>
 
 #include <thrift/lib/cpp2/server/proxygen/ProxygenThriftServer.h>
 #include <thrift/lib/cpp2/test/util/TestServerFactory.h>
@@ -82,5 +82,5 @@ struct TestProxygenThriftServerFactory : public TestServerFactory {
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe_{nullptr};
   uint32_t idleTimeoutMs_{0};
 };
-}
-} // apache::thrift
+} // namespace thrift
+} // namespace apache

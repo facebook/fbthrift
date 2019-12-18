@@ -16,54 +16,55 @@
 
 #pragma once
 
-#include <memory>
 #include <chrono>
+#include <memory>
 
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/util/TestServerFactory.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
-template<typename Interface>
+template <typename Interface>
 struct TestThriftServerFactory : public TestServerFactory {
-  public:
-   std::shared_ptr<BaseThriftServer> create() override {
-     auto server = std::make_shared<apache::thrift::ThriftServer>();
-     server->setNumIOWorkerThreads(1);
-     if (useSimpleThreadManager_) {
-       auto threadFactory =
-           std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();
-       auto threadManager =
-           apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-               1, false);
-       threadManager->threadFactory(threadFactory);
-       threadManager->start();
-       server->setThreadManager(threadManager);
-     } else if (exe_) {
-       server->setThreadManager(exe_);
-     }
+ public:
+  std::shared_ptr<BaseThriftServer> create() override {
+    auto server = std::make_shared<apache::thrift::ThriftServer>();
+    server->setNumIOWorkerThreads(1);
+    if (useSimpleThreadManager_) {
+      auto threadFactory =
+          std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();
+      auto threadManager =
+          apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
+              1, false);
+      threadManager->threadFactory(threadFactory);
+      threadManager->start();
+      server->setThreadManager(threadManager);
+    } else if (exe_) {
+      server->setThreadManager(exe_);
+    }
 
-     server->setPort(0);
+    server->setPort(0);
 
-     if (idleTimeoutMs_ != 0) {
-       server->setIdleTimeout(std::chrono::milliseconds(idleTimeoutMs_));
-     }
+    if (idleTimeoutMs_ != 0) {
+      server->setIdleTimeout(std::chrono::milliseconds(idleTimeoutMs_));
+    }
 
-     if (duplex_) {
-       server->setDuplex(true);
-     }
+    if (duplex_) {
+      server->setDuplex(true);
+    }
 
-     if (serverEventHandler_) {
-       server->setServerEventHandler(serverEventHandler_);
-     }
+    if (serverEventHandler_) {
+      server->setServerEventHandler(serverEventHandler_);
+    }
 
-     server->setMinCompressBytes(minCompressBytes_);
-     if (transId_) {
-       std::vector<uint16_t> transforms{transId_};
-       server->setDefaultWriteTransforms(transforms);
-     }
-     server->setInterface(std::unique_ptr<Interface>(new Interface));
-     return server;
+    server->setMinCompressBytes(minCompressBytes_);
+    if (transId_) {
+      std::vector<uint16_t> transforms{transId_};
+      server->setDefaultWriteTransforms(transforms);
+    }
+    server->setInterface(std::unique_ptr<Interface>(new Interface));
+    return server;
   }
 
   TestThriftServerFactory& useSimpleThreadManager(bool use) override {
@@ -78,7 +79,7 @@ struct TestThriftServerFactory : public TestServerFactory {
     return *this;
   }
 
-  TestThriftServerFactory& idleTimeoutMs (uint32_t idle) {
+  TestThriftServerFactory& idleTimeoutMs(uint32_t idle) {
     idleTimeoutMs_ = idle;
     return *this;
   }
@@ -107,4 +108,5 @@ struct TestThriftServerFactory : public TestServerFactory {
   uint16_t transId_{0};
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
