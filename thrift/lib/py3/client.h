@@ -124,7 +124,18 @@ folly::Future<RequestChannel_ptr> createThriftChannelUnix(
     CLIENT_TYPE client_t,
     apache::thrift::protocol::PROTOCOL_TYPES proto) {
   auto eb = folly::getEventBase();
-  return folly::via(eb, [=, path{std::move(path)}] {
+  return folly::via(eb, [=, path{std::move(path)}]() -> RequestChannel_ptr {
+    if (client_t == THRIFT_ROCKET_CLIENT_TYPE) {
+      auto chan = apache::thrift::RocketClientChannel::newChannel(
+          apache::thrift::async::TAsyncSocket::UniquePtr(
+              new apache::thrift::async::TAsyncSocket(
+                  eb,
+                  folly::SocketAddress::makeFromPath(
+                      folly::StringPiece(path.data(), path.size())),
+                  connect_timeout)));
+      chan->setProtocolId(proto);
+      return chan;
+    }
     return configureClientChannel(
         apache::thrift::HeaderClientChannel::newChannel(
             apache::thrift::async::TAsyncSocket::newSocket(
