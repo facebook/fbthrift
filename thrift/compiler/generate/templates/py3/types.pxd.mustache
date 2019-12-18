@@ -44,7 +44,7 @@ from cpython.ref cimport PyObject
 from thrift.py3.stream cimport (
     ClientBufferedStream, cClientBufferedStream, cClientBufferedStreamWrapper,
     ResponseAndClientBufferedStream, cResponseAndClientBufferedStream,
-    Stream, cStream, ResponseAndStream
+    ServerStream, cServerStream, ResponseAndServerStream
 )
 from thrift.py3.common cimport RpcOptions as __RpcOptions
 {{/program:has_stream?}}
@@ -317,7 +317,7 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
         PyObject* userdata,
     )
 
-cdef class Stream__{{type:flat_name}}(Stream):
+cdef class ServerStream__{{type:flat_name}}(ServerStream):
     pass
 
 {{/program:stream_types}}
@@ -333,7 +333,7 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
         }}{{#type:streamElemType}}{{ > types/CythonCppType}}{{/type:streamElemType}}]& c_obj, __RpcOptions rpc_options)
 
 
-cdef class ResponseAndStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndStream):
+cdef class ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndServerStream):
     pass
 
 {{/program:response_and_stream_types}}

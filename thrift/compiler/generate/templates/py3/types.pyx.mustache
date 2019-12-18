@@ -1452,7 +1452,7 @@ cdef class ClientBufferedStream__{{type:flat_name}}(ClientBufferedStream):
         )
         return asyncio.shield(__future)
 
-cdef class Stream__{{type:flat_name}}(Stream):
+cdef class ServerStream__{{type:flat_name}}(ServerStream):
     pass
 
 {{/program:stream_types}}
@@ -1477,7 +1477,7 @@ cdef class ResponseAndClientBufferedStream__{{> stream/ResponseClassNameSuffix}}
         yield self._response
         yield self._stream
 
-cdef class ResponseAndStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndStream):
+cdef class ResponseAndServerStream__{{> stream/ResponseClassNameSuffix}}(ResponseAndServerStream):
     pass
 
 {{/program:response_and_stream_types}}

@@ -17,10 +17,10 @@
 }}{{!
 Cpp type for returnType in services
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}apache::thrift::ResponseAndStream<{{!
+  }}{{#type:streamHasFirstResponse?}}apache::thrift::ResponseAndServerStream<{{!
     }}{{#type:streamFirstResponseType}}{{ >types/CppValueType}}{{/type:streamFirstResponseType}},{{!
   }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}apache::thrift::Stream<{{/type:streamHasFirstResponse?}}{{!
+  }}{{^type:streamHasFirstResponse?}}apache::thrift::ServerStream<{{/type:streamHasFirstResponse?}}{{!
   }}{{#type:streamElemType}}{{ >types/CppValueType}}{{/type:streamElemType}}>{{!
 }}{{/type:streamresponse?}}{{!
 }}{{^type:streamresponse?}}{{!

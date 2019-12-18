@@ -17,10 +17,10 @@
 }}{{!
 Cython type for returnType in services
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}cResponseAndStream[{{!
+  }}{{#type:streamHasFirstResponse?}}cResponseAndServerStream[{{!
   }}{{#type:streamFirstResponseType}}{{ >types/CythonCppType}}{{/type:streamFirstResponseType}},{{!
   }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}cStream[{{!
+  }}{{^type:streamHasFirstResponse?}}cServerStream[{{!
   }}{{/type:streamHasFirstResponse?}}{{!
   }}{{#type:streamElemType}}{{ >types/CythonCppType}}{{/type:streamElemType}}]{{!
 }}{{/type:streamresponse?}}{{!

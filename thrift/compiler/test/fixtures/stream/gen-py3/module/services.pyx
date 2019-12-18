@@ -44,7 +44,7 @@ cimport folly.iobuf as __iobuf
 import folly.iobuf as __iobuf
 from folly.iobuf cimport move as move_iobuf
 
-from thrift.py3.stream cimport cStream, cResponseAndStream
+from thrift.py3.stream cimport cServerStream, cResponseAndServerStream
 cimport module.types as _module_types
 import module.types as _module_types
 
@@ -58,29 +58,29 @@ from module.services_wrapper cimport cPubSubStreamingServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cResponseAndStream[int32_t,int32_t]] move_promise_cResponseAndStream__int32_t_int32_t "std::move"(
-        cFollyPromise[cResponseAndStream[int32_t,int32_t]])
-    cdef cFollyPromise[cStream[int32_t]] move_promise_cStream__int32_t "std::move"(
-        cFollyPromise[cStream[int32_t]])
+    cdef cFollyPromise[cResponseAndServerStream[int32_t,int32_t]] move_promise_cResponseAndServerStream__int32_t_int32_t "std::move"(
+        cFollyPromise[cResponseAndServerStream[int32_t,int32_t]])
+    cdef cFollyPromise[cServerStream[int32_t]] move_promise_cServerStream__int32_t "std::move"(
+        cFollyPromise[cServerStream[int32_t]])
 
 @cython.auto_pickle(False)
-cdef class Promise_cResponseAndStream__int32_t_int32_t:
-    cdef cFollyPromise[cResponseAndStream[int32_t,int32_t]] cPromise
+cdef class Promise_cResponseAndServerStream__int32_t_int32_t:
+    cdef cFollyPromise[cResponseAndServerStream[int32_t,int32_t]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cResponseAndStream[int32_t,int32_t]] cPromise):
-        inst = <Promise_cResponseAndStream__int32_t_int32_t>Promise_cResponseAndStream__int32_t_int32_t.__new__(Promise_cResponseAndStream__int32_t_int32_t)
-        inst.cPromise = move_promise_cResponseAndStream__int32_t_int32_t(cPromise)
+    cdef create(cFollyPromise[cResponseAndServerStream[int32_t,int32_t]] cPromise):
+        inst = <Promise_cResponseAndServerStream__int32_t_int32_t>Promise_cResponseAndServerStream__int32_t_int32_t.__new__(Promise_cResponseAndServerStream__int32_t_int32_t)
+        inst.cPromise = move_promise_cResponseAndServerStream__int32_t_int32_t(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cStream__int32_t:
-    cdef cFollyPromise[cStream[int32_t]] cPromise
+cdef class Promise_cServerStream__int32_t:
+    cdef cFollyPromise[cServerStream[int32_t]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cStream[int32_t]] cPromise):
-        inst = <Promise_cStream__int32_t>Promise_cStream__int32_t.__new__(Promise_cStream__int32_t)
-        inst.cPromise = move_promise_cStream__int32_t(cPromise)
+    cdef create(cFollyPromise[cServerStream[int32_t]] cPromise):
+        inst = <Promise_cServerStream__int32_t>Promise_cServerStream__int32_t.__new__(Promise_cServerStream__int32_t)
+        inst.cPromise = move_promise_cServerStream__int32_t(cPromise)
         return inst
 
 cdef object _PubSubStreamingService_annotations = _py_types.MappingProxyType({
@@ -181,7 +181,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.Stream__i32,
+            result=_module_types.ServerStream__i32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -200,7 +200,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.Stream__i32,
+            result=_module_types.ServerStream__i32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -219,7 +219,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.Stream__i32,
+            result=_module_types.ServerStream__i32,
             exceptions=[
                 _module_types.FooEx,
             ],
@@ -239,7 +239,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.ResponseAndtream__i32_i32,
+            result=_module_types.ResponseAndServerStream__i32_i32,
             exceptions=[
                 _module_types.FooEx,
             ],
@@ -259,7 +259,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.Stream__i32,
+            result=_module_types.ServerStream__i32,
             exceptions=[
             ],
             annotations=_py_types.MappingProxyType({
@@ -278,7 +278,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.Stream__i32,
+            result=_module_types.ServerStream__i32,
             exceptions=[
                 _module_types.FooEx,
             ],
@@ -298,7 +298,7 @@ cdef class PubSubStreamingServiceInterface(
                     }),
                 ),
             ],
-            result=_module_types.ResponseAndtream__i32_i32,
+            result=_module_types.ResponseAndServerStream__i32_i32,
             exceptions=[
                 _module_types.FooEx,
             ],
@@ -328,13 +328,13 @@ cdef class PubSubStreamingServiceInterface(
 cdef api void call_cy_PubSubStreamingService_returnstream(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cStream[int32_t]] cPromise,
+    cFollyPromise[cServerStream[int32_t]] cPromise,
     int32_t i32_from,
     int32_t i32_to
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    __promise = Promise_cServerStream__int32_t.create(move_promise_cServerStream__int32_t(cPromise))
     arg_i32_from = i32_from
     arg_i32_to = i32_to
     __context_obj = RequestContext.create(ctx)
@@ -358,7 +358,7 @@ cdef api void call_cy_PubSubStreamingService_returnstream(
 async def PubSubStreamingService_returnstream_coro(
     object self,
     object ctx,
-    Promise_cStream__int32_t promise,
+    Promise_cServerStream__int32_t promise,
     i32_from,
     i32_to
 ):
@@ -385,18 +385,18 @@ async def PubSubStreamingService_returnstream_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[int32_t]() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_streamthrows(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cStream[int32_t]] cPromise,
+    cFollyPromise[cServerStream[int32_t]] cPromise,
     int32_t foo
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    __promise = Promise_cServerStream__int32_t.create(move_promise_cServerStream__int32_t(cPromise))
     arg_foo = foo
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -418,7 +418,7 @@ cdef api void call_cy_PubSubStreamingService_streamthrows(
 async def PubSubStreamingService_streamthrows_coro(
     object self,
     object ctx,
-    Promise_cStream__int32_t promise,
+    Promise_cServerStream__int32_t promise,
     foo
 ):
     try:
@@ -442,18 +442,18 @@ async def PubSubStreamingService_streamthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[int32_t]() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_boththrows(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cStream[int32_t]] cPromise,
+    cFollyPromise[cServerStream[int32_t]] cPromise,
     int32_t foo
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    __promise = Promise_cServerStream__int32_t.create(move_promise_cServerStream__int32_t(cPromise))
     arg_foo = foo
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -475,7 +475,7 @@ cdef api void call_cy_PubSubStreamingService_boththrows(
 async def PubSubStreamingService_boththrows_coro(
     object self,
     object ctx,
-    Promise_cStream__int32_t promise,
+    Promise_cServerStream__int32_t promise,
     foo
 ):
     try:
@@ -501,18 +501,18 @@ async def PubSubStreamingService_boththrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[int32_t]() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cResponseAndStream[int32_t,int32_t]] cPromise,
+    cFollyPromise[cResponseAndServerStream[int32_t,int32_t]] cPromise,
     int32_t foo
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cResponseAndStream__int32_t_int32_t.create(move_promise_cResponseAndStream__int32_t_int32_t(cPromise))
+    __promise = Promise_cResponseAndServerStream__int32_t_int32_t.create(move_promise_cResponseAndServerStream__int32_t_int32_t(cPromise))
     arg_foo = foo
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -534,7 +534,7 @@ cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
 async def PubSubStreamingService_responseandstreamthrows_coro(
     object self,
     object ctx,
-    Promise_cResponseAndStream__int32_t_int32_t promise,
+    Promise_cResponseAndServerStream__int32_t_int32_t promise,
     foo
 ):
     try:
@@ -560,18 +560,18 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cResponseAndStream[int32_t,int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cResponseAndServerStream[int32_t,int32_t]() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_streamleftthrows(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cStream[int32_t]] cPromise,
+    cFollyPromise[cServerStream[int32_t]] cPromise,
     int32_t foo
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    __promise = Promise_cServerStream__int32_t.create(move_promise_cServerStream__int32_t(cPromise))
     arg_foo = foo
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -593,7 +593,7 @@ cdef api void call_cy_PubSubStreamingService_streamleftthrows(
 async def PubSubStreamingService_streamleftthrows_coro(
     object self,
     object ctx,
-    Promise_cStream__int32_t promise,
+    Promise_cServerStream__int32_t promise,
     foo
 ):
     try:
@@ -617,18 +617,18 @@ async def PubSubStreamingService_streamleftthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[int32_t]() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_bothleftthrows(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cStream[int32_t]] cPromise,
+    cFollyPromise[cServerStream[int32_t]] cPromise,
     int32_t foo
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cStream__int32_t.create(move_promise_cStream__int32_t(cPromise))
+    __promise = Promise_cServerStream__int32_t.create(move_promise_cServerStream__int32_t(cPromise))
     arg_foo = foo
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -650,7 +650,7 @@ cdef api void call_cy_PubSubStreamingService_bothleftthrows(
 async def PubSubStreamingService_bothleftthrows_coro(
     object self,
     object ctx,
-    Promise_cStream__int32_t promise,
+    Promise_cServerStream__int32_t promise,
     foo
 ):
     try:
@@ -676,18 +676,18 @@ async def PubSubStreamingService_bothleftthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cStream[int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cServerStream[int32_t]() # server streaming support is not implemented yet
 )
 
 cdef api void call_cy_PubSubStreamingService_responseandstreamleftthrows(
     object self,
     Cpp2RequestContext* ctx,
-    cFollyPromise[cResponseAndStream[int32_t,int32_t]] cPromise,
+    cFollyPromise[cResponseAndServerStream[int32_t,int32_t]] cPromise,
     int32_t foo
 ):
     cdef PubSubStreamingServiceInterface __iface
     __iface = self
-    __promise = Promise_cResponseAndStream__int32_t_int32_t.create(move_promise_cResponseAndStream__int32_t_int32_t(cPromise))
+    __promise = Promise_cResponseAndServerStream__int32_t_int32_t.create(move_promise_cResponseAndServerStream__int32_t_int32_t(cPromise))
     arg_foo = foo
     __context_obj = RequestContext.create(ctx)
     __context = None
@@ -709,7 +709,7 @@ cdef api void call_cy_PubSubStreamingService_responseandstreamleftthrows(
 async def PubSubStreamingService_responseandstreamleftthrows_coro(
     object self,
     object ctx,
-    Promise_cResponseAndStream__int32_t_int32_t promise,
+    Promise_cResponseAndServerStream__int32_t_int32_t promise,
     foo
 ):
     try:
@@ -735,6 +735,6 @@ async def PubSubStreamingService_responseandstreamleftthrows_coro(
             cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(cResponseAndStream[int32_t,int32_t]() # server streaming support is not implemented yet
+        promise.cPromise.setValue(cResponseAndServerStream[int32_t,int32_t]() # server streaming support is not implemented yet
 )
 

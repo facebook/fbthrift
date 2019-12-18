@@ -24,7 +24,7 @@ from cpython.ref cimport PyObject
 from thrift.py3.stream cimport (
     ClientBufferedStream, cClientBufferedStream, cClientBufferedStreamWrapper,
     ResponseAndClientBufferedStream, cResponseAndClientBufferedStream,
-    Stream, cStream, ResponseAndStream
+    ServerStream, cServerStream, ResponseAndServerStream
 )
 from thrift.py3.common cimport RpcOptions as __RpcOptions
 
@@ -98,7 +98,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         PyObject* userdata,
     )
 
-cdef class Stream__i32(Stream):
+cdef class ServerStream__i32(ServerStream):
     pass
 
 
@@ -110,6 +110,6 @@ cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStr
     cdef create(cResponseAndClientBufferedStream[int32_t, int32_t]& c_obj, __RpcOptions rpc_options)
 
 
-cdef class ResponseAndStream__i32_i32(ResponseAndStream):
+cdef class ResponseAndServerStream__i32_i32(ResponseAndServerStream):
     pass
 

@@ -71,10 +71,10 @@ This is the equivalent of CythonCpp[Basic]Type, for use as part of an identifier
   }}c{{enum:name}}{{!
 }}{{/type:enum}}{{!
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}cResponseAndStream__{{!
+  }}{{#type:streamHasFirstResponse?}}cResponseAndServerStream__{{!
   }}{{#type:streamFirstResponseType}}{{ >types/CythonCppTypeIdent}}{{/type:streamFirstResponseType}}_{{!
   }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}cStream__{{!
+  }}{{^type:streamHasFirstResponse?}}cServerStream__{{!
   }}{{/type:streamHasFirstResponse?}}{{!
   }}{{#type:streamElemType}}{{ >types/CythonCppTypeIdent}}{{/type:streamElemType}}{{!
 }}{{/type:streamresponse?}}{{!

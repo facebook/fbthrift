@@ -28,14 +28,14 @@ cdef extern from "thrift/lib/cpp2/async/ClientBufferedStream.h" namespace "::apa
         cClientBufferedStream[S] stream
         cResponseAndClientBufferedStream()
 
-cdef extern from "thrift/lib/cpp2/async/Stream.h" namespace "::apache::thrift":
-    cdef cppclass cStream "::apache::thrift::Stream"[T]:
-        cStream()
+cdef extern from "thrift/lib/cpp2/async/ServerStream.h" namespace "::apache::thrift":
+    cdef cppclass cServerStream "::apache::thrift::ServerStream"[T]:
+        cServerStream()
 
-    cdef cppclass cResponseAndStream "::apache::thrift::ResponseAndStream"[R, S]:
+    cdef cppclass cResponseAndServerStream "::apache::thrift::ResponseAndServerStream"[R, S]:
         R response
-        cStream[S] stream
-        cResponseAndStream()
+        cServerStream[S] stream
+        cResponseAndServerStream()
 
 cdef extern from "thrift/lib/py3/stream.h" namespace "::thrift::py3":
     cdef cppclass cClientBufferedStreamWrapper "::thrift::py3::ClientBufferedStreamWrapper"[T]:
@@ -51,8 +51,8 @@ cdef class ClientBufferedStream:
 cdef class ResponseAndClientBufferedStream:
     pass
 
-cdef class Stream:
+cdef class ServerStream:
     pass
 
-cdef class ResponseAndStream:
+cdef class ResponseAndServerStream:
     pass

@@ -18,11 +18,11 @@ PubSubStreamingServiceWrapper::PubSubStreamingServiceWrapper(PyObject *obj, foll
   }
 
 
-folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceWrapper::future_returnstream(
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_returnstream(
   int32_t i32_from,
   int32_t i32_to
 ) {
-  folly::Promise<apache::thrift::Stream<int32_t>> promise;
+  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -42,10 +42,10 @@ i32_to    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceWrapper::future_streamthrows(
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_streamthrows(
   int32_t foo
 ) {
-  folly::Promise<apache::thrift::Stream<int32_t>> promise;
+  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -63,10 +63,10 @@ foo    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceWrapper::future_boththrows(
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_boththrows(
   int32_t foo
 ) {
-  folly::Promise<apache::thrift::Stream<int32_t>> promise;
+  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -84,10 +84,10 @@ foo    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> PubSubStreamingServiceWrapper::future_responseandstreamthrows(
+folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceWrapper::future_responseandstreamthrows(
   int32_t foo
 ) {
-  folly::Promise<apache::thrift::ResponseAndStream<int32_t,int32_t>> promise;
+  folly::Promise<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -105,10 +105,10 @@ foo    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceWrapper::future_streamleftthrows(
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_streamleftthrows(
   int32_t foo
 ) {
-  folly::Promise<apache::thrift::Stream<int32_t>> promise;
+  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -126,10 +126,10 @@ foo    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::Stream<int32_t>> PubSubStreamingServiceWrapper::future_bothleftthrows(
+folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_bothleftthrows(
   int32_t foo
 ) {
-  folly::Promise<apache::thrift::Stream<int32_t>> promise;
+  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(
@@ -147,10 +147,10 @@ foo    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> PubSubStreamingServiceWrapper::future_responseandstreamleftthrows(
+folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceWrapper::future_responseandstreamleftthrows(
   int32_t foo
 ) {
-  folly::Promise<apache::thrift::ResponseAndStream<int32_t,int32_t>> promise;
+  folly::Promise<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> promise;
   auto future = promise.getFuture();
   auto ctx = getConnectionContext();
   folly::via(

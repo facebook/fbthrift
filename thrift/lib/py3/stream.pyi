@@ -30,8 +30,8 @@ class ClientBufferedStream(AsyncIterator[_T]):
 class ResponseAndClientBufferedStream:
     def __iter__(self: rST) -> Tuple[rT, sT]: ...
 
-class Stream:
+class ServerStream:
     pass
 
-class ResponseAndStream:
+class ResponseAndServerStream:
     pass

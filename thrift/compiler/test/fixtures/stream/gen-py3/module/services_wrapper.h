@@ -20,26 +20,26 @@ class PubSubStreamingServiceWrapper : virtual public PubSubStreamingServiceSvIf 
     folly::Executor *executor;
   public:
     explicit PubSubStreamingServiceWrapper(PyObject *if_object, folly::Executor *exc);
-    folly::Future<apache::thrift::Stream<int32_t>> future_returnstream(
+    folly::Future<apache::thrift::ServerStream<int32_t>> future_returnstream(
         int32_t i32_from,
         int32_t i32_to
     ) override;
-    folly::Future<apache::thrift::Stream<int32_t>> future_streamthrows(
+    folly::Future<apache::thrift::ServerStream<int32_t>> future_streamthrows(
         int32_t foo
     ) override;
-    folly::Future<apache::thrift::Stream<int32_t>> future_boththrows(
+    folly::Future<apache::thrift::ServerStream<int32_t>> future_boththrows(
         int32_t foo
     ) override;
-    folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamthrows(
+    folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamthrows(
         int32_t foo
     ) override;
-    folly::Future<apache::thrift::Stream<int32_t>> future_streamleftthrows(
+    folly::Future<apache::thrift::ServerStream<int32_t>> future_streamleftthrows(
         int32_t foo
     ) override;
-    folly::Future<apache::thrift::Stream<int32_t>> future_bothleftthrows(
+    folly::Future<apache::thrift::ServerStream<int32_t>> future_bothleftthrows(
         int32_t foo
     ) override;
-    folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamleftthrows(
+    folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamleftthrows(
         int32_t foo
     ) override;
 };

@@ -192,7 +192,7 @@ cdef class ClientBufferedStream__i32(ClientBufferedStream):
         )
         return asyncio.shield(__future)
 
-cdef class Stream__i32(Stream):
+cdef class ServerStream__i32(ServerStream):
     pass
 
 cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStream):
@@ -211,6 +211,6 @@ cdef class ResponseAndClientBufferedStream__i32_i32(ResponseAndClientBufferedStr
         yield self._response
         yield self._stream
 
-cdef class ResponseAndStream__i32_i32(ResponseAndStream):
+cdef class ResponseAndServerStream__i32_i32(ResponseAndServerStream):
     pass
 

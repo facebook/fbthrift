@@ -39,11 +39,11 @@ cdef class ResponseAndClientBufferedStream:
         yield None  # response
         yield None  # stream
 
-cdef class Stream:
+cdef class ServerStream:
     """
     Base class for all Stream object
     """
     pass
 
-cdef class ResponseAndStream:
+cdef class ResponseAndServerStream:
     pass
