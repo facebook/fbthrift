@@ -70,7 +70,7 @@ class RocketClient : public folly::DelayedDestruction,
   RocketClient& operator=(const RocketClient&) = delete;
   RocketClient& operator=(RocketClient&&) = delete;
 
-  ~RocketClient() final;
+  ~RocketClient() override;
 
   static std::shared_ptr<RocketClient> create(
       folly::EventBase& evb,
@@ -114,10 +114,10 @@ class RocketClient : public folly::DelayedDestruction,
   bool streamExists(StreamId streamId) const;
 
   // AsyncTransportWrapper::WriteCallback implementation
-  void writeSuccess() noexcept final;
+  void writeSuccess() noexcept override;
   void writeErr(
       size_t bytesWritten,
-      const folly::AsyncSocketException& e) noexcept final;
+      const folly::AsyncSocketException& e) noexcept override;
 
   // Hard close: stop reading from socket and abort all in-progress writes
   // immediately.
@@ -253,8 +253,8 @@ class RocketClient : public folly::DelayedDestruction,
   class WriteLoopCallback : public folly::EventBase::LoopCallback {
    public:
     explicit WriteLoopCallback(RocketClient& client) : client_(client) {}
-    ~WriteLoopCallback() final = default;
-    void runLoopCallback() noexcept final;
+    ~WriteLoopCallback() override = default;
+    void runLoopCallback() noexcept override;
 
    private:
     RocketClient& client_;
