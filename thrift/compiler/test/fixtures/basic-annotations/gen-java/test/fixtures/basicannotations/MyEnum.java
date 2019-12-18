@@ -8,7 +8,6 @@ package test.fixtures.basicannotations;
 
 
 import com.facebook.thrift.IntRangeSet;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 

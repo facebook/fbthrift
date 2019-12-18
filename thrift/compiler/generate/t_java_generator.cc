@@ -165,8 +165,7 @@ void t_java_generator::generate_enum(t_enum* tenum) {
 
   // Add java imports
   f_enum << string() + "import com.facebook.thrift.IntRangeSet;\n" +
-          "import java.util.IdentityHashMap;\n" + "import java.util.Map;\n" +
-          "import java.util.HashMap;\n"
+          +"import java.util.Map;\n" + "import java.util.HashMap;\n"
          << endl;
 
   f_enum << java_suppress_warnings_enum() << "public enum " << tenum->get_name()
@@ -189,8 +188,7 @@ void t_java_generator::generate_enum(t_enum* tenum) {
 
   if (enums.size() > LARGE_ENUMS_THRESHOLD) {
     f_enum << indent() << "private static final Map<Integer, "
-           << tenum->get_name()
-           << "> INDEXED_VALUES = new IdentityHashMap<Integer, "
+           << tenum->get_name() << "> INDEXED_VALUES = new HashMap<Integer, "
            << tenum->get_name() << ">();" << endl
            << endl
            << indent() << "static {" << endl

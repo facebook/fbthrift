@@ -8,7 +8,6 @@ package test.fixtures.enumstrict;
 
 
 import com.facebook.thrift.IntRangeSet;
-import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -35,7 +34,7 @@ public enum MyBigEnum implements com.facebook.thrift.TEnum {
   EIGHTEEN(18),
   NINETEEN(19);
 
-  private static final Map<Integer, MyBigEnum> INDEXED_VALUES = new IdentityHashMap<Integer, MyBigEnum>();
+  private static final Map<Integer, MyBigEnum> INDEXED_VALUES = new HashMap<Integer, MyBigEnum>();
 
   static {
     for (MyBigEnum e: values()) {
