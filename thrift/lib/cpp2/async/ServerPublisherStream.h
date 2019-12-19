@@ -241,7 +241,7 @@ class ServerPublisherStream : private StreamServerCallback {
 template <typename T>
 class ServerStreamPublisher {
  public:
-  void next(T payload) {
+  void next(T payload) const {
     impl_->publish(folly::Try<T>(std::move(payload)));
   }
   void complete(folly::exception_wrapper ew) && {
