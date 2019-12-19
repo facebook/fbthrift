@@ -462,8 +462,6 @@ class mstch_cpp2_type : public mstch_type {
             {"type:optionals?", &mstch_cpp2_type::optionals},
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
-            {"type:client_buffered_stream?",
-             &mstch_cpp2_type::client_buffered_stream},
         });
   }
   std::string get_type_namespace(t_program const* program) override {
@@ -598,9 +596,6 @@ class mstch_cpp2_type : public mstch_type {
       // TODO: stream is not supported
       return "::apache::thrift::type_class::unknown";
     }
-  }
-  mstch::node client_buffered_stream() {
-    return cache_->parsed_options_.count("deprecated_client_streams") == 0;
   }
 };
 
@@ -1221,7 +1216,7 @@ class mstch_cpp2_service : public mstch_service {
     });
   }
   mstch::node client_buffered_stream() {
-    return cache_->parsed_options_.count("client_buffered_stream") != 0;
+    return cache_->parsed_options_.count("deprecated_client_streams") == 0;
   }
   mstch::node server_stream() {
     return cache_->parsed_options_.count("deprecated_server_streams") == 0;
