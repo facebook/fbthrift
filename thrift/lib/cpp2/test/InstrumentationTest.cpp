@@ -100,8 +100,8 @@ class TestInterface : public InstrumentationTestServiceSvIf {
     co_await finished_;
   }
 
-  folly::coro::Task<apache::thrift::Stream<int32_t>> co_sendStreamingRequest()
-      override {
+  folly::coro::Task<apache::thrift::ServerStream<int32_t>>
+  co_sendStreamingRequest() override {
     auto rg = requestGuard();
     co_await finished_;
     co_return createStreamGenerator(
