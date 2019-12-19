@@ -159,11 +159,13 @@ void HTTP2RoutingHandler::handleConnection(
   auto sessionManager = new HTTP2RoutingSessionManager(processor_);
   // Create the DownstreamSession
   // A const_cast is needed to match wangle and proxygen APIs
+  auto h2codec = std::make_unique<proxygen::HTTP2Codec>(
+    proxygen::TransportDirection::DOWNSTREAM);
+  h2codec->setAddDateHeaderToResponse(false);
   auto session = sessionManager->createSession(
       std::move(sock),
       const_cast<folly::SocketAddress*>(peerAddress),
-      std::make_unique<proxygen::HTTP2Codec>(
-          proxygen::TransportDirection::DOWNSTREAM),
+      std::move(h2codec),
       tinfo);
   // TODO: Improve the way max incoming streams is set
   // HTTPServerOptions::maxConcurrentIncomingStreams is one option
