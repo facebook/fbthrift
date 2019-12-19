@@ -591,7 +591,7 @@ class TestClientCallback : public StreamClientCallback {
         requestedHeaders_(requestedHeaders),
         echoHeaders_(echoHeaders) {}
 
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&& firstResponsePayload,
       folly::EventBase* evb,
       StreamServerCallback* subscription) override {
@@ -601,7 +601,7 @@ class TestClientCallback : public StreamClientCallback {
           std::move(firstResponsePayload.payload));
       evb_.terminateLoopSoon();
       firstResponseError_ = true;
-      return;
+      return true;
     }
 
     subscription_ = subscription;
@@ -616,8 +616,10 @@ class TestClientCallback : public StreamClientCallback {
       HeadersPayloadContent header;
       header.otherMetadata_ref() = {
           {"expected_header", folly::to<std::string>(i)}};
-      subscription_->onSinkHeaders({std::move(header), {}});
+      auto alive = subscription_->onSinkHeaders({std::move(header), {}});
+      DCHECK(alive);
     }
+    return true;
   }
 
   void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -626,12 +628,13 @@ class TestClientCallback : public StreamClientCallback {
     evb_.terminateLoopSoon();
   }
 
-  void onStreamNext(StreamPayload&& payload) override {
+  bool onStreamNext(StreamPayload&& payload) override {
     DCHECK(!firstResponseError_);
     EXPECT_EQ(
         folly::to<std::string>(++received_),
         folly::StringPiece{payload.payload->coalesce()});
     EXPECT_LE(received_, requested_);
+    return true;
   }
   void onStreamError(folly::exception_wrapper ew) override {
     subscription_ = nullptr;
@@ -646,7 +649,7 @@ class TestClientCallback : public StreamClientCallback {
     subscription_ = nullptr;
     evb_.terminateLoopSoon();
   }
-  void onStreamHeaders(HeadersPayload&& payload) override {
+  bool onStreamHeaders(HeadersPayload&& payload) override {
     auto metadata_ref = payload.payload.otherMetadata_ref();
     EXPECT_TRUE(metadata_ref);
     if (metadata_ref) {
@@ -655,6 +658,7 @@ class TestClientCallback : public StreamClientCallback {
           (*metadata_ref)["expected_header"]);
     }
     EXPECT_LE(receivedHeaders_, requestedHeaders_);
+    return true;
   }
 
   void resetServerCallback(StreamServerCallback& serverCallback) override {
@@ -668,7 +672,7 @@ class TestClientCallback : public StreamClientCallback {
   }
   void request(uint64_t tokens) {
     if (subscription_) {
-      subscription_->onStreamRequestN(tokens);
+      std::ignore = subscription_->onStreamRequestN(tokens);
     }
   }
 

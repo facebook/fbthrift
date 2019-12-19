@@ -94,7 +94,7 @@ class ClientStreamBridge : public TwoWayBridge<
   explicit ClientStreamBridge(FirstResponseCallback* callback)
       : firstResponseCallback_(callback) {}
 
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&& payload,
       folly::EventBase* evb,
       StreamServerCallback* streamServerCallback) override {
@@ -105,6 +105,7 @@ class ClientStreamBridge : public TwoWayBridge<
     DCHECK(scheduledWait);
     firstResponseCallback->onFirstResponse(
         std::move(payload), ClientPtr(copy().release()));
+    return true;
   }
 
   void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -112,8 +113,9 @@ class ClientStreamBridge : public TwoWayBridge<
     serverCleanup();
   }
 
-  void onStreamNext(StreamPayload&& payload) override {
+  bool onStreamNext(StreamPayload&& payload) override {
     serverPush(folly::Try<StreamPayload>(std::move(payload)));
+    return true;
   }
 
   void onStreamError(folly::exception_wrapper ew) override {
@@ -150,7 +152,7 @@ class ClientStreamBridge : public TwoWayBridge<
       }
     }
 
-    streamServerCallback_->onStreamRequestN(credits);
+    std::ignore = streamServerCallback_->onStreamRequestN(credits);
   }
 
   void serverCleanup() {

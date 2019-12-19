@@ -46,11 +46,12 @@ class ClientCallbackFlowable final
       }
       n = std::min<int64_t>(
           std::max<int64_t>(0, n), std::numeric_limits<int32_t>::max());
-      flowable_->serverCallback_->onStreamRequestN(n);
+      std::ignore = flowable_->serverCallback_->onStreamRequestN(n);
     }
 
     void cancel() override {
       flowable_->serverCallback_->onStreamCancel();
+      flowable_->serverCallback_ = nullptr;
       flowable_.reset();
     }
 
@@ -83,7 +84,7 @@ class ClientCallbackFlowable final
   }
 
   // ClientCallback interface
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&& firstPayload,
       folly::EventBase* evb,
       StreamServerCallback* serverCallback) override {
@@ -93,6 +94,8 @@ class ClientCallbackFlowable final
         std::move(firstPayload.metadata),
         std::move(firstPayload.payload),
         toStream(std::move(self_), evb));
+    DCHECK(serverCallback_);
+    return true;
   }
 
   void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -101,8 +104,10 @@ class ClientCallbackFlowable final
     self_.reset();
   }
 
-  void onStreamNext(StreamPayload&& payload) override {
+  bool onStreamNext(StreamPayload&& payload) override {
     subscriber_->onNext(std::move(payload.payload));
+    DCHECK(serverCallback_);
+    return true;
   }
 
   void onStreamError(folly::exception_wrapper ew) override {

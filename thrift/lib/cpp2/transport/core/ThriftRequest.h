@@ -184,22 +184,17 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-  void sendStreamReply(
+  bool sendStreamReply(
       std::unique_ptr<folly::IOBuf> response,
       StreamServerCallback* stream,
       folly::Optional<uint32_t> crc32c) override final {
-    SCOPE_EXIT {
-      if (stream) {
-        stream->onStreamCancel();
-      }
-    };
     if (active_.exchange(false)) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata();
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
-      sendReplyInternal(
+      auto alive = sendReplyInternal(
           std::move(metadata),
           std::move(response),
           std::exchange(stream, nullptr));
@@ -207,7 +202,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
       }
+      return alive;
     }
+    stream->onStreamCancel();
+    return false;
   }
 
   void sendStreamReply(
@@ -274,13 +272,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
 
-  virtual void sendStreamThriftResponse(
+  virtual bool sendStreamThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      StreamServerCallback* stream) noexcept {
-    if (stream) {
-      stream->onStreamCancel();
-    }
+      StreamServerCallback*) noexcept {
     LOG(FATAL) << "sendStreamThriftResponse not implemented";
   }
 
@@ -355,21 +350,17 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
   }
 
-  void sendReplyInternal(
+  bool sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
       StreamServerCallback* stream) {
-    SCOPE_EXIT {
-      if (stream) {
-        stream->onStreamCancel();
-      }
-    };
-    if (checkResponseSize(*buf)) {
-      sendStreamThriftResponse(
-          std::move(metadata), std::move(buf), std::exchange(stream, nullptr));
-    } else {
+    if (!checkResponseSize(*buf)) {
       sendResponseTooBigEx();
+      stream->onStreamCancel();
+      return false;
     }
+    return sendStreamThriftResponse(
+        std::move(metadata), std::move(buf), std::exchange(stream, nullptr));
   }
 
   void sendReplyInternal(

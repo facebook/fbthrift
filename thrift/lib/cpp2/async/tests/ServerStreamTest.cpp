@@ -32,23 +32,25 @@ using namespace ::testing;
 
 class ClientCallback : public StreamClientCallback {
  public:
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&&,
       folly::EventBase*,
       StreamServerCallback* c) override {
     cb = c;
     started.post();
+    return true;
   }
   void onFirstResponseError(folly::exception_wrapper) override {
     std::terminate();
   }
 
-  void onStreamNext(StreamPayload&& payload) override {
+  bool onStreamNext(StreamPayload&& payload) override {
     if (i < 1024) {
       EXPECT_EQ(payload.payload->capacity(), i++);
     } else {
       ++i;
     }
+    return true;
   }
   void onStreamError(folly::exception_wrapper) override {
     std::terminate();
@@ -116,7 +118,7 @@ TEST(ServerStreamTest, PublishConsumeCoro) {
       clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
-    clientCallback.cb->onStreamRequestN(11); // complete costs 1
+    std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
   clientCallback.completed.wait();
   EXPECT_EQ(clientCallback.i, 10);
@@ -124,12 +126,13 @@ TEST(ServerStreamTest, PublishConsumeCoro) {
 
 TEST(ServerStreamTest, ImmediateCancel) {
   class CancellingClientCallback : public ClientCallback {
-    void onFirstResponse(
+    bool onFirstResponse(
         FirstResponsePayload&&,
         folly::EventBase*,
         StreamServerCallback* c) override {
       c->onStreamCancel();
       completed.post();
+      return false;
     }
   };
   folly::ScopedEventBaseThread clientEb, serverEb;
@@ -150,11 +153,13 @@ TEST(ServerStreamTest, ImmediateCancel) {
 
 TEST(ServerStreamTest, DelayedCancel) {
   class CancellingClientCallback : public ClientCallback {
-    void onStreamNext(StreamPayload&&) override {
+    bool onStreamNext(StreamPayload&&) override {
       if (i++ == 3) {
         cb->onStreamCancel();
         completed.post();
+        return false;
       }
+      return true;
     }
   };
   folly::ScopedEventBaseThread clientEb, serverEb;
@@ -172,7 +177,7 @@ TEST(ServerStreamTest, DelayedCancel) {
       clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
-    clientCallback.cb->onStreamRequestN(11); // complete costs 1
+    std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
   clientCallback.completed.wait();
   EXPECT_EQ(clientCallback.i, 4);
@@ -194,7 +199,8 @@ TEST(ServerStreamTest, PropagatedCancel) {
       &clientCallback,
       clientEb.getEventBase());
   clientCallback.started.wait();
-  clientEb.getEventBase()->add([&] { clientCallback.cb->onStreamRequestN(1); });
+  clientEb.getEventBase()->add(
+      [&] { std::ignore = clientCallback.cb->onStreamRequestN(1); });
   setup.wait();
   clientEb.getEventBase()->add([&] { clientCallback.cb->onStreamCancel(); });
   ASSERT_TRUE(canceled.try_wait_for(std::chrono::seconds(1)));
@@ -219,7 +225,7 @@ TEST(ServerStreamTest, CancelCoro) {
         clientEb.getEventBase());
     clientEb.add([&] {
       clientCallback.started.wait();
-      clientCallback.cb->onStreamRequestN(11); // complete costs 1
+      std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
     });
     folly::coro::blockingWait(baton);
     clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
@@ -240,7 +246,7 @@ TEST(ServerStreamTest, MustClosePublisher) {
             clientEb.getEventBase());
         clientEb.add([&] {
           clientCallback.started.wait();
-          clientCallback.cb->onStreamRequestN(5);
+          std::ignore = clientCallback.cb->onStreamRequestN(5);
         });
         publisher.next(0);
       })(),
@@ -262,7 +268,7 @@ TEST(ServerStreamTest, PublishConsumePublisher) {
       clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
-    clientCallback.cb->onStreamRequestN(11); // complete costs 1
+    std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
   for (int i = 5; i < 10; i++) {
     publisher.next(i);
@@ -285,7 +291,7 @@ TEST(ServerStreamTest, CancelPublisher) {
       clientEb.getEventBase());
   clientEb.add([&] {
     clientCallback.started.wait();
-    clientCallback.cb->onStreamRequestN(11); // complete costs 1
+    std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
   });
   std::thread([&, publisher = std::move(publisher)]() mutable {
     for (int i = 0; i < 10; i++) {

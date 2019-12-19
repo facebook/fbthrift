@@ -63,7 +63,7 @@ RocketStreamClientCallback::RocketStreamClientCallback(
     uint32_t initialRequestN)
     : streamId_(streamId), connection_(connection), tokens_(initialRequestN) {}
 
-void RocketStreamClientCallback::onFirstResponse(
+bool RocketStreamClientCallback::onFirstResponse(
     FirstResponsePayload&& firstResponse,
     folly::EventBase* /* unused */,
     StreamServerCallback* serverCallback) {
@@ -72,7 +72,7 @@ void RocketStreamClientCallback::onFirstResponse(
     auto& connection = connection_;
     connection_.freeStream(streamId_);
     connection.decInflightRequests();
-    return;
+    return false;
   }
 
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
@@ -94,9 +94,13 @@ void RocketStreamClientCallback::onFirstResponse(
       Flags::none().next(true));
 
   bool selfAlive = connection_.decInflightRequests();
-  if (selfAlive && tokens) {
-    request(tokens);
+  if (!selfAlive) {
+    return false;
   }
+  if (tokens) {
+    return request(tokens);
+  }
+  return true;
 }
 
 void RocketStreamClientCallback::onFirstResponseError(
@@ -113,7 +117,7 @@ void RocketStreamClientCallback::onFirstResponseError(
   connection.decInflightRequests();
 }
 
-void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
+bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
   DCHECK(tokens_ != 0);
   if (!--tokens_) {
     scheduleTimeout();
@@ -122,6 +126,7 @@ void RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
   compressResponse(payload);
   connection_.sendPayload(
       streamId_, pack(std::move(payload)).value(), Flags::none().next(true));
+  return true;
 }
 
 void RocketStreamClientCallback::onStreamComplete() {
@@ -153,12 +158,13 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
   connection_.freeStream(streamId_);
 }
 
-void RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
+bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
   connection_.sendExt(
       streamId_,
       pack(payload).value(),
       Flags::none().ignore(true),
       ExtFrameType::HEADERS_PUSH);
+  return true;
 }
 
 void RocketStreamClientCallback::resetServerCallback(
@@ -166,18 +172,18 @@ void RocketStreamClientCallback::resetServerCallback(
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(&serverCallback);
 }
 
-void RocketStreamClientCallback::request(uint32_t tokens) {
+bool RocketStreamClientCallback::request(uint32_t tokens) {
   if (!tokens) {
-    return;
+    return true;
   }
 
   cancelTimeout();
   tokens_ += tokens;
-  serverCallback()->onStreamRequestN(tokens);
+  return serverCallback()->onStreamRequestN(tokens);
 }
 
 void RocketStreamClientCallback::headers(HeadersPayload&& payload) {
-  serverCallback()->onSinkHeaders(std::move(payload));
+  std::ignore = serverCallback()->onSinkHeaders(std::move(payload));
 }
 
 void RocketStreamClientCallback::onStreamCancel() {

@@ -261,13 +261,14 @@ StreamServerCallback* SemiStream<T>::toStreamServerCallbackPtr(
                                             public SubscriberIf<T> {
    public:
     // StreamServerCallback implementation
-    void onStreamRequestN(uint64_t tokens) override {
+    bool onStreamRequestN(uint64_t tokens) override {
       if (!subscription_) {
         tokensBeforeSubscribe_ += tokens;
       } else {
         DCHECK_EQ(0, tokensBeforeSubscribe_);
         subscription_->request(tokens);
       }
+      return clientCallback_;
     }
     void onStreamCancel() override {
       clientCallback_ = nullptr;
@@ -292,7 +293,8 @@ StreamServerCallback* SemiStream<T>::toStreamServerCallbackPtr(
     }
     void onNext(T&& next) override {
       if (clientCallback_) {
-        clientCallback_->onStreamNext(StreamPayload{std::move(next), {}});
+        std::ignore =
+            clientCallback_->onStreamNext(StreamPayload{std::move(next), {}});
       }
     }
     void onError(folly::exception_wrapper ew) override {

@@ -38,20 +38,20 @@ class RocketStreamClientCallback final : public StreamClientCallback {
       uint32_t initialRequestN);
   ~RocketStreamClientCallback() override = default;
 
-  void onFirstResponse(
+  bool onFirstResponse(
       FirstResponsePayload&& firstResponse,
       folly::EventBase* evb,
       StreamServerCallback* serverCallback) override;
   void onFirstResponseError(folly::exception_wrapper ew) override;
 
-  void onStreamNext(StreamPayload&& payload) override;
+  bool onStreamNext(StreamPayload&& payload) override;
   void onStreamError(folly::exception_wrapper ew) override;
   void onStreamComplete() override;
-  void onStreamHeaders(HeadersPayload&& payload) override;
+  bool onStreamHeaders(HeadersPayload&& payload) override;
 
   void resetServerCallback(StreamServerCallback&) override;
 
-  void request(uint32_t n);
+  bool request(uint32_t n);
   void onStreamCancel();
   void headers(HeadersPayload&& payload);
 

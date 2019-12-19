@@ -50,10 +50,10 @@ class RocketStreamServerCallback : public StreamServerCallback {
         chunkTimeout_(chunkTimeout),
         credits_(initialCredits) {}
 
-  void onStreamRequestN(uint64_t tokens) override;
+  bool onStreamRequestN(uint64_t tokens) override;
   void onStreamCancel() override;
 
-  void onSinkHeaders(HeadersPayload&& payload) override;
+  bool onSinkHeaders(HeadersPayload&& payload) override;
 
   void resetClientCallback(StreamClientCallback& clientCallback) override {
     clientCallback_ = &clientCallback;

@@ -199,17 +199,17 @@ void ThriftServerRequestStream::sendStreamReply(
   }
 }
 
-void ThriftServerRequestStream::sendStreamThriftResponse(
+bool ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     StreamServerCallback* stream) noexcept {
   if (!stream) {
     sendStreamThriftError(std::move(metadata), std::move(data));
-    return;
+    return false;
   }
   stream->resetClientCallback(*clientCallback_);
   clientCallback_->setProtoId(getProtoId());
-  clientCallback_->onFirstResponse(
+  return clientCallback_->onFirstResponse(
       FirstResponsePayload{std::move(data), std::move(metadata)},
       nullptr /* evb */,
       stream);

@@ -59,7 +59,8 @@ class ServerStream {
                 SemiStream<std::unique_ptr<folly::IOBuf>>(std::move(stream))
                     .toStreamServerCallbackPtr(*clientEb);
             streamPtr->resetClientCallback(*callback);
-            callback->onFirstResponse(std::move(payload), clientEb, streamPtr);
+            std::ignore = callback->onFirstResponse(
+                std::move(payload), clientEb, streamPtr);
           };
         }) {}
 

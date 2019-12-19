@@ -383,7 +383,7 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
         }
         n = std::min<int64_t>(
             std::max<int64_t>(0, n), std::numeric_limits<int32_t>::max());
-        flowable_->serverCallback_->onStreamRequestN(n);
+        std::ignore = flowable_->serverCallback_->onStreamRequestN(n);
       }
 
       void cancel() override {
@@ -421,7 +421,7 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
     }
 
     // ClientCallback interface
-    void onFirstResponse(
+    bool onFirstResponse(
         FirstResponsePayload&& firstPayload,
         folly::EventBase* evb,
         StreamServerCallback* serverCallback) override {
@@ -439,6 +439,7 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
       } else {
         p_.setValue(toStream(std::move(self), evb));
       }
+      return true;
     }
 
     void onFirstResponseError(folly::exception_wrapper ew) override {
@@ -446,8 +447,9 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
       self_.reset();
     }
 
-    void onStreamNext(StreamPayload&& payload) override {
+    bool onStreamNext(StreamPayload&& payload) override {
       subscriber_->onNext(Payload::makeFromData(std::move(payload.payload)));
+      return true;
     }
 
     void onStreamError(folly::exception_wrapper ew) override {
@@ -669,22 +671,25 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
             n_(n),
             nEchoHeaders_(nEchoHeaders) {}
 
-      void onStreamRequestN(uint64_t tokens) override {
+      bool onStreamRequestN(uint64_t tokens) override {
         while (tokens-- && i_++ < n_) {
-          clientCallback_->onStreamNext(StreamPayload{
+          auto alive = clientCallback_->onStreamNext(StreamPayload{
               folly::IOBuf::copyBuffer(folly::to<std::string>(i_)), {}});
+          DCHECK(alive);
         }
         if (i_ == n_ && iEchoHeaders_ == nEchoHeaders_) {
           clientCallback_->onStreamComplete();
           delete this;
+          return false;
         }
+        return true;
       }
 
       void onStreamCancel() override {
         delete this;
       }
 
-      void onSinkHeaders(HeadersPayload&& payload) override {
+      bool onSinkHeaders(HeadersPayload&& payload) override {
         auto metadata_ref = payload.payload.otherMetadata_ref();
         EXPECT_TRUE(metadata_ref);
         if (metadata_ref) {
@@ -692,11 +697,14 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
               folly::to<std::string>(++iEchoHeaders_),
               (*metadata_ref)["expected_header"]);
         }
-        clientCallback_->onStreamHeaders(std::move(payload));
+        auto alive = clientCallback_->onStreamHeaders(std::move(payload));
+        DCHECK(alive);
         if (i_ == n_ && iEchoHeaders_ == nEchoHeaders_) {
           clientCallback_->onStreamComplete();
           delete this;
+          return false;
         }
+        return true;
       }
 
       void resetClientCallback(StreamClientCallback& clientCallback) override {
@@ -727,20 +735,24 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         : (data.removePrefix("generate:") ? folly::to<size_t>(data) : 500);
     auto* serverCallback =
         new TestRocketStreamServerCallback(clientCallback, n, nEchoHeaders);
-    clientCallback->onFirstResponse(
-        FirstResponsePayload{
-            folly::IOBuf::copyBuffer(folly::to<std::string>(0)), {}},
-        nullptr /* evb */,
-        serverCallback);
+    {
+      auto alive = clientCallback->onFirstResponse(
+          FirstResponsePayload{
+              folly::IOBuf::copyBuffer(folly::to<std::string>(0)), {}},
+          nullptr /* evb */,
+          serverCallback);
+      DCHECK(alive);
+    }
 
     for (size_t i = 1; i <= nHeaders; ++i) {
       HeadersPayloadContent header;
       header.otherMetadata_ref() = {
           {"expected_header", folly::to<std::string>(i)}};
-      clientCallback->onStreamHeaders({std::move(header), {}});
+      auto alive = clientCallback->onStreamHeaders({std::move(header), {}});
+      DCHECK(alive);
     }
     if (n == 0 && nEchoHeaders == 0) {
-      serverCallback->onStreamRequestN(0);
+      std::ignore = serverCallback->onStreamRequestN(0);
     }
   }
 

@@ -62,9 +62,8 @@ class ServerPublisherStream : private StreamServerCallback {
                          folly::EventBase* clientEb) mutable {
                 stream->streamClientCallback_ = callback;
                 stream->clientEventBase_ = clientEb;
-                callback->onFirstResponse(
-                    std::move(payload), clientEb, stream.get());
-                return stream.release();
+                std::ignore = callback->onFirstResponse(
+                    std::move(payload), clientEb, stream.release());
               };
             },
             ServerStreamPublisher<T>(stream->copy())};
@@ -97,7 +96,12 @@ class ServerPublisherStream : private StreamServerCallback {
   }
 
   void consume() {
-    clientEventBase_->add([self = copy()]() { self->processPayloads(); });
+    clientEventBase_->add([self = copy()]() {
+      if (self->queue_.isClosed()) {
+        return;
+      }
+      self->processPayloads();
+    });
   }
   void canceled() {}
 
@@ -119,13 +123,14 @@ class ServerPublisherStream : private StreamServerCallback {
   using Queue = typename twowaybridge_detail::
       AtomicQueue<ServerPublisherStream, folly::Try<Payload>>;
 
-  void onStreamRequestN(uint64_t credits) override {
+  bool onStreamRequestN(uint64_t credits) override {
     clientEventBase_->dcheckIsInEventBaseThread();
     credits_ += credits;
     if (credits_ == credits) {
       // we are responsible for waking the queue reader
-      processPayloads();
+      return processPayloads();
     }
+    return true;
   }
 
   void onStreamCancel() override {
@@ -150,42 +155,52 @@ class ServerPublisherStream : private StreamServerCallback {
   // resume processing buffered requests
   // called by onStreamRequestN when credits were previously empty,
   // otherwise by queue on publish
-  void processPayloads() {
+  bool processPayloads() {
     clientEventBase_->dcheckIsInEventBaseThread();
     DCHECK(encode_);
 
+    DCHECK(!queue_.isClosed());
+
     // returns stream completion status
     auto processQueue = [&] {
-      for (; !queue_.isClosed() && credits_ && !buffer_.empty();
-           buffer_.pop()) {
+      for (; credits_ && !buffer_.empty(); buffer_.pop()) {
+        DCHECK(!queue_.isClosed());
         auto payload = std::move(buffer_.front());
         if (payload.hasValue()) {
-          streamClientCallback_->onStreamNext(std::move(payload.value()));
+          auto alive =
+              streamClientCallback_->onStreamNext(std::move(payload.value()));
           --credits_;
+          if (!alive) {
+            return false;
+          }
         } else if (payload.hasException()) {
           streamClientCallback_->onStreamError(std::move(payload.exception()));
-          return true;
+          close();
+          return false;
         } else {
           streamClientCallback_->onStreamComplete();
-          return true;
+          close();
+          return false;
         }
       }
-      return false;
+      return true;
     };
 
-    if (processQueue()) {
-      close();
-      return;
+    if (!processQueue()) {
+      return false;
     }
 
-    while (!queue_.isClosed() && credits_ && !queue_.wait(this)) {
+    DCHECK(!queue_.isClosed());
+
+    while (credits_ && !queue_.wait(this)) {
       DCHECK(buffer_.empty());
       buffer_ = queue_.getMessages();
-      if (processQueue()) {
-        close();
-        return;
+      if (!processQueue()) {
+        return false;
       }
     }
+
+    return true;
   }
 
   void close() {

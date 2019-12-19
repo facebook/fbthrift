@@ -63,7 +63,8 @@ class ServerGeneratorStream : public TwoWayBridge<
         auto stream = new ServerGeneratorStream(callback, clientEb);
         auto streamPtr = stream->copy();
         clientEb->add([=, payload = std::move(payload)]() mutable {
-          callback->onFirstResponse(std::move(payload), clientEb, stream);
+          std::ignore =
+              callback->onFirstResponse(std::move(payload), clientEb, stream);
           stream->processPayloads();
         });
         folly::coro::co_invoke(
@@ -163,8 +164,9 @@ class ServerGeneratorStream : public TwoWayBridge<
     return serverGetMessages();
   }
 
-  void onStreamRequestN(uint64_t credits) override {
+  bool onStreamRequestN(uint64_t credits) override {
     clientPush(std::move(credits));
+    return true;
   }
 
   void onStreamCancel() override {
@@ -173,7 +175,6 @@ class ServerGeneratorStream : public TwoWayBridge<
 #endif
     clientPush(-1);
     clientClose();
-    streamClientCallback_ = nullptr;
   }
 
   void resetClientCallback(StreamClientCallback& clientCallback) override {
@@ -183,12 +184,16 @@ class ServerGeneratorStream : public TwoWayBridge<
   void processPayloads() {
     clientEventBase_->dcheckIsInEventBaseThread();
     while (!clientWait(this)) {
-      for (auto messages = clientGetMessages();
-           !messages.empty() && streamClientCallback_;
+      for (auto messages = clientGetMessages(); !messages.empty();
            messages.pop()) {
+        DCHECK(!isClientClosed());
         auto& payload = messages.front();
         if (payload.hasValue()) {
-          streamClientCallback_->onStreamNext(std::move(payload.value()));
+          auto alive =
+              streamClientCallback_->onStreamNext(std::move(payload.value()));
+          if (!alive) {
+            break;
+          }
         } else if (payload.hasException()) {
           streamClientCallback_->onStreamError(std::move(payload.exception()));
           Ptr(this);

@@ -341,7 +341,7 @@ void RocketServerConnection::handleStreamFrame(
             freeStream(streamId);
             return;
           }
-          serverCallback.onSinkHeaders(std::move(*headers));
+          std::ignore = serverCallback.onSinkHeaders(std::move(*headers));
           return;
         }
         case ExtFrameType::UNKNOWN:
