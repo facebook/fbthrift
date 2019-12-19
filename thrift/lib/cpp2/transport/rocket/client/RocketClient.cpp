@@ -481,10 +481,6 @@ void RocketClient::sendRequestStreamChannel(
       }
     }
 
-    auto scheduleWrite() {
-      return client_.scheduleWrite(ctx_);
-    }
-
     static void run(
         std::unique_ptr<Context> self,
         std::chrono::milliseconds firstResponseTimeout) {
@@ -543,23 +539,6 @@ void RocketClient::sendRequestStreamChannel(
       firstResponseTimeout);
 }
 
-folly::Try<void> RocketClient::sendRequestNSync(StreamId streamId, int32_t n) {
-  if (UNLIKELY(n <= 0)) {
-    return {};
-  }
-
-  if (!streamExists(streamId)) {
-    return {};
-  }
-
-  RequestContext ctx(RequestNFrame(streamId, n), queue_);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<void>(std::move(swr.exception()));
-  }
-  return ctx.waitForWriteToComplete();
-}
-
 folly::Try<void> RocketClient::sendCancelSync(StreamId streamId) {
   RequestContext ctx(CancelFrame(streamId), queue_);
   auto swr = scheduleWrite(ctx);
@@ -606,21 +585,59 @@ folly::Try<void> RocketClient::sendExtSync(
   return ctx.waitForWriteToComplete();
 }
 
-void RocketClient::sendRequestN(StreamId streamId, int32_t n) {
-  auto g = makeRequestCountGuard();
-  fm_->addTaskFinally(
-      [this, g = std::move(g), streamId, n] {
-        return sendRequestNSync(streamId, n);
-      },
-      [this,
-       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
-        auto resc = collapseTry(std::move(result));
-        if (resc.hasException()) {
-          FB_LOG_EVERY_MS(ERROR, 1000) << "sendRequestN failed, closing now: "
-                                       << resc.exception().what();
-          closeNow(std::move(resc.exception()));
-        }
-      });
+bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
+  if (UNLIKELY(n <= 0)) {
+    return true;
+  }
+
+  DCHECK(streamExists(streamId));
+
+  using RequestCountGuard = decltype(makeRequestCountGuard());
+
+  class Context : public folly::fibers::Baton::Waiter {
+   public:
+    Context(std::shared_ptr<RocketClient> client, RequestNFrame&& frame)
+        : client_(std::move(client)),
+          ctx_(std::move(frame), client_->queue_),
+          g_(client_->makeRequestCountGuard()) {}
+
+    FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
+      auto writeScheduled = self->client_->scheduleWrite(self->ctx_);
+      if (writeScheduled.hasException()) {
+        self->onError(std::move(writeScheduled.exception()));
+        return false;
+      }
+
+      auto& ctx = self->ctx_;
+      ctx.waitForWriteToCompleteSchedule(self.release());
+
+      return true;
+    }
+
+   private:
+    void post() override {
+      std::unique_ptr<Context> self(this);
+
+      auto writeCompleted = ctx_.waitForWriteToCompleteResult();
+      if (writeCompleted.hasException()) {
+        onError(std::move(writeCompleted.exception()));
+      }
+    }
+
+    void onError(folly::exception_wrapper ew) {
+      FB_LOG_EVERY_MS(ERROR, 1000)
+          << "sendRequestN failed, closing now: " << ew.what();
+      client_->closeNow(std::move(ew));
+    }
+
+    std::shared_ptr<RocketClient> client_;
+    RequestContext ctx_;
+    RequestCountGuard g_;
+  };
+
+  auto ctx =
+      std::make_unique<Context>(shared_from_this(), RequestNFrame(streamId, n));
+  return Context::run(std::move(ctx));
 }
 
 void RocketClient::cancelStream(StreamId streamId) {

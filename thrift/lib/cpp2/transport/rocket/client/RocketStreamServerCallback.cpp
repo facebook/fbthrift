@@ -44,8 +44,7 @@ bool RocketStreamServerCallback::onStreamRequestN(uint64_t tokens) {
     scheduleTimeout();
   }
   credits_ += tokens;
-  client_.sendRequestN(streamId_, tokens);
-  return true;
+  return client_.sendRequestN(streamId_, tokens);
 }
 void RocketStreamServerCallback::onStreamCancel() {
   client_.cancelStream(streamId_);
@@ -146,7 +145,7 @@ void RocketStreamServerCallback::cancelTimeout() {
 // RocketChannelServerCallback
 void RocketChannelServerCallback::onStreamRequestN(uint64_t tokens) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  client_.sendRequestN(streamId_, tokens);
+  std::ignore = client_.sendRequestN(streamId_, tokens);
 }
 void RocketChannelServerCallback::onStreamCancel() {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);

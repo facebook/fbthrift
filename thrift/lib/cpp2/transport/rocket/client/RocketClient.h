@@ -104,7 +104,7 @@ class RocketClient : public folly::DelayedDestruction,
       std::chrono::milliseconds firstResponseTimeout,
       SinkClientCallback* clientCallback);
 
-  void sendRequestN(StreamId streamId, int32_t n);
+  FOLLY_NODISCARD bool sendRequestN(StreamId streamId, int32_t n);
   void cancelStream(StreamId streamId);
   void sendPayload(StreamId streamId, StreamPayload&& payload, Flags flags);
   void sendError(StreamId streamId, RocketException&& rex);
@@ -271,9 +271,6 @@ class RocketClient : public folly::DelayedDestruction,
       folly::AsyncTransportWrapper::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
 
-  FOLLY_NODISCARD folly::Try<void> sendRequestNSync(
-      StreamId streamId,
-      int32_t n);
   FOLLY_NODISCARD folly::Try<void> sendCancelSync(StreamId streamId);
   FOLLY_NODISCARD folly::Try<void>
   sendPayloadSync(StreamId streamId, Payload&& payload, Flags flags);
