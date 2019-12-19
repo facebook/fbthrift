@@ -483,7 +483,7 @@ TEST_P(StreamingTest, SimpleStream) {
 
 TEST_P(StreamingTest, FutureSimpleStream) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    auto futureRange = client->future_range(0, 10);
+    auto futureRange = client->semifuture_range(0, 10);
     auto stream = std::move(futureRange).get();
     auto result = std::move(stream).via(&executor_);
     int j = 0;
@@ -491,32 +491,6 @@ TEST_P(StreamingTest, FutureSimpleStream) {
         [&j](auto i) mutable { EXPECT_EQ(j++, i); },
         [](auto ex) { FAIL() << "Should not call onError: " << ex.what(); });
     std::move(subscription).join();
-    EXPECT_EQ(10, j);
-  });
-}
-
-TEST_P(StreamingTest, CallbackSimpleStream) {
-  connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
-    folly::Baton<> done;
-    int j = 0;
-    auto callback =
-        [&done, &j, this](::apache::thrift::ClientReceiveState&& receiveState) {
-          ASSERT_FALSE(receiveState.isException());
-          auto stream = receiveState.extractStream();
-          auto result = std::move(stream).via(&executor_);
-          std::move(result)
-              .subscribe(
-                  [&j](const std::unique_ptr<folly::IOBuf>) mutable { ++j; },
-                  [](auto ex) {
-                    FAIL() << "Should not call onError: " << ex.what();
-                  },
-                  [&done]() { done.post(); })
-              .detach();
-        };
-
-    client->range(std::move(callback), 0, 10);
-
-    EXPECT_TRUE(done.try_wait_for(std::chrono::milliseconds(100)));
     EXPECT_EQ(10, j);
   });
 }
@@ -552,7 +526,7 @@ TEST_P(StreamingTest, ChecksummingRequest) {
           setCorruption(testType);
           bool didThrow = false;
           try {
-            auto futureRet = client->future_requestWithBlob(
+            auto futureRet = client->semifuture_requestWithBlob(
                 RpcOptions().setEnableChecksum(true), *payload);
             auto stream = std::move(futureRet).get();
             auto result = std::move(stream).via(&executor_);
