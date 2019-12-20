@@ -122,14 +122,14 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_method(apache::thr
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return, ExMapType{});
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return, ExMapType{});
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -216,14 +216,14 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodAndReponse(a
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return, ExMapType{});
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return, ExMapType{});
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
     }
     default:
     {
@@ -310,14 +310,14 @@ folly::exception_wrapper SinkServiceAsyncClient::recv_wrapped_methodThrow(apache
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolReader reader;
-      return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::BinaryProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return, ExMapType{});
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::BinaryProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
-      return apache::thrift::detail::ac::recv_wrapped<result, apache::thrift::CompactProtocolWriter>(
-          fname, &reader, state, state.extractSink(), _return, ExMapType{});
+      return apache::thrift::detail::ac::recv_wrapped<result, ExMapType, apache::thrift::CompactProtocolWriter>(
+          fname, &reader, state, state.extractSink(), _return);
     }
     default:
     {

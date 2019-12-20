@@ -704,20 +704,19 @@ ClientSink<SinkType, FinalResponseType> createSink(
 
 template <
     typename PResult,
+    typename ErrorMapFunc,
     typename ProtocolWriter,
     typename ProtocolReader,
     typename Response,
     typename Item,
-    typename FinalResponse,
-    typename ErrorMapFunc>
+    typename FinalResponse>
 folly::exception_wrapper recv_wrapped(
     const char* method,
     ProtocolReader* prot,
     ClientReceiveState& state,
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
-        _return,
-    ErrorMapFunc) {
+        _return) {
 #if FOLLY_HAS_COROUTINES
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
@@ -757,18 +756,17 @@ folly::exception_wrapper recv_wrapped(
 
 template <
     typename PResult,
+    typename ErrorMapFunc,
     typename ProtocolWriter,
     typename ProtocolReader,
     typename Item,
-    typename FinalResponse,
-    typename ErrorMapFunc>
+    typename FinalResponse>
 folly::exception_wrapper recv_wrapped(
     const char* method,
     ProtocolReader* prot,
     ClientReceiveState& state,
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
-    apache::thrift::ClientSink<Item, FinalResponse>& _return,
-    ErrorMapFunc) {
+    apache::thrift::ClientSink<Item, FinalResponse>& _return) {
 #if FOLLY_HAS_COROUTINES
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
