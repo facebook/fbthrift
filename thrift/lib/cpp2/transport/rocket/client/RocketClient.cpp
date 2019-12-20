@@ -171,8 +171,8 @@ void RocketClient::handleStreamChannelFrame(
     notifyIfDetachable();
     return;
   }
-  StreamChannelStatus status = folly::variant_match(
-      it->second, [&](const auto& serverCallbackUniquePtr) {
+  StreamChannelStatus status =
+      folly::variant_match(*it, [&](const auto& serverCallbackUniquePtr) {
         auto& serverCallback = *serverCallbackUniquePtr;
         switch (frameType) {
           case FrameType::PAYLOAD:
@@ -541,7 +541,7 @@ void RocketClient::sendRequestStreamChannel(
   };
 
   auto serverCallbackPtr = serverCallback.get();
-  streams_.emplace(streamId, std::move(serverCallback));
+  streams_.emplace(ServerCallbackUniquePtr(std::move(serverCallback)));
 
   Context::run(
       std::make_unique<Context>(
@@ -830,9 +830,9 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   // invalidating any outstanding iterators. Also, since the client is shutting
   // down now, we don't bother with notifyIfDetachable().
   auto streams = std::move(streams_);
-  for (const auto& idAndCallback : streams) {
-    folly::variant_match(idAndCallback.second, [&](const auto& serverCallback) {
-      if (firstResponseTimeouts_.count(idAndCallback.first)) {
+  for (const auto& callback : streams) {
+    folly::variant_match(callback, [&](const auto& serverCallback) {
+      if (firstResponseTimeouts_.count(serverCallback->streamId())) {
         serverCallback->onInitialError(ew);
       } else {
         serverCallback->onStreamTransportError(ew);
@@ -931,7 +931,7 @@ void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
   const auto streamIt = client_.streams_.find(streamId_);
   CHECK(streamIt != client_.streams_.end());
 
-  folly::variant_match(streamIt->second, [&](const auto& serverCallback) {
+  folly::variant_match(*streamIt, [&](const auto& serverCallback) {
     serverCallback->onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TIMED_OUT));

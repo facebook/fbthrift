@@ -70,6 +70,10 @@ class RocketStreamServerCallback : public StreamServerCallback {
 
   void timeoutExpired() noexcept;
 
+  rocket::StreamId streamId() const noexcept {
+    return streamId_;
+  }
+
  protected:
   rocket::RocketClient& client_;
 
@@ -136,6 +140,10 @@ class RocketChannelServerCallback : public ChannelServerCallback {
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
 
+  rocket::StreamId streamId() const noexcept {
+    return streamId_;
+  }
+
  private:
   rocket::RocketClient& client_;
   ChannelClientCallback& clientCallback_;
@@ -170,6 +178,10 @@ class RocketSinkServerCallback : public SinkServerCallback {
 
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
+
+  rocket::StreamId streamId() const noexcept {
+    return streamId_;
+  }
 
  private:
   rocket::RocketClient& client_;

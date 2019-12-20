@@ -26,10 +26,11 @@
 #include <glog/logging.h>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Overload.h>
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
 #include <folly/Try.h>
-#include <folly/container/F14Map.h>
+#include <folly/container/F14Set.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
@@ -239,7 +240,40 @@ class RocketClient : public folly::DelayedDestruction,
       std::unique_ptr<RocketStreamServerCallbackWithChunkTimeout>,
       std::unique_ptr<RocketChannelServerCallback>,
       std::unique_ptr<RocketSinkServerCallback>>;
-  using StreamMap = folly::F14FastMap<StreamId, ServerCallbackUniquePtr>;
+  struct StreamIdResolver {
+    StreamId operator()(StreamId streamId) const {
+      return streamId;
+    }
+
+    StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
+      return folly::variant_match(callbackVariant, [](const auto& callback) {
+        return callback->streamId();
+      });
+    }
+  };
+  struct StreamMapHasher : private folly::f14::DefaultHasher<StreamId> {
+    template <typename K>
+    auto operator()(const K& key) const {
+      return folly::f14::DefaultHasher<StreamId>::operator()(
+          streamIdResolver_(key));
+    }
+
+   private:
+    StreamIdResolver streamIdResolver_;
+  };
+  struct StreamMapEquals {
+    template <typename A, typename B>
+    bool operator()(const A& a, const B& b) const {
+      return streamIdResolver_(a) == streamIdResolver_(b);
+    }
+
+   private:
+    StreamIdResolver streamIdResolver_;
+  };
+  using StreamMap = folly::F14FastSet<
+      ServerCallbackUniquePtr,
+      folly::transparent<StreamMapHasher>,
+      folly::transparent<StreamMapEquals>>;
   StreamMap streams_;
 
   folly::F14FastMap<StreamId, Payload> bufferedFragments_;
