@@ -539,15 +539,6 @@ void RocketClient::sendRequestStreamChannel(
       firstResponseTimeout);
 }
 
-folly::Try<void> RocketClient::sendCancelSync(StreamId streamId) {
-  RequestContext ctx(CancelFrame(streamId), queue_);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<void>(std::move(swr.exception()));
-  }
-  return ctx.waitForWriteToComplete();
-}
-
 folly::Try<void> RocketClient::sendPayloadSync(
     StreamId streamId,
     Payload&& payload,
@@ -571,40 +562,22 @@ folly::Try<void> RocketClient::sendErrorSync(
   return ctx.waitForWriteToComplete();
 }
 
-folly::Try<void> RocketClient::sendExtSync(
-    StreamId streamId,
-    Payload&& payload,
-    Flags flags,
-    ExtFrameType extFrameType) {
-  RequestContext ctx(
-      ExtFrame(streamId, std::move(payload), flags, extFrameType), queue_);
-  auto swr = scheduleWrite(ctx);
-  if (swr.hasException()) {
-    return folly::Try<void>(std::move(swr.exception()));
-  }
-  return ctx.waitForWriteToComplete();
-}
-
-bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
-  if (UNLIKELY(n <= 0)) {
-    return true;
-  }
-
-  DCHECK(streamExists(streamId));
-
+template <typename Frame, typename OnError>
+bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
   using RequestCountGuard = decltype(makeRequestCountGuard());
 
   class Context : public folly::fibers::Baton::Waiter {
    public:
-    Context(std::shared_ptr<RocketClient> client, RequestNFrame&& frame)
-        : client_(std::move(client)),
-          ctx_(std::move(frame), client_->queue_),
-          g_(client_->makeRequestCountGuard()) {}
+    Context(RocketClient& client, Frame&& frame, OnError&& onError)
+        : client_(client),
+          ctx_(std::forward<Frame>(frame), client_.queue_),
+          onError_(std::forward<OnError>(onError)),
+          g_(client_.makeRequestCountGuard()) {}
 
     FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
-      auto writeScheduled = self->client_->scheduleWrite(self->ctx_);
+      auto writeScheduled = self->client_.scheduleWrite(self->ctx_);
       if (writeScheduled.hasException()) {
-        self->onError(std::move(writeScheduled.exception()));
+        self->onError_(std::move(writeScheduled.exception()));
         return false;
       }
 
@@ -620,39 +593,45 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
 
       auto writeCompleted = ctx_.waitForWriteToCompleteResult();
       if (writeCompleted.hasException()) {
-        onError(std::move(writeCompleted.exception()));
+        onError_(std::move(writeCompleted.exception()));
       }
     }
 
-    void onError(folly::exception_wrapper ew) {
-      FB_LOG_EVERY_MS(ERROR, 1000)
-          << "sendRequestN failed, closing now: " << ew.what();
-      client_->closeNow(std::move(ew));
-    }
-
-    std::shared_ptr<RocketClient> client_;
+    RocketClient& client_;
     RequestContext ctx_;
+    std::decay_t<OnError> onError_;
     RequestCountGuard g_;
   };
 
-  auto ctx =
-      std::make_unique<Context>(shared_from_this(), RequestNFrame(streamId, n));
+  auto ctx = std::make_unique<Context>(
+      *this, std::forward<Frame>(frame), std::forward<OnError>(onError));
   return Context::run(std::move(ctx));
 }
 
+bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
+  if (UNLIKELY(n <= 0)) {
+    return true;
+  }
+
+  DCHECK(streamExists(streamId));
+
+  return sendFrame(
+      RequestNFrame(streamId, n),
+      [self = shared_from_this()](folly::exception_wrapper ew) {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "sendRequestN failed, closing now: " << ew.what();
+        self->closeNow(std::move(ew));
+      });
+}
+
 void RocketClient::cancelStream(StreamId streamId) {
-  auto g = makeRequestCountGuard();
   freeStream(streamId);
-  fm_->addTaskFinally(
-      [this, g = std::move(g), streamId] { return sendCancelSync(streamId); },
-      [this,
-       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
-        auto resc = collapseTry(std::move(result));
-        if (resc.hasException()) {
-          FB_LOG_EVERY_MS(ERROR, 1000) << "cancelStream failed, closing now: "
-                                       << resc.exception().what();
-          closeNow(std::move(resc.exception()));
-        }
+  std::ignore = sendFrame(
+      CancelFrame(streamId),
+      [self = shared_from_this()](folly::exception_wrapper ew) {
+        FB_LOG_EVERY_MS(ERROR, 1000)
+            << "cancelStream failed, closing now: " << ew.what();
+        self->closeNow(std::move(ew));
       });
 }
 
@@ -713,32 +692,25 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
       rocket::Flags::none().complete(true));
 }
 
-void RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
-  auto g = makeRequestCountGuard();
-  fm_->addTaskFinally(
-      [this,
-       g = std::move(g),
-       streamId,
-       payload = pack(std::move(payload))]() mutable {
-        if (payload.hasException()) {
-          return folly::Try<void>(std::move(payload).exception());
-        }
+bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
+  auto onError = [self = shared_from_this()](folly::exception_wrapper ew) {
+    FB_LOG_EVERY_MS(ERROR, 1000)
+        << "sendExtHeaders failed, closing now: " << ew.what();
+    self->closeNow(std::move(ew));
+  };
+  auto packedPayload = pack(std::move(payload));
+  if (packedPayload.hasException()) {
+    onError(std::move(packedPayload.exception()));
+    return false;
+  }
 
-        return sendExtSync(
-            streamId,
-            std::move(payload.value()),
-            rocket::Flags::none().ignore(true),
-            ExtFrameType::HEADERS_PUSH);
-      },
-      [this,
-       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
-        auto resc = collapseTry(std::move(result));
-        if (resc.hasException()) {
-          FB_LOG_EVERY_MS(ERROR, 1000) << "sendExtHeaders failed, closing now: "
-                                       << resc.exception().what();
-          closeNow(std::move(resc.exception()));
-        }
-      });
+  return sendFrame(
+      ExtFrame(
+          streamId,
+          std::move(packedPayload.value()),
+          rocket::Flags::none().ignore(true),
+          ExtFrameType::HEADERS_PUSH),
+      std::move(onError));
 }
 
 folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
