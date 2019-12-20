@@ -40,10 +40,6 @@ class TimeoutCallback : public folly::HHWheelTimer::Callback {
 
 // RocketStreamServerCallback
 bool RocketStreamServerCallback::onStreamRequestN(uint64_t tokens) {
-  if (credits_ == 0) {
-    scheduleTimeout();
-  }
-  credits_ += tokens;
   return client_.sendRequestN(streamId_, tokens);
 }
 void RocketStreamServerCallback::onStreamCancel() {
@@ -56,9 +52,6 @@ bool RocketStreamServerCallback::onSinkHeaders(HeadersPayload&& payload) {
 void RocketStreamServerCallback::onInitialPayload(
     FirstResponsePayload&& payload,
     folly::EventBase* evb) {
-  if (credits_ > 0) {
-    scheduleTimeout();
-  }
   std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
 }
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
@@ -71,12 +64,6 @@ void RocketStreamServerCallback::onStreamTransportError(
 }
 StreamChannelStatus RocketStreamServerCallback::onStreamPayload(
     StreamPayload&& payload) {
-  DCHECK(credits_ != 0);
-  if (--credits_ != 0) {
-    scheduleTimeout();
-  } else {
-    cancelTimeout();
-  }
   std::ignore = clientCallback_->onStreamNext(std::move(payload));
   return StreamChannelStatus::Alive;
 }
@@ -120,24 +107,51 @@ StreamChannelStatus RocketStreamServerCallback::onSinkCancel() {
           "onSinkCancel called for a stream"));
   return StreamChannelStatus::ContractViolation;
 }
-void RocketStreamServerCallback::timeoutExpired() noexcept {
-  clientCallback_->onStreamError(
+
+// RocketStreamServerCallbackWithChunkTimeout
+bool RocketStreamServerCallbackWithChunkTimeout::onStreamRequestN(
+    uint64_t tokens) {
+  if (credits_ == 0) {
+    scheduleTimeout();
+  }
+  credits_ += tokens;
+  return RocketStreamServerCallback::onStreamRequestN(tokens);
+}
+
+void RocketStreamServerCallbackWithChunkTimeout::onInitialPayload(
+    FirstResponsePayload&& payload,
+    folly::EventBase* evb) {
+  if (credits_ > 0) {
+    scheduleTimeout();
+  }
+  RocketStreamServerCallback::onInitialPayload(std::move(payload), evb);
+}
+
+StreamChannelStatus RocketStreamServerCallbackWithChunkTimeout::onStreamPayload(
+    StreamPayload&& payload) {
+  DCHECK(credits_ != 0);
+  if (--credits_ != 0) {
+    scheduleTimeout();
+  } else {
+    cancelTimeout();
+  }
+  return RocketStreamServerCallback::onStreamPayload(std::move(payload));
+}
+void RocketStreamServerCallbackWithChunkTimeout::timeoutExpired() noexcept {
+  onStreamTransportError(
       folly::make_exception_wrapper<transport::TTransportException>(
           transport::TTransportException::TTransportExceptionType::TIMED_OUT,
           "stream chunk timeout"));
   onStreamCancel();
 }
-void RocketStreamServerCallback::scheduleTimeout() {
-  if (chunkTimeout_ == std::chrono::milliseconds::zero()) {
-    return;
-  }
+void RocketStreamServerCallbackWithChunkTimeout::scheduleTimeout() {
   if (!timeout_) {
-    timeout_ =
-        std::make_unique<TimeoutCallback<RocketStreamServerCallback>>(*this);
+    timeout_ = std::make_unique<
+        TimeoutCallback<RocketStreamServerCallbackWithChunkTimeout>>(*this);
   }
   client_.scheduleTimeout(timeout_.get(), chunkTimeout_);
 }
-void RocketStreamServerCallback::cancelTimeout() {
+void RocketStreamServerCallbackWithChunkTimeout::cancelTimeout() {
   timeout_.reset();
 }
 

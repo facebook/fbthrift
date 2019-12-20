@@ -399,14 +399,26 @@ void RocketClient::sendRequestStream(
     int32_t initialRequestN,
     StreamClientCallback* clientCallback) {
   const auto streamId = makeStreamId();
-  auto serverCallback = std::make_unique<RocketStreamServerCallback>(
-      streamId, *this, *clientCallback, chunkTimeout, initialRequestN);
-  sendRequestStreamChannel(
-      streamId,
-      std::move(request),
-      firstResponseTimeout,
-      initialRequestN,
-      std::move(serverCallback));
+  if (chunkTimeout != std::chrono::milliseconds::zero()) {
+    auto serverCallback =
+        std::make_unique<RocketStreamServerCallbackWithChunkTimeout>(
+            streamId, *this, *clientCallback, chunkTimeout, initialRequestN);
+    sendRequestStreamChannel(
+        streamId,
+        std::move(request),
+        firstResponseTimeout,
+        initialRequestN,
+        std::move(serverCallback));
+  } else {
+    auto serverCallback = std::make_unique<RocketStreamServerCallback>(
+        streamId, *this, *clientCallback);
+    sendRequestStreamChannel(
+        streamId,
+        std::move(request),
+        firstResponseTimeout,
+        initialRequestN,
+        std::move(serverCallback));
+  }
 }
 
 void RocketClient::sendRequestChannel(
@@ -447,7 +459,10 @@ void RocketClient::sendRequestStreamChannel(
     int32_t initialRequestN,
     std::unique_ptr<ServerCallback> serverCallback) {
   using Frame = std::conditional_t<
-      std::is_same<RocketStreamServerCallback, ServerCallback>::value,
+      std::is_same<RocketStreamServerCallback, ServerCallback>::value ||
+          std::is_same<
+              RocketStreamServerCallbackWithChunkTimeout,
+              ServerCallback>::value,
       RequestStreamFrame,
       RequestChannelFrame>;
 

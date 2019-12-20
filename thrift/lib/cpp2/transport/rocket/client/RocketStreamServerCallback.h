@@ -41,14 +41,10 @@ class RocketStreamServerCallback : public StreamServerCallback {
   RocketStreamServerCallback(
       rocket::StreamId streamId,
       rocket::RocketClient& client,
-      StreamClientCallback& clientCallback,
-      const std::chrono::milliseconds& chunkTimeout,
-      uint64_t initialCredits)
+      StreamClientCallback& clientCallback)
       : client_(client),
         clientCallback_(&clientCallback),
-        streamId_(streamId),
-        chunkTimeout_(chunkTimeout),
-        credits_(initialCredits) {}
+        streamId_(streamId) {}
 
   bool onStreamRequestN(uint64_t tokens) override;
   void onStreamCancel() override;
@@ -74,14 +70,40 @@ class RocketStreamServerCallback : public StreamServerCallback {
 
   void timeoutExpired() noexcept;
 
+ protected:
+  rocket::RocketClient& client_;
+
+ private:
+  StreamClientCallback* clientCallback_;
+  rocket::StreamId streamId_;
+};
+
+class RocketStreamServerCallbackWithChunkTimeout
+    : public RocketStreamServerCallback {
+ public:
+  RocketStreamServerCallbackWithChunkTimeout(
+      rocket::StreamId streamId,
+      rocket::RocketClient& client,
+      StreamClientCallback& clientCallback,
+      std::chrono::milliseconds chunkTimeout,
+      uint64_t initialCredits)
+      : RocketStreamServerCallback(streamId, client, clientCallback),
+        chunkTimeout_(chunkTimeout),
+        credits_(initialCredits) {}
+
+  bool onStreamRequestN(uint64_t tokens) override;
+
+  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+
+  StreamChannelStatus onStreamPayload(StreamPayload&&);
+
+  void timeoutExpired() noexcept;
+
  private:
   void scheduleTimeout();
   void cancelTimeout();
 
-  rocket::RocketClient& client_;
-  StreamClientCallback* clientCallback_;
-  rocket::StreamId streamId_;
-  std::chrono::milliseconds chunkTimeout_;
+  const std::chrono::milliseconds chunkTimeout_;
   uint64_t credits_{0};
   std::unique_ptr<folly::HHWheelTimer::Callback> timeout_;
 };

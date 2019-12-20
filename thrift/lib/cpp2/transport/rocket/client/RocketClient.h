@@ -236,12 +236,9 @@ class RocketClient : public folly::DelayedDestruction,
 
   using ServerCallbackUniquePtr = boost::variant<
       std::unique_ptr<RocketStreamServerCallback>,
+      std::unique_ptr<RocketStreamServerCallbackWithChunkTimeout>,
       std::unique_ptr<RocketChannelServerCallback>,
       std::unique_ptr<RocketSinkServerCallback>>;
-  using ServerCallbackPtr = boost::variant<
-      RocketStreamServerCallback*,
-      RocketChannelServerCallback*,
-      RocketSinkServerCallback*>;
   using StreamMap = folly::F14FastMap<StreamId, ServerCallbackUniquePtr>;
   StreamMap streams_;
 
