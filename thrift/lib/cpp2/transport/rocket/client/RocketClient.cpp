@@ -640,6 +640,7 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
 }
 
 void RocketClient::cancelStream(StreamId streamId) {
+  auto g = makeRequestCountGuard();
   freeStream(streamId);
   std::ignore = sendFrame(
       CancelFrame(streamId),
