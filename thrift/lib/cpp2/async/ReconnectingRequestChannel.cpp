@@ -34,8 +34,10 @@ class ChannelKeepAlive : public RequestClientCallback {
       : keepAlive_(std::move(impl)), cob_(std::move(cob)), oneWay_(oneWay) {}
 
   void onRequestSent() noexcept override {
-    cob_->onRequestSent();
-    if (oneWay_) {
+    if (!oneWay_) {
+      cob_->onRequestSent();
+    } else {
+      cob_.release()->onRequestSent();
       delete this;
     }
   }

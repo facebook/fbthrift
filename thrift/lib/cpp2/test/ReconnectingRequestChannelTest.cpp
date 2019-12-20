@@ -19,6 +19,7 @@
 #include <folly/io/async/test/ScopedBoundPort.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -48,28 +49,45 @@ class ReconnectingRequestChannelTest : public Test {
 
   folly::SocketAddress up_addr{runner->getAddress()};
   folly::SocketAddress dn_addr{bound.getAddress()};
+  uint32_t connection_count_ = 0;
+
+  void runReconnect(TestServiceAsyncClient& client);
 };
 
-TEST_F(ReconnectingRequestChannelTest, reconnect) {
-  auto connection_count = 0;
+TEST_F(ReconnectingRequestChannelTest, ReconnectHeader) {
   auto channel = ReconnectingRequestChannel::newChannel(
-      *eb, [this, &connection_count](folly::EventBase& eb) mutable {
-        connection_count++;
+      *eb, [this](folly::EventBase& eb) mutable {
+        connection_count_++;
         return HeaderClientChannel::newChannel(
             TAsyncSocket::newSocket(&eb, up_addr));
       });
-
   TestServiceAsyncClient client(std::move(channel));
+  runReconnect(client);
+}
+
+TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
+  auto channel = ReconnectingRequestChannel::newChannel(
+      *eb, [this](folly::EventBase& eb) mutable {
+        connection_count_++;
+        return HeaderClientChannel::newChannel(
+            TAsyncSocket::newSocket(&eb, up_addr));
+      });
+  TestServiceAsyncClient client(std::move(channel));
+  runReconnect(client);
+}
+
+void ReconnectingRequestChannelTest::runReconnect(
+    TestServiceAsyncClient& client) {
   EXPECT_CALL(*handler, echoInt(_))
       .WillOnce(Return(1))
       .WillOnce(Return(3))
       .WillOnce(Return(4));
   EXPECT_EQ(client.sync_echoInt(1), 1);
-  EXPECT_EQ(connection_count, 1);
+  EXPECT_EQ(connection_count_, 1);
 
   EXPECT_CALL(*handler, noResponse(_));
   client.sync_noResponse(0);
-  EXPECT_EQ(connection_count, 1);
+  EXPECT_EQ(connection_count_, 1);
 
   // bounce the server
   runner =
@@ -78,7 +96,7 @@ TEST_F(ReconnectingRequestChannelTest, reconnect) {
 
   EXPECT_THROW(client.sync_echoInt(2), TTransportException);
   EXPECT_EQ(client.sync_echoInt(3), 3);
-  EXPECT_EQ(connection_count, 2);
+  EXPECT_EQ(connection_count_, 2);
   EXPECT_EQ(client.sync_echoInt(4), 4);
-  EXPECT_EQ(connection_count, 2);
+  EXPECT_EQ(connection_count_, 2);
 }
