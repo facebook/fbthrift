@@ -37,7 +37,7 @@ class FakeResponseHandler {
 
   ~FakeResponseHandler() = default;
 
-  proxygen::HTTPTransaction* getTransaction() {
+  proxygen::MockHTTPTransaction* getTransaction() {
     return &txn_;
   }
 

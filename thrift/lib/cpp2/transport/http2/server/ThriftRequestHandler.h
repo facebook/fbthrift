@@ -66,6 +66,8 @@ class ThriftRequestHandler : public proxygen::HTTPTransactionHandler {
   void onEgressResumed() noexcept override {}
 
  private:
+  void deliverChannelError(proxygen::ProxygenError error);
+
   // There is a single ThriftProcessor object which is used for all requests.
   // Owned by H2ThriftServer.
   ThriftProcessor* processor_;

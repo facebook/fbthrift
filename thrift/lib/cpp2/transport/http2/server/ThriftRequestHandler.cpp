@@ -48,16 +48,48 @@ void ThriftRequestHandler::onEOM() noexcept {
 void ThriftRequestHandler::onUpgrade(UpgradeProtocol /*prot*/) noexcept {}
 
 void ThriftRequestHandler::detachTransaction() noexcept {
-  channel_->onH2StreamClosed(ProxygenError::kErrorNone);
+  if (channel_) {
+    channel_->onH2StreamClosed(ProxygenError::kErrorNone);
+  }
   delete this;
 }
 
 void ThriftRequestHandler::onError(
     const proxygen::HTTPException& error) noexcept {
-  if (channel_) {
-    channel_->onH2StreamClosed(error.getProxygenError());
+  if (error.getProxygenError() == proxygen::kErrorTimeout) {
+    deliverChannelError(proxygen::kErrorTimeout);
+
+    if (!txn_->canSendHeaders()) {
+      txn_->sendAbort();
+    } else {
+      HTTPMessage resp;
+      resp.setStatusCode(408 /* client timeout */);
+      txn_->sendHeadersWithOptionalEOM(resp, true);
+    }
+  } else if (
+      error.getDirection() == proxygen::HTTPException::Direction::INGRESS) {
+    deliverChannelError(proxygen::kErrorRead);
+
+    if (!txn_->canSendHeaders()) {
+      txn_->sendAbort();
+    } else {
+      HTTPMessage resp;
+      resp.setStatusCode(400 /* bad request */);
+      txn_->sendHeadersWithOptionalEOM(resp, true);
+    }
+
+  } else {
+    deliverChannelError(
+        error.hasProxygenError() ? error.getProxygenError()
+                                 : proxygen::kErrorWrite);
   }
-  delete this;
+}
+
+void ThriftRequestHandler::deliverChannelError(proxygen::ProxygenError error) {
+  if (channel_) {
+    channel_->onH2StreamClosed(error);
+    channel_ = nullptr;
+  }
 }
 
 } // namespace thrift

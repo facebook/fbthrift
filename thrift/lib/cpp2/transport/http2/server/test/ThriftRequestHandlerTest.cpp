@@ -60,7 +60,7 @@ class ThriftRequestHandlerTest : public testing::Test {
     // to use SingleRpcChannel.  The second parameter 1 enables this.
     // requestHandler_ deletes itself.
     requestHandler_ = new ThriftRequestHandler(processor_.get());
-    requestHandler_->setTransaction(responseHandler_->getTransaction());
+    responseHandler_->getTransaction()->setHandler(requestHandler_);
   }
 
   // Tears down after the test.
@@ -73,6 +73,12 @@ class ThriftRequestHandlerTest : public testing::Test {
     writer.writeMessageBegin("dummy", T_CALL, 0);
     queue->append("payload");
     return queue->move();
+  }
+
+  void onError(proxygen::ProxygenError error) {
+    // This simulates the HTTPTransaction behavior
+    requestHandler_->onError(makeHTTPException(error));
+    requestHandler_->detachTransaction();
   }
 
  protected:
@@ -116,7 +122,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
   requestHandler_->onBody(makeBody());
   requestHandler_->onEOM();
   eventBase_->loopOnce();
-  requestHandler_->onError(makeHTTPException(proxygen::kErrorUnknown));
+  onError(proxygen::kErrorUnknown);
   auto outputHeaders = responseHandler_->getHeaders();
   auto outputPayload = responseHandler_->getBody();
   EXPECT_EQ(3, outputHeaders->size());
@@ -137,7 +143,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
   requestHandler_->onHeadersComplete(std::move(msg));
   requestHandler_->onBody(makeBody());
   requestHandler_->onEOM();
-  requestHandler_->onError(makeHTTPException(proxygen::kErrorUnknown));
+  onError(proxygen::kErrorUnknown);
   eventBase_->loopOnce();
   auto outputHeaders = responseHandler_->getHeaders();
   auto outputPayload = responseHandler_->getBody();
@@ -154,7 +160,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeEOM) {
   headers.rawSet("key2", "value2");
   requestHandler_->onHeadersComplete(std::move(msg));
   requestHandler_->onBody(makeBody());
-  requestHandler_->onError(makeHTTPException(proxygen::kErrorUnknown));
+  onError(proxygen::kErrorUnknown);
   eventBase_->loopOnce();
   auto outputHeaders = responseHandler_->getHeaders();
   auto outputPayload = responseHandler_->getBody();
@@ -170,8 +176,29 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeOnBody) {
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
   requestHandler_->onHeadersComplete(std::move(msg));
-  requestHandler_->onError(makeHTTPException(proxygen::kErrorUnknown));
+  onError(proxygen::kErrorUnknown);
   eventBase_->loopOnce();
+  auto outputHeaders = responseHandler_->getHeaders();
+  auto outputPayload = responseHandler_->getBody();
+  EXPECT_EQ(0, outputHeaders->size());
+  EXPECT_EQ("", outputPayload);
+}
+
+// Tests the interaction between ThriftRequestHandler and
+// SingleRpcChannel with a timeout between onBody calls
+TEST_F(ThriftRequestHandlerTest, SingleRpcChannelTimeoutDuringBody) {
+  auto msg = std::make_unique<HTTPMessage>();
+  auto& headers = msg->getHeaders();
+  headers.rawSet("key1", "value1");
+  headers.rawSet("key2", "value2");
+  responseHandler_->getTransaction()->onIngressHeadersComplete(std::move(msg));
+  responseHandler_->getTransaction()->onIngressBody(
+      folly::IOBuf::wrapBuffer("hello world", 11), 0);
+  responseHandler_->getTransaction()->onIngressTimeout();
+  EXPECT_TRUE(responseHandler_->getTransaction()->isEgressComplete());
+  eventBase_->loopOnce();
+  responseHandler_->getTransaction()->onIngressBody(
+      folly::IOBuf::wrapBuffer("hello world", 11), 0);
   auto outputHeaders = responseHandler_->getHeaders();
   auto outputPayload = responseHandler_->getBody();
   EXPECT_EQ(0, outputHeaders->size());
@@ -181,7 +208,7 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeOnBody) {
 // Tests the interaction between ThriftRequestHandler and
 // SingleRpcChannel with an error right at the beginning.
 TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtBeginning) {
-  requestHandler_->onError(makeHTTPException(proxygen::kErrorUnknown));
+  onError(proxygen::kErrorUnknown);
   eventBase_->loopOnce();
   auto outputHeaders = responseHandler_->getHeaders();
   auto outputPayload = responseHandler_->getBody();
