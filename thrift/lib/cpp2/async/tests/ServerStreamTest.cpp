@@ -107,11 +107,12 @@ auto decode(folly::Try<StreamPayload>&& i) -> folly::Try<int> {
 TEST(ServerStreamTest, PublishConsumeCoro) {
   folly::ScopedEventBaseThread clientEb, serverEb;
   ClientCallback clientCallback;
-  ServerStream<int> factory([]() -> folly::coro::AsyncGenerator<int&&> {
-    for (int i = 0; i < 10; ++i) {
-      co_yield std::move(i);
-    }
-  }());
+  ServerStream<int> factory(
+      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int&&> {
+        for (int i = 0; i < 10; ++i) {
+          co_yield std::move(i);
+        }
+      }));
   factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
@@ -137,13 +138,14 @@ TEST(ServerStreamTest, ImmediateCancel) {
   };
   folly::ScopedEventBaseThread clientEb, serverEb;
   CancellingClientCallback clientCallback;
-  ServerStream<int> factory([]() -> folly::coro::AsyncGenerator<int&&> {
-    for (int i = 0; i < 10; ++i) {
-      co_await folly::coro::sleep(std::chrono::milliseconds(10));
-      co_yield std::move(i);
-    }
-    EXPECT_TRUE(false);
-  }());
+  ServerStream<int> factory(
+      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int&&> {
+        for (int i = 0; i < 10; ++i) {
+          co_await folly::coro::sleep(std::chrono::milliseconds(10));
+          co_yield std::move(i);
+        }
+        EXPECT_TRUE(false);
+      }));
   factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
@@ -164,13 +166,14 @@ TEST(ServerStreamTest, DelayedCancel) {
   };
   folly::ScopedEventBaseThread clientEb, serverEb;
   CancellingClientCallback clientCallback;
-  ServerStream<int> factory([]() -> folly::coro::AsyncGenerator<int&&> {
-    for (int i = 0; i < 10; ++i) {
-      co_await folly::coro::sleep(std::chrono::milliseconds(10));
-      co_yield std::move(i);
-    }
-    EXPECT_TRUE(false);
-  }());
+  ServerStream<int> factory(
+      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int&&> {
+        for (int i = 0; i < 10; ++i) {
+          co_await folly::coro::sleep(std::chrono::milliseconds(10));
+          co_yield std::move(i);
+        }
+        EXPECT_TRUE(false);
+      }));
   factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
@@ -187,13 +190,14 @@ TEST(ServerStreamTest, PropagatedCancel) {
   folly::ScopedEventBaseThread clientEb, serverEb;
   ClientCallback clientCallback;
   folly::Baton<> setup, canceled;
-  ServerStream<int> factory([&]() -> folly::coro::AsyncGenerator<int&&> {
-    folly::CancellationCallback cb{
-        co_await folly::coro::co_current_cancellation_token,
-        [&] { canceled.post(); }};
-    setup.post();
-    co_await folly::coro::sleep(std::chrono::minutes(1));
-  }());
+  ServerStream<int> factory(
+      folly::coro::co_invoke([&]() -> folly::coro::AsyncGenerator<int&&> {
+        folly::CancellationCallback cb{
+            co_await folly::coro::co_current_cancellation_token,
+            [&] { canceled.post(); }};
+        setup.post();
+        co_await folly::coro::sleep(std::chrono::minutes(1));
+      }));
   factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       &clientCallback,
@@ -211,14 +215,15 @@ TEST(ServerStreamTest, CancelCoro) {
   {
     folly::coro::Baton baton;
     folly::ScopedEventBaseThread clientEb, serverEb;
-    ServerStream<int> factory([&]() -> folly::coro::AsyncGenerator<int&&> {
-      baton.post();
-      for (int i = 0;; ++i) {
-        EXPECT_LT(i, 10);
-        co_await folly::coro::sleep(std::chrono::milliseconds(10));
-        co_yield std::move(i);
-      }
-    }());
+    ServerStream<int> factory(
+        folly::coro::co_invoke([&]() -> folly::coro::AsyncGenerator<int&&> {
+          baton.post();
+          for (int i = 0;; ++i) {
+            EXPECT_LT(i, 10);
+            co_await folly::coro::sleep(std::chrono::milliseconds(10));
+            co_yield std::move(i);
+          }
+        }));
     factory(serverEb.getEventBase(), &encode)(
         FirstResponsePayload{nullptr, {}},
         &clientCallback,
@@ -315,11 +320,12 @@ TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
   auto clientStreamBridge =
       detail::ClientStreamBridge::create(&firstResponseCallback);
 
-  ServerStream<int> factory([&]() -> folly::coro::AsyncGenerator<int&&> {
-    for (int i = 0; i < 10; ++i) {
-      co_yield std::move(i);
-    }
-  }());
+  ServerStream<int> factory(
+      folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int&&> {
+        for (int i = 0; i < 10; ++i) {
+          co_yield std::move(i);
+        }
+      }));
   factory(serverEb.getEventBase(), &encode)(
       FirstResponsePayload{nullptr, {}},
       clientStreamBridge,
@@ -380,12 +386,11 @@ TEST(ServerStreamTest, ClientBufferedStreamPublisherIntegration) {
 TEST(ServerStreamTest, FactoryLeak) {
   auto [stream, publisher] = ServerStream<int>::createPublisher([] {});
   std::move(publisher).complete();
-  stream = [&]() -> folly::coro::AsyncGenerator<int&&> {
+  stream = folly::coro::co_invoke([]() -> folly::coro::AsyncGenerator<int&&> {
     for (int i = 0; i < 10; ++i) {
       co_yield std::move(i);
     }
-  }
-  ();
+  });
   stream = apache::thrift::Stream<int>();
 }
 
