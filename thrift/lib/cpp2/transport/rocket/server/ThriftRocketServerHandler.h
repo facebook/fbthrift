@@ -22,6 +22,7 @@
 #include <folly/Function.h>
 #include <folly/SocketAddress.h>
 
+#include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 
@@ -79,6 +80,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       RequestChannelFrame&& frame,
       RocketSinkClientCallback* clientCallback) final;
 
+  apache::thrift::server::TServerObserver::SamplingStatus shouldSample();
+
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const folly::SocketAddress clientAddress_;
@@ -91,6 +94,9 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   std::shared_ptr<ActiveRequestsRegistry> activeRequestsRegistry_;
   folly::EventBase* eventBase_;
   bool setupFrameValid_ = false;
+
+  uint32_t sampleRate_{0};
+  static thread_local uint32_t sample_;
 
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);

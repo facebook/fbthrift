@@ -41,6 +41,8 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
   std::atomic<size_t> callCompleted_{0};
   std::atomic<size_t> protocolError_{0};
 
+  FakeServerObserver() : TServerObserver(1) {}
+
   void connAccepted() override {
     ++connAccepted_;
   }

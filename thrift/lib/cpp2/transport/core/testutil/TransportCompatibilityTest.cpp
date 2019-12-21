@@ -450,12 +450,17 @@ void TransportCompatibilityTest::TestRequestResponse_Timeout() {
     callSleep(client.get(), 2000, 500);
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    if (FLAGS_transport == "rocket") {
+      EXPECT_EQ(5, server_->observer_->activeRequests_);
+    }
     callSleep(client.get(), 100, 1000);
     callSleep(client.get(), 200, 0);
     /* Sleep to give time for all callbacks to be completed */
     /* sleep override */
     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-
+    if (FLAGS_transport == "rocket") {
+      EXPECT_EQ(2, server_->observer_->activeRequests_);
+    }
     EXPECT_EQ(3, server_->observer_->taskTimeout_);
     EXPECT_EQ(0, server_->observer_->queueTimeout_);
   });
@@ -736,6 +741,7 @@ void TransportCompatibilityTest::TestRequestResponse_Checksumming() {
         } catch (TApplicationException& ex) {
           EXPECT_EQ(TApplicationException::CHECKSUM_MISMATCH, ex.getType());
           didThrow = true;
+          EXPECT_EQ(1, server_->observer_->taskKilled_);
         }
         EXPECT_TRUE(didThrow);
       }
@@ -871,6 +877,10 @@ void TransportCompatibilityTest::TestOneway_Checksumming() {
       // a one-way RPC.
       /* sleep override */
       std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+      if (shouldCorrupt) {
+        EXPECT_EQ(1, server_->observer_->taskKilled_);
+      }
     }
     setCorruption(false);
   });

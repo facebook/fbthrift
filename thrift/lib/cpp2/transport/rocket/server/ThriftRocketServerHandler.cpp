@@ -50,6 +50,8 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+thread_local uint32_t ThriftRocketServerHandler::sample_{0};
+
 namespace {
 bool deserializeMetadata(const Payload& p, RequestRpcMetadata& metadata) {
   try {
@@ -84,6 +86,16 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           nullptr, /* x509PeerCert */
           worker_->getServer()->getClientIdentityHook())),
       setupFrameHandlers_(handlers) {}
+
+apache::thrift::server::TServerObserver::SamplingStatus
+ThriftRocketServerHandler::shouldSample() {
+  bool isServerSamplingEnabled =
+      (sampleRate_ > 0) && ((sample_++ % sampleRate_) == 0);
+
+  // TODO: determine isClientSamplingEnabled by "client_logging_enabled" header
+  return apache::thrift::server::TServerObserver::SamplingStatus(
+      isServerSamplingEnabled, false);
+}
 
 void ThriftRocketServerHandler::handleSetupFrame(
     SetupFrame&& frame,
@@ -144,6 +156,12 @@ void ThriftRocketServerHandler::handleSetupFrame(
     serverConfigs_ = worker_->getServer();
     activeRequestsRegistry_ = worker_->getRequestsRegistry();
     setupFrameValid_ = true;
+    // add sampleRate
+    if (serverConfigs_) {
+      if (auto* observer = serverConfigs_->getObserver()) {
+        sampleRate_ = observer->getSampleRate();
+      }
+    }
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP,
@@ -276,7 +294,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
         std::move(metadata), std::move(debugPayload), reqCtx.get()));
     return;
   }
-
   // check if server is overloaded
   if (UNLIKELY(serverConfigs_->isOverloaded(
           metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref()
@@ -307,6 +324,17 @@ void ThriftRocketServerHandler::handleRequestCommon(
       makeRequest(std::move(metadata), std::move(debugPayload), reqCtx.get());
   const auto protocolId = request->getProtoId();
   auto* const cpp2ReqCtx = request->getRequestContext();
+  if (serverConfigs_) {
+    if (auto* observer = serverConfigs_->getObserver()) {
+      auto samplingStatus = shouldSample();
+      if (UNLIKELY(
+              samplingStatus.isEnabled() &&
+              samplingStatus.isEnabledByServer())) {
+        observer->queuedRequests(threadManager_->pendingTaskCount());
+        observer->activeRequests(serverConfigs_->getActiveRequests());
+      }
+    }
+  }
   cpp2Processor_->process(
       std::move(request),
       std::move(data),
@@ -327,6 +355,9 @@ void ThriftRocketServerHandler::handleRequestForInvalidConnection(
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(
     std::unique_ptr<ThriftRequestCore> request) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::UNSUPPORTED_CLIENT_TYPE,
@@ -336,6 +367,9 @@ void ThriftRocketServerHandler::handleRequestWithBadMetadata(
 
 void ThriftRocketServerHandler::handleRequestWithBadChecksum(
     std::unique_ptr<ThriftRequestCore> request) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::CHECKSUM_MISMATCH, "Checksum mismatch"),
@@ -346,6 +380,7 @@ void ThriftRocketServerHandler::handleRequestOverloadedServer(
     std::unique_ptr<ThriftRequestCore> request) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
+    observer->taskKilled();
   }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
@@ -355,6 +390,9 @@ void ThriftRocketServerHandler::handleRequestOverloadedServer(
 
 void ThriftRocketServerHandler::handleServerShutdown(
     std::unique_ptr<ThriftRequestCore> request) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::INTERNAL_ERROR, "server shutting down"),
