@@ -27,7 +27,6 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/GLog.h>
 #include <folly/Likely.h>
-#include <folly/Overload.h>
 #include <folly/ScopeGuard.h>
 #include <folly/Try.h>
 #include <folly/fibers/FiberManager.h>
@@ -171,31 +170,30 @@ void RocketClient::handleStreamChannelFrame(
     notifyIfDetachable();
     return;
   }
-  StreamChannelStatus status =
-      folly::variant_match(*it, [&](const auto& serverCallbackUniquePtr) {
-        auto& serverCallback = *serverCallbackUniquePtr;
-        switch (frameType) {
-          case FrameType::PAYLOAD:
-            return this->handlePayloadFrame(serverCallback, std::move(frame));
-          case FrameType::ERROR:
-            return this->handleErrorFrame(serverCallback, std::move(frame));
-          case FrameType::REQUEST_N:
-            return this->handleRequestNFrame(serverCallback, std::move(frame));
-          case FrameType::CANCEL:
-            return this->handleCancelFrame(serverCallback, std::move(frame));
-          case FrameType::EXT:
-            return this->handleExtFrame(serverCallback, std::move(frame));
-          default:
-            this->close(
-                folly::make_exception_wrapper<transport::TTransportException>(
-                    transport::TTransportException::TTransportExceptionType::
-                        NETWORK_ERROR,
-                    folly::to<std::string>(
-                        "Client attempting to handle unhandleable frame type: ",
-                        static_cast<uint8_t>(frameType))));
-            return StreamChannelStatus::Alive;
-        }
-      });
+  StreamChannelStatus status = it->match([&](auto* serverCallbackPtr) {
+    auto& serverCallback = *serverCallbackPtr;
+    switch (frameType) {
+      case FrameType::PAYLOAD:
+        return this->handlePayloadFrame(serverCallback, std::move(frame));
+      case FrameType::ERROR:
+        return this->handleErrorFrame(serverCallback, std::move(frame));
+      case FrameType::REQUEST_N:
+        return this->handleRequestNFrame(serverCallback, std::move(frame));
+      case FrameType::CANCEL:
+        return this->handleCancelFrame(serverCallback, std::move(frame));
+      case FrameType::EXT:
+        return this->handleExtFrame(serverCallback, std::move(frame));
+      default:
+        this->close(
+            folly::make_exception_wrapper<transport::TTransportException>(
+                transport::TTransportException::TTransportExceptionType::
+                    NETWORK_ERROR,
+                folly::to<std::string>(
+                    "Client attempting to handle unhandleable frame type: ",
+                    static_cast<uint8_t>(frameType))));
+        return StreamChannelStatus::Alive;
+    }
+  });
 
   switch (status) {
     case StreamChannelStatus::Alive:
@@ -833,7 +831,7 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   // down now, we don't bother with notifyIfDetachable().
   auto streams = std::move(streams_);
   for (const auto& callback : streams) {
-    folly::variant_match(callback, [&](const auto& serverCallback) {
+    callback.match([&](auto* serverCallback) {
       if (firstResponseTimeouts_.count(serverCallback->streamId())) {
         serverCallback->onInitialError(ew);
       } else {
@@ -933,7 +931,7 @@ void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
   const auto streamIt = client_.streams_.find(streamId_);
   CHECK(streamIt != client_.streams_.end());
 
-  folly::variant_match(*streamIt, [&](const auto& serverCallback) {
+  streamIt->match([&](auto* serverCallback) {
     serverCallback->onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TIMED_OUT));

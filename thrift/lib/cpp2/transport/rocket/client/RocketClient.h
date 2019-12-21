@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
 #include <chrono>
 #include <memory>
 #include <string>
@@ -235,20 +234,86 @@ class RocketClient : public folly::DelayedDestruction,
     StreamId streamId_;
   };
 
-  using ServerCallbackUniquePtr = boost::variant<
-      std::unique_ptr<RocketStreamServerCallback>,
-      std::unique_ptr<RocketStreamServerCallbackWithChunkTimeout>,
-      std::unique_ptr<RocketChannelServerCallback>,
-      std::unique_ptr<RocketSinkServerCallback>>;
+  struct ServerCallbackUniquePtr {
+    explicit ServerCallbackUniquePtr(
+        std::unique_ptr<RocketStreamServerCallback> ptr) noexcept
+        : storage_(
+              reinterpret_cast<intptr_t>(ptr.release()) |
+              static_cast<intptr_t>(CallbackType::STREAM)) {}
+    explicit ServerCallbackUniquePtr(
+        std::unique_ptr<RocketStreamServerCallbackWithChunkTimeout>
+            ptr) noexcept
+        : storage_(
+              reinterpret_cast<intptr_t>(ptr.release()) |
+              static_cast<intptr_t>(CallbackType::STREAM_WITH_CHUNK_TIMEOUT)) {}
+    explicit ServerCallbackUniquePtr(
+        std::unique_ptr<RocketChannelServerCallback> ptr) noexcept
+        : storage_(
+              reinterpret_cast<intptr_t>(ptr.release()) |
+              static_cast<intptr_t>(CallbackType::CHANNEL)) {}
+    explicit ServerCallbackUniquePtr(
+        std::unique_ptr<RocketSinkServerCallback> ptr) noexcept
+        : storage_(
+              reinterpret_cast<intptr_t>(ptr.release()) |
+              static_cast<intptr_t>(CallbackType::SINK)) {}
+
+    ServerCallbackUniquePtr(ServerCallbackUniquePtr&& other) noexcept
+        : storage_(std::exchange(other.storage_, 0)) {}
+
+    template <typename F>
+    auto match(F&& f) const {
+      switch (static_cast<CallbackType>(storage_ & kTypeMask)) {
+        case CallbackType::STREAM:
+          return f(reinterpret_cast<RocketStreamServerCallback*>(
+              storage_ & kPointerMask));
+        case CallbackType::STREAM_WITH_CHUNK_TIMEOUT:
+          return f(
+              reinterpret_cast<RocketStreamServerCallbackWithChunkTimeout*>(
+                  storage_ & kPointerMask));
+        case CallbackType::CHANNEL:
+          return f(reinterpret_cast<RocketChannelServerCallback*>(
+              storage_ & kPointerMask));
+        case CallbackType::SINK:
+          return f(reinterpret_cast<RocketSinkServerCallback*>(
+              storage_ & kPointerMask));
+        default:
+          folly::assume_unreachable();
+      };
+    }
+
+    ServerCallbackUniquePtr& operator=(
+        ServerCallbackUniquePtr&& other) noexcept {
+      match([](auto* ptr) { delete ptr; });
+      storage_ = std::exchange(other.storage_, 0);
+
+      return *this;
+    }
+
+    ~ServerCallbackUniquePtr() {
+      match([](auto* ptr) { delete ptr; });
+    }
+
+   private:
+    enum class CallbackType {
+      STREAM,
+      STREAM_WITH_CHUNK_TIMEOUT,
+      CHANNEL,
+      SINK,
+    };
+
+    static constexpr intptr_t kTypeMask = 3;
+    static constexpr intptr_t kPointerMask = ~kTypeMask;
+
+    intptr_t storage_;
+  };
   struct StreamIdResolver {
     StreamId operator()(StreamId streamId) const {
       return streamId;
     }
 
     StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
-      return folly::variant_match(callbackVariant, [](const auto& callback) {
-        return callback->streamId();
-      });
+      return callbackVariant.match(
+          [](const auto* callback) { return callback->streamId(); });
     }
   };
   struct StreamMapHasher : private folly::f14::DefaultHasher<StreamId> {
