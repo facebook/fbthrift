@@ -579,15 +579,12 @@ folly::Try<void> RocketClient::sendErrorSync(
 
 template <typename Frame, typename OnError>
 bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
-  using RequestCountGuard = decltype(makeRequestCountGuard());
-
   class Context : public folly::fibers::Baton::Waiter {
    public:
     Context(RocketClient& client, Frame&& frame, OnError&& onError)
         : client_(client),
           ctx_(std::forward<Frame>(frame), client_.queue_),
-          onError_(std::forward<OnError>(onError)),
-          g_(client_.makeRequestCountGuard()) {}
+          onError_(std::forward<OnError>(onError)) {}
 
     FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
       auto writeScheduled = self->client_.scheduleWrite(self->ctx_);
@@ -615,7 +612,6 @@ bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
     RocketClient& client_;
     RequestContext ctx_;
     std::decay_t<OnError> onError_;
-    RequestCountGuard g_;
   };
 
   auto ctx = std::make_unique<Context>(
@@ -624,6 +620,7 @@ bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
 }
 
 bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
+  auto g = makeRequestCountGuard();
   if (UNLIKELY(n <= 0)) {
     return true;
   }
@@ -632,7 +629,8 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
 
   return sendFrame(
       RequestNFrame(streamId, n),
-      [self = shared_from_this()](folly::exception_wrapper ew) {
+      [self = shared_from_this(),
+       g = std::move(g)](folly::exception_wrapper ew) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "sendRequestN failed, closing now: " << ew.what();
         self->closeNow(std::move(ew));
@@ -644,7 +642,8 @@ void RocketClient::cancelStream(StreamId streamId) {
   freeStream(streamId);
   std::ignore = sendFrame(
       CancelFrame(streamId),
-      [self = shared_from_this()](folly::exception_wrapper ew) {
+      [self = shared_from_this(),
+       g = std::move(g)](folly::exception_wrapper ew) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "cancelStream failed, closing now: " << ew.what();
         self->closeNow(std::move(ew));
@@ -709,7 +708,9 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
 }
 
 bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
-  auto onError = [self = shared_from_this()](folly::exception_wrapper ew) {
+  auto g = makeRequestCountGuard();
+  auto onError = [self = shared_from_this(),
+                  g = std::move(g)](folly::exception_wrapper ew) {
     FB_LOG_EVERY_MS(ERROR, 1000)
         << "sendExtHeaders failed, closing now: " << ew.what();
     self->closeNow(std::move(ew));
