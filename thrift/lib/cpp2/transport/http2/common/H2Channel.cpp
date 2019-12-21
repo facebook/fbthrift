@@ -111,40 +111,44 @@ bool H2Channel::handleThriftMetadata(
     const std::string& key,
     const std::string& value) noexcept {
   if (key == transport::THeader::CLIENT_TIMEOUT_HEADER) {
-    try {
-      metadata->clientTimeoutMs_ref() = folly::to<int64_t>(value);
-    } catch (const std::range_error&) {
+    auto parsed = folly::tryTo<int64_t>(value);
+    if (!parsed) {
       LOG(INFO) << "Bad client timeout " << value;
+      return false;
     }
+    metadata->clientTimeoutMs_ref() = *parsed;
     return true;
   }
   if (key == RPC_KIND) {
-    try {
-      metadata->kind_ref() = static_cast<RpcKind>(folly::to<int32_t>(value));
-    } catch (const std::range_error&) {
+    auto parsed = folly::tryTo<int32_t>(value);
+    if (!parsed) {
       LOG(INFO) << "Bad Request Kind " << value;
+      return false;
     }
+    metadata->kind_ref() = static_cast<RpcKind>(*parsed);
     return true;
   }
   if (key == transport::THeader::QUEUE_TIMEOUT_HEADER) {
-    try {
-      metadata->queueTimeoutMs_ref() = folly::to<int64_t>(value);
-    } catch (const std::range_error&) {
+    auto parsed = folly::tryTo<int64_t>(value);
+    if (!parsed) {
       LOG(INFO) << "Bad client timeout " << value;
+      return false;
     }
+    metadata->queueTimeoutMs_ref() = *parsed;
     return true;
   }
   if (key == transport::THeader::PRIORITY_HEADER) {
-    try {
-      auto pr = static_cast<RpcPriority>(folly::to<int32_t>(value));
-      if (pr < RpcPriority::N_PRIORITIES) {
-        metadata->priority_ref() = pr;
-      } else {
-        LOG(INFO) << "Too large value for method priority " << value;
-      }
-    } catch (const std::range_error&) {
+    auto parsed = folly::tryTo<int32_t>(value);
+    if (!parsed) {
       LOG(INFO) << "Bad method priority " << value;
+      return false;
     }
+    auto pr = static_cast<RpcPriority>(*parsed);
+    if (pr >= RpcPriority::N_PRIORITIES) {
+      LOG(INFO) << "Too large value for method priority " << value;
+      return false;
+    }
+    metadata->priority_ref() = pr;
     return true;
   }
   return false;
