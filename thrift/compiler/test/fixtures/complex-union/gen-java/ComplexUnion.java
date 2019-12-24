@@ -152,6 +152,57 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   }
 
   @Override
+  public void read(TProtocol iprot) throws TException {
+    setField_ = 0;
+    value_ = null;
+    iprot.readStructBegin(metaDataMap);
+    TField __field = iprot.readFieldBegin();
+    if (__field.type != TType.STOP)
+    {
+      value_ = readValue(iprot, __field);
+      if (value_ != null)
+      {
+        switch (__field.id) {
+          case INTVALUE:
+            if (__field.type == INT_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case STRINGVALUE:
+            if (__field.type == STRING_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case INTLISTVALUE:
+            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case STRINGLISTVALUE:
+            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case TYPEDEFVALUE:
+            if (__field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+          case STRINGREF:
+            if (__field.type == STRING_REF_FIELD_DESC.type) {
+              setField_ = __field.id;
+            }
+            break;
+        }
+      }
+      iprot.readFieldEnd();
+      iprot.readFieldBegin();
+      iprot.readFieldEnd();
+    }
+    iprot.readStructEnd();
+  }
+
+  @Override
   protected Object readValue(TProtocol iprot, TField __field) throws TException {
     switch (__field.id) {
       case INTVALUE:

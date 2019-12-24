@@ -728,6 +728,8 @@ void t_java_generator::generate_union_abstract_methods(
     // `TUnion`)
     generate_check_type(out, tstruct);
     out << endl;
+    generate_union_reader(out, tstruct);
+    out << endl;
   }
 
   generate_read_value(out, tstruct);
@@ -782,6 +784,73 @@ void t_java_generator::generate_check_type(ofstream& out, t_struct* tstruct) {
 
   indent_down();
   indent(out) << "}" << endl;
+
+  indent_down();
+  indent(out) << "}" << endl;
+}
+
+/**
+ * Generates a function to read a union.
+ *
+ * @param out The output stream
+ * @param tstruct The struct definition
+ */
+void t_java_generator::generate_union_reader(ofstream& out, t_struct* tstruct) {
+  indent(out) << "@Override" << endl;
+  indent(out) << "public void read(TProtocol iprot) throws TException {"
+              << endl;
+  indent_up();
+
+  indent(out) << "setField_ = 0;" << endl;
+  indent(out) << "value_ = null;" << endl;
+
+  // metaDataMap must be passed to iprot.readStructBegin() for
+  // deserialization to work.
+  indent(out) << "iprot.readStructBegin("
+              << (generate_field_metadata_ ? "metaDataMap" : "") << ");"
+              << endl;
+
+  indent(out) << "TField __field = iprot.readFieldBegin();" << endl;
+
+  indent(out) << "if (__field.type != TType.STOP)" << endl;
+  scope_up(out);
+
+  indent(out) << "value_ = readValue(iprot, __field);" << endl;
+  indent(out) << "if (value_ != null)" << endl;
+  scope_up(out);
+
+  indent(out) << "switch (__field.id) {" << endl;
+  indent_up();
+
+  const vector<t_field*>& members = tstruct->get_members();
+  vector<t_field*>::const_iterator m_iter;
+
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    t_field* field = (*m_iter);
+    indent(out) << "case " << upcase_string(field->get_name()) << ":" << endl;
+    indent_up();
+    indent(out) << "if (__field.type == " << constant_name(field->get_name())
+                << "_FIELD_DESC.type) {" << endl;
+    indent_up();
+    indent(out) << "setField_ = __field.id;" << endl;
+    indent_down();
+    indent(out) << "}" << endl;
+    indent(out) << "break;" << endl;
+    indent_down();
+  }
+
+  indent_down();
+  indent(out) << "}" << endl;
+  indent_down();
+  indent(out) << "}" << endl;
+  indent(out) << "iprot.readFieldEnd();" << endl;
+  // Eat stop byte
+  indent(out) << "iprot.readFieldBegin();" << endl;
+  indent(out) << "iprot.readFieldEnd();" << endl;
+  indent_down();
+  indent(out) << "}" << endl;
+
+  indent(out) << "iprot.readStructEnd();" << endl;
 
   indent_down();
   indent(out) << "}" << endl;
