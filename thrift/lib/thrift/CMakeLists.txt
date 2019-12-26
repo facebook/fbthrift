@@ -23,6 +23,16 @@ thrift_generate(
 )
 
 thrift_generate(
+  "metadata" #file_name
+  "" #services
+  "cpp2" #language
+  "" #options
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
+  "thrift/lib/thrift" #include_prefix
+)
+
+thrift_generate(
   "frozen" #file_name
   "" #services
   "cpp2" #language
