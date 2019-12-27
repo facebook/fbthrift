@@ -77,9 +77,6 @@ class Monitor::Impl {
   void wait(int64_t timeout_ms) const {
     int result = waitForTimeRelative(timeout_ms);
     if (result == ETIMEDOUT) {
-      // pthread_cond_timedwait has been observed to return early on
-      // various platforms, so comment out this assert.
-      // assert(Util::currentTime() >= (now + timeout));
       throw TimedOutException();
     } else if (result != 0) {
       throw TLibraryException(
