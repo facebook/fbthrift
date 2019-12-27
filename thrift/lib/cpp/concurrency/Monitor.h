@@ -20,7 +20,9 @@
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 /**
  * A monitor is a combination mutex and condition-event.  Waiting and
@@ -92,7 +94,6 @@ class Monitor {
    */
   void wait(int64_t timeout_ms = 0LL) const;
 
-
   /** Wakes up one thread waiting on this monitor. */
   virtual void notify() const;
 
@@ -100,7 +101,6 @@ class Monitor {
   virtual void notifyAll() const;
 
  private:
-
   class Impl;
 
   Impl* impl_;
@@ -108,13 +108,15 @@ class Monitor {
 
 class Synchronized {
  public:
- explicit Synchronized(const Monitor* monitor) : g(monitor->mutex()) { }
- explicit Synchronized(const Monitor& monitor) : g(monitor.mutex()) { }
+  explicit Synchronized(const Monitor* monitor) : g(monitor->mutex()) {}
+  explicit Synchronized(const Monitor& monitor) : g(monitor.mutex()) {}
 
  private:
   Guard g;
 };
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_CONCURRENCY_MONITOR_H_

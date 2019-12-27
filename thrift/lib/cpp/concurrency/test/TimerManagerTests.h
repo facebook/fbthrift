@@ -14,15 +14,18 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/concurrency/TimerManager.h>
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/TimerManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <assert.h>
 #include <iostream>
 
-namespace apache { namespace thrift { namespace concurrency { namespace test {
+namespace apache {
+namespace thrift {
+namespace concurrency {
+namespace test {
 
 using namespace apache::thrift::concurrency;
 
@@ -32,45 +35,44 @@ using namespace apache::thrift::concurrency;
  * @version $Id:$
  */
 class TimerManagerTests {
-
  public:
-
   static const double ERROR;
 
-  class Task: public Runnable {
+  class Task : public Runnable {
    public:
+    Task(Monitor& monitor, int64_t timeout)
+        : _timeout(timeout),
+          _startTime(Util::currentTime()),
+          _monitor(monitor),
+          _success(false),
+          _done(false) {}
 
-    Task(Monitor& monitor, int64_t timeout) :
-      _timeout(timeout),
-      _startTime(Util::currentTime()),
-      _monitor(monitor),
-      _success(false),
-      _done(false) {}
-
-    ~Task() override { std::cerr << this << std::endl; }
+    ~Task() override {
+      std::cerr << this << std::endl;
+    }
 
     void run() override {
-
       _endTime = Util::currentTime();
 
       // Figure out error percentage
 
       int64_t delta = _endTime - _startTime;
 
-
-      delta = delta > _timeout ?  delta - _timeout : _timeout - delta;
+      delta = delta > _timeout ? delta - _timeout : _timeout - delta;
 
       float error = delta / _timeout;
 
-      if(error < ERROR) {
+      if (error < ERROR) {
         _success = true;
       }
 
       _done = true;
 
-      std::cout << "\t\t\tTimerManagerTests::Task[" << this << "] done" << std::endl; //debug
+      std::cout << "\t\t\tTimerManagerTests::Task[" << this << "] done"
+                << std::endl; // debug
 
-      {Synchronized s(_monitor);
+      {
+        Synchronized s(_monitor);
         _monitor.notifyAll();
       }
     }
@@ -89,21 +91,24 @@ class TimerManagerTests {
    * properly clean up itself and the remaining orphaned timeout task when the
    * manager goes out of scope and its destructor is called.
    */
-  bool test00(int64_t timeout=1000LL) {
-
-    shared_ptr<TimerManagerTests::Task> orphanTask = shared_ptr<TimerManagerTests::Task>(new TimerManagerTests::Task(_monitor, 10 * timeout));
+  bool test00(int64_t timeout = 1000LL) {
+    shared_ptr<TimerManagerTests::Task> orphanTask =
+        shared_ptr<TimerManagerTests::Task>(
+            new TimerManagerTests::Task(_monitor, 10 * timeout));
 
     {
-
       TimerManager timerManager;
 
-      timerManager.threadFactory(shared_ptr<PosixThreadFactory>(new PosixThreadFactory()));
+      timerManager.threadFactory(
+          shared_ptr<PosixThreadFactory>(new PosixThreadFactory()));
 
       timerManager.start();
 
       assert(timerManager.state() == TimerManager::STARTED);
 
-      shared_ptr<TimerManagerTests::Task> task = shared_ptr<TimerManagerTests::Task>(new TimerManagerTests::Task(_monitor, timeout));
+      shared_ptr<TimerManagerTests::Task> task =
+          shared_ptr<TimerManagerTests::Task>(
+              new TimerManagerTests::Task(_monitor, timeout));
 
       {
         Synchronized s(_monitor);
@@ -117,8 +122,8 @@ class TimerManagerTests {
 
       assert(task->_done);
 
-
-      std::cout << "\t\t\t" << (task->_success ? "Success" : "Failure") << "!" << std::endl;
+      std::cout << "\t\t\t" << (task->_success ? "Success" : "Failure") << "!"
+                << std::endl;
     }
 
     // timerManager.stop(); This is where it happens via destructor
@@ -135,5 +140,7 @@ class TimerManagerTests {
 
 const double TimerManagerTests::ERROR = .20;
 
-}}}} // apache::thrift::concurrency
-
+} // namespace test
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

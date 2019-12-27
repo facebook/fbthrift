@@ -32,13 +32,15 @@
 #include <folly/synchronization/LifoSem.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
+#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 
 DECLARE_bool(codel_enabled);
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 class Runnable;
 class ThreadFactory;
@@ -66,7 +68,7 @@ class ThreadManager : public virtual folly::Executor {
   ThreadManager() {}
 
  public:
-  static const size_t DEFAULT_MAX_QUEUE_SIZE = 1<<16;   // should be power of 2
+  static const size_t DEFAULT_MAX_QUEUE_SIZE = 1 << 16; // should be power of 2
 
   class Task;
   typedef std::function<void(std::shared_ptr<Runnable>)> ExpireCallback;
@@ -101,7 +103,7 @@ class ThreadManager : public virtual folly::Executor {
     STARTED,
     JOINING,
     STOPPING,
-    STOPPED
+    STOPPED,
   };
 
   virtual STATE state() const = 0;
@@ -114,9 +116,9 @@ class ThreadManager : public virtual folly::Executor {
 
   virtual void setNamePrefix(const std::string& name) = 0;
 
-  virtual void addWorker(size_t value=1) = 0;
+  virtual void addWorker(size_t value = 1) = 0;
 
-  virtual void removeWorker(size_t value=1) = 0;
+  virtual void removeWorker(size_t value = 1) = 0;
 
   /**
    * Gets the current number of idle worker threads
@@ -131,7 +133,7 @@ class ThreadManager : public virtual folly::Executor {
   /**
    * Gets the current number of pending tasks
    */
-  virtual size_t pendingTaskCount() const  = 0;
+  virtual size_t pendingTaskCount() const = 0;
 
   /**
    * Gets the current number of pending and executing tasks
@@ -225,9 +227,10 @@ class ThreadManager : public virtual folly::Executor {
    * @param runTime - average time (us) task spent running
    * @param maxItems - max items collected for stats
    */
-  virtual void getStats(std::chrono::microseconds& waitTime,
-                        std::chrono::microseconds& runTime,
-                        int64_t /*maxItems*/) {
+  virtual void getStats(
+      std::chrono::microseconds& waitTime,
+      std::chrono::microseconds& runTime,
+      int64_t /*maxItems*/) {
     waitTime = std::chrono::microseconds::zero();
     runTime = std::chrono::microseconds::zero();
   }
@@ -363,21 +366,35 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   void join() override {}
   void start() override {}
   void stop() override {}
-  STATE state() const override { return STARTED; }
+  STATE state() const override {
+    return STARTED;
+  }
   std::shared_ptr<ThreadFactory> threadFactory() const override {
     return nullptr;
   }
   void threadFactory(std::shared_ptr<ThreadFactory> /*value*/) override {}
-  std::string getNamePrefix() const override { return ""; }
+  std::string getNamePrefix() const override {
+    return "";
+  }
   void setNamePrefix(const std::string& /*name*/) override {}
   void addWorker(size_t /*value*/ = 1) override {}
   void removeWorker(size_t /*value*/ = 1) override {}
 
-  size_t idleWorkerCount() const override { return 0; }
-  size_t workerCount() const override { return 0; }
-  size_t pendingTaskCount() const override { return 0; }
-  size_t totalTaskCount() const override { return 0; }
-  size_t expiredTaskCount() override { return 0; }
+  size_t idleWorkerCount() const override {
+    return 0;
+  }
+  size_t workerCount() const override {
+    return 0;
+  }
+  size_t pendingTaskCount() const override {
+    return 0;
+  }
+  size_t totalTaskCount() const override {
+    return 0;
+  }
+  size_t expiredTaskCount() override {
+    return 0;
+  }
 
   void add(
       std::shared_ptr<Runnable> task,
@@ -392,7 +409,9 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   }
 
   void remove(std::shared_ptr<Runnable> /*task*/) override {}
-  std::shared_ptr<Runnable> removeNextPending() override { return nullptr; }
+  std::shared_ptr<Runnable> removeNextPending() override {
+    return nullptr;
+  }
   void clearPending() override {}
 
   void setExpireCallback(ExpireCallback /*expireCallback*/) override {}
@@ -408,7 +427,9 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
   folly::Executor::KeepAlive<> ka_;
 };
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp/concurrency/ThreadManager-inl.h>
 #endif // #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_

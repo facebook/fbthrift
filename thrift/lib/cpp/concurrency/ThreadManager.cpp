@@ -32,13 +32,15 @@
 
 DEFINE_bool(codel_enabled, false, "Enable codel queue timeout algorithm");
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
-using std::shared_ptr;
-using std::make_shared;
-using std::dynamic_pointer_cast;
-using std::unique_ptr;
 using folly::RequestContext;
+using std::dynamic_pointer_cast;
+using std::make_shared;
+using std::shared_ptr;
+using std::unique_ptr;
 
 folly::SharedMutex ThreadManager::observerLock_;
 std::shared_ptr<ThreadManager::Observer> ThreadManager::observer_;
@@ -54,4 +56,6 @@ void ThreadManager::setObserver(
     observer_.swap(observer);
   }
 }
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

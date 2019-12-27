@@ -32,12 +32,14 @@
 
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
-using std::shared_ptr;
-using std::make_shared;
 using folly::Codel;
 using std::dynamic_pointer_cast;
+using std::make_shared;
+using std::shared_ptr;
 using std::unique_ptr;
 
 class ThreadManager::Task {
@@ -46,16 +48,19 @@ class ThreadManager::Task {
     WAITING,
     EXECUTING,
     CANCELLED,
-    COMPLETE
+    COMPLETE,
   };
 
-  Task(shared_ptr<Runnable> runnable,
-       const std::chrono::milliseconds& expiration)
-    : runnable_(std::move(runnable))
-    , queueBeginTime_(SystemClock::now())
-    , expireTime_(expiration > std::chrono::milliseconds::zero() ?
-                  queueBeginTime_ + expiration : SystemClockTimePoint())
-    , context_(folly::RequestContext::saveContext()) {}
+  Task(
+      shared_ptr<Runnable> runnable,
+      const std::chrono::milliseconds& expiration)
+      : runnable_(std::move(runnable)),
+        queueBeginTime_(SystemClock::now()),
+        expireTime_(
+            expiration > std::chrono::milliseconds::zero()
+                ? queueBeginTime_ + expiration
+                : SystemClockTimePoint()),
+        context_(folly::RequestContext::saveContext()) {}
 
   ~Task() {}
 
@@ -123,13 +128,19 @@ class ThreadManager::ImplT : public ThreadManager,
         namePrefixCounter_(0),
         codelEnabled_(false || FLAGS_codel_enabled) {}
 
-  ~ImplT() override { stop(); }
+  ~ImplT() override {
+    stop();
+  }
 
   void start() override;
 
-  void stop() override { stopImpl(false); }
+  void stop() override {
+    stopImpl(false);
+  }
 
-  void join() override { stopImpl(true); }
+  void join() override {
+    stopImpl(true);
+  }
 
   ThreadManager::STATE state() const override {
     return state_;
@@ -210,18 +221,20 @@ class ThreadManager::ImplT : public ThreadManager,
     initCallback_ = initCallback;
   }
 
-  void getStats(std::chrono::microseconds& waitTime,
-                std::chrono::microseconds& runTime,
-                int64_t maxItems) override;
+  void getStats(
+      std::chrono::microseconds& waitTime,
+      std::chrono::microseconds& runTime,
+      int64_t maxItems) override;
   void enableCodel(bool) override;
   Codel* getCodel() override;
 
   // Methods to be invoked by workers
   void workerStarted(Worker<SemType>* worker);
   void workerExiting(Worker<SemType>* worker);
-  void reportTaskStats(const Task& task,
-                       const SystemClockTimePoint& workBegin,
-                       const SystemClockTimePoint& workEnd);
+  void reportTaskStats(
+      const Task& task,
+      const SystemClockTimePoint& workBegin,
+      const SystemClockTimePoint& workEnd);
   std::unique_ptr<Task> waitOnTask();
   void onTaskExpired(const Task& task);
 
@@ -283,7 +296,7 @@ class ThreadManager::ImplT : public ThreadManager,
   SemType waitSem_;
   // deadWorkerMonitor_ is signaled whenever a worker thread exits
   Monitor deadWorkerMonitor_;
-  std::deque<shared_ptr<Thread> > deadWorkers_;
+  std::deque<shared_ptr<Thread>> deadWorkers_;
 
   folly::ThreadLocal<bool> isThreadManagerThread_{
       [] { return new bool(false); }};
@@ -293,7 +306,8 @@ class ThreadManager::ImplT : public ThreadManager,
   bool codelEnabled_;
 };
 
-
-}}}
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #endif

@@ -31,7 +31,9 @@
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/thrift_config.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 using std::shared_ptr;
 using std::weak_ptr;
@@ -48,16 +50,18 @@ bool PthreadThread::updateName() {
   return folly::setThreadName(pthread_, name_);
 }
 
-PthreadThread::PthreadThread(int policy, int priority, int stackSize,
-                             bool detached,
-                             shared_ptr<Runnable> runnable) :
-  pthread_(),
-  state_(uninitialized),
-  policy_(policy),
-  priority_(priority),
-  stackSize_(stackSize),
-  detached_(detached) {
-
+PthreadThread::PthreadThread(
+    int policy,
+    int priority,
+    int stackSize,
+    bool detached,
+    shared_ptr<Runnable> runnable)
+    : pthread_(),
+      state_(uninitialized),
+      policy_(policy),
+      priority_(priority),
+      stackSize_(stackSize),
+      detached_(detached) {
   this->Thread::runnable(runnable);
 }
 
@@ -65,10 +69,10 @@ PthreadThread::~PthreadThread() {
   /* Nothing references this thread, if is is not detached, do a join
      now, otherwise the thread-id and, possibly, other resources will
      be leaked. */
-  if(!detached_) {
+  if (!detached_) {
     try {
       join();
-    } catch(...) {
+    } catch (...) {
       // We're really hosed.
     }
   }
@@ -83,14 +87,13 @@ void PthreadThread::start() {
 
   pthread_attr_t thread_attr;
   if (pthread_attr_init(&thread_attr) != 0) {
-      throw SystemResourceException("pthread_attr_init failed");
+    throw SystemResourceException("pthread_attr_init failed");
   }
 
-  if(pthread_attr_setdetachstate(&thread_attr,
-                                 detached_ ?
-                                 PTHREAD_CREATE_DETACHED :
-                                 PTHREAD_CREATE_JOINABLE) != 0) {
-      throw SystemResourceException("pthread_attr_setdetachstate failed");
+  if (pthread_attr_setdetachstate(
+          &thread_attr,
+          detached_ ? PTHREAD_CREATE_DETACHED : PTHREAD_CREATE_JOINABLE) != 0) {
+    throw SystemResourceException("pthread_attr_setdetachstate failed");
   }
 
   // Set thread stack size
@@ -104,7 +107,8 @@ void PthreadThread::start() {
 
   state_ = starting;
 
-  if (pthread_create(&pthread_, &thread_attr, threadMain, (void*)selfRef) != 0) {
+  if (pthread_create(&pthread_, &thread_attr, threadMain, (void*)selfRef) !=
+      0) {
     throw SystemResourceException("pthread_create failed");
   }
 
@@ -115,7 +119,6 @@ void PthreadThread::start() {
 void PthreadThread::join() {
   Guard g(stateLock_);
   STATE join_state = state_;
-
 
   if (!detached_ && join_state != uninitialized) {
     void* ignore;
@@ -140,7 +143,7 @@ Thread::id_t PthreadThread::getId() {
 #ifdef _WIN32
   return (Thread::id_t)pthread_getw32threadid_np(pthread_);
 #else
-   return (Thread::id_t)pthread_;
+  return (Thread::id_t)pthread_;
 #endif
 }
 
@@ -179,7 +182,7 @@ void* PthreadThread::threadMain(void* arg) {
     struct sched_param sched_param;
     sched_param.sched_priority = thread->priority_;
     int err =
-      pthread_setschedparam(pthread_self(), thread->policy_, &sched_param);
+        pthread_setschedparam(pthread_self(), thread->policy_, &sched_param);
     if (err != 0) {
       VLOG(1) << "pthread_setschedparam failed (are you root?) with error "
               << err << ": " << folly::errnoStr(err);
@@ -200,19 +203,20 @@ void* PthreadThread::threadMain(void* arg) {
 
 int PosixThreadFactory::Impl::toPthreadPolicy(POLICY policy) {
   switch (policy) {
-  case OTHER:
-    return SCHED_OTHER;
-  case FIFO:
-    return SCHED_FIFO;
-  case ROUND_ROBIN:
-    return SCHED_RR;
+    case OTHER:
+      return SCHED_OTHER;
+    case FIFO:
+      return SCHED_FIFO;
+    case ROUND_ROBIN:
+      return SCHED_RR;
   }
   return SCHED_OTHER;
 }
 
 /* static */
-int PosixThreadFactory::Impl::toPthreadPriority(POLICY policy,
-                                                PRIORITY priority) {
+int PosixThreadFactory::Impl::toPthreadPriority(
+    POLICY policy,
+    PRIORITY priority) {
   int pthread_policy = toPthreadPolicy(policy);
   int min_priority = 0;
   int max_priority = 0;
@@ -253,10 +257,11 @@ int PosixThreadFactory::Impl::toPthreadPriority(POLICY policy,
 #endif
 }
 
-PosixThreadFactory::Impl::Impl(POLICY policy,
-                               PRIORITY priority,
-                               int stackSize,
-                               DetachState detached)
+PosixThreadFactory::Impl::Impl(
+    POLICY policy,
+    PRIORITY priority,
+    int stackSize,
+    DetachState detached)
     : policy_(policy),
       priority_(priority),
       stackSize_(stackSize),
@@ -265,10 +270,13 @@ PosixThreadFactory::Impl::Impl(POLICY policy,
 shared_ptr<Thread> PosixThreadFactory::Impl::newThread(
     const shared_ptr<Runnable>& runnable,
     PosixThreadFactory::DetachState detachState) const {
-  shared_ptr<PthreadThread> result = shared_ptr<PthreadThread>(
-      new PthreadThread(toPthreadPolicy(policy_),
-                        toPthreadPriority(policy_, priority_), stackSize_,
-                        detachState == DETACHED, runnable));
+  shared_ptr<PthreadThread> result =
+      shared_ptr<PthreadThread>(new PthreadThread(
+          toPthreadPolicy(policy_),
+          toPthreadPriority(policy_, priority_),
+          stackSize_,
+          detachState == DETACHED,
+          runnable));
   result->weakRef(result);
   runnable->thread(result);
   return result;
@@ -282,8 +290,7 @@ void PosixThreadFactory::Impl::setStackSize(int value) {
   stackSize_ = value;
 }
 
-PosixThreadFactory::PRIORITY PosixThreadFactory::Impl::getPriority()
-    const {
+PosixThreadFactory::PRIORITY PosixThreadFactory::Impl::getPriority() const {
   return priority_;
 }
 
@@ -310,17 +317,23 @@ Thread::id_t PosixThreadFactory::Impl::getCurrentThreadId() const {
   return (Thread::id_t)folly::getCurrentThreadID();
 }
 
-
-PosixThreadFactory::PosixThreadFactory(POLICY policy, PRIORITY priority,
-                                       int stackSize, bool detached)
-  : impl_(new PosixThreadFactory::Impl(policy, priority, stackSize,
-                                       detached ? DETACHED : ATTACHED)) {
-}
+PosixThreadFactory::PosixThreadFactory(
+    POLICY policy,
+    PRIORITY priority,
+    int stackSize,
+    bool detached)
+    : impl_(new PosixThreadFactory::Impl(
+          policy,
+          priority,
+          stackSize,
+          detached ? DETACHED : ATTACHED)) {}
 
 PosixThreadFactory::PosixThreadFactory(DetachState detached)
-  : impl_(new PosixThreadFactory::Impl(kDefaultPolicy, kDefaultPriority,
-                                       kDefaultStackSizeMB, detached)) {
-}
+    : impl_(new PosixThreadFactory::Impl(
+          kDefaultPolicy,
+          kDefaultPriority,
+          kDefaultStackSizeMB,
+          detached)) {}
 
 shared_ptr<Thread> PosixThreadFactory::newThread(
     const shared_ptr<Runnable>& runnable) const {
@@ -333,13 +346,21 @@ shared_ptr<Thread> PosixThreadFactory::newThread(
   return impl_->newThread(runnable, detachState);
 }
 
-int PosixThreadFactory::getStackSize() const { return impl_->getStackSize(); }
+int PosixThreadFactory::getStackSize() const {
+  return impl_->getStackSize();
+}
 
-void PosixThreadFactory::setStackSize(int value) { impl_->setStackSize(value); }
+void PosixThreadFactory::setStackSize(int value) {
+  impl_->setStackSize(value);
+}
 
-PosixThreadFactory::PRIORITY PosixThreadFactory::getPriority() const { return impl_->getPriority(); }
+PosixThreadFactory::PRIORITY PosixThreadFactory::getPriority() const {
+  return impl_->getPriority();
+}
 
-void PosixThreadFactory::setPriority(PosixThreadFactory::PRIORITY value) { impl_->setPriority(value); }
+void PosixThreadFactory::setPriority(PosixThreadFactory::PRIORITY value) {
+  impl_->setPriority(value);
+}
 
 bool PosixThreadFactory::isDetached() const {
   return impl_->getDetachState() == DETACHED;
@@ -353,6 +374,10 @@ void PosixThreadFactory::setDetached(DetachState value) {
   impl_->setDetachState(value);
 }
 
-Thread::id_t PosixThreadFactory::getCurrentThreadId() const { return impl_->getCurrentThreadId(); }
+Thread::id_t PosixThreadFactory::getCurrentThreadId() const {
+  return impl_->getCurrentThreadId();
+}
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

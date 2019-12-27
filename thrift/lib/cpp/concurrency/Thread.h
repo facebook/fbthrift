@@ -20,7 +20,9 @@
 #include <cstdint>
 #include <memory>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 class Thread;
 
@@ -30,7 +32,6 @@ class Thread;
  * @version $Id:$
  */
 class Runnable {
-
  public:
   virtual ~Runnable() {}
   virtual void run() = 0;
@@ -39,13 +40,17 @@ class Runnable {
    * Gets the thread object that is hosting this runnable object  - can return
    * an empty std::shared pointer if no references remain on the thread object
    */
-  virtual std::shared_ptr<Thread> thread() { return thread_.lock(); }
+  virtual std::shared_ptr<Thread> thread() {
+    return thread_.lock();
+  }
 
   /**
    * Sets the thread that is executing this object.  This is only meant for
    * use by concrete implementations of Thread.
    */
-  virtual void thread(std::shared_ptr<Thread> value) { thread_ = value; }
+  virtual void thread(std::shared_ptr<Thread> value) {
+    thread_ = value;
+  }
 
  private:
   std::weak_ptr<Thread> thread_;
@@ -75,9 +80,7 @@ class PriorityRunnable : public virtual Runnable {
  * @see apache::thrift::concurrency::ThreadFactory)
  */
 class Thread {
-
  public:
-
   typedef uint64_t id_t;
 
   virtual ~Thread() {}
@@ -103,20 +106,25 @@ class Thread {
   /**
    * Gets the runnable object this thread is hosting
    */
-  virtual std::shared_ptr<Runnable> runnable() const { return _runnable; }
+  virtual std::shared_ptr<Runnable> runnable() const {
+    return _runnable;
+  }
 
   /**
    * Sets thread name for debugging purposes after the thread was created.
    * Returns true on success.
    */
-  virtual bool setName(const std::string& /*name*/) { return false; }
+  virtual bool setName(const std::string& /*name*/) {
+    return false;
+  }
 
  protected:
-  virtual void runnable(std::shared_ptr<Runnable> value) { _runnable = value; }
+  virtual void runnable(std::shared_ptr<Runnable> value) {
+    _runnable = value;
+  }
 
  private:
   std::shared_ptr<Runnable> _runnable;
-
 };
 
 /**
@@ -124,11 +132,10 @@ class Thread {
  * object for execution
  */
 class ThreadFactory {
-
  public:
   enum DetachState {
     ATTACHED,
-    DETACHED
+    DETACHED,
   };
 
   virtual ~ThreadFactory() {}
@@ -139,13 +146,18 @@ class ThreadFactory {
       const std::shared_ptr<Runnable>& runnable,
       DetachState detachState) const = 0;
 
-  /** Gets the current thread id or unknown_thread_id if the current thread is not a thrift thread */
+  /**
+   * Gets the current thread id or unknown_thread_id if the current thread is
+   * not a thrift thread
+   */
 
   static const Thread::id_t unknown_thread_id;
 
   virtual Thread::id_t getCurrentThreadId() const = 0;
 };
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_CONCURRENCY_THREAD_H_

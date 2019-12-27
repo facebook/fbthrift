@@ -23,7 +23,9 @@
 
 #include <folly/Portability.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 class PthreadMutex;
 class PthreadRWMutex;
 
@@ -94,7 +96,7 @@ class [[deprecated(
   // this releases both read and write locks
   virtual void release() const;
 
-private:
+ private:
   std::shared_ptr<PthreadRWMutex> impl_;
 };
 
@@ -119,16 +121,17 @@ class [[deprecated(
   bool timedRead(std::chrono::milliseconds milliseconds) const override;
   bool timedWrite(std::chrono::milliseconds milliseconds) const override;
 
-private:
+ private:
   Mutex mutex_;
   mutable volatile bool writerWaiting_;
 };
 
 class FOLLY_NODISCARD Guard {
  public:
-  explicit Guard(const Mutex& value,
-    std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
-    : mutex_(&value) {
+  explicit Guard(
+      const Mutex& value,
+      std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
+      : mutex_(&value) {
     if (timeout == std::chrono::milliseconds::zero()) {
       value.lock();
     } else if (timeout < std::chrono::milliseconds::zero()) {
@@ -185,11 +188,14 @@ enum RWGuardType {
   RW_WRITE = 1,
 };
 
+// clang-format off
 class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGuard {
+  // clang-format on
  public:
-  explicit RWGuard(const ReadWriteMutex& value, bool write = false,
-                   std::chrono::milliseconds timeout =
-                    std::chrono::milliseconds::zero())
+  explicit RWGuard(
+      const ReadWriteMutex& value,
+      bool write = false,
+      std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
       : rw_mutex_(&value) {
     bool locked = true;
     if (write) {
@@ -209,10 +215,11 @@ class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGu
       rw_mutex_ = nullptr;
     }
   }
-  RWGuard(const ReadWriteMutex& value, RWGuardType type,
-          std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
-      : RWGuard(value, type == RW_WRITE, timeout) {
-  }
+  RWGuard(
+      const ReadWriteMutex& value,
+      RWGuardType type,
+      std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
+      : RWGuard(value, type == RW_WRITE, timeout) {}
 
   RWGuard(const RWGuard&) = delete;
   RWGuard& operator=(const RWGuard&) = delete;
@@ -222,7 +229,7 @@ class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGu
   }
 
   // Move constructor/assignment.
-  RWGuard(RWGuard&& other) noexcept {
+  RWGuard(RWGuard && other) noexcept {
     *this = std::move(other);
   }
   RWGuard& operator=(RWGuard&& other) noexcept {
@@ -239,7 +246,8 @@ class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGu
   }
 
   bool release() {
-    if (rw_mutex_ == nullptr) return false;
+    if (rw_mutex_ == nullptr)
+      return false;
     rw_mutex_->release();
     rw_mutex_ = nullptr;
     return true;
@@ -248,6 +256,8 @@ class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGu
  private:
   const ReadWriteMutex* rw_mutex_ = nullptr;
 };
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_CONCURRENCY_MUTEX_H_

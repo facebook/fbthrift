@@ -26,7 +26,9 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 int64_t Util::currentTimeTicks(int64_t ticksPerSec) {
   int64_t result;
@@ -72,4 +74,6 @@ int64_t Util::monotonicTimeTicks(int64_t ticksPerSec) {
 #endif // defined(THRIFT_HAVE_CLOCK_GETTIME)
 }
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

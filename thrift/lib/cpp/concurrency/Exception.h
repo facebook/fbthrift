@@ -21,7 +21,9 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 class NoSuchTaskException : public apache::thrift::TLibraryException {};
 
@@ -30,33 +32,36 @@ class UncancellableTaskException : public apache::thrift::TLibraryException {};
 class InvalidArgumentException : public apache::thrift::TLibraryException {};
 
 class IllegalStateException : public apache::thrift::TLibraryException {
-public:
+ public:
   IllegalStateException() {}
-  IllegalStateException(const std::string& message) : TLibraryException(message) {}
+  IllegalStateException(const std::string& message)
+      : TLibraryException(message) {}
 };
 
 class TimedOutException : public apache::thrift::TLibraryException {
-public:
-  TimedOutException():TLibraryException("TimedOutException"){}
-  TimedOutException(const std::string& message ) :
-    TLibraryException(message) {}
+ public:
+  TimedOutException() : TLibraryException("TimedOutException") {}
+  TimedOutException(const std::string& message) : TLibraryException(message) {}
 };
 
 class TooManyPendingTasksException : public apache::thrift::TLibraryException {
-public:
-  TooManyPendingTasksException():TLibraryException("TooManyPendingTasksException"){}
-  TooManyPendingTasksException(const std::string& message ) :
-    TLibraryException(message) {}
+ public:
+  TooManyPendingTasksException()
+      : TLibraryException("TooManyPendingTasksException") {}
+  TooManyPendingTasksException(const std::string& message)
+      : TLibraryException(message) {}
 };
 
 class SystemResourceException : public apache::thrift::TLibraryException {
-public:
-    SystemResourceException() {}
+ public:
+  SystemResourceException() {}
 
-    SystemResourceException(const std::string& message) :
-        TLibraryException(message) {}
+  SystemResourceException(const std::string& message)
+      : TLibraryException(message) {}
 };
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_CONCURRENCY_EXCEPTION_H_

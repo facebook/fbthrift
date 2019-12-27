@@ -28,15 +28,17 @@ TEST(FunctionRunnerTests, NonPeriodicTest) {
   bool didRunInit = false;
   bool didRunFunc = false;
 
-  auto f = FunctionRunner::create([&] () mutable {
+  auto f = FunctionRunner::create([&]() mutable {
     fprintf(stderr, "a");
     fflush(stderr);
-    didRunFunc = true; });
+    didRunFunc = true;
+  });
 
-  f->setInitFunc([&] () mutable {
+  f->setInitFunc([&]() mutable {
     fprintf(stderr, "b");
     fflush(stderr);
-    didRunInit = true; });
+    didRunInit = true;
+  });
 
   f->run();
 
@@ -50,10 +52,13 @@ TEST(FunctionRunnerTests, PeriodicTest) {
 
   size_t counter = 0;
 
-  auto f = FunctionRunner::create([&] () mutable {
-    fprintf(stderr, "c");
-    fflush(stderr);
-    return (++counter) < kCount; }, kMsec);
+  auto f = FunctionRunner::create(
+      [&]() mutable {
+        fprintf(stderr, "c");
+        fflush(stderr);
+        return (++counter) < kCount;
+      },
+      kMsec);
 
   f->run();
 
@@ -66,11 +71,14 @@ TEST(FunctionRunnerTests, PeriodicTestWithCancellation) {
 
   std::atomic<size_t> counter(0);
   // this callback always returns true so it runs indefinitely
-  auto f = FunctionRunner::create([&] () mutable {
-    fprintf(stderr, "d");
-    fflush(stderr);
-    ++counter;
-    return true; }, kMsec);
+  auto f = FunctionRunner::create(
+      [&]() mutable {
+        fprintf(stderr, "d");
+        fflush(stderr);
+        ++counter;
+        return true;
+      },
+      kMsec);
 
   // kick off in another thread
   auto t = std::thread([&] { f->run(); });

@@ -31,7 +31,9 @@ using folly::RequestContext;
 
 DEFINE_bool(thrift_numa_enabled, false, "Enable NumaThreadManager in thrift");
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 static bool isNumaEnabled() {
   return numa_available() >= 0 && FLAGS_thrift_numa_enabled;
@@ -52,14 +54,14 @@ class NumaContextData : public folly::RequestData {
 // Used with NumaThreadFactory
 class NumaRunnable : public Runnable {
  public:
-
   explicit NumaRunnable(int setNode, std::shared_ptr<Runnable> runnable)
-      : setNode_(setNode)
-      , runnable_(runnable) {}
+      : setNode_(setNode), runnable_(runnable) {}
 
   void run() override;
 
-  std::shared_ptr<Thread> thread() override { return runnable_->thread(); }
+  std::shared_ptr<Thread> thread() override {
+    return runnable_->thread();
+  }
 
   void thread(std::shared_ptr<Thread> value) override {
     runnable_->thread(value);
@@ -71,7 +73,6 @@ class NumaRunnable : public Runnable {
 };
 
 void NumaRunnable::run() {
-
   if (isNumaEnabled()) {
     static std::atomic<int> counter;
     int node = counter++ % (numa_max_node() + 1);
@@ -87,11 +88,13 @@ void NumaRunnable::run() {
 
     // Bind pthread stack to node.
     pthread_attr_t thread_attrs;
-    void *stack_addr;
+    void* stack_addr;
     size_t stack_size;
     size_t guard_size;
 
-    SCOPE_EXIT{     pthread_attr_destroy(&thread_attrs); };
+    SCOPE_EXIT {
+      pthread_attr_destroy(&thread_attrs);
+    };
 
     if (pthread_getattr_np(pthread_self(), &thread_attrs) != 0) {
       LOG(ERROR) << "Failed to get attributes of the current thread.";
@@ -111,7 +114,7 @@ void NumaRunnable::run() {
       numa_tonode_memory(stack_addr, stack_size, node);
     } else {
       LOG(ERROR) << "Thread stack is not page aligned. "
-        "Cannot bind to NUMA node.";
+                    "Cannot bind to NUMA node.";
     }
 
     // Set the thread-local node to the node we are running on.
@@ -126,8 +129,8 @@ std::string NumaContextData::ContextDataVal = "numa";
 void NumaThreadFactory::setNumaNode() {
   if (node_ != -1) {
     RequestContext::get()->setContextData(
-      NumaContextData::ContextDataVal,
-      std::make_unique<NumaContextData>(node_));
+        NumaContextData::ContextDataVal,
+        std::make_unique<NumaContextData>(node_));
   }
 }
 
@@ -135,8 +138,8 @@ __thread int NumaThreadFactory::node_{-1};
 int NumaThreadFactory::workerNode_{0};
 
 int NumaThreadFactory::getNumaNode() {
-  auto data = RequestContext::get()->getContextData(
-    NumaContextData::ContextDataVal);
+  auto data =
+      RequestContext::get()->getContextData(NumaContextData::ContextDataVal);
   if (data) {
     return static_cast<NumaContextData*>(data)->node;
   } else {
@@ -150,22 +153,22 @@ int NumaThreadFactory::getNumaNode() {
 }
 
 std::shared_ptr<Thread> NumaThreadFactory::newThread(
-  const std::shared_ptr<Runnable>& runnable) const {
+    const std::shared_ptr<Runnable>& runnable) const {
   return PosixThreadFactory::newThread(
-    std::make_shared<NumaRunnable>(setNode_, runnable));
+      std::make_shared<NumaRunnable>(setNode_, runnable));
 }
 
 std::shared_ptr<Thread> NumaThreadFactory::newThread(
-  const std::shared_ptr<Runnable>& runnable,
-  DetachState detachState) const {
+    const std::shared_ptr<Runnable>& runnable,
+    DetachState detachState) const {
   return PosixThreadFactory::newThread(
-    std::make_shared<NumaRunnable>(setNode_, runnable),
-    detachState);
+      std::make_shared<NumaRunnable>(setNode_, runnable), detachState);
 }
 
-NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
-                                     bool enableTaskStats,
-                                     int threadStackSize) {
+NumaThreadManager::NumaThreadManager(
+    size_t normalThreadsCount,
+    bool enableTaskStats,
+    int threadStackSize) {
   int nodes = 1;
   size_t pri_threads = 2;
   if (isNumaEnabled()) {
@@ -176,8 +179,8 @@ NumaThreadManager::NumaThreadManager(size_t normalThreadsCount,
     auto factory = std::make_shared<NumaThreadFactory>(i, threadStackSize);
     // Choose the number of threads: Round up, so we don't end up
     // with any 0-thread managers.
-    size_t threads = (size_t)
-      ((((double)normalThreadsCount) / (nodes - i)) + .5);
+    size_t threads =
+        (size_t)((((double)normalThreadsCount) / (nodes - i)) + .5);
     normalThreadsCount -= threads;
     pri_threads = std::min(threads, pri_threads);
     managers_.push_back(PriorityThreadManager::newPriorityThreadManager(
@@ -233,4 +236,6 @@ void NumaThreadManager::removeWorker(size_t t) {
   }
 }
 
-}}}
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

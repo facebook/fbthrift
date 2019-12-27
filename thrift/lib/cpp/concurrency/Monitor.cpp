@@ -28,7 +28,9 @@
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 using boost::scoped_ptr;
 
@@ -38,33 +40,32 @@ using boost::scoped_ptr;
  * @version $Id:$
  */
 class Monitor::Impl {
-
  public:
-
-  Impl()
-     : ownedMutex_(new Mutex()),
-       mutex_(nullptr),
-       condInitialized_(false) {
+  Impl() : ownedMutex_(new Mutex()), mutex_(nullptr), condInitialized_(false) {
     init(ownedMutex_.get());
   }
 
-  Impl(Mutex* mutex)
-     : mutex_(nullptr),
-       condInitialized_(false) {
+  Impl(Mutex* mutex) : mutex_(nullptr), condInitialized_(false) {
     init(mutex);
   }
 
-  Impl(Monitor* monitor)
-     : mutex_(nullptr),
-       condInitialized_(false) {
+  Impl(Monitor* monitor) : mutex_(nullptr), condInitialized_(false) {
     init(&(monitor->mutex()));
   }
 
-  ~Impl() { cleanup(); }
+  ~Impl() {
+    cleanup();
+  }
 
-  Mutex& mutex() { return *mutex_; }
-  void lock() { mutex().lock(); }
-  void unlock() { mutex().unlock(); }
+  Mutex& mutex() {
+    return *mutex_;
+  }
+  void lock() {
+    mutex().lock();
+  }
+  void unlock() {
+    mutex().unlock();
+  }
 
   /**
    * Exception-throwing version of waitForTimeRelative(), called simply
@@ -78,11 +79,11 @@ class Monitor::Impl {
     if (result == ETIMEDOUT) {
       // pthread_cond_timedwait has been observed to return early on
       // various platforms, so comment out this assert.
-      //assert(Util::currentTime() >= (now + timeout));
+      // assert(Util::currentTime() >= (now + timeout));
       throw TimedOutException();
     } else if (result != 0) {
       throw TLibraryException(
-        "pthread_cond_wait() or pthread_cond_timedwait() failed");
+          "pthread_cond_wait() or pthread_cond_timedwait() failed");
     }
   }
 
@@ -112,12 +113,10 @@ class Monitor::Impl {
     assert(mutex_->isLocked());
 
     pthread_mutex_t* mutexImpl =
-      reinterpret_cast<pthread_mutex_t*>(mutex_->getUnderlyingImpl());
+        reinterpret_cast<pthread_mutex_t*>(mutex_->getUnderlyingImpl());
     assert(mutexImpl);
 
-    return pthread_cond_timedwait(&pthread_cond_,
-                                  mutexImpl,
-                                  abstime);
+    return pthread_cond_timedwait(&pthread_cond_, mutexImpl, abstime);
   }
 
   /**
@@ -130,11 +129,10 @@ class Monitor::Impl {
     assert(mutex_->isLocked());
 
     pthread_mutex_t* mutexImpl =
-      reinterpret_cast<pthread_mutex_t*>(mutex_->getUnderlyingImpl());
+        reinterpret_cast<pthread_mutex_t*>(mutex_->getUnderlyingImpl());
     assert(mutexImpl);
     return pthread_cond_wait(&pthread_cond_, mutexImpl);
   }
-
 
   void notify() {
     // The caller must lock the mutex before calling notify()
@@ -153,7 +151,6 @@ class Monitor::Impl {
   }
 
  private:
-
   void init(Mutex* mutex) {
     mutex_ = mutex;
 
@@ -186,15 +183,25 @@ Monitor::Monitor() : impl_(new Monitor::Impl()) {}
 Monitor::Monitor(Mutex* mutex) : impl_(new Monitor::Impl(mutex)) {}
 Monitor::Monitor(Monitor* monitor) : impl_(new Monitor::Impl(monitor)) {}
 
-Monitor::~Monitor() { delete impl_; }
+Monitor::~Monitor() {
+  delete impl_;
+}
 
-Mutex& Monitor::mutex() const { return impl_->mutex(); }
+Mutex& Monitor::mutex() const {
+  return impl_->mutex();
+}
 
-void Monitor::lock() const { impl_->lock(); }
+void Monitor::lock() const {
+  impl_->lock();
+}
 
-void Monitor::unlock() const { impl_->unlock(); }
+void Monitor::unlock() const {
+  impl_->unlock();
+}
 
-void Monitor::wait(int64_t timeout) const { impl_->wait(timeout); }
+void Monitor::wait(int64_t timeout) const {
+  impl_->wait(timeout);
+}
 
 int Monitor::waitForTime(const timespec* abstime) const {
   return impl_->waitForTime(abstime);
@@ -208,8 +215,14 @@ int Monitor::waitForever() const {
   return impl_->waitForever();
 }
 
-void Monitor::notify() const { impl_->notify(); }
+void Monitor::notify() const {
+  impl_->notify();
+}
 
-void Monitor::notifyAll() const { impl_->notifyAll(); }
+void Monitor::notifyAll() const {
+  impl_->notifyAll();
+}
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

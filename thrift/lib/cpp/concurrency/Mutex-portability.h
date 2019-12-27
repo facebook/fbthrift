@@ -20,13 +20,13 @@
 #ifdef THRIFT_MUTEX_EMULATE_PTHREAD_TIMEDLOCK
 
 /* Backport of pthread_*_timed*lock() */
-template<class MutexType>
-inline int thrift_pthread_timedlock_impl(MutexType* mutex,
-                                         const timespec* ts,
-                                         int (*lockfunc)(MutexType*),
-                                         int (*trylockfunc)(MutexType*)) {
-  if (!ts ||
-      ((ts->tv_sec == 0) && (ts->tv_nsec == 0))) {
+template <class MutexType>
+inline int thrift_pthread_timedlock_impl(
+    MutexType* mutex,
+    const timespec* ts,
+    int (*lockfunc)(MutexType*),
+    int (*trylockfunc)(MutexType*)) {
+  if (!ts || ((ts->tv_sec == 0) && (ts->tv_nsec == 0))) {
     return lockfunc(mutex);
   }
 
@@ -72,25 +72,23 @@ inline int thrift_pthread_timedlock_impl(MutexType* mutex,
   return EBUSY;
 }
 
-inline int pthread_mutex_timedlock(pthread_mutex_t *mutex,
-                                   const timespec* ts) {
-  return thrift_pthread_timedlock_impl(mutex, ts,
-                                       pthread_mutex_lock,
-                                       pthread_mutex_trylock);
+inline int pthread_mutex_timedlock(pthread_mutex_t* mutex, const timespec* ts) {
+  return thrift_pthread_timedlock_impl(
+      mutex, ts, pthread_mutex_lock, pthread_mutex_trylock);
 }
 
-inline int pthread_rwlock_timedwrlock(pthread_rwlock_t* rwlock,
-                                      const timespec* ts) {
-  return thrift_pthread_timedlock_impl(rwlock, ts,
-                                       pthread_rwlock_wrlock,
-                                       pthread_rwlock_trywrlock);
+inline int pthread_rwlock_timedwrlock(
+    pthread_rwlock_t* rwlock,
+    const timespec* ts) {
+  return thrift_pthread_timedlock_impl(
+      rwlock, ts, pthread_rwlock_wrlock, pthread_rwlock_trywrlock);
 }
 
-inline int pthread_rwlock_timedrdlock(pthread_rwlock_t* rwlock,
-                                      const timespec* ts) {
-  return thrift_pthread_timedlock_impl(rwlock, ts,
-                                       pthread_rwlock_rdlock,
-                                       pthread_rwlock_tryrdlock);
+inline int pthread_rwlock_timedrdlock(
+    pthread_rwlock_t* rwlock,
+    const timespec* ts) {
+  return thrift_pthread_timedlock_impl(
+      rwlock, ts, pthread_rwlock_rdlock, pthread_rwlock_tryrdlock);
 }
 #endif // THRIFT_MUTEX_EMULATE_PTHREAD_TIMEDLOCK
 

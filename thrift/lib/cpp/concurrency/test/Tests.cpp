@@ -15,8 +15,8 @@
  */
 
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include <glog/logging.h>
 
@@ -27,10 +27,9 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::concurrency::test;
 
 int main(int argc, char** argv) {
-
   std::string arg;
 
-  std::vector<std::string>  args(argc - 1 > 1 ? argc - 1 : 1);
+  std::vector<std::string> args(argc - 1 > 1 ? argc - 1 : 1);
 
   args[0] = "all";
 
@@ -45,18 +44,20 @@ int main(int argc, char** argv) {
 
     std::cout << "ThreadFactory tests..." << std::endl;
 
-    size_t count =  1000;
-    size_t floodLoops =  1;
-    size_t floodCount =  100000;
+    size_t count = 1000;
+    size_t floodLoops = 1;
+    size_t floodCount = 100000;
 
     // DCHECK(threadFactoryTests.helloWorldTest());
     DCHECK(threadFactoryTests.getCurrentThreadIdTest());
 
-    std::cout << "\t\tThreadFactory reap N threads test: N = " << count << std::endl;
+    std::cout << "\t\tThreadFactory reap N threads test: N = " << count
+              << std::endl;
 
     DCHECK(threadFactoryTests.reapNThreads(count));
 
-    std::cout << "\t\tThreadFactory floodN threads test: N = " << floodCount << std::endl;
+    std::cout << "\t\tThreadFactory floodN threads test: N = " << floodCount
+              << std::endl;
 
     DCHECK(threadFactoryTests.floodNTest(floodLoops, floodCount));
 
@@ -92,7 +93,8 @@ int main(int argc, char** argv) {
       time01 = Util::currentTime();
     }
 
-    std::cout << "\t\t\tscall per ms: " << count / (time01 - time00) << std::endl;
+    std::cout << "\t\t\tscall per ms: " << count / (time01 - time00)
+              << std::endl;
   }
 
   if (runAll || args[0] == "timer-manager") {

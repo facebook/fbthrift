@@ -21,7 +21,9 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 // ThreadFactory that ties threads to NUMA nodes.
 class NumaThreadFactory : public PosixThreadFactory {
@@ -29,21 +31,22 @@ class NumaThreadFactory : public PosixThreadFactory {
   // if setNode is -1, threads will be round robin spread
   // over nodes.  Otherwise, all threads will be created on
   // setNode node.
-  explicit NumaThreadFactory(int setNode = -1,
-                             int stackSize
-                             = PosixThreadFactory::kDefaultStackSizeMB)
+  explicit NumaThreadFactory(
+      int setNode = -1,
+      int stackSize = PosixThreadFactory::kDefaultStackSizeMB)
       : PosixThreadFactory(
-          PosixThreadFactory::kDefaultPolicy,
-          PosixThreadFactory::kDefaultPriority,
-          stackSize),
+            PosixThreadFactory::kDefaultPolicy,
+            PosixThreadFactory::kDefaultPriority,
+            stackSize),
         setNode_(setNode) {}
 
   // Overridden methods to implement numa binding
   std::shared_ptr<Thread> newThread(
       const std::shared_ptr<Runnable>& runnable) const override;
 
-  std::shared_ptr<Thread> newThread(const std::shared_ptr<Runnable>& runnable,
-                                    DetachState detachState) const override;
+  std::shared_ptr<Thread> newThread(
+      const std::shared_ptr<Runnable>& runnable,
+      DetachState detachState) const override;
 
   // Get the threadlocal describing which node
   // this thread is bound to.
@@ -96,11 +99,10 @@ class NumaThreadManager : public ThreadManager {
     add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false, true);
   }
 
-  explicit NumaThreadManager(size_t normalThreadsCount
-                             = sysconf(_SC_NPROCESSORS_ONLN),
-                             bool enableTaskStats = false,
-                             int threadStackSizeMB
-                             = PosixThreadFactory::kDefaultStackSizeMB);
+  explicit NumaThreadManager(
+      size_t normalThreadsCount = sysconf(_SC_NPROCESSORS_ONLN),
+      bool enableTaskStats = false,
+      int threadStackSizeMB = PosixThreadFactory::kDefaultStackSizeMB);
 
   void start() override {
     for (auto& manager : managers_) {
@@ -226,4 +228,6 @@ class NumaThreadManager : public ThreadManager {
   int workerNode_{0};
 };
 
-}}}
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache

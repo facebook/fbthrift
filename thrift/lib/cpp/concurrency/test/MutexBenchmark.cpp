@@ -24,10 +24,15 @@
 #include <folly/Benchmark.h>
 #include <folly/portability/GFlags.h>
 
-DEFINE_int32(num_threads, 32, "Number of threads to run concurrency "
-                              "benchmarks");
-DEFINE_int32(malloc_contention_bytes, 1024 * 1024,
-             "Size of a large malloc to test effects of contention in malloc");
+DEFINE_int32(
+    num_threads,
+    32,
+    "Number of threads to run concurrency "
+    "benchmarks");
+DEFINE_int32(
+    malloc_contention_bytes,
+    1024 * 1024,
+    "Size of a large malloc to test effects of contention in malloc");
 DEFINE_int32(malloc_contention_time_us, 1, "How long to call malloc in loop");
 DEFINE_int32(spin_us, 0, "Time in us to spin with lock");
 
@@ -41,7 +46,7 @@ void mallocContentionTest(int64_t iters, int64_t mallocTime) {
     std::lock_guard<T> g(m);
     if (mallocTime) {
       auto now = std::chrono::system_clock::now();
-      auto end = now + std::chrono::microseconds {mallocTime};
+      auto end = now + std::chrono::microseconds{mallocTime};
       do {
         now = std::chrono::system_clock::now();
         if (buf) {
@@ -59,7 +64,7 @@ void grabLockNTimes(T& m, int64_t iters) {
     std::lock_guard<T> g(m);
     if (FLAGS_spin_us > 0) {
       auto now = std::chrono::system_clock::now();
-      auto end = now + std::chrono::microseconds {FLAGS_spin_us};
+      auto end = now + std::chrono::microseconds{FLAGS_spin_us};
       do {
         now = std::chrono::system_clock::now();
       } while (now < end);
@@ -67,7 +72,7 @@ void grabLockNTimes(T& m, int64_t iters) {
   }
 }
 
-static void runConcurrently(int64_t numThreads, std::function<void ()> fn) {
+static void runConcurrently(int64_t numThreads, std::function<void()> fn) {
   std::atomic<bool> go(false);
   std::vector<std::thread> threads;
   BENCHMARK_SUSPEND {
@@ -133,17 +138,17 @@ BENCHMARK_DRAW_LINE();
  */
 BENCHMARK(thrift_contended, iters) {
   ThriftMutex m;
-  runConcurrently(FLAGS_num_threads,
-                  [&m, iters]() { grabLockNTimes(m, iters); });
+  runConcurrently(
+      FLAGS_num_threads, [&m, iters]() { grabLockNTimes(m, iters); });
 }
 
 BENCHMARK_RELATIVE(std_contended, iters) {
   std::mutex m;
-  runConcurrently(FLAGS_num_threads,
-                  [&m, iters]() { grabLockNTimes(m, iters); });
+  runConcurrently(
+      FLAGS_num_threads, [&m, iters]() { grabLockNTimes(m, iters); });
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   folly::runBenchmarks();
   return 0;
@@ -157,7 +162,8 @@ thrift mutex.
 
 Consider the following set of results:
 
-_bin/thrift/lib/cpp/concurrency/test/mutex_benchmark --bm_min_iters=10000 --spin_us=5 --num_threads=200
+_bin/thrift/lib/cpp/concurrency/test/mutex_benchmark \
+    --bm_min_iters=10000 --spin_us=5 --num_threads=200
 ============================================================================
 thrift/lib/cpp/concurrency/test/MutexBenchmark.cpprelative  time/iter  iters/s
 ============================================================================

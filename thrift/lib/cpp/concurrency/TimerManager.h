@@ -26,7 +26,9 @@
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
-namespace apache { namespace thrift { namespace concurrency {
+namespace apache {
+namespace thrift {
+namespace concurrency {
 
 /**
  * Timer Manager
@@ -36,9 +38,7 @@ namespace apache { namespace thrift { namespace concurrency {
  * @version $Id:$
  */
 class TimerManager {
-
  public:
-
   TimerManager();
 
   virtual ~TimerManager();
@@ -59,7 +59,7 @@ class TimerManager {
    */
   virtual void stop();
 
-  virtual size_t taskCount() const ;
+  virtual size_t taskCount() const;
 
   /**
    * Adds a task to be executed at some time in the future by a worker thread.
@@ -75,7 +75,9 @@ class TimerManager {
    * @param task The task to execute
    * @param timeout Absolute time in the future to execute task.
    */
-  virtual void add(std::shared_ptr<Runnable> task, const struct timespec& timeout);
+  virtual void add(
+      std::shared_ptr<Runnable> task,
+      const struct timespec& timeout);
 
   /**
    * Removes a pending task
@@ -94,7 +96,7 @@ class TimerManager {
     STARTING,
     STARTED,
     STOPPING,
-    STOPPED
+    STOPPED,
   };
 
   virtual STATE state() const;
@@ -103,7 +105,7 @@ class TimerManager {
   std::shared_ptr<const ThreadFactory> threadFactory_;
   class Task;
   friend class Task;
-  std::multimap<int64_t, std::shared_ptr<Task> > taskMap_;
+  std::multimap<int64_t, std::shared_ptr<Task>> taskMap_;
   std::atomic<size_t> taskCount_;
   Monitor monitor_;
   STATE state_;
@@ -111,10 +113,13 @@ class TimerManager {
   friend class Dispatcher;
   std::shared_ptr<Dispatcher> dispatcher_;
   std::shared_ptr<Thread> dispatcherThread_;
-  typedef std::multimap<int64_t, std::shared_ptr<TimerManager::Task> >::iterator task_iterator;
+  typedef std::multimap<int64_t, std::shared_ptr<TimerManager::Task>>::iterator
+      task_iterator;
   typedef std::pair<task_iterator, task_iterator> task_range;
 };
 
-}}} // apache::thrift::concurrency
+} // namespace concurrency
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_CONCURRENCY_TIMERMANAGER_H_
