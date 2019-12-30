@@ -23,7 +23,9 @@
 
 #include <folly/ThreadLocal.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 const bool RNG::has_fixed_range;
 
@@ -33,9 +35,7 @@ namespace {
 boost::mt19937 seedRNG;
 
 struct RNGImpl {
-  RNGImpl()
-    : rng()
-    , rngWrapper(&rng) {
+  RNGImpl() : rng(), rngWrapper(&rng) {
     // Pick a value from seedRNG to seed this new rng
     rng.seed(seedRNG());
   }
@@ -99,9 +99,11 @@ double RNG::getLogNormal(double mean, double sigma) {
     sigma = mean / 2;
   }
   boost::lognormal_distribution<double> dist(mean, sigma);
-  boost::variate_generator< RNG, boost::lognormal_distribution<double> >
-    gen(getRNG(), dist);
+  boost::variate_generator<RNG, boost::lognormal_distribution<double>> gen(
+      getRNG(), dist);
   return gen();
 }
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache

@@ -17,11 +17,13 @@
 #ifndef THRIFT_TEST_LOADGEN_QPSMONITOR_H_
 #define THRIFT_TEST_LOADGEN_QPSMONITOR_H_ 1
 
-#include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
 #include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
 #include <thrift/lib/cpp/test/loadgen/QpsScoreBoard.h>
+#include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class LoadConfig;
 
@@ -52,7 +54,7 @@ class QpsMonitor : public TerminalMonitor {
   }
 
  private:
-  typedef std::vector< std::shared_ptr<QpsScoreBoard> > ScoreBoardVector;
+  typedef std::vector<std::shared_ptr<QpsScoreBoard>> ScoreBoardVector;
 
   void computeAggregate(QpsScoreBoard* scoreboard);
 
@@ -69,6 +71,8 @@ class QpsMonitor : public TerminalMonitor {
   uint64_t currentQps_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_QPSMONITOR_H_

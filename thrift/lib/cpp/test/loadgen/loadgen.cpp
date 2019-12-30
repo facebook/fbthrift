@@ -16,15 +16,18 @@
 
 #include <thrift/lib/cpp/test/loadgen/loadgen.h>
 
+#include <boost/scoped_ptr.hpp>
 #include <thrift/lib/cpp/test/loadgen/Controller.h>
 #include <thrift/lib/cpp/test/loadgen/LatencyMonitor.h>
-#include <boost/scoped_ptr.hpp>
 
 using namespace boost;
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
-void runLoadGen(WorkerFactory* factory,
+void runLoadGen(
+    WorkerFactory* factory,
     const std::shared_ptr<LoadConfig>& config,
     double interval,
     Monitor* monitor,
@@ -36,9 +39,10 @@ void runLoadGen(WorkerFactory* factory,
   }
 
   Controller controller(factory, monitor, config, threadFactory);
-  controller.run(config->getNumWorkerThreads(),
-                 config->getMaxWorkerThreads(),
-                 interval);
+  controller.run(
+      config->getNumWorkerThreads(), config->getMaxWorkerThreads(), interval);
 }
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache

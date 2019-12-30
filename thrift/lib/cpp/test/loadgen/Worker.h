@@ -19,15 +19,17 @@
 
 #include <thrift/lib/cpp/test/loadgen/WorkerIf.h>
 
+#include <thrift/lib/cpp/TLogging.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
 #include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
-#include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp/TLogging.h>
 
 #include <memory>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 /**
  * Main Worker implementation
@@ -56,11 +58,11 @@ class Worker : public WorkerIf {
   };
 
   Worker()
-    : id_(-1)
-    , alive_(false)
-    , intervalTimer_(nullptr)
-    , config_()
-    , scoreboard_() {}
+      : id_(-1),
+        alive_(false),
+        intervalTimer_(nullptr),
+        config_(),
+        scoreboard_() {}
 
   Worker(const Worker&) = delete;
   Worker& operator=(const Worker&) = delete;
@@ -77,10 +79,11 @@ class Worker : public WorkerIf {
    * specific initialization after the config object has been set, it can
    * override init().
    */
-  void init(int id,
-            const std::shared_ptr<ConfigT>& config,
-            const std::shared_ptr<ScoreBoard>& scoreboard,
-            IntervalTimer* itimer) {
+  void init(
+      int id,
+      const std::shared_ptr<ConfigT>& config,
+      const std::shared_ptr<ScoreBoard>& scoreboard,
+      IntervalTimer* itimer) {
     assert(id_ == -1);
     assert(!config_);
     id_ = id;
@@ -108,8 +111,9 @@ class Worker : public WorkerIf {
    *
    * Subclasses must implement this method.
    */
-  virtual void performOperation(const std::shared_ptr<ClientT>& client,
-                                uint32_t opType) = 0;
+  virtual void performOperation(
+      const std::shared_ptr<ClientT>& client,
+      uint32_t opType) = 0;
 
   /**
    * Determine how to handle an exception raised by createConnection().
@@ -118,8 +122,11 @@ class Worker : public WorkerIf {
    * Subclasses may override this function to provide alternate behavior.
    */
   virtual ErrorAction handleConnError(const std::exception& ex) {
-    T_ERROR("worker %d caught %s exception while connecting: %s",
-            id_, typeid(ex).name(), ex.what());
+    T_ERROR(
+        "worker %d caught %s exception while connecting: %s",
+        id_,
+        typeid(ex).name(),
+        ex.what());
     return EA_ABORT;
   }
 
@@ -131,9 +138,12 @@ class Worker : public WorkerIf {
    * alternate behavior.
    */
   virtual ErrorAction handleOpError(uint32_t opType, const std::exception& ex) {
-    T_ERROR("worker %d caught %s exception performing operation %s: %s",
-            id_, typeid(ex).name(), config_->getOpName(opType).c_str(),
-            ex.what());
+    T_ERROR(
+        "worker %d caught %s exception performing operation %s: %s",
+        id_,
+        typeid(ex).name(),
+        config_->getOpName(opType).c_str(),
+        ex.what());
     return EA_NEXT_CONNECTION;
   }
 
@@ -174,8 +184,10 @@ class Worker : public WorkerIf {
           T_ERROR("worker %d causing abort after connection error", id_);
           abort();
         } else {
-          T_ERROR("worker %d received unknown conn error action %d; aborting",
-                  id_, action);
+          T_ERROR(
+              "worker %d received unknown conn error action %d; aborting",
+              id_,
+              action);
           abort();
         }
       }
@@ -185,7 +197,7 @@ class Worker : public WorkerIf {
 
       // Perform operations on the connection
       for (uint32_t n = 0; n < nops; ++n) {
-       // Only send as fast as requested
+        // Only send as fast as requested
         if (!intervalTimer_->sleep()) {
           T_ERROR("can't keep up with requested QPS rate");
         }
@@ -212,8 +224,10 @@ class Worker : public WorkerIf {
             T_ERROR("worker %d causing abort after op %d error", id_, opType);
             abort();
           } else {
-            T_ERROR("worker %d received unknown op error action %d; aborting",
-                    id_, action);
+            T_ERROR(
+                "worker %d received unknown op error action %d; aborting",
+                id_,
+                action);
             abort();
           }
         }
@@ -224,7 +238,9 @@ class Worker : public WorkerIf {
     alive_ = false;
   }
 
-  bool isAlive() const override { return alive_; }
+  bool isAlive() const override {
+    return alive_;
+  }
 
  protected:
   // Methods needed for overriding ::run
@@ -244,22 +260,22 @@ class Worker : public WorkerIf {
   std::shared_ptr<ScoreBoard> scoreboard_;
 };
 
-
 /**
  * Default WorkerFactory implementation.
  *
  * This factory creates Worker objects using the default constructor,
  * then calls init(id, config, scoreboard) on each worker before returning it.
  */
-template<typename WorkerT, typename ConfigT = LoadConfig>
+template <typename WorkerT, typename ConfigT = LoadConfig>
 class SimpleWorkerFactory : public WorkerFactory {
  public:
   explicit SimpleWorkerFactory(const std::shared_ptr<ConfigT>& config)
-    : config_(config) {}
+      : config_(config) {}
 
-  WorkerT* newWorker(int id,
-                     const std::shared_ptr<ScoreBoard>& scoreboard,
-                     IntervalTimer* itimer) override {
+  WorkerT* newWorker(
+      int id,
+      const std::shared_ptr<ScoreBoard>& scoreboard,
+      IntervalTimer* itimer) override {
     std::unique_ptr<WorkerT> worker(new WorkerT);
     worker->init(id, config_, scoreboard, itimer);
     return worker.release();
@@ -268,6 +284,8 @@ class SimpleWorkerFactory : public WorkerFactory {
   std::shared_ptr<ConfigT> config_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_WORKER_H_

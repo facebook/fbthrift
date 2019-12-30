@@ -19,7 +19,9 @@
 
 #include <thrift/lib/cpp/test/loadgen/Monitor.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 /**
  * A Monitor object that prints statistics to a terminal.
@@ -78,6 +80,8 @@ class TerminalMonitor : public Monitor {
   uint32_t linesPrinted_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_TERMINALMONITOR_H_

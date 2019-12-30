@@ -19,13 +19,14 @@
 
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace concurrency {
 
 class PosixThreadFactory;
 
-} // apache::thrift::concurrency
+} // namespace concurrency
 
 namespace loadgen {
 
@@ -42,7 +43,8 @@ class Monitor;
  * @param monitor     The Monitor to use for printing statistics.  If nullptr,
  *                    a LatencyMonitor will be used.
  */
-void runLoadGen(WorkerFactory* factory,
+void runLoadGen(
+    WorkerFactory* factory,
     const std::shared_ptr<LoadConfig>& config,
     double interval = 1.0,
     Monitor* monitor = nullptr,
@@ -54,8 +56,9 @@ void runLoadGen(WorkerFactory* factory,
  * This is a helper function around runLoadGen() that automatically creates a
  * SimpleWorkerFactory.
  */
-template<typename WorkerT, typename ConfigT>
-void runLoadGen(const std::shared_ptr<ConfigT>& config,
+template <typename WorkerT, typename ConfigT>
+void runLoadGen(
+    const std::shared_ptr<ConfigT>& config,
     double interval = 1.0,
     Monitor* monitor = nullptr,
     apache::thrift::concurrency::PosixThreadFactory* threadFactory = nullptr) {
@@ -69,14 +72,17 @@ void runLoadGen(const std::shared_ptr<ConfigT>& config,
  * This is a helper function around runLoadGen() that automatically creates a
  * SimpleWorkerFactory.
  */
-template<typename WorkerT>
-void runLoadGen(const std::shared_ptr<LoadConfig>& config,
+template <typename WorkerT>
+void runLoadGen(
+    const std::shared_ptr<LoadConfig>& config,
     double interval = 1.0,
     Monitor* monitor = nullptr,
     apache::thrift::concurrency::PosixThreadFactory* threadFactory = nullptr) {
   runLoadGen<WorkerT, LoadConfig>(config, interval, monitor, threadFactory);
 }
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_LOADGEN_H_

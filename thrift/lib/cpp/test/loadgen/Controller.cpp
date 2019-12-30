@@ -22,12 +22,14 @@
 #include <thrift/lib/cpp/test/loadgen/Monitor.h>
 #include <thrift/lib/cpp/test/loadgen/WorkerIf.h>
 
-using std::shared_ptr;
 using apache::thrift::concurrency::PosixThreadFactory;
-using apache::thrift::concurrency::Thread;
 using apache::thrift::concurrency::Synchronized;
+using apache::thrift::concurrency::Thread;
+using std::shared_ptr;
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class Controller::WorkerRunner : public concurrency::Runnable {
  public:
@@ -42,20 +44,23 @@ class Controller::WorkerRunner : public concurrency::Runnable {
   Controller* controller_;
 };
 
-Controller::Controller(WorkerFactory* factory, Monitor* monitor,
-                       std::shared_ptr<LoadConfig> config,
-                       PosixThreadFactory* threadFactory)
-  : numThreads_(0)
-  , maxThreads_(0)
-  , workerFactory_(factory)
-  , monitor_(monitor)
-  , intervalTimer_(0)
-  , config_(config)
-  , threadFactory_(threadFactory) {
-}
+Controller::Controller(
+    WorkerFactory* factory,
+    Monitor* monitor,
+    std::shared_ptr<LoadConfig> config,
+    PosixThreadFactory* threadFactory)
+    : numThreads_(0),
+      maxThreads_(0),
+      workerFactory_(factory),
+      monitor_(monitor),
+      intervalTimer_(0),
+      config_(config),
+      threadFactory_(threadFactory) {}
 
-void Controller::run(uint32_t numThreads, uint32_t maxThreads,
-                     double monitorInterval) {
+void Controller::run(
+    uint32_t numThreads,
+    uint32_t maxThreads,
+    double monitorInterval) {
   maxThreads_ = maxThreads;
 
   // start all of the worker threads
@@ -66,9 +71,8 @@ void Controller::run(uint32_t numThreads, uint32_t maxThreads,
 }
 
 void Controller::createWorkerThreads(uint32_t numThreads) {
-  const PosixThreadFactory& threadFactory = threadFactory_ ?
-    *threadFactory_ :
-    PosixThreadFactory();
+  const PosixThreadFactory& threadFactory =
+      threadFactory_ ? *threadFactory_ : PosixThreadFactory();
 
   for (uint32_t n = 0; n < numThreads; ++n) {
     shared_ptr<WorkerRunner> runner(new WorkerRunner(this));
@@ -102,9 +106,9 @@ void Controller::startWorkers(uint32_t numThreads) {
 
 void Controller::runMonitor(double interval) {
   unsigned long intervalUsec =
-    static_cast<unsigned long>(interval * concurrency::Util::US_PER_S);
+      static_cast<unsigned long>(interval * concurrency::Util::US_PER_S);
   unsigned long intervalNsec =
-    static_cast<unsigned long>(interval * concurrency::Util::NS_PER_S);
+      static_cast<unsigned long>(interval * concurrency::Util::NS_PER_S);
   IntervalTimer itimer(intervalNsec);
 
   itimer.start();
@@ -135,15 +139,15 @@ void Controller::runMonitor(double interval) {
 
       if (currentQps < desiredQps) {
         uint32_t numNewWorkerThreads =
-          (desiredQps - currentQps) * numThreads_ / currentQps;
+            (desiredQps - currentQps) * numThreads_ / currentQps;
         numNewWorkerThreads =
-          std::min(numNewWorkerThreads, maxThreads_ - numThreads_);
+            std::min(numNewWorkerThreads, maxThreads_ - numThreads_);
 
         createWorkerThreads(numNewWorkerThreads);
         numThreads_ += numNewWorkerThreads;
 
-        T_LOG_OPER("Total worker threads: %u (max %u)",
-                   numThreads_, maxThreads_);
+        T_LOG_OPER(
+            "Total worker threads: %u (max %u)", numThreads_, maxThreads_);
       }
     }
   }
@@ -173,8 +177,8 @@ shared_ptr<WorkerIf> Controller::createWorker() {
   // Create the worker
   int id = workers_.size();
   shared_ptr<ScoreBoard> scoreboard(monitor_->newScoreBoard(id));
-  shared_ptr<WorkerIf> worker(workerFactory_->newWorker(id, scoreboard,
-                                                        &intervalTimer_));
+  shared_ptr<WorkerIf> worker(
+      workerFactory_->newWorker(id, scoreboard, &intervalTimer_));
 
   // Add the worker to the workers_ array,
   // and notify anyone waiting that we have updated workers_
@@ -189,4 +193,6 @@ shared_ptr<WorkerIf> Controller::createWorker() {
   return worker;
 }
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache

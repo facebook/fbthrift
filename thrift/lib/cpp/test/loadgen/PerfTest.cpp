@@ -23,9 +23,9 @@
 
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-#include <thrift/lib/cpp/test/loadgen/loadgen.h>
 #include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
+#include <thrift/lib/cpp/test/loadgen/loadgen.h>
 
 #include "common/config/Flags.h"
 
@@ -37,33 +37,40 @@ DEFINE_bool(qps_monitor, false, "use the simple QPS monitor");
 using std::shared_ptr;
 namespace loadgen = apache::thrift::loadgen;
 
-
 class PerfLoadConfig : public loadgen::LoadConfig {
  public:
-  uint32_t getNumOpTypes() const override { return 1; }
+  uint32_t getNumOpTypes() const override {
+    return 1;
+  }
 
-  uint32_t pickOpType() override { return 0; }
+  uint32_t pickOpType() override {
+    return 0;
+  }
 
-  uint32_t pickOpsPerConnection() override { return FLAGS_ops_per_conn; }
+  uint32_t pickOpsPerConnection() override {
+    return FLAGS_ops_per_conn;
+  }
 
-  uint32_t getNumWorkerThreads() const override { return FLAGS_num_threads; }
+  uint32_t getNumWorkerThreads() const override {
+    return FLAGS_num_threads;
+  }
 
   std::string getOpName(uint32_t /* opType */) override {
     return "noop";
   }
 };
 
-
 class PerfWorker : public loadgen::Worker<void, PerfLoadConfig> {
  public:
-  shared_ptr<void> createConnection() override { return shared_ptr<void>(); }
+  shared_ptr<void> createConnection() override {
+    return shared_ptr<void>();
+  }
 
   void performOperation(const shared_ptr<void>& /* client */, uint32_t /* op */)
       override {
     return;
   }
 };
-
 
 int main(int argc, char* argv[]) {
   facebook::config::Flags::initFlags(&argc, &argv, true);

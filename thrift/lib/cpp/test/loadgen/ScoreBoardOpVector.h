@@ -20,10 +20,12 @@
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 
 #include <assert.h>
-#include <vector>
 #include <stddef.h>
+#include <vector>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 /**
  * A vector of per-operation scoreboard data.
@@ -35,7 +37,7 @@ namespace apache { namespace thrift { namespace loadgen {
  * - a zero() method
  * - an accumulate() method
  */
-template<typename OpDataT>
+template <typename OpDataT>
 class ScoreBoardOpVector {
  private:
   typedef std::vector<OpDataT> DataVector;
@@ -74,8 +76,7 @@ class ScoreBoardOpVector {
     }
 
     uint32_t index = 0;
-    for (ConstIterator it = other->opData_.begin();
-         it != other->opData_.end();
+    for (ConstIterator it = other->opData_.begin(); it != other->opData_.end();
          ++it, ++index) {
       opData_[index].accumulate(&(*it));
     }
@@ -120,6 +121,8 @@ class ScoreBoardOpVector {
   DataVector opData_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_SCOREBOARDOPVECTOR_H_

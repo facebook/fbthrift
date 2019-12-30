@@ -21,7 +21,9 @@
 
 #include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class ScoreBoard;
 
@@ -50,7 +52,6 @@ class WorkerIf {
   virtual bool isAlive() const = 0;
 };
 
-
 /**
  * WorkerFactory
  */
@@ -58,11 +59,14 @@ class WorkerFactory {
  public:
   virtual ~WorkerFactory() {}
 
-  virtual WorkerIf* newWorker(int id,
-                              const std::shared_ptr<ScoreBoard>& sb,
-                              IntervalTimer* itimer) = 0;
+  virtual WorkerIf* newWorker(
+      int id,
+      const std::shared_ptr<ScoreBoard>& sb,
+      IntervalTimer* itimer) = 0;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_WORKERIF_H_

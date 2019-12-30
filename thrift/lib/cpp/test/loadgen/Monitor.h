@@ -17,11 +17,13 @@
 #ifndef THRIFT_TEST_LOADGEN_MONITOR_H_
 #define THRIFT_TEST_LOADGEN_MONITOR_H_ 1
 
+#include <stdint.h>
 #include <memory>
 #include <vector>
-#include <stdint.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class ScoreBoard;
 
@@ -67,9 +69,13 @@ class Monitor {
    * Get current QPS.
    *
    */
-  virtual uint64_t getCurrentQps() { return 0; }
+  virtual uint64_t getCurrentQps() {
+    return 0;
+  }
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_MONITOR_H_

@@ -19,7 +19,9 @@
 
 #include <inttypes.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 /**
  * A ScoreBoard object keeps statistics for a Worker.
@@ -52,6 +54,8 @@ class ScoreBoard {
   virtual void opFailed(uint32_t opType) = 0;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_SCOREBOARD_H_

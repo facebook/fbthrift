@@ -18,24 +18,25 @@
 
 #include <thrift/lib/cpp/test/loadgen/WeightedLoadConfig.h>
 
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include <thrift/lib/cpp/Thrift.h>
 
 using namespace std;
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
-WeightedLoadConfig::WeightedLoadConfig(uint32_t numOps)
-    : weightsSum_(0) {
-
+WeightedLoadConfig::WeightedLoadConfig(uint32_t numOps) : weightsSum_(0) {
   weights_.resize(numOps, 0);
   names_.resize(numOps, "");
 }
 
-void WeightedLoadConfig::setOpInfo(uint32_t opType,
-                                   const string& name,
-                                   uint32_t weight) {
+void WeightedLoadConfig::setOpInfo(
+    uint32_t opType,
+    const string& name,
+    uint32_t weight) {
   if (opType >= weights_.size()) {
     throw TLibraryException("setOpInfo() called with invalid op type");
   }
@@ -75,8 +76,10 @@ uint32_t WeightedLoadConfig::pickOpType() {
   }
 
   // This should never happen.
-  T_ERROR("random number %" PRIu32 " exceeded max %" PRIu32,
-          weightsSum_ + value, weightsSum_ - 1);
+  T_ERROR(
+      "random number %" PRIu32 " exceeded max %" PRIu32,
+      weightsSum_ + value,
+      weightsSum_ - 1);
   abort();
 }
 
@@ -96,4 +99,6 @@ void WeightedLoadConfig::configureEnabledState(OpEnabledState* state) const {
   }
 }
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache

@@ -27,21 +27,22 @@
 using namespace boost;
 using namespace apache::thrift::concurrency;
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 enum {
-  US_PER_S = concurrency::Util::US_PER_S
+  US_PER_S = concurrency::Util::US_PER_S,
 };
 
 QpsMonitor::QpsMonitor(const std::shared_ptr<LoadConfig>& config)
-  : initialTime_(0)
-  , initialSum_(0)
-  , printAllTime_(true)
-  , enabledState_(config->getNumOpTypes())
-  , aggregateScoreBoard_(config->getNumOpTypes())
-  , config_(config)
-  , currentQps_(0) {
-}
+    : initialTime_(0),
+      initialSum_(0),
+      printAllTime_(true),
+      enabledState_(config->getNumOpTypes()),
+      aggregateScoreBoard_(config->getNumOpTypes()),
+      config_(config),
+      currentQps_(0) {}
 
 std::shared_ptr<ScoreBoard> QpsMonitor::newScoreBoard(int /* id */) {
   std::shared_ptr<QpsScoreBoard> scoreboard(
@@ -146,8 +147,8 @@ uint32_t QpsMonitor::printInfo(uint64_t intervalUsec) {
   // Print the all-time queries per second
   if (printAllTime_) {
     int64_t now = Util::currentTimeUsec();
-    uint64_t allTimeQps = ((US_PER_S * (currentSum - initialSum_)) /
-                           (now - initialTime_));
+    uint64_t allTimeQps =
+        ((US_PER_S * (currentSum - initialSum_)) / (now - initialTime_));
     printf("%10" PRIu64, allTimeQps);
   }
 
@@ -176,4 +177,6 @@ void QpsMonitor::computeAggregate(QpsScoreBoard* scoreboard) {
   }
 }
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache

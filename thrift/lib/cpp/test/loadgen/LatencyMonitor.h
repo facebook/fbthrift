@@ -17,11 +17,13 @@
 #ifndef THRIFT_TEST_LOADGEN_LATENCYMONITOR_H_
 #define THRIFT_TEST_LOADGEN_LATENCYMONITOR_H_ 1
 
-#include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
-#include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
 #include <thrift/lib/cpp/test/loadgen/LatencyScoreBoard.h>
+#include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
+#include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class LoadConfig;
 
@@ -45,9 +47,7 @@ class LatencyMonitor : public TerminalMonitor {
 
   struct FieldInfo {
     explicit FieldInfo(FieldEnum f, int w = -1)
-      : field(f)
-      , width(w)
-      , dynamicWidth(true) {}
+        : field(f), width(w), dynamicWidth(true) {}
 
     FieldEnum field;
     int width;
@@ -76,28 +76,30 @@ class LatencyMonitor : public TerminalMonitor {
   uint64_t getCurrentQps() override;
 
  private:
-  typedef std::vector< std::shared_ptr<LatencyScoreBoard> > ScoreBoardVector;
+  typedef std::vector<std::shared_ptr<LatencyScoreBoard>> ScoreBoardVector;
 
   void printOpHeader(FieldInfoVector* fields);
-  void printOpInfo(FieldInfoVector* fields,
-                   const LatencyScoreBoard::OpData* current,
-                   const LatencyScoreBoard::OpData* prev,
-                   const LatencyScoreBoard::OpData* initial,
-                   uint64_t intervalUsec,
-                   uint64_t allTimeUsec);
+  void printOpInfo(
+      FieldInfoVector* fields,
+      const LatencyScoreBoard::OpData* current,
+      const LatencyScoreBoard::OpData* prev,
+      const LatencyScoreBoard::OpData* initial,
+      uint64_t intervalUsec,
+      uint64_t allTimeUsec);
 
   uint32_t getFieldVectorWidth(const FieldInfoVector* fields) const;
-  const char *getFieldName(FieldEnum field) const;
+  const char* getFieldName(FieldEnum field) const;
   uint32_t getDefaultFieldWidth(FieldEnum field) const;
 
-  void formatFieldValue(FieldEnum field,
-                        char* buf,
-                        size_t buflen,
-                        const LatencyScoreBoard::OpData* current,
-                        const LatencyScoreBoard::OpData* prev,
-                        const LatencyScoreBoard::OpData* initial,
-                        uint64_t intervalUsec,
-                        uint64_t allTimeUsec);
+  void formatFieldValue(
+      FieldEnum field,
+      char* buf,
+      size_t buflen,
+      const LatencyScoreBoard::OpData* current,
+      const LatencyScoreBoard::OpData* prev,
+      const LatencyScoreBoard::OpData* initial,
+      uint64_t intervalUsec,
+      uint64_t allTimeUsec);
   void formatLatency(char* buf, size_t buflen, double pct);
   void formatLatency(char* buf, size_t buflen, double avg, double stddev);
 
@@ -128,6 +130,8 @@ class LatencyMonitor : public TerminalMonitor {
   uint64_t currentQps_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_LATENCYMONITOR_H_

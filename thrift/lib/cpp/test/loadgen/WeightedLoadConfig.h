@@ -22,7 +22,9 @@
 #include <string>
 #include <vector>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class OpEnabledState;
 
@@ -30,9 +32,7 @@ class WeightedLoadConfig : public LoadConfig {
  public:
   WeightedLoadConfig(uint32_t numOps);
 
-  void setOpInfo(uint32_t opType,
-                 const std::string& name,
-                 uint32_t weight);
+  void setOpInfo(uint32_t opType, const std::string& name, uint32_t weight);
   uint32_t getOpWeight(uint32_t opType);
 
   uint32_t getNumOpTypes() const override;
@@ -53,6 +53,8 @@ class WeightedLoadConfig : public LoadConfig {
   std::vector<std::string> names_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_WEIGHTEDLOADCONFIG_H_

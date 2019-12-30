@@ -22,7 +22,9 @@
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 /**
  * A ScoreBoard that tracks number of queries per second, as well as
@@ -62,8 +64,7 @@ class LatencyScoreBoard : public ScoreBoard {
   };
 
   explicit LatencyScoreBoard(uint32_t numOpsHint)
-    : startTime_(0)
-    , opData_(numOpsHint) {}
+      : startTime_(0), opData_(numOpsHint) {}
 
   void opStarted(uint32_t opType) override;
   void opSucceeded(uint32_t opType) override;
@@ -98,6 +99,8 @@ class LatencyScoreBoard : public ScoreBoard {
   ScoreBoardOpVector<OpData> opData_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_LATENCYSCOREBOARD_H_

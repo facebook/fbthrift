@@ -17,13 +17,15 @@
 #ifndef THRIFT_TEST_LOADGEN_INTERVALTIMER_H_
 #define THRIFT_TEST_LOADGEN_INTERVALTIMER_H_ 1
 
-#include <thrift/lib/cpp/concurrency/Util.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/TLogging.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
+#include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <folly/portability/Unistd.h>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 /**
  * IntervalTimer helps perform tasks at a desired rate.
@@ -48,18 +50,18 @@ class IntervalTimer {
    *                      timer goes too fast in order to catch up to the
    *                      average rate.
    */
-  IntervalTimer(uint64_t intervalNsec,
-                uint64_t maxBacklog = 3 * concurrency::Util::US_PER_S)
-    : numTimes_(0)
-    , intervalNsec_(intervalNsec)
-    , intervalStart_(0)
-    , maxBacklog_(maxBacklog) { }
+  IntervalTimer(
+      uint64_t intervalNsec,
+      uint64_t maxBacklog = 3 * concurrency::Util::US_PER_S)
+      : numTimes_(0),
+        intervalNsec_(intervalNsec),
+        intervalStart_(0),
+        maxBacklog_(maxBacklog) {}
 
   void setIntervalNsec(uint64_t interval) {
     concurrency::Guard guard(mutex_);
     intervalNsec_ = interval;
-    intervalStart_ = intervalStart_ ? concurrency::Util::currentTimeUsec()
-                                    : 0;
+    intervalStart_ = intervalStart_ ? concurrency::Util::currentTimeUsec() : 0;
     numTimes_ = 0;
   }
 
@@ -68,10 +70,11 @@ class IntervalTimer {
    */
   void setRatePerSec(uint64_t rate) {
     concurrency::Guard guard(mutex_);
-    if (rate == 0) intervalNsec_ = 0;
-    else intervalNsec_ = concurrency::Util::NS_PER_S / rate;
-    intervalStart_ = intervalStart_ ? concurrency::Util::currentTimeUsec()
-                                    : 0;
+    if (rate == 0)
+      intervalNsec_ = 0;
+    else
+      intervalNsec_ = concurrency::Util::NS_PER_S / rate;
+    intervalStart_ = intervalStart_ ? concurrency::Util::currentTimeUsec() : 0;
     numTimes_ = 0;
   }
 
@@ -96,7 +99,6 @@ class IntervalTimer {
     if (intervalNsec_ == 0) {
       return true;
     }
-
 
     uint64_t waitUntil, now;
     {
@@ -142,6 +144,8 @@ class IntervalTimer {
   concurrency::Mutex mutex_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_INTERVALTIMER_H_

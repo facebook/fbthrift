@@ -18,16 +18,17 @@
 #define THRIFT_TEST_LOADGEN_CONTROLLER_H_ 1
 
 #include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 #include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
+#include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace concurrency {
 
 class PosixThreadFactory;
 
-} // apache::thrift::concurrency
+} // namespace concurrency
 
 namespace loadgen {
 
@@ -37,19 +38,21 @@ class Monitor;
 
 class Controller {
  public:
-  Controller(WorkerFactory* factory, Monitor* monitor,
+  Controller(
+      WorkerFactory* factory,
+      Monitor* monitor,
       std::shared_ptr<LoadConfig> config,
       apache::thrift::concurrency::PosixThreadFactory* threadFactory = nullptr);
 
   Controller(const Controller&) = delete;
   Controller& operator=(const Controller&) = delete;
 
-  void run(uint32_t numThreads, uint32_t maxThreads,
-      double monitorInterval = 1.0);
+  void
+  run(uint32_t numThreads, uint32_t maxThreads, double monitorInterval = 1.0);
 
  private:
   class WorkerRunner;
-  typedef std::vector< std::shared_ptr<WorkerIf> > WorkerVector;
+  typedef std::vector<std::shared_ptr<WorkerIf>> WorkerVector;
 
   void createWorkerThreads(uint32_t numThreads);
   void startWorkers(uint32_t numThreads);
@@ -67,6 +70,8 @@ class Controller {
   apache::thrift::concurrency::PosixThreadFactory* threadFactory_;
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_CONTROLLER_H_

@@ -18,10 +18,12 @@
 #define THRIFT_TEST_LOADGEN_LOADCONFIG_H_ 1
 
 #include <boost/random.hpp>
-#include <string>
 #include <inttypes.h>
+#include <string>
 
-namespace apache { namespace thrift { namespace loadgen {
+namespace apache {
+namespace thrift {
+namespace loadgen {
 
 class LoadConfig {
  public:
@@ -70,6 +72,8 @@ class LoadConfig {
   }
 };
 
-}}} // apache::thrift::loadgen
+} // namespace loadgen
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_LOADGEN_LOADCONFIG_H_
