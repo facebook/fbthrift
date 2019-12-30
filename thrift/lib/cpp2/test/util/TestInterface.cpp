@@ -29,18 +29,22 @@ void TestInterface::sendResponse(std::string& _return, int64_t size) {
   _return = fmt::format("test{0}", size);
 }
 
-void TestInterface::noResponse(int64_t size) { usleep(size); }
+void TestInterface::noResponse(int64_t size) {
+  usleep(size);
+}
 
-void TestInterface::voidResponse() { }
+void TestInterface::voidResponse() {}
 
-void TestInterface::echoRequest(std::string& _return,
-                                std::unique_ptr<std::string> req) {
+void TestInterface::echoRequest(
+    std::string& _return,
+    std::unique_ptr<std::string> req) {
   _return = *req + kEchoSuffix;
 }
 
 typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>> StringCob;
 void TestInterface::async_tm_serializationTest(
-    std::unique_ptr<StringCob> callback, bool) {
+    std::unique_ptr<StringCob> callback,
+    bool) {
   std::unique_ptr<std::string> sp(new std::string("hello world"));
   callback->result(std::move(sp));
 }
@@ -54,8 +58,9 @@ void TestInterface::async_eb_eventBaseAsync(
 void TestInterface::async_tm_notCalledBack(
     std::unique_ptr<apache::thrift::HandlerCallback<void>>) {}
 
-void TestInterface::echoIOBuf(std::unique_ptr<folly::IOBuf>& ret,
-                              std::unique_ptr<folly::IOBuf> buf) {
+void TestInterface::echoIOBuf(
+    std::unique_ptr<folly::IOBuf>& ret,
+    std::unique_ptr<folly::IOBuf> buf) {
   ret = std::move(buf);
   folly::io::Appender cursor(ret.get(), kEchoSuffix.size());
   cursor.push(folly::StringPiece(kEchoSuffix.data(), kEchoSuffix.size()));

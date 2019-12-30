@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 
 struct TestHeaderClientChannelFactory : public TestClientChannelFactory {
  public:

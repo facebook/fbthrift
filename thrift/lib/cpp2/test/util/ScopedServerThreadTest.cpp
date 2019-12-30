@@ -22,8 +22,8 @@
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include <iostream>
 #include <folly/portability/GTest.h>
+#include <iostream>
 #include <stdexcept>
 
 using namespace apache::thrift;
@@ -36,7 +36,9 @@ using namespace testing;
 class DummyServiceHandler : virtual public facebook::fb303::FacebookBase2 {
  public:
   DummyServiceHandler() : FacebookBase2("dummy") {}
-  cpp2::fb_status getStatus() override { return cpp2::fb_status::ALIVE; }
+  cpp2::fb_status getStatus() override {
+    return cpp2::fb_status::ALIVE;
+  }
 };
 
 TEST(ScopedServerThreadTest, BindFailure) {
@@ -46,8 +48,7 @@ TEST(ScopedServerThreadTest, BindFailure) {
   folly::SocketAddress squattingAddress;
   squattingAddress.setFromLocalPort(static_cast<uint16_t>(0));
   squattingServer->setAddress(squattingAddress);
-  auto squattingThread = std::make_unique<ScopedServerThread>(
-      squattingServer);
+  auto squattingThread = std::make_unique<ScopedServerThread>(squattingServer);
 
   // Try to start another server on the same port.
   auto server = make_shared<ThriftServer>();

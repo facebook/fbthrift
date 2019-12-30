@@ -31,7 +31,9 @@ using namespace apache::thrift::concurrency;
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 
 /**
  * ScopedServerThread::Helper runs the server loop in the new server thread.
@@ -39,8 +41,7 @@ namespace apache { namespace thrift { namespace util {
  * It also provides a waitUntilStarted() method that the main thread can use to
  * block until the server has started listening for new connections.
  */
-class ScopedServerThread::Helper : public Runnable,
-                                   public TServerEventHandler {
+class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
  public:
   Helper() : state_(STATE_NOT_STARTED) {}
 
@@ -83,13 +84,14 @@ class ScopedServerThread::Helper : public Runnable,
   enum StateEnum {
     STATE_NOT_STARTED,
     STATE_RUNNING,
-    STATE_START_ERROR
+    STATE_START_ERROR,
   };
 
   class EventHandler : public TServerEventHandler {
    public:
     explicit EventHandler(const shared_ptr<Helper>& outer) : outer_(outer) {}
     void preServe(const folly::SocketAddress* address) override;
+
    private:
     weak_ptr<Helper> outer_;
   };
@@ -101,19 +103,21 @@ class ScopedServerThread::Helper : public Runnable,
     virtual void rethrow() = 0;
   };
 
-  template<typename ExceptionT>
+  template <typename ExceptionT>
   class SavedExceptionImpl : public SavedException {
    public:
     explicit SavedExceptionImpl(const ExceptionT& x) : exception_(x) {}
 
-    void rethrow() override { throw exception_; }
+    void rethrow() override {
+      throw exception_;
+    }
 
    private:
     ExceptionT exception_;
   };
 
   // Attempt to downcast to a specific type to avoid slicing.
-  template<typename ExceptionT>
+  template <typename ExceptionT>
   bool tryHandleServeError(const std::exception& x) {
     auto e = dynamic_cast<const ExceptionT*>(&x);
     if (e) {
@@ -127,12 +131,12 @@ class ScopedServerThread::Helper : public Runnable,
   // state as possible.
   void handleServeError(const std::exception& x) override {
     tryHandleServeError<TTransportException>(x) ||
-    tryHandleServeError<TException>(x) ||
-    tryHandleServeError<std::system_error>(x) ||
-    tryHandleServeError<std::exception>(x);
+        tryHandleServeError<TException>(x) ||
+        tryHandleServeError<std::system_error>(x) ||
+        tryHandleServeError<std::exception>(x);
   }
 
-  template<typename ExceptionT>
+  template <typename ExceptionT>
   void handleServeError(const ExceptionT& x) {
     if (eventHandler_ && *eventHandler_) {
       (*eventHandler_)->handleServeError(x);
@@ -149,8 +153,10 @@ class ScopedServerThread::Helper : public Runnable,
     } else {
       // The error occurred during normal server execution.
       // Just log an error message.
-      T_ERROR("ScopedServerThread: serve() raised a %s while running: %s",
-              typeid(x).name(), x.what());
+      T_ERROR(
+          "ScopedServerThread: serve() raised a %s while running: %s",
+          typeid(x).name(),
+          x.what());
     }
   }
 
@@ -218,8 +224,7 @@ void ScopedServerThread::Helper::waitUntilStarted() {
   }
 }
 
-void ScopedServerThread::Helper::preServe(
-    const folly::SocketAddress* address) {
+void ScopedServerThread::Helper::preServe(const folly::SocketAddress* address) {
   // Save a copy of the address
   address_ = *address;
 
@@ -254,8 +259,7 @@ void ScopedServerThread::Helper::EventHandler::preServe(
  * ScopedServerThread methods
  */
 
-ScopedServerThread::ScopedServerThread() {
-}
+ScopedServerThread::ScopedServerThread() {}
 
 ScopedServerThread::ScopedServerThread(shared_ptr<BaseThriftServer> server) {
   start(std::move(server));
@@ -313,9 +317,10 @@ void ScopedServerThread::join() {
 
 const folly::SocketAddress* ScopedServerThread::getAddress() const {
   if (!helper_) {
-    throw TTransportException(TTransportException::NOT_OPEN,
-                              "attempted to get address of stopped "
-                              "ScopedServerThread");
+    throw TTransportException(
+        TTransportException::NOT_OPEN,
+        "attempted to get address of stopped "
+        "ScopedServerThread");
   }
 
   return helper_->getAddress();
@@ -332,4 +337,6 @@ bool ScopedServerThread::setServeThreadName(const std::string& name) {
   return thread_->setName(name);
 }
 
-}}} // apache::thrift::util
+} // namespace util
+} // namespace thrift
+} // namespace apache

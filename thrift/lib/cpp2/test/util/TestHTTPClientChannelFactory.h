@@ -17,8 +17,8 @@
 #pragma once
 
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
-#include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
+#include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 
 struct TestHTTPClientChannelFactory : public TestClientChannelFactory {
  public:
@@ -27,8 +27,8 @@ struct TestHTTPClientChannelFactory : public TestClientChannelFactory {
 
   apache::thrift::ClientChannel::Ptr create(
       apache::thrift::async::TAsyncTransport::UniquePtr socket) override {
-    auto channel = apache::thrift::HTTPClientChannel::newHTTP2Channel(
-        std::move(socket));
+    auto channel =
+        apache::thrift::HTTPClientChannel::newHTTP2Channel(std::move(socket));
 
     channel->setHTTPHost("localhost");
     channel->setHTTPUrl("/");

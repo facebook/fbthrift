@@ -19,8 +19,8 @@
 #include <atomic>
 
 #include <folly/io/async/EventBase.h>
-#include <folly/stop_watch.h>
 #include <folly/portability/GTest.h>
+#include <folly/stop_watch.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -33,36 +33,32 @@ using namespace apache::thrift::async;
 using namespace apache::thrift::util::cpp2;
 
 class SimpleServiceImpl : public virtual SimpleServiceSvIf {
-public:
- ~SimpleServiceImpl() override {}
- void async_tm_add(unique_ptr<HandlerCallback<int64_t>> cb,
-                   int64_t a,
-                   int64_t b) override {
+ public:
+  ~SimpleServiceImpl() override {}
+  void async_tm_add(
+      unique_ptr<HandlerCallback<int64_t>> cb,
+      int64_t a,
+      int64_t b) override {
     cb->result(a + b);
   }
 };
 
 TEST(ScopedServerInterfaceThread, nada) {
-  ScopedServerInterfaceThread ssit(
-    make_shared<SimpleServiceImpl>());
+  ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
 }
 
 TEST(ScopedServerInterfaceThread, example) {
-  ScopedServerInterfaceThread ssit(
-    make_shared<SimpleServiceImpl>());
+  ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
 
   EventBase eb;
-  SimpleServiceAsyncClient cli(
-    HeaderClientChannel::newChannel(
-      TAsyncSocket::newSocket(
-        &eb, ssit.getAddress())));
+  SimpleServiceAsyncClient cli(HeaderClientChannel::newChannel(
+      TAsyncSocket::newSocket(&eb, ssit.getAddress())));
 
   EXPECT_EQ(6, cli.sync_add(-3, 9));
 }
 
 TEST(ScopedServerInterfaceThread, newClient) {
-  ScopedServerInterfaceThread ssit(
-    make_shared<SimpleServiceImpl>());
+  ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
 
   EventBase eb;
   auto cli = ssit.newClient<SimpleServiceAsyncClient>(&eb);
@@ -71,11 +67,10 @@ TEST(ScopedServerInterfaceThread, newClient) {
 }
 
 TEST(ScopedServerInterfaceThread, newClient_ref) {
-  ScopedServerInterfaceThread ssit(
-    make_shared<SimpleServiceImpl>());
+  ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
 
   EventBase eb;
-  auto cli = ssit.newClient<SimpleServiceAsyncClient>(eb);  // ref
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>(eb); // ref
 
   EXPECT_EQ(6, cli->sync_add(-3, 9));
 }
@@ -89,8 +84,7 @@ TEST(ScopedServerInterfaceThread, newClient_SemiFuture) {
 }
 
 TEST(ScopedServerInterfaceThread, getThriftServer) {
-  ScopedServerInterfaceThread ssit(
-    make_shared<SimpleServiceImpl>());
+  ScopedServerInterfaceThread ssit(make_shared<SimpleServiceImpl>());
   auto& ts = ssit.getThriftServer();
   EXPECT_EQ(0, ts.getNumCPUWorkerThreads());
   EXPECT_EQ(1, ts.getNumIOWorkerThreads());
@@ -106,10 +100,8 @@ TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
   EXPECT_EQ(uintptr_t(ts.get()), uintptr_t(&ssit.getThriftServer())); // sanity
 
   EventBase eb;
-  SimpleServiceAsyncClient cli(
-    HeaderClientChannel::newChannel(
-      TAsyncSocket::newSocket(
-        &eb, ssit.getAddress())));
+  SimpleServiceAsyncClient cli(HeaderClientChannel::newChannel(
+      TAsyncSocket::newSocket(&eb, ssit.getAddress())));
 
   EXPECT_EQ(6, cli.sync_add(-3, 9));
 }

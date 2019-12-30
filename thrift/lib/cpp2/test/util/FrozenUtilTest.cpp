@@ -37,10 +37,10 @@ double filesize(int fd) {
   return st.st_size;
 }
 
-}
+} // namespace
 
-TEST(FrozenUtilTest, Set ) {
-  std::set<std::string> tset { "1", "3", "7", "5" };
+TEST(FrozenUtilTest, Set) {
+  std::set<std::string> tset{"1", "3", "7", "5"};
   auto tempFrozen = freezeToTempFile(tset);
   MemoryMapping mapping(tempFrozen.fd());
 
@@ -50,7 +50,7 @@ TEST(FrozenUtilTest, Set ) {
   EXPECT_EQ(0, fset.count("4"));
 }
 
-TEST(FrozenUtilTest, Vector ) {
+TEST(FrozenUtilTest, Vector) {
   std::vector<Person> people(3);
   people[0].id = 300;
   people[1].id = 301;
@@ -59,13 +59,13 @@ TEST(FrozenUtilTest, Vector ) {
   auto tempFrozen = freezeToTempFile(people);
   MemoryMapping mapping(tempFrozen.fd());
 
-  auto* pfvect= mapFrozen<std::vector<Person>>(mapping);
+  auto* pfvect = mapFrozen<std::vector<Person>>(mapping);
   auto& fvect = *pfvect;
   EXPECT_EQ(300, fvect[0].id);
   EXPECT_EQ(302, fvect[2].id);
 }
 
-TEST(FrozenUtilTest, Shrink ) {
+TEST(FrozenUtilTest, Shrink) {
   std::vector<Person> people(3);
 
   File f = File::temporary();
@@ -77,20 +77,22 @@ TEST(FrozenUtilTest, Shrink ) {
   }
 
   freezeToFile(people, f.fd());
-  EXPECT_NEAR(sizeof(Frozen<Person>) * count,
-              filesize(f.fd()),
-              sizeof(Frozen<Person>) * count);
+  EXPECT_NEAR(
+      sizeof(Frozen<Person>) * count,
+      filesize(f.fd()),
+      sizeof(Frozen<Person>) * count);
 
   count /= 16;
   people.resize(count);
 
   freezeToFile(people, f.fd());
-  EXPECT_NEAR(sizeof(Frozen<Person>) * count,
-              filesize(f.fd()),
-              sizeof(Frozen<Person>) * count);
+  EXPECT_NEAR(
+      sizeof(Frozen<Person>) * count,
+      filesize(f.fd()),
+      sizeof(Frozen<Person>) * count);
 }
 
-TEST(FrozenUtilTest, Sparse ) {
+TEST(FrozenUtilTest, Sparse) {
   std::vector<Person> people;
 
   size_t count = 1 << 20;
@@ -103,9 +105,10 @@ TEST(FrozenUtilTest, Sparse ) {
 
   freezeToSparseFile(people, folly::File(f.fd()));
 
-  EXPECT_NEAR(sizeof(Frozen<Person>) * count,
-              filesize(f.fd()),
-              sizeof(Frozen<Person>) * count);
+  EXPECT_NEAR(
+      sizeof(Frozen<Person>) * count,
+      filesize(f.fd()),
+      sizeof(Frozen<Person>) * count);
 
   MemoryMapping mapping(f.fd());
   auto* pfvect = mapFrozen<std::vector<Person>>(mapping);
@@ -114,17 +117,17 @@ TEST(FrozenUtilTest, Sparse ) {
   EXPECT_EQ(people[9876].id, fvect[9876].id);
 }
 
-TEST(FrozenUtilTest, KeepMapped ) {
+TEST(FrozenUtilTest, KeepMapped) {
   Person p;
-  p.nums = { 9, 8, 7 };
+  p.nums = {9, 8, 7};
   p.id = 123;
   p.name = "Tom";
 
   File f = File::temporary();
-  MemoryMapping mapping(folly::File(f.fd()), 0, frozenSize(p),
-                        MemoryMapping::writable());
+  MemoryMapping mapping(
+      folly::File(f.fd()), 0, frozenSize(p), MemoryMapping::writable());
 
-  //also returns mapped addr
+  // also returns mapped addr
   auto* pfp = freezeToFile(p, mapping);
   auto& fp = *pfp;
 

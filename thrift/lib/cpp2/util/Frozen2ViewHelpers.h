@@ -57,6 +57,6 @@ struct ViewHelper<folly::Range<const char*>> {
     return std::string(v.begin(), v.end());
   }
 };
-}
-}
-} // apache::thrift::frozen
+} // namespace frozen
+} // namespace thrift
+} // namespace apache
