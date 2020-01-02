@@ -30,8 +30,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Empty {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Empty {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Empty");
             p.write_field_stop();
             p.write_struct_end();
@@ -67,8 +67,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Nada {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for Nada {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Nada");
             match self {
                 Nada::UnknownField(x) => {

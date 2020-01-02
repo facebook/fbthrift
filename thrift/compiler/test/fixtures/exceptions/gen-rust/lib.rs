@@ -35,8 +35,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Banal {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Banal {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Banal");
             p.write_field_stop();
             p.write_struct_end();
@@ -73,8 +73,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Fiery {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Fiery {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Fiery");
             p.write_field_begin("message", TType::String, 1);
             Serialize::write(&self.message, p);
@@ -117,8 +117,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Serious {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Serious {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Serious");
             if let Some(some) = &self.sonnet {
                 p.write_field_begin("sonnet", TType::String, 1);
@@ -182,8 +182,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a DoBlandExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for DoBlandExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoBland");
                 match self {
                     DoBlandExn::Success(inner) => {
@@ -291,8 +291,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a DoRaiseExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for DoRaiseExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoRaise");
                 match self {
                     DoRaiseExn::Success(inner) => {
@@ -418,8 +418,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a Get200Exn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for Get200Exn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Get200");
                 match self {
                     Get200Exn::Success(inner) => {
@@ -533,8 +533,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a Get500Exn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for Get500Exn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Get500");
                 match self {
                     Get500Exn::Success(inner) => {

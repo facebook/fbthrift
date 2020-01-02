@@ -89,9 +89,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyEnum {
+    impl<P: ProtocolWriter> Serialize<P> for MyEnum {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -118,8 +118,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::MyStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             p.write_field_begin("major", TType::I64, 1);
             Serialize::write(&self.major, p);
@@ -199,8 +199,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a PingExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for PingExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Ping");
                 match self {
                     PingExn::Success(inner) => {
@@ -287,8 +287,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a GetRandomDataExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for GetRandomDataExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("GetRandomData");
                 match self {
                     GetRandomDataExn::Success(inner) => {
@@ -381,8 +381,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a HasDataByIdExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for HasDataByIdExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("HasDataById");
                 match self {
                     HasDataByIdExn::Success(inner) => {
@@ -475,8 +475,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a GetDataByIdExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for GetDataByIdExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("GetDataById");
                 match self {
                     GetDataByIdExn::Success(inner) => {
@@ -569,8 +569,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a PutDataByIdExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for PutDataByIdExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("PutDataById");
                 match self {
                     PutDataByIdExn::Success(inner) => {
@@ -657,8 +657,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a LobDataByIdExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for LobDataByIdExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("LobDataById");
                 match self {
                     LobDataByIdExn::Success(inner) => {
@@ -745,8 +745,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a DoNothingExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for DoNothingExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoNothing");
                 match self {
                     DoNothingExn::Success(inner) => {
@@ -840,8 +840,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a PingExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for PingExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Ping");
                 match self {
                     PingExn::Success(inner) => {
@@ -928,8 +928,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a PongExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for PongExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Pong");
                 match self {
                     PongExn::Success(inner) => {
@@ -1023,8 +1023,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a PangExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for PangExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Pang");
                 match self {
                     PangExn::Success(inner) => {

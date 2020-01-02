@@ -95,9 +95,9 @@
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{enum:rust_name}} {
+    impl<P: ProtocolWriter> Serialize<P> for {{enum:rust_name}} {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }

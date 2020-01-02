@@ -34,8 +34,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a MapListExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for MapListExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("MapList");
                 match self {
                     MapListExn::Success(inner) => {
@@ -122,8 +122,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a MapSetExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for MapSetExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("MapSet");
                 match self {
                     MapSetExn::Success(inner) => {
@@ -210,8 +210,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a ListMapExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for ListMapExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("ListMap");
                 match self {
                     ListMapExn::Success(inner) => {
@@ -298,8 +298,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a ListSetExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for ListSetExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("ListSet");
                 match self {
                     ListSetExn::Success(inner) => {
@@ -386,8 +386,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a TurtlesExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for TurtlesExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("Turtles");
                 match self {
                     TurtlesExn::Success(inner) => {

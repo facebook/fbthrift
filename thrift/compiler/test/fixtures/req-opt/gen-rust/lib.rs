@@ -33,8 +33,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Foo {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Foo {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Foo");
             p.write_field_begin("myInteger", TType::I32, 1);
             Serialize::write(&self.myInteger, p);

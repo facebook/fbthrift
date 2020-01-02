@@ -223,9 +223,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a has_bitwise_ops {
+    impl<P: ProtocolWriter> Serialize<P> for has_bitwise_ops {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -305,9 +305,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a is_unscoped {
+    impl<P: ProtocolWriter> Serialize<P> for is_unscoped {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -387,9 +387,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyForwardRefEnum {
+    impl<P: ProtocolWriter> Serialize<P> for MyForwardRefEnum {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -472,9 +472,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyEnumA {
+    impl<P: ProtocolWriter> Serialize<P> for MyEnumA {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -499,8 +499,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::decorated_struct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::decorated_struct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("decorated_struct");
             p.write_field_begin("field", TType::String, 1);
             Serialize::write(&self.field, p);
@@ -550,8 +550,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ContainerStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::ContainerStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ContainerStruct");
             p.write_field_begin("fieldA", TType::List, 12);
             Serialize::write(&self.fieldA, p);
@@ -636,8 +636,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::CppTypeStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::CppTypeStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("CppTypeStruct");
             p.write_field_begin("fieldA", TType::List, 1);
             Serialize::write(&self.fieldA, p);
@@ -680,8 +680,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::VirtualStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::VirtualStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("VirtualStruct");
             p.write_field_begin("MyIntField", TType::I64, 1);
             Serialize::write(&self.MyIntField, p);
@@ -725,8 +725,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStructWithForwardRefEnum {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::MyStructWithForwardRefEnum {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStructWithForwardRefEnum");
             p.write_field_begin("a", TType::I32, 1);
             Serialize::write(&self.a, p);
@@ -776,8 +776,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::TrivialNumeric {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::TrivialNumeric {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("TrivialNumeric");
             p.write_field_begin("a", TType::I32, 1);
             Serialize::write(&self.a, p);
@@ -830,8 +830,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::TrivialNestedWithDefault {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::TrivialNestedWithDefault {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("TrivialNestedWithDefault");
             p.write_field_begin("z", TType::I32, 1);
             Serialize::write(&self.z, p);
@@ -884,8 +884,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ComplexString {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::ComplexString {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ComplexString");
             p.write_field_begin("a", TType::String, 1);
             Serialize::write(&self.a, p);
@@ -942,8 +942,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ComplexNestedWithDefault {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::ComplexNestedWithDefault {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ComplexNestedWithDefault");
             p.write_field_begin("z", TType::String, 1);
             Serialize::write(&self.z, p);
@@ -1003,8 +1003,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MinPadding {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::MinPadding {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("MinPadding");
             p.write_field_begin("small", TType::Byte, 1);
             Serialize::write(&self.small, p);
@@ -1074,8 +1074,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::MyStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             p.write_field_begin("MyIntField", TType::I64, 1);
             Serialize::write(&self.MyIntField, p);
@@ -1135,8 +1135,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyDataItem {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::MyDataItem {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("MyDataItem");
             p.write_field_stop();
             p.write_struct_end();
@@ -1173,8 +1173,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Renaming {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Renaming {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Renaming");
             p.write_field_begin("foo", TType::I64, 1);
             Serialize::write(&self.foo, p);
@@ -1218,8 +1218,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::AnnotatedTypes {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::AnnotatedTypes {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("AnnotatedTypes");
             p.write_field_begin("binary_field", TType::String, 1);
             Serialize::write(&self.binary_field, p);
@@ -1269,8 +1269,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ForwardUsageRoot {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::ForwardUsageRoot {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ForwardUsageRoot");
             if let Some(some) = &self.ForwardUsageStruct {
                 p.write_field_begin("ForwardUsageStruct", TType::Struct, 1);
@@ -1323,8 +1323,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ForwardUsageStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::ForwardUsageStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ForwardUsageStruct");
             if let Some(some) = &self.foo {
                 p.write_field_begin("foo", TType::Struct, 1);
@@ -1369,8 +1369,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::ForwardUsageByRef {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::ForwardUsageByRef {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ForwardUsageByRef");
             if let Some(some) = &self.foo {
                 p.write_field_begin("foo", TType::Struct, 1);
@@ -1414,8 +1414,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NoexceptMoveEmpty {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::NoexceptMoveEmpty {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("NoexceptMoveEmpty");
             p.write_field_stop();
             p.write_struct_end();
@@ -1452,8 +1452,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NoexceptMoveSimpleStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::NoexceptMoveSimpleStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("NoexceptMoveSimpleStruct");
             p.write_field_begin("boolField", TType::I64, 1);
             Serialize::write(&self.boolField, p);
@@ -1509,8 +1509,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NoexceptMoveComplexStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::NoexceptMoveComplexStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("NoexceptMoveComplexStruct");
             p.write_field_begin("MyBoolField", TType::Bool, 1);
             Serialize::write(&self.MyBoolField, p);
@@ -1607,8 +1607,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a NoExceptMoveUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for NoExceptMoveUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("NoExceptMoveUnion");
             match self {
                 NoExceptMoveUnion::string_field(inner) => {
@@ -1698,8 +1698,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a BounceMapExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for BounceMapExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("BounceMap");
                 match self {
                     BounceMapExn::Success(inner) => {
@@ -1792,8 +1792,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a BinaryKeyedMapExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for BinaryKeyedMapExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("BinaryKeyedMap");
                 match self {
                     BinaryKeyedMapExn::Success(inner) => {

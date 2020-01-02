@@ -114,9 +114,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Animal {
+    impl<P: ProtocolWriter> Serialize<P> for Animal {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -144,8 +144,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Color {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Color {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Color");
             p.write_field_begin("red", TType::Double, 1);
             Serialize::write(&self.red, p);
@@ -210,8 +210,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Vehicle {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Vehicle {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Vehicle");
             p.write_field_begin("color", TType::Struct, 1);
             Serialize::write(&self.color, p);
@@ -295,8 +295,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Person {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Person {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Person");
             p.write_field_begin("id", TType::I64, 1);
             Serialize::write(&self.id, p);

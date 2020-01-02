@@ -153,12 +153,12 @@ where
     }
 }
 
-impl<'a, P> Serialize<P> for &'a ApplicationException
+impl<P> Serialize<P> for ApplicationException
 where
     P: ProtocolWriter,
 {
     /// Writes an application exception to the Protocol stream
-    fn write(self, oprot: &mut P) {
+    fn write(&self, oprot: &mut P) {
         oprot.write_struct_begin(TAPPLICATION_EXCEPTION_ERROR_CODE);
 
         if self.message.len() > 0 {

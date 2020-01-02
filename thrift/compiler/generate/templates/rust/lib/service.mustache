@@ -59,8 +59,8 @@
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{function:upcamel}}Exn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for {{function:upcamel}}Exn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("{{function:upcamel}}");
                 match self {
                     {{function:upcamel}}Exn::Success(inner) => {

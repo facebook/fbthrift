@@ -404,9 +404,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a EmptyEnum {
+    impl<P: ProtocolWriter> Serialize<P> for EmptyEnum {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -492,9 +492,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a City {
+    impl<P: ProtocolWriter> Serialize<P> for City {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -580,9 +580,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a Company {
+    impl<P: ProtocolWriter> Serialize<P> for Company {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -612,8 +612,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Internship {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Internship {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Internship");
             p.write_field_begin("weeks", TType::I32, 1);
             Serialize::write(&self.weeks, p);
@@ -670,8 +670,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::UnEnumStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::UnEnumStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("UnEnumStruct");
             p.write_field_begin("city", TType::I32, 1);
             Serialize::write(&self.city, p);
@@ -715,8 +715,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Range {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Range {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Range");
             p.write_field_begin("min", TType::I32, 1);
             Serialize::write(&self.min, p);
@@ -766,8 +766,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::struct1 {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::struct1 {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("struct1");
             p.write_field_begin("a", TType::I32, 1);
             Serialize::write(&self.a, p);
@@ -819,8 +819,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::struct2 {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::struct2 {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("struct2");
             p.write_field_begin("a", TType::I32, 1);
             Serialize::write(&self.a, p);
@@ -883,8 +883,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::struct3 {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::struct3 {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("struct3");
             p.write_field_begin("a", TType::String, 1);
             Serialize::write(&self.a, p);
@@ -938,8 +938,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a union1 {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for union1 {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("union1");
             match self {
                 union1::i(inner) => {
@@ -1009,8 +1009,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a union2 {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for union2 {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("union2");
             match self {
                 union2::i(inner) => {

@@ -21,8 +21,8 @@
         const TTYPE: TType = <{{#typedef:type}}{{>lib/type}}{{/typedef:type}} as GetTType>::TTYPE;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a {{typedef:rust_name}} {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for {{typedef:rust_name}} {
+        fn write(&self, p: &mut P) {
             self.0.write(p)
         }
     }

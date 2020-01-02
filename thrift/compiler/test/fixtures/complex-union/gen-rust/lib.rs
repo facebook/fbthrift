@@ -81,8 +81,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ComplexUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for ComplexUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ComplexUnion");
             match self {
                 ComplexUnion::intValue(inner) => {
@@ -188,8 +188,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ListUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for ListUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ListUnion");
             match self {
                 ListUnion::intListValue(inner) => {
@@ -259,8 +259,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a DataUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for DataUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("DataUnion");
             match self {
                 DataUnion::binaryData(inner) => {
@@ -333,8 +333,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::Val {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::Val {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("Val");
             p.write_field_begin("strVal", TType::String, 1);
             Serialize::write(&self.strVal, p);
@@ -388,8 +388,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a ValUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for ValUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("ValUnion");
             match self {
                 ValUnion::v1(inner) => {
@@ -459,8 +459,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a VirtualComplexUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for VirtualComplexUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("VirtualComplexUnion");
             match self {
                 VirtualComplexUnion::thingOne(inner) => {
@@ -531,8 +531,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::NonCopyableStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::NonCopyableStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("NonCopyableStruct");
             p.write_field_begin("num", TType::I64, 1);
             Serialize::write(&self.num, p);
@@ -574,8 +574,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a NonCopyableUnion {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for NonCopyableUnion {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("NonCopyableUnion");
             match self {
                 NonCopyableUnion::s(inner) => {

@@ -80,9 +80,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a EmptyEnum {
+    impl<P: ProtocolWriter> Serialize<P> for EmptyEnum {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -162,9 +162,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyEnum {
+    impl<P: ProtocolWriter> Serialize<P> for MyEnum {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -298,9 +298,9 @@ pub mod types {
         const TTYPE: TType = TType::I32;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a MyBigEnum {
+    impl<P: ProtocolWriter> Serialize<P> for MyBigEnum {
         #[inline]
-        fn write(self, p: &mut P) {
+        fn write(&self, p: &mut P) {
             p.write_i32(self.into())
         }
     }
@@ -325,8 +325,8 @@ pub mod types {
         const TTYPE: TType = TType::Struct;
     }
 
-    impl<'a, P: ProtocolWriter> Serialize<P> for &'a self::MyStruct {
-        fn write(self, p: &mut P) {
+    impl<P: ProtocolWriter> Serialize<P> for self::MyStruct {
+        fn write(&self, p: &mut P) {
             p.write_struct_begin("MyStruct");
             p.write_field_begin("myEnum", TType::I32, 1);
             Serialize::write(&self.myEnum, p);

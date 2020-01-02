@@ -34,8 +34,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a DoRootExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for DoRootExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoRoot");
                 match self {
                     DoRootExn::Success(inner) => {
@@ -129,8 +129,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a DoMidExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for DoMidExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoMid");
                 match self {
                     DoMidExn::Success(inner) => {
@@ -224,8 +224,8 @@ pub mod services {
             const TTYPE: fbthrift::TType = fbthrift::TType::Struct;
         }
 
-        impl<'a, P: ProtocolWriter> Serialize<P> for &'a DoLeafExn {
-            fn write(self, p: &mut P) {
+        impl<P: ProtocolWriter> Serialize<P> for DoLeafExn {
+            fn write(&self, p: &mut P) {
                 p.write_struct_begin("DoLeaf");
                 match self {
                     DoLeafExn::Success(inner) => {
