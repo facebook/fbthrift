@@ -827,6 +827,7 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:value", &mstch_rust_struct_field::value},
             {"field:type", &mstch_rust_struct_field::type},
             {"field:box?", &mstch_rust_struct_field::is_boxed},
+            {"field:arc?", &mstch_rust_struct_field::is_arc},
         });
   }
   mstch::node rust_name() {
@@ -850,6 +851,9 @@ class mstch_rust_struct_field : public mstch_base {
   }
   mstch::node is_boxed() {
     return field_->annotations_.count("rust.box") != 0;
+  }
+  mstch::node is_arc() {
+    return field_->annotations_.count("rust.arc") != 0;
   }
 
  private:
@@ -981,6 +985,7 @@ class mstch_rust_field : public mstch_field {
             {"field:rename?", &mstch_rust_field::rust_rename},
             {"field:default", &mstch_rust_field::rust_default},
             {"field:box?", &mstch_rust_field::rust_is_boxed},
+            {"field:arc?", &mstch_rust_field::rust_is_arc},
         });
   }
   mstch::node rust_name() {
@@ -1005,6 +1010,9 @@ class mstch_rust_field : public mstch_field {
   }
   mstch::node rust_is_boxed() {
     return field_->annotations_.count("rust.box") != 0;
+  }
+  mstch::node rust_is_arc() {
+    return field_->annotations_.count("rust.arc") != 0;
   }
 
  private:

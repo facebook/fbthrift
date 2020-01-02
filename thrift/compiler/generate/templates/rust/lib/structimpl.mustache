@@ -23,11 +23,7 @@
             }}{{#struct:fields}}
                 {{field:rust_name}}: {{!
                     }}{{#field:default}}{{!
-                        }}{{#field:optional?}}Some({{/field:optional?}}{{!
-                            }}{{#field:box?}}Box::new({{/field:box?}}{{!
-                                }}{{>lib/value}}{{!
-                            }}{{#field:box?}}){{/field:box?}}{{!
-                        }}{{#field:optional?}}){{/field:optional?}}{{!
+                        }}{{>lib/fieldvalue}}{{!
                     }}{{/field:default}}{{!
                     }}{{^field:default}}{{!
                         }}{{#field:optional?}}{{!

@@ -30,26 +30,14 @@
         }}{{/field:rename?}}{{^field:optional?}}
         #[serde(default)]{{!
         }}{{/field:optional?}}{{/program:serde?}}
-        pub {{field:rust_name}}: {{!
-            }}{{#field:optional?}}Option<{{/field:optional?}}{{!
-                }}{{#field:box?}}Box<{{/field:box?}}{{!
-                    }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
-                }}{{#field:box?}}>{{/field:box?}}{{!
-            }}{{#field:optional?}}>{{/field:optional?}}{{!
-        }},{{!
+        pub {{field:rust_name}}: {{>lib/fieldtype}},{{!
     }}{{/struct:fields}}
     }
 {{/struct:union?}}
 {{#struct:union?}}
     pub enum {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}
-        {{field:rust_name}}({{!
-            }}{{#field:optional?}}Option<{{/field:optional?}}{{!
-                }}{{#field:box?}}Box<{{/field:box?}}{{!
-                    }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
-                }}{{#field:box?}}>{{/field:box?}}{{!
-            }}{{#field:optional?}}>{{/field:optional?}}{{!
-        }}),{{!
+        {{field:rust_name}}({{>lib/fieldtype}}),{{!
     }}{{/struct:fields}}
         UnknownField(i32),
     }

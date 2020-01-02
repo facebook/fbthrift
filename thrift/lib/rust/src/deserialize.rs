@@ -19,6 +19,7 @@ use crate::Result;
 use bytes::Bytes;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::hash::Hash;
+use std::sync::Arc;
 
 // Read trait. Every type that needs to be deserialized will implement this trait.
 pub trait Deserialize<P>
@@ -38,6 +39,16 @@ where
     #[inline]
     fn read(p: &mut P) -> Result<Self> {
         T::read(p).map(Box::new)
+    }
+}
+
+impl<P, T> Deserialize<P> for Arc<T>
+where
+    P: ProtocolReader,
+    T: Deserialize<P>,
+{
+    fn read(p: &mut P) -> Result<Self> {
+        T::read(p).map(Arc::new)
     }
 }
 

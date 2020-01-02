@@ -19,6 +19,7 @@ use crate::ttype::GetTType;
 use bytes::Bytes;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::hash::Hash;
+use std::sync::Arc;
 
 // Write trait. Every type that needs to be serialized will implement this trait.
 pub trait Serialize<P>
@@ -46,6 +47,16 @@ where
     #[inline]
     fn write(&self, p: &mut P) {
         self.as_ref().write(p)
+    }
+}
+
+impl<P, T> Serialize<P> for Arc<T>
+where
+    P: ProtocolWriter,
+    T: Serialize<P>,
+{
+    fn write(&self, p: &mut P) {
+        (**self).write(p);
     }
 }
 

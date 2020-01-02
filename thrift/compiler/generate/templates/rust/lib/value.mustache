@@ -88,13 +88,7 @@
     }}{{>lib/type}} {{>lib/block}}{{!
         }}{{#value:structFields}}
             {{value:indent}}{{field:rust_name}}: {{!
-            }}{{#field:value}}{{!
-                }}{{#field:optional?}}Some({{/field:optional?}}{{!
-                    }}{{#field:box?}}Box::new({{/field:box?}}{{!
-                        }}{{>lib/value}}{{!
-                    }}{{#field:box?}}){{/field:box?}}{{!
-                }}{{#field:optional?}}){{/field:optional?}}{{!
-            }}{{/field:value}}{{!
+            }}{{#field:value}}{{>lib/fieldvalue}}{{/field:value}}{{!
             }}{{^field:value}}Default::default(){{/field:value}}{{!
             }},{{!
         }}{{/value:structFields}}
