@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <numa.h>
-
 #include <chrono>
 #include <deque>
 #include <iostream>
@@ -31,14 +29,11 @@
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
 #include <thrift/lib/cpp/concurrency/Monitor.h>
-#include <thrift/lib/cpp/concurrency/NumaThreadManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 using namespace apache::thrift::concurrency;
-
-DECLARE_bool(thrift_numa_enabled);
 
 class ThreadManagerTest : public testing::Test {
  public:
@@ -542,64 +537,6 @@ class TestObserver : public ThreadManager::Observer {
   std::string expectedName;
 };
 
-TEST_F(ThreadManagerTest, NumaThreadManagerTest) {
-  gflags::FlagSaver saver;
-  FLAGS_thrift_numa_enabled = true;
-
-  if (numa_available() == -1) {
-    LOG(ERROR) << "numa is unavailable, skipping NumaThreadManagerTest";
-    return;
-  }
-
-  auto numa = std::make_unique<NumaThreadManager>(2);
-  bool failed = false;
-
-  numa->setNamePrefix("foo");
-  numa->start();
-
-  folly::Synchronized<std::set<int>> nodes;
-
-  auto data = RequestContext::get()->getContextData("numa");
-  EXPECT_EQ(nullptr, data);
-
-  auto checkFunc = FunctionRunner::create([&]() {
-    auto data = RequestContext::get()->getContextData("numa");
-    // Check that the request is not bound unless requested
-    if (nullptr != data) {
-      failed = true;
-    }
-    auto node = NumaThreadFactory::getNumaNode();
-    SYNCHRONIZED(nodes) {
-      nodes.insert(node);
-    }
-
-    numa->add(
-        FunctionRunner::create([=, &failed]() {
-          auto data = RequestContext::get()->getContextData("numa");
-          if (nullptr != data) {
-            failed = true;
-          }
-          // Check that multiple calls stay on the same node
-          auto node2 = NumaThreadFactory::getNumaNode();
-          if (node != node2) {
-            failed = true;
-          }
-        }),
-        0,
-        0,
-        true,
-        true);
-  });
-
-  for (int i = 0; i < 100; i++) {
-    numa->add(checkFunc, 0, 0, true, true);
-  }
-
-  numa->join();
-  EXPECT_EQ(numa_num_configured_nodes(), nodes.wlock()->size());
-  EXPECT_FALSE(failed);
-}
-
 class FailThread : public PthreadThread {
  public:
   FailThread(
@@ -672,25 +609,6 @@ TEST_F(ThreadManagerTest, ThreadStartFailureTest) {
   for (int i = 0; i < 10; i++) {
     EXPECT_THROW(DummyFailureClass(), int);
   }
-}
-
-TEST_F(ThreadManagerTest, NumaThreadManagerBind) {
-  gflags::FlagSaver saver;
-  FLAGS_thrift_numa_enabled = true;
-
-  auto numa = std::make_unique<NumaThreadManager>(2);
-  numa->setNamePrefix("foo");
-  numa->start();
-
-  // Test binding the request.  Only works on threads started with
-  // NumaThreadManager.
-  numa->add(FunctionRunner::create([=]() {
-    // Try binding the numa node
-    NumaThreadFactory::setNumaNode();
-    auto node = NumaThreadFactory::getNumaNode();
-    EXPECT_NE(-1, node);
-  }));
-  numa->join();
 }
 
 TEST_F(ThreadManagerTest, ObserverTest) {
