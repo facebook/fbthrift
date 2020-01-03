@@ -16,16 +16,17 @@
 
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 
-#include <folly/Utility.h>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include <folly/SocketAddress.h>
+#include <folly/io/async/AsyncTransport.h>
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/ManagedRSocketConnection.h>
-#include <thrift/lib/cpp2/transport/rsocket/server/RSResponder.h>
-
-using namespace rsocket;
 
 namespace apache {
 namespace thrift {
@@ -87,54 +88,23 @@ void RSRoutingHandler::handleConnection(
     return;
   }
 
-  auto sockPtr = sock.get();
-
-  wangle::ManagedConnection* connection = nullptr;
+  auto* const sockPtr = sock.get();
   auto* const server = worker->getServer();
-  if (server->isRocketServerEnabled()) {
-    connection = new rocket::RocketServerConnection(
-        std::move(sock),
-        std::make_shared<rocket::ThriftRocketServerHandler>(
-            worker, *address, sockPtr, setupFrameHandlers_),
-        server->getStreamExpireTime(),
-        server->getWriteBatchingInterval(),
-        server->getWriteBatchingSize());
-    // set compression algorithm to be used on this connection
-    auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
-                           ->getNegotiatedParameters()
-                           .compression;
-    if (compression != CompressionAlgorithm::NONE) {
-      static_cast<rocket::RocketServerConnection*>(connection)
-          ->setNegotiatedCompressionAlgorithm(compression);
-    }
-    // set minCompressBytes
-    static_cast<rocket::RocketServerConnection*>(connection)
-        ->setMinCompressBytes(server->getMinCompressBytes());
-  } else {
-    connection = new ManagedRSocketConnection(
-        std::move(sock),
-        [sockPtr, worker = worker, clientAddress = folly::copy(*address)](
-            auto&) mutable {
-          DCHECK(worker->getServer());
-          DCHECK(worker->getServer()->getCpp2Processor());
-          // RSResponder will be created per client connection. It will use
-          // the current Observer of the server.
-          return std::make_shared<RSResponder>(
-              std::move(worker), clientAddress, sockPtr);
-        });
-    // set compression algorithm to be used on this connection
-    auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
-                           ->getNegotiatedParameters()
-                           .compression;
-    if (compression != CompressionAlgorithm::NONE) {
-      static_cast<ManagedRSocketConnection*>(connection)
-          ->setNegotiatedCompressionAlgorithm(compression);
-    }
-    // set minCompressBytes
-    static_cast<ManagedRSocketConnection*>(connection)
-        ->setMinCompressBytes(server->getMinCompressBytes());
+  auto* const connection = new rocket::RocketServerConnection(
+      std::move(sock),
+      std::make_shared<rocket::ThriftRocketServerHandler>(
+          worker, *address, sockPtr, setupFrameHandlers_),
+      server->getStreamExpireTime(),
+      server->getWriteBatchingInterval(),
+      server->getWriteBatchingSize());
+  // set compression algorithm to be used on this connection
+  auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
+                         ->getNegotiatedParameters()
+                         .compression;
+  if (compression != CompressionAlgorithm::NONE) {
+    connection->setNegotiatedCompressionAlgorithm(compression);
   }
-
+  connection->setMinCompressBytes(server->getMinCompressBytes());
   connectionManager->addConnection(connection);
 
   if (auto* observer = server->getObserver()) {
@@ -149,5 +119,6 @@ void RSRoutingHandler::addSetupFrameHandler(
     std::unique_ptr<rocket::SetupFrameHandler> handler) {
   setupFrameHandlers_.push_back(std::move(handler));
 }
+
 } // namespace thrift
 } // namespace apache

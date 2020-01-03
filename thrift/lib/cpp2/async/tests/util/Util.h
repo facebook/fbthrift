@@ -65,7 +65,6 @@ class TestSetup {
     server_->setPort(0);
     server_->setNumIOWorkerThreads(numIOThreads_);
     server_->setNumCPUWorkerThreads(numWorkerThreads_);
-    server_->enableRocketServer(true);
     server_->setQueueTimeout(std::chrono::milliseconds(0));
     server_->setIdleTimeout(std::chrono::milliseconds(0));
     server_->setTaskExpireTime(std::chrono::milliseconds(0));

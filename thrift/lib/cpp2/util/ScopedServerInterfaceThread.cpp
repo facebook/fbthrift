@@ -42,7 +42,6 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
-  ts->enableRocketServer(true);
   ts->addRoutingHandler(std::make_unique<RSRoutingHandler>());
   if (configCb) {
     configCb(*ts);

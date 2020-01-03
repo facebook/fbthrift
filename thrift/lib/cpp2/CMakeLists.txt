@@ -121,10 +121,7 @@ add_library(
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
-  transport/rsocket/server/ManagedRSocketConnection.cpp
-  transport/rsocket/server/RSResponder.cpp
   transport/rsocket/server/RSRoutingHandler.cpp
-  transport/rsocket/server/RSThriftRequests.cpp
   util/Checksum.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp

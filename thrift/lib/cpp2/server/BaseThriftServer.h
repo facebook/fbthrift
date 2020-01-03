@@ -161,12 +161,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       DEFAULT_STREAM_EXPIRE_TIME};
 
   /**
-   * If true, rsocket connections will use RocketServerConnection; otherwise,
-   * ManagedRSocketConnection will be used.
-   */
-  ServerAttribute<bool> enableRocketServer_{true};
-
-  /**
    * The time we'll allow a task to wait on the queue and still perform it
    * (0 == infinite)
    */
@@ -783,24 +777,6 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   std::chrono::milliseconds getStreamExpireTime() const final {
     return streamExpireTime_.get();
-  }
-
-  /**
-   * If true, use RocketServerConnection for rsocket connections; otherwise, use
-   * ManagedRSocketConnection.
-   */
-  void enableRocketServer(
-      bool enabled,
-      AttributeSource source = AttributeSource::OVERRIDE) {
-    enableRocketServer_.set(enabled, source);
-  }
-
-  /**
-   * Returns true if and only if RocketServerConnection is enabled for rsocket
-   * connections.
-   */
-  bool isRocketServerEnabled() const {
-    return enableRocketServer_.get();
   }
 
   /**
