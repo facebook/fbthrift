@@ -57,7 +57,7 @@ class TestSinkService : public TestSinkServiceSvIf {
   void purge() override;
 
  private:
-  bool sinkUnsubscribed_{false};
+ std::atomic<int> activeSinks_{0};
 };
 
 } // namespace testservice

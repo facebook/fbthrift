@@ -103,8 +103,9 @@ TestSinkService::rangeEarlyResponse(int32_t from, int32_t, int32_t early) {
 
 apache::thrift::SinkConsumer<int32_t, bool>
 TestSinkService::unSubscribedSink() {
+  activeSinks_++;
   return apache::thrift::SinkConsumer<int32_t, bool>{
-      [g = folly::makeGuard([this]() { sinkUnsubscribed_ = true; })](
+      [g = folly::makeGuard([this]() { activeSinks_--; })](
           folly::coro::AsyncGenerator<int32_t&&> gen) mutable
       -> folly::coro::Task<bool> {
         EXPECT_THROW(
@@ -118,8 +119,9 @@ TestSinkService::unSubscribedSink() {
 folly::SemiFuture<apache::thrift::SinkConsumer<int32_t, bool>>
 TestSinkService::semifuture_unSubscribedSinkSlowReturn() {
   return folly::futures::sleep(std::chrono::seconds(1)).deferValue([=](auto&&) {
+    activeSinks_++;
     return apache::thrift::SinkConsumer<int32_t, bool>{
-        [g = folly::makeGuard([this]() { sinkUnsubscribed_ = true; })](
+        [g = folly::makeGuard([this]() { activeSinks_--; })](
             folly::coro::AsyncGenerator<int32_t&&> gen) mutable
         -> folly::coro::Task<bool> {
           co_await gen.next();
@@ -131,7 +133,7 @@ TestSinkService::semifuture_unSubscribedSinkSlowReturn() {
 }
 
 bool TestSinkService::isSinkUnSubscribed() {
-  return sinkUnsubscribed_;
+  return activeSinks_ == 0;
 }
 
 apache::thrift::ResponseAndSinkConsumer<bool, int32_t, bool>

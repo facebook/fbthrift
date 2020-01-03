@@ -186,11 +186,23 @@ TEST_F(SinkServiceTest, SinkChunkTimeout) {
       });
 }
 
-TEST_F(SinkServiceTest, ClientTimeoutNotLeak) {
+TEST_F(SinkServiceTest, ClientTimeoutNoLeak) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         EXPECT_THROW(
             co_await client.co_unSubscribedSinkSlowReturn(), std::exception);
+        EXPECT_TRUE(co_await waitNoLeak(client));
+      });
+}
+
+
+TEST_F(SinkServiceTest, AssignmentNoLeak) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        {
+          auto sink = co_await client.co_unSubscribedSink();
+          sink = co_await client.co_unSubscribedSink();
+        }
         EXPECT_TRUE(co_await waitNoLeak(client));
       });
 }

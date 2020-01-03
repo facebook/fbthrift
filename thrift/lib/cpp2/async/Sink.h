@@ -58,19 +58,20 @@ class ClientSink {
         deserializer_(std::move(deserializer)) {}
 
   ~ClientSink() {
-    if (impl_) {
-      impl_->cancel(serializer_(
-          folly::Try<T>(folly::make_exception_wrapper<TApplicationException>(
-              TApplicationException::TApplicationExceptionType::INTERRUPTION,
-              "never called sink object"))));
-    }
+    cancel();
   }
 
   ClientSink(const ClientSink&) = delete;
   ClientSink& operator=(const ClientSink&) = delete;
 
   ClientSink(ClientSink&&) = default;
-  ClientSink& operator=(ClientSink&&) = default;
+  ClientSink& operator=(ClientSink&& sink) noexcept {
+    cancel();
+    impl_ = std::move(sink.impl_);
+    serializer_ = std::move(sink.serializer_);
+    deserializer_ = std::move(sink.deserializer_);
+    return *this;
+  }
 
   folly::coro::Task<R> sink(folly::coro::AsyncGenerator<T&&> generator) {
     folly::exception_wrapper ew;
@@ -106,6 +107,15 @@ class ClientSink {
   }
 
  private:
+  void cancel() {
+    if (impl_) {
+      impl_->cancel(serializer_(
+          folly::Try<T>(folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::INTERRUPTION,
+              "never called sink object"))));
+    }
+  }
+
   detail::ClientSinkBridge::Ptr impl_;
   PayloadSerializer serializer_;
   FinalResponseDeserializer deserializer_;
