@@ -440,6 +440,9 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
             buffer.reset()
 
         serializer = cls._exception_serializer
+        # We have to fill this in because it normaly only gets set for
+        # call and oneway.
+        serializer.trans.seq_id = seqid
         serializer.writeMessageBegin(fname, TMessageType.EXCEPTION, seqid)
         exception.write(serializer)
         serializer.writeMessageEnd()

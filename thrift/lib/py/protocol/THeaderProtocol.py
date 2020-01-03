@@ -160,7 +160,16 @@ class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
                 ex.write(self)
                 self.writeMessageEnd()
                 self.trans.flush()
-        return self.__proto.readMessageBegin()
+
+        fname, mtype, mid = self.__proto.readMessageBegin()
+        hseqid = self.trans.seq_id
+        if self.trans.is_header_transport:
+            # Its expected that all header transport's track sequence id's in header
+            return fname, mtype, hseqid
+        else:
+            # If transport is not header, return the message id
+            return fname, mtype, mid
+
 
     def readMessageEnd(self):
         return self.__proto.readMessageEnd()
