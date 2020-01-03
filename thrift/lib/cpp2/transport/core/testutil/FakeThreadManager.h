@@ -35,8 +35,7 @@ class FakeThreadManager : public apache::thrift::concurrency::ThreadManager {
       std::shared_ptr<apache::thrift::concurrency::Runnable> task,
       int64_t /*timeout*/,
       int64_t /*expiration*/,
-      bool /*cancellable*/,
-      bool /*numa*/) noexcept {
+      bool /*cancellable*/) noexcept {
     auto thread = factory_.newThread(task);
     thread->start();
   }

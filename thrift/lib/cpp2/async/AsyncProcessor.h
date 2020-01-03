@@ -278,8 +278,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
             kind == apache::thrift::RpcKind::SINGLE_REQUEST_NO_RESPONSE),
         0, // timeout
         0, // expiration
-        true, // cancellable
-        true); // numa
+        true); // cancellable
   }
 };
 
@@ -398,7 +397,6 @@ class ServerInterface : public AsyncProcessorFactory {
             std::move(task),
             std::chrono::milliseconds(kTimeout).count(),
             0,
-            false,
             false);
         return;
       } catch (...) {
@@ -601,8 +599,7 @@ class HandlerCallbackBase {
           task,
           0, // timeout
           0, // expiration
-          true, // cancellable
-          true); // numa
+          true); // cancellable
     } catch (...) {
       if (oneway) {
         return;

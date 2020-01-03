@@ -161,8 +161,7 @@ class ThreadManager : public virtual folly::Executor {
       std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool cancellable = false,
-      bool numa = false) noexcept = 0;
+      bool cancellable = false) noexcept = 0;
 
   /**
    * Implements folly::Executor::add()
@@ -301,8 +300,7 @@ class PriorityThreadManager : public ThreadManager {
       std::shared_ptr<Runnable> task,
       int64_t timeout = 0,
       int64_t expiration = 0,
-      bool cancellable = false,
-      bool numa = false) noexcept = 0;
+      bool cancellable = false) noexcept = 0;
 
   uint8_t getNumPriorities() const override {
     return N_PRIORITIES;
@@ -400,8 +398,7 @@ class ThreadManagerExecutorAdapter : public ThreadManager {
       std::shared_ptr<Runnable> task,
       int64_t /*timeout*/ = 0,
       int64_t /*expiration*/ = 0,
-      bool /*cancellable*/ = false,
-      bool /*numa*/ = false) noexcept override {
+      bool /*cancellable*/ = false) noexcept override {
     ka_->add([=] { task->run(); });
   }
   void add(folly::Func f) override {

@@ -199,14 +199,13 @@ class ThreadManager::ImplT : public ThreadManager,
       shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      bool cancellable,
-      bool numa) noexcept override;
+      bool cancellable) noexcept override;
 
   /**
    * Implements folly::Executor::add()
    */
   void add(folly::Func f) override {
-    add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false, false);
+    add(FunctionRunner::create(std::move(f)), 0LL, 0LL, false);
   }
 
   void remove(shared_ptr<Runnable> task) override;
@@ -246,8 +245,7 @@ class ThreadManager::ImplT : public ThreadManager,
       shared_ptr<Runnable> value,
       int64_t timeout,
       int64_t expiration,
-      bool cancellable,
-      bool numa) noexcept;
+      bool cancellable) noexcept;
 
   // returns a string to attach to namePrefix when recording
   // stats
