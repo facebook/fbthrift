@@ -37,29 +37,52 @@ class ConnectHandler
       std::unique_ptr<ConnectHandler, folly::DelayedDestruction::Destructor>;
   explicit ConnectHandler(
       const std::shared_ptr<folly::SSLContext>& ctx,
-      folly::EventBase* evb)
-      : socket_{new TAsyncSSLSocket(ctx, evb)} {}
+      folly::EventBase* evb,
+      std::string&& host,
+      const uint16_t port,
+      const uint32_t connect_timeout,
+      const uint32_t ssl_timeout,
+      CLIENT_TYPE client_t,
+      apache::thrift::protocol::PROTOCOL_TYPES proto,
+      std::string&& endpoint)
+      : socket_{new TAsyncSSLSocket(ctx, evb)},
+        host_(std::move(host)),
+        port_(port),
+        connect_timeout_(connect_timeout),
+        ssl_timeout_(ssl_timeout),
+        client_t_(client_t),
+        proto_(proto),
+        endpoint_(std::move(endpoint)) {}
 
-  folly::Future<HeaderChannel_ptr> connect(
-      const std::string& ip,
-      uint16_t port,
-      uint32_t timeout = 0,
-      uint32_t ssl_timeout = 0) {
+  folly::Future<RequestChannel_ptr> connect() {
     folly::DelayedDestruction::DestructorGuard dg(this);
-    uint64_t total_timeout = timeout + ssl_timeout;
-
     socket_->connect(
         this,
-        folly::SocketAddress(ip, port),
-        std::chrono::milliseconds(timeout),
-        std::chrono::milliseconds(timeout + ssl_timeout));
+        folly::SocketAddress(host_, port_),
+        std::chrono::milliseconds(connect_timeout_),
+        std::chrono::milliseconds(connect_timeout_ + ssl_timeout_));
     return promise_.getFuture();
   }
 
   void connectSuccess() noexcept override {
     UniquePtr p(this);
-    promise_.setValue(apache::thrift::HeaderClientChannel::newChannel(
-        std::shared_ptr<TAsyncSocket>{std::move(socket_)}));
+    promise_.setValue([this]() mutable -> RequestChannel_ptr {
+      if (client_t_ == CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE) {
+        auto chan =
+            apache::thrift::RocketClientChannel::newChannel(std::move(socket_));
+        chan->setProtocolId(proto_);
+        return chan;
+      }
+      auto chan = configureClientChannel(
+          apache::thrift::HeaderClientChannel::newChannel(
+              std::shared_ptr<TAsyncSocket>{std::move(socket_)}),
+          client_t_,
+          proto_);
+      if (client_t_ == THRIFT_HTTP_CLIENT_TYPE) {
+        chan->useAsHttpClient(host_, endpoint_);
+      }
+      return chan;
+    }());
   }
 
   void connectError(const apache::thrift::transport::TTransportException&
@@ -71,8 +94,15 @@ class ConnectHandler
   }
 
  private:
-  folly::Promise<HeaderChannel_ptr> promise_;
+  folly::Promise<RequestChannel_ptr> promise_;
   TAsyncSSLSocket::UniquePtr socket_;
+  std::string host_;
+  const uint16_t port_;
+  const uint32_t connect_timeout_;
+  const uint32_t ssl_timeout_;
+  CLIENT_TYPE client_t_;
+  apache::thrift::protocol::PROTOCOL_TYPES proto_;
+  std::string endpoint_;
 };
 
 /**
@@ -89,20 +119,23 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
     std::string&& endpoint) {
   auto eb = folly::getEventBase();
   return folly::via(
-             eb,
-             [=, host{std::move(host)}] {
-               ConnectHandler::UniquePtr handler{new ConnectHandler(ctx, eb)};
-               auto future =
-                   handler->connect(host, port, connect_timeout, ssl_timeout);
-               handler.release();
-               return future;
-             })
-      .thenValue([=, endpoint{std::move(endpoint)}](HeaderChannel_ptr&& chan_) {
-        auto chan = configureClientChannel(std::move(chan_), client_t, proto);
-        if (client_t == THRIFT_HTTP_CLIENT_TYPE) {
-          chan->useAsHttpClient(host, endpoint);
+      eb, [=, host{std::move(host)}, endpoint{std::move(endpoint)}]() mutable {
+        if (client_t == CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE) {
+          ctx->setAdvertisedNextProtocols({"rs"});
         }
-        return std::move(chan);
+        ConnectHandler::UniquePtr handler{new ConnectHandler(
+            ctx,
+            eb,
+            std::move(host),
+            port,
+            connect_timeout,
+            ssl_timeout,
+            client_t,
+            proto,
+            std::move(endpoint))};
+        auto future = handler->connect();
+        handler.release();
+        return future;
       });
 }
 } // namespace py3
