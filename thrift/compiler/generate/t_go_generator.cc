@@ -46,7 +46,8 @@ namespace compiler {
 
 // static const string endl = "\n"; // avoid ostream << std::endl flushes
 
-const string default_thrift_import = "github.com/facebook/fbthrift-go";
+const string default_thrift_import =
+    "github.com/facebook/fbthrift/thrift/lib/go/thrift";
 static std::string package_flag;
 
 /**
