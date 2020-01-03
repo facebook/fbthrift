@@ -157,6 +157,7 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
    *   pang();
    */
   public async function pang(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_pang($currentseqid);
@@ -173,6 +174,7 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
    *   pang();
    */
   public async function pang(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioChild", "pang");
     $currentseqid = $this->sendImpl_pang();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_pang($currentseqid);

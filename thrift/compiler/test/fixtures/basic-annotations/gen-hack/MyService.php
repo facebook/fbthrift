@@ -823,6 +823,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   ping();
    */
   public async function ping(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_ping($currentseqid);
@@ -834,6 +835,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   getRandomData();
    */
   public async function getRandomData(): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_getRandomData($currentseqid);
@@ -845,6 +847,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   hasDataById(1: i64 id);
    */
   public async function hasDataById(int $id): Awaitable<bool> {
+    await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_hasDataById($currentseqid);
@@ -856,6 +859,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   getDataById(1: i64 id);
    */
   public async function getDataById(int $id): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_getDataById($currentseqid);
@@ -868,6 +872,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *               2: string data);
    */
   public async function putDataById(int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_putDataById($currentseqid);
@@ -880,6 +885,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *               2: string data);
    */
   public async function lobDataById(int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
   }
 
@@ -889,6 +895,7 @@ class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf
    *   doNothing();
    */
   public async function doNothing(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_doNothing($currentseqid);
@@ -905,6 +912,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   ping();
    */
   public async function ping(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "ping");
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_ping($currentseqid);
@@ -916,6 +924,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   getRandomData();
    */
   public async function getRandomData(): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("MyService", "getRandomData");
     $currentseqid = $this->sendImpl_getRandomData();
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_getRandomData($currentseqid);
@@ -927,6 +936,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   hasDataById(1: i64 id);
    */
   public async function hasDataById(int $id): Awaitable<bool> {
+    await $this->asyncHandler_->genBefore("MyService", "hasDataById");
     $currentseqid = $this->sendImpl_hasDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_hasDataById($currentseqid);
@@ -938,6 +948,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   getDataById(1: i64 id);
    */
   public async function getDataById(int $id): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("MyService", "getDataById");
     $currentseqid = $this->sendImpl_getDataById($id);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_getDataById($currentseqid);
@@ -950,6 +961,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *               2: string data);
    */
   public async function putDataById(int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "putDataById");
     $currentseqid = $this->sendImpl_putDataById($id, $data);
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_putDataById($currentseqid);
@@ -962,6 +974,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *               2: string data);
    */
   public async function lobDataById(int $id, string $data): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "lobDataById");
     $currentseqid = $this->sendImpl_lobDataById($id, $data);
   }
 
@@ -971,6 +984,7 @@ class MyServiceClient extends \ThriftClientBase implements MyServiceClientIf {
    *   doNothing();
    */
   public async function doNothing(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyService", "doNothing");
     $currentseqid = $this->sendImpl_doNothing();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_doNothing($currentseqid);

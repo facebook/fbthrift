@@ -197,6 +197,7 @@ class BazAsyncClient extends \ThriftClientBase implements BazAsyncIf {
    *       3: map<Foo, string> c);
    */
   public async function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Baz", "qux");
     $currentseqid = $this->sendImpl_qux($a, $b, $c);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_qux($currentseqid);
@@ -215,6 +216,7 @@ class BazClient extends \ThriftClientBase implements BazClientIf {
    *       3: map<Foo, string> c);
    */
   public async function qux(Set<arraykey> $a, KeyedContainer<int, Bar> $b, KeyedContainer<arraykey, string> $c): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Baz", "qux");
     $currentseqid = $this->sendImpl_qux($a, $b, $c);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_qux($currentseqid);

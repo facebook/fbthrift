@@ -171,6 +171,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *       2: list<map<i32, set<string>>> b);
    */
   public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -188,6 +189,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *       2: list<map<i32, set<string>>> b);
    */
   public async function baz(keyset<int> $a, KeyedContainer<int, KeyedContainer<int, keyset<string>>> $b): Awaitable<string> {
+    await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);

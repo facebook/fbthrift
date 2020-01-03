@@ -4397,6 +4397,7 @@ void t_hack_generator::_generate_service_client_children(
     const vector<t_field*>& fields = arg_struct->get_members();
     vector<t_field*>::const_iterator fld_iter;
     string funname = (*f_iter)->get_name();
+    string tservice_name = tservice->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
     generate_php_docstring(out, *f_iter);
     if (nullable_everything_) {
@@ -4411,6 +4412,8 @@ void t_hack_generator::_generate_service_client_children(
     }
 
     indent_up();
+    indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
+                << "\", \"" << funname << "\");\n";
     indent(out) << "$currentseqid = $this->sendImpl_" << funname << "(";
 
     first = true;

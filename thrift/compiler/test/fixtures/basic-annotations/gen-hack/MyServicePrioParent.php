@@ -272,6 +272,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
    *   ping();
    */
   public async function ping(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_ping($currentseqid);
@@ -283,6 +284,7 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
    *   pong();
    */
   public async function pong(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_pong($currentseqid);
@@ -299,6 +301,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
    *   ping();
    */
   public async function ping(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_ping($currentseqid);
@@ -310,6 +313,7 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
    *   pong();
    */
   public async function pong(): Awaitable<void> {
+    await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
     await $this->asyncHandler_->genWait($currentseqid);
     $this->recvImpl_pong($currentseqid);

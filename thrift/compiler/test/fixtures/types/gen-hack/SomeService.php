@@ -286,6 +286,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
    *   bounce_map(1: include.SomeMap m);
    */
   public async function bounce_map(Map<int, string> $m): Awaitable<Map<int, string>> {
+    await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $currentseqid = $this->sendImpl_bounce_map($m);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_bounce_map($currentseqid);
@@ -297,6 +298,7 @@ class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsy
    *   binary_keyed_map(1: list<i64> r);
    */
   public async function binary_keyed_map(KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
+    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_binary_keyed_map($currentseqid);
@@ -313,6 +315,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
    *   bounce_map(1: include.SomeMap m);
    */
   public async function bounce_map(Map<int, string> $m): Awaitable<Map<int, string>> {
+    await $this->asyncHandler_->genBefore("SomeService", "bounce_map");
     $currentseqid = $this->sendImpl_bounce_map($m);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_bounce_map($currentseqid);
@@ -324,6 +327,7 @@ class SomeServiceClient extends \ThriftClientBase implements SomeServiceClientIf
    *   binary_keyed_map(1: list<i64> r);
    */
   public async function binary_keyed_map(KeyedContainer<int, int> $r): Awaitable<Map<string, int>> {
+    await $this->asyncHandler_->genBefore("SomeService", "binary_keyed_map");
     $currentseqid = $this->sendImpl_binary_keyed_map($r);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_binary_keyed_map($currentseqid);
