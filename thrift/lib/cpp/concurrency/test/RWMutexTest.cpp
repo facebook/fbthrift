@@ -196,15 +196,6 @@ TEST(RWMutexTest, Write_Holders) {
   EXPECT_FALSE(l.timedRead(kTimeoutMs));
 }
 
-TEST(MutexTest, Recursive_Holders) {
-  Mutex mutex(Mutex::RECURSIVE_INITIALIZER);
-  Guard g1(mutex);
-  {
-    Guard g2(mutex); //
-  }
-  Guard g2(mutex);
-}
-
 TEST(NoStarveRWMutexTest, Max_Readers) {
   NoStarveReadWriteMutex l;
 

@@ -42,8 +42,7 @@ class Mutex {
   // PTHREAD_MUTEX_ERRORCHECK, PTHREAD_MUTEX_RECURSIVE and
   // PTHREAD_MUTEX_DEFAULT.
   //
-  // Backwards compatibility: pass DEFAULT_INITIALIZER for PTHREAD_MUTEX_NORMAL
-  // or RECURSIVE_INITIALIZER for PTHREAD_MUTEX_RECURSIVE.
+  // Backwards compatibility: pass DEFAULT_INITIALIZER for PTHREAD_MUTEX_NORMAL.
   explicit Mutex(int type = DEFAULT_INITIALIZER);
 
   virtual ~Mutex() {}
@@ -68,7 +67,6 @@ class Mutex {
   void* getUnderlyingImpl() const;
 
   static int DEFAULT_INITIALIZER;
-  static int RECURSIVE_INITIALIZER;
 
  private:
   std::shared_ptr<PthreadMutex> impl_;

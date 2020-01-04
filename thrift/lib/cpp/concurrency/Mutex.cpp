@@ -29,7 +29,6 @@ namespace thrift {
 namespace concurrency {
 
 int Mutex::DEFAULT_INITIALIZER = PTHREAD_MUTEX_NORMAL;
-int Mutex::RECURSIVE_INITIALIZER = PTHREAD_MUTEX_RECURSIVE;
 
 Mutex::Mutex(int type) : impl_(std::make_shared<PthreadMutex>(type)) {}
 
