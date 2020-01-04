@@ -38,8 +38,6 @@ constexpr R fs() {
   return fatal::to_instance<R, N>();
 }
 
-extern id_t get_type_id(type_t type, folly::StringPiece name);
-
 inline datatype_t* registering_datatype_prep(
     schema_t& schema,
     folly::StringPiece rname,

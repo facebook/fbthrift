@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/reflection/legacy_reflection.h>
+#include <thrift/lib/cpp2/reflection/internal/legacy_reflection_type_id.h>
 
 #include <folly/lang/Bits.h>
 #include <folly/ssl/OpenSSLHash.h>
@@ -24,7 +24,7 @@ namespace thrift {
 
 namespace legacy_reflection_detail {
 
-id_t get_type_id(type_t type, folly::StringPiece name) {
+id_t get_type_id(reflection::Type type, folly::StringPiece name) {
   union {
     id_t val;
     std::uint8_t buf[20];
