@@ -28,9 +28,7 @@ namespace apache {
 namespace thrift {
 namespace concurrency {
 
-int Mutex::DEFAULT_INITIALIZER = PTHREAD_MUTEX_NORMAL;
-
-Mutex::Mutex(int type) : impl_(std::make_shared<PthreadMutex>(type)) {}
+Mutex::Mutex() : impl_(std::make_shared<PthreadMutex>(PTHREAD_MUTEX_NORMAL)) {}
 
 void* Mutex::getUnderlyingImpl() const {
   return impl_->getUnderlyingImpl();

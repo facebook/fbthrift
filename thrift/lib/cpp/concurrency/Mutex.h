@@ -36,14 +36,7 @@ class PthreadRWMutex;
  */
 class Mutex {
  public:
-  // Specifying the type of the mutex with an integer. The value has
-  // to be supported by the underlying implementation, currently
-  // pthread_mutex. So the possible values are PTHREAD_MUTEX_NORMAL,
-  // PTHREAD_MUTEX_ERRORCHECK, PTHREAD_MUTEX_RECURSIVE and
-  // PTHREAD_MUTEX_DEFAULT.
-  //
-  // Backwards compatibility: pass DEFAULT_INITIALIZER for PTHREAD_MUTEX_NORMAL.
-  explicit Mutex(int type = DEFAULT_INITIALIZER);
+  Mutex();
 
   virtual ~Mutex() {}
   virtual void lock() const;
@@ -65,8 +58,6 @@ class Mutex {
   virtual bool isLocked() const;
 
   void* getUnderlyingImpl() const;
-
-  static int DEFAULT_INITIALIZER;
 
  private:
   std::shared_ptr<PthreadMutex> impl_;
