@@ -39,12 +39,9 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
-#include <rsocket/RSocket.h>
-#include <rsocket/transports/tcp/TcpConnectionAcceptor.h>
 #include <wangle/acceptor/Acceptor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 #include <yarpl/Flowable.h>
-#include <yarpl/Single.h>
 
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 #include <thrift/lib/cpp2/async/Stream.h>
@@ -64,9 +61,7 @@
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
-using namespace rsocket;
 using namespace yarpl::flowable;
-using namespace yarpl::single;
 
 namespace apache {
 namespace thrift {
@@ -74,27 +69,6 @@ namespace rocket {
 namespace test {
 
 namespace {
-class RsocketTestServerResponder : public rsocket::RSocketResponder {
- public:
-  std::shared_ptr<Single<rsocket::Payload>> handleRequestResponse(
-      rsocket::Payload request,
-      uint32_t) final;
-
-  std::shared_ptr<Flowable<rsocket::Payload>> handleRequestStream(
-      rsocket::Payload request,
-      uint32_t) final;
-
-  std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
-  handleRequestChannel(
-      rsocket::Payload request,
-      std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
-          requestStream,
-      uint32_t streamId) final;
-
- private:
-  folly::ScopedEventBaseThread th_;
-};
-
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
 makeTestResponse(
     std::unique_ptr<folly::IOBuf> requestMetadata,
@@ -106,7 +80,6 @@ makeTestResponse(
   constexpr folly::StringPiece kMetadataEchoPrefix{"metadata_echo:"};
   constexpr folly::StringPiece kDataEchoPrefix{"data_echo:"};
 
-  folly::Optional<rsocket::Payload> responsePayload;
   if (data.removePrefix("sleep_ms:")) {
     // Sleep, then echo back request.
     std::chrono::milliseconds sleepFor(folly::to<uint32_t>(data));
@@ -136,122 +109,6 @@ makeTestResponse(
 
   return response;
 }
-
-template <class P>
-P makePayload(folly::StringPiece metadata, folly::StringPiece data) = delete;
-
-template <>
-rsocket::Payload makePayload<rsocket::Payload>(
-    folly::StringPiece metadata,
-    folly::StringPiece data) {
-  return rsocket::Payload(data, metadata);
-}
-
-template <class P>
-std::shared_ptr<yarpl::flowable::Flowable<P>> makeTestFlowable(
-    folly::StringPiece data) {
-  size_t n = 500;
-  if (data.removePrefix("generate:")) {
-    n = folly::to<size_t>(data);
-  }
-
-  auto gen = [n, i = static_cast<size_t>(0)](
-                 auto& subscriber, int64_t requested) mutable {
-    while (requested-- > 0 && i <= n) {
-      // Note that first payload (i == 0) is not counted against requested
-      // number of payloads to generate.
-      subscriber.onNext(makePayload<P>(
-          !i ? CompactSerializer::serialize<std::string>(ResponseRpcMetadata{})
-             : CompactSerializer::serialize<std::string>(
-                   StreamPayloadMetadata{}),
-          folly::to<std::string>(i)));
-      ++i;
-    }
-    if (i == n + 1) {
-      subscriber.onComplete();
-    }
-  };
-  return yarpl::flowable::Flowable<P>::create(std::move(gen));
-}
-
-std::shared_ptr<Single<rsocket::Payload>>
-RsocketTestServerResponder::handleRequestResponse(
-    rsocket::Payload request,
-    uint32_t /* streamId */) {
-  DCHECK(request.data);
-  auto data = folly::StringPiece(request.data->coalesce());
-
-  if (data.removePrefix("error:application")) {
-    return Single<rsocket::Payload>::create([](auto&& subscriber) mutable {
-      subscriber->onSubscribe(SingleSubscriptions::empty());
-      subscriber->onError(folly::make_exception_wrapper<std::runtime_error>(
-          "Application error occurred"));
-    });
-  }
-
-  auto response =
-      makeTestResponse(std::move(request.metadata), std::move(request.data));
-  rsocket::Payload responsePayload(
-      std::move(response.second), std::move(response.first));
-
-  return Single<rsocket::Payload>::create(
-      [responsePayload =
-           std::move(responsePayload)](auto&& subscriber) mutable {
-        subscriber->onSubscribe(SingleSubscriptions::empty());
-        subscriber->onSuccess(std::move(responsePayload));
-      });
-}
-
-std::shared_ptr<Flowable<rsocket::Payload>>
-RsocketTestServerResponder::handleRequestStream(
-    rsocket::Payload request,
-    uint32_t /* streamId */) {
-  DCHECK(request.data);
-  auto data = folly::StringPiece(request.data->coalesce());
-
-  if (data.removePrefix("error:application")) {
-    return Flowable<rsocket::Payload>::create(
-        [](Subscriber<rsocket::Payload>& subscriber,
-           int64_t /* requested */) mutable {
-          subscriber.onError(folly::make_exception_wrapper<std::runtime_error>(
-              "Application error occurred"));
-        });
-  }
-  return makeTestFlowable<rsocket::Payload>(data);
-}
-
-std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>>
-RsocketTestServerResponder::handleRequestChannel(
-    rsocket::Payload request,
-    std::shared_ptr<yarpl::flowable::Flowable<rsocket::Payload>> input,
-    uint32_t /* streamId */) {
-  auto data = folly::StringPiece(request.data->coalesce());
-
-  auto streamAndPublisher =
-      apache::thrift::StreamPublisher<rsocket::Payload>::create(
-          th_.getEventBase(), [] {}, 1000);
-  streamAndPublisher.second.next(rsocket::Payload("FirstResponse"));
-  if (data.removePrefix("upload:")) {
-    std::shared_ptr<int> d = std::make_shared<int>(0);
-    input->subscribe(
-        [d](rsocket::Payload p) {
-          std::string data = p.cloneDataToString();
-          if (data.empty()) {
-            return;
-          }
-          EXPECT_EQ(*d, folly::to<int>(data));
-          (*d)++;
-        },
-        [](folly::exception_wrapper) {},
-        [publisher = std::move(streamAndPublisher.second), d]() mutable {
-          publisher.next(rsocket::Payload(folly::to<std::string>(*d)));
-          std::move(publisher).complete();
-        },
-        10);
-  }
-  return toFlowable(std::move(streamAndPublisher.first));
-}
-
 } // namespace
 
 rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
@@ -279,33 +136,6 @@ rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
   appender.insert(paramQueue.move());
   return rocket::SetupFrame(
       rocket::Payload::makeFromMetadataAndData(queue.move(), {}));
-}
-
-RsocketTestServer::RsocketTestServer() {
-  TcpConnectionAcceptor::Options opts;
-  opts.address = folly::SocketAddress("::1", 0 /* bind to any port */);
-  opts.threads = 2;
-
-  rsocketServer_ = RSocket::createServer(
-      std::make_unique<TcpConnectionAcceptor>(std::move(opts)));
-  // Start accepting connections
-  rsocketServer_->start([](const rsocket::SetupParameters&) {
-    return std::make_shared<RsocketTestServerResponder>();
-  });
-}
-
-RsocketTestServer::~RsocketTestServer() {
-  shutdown();
-}
-
-uint16_t RsocketTestServer::getListeningPort() const {
-  auto oport = rsocketServer_->listeningPort();
-  DCHECK(oport);
-  return *oport;
-}
-
-void RsocketTestServer::shutdown() {
-  rsocketServer_.reset();
 }
 
 RocketTestClient::RocketTestClient(const folly::SocketAddress& serverAddr)

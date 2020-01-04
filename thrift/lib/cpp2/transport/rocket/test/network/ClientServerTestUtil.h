@@ -41,10 +41,6 @@ class FiberManager;
 } // namespace fibers
 } // namespace folly
 
-namespace rsocket {
-class RSocketServer;
-} // namespace rsocket
-
 namespace wangle {
 class Acceptor;
 } // namespace wangle
@@ -61,19 +57,6 @@ class RocketClient;
 class RocketClientWriteCallback;
 
 namespace test {
-
-class RsocketTestServer {
- public:
-  RsocketTestServer();
-  ~RsocketTestServer();
-
-  uint16_t getListeningPort() const;
-  void shutdown();
-  void setExpectedRemainingStreams(size_t) {}
-
- private:
-  std::unique_ptr<rsocket::RSocketServer> rsocketServer_;
-};
 
 class RocketTestClient {
  public:
