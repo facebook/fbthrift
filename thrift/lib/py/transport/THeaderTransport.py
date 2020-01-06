@@ -172,10 +172,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     def header_flags(self):
         return self.__flags
 
-    @property
-    def is_header_transport(self):
-        return self.__client_type == CLIENT_TYPE.HEADER
-
     def set_max_frame_size(self, size):
         if size > MAX_BIG_FRAME_SIZE:
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
