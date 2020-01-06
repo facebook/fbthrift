@@ -24,10 +24,11 @@ using namespace apache::thrift::test;
 
 using apache::thrift::concurrency::Util;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 void AsyncLoadHandler2::async_eb_noop(
-  std::unique_ptr<HandlerCallback<void>> callback) {
+    std::unique_ptr<HandlerCallback<void>> callback) {
   // Note that we could have done this with a sync function,
   // but an inline async op is faster, and we want to maintain
   // parity with the old loadgen for comparison testing
@@ -35,40 +36,39 @@ void AsyncLoadHandler2::async_eb_noop(
 }
 
 void AsyncLoadHandler2::async_eb_onewayNoop(
-  std::unique_ptr<HandlerCallbackBase> callback) {
+    std::unique_ptr<HandlerCallbackBase> callback) {
   callback.release()->deleteInThread();
 }
 
 void AsyncLoadHandler2::async_eb_asyncNoop(
-  std::unique_ptr<HandlerCallback<void>> callback) {
+    std::unique_ptr<HandlerCallback<void>> callback) {
   decltype(callback)::element_type::doneInThread(std::move(callback));
 }
 
 void AsyncLoadHandler2::async_eb_sleep(
-  std::unique_ptr<HandlerCallback<void>> callback,
-  int64_t microseconds) {
+    std::unique_ptr<HandlerCallback<void>> callback,
+    int64_t microseconds) {
   // May leak if task never finishes
   HandlerCallback<void>* callbackp = callback.release();
   callbackp->getEventBase()->runInEventBaseThread([=]() {
-    callbackp->getEventBase()->tryRunAfterDelay([=](){
-      std::unique_ptr<HandlerCallback<void>> cb(callbackp);
-      cb->done();
-    },
-    microseconds / Util::US_PER_MS);
+    callbackp->getEventBase()->tryRunAfterDelay(
+        [=]() {
+          std::unique_ptr<HandlerCallback<void>> cb(callbackp);
+          cb->done();
+        },
+        microseconds / Util::US_PER_MS);
   });
 }
 
 void AsyncLoadHandler2::async_eb_onewaySleep(
-  std::unique_ptr<HandlerCallbackBase> callback,
-  int64_t microseconds) {
+    std::unique_ptr<HandlerCallbackBase> callback,
+    int64_t microseconds) {
   auto callbackp = callback.release();
   // May leak if task never finishes
   auto eb = callbackp->getEventBase();
   eb->runInEventBaseThread([=]() {
-    eb->tryRunAfterDelay([=](){
-      delete callbackp;
-    },
-    microseconds / Util::US_PER_MS);
+    eb->tryRunAfterDelay(
+        [=]() { delete callbackp; }, microseconds / Util::US_PER_MS);
   });
 }
 
@@ -83,8 +83,8 @@ void AsyncLoadHandler2::sync_burn(int64_t microseconds) {
   } while (now < end);
 }
 
-folly::Future<folly::Unit>
-AsyncLoadHandler2::future_burn(int64_t microseconds) {
+folly::Future<folly::Unit> AsyncLoadHandler2::future_burn(
+    int64_t microseconds) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
 
@@ -98,8 +98,8 @@ void AsyncLoadHandler2::sync_onewayBurn(int64_t microseconds) {
   sync_burn(microseconds);
 }
 
-folly::Future<folly::Unit>
-AsyncLoadHandler2::future_onewayBurn(int64_t microseconds) {
+folly::Future<folly::Unit> AsyncLoadHandler2::future_onewayBurn(
+    int64_t microseconds) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
 
@@ -110,28 +110,27 @@ AsyncLoadHandler2::future_onewayBurn(int64_t microseconds) {
 }
 
 void AsyncLoadHandler2::async_eb_badSleep(
-  std::unique_ptr<HandlerCallback<void>> callback,
-  int64_t microseconds) {
+    std::unique_ptr<HandlerCallback<void>> callback,
+    int64_t microseconds) {
   usleep(microseconds);
   callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_badBurn(
-  std::unique_ptr<HandlerCallback<void>> callback,
-  int64_t microseconds) {
+    std::unique_ptr<HandlerCallback<void>> callback,
+    int64_t microseconds) {
   // This is a true (bad) async call.
   sync_burn(microseconds);
   callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_throwError(
-  std::unique_ptr<HandlerCallback<void>> callback,
-  int32_t code) {
-
+    std::unique_ptr<HandlerCallback<void>> callback,
+    int32_t code) {
   LoadError error;
   error.code = code;
-  decltype(callback)::element_type::exceptionInThread(std::move(callback),
-                                                      error);
+  decltype(callback)::element_type::exceptionInThread(
+      std::move(callback), error);
 }
 
 void AsyncLoadHandler2::async_eb_throwUnexpected(
@@ -145,13 +144,12 @@ void AsyncLoadHandler2::async_eb_throwUnexpected(
 }
 
 void AsyncLoadHandler2::async_eb_onewayThrow(
-  std::unique_ptr<HandlerCallbackBase> callback,
-  int32_t code) {
-
+    std::unique_ptr<HandlerCallbackBase> callback,
+    int32_t code) {
   LoadError error;
   error.code = code;
-  decltype(callback)::element_type::exceptionInThread(std::move(callback),
-                                                      error);
+  decltype(callback)::element_type::exceptionInThread(
+      std::move(callback), error);
 }
 
 void AsyncLoadHandler2::async_eb_send(
@@ -167,11 +165,11 @@ void AsyncLoadHandler2::async_eb_onewaySend(
 }
 
 void AsyncLoadHandler2::async_eb_recv(
-  std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
-  int64_t bytes) {
+    std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
+    int64_t bytes) {
   std::unique_ptr<std::string> ret(new std::string(bytes, 'a'));
-  decltype(callback)::element_type::resultInThread(std::move(callback),
-                                                   std::move(ret));
+  decltype(callback)::element_type::resultInThread(
+      std::move(callback), std::move(ret));
 }
 
 void AsyncLoadHandler2::async_eb_sendrecv(
@@ -179,20 +177,19 @@ void AsyncLoadHandler2::async_eb_sendrecv(
     std::unique_ptr<std::string> /* data */,
     int64_t recvBytes) {
   std::unique_ptr<std::string> ret(new std::string(recvBytes, 'a'));
-  decltype(callback)::element_type::resultInThread(std::move(callback),
-                                                   std::move(ret));
+  decltype(callback)::element_type::resultInThread(
+      std::move(callback), std::move(ret));
 }
 
 void AsyncLoadHandler2::sync_echo(
-  // Slightly different from thrift1, this happens in a
-  // thread pool.
-  std::string& output,
-  std::unique_ptr<std::string> data) {
+    // Slightly different from thrift1, this happens in a
+    // thread pool.
+    std::string& output,
+    std::unique_ptr<std::string> data) {
   output = std::move(*data);
 }
 
-folly::Future<std::unique_ptr<std::string>>
-AsyncLoadHandler2::future_echo(
+folly::Future<std::unique_ptr<std::string>> AsyncLoadHandler2::future_echo(
     std::unique_ptr<std::string> data) {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
@@ -216,7 +213,7 @@ void AsyncLoadHandler2::async_eb_largeContainer(
 
 void AsyncLoadHandler2::async_eb_iterAllFields(
     std::unique_ptr<HandlerCallback<std::unique_ptr<std::vector<BigStruct>>>>
-    callback,
+        callback,
     std::unique_ptr<std::vector<BigStruct>> items) {
   std::string x;
   for (auto& item : *items) {
@@ -229,10 +226,11 @@ void AsyncLoadHandler2::async_eb_iterAllFields(
 }
 
 void AsyncLoadHandler2::async_eb_add(
-  std::unique_ptr<HandlerCallback<int64_t>> callback,
-  int64_t a,
-  int64_t b){
-  decltype(callback)::element_type::resultInThread(std::move(callback), a+b);
+    std::unique_ptr<HandlerCallback<int64_t>> callback,
+    int64_t a,
+    int64_t b) {
+  decltype(callback)::element_type::resultInThread(std::move(callback), a + b);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

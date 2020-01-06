@@ -25,12 +25,13 @@
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
-using apache::thrift::test::ClientLoadConfig;
 using apache::thrift::loadgen::Worker;
 using apache::thrift::protocol::TBinaryProtocolFactory;
 using apache::thrift::protocol::THeaderProtocolFactory;
+using apache::thrift::test::ClientLoadConfig;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 // Before updating for header format LoadTestClientT was specialized on
 // TBinaryProtocolT<TBufferBase>, but in practice it didn't seem to
@@ -39,12 +40,11 @@ namespace apache { namespace thrift {
 class AsyncClientWorker2
     : public Worker<test::LoadTestAsyncClient, ClientLoadConfig> {
  public:
-
-  AsyncClientWorker2() :
-      eb_(),
-      binProtoFactory_(),
-      duplexProtoFactory_(apache::thrift::protocol::T_BINARY_PROTOCOL, true),
-      sslContext_(new folly::SSLContext()) {
+  AsyncClientWorker2()
+      : eb_(),
+        binProtoFactory_(),
+        duplexProtoFactory_(apache::thrift::protocol::T_BINARY_PROTOCOL, true),
+        sslContext_(new folly::SSLContext()) {
     std::bitset<CLIENT_TYPES_LEN> clientTypes;
     clientTypes[THRIFT_FRAMED_DEPRECATED] = 1;
     clientTypes[THRIFT_HEADER_CLIENT_TYPE] = 1;
@@ -61,11 +61,10 @@ class AsyncClientWorker2
   // from Worker::run
   void performOperation(
       const std::shared_ptr<Client>& /* client */,
-      uint32_t /* opType */) override{}
+      uint32_t /* opType */) override {}
   void run() override;
 
  private:
-
   void setupSSLContext();
 
   folly::EventBase eb_;
@@ -81,6 +80,7 @@ class AsyncClientWorker2
   std::unique_ptr<SSL_SESSION, SessionDeleter> session_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_PERF_CLIENTWORKER_H_

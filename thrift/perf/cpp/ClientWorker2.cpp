@@ -27,16 +27,17 @@
 using namespace apache::thrift::transport;
 using namespace apache::thrift::async;
 
-namespace apache { namespace thrift { namespace test {
+namespace apache {
+namespace thrift {
+namespace test {
 
 const int kTimeout = 60000;
 
 std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   const std::shared_ptr<ClientLoadConfig>& config = getConfig();
   std::shared_ptr<TAsyncSocket> socket;
-  std::unique_ptr<
-    RequestChannel,
-    folly::DelayedDestruction::Destructor> channel;
+  std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>
+      channel;
   if (config->useSSL()) {
     std::shared_ptr<SSLContext> context = std::make_shared<SSLContext>();
     if (!config->trustedCAList().empty()) {
@@ -75,11 +76,12 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   channel = std::move(headerChannel);
 
   return std::shared_ptr<ClientWorker2::Client>(
-    new ClientWorker2::Client(std::move(channel)));
+      new ClientWorker2::Client(std::move(channel)));
 }
 
-void ClientWorker2::performOperation(const std::shared_ptr<Client>& client,
-                                    uint32_t opType) {
+void ClientWorker2::performOperation(
+    const std::shared_ptr<Client>& client,
+    uint32_t opType) {
   switch (static_cast<ClientLoadConfig::OperationEnum>(opType)) {
     case ClientLoadConfig::OP_NOOP:
       return performNoop(client);
@@ -124,12 +126,13 @@ void ClientWorker2::performOperation(const std::shared_ptr<Client>& client,
     case ClientLoadConfig::NUM_OPS:
       // fall through
       break;
-    // no default case, so gcc will warn us if a new op is added
-    // and this switch statement is not updated
   }
+  // no default case, so gcc will warn us if a new op is added
+  // and this switch statement is not updated
 
-  T_ERROR("ClientWorker2::performOperation() got unknown operation %" PRIu32,
-          opType);
+  T_ERROR(
+      "ClientWorker2::performOperation() got unknown operation %" PRIu32,
+      opType);
   assert(false);
 }
 
@@ -179,7 +182,8 @@ void ClientWorker2::performThrowError(const std::shared_ptr<Client>& client) {
   }
 }
 
-void ClientWorker2::performThrowUnexpected(const std::shared_ptr<Client>& client) {
+void ClientWorker2::performThrowUnexpected(
+    const std::shared_ptr<Client>& client) {
   try {
     client->sync_throwUnexpected(loadgen::RNG::getU32());
     T_ERROR("throwUnexpected() didn't throw any exception");
@@ -227,8 +231,13 @@ void ClientWorker2::performAdd(const std::shared_ptr<Client>& client) {
   int64_t result = client->sync_add(a, b);
 
   if (result != a + b) {
-    T_ERROR("add(%" PRId64 ", %" PRId64 " gave wrong result %" PRId64
-            "(expected %" PRId64 ")", a, b, result, a + b);
+    T_ERROR(
+        "add(%" PRId64 ", %" PRId64 " gave wrong result %" PRId64
+        "(expected %" PRId64 ")",
+        a,
+        b,
+        result,
+        a + b);
   }
 }
 
@@ -250,4 +259,6 @@ void ClientWorker2::performIterAllFields(
   }
 }
 
-}}} // apache::thrift::test
+} // namespace test
+} // namespace thrift
+} // namespace apache

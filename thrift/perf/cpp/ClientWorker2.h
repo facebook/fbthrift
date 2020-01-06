@@ -17,11 +17,12 @@
 #ifndef THRIFT_TEST_PERF_CLIENTWORKER2_H_
 #define THRIFT_TEST_PERF_CLIENTWORKER2_H_ 1
 
-#include <thrift/perf/if/gen-cpp2/LoadTest.h>
-#include <thrift/lib/cpp/test/loadgen/Worker.h>
 #include <folly/io/async/EventBaseManager.h>
+#include <thrift/lib/cpp/test/loadgen/Worker.h>
+#include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace test {
 
@@ -38,8 +39,8 @@ class ClientWorker2
   typedef loadgen::Worker<Client, ClientLoadConfig> Parent;
 
   std::shared_ptr<Client> createConnection() override;
-  void performOperation(const std::shared_ptr<Client>& client,
-                        uint32_t opType) override;
+  void performOperation(const std::shared_ptr<Client>& client, uint32_t opType)
+      override;
 
  private:
   void performNoop(const std::shared_ptr<Client>& client);
@@ -66,6 +67,8 @@ class ClientWorker2
   folly::EventBaseManager ebm_;
 };
 
-}}} // apache::thrift::test
+} // namespace test
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_PERF_CLIENTWORKER2_H_

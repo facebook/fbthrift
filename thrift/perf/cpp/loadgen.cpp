@@ -14,15 +14,16 @@
  * limitations under the License.
  */
 
-#include <folly/init/Init.h>
 #include <thrift/lib/cpp/test/loadgen/loadgen.h>
-#include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
-#include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include <thrift/perf/cpp/ClientLoadConfig.h>
-#include <thrift/perf/cpp/ClientWorker2.h>
-#include <thrift/perf/cpp/AsyncClientWorker2.h>
 
 #include <signal.h>
+
+#include <folly/init/Init.h>
+#include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
+#include <thrift/perf/cpp/AsyncClientWorker2.h>
+#include <thrift/perf/cpp/ClientLoadConfig.h>
+#include <thrift/perf/cpp/ClientWorker2.h>
 
 DEFINE_double(interval, 1.0, "number of seconds between statistics output");
 
@@ -50,7 +51,7 @@ int main(int argc, char* argv[]) {
   std::shared_ptr<ClientLoadConfig> config(new ClientLoadConfig);
   if (config->useAsync()) {
     loadgen::runLoadGen<apache::thrift::AsyncClientWorker2>(
-      config, FLAGS_interval);
+        config, FLAGS_interval);
   } else {
     loadgen::runLoadGen<ClientWorker2>(config, FLAGS_interval);
   }

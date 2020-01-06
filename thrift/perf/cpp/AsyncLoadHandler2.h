@@ -19,7 +19,8 @@
 
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 class AsyncLoadHandler2 : public test::LoadTestSvIf {
  public:
@@ -28,28 +29,37 @@ class AsyncLoadHandler2 : public test::LoadTestSvIf {
       std::unique_ptr<HandlerCallbackBase> callback) override;
   void async_eb_asyncNoop(
       std::unique_ptr<HandlerCallback<void>> callback) override;
-  void async_eb_sleep(std::unique_ptr<HandlerCallback<void>> callback,
-                      int64_t microseconds) override;
-  void async_eb_onewaySleep(std::unique_ptr<HandlerCallbackBase> callback,
-                            int64_t microseconds) override;
+  void async_eb_sleep(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      int64_t microseconds) override;
+  void async_eb_onewaySleep(
+      std::unique_ptr<HandlerCallbackBase> callback,
+      int64_t microseconds) override;
   void sync_burn(int64_t microseconds);
   folly::Future<folly::Unit> future_burn(int64_t microseconds) override;
   void sync_onewayBurn(int64_t microseconds);
   folly::Future<folly::Unit> future_onewayBurn(int64_t microseconds) override;
-  void async_eb_badSleep(std::unique_ptr<HandlerCallback<void>> callback,
-                         int64_t microseconds) override;
-  void async_eb_badBurn(std::unique_ptr<HandlerCallback<void>> callback,
-                        int64_t microseconds) override;
-  void async_eb_throwError(std::unique_ptr<HandlerCallback<void>> callback,
-                           int32_t code) override;
-  void async_eb_throwUnexpected(std::unique_ptr<HandlerCallback<void>> callback,
-                                int32_t code) override;
-  void async_eb_onewayThrow(std::unique_ptr<HandlerCallbackBase> callback,
-                            int32_t code) override;
-  void async_eb_send(std::unique_ptr<HandlerCallback<void>> callback,
-                     std::unique_ptr<std::string> data) override;
-  void async_eb_onewaySend(std::unique_ptr<HandlerCallbackBase> callback,
-                           std::unique_ptr<std::string> data) override;
+  void async_eb_badSleep(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      int64_t microseconds) override;
+  void async_eb_badBurn(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      int64_t microseconds) override;
+  void async_eb_throwError(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      int32_t code) override;
+  void async_eb_throwUnexpected(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      int32_t code) override;
+  void async_eb_onewayThrow(
+      std::unique_ptr<HandlerCallbackBase> callback,
+      int32_t code) override;
+  void async_eb_send(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      std::unique_ptr<std::string> data) override;
+  void async_eb_onewaySend(
+      std::unique_ptr<HandlerCallbackBase> callback,
+      std::unique_ptr<std::string> data) override;
   void async_eb_recv(
       std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
       int64_t bytes) override;
@@ -57,14 +67,13 @@ class AsyncLoadHandler2 : public test::LoadTestSvIf {
       std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
       std::unique_ptr<std::string> data,
       int64_t recvBytes) override;
-  void sync_echo(
-    std::string& output,
-    std::unique_ptr<std::string> data);
+  void sync_echo(std::string& output, std::unique_ptr<std::string> data);
   folly::Future<std::unique_ptr<std::string>> future_echo(
       std::unique_ptr<std::string> data) override;
-  void async_eb_add(std::unique_ptr<HandlerCallback<int64_t>>,
-                    int64_t a,
-                    int64_t b) override;
+  void async_eb_add(
+      std::unique_ptr<HandlerCallback<int64_t>>,
+      int64_t a,
+      int64_t b) override;
   void async_eb_largeContainer(
       std::unique_ptr<HandlerCallback<void>> callback,
       std::unique_ptr<std::vector<test::BigStruct>> items) override;
@@ -75,6 +84,7 @@ class AsyncLoadHandler2 : public test::LoadTestSvIf {
       std::unique_ptr<std::vector<test::BigStruct>> items) override;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_HANDLERS_ASYNCLOADHANDLER2_H_
