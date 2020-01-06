@@ -19,17 +19,17 @@
 using apache::thrift::transport::TMemoryBuffer;
 using std::shared_ptr;
 
-
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 TZlibAsyncChannel::SendRequest::SendRequest()
-  : compressedBuffer_(new TMemoryBuffer)
-  , zlibTransport_(compressedBuffer_)
-  , sendSuccess_(std::bind(&SendRequest::sendSuccess, this))
-  , sendError_(std::bind(&SendRequest::sendError, this))
-  , callback_()
-  , errorCallback_() {
-}
+    : compressedBuffer_(new TMemoryBuffer),
+      zlibTransport_(compressedBuffer_),
+      sendSuccess_(std::bind(&SendRequest::sendSuccess, this)),
+      sendError_(std::bind(&SendRequest::sendError, this)),
+      callback_(),
+      errorCallback_() {}
 
 void TZlibAsyncChannel::SendRequest::set(
     const VoidCallback& callback,
@@ -75,13 +75,12 @@ void TZlibAsyncChannel::SendRequest::sendError() {
 }
 
 TZlibAsyncChannel::RecvRequest::RecvRequest()
-  : compressedBuffer_(new TMemoryBuffer)
-  , zlibTransport_(compressedBuffer_)
-  , recvSuccess_(std::bind(&RecvRequest::recvSuccess, this))
-  , recvError_(std::bind(&RecvRequest::recvError, this))
-  , callback_()
-  , errorCallback_() {
-}
+    : compressedBuffer_(new TMemoryBuffer),
+      zlibTransport_(compressedBuffer_),
+      recvSuccess_(std::bind(&RecvRequest::recvSuccess, this)),
+      recvError_(std::bind(&RecvRequest::recvError, this)),
+      callback_(),
+      errorCallback_() {}
 
 void TZlibAsyncChannel::RecvRequest::set(
     const VoidCallback& callback,
@@ -141,14 +140,12 @@ void TZlibAsyncChannel::RecvRequest::recvError() {
 
 TZlibAsyncChannel::TZlibAsyncChannel(
     const shared_ptr<TAsyncEventChannel>& channel)
-  : channel_(channel)
-  , sendRequest_()
-  , recvRequest_() {
-}
+    : channel_(channel), sendRequest_(), recvRequest_() {}
 
-void TZlibAsyncChannel::sendMessage(const VoidCallback& callback,
-                                    const VoidCallback& errorCallback,
-                                    TMemoryBuffer* message) {
+void TZlibAsyncChannel::sendMessage(
+    const VoidCallback& callback,
+    const VoidCallback& errorCallback,
+    TMemoryBuffer* message) {
   assert(message);
   DestructorGuard dg(this);
 
@@ -158,8 +155,9 @@ void TZlibAsyncChannel::sendMessage(const VoidCallback& callback,
   }
 
   if (sendRequest_.isSet()) {
-    T_ERROR("zlib async channel currently does not support multiple "
-            "outstanding send requests");
+    T_ERROR(
+        "zlib async channel currently does not support multiple "
+        "outstanding send requests");
     return errorCallback();
   }
 
@@ -173,9 +171,10 @@ void TZlibAsyncChannel::sendMessage(const VoidCallback& callback,
   sendRequest_.send(channel_.get());
 }
 
-void TZlibAsyncChannel::recvMessage(const VoidCallback& callback,
-                                    const VoidCallback& errorCallback,
-                                    TMemoryBuffer* message) {
+void TZlibAsyncChannel::recvMessage(
+    const VoidCallback& callback,
+    const VoidCallback& errorCallback,
+    TMemoryBuffer* message) {
   assert(message);
   DestructorGuard dg(this);
 
@@ -199,15 +198,17 @@ void TZlibAsyncChannel::recvMessage(const VoidCallback& callback,
   recvRequest_.recv(channel_.get());
 }
 
-void TZlibAsyncChannel::sendAndRecvMessage(const VoidCallback& callback,
-                                           const VoidCallback& errorCallback,
-                                           TMemoryBuffer* sendBuf,
-                                           TMemoryBuffer* recvBuf) {
-  const VoidCallback& sendSucceeded =
-    std::bind(&TZlibAsyncChannel::recvMessage, this, callback, errorCallback,
-              recvBuf);
+void TZlibAsyncChannel::sendAndRecvMessage(
+    const VoidCallback& callback,
+    const VoidCallback& errorCallback,
+    TMemoryBuffer* sendBuf,
+    TMemoryBuffer* recvBuf) {
+  const VoidCallback& sendSucceeded = std::bind(
+      &TZlibAsyncChannel::recvMessage, this, callback, errorCallback, recvBuf);
 
   return sendMessage(sendSucceeded, errorCallback, sendBuf);
 }
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache

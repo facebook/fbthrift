@@ -19,7 +19,9 @@
 
 #include <thrift/lib/cpp/async/TUnframedAsyncChannel.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 namespace detail {
 
@@ -28,15 +30,13 @@ namespace detail {
  */
 class THeaderACProtocolTraits {
  public:
-
-  THeaderACProtocolTraits()
-      : maxMessageSize_(0x7fffffff)
-      , strictRead_(true) {}
+  THeaderACProtocolTraits() : maxMessageSize_(0x7fffffff), strictRead_(true) {}
 
   // Methods required by TUnframedACReadState
-  bool getMessageLength(uint8_t* buffer,
-                        uint32_t bufferLength,
-                        uint32_t* messageLength);
+  bool getMessageLength(
+      uint8_t* buffer,
+      uint32_t bufferLength,
+      uint32_t* messageLength);
 
   void setMaxMessageSize(uint32_t maxMessageSize) {
     maxMessageSize_ = maxMessageSize;
@@ -62,15 +62,15 @@ class THeaderACProtocolTraits {
  * This is a TAsyncChannel implementation that reads and writes
  * messages encoded using THeaderProtocol.
  */
-class THeaderAsyncChannel :
-  public TUnframedAsyncChannel<detail::THeaderACProtocolTraits> {
+class THeaderAsyncChannel
+    : public TUnframedAsyncChannel<detail::THeaderACProtocolTraits> {
  private:
   typedef TUnframedAsyncChannel<detail::THeaderACProtocolTraits> Parent;
 
  public:
   explicit THeaderAsyncChannel(
-    const std::shared_ptr<TAsyncTransport>& transport)
-    : Parent(transport) {}
+      const std::shared_ptr<TAsyncTransport>& transport)
+      : Parent(transport) {}
 
   /**
    * Helper function to create a shared_ptr<THeaderAsyncChannel>.
@@ -111,10 +111,10 @@ class THeaderAsyncChannel :
 class THeaderAsyncChannelFactory : public TStreamAsyncChannelFactory {
  public:
   THeaderAsyncChannelFactory()
-    : maxMessageSize_(0x7fffffff)
-    , recvTimeout_(0)
-    , sendTimeout_(0)
-    , strictRead_(true) {}
+      : maxMessageSize_(0x7fffffff),
+        recvTimeout_(0),
+        sendTimeout_(0),
+        strictRead_(true) {}
 
   void setMaxMessageSize(uint32_t bytes) {
     maxMessageSize_ = bytes;
@@ -150,6 +150,8 @@ class THeaderAsyncChannelFactory : public TStreamAsyncChannelFactory {
   bool strictRead_;
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_THEADERASYNCCHANNEL_H_

@@ -21,7 +21,10 @@
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
-namespace apache { namespace thrift { namespace async { namespace detail {
+namespace apache {
+namespace thrift {
+namespace async {
+namespace detail {
 
 TUnframedACWriteRequest::TUnframedACWriteRequest(
     const VoidCallback& callback,
@@ -51,9 +54,14 @@ void TUnframedACWriteRequest::writeSuccess() noexcept {
 void TUnframedACWriteRequest::writeError(
     size_t bytesWritten,
     const TTransportException& ex) noexcept {
-  T_ERROR("unframed channel: write failed after writing %zu bytes: %s",
-          bytesWritten, ex.what());
+  T_ERROR(
+      "unframed channel: write failed after writing %zu bytes: %s",
+      bytesWritten,
+      ex.what());
   invokeErrorCallback();
 }
 
-}}}} // apache::thrift::async::detail
+} // namespace detail
+} // namespace async
+} // namespace thrift
+} // namespace apache

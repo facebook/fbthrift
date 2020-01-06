@@ -20,7 +20,9 @@
 #include <thrift/lib/cpp/async/TAsyncEventChannel.h>
 #include <thrift/lib/cpp/transport/TZlibTransport.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 class TZlibAsyncChannel : public TAsyncEventChannel {
  public:
@@ -38,22 +40,35 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
     return std::shared_ptr<TZlibAsyncChannel>(
         new TZlibAsyncChannel(channel), Destructor());
   }
-  bool readable() const override { return channel_->readable(); }
-  bool good() const override { return channel_->good(); }
-  bool error() const override { return channel_->error(); }
-  bool timedOut() const override { return channel_->timedOut(); }
-  bool isIdle() const override { return channel_->isIdle(); }
+  bool readable() const override {
+    return channel_->readable();
+  }
+  bool good() const override {
+    return channel_->good();
+  }
+  bool error() const override {
+    return channel_->error();
+  }
+  bool timedOut() const override {
+    return channel_->timedOut();
+  }
+  bool isIdle() const override {
+    return channel_->isIdle();
+  }
 
-  void sendMessage(const VoidCallback& cob,
-                   const VoidCallback& errorCob,
-                   transport::TMemoryBuffer* message) override;
-  void recvMessage(const VoidCallback& cob,
-                   const VoidCallback& errorCob,
-                   transport::TMemoryBuffer* message) override;
-  void sendAndRecvMessage(const VoidCallback& cob,
-                          const VoidCallback& errorCob,
-                          transport::TMemoryBuffer* sendBuf,
-                          transport::TMemoryBuffer* recvBuf) override;
+  void sendMessage(
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      transport::TMemoryBuffer* message) override;
+  void recvMessage(
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      transport::TMemoryBuffer* message) override;
+  void sendAndRecvMessage(
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      transport::TMemoryBuffer* sendBuf,
+      transport::TMemoryBuffer* recvBuf) override;
 
   std::shared_ptr<TAsyncTransport> getTransport() override {
     return channel_->getTransport();
@@ -62,7 +77,9 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
   void attachEventBase(folly::EventBase* eventBase) override {
     channel_->attachEventBase(eventBase);
   }
-  void detachEventBase() override { channel_->detachEventBase(); }
+  void detachEventBase() override {
+    channel_->detachEventBase();
+  }
 
   uint32_t getRecvTimeout() const override {
     return channel_->getRecvTimeout();
@@ -95,9 +112,10 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
       return static_cast<bool>(callback_);
     }
 
-    void set(const VoidCallback& callback,
-             const VoidCallback& errorCallback,
-             transport::TMemoryBuffer* message);
+    void set(
+        const VoidCallback& callback,
+        const VoidCallback& errorCallback,
+        transport::TMemoryBuffer* message);
 
     void send(TAsyncEventChannel* channel);
 
@@ -128,9 +146,10 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
       return static_cast<bool>(callback_);
     }
 
-    void set(const VoidCallback& callback,
-             const VoidCallback& errorCallback,
-             transport::TMemoryBuffer* message);
+    void set(
+        const VoidCallback& callback,
+        const VoidCallback& errorCallback,
+        transport::TMemoryBuffer* message);
 
     void recv(TAsyncEventChannel* channel);
 
@@ -151,7 +170,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
 
     VoidCallback callback_;
     VoidCallback errorCallback_;
-    transport::TMemoryBuffer *callbackBuffer_;
+    transport::TMemoryBuffer* callbackBuffer_;
   };
 
   std::shared_ptr<TAsyncEventChannel> channel_;
@@ -161,6 +180,8 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
   RecvRequest recvRequest_;
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_TZLIBASYNCCHANNEL_H_

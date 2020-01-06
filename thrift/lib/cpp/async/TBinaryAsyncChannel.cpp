@@ -27,12 +27,15 @@ using apache::thrift::transport::TBufferBase;
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
-bool tryReadUnframed(uint8_t* buffer,
-                     uint32_t bufferLength,
-                     uint32_t* messageLength,
-                     bool strictRead) {
+bool tryReadUnframed(
+    uint8_t* buffer,
+    uint32_t bufferLength,
+    uint32_t* messageLength,
+    bool strictRead) {
   // Try unframed message.
   TMemoryBuffer memBuffer(buffer, bufferLength, TMemoryBuffer::OBSERVE);
   TBinaryProtocolT<TBufferBase> proto(&memBuffer);
@@ -58,10 +61,14 @@ bool tryReadUnframed(uint8_t* buffer,
 
 namespace detail {
 
-bool TBinaryACProtocolTraits::getMessageLength(uint8_t* buffer,
-                                               uint32_t bufferLength,
-                                               uint32_t* messageLength) {
+bool TBinaryACProtocolTraits::getMessageLength(
+    uint8_t* buffer,
+    uint32_t bufferLength,
+    uint32_t* messageLength) {
   return tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
 }
 
-}}}} // apache::thrift::async::detail
+} // namespace detail
+} // namespace async
+} // namespace thrift
+} // namespace apache

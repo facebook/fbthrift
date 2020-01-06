@@ -17,13 +17,15 @@
 #ifndef THRIFT_ASYNC_TEVENTJOBQUEUE_H_
 #define THRIFT_ASYNC_TEVENTJOBQUEUE_H_ 1
 
+#include <folly/io/async/EventBase.h>
 #include <folly/io/async/NotificationQueue.h>
 #include <thrift/lib/cpp/Thrift.h>
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/Thread.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 /**
  * Similar to concurrency::Runnable, but run has access to a EventBase to do
@@ -42,7 +44,7 @@ class TEventRunnable {
   /**
    * Set the event base on this runnable
    */
-  void setEventBase(folly::EventBase *eventBase) {
+  void setEventBase(folly::EventBase* eventBase) {
     eventBase_ = eventBase;
   }
 
@@ -51,7 +53,7 @@ class TEventRunnable {
    *
    * The TEventJobQueue will set this correctly for run and jobComplete
    */
-  folly::EventBase *getEventBase() const {
+  folly::EventBase* getEventBase() const {
     return eventBase_;
   }
 
@@ -60,13 +62,9 @@ class TEventRunnable {
    */
   virtual void run() = 0;
 
-
  protected:
-
-  folly::EventBase *eventBase_;
-
+  folly::EventBase* eventBase_;
 };
-
 
 /**
  * A job queue for working in a EventBase driven application.
@@ -76,14 +74,12 @@ class TEventRunnable {
  */
 class TEventJobQueue {
  private:
-
   /**
    * A thread that listens for work on a notification queue, and
    * executes a job
    */
-  class JobThread:
-      public apache::thrift::concurrency::Runnable,
-      public folly::NotificationQueue<TEventRunnable*>::Consumer {
+  class JobThread : public apache::thrift::concurrency::Runnable,
+                    public folly::NotificationQueue<TEventRunnable*>::Consumer {
    public:
     explicit JobThread(TEventJobQueue* /* parent */) {}
     ~JobThread() override {}
@@ -108,9 +104,8 @@ class TEventJobQueue {
       startConsuming(&eventBase_, &jobQueue_);
       try {
         eventBase_.loop();
-      } catch (const std::exception &ex) {
-        LOG(ERROR) << "Unhandled exception in TEventJobQueue: " <<
-          ex.what();
+      } catch (const std::exception& ex) {
+        LOG(ERROR) << "Unhandled exception in TEventJobQueue: " << ex.what();
       }
       folly::NotificationQueue<TEventRunnable*>::Consumer::stopConsuming();
     }
@@ -119,8 +114,7 @@ class TEventJobQueue {
      * Hold a reference so we can join this thread later
      */
     void thread(
-      std::shared_ptr<apache::thrift::concurrency::Thread> value) override {
-
+        std::shared_ptr<apache::thrift::concurrency::Thread> value) override {
       thread_ = value;
       apache::thrift::concurrency::Runnable::thread(value);
     }
@@ -147,16 +141,11 @@ class TEventJobQueue {
   };
 
  public:
-  explicit TEventJobQueue(uint32_t numThreads) :
-      numThreads_(numThreads),
-      curThread_(0),
-      shouldJoin_(true) {
-  }
+  explicit TEventJobQueue(uint32_t numThreads)
+      : numThreads_(numThreads), curThread_(0), shouldJoin_(true) {}
   // Constructor where setNumThreads must be called later
-  explicit TEventJobQueue() :
-      numThreads_(0),
-      curThread_(0),
-      shouldJoin_(true){}
+  explicit TEventJobQueue()
+      : numThreads_(0), curThread_(0), shouldJoin_(true) {}
 
   // Must be called before init() is called
   void setNumThreads(uint32_t numThreads) {
@@ -166,7 +155,6 @@ class TEventJobQueue {
   ~TEventJobQueue() {
     shutdown(true, shouldJoin_); // force
   }
-
 
   /**
    * Start the worker threads
@@ -185,7 +173,7 @@ class TEventJobQueue {
     for (uint32_t idx = 0; idx < numThreads_; idx++) {
       threads_[idx] = std::shared_ptr<JobThread>(new JobThread(this));
       std::shared_ptr<apache::thrift::concurrency::Thread> thread =
-        factory->newThread(threads_[idx]);
+          factory->newThread(threads_[idx]);
       if (!thread) {
         LOG(CRITICAL) << "Cannot create thread with number: " << idx;
         shutdown(false, shouldJoin_);
@@ -206,16 +194,16 @@ class TEventJobQueue {
    * leaving shutdown.
    */
   void shutdown(bool force = false, bool join = true) {
-    for (auto &thread: threads_) {
-      thread->getEventBase()->runInEventBaseThread([thread, force]{
-          thread->stopConsuming();
-          if (force) {
-            thread->getEventBase()->terminateLoopSoon();
-          }
-        });
+    for (auto& thread : threads_) {
+      thread->getEventBase()->runInEventBaseThread([thread, force] {
+        thread->stopConsuming();
+        if (force) {
+          thread->getEventBase()->terminateLoopSoon();
+        }
+      });
     }
     if (join) {
-      for (auto &thread: threads_) {
+      for (auto& thread : threads_) {
         thread->join();
       }
       threads_.clear();
@@ -238,20 +226,22 @@ class TEventJobQueue {
    * Run the given function in all consumer threads.  The function is passed
    * the event base for the consumer thread.
    */
-  void runInAllThreads(const std::function<void(folly::EventBase *)>& fn) {
-    for (auto &thread: threads_) {
+  void runInAllThreads(const std::function<void(folly::EventBase*)>& fn) {
+    for (auto& thread : threads_) {
       thread->getEventBase()->runInEventBaseThread(
-        std::bind(fn, thread->getEventBase()));
+          std::bind(fn, thread->getEventBase()));
     }
   }
 
-private:
+ private:
   uint32_t numThreads_;
   std::atomic<uint64_t> curThread_;
   std::vector<std::shared_ptr<JobThread>> threads_;
   bool shouldJoin_;
 };
 
-}}}
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif

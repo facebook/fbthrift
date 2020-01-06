@@ -22,15 +22,18 @@ using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 using apache::thrift::util::THttpParser;
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 namespace detail {
 
-THttpACWriteRequest::THttpACWriteRequest(const VoidCallback& callback,
-                                         const VoidCallback& errorCallback,
-                                         TMemoryBuffer* message,
-                                         TAsyncEventChannel* channel)
-  : TAsyncChannelWriteRequestBase(callback, errorCallback, message) {
+THttpACWriteRequest::THttpACWriteRequest(
+    const VoidCallback& callback,
+    const VoidCallback& errorCallback,
+    TMemoryBuffer* message,
+    TAsyncEventChannel* channel)
+    : TAsyncChannelWriteRequestBase(callback, errorCallback, message) {
   channel_ = static_cast<THttpAsyncChannel*>(channel);
 }
 
@@ -53,8 +56,10 @@ void THttpACWriteRequest::writeSuccess() noexcept {
 void THttpACWriteRequest::writeError(
     size_t bytesWritten,
     const TTransportException& ex) noexcept {
-  T_ERROR("THttpAC: write failed after writing %zu bytes: %s",
-          bytesWritten, ex.what());
+  T_ERROR(
+      "THttpAC: write failed after writing %zu bytes: %s",
+      bytesWritten,
+      ex.what());
   invokeErrorCallback();
 }
 
@@ -66,6 +71,8 @@ bool THttpACReadState::readDataAvailable(size_t len) {
   return parser_->readDataAvailable(len);
 }
 
-} // detail
+} // namespace detail
 
-}}}  // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache

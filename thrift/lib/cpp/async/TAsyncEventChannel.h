@@ -17,11 +17,13 @@
 #ifndef THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_
 #define THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_ 1
 
-#include <thrift/lib/cpp/async/TAsyncChannel.h>
-#include <folly/io/async/EventBase.h>
 #include <folly/io/async/DelayedDestruction.h>
+#include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TAsyncChannel.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 /**
  * TAsyncEventChannel defines an API for TAsyncChannel objects that are driven
@@ -30,7 +32,6 @@ namespace apache { namespace thrift { namespace async {
 class TAsyncEventChannel : public TAsyncChannel,
                            public folly::DelayedDestruction {
  public:
-
   /**
    * Determine if this channel is idle (i.e., has no outstanding reads or
    * writes).
@@ -87,6 +88,8 @@ class TAsyncEventChannel : public TAsyncChannel,
   ~TAsyncEventChannel() override {}
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_TASYNCEVENTCHANNEL_H_

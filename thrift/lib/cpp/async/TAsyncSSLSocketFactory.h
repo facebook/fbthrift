@@ -20,13 +20,14 @@
 
 #include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 /**
  * Factory class for producing TAsyncSSLSocket instances.
  */
-class TAsyncSSLSocketFactory :
- public TAsyncSocketFactory {
+class TAsyncSSLSocketFactory : public TAsyncSocketFactory {
  public:
   explicit TAsyncSSLSocketFactory(folly::EventBase* eventBase);
   ~TAsyncSSLSocketFactory() override;
@@ -53,4 +54,6 @@ class TAsyncSSLSocketFactory :
   bool serverMode_;
 };
 
-}}}
+} // namespace async
+} // namespace thrift
+} // namespace apache

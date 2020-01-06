@@ -17,13 +17,15 @@
 #ifndef THRIFT_ASYNC_TSTREAMASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TSTREAMASYNCCHANNEL_H_ 1
 
-#include <thrift/lib/cpp/async/TAsyncEventChannel.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
-#include <folly/io/async/AsyncTimeout.h>
-
 #include <memory>
 
-namespace apache { namespace thrift { namespace async {
+#include <folly/io/async/AsyncTimeout.h>
+#include <thrift/lib/cpp/async/TAsyncEventChannel.h>
+#include <thrift/lib/cpp/async/TAsyncTransport.h>
+
+namespace apache {
+namespace thrift {
+namespace async {
 
 class TAsyncTransport;
 
@@ -32,14 +34,14 @@ class TAsyncChannelWriteRequestBase {
  public:
   typedef std::function<void()> VoidCallback;
 
-  TAsyncChannelWriteRequestBase(const VoidCallback& callback,
-                                const VoidCallback& errorCallback,
-                                transport::TMemoryBuffer* message)
+  TAsyncChannelWriteRequestBase(
+      const VoidCallback& callback,
+      const VoidCallback& errorCallback,
+      transport::TMemoryBuffer* message)
       : buffer_(message),
         next_(nullptr),
         callback_(callback),
         errorCallback_(errorCallback) {
-
     // The WriteRequest's buffer consumes all of the data in message,
     // so we don't attempt to resend data; yet is also an observer
     // which prevents consumed data from being overwritten while it's pending
@@ -49,8 +51,7 @@ class TAsyncChannelWriteRequestBase {
     message->consume(len);
   }
 
-  virtual ~TAsyncChannelWriteRequestBase() {
-  }
+  virtual ~TAsyncChannelWriteRequestBase() {}
 
   void setNext(Subclass_* next) {
     assert(next_ == nullptr);
@@ -95,7 +96,6 @@ class TAsyncChannelWriteRequestBase {
   VoidCallback callback_;
   VoidCallback errorCallback_;
 };
-
 
 /**
  * TStreamAsyncChannel is a helper class for channel implementations that use
@@ -195,7 +195,7 @@ class TAsyncChannelWriteRequestBase {
  *     underlying transport.  The data will have been placed in the buffer
  *     returned by the previous getReadBuffer() call.
  */
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 class TStreamAsyncChannel : public TAsyncEventChannel,
                             protected TAsyncTransport::ReadCallback,
                             protected TAsyncTransport::WriteCallback,
@@ -239,9 +239,10 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
    * immediately (before return) if the channel is unusable for some reason,
    * and "cob" immediately if we're able to perform the write without delay.
    */
-  void sendMessage(const VoidCallback& cob,
-                   const VoidCallback& errorCob,
-                   apache::thrift::transport::TMemoryBuffer* message) override;
+  void sendMessage(
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      apache::thrift::transport::TMemoryBuffer* message) override;
 
   /**
    * Send a message to the channel; note that "errorCob" will be called
@@ -263,9 +264,10 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
    * Note that an EOF is considered normal, so "cob" will be called although
    * "good()" will be false.
    */
-  void recvMessage(const VoidCallback& cob,
-                   const VoidCallback& errorCob,
-                   apache::thrift::transport::TMemoryBuffer* message) override;
+  void recvMessage(
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      apache::thrift::transport::TMemoryBuffer* message) override;
 
   /**
    * Send a message to the channel and receive the response; note that the
@@ -275,10 +277,11 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
    * reason. It is conceivable that "cob" will be called before return if data
    * is somehow available in the channel when a read is first attempted.
    */
-  void sendAndRecvMessage(const VoidCallback& cob,
-                          const VoidCallback& errorCob,
-                          transport::TMemoryBuffer* sendBuf,
-                          transport::TMemoryBuffer* recvBuf) override;
+  void sendAndRecvMessage(
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      transport::TMemoryBuffer* sendBuf,
+      transport::TMemoryBuffer* recvBuf) override;
 
   /**
    * Close this channel.
@@ -344,7 +347,9 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
    * @return Returns the current receive timeout, in milliseconds.  A return
    *         value of 0 indicates that no timeout is set.
    */
-  uint32_t getRecvTimeout() const override { return recvTimeout_; }
+  uint32_t getRecvTimeout() const override {
+    return recvTimeout_;
+  }
 
   /**
    * Cancel pending callbacks. Use this when the channel is closing because the
@@ -373,21 +378,22 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
    */
   bool isIdle() const override {
     return (writeReqHead_ == nullptr) && (!readCallback_) &&
-      !transport_->connecting();
+        !transport_->connecting();
   }
 
  protected:
   struct ReadQueueEntry {
-    ReadQueueEntry(const VoidCallback& cob,
-                   const VoidCallback& errorCob,
-                   apache::thrift::transport::TMemoryBuffer* message) {
+    ReadQueueEntry(
+        const VoidCallback& cob,
+        const VoidCallback& errorCob,
+        apache::thrift::transport::TMemoryBuffer* message) {
       readCallback = cob;
       readErrorCallback = errorCob;
       readBuffer = message;
     }
     VoidCallback readCallback;
     VoidCallback readErrorCallback;
-    transport::TMemoryBuffer *readBuffer;
+    transport::TMemoryBuffer* readBuffer;
     int64_t startTime;
   };
 
@@ -406,16 +412,16 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
   void readError(const transport::TTransportException& ex) noexcept override;
 
   void writeSuccess() noexcept override;
-  void writeError(size_t bytesWritten,
-                  const transport::TTransportException& ex) noexcept override;
+  void writeError(
+      size_t bytesWritten,
+      const transport::TTransportException& ex) noexcept override;
 
   // callback from AsyncTimeout
   void timeoutExpired() noexcept override;
 
   bool invokeReadDataAvailable(size_t len) noexcept;
   void processReadEOF() noexcept;
-  void invokeReadCallback(VoidCallback cb,
-                          char const* callbackName) noexcept;
+  void invokeReadCallback(VoidCallback cb, char const* callbackName) noexcept;
 
   void pushWriteRequest(WriteRequest_* req) {
     if (writeReqTail_ == nullptr) {
@@ -462,8 +468,8 @@ class TStreamAsyncChannel : public TAsyncEventChannel,
 
  private:
   // Forbidden copy constructor and assignment opererator
-  TStreamAsyncChannel(TStreamAsyncChannel const &);
-  TStreamAsyncChannel& operator=(TStreamAsyncChannel const &);
+  TStreamAsyncChannel(TStreamAsyncChannel const&);
+  TStreamAsyncChannel& operator=(TStreamAsyncChannel const&);
 };
 
 class TStreamAsyncChannelFactory {
@@ -474,7 +480,9 @@ class TStreamAsyncChannelFactory {
       const std::shared_ptr<TAsyncTransport>& transport) = 0;
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp/async/TStreamAsyncChannel-inl.h>
 

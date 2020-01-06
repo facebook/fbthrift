@@ -31,21 +31,26 @@ using apache::thrift::transport::TBufferBase;
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 namespace detail {
 
-bool THeaderACProtocolTraits::getMessageLength(uint8_t* buffer,
-                                               uint32_t bufferLength,
-                                               uint32_t* messageLength) {
+bool THeaderACProtocolTraits::getMessageLength(
+    uint8_t* buffer,
+    uint32_t bufferLength,
+    uint32_t* messageLength) {
   int32_t frameSize;
   if (bufferLength >= sizeof(frameSize)) {
     // We've finished reading the frame size
     // Convert the frame size to host byte order
     memcpy(&frameSize, buffer, sizeof(frameSize));
     frameSize = folly::Endian::big(frameSize);
-    if ((frameSize & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
-      bool foundCompleteMessage = tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
+    if ((frameSize & TBinaryProtocol::VERSION_MASK) ==
+        TBinaryProtocol::VERSION_1) {
+      bool foundCompleteMessage =
+          tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
       if (foundCompleteMessage && (*messageLength > maxMessageSize_)) {
         throw TTransportException("Frame size exceeded maximum");
       }
@@ -61,4 +66,7 @@ bool THeaderACProtocolTraits::getMessageLength(uint8_t* buffer,
   }
 }
 
-}}}} // apache::thrift::async::detail
+} // namespace detail
+} // namespace async
+} // namespace thrift
+} // namespace apache

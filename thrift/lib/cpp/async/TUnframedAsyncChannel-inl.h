@@ -25,23 +25,25 @@ namespace {
 const uint32_t kInitialBufferSize = 4096;
 }
 
-namespace apache { namespace thrift { namespace async { namespace detail {
+namespace apache {
+namespace thrift {
+namespace async {
+namespace detail {
 
-template<typename ProtocolTraits_>
+template <typename ProtocolTraits_>
 TUnframedACReadState<ProtocolTraits_>::TUnframedACReadState()
-  : maxMessageSize_(0x7fffffff)
-  , memBuffer_(kInitialBufferSize)
-  , callbackBuffer_(nullptr)
-  , protocolTraits_() {
-}
+    : maxMessageSize_(0x7fffffff),
+      memBuffer_(kInitialBufferSize),
+      callbackBuffer_(nullptr),
+      protocolTraits_() {}
 
-template<typename ProtocolTraits_>
-TUnframedACReadState<ProtocolTraits_>::~TUnframedACReadState() {
-}
+template <typename ProtocolTraits_>
+TUnframedACReadState<ProtocolTraits_>::~TUnframedACReadState() {}
 
-template<typename ProtocolTraits_>
-void TUnframedACReadState<ProtocolTraits_>::getReadBuffer(void** bufReturn,
-                                                          size_t* lenReturn) {
+template <typename ProtocolTraits_>
+void TUnframedACReadState<ProtocolTraits_>::getReadBuffer(
+    void** bufReturn,
+    size_t* lenReturn) {
   uint32_t bytesAvailable = memBuffer_.available_write();
   if (bytesAvailable > 0) {
     // If there is room available in the buffer, just return it.
@@ -76,22 +78,23 @@ void TUnframedACReadState<ProtocolTraits_>::getReadBuffer(void** bufReturn,
     uint8_t* newBuffer = memBuffer_.getWritePtr(additionalSpace);
     *lenReturn = memBuffer_.available_write();
     *bufReturn = newBuffer;
-  } catch (std::exception &ex) {
-    T_ERROR("TUnframedAsyncChannel: failed to allocate larger read buffer: %s",
-            ex.what());
+  } catch (std::exception& ex) {
+    T_ERROR(
+        "TUnframedAsyncChannel: failed to allocate larger read buffer: %s",
+        ex.what());
     *lenReturn = 0;
     *bufReturn = nullptr;
   }
 }
 
-template<typename ProtocolTraits_>
+template <typename ProtocolTraits_>
 bool TUnframedACReadState<ProtocolTraits_>::readDataAvailable(size_t len) {
   assert(memBuffer_.available_read() + len <= memBuffer_.getBufferSize());
   memBuffer_.wroteBytes(len);
 
   uint32_t messageLength = 0;
   uint32_t bytesRead = memBuffer_.available_read();
-  uint8_t *buffer = (uint8_t *)memBuffer_.borrow(nullptr, &bytesRead);
+  uint8_t* buffer = (uint8_t*)memBuffer_.borrow(nullptr, &bytesRead);
   if (!protocolTraits_.getMessageLength(buffer, bytesRead, &messageLength)) {
     // We're not at the end of the message yet.
     //
@@ -119,6 +122,9 @@ bool TUnframedACReadState<ProtocolTraits_>::readDataAvailable(size_t len) {
   return true;
 }
 
-}}}} // apache::thrift::async::detail
+} // namespace detail
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_TUNFRAMEDASYNCCHANNEL_TCC_

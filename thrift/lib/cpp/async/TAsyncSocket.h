@@ -19,10 +19,12 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 // Wrapper around folly's AsyncSocket to maintain backwards compatibility:
 // Converts exceptions to thrift's TTransportException type.
@@ -54,8 +56,7 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       : folly::AsyncSocket(std::move(sock)) {}
 
   static std::shared_ptr<TAsyncSocket> newSocket(folly::EventBase* evb) {
-    return std::shared_ptr<TAsyncSocket>(new TAsyncSocket(evb),
-                                           Destructor());
+    return std::shared_ptr<TAsyncSocket>(new TAsyncSocket(evb), Destructor());
   }
 
   static std::shared_ptr<TAsyncSocket> newSocket(
@@ -79,9 +80,11 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
         Destructor());
   }
 
-  static std::shared_ptr<TAsyncSocket> newSocket(folly::EventBase* evb, int fd) {
-    return std::shared_ptr<TAsyncSocket>(new TAsyncSocket(evb, fd),
-                                           Destructor());
+  static std::shared_ptr<TAsyncSocket> newSocket(
+      folly::EventBase* evb,
+      int fd) {
+    return std::shared_ptr<TAsyncSocket>(
+        new TAsyncSocket(evb, fd), Destructor());
   }
 
   class ConnectCallback : public folly::AsyncSocket::ConnectCallback {
@@ -99,14 +102,15 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
      *
      * @param ex        An exception describing the error that occurred.
      */
-    virtual void connectError(const transport::TTransportException& ex)
-      noexcept = 0;
+    virtual void connectError(
+        const transport::TTransportException& ex) noexcept = 0;
 
    private:
     void connectErr(const folly::AsyncSocketException& ex) noexcept override {
       transport::TTransportException tex(
-        transport::TTransportException::TTransportExceptionType(ex.getType()),
-        ex.what(), ex.getErrno());
+          transport::TTransportException::TTransportExceptionType(ex.getType()),
+          ex.what(),
+          ex.getErrno());
 
       connectError(tex);
     }
@@ -135,4 +139,6 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
 
 typedef folly::WriteFlags WriteFlags;
 
-}}}
+} // namespace async
+} // namespace thrift
+} // namespace apache

@@ -21,17 +21,17 @@
 using folly::SSLContext;
 using folly::SSLContextPtr;
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
-TAsyncSSLSocketFactory::TAsyncSSLSocketFactory(folly::EventBase* eventBase) :
-  TAsyncSocketFactory(eventBase),
-  eventBase_(eventBase),
-  context_(),
-  serverMode_(false) {
-}
+TAsyncSSLSocketFactory::TAsyncSSLSocketFactory(folly::EventBase* eventBase)
+    : TAsyncSocketFactory(eventBase),
+      eventBase_(eventBase),
+      context_(),
+      serverMode_(false) {}
 
-TAsyncSSLSocketFactory::~TAsyncSSLSocketFactory() {
-}
+TAsyncSSLSocketFactory::~TAsyncSSLSocketFactory() {}
 
 void TAsyncSSLSocketFactory::setSSLContext(SSLContextPtr& ctx) {
   context_ = ctx;
@@ -50,7 +50,10 @@ TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make() const {
 }
 
 TAsyncSocket::UniquePtr TAsyncSSLSocketFactory::make(int fd) const {
-  return TAsyncSocket::UniquePtr(new TAsyncSSLSocket(context_, eventBase_, fd, serverMode_));
+  return TAsyncSocket::UniquePtr(
+      new TAsyncSSLSocket(context_, eventBase_, fd, serverMode_));
 }
 
-}}}
+} // namespace async
+} // namespace thrift
+} // namespace apache

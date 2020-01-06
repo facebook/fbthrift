@@ -19,27 +19,32 @@
 
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 namespace detail {
 
 /**
  * Encapsulation of one outstanding write request on a TFramedAsyncChannel.
  */
-class TFramedACWriteRequest :
-      public TAsyncChannelWriteRequestBase<TFramedACWriteRequest> {
+class TFramedACWriteRequest
+    : public TAsyncChannelWriteRequestBase<TFramedACWriteRequest> {
  public:
-  TFramedACWriteRequest(const VoidCallback& callback,
-                        const VoidCallback& errorCallback,
-                        transport::TMemoryBuffer* message,
-                        TAsyncEventChannel* channel);
+  TFramedACWriteRequest(
+      const VoidCallback& callback,
+      const VoidCallback& errorCallback,
+      transport::TMemoryBuffer* message,
+      TAsyncEventChannel* channel);
 
-  void write(TAsyncTransport* transport,
-             TAsyncTransport::WriteCallback* callback) noexcept;
+  void write(
+      TAsyncTransport* transport,
+      TAsyncTransport::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
-  void writeError(size_t bytesWritten,
-                  const transport::TTransportException& ex) noexcept;
+  void writeError(
+      size_t bytesWritten,
+      const transport::TTransportException& ex) noexcept;
 
  private:
   union {
@@ -118,18 +123,19 @@ class TFramedACReadState {
  *
  * Its messages are compatible with TFramedTransport.
  */
-class TFramedAsyncChannel :
-  public TStreamAsyncChannel<detail::TFramedACWriteRequest,
-                             detail::TFramedACReadState> {
+class TFramedAsyncChannel : public TStreamAsyncChannel<
+                                detail::TFramedACWriteRequest,
+                                detail::TFramedACReadState> {
  private:
-  typedef TStreamAsyncChannel<detail::TFramedACWriteRequest,
-                              detail::TFramedACReadState> Parent;
+  typedef TStreamAsyncChannel<
+      detail::TFramedACWriteRequest,
+      detail::TFramedACReadState>
+      Parent;
 
  public:
   explicit TFramedAsyncChannel(
-    const std::shared_ptr<TAsyncTransport>& transport
-    )
-    : Parent(transport) {}
+      const std::shared_ptr<TAsyncTransport>& transport)
+      : Parent(transport) {}
 
   /**
    * Helper function to create a shared_ptr<TFramedAsyncChannel>.
@@ -165,9 +171,7 @@ class TFramedAsyncChannel :
 class TFramedAsyncChannelFactory : public TStreamAsyncChannelFactory {
  public:
   TFramedAsyncChannelFactory()
-    : maxFrameSize_(0x7fffffff)
-    , recvTimeout_(0)
-    , sendTimeout_(0) {}
+      : maxFrameSize_(0x7fffffff), recvTimeout_(0), sendTimeout_(0) {}
 
   void setMaxFrameSize(uint32_t bytes) {
     maxFrameSize_ = bytes;
@@ -197,6 +201,8 @@ class TFramedAsyncChannelFactory : public TStreamAsyncChannelFactory {
   uint32_t sendTimeout_;
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_TFRAMEDASYNCCHANNEL_H_

@@ -22,7 +22,9 @@
 using apache::thrift::transport::TMemoryBuffer;
 using apache::thrift::transport::TTransportException;
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 namespace detail {
 
@@ -59,16 +61,15 @@ void TFramedACWriteRequest::writeSuccess() noexcept {
 void TFramedACWriteRequest::writeError(
     size_t bytesWritten,
     const TTransportException& ex) noexcept {
-  T_ERROR("TFramedAC: write failed after writing %zu bytes: %s",
-          bytesWritten, ex.what());
+  T_ERROR(
+      "TFramedAC: write failed after writing %zu bytes: %s",
+      bytesWritten,
+      ex.what());
   invokeErrorCallback();
 }
 
-
 TFramedACReadState::TFramedACReadState()
-  : maxFrameSize_(0x7fffffff)
-  , bytesRead_(0)
-  , buffer_(nullptr) {
+    : maxFrameSize_(0x7fffffff), bytesRead_(0), buffer_(nullptr) {
   frameSize_ = 0;
 }
 
@@ -101,8 +102,9 @@ bool TFramedACReadState::readDataAvailable(size_t len) {
       // instead of allocating a huge buffer.
       if (frameSize_ > maxFrameSize_) {
         T_ERROR("TFramedAC::read(): frame size of %d rejected", frameSize_);
-        throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                  "rejected overly large frame size");
+        throw TTransportException(
+            TTransportException::CORRUPTED_DATA,
+            "rejected overly large frame size");
       }
 
       // The empty frame is complete without body bytes
@@ -127,6 +129,8 @@ bool TFramedACReadState::readDataAvailable(size_t len) {
   return false;
 }
 
-} // detail
+} // namespace detail
 
-}}}  // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache

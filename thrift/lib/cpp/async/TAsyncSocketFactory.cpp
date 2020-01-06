@@ -18,14 +18,14 @@
 
 #include <folly/Memory.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
-TAsyncSocketFactory::TAsyncSocketFactory(folly::EventBase* eventBase) :
- eventBase_(eventBase) {
-}
+TAsyncSocketFactory::TAsyncSocketFactory(folly::EventBase* eventBase)
+    : eventBase_(eventBase) {}
 
-TAsyncSocketFactory::~TAsyncSocketFactory() {
-}
+TAsyncSocketFactory::~TAsyncSocketFactory() {}
 
 TAsyncSocket::UniquePtr TAsyncSocketFactory::make() const {
   return TAsyncSocket::UniquePtr(new TAsyncSocket(eventBase_));
@@ -35,4 +35,6 @@ TAsyncSocket::UniquePtr TAsyncSocketFactory::make(int fd) const {
   return TAsyncSocket::UniquePtr(new TAsyncSocket(eventBase_, fd));
 }
 
-}}}
+} // namespace async
+} // namespace thrift
+} // namespace apache

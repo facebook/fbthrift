@@ -17,10 +17,12 @@
 #ifndef THRIFT_ASYNC_TASYNCSOCKETFACTORY_H_
 #define THRIFT_ASYNC_TASYNCSOCKETFACTORY_H_ 1
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 /**
  * Factory class for producing TAsyncSocket instances.
@@ -47,6 +49,8 @@ class TAsyncSocketFactory {
   folly::EventBase* eventBase_;
 };
 
-}}}
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif

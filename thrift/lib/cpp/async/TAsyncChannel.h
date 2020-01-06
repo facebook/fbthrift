@@ -18,11 +18,14 @@
 #define THRIFT_ASYNC_TASYNCCHANNEL_H_ 1
 
 #include <functional>
-#include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
 
-namespace apache { namespace thrift { namespace async {
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+
+namespace apache {
+namespace thrift {
+namespace async {
 
 class TAsyncTransport;
 
@@ -44,7 +47,7 @@ class TAsyncChannel {
 
   // Get TTransportException error type if error() returns true
   virtual transport::TTransportException::TTransportExceptionType errorType()
-    const {
+      const {
     return transport::TTransportException::TTransportExceptionType::UNKNOWN;
   }
 
@@ -56,14 +59,14 @@ class TAsyncChannel {
    *          called and it will be called exactly once per invocation.
    */
   virtual void sendMessage(
-                        const VoidCallback& cob,
-                        const VoidCallback& errorCob,
-                        apache::thrift::transport::TMemoryBuffer* message) = 0;
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      apache::thrift::transport::TMemoryBuffer* message) = 0;
 
   virtual void sendOnewayMessage(
-                        const VoidCallback& cob,
-                        const VoidCallback& errorCob,
-                        apache::thrift::transport::TMemoryBuffer* message) {
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      apache::thrift::transport::TMemoryBuffer* message) {
     sendMessage(cob, errorCob, message);
   }
 
@@ -75,9 +78,9 @@ class TAsyncChannel {
    *          called and it will be called exactly once per invocation.
    */
   virtual void recvMessage(
-                        const VoidCallback& cob,
-                        const VoidCallback& errorCob,
-                        apache::thrift::transport::TMemoryBuffer* message) = 0;
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      apache::thrift::transport::TMemoryBuffer* message) = 0;
 
   /**
    * Send a message over the channel and receive a response.
@@ -87,10 +90,10 @@ class TAsyncChannel {
    *          called and it will be called exactly once per invocation.
    */
   virtual void sendAndRecvMessage(
-                        const VoidCallback& cob,
-                        const VoidCallback& errorCob,
-                        apache::thrift::transport::TMemoryBuffer* sendBuf,
-                        apache::thrift::transport::TMemoryBuffer* recvBuf) = 0;
+      const VoidCallback& cob,
+      const VoidCallback& errorCob,
+      apache::thrift::transport::TMemoryBuffer* sendBuf,
+      apache::thrift::transport::TMemoryBuffer* recvBuf) = 0;
 
   /**
    * Send a message over the channel, single cob version.  (See above.)
@@ -98,13 +101,15 @@ class TAsyncChannel {
    * @return  call "cob" on success or fail; channel status must be queried
    *          by the cob.
    */
-  void sendMessage(const VoidCallback& cob,
-                   apache::thrift::transport::TMemoryBuffer* message) {
+  void sendMessage(
+      const VoidCallback& cob,
+      apache::thrift::transport::TMemoryBuffer* message) {
     return sendMessage(cob, cob, message);
   }
 
-  void sendOnewayMessage(const VoidCallback& cob,
-                   apache::thrift::transport::TMemoryBuffer* message) {
+  void sendOnewayMessage(
+      const VoidCallback& cob,
+      apache::thrift::transport::TMemoryBuffer* message) {
     return sendOnewayMessage(cob, cob, message);
   }
 
@@ -114,8 +119,9 @@ class TAsyncChannel {
    * @return  call "cob" on success or fail; channel status must be queried
    *          by the cob.
    */
-  void recvMessage(const VoidCallback& cob,
-                          apache::thrift::transport::TMemoryBuffer* message) {
+  void recvMessage(
+      const VoidCallback& cob,
+      apache::thrift::transport::TMemoryBuffer* message) {
     return recvMessage(cob, cob, message);
   }
 
@@ -126,9 +132,10 @@ class TAsyncChannel {
    * @return  call "cob" on success or fail; channel status must be queried
    *          by the cob.
    */
-  void sendAndRecvMessage(const VoidCallback& cob,
-                          apache::thrift::transport::TMemoryBuffer* sendBuf,
-                          apache::thrift::transport::TMemoryBuffer* recvBuf) {
+  void sendAndRecvMessage(
+      const VoidCallback& cob,
+      apache::thrift::transport::TMemoryBuffer* sendBuf,
+      apache::thrift::transport::TMemoryBuffer* recvBuf) {
     return sendAndRecvMessage(cob, cob, sendBuf, recvBuf);
   }
 
@@ -143,6 +150,8 @@ class TAsyncChannel {
   virtual std::shared_ptr<TAsyncTransport> getTransport() = 0;
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_ASYNC_TASYNCCHANNEL_H_

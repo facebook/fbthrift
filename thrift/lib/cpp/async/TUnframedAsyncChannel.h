@@ -19,35 +19,40 @@
 
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
 namespace detail {
 
 /**
  * Encapsulation of one outstanding write request on a TUnframedAsyncChannel.
  */
-class TUnframedACWriteRequest :
-      public TAsyncChannelWriteRequestBase<TUnframedACWriteRequest> {
+class TUnframedACWriteRequest
+    : public TAsyncChannelWriteRequestBase<TUnframedACWriteRequest> {
  public:
   typedef std::function<void()> VoidCallback;
 
-  TUnframedACWriteRequest(const VoidCallback& callback,
-                          const VoidCallback& errorCallback,
-                          transport::TMemoryBuffer* message,
-                          TAsyncEventChannel* channel);
+  TUnframedACWriteRequest(
+      const VoidCallback& callback,
+      const VoidCallback& errorCallback,
+      transport::TMemoryBuffer* message,
+      TAsyncEventChannel* channel);
 
-  void write(TAsyncTransport* transport,
-             TAsyncTransport::WriteCallback* callback) noexcept;
+  void write(
+      TAsyncTransport* transport,
+      TAsyncTransport::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
-  void writeError(size_t bytesWritten,
-                  const transport::TTransportException& ex) noexcept;
+  void writeError(
+      size_t bytesWritten,
+      const transport::TTransportException& ex) noexcept;
 };
 
 /**
  * Read state for TUnframedAsyncChannel
  */
-template<typename ProtocolTraits_>
+template <typename ProtocolTraits_>
 class TUnframedACReadState {
  public:
   typedef std::function<void()> VoidCallback;
@@ -93,9 +98,10 @@ class TUnframedACReadState {
   }
 
  private:
-  bool getMessageLength(uint8_t* buffer,
-                        uint32_t bufferLength,
-                        uint32_t* messageLength);
+  bool getMessageLength(
+      uint8_t* buffer,
+      uint32_t bufferLength,
+      uint32_t* messageLength);
 
   /// maximum frame size accepted
   uint32_t maxMessageSize_;
@@ -114,21 +120,22 @@ class TUnframedACReadState {
  * messages.  When reading messages, ProtocolTraits_ is used to determine the
  * end of a message.
  */
-template<typename ProtocolTraits_>
-class TUnframedAsyncChannel :
-  public TStreamAsyncChannel<detail::TUnframedACWriteRequest,
-                             detail::TUnframedACReadState<ProtocolTraits_> > {
+template <typename ProtocolTraits_>
+class TUnframedAsyncChannel
+    : public TStreamAsyncChannel<
+          detail::TUnframedACWriteRequest,
+          detail::TUnframedACReadState<ProtocolTraits_>> {
  private:
-  typedef TStreamAsyncChannel<detail::TUnframedACWriteRequest,
-                              detail::TUnframedACReadState<ProtocolTraits_> >
+  typedef TStreamAsyncChannel<
+      detail::TUnframedACWriteRequest,
+      detail::TUnframedACReadState<ProtocolTraits_>>
       Parent;
   typedef TUnframedAsyncChannel<ProtocolTraits_> Self;
 
  public:
   explicit TUnframedAsyncChannel(
-    const std::shared_ptr<TAsyncTransport>& transport
-    )
-    : Parent(transport) {}
+      const std::shared_ptr<TAsyncTransport>& transport)
+      : Parent(transport) {}
 
   /**
    * Helper function to create a shared_ptr<TUnframedAsyncChannel>.
@@ -138,8 +145,8 @@ class TUnframedAsyncChannel :
    */
   static std::shared_ptr<Self> newChannel(
       const std::shared_ptr<TAsyncTransport>& transport) {
-    return std::shared_ptr<Self>(new Self(transport),
-                                   typename Self::Destructor());
+    return std::shared_ptr<Self>(
+        new Self(transport), typename Self::Destructor());
   }
 
   /// size in bytes beyond which we'll reject a given message.
@@ -161,7 +168,9 @@ class TUnframedAsyncChannel :
   ~TUnframedAsyncChannel() override {}
 };
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp/async/TUnframedAsyncChannel-inl.h>
 

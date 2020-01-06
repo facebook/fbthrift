@@ -17,27 +17,29 @@
 #ifndef THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_
 #define THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_ 1
 
-#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 #include <folly/SocketAddress.h>
+#include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
-namespace apache { namespace thrift { namespace async {
+namespace apache {
+namespace thrift {
+namespace async {
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 TStreamAsyncChannel<WriteRequest_, ReadState_>::TStreamAsyncChannel(
     const std::shared_ptr<TAsyncTransport>& transport)
-  : folly::AsyncTimeout(transport->getEventBase())
-  , transport_(transport)
-  , writeReqHead_(nullptr)
-  , writeReqTail_(nullptr)
-  , readState_()
-  , readCallback_()
-  , readErrorCallback_()
-  , recvTimeout_(0)
-  , timedOut_(false)
-  , errorType_(transport::TTransportException::TTransportExceptionType::UNKNOWN)
-{ }
+    : folly::AsyncTimeout(transport->getEventBase()),
+      transport_(transport),
+      writeReqHead_(nullptr),
+      writeReqTail_(nullptr),
+      readState_(),
+      readCallback_(),
+      readErrorCallback_(),
+      recvTimeout_(0),
+      timedOut_(false),
+      errorType_(
+          transport::TTransportException::TTransportExceptionType::UNKNOWN) {}
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::destroy() {
   // When destroy is called, close the channel immediately
   closeNow();
@@ -47,33 +49,33 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::destroy() {
   folly::DelayedDestruction::destroy();
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 bool TStreamAsyncChannel<WriteRequest_, ReadState_>::readable() const {
   return transport_->readable();
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 bool TStreamAsyncChannel<WriteRequest_, ReadState_>::good() const {
   return transport_->good();
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 bool TStreamAsyncChannel<WriteRequest_, ReadState_>::error() const {
   return (timedOut_ || transport_->error());
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 bool TStreamAsyncChannel<WriteRequest_, ReadState_>::timedOut() const {
   return timedOut_;
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 transport::TTransportException::TTransportExceptionType
 TStreamAsyncChannel<WriteRequest_, ReadState_>::errorType() const {
   return errorType_;
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendMessage(
     const VoidCallback& cob,
     const VoidCallback& errorCob,
@@ -104,7 +106,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendMessage(
   writeReq->write(transport_.get(), this);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendOnewayMessage(
     const VoidCallback& cob,
     const VoidCallback& errorCob,
@@ -112,7 +114,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendOnewayMessage(
   sendMessage(cob, errorCob, message);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::recvMessage(
     const VoidCallback& cob,
     const VoidCallback& errorCob,
@@ -161,7 +163,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::recvMessage(
   transport_->setReadCallback(this);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendAndRecvMessage(
     const VoidCallback& cob,
     const VoidCallback& errorCob,
@@ -169,14 +171,13 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::sendAndRecvMessage(
     transport::TMemoryBuffer* recvBuf) {
   // TODO: it would be better to perform this bind once, rather than
   // each time sendAndRecvMessage() is called.
-  const VoidCallback& send_done =
-    std::bind(&TStreamAsyncChannel::recvMessage, this, cob, errorCob,
-                   recvBuf);
+  const VoidCallback& send_done = std::bind(
+      &TStreamAsyncChannel::recvMessage, this, cob, errorCob, recvBuf);
 
   return sendMessage(send_done, errorCob, sendBuf);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::close() {
   DestructorGuard dg(this); // transport::close can invoke callbacks
 
@@ -191,7 +192,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::close() {
   // drain the writes first
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::closeNow() {
   DestructorGuard dg(this); // transport::closeNow can invoke callbacks
 
@@ -206,14 +207,14 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::closeNow() {
   // fail pending writes first
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::attachEventBase(
     folly::EventBase* eventBase) {
   folly::AsyncTimeout::attachEventBase(eventBase);
   transport_->attachEventBase(eventBase);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::detachEventBase() {
   // detachEventBase() may not be called while in the middle of reading or
   // writing a message.  Make sure there are no read callbacks
@@ -233,13 +234,13 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::detachEventBase() {
   transport_->detachEventBase();
 }
 
-template<typename WriteRequest_, typename ReadState_>
-folly::EventBase*
-TStreamAsyncChannel<WriteRequest_, ReadState_>::getEventBase() const {
+template <typename WriteRequest_, typename ReadState_>
+folly::EventBase* TStreamAsyncChannel<WriteRequest_, ReadState_>::getEventBase()
+    const {
   return transport_->getEventBase();
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::setRecvTimeout(
     uint32_t milliseconds) {
   recvTimeout_ = milliseconds;
@@ -253,19 +254,20 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::setRecvTimeout(
   }
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::getReadBuffer(
-    void** bufReturn, size_t* lenReturn) {
+    void** bufReturn,
+    size_t* lenReturn) {
   readState_.getReadBuffer(bufReturn, lenReturn);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::readDataAvailable(
     size_t len) noexcept {
   invokeReadDataAvailable(len);
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::readEOF() noexcept {
   // readCallback_ may be nullptr if readEOF() is invoked while the read
   // callback is already running inside invokeReadDataAvailable(), since
@@ -293,9 +295,8 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::readError(
   failAllReads();
 }
 
-template<typename WriteRequest_, typename ReadState_>
-void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeSuccess()
-    noexcept {
+template <typename WriteRequest_, typename ReadState_>
+void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeSuccess() noexcept {
   DestructorGuard dg(this);
 
   WriteRequest_* req = popWriteRequest();
@@ -303,7 +304,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeSuccess()
   delete req;
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeError(
     size_t bytesWritten,
     const transport::TTransportException& ex) noexcept {
@@ -321,9 +322,8 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeError(
   delete req;
 }
 
-template<typename WriteRequest_, typename ReadState_>
-void TStreamAsyncChannel<WriteRequest_, ReadState_>::timeoutExpired()
-    noexcept {
+template <typename WriteRequest_, typename ReadState_>
+void TStreamAsyncChannel<WriteRequest_, ReadState_>::timeoutExpired() noexcept {
   DestructorGuard dg(this);
 
   errorType_ = transport::TTransportException::TIMED_OUT;
@@ -351,7 +351,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::timeoutExpired()
   failAllReads();
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
     size_t len) noexcept {
   DestructorGuard dg(this);
@@ -428,7 +428,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
     } else {
       // There are queued readers, pop one.  This block should have the same
       // effect as if recvMessage were called
-      const ReadQueueEntry &qentry = readCallbackQ_.front();
+      const ReadQueueEntry& qentry = readCallbackQ_.front();
       readCallback_ = qentry.readCallback;
       readErrorCallback_ = qentry.readErrorCallback;
       readState_.setCallbackBuffer(qentry.readBuffer);
@@ -444,20 +444,19 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
   return true;
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::failAllReads() {
   invokeReadCallback(readErrorCallback_, "read error callback");
 
   while (!readCallbackQ_.empty()) {
-    const ReadQueueEntry &qentry = readCallbackQ_.front();
+    const ReadQueueEntry& qentry = readCallbackQ_.front();
     invokeReadCallback(qentry.readErrorCallback, "read error callback");
     readCallbackQ_.pop_front();
   }
 }
 
-template<typename WriteRequest_, typename ReadState_>
-void TStreamAsyncChannel<WriteRequest_, ReadState_>::processReadEOF()
-    noexcept {
+template <typename WriteRequest_, typename ReadState_>
+void TStreamAsyncChannel<WriteRequest_, ReadState_>::processReadEOF() noexcept {
   DestructorGuard dg(this);
   assert(readCallback_);
 
@@ -483,15 +482,16 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::processReadEOF()
   // Any queued reads should be notified like the else case above as only
   // the first reader can have partial data.
   while (!readCallbackQ_.empty()) {
-    const ReadQueueEntry &qentry = readCallbackQ_.front();
+    const ReadQueueEntry& qentry = readCallbackQ_.front();
     invokeReadCallback(qentry.readCallback, cbName);
     readCallbackQ_.pop_front();
   }
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadCallback(
-    VoidCallback cb, char const* callbackName) noexcept {
+    VoidCallback cb,
+    char const* callbackName) noexcept {
   readState_.unsetCallbackBuffer();
   readCallback_ = VoidCallback();
   readErrorCallback_ = VoidCallback();
@@ -513,8 +513,11 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadCallback(
     //     for (const auto& e : getCurrentExceptions()) { LOG(ERROR) << e; }
     // Note that exception_tracer has overhead for each throw statement, thus
     // only use it when debugging.
-    T_ERROR("TAsyncChannel: %s threw %s exception: %s",
-            callbackName, typeid(ex).name(), ex.what());
+    T_ERROR(
+        "TAsyncChannel: %s threw %s exception: %s",
+        callbackName,
+        typeid(ex).name(),
+        ex.what());
     abort();
   } catch (...) {
     // The big comment above also applies here.
@@ -523,6 +526,8 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadCallback(
   }
 }
 
-}}} // apache::thrift::async
+} // namespace async
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_
