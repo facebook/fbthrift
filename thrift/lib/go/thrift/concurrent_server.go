@@ -75,6 +75,10 @@ func (p *ConcurrentServer) processRequests(ctx context.Context, client Transport
 		outputProtocol = p.outputProtocolFactory.GetProtocol(outputTransport)
 	}
 
+	// Store the input protocol on the context so handlers can query headers.
+	// See HeadersFromContext.
+	ctx = context.WithValue(ctx, protocolKey, inputProtocol)
+
 	// recover from any panic in the processor, so it doesn't crash the
 	// thrift server
 	defer func() {

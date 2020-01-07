@@ -26,6 +26,7 @@ type contextKey int
 
 const (
 	connInfoKey contextKey = iota
+	protocolKey
 )
 
 // ConnInfo contains connection information from clients of the SimpleServer.
@@ -74,4 +75,32 @@ func (c ConnInfo) TLS() *tls.ConnectionState {
 func ConnInfoFromContext(ctx context.Context) (ConnInfo, bool) {
 	v, ok := ctx.Value(connInfoKey).(ConnInfo)
 	return v, ok
+}
+
+// The context can be augmented with the underlying HeaderProtocol. Thrift
+// handlers can then query the context for the message headers. We store the
+// protocol object on the context instead of the headers directly to avoid
+// copying headers at each request and only lazy-copy them when the handler
+// asks for them.
+func headerProtocolFromContext(ctx context.Context) *HeaderProtocol {
+	v, ok := ctx.Value(protocolKey).(*HeaderProtocol)
+	if !ok {
+		return nil
+	}
+	return v
+}
+
+// HeadersFromContext extracts headers for this message, both per-message
+// and persistent headers. When both a per-message header and a persistent
+// header exist with the same name, the persistent header is returned. This is
+// also the behaviour of the C++ implementation.
+// This function returns nil when the underlying transport/protocol do not
+// support headers.
+func HeadersFromContext(ctx context.Context) map[string]string {
+	t := headerProtocolFromContext(ctx)
+	if t == nil {
+		// A nil map behaves like an empty map for reading.
+		return nil
+	}
+	return t.ReadHeaders()
 }

@@ -263,6 +263,10 @@ func (p *SimpleServer) processRequests(ctx context.Context, client Transport) er
 		outputProtocol = p.outputProtocolFactory.GetProtocol(outputTransport)
 	}
 
+	// Store the input protocol on the context so handlers can query headers.
+	// See HeadersFromContext.
+	ctx = context.WithValue(ctx, protocolKey, inputProtocol)
+
 	defer func() {
 		if err := recover(); err != nil {
 			p.log.Printf("panic in processor: %v: %s", err, debug.Stack())
