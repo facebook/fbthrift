@@ -18,8 +18,8 @@
 
 #include <folly/portability/GTest.h>
 
-using apache::thrift::protocol::base64_encode;
 using apache::thrift::protocol::base64_decode;
+using apache::thrift::protocol::base64_encode;
 
 static void setupTestData(int i, uint8_t* data, int& len) {
   len = 0;
@@ -47,7 +47,6 @@ TEST(Base64Test, test_Base64_Encode_Decode) {
   // three byte limit for base64_encode.
 
   for (int i = 0xFFFFFF; i >= 0; i--) {
-
     // fill testInput based on i
     setupTestData(i, testInput, len);
 
@@ -60,6 +59,5 @@ TEST(Base64Test, test_Base64_Encode_Decode) {
     // decode output and check that it matches input
     base64_decode(testOutput, len + 1);
     ASSERT_EQ(0, memcmp(testInput, testOutput, len));
-
   }
 }

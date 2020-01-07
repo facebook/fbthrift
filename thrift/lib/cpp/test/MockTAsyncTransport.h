@@ -20,9 +20,11 @@
 
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
 
-namespace apache { namespace thrift { namespace test {
+namespace apache {
+namespace thrift {
+namespace test {
 
-class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
+class MockTAsyncTransport : public apache::thrift::async::TAsyncTransport {
  public:
   using ReadCallback = apache::thrift::async::TAsyncTransport::ReadCallback;
   using WriteCallback = apache::thrift::async::TAsyncTransport::WriteCallback;
@@ -31,24 +33,32 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   MOCK_METHOD1(setReadCB, void(AsyncTransportWrapper::ReadCallback*));
   MOCK_CONST_METHOD0(getReadCallback, ReadCallback*());
   MOCK_CONST_METHOD0(getReadCB, AsyncTransportWrapper::ReadCallback*());
-  MOCK_METHOD4(write, void(AsyncTransportWrapper::WriteCallback*,
-                           const void*,
-                           size_t,
-                           apache::thrift::async::WriteFlags));
-  MOCK_METHOD4(writev, void(AsyncTransportWrapper::WriteCallback*,
-                            const iovec*,
-                            size_t,
-                            apache::thrift::async::WriteFlags));
-  MOCK_METHOD3(writeChain,
-               void(AsyncTransportWrapper::WriteCallback*,
-                    std::shared_ptr<folly::IOBuf>,
-                    apache::thrift::async::WriteFlags));
+  MOCK_METHOD4(
+      write,
+      void(
+          AsyncTransportWrapper::WriteCallback*,
+          const void*,
+          size_t,
+          apache::thrift::async::WriteFlags));
+  MOCK_METHOD4(
+      writev,
+      void(
+          AsyncTransportWrapper::WriteCallback*,
+          const iovec*,
+          size_t,
+          apache::thrift::async::WriteFlags));
+  MOCK_METHOD3(
+      writeChain,
+      void(
+          AsyncTransportWrapper::WriteCallback*,
+          std::shared_ptr<folly::IOBuf>,
+          apache::thrift::async::WriteFlags));
 
-
-  void writeChain(AsyncTransportWrapper::WriteCallback* callback,
-                  std::unique_ptr<folly::IOBuf>&& iob,
-                  apache::thrift::async::WriteFlags flags =
-                  apache::thrift::async::WriteFlags::NONE) override {
+  void writeChain(
+      AsyncTransportWrapper::WriteCallback* callback,
+      std::unique_ptr<folly::IOBuf>&& iob,
+      apache::thrift::async::WriteFlags flags =
+          apache::thrift::async::WriteFlags::NONE) override {
     writeChain(callback, std::shared_ptr<folly::IOBuf>(iob.release()), flags);
   }
 
@@ -75,25 +85,34 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
   MOCK_CONST_METHOD0(getRawBytesReceived, size_t());
   MOCK_CONST_METHOD0(isEorTrackingEnabled, bool());
   MOCK_METHOD1(setEorTracking, void(bool));
-
 };
 
-class MockReadCallback:
-      public apache::thrift::async::TAsyncTransport::ReadCallback {
+class MockReadCallback
+    : public apache::thrift::async::TAsyncTransport::ReadCallback {
  public:
   MOCK_METHOD2(getReadBuffer, void(void**, size_t*));
   GMOCK_METHOD1_(, noexcept, , readDataAvailable, void(size_t));
   GMOCK_METHOD0_(, noexcept, , readEOF, void());
-  GMOCK_METHOD1_(, noexcept, , readError,
-                 void(const transport::TTransportException&));
+  GMOCK_METHOD1_(
+      ,
+      noexcept,
+      ,
+      readError,
+      void(const transport::TTransportException&));
 };
 
-class MockWriteCallback:
-      public apache::thrift::async::TAsyncTransport::WriteCallback {
+class MockWriteCallback
+    : public apache::thrift::async::TAsyncTransport::WriteCallback {
  public:
   GMOCK_METHOD0_(, noexcept, , writeSuccess, void());
-  GMOCK_METHOD2_(, noexcept, , writeError,
-                 void(size_t, const transport::TTransportException&));
+  GMOCK_METHOD2_(
+      ,
+      noexcept,
+      ,
+      writeError,
+      void(size_t, const transport::TTransportException&));
 };
 
-}}}
+} // namespace test
+} // namespace thrift
+} // namespace apache

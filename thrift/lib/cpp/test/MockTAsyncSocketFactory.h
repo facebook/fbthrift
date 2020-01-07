@@ -17,20 +17,20 @@
 #ifndef THRIFT_TEST_MOCKTASYNCSOCKETFACTORY_H_
 #define THRIFT_TEST_MOCKTASYNCSOCKETFACTORY_H_ 1
 
-#include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocketFactory.h>
 
 #include <folly/portability/GMock.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace test {
 
 class MockTAsyncSocketFactory : public async::TAsyncSocketFactory {
  public:
-  explicit MockTAsyncSocketFactory(folly::EventBase* base) :
-   async::TAsyncSocketFactory(base) {
-  }
+  explicit MockTAsyncSocketFactory(folly::EventBase* base)
+      : async::TAsyncSocketFactory(base) {}
 
   async::TAsyncSocket::UniquePtr make() const override {
     return async::TAsyncSocket::UniquePtr(make_mocked());
@@ -45,6 +45,8 @@ class MockTAsyncSocketFactory : public async::TAsyncSocketFactory {
   MOCK_CONST_METHOD1(make_mocked, async::TAsyncSocket*(int));
 };
 
-}}}
+} // namespace test
+} // namespace thrift
+} // namespace apache
 
 #endif

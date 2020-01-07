@@ -27,19 +27,19 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 
-using folly::AsyncServerSocket;
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
-using folly::EventBase;
 using apache::thrift::async::WriteFlags;
-using folly::SSLContext;
-using folly::SocketAddress;
 using apache::thrift::transport::TTransportException;
-using std::shared_ptr;
+using folly::AsyncServerSocket;
+using folly::EventBase;
 using folly::IOBuf;
+using folly::SocketAddress;
+using folly::SSLContext;
+using std::shared_ptr;
 using std::string;
-using std::vector;
 using std::unique_ptr;
+using std::vector;
 
 class AcceptCallback : public AsyncServerSocket::AcceptCallback {
  public:
@@ -64,7 +64,9 @@ class ConnectCallback : public TAsyncSocket::ConnectCallback {
  public:
   explicit ConnectCallback(const std::function<void()>& fn) : fn_(fn) {}
 
-  void connectSuccess() noexcept override { fn_(); }
+  void connectSuccess() noexcept override {
+    fn_();
+  }
   void connectError(const TTransportException& ex) noexcept override {
     LOG(FATAL) << "connectError(): " << ex.what();
   }
@@ -90,13 +92,13 @@ class HandshakeCallback : public TAsyncSSLSocket::HandshakeCallback {
   std::function<void()> fn_;
 };
 
-void createTCPSocketPair(EventBase* eventBase,
-                         shared_ptr<TAsyncSocket>* client,
-                         shared_ptr<TAsyncSocket>* server) {
-  AsyncServerSocket::UniquePtr acceptSocket(
-      new AsyncServerSocket(eventBase));
+void createTCPSocketPair(
+    EventBase* eventBase,
+    shared_ptr<TAsyncSocket>* client,
+    shared_ptr<TAsyncSocket>* server) {
+  AsyncServerSocket::UniquePtr acceptSocket(new AsyncServerSocket(eventBase));
 
-  AcceptCallback acceptCallback([&] (int fd) {
+  AcceptCallback acceptCallback([&](int fd) {
     VLOG(4) << "socket accepted";
 
     // Destroy the accept socket to stop waiting on new connections,
@@ -114,30 +116,28 @@ void createTCPSocketPair(EventBase* eventBase,
   acceptSocket->startAccepting();
 
   *client = TAsyncSocket::newSocket(eventBase);
-  ConnectCallback clientConnectCallback([&] {
-    VLOG(4) << "client connect done";
-  });
+  ConnectCallback clientConnectCallback(
+      [&] { VLOG(4) << "client connect done"; });
   (*client)->connect(&clientConnectCallback, serverAddr);
 
   eventBase->loop();
 }
 
-void createSSLSocketPair(EventBase* eventBase,
-                         shared_ptr<TAsyncSSLSocket>* client,
-                         shared_ptr<TAsyncSSLSocket>* server) {
-  AsyncServerSocket::UniquePtr acceptSocket(
-      new AsyncServerSocket(eventBase));
+void createSSLSocketPair(
+    EventBase* eventBase,
+    shared_ptr<TAsyncSSLSocket>* client,
+    shared_ptr<TAsyncSSLSocket>* server) {
+  AsyncServerSocket::UniquePtr acceptSocket(new AsyncServerSocket(eventBase));
 
   shared_ptr<SSLContext> ctx(new SSLContext);
   ctx->loadCertificate("thrift/lib/cpp/test/ssl/tests-cert.pem");
   ctx->loadPrivateKey("thrift/lib/cpp/test/ssl/tests-key.pem");
   ctx->ciphers("ALL:!ADH:!LOW:!EXP:!MD5:@STRENGTH");
 
-  HandshakeCallback serverHandshakeCallback([&] {
-    VLOG(4) << "server handshake done";
-  });
+  HandshakeCallback serverHandshakeCallback(
+      [&] { VLOG(4) << "server handshake done"; });
 
-  AcceptCallback acceptCallback([&] (int fd) {
+  AcceptCallback acceptCallback([&](int fd) {
     VLOG(4) << "socket accepted";
 
     // Destroy the accept socket to stop waiting on new connections,
@@ -145,8 +145,8 @@ void createSSLSocketPair(EventBase* eventBase,
     acceptSocket.reset();
 
     *server = TAsyncSSLSocket::newSocket(ctx, eventBase, fd);
-    (*server)->sslAccept(&serverHandshakeCallback,
-        std::chrono::milliseconds(5));
+    (*server)->sslAccept(
+        &serverHandshakeCallback, std::chrono::milliseconds(5));
   });
 
   acceptSocket->addAcceptCallback(&acceptCallback, nullptr);
@@ -157,9 +157,8 @@ void createSSLSocketPair(EventBase* eventBase,
   acceptSocket->startAccepting();
 
   *client = TAsyncSSLSocket::newSocket(ctx, eventBase);
-  ConnectCallback clientConnectCallback([&] {
-    VLOG(4) << "client connect done";
-  });
+  ConnectCallback clientConnectCallback(
+      [&] { VLOG(4) << "client connect done"; });
   (*client)->connect(&clientConnectCallback, serverAddr);
 
   eventBase->loop();
@@ -294,8 +293,8 @@ class Capturer {
     // Note that this unit test needs to be run as root.
     // Otherwise you won't be able to initialize packet capturing, and the
     // following check will fail.
-    CHECK(pcap_ != nullptr) << "unable to initialize packet capturing: "
-                            << errbuf;
+    CHECK(pcap_ != nullptr)
+        << "unable to initialize packet capturing: " << errbuf;
 
     struct bpf_program program;
     int rc = pcap_compile(pcap_, &program, filter.c_str(), 1, 0xffffffff);
@@ -310,17 +309,19 @@ class Capturer {
     pcap_close(pcap_);
   }
 
-  vector<Packet> capture(int max=1024) {
+  vector<Packet> capture(int max = 1024) {
     vector<Packet> packets;
-    int rc = pcap_dispatch(pcap_, max, pcapCallback,
-                           reinterpret_cast<unsigned char*>(&packets));
+    int rc = pcap_dispatch(
+        pcap_, max, pcapCallback, reinterpret_cast<unsigned char*>(&packets));
     CHECK_GE(rc, 0);
     return packets;
   }
 
  private:
-  static void pcapCallback(unsigned char* arg, const struct pcap_pkthdr* hdr,
-                           const unsigned char* bytes) {
+  static void pcapCallback(
+      unsigned char* arg,
+      const struct pcap_pkthdr* hdr,
+      const unsigned char* bytes) {
     vector<Packet>* packets = reinterpret_cast<vector<Packet>*>(arg);
     packets->emplace_back(hdr, bytes);
   }
@@ -338,9 +339,11 @@ void ensureNPackets(
   sender->getLocalAddress(&senderAddr);
   sender->getPeerAddress(&receiverAddr);
 
-  string captureFilter = folly::to<string>("src port ", senderAddr.getPort(),
-                                           " and dst port ",
-                                           receiverAddr.getPort());
+  string captureFilter = folly::to<string>(
+      "src port ",
+      senderAddr.getPort(),
+      " and dst port ",
+      receiverAddr.getPort());
   Capturer cap(captureFilter);
 
   // Call the function
@@ -350,9 +353,10 @@ void ensureNPackets(
   EXPECT_EQ(expectedNumPackets, packets.size());
 }
 
-void testWriteFlushing(EventBase* eventBase,
-                       const shared_ptr<TAsyncSocket>& client,
-                       const shared_ptr<TAsyncSocket>& server) {
+void testWriteFlushing(
+    EventBase* eventBase,
+    const shared_ptr<TAsyncSocket>& client,
+    const shared_ptr<TAsyncSocket>& server) {
   char buf[] = "foobar";
   const int bufsize = 6;
 
@@ -380,13 +384,13 @@ void testWriteFlushing(EventBase* eventBase,
 
   // Calling write() with cork=true shouldn't trigger its own packet
   ensureNPackets(client, server, 2, [&] {
-      client->write(nullptr, buf, bufsize, WriteFlags::CORK);
-      client->write(nullptr, buf, bufsize);
-      client->write(nullptr, buf, bufsize, WriteFlags::CORK);
-      client->writev(nullptr, iov, iovCount, WriteFlags::CORK);
-      client->write(nullptr, buf, bufsize, WriteFlags::CORK);
-      client->write(nullptr, buf, bufsize);
-      eventBase->loop();
+    client->write(nullptr, buf, bufsize, WriteFlags::CORK);
+    client->write(nullptr, buf, bufsize);
+    client->write(nullptr, buf, bufsize, WriteFlags::CORK);
+    client->writev(nullptr, iov, iovCount, WriteFlags::CORK);
+    client->write(nullptr, buf, bufsize, WriteFlags::CORK);
+    client->write(nullptr, buf, bufsize);
+    eventBase->loop();
   });
 
   // Test the behavior of IOBuf chains

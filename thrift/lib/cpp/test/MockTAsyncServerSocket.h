@@ -27,32 +27,31 @@ namespace thrift {
 
 namespace test {
 
-class MockTAsyncServerSocket :
-  public folly::AsyncServerSocket {
-public:
+class MockTAsyncServerSocket : public folly::AsyncServerSocket {
+ public:
   typedef std::unique_ptr<MockTAsyncServerSocket, Destructor> UniquePtr;
 
   // We explicitly do not mock destroy(), since the base class implementation
   // in DelayedDestruction is what actually deletes the object.
-  //MOCK_METHOD0(destroy,
+  // MOCK_METHOD0(destroy,
   //             void());
-  MOCK_METHOD1(bind,
-               void(const folly::SocketAddress& address));
-  MOCK_METHOD2(bind,
-               void(const std::vector<folly::IPAddress>& ipAddresses,
-                    uint16_t port));
-  MOCK_METHOD1(bind,
-               void(uint16_t port));
-  MOCK_METHOD1(listen,
-               void(int backlog));
-  MOCK_METHOD0(startAccepting,
-               void());
-  MOCK_METHOD3(addAcceptCallback,
-               void(AcceptCallback *callback,
-                    folly::EventBase *eventBase,
-                    uint32_t maxAtOnce));
+  MOCK_METHOD1(bind, void(const folly::SocketAddress& address));
+  MOCK_METHOD2(
+      bind,
+      void(const std::vector<folly::IPAddress>& ipAddresses, uint16_t port));
+  MOCK_METHOD1(bind, void(uint16_t port));
+  MOCK_METHOD1(listen, void(int backlog));
+  MOCK_METHOD0(startAccepting, void());
+  MOCK_METHOD3(
+      addAcceptCallback,
+      void(
+          AcceptCallback* callback,
+          folly::EventBase* eventBase,
+          uint32_t maxAtOnce));
 };
 
-}}} // apache::thrift::test
+} // namespace test
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TEST_MOCKTASYNCSERVERSOCKET_H_

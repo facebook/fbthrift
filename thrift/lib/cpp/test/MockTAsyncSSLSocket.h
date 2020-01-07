@@ -120,8 +120,8 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
           uint64_t,
           const apache::thrift::transport::SSLContext::SSLVerifyPeerEnum&));
 };
-}
-}
-}
+} // namespace test
+} // namespace thrift
+} // namespace apache
 
 #endif

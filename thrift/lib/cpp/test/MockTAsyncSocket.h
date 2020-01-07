@@ -17,11 +17,10 @@
 #ifndef THRIFT_TEST_MOCKTASYNCSOCKET_H_
 #define THRIFT_TEST_MOCKTASYNCSOCKET_H_ 1
 
-
 #include <folly/portability/GMock.h>
 
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
 
 namespace apache {
 namespace thrift {
@@ -40,15 +39,17 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
     return MockTAsyncSocket::UniquePtr(new MockTAsyncSocket(base));
   }
 
-  GMOCK_METHOD5_(,
-                 noexcept,
-                 ,
-                 connectInternal,
-                 void(AsyncSocket::ConnectCallback*,
-                      const folly::SocketAddress&,
-                      int,
-                      const OptionMap&,
-                      const folly::SocketAddress&));
+  GMOCK_METHOD5_(
+      ,
+      noexcept,
+      ,
+      connectInternal,
+      void(
+          AsyncSocket::ConnectCallback*,
+          const folly::SocketAddress&,
+          int,
+          const OptionMap&,
+          const folly::SocketAddress&));
 
   void connect(
       AsyncSocket::ConnectCallback* callback,
@@ -59,8 +60,7 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
     connectInternal(callback, addr, timeout, options, bindAddr);
   }
 
-  MOCK_CONST_METHOD1(getPeerAddress,
-                     void(folly::SocketAddress*));
+  MOCK_CONST_METHOD1(getPeerAddress, void(folly::SocketAddress*));
   MOCK_METHOD0(detachNetworkSocket, folly::NetworkSocket());
   MOCK_CONST_METHOD0(getNetworkSocket, folly::NetworkSocket());
   MOCK_METHOD0(closeNow, void());
@@ -76,6 +76,8 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
           apache::thrift::async::WriteFlags));
 };
 
-}}}
+} // namespace test
+} // namespace thrift
+} // namespace apache
 
 #endif

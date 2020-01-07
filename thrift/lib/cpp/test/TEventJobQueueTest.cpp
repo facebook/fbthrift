@@ -16,47 +16,46 @@
 
 #include <iostream>
 
-#include <thrift/lib/cpp/async/TEventJobQueue.h>
-#include <folly/io/async/EventBase.h>
 #include <folly/io/async/AsyncTimeout.h>
+#include <folly/io/async/EventBase.h>
+#include <thrift/lib/cpp/async/TEventJobQueue.h>
 
 #include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace apache::thrift::async;
 
-
 class SimpleRunnable : public TEventRunnable {
  public:
-  SimpleRunnable(folly::EventBase *origEventBase, int x, int *sum)
-      : origEventBase_(origEventBase),
-        x_(x),
-        sum_(sum) {}
+  SimpleRunnable(folly::EventBase* origEventBase, int x, int* sum)
+      : origEventBase_(origEventBase), x_(x), sum_(sum) {}
   ~SimpleRunnable() override {}
 
   void run() override {
     int result = x_ * x_;
     origEventBase_->runInEventBaseThread([this, result] {
-        (*sum_) += result;
-        if (*sum_ == 264) {
-          origEventBase_->terminateLoopSoon();
-        }
-        delete this;
-      });
+      (*sum_) += result;
+      if (*sum_ == 264) {
+        origEventBase_->terminateLoopSoon();
+      }
+      delete this;
+    });
   }
 
  private:
-  folly::EventBase *origEventBase_;
+  folly::EventBase* origEventBase_;
   int x_;
-  int *sum_;
+  int* sum_;
 };
 
 // TODO: Move this to the test/util library
 class EventBaseAborter : public folly::AsyncTimeout {
  public:
   EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
-    : folly::AsyncTimeout(eventBase, folly::AsyncTimeout::InternalEnum::INTERNAL)
-    , eventBase_(eventBase) {
+      : folly::AsyncTimeout(
+            eventBase,
+            folly::AsyncTimeout::InternalEnum::INTERNAL),
+        eventBase_(eventBase) {
     scheduleTimeout(timeoutMS);
   }
 
@@ -77,12 +76,12 @@ TEST(TEventJobQueueTest, SimpleJobQueueTest) {
   folly::EventBase eventBase;
   EventBaseAborter eba(&eventBase, 1000);
   TEventJobQueue jobQueue(4);
-  int data[] = { 8, 6, 7, 5, 3, 0, 9 };
+  int data[] = {8, 6, 7, 5, 3, 0, 9};
   int sum = 0;
 
   jobQueue.init();
 
-  for (auto x: data) {
+  for (auto x : data) {
     jobQueue.enqueueJob(new SimpleRunnable(&eventBase, x, &sum));
   }
 
@@ -105,12 +104,12 @@ TEST(TEventJobQueueTest, ArgsJobQueueTest) {
   apache::thrift::concurrency::PosixThreadFactory factory;
   factory.setDetached(true);
 
-  int data[] = { 8, 6, 7, 5, 3, 0, 9 };
+  int data[] = {8, 6, 7, 5, 3, 0, 9};
   int sum = 0;
 
   jobQueue.init(&factory);
 
-  for (auto x: data) {
+  for (auto x : data) {
     jobQueue.enqueueJob(new SimpleRunnable(&eventBase, x, &sum));
   }
 
