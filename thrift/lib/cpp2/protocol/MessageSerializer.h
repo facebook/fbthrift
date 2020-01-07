@@ -69,7 +69,7 @@ std::pair<std::string, int> PargsPresultDeserialize(
     }
     valuep.read(&reader);
     reader.readMessageEnd();
-  } catch (const std::out_of_range& e) {
+  } catch (const std::out_of_range&) {
     throw transport::TTransportException(
         transport::TTransportException::END_OF_FILE);
   }
