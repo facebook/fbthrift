@@ -22,6 +22,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
+#include <thrift/lib/cpp/util/VarintUtils.h>
 #include <thrift/lib/cpp2/protocol/nimble/BufferingNimbleEncoder.h>
 #include <thrift/lib/cpp2/protocol/nimble/NimbleTypes.h>
 

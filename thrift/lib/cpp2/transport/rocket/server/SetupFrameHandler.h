@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Optional.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace folly {
 class EventBase;

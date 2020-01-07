@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <glog/logging.h>
 #include <atomic>
 #include <cassert>
 #include <memory>

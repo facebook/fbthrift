@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/CPortability.h>
 #include <cstddef>
 #include <type_traits>
 #include <utility>
