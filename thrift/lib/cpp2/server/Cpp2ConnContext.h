@@ -21,7 +21,8 @@
 
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <thrift/lib/cpp/transport/THeader.h>

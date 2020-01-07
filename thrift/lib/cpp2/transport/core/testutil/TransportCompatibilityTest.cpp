@@ -26,7 +26,6 @@
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
