@@ -23,7 +23,6 @@
 #include <thrift/lib/cpp/test/loadgen/WorkerIf.h>
 
 using apache::thrift::concurrency::PosixThreadFactory;
-using apache::thrift::concurrency::Synchronized;
 using apache::thrift::concurrency::Thread;
 using std::shared_ptr;
 
@@ -97,9 +96,9 @@ void Controller::startWorkers(uint32_t numThreads) {
   // other hand, the monitor correctly handles the case where some workers were
   // already performing operations for some time before the monitor started.
   {
-    Synchronized s(initMonitor_);
+    std::unique_lock<std::mutex> l(initMutex_);
     while (workers_.size() < numThreads_) {
-      initMonitor_.wait();
+      initCondVar_.wait(l);
     }
   }
 }
@@ -172,7 +171,7 @@ void Controller::runMonitor(double interval) {
  * let smarter malloc implementations avoid false sharing.
  */
 shared_ptr<WorkerIf> Controller::createWorker() {
-  Synchronized s(initMonitor_);
+  std::unique_lock<std::mutex> l(initMutex_);
 
   // Create the worker
   int id = workers_.size();
@@ -183,11 +182,11 @@ shared_ptr<WorkerIf> Controller::createWorker() {
   // Add the worker to the workers_ array,
   // and notify anyone waiting that we have updated workers_
   workers_.push_back(worker);
-  initMonitor_.notifyAll();
+  initCondVar_.notify_all();
 
   // Wait on all of the other workers to be created
   while (workers_.size() != numThreads_) {
-    initMonitor_.wait();
+    initCondVar_.wait(l);
   }
 
   return worker;

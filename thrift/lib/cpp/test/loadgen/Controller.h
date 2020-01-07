@@ -17,7 +17,9 @@
 #ifndef THRIFT_TEST_LOADGEN_CONTROLLER_H_
 #define THRIFT_TEST_LOADGEN_CONTROLLER_H_ 1
 
-#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <condition_variable>
+#include <mutex>
+
 #include <thrift/lib/cpp/test/loadgen/IntervalTimer.h>
 #include <thrift/lib/cpp/test/loadgen/LoadConfig.h>
 
@@ -59,7 +61,8 @@ class Controller {
   void runMonitor(double interval);
   std::shared_ptr<WorkerIf> createWorker();
 
-  concurrency::Monitor initMonitor_;
+  std::mutex initMutex_;
+  std::condition_variable initCondVar_;
   uint32_t numThreads_;
   uint32_t maxThreads_;
   WorkerFactory* workerFactory_;
