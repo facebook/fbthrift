@@ -16,12 +16,13 @@
 
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
+#include <condition_variable>
 #include <memory>
+#include <mutex>
 #include <utility>
 
 #include <folly/ScopeGuard.h>
 #include <folly/SocketAddress.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 
@@ -142,14 +143,14 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
       (*eventHandler_)->handleServeError(x);
     }
 
-    Synchronized s(stateMonitor_);
+    std::unique_lock<std::mutex> l(stateMutex_);
 
     if (state_ == STATE_NOT_STARTED) {
       // If the error occurred before the server started,
       // save a copy of the error and notify the main thread
       savedError_.reset(new SavedExceptionImpl<ExceptionT>(x));
       state_ = STATE_START_ERROR;
-      stateMonitor_.notify();
+      stateCondVar_.notify_one();
     } else {
       // The error occurred during normal server execution.
       // Just log an error message.
@@ -161,7 +162,8 @@ class ScopedServerThread::Helper : public Runnable, public TServerEventHandler {
   }
 
   StateEnum state_;
-  Monitor stateMonitor_;
+  std::mutex stateMutex_;
+  std::condition_variable stateCondVar_;
 
   shared_ptr<BaseThriftServer> server_;
   // If the server event handler has been intercepted, then this field will be
@@ -211,9 +213,9 @@ void ScopedServerThread::Helper::stop() {
 }
 
 void ScopedServerThread::Helper::waitUntilStarted() {
-  concurrency::Synchronized s(stateMonitor_);
+  std::unique_lock<std::mutex> l(stateMutex_);
   while (state_ == STATE_NOT_STARTED) {
-    stateMonitor_.waitForever();
+    stateCondVar_.wait(l);
   }
 
   // If an error occurred starting the server,
@@ -242,10 +244,10 @@ void ScopedServerThread::Helper::preServe(const folly::SocketAddress* address) {
   }
 
   // Inform the main thread that the server has started
-  concurrency::Synchronized s(stateMonitor_);
+  std::unique_lock<std::mutex> l(stateMutex_);
   assert(state_ == STATE_NOT_STARTED);
   state_ = STATE_RUNNING;
-  stateMonitor_.notify();
+  stateCondVar_.notify_one();
 }
 
 void ScopedServerThread::Helper::EventHandler::preServe(
