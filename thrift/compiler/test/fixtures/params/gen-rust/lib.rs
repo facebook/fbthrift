@@ -510,6 +510,10 @@ pub mod client {
                 p,
                 "mapList",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_foo", TType::Map, 1i16);
@@ -517,7 +521,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -558,6 +562,10 @@ pub mod client {
                 p,
                 "mapSet",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_foo", TType::Map, 1i16);
@@ -565,7 +573,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -606,6 +614,10 @@ pub mod client {
                 p,
                 "listMap",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_foo", TType::List, 1i16);
@@ -613,7 +625,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -654,6 +666,10 @@ pub mod client {
                 p,
                 "listSet",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_foo", TType::List, 1i16);
@@ -661,7 +677,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -702,6 +718,10 @@ pub mod client {
                 p,
                 "turtles",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_foo", TType::List, 1i16);
@@ -709,7 +729,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -878,6 +898,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -918,6 +939,7 @@ pub mod server {
                 p,
                 "mapList",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -927,6 +949,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -967,6 +990,7 @@ pub mod server {
                 p,
                 "mapSet",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -976,6 +1000,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1016,6 +1041,7 @@ pub mod server {
                 p,
                 "listMap",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1025,6 +1051,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1065,6 +1092,7 @@ pub mod server {
                 p,
                 "listSet",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1074,6 +1102,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_foo = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1114,6 +1143,7 @@ pub mod server {
                 p,
                 "turtles",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1147,13 +1177,14 @@ pub mod server {
             idx: usize,
             p: &mut P::Deserializer,
             r: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_mapList(p, r).await,
-                1usize => self.handle_mapSet(p, r).await,
-                2usize => self.handle_listMap(p, r).await,
-                3usize => self.handle_listSet(p, r).await,
-                4usize => self.handle_turtles(p, r).await,
+                0usize => self.handle_mapList(p, r, seqid).await,
+                1usize => self.handle_mapSet(p, r, seqid).await,
+                2usize => self.handle_listMap(p, r, seqid).await,
+                3usize => self.handle_listSet(p, r, seqid).await,
+                4usize => self.handle_turtles(p, r, seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "NestedContainersProcessor",
@@ -1181,7 +1212,7 @@ pub mod server {
             req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
-            let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
                 return Err(From::from(ApplicationException::new(
                     ApplicationExceptionErrorCode::InvalidMessageType,
@@ -1195,7 +1226,7 @@ pub mod server {
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -1206,6 +1237,7 @@ pub mod server {
                                 p,
                                 "NestedContainersProcessor",
                                 MessageType::Exception,
+                                seqid,
                                 |p| ae.write(p),
                             )
                         });

@@ -79,6 +79,7 @@ where
         //frame: &P::Frame,
         request: &mut P::Deserializer,
         req_ctxt: &Self::RequestContext,
+        seqid: u32,
     ) -> Result<ProtocolEncodedFinal<P>, Error>;
 }
 
@@ -118,6 +119,7 @@ where
         //_frame: &P::Frame,
         _d: &mut P::Deserializer,
         _req_ctxt: &R,
+        _seqid: u32,
     ) -> Result<ProtocolEncodedFinal<P>, Error> {
         // Should never be called since method_idx() always returns an error
         unimplemented!("NullServiceProcessor implements no methods")
@@ -141,7 +143,7 @@ where
     ) -> Result<ProtocolEncodedFinal<P>, Error> {
         let mut p = P::deserializer(req);
 
-        let ((name, ae), ..) = p.read_message_begin(|name| {
+        let ((name, ae), _, seqid) = p.read_message_begin(|name| {
             let name = String::from_utf8_lossy(name).into_owned();
             let ae = ApplicationException::unimplemented_method("NullService", &name);
             (name, ae)
@@ -151,7 +153,8 @@ where
             p,
             &name,
             MessageType::Exception,
-            |p| ae.write(p)
+            seqid,
+            |p| ae.write(p),
         ));
 
         Ok(res)

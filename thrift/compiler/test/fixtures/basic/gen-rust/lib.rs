@@ -910,11 +910,15 @@ pub mod client {
                 p,
                 "ping",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -954,11 +958,15 @@ pub mod client {
                 p,
                 "getRandomData",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -999,6 +1007,10 @@ pub mod client {
                 p,
                 "hasDataById",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_id", TType::I64, 1i16);
@@ -1006,7 +1018,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -1047,6 +1059,10 @@ pub mod client {
                 p,
                 "getDataById",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_id", TType::I64, 1i16);
@@ -1054,7 +1070,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -1096,6 +1112,10 @@ pub mod client {
                 p,
                 "putDataById",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_id", TType::I64, 1i16);
@@ -1106,7 +1126,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -1148,6 +1168,10 @@ pub mod client {
                 p,
                 "lobDataById",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_begin("arg_id", TType::I64, 1i16);
@@ -1158,7 +1182,7 @@ pub mod client {
                     p.write_field_end();
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -1338,6 +1362,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1370,6 +1395,7 @@ pub mod server {
                 p,
                 "ping",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1379,6 +1405,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1411,6 +1438,7 @@ pub mod server {
                 p,
                 "getRandomData",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1420,6 +1448,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1460,6 +1489,7 @@ pub mod server {
                 p,
                 "hasDataById",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1469,6 +1499,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let _ = p.read_struct_begin(|_| ())?;
@@ -1509,6 +1540,7 @@ pub mod server {
                 p,
                 "getDataById",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1518,6 +1550,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
@@ -1566,6 +1599,7 @@ pub mod server {
                 p,
                 "putDataById",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1575,6 +1609,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut field_id = None;
             let mut field_data = None;
@@ -1623,6 +1658,7 @@ pub mod server {
                 p,
                 "lobDataById",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1657,14 +1693,15 @@ pub mod server {
             idx: usize,
             p: &mut P::Deserializer,
             r: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_ping(p, r).await,
-                1usize => self.handle_getRandomData(p, r).await,
-                2usize => self.handle_hasDataById(p, r).await,
-                3usize => self.handle_getDataById(p, r).await,
-                4usize => self.handle_putDataById(p, r).await,
-                5usize => self.handle_lobDataById(p, r).await,
+                0usize => self.handle_ping(p, r, seqid).await,
+                1usize => self.handle_getRandomData(p, r, seqid).await,
+                2usize => self.handle_hasDataById(p, r, seqid).await,
+                3usize => self.handle_getDataById(p, r, seqid).await,
+                4usize => self.handle_putDataById(p, r, seqid).await,
+                5usize => self.handle_lobDataById(p, r, seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyServiceProcessor",
@@ -1692,7 +1729,7 @@ pub mod server {
             req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
-            let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
                 return Err(From::from(ApplicationException::new(
                     ApplicationExceptionErrorCode::InvalidMessageType,
@@ -1706,7 +1743,7 @@ pub mod server {
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -1717,6 +1754,7 @@ pub mod server {
                                 p,
                                 "MyServiceProcessor",
                                 MessageType::Exception,
+                                seqid,
                                 |p| ae.write(p),
                             )
                         });

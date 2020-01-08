@@ -223,12 +223,12 @@ macro_rules! serialize {
 }
 
 /// Helper for wrapping a response in a message envelope
-pub fn write_message<P, F>(p: &mut P, name: &str, messagetype: MessageType, body: F)
+pub fn write_message<P, F>(p: &mut P, name: &str, messagetype: MessageType, seqid: u32, body: F)
 where
     P: ProtocolWriter,
     F: FnOnce(&mut P),
 {
-    p.write_message_begin(name, messagetype, 0);
+    p.write_message_begin(name, messagetype, seqid);
     body(p);
     p.write_message_end();
 }

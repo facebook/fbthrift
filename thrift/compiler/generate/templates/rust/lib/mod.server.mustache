@@ -102,6 +102,7 @@
             &'a self,
             p: &'a mut P::Deserializer,
             {{^service:requestContext?}}_{{/service:requestContext?}}req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {{>lib/block}}{{!
             }}{{#function:args}}
             let mut field_{{field:name}} = None;{{!
@@ -152,6 +153,7 @@
                 p,
                 "{{function:name}}",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -196,10 +198,11 @@
             }}p: &mut P::Deserializer,
             {{^service:functions?}}_{{/service:functions?}}{{!
             }}r: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
                 }}{{#service:functions}}
-                {{function:index}}usize => self.handle_{{function:name}}(p, r).await,{{!
+                {{function:index}}usize => self.handle_{{function:name}}(p, r, seqid).await,{{!
                 }}{{/service:functions}}
                 bad => panic!(
                     "{}: unexpected method idx {}",
@@ -238,7 +241,7 @@
             req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
-            let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
                 return Err(From::from(ApplicationException::new(
                     ApplicationExceptionErrorCode::InvalidMessageType,
@@ -252,7 +255,7 @@
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -263,6 +266,7 @@
                                 p,
                                 "{{service:name}}Processor",
                                 MessageType::Exception,
+                                seqid,
                                 |p| ae.write(p),
                             )
                         });

@@ -330,11 +330,15 @@ pub mod client {
                 p,
                 "do_root",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -443,11 +447,15 @@ pub mod client {
                 p,
                 "do_mid",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -556,11 +564,15 @@ pub mod client {
                 p,
                 "do_leaf",
                 MessageType::Call,
+                // Note: we send a 0 message sequence ID from clients because
+                // this field should not be used by the server (except for some
+                // language implementations).
+                0,
                 |p| {
                     p.write_struct_begin("args");
                     p.write_field_stop();
                     p.write_struct_end();
-                }
+                },
             ));
             self.transport
                 .call(request)
@@ -684,6 +696,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -716,6 +729,7 @@ pub mod server {
                 p,
                 "do_root",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -745,9 +759,10 @@ pub mod server {
             idx: usize,
             p: &mut P::Deserializer,
             r: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_do_root(p, r).await,
+                0usize => self.handle_do_root(p, r, seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyRootProcessor",
@@ -775,7 +790,7 @@ pub mod server {
             req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
-            let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
                 return Err(From::from(ApplicationException::new(
                     ApplicationExceptionErrorCode::InvalidMessageType,
@@ -789,7 +804,7 @@ pub mod server {
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -800,6 +815,7 @@ pub mod server {
                                 p,
                                 "MyRootProcessor",
                                 MessageType::Exception,
+                                seqid,
                                 |p| ae.write(p),
                             )
                         });
@@ -877,6 +893,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -909,6 +926,7 @@ pub mod server {
                 p,
                 "do_mid",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -941,9 +959,10 @@ pub mod server {
             idx: usize,
             p: &mut P::Deserializer,
             r: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_do_mid(p, r).await,
+                0usize => self.handle_do_mid(p, r, seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyNodeProcessor",
@@ -974,7 +993,7 @@ pub mod server {
             req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
-            let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
                 return Err(From::from(ApplicationException::new(
                     ApplicationExceptionErrorCode::InvalidMessageType,
@@ -988,7 +1007,7 @@ pub mod server {
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -999,6 +1018,7 @@ pub mod server {
                                 p,
                                 "MyNodeProcessor",
                                 MessageType::Exception,
+                                seqid,
                                 |p| ae.write(p),
                             )
                         });
@@ -1080,6 +1100,7 @@ pub mod server {
             &'a self,
             p: &'a mut P::Deserializer,
             _req_ctxt: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let _ = p.read_struct_begin(|_| ())?;
             loop {
@@ -1112,6 +1133,7 @@ pub mod server {
                 p,
                 "do_leaf",
                 MessageType::Reply,
+                seqid,
                 |p| res.write(p),
             ));
             Ok(res)
@@ -1144,9 +1166,10 @@ pub mod server {
             idx: usize,
             p: &mut P::Deserializer,
             r: &R,
+            seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_do_leaf(p, r).await,
+                0usize => self.handle_do_leaf(p, r, seqid).await,
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "MyLeafProcessor",
@@ -1177,7 +1200,7 @@ pub mod server {
             req_ctxt: &R,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             let mut p = P::deserializer(req);
-            let (idx, mty, _) = p.read_message_begin(|name| self.method_idx(name))?;
+            let (idx, mty, seqid) = p.read_message_begin(|name| self.method_idx(name))?;
             if mty != MessageType::Call {
                 return Err(From::from(ApplicationException::new(
                     ApplicationExceptionErrorCode::InvalidMessageType,
@@ -1191,7 +1214,7 @@ pub mod server {
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
             p.read_message_end()?;
             match res {
                 Ok(bytes) => Ok(bytes),
@@ -1202,6 +1225,7 @@ pub mod server {
                                 p,
                                 "MyLeafProcessor",
                                 MessageType::Exception,
+                                seqid,
                                 |p| ae.write(p),
                             )
                         });
