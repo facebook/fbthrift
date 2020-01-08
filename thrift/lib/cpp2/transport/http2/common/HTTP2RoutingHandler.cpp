@@ -111,7 +111,6 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
   // end SimpleController methods
 
  private:
-
   ThriftProcessor* processor_;
 };
 
@@ -170,6 +169,7 @@ void HTTP2RoutingHandler::handleConnection(
       std::move(h2codec),
       tinfo);
   session->setMaxReadBufferSize(kMaxReadBufferSize);
+  session->setByteEventTracker(nullptr);
   // TODO: Improve the way max incoming streams is set
   // HTTPServerOptions::maxConcurrentIncomingStreams is one option
   session->setMaxConcurrentIncomingStreams(kMaxConcurrentIncomingStreams);
