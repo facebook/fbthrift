@@ -12,4 +12,4 @@ from folly cimport cFollyExecutor
 
 
 cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "::apache::thrift::fixtures::types":
-    shared_ptr[cAsyncProcessorFactory] cSomeServiceInterface "::apache::thrift::fixtures::types::SomeServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cSomeServiceInterface "::apache::thrift::fixtures::types::SomeServiceInterface"(PyObject *if_object, cFollyExecutor* Q) except *

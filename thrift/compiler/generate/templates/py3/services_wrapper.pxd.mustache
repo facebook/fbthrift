@@ -32,7 +32,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/services_wra
 {{#program:services}}
     shared_ptr[cAsyncProcessorFactory] c{{service:name}}Interface {{!
       }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
-      }}{{service:name}}Interface"(PyObject *if_object, cFollyExecutor* Q)
+      }}{{service:name}}Interface"(PyObject *if_object, cFollyExecutor* Q) except *
 {{/program:services}}
 {{^program:services}}
     pass

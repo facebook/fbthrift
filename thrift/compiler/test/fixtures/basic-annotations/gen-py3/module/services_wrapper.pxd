@@ -12,6 +12,6 @@ from folly cimport cFollyExecutor
 
 
 cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "::cpp2":
-    shared_ptr[cAsyncProcessorFactory] cMyServiceInterface "::cpp2::MyServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
-    shared_ptr[cAsyncProcessorFactory] cMyServicePrioParentInterface "::cpp2::MyServicePrioParentInterface"(PyObject *if_object, cFollyExecutor* Q)
-    shared_ptr[cAsyncProcessorFactory] cMyServicePrioChildInterface "::cpp2::MyServicePrioChildInterface"(PyObject *if_object, cFollyExecutor* Q)
+    shared_ptr[cAsyncProcessorFactory] cMyServiceInterface "::cpp2::MyServiceInterface"(PyObject *if_object, cFollyExecutor* Q) except *
+    shared_ptr[cAsyncProcessorFactory] cMyServicePrioParentInterface "::cpp2::MyServicePrioParentInterface"(PyObject *if_object, cFollyExecutor* Q) except *
+    shared_ptr[cAsyncProcessorFactory] cMyServicePrioChildInterface "::cpp2::MyServicePrioChildInterface"(PyObject *if_object, cFollyExecutor* Q) except *
