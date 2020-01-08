@@ -17,10 +17,14 @@
 #ifndef _THRIFT_CONCURRENCY_FUNCTION_RUNNER_H
 #define _THRIFT_CONCURRENCY_FUNCTION_RUNNER_H 1
 
+#include <chrono>
+#include <condition_variable>
+#include <mutex>
+
 #include <folly/Function.h>
 #include <folly/portability/Unistd.h>
 
-#include <thrift/lib/cpp/concurrency/Monitor.h>
+#include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
 namespace apache {
@@ -119,21 +123,17 @@ class FunctionRunner : public virtual Runnable {
 
   void run() override {
     if (initFunc_) {
-      apache::thrift::concurrency::Synchronized s(monitor_);
+      std::unique_lock<std::mutex> l(mutex_);
       if (initFunc_) {
         initFunc_();
       }
     }
     if (intervalMs_ != -1) {
-      apache::thrift::concurrency::Synchronized s(monitor_);
+      std::unique_lock<std::mutex> l(mutex_);
       while (repFunc_ && repFunc_()) {
-        try {
-          // this wait could time out (normal interval-"sleep" case),
-          // or the monitor_ could have been notify()'ed by stop method.
-          monitor_.waitForTimeRelative(intervalMs_);
-        } catch (const TimedOutException&) {
-          // restart loop
-        }
+        // this wait could time out (normal interval-"sleep" case),
+        // or the monitor_ could have been notify()'ed by stop method.
+        cond_.wait_for(l, std::chrono::milliseconds(intervalMs_));
       }
     } else {
       func_();
@@ -141,10 +141,10 @@ class FunctionRunner : public virtual Runnable {
   }
 
   void stop() {
-    apache::thrift::concurrency::Synchronized s(monitor_);
+    std::unique_lock<std::mutex> l(mutex_);
     if (repFunc_) {
       repFunc_ = nullptr;
-      monitor_.notify();
+      cond_.notify_one();
     }
   }
 
@@ -157,7 +157,8 @@ class FunctionRunner : public virtual Runnable {
   BoolFunc repFunc_;
   const int intervalMs_{-1}; // -1 iff invalid (no periodic function)
   VoidFunc initFunc_;
-  Monitor monitor_;
+  std::mutex mutex_;
+  std::condition_variable cond_;
 };
 
 } // namespace concurrency
