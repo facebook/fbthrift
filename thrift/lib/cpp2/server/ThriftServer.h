@@ -797,6 +797,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
           creationTimestamp_(stub.getTimestamp()),
           protoId_(stub.getProtoId()),
           payload_(stub.clonePayload()),
+          peerAddress_(*stub.getRequestContext().getPeerAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
           reqId_(stub.getRequestId().toString()) {}
 
@@ -827,11 +828,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return protoId_;
     }
 
+    const folly::SocketAddress& getPeerAddress() const {
+      return peerAddress_;
+    }
+
    private:
     const std::string methodName_;
     const std::chrono::steady_clock::time_point creationTimestamp_;
     const protocol::PROTOCOL_TYPES protoId_;
     std::unique_ptr<folly::IOBuf> payload_;
+    folly::SocketAddress peerAddress_;
     intptr_t rootRequestContextId_;
     const std::string reqId_;
   };
