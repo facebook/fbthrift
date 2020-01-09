@@ -15,17 +15,20 @@
  */
 
 #include <cassert>
+#include <chrono>
+#include <condition_variable>
 #include <functional>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <set>
 
 #include <glog/logging.h>
 
 #include <folly/portability/Unistd.h>
 
+#include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/InitThreadFactory.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -129,22 +132,26 @@ class ThreadFactoryTests {
    */
   class ReapNTask : public Runnable {
    public:
-    ReapNTask(Monitor& monitor, int& activeCount)
-        : _monitor(monitor), _count(activeCount) {}
+    ReapNTask(
+        std::mutex& mutex,
+        std::condition_variable& cond,
+        int& activeCount)
+        : _mutex(mutex), _cond(cond), _count(activeCount) {}
 
     void run() override {
-      Synchronized s(_monitor);
+      std::unique_lock<std::mutex> l(_mutex);
 
       _count--;
 
       // std::cout << "\t\t\tthread count: " << _count << std::endl;
 
       if (_count == 0) {
-        _monitor.notify();
+        _cond.notify_one();
       }
     }
 
-    Monitor& _monitor;
+    std::mutex& _mutex;
+    std::condition_variable& _cond;
 
     int& _count;
   };
@@ -152,7 +159,8 @@ class ThreadFactoryTests {
   bool reapNThreads(int loop = 1, int count = 10) {
     PosixThreadFactory threadFactory = PosixThreadFactory();
 
-    Monitor* monitor = new Monitor();
+    std::mutex* mutex = new std::mutex();
+    std::condition_variable* cond = new std::condition_variable();
 
     for (int lix = 0; lix < loop; lix++) {
       int* activeCount = new int(count);
@@ -163,8 +171,8 @@ class ThreadFactoryTests {
 
       for (tix = 0; tix < count; tix++) {
         try {
-          threads.insert(threadFactory.newThread(
-              shared_ptr<Runnable>(new ReapNTask(*monitor, *activeCount))));
+          threads.insert(threadFactory.newThread(shared_ptr<Runnable>(
+              new ReapNTask(*mutex, *cond, *activeCount))));
         } catch (SystemResourceException& e) {
           std::cout << "\t\t\tfailed to create " << lix * count + tix
                     << " thread " << e.what() << std::endl;
@@ -187,9 +195,9 @@ class ThreadFactoryTests {
       }
 
       {
-        Synchronized s(*monitor);
+        std::unique_lock<std::mutex> l(*mutex);
         while (*activeCount > 0) {
-          monitor->wait(1000);
+          cond->wait_for(l, std::chrono::seconds(1));
         }
       }
 
@@ -211,43 +219,48 @@ class ThreadFactoryTests {
       STOPPED,
     };
 
-    SynchStartTask(Monitor& monitor, volatile STATE& state)
-        : _monitor(monitor), _state(state) {}
+    SynchStartTask(
+        std::mutex& mutex,
+        std::condition_variable& cond,
+        volatile STATE& state)
+        : _mutex(mutex), _cond(cond), _state(state) {}
 
     void run() override {
       {
-        Synchronized s(_monitor);
+        std::unique_lock<std::mutex> l(_mutex);
         if (_state == SynchStartTask::STARTING) {
           _state = SynchStartTask::STARTED;
-          _monitor.notify();
+          _cond.notify_one();
         }
       }
 
       {
-        Synchronized s(_monitor);
+        std::unique_lock<std::mutex> l(_mutex);
         while (_state == SynchStartTask::STARTED) {
-          _monitor.wait();
+          _cond.wait(l);
         }
 
         if (_state == SynchStartTask::STOPPING) {
           _state = SynchStartTask::STOPPED;
-          _monitor.notifyAll();
+          _cond.notify_all();
         }
       }
     }
 
    private:
-    Monitor& _monitor;
+    std::mutex& _mutex;
+    std::condition_variable& _cond;
     volatile STATE& _state;
   };
 
   bool synchStartTest() {
-    Monitor monitor;
+    std::mutex mutex;
+    std::condition_variable cond;
 
     SynchStartTask::STATE state = SynchStartTask::UNINITIALIZED;
 
     shared_ptr<SynchStartTask> task =
-        shared_ptr<SynchStartTask>(new SynchStartTask(monitor, state));
+        shared_ptr<SynchStartTask>(new SynchStartTask(mutex, cond, state));
 
     PosixThreadFactory threadFactory = PosixThreadFactory();
 
@@ -260,30 +273,27 @@ class ThreadFactoryTests {
     }
 
     {
-      Synchronized s(monitor);
+      std::unique_lock<std::mutex> l(mutex);
       while (state == SynchStartTask::STARTING) {
-        monitor.wait();
+        cond.wait(l);
       }
     }
 
     assert(state != SynchStartTask::STARTING);
 
     {
-      Synchronized s(monitor);
+      std::unique_lock<std::mutex> l(mutex);
 
-      try {
-        monitor.wait(100);
-      } catch (TimedOutException&) {
-      }
+      cond.wait_for(l, std::chrono::milliseconds(100));
 
       if (state == SynchStartTask::STARTED) {
         state = SynchStartTask::STOPPING;
 
-        monitor.notify();
+        cond.notify_one();
       }
 
       while (state == SynchStartTask::STOPPING) {
-        monitor.wait();
+        cond.wait(l);
       }
     }
 
@@ -297,20 +307,18 @@ class ThreadFactoryTests {
     return true;
   }
 
-  /** See how accurate monitor timeout is. */
+  /** See how accurate condition_variable timeout is. */
 
-  bool monitorTimeoutTest(size_t count = 1000, int64_t timeout = 10) {
-    Monitor monitor;
+  bool conditionVariableTimeoutTest(size_t count = 1000, int64_t timeout = 10) {
+    std::mutex mutex;
+    std::condition_variable cond;
 
     int64_t startTime = Util::currentTime();
 
     for (size_t ix = 0; ix < count; ix++) {
       {
-        Synchronized s(monitor);
-        try {
-          monitor.wait(timeout);
-        } catch (TimedOutException&) {
-        }
+        std::unique_lock<std::mutex> l(mutex);
+        cond.wait_for(l, std::chrono::milliseconds(timeout));
       }
     }
 

@@ -65,9 +65,10 @@ int main(int argc, char** argv) {
 
     DCHECK(threadFactoryTests.synchStartTest());
 
-    std::cout << "\t\tThreadFactory monitor timeout test" << std::endl;
+    std::cout << "\t\tThreadFactory condition variable timeout test"
+              << std::endl;
 
-    DCHECK(threadFactoryTests.monitorTimeoutTest());
+    DCHECK(threadFactoryTests.conditionVariableTimeoutTest());
 
     std::cout << "\t\tInitThreadFactory test" << std::endl;
 
