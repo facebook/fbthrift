@@ -20,16 +20,16 @@
 
 #include <boost/python.hpp>
 
-#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
-#include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/lib/py/server/CppContextData.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/py/server/CppContextData.h>
 #include <wangle/ssl/SSLContextConfig.h>
 
 using namespace apache::thrift;
@@ -44,6 +44,11 @@ using folly::SSLContext;
 using wangle::SSLCacheOptions;
 using wangle::SSLContextConfig;
 using namespace boost::python;
+
+// If less than 3.7 offer no additional protection
+#if PY_VERSION_HEX <= 0x03070000
+#define _Py_IsFinalizing() false
+#endif
 
 namespace {
 
@@ -74,7 +79,7 @@ std::string getStringAttrSafe(object& pyObject, const char* attrName) {
   return extract<std::string>(str(val));
 }
 
-template<class T>
+template <class T>
 T getIntAttr(object& pyObject, const char* attrName) {
   object val = pyObject.attr(attrName);
   return extract<T>(val);
@@ -97,10 +102,10 @@ std::list<std::string> getStringListSafe(object& pyObject, const char* attr) {
   return result;
 }
 
-}
+} // namespace
 
 class CallbackWrapper {
-public:
+ public:
   void call(object obj) {
     callback_(obj);
   }
@@ -109,14 +114,14 @@ public:
     callback_ = std::move(callback);
   }
 
-private:
+ private:
   folly::Function<void(object)> callback_;
 };
 
 class CppServerEventHandler : public TServerEventHandler {
-public:
+ public:
   explicit CppServerEventHandler(object serverEventHandler)
-    : handler_(std::make_shared<object>(serverEventHandler)) {}
+      : handler_(std::make_shared<object>(serverEventHandler)) {}
 
   void newConnection(TConnectionContext* ctx) override {
     callPythonHandler(ctx, "newConnection");
@@ -126,53 +131,89 @@ public:
     callPythonHandler(ctx, "connectionDestroyed");
   }
 
-private:
-  void callPythonHandler(TConnectionContext *ctx, const char* method) {
-    PyGILState_STATE state = PyGILState_Ensure();
-    SCOPE_EXIT { PyGILState_Release(state); };
+ private:
+  void callPythonHandler(TConnectionContext* ctx, const char* method) {
+    if (!_Py_IsFinalizing()) {
+      PyGILState_STATE state = PyGILState_Ensure();
+      SCOPE_EXIT {
+        PyGILState_Release(state);
+      };
 
-    // This cast always succeeds because it is called from Cpp2Connection.
-    Cpp2ConnContext *cpp2Ctx = dynamic_cast<Cpp2ConnContext*>(ctx);
-    auto cd_cls = handler_->attr("CONTEXT_DATA");
-    object contextData = cd_cls();
-    extract<CppContextData&>(contextData)().copyContextContents(cpp2Ctx);
-    auto ctx_cls = handler_->attr("CPP_CONNECTION_CONTEXT");
-    object cppConnContext = ctx_cls(contextData);
-    handler_->attr(method)(cppConnContext);
+      // This cast always succeeds because it is called from Cpp2Connection.
+      Cpp2ConnContext* cpp2Ctx = dynamic_cast<Cpp2ConnContext*>(ctx);
+      auto cd_cls = handler_->attr("CONTEXT_DATA");
+      object contextData = cd_cls();
+      extract<CppContextData&>(contextData)().copyContextContents(cpp2Ctx);
+      auto ctx_cls = handler_->attr("CPP_CONNECTION_CONTEXT");
+      object cppConnContext = ctx_cls(contextData);
+      handler_->attr(method)(cppConnContext);
+    }
   }
 
   std::shared_ptr<object> handler_;
 };
 
 class CppServerObserver : public TServerObserver {
-public:
+ public:
   explicit CppServerObserver(object serverObserver)
-    : observer_(serverObserver) {}
+      : observer_(serverObserver) {}
 
-  void connAccepted() override { this->call("connAccepted"); }
-  void connDropped() override { this->call("connDropped"); }
-  void connRejected() override { this->call("connRejected"); }
-  void tlsError() override { this->call("tlsError"); }
-  void tlsComplete() override { this->call("tlsComplete"); }
-  void tlsFallback() override { this->call("tlsFallback"); }
-  void tlsResumption() override { this->call("tlsResumption"); }
-  void taskKilled() override { this->call("taskKilled"); }
-  void taskTimeout() override { this->call("taskTimeout"); }
-  void serverOverloaded() override { this->call("serverOverloaded"); }
-  void receivedRequest() override { this->call("receivedRequest"); }
-  void queuedRequests(int32_t n) override { this->call("queuedRequests", n); }
-  void queueTimeout() override { this->call("queueTimeout"); }
-  void sentReply() override { this->call("sentReply"); }
-  void activeRequests(int32_t n) override { this->call("activeRequests", n); }
+  void connAccepted() override {
+    this->call("connAccepted");
+  }
+  void connDropped() override {
+    this->call("connDropped");
+  }
+  void connRejected() override {
+    this->call("connRejected");
+  }
+  void tlsError() override {
+    this->call("tlsError");
+  }
+  void tlsComplete() override {
+    this->call("tlsComplete");
+  }
+  void tlsFallback() override {
+    this->call("tlsFallback");
+  }
+  void tlsResumption() override {
+    this->call("tlsResumption");
+  }
+  void taskKilled() override {
+    this->call("taskKilled");
+  }
+  void taskTimeout() override {
+    this->call("taskTimeout");
+  }
+  void serverOverloaded() override {
+    this->call("serverOverloaded");
+  }
+  void receivedRequest() override {
+    this->call("receivedRequest");
+  }
+  void queuedRequests(int32_t n) override {
+    this->call("queuedRequests", n);
+  }
+  void queueTimeout() override {
+    this->call("queueTimeout");
+  }
+  void sentReply() override {
+    this->call("sentReply");
+  }
+  void activeRequests(int32_t n) override {
+    this->call("activeRequests", n);
+  }
   void callCompleted(const CallTimestamps& runtimes) override {
-     this->call("callCompleted", runtimes);
-   }
+    this->call("callCompleted", runtimes);
+  }
 
-private:
-  template<class ... Types>
-  void call(const char* method_name, Types ... args) {
+ private:
+  template <class... Types>
+  void call(const char* method_name, Types... args) {
     PyGILState_STATE state = PyGILState_Ensure();
-    SCOPE_EXIT { PyGILState_Release(state); };
+    SCOPE_EXIT {
+      PyGILState_Release(state);
+    };
 
     // check if the object has an attribute, because we want to be accepting
     // if we added a new listener callback and didn't yet update call the
@@ -196,20 +237,21 @@ private:
 };
 
 class PythonAsyncProcessor : public AsyncProcessor {
-public:
+ public:
   explicit PythonAsyncProcessor(std::shared_ptr<object> adapter)
-    : adapter_(adapter) {
+      : adapter_(adapter) {
     getPythonOnewayMethods();
   }
 
   // Create a task and add it to thread manager's queue. Essentially the same
   // as GeneratedAsyncProcessor's processInThread method.
-  void process(std::unique_ptr<ResponseChannelRequest> req,
-               std::unique_ptr<folly::IOBuf> buf,
-               apache::thrift::protocol::PROTOCOL_TYPES protType,
-               Cpp2RequestContext* context,
-               folly::EventBase* eb,
-               apache::thrift::concurrency::ThreadManager* tm) override {
+  void process(
+      std::unique_ptr<ResponseChannelRequest> req,
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::protocol::PROTOCOL_TYPES protType,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm) override {
     auto fname = getMethodName(buf.get(), context->getHeader());
     auto priority = getMethodPriority(fname, context);
     bool oneway = isOnewayMethod(fname);
@@ -353,8 +395,8 @@ public:
   }
 
   std::string getMethodName(const folly::IOBuf* buf, const THeader* header) {
-    auto protType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>
-      (header->getProtocolId());
+    auto protType = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
+        header->getProtocolId());
     switch (protType) {
       case apache::thrift::protocol::T_BINARY_PROTOCOL:
         return getMethodName<apache::thrift::BinaryProtocolReader>(buf);
@@ -427,7 +469,9 @@ public:
 
   void getPythonOnewayMethods() {
     PyGILState_STATE state = PyGILState_Ensure();
-    SCOPE_EXIT { PyGILState_Release(state); };
+    SCOPE_EXIT {
+      PyGILState_Release(state);
+    };
     object ret = adapter_->attr("oneway_methods")();
     if (ret.is_none()) {
       LOG(ERROR) << "Unexpected error in processor method";
@@ -444,26 +488,25 @@ public:
 };
 
 class PythonAsyncProcessorFactory : public AsyncProcessorFactory {
-public:
+ public:
   explicit PythonAsyncProcessorFactory(std::shared_ptr<object> adapter)
-    : adapter_(adapter) {}
+      : adapter_(adapter) {}
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::make_unique<PythonAsyncProcessor>(adapter_);
   }
 
-private:
+ private:
   std::shared_ptr<object> adapter_;
 };
 
 class CppServerWrapper : public ThriftServer {
-public:
+ public:
   void setAdapter(object adapter) {
     // We use a shared_ptr to manage the adapter so the processor
     // factory handing won't ever try to manipulate python reference
     // counts without the GIL.
-    setProcessorFactory(
-      std::make_unique<PythonAsyncProcessorFactory>(
+    setProcessorFactory(std::make_unique<PythonAsyncProcessorFactory>(
         std::make_shared<object>(adapter)));
   }
 
@@ -479,7 +522,9 @@ public:
 
   void loop() {
     PyThreadState* save_state = PyEval_SaveThread();
-    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
+    SCOPE_EXIT {
+      PyEval_RestoreThread(save_state);
+    };
 
     // Thrift main loop.  This will run indefinitely, until stop() is
     // called.
@@ -491,8 +536,8 @@ public:
     auto certPath = getStringAttrSafe(sslConfig, "cert_path");
     auto keyPath = getStringAttrSafe(sslConfig, "key_path");
     if (certPath.empty() ^ keyPath.empty()) {
-      PyErr_SetString(PyExc_ValueError,
-                      "certPath and keyPath must both be populated");
+      PyErr_SetString(
+          PyExc_ValueError, "certPath and keyPath must both be populated");
       throw_error_already_set();
       return;
     }
@@ -502,8 +547,8 @@ public:
       auto keyPwPath = getStringAttrSafe(sslConfig, "key_pw_path");
       cfg->setCertificate(certPath, keyPath, keyPwPath);
     }
-    cfg->clientVerification
-      = extract<SSLContext::SSLVerifyPeerEnum>(sslConfig.attr("verify"));
+    cfg->clientVerification =
+        extract<SSLContext::SSLVerifyPeerEnum>(sslConfig.attr("verify"));
     auto eccCurve = getStringAttrSafe(sslConfig, "ecc_curve_name");
     if (!eccCurve.empty()) {
       cfg->eccCurveName = eccCurve;
@@ -572,7 +617,9 @@ public:
     // only once thrift is all cleaned up.
 
     PyThreadState* save_state = PyEval_SaveThread();
-    SCOPE_EXIT { PyEval_RestoreThread(save_state); };
+    SCOPE_EXIT {
+      PyEval_RestoreThread(save_state);
+    };
     ThriftServer::cleanUp();
   }
 
@@ -645,8 +692,7 @@ public:
   //
   // the magic is in the custom deleter which takes and releases a refcount on
   // the std::shared_ptr, instead of doing any local deletion.
-  boost::shared_ptr<ThreadManager>
-  getThreadManagerHelper() {
+  boost::shared_ptr<ThreadManager> getThreadManagerHelper() {
     auto ptr = this->getThreadManager();
     return boost::shared_ptr<ThreadManager>(ptr.get(), [ptr](void*) {});
   }
@@ -780,17 +826,16 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
       .def_readwrite("writeEnd", &TServerObserver::CallTimestamps::writeEnd);
 
   enum_<SSLPolicy>("SSLPolicy")
-    .value("DISABLED", SSLPolicy::DISABLED)
-    .value("PERMITTED", SSLPolicy::PERMITTED)
-    .value("REQUIRED", SSLPolicy::REQUIRED)
-    ;
+      .value("DISABLED", SSLPolicy::DISABLED)
+      .value("PERMITTED", SSLPolicy::PERMITTED)
+      .value("REQUIRED", SSLPolicy::REQUIRED);
 
   enum_<folly::SSLContext::SSLVerifyPeerEnum>("SSLVerifyPeerEnum")
-    .value("VERIFY", folly::SSLContext::SSLVerifyPeerEnum::VERIFY)
-    .value("VERIFY_REQ",
-           folly::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT)
-    .value("NO_VERIFY", folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY)
-    ;
+      .value("VERIFY", folly::SSLContext::SSLVerifyPeerEnum::VERIFY)
+      .value(
+          "VERIFY_REQ",
+          folly::SSLContext::SSLVerifyPeerEnum::VERIFY_REQ_CLIENT_CERT)
+      .value("NO_VERIFY", folly::SSLContext::SSLVerifyPeerEnum::NO_VERIFY);
 
   enum_<folly::SSLContext::SSLVersion>("SSLVersion")
       .value("TLSv1_2", folly::SSLContext::SSLVersion::TLSv1_2);
