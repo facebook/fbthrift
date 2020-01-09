@@ -17,6 +17,8 @@
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 
+#include <cstdarg>
+
 #include <boost/filesystem.hpp>
 
 namespace apache {

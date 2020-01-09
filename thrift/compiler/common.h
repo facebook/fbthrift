@@ -17,23 +17,12 @@
 #ifndef THRIFT_COMPILER_COMMON_
 #define THRIFT_COMPILER_COMMON_ 1
 
-#include <sys/types.h>
-
-#include <algorithm>
-#include <cassert>
-#include <cerrno>
-#include <climits>
-#include <cstdarg>
-#include <cstdio>
-#include <cstdlib>
-#include <set>
+#include <memory>
 #include <string>
-
-#include <thrift/compiler/parse/parsing_driver.h>
 
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
-#include <thrift/compiler/ast/t_scope.h>
+#include <thrift/compiler/parse/parsing_driver.h>
 
 namespace apache {
 namespace thrift {
