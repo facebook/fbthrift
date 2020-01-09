@@ -178,7 +178,7 @@ enum RWGuardType {
 };
 
 // clang-format off
-class [[nodiscard, deprecated("use std::unique_lock or std::shared_lock")]] RWGuard {
+class [[deprecated("use std::unique_lock or std::shared_lock")]] RWGuard {
   // clang-format on
  public:
   explicit RWGuard(
