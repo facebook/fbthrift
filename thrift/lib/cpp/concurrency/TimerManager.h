@@ -18,12 +18,13 @@
 #define _THRIFT_CONCURRENCY_TIMERMANAGER_H_ 1
 
 #include <atomic>
+#include <condition_variable>
 #include <ctime>
 #include <map>
 #include <memory>
+#include <mutex>
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
 namespace apache {
@@ -107,7 +108,8 @@ class TimerManager {
   friend class Task;
   std::multimap<int64_t, std::shared_ptr<Task>> taskMap_;
   std::atomic<size_t> taskCount_;
-  Monitor monitor_;
+  mutable std::mutex mutex_;
+  std::condition_variable cond_;
   STATE state_;
   class Dispatcher;
   friend class Dispatcher;
