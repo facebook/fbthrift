@@ -170,6 +170,8 @@ void HTTP2RoutingHandler::handleConnection(
       tinfo);
   session->setMaxReadBufferSize(kMaxReadBufferSize);
   session->setByteEventTracker(nullptr);
+  // Enable HTTP/2 priorities
+  session->setHTTP2PrioritiesEnabled(true);
   // TODO: Improve the way max incoming streams is set
   // HTTPServerOptions::maxConcurrentIncomingStreams is one option
   session->setMaxConcurrentIncomingStreams(kMaxConcurrentIncomingStreams);
