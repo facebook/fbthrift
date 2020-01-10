@@ -60,7 +60,7 @@ class Decoder {
     apache::thrift::util::readVarint(cursor, stringSize);
 
     auto splice = [&](std::uint64_t size) {
-      if (size > (std::uint64_t)std::numeric_limits<std::size_t>::max()) {
+      if (size != static_cast<std::size_t>(size)) { // when size_t != uint64_t
         protocol::TProtocolException::throwExceededSizeLimit();
       }
       folly::io::Cursor result{cursor, (std::size_t)size};
