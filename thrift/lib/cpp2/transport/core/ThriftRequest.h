@@ -272,6 +272,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
       apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>
           stream) noexcept = 0;
 
+  virtual void sendSerializedError(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> exbuf) noexcept = 0;
+
   virtual bool sendStreamThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
@@ -284,15 +288,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf>,
       detail::ServerStreamFactory&&) noexcept {
     LOG(FATAL) << "sendStreamThriftResponse not implemented";
-  }
-
-  virtual void sendStreamThriftError(
-      ResponseRpcMetadata&& metadata,
-      std::unique_ptr<folly::IOBuf> response) noexcept {
-    sendStreamThriftResponse(
-        std::move(metadata),
-        std::move(response),
-        apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>());
   }
 
 #if FOLLY_HAS_COROUTINES
@@ -442,24 +437,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
         return;
       }
 
-      switch (kind_) {
-        case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-        case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
-          sendThriftResponse(makeResponseRpcMetadata(), std::move(exbuf));
-          break;
-        case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
-          sendStreamThriftError(makeResponseRpcMetadata(), std::move(exbuf));
-          break;
-#if FOLLY_HAS_COROUTINES
-        case RpcKind::SINK:
-          sendSinkThriftResponse(
-              makeResponseRpcMetadata(), std::move(exbuf), {});
-          break;
-#endif
-        default: // Don't send error back for one-way.
-          break;
-      }
+      sendSerializedError(makeResponseRpcMetadata(), std::move(exbuf));
     });
   }
 
@@ -528,9 +506,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
  protected:
   server::ServerConfigs& serverConfigs_;
+  const RpcKind kind_;
 
  private:
-  const RpcKind kind_;
   std::atomic<bool> active_;
   bool checksumRequested_{false};
   transport::THeader header_;
@@ -579,6 +557,32 @@ class ThriftRequest final : public ThriftRequestCore {
           stream) noexcept override {
     channel_->sendStreamThriftResponse(
         std::move(metadata), std::move(response), std::move(stream));
+  }
+
+  void sendSerializedError(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> exbuf) noexcept override {
+    switch (kind_) {
+      case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
+      case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
+        sendThriftResponse(std::move(metadata), std::move(exbuf));
+        break;
+      case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
+      case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
+        sendStreamThriftResponse(
+            std::move(metadata),
+            std::move(exbuf),
+            apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>());
+        break;
+#if FOLLY_HAS_COROUTINES
+      case RpcKind::SINK:
+        sendSinkThriftResponse(std::move(metadata), std::move(exbuf), {});
+        break;
+#endif
+      default: // Don't send error back for one-way.
+        LOG(ERROR) << "unknown rpckind " << static_cast<int32_t>(kind_);
+        break;
+    }
   }
 
   // Don't allow hiding of overloaded method.

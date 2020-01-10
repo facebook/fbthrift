@@ -109,6 +109,12 @@ void ThriftServerRequestResponse::sendStreamThriftResponse(
   LOG(FATAL) << "Single-response requests cannot send stream responses";
 }
 
+void ThriftServerRequestResponse::sendSerializedError(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> exbuf) noexcept {
+  sendThriftResponse(std::move(metadata), std::move(exbuf));
+}
+
 ThriftServerRequestFnf::ThriftServerRequestFnf(
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
@@ -151,6 +157,10 @@ void ThriftServerRequestFnf::sendStreamThriftResponse(
     SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
   LOG(FATAL) << "One-way requests cannot send stream responses";
 }
+
+void ThriftServerRequestFnf::sendSerializedError(
+    ResponseRpcMetadata&&,
+    std::unique_ptr<folly::IOBuf>) noexcept {}
 
 ThriftServerRequestStream::ThriftServerRequestStream(
     folly::EventBase& evb,
@@ -204,7 +214,7 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
     std::unique_ptr<folly::IOBuf> data,
     StreamServerCallback* stream) noexcept {
   if (!stream) {
-    sendStreamThriftError(std::move(metadata), std::move(data));
+    sendSerializedError(std::move(metadata), std::move(data));
     return false;
   }
   stream->resetClientCallback(*clientCallback_);
@@ -227,13 +237,13 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
       &evb_);
 }
 
-void ThriftServerRequestStream::sendStreamThriftError(
+void ThriftServerRequestStream::sendSerializedError(
     ResponseRpcMetadata&&,
-    std::unique_ptr<folly::IOBuf> data) noexcept {
+    std::unique_ptr<folly::IOBuf> exbuf) noexcept {
   std::exchange(clientCallback_, nullptr)
       ->onFirstResponseError(
           folly::make_exception_wrapper<thrift::detail::EncodedError>(
-              std::move(data)));
+              std::move(exbuf)));
 }
 
 ThriftServerRequestSink::ThriftServerRequestSink(
@@ -272,6 +282,15 @@ void ThriftServerRequestSink::sendStreamThriftResponse(
     std::unique_ptr<folly::IOBuf>,
     SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
   LOG(FATAL) << "Sink requests cannot send stream responses";
+}
+
+void ThriftServerRequestSink::sendSerializedError(
+    ResponseRpcMetadata&&,
+    std::unique_ptr<folly::IOBuf> exbuf) noexcept {
+  std::exchange(clientCallback_, nullptr)
+      ->onFirstResponseError(
+          folly::make_exception_wrapper<thrift::detail::EncodedError>(
+              std::move(exbuf)));
 }
 
 #if FOLLY_HAS_COROUTINES
