@@ -146,7 +146,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
                   ErrorCode::INVALID_SETUP,
                   "Error in implementation of custom connection handler."));
         }
-        setupFrameValid_ = true;
         return;
       }
     }
@@ -155,7 +154,6 @@ void ThriftRocketServerHandler::handleSetupFrame(
     threadManager_ = worker_->getServer()->getThreadManager();
     serverConfigs_ = worker_->getServer();
     activeRequestsRegistry_ = worker_->getRequestsRegistry();
-    setupFrameValid_ = true;
     // add sampleRate
     if (serverConfigs_) {
       if (auto* observer = serverConfigs_->getObserver()) {
@@ -277,12 +275,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
       Payload::makeCombined(payload.buffer()->clone(), payload.metadataSize());
   const bool validMetadata = parseOk && isMetadataValid(metadata);
 
-  if (!setupFrameValid_) {
-    handleRequestForInvalidConnection(makeRequest(
-        std::move(metadata), std::move(debugPayload), reqCtx.get()));
-    return;
-  }
-
   if (!validMetadata) {
     handleRequestWithBadMetadata(makeRequest(
         std::move(metadata), std::move(debugPayload), reqCtx.get()));
@@ -342,15 +334,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
       cpp2ReqCtx,
       eventBase_,
       threadManager_.get());
-}
-
-void ThriftRocketServerHandler::handleRequestForInvalidConnection(
-    std::unique_ptr<ThriftRequestCore> request) {
-  request->sendErrorWrapped(
-      folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::UNSUPPORTED_CLIENT_TYPE,
-          "Invalid connection setup"),
-      "Corrupted setup for rsocket connection setup");
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(

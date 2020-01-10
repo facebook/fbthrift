@@ -93,7 +93,6 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   server::ServerConfigs* serverConfigs_ = nullptr;
   std::shared_ptr<ActiveRequestsRegistry> activeRequestsRegistry_;
   folly::EventBase* eventBase_;
-  bool setupFrameValid_ = false;
 
   uint32_t sampleRate_{0};
   static thread_local uint32_t sample_;
@@ -101,8 +100,6 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   template <class F>
   void handleRequestCommon(Payload&& payload, F&& makeRequest);
 
-  FOLLY_NOINLINE void handleRequestForInvalidConnection(
-      std::unique_ptr<ThriftRequestCore> request);
   FOLLY_NOINLINE void handleRequestWithBadMetadata(
       std::unique_ptr<ThriftRequestCore> request);
   FOLLY_NOINLINE void handleRequestWithBadChecksum(

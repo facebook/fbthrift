@@ -139,6 +139,10 @@ bool RocketServerConnection::closeIfNeeded() {
 void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   DestructorGuard dg(this);
 
+  if (state_ != ConnectionState::ALIVE) {
+    return;
+  }
+
   // Entire payloads may be chained, but the parser ensures each fragment is
   // coalesced.
   DCHECK(!frame->isChained());
