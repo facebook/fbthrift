@@ -91,9 +91,9 @@ class ServerGeneratorStream : public TwoWayBridge<
 
               while (true) {
                 if (credits == 0) {
-                  ReadyCallback callback;
-                  if (stream->wait(&callback)) {
-                    co_await callback.baton;
+                  ReadyCallback ready;
+                  if (stream->wait(&ready)) {
+                    co_await ready.baton;
                   }
                 }
 
@@ -110,10 +110,10 @@ class ServerGeneratorStream : public TwoWayBridge<
                 }
 
                 try {
-                  auto&& payload = co_await folly::coro::co_withCancellation(
+                  auto&& next = co_await folly::coro::co_withCancellation(
                       stream->cancelSource_.getToken(), gen.next());
-                  if (payload) {
-                    stream->publish(encode(folly::Try<T>(std::move(*payload))));
+                  if (next) {
+                    stream->publish(encode(folly::Try<T>(std::move(*next))));
                     --credits;
                     continue;
                   }
