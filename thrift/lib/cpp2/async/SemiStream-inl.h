@@ -166,10 +166,10 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
         stream.executor_->add([keepAlive = std::move(keepAlive),
                                sharedStateWeak = std::weak_ptr<SharedState>(
                                    sharedState)]() mutable {
-          if (auto sharedState = sharedStateWeak.lock()) {
-            sharedState->terminated_ = true;
-            if (sharedState->subscription_) {
-              auto subscription = std::move(sharedState->subscription_);
+          if (auto state = sharedStateWeak.lock()) {
+            state->terminated_ = true;
+            if (state->subscription_) {
+              auto subscription = std::move(state->subscription_);
               subscription->cancel();
             }
           }
