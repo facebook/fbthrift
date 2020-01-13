@@ -257,7 +257,7 @@ Subscription Stream<T>::subscribe(Subscriber&& subscriber, int64_t batch) && {
 
    private:
     struct SharedState {
-      explicit SharedState(folly::Executor& executor_) : executor(&executor_) {}
+      explicit SharedState(folly::Executor& ex) : executor(&ex) {}
 
       std::unique_ptr<SubscriptionIf> subscription;
       bool canceled{false};
