@@ -55,38 +55,78 @@ class ServerPublisherStream : private StreamServerCallback {
    public:
     template <typename Func>
     CallOnceFunction(Func&& f)
-        : storage_(new FunctionHolder<folly::remove_cvref_t<Func>>(
-              std::forward<Func>(f))) {}
+        : storage_(
+              reinterpret_cast<intptr_t>(
+                  new FunctionHolder<folly::remove_cvref_t<Func>>(
+                      std::forward<Func>(f))) |
+              static_cast<intptr_t>(Type::READY)) {}
     ~CallOnceFunction() {
-      DCHECK(!*this);
+      DCHECK_EQ(
+          storage_.load(std::memory_order_relaxed) & kTypeMask,
+          static_cast<intptr_t>(Type::DONE));
     }
 
     explicit operator bool() const {
-      std::lock_guard<std::mutex> guard(mutex_);
-      return storage_;
+      auto type = static_cast<Type>(
+          storage_.load(std::memory_order_relaxed) & kTypeMask);
+      return type == Type::READY;
     }
 
     void call() {
-      std::unique_ptr<Function> func;
-      {
-        std::lock_guard<std::mutex> guard(mutex_);
-        func.reset(std::exchange(storage_, nullptr));
-      }
-      if (func) {
-        (*func)();
-        baton_.post();
+      auto storage = storage_.load(std::memory_order_relaxed);
+      if (static_cast<Type>(storage & kTypeMask) == Type::READY) {
+        if (storage_.compare_exchange_strong(
+                storage,
+                static_cast<intptr_t>(Type::IN_PROGRESS),
+                std::memory_order_acquire)) {
+          auto func = reinterpret_cast<Function*>(storage & kPtrMask);
+          storage = static_cast<intptr_t>(Type::IN_PROGRESS);
+
+          SCOPE_EXIT {
+            if (!storage_.compare_exchange_strong(
+                    storage,
+                    static_cast<intptr_t>(Type::DONE),
+                    std::memory_order_acq_rel)) {
+              reinterpret_cast<folly::Baton<>*>(storage & kPtrMask)->post();
+            }
+            delete func;
+          };
+
+          (*func)();
+        }
       }
     }
 
     void callOrJoin() {
       call();
-      baton_.wait();
+      auto storage = storage_.load(std::memory_order_relaxed);
+      if (static_cast<Type>(storage & kTypeMask) == Type::IN_PROGRESS) {
+        folly::Baton<> baton;
+        if (storage_.compare_exchange_strong(
+                storage,
+                reinterpret_cast<intptr_t>(&baton) |
+                    static_cast<intptr_t>(Type::WAITING),
+                std::memory_order_acquire)) {
+          baton.wait();
+          DCHECK_EQ(
+              storage_.exchange(
+                  static_cast<intptr_t>(Type::DONE), std::memory_order_release),
+              reinterpret_cast<intptr_t>(&baton) |
+                  static_cast<intptr_t>(Type::WAITING));
+        }
+      }
     }
 
    private:
-    Function* storage_;
-    mutable std::mutex mutex_;
-    folly::Baton<> baton_;
+    enum class Type : uint8_t {
+      READY = 0,
+      IN_PROGRESS = 1,
+      WAITING = 2,
+      DONE = 3
+    };
+    const intptr_t kTypeMask = 0x3;
+    const intptr_t kPtrMask = ~kTypeMask;
+    std::atomic<intptr_t> storage_{0};
   };
 
  public:
