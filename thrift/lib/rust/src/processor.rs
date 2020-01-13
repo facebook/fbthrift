@@ -98,6 +98,12 @@ impl<P, R> NullServiceProcessor<P, R> {
     }
 }
 
+impl<P, R> Default for NullServiceProcessor<P, R> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 #[async_trait]
 impl<P, R> ServiceProcessor<P> for NullServiceProcessor<P, R>
 where

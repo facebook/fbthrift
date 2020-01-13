@@ -28,8 +28,8 @@ use bytes::{Buf, Bytes, BytesMut};
 use ghost::phantom;
 use std::{cmp, convert::TryFrom, io::Cursor};
 
-pub const BINARY_VERSION_MASK: u32 = 0xffff0000;
-pub const BINARY_VERSION_1: u32 = 0x80010000;
+pub const BINARY_VERSION_MASK: u32 = 0xffff_0000;
+pub const BINARY_VERSION_1: u32 = 0x8001_0000;
 
 /// A straight-forward binary format that encodes numeric values in fixed width.
 ///
@@ -289,7 +289,7 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
         };
         let seq_id = self.read_u32()?;
 
-        return Ok((name, msgtype, seq_id));
+        Ok((name, msgtype, seq_id))
     }
 
     fn read_message_end(&mut self) -> Result<()> {

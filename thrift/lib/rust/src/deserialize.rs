@@ -178,14 +178,15 @@ where
     }
 }
 
-impl<P, T> Deserialize<P> for HashSet<T>
+impl<P, T, S> Deserialize<P> for HashSet<T, S>
 where
     P: ProtocolReader,
     T: Deserialize<P> + Hash + Eq,
+    S: std::hash::BuildHasher + Default,
 {
     fn read(p: &mut P) -> Result<Self> {
         let (_elem_ty, len) = p.read_set_begin()?;
-        let mut hset = HashSet::with_capacity(len);
+        let mut hset = HashSet::with_capacity_and_hasher(len, Default::default());
         for _ in 0..len {
             let item = Deserialize::read(p)?;
             hset.insert(item);
@@ -212,15 +213,16 @@ where
     }
 }
 
-impl<P, K, V> Deserialize<P> for HashMap<K, V>
+impl<P, K, V, S> Deserialize<P> for HashMap<K, V, S>
 where
     P: ProtocolReader,
     K: Deserialize<P> + Hash + Eq,
     V: Deserialize<P>,
+    S: std::hash::BuildHasher + Default,
 {
     fn read(p: &mut P) -> Result<Self> {
         let (_key_ty, _val_ty, len) = p.read_map_begin()?;
-        let mut hmap = HashMap::with_capacity(len);
+        let mut hmap = HashMap::with_capacity_and_hasher(len, Default::default());
         for _ in 0..len {
             let key = Deserialize::read(p)?;
             let val = Deserialize::read(p)?;

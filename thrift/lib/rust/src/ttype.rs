@@ -167,9 +167,10 @@ where
     const TTYPE: TType = TType::Set;
 }
 
-impl<T> GetTType for HashSet<T>
+impl<T, S> GetTType for HashSet<T, S>
 where
     T: GetTType + Hash + Eq,
+    S: std::hash::BuildHasher,
 {
     const TTYPE: TType = TType::Set;
 }
@@ -182,10 +183,11 @@ where
     const TTYPE: TType = TType::Map;
 }
 
-impl<K, V> GetTType for HashMap<K, V>
+impl<K, V, S> GetTType for HashMap<K, V, S>
 where
     K: GetTType + Hash + Eq,
     V: GetTType,
+    S: std::hash::BuildHasher,
 {
     const TTYPE: TType = TType::Map;
 }

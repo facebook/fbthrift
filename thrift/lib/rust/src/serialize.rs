@@ -203,11 +203,12 @@ where
     }
 }
 
-impl<P, T> Serialize<P> for HashSet<T>
+impl<P, T, S> Serialize<P> for HashSet<T, S>
 where
     P: ProtocolWriter,
     T: GetTType + Hash + Eq,
     T: Serialize<P>,
+    S: std::hash::BuildHasher,
 {
     fn write(&self, p: &mut P) {
         p.write_set_begin(T::TTYPE, self.len());
@@ -236,13 +237,14 @@ where
     }
 }
 
-impl<P, K, V> Serialize<P> for HashMap<K, V>
+impl<P, K, V, S> Serialize<P> for HashMap<K, V, S>
 where
     P: ProtocolWriter,
     K: GetTType + Hash + Eq,
     K: Serialize<P>,
     V: GetTType,
     V: Serialize<P>,
+    S: std::hash::BuildHasher,
 {
     fn write(&self, p: &mut P) {
         p.write_map_begin(K::TTYPE, V::TTYPE, self.len());

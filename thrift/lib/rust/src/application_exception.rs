@@ -46,7 +46,7 @@ impl Default for ApplicationExceptionErrorCode {
     }
 }
 
-const TAPPLICATION_EXCEPTION_ERROR_CODE: &'static str = "ApplicationExceptionErrorCode";
+const TAPPLICATION_EXCEPTION_ERROR_CODE: &str = "ApplicationExceptionErrorCode";
 
 /// ApplicationException is *not* actually an error type in the Rust sense, but
 /// a Thrift-specific serializable
@@ -149,7 +149,7 @@ where
             iprot.read_field_end()?;
         }
         iprot.read_struct_end()?;
-        return Ok(ApplicationException::new(type_, message));
+        Ok(ApplicationException::new(type_, message))
     }
 }
 
@@ -161,7 +161,7 @@ where
     fn write(&self, oprot: &mut P) {
         oprot.write_struct_begin(TAPPLICATION_EXCEPTION_ERROR_CODE);
 
-        if self.message.len() > 0 {
+        if !self.message.is_empty() {
             oprot.write_field_begin("message", TType::String, 1);
             oprot.write_string(&self.message);
             oprot.write_field_end();

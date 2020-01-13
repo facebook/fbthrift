@@ -415,12 +415,10 @@ impl<B: BufMutExt> ProtocolWriter for CompactProtocolSerializer<B> {
         // the encoding.
         if self.state.in_field() {
             self.write_field_id(CType::from(value))
+        } else if value {
+            self.write_byte(CType::BoolTrue as i8)
         } else {
-            if value {
-                self.write_byte(CType::BoolTrue as i8)
-            } else {
-                self.write_byte(CType::BoolFalse as i8)
-            }
+            self.write_byte(CType::BoolFalse as i8)
         }
     }
 
@@ -641,7 +639,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         let kvtype = if size > 0 { self.read_byte()? } else { 0 };
 
         let kcty = CType::try_from((kvtype >> 4) & 0x0f)?;
-        let vcty = CType::try_from((kvtype >> 0) & 0x0f)?;
+        let vcty = CType::try_from((kvtype) & 0x0f)?;
 
         Ok((TType::from(kcty), TType::from(vcty), size as usize))
     }
