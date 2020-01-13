@@ -1158,9 +1158,9 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
     folly::exception_wrapper ew;
     try {
       FinalResponseType finalResponse = co_await innerConsumer(
-          [](folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> gen)
+          [](folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> gen_)
               -> folly::coro::AsyncGenerator<SinkType&&> {
-            while (auto item = co_await gen.next()) {
+            while (auto item = co_await gen_.next()) {
               auto payload = std::move(*item);
               if (payload.hasValue()) {
                 // if exception is thrown there, it will propagate to inner
