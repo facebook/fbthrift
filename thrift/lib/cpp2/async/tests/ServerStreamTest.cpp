@@ -314,6 +314,102 @@ TEST(ServerStreamTest, CancelPublisher) {
   EXPECT_TRUE(closed);
 }
 
+TEST(ServerStreamTest, CancelDestroyPublisher) {
+  ClientCallback clientCallback;
+  folly::Optional<ServerStreamPublisher<int>> pub;
+  {
+    folly::ScopedEventBaseThread clientEb, serverEb;
+    auto pair = ServerStream<int>::createPublisher([&] { pub.reset(); });
+    pub = std::move(pair.second);
+    pair.first(serverEb.getEventBase(), &encode)(
+        FirstResponsePayload{nullptr, {}},
+        &clientCallback,
+        clientEb.getEventBase());
+    clientEb.add([&] {
+      clientCallback.started.wait();
+      std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
+    });
+    for (int i = 0; i < 10; i++) {
+      serverEb.add([&, i] {
+        if (pub) {
+          if (i == 1) {
+            clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
+          }
+          /* sleep override */
+          std::this_thread::sleep_for(std::chrono::milliseconds(1));
+          pub->next(i);
+        }
+      });
+    }
+  }
+  EXPECT_EQ(clientCallback.i, 1);
+  EXPECT_FALSE(pub);
+}
+
+TEST(ServerStreamTest, CancelCompletePublisherRace) {
+  ClientCallback clientCallback;
+  bool closed = false;
+  folly::ScopedEventBaseThread clientEb, serverEb;
+  folly::Baton<> baton;
+  auto [factory, publisher] = ServerStream<int>::createPublisher([&] {
+    baton.post();
+    /* sleep override */
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    closed = true;
+  });
+  factory(serverEb.getEventBase(), &encode)(
+      FirstResponsePayload{nullptr, {}},
+      &clientCallback,
+      clientEb.getEventBase());
+  clientCallback.started.wait();
+  clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
+  baton.wait();
+  EXPECT_FALSE(closed);
+  std::move(publisher).complete();
+  EXPECT_TRUE(closed);
+}
+
+TEST(ServerStreamTest, CancelDestroyPublisherRace) {
+  ClientCallback clientCallback;
+  folly::Optional<ServerStreamPublisher<int>> pub;
+  bool closed = false;
+  {
+    folly::ScopedEventBaseThread clientEb, serverEb;
+    folly::Baton<> baton;
+    struct Destructible {
+      Destructible() {
+        x = 1;
+      }
+      ~Destructible() {
+        x = 0;
+      }
+      void operator()() {
+        EXPECT_EQ(x, 1);
+      }
+      int x;
+    };
+    auto [factory, publisher] = ServerStream<int>::createPublisher(
+        [&, dummy = std::make_unique<Destructible>()] {
+          baton.post();
+          /* sleep override */
+          std::this_thread::sleep_for(std::chrono::milliseconds(100));
+          (*dummy)();
+          closed = true;
+        });
+    pub = std::move(publisher);
+    factory(serverEb.getEventBase(), &encode)(
+        FirstResponsePayload{nullptr, {}},
+        &clientCallback,
+        clientEb.getEventBase());
+    clientCallback.started.wait();
+    clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
+    baton.wait();
+    pub.reset();
+    EXPECT_FALSE(closed);
+  }
+  EXPECT_TRUE(closed);
+}
+
 TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
   folly::ScopedEventBaseThread clientEb, serverEb;
   MyFirstResponseCallback firstResponseCallback;

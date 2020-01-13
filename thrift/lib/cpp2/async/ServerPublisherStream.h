@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/Try.h>
+#include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/async/ServerStreamDetail.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 
@@ -34,13 +35,68 @@ class ServerPublisherStream : private StreamServerCallback {
     }
   };
 
+  struct CallOnceFunction {
+   private:
+    struct Function {
+      virtual void operator()() = 0;
+      virtual ~Function() = default;
+    };
+    template <typename Func>
+    struct FunctionHolder : public Function {
+      explicit FunctionHolder(Func&& f) : f_(std::forward<Func>(f)) {}
+      void operator()() override {
+        f_();
+      }
+
+     private:
+      Func f_;
+    };
+
+   public:
+    template <typename Func>
+    CallOnceFunction(Func&& f)
+        : storage_(new FunctionHolder<folly::remove_cvref_t<Func>>(
+              std::forward<Func>(f))) {}
+    ~CallOnceFunction() {
+      DCHECK(!*this);
+    }
+
+    explicit operator bool() const {
+      std::lock_guard<std::mutex> guard(mutex_);
+      return storage_;
+    }
+
+    void call() {
+      std::unique_ptr<Function> func;
+      {
+        std::lock_guard<std::mutex> guard(mutex_);
+        func.reset(std::exchange(storage_, nullptr));
+      }
+      if (func) {
+        (*func)();
+        baton_.post();
+      }
+    }
+
+    void callOrJoin() {
+      call();
+      baton_.wait();
+    }
+
+   private:
+    Function* storage_;
+    mutable std::mutex mutex_;
+    folly::Baton<> baton_;
+  };
+
  public:
   using Ptr = std::unique_ptr<ServerPublisherStream<T>, Deleter>;
 
+  template <typename Func>
   static std::pair<ServerStreamFn<T>, ServerStreamPublisher<T>> create(
-      folly::Function<void()> onStreamCompleteOrCancel) {
-    auto stream = new detail::ServerPublisherStream<T>(
-        std::move(onStreamCompleteOrCancel));
+      Func onStreamCompleteOrCancel) {
+    auto stream =
+        new ServerPublisherStream<T>(std::move(onStreamCompleteOrCancel));
     return {[stream = Ptr(stream)](
                 folly::Executor::KeepAlive<> serverExecutor,
                 folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
@@ -83,15 +139,13 @@ class ServerPublisherStream : private StreamServerCallback {
     }
 
     if (close) {
-      std::lock_guard<std::mutex> guard(callbackMutex_);
-      if (onStreamCompleteOrCancel_) {
-        std::exchange(onStreamCompleteOrCancel_, nullptr)();
-      }
+      // ensure the callback has completed when we return from complete()
+      // (if started from onStreamCancel())
+      onStreamCompleteOrCancel_.callOrJoin();
     }
   }
 
   bool wasCancelled() {
-    std::lock_guard<std::mutex> guard(callbackMutex_);
     return !onStreamCompleteOrCancel_;
   }
 
@@ -106,8 +160,8 @@ class ServerPublisherStream : private StreamServerCallback {
   void canceled() {}
 
  private:
-  explicit ServerPublisherStream(
-      folly::Function<void()> onStreamCompleteOrCancel)
+  template <typename Func>
+  explicit ServerPublisherStream(Func onStreamCompleteOrCancel)
       : streamClientCallback_(nullptr),
         clientEventBase_(nullptr),
         onStreamCompleteOrCancel_(std::move(onStreamCompleteOrCancel)),
@@ -136,13 +190,7 @@ class ServerPublisherStream : private StreamServerCallback {
   void onStreamCancel() override {
     clientEventBase_->dcheckIsInEventBaseThread();
     serverExecutor_->add([ex = serverExecutor_, self = copy()] {
-      auto onStreamCompleteOrCancel = [&] {
-        std::lock_guard<std::mutex> guard(self->callbackMutex_);
-        return std::exchange(self->onStreamCompleteOrCancel_, nullptr);
-      }();
-      if (onStreamCompleteOrCancel) {
-        onStreamCompleteOrCancel();
-      }
+      self->onStreamCompleteOrCancel_.call();
     });
     queue_.close();
     close();
@@ -221,9 +269,7 @@ class ServerPublisherStream : private StreamServerCallback {
 
   Queue<StreamPayload> queue_;
 
-  // this mutex will turn into a state atomic in a future diff
-  folly::Function<void()> onStreamCompleteOrCancel_;
-  std::mutex callbackMutex_;
+  CallOnceFunction onStreamCompleteOrCancel_;
 
   // these will be combined into a single atomic in a future diff
   Queue<T> unencodedQueue_;
