@@ -114,8 +114,31 @@ struct ThriftService {
   3: optional string parent;
 }
 
+// ThriftModuleContext represents module-specific metadata.
+struct ThriftModuleContext {
+  1: string name;
+}
+
+// ThriftServiceContext represents service-specific metadata.
+struct ThriftServiceContext {
+  1: ThriftService service_info;
+  2: ThriftModuleContext module;
+}
+
+struct ThriftServiceMetadataResponse {
+  1: ThriftServiceContext context;
+  2: ThriftMetadata metadata;
+}
+
+/**
+ * ThriftMetadata is for looking up types/exceptions with a specific name in
+ * some environments, typically used by ThriftServiceMetadataResponse to
+ * help finding definitions of a service's depending types/execptions.
+ */
 struct ThriftMetadata {
-  1: string file_name;
+  // 1: string file_name;
+  // ThriftMetadata is now used as a pure container for name lookup, and users
+  // should use ThriftModuleContext instead if they want to get module name.
   2: map<string, ThriftEnum> enums;
   4: map<string, ThriftStruct> structs;
   5: map<string, ThriftException> exceptions;
@@ -123,5 +146,6 @@ struct ThriftMetadata {
 }
 
 service ThriftMetadataService {
-  ThriftMetadata getRpcMetadata();
+  ThriftMetadata getRpcMetadata(); // deprecated
+  ThriftServiceMetadataResponse getServiceMetadata();
 }
