@@ -151,7 +151,7 @@ bool setupRequestContextWithMessageBegin(
       return setupRequestContextWithMessageBegin<CompactProtocolReader>(
           msgBegin, req, ctx, eb);
     default:
-      LOG(ERROR) << "invalid protType: " << protType;
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
       return false;
   }
 }
@@ -219,7 +219,7 @@ bool is_oneway_method(
     case T_COMPACT_PROTOCOL:
       return is_oneway_method<CompactProtocolReader>(buf, oneways);
     default:
-      LOG(ERROR) << "invalid protType: " << protType;
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
       return false;
   }
 }

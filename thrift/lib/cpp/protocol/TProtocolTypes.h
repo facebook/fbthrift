@@ -21,7 +21,7 @@ namespace apache {
 namespace thrift {
 namespace protocol {
 
-enum PROTOCOL_TYPES {
+enum PROTOCOL_TYPES : uint16_t {
   T_BINARY_PROTOCOL = 0,
   T_JSON_PROTOCOL = 1,
   T_COMPACT_PROTOCOL = 2,

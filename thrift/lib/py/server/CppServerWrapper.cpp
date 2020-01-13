@@ -22,6 +22,8 @@
 
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <folly/Utility.h>
+
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -403,7 +405,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
       case apache::thrift::protocol::T_COMPACT_PROTOCOL:
         return getMethodName<apache::thrift::CompactProtocolReader>(buf);
       default:
-        LOG(ERROR) << "Invalid protType: " << protType;
+        LOG(ERROR) << "Invalid protType: " << folly::to_underlying(protType);
         return "";
     }
   }

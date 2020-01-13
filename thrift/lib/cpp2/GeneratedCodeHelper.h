@@ -23,6 +23,7 @@
 
 #include <fmt/core.h>
 #include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp2/FrozenTApplicationException.h>
@@ -954,7 +955,7 @@ void process(
           processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
     }
     default:
-      LOG(ERROR) << "invalid protType: " << protType;
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
       return;
   }
 }
