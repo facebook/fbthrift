@@ -34,9 +34,7 @@ namespace thrift {
 using namespace testutil::testservice;
 using namespace apache::thrift::transport;
 
-class RSCompatibilityTest
-    : public testing::Test,
-      public testing::WithParamInterface<bool /* useRocketClient */> {
+class RSCompatibilityTest : public testing::Test {
  public:
   RSCompatibilityTest() {
     FLAGS_transport = "rocket";
