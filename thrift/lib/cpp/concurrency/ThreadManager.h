@@ -202,10 +202,20 @@ class ThreadManager : public virtual folly::Executor {
   static std::shared_ptr<ThreadManager> newThreadManager();
 
   /**
-   * Creates a simple thread manager the uses count number of worker threads
+   * Creates a simple thread manager that uses count number of worker threads
    */
   template <typename SemType = folly::LifoSem>
   static std::shared_ptr<ThreadManager> newSimpleThreadManager(
+      size_t count = 4,
+      bool enableTaskStats = false);
+
+  /**
+   * Creates a simple thread manager that uses count number of worker threads
+   * and sets the name prefix
+   */
+  template <typename SemType = folly::LifoSem>
+  static std::shared_ptr<ThreadManager> newSimpleThreadManager(
+      const std::string& name,
       size_t count = 4,
       bool enableTaskStats = false);
 

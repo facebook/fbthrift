@@ -598,6 +598,17 @@ shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
 }
 
 template <typename SemType>
+shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
+    const std::string& name,
+    size_t count,
+    bool enableTaskStats) {
+  auto simpleThreadManager =
+      make_shared<SimpleThreadManager<SemType>>(count, enableTaskStats);
+  simpleThreadManager->setNamePrefix(name);
+  return simpleThreadManager;
+}
+
+template <typename SemType>
 class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
  public:
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
