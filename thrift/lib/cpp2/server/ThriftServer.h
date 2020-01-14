@@ -820,7 +820,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     /**
      * Return nullptr if payload is not present.
      */
-    const folly::IOBuf* getPayload() const {
+    folly::IOBuf* getPayload() const {
       return payload_.get();
     }
 
