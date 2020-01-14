@@ -398,9 +398,7 @@ TEST_F(RequestInstrumentationTest, requestPayloadTest) {
 
   std::set<const folly::IOBuf*, folly::IOBufLess> snapshotPayloadSet;
   for (const auto& reqSnapshot : reqSnapshots) {
-    auto payload = reqSnapshot.getPayload();
-    EXPECT_NE(payload, nullptr);
-    snapshotPayloadSet.insert(payload);
+    snapshotPayloadSet.insert(&reqSnapshot.getPayload());
   }
 
   EXPECT_EQ(interceptedPayloadList.size(), snapshotPayloadSet.size());
