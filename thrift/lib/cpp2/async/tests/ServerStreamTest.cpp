@@ -19,6 +19,7 @@
 #include <folly/synchronization/Baton.h>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/BlockingWait.h>
@@ -29,6 +30,29 @@ namespace apache {
 namespace thrift {
 
 using namespace ::testing;
+
+auto encode(folly::Try<int>&& i) -> folly::Try<StreamPayload> {
+  if (i.hasValue()) {
+    folly::IOBufQueue buf;
+    CompactSerializer::serialize(*i, &buf);
+    return folly::Try<StreamPayload>({buf.move(), {}});
+  } else if (i.hasException()) {
+    return folly::Try<StreamPayload>(i.exception());
+  } else {
+    return folly::Try<StreamPayload>();
+  }
+}
+auto decode(folly::Try<StreamPayload>&& i) -> folly::Try<int> {
+  if (i.hasValue()) {
+    int out;
+    CompactSerializer::deserialize<int>(i.value().payload.get(), out);
+    return folly::Try<int>(out);
+  } else if (i.hasException()) {
+    return folly::Try<int>(i.exception());
+  } else {
+    return folly::Try<int>();
+  }
+}
 
 class ClientCallback : public StreamClientCallback {
  public:
@@ -46,7 +70,7 @@ class ClientCallback : public StreamClientCallback {
 
   bool onStreamNext(StreamPayload&& payload) override {
     if (i < 1024) {
-      EXPECT_EQ(payload.payload->capacity(), i++);
+      EXPECT_EQ(*decode(folly::Try<StreamPayload>(std::move(payload))), i++);
     } else {
       ++i;
     }
@@ -82,26 +106,6 @@ class MyFirstResponseCallback
   detail::ClientStreamBridge::ClientPtr clientStreamBridge;
   folly::fibers::Baton baton;
 };
-
-auto encode(folly::Try<int>&& i) -> folly::Try<StreamPayload> {
-  if (i.hasValue()) {
-    return folly::Try<StreamPayload>(
-        StreamPayload{folly::IOBuf::create(*i), {}});
-  } else if (i.hasException()) {
-    return folly::Try<StreamPayload>(i.exception());
-  } else {
-    return folly::Try<StreamPayload>();
-  }
-}
-auto decode(folly::Try<StreamPayload>&& i) -> folly::Try<int> {
-  if (i.hasValue()) {
-    return folly::Try<int>(i->payload->capacity());
-  } else if (i.hasException()) {
-    return folly::Try<int>(i.exception());
-  } else {
-    return folly::Try<int>();
-  }
-}
 
 #if FOLLY_HAS_COROUTINES
 TEST(ServerStreamTest, PublishConsumeCoro) {
