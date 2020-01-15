@@ -45,6 +45,10 @@ class MyRootAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_do_root() {
     co_await semifuture_do_root();
   }
+  template <int = 0>
+  folly::coro::Task<void> co_do_root(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_do_root(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_do_root(::apache::thrift::ClientReceiveState& state);

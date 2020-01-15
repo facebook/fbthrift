@@ -46,6 +46,10 @@ class MyLeafAsyncClient : public ::cpp2::MyNodeAsyncClient {
   folly::coro::Task<void> co_do_leaf() {
     co_await semifuture_do_leaf();
   }
+  template <int = 0>
+  folly::coro::Task<void> co_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_do_leaf(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_do_leaf(::apache::thrift::ClientReceiveState& state);

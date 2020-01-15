@@ -46,6 +46,10 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(const  ::apache::thrift::fixtures::types::SomeMap& m) {
     co_return co_await semifuture_bounce_map(m);
   }
+  template <int = 0>
+  folly::coro::Task< ::apache::thrift::fixtures::types::SomeMap> co_bounce_map(apache::thrift::RpcOptions& rpcOptions, const  ::apache::thrift::fixtures::types::SomeMap& m) {
+    co_return co_await semifuture_bounce_map(rpcOptions, m);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void bounce_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::apache::thrift::fixtures::types::SomeMap& m);
   static folly::exception_wrapper recv_wrapped_bounce_map( ::apache::thrift::fixtures::types::SomeMap& _return, ::apache::thrift::ClientReceiveState& state);
@@ -75,6 +79,10 @@ class SomeServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(const ::std::vector<int64_t>& r) {
     co_return co_await semifuture_binary_keyed_map(r);
+  }
+  template <int = 0>
+  folly::coro::Task<::std::map< ::apache::thrift::fixtures::types::TBinary, int64_t>> co_binary_keyed_map(apache::thrift::RpcOptions& rpcOptions, const ::std::vector<int64_t>& r) {
+    co_return co_await semifuture_binary_keyed_map(rpcOptions, r);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void binary_keyed_map(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const ::std::vector<int64_t>& r);

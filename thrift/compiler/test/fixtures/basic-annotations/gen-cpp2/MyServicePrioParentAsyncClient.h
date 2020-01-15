@@ -45,6 +45,10 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   folly::coro::Task<void> co_ping() {
     co_await semifuture_ping();
   }
+  template <int = 0>
+  folly::coro::Task<void> co_ping(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_ping(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_ping(::apache::thrift::ClientReceiveState& state);
@@ -74,6 +78,10 @@ class MyServicePrioParentAsyncClient : public apache::thrift::GeneratedAsyncClie
   template <int = 0>
   folly::coro::Task<void> co_pong() {
     co_await semifuture_pong();
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_pong(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_pong(rpcOptions);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

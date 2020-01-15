@@ -45,6 +45,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_doBland() {
     co_await semifuture_doBland();
   }
+  template <int = 0>
+  folly::coro::Task<void> co_doBland(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_doBland(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void doBland(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_doBland(::apache::thrift::ClientReceiveState& state);
@@ -74,6 +78,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<void> co_doRaise() {
     co_await semifuture_doRaise();
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_doRaise(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_doRaise(rpcOptions);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void doRaise(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
@@ -105,6 +113,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<::std::string> co_get200() {
     co_return co_await semifuture_get200();
   }
+  template <int = 0>
+  folly::coro::Task<::std::string> co_get200(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await semifuture_get200(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void get200(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_get200(::std::string& _return, ::apache::thrift::ClientReceiveState& state);
@@ -134,6 +146,10 @@ class RaiserAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<::std::string> co_get500() {
     co_return co_await semifuture_get500();
+  }
+  template <int = 0>
+  folly::coro::Task<::std::string> co_get500(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await semifuture_get500(rpcOptions);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void get500(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);

@@ -47,6 +47,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<bool> co_hasDataById(int64_t id) {
     co_return co_await semifuture_hasDataById(id);
   }
+  template <int = 0>
+  folly::coro::Task<bool> co_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+    co_return co_await semifuture_hasDataById(rpcOptions, id);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id);
   static folly::exception_wrapper recv_wrapped_hasDataById(bool& _return, ::apache::thrift::ClientReceiveState& state);
@@ -78,6 +82,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<::std::string> co_getDataById(int64_t id) {
     co_return co_await semifuture_getDataById(id);
+  }
+  template <int = 0>
+  folly::coro::Task<::std::string> co_getDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
+    co_return co_await semifuture_getDataById(rpcOptions, id);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id);
@@ -111,6 +119,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_putDataById(int64_t id, const ::std::string& data) {
     co_await semifuture_putDataById(id, data);
   }
+  template <int = 0>
+  folly::coro::Task<void> co_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+    co_await semifuture_putDataById(rpcOptions, id, data);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data);
   static folly::exception_wrapper recv_wrapped_putDataById(::apache::thrift::ClientReceiveState& state);
@@ -138,6 +150,10 @@ class MyServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<void> co_lobDataById(int64_t id, const ::std::string& data) {
     co_await semifuture_lobDataById(id, data);
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const ::std::string& data) {
+    co_await semifuture_lobDataById(rpcOptions, id, data);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const ::std::string& data);

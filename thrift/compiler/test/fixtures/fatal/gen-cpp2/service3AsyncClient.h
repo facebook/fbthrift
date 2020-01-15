@@ -48,6 +48,10 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_methodA() {
     co_await semifuture_methodA();
   }
+  template <int = 0>
+  folly::coro::Task<void> co_methodA(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_methodA(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodA(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_methodA(::apache::thrift::ClientReceiveState& state);
@@ -77,6 +81,10 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<void> co_methodB(int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
     co_await semifuture_methodB(x, y, z);
+  }
+  template <int = 0>
+  folly::coro::Task<void> co_methodB(apache::thrift::RpcOptions& rpcOptions, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
+    co_await semifuture_methodB(rpcOptions, x, y, z);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodB(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z);
@@ -108,6 +116,10 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<int32_t> co_methodC() {
     co_return co_await semifuture_methodC();
   }
+  template <int = 0>
+  folly::coro::Task<int32_t> co_methodC(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await semifuture_methodC(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodC(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_methodC(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
@@ -137,6 +149,10 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task<int32_t> co_methodD(int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
     co_return co_await semifuture_methodD(i, j, k);
+  }
+  template <int = 0>
+  folly::coro::Task<int32_t> co_methodD(apache::thrift::RpcOptions& rpcOptions, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
+    co_return co_await semifuture_methodD(rpcOptions, i, j, k);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodD(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k);
@@ -168,6 +184,10 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> co_methodE() {
     co_return co_await semifuture_methodE();
   }
+  template <int = 0>
+  folly::coro::Task< ::test_cpp2::cpp_reflection::struct2> co_methodE(apache::thrift::RpcOptions& rpcOptions) {
+    co_return co_await semifuture_methodE(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodE(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_methodE( ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state);
@@ -197,6 +217,10 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
   template <int = 0>
   folly::coro::Task< ::test_cpp2::cpp_reflection::struct3> co_methodF(int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
     co_return co_await semifuture_methodF(l, m, n);
+  }
+  template <int = 0>
+  folly::coro::Task< ::test_cpp2::cpp_reflection::struct3> co_methodF(apache::thrift::RpcOptions& rpcOptions, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
+    co_return co_await semifuture_methodF(rpcOptions, l, m, n);
   }
 #endif // FOLLY_HAS_COROUTINES
   virtual void methodF(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n);

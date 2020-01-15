@@ -45,6 +45,10 @@ class CAsyncClient : public apache::thrift::GeneratedAsyncClient {
   folly::coro::Task<void> co_f() {
     co_await semifuture_f();
   }
+  template <int = 0>
+  folly::coro::Task<void> co_f(apache::thrift::RpcOptions& rpcOptions) {
+    co_await semifuture_f(rpcOptions);
+  }
 #endif // FOLLY_HAS_COROUTINES
   virtual void f(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_f(::apache::thrift::ClientReceiveState& state);

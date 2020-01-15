@@ -43,6 +43,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_returnstream(int32_t i32_from, int32_t i32_to) {
     co_return co_await semifuture_returnstream(i32_from, i32_to);
   }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_returnstream(apache::thrift::RpcOptions& rpcOptions, int32_t i32_from, int32_t i32_to) {
+    co_return co_await semifuture_returnstream(rpcOptions, i32_from, i32_to);
+  }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_returnstream(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::SemiStream<int32_t> recv_returnstream(::apache::thrift::ClientReceiveState& state);
@@ -68,6 +72,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   template <int = 0>
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_streamthrows(int32_t foo) {
     co_return co_await semifuture_streamthrows(foo);
+  }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_streamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+    co_return co_await semifuture_streamthrows(rpcOptions, foo);
   }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_streamthrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
@@ -95,6 +103,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_boththrows(int32_t foo) {
     co_return co_await semifuture_boththrows(foo);
   }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_boththrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+    co_return co_await semifuture_boththrows(rpcOptions, foo);
+  }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_boththrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::SemiStream<int32_t> recv_boththrows(::apache::thrift::ClientReceiveState& state);
@@ -120,6 +132,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   template <int = 0>
   folly::coro::Task<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> co_responseandstreamthrows(int32_t foo) {
     co_return co_await semifuture_responseandstreamthrows(foo);
+  }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> co_responseandstreamthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+    co_return co_await semifuture_responseandstreamthrows(rpcOptions, foo);
   }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_responseandstreamthrows(apache::thrift::ResponseAndSemiStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
@@ -147,6 +163,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_streamleftthrows(int32_t foo) {
     co_return co_await semifuture_streamleftthrows(foo);
   }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_streamleftthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+    co_return co_await semifuture_streamleftthrows(rpcOptions, foo);
+  }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_streamleftthrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::SemiStream<int32_t> recv_streamleftthrows(::apache::thrift::ClientReceiveState& state);
@@ -173,6 +193,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_bothleftthrows(int32_t foo) {
     co_return co_await semifuture_bothleftthrows(foo);
   }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::SemiStream<int32_t>> co_bothleftthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+    co_return co_await semifuture_bothleftthrows(rpcOptions, foo);
+  }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_bothleftthrows(apache::thrift::SemiStream<int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
   static apache::thrift::SemiStream<int32_t> recv_bothleftthrows(::apache::thrift::ClientReceiveState& state);
@@ -198,6 +222,10 @@ class PubSubStreamingServiceAsyncClient : public apache::thrift::GeneratedAsyncC
   template <int = 0>
   folly::coro::Task<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> co_responseandstreamleftthrows(int32_t foo) {
     co_return co_await semifuture_responseandstreamleftthrows(foo);
+  }
+  template <int = 0>
+  folly::coro::Task<apache::thrift::ResponseAndSemiStream<int32_t,int32_t>> co_responseandstreamleftthrows(apache::thrift::RpcOptions& rpcOptions, int32_t foo) {
+    co_return co_await semifuture_responseandstreamleftthrows(rpcOptions, foo);
   }
 #endif // FOLLY_HAS_COROUTINES
   static folly::exception_wrapper recv_wrapped_responseandstreamleftthrows(apache::thrift::ResponseAndSemiStream<int32_t,int32_t>& _return, ::apache::thrift::ClientReceiveState& state);
