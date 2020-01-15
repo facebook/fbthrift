@@ -104,8 +104,8 @@ class TestInterface : public InstrumentationTestServiceSvIf {
   co_sendStreamingRequest() override {
     auto rg = requestGuard();
     co_await finished_;
-    co_return createStreamGenerator(
-        []() -> folly::coro::AsyncGenerator<int32_t> { co_yield 0; });
+    co_return folly::coro::co_invoke(
+        []() -> folly::coro::AsyncGenerator<int32_t&&> { co_yield 0; });
   }
 
   folly::coro::Task<apache::thrift::test::IOBuf> co_sendPayload(

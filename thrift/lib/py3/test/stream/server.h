@@ -33,10 +33,10 @@ class StreamTestService : public StreamTestServiceSvIf {
   apache::thrift::ServerStream<int32_t> returnstream(
       int32_t i32_from,
       int32_t i32_to) override {
-    return createStreamGenerator(
-        [i32_from, i32_to]() -> folly::coro::AsyncGenerator<int32_t> {
+    return folly::coro::co_invoke(
+        [ i32_from, i32_to ]() -> folly::coro::AsyncGenerator<int32_t&&> {
           for (auto i = i32_from; i < i32_to; ++i) {
-            co_yield i;
+            co_yield folly::copy(i);
           }
         });
   }
@@ -44,7 +44,7 @@ class StreamTestService : public StreamTestServiceSvIf {
     if (t) {
       throw FuncEx{};
     } else {
-      return createStreamGenerator(
+      return folly::coro::co_invoke(
           []() -> folly::coro::AsyncGenerator<int32_t&&> { throw StreamEx{}; });
     }
   }
@@ -55,7 +55,7 @@ class StreamTestService : public StreamTestServiceSvIf {
     included::Included resp;
     resp.from = 100;
     resp.to = 200;
-    auto stream = createStreamGenerator(
+    auto stream = folly::coro::co_invoke(
         [foo = std::move(foo)]() mutable
         -> folly::coro::AsyncGenerator<included::Included&&> {
           for (auto i = foo->from; i < foo->to; ++i) {
