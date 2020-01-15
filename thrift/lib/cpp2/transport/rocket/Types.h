@@ -39,6 +39,10 @@ class StreamId {
     return streamId_ == other.streamId_;
   }
 
+  bool operator!=(StreamId other) const {
+    return streamId_ != other.streamId_;
+  }
+
   StreamId& operator+=(uint32_t delta) {
     streamId_ += delta;
     return *this;

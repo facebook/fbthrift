@@ -18,6 +18,7 @@
 
 #include <stdint.h>
 
+#include <fmt/core.h>
 #include <glog/logging.h>
 
 namespace apache {
@@ -29,8 +30,10 @@ class Flags {
   constexpr Flags() = default;
 
   constexpr explicit Flags(uint16_t flags) : flags_(static_cast<Bits>(flags)) {
-    DCHECK(flags == 0 || flags >= Bits::NEXT);
     DCHECK((flags & ~mask()) == 0);
+    if (flags != 0 && flags < Bits::NEXT) {
+      throw std::runtime_error(fmt::format("received invalid flags {}", flags));
+    }
   }
 
   // Flags and frame type are packed into 2 bytes on the wire. Flags occupy the

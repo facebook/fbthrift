@@ -670,7 +670,10 @@ SetupFrame::SetupFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   folly::io::Cursor cursor(frame.get());
   const StreamId zero(readStreamId(cursor));
-  DCHECK_EQ(StreamId{0}, zero);
+  if (zero != StreamId{0}) {
+    throw std::runtime_error(fmt::format(
+        "SETUP frame has non zero stream id {}", static_cast<uint32_t>(zero)));
+  }
 
   FrameType type;
   std::tie(type, flags_) = readFrameTypeAndFlags(cursor);
