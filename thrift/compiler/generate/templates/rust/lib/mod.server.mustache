@@ -198,7 +198,8 @@
             }}p: &mut P::Deserializer,
             {{^service:functions?}}_{{/service:functions?}}{{!
             }}r: &R,
-            seqid: u32,
+            {{^service:functions?}}_{{/service:functions?}}{{!
+            }}seqid: u32,
         ) -> anyhow::Result<ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
                 }}{{#service:functions}}
