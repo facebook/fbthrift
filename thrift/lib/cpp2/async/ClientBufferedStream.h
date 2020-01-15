@@ -216,8 +216,12 @@ class ClientBufferedStream {
         : state_(std::move(state)) {}
 
    public:
-    Subscription(Subscription&& s) {
-      state_ = std::move(s.state_);
+    Subscription(Subscription&& s) = default;
+    Subscription& operator=(Subscription&& s) {
+      if (std::exchange(state_, std::move(s.state_))) {
+        LOG(FATAL) << "Subscription has to be joined/detached";
+      }
+      return *this;
     }
     ~Subscription() {
       if (state_) {
