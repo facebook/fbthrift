@@ -17,6 +17,8 @@
 #ifndef THRIFT_PROTOCOL_TPROTOCOLTYPES_H_
 #define THRIFT_PROTOCOL_TPROTOCOLTYPES_H_ 1
 
+#include <stdint.h>
+
 namespace apache {
 namespace thrift {
 namespace protocol {
