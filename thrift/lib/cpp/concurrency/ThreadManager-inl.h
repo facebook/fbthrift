@@ -32,7 +32,6 @@
 #include <folly/io/async/Request.h>
 
 #include <thrift/lib/cpp/concurrency/Exception.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
@@ -168,7 +167,7 @@ void ThreadManager::ImplT<SemType>::addWorker(size_t value) {
     auto thread = threadFactory_->newThread(worker, ThreadFactory::ATTACHED);
     {
       // We need to increment idle count
-      Guard g(mutex_);
+      std::unique_lock<std::mutex> l(mutex_);
       if (state_ != STARTED) {
         throw IllegalStateException(
             "ThreadManager::addWorker(): "
@@ -182,12 +181,12 @@ void ThreadManager::ImplT<SemType>::addWorker(size_t value) {
     } catch (...) {
       // If thread is started unsuccessfully, we need to decrement the
       // count we incremented above
-      Guard g(mutex_);
+      std::unique_lock<std::mutex> l(mutex_);
       idleCount_--;
       throw;
     }
 
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     workerCount_++;
     intendedWorkerCount_++;
   }
@@ -197,7 +196,7 @@ template <typename SemType>
 void ThreadManager::ImplT<SemType>::workerStarted(Worker<SemType>* worker) {
   InitCallback initCallback;
   {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     assert(idleCount_ > 0);
     --idleCount_;
     ++totalTaskCount_;
@@ -217,20 +216,20 @@ void ThreadManager::ImplT<SemType>::workerStarted(Worker<SemType>* worker) {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::workerExiting(Worker<SemType>* worker) {
-  Guard g(mutex_);
+  std::unique_lock<std::mutex> l(mutex_);
 
   shared_ptr<Thread> thread = worker->thread();
 
   --workerCount_;
   --totalTaskCount_;
   deadWorkers_.push_back(thread);
-  deadWorkerMonitor_.notify();
+  deadWorkerCond_.notify_one();
 }
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::start() {
-  Guard sg(stateUpdateMutex_);
-  Guard g(mutex_);
+  std::unique_lock<std::mutex> sl(stateUpdateMutex_);
+  std::unique_lock<std::mutex> l(mutex_);
 
   if (state_ == ThreadManager::STOPPED) {
     return;
@@ -241,31 +240,31 @@ void ThreadManager::ImplT<SemType>::start() {
       throw InvalidArgumentException();
     }
     state_ = ThreadManager::STARTED;
-    monitor_.notifyAll();
+    cond_.notify_all();
   }
 }
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
-  Guard sg(stateUpdateMutex_);
+  std::unique_lock<std::mutex> sl(stateUpdateMutex_);
 
   if (state_ == ThreadManager::UNINITIALIZED) {
     // The thread manager was never started.  Just ignore the stop() call.
     // This will happen if the ThreadManager is destroyed without ever being
     // started.
     joinKeepAlive();
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     state_ = ThreadManager::STOPPED;
   } else if (state_ == ThreadManager::STARTED) {
     joinKeepAlive();
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     if (joinArg) {
       state_ = ThreadManager::JOINING;
-      removeWorkerImpl(intendedWorkerCount_, true);
+      removeWorkerImpl(l, intendedWorkerCount_, true);
       assert(tasks_.empty());
     } else {
       state_ = ThreadManager::STOPPING;
-      removeWorkerImpl(intendedWorkerCount_);
+      removeWorkerImpl(l, intendedWorkerCount_);
       // Empty the task queue, in case we stopped without running
       // all of the tasks.
       totalTaskCount_ -= tasks_.size();
@@ -274,14 +273,13 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
       }
     }
     state_ = ThreadManager::STOPPED;
-    monitor_.notifyAll();
-    g.release();
+    cond_.notify_all();
   } else {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     // Another stopImpl() call is already in progress.
     // Just wait for the state to change to STOPPED
     while (state_ != ThreadManager::STOPPED) {
-      monitor_.wait();
+      cond_.wait(l);
     }
   }
 
@@ -293,15 +291,16 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::removeWorker(size_t value) {
-  Guard g(mutex_);
-  removeWorkerImpl(value);
+  std::unique_lock<std::mutex> l(mutex_);
+  removeWorkerImpl(l, value);
 }
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::removeWorkerImpl(
+    std::unique_lock<std::mutex>& lock,
     size_t value,
     bool afterTasks) {
-  assert(mutex_.isLocked());
+  assert(lock.owns_lock());
 
   if (value > intendedWorkerCount_) {
     throw InvalidArgumentException();
@@ -316,14 +315,14 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(
       tasks_.at_priority(qpriority).enqueue(nullptr);
       ++totalTaskCount_;
     }
-    monitor_.notifyAll();
+    cond_.notify_all();
     for (size_t n = 0; n < value; ++n) {
       waitSem_.post();
     }
   } else {
     // Ask threads to exit ASAP
     workersToStop_ += value;
-    monitor_.notifyAll();
+    cond_.notify_all();
     for (size_t n = 0; n < value; ++n) {
       waitSem_.post();
     }
@@ -332,7 +331,7 @@ void ThreadManager::ImplT<SemType>::removeWorkerImpl(
   // Wait for the specified number of threads to exit
   for (size_t n = 0; n < value; ++n) {
     while (deadWorkers_.empty()) {
-      deadWorkerMonitor_.wait();
+      deadWorkerCond_.wait(lock);
     }
 
     shared_ptr<Thread> thread = deadWorkers_.front();
@@ -388,7 +387,7 @@ void ThreadManager::ImplT<SemType>::add(
 
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::remove(shared_ptr<Runnable> /*task*/) {
-  Synchronized s(monitor_);
+  std::unique_lock<std::mutex> l(mutex_);
   if (state_ != ThreadManager::STARTED) {
     throw IllegalStateException(
         "ThreadManager::Impl::remove ThreadManager not "
@@ -400,7 +399,7 @@ void ThreadManager::ImplT<SemType>::remove(shared_ptr<Runnable> /*task*/) {
 
 template <typename SemType>
 std::shared_ptr<Runnable> ThreadManager::ImplT<SemType>::removeNextPending() {
-  Guard g(mutex_);
+  std::unique_lock<std::mutex> l(mutex_);
   if (state_ != ThreadManager::STARTED) {
     throw IllegalStateException(
         "ThreadManager::Impl::removeNextPending "
@@ -454,7 +453,7 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
   }
 
   // Otherwise, no tasks on the horizon, so go sleep
-  Guard g(mutex_);
+  std::unique_lock<std::mutex> l(mutex_);
   if (shouldStop()) {
     // check again because it might have changed by the time we got the mutex
     return nullptr;
@@ -462,11 +461,11 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
 
   ++idleCount_;
   --totalTaskCount_;
-  g.release();
+  l.unlock();
   while (!tasks_.try_dequeue(task)) {
     waitSem_.wait();
     if (shouldStop()) {
-      Guard f(mutex_);
+      std::unique_lock<std::mutex> l2(mutex_);
       --idleCount_;
       ++totalTaskCount_;
       return nullptr;
@@ -483,7 +482,7 @@ template <typename SemType>
 void ThreadManager::ImplT<SemType>::onTaskExpired(const Task& task) {
   ExpireCallback expireCallback;
   {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     expiredCount_++;
     expireCallback = expireCallback_;
   }

@@ -19,8 +19,10 @@
 #ifndef THREADMANAGERIMPL_H
 #define THREADMANAGERIMPL_H
 
+#include <condition_variable>
 #include <deque>
 #include <memory>
+#include <mutex>
 
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/ThreadLocal.h>
@@ -29,8 +31,6 @@
 #include <folly/io/async/Request.h>
 #include <folly/synchronization/LifoSem.h>
 #include <folly/synchronization/SmallLocks.h>
-
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 
 namespace apache {
 namespace thrift {
@@ -121,8 +121,6 @@ class ThreadManager::ImplT : public ThreadManager,
         numTasks_(0),
         state_(ThreadManager::UNINITIALIZED),
         tasks_(numPriorities),
-        monitor_(&mutex_),
-        deadWorkerMonitor_(&mutex_),
         deadWorkers_(),
         namePrefix_(""),
         namePrefixCounter_(0),
@@ -147,22 +145,22 @@ class ThreadManager::ImplT : public ThreadManager,
   }
 
   shared_ptr<ThreadFactory> threadFactory() const override {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     return threadFactory_;
   }
 
   void threadFactory(shared_ptr<ThreadFactory> value) override {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     threadFactory_ = value;
   }
 
   std::string getNamePrefix() const override {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     return namePrefix_;
   }
 
   void setNamePrefix(const std::string& name) override {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     namePrefix_ = name;
   }
 
@@ -187,7 +185,7 @@ class ThreadManager::ImplT : public ThreadManager,
   }
 
   size_t expiredTaskCount() override {
-    Guard g(mutex_);
+    std::unique_lock<std::mutex> l(mutex_);
     size_t result = expiredCount_;
     expiredCount_ = 0;
     return result;
@@ -255,7 +253,10 @@ class ThreadManager::ImplT : public ThreadManager,
 
  private:
   void stopImpl(bool joinArg);
-  void removeWorkerImpl(size_t value, bool afterTasks = false);
+  void removeWorkerImpl(
+      std::unique_lock<std::mutex>& lock,
+      size_t value,
+      bool afterTasks = false);
   bool shouldStop();
 
   size_t workerCount_;
@@ -285,15 +286,15 @@ class ThreadManager::ImplT : public ThreadManager,
   folly::PriorityUMPMCQueueSet<std::unique_ptr<Task>, /* MayBlock = */ false>
       tasks_;
 
-  Mutex mutex_;
-  Mutex stateUpdateMutex_;
-  // monitor_ is signaled on any of the following events:
+  mutable std::mutex mutex_;
+  std::mutex stateUpdateMutex_;
+  // cond_ is signaled on any of the following events:
   // - a new task is added to the task queue
   // - state_ changes
-  Monitor monitor_;
+  std::condition_variable cond_;
   SemType waitSem_;
-  // deadWorkerMonitor_ is signaled whenever a worker thread exits
-  Monitor deadWorkerMonitor_;
+  // deadWorkerCond_ is signaled whenever a worker thread exits
+  std::condition_variable deadWorkerCond_;
   std::deque<shared_ptr<Thread>> deadWorkers_;
 
   folly::ThreadLocal<bool> isThreadManagerThread_{

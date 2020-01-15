@@ -15,9 +15,11 @@
  */
 
 #include <chrono>
+#include <condition_variable>
 #include <deque>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <random>
 #include <thread>
 
@@ -28,7 +30,6 @@
 #include <folly/portability/SysTime.h>
 #include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -71,8 +72,13 @@ class ThreadManagerTest : public testing::Test {
 
 class LoadTask : public Runnable {
  public:
-  LoadTask(Monitor* monitor, size_t* count, int64_t timeout)
-      : monitor_(monitor),
+  LoadTask(
+      std::mutex* mutex,
+      std::condition_variable* cond,
+      size_t* count,
+      int64_t timeout)
+      : mutex_(mutex),
+        cond_(cond),
         count_(count),
         timeout_(timeout),
         startTime_(0),
@@ -84,16 +90,17 @@ class LoadTask : public Runnable {
     endTime_ = Util::currentTime();
 
     {
-      Synchronized s(*monitor_);
+      std::unique_lock<std::mutex> l(*mutex_);
 
       (*count_)--;
       if (*count_ == 0) {
-        monitor_->notify();
+        cond_->notify_one();
       }
     }
   }
 
-  Monitor* monitor_;
+  std::mutex* mutex_;
+  std::condition_variable* cond_;
   size_t* count_;
   int64_t timeout_;
   int64_t startTime_;
@@ -106,7 +113,8 @@ class LoadTask : public Runnable {
  * up properly on delete.
  */
 static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
-  Monitor monitor;
+  std::mutex mutex;
+  std::condition_variable cond;
   size_t tasksLeft = numTasks;
 
   auto threadManager = ThreadManager::newSimpleThreadManager(numWorkers, true);
@@ -116,7 +124,8 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
 
   std::set<std::shared_ptr<LoadTask>> tasks;
   for (size_t n = 0; n < numTasks; n++) {
-    tasks.insert(std::make_shared<LoadTask>(&monitor, &tasksLeft, timeout));
+    tasks.insert(
+        std::make_shared<LoadTask>(&mutex, &cond, &tasksLeft, timeout));
   }
 
   int64_t startTime = Util::currentTime();
@@ -127,9 +136,9 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   int64_t tasksStartedTime = Util::currentTime();
 
   {
-    Synchronized s(monitor);
+    std::unique_lock<std::mutex> l(mutex);
     while (tasksLeft > 0) {
-      monitor.wait();
+      cond.wait(l);
     }
   }
   int64_t endTime = Util::currentTime();
@@ -225,9 +234,17 @@ TEST_F(ThreadManagerTest, LoadTest) {
 
 class BlockTask : public Runnable {
  public:
-  BlockTask(Monitor* monitor, Monitor* bmonitor, bool* blocked, size_t* count)
-      : monitor_(monitor),
-        bmonitor_(bmonitor),
+  BlockTask(
+      std::mutex* mutex,
+      std::condition_variable* cond,
+      std::mutex* bmutex,
+      std::condition_variable* bcond,
+      bool* blocked,
+      size_t* count)
+      : mutex_(mutex),
+        cond_(cond),
+        bmutex_(bmutex),
+        bcond_(bcond),
         blocked_(blocked),
         count_(count),
         started_(false) {}
@@ -235,58 +252,65 @@ class BlockTask : public Runnable {
   void run() override {
     started_ = true;
     {
-      Synchronized s(*bmonitor_);
+      std::unique_lock<std::mutex> l(*bmutex_);
       while (*blocked_) {
-        bmonitor_->wait();
+        bcond_->wait(l);
       }
     }
 
     {
-      Synchronized s(*monitor_);
+      std::unique_lock<std::mutex> l(*mutex_);
       (*count_)--;
       if (*count_ == 0) {
-        monitor_->notify();
+        cond_->notify_one();
       }
     }
   }
 
-  Monitor* monitor_;
-  Monitor* bmonitor_;
+  std::mutex* mutex_;
+  std::condition_variable* cond_;
+  std::mutex* bmutex_;
+  std::condition_variable* bcond_;
   bool* blocked_;
   size_t* count_;
   bool started_;
 };
 
-static void
-expireTestCallback(std::shared_ptr<Runnable>, Monitor* monitor, size_t* count) {
-  Synchronized s(*monitor);
+static void expireTestCallback(
+    std::shared_ptr<Runnable>,
+    std::mutex* mutex,
+    std::condition_variable* cond,
+    size_t* count) {
+  std::unique_lock<std::mutex> l(*mutex);
   --(*count);
   if (*count == 0) {
-    monitor->notify();
+    cond->notify_one();
   }
 }
 
 static void expireTest(size_t numWorkers, int64_t expirationTimeMs) {
   size_t maxPendingTasks = numWorkers;
   size_t activeTasks = numWorkers + maxPendingTasks;
-  Monitor monitor;
+  std::mutex mutex;
+  std::condition_variable cond;
 
   auto threadManager = ThreadManager::newSimpleThreadManager(numWorkers);
   auto threadFactory = std::make_shared<PosixThreadFactory>();
   threadManager->threadFactory(threadFactory);
   threadManager->setExpireCallback(std::bind(
-      expireTestCallback, std::placeholders::_1, &monitor, &activeTasks));
+      expireTestCallback, std::placeholders::_1, &mutex, &cond, &activeTasks));
   threadManager->start();
 
   // Add numWorkers + maxPendingTasks to fill up the ThreadManager's task queue
   std::vector<std::shared_ptr<BlockTask>> tasks;
   tasks.reserve(activeTasks);
 
-  Monitor bmonitor;
+  std::mutex bmutex;
+  std::condition_variable bcond;
   bool blocked = true;
   for (size_t n = 0; n < numWorkers + maxPendingTasks; ++n) {
     auto task = std::make_shared<BlockTask>(
-        &monitor, &bmonitor, &blocked, &activeTasks);
+        &mutex, &cond, &bmutex, &bcond, &blocked, &activeTasks);
     tasks.push_back(task);
     threadManager->add(task, 0, expirationTimeMs);
   }
@@ -296,15 +320,15 @@ static void expireTest(size_t numWorkers, int64_t expirationTimeMs) {
 
   // Unblock the tasks
   {
-    Synchronized s(bmonitor);
+    std::unique_lock<std::mutex> l(bmutex);
     blocked = false;
-    bmonitor.notifyAll();
+    bcond.notify_all();
   }
   // Wait for all tasks to complete or expire
   {
-    Synchronized s(monitor);
+    std::unique_lock<std::mutex> l(mutex);
     while (activeTasks != 0) {
-      monitor.wait();
+      cond.wait(l);
     }
   }
 
@@ -331,20 +355,22 @@ class AddRemoveTask : public Runnable,
   AddRemoveTask(
       uint32_t timeoutUs,
       const std::shared_ptr<ThreadManager>& manager,
-      Monitor* monitor,
+      std::mutex* mutex,
+      std::condition_variable* cond,
       int64_t* count,
       int64_t* objectCount)
       : timeoutUs_(timeoutUs),
         manager_(manager),
-        monitor_(monitor),
+        mutex_(mutex),
+        cond_(cond),
         count_(count),
         objectCount_(objectCount) {
-    Synchronized s(monitor_);
+    std::unique_lock<std::mutex> l(*mutex_);
     ++*objectCount_;
   }
 
   ~AddRemoveTask() override {
-    Synchronized s(monitor_);
+    std::unique_lock<std::mutex> l(*mutex_);
     --*objectCount_;
   }
 
@@ -352,7 +378,7 @@ class AddRemoveTask : public Runnable,
     usleep(timeoutUs_);
 
     {
-      Synchronized s(monitor_);
+      std::unique_lock<std::mutex> l(*mutex_);
 
       if (*count_ <= 0) {
         // The task count already dropped to 0.
@@ -363,7 +389,7 @@ class AddRemoveTask : public Runnable,
 
       --*count_;
       if (*count_ == 0) {
-        monitor_->notifyAll();
+        cond_->notify_all();
         return;
       }
     }
@@ -375,7 +401,8 @@ class AddRemoveTask : public Runnable,
  private:
   int32_t timeoutUs_;
   std::shared_ptr<ThreadManager> manager_;
-  Monitor* monitor_;
+  std::mutex* mutex_;
+  std::condition_variable* cond_;
   int64_t* count_;
   int64_t* objectCount_;
 };
@@ -384,11 +411,11 @@ class WorkerCountChanger : public Runnable {
  public:
   WorkerCountChanger(
       const std::shared_ptr<ThreadManager>& manager,
-      Monitor* monitor,
+      std::mutex* mutex,
       int64_t* count,
       int64_t* addAndRemoveCount)
       : manager_(manager),
-        monitor_(monitor),
+        mutex_(mutex),
         count_(count),
         addAndRemoveCount_(addAndRemoveCount) {}
 
@@ -396,7 +423,7 @@ class WorkerCountChanger : public Runnable {
     // Continue adding and removing threads until the tasks are all done
     while (true) {
       {
-        Synchronized s(monitor_);
+        std::unique_lock<std::mutex> l(*mutex_);
         if (*count_ == 0) {
           return;
         }
@@ -428,7 +455,7 @@ class WorkerCountChanger : public Runnable {
  private:
   std::mt19937 rng_;
   std::shared_ptr<ThreadManager> manager_;
-  Monitor* monitor_;
+  std::mutex* mutex_;
   int64_t* count_;
   int64_t* addAndRemoveCount_;
 };
@@ -450,7 +477,8 @@ TEST_F(ThreadManagerTest, AddRemoveWorker) {
   threadManager->threadFactory(threadFactory);
   threadManager->start();
 
-  Monitor monitor;
+  std::mutex mutex;
+  std::condition_variable cond;
   int64_t currentTaskObjects = 0;
   int64_t count = numTasks;
   int64_t addRemoveCount = 0;
@@ -460,7 +488,12 @@ TEST_F(ThreadManagerTest, AddRemoveWorker) {
   for (int64_t n = 0; n < numParallelTasks; ++n) {
     int64_t taskTimeoutUs = taskTimeoutDist(rng);
     auto task = std::make_shared<AddRemoveTask>(
-        taskTimeoutUs, threadManager, &monitor, &count, &currentTaskObjects);
+        taskTimeoutUs,
+        threadManager,
+        &mutex,
+        &cond,
+        &count,
+        &currentTaskObjects);
     threadManager->add(task);
   }
 
@@ -469,7 +502,7 @@ TEST_F(ThreadManagerTest, AddRemoveWorker) {
   std::deque<std::shared_ptr<Thread>> addRemoveThreads;
   for (int64_t n = 0; n < numAddRemoveWorkers; ++n) {
     auto worker = std::make_shared<WorkerCountChanger>(
-        threadManager, &monitor, &count, &addRemoveCount);
+        threadManager, &mutex, &count, &addRemoveCount);
     auto thread = addRemoveFactory->newThread(worker);
     addRemoveThreads.push_back(thread);
     thread->start();
@@ -615,7 +648,8 @@ TEST_F(ThreadManagerTest, ObserverTest) {
   auto observer = std::make_shared<TestObserver>(1000, "foo");
   ThreadManager::setObserver(observer);
 
-  Monitor monitor;
+  std::mutex mutex;
+  std::condition_variable cond;
   size_t tasks = 1;
 
   auto threadManager = ThreadManager::newSimpleThreadManager(10);
@@ -623,7 +657,7 @@ TEST_F(ThreadManagerTest, ObserverTest) {
   threadManager->threadFactory(std::make_shared<PosixThreadFactory>());
   threadManager->start();
 
-  auto task = std::make_shared<LoadTask>(&monitor, &tasks, 1000);
+  auto task = std::make_shared<LoadTask>(&mutex, &cond, &tasks, 1000);
   threadManager->add(task);
   threadManager->join();
   EXPECT_EQ(1, observer->timesCalled);

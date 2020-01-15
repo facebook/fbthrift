@@ -32,7 +32,6 @@
 #include <folly/synchronization/LifoSem.h>
 
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
-#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
