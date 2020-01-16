@@ -232,7 +232,7 @@ std::unique_ptr<folly::IOBuf> preprocessSendT(
     Protocol* prot,
     apache::thrift::RpcOptions& rpcOptions,
     apache::thrift::ContextStack& ctx,
-    std::shared_ptr<apache::thrift::transport::THeader>& header,
+    apache::thrift::transport::THeader& header,
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
@@ -268,7 +268,7 @@ std::unique_ptr<folly::IOBuf> preprocessSendT(
     }
 
     if (rpcOptions.getEnableChecksum()) {
-      header->setCrc32c(
+      header.setCrc32c(
           apache::thrift::checksum::crc32c(*queue.front(), crcSkip));
     }
 
@@ -290,7 +290,7 @@ void clientSendT(
     RpcKind kind,
     bool useClientStreamBridge = false) {
   auto buf = preprocessSendT(
-      prot, rpcOptions, ctx, header, methodName, writefunc, sizefunc);
+      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
   channel->sendRequestAsync(
       rpcOptions,
       std::move(buf),
@@ -312,7 +312,7 @@ void clientSendT(
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc) {
   auto buf = preprocessSendT(
-      prot, rpcOptions, ctx, header, methodName, writefunc, sizefunc);
+      prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
   channel->sendRequestAsync(
       rpcOptions, std::move(buf), std::move(header), std::move(callback));
 }
