@@ -74,17 +74,17 @@ class TimerManager::Dispatcher : public Runnable {
    */
   void run() override {
     {
-      std::unique_lock<std::mutex> l(manager_->mutex_);
+      Synchronized s(manager_->monitor_);
       if (manager_->state_ == TimerManager::STARTING) {
         manager_->state_ = TimerManager::STARTED;
-        manager_->cond_.notify_all();
+        manager_->monitor_.notifyAll();
       }
     }
 
     do {
       std::set<shared_ptr<TimerManager::Task>> expiredTasks;
       {
-        std::unique_lock<std::mutex> l(manager_->mutex_);
+        Synchronized s(manager_->monitor_);
         task_iterator expiredTaskEnd;
         int64_t now = Util::currentTime();
         while (manager_->state_ == TimerManager::STARTED &&
@@ -97,7 +97,10 @@ class TimerManager::Dispatcher : public Runnable {
           auto count = manager_->taskCount_.load(std::memory_order_relaxed);
           (void)count;
           assert((timeout != 0 && count > 0) || (timeout == 0 && count == 0));
-          manager_->cond_.wait_for(l, std::chrono::milliseconds(timeout));
+          try {
+            manager_->monitor_.wait(timeout);
+          } catch (TimedOutException&) {
+          }
           now = Util::currentTime();
         }
 
@@ -126,10 +129,10 @@ class TimerManager::Dispatcher : public Runnable {
     } while (manager_->state_ == TimerManager::STARTED);
 
     {
-      std::unique_lock<std::mutex> l(manager_->mutex_);
+      Synchronized s(manager_->monitor_);
       if (manager_->state_ == TimerManager::STOPPING) {
         manager_->state_ = TimerManager::STOPPED;
-        manager_->cond_.notify_one();
+        manager_->monitor_.notify();
       }
     }
     return;
@@ -157,7 +160,7 @@ TimerManager::~TimerManager() {
 void TimerManager::start() {
   bool doStart = false;
   {
-    std::unique_lock<std::mutex> l(mutex_);
+    Synchronized s(monitor_);
     if (threadFactory_ == nullptr) {
       throw InvalidArgumentException();
     }
@@ -173,9 +176,9 @@ void TimerManager::start() {
   }
 
   {
-    std::unique_lock<std::mutex> l(mutex_);
+    Synchronized s(monitor_);
     while (state_ == TimerManager::STARTING) {
-      cond_.wait(l);
+      monitor_.wait();
     }
     assert(state_ != TimerManager::STARTING);
   }
@@ -184,16 +187,16 @@ void TimerManager::start() {
 void TimerManager::stop() {
   bool doStop = false;
   {
-    std::unique_lock<std::mutex> l(mutex_);
+    Synchronized s(monitor_);
     if (state_ == TimerManager::UNINITIALIZED) {
       state_ = TimerManager::STOPPED;
     } else if (state_ != STOPPING && state_ != STOPPED) {
       doStop = true;
       state_ = STOPPING;
-      cond_.notify_all();
+      monitor_.notifyAll();
     }
     while (state_ != STOPPED) {
-      cond_.wait(l);
+      monitor_.wait();
     }
   }
 
@@ -207,12 +210,12 @@ void TimerManager::stop() {
 }
 
 shared_ptr<const ThreadFactory> TimerManager::threadFactory() const {
-  std::unique_lock<std::mutex> l(mutex_);
+  Synchronized s(monitor_);
   return threadFactory_;
 }
 
 void TimerManager::threadFactory(shared_ptr<const ThreadFactory> value) {
-  std::unique_lock<std::mutex> l(mutex_);
+  Synchronized s(monitor_);
   threadFactory_ = value;
 }
 
@@ -225,7 +228,7 @@ void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
   timeout += now;
 
   {
-    std::unique_lock<std::mutex> l(mutex_);
+    Synchronized s(monitor_);
     if (state_ != TimerManager::STARTED) {
       throw IllegalStateException();
     }
@@ -235,7 +238,7 @@ void TimerManager::add(shared_ptr<Runnable> task, int64_t timeout) {
     // timeout. Do this before inserting to limit comparisons to current tasks
     auto const count = taskCount_.load(std::memory_order_relaxed);
     if (count == 0 || timeout < taskMap_.begin()->first) {
-      cond_.notify_one();
+      monitor_.notify();
     }
 
     taskCount_.store(count + 1, std::memory_order_relaxed);
@@ -259,7 +262,7 @@ void TimerManager::add(
 }
 
 void TimerManager::remove(shared_ptr<Runnable> /*task*/) {
-  std::unique_lock<std::mutex> l(mutex_);
+  Synchronized s(monitor_);
   if (state_ != TimerManager::STARTED) {
     throw IllegalStateException();
   }

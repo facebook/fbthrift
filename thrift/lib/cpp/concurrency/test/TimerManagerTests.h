@@ -14,19 +14,20 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/TimerManager.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <assert.h>
-#include <condition_variable>
 #include <iostream>
-#include <mutex>
 
 namespace apache {
 namespace thrift {
 namespace concurrency {
 namespace test {
+
+using namespace apache::thrift::concurrency;
 
 /**
  * ThreadManagerTests class
@@ -39,11 +40,10 @@ class TimerManagerTests {
 
   class Task : public Runnable {
    public:
-    Task(std::mutex& mutex, std::condition_variable& cond, int64_t timeout)
+    Task(Monitor& monitor, int64_t timeout)
         : _timeout(timeout),
           _startTime(Util::currentTime()),
-          _mutex(mutex),
-          _cond(cond),
+          _monitor(monitor),
           _success(false),
           _done(false) {}
 
@@ -72,16 +72,15 @@ class TimerManagerTests {
                 << std::endl; // debug
 
       {
-        std::unique_lock<std::mutex> l(_mutex);
-        _cond.notify_all();
+        Synchronized s(_monitor);
+        _monitor.notifyAll();
       }
     }
 
     int64_t _timeout;
     int64_t _startTime;
     int64_t _endTime;
-    std::mutex& _mutex;
-    std::condition_variable& _cond;
+    Monitor& _monitor;
     bool _success;
     bool _done;
   };
@@ -95,7 +94,7 @@ class TimerManagerTests {
   bool test00(int64_t timeout = 1000LL) {
     shared_ptr<TimerManagerTests::Task> orphanTask =
         shared_ptr<TimerManagerTests::Task>(
-            new TimerManagerTests::Task(_mutex, _cond, 10 * timeout));
+            new TimerManagerTests::Task(_monitor, 10 * timeout));
 
     {
       TimerManager timerManager;
@@ -109,16 +108,16 @@ class TimerManagerTests {
 
       shared_ptr<TimerManagerTests::Task> task =
           shared_ptr<TimerManagerTests::Task>(
-              new TimerManagerTests::Task(_mutex, _cond, timeout));
+              new TimerManagerTests::Task(_monitor, timeout));
 
       {
-        std::unique_lock<std::mutex> l(_mutex);
+        Synchronized s(_monitor);
 
         timerManager.add(orphanTask, 10 * timeout);
 
         timerManager.add(task, timeout);
 
-        _cond.wait(l);
+        _monitor.wait();
       }
 
       assert(task->_done);
@@ -136,8 +135,7 @@ class TimerManagerTests {
 
   friend class TestTask;
 
-  std::mutex _mutex;
-  std::condition_variable _cond;
+  Monitor _monitor;
 };
 
 const double TimerManagerTests::ERROR = .20;
