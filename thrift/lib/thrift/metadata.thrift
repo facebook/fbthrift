@@ -67,6 +67,22 @@ struct ThriftTypedefType {
     (cpp.ref = "true", cpp2.ref = "true", rust.box);
 }
 
+struct ThriftStreamType {
+  1: optional ThriftType elemType
+    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  2: optional ThriftType initialResponseType
+    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+}
+
+struct ThriftSinkType {
+  1: optional ThriftType elemType
+    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  2: optional ThriftType finalResponseType
+    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  3: optional ThriftType initialResponseType
+    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+}
+
 union ThriftType {
   1: ThriftPrimitiveType t_primitive;
   2: ThriftListType t_list;
@@ -76,6 +92,8 @@ union ThriftType {
   6: ThriftStructType t_struct;
   7: ThriftUnionType t_union;
   8: ThriftTypedefType t_typedef;
+  9: ThriftStreamType t_stream;
+  10: ThriftSinkType t_sink;
 }
 
 struct ThriftEnum {
