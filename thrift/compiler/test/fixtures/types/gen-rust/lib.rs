@@ -1891,7 +1891,7 @@ pub mod client {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>>;
         fn binary_keyed_map(
             &self,
-            arg_r: &Vec<i64>,
+            arg_r: &[i64],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>>;
     }
 
@@ -1955,7 +1955,7 @@ pub mod client {
         }
         fn binary_keyed_map(
             &self,
-            arg_r: &Vec<i64>,
+            arg_r: &[i64],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
             use futures_preview::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
@@ -2433,11 +2433,11 @@ pub mod mock {
         }
         fn binary_keyed_map(
             &self,
-            arg_r: &Vec<i64>,
+            arg_r: &[i64],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<i64>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_r.clone())
+            Box::pin(futures_preview::future::ready(closure(arg_r.to_owned())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
                 ))))

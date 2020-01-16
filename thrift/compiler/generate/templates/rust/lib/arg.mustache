@@ -17,6 +17,11 @@
 }}{{^field:primitive?}}&{{/field:primitive?}}{{!
 }}{{#field:type}}{{!
     }}{{#type:string?}}str{{/type:string?}}{{!
-    }}{{^type:string?}}{{>lib/type}}{{/type:string?}}{{!
+    }}{{#type:list?}}{{!
+      }}[{{#type:listElemType}}{{>lib/type}}{{/type:listElemType}}]{{!
+    }}{{/type:list?}}{{!
+    }}{{^type:string?}}{{^type:list?}}{{!
+      }}{{>lib/type}}{{!
+    }}{{/type:list?}}{{/type:string?}}{{!
 }}{{/field:type}}{{!
 }}

@@ -61,7 +61,10 @@
                 }}{{#function:args}}{{!
                 }}arg_{{field:name}}{{#field:type}}{{!
                     }}{{#type:string?}}.to_owned(){{/type:string?}}{{!
-                    }}{{^type:string?}}.clone(){{/type:string?}}{{!
+                    }}{{#type:list?}}.to_owned(){{/type:list?}}{{!
+                    }}{{^type:string?}}{{^type:list?}}{{!
+                        }}.clone(){{!
+                    }}{{/type:list?}}{{/type:string?}}{{!
                 }}{{/field:type}}{{!
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
