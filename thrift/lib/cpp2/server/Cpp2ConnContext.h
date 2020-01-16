@@ -19,6 +19,7 @@
 
 #include <memory>
 
+#include <folly/CancellationToken.h>
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -199,6 +200,27 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return peerCred_.getError();
   }
 
+  /**
+   * Retrieve a new folly::CancellationToken that will be signaled when the
+   * connection is closed.
+   */
+  folly::CancellationToken getCancellationToken() const {
+    return cancellationSource_.getToken();
+  }
+
+  /**
+   * Signal that the connection has been closed.
+   *
+   * This is intended to be called by the thrift server implementation code.
+   *
+   * Note that this will cause any CancellationCallback functions that have been
+   * registered to run immediately in this thread.  If any of these callbacks
+   * throw this will cause program termination.
+   */
+  void connectionClosed() {
+    cancellationSource_.requestCancellation();
+  }
+
  private:
   /**
    * Platform-independent representation of unix domain socket peer credentials,
@@ -283,6 +305,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::string securityProtocol_;
   const folly::AsyncTransportWrapper* transport_;
   PeerCred peerCred_;
+  // A CancellationSource that will be signaled when the connection is closed.
+  folly::CancellationSource cancellationSource_;
 
   static void no_op_destructor(void* /*ptr*/) {}
 };

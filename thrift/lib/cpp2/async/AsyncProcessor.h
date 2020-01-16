@@ -457,7 +457,7 @@ class ServerInterface : public AsyncProcessorFactory {
  * If you passed the HandlerCallback to another thread, you may call
  * the *InThread() version of these methods.  The callback will be
  * called in the correct thread, then it will *delete* itself (because
- * otherwise you wouldnoy know when to delete it). So make sure to
+ * otherwise you wouldn't know when to delete it). So make sure to
  * .release() the unique_ptr on the HandlerCallback if you call the
  * *InThread() method.
  */

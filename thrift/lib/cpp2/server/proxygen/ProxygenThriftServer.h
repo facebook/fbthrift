@@ -121,6 +121,9 @@ class ProxygenThriftServer : public BaseThriftServer,
     }
     void cancel() override {
       active_ = false;
+      if (connCtx_) {
+        connCtx_->connectionClosed();
+      }
     }
     bool isOneway() const override {
       return false;

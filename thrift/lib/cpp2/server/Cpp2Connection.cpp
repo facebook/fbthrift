@@ -90,6 +90,7 @@ void Cpp2Connection::stop() {
   if (getConnectionManager()) {
     getConnectionManager()->removeConnection(this);
   }
+  context_.connectionClosed();
 
   for (auto req : activeRequests_) {
     VLOG(1) << "Task killed due to channel close: "

@@ -177,6 +177,7 @@ void ProxygenThriftServer::ThriftRequestHandler::onError(
     request_->clearHandler();
     request_ = nullptr;
   }
+  cancel();
 
   // TODO(ckwalsh) Expose proxygen errors as a counter somewhere
   delete this;
