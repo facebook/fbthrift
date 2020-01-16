@@ -157,7 +157,8 @@ class TTransportException : public apache::thrift::TLibraryException {
           return "TTransportException: Network Error";
         case EARLY_DATA_REJECTED:
           return "TTransportException: Early data rejected";
-
+        case STREAMING_CONTRACT_VIOLATION:
+          return "TTransportException: Streaming contract violation";
         default:
           return "TTransportException: (Invalid exception type)";
       }
