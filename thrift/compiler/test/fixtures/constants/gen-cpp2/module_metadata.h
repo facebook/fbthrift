@@ -29,44 +29,5 @@ class GeneratedEnumMetadata<::cpp2::Company> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-template <>
-class GeneratedStructMetadata<::cpp2::Internship> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::UnEnumStruct> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::Range> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::struct1> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::struct2> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::struct3> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::union1> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::union2> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
+
 } // apache::thrift::detail::metadata

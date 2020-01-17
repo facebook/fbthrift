@@ -4,32 +4,12 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_metadata.h"
 #include "other/gen-cpp2/matching_module_name_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
-
-void GeneratedStructMetadata<::matching_module_name::MyStruct>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("matching_module_name.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& matching_module_name_MyStruct = res.first->second;
-  matching_module_name_MyStruct.name = "matching_module_name.MyStruct";
-  matching_module_name_MyStruct.is_union = false;
-  ::apache::thrift::metadata::ThriftField matching_module_name_MyStruct_OtherStructField_1;
-  matching_module_name_MyStruct_OtherStructField_1.id = 1;
-  matching_module_name_MyStruct_OtherStructField_1.name = "OtherStructField";
-  matching_module_name_MyStruct_OtherStructField_1.is_optional = false;
-  auto matching_module_name_MyStruct_OtherStructField_1_type = std::make_unique<Struct< ::matching_module_name::OtherStruct>>("matching_module_name.OtherStruct", metadata);
-  matching_module_name_MyStruct_OtherStructField_1_type->initialize(matching_module_name_MyStruct_OtherStructField_1.type);
-  matching_module_name_MyStruct.fields.push_back(std::move(matching_module_name_MyStruct_OtherStructField_1));
-}
 
 } // apache::thrift::detail::metadata

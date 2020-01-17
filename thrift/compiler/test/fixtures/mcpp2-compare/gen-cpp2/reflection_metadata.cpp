@@ -4,31 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
-
-void GeneratedStructMetadata<::cpp2::ReflectionStruct>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("reflection.ReflectionStruct", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& reflection_ReflectionStruct = res.first->second;
-  reflection_ReflectionStruct.name = "reflection.ReflectionStruct";
-  reflection_ReflectionStruct.is_union = false;
-  ::apache::thrift::metadata::ThriftField reflection_ReflectionStruct_fieldA_1;
-  reflection_ReflectionStruct_fieldA_1.id = 1;
-  reflection_ReflectionStruct_fieldA_1.name = "fieldA";
-  reflection_ReflectionStruct_fieldA_1.is_optional = false;
-  auto reflection_ReflectionStruct_fieldA_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
-  reflection_ReflectionStruct_fieldA_1_type->initialize(reflection_ReflectionStruct_fieldA_1.type);
-  reflection_ReflectionStruct.fields.push_back(std::move(reflection_ReflectionStruct_fieldA_1));
-}
 
 } // apache::thrift::detail::metadata

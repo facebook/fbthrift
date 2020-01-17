@@ -15,7 +15,6 @@
   limitations under the License.
 
 %><% > Autogen%>
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "<%program:include_prefix%><%program:name%>_metadata.h"
 <%#program:thrift_includes%>
 #include "<%program:include_prefix%><%program:name%>_metadata.h"
@@ -24,8 +23,6 @@
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 <%#program:enums%>
 void GeneratedEnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::genMetadata(ThriftMetadata& metadata) {
@@ -41,34 +38,4 @@ void GeneratedEnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::genMetada
 }
 <%/program:enums%>
 
-<%#program:structs%>
-void GeneratedStructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& <%struct:metadata_name%> = res.first->second;
-  <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
-  <%struct:metadata_name%>.is_union = <%struct:union?%>;
-<%#struct:fields%>
-  <% > metadata/field_gen%>
-<%/struct:fields%>
-}
-<%/program:structs%>
-
-<%#program:structs%>
-<%#struct:exception?%>
-void GeneratedExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftException& <%struct:metadata_name%> = res.first->second;
-  <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
-<%#struct:fields%>
-  <% > metadata/field_gen%>
-<%/struct:fields%>
-}
-<%/struct:exception?%>
-<%/program:structs%>
 } // apache::thrift::detail::metadata

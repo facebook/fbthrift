@@ -4,94 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 
-void GeneratedStructMetadata<::cpp2::Banal>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Banal", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_Banal = res.first->second;
-  module_Banal.name = "module.Banal";
-  module_Banal.is_union = false;
-}
-void GeneratedStructMetadata<::cpp2::Fiery>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Fiery", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_Fiery = res.first->second;
-  module_Fiery.name = "module.Fiery";
-  module_Fiery.is_union = false;
-  ::apache::thrift::metadata::ThriftField module_Fiery_message_1;
-  module_Fiery_message_1.id = 1;
-  module_Fiery_message_1.name = "message";
-  module_Fiery_message_1.is_optional = false;
-  auto module_Fiery_message_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_Fiery_message_1_type->initialize(module_Fiery_message_1.type);
-  module_Fiery.fields.push_back(std::move(module_Fiery_message_1));
-}
-void GeneratedStructMetadata<::cpp2::Serious>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Serious", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_Serious = res.first->second;
-  module_Serious.name = "module.Serious";
-  module_Serious.is_union = false;
-  ::apache::thrift::metadata::ThriftField module_Serious_sonnet_1;
-  module_Serious_sonnet_1.id = 1;
-  module_Serious_sonnet_1.name = "sonnet";
-  module_Serious_sonnet_1.is_optional = true;
-  auto module_Serious_sonnet_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_Serious_sonnet_1_type->initialize(module_Serious_sonnet_1.type);
-  module_Serious.fields.push_back(std::move(module_Serious_sonnet_1));
-}
-
-void GeneratedExceptionMetadata<::cpp2::Banal>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.Banal", ::apache::thrift::metadata::ThriftException{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftException& module_Banal = res.first->second;
-  module_Banal.name = "module.Banal";
-}
-void GeneratedExceptionMetadata<::cpp2::Fiery>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.Fiery", ::apache::thrift::metadata::ThriftException{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftException& module_Fiery = res.first->second;
-  module_Fiery.name = "module.Fiery";
-  ::apache::thrift::metadata::ThriftField module_Fiery_message_1;
-  module_Fiery_message_1.id = 1;
-  module_Fiery_message_1.name = "message";
-  module_Fiery_message_1.is_optional = false;
-  auto module_Fiery_message_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_Fiery_message_1_type->initialize(module_Fiery_message_1.type);
-  module_Fiery.fields.push_back(std::move(module_Fiery_message_1));
-}
-void GeneratedExceptionMetadata<::cpp2::Serious>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.exceptions.emplace("module.Serious", ::apache::thrift::metadata::ThriftException{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftException& module_Serious = res.first->second;
-  module_Serious.name = "module.Serious";
-  ::apache::thrift::metadata::ThriftField module_Serious_sonnet_1;
-  module_Serious_sonnet_1.id = 1;
-  module_Serious_sonnet_1.name = "sonnet";
-  module_Serious_sonnet_1.is_optional = true;
-  auto module_Serious_sonnet_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_Serious_sonnet_1_type->initialize(module_Serious_sonnet_1.type);
-  module_Serious.fields.push_back(std::move(module_Serious_sonnet_1));
-}
 } // apache::thrift::detail::metadata

@@ -14,4 +14,5 @@ namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+
 } // apache::thrift::detail::metadata

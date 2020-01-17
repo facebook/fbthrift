@@ -4,39 +4,12 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_metadata.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/transitive_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
-
-void GeneratedStructMetadata<::cpp2::Included>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("includes.Included", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& includes_Included = res.first->second;
-  includes_Included.name = "includes.Included";
-  includes_Included.is_union = false;
-  ::apache::thrift::metadata::ThriftField includes_Included_MyIntField_1;
-  includes_Included_MyIntField_1.id = 1;
-  includes_Included_MyIntField_1.name = "MyIntField";
-  includes_Included_MyIntField_1.is_optional = false;
-  auto includes_Included_MyIntField_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
-  includes_Included_MyIntField_1_type->initialize(includes_Included_MyIntField_1.type);
-  includes_Included.fields.push_back(std::move(includes_Included_MyIntField_1));
-  ::apache::thrift::metadata::ThriftField includes_Included_MyTransitiveField_2;
-  includes_Included_MyTransitiveField_2.id = 2;
-  includes_Included_MyTransitiveField_2.name = "MyTransitiveField";
-  includes_Included_MyTransitiveField_2.is_optional = false;
-  auto includes_Included_MyTransitiveField_2_type = std::make_unique<Struct< ::cpp2::Foo>>("transitive.Foo", metadata);
-  includes_Included_MyTransitiveField_2_type->initialize(includes_Included_MyTransitiveField_2.type);
-  includes_Included.fields.push_back(std::move(includes_Included_MyTransitiveField_2));
-}
 
 } // apache::thrift::detail::metadata

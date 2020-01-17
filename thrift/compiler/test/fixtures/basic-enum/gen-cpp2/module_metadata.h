@@ -29,9 +29,5 @@ class GeneratedEnumMetadata<::test::fixtures::enumstrict::MyBigEnum> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-template <>
-class GeneratedStructMetadata<::test::fixtures::enumstrict::MyStruct> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
+
 } // apache::thrift::detail::metadata

@@ -4,33 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/empty-struct/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
-
-void GeneratedStructMetadata<::cpp2::Empty>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Empty", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_Empty = res.first->second;
-  module_Empty.name = "module.Empty";
-  module_Empty.is_union = false;
-}
-void GeneratedStructMetadata<::cpp2::Nada>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.Nada", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_Nada = res.first->second;
-  module_Nada.name = "module.Nada";
-  module_Nada.is_union = true;
-}
 
 } // apache::thrift::detail::metadata

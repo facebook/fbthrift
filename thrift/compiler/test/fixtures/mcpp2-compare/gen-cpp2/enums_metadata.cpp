@@ -4,14 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::facebook::ns::qwerty::AnEnumA>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("enums.AnEnumA", ::apache::thrift::metadata::ThriftEnum{});
@@ -58,23 +55,6 @@ void GeneratedEnumMetadata<::facebook::ns::qwerty::AnEnumE>::genMetadata(ThriftM
   ::apache::thrift::metadata::ThriftEnum& enums_AnEnumE = res.first->second;
   enums_AnEnumE.name = "enums.AnEnumE";
   enums_AnEnumE.elements[0] = "FIELDA";
-}
-
-void GeneratedStructMetadata<::facebook::ns::qwerty::SomeStruct>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("enums.SomeStruct", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& enums_SomeStruct = res.first->second;
-  enums_SomeStruct.name = "enums.SomeStruct";
-  enums_SomeStruct.is_union = false;
-  ::apache::thrift::metadata::ThriftField enums_SomeStruct_fieldA_1;
-  enums_SomeStruct_fieldA_1.id = 1;
-  enums_SomeStruct_fieldA_1.name = "fieldA";
-  enums_SomeStruct_fieldA_1.is_optional = false;
-  auto enums_SomeStruct_fieldA_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
-  enums_SomeStruct_fieldA_1_type->initialize(enums_SomeStruct_fieldA_1.type);
-  enums_SomeStruct.fields.push_back(std::move(enums_SomeStruct_fieldA_1));
 }
 
 } // apache::thrift::detail::metadata

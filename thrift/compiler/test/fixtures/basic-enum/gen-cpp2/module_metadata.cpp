@@ -4,14 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/basic-enum/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::test::fixtures::enumstrict::EmptyEnum>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.EmptyEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -58,30 +55,6 @@ void GeneratedEnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::genMetadata
   module_MyBigEnum.elements[17] = "SEVENTEEN";
   module_MyBigEnum.elements[18] = "EIGHTEEN";
   module_MyBigEnum.elements[19] = "NINETEEN";
-}
-
-void GeneratedStructMetadata<::test::fixtures::enumstrict::MyStruct>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
-  module_MyStruct.name = "module.MyStruct";
-  module_MyStruct.is_union = false;
-  ::apache::thrift::metadata::ThriftField module_MyStruct_myEnum_1;
-  module_MyStruct_myEnum_1.id = 1;
-  module_MyStruct_myEnum_1.name = "myEnum";
-  module_MyStruct_myEnum_1.is_optional = false;
-  auto module_MyStruct_myEnum_1_type = std::make_unique<Enum< ::test::fixtures::enumstrict::MyEnum>>("module.MyEnum", metadata);
-  module_MyStruct_myEnum_1_type->initialize(module_MyStruct_myEnum_1.type);
-  module_MyStruct.fields.push_back(std::move(module_MyStruct_myEnum_1));
-  ::apache::thrift::metadata::ThriftField module_MyStruct_myBigEnum_2;
-  module_MyStruct_myBigEnum_2.id = 2;
-  module_MyStruct_myBigEnum_2.name = "myBigEnum";
-  module_MyStruct_myBigEnum_2.is_optional = false;
-  auto module_MyStruct_myBigEnum_2_type = std::make_unique<Enum< ::test::fixtures::enumstrict::MyBigEnum>>("module.MyBigEnum", metadata);
-  module_MyStruct_myBigEnum_2_type->initialize(module_MyStruct_myBigEnum_2.type);
-  module_MyStruct.fields.push_back(std::move(module_MyStruct_myBigEnum_2));
 }
 
 } // apache::thrift::detail::metadata

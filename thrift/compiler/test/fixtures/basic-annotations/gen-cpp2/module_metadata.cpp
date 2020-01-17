@@ -4,14 +4,11 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
-using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
-using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::cpp2::MyEnum>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -23,44 +20,6 @@ void GeneratedEnumMetadata<::cpp2::MyEnum>::genMetadata(ThriftMetadata& metadata
   module_MyEnum.elements[0] = "MyValue1";
   module_MyEnum.elements[1] = "MyValue2";
   module_MyEnum.elements[2] = "DOMAIN";
-}
-
-void GeneratedStructMetadata<::cpp2::MyStruct>::genMetadata(ThriftMetadata& metadata) {
-  auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
-  if (!res.second) {
-    return;
-  }
-  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
-  module_MyStruct.name = "module.MyStruct";
-  module_MyStruct.is_union = false;
-  ::apache::thrift::metadata::ThriftField module_MyStruct_major_1;
-  module_MyStruct_major_1.id = 1;
-  module_MyStruct_major_1.name = "major";
-  module_MyStruct_major_1.is_optional = false;
-  auto module_MyStruct_major_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
-  module_MyStruct_major_1_type->initialize(module_MyStruct_major_1.type);
-  module_MyStruct.fields.push_back(std::move(module_MyStruct_major_1));
-  ::apache::thrift::metadata::ThriftField module_MyStruct_package_2;
-  module_MyStruct_package_2.id = 2;
-  module_MyStruct_package_2.name = "package";
-  module_MyStruct_package_2.is_optional = false;
-  auto module_MyStruct_package_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_MyStruct_package_2_type->initialize(module_MyStruct_package_2.type);
-  module_MyStruct.fields.push_back(std::move(module_MyStruct_package_2));
-  ::apache::thrift::metadata::ThriftField module_MyStruct_annotation_with_quote_3;
-  module_MyStruct_annotation_with_quote_3.id = 3;
-  module_MyStruct_annotation_with_quote_3.name = "annotation_with_quote";
-  module_MyStruct_annotation_with_quote_3.is_optional = false;
-  auto module_MyStruct_annotation_with_quote_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_MyStruct_annotation_with_quote_3_type->initialize(module_MyStruct_annotation_with_quote_3.type);
-  module_MyStruct.fields.push_back(std::move(module_MyStruct_annotation_with_quote_3));
-  ::apache::thrift::metadata::ThriftField module_MyStruct_class__4;
-  module_MyStruct_class__4.id = 4;
-  module_MyStruct_class__4.name = "class_";
-  module_MyStruct_class__4.is_optional = false;
-  auto module_MyStruct_class__4_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
-  module_MyStruct_class__4_type->initialize(module_MyStruct_class__4.type);
-  module_MyStruct.fields.push_back(std::move(module_MyStruct_class__4));
 }
 
 } // apache::thrift::detail::metadata

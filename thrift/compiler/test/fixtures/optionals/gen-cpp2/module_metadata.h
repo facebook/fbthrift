@@ -19,19 +19,5 @@ class GeneratedEnumMetadata<::cpp2::Animal> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-template <>
-class GeneratedStructMetadata<::cpp2::Color> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::Vehicle> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-template <>
-class GeneratedStructMetadata<::cpp2::Person> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
+
 } // apache::thrift::detail::metadata

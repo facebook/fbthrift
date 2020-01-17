@@ -32,20 +32,5 @@ class GeneratedEnumMetadata<<% > common/namespace_cpp2%><%enum:name%>> {
   static void genMetadata(ThriftMetadata& metadata);
 };
 <%/program:enums%>
-<%#program:structs%>
-template <>
-class GeneratedStructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-<%/program:structs%>
-<%#program:structs%>
-<%#struct:exception?%>
-template <>
-class GeneratedExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
-<%/struct:exception?%>
-<%/program:structs%>
+
 } // apache::thrift::detail::metadata

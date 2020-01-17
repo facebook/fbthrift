@@ -27,17 +27,5 @@ class GeneratedEnumMetadata {
  public:
   static void genMetadata(::apache::thrift::metadata::ThriftMetadata& metadata);
 };
-
-template <typename T>
-class GeneratedStructMetadata {
- public:
-  static void genMetadata(::apache::thrift::metadata::ThriftMetadata& metadata);
-};
-
-template <typename T>
-class GeneratedExceptionMetadata {
- public:
-  static void genMetadata(::apache::thrift::metadata::ThriftMetadata& metadata);
-};
 } // namespace detail::metadata
 } // namespace apache::thrift

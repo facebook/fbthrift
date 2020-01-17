@@ -19,9 +19,5 @@ class GeneratedEnumMetadata<::cpp2::MyEnum> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-template <>
-class GeneratedStructMetadata<::cpp2::MyStruct> {
- public:
-  static void genMetadata(ThriftMetadata& metadata);
-};
+
 } // apache::thrift::detail::metadata
