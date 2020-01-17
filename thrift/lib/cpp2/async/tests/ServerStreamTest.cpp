@@ -305,10 +305,9 @@ TEST(ServerStreamTest, CancelPublisher) {
   std::thread([&, publisher = std::move(publisher)]() mutable {
     for (int i = 0; i < 10; i++) {
       if (i == 1) {
-        clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
+        clientEb.getEventBase()->runInEventBaseThreadAndWait(
+            [&] { clientCallback.cb->onStreamCancel(); });
       }
-      /* sleep override */
-      std::this_thread::sleep_for(std::chrono::milliseconds(10));
       publisher.next(i);
     }
     std::move(publisher).complete();
@@ -337,10 +336,9 @@ TEST(ServerStreamTest, CancelDestroyPublisher) {
       serverEb.add([&, i] {
         if (pub) {
           if (i == 1) {
-            clientEb.add([&] { clientCallback.cb->onStreamCancel(); });
+            clientEb.getEventBase()->runInEventBaseThreadAndWait(
+                [&] { clientCallback.cb->onStreamCancel(); });
           }
-          /* sleep override */
-          std::this_thread::sleep_for(std::chrono::milliseconds(1));
           pub->next(i);
         }
       });
