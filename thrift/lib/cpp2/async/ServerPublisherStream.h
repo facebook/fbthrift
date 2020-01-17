@@ -142,14 +142,11 @@ class ServerPublisherStream : private StreamServerCallback {
                 folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
               stream->serverExecutor_ = std::move(serverExecutor);
 
-              {
-                std::lock_guard<std::mutex> guard(stream->encodeMutex_);
-                for (auto messages = stream->unencodedQueue_.getMessages();
-                     !messages.empty();
-                     messages.pop()) {
+              while (auto messages =
+                         stream->encodeOrQueue_.closeOrGetMessages(encode)) {
+                for (; !messages.empty(); messages.pop()) {
                   stream->queue_.push(encode(std::move(messages.front())));
                 }
-                stream->encode_ = encode;
               }
 
               return [stream = std::move(stream)](
@@ -168,14 +165,10 @@ class ServerPublisherStream : private StreamServerCallback {
   void publish(folly::Try<T>&& payload) {
     bool close = !payload.hasValue();
 
-    {
-      std::unique_lock<std::mutex> guard(encodeMutex_);
-      if (encode_) {
-        guard.unlock();
-        queue_.push(encode_(std::move(payload)));
-      } else {
-        unencodedQueue_.push(std::move(payload));
-      }
+    // pushOrGetClosedPayload only moves from payload on success
+    if (auto encode =
+            encodeOrQueue_.pushOrGetClosedPayload(std::move(payload))) {
+      queue_.push(encode(std::move(payload)));
     }
 
     if (close) {
@@ -204,8 +197,7 @@ class ServerPublisherStream : private StreamServerCallback {
   explicit ServerPublisherStream(Func onStreamCompleteOrCancel)
       : streamClientCallback_(nullptr),
         clientEventBase_(nullptr),
-        onStreamCompleteOrCancel_(std::move(onStreamCompleteOrCancel)),
-        encode_(nullptr) {}
+        onStreamCompleteOrCancel_(std::move(onStreamCompleteOrCancel)) {}
 
   Ptr copy() {
     auto refCount = refCount_.fetch_add(1, std::memory_order_relaxed);
@@ -245,7 +237,7 @@ class ServerPublisherStream : private StreamServerCallback {
   // otherwise by queue on publish
   bool processPayloads() {
     clientEventBase_->dcheckIsInEventBaseThread();
-    DCHECK(encode_);
+    DCHECK(encodeOrQueue_.isClosed());
 
     DCHECK(!queue_.isClosed());
 
@@ -311,10 +303,10 @@ class ServerPublisherStream : private StreamServerCallback {
 
   CallOnceFunction onStreamCompleteOrCancel_;
 
-  // these will be combined into a single atomic in a future diff
-  Queue<T> unencodedQueue_;
-  folly::Try<StreamPayload> (*encode_)(folly::Try<T>&&);
-  std::mutex encodeMutex_;
+  using EncodeFn = typename std::remove_pointer_t<folly::Try<StreamPayload> (*)(
+      folly::Try<T>&&)>;
+  typename twowaybridge_detail::AtomicQueueOrPtr<folly::Try<T>, EncodeFn>
+      encodeOrQueue_;
 
   // these will be combined into a single atomic in a future diff
   // must only be read/written on client thread

@@ -61,11 +61,17 @@ class Queue {
     }
   }
 
+  explicit operator bool() const {
+    return !empty();
+  }
+
   struct Node {
    private:
     template <typename Consumer, typename Message>
     friend class AtomicQueue;
     friend class Queue;
+    template <typename Message, typename Value>
+    friend class AtomicQueueOrPtr;
 
     explicit Node(T&& t) : value(std::move(t)) {}
 
@@ -76,8 +82,18 @@ class Queue {
  private:
   template <typename Consumer, typename Message>
   friend class AtomicQueue;
+  template <typename Message, typename Value>
+  friend class AtomicQueueOrPtr;
 
   explicit Queue(Node* head) : head_(head) {}
+  static Queue fromReversed(Node* tail) {
+    // Reverse a linked list.
+    Node* head{nullptr};
+    while (tail) {
+      head = std::exchange(tail, std::exchange(tail->next, head));
+    }
+    return Queue(head);
+  }
 
   Node* head_{nullptr};
 };
@@ -97,7 +113,8 @@ class AtomicQueue {
       case Type::CLOSED:
         return;
       case Type::TAIL:
-        makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
+        MessageQueue::fromReversed(
+            reinterpret_cast<typename MessageQueue::Node*>(ptr));
         return;
       default:
         folly::assume_unreachable();
@@ -187,7 +204,8 @@ class AtomicQueue {
       case Type::EMPTY:
         return;
       case Type::TAIL:
-        makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
+        MessageQueue::fromReversed(
+            reinterpret_cast<typename MessageQueue::Node*>(ptr));
         return;
       case Type::CONSUMER:
         reinterpret_cast<Consumer*>(ptr)->canceled();
@@ -209,7 +227,8 @@ class AtomicQueue {
     auto ptr = storage & kPointerMask;
     switch (type) {
       case Type::TAIL:
-        return makeQueue(reinterpret_cast<typename MessageQueue::Node*>(ptr));
+        return MessageQueue::fromReversed(
+            reinterpret_cast<typename MessageQueue::Node*>(ptr));
       case Type::EMPTY:
         return MessageQueue();
       case Type::CLOSED:
@@ -226,14 +245,110 @@ class AtomicQueue {
  private:
   enum class Type : intptr_t { EMPTY = 0, CONSUMER = 1, TAIL = 2, CLOSED = 3 };
 
-  MessageQueue makeQueue(typename MessageQueue::Node* tail) {
-    // Reverse a linked list.
-    typename MessageQueue::Node* head{nullptr};
-    while (tail) {
-      head = std::exchange(tail, std::exchange(tail->next, head));
-    }
-    return MessageQueue(head);
+  static constexpr intptr_t kTypeMask = 3;
+  static constexpr intptr_t kPointerMask = ~kTypeMask;
+
+  std::atomic<intptr_t> storage_{0};
+};
+
+// queue with no consumers
+template <typename Message, typename Value>
+class AtomicQueueOrPtr {
+ public:
+  using MessageQueue = Queue<Message>;
+
+  AtomicQueueOrPtr() {}
+  ~AtomicQueueOrPtr() {
+    auto storage = storage_.load(std::memory_order_relaxed);
+    auto type = static_cast<Type>(storage & kTypeMask);
+    auto ptr = storage & kPointerMask;
+    switch (type) {
+      case Type::EMPTY:
+      case Type::CLOSED:
+        return;
+      case Type::TAIL:
+        MessageQueue::fromReversed(
+            reinterpret_cast<typename MessageQueue::Node*>(ptr));
+        return;
+      default:
+        folly::assume_unreachable();
+    };
   }
+  AtomicQueueOrPtr(const AtomicQueueOrPtr&) = delete;
+  AtomicQueueOrPtr& operator=(const AtomicQueueOrPtr&) = delete;
+
+  // returns closed payload and does not move from message on failure
+  Value* pushOrGetClosedPayload(Message&& message) {
+    auto storage = storage_.load(std::memory_order_acquire);
+    if (static_cast<Type>(storage & kTypeMask) == Type::CLOSED) {
+      return reinterpret_cast<Value*>(storage & kPointerMask);
+    }
+
+    std::unique_ptr<typename MessageQueue::Node> node(
+        new typename MessageQueue::Node(std::move(message)));
+    assert(!(reinterpret_cast<intptr_t>(node.get()) & kTypeMask));
+
+    while (true) {
+      auto type = static_cast<Type>(storage & kTypeMask);
+      auto ptr = storage & kPointerMask;
+      switch (type) {
+        case Type::EMPTY:
+        case Type::TAIL:
+          node->next = reinterpret_cast<typename MessageQueue::Node*>(ptr);
+          if (storage_.compare_exchange_weak(
+                  storage,
+                  reinterpret_cast<intptr_t>(node.get()) |
+                      static_cast<intptr_t>(Type::TAIL),
+                  std::memory_order_release,
+                  std::memory_order_acquire)) {
+            node.release();
+            return nullptr;
+          }
+          break;
+        case Type::CLOSED:
+          message = std::move(node->value);
+          return reinterpret_cast<Value*>(ptr);
+        default:
+          folly::assume_unreachable();
+      }
+    }
+  }
+
+  MessageQueue closeOrGetMessages(Value* payload) {
+    assert(!(reinterpret_cast<intptr_t>(payload) & kTypeMask));
+    assert(payload); // nullptr is used as a sentinel
+    while (true) {
+      auto storage = storage_.exchange(
+          static_cast<intptr_t>(Type::EMPTY), std::memory_order_acquire);
+      auto type = static_cast<Type>(storage & kTypeMask);
+      auto ptr = storage & kPointerMask;
+      switch (type) {
+        case Type::TAIL:
+          return MessageQueue::fromReversed(
+              reinterpret_cast<typename MessageQueue::Node*>(ptr));
+        case Type::EMPTY:
+          if (storage_.compare_exchange_weak(
+                  storage,
+                  reinterpret_cast<intptr_t>(payload) |
+                      static_cast<intptr_t>(Type::CLOSED),
+                  std::memory_order_release,
+                  std::memory_order_relaxed)) {
+            return MessageQueue();
+          }
+          break;
+        case Type::CLOSED:
+        default:
+          folly::assume_unreachable();
+      }
+    }
+  }
+
+  bool isClosed() const {
+    return static_cast<Type>(storage_ & kTypeMask) == Type::CLOSED;
+  }
+
+ private:
+  enum class Type : intptr_t { EMPTY = 0, TAIL = 1, CLOSED = 2 };
 
   static constexpr intptr_t kTypeMask = 3;
   static constexpr intptr_t kPointerMask = ~kTypeMask;
