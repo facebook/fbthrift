@@ -19,5 +19,69 @@ class GeneratedEnumMetadata<::cpp2::TypedEnum> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-
+template <>
+class GeneratedStructMetadata<::cpp2::MyUnion> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::MyField> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::MyStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithUnion> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::RecursiveStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithContainers> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithSharedConst> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::Empty> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithRef> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithRefTypeUnique> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithRefTypeShared> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithRefTypeSharedConst> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
 } // apache::thrift::detail::metadata

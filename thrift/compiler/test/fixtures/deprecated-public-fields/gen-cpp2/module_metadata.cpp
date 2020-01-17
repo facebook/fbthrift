@@ -4,11 +4,31 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/deprecated-public-fields/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void GeneratedStructMetadata<::cpp2::Foo>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Foo", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Foo = res.first->second;
+  module_Foo.name = "module.Foo";
+  module_Foo.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_Foo_bar_1;
+  module_Foo_bar_1.id = 1;
+  module_Foo_bar_1.name = "bar";
+  module_Foo_bar_1.is_optional = true;
+  auto module_Foo_bar_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_Foo_bar_1_type->initialize(module_Foo_bar_1.type);
+  module_Foo.fields.push_back(std::move(module_Foo_bar_1));
+}
 
 } // apache::thrift::detail::metadata

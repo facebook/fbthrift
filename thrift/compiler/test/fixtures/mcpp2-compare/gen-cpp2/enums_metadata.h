@@ -39,5 +39,9 @@ class GeneratedEnumMetadata<::facebook::ns::qwerty::AnEnumE> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-
+template <>
+class GeneratedStructMetadata<::facebook::ns::qwerty::SomeStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
 } // apache::thrift::detail::metadata

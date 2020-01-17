@@ -4,11 +4,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/refs/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::cpp2::TypedEnum>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.TypedEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -19,6 +22,362 @@ void GeneratedEnumMetadata<::cpp2::TypedEnum>::genMetadata(ThriftMetadata& metad
   module_TypedEnum.name = "module.TypedEnum";
   module_TypedEnum.elements[0] = "VAL1";
   module_TypedEnum.elements[1] = "VAL2";
+}
+
+void GeneratedStructMetadata<::cpp2::MyUnion>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyUnion = res.first->second;
+  module_MyUnion.name = "module.MyUnion";
+  module_MyUnion.is_union = true;
+  ::apache::thrift::metadata::ThriftField module_MyUnion_anInteger_1;
+  module_MyUnion_anInteger_1.id = 1;
+  module_MyUnion_anInteger_1.name = "anInteger";
+  module_MyUnion_anInteger_1.is_optional = false;
+  auto module_MyUnion_anInteger_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_MyUnion_anInteger_1_type->initialize(module_MyUnion_anInteger_1.type);
+  module_MyUnion.fields.push_back(std::move(module_MyUnion_anInteger_1));
+  ::apache::thrift::metadata::ThriftField module_MyUnion_aString_2;
+  module_MyUnion_aString_2.id = 2;
+  module_MyUnion_aString_2.name = "aString";
+  module_MyUnion_aString_2.is_optional = false;
+  auto module_MyUnion_aString_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_MyUnion_aString_2_type->initialize(module_MyUnion_aString_2.type);
+  module_MyUnion.fields.push_back(std::move(module_MyUnion_aString_2));
+}
+void GeneratedStructMetadata<::cpp2::MyField>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyField", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyField = res.first->second;
+  module_MyField.name = "module.MyField";
+  module_MyField.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_MyField_opt_value_1;
+  module_MyField_opt_value_1.id = 1;
+  module_MyField_opt_value_1.name = "opt_value";
+  module_MyField_opt_value_1.is_optional = true;
+  auto module_MyField_opt_value_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_MyField_opt_value_1_type->initialize(module_MyField_opt_value_1.type);
+  module_MyField.fields.push_back(std::move(module_MyField_opt_value_1));
+  ::apache::thrift::metadata::ThriftField module_MyField_value_2;
+  module_MyField_value_2.id = 2;
+  module_MyField_value_2.name = "value";
+  module_MyField_value_2.is_optional = false;
+  auto module_MyField_value_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_MyField_value_2_type->initialize(module_MyField_value_2.type);
+  module_MyField.fields.push_back(std::move(module_MyField_value_2));
+  ::apache::thrift::metadata::ThriftField module_MyField_req_value_3;
+  module_MyField_req_value_3.id = 3;
+  module_MyField_req_value_3.name = "req_value";
+  module_MyField_req_value_3.is_optional = false;
+  auto module_MyField_req_value_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_MyField_req_value_3_type->initialize(module_MyField_req_value_3.type);
+  module_MyField.fields.push_back(std::move(module_MyField_req_value_3));
+}
+void GeneratedStructMetadata<::cpp2::MyStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
+  module_MyStruct.name = "module.MyStruct";
+  module_MyStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_MyStruct_opt_ref_1;
+  module_MyStruct_opt_ref_1.id = 1;
+  module_MyStruct_opt_ref_1.name = "opt_ref";
+  module_MyStruct_opt_ref_1.is_optional = true;
+  auto module_MyStruct_opt_ref_1_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_MyStruct_opt_ref_1_type->initialize(module_MyStruct_opt_ref_1.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_opt_ref_1));
+  ::apache::thrift::metadata::ThriftField module_MyStruct_ref_2;
+  module_MyStruct_ref_2.id = 2;
+  module_MyStruct_ref_2.name = "ref";
+  module_MyStruct_ref_2.is_optional = false;
+  auto module_MyStruct_ref_2_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_MyStruct_ref_2_type->initialize(module_MyStruct_ref_2.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_ref_2));
+  ::apache::thrift::metadata::ThriftField module_MyStruct_req_ref_3;
+  module_MyStruct_req_ref_3.id = 3;
+  module_MyStruct_req_ref_3.name = "req_ref";
+  module_MyStruct_req_ref_3.is_optional = false;
+  auto module_MyStruct_req_ref_3_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_MyStruct_req_ref_3_type->initialize(module_MyStruct_req_ref_3.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_req_ref_3));
+}
+void GeneratedStructMetadata<::cpp2::StructWithUnion>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithUnion = res.first->second;
+  module_StructWithUnion.name = "module.StructWithUnion";
+  module_StructWithUnion.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithUnion_u_1;
+  module_StructWithUnion_u_1.id = 1;
+  module_StructWithUnion_u_1.name = "u";
+  module_StructWithUnion_u_1.is_optional = false;
+  auto module_StructWithUnion_u_1_type = std::make_unique<Union< ::cpp2::MyUnion>>("module.MyUnion", metadata);
+  module_StructWithUnion_u_1_type->initialize(module_StructWithUnion_u_1.type);
+  module_StructWithUnion.fields.push_back(std::move(module_StructWithUnion_u_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithUnion_aDouble_2;
+  module_StructWithUnion_aDouble_2.id = 2;
+  module_StructWithUnion_aDouble_2.name = "aDouble";
+  module_StructWithUnion_aDouble_2.is_optional = false;
+  auto module_StructWithUnion_aDouble_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_StructWithUnion_aDouble_2_type->initialize(module_StructWithUnion_aDouble_2.type);
+  module_StructWithUnion.fields.push_back(std::move(module_StructWithUnion_aDouble_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithUnion_f_3;
+  module_StructWithUnion_f_3.id = 3;
+  module_StructWithUnion_f_3.name = "f";
+  module_StructWithUnion_f_3.is_optional = false;
+  auto module_StructWithUnion_f_3_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_StructWithUnion_f_3_type->initialize(module_StructWithUnion_f_3.type);
+  module_StructWithUnion.fields.push_back(std::move(module_StructWithUnion_f_3));
+}
+void GeneratedStructMetadata<::cpp2::RecursiveStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.RecursiveStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_RecursiveStruct = res.first->second;
+  module_RecursiveStruct.name = "module.RecursiveStruct";
+  module_RecursiveStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_RecursiveStruct_mes_1;
+  module_RecursiveStruct_mes_1.id = 1;
+  module_RecursiveStruct_mes_1.name = "mes";
+  module_RecursiveStruct_mes_1.is_optional = true;
+  auto module_RecursiveStruct_mes_1_type = std::make_unique<List>(std::make_unique<Typedef>("module.RecursiveStruct", std::make_unique<Struct< ::cpp2::RecursiveStruct>>("module.RecursiveStruct", metadata)));
+  module_RecursiveStruct_mes_1_type->initialize(module_RecursiveStruct_mes_1.type);
+  module_RecursiveStruct.fields.push_back(std::move(module_RecursiveStruct_mes_1));
+}
+void GeneratedStructMetadata<::cpp2::StructWithContainers>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithContainers", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithContainers = res.first->second;
+  module_StructWithContainers.name = "module.StructWithContainers";
+  module_StructWithContainers.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithContainers_list_ref_1;
+  module_StructWithContainers_list_ref_1.id = 1;
+  module_StructWithContainers_list_ref_1.name = "list_ref";
+  module_StructWithContainers_list_ref_1.is_optional = false;
+  auto module_StructWithContainers_list_ref_1_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_StructWithContainers_list_ref_1_type->initialize(module_StructWithContainers_list_ref_1.type);
+  module_StructWithContainers.fields.push_back(std::move(module_StructWithContainers_list_ref_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithContainers_set_ref_2;
+  module_StructWithContainers_set_ref_2.id = 2;
+  module_StructWithContainers_set_ref_2.name = "set_ref";
+  module_StructWithContainers_set_ref_2.is_optional = false;
+  auto module_StructWithContainers_set_ref_2_type = std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_StructWithContainers_set_ref_2_type->initialize(module_StructWithContainers_set_ref_2.type);
+  module_StructWithContainers.fields.push_back(std::move(module_StructWithContainers_set_ref_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithContainers_map_ref_3;
+  module_StructWithContainers_map_ref_3.id = 3;
+  module_StructWithContainers_map_ref_3.name = "map_ref";
+  module_StructWithContainers_map_ref_3.is_optional = false;
+  auto module_StructWithContainers_map_ref_3_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_StructWithContainers_map_ref_3_type->initialize(module_StructWithContainers_map_ref_3.type);
+  module_StructWithContainers.fields.push_back(std::move(module_StructWithContainers_map_ref_3));
+  ::apache::thrift::metadata::ThriftField module_StructWithContainers_list_ref_unique_4;
+  module_StructWithContainers_list_ref_unique_4.id = 4;
+  module_StructWithContainers_list_ref_unique_4.name = "list_ref_unique";
+  module_StructWithContainers_list_ref_unique_4.is_optional = false;
+  auto module_StructWithContainers_list_ref_unique_4_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_StructWithContainers_list_ref_unique_4_type->initialize(module_StructWithContainers_list_ref_unique_4.type);
+  module_StructWithContainers.fields.push_back(std::move(module_StructWithContainers_list_ref_unique_4));
+  ::apache::thrift::metadata::ThriftField module_StructWithContainers_set_ref_shared_5;
+  module_StructWithContainers_set_ref_shared_5.id = 5;
+  module_StructWithContainers_set_ref_shared_5.name = "set_ref_shared";
+  module_StructWithContainers_set_ref_shared_5.is_optional = false;
+  auto module_StructWithContainers_set_ref_shared_5_type = std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_StructWithContainers_set_ref_shared_5_type->initialize(module_StructWithContainers_set_ref_shared_5.type);
+  module_StructWithContainers.fields.push_back(std::move(module_StructWithContainers_set_ref_shared_5));
+  ::apache::thrift::metadata::ThriftField module_StructWithContainers_list_ref_shared_const_6;
+  module_StructWithContainers_list_ref_shared_const_6.id = 6;
+  module_StructWithContainers_list_ref_shared_const_6.name = "list_ref_shared_const";
+  module_StructWithContainers_list_ref_shared_const_6.is_optional = false;
+  auto module_StructWithContainers_list_ref_shared_const_6_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_StructWithContainers_list_ref_shared_const_6_type->initialize(module_StructWithContainers_list_ref_shared_const_6.type);
+  module_StructWithContainers.fields.push_back(std::move(module_StructWithContainers_list_ref_shared_const_6));
+}
+void GeneratedStructMetadata<::cpp2::StructWithSharedConst>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithSharedConst", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithSharedConst = res.first->second;
+  module_StructWithSharedConst.name = "module.StructWithSharedConst";
+  module_StructWithSharedConst.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithSharedConst_opt_shared_const_1;
+  module_StructWithSharedConst_opt_shared_const_1.id = 1;
+  module_StructWithSharedConst_opt_shared_const_1.name = "opt_shared_const";
+  module_StructWithSharedConst_opt_shared_const_1.is_optional = true;
+  auto module_StructWithSharedConst_opt_shared_const_1_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_StructWithSharedConst_opt_shared_const_1_type->initialize(module_StructWithSharedConst_opt_shared_const_1.type);
+  module_StructWithSharedConst.fields.push_back(std::move(module_StructWithSharedConst_opt_shared_const_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithSharedConst_shared_const_2;
+  module_StructWithSharedConst_shared_const_2.id = 2;
+  module_StructWithSharedConst_shared_const_2.name = "shared_const";
+  module_StructWithSharedConst_shared_const_2.is_optional = false;
+  auto module_StructWithSharedConst_shared_const_2_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_StructWithSharedConst_shared_const_2_type->initialize(module_StructWithSharedConst_shared_const_2.type);
+  module_StructWithSharedConst.fields.push_back(std::move(module_StructWithSharedConst_shared_const_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithSharedConst_req_shared_const_3;
+  module_StructWithSharedConst_req_shared_const_3.id = 3;
+  module_StructWithSharedConst_req_shared_const_3.name = "req_shared_const";
+  module_StructWithSharedConst_req_shared_const_3.is_optional = false;
+  auto module_StructWithSharedConst_req_shared_const_3_type = std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata);
+  module_StructWithSharedConst_req_shared_const_3_type->initialize(module_StructWithSharedConst_req_shared_const_3.type);
+  module_StructWithSharedConst.fields.push_back(std::move(module_StructWithSharedConst_req_shared_const_3));
+}
+void GeneratedStructMetadata<::cpp2::Empty>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Empty", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Empty = res.first->second;
+  module_Empty.name = "module.Empty";
+  module_Empty.is_union = false;
+}
+void GeneratedStructMetadata<::cpp2::StructWithRef>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithRef", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithRef = res.first->second;
+  module_StructWithRef.name = "module.StructWithRef";
+  module_StructWithRef.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithRef_def_field_1;
+  module_StructWithRef_def_field_1.id = 1;
+  module_StructWithRef_def_field_1.name = "def_field";
+  module_StructWithRef_def_field_1.is_optional = false;
+  auto module_StructWithRef_def_field_1_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRef_def_field_1_type->initialize(module_StructWithRef_def_field_1.type);
+  module_StructWithRef.fields.push_back(std::move(module_StructWithRef_def_field_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithRef_opt_field_2;
+  module_StructWithRef_opt_field_2.id = 2;
+  module_StructWithRef_opt_field_2.name = "opt_field";
+  module_StructWithRef_opt_field_2.is_optional = true;
+  auto module_StructWithRef_opt_field_2_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRef_opt_field_2_type->initialize(module_StructWithRef_opt_field_2.type);
+  module_StructWithRef.fields.push_back(std::move(module_StructWithRef_opt_field_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithRef_req_field_3;
+  module_StructWithRef_req_field_3.id = 3;
+  module_StructWithRef_req_field_3.name = "req_field";
+  module_StructWithRef_req_field_3.is_optional = false;
+  auto module_StructWithRef_req_field_3_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRef_req_field_3_type->initialize(module_StructWithRef_req_field_3.type);
+  module_StructWithRef.fields.push_back(std::move(module_StructWithRef_req_field_3));
+}
+void GeneratedStructMetadata<::cpp2::StructWithRefTypeUnique>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithRefTypeUnique", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithRefTypeUnique = res.first->second;
+  module_StructWithRefTypeUnique.name = "module.StructWithRefTypeUnique";
+  module_StructWithRefTypeUnique.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeUnique_def_field_1;
+  module_StructWithRefTypeUnique_def_field_1.id = 1;
+  module_StructWithRefTypeUnique_def_field_1.name = "def_field";
+  module_StructWithRefTypeUnique_def_field_1.is_optional = false;
+  auto module_StructWithRefTypeUnique_def_field_1_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeUnique_def_field_1_type->initialize(module_StructWithRefTypeUnique_def_field_1.type);
+  module_StructWithRefTypeUnique.fields.push_back(std::move(module_StructWithRefTypeUnique_def_field_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeUnique_opt_field_2;
+  module_StructWithRefTypeUnique_opt_field_2.id = 2;
+  module_StructWithRefTypeUnique_opt_field_2.name = "opt_field";
+  module_StructWithRefTypeUnique_opt_field_2.is_optional = true;
+  auto module_StructWithRefTypeUnique_opt_field_2_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeUnique_opt_field_2_type->initialize(module_StructWithRefTypeUnique_opt_field_2.type);
+  module_StructWithRefTypeUnique.fields.push_back(std::move(module_StructWithRefTypeUnique_opt_field_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeUnique_req_field_3;
+  module_StructWithRefTypeUnique_req_field_3.id = 3;
+  module_StructWithRefTypeUnique_req_field_3.name = "req_field";
+  module_StructWithRefTypeUnique_req_field_3.is_optional = false;
+  auto module_StructWithRefTypeUnique_req_field_3_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeUnique_req_field_3_type->initialize(module_StructWithRefTypeUnique_req_field_3.type);
+  module_StructWithRefTypeUnique.fields.push_back(std::move(module_StructWithRefTypeUnique_req_field_3));
+}
+void GeneratedStructMetadata<::cpp2::StructWithRefTypeShared>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithRefTypeShared", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithRefTypeShared = res.first->second;
+  module_StructWithRefTypeShared.name = "module.StructWithRefTypeShared";
+  module_StructWithRefTypeShared.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeShared_def_field_1;
+  module_StructWithRefTypeShared_def_field_1.id = 1;
+  module_StructWithRefTypeShared_def_field_1.name = "def_field";
+  module_StructWithRefTypeShared_def_field_1.is_optional = false;
+  auto module_StructWithRefTypeShared_def_field_1_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeShared_def_field_1_type->initialize(module_StructWithRefTypeShared_def_field_1.type);
+  module_StructWithRefTypeShared.fields.push_back(std::move(module_StructWithRefTypeShared_def_field_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeShared_opt_field_2;
+  module_StructWithRefTypeShared_opt_field_2.id = 2;
+  module_StructWithRefTypeShared_opt_field_2.name = "opt_field";
+  module_StructWithRefTypeShared_opt_field_2.is_optional = true;
+  auto module_StructWithRefTypeShared_opt_field_2_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeShared_opt_field_2_type->initialize(module_StructWithRefTypeShared_opt_field_2.type);
+  module_StructWithRefTypeShared.fields.push_back(std::move(module_StructWithRefTypeShared_opt_field_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeShared_req_field_3;
+  module_StructWithRefTypeShared_req_field_3.id = 3;
+  module_StructWithRefTypeShared_req_field_3.name = "req_field";
+  module_StructWithRefTypeShared_req_field_3.is_optional = false;
+  auto module_StructWithRefTypeShared_req_field_3_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeShared_req_field_3_type->initialize(module_StructWithRefTypeShared_req_field_3.type);
+  module_StructWithRefTypeShared.fields.push_back(std::move(module_StructWithRefTypeShared_req_field_3));
+}
+void GeneratedStructMetadata<::cpp2::StructWithRefTypeSharedConst>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithRefTypeSharedConst", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithRefTypeSharedConst = res.first->second;
+  module_StructWithRefTypeSharedConst.name = "module.StructWithRefTypeSharedConst";
+  module_StructWithRefTypeSharedConst.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeSharedConst_def_field_1;
+  module_StructWithRefTypeSharedConst_def_field_1.id = 1;
+  module_StructWithRefTypeSharedConst_def_field_1.name = "def_field";
+  module_StructWithRefTypeSharedConst_def_field_1.is_optional = false;
+  auto module_StructWithRefTypeSharedConst_def_field_1_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeSharedConst_def_field_1_type->initialize(module_StructWithRefTypeSharedConst_def_field_1.type);
+  module_StructWithRefTypeSharedConst.fields.push_back(std::move(module_StructWithRefTypeSharedConst_def_field_1));
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeSharedConst_opt_field_2;
+  module_StructWithRefTypeSharedConst_opt_field_2.id = 2;
+  module_StructWithRefTypeSharedConst_opt_field_2.name = "opt_field";
+  module_StructWithRefTypeSharedConst_opt_field_2.is_optional = true;
+  auto module_StructWithRefTypeSharedConst_opt_field_2_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeSharedConst_opt_field_2_type->initialize(module_StructWithRefTypeSharedConst_opt_field_2.type);
+  module_StructWithRefTypeSharedConst.fields.push_back(std::move(module_StructWithRefTypeSharedConst_opt_field_2));
+  ::apache::thrift::metadata::ThriftField module_StructWithRefTypeSharedConst_req_field_3;
+  module_StructWithRefTypeSharedConst_req_field_3.id = 3;
+  module_StructWithRefTypeSharedConst_req_field_3.name = "req_field";
+  module_StructWithRefTypeSharedConst_req_field_3.is_optional = false;
+  auto module_StructWithRefTypeSharedConst_req_field_3_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefTypeSharedConst_req_field_3_type->initialize(module_StructWithRefTypeSharedConst_req_field_3.type);
+  module_StructWithRefTypeSharedConst.fields.push_back(std::move(module_StructWithRefTypeSharedConst_req_field_3));
+}
+void GeneratedStructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.StructWithRefAndAnnotCppNoexceptMoveCtor", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_StructWithRefAndAnnotCppNoexceptMoveCtor = res.first->second;
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor.name = "module.StructWithRefAndAnnotCppNoexceptMoveCtor";
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1;
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1.id = 1;
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1.name = "def_field";
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1.is_optional = false;
+  auto module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1_type = std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata);
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1_type->initialize(module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1.type);
+  module_StructWithRefAndAnnotCppNoexceptMoveCtor.fields.push_back(std::move(module_StructWithRefAndAnnotCppNoexceptMoveCtor_def_field_1));
 }
 
 } // apache::thrift::detail::metadata

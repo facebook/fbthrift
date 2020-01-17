@@ -4,11 +4,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::cpp2::B>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.B", ::apache::thrift::metadata::ThriftEnum{});
@@ -18,6 +21,23 @@ void GeneratedEnumMetadata<::cpp2::B>::genMetadata(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftEnum& module_B = res.first->second;
   module_B.name = "module.B";
   module_B.elements[0] = "HELLO";
+}
+
+void GeneratedStructMetadata<::cpp2::A>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.A", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_A = res.first->second;
+  module_A.name = "module.A";
+  module_A.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_A_useless_field_1;
+  module_A_useless_field_1.id = 1;
+  module_A_useless_field_1.name = "useless_field";
+  module_A_useless_field_1.is_optional = false;
+  auto module_A_useless_field_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_A_useless_field_1_type->initialize(module_A_useless_field_1.type);
+  module_A.fields.push_back(std::move(module_A_useless_field_1));
 }
 
 } // apache::thrift::detail::metadata

@@ -14,5 +14,14 @@ namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
-
+template <>
+class GeneratedStructMetadata<::cpp2::House> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::cpp2::Field> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
 } // apache::thrift::detail::metadata

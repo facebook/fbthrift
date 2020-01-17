@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_metadata.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_metadata.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_metadata.h"
@@ -11,6 +12,8 @@
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::some::ns::EnumB>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.EnumB", ::apache::thrift::metadata::ThriftEnum{});
@@ -20,6 +23,81 @@ void GeneratedEnumMetadata<::some::ns::EnumB>::genMetadata(ThriftMetadata& metad
   ::apache::thrift::metadata::ThriftEnum& module_EnumB = res.first->second;
   module_EnumB.name = "module.EnumB";
   module_EnumB.elements[1] = "EMPTY";
+}
+
+void GeneratedStructMetadata<::some::ns::ModuleA>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ModuleA", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ModuleA = res.first->second;
+  module_ModuleA.name = "module.ModuleA";
+  module_ModuleA.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ModuleA_i32Field_1;
+  module_ModuleA_i32Field_1.id = 1;
+  module_ModuleA_i32Field_1.name = "i32Field";
+  module_ModuleA_i32Field_1.is_optional = false;
+  auto module_ModuleA_i32Field_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_ModuleA_i32Field_1_type->initialize(module_ModuleA_i32Field_1.type);
+  module_ModuleA.fields.push_back(std::move(module_ModuleA_i32Field_1));
+  ::apache::thrift::metadata::ThriftField module_ModuleA_strField_2;
+  module_ModuleA_strField_2.id = 2;
+  module_ModuleA_strField_2.name = "strField";
+  module_ModuleA_strField_2.is_optional = false;
+  auto module_ModuleA_strField_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_ModuleA_strField_2_type->initialize(module_ModuleA_strField_2.type);
+  module_ModuleA.fields.push_back(std::move(module_ModuleA_strField_2));
+  ::apache::thrift::metadata::ThriftField module_ModuleA_listField_3;
+  module_ModuleA_listField_3.id = 3;
+  module_ModuleA_listField_3.name = "listField";
+  module_ModuleA_listField_3.is_optional = false;
+  auto module_ModuleA_listField_3_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I16));
+  module_ModuleA_listField_3_type->initialize(module_ModuleA_listField_3.type);
+  module_ModuleA.fields.push_back(std::move(module_ModuleA_listField_3));
+  ::apache::thrift::metadata::ThriftField module_ModuleA_mapField_4;
+  module_ModuleA_mapField_4.id = 4;
+  module_ModuleA_mapField_4.name = "mapField";
+  module_ModuleA_mapField_4.is_optional = false;
+  auto module_ModuleA_mapField_4_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ModuleA_mapField_4_type->initialize(module_ModuleA_mapField_4.type);
+  module_ModuleA.fields.push_back(std::move(module_ModuleA_mapField_4));
+  ::apache::thrift::metadata::ThriftField module_ModuleA_inclAField_5;
+  module_ModuleA_inclAField_5.id = 5;
+  module_ModuleA_inclAField_5.name = "inclAField";
+  module_ModuleA_inclAField_5.is_optional = false;
+  auto module_ModuleA_inclAField_5_type = std::make_unique<Struct< ::some::ns::IncludedA>>("include1.IncludedA", metadata);
+  module_ModuleA_inclAField_5_type->initialize(module_ModuleA_inclAField_5.type);
+  module_ModuleA.fields.push_back(std::move(module_ModuleA_inclAField_5));
+  ::apache::thrift::metadata::ThriftField module_ModuleA_inclBField_6;
+  module_ModuleA_inclBField_6.id = 6;
+  module_ModuleA_inclBField_6.name = "inclBField";
+  module_ModuleA_inclBField_6.is_optional = false;
+  auto module_ModuleA_inclBField_6_type = std::make_unique<Struct< ::some::ns::IncludedB>>("include2.IncludedB", metadata);
+  module_ModuleA_inclBField_6_type->initialize(module_ModuleA_inclBField_6.type);
+  module_ModuleA.fields.push_back(std::move(module_ModuleA_inclBField_6));
+}
+void GeneratedStructMetadata<::some::ns::ModuleB>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ModuleB", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ModuleB = res.first->second;
+  module_ModuleB.name = "module.ModuleB";
+  module_ModuleB.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ModuleB_i32Field_1;
+  module_ModuleB_i32Field_1.id = 1;
+  module_ModuleB_i32Field_1.name = "i32Field";
+  module_ModuleB_i32Field_1.is_optional = false;
+  auto module_ModuleB_i32Field_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_ModuleB_i32Field_1_type->initialize(module_ModuleB_i32Field_1.type);
+  module_ModuleB.fields.push_back(std::move(module_ModuleB_i32Field_1));
+  ::apache::thrift::metadata::ThriftField module_ModuleB_inclEnumB_2;
+  module_ModuleB_inclEnumB_2.id = 2;
+  module_ModuleB_inclEnumB_2.name = "inclEnumB";
+  module_ModuleB_inclEnumB_2.is_optional = false;
+  auto module_ModuleB_inclEnumB_2_type = std::make_unique<Enum< ::some::ns::EnumB>>("module.EnumB", metadata);
+  module_ModuleB_inclEnumB_2_type->initialize(module_ModuleB_inclEnumB_2.type);
+  module_ModuleB.fields.push_back(std::move(module_ModuleB_inclEnumB_2));
 }
 
 } // apache::thrift::detail::metadata

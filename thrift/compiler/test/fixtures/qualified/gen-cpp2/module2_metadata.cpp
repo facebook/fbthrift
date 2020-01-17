@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_metadata.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_metadata.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_metadata.h"
@@ -11,6 +12,55 @@
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void GeneratedStructMetadata<::module2::Struct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module2.Struct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module2_Struct = res.first->second;
+  module2_Struct.name = "module2.Struct";
+  module2_Struct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module2_Struct_first_1;
+  module2_Struct_first_1.id = 1;
+  module2_Struct_first_1.name = "first";
+  module2_Struct_first_1.is_optional = false;
+  auto module2_Struct_first_1_type = std::make_unique<Struct< ::module0::Struct>>("module0.Struct", metadata);
+  module2_Struct_first_1_type->initialize(module2_Struct_first_1.type);
+  module2_Struct.fields.push_back(std::move(module2_Struct_first_1));
+  ::apache::thrift::metadata::ThriftField module2_Struct_second_2;
+  module2_Struct_second_2.id = 2;
+  module2_Struct_second_2.name = "second";
+  module2_Struct_second_2.is_optional = false;
+  auto module2_Struct_second_2_type = std::make_unique<Struct< ::module1::Struct>>("module1.Struct", metadata);
+  module2_Struct_second_2_type->initialize(module2_Struct_second_2.type);
+  module2_Struct.fields.push_back(std::move(module2_Struct_second_2));
+}
+void GeneratedStructMetadata<::module2::BigStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module2.BigStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module2_BigStruct = res.first->second;
+  module2_BigStruct.name = "module2.BigStruct";
+  module2_BigStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module2_BigStruct_s_1;
+  module2_BigStruct_s_1.id = 1;
+  module2_BigStruct_s_1.name = "s";
+  module2_BigStruct_s_1.is_optional = false;
+  auto module2_BigStruct_s_1_type = std::make_unique<Struct< ::module2::Struct>>("module2.Struct", metadata);
+  module2_BigStruct_s_1_type->initialize(module2_BigStruct_s_1.type);
+  module2_BigStruct.fields.push_back(std::move(module2_BigStruct_s_1));
+  ::apache::thrift::metadata::ThriftField module2_BigStruct_id_2;
+  module2_BigStruct_id_2.id = 2;
+  module2_BigStruct_id_2.name = "id";
+  module2_BigStruct_id_2.is_optional = false;
+  auto module2_BigStruct_id_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module2_BigStruct_id_2_type->initialize(module2_BigStruct_id_2.type);
+  module2_BigStruct.fields.push_back(std::move(module2_BigStruct_id_2));
+}
 
 } // apache::thrift::detail::metadata

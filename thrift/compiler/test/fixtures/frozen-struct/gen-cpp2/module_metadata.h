@@ -19,5 +19,14 @@ class GeneratedEnumMetadata<::some::ns::EnumB> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-
+template <>
+class GeneratedStructMetadata<::some::ns::ModuleA> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::ns::ModuleB> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
 } // apache::thrift::detail::metadata

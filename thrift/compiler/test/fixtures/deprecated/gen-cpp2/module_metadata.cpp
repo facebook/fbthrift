@@ -4,11 +4,68 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/deprecated/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void GeneratedStructMetadata<::cpp2::House>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.House", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_House = res.first->second;
+  module_House.name = "module.House";
+  module_House.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_House_id_1;
+  module_House_id_1.id = 1;
+  module_House_id_1.name = "id";
+  module_House_id_1.is_optional = false;
+  auto module_House_id_1_type = std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  module_House_id_1_type->initialize(module_House_id_1.type);
+  module_House.fields.push_back(std::move(module_House_id_1));
+  ::apache::thrift::metadata::ThriftField module_House_houseName_2;
+  module_House_houseName_2.id = 2;
+  module_House_houseName_2.name = "houseName";
+  module_House_houseName_2.is_optional = false;
+  auto module_House_houseName_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_House_houseName_2_type->initialize(module_House_houseName_2.type);
+  module_House.fields.push_back(std::move(module_House_houseName_2));
+  ::apache::thrift::metadata::ThriftField module_House_houseColors_3;
+  module_House_houseColors_3.id = 3;
+  module_House_houseColors_3.name = "houseColors";
+  module_House_houseColors_3.is_optional = true;
+  auto module_House_houseColors_3_type = std::make_unique<Set>(std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::I64)));
+  module_House_houseColors_3_type->initialize(module_House_houseColors_3.type);
+  module_House.fields.push_back(std::move(module_House_houseColors_3));
+}
+void GeneratedStructMetadata<::cpp2::Field>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Field", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Field = res.first->second;
+  module_Field.name = "module.Field";
+  module_Field.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_Field_id_1;
+  module_Field_id_1.id = 1;
+  module_Field_id_1.name = "id";
+  module_Field_id_1.is_optional = false;
+  auto module_Field_id_1_type = std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  module_Field_id_1_type->initialize(module_Field_id_1.type);
+  module_Field.fields.push_back(std::move(module_Field_id_1));
+  ::apache::thrift::metadata::ThriftField module_Field_fieldType_2;
+  module_Field_fieldType_2.id = 2;
+  module_Field_fieldType_2.name = "fieldType";
+  module_Field_fieldType_2.is_optional = false;
+  auto module_Field_fieldType_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_Field_fieldType_2_type->initialize(module_Field_fieldType_2.type);
+  module_Field.fields.push_back(std::move(module_Field_fieldType_2));
+}
 
 } // apache::thrift::detail::metadata

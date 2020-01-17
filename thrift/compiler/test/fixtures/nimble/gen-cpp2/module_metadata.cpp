@@ -4,11 +4,52 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/nimble/gen-cpp2/module_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void GeneratedStructMetadata<::cpp2::BasicTypes>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.BasicTypes", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_BasicTypes = res.first->second;
+  module_BasicTypes.name = "module.BasicTypes";
+  module_BasicTypes.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_BasicTypes_first_1;
+  module_BasicTypes_first_1.id = 1;
+  module_BasicTypes_first_1.name = "first";
+  module_BasicTypes_first_1.is_optional = false;
+  auto module_BasicTypes_first_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_BasicTypes_first_1_type->initialize(module_BasicTypes_first_1.type);
+  module_BasicTypes.fields.push_back(std::move(module_BasicTypes_first_1));
+  ::apache::thrift::metadata::ThriftField module_BasicTypes_second_2;
+  module_BasicTypes_second_2.id = 2;
+  module_BasicTypes_second_2.name = "second";
+  module_BasicTypes_second_2.is_optional = true;
+  auto module_BasicTypes_second_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_BasicTypes_second_2_type->initialize(module_BasicTypes_second_2.type);
+  module_BasicTypes.fields.push_back(std::move(module_BasicTypes_second_2));
+  ::apache::thrift::metadata::ThriftField module_BasicTypes_third_3;
+  module_BasicTypes_third_3.id = 3;
+  module_BasicTypes_third_3.name = "third";
+  module_BasicTypes_third_3.is_optional = true;
+  auto module_BasicTypes_third_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_BasicTypes_third_3_type->initialize(module_BasicTypes_third_3.type);
+  module_BasicTypes.fields.push_back(std::move(module_BasicTypes_third_3));
+  ::apache::thrift::metadata::ThriftField module_BasicTypes_isTrue_4;
+  module_BasicTypes_isTrue_4.id = 4;
+  module_BasicTypes_isTrue_4.name = "isTrue";
+  module_BasicTypes_isTrue_4.is_optional = false;
+  auto module_BasicTypes_isTrue_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  module_BasicTypes_isTrue_4_type->initialize(module_BasicTypes_isTrue_4.type);
+  module_BasicTypes.fields.push_back(std::move(module_BasicTypes_isTrue_4));
+}
 
 } // apache::thrift::detail::metadata

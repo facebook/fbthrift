@@ -4,11 +4,14 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::a::different::ns::AnEnum>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("includes.AnEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -19,6 +22,39 @@ void GeneratedEnumMetadata<::a::different::ns::AnEnum>::genMetadata(ThriftMetada
   includes_AnEnum.name = "includes.AnEnum";
   includes_AnEnum.elements[2] = "FIELDA";
   includes_AnEnum.elements[4] = "FIELDB";
+}
+
+void GeneratedStructMetadata<::a::different::ns::AStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("includes.AStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& includes_AStruct = res.first->second;
+  includes_AStruct.name = "includes.AStruct";
+  includes_AStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField includes_AStruct_FieldA_1;
+  includes_AStruct_FieldA_1.id = 1;
+  includes_AStruct_FieldA_1.name = "FieldA";
+  includes_AStruct_FieldA_1.is_optional = false;
+  auto includes_AStruct_FieldA_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  includes_AStruct_FieldA_1_type->initialize(includes_AStruct_FieldA_1.type);
+  includes_AStruct.fields.push_back(std::move(includes_AStruct_FieldA_1));
+}
+void GeneratedStructMetadata<::a::different::ns::AStructB>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("includes.AStructB", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& includes_AStructB = res.first->second;
+  includes_AStructB.name = "includes.AStructB";
+  includes_AStructB.is_union = false;
+  ::apache::thrift::metadata::ThriftField includes_AStructB_FieldA_1;
+  includes_AStructB_FieldA_1.id = 1;
+  includes_AStructB_FieldA_1.name = "FieldA";
+  includes_AStructB_FieldA_1.is_optional = false;
+  auto includes_AStructB_FieldA_1_type = std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct", metadata);
+  includes_AStructB_FieldA_1_type->initialize(includes_AStructB_FieldA_1.type);
+  includes_AStructB.fields.push_back(std::move(includes_AStructB_FieldA_1));
 }
 
 } // apache::thrift::detail::metadata

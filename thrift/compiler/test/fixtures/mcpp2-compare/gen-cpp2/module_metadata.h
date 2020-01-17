@@ -34,5 +34,89 @@ class GeneratedEnumMetadata<::some::valid::ns::MyEnumB> {
  public:
   static void genMetadata(ThriftMetadata& metadata);
 };
-
+template <>
+class GeneratedStructMetadata<::some::valid::ns::Empty> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::ASimpleStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::ASimpleStructNoexcept> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::MyStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::SimpleUnion> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::ComplexUnion> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::AnException> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::AnotherException> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::containerStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::MyIncludedStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::AnnotatedStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::ComplexContainerStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::FloatStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::FloatUnion> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedStructMetadata<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedExceptionMetadata<::some::valid::ns::AnException> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
+template <>
+class GeneratedExceptionMetadata<::some::valid::ns::AnotherException> {
+ public:
+  static void genMetadata(ThriftMetadata& metadata);
+};
 } // apache::thrift::detail::metadata

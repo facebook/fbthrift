@@ -4,12 +4,15 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_metadata.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_metadata.h"
 
 namespace apache::thrift::detail::metadata {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void GeneratedEnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops>::genMetadata(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.has_bitwise_ops", ::apache::thrift::metadata::ThriftEnum{});
@@ -54,6 +57,539 @@ void GeneratedEnumMetadata<::apache::thrift::fixtures::types::MyEnumA>::genMetad
   module_MyEnumA.elements[1] = "fieldA";
   module_MyEnumA.elements[2] = "fieldB";
   module_MyEnumA.elements[4] = "fieldC";
+}
+
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::decorated_struct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.decorated_struct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_decorated_struct = res.first->second;
+  module_decorated_struct.name = "module.decorated_struct";
+  module_decorated_struct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_decorated_struct_field_1;
+  module_decorated_struct_field_1.id = 1;
+  module_decorated_struct_field_1.name = "field";
+  module_decorated_struct_field_1.is_optional = false;
+  auto module_decorated_struct_field_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_decorated_struct_field_1_type->initialize(module_decorated_struct_field_1.type);
+  module_decorated_struct.fields.push_back(std::move(module_decorated_struct_field_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::ContainerStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ContainerStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ContainerStruct = res.first->second;
+  module_ContainerStruct.name = "module.ContainerStruct";
+  module_ContainerStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldA_12;
+  module_ContainerStruct_fieldA_12.id = 12;
+  module_ContainerStruct_fieldA_12.name = "fieldA";
+  module_ContainerStruct_fieldA_12.is_optional = false;
+  auto module_ContainerStruct_fieldA_12_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ContainerStruct_fieldA_12_type->initialize(module_ContainerStruct_fieldA_12.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldA_12));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldB_2;
+  module_ContainerStruct_fieldB_2.id = 2;
+  module_ContainerStruct_fieldB_2.name = "fieldB";
+  module_ContainerStruct_fieldB_2.is_optional = false;
+  auto module_ContainerStruct_fieldB_2_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ContainerStruct_fieldB_2_type->initialize(module_ContainerStruct_fieldB_2.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldB_2));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldC_3;
+  module_ContainerStruct_fieldC_3.id = 3;
+  module_ContainerStruct_fieldC_3.name = "fieldC";
+  module_ContainerStruct_fieldC_3.is_optional = false;
+  auto module_ContainerStruct_fieldC_3_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ContainerStruct_fieldC_3_type->initialize(module_ContainerStruct_fieldC_3.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldC_3));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldD_4;
+  module_ContainerStruct_fieldD_4.id = 4;
+  module_ContainerStruct_fieldD_4.name = "fieldD";
+  module_ContainerStruct_fieldD_4.is_optional = false;
+  auto module_ContainerStruct_fieldD_4_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ContainerStruct_fieldD_4_type->initialize(module_ContainerStruct_fieldD_4.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldD_4));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldE_5;
+  module_ContainerStruct_fieldE_5.id = 5;
+  module_ContainerStruct_fieldE_5.name = "fieldE";
+  module_ContainerStruct_fieldE_5.is_optional = false;
+  auto module_ContainerStruct_fieldE_5_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ContainerStruct_fieldE_5_type->initialize(module_ContainerStruct_fieldE_5.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldE_5));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldF_6;
+  module_ContainerStruct_fieldF_6.id = 6;
+  module_ContainerStruct_fieldF_6.name = "fieldF";
+  module_ContainerStruct_fieldF_6.is_optional = false;
+  auto module_ContainerStruct_fieldF_6_type = std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ContainerStruct_fieldF_6_type->initialize(module_ContainerStruct_fieldF_6.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldF_6));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldG_7;
+  module_ContainerStruct_fieldG_7.id = 7;
+  module_ContainerStruct_fieldG_7.name = "fieldG";
+  module_ContainerStruct_fieldG_7.is_optional = false;
+  auto module_ContainerStruct_fieldG_7_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::STRING));
+  module_ContainerStruct_fieldG_7_type->initialize(module_ContainerStruct_fieldG_7.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldG_7));
+  ::apache::thrift::metadata::ThriftField module_ContainerStruct_fieldH_8;
+  module_ContainerStruct_fieldH_8.id = 8;
+  module_ContainerStruct_fieldH_8.name = "fieldH";
+  module_ContainerStruct_fieldH_8.is_optional = false;
+  auto module_ContainerStruct_fieldH_8_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  module_ContainerStruct_fieldH_8_type->initialize(module_ContainerStruct_fieldH_8.type);
+  module_ContainerStruct.fields.push_back(std::move(module_ContainerStruct_fieldH_8));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::CppTypeStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.CppTypeStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_CppTypeStruct = res.first->second;
+  module_CppTypeStruct.name = "module.CppTypeStruct";
+  module_CppTypeStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_CppTypeStruct_fieldA_1;
+  module_CppTypeStruct_fieldA_1.id = 1;
+  module_CppTypeStruct_fieldA_1.name = "fieldA";
+  module_CppTypeStruct_fieldA_1.is_optional = false;
+  auto module_CppTypeStruct_fieldA_1_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_CppTypeStruct_fieldA_1_type->initialize(module_CppTypeStruct_fieldA_1.type);
+  module_CppTypeStruct.fields.push_back(std::move(module_CppTypeStruct_fieldA_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::VirtualStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.VirtualStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_VirtualStruct = res.first->second;
+  module_VirtualStruct.name = "module.VirtualStruct";
+  module_VirtualStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_VirtualStruct_MyIntField_1;
+  module_VirtualStruct_MyIntField_1.id = 1;
+  module_VirtualStruct_MyIntField_1.name = "MyIntField";
+  module_VirtualStruct_MyIntField_1.is_optional = false;
+  auto module_VirtualStruct_MyIntField_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_VirtualStruct_MyIntField_1_type->initialize(module_VirtualStruct_MyIntField_1.type);
+  module_VirtualStruct.fields.push_back(std::move(module_VirtualStruct_MyIntField_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::MyStructWithForwardRefEnum>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStructWithForwardRefEnum", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStructWithForwardRefEnum = res.first->second;
+  module_MyStructWithForwardRefEnum.name = "module.MyStructWithForwardRefEnum";
+  module_MyStructWithForwardRefEnum.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_MyStructWithForwardRefEnum_a_1;
+  module_MyStructWithForwardRefEnum_a_1.id = 1;
+  module_MyStructWithForwardRefEnum_a_1.name = "a";
+  module_MyStructWithForwardRefEnum_a_1.is_optional = false;
+  auto module_MyStructWithForwardRefEnum_a_1_type = std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum", metadata));
+  module_MyStructWithForwardRefEnum_a_1_type->initialize(module_MyStructWithForwardRefEnum_a_1.type);
+  module_MyStructWithForwardRefEnum.fields.push_back(std::move(module_MyStructWithForwardRefEnum_a_1));
+  ::apache::thrift::metadata::ThriftField module_MyStructWithForwardRefEnum_b_2;
+  module_MyStructWithForwardRefEnum_b_2.id = 2;
+  module_MyStructWithForwardRefEnum_b_2.name = "b";
+  module_MyStructWithForwardRefEnum_b_2.is_optional = false;
+  auto module_MyStructWithForwardRefEnum_b_2_type = std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum", metadata));
+  module_MyStructWithForwardRefEnum_b_2_type->initialize(module_MyStructWithForwardRefEnum_b_2.type);
+  module_MyStructWithForwardRefEnum.fields.push_back(std::move(module_MyStructWithForwardRefEnum_b_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::TrivialNumeric>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.TrivialNumeric", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_TrivialNumeric = res.first->second;
+  module_TrivialNumeric.name = "module.TrivialNumeric";
+  module_TrivialNumeric.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_TrivialNumeric_a_1;
+  module_TrivialNumeric_a_1.id = 1;
+  module_TrivialNumeric_a_1.name = "a";
+  module_TrivialNumeric_a_1.is_optional = false;
+  auto module_TrivialNumeric_a_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_TrivialNumeric_a_1_type->initialize(module_TrivialNumeric_a_1.type);
+  module_TrivialNumeric.fields.push_back(std::move(module_TrivialNumeric_a_1));
+  ::apache::thrift::metadata::ThriftField module_TrivialNumeric_b_2;
+  module_TrivialNumeric_b_2.id = 2;
+  module_TrivialNumeric_b_2.name = "b";
+  module_TrivialNumeric_b_2.is_optional = false;
+  auto module_TrivialNumeric_b_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  module_TrivialNumeric_b_2_type->initialize(module_TrivialNumeric_b_2.type);
+  module_TrivialNumeric.fields.push_back(std::move(module_TrivialNumeric_b_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::TrivialNestedWithDefault>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.TrivialNestedWithDefault", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_TrivialNestedWithDefault = res.first->second;
+  module_TrivialNestedWithDefault.name = "module.TrivialNestedWithDefault";
+  module_TrivialNestedWithDefault.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_TrivialNestedWithDefault_z_1;
+  module_TrivialNestedWithDefault_z_1.id = 1;
+  module_TrivialNestedWithDefault_z_1.name = "z";
+  module_TrivialNestedWithDefault_z_1.is_optional = false;
+  auto module_TrivialNestedWithDefault_z_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_TrivialNestedWithDefault_z_1_type->initialize(module_TrivialNestedWithDefault_z_1.type);
+  module_TrivialNestedWithDefault.fields.push_back(std::move(module_TrivialNestedWithDefault_z_1));
+  ::apache::thrift::metadata::ThriftField module_TrivialNestedWithDefault_n_2;
+  module_TrivialNestedWithDefault_n_2.id = 2;
+  module_TrivialNestedWithDefault_n_2.name = "n";
+  module_TrivialNestedWithDefault_n_2.is_optional = false;
+  auto module_TrivialNestedWithDefault_n_2_type = std::make_unique<Struct< ::apache::thrift::fixtures::types::TrivialNumeric>>("module.TrivialNumeric", metadata);
+  module_TrivialNestedWithDefault_n_2_type->initialize(module_TrivialNestedWithDefault_n_2.type);
+  module_TrivialNestedWithDefault.fields.push_back(std::move(module_TrivialNestedWithDefault_n_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::ComplexString>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ComplexString", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ComplexString = res.first->second;
+  module_ComplexString.name = "module.ComplexString";
+  module_ComplexString.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ComplexString_a_1;
+  module_ComplexString_a_1.id = 1;
+  module_ComplexString_a_1.name = "a";
+  module_ComplexString_a_1.is_optional = false;
+  auto module_ComplexString_a_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_ComplexString_a_1_type->initialize(module_ComplexString_a_1.type);
+  module_ComplexString.fields.push_back(std::move(module_ComplexString_a_1));
+  ::apache::thrift::metadata::ThriftField module_ComplexString_b_2;
+  module_ComplexString_b_2.id = 2;
+  module_ComplexString_b_2.name = "b";
+  module_ComplexString_b_2.is_optional = false;
+  auto module_ComplexString_b_2_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  module_ComplexString_b_2_type->initialize(module_ComplexString_b_2.type);
+  module_ComplexString.fields.push_back(std::move(module_ComplexString_b_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::ComplexNestedWithDefault>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ComplexNestedWithDefault", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ComplexNestedWithDefault = res.first->second;
+  module_ComplexNestedWithDefault.name = "module.ComplexNestedWithDefault";
+  module_ComplexNestedWithDefault.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ComplexNestedWithDefault_z_1;
+  module_ComplexNestedWithDefault_z_1.id = 1;
+  module_ComplexNestedWithDefault_z_1.name = "z";
+  module_ComplexNestedWithDefault_z_1.is_optional = false;
+  auto module_ComplexNestedWithDefault_z_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_ComplexNestedWithDefault_z_1_type->initialize(module_ComplexNestedWithDefault_z_1.type);
+  module_ComplexNestedWithDefault.fields.push_back(std::move(module_ComplexNestedWithDefault_z_1));
+  ::apache::thrift::metadata::ThriftField module_ComplexNestedWithDefault_n_2;
+  module_ComplexNestedWithDefault_n_2.id = 2;
+  module_ComplexNestedWithDefault_n_2.name = "n";
+  module_ComplexNestedWithDefault_n_2.is_optional = false;
+  auto module_ComplexNestedWithDefault_n_2_type = std::make_unique<Struct< ::apache::thrift::fixtures::types::ComplexString>>("module.ComplexString", metadata);
+  module_ComplexNestedWithDefault_n_2_type->initialize(module_ComplexNestedWithDefault_n_2.type);
+  module_ComplexNestedWithDefault.fields.push_back(std::move(module_ComplexNestedWithDefault_n_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::MinPadding>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MinPadding", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MinPadding = res.first->second;
+  module_MinPadding.name = "module.MinPadding";
+  module_MinPadding.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_MinPadding_small_1;
+  module_MinPadding_small_1.id = 1;
+  module_MinPadding_small_1.name = "small";
+  module_MinPadding_small_1.is_optional = false;
+  auto module_MinPadding_small_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BYTE);
+  module_MinPadding_small_1_type->initialize(module_MinPadding_small_1.type);
+  module_MinPadding.fields.push_back(std::move(module_MinPadding_small_1));
+  ::apache::thrift::metadata::ThriftField module_MinPadding_big_2;
+  module_MinPadding_big_2.id = 2;
+  module_MinPadding_big_2.name = "big";
+  module_MinPadding_big_2.is_optional = false;
+  auto module_MinPadding_big_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_MinPadding_big_2_type->initialize(module_MinPadding_big_2.type);
+  module_MinPadding.fields.push_back(std::move(module_MinPadding_big_2));
+  ::apache::thrift::metadata::ThriftField module_MinPadding_medium_3;
+  module_MinPadding_medium_3.id = 3;
+  module_MinPadding_medium_3.name = "medium";
+  module_MinPadding_medium_3.is_optional = false;
+  auto module_MinPadding_medium_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I16);
+  module_MinPadding_medium_3_type->initialize(module_MinPadding_medium_3.type);
+  module_MinPadding.fields.push_back(std::move(module_MinPadding_medium_3));
+  ::apache::thrift::metadata::ThriftField module_MinPadding_biggish_4;
+  module_MinPadding_biggish_4.id = 4;
+  module_MinPadding_biggish_4.name = "biggish";
+  module_MinPadding_biggish_4.is_optional = false;
+  auto module_MinPadding_biggish_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_MinPadding_biggish_4_type->initialize(module_MinPadding_biggish_4.type);
+  module_MinPadding.fields.push_back(std::move(module_MinPadding_biggish_4));
+  ::apache::thrift::metadata::ThriftField module_MinPadding_tiny_5;
+  module_MinPadding_tiny_5.id = 5;
+  module_MinPadding_tiny_5.name = "tiny";
+  module_MinPadding_tiny_5.is_optional = false;
+  auto module_MinPadding_tiny_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::BYTE);
+  module_MinPadding_tiny_5_type->initialize(module_MinPadding_tiny_5.type);
+  module_MinPadding.fields.push_back(std::move(module_MinPadding_tiny_5));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::MyDataItem>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyDataItem", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyDataItem = res.first->second;
+  module_MyDataItem.name = "module.MyDataItem";
+  module_MyDataItem.is_union = false;
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::MyStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
+  module_MyStruct.name = "module.MyStruct";
+  module_MyStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_MyStruct_MyIntField_1;
+  module_MyStruct_MyIntField_1.id = 1;
+  module_MyStruct_MyIntField_1.name = "MyIntField";
+  module_MyStruct_MyIntField_1.is_optional = false;
+  auto module_MyStruct_MyIntField_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_MyStruct_MyIntField_1_type->initialize(module_MyStruct_MyIntField_1.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_MyIntField_1));
+  ::apache::thrift::metadata::ThriftField module_MyStruct_MyStringField_2;
+  module_MyStruct_MyStringField_2.id = 2;
+  module_MyStruct_MyStringField_2.name = "MyStringField";
+  module_MyStruct_MyStringField_2.is_optional = false;
+  auto module_MyStruct_MyStringField_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_MyStruct_MyStringField_2_type->initialize(module_MyStruct_MyStringField_2.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_MyStringField_2));
+  ::apache::thrift::metadata::ThriftField module_MyStruct_majorVer_3;
+  module_MyStruct_majorVer_3.id = 3;
+  module_MyStruct_majorVer_3.name = "majorVer";
+  module_MyStruct_majorVer_3.is_optional = false;
+  auto module_MyStruct_majorVer_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_MyStruct_majorVer_3_type->initialize(module_MyStruct_majorVer_3.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_majorVer_3));
+  ::apache::thrift::metadata::ThriftField module_MyStruct_data_4;
+  module_MyStruct_data_4.id = 4;
+  module_MyStruct_data_4.name = "data";
+  module_MyStruct_data_4.is_optional = false;
+  auto module_MyStruct_data_4_type = std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct< ::apache::thrift::fixtures::types::MyDataItem>>("module.MyDataItem", metadata));
+  module_MyStruct_data_4_type->initialize(module_MyStruct_data_4.type);
+  module_MyStruct.fields.push_back(std::move(module_MyStruct_data_4));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::Renaming>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Renaming", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Renaming = res.first->second;
+  module_Renaming.name = "module.Renaming";
+  module_Renaming.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_Renaming_foo_1;
+  module_Renaming_foo_1.id = 1;
+  module_Renaming_foo_1.name = "foo";
+  module_Renaming_foo_1.is_optional = false;
+  auto module_Renaming_foo_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_Renaming_foo_1_type->initialize(module_Renaming_foo_1.type);
+  module_Renaming.fields.push_back(std::move(module_Renaming_foo_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::AnnotatedTypes>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.AnnotatedTypes", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_AnnotatedTypes = res.first->second;
+  module_AnnotatedTypes.name = "module.AnnotatedTypes";
+  module_AnnotatedTypes.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_AnnotatedTypes_binary_field_1;
+  module_AnnotatedTypes_binary_field_1.id = 1;
+  module_AnnotatedTypes_binary_field_1.name = "binary_field";
+  module_AnnotatedTypes_binary_field_1.is_optional = false;
+  auto module_AnnotatedTypes_binary_field_1_type = std::make_unique<Typedef>("module.TBinary", std::make_unique<Typedef>("module.TBinary", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)));
+  module_AnnotatedTypes_binary_field_1_type->initialize(module_AnnotatedTypes_binary_field_1.type);
+  module_AnnotatedTypes.fields.push_back(std::move(module_AnnotatedTypes_binary_field_1));
+  ::apache::thrift::metadata::ThriftField module_AnnotatedTypes_list_field_2;
+  module_AnnotatedTypes_list_field_2.id = 2;
+  module_AnnotatedTypes_list_field_2.name = "list_field";
+  module_AnnotatedTypes_list_field_2.is_optional = false;
+  auto module_AnnotatedTypes_list_field_2_type = std::make_unique<Typedef>("include.SomeListOfTypeMap", std::make_unique<Typedef>("include.SomeListOfTypeMap", std::make_unique<List>(std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::STRING))))));
+  module_AnnotatedTypes_list_field_2_type->initialize(module_AnnotatedTypes_list_field_2.type);
+  module_AnnotatedTypes.fields.push_back(std::move(module_AnnotatedTypes_list_field_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ForwardUsageStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageStruct = res.first->second;
+  module_ForwardUsageStruct.name = "module.ForwardUsageStruct";
+  module_ForwardUsageStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ForwardUsageStruct_foo_1;
+  module_ForwardUsageStruct_foo_1.id = 1;
+  module_ForwardUsageStruct_foo_1.name = "foo";
+  module_ForwardUsageStruct_foo_1.is_optional = true;
+  auto module_ForwardUsageStruct_foo_1_type = std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot", metadata);
+  module_ForwardUsageStruct_foo_1_type->initialize(module_ForwardUsageStruct_foo_1.type);
+  module_ForwardUsageStruct.fields.push_back(std::move(module_ForwardUsageStruct_foo_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ForwardUsageRoot", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageRoot = res.first->second;
+  module_ForwardUsageRoot.name = "module.ForwardUsageRoot";
+  module_ForwardUsageRoot.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ForwardUsageRoot_ForwardUsageStruct_1;
+  module_ForwardUsageRoot_ForwardUsageStruct_1.id = 1;
+  module_ForwardUsageRoot_ForwardUsageStruct_1.name = "ForwardUsageStruct";
+  module_ForwardUsageRoot_ForwardUsageStruct_1.is_optional = true;
+  auto module_ForwardUsageRoot_ForwardUsageStruct_1_type = std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct", metadata));
+  module_ForwardUsageRoot_ForwardUsageStruct_1_type->initialize(module_ForwardUsageRoot_ForwardUsageStruct_1.type);
+  module_ForwardUsageRoot.fields.push_back(std::move(module_ForwardUsageRoot_ForwardUsageStruct_1));
+  ::apache::thrift::metadata::ThriftField module_ForwardUsageRoot_ForwardUsageByRef_2;
+  module_ForwardUsageRoot_ForwardUsageByRef_2.id = 2;
+  module_ForwardUsageRoot_ForwardUsageByRef_2.name = "ForwardUsageByRef";
+  module_ForwardUsageRoot_ForwardUsageByRef_2.is_optional = true;
+  auto module_ForwardUsageRoot_ForwardUsageByRef_2_type = std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef", metadata));
+  module_ForwardUsageRoot_ForwardUsageByRef_2_type->initialize(module_ForwardUsageRoot_ForwardUsageByRef_2.type);
+  module_ForwardUsageRoot.fields.push_back(std::move(module_ForwardUsageRoot_ForwardUsageByRef_2));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ForwardUsageByRef", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ForwardUsageByRef = res.first->second;
+  module_ForwardUsageByRef.name = "module.ForwardUsageByRef";
+  module_ForwardUsageByRef.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_ForwardUsageByRef_foo_1;
+  module_ForwardUsageByRef_foo_1.id = 1;
+  module_ForwardUsageByRef_foo_1.name = "foo";
+  module_ForwardUsageByRef_foo_1.is_optional = true;
+  auto module_ForwardUsageByRef_foo_1_type = std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot", metadata);
+  module_ForwardUsageByRef_foo_1_type->initialize(module_ForwardUsageByRef_foo_1.type);
+  module_ForwardUsageByRef.fields.push_back(std::move(module_ForwardUsageByRef_foo_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.NoexceptMoveEmpty", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_NoexceptMoveEmpty = res.first->second;
+  module_NoexceptMoveEmpty.name = "module.NoexceptMoveEmpty";
+  module_NoexceptMoveEmpty.is_union = false;
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.NoexceptMoveSimpleStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_NoexceptMoveSimpleStruct = res.first->second;
+  module_NoexceptMoveSimpleStruct.name = "module.NoexceptMoveSimpleStruct";
+  module_NoexceptMoveSimpleStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveSimpleStruct_boolField_1;
+  module_NoexceptMoveSimpleStruct_boolField_1.id = 1;
+  module_NoexceptMoveSimpleStruct_boolField_1.name = "boolField";
+  module_NoexceptMoveSimpleStruct_boolField_1.is_optional = false;
+  auto module_NoexceptMoveSimpleStruct_boolField_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_NoexceptMoveSimpleStruct_boolField_1_type->initialize(module_NoexceptMoveSimpleStruct_boolField_1.type);
+  module_NoexceptMoveSimpleStruct.fields.push_back(std::move(module_NoexceptMoveSimpleStruct_boolField_1));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.NoexceptMoveComplexStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_NoexceptMoveComplexStruct = res.first->second;
+  module_NoexceptMoveComplexStruct.name = "module.NoexceptMoveComplexStruct";
+  module_NoexceptMoveComplexStruct.is_union = false;
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyBoolField_1;
+  module_NoexceptMoveComplexStruct_MyBoolField_1.id = 1;
+  module_NoexceptMoveComplexStruct_MyBoolField_1.name = "MyBoolField";
+  module_NoexceptMoveComplexStruct_MyBoolField_1.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyBoolField_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  module_NoexceptMoveComplexStruct_MyBoolField_1_type->initialize(module_NoexceptMoveComplexStruct_MyBoolField_1.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyBoolField_1));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyIntField_2;
+  module_NoexceptMoveComplexStruct_MyIntField_2.id = 2;
+  module_NoexceptMoveComplexStruct_MyIntField_2.name = "MyIntField";
+  module_NoexceptMoveComplexStruct_MyIntField_2.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyIntField_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  module_NoexceptMoveComplexStruct_MyIntField_2_type->initialize(module_NoexceptMoveComplexStruct_MyIntField_2.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyIntField_2));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyStringField_3;
+  module_NoexceptMoveComplexStruct_MyStringField_3.id = 3;
+  module_NoexceptMoveComplexStruct_MyStringField_3.name = "MyStringField";
+  module_NoexceptMoveComplexStruct_MyStringField_3.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyStringField_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_NoexceptMoveComplexStruct_MyStringField_3_type->initialize(module_NoexceptMoveComplexStruct_MyStringField_3.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyStringField_3));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyStringField2_4;
+  module_NoexceptMoveComplexStruct_MyStringField2_4.id = 4;
+  module_NoexceptMoveComplexStruct_MyStringField2_4.name = "MyStringField2";
+  module_NoexceptMoveComplexStruct_MyStringField2_4.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyStringField2_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_NoexceptMoveComplexStruct_MyStringField2_4_type->initialize(module_NoexceptMoveComplexStruct_MyStringField2_4.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyStringField2_4));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyBinaryField_5;
+  module_NoexceptMoveComplexStruct_MyBinaryField_5.id = 5;
+  module_NoexceptMoveComplexStruct_MyBinaryField_5.name = "MyBinaryField";
+  module_NoexceptMoveComplexStruct_MyBinaryField_5.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyBinaryField_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::BINARY);
+  module_NoexceptMoveComplexStruct_MyBinaryField_5_type->initialize(module_NoexceptMoveComplexStruct_MyBinaryField_5.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyBinaryField_5));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyBinaryField2_6;
+  module_NoexceptMoveComplexStruct_MyBinaryField2_6.id = 6;
+  module_NoexceptMoveComplexStruct_MyBinaryField2_6.name = "MyBinaryField2";
+  module_NoexceptMoveComplexStruct_MyBinaryField2_6.is_optional = true;
+  auto module_NoexceptMoveComplexStruct_MyBinaryField2_6_type = std::make_unique<Primitive>(ThriftPrimitiveType::BINARY);
+  module_NoexceptMoveComplexStruct_MyBinaryField2_6_type->initialize(module_NoexceptMoveComplexStruct_MyBinaryField2_6.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyBinaryField2_6));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyBinaryField3_7;
+  module_NoexceptMoveComplexStruct_MyBinaryField3_7.id = 7;
+  module_NoexceptMoveComplexStruct_MyBinaryField3_7.name = "MyBinaryField3";
+  module_NoexceptMoveComplexStruct_MyBinaryField3_7.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyBinaryField3_7_type = std::make_unique<Primitive>(ThriftPrimitiveType::BINARY);
+  module_NoexceptMoveComplexStruct_MyBinaryField3_7_type->initialize(module_NoexceptMoveComplexStruct_MyBinaryField3_7.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyBinaryField3_7));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyBinaryListField4_8;
+  module_NoexceptMoveComplexStruct_MyBinaryListField4_8.id = 8;
+  module_NoexceptMoveComplexStruct_MyBinaryListField4_8.name = "MyBinaryListField4";
+  module_NoexceptMoveComplexStruct_MyBinaryListField4_8.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyBinaryListField4_8_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::BINARY));
+  module_NoexceptMoveComplexStruct_MyBinaryListField4_8_type->initialize(module_NoexceptMoveComplexStruct_MyBinaryListField4_8.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyBinaryListField4_8));
+  ::apache::thrift::metadata::ThriftField module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9;
+  module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9.id = 9;
+  module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9.name = "MyMapEnumAndInt";
+  module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9.is_optional = false;
+  auto module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9_type = std::make_unique<Map>(std::make_unique<Enum< ::apache::thrift::fixtures::types::MyEnumA>>("module.MyEnumA", metadata), std::make_unique<Primitive>(ThriftPrimitiveType::STRING));
+  module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9_type->initialize(module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9.type);
+  module_NoexceptMoveComplexStruct.fields.push_back(std::move(module_NoexceptMoveComplexStruct_MyMapEnumAndInt_9));
+}
+void GeneratedStructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>::genMetadata(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.NoExceptMoveUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_NoExceptMoveUnion = res.first->second;
+  module_NoExceptMoveUnion.name = "module.NoExceptMoveUnion";
+  module_NoExceptMoveUnion.is_union = true;
+  ::apache::thrift::metadata::ThriftField module_NoExceptMoveUnion_string_field_1;
+  module_NoExceptMoveUnion_string_field_1.id = 1;
+  module_NoExceptMoveUnion_string_field_1.name = "string_field";
+  module_NoExceptMoveUnion_string_field_1.is_optional = false;
+  auto module_NoExceptMoveUnion_string_field_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  module_NoExceptMoveUnion_string_field_1_type->initialize(module_NoExceptMoveUnion_string_field_1.type);
+  module_NoExceptMoveUnion.fields.push_back(std::move(module_NoExceptMoveUnion_string_field_1));
+  ::apache::thrift::metadata::ThriftField module_NoExceptMoveUnion_i32_field_2;
+  module_NoExceptMoveUnion_i32_field_2.id = 2;
+  module_NoExceptMoveUnion_i32_field_2.name = "i32_field";
+  module_NoExceptMoveUnion_i32_field_2.is_optional = false;
+  auto module_NoExceptMoveUnion_i32_field_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_NoExceptMoveUnion_i32_field_2_type->initialize(module_NoExceptMoveUnion_i32_field_2.type);
+  module_NoExceptMoveUnion.fields.push_back(std::move(module_NoExceptMoveUnion_i32_field_2));
 }
 
 } // apache::thrift::detail::metadata

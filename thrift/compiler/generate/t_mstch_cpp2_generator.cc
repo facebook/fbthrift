@@ -467,6 +467,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:optionals?", &mstch_cpp2_type::optionals},
             {"type:no_getters_setters?", &mstch_cpp2_type::no_getters_setters},
             {"type:fatal_type_class", &mstch_cpp2_type::fatal_type_class},
+            {"type:program_name", &mstch_cpp2_type::program_name},
         });
   }
   std::string get_type_namespace(t_program const* program) override {
@@ -602,6 +603,13 @@ class mstch_cpp2_type : public mstch_type {
       return "::apache::thrift::type_class::unknown";
     }
   }
+  mstch::node program_name() {
+    std::string name;
+    if (auto prog = type_->get_program()) {
+      name = prog->get_name();
+    }
+    return name;
+  }
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -637,6 +645,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:fatal_required_qualifier",
              &mstch_cpp2_field::fatal_required_qualifier},
             {"field:visibility", &mstch_cpp2_field::visibility},
+            {"field:metadata_name", &mstch_cpp2_field::metadata_name},
         });
   }
   mstch::node index_plus_one() {
@@ -739,6 +748,11 @@ class mstch_cpp2_field : public mstch_field {
         !cpp2::is_cpp_ref(field_);
     return std::string(isPrivate ? "private" : "public");
   }
+  mstch::node metadata_name() {
+    auto key = field_->get_key();
+    auto suffix = key >= 0 ? std::to_string(key) : "_" + std::to_string(-key);
+    return field_->get_name() + "_" + suffix;
+  }
 };
 
 class mstch_cpp2_struct : public mstch_struct {
@@ -786,6 +800,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::has_fatal_annotations},
             {"struct:fatal_annotations", &mstch_cpp2_struct::fatal_annotations},
             {"struct:legacy_type_id", &mstch_cpp2_struct::get_legacy_type_id},
+            {"struct:metadata_name", &mstch_cpp2_struct::metadata_name},
         });
   }
   mstch::node getters_setters() {
@@ -988,6 +1003,9 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(strct_->get_type_id());
+  }
+  mstch::node metadata_name() {
+    return strct_->get_program()->get_name() + "_" + strct_->get_name();
   }
 
  protected:
