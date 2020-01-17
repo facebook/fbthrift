@@ -236,7 +236,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void set_mstch_generators();
   void generate_reflection(t_program const* program);
   void generate_constants(t_program const* program);
-  void generate_metadata(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
 
@@ -267,7 +266,6 @@ class mstch_cpp2_enum : public mstch_enum {
              &mstch_cpp2_enum::has_fatal_annotations},
             {"enum:fatal_annotations", &mstch_cpp2_enum::fatal_annotations},
             {"enum:legacy_type_id", &mstch_cpp2_enum::get_legacy_type_id},
-            {"enum:metadata_name", &mstch_cpp2_enum::metadata_name},
         });
   }
   mstch::node is_empty() {
@@ -350,9 +348,6 @@ class mstch_cpp2_enum : public mstch_enum {
   }
   mstch::node get_legacy_type_id() {
     return std::to_string(enm_->get_type_id());
-  }
-  mstch::node metadata_name() {
-    return enm_->get_program()->get_name() + "_" + enm_->get_name();
   }
 };
 
@@ -1972,7 +1967,6 @@ void t_mstch_cpp2_generator::generate_program() {
   for (const auto* service : program->get_services()) {
     generate_service(service);
   }
-  generate_metadata(program);
 }
 
 void t_mstch_cpp2_generator::set_mstch_generators() {
@@ -2007,20 +2001,6 @@ void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
       cache_->programs_[id], "module_constants.h", name + "_constants.h");
   render_to_file(
       cache_->programs_[id], "module_constants.cpp", name + "_constants.cpp");
-}
-
-void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
-  auto name = program->get_name();
-  const auto& id = program->get_path();
-  if (!cache_->programs_.count(id)) {
-    cache_->programs_[id] =
-        generators_->program_generator_->generate(program, generators_, cache_);
-  }
-
-  render_to_file(
-      cache_->programs_[id], "module_metadata.h", name + "_metadata.h");
-  render_to_file(
-      cache_->programs_[id], "module_metadata.cpp", name + "_metadata.cpp");
 }
 
 void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {
