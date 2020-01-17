@@ -37,10 +37,6 @@ class RocketServerConnection;
 class RocketSinkClientCallback;
 class RocketStreamClientCallback;
 
-namespace detail {
-class OnPayloadVisitor;
-} // namespace detail
-
 class RocketServerFrameContext {
  public:
   RocketServerFrameContext(
@@ -53,9 +49,6 @@ class RocketServerFrameContext {
   void sendPayload(Payload&& payload, Flags flags);
   void sendError(RocketException&& rex);
 
-  template <class RequestFrame>
-  void onRequestFrame(RequestFrame&& frame) &&;
-
   folly::EventBase& getEventBase() const;
 
   StreamId streamId() const {
@@ -67,46 +60,15 @@ class RocketServerFrameContext {
     return *connection_;
   }
 
- private:
-  friend class detail::OnPayloadVisitor;
-
-  RocketServerConnection* connection_{nullptr};
-  const StreamId streamId_;
-
   void onFullFrame(RequestResponseFrame&& fullFrame) &&;
   void onFullFrame(RequestFnfFrame&& fullFrame) &&;
   void onFullFrame(RequestStreamFrame&& fullFrame) &&;
   void onFullFrame(RequestChannelFrame&& fullFrame) &&;
-};
-
-class RocketServerPartialFrameContext {
- public:
-  template <class RequestFrame>
-  RocketServerPartialFrameContext(
-      RocketServerFrameContext&& baseCtx,
-      RequestFrame&& frame)
-      : mainCtx(std::move(baseCtx)),
-        bufferedFragments_(std::forward<RequestFrame>(frame)) {}
-  void onPayloadFrame(PayloadFrame&& payloadFrame) &&;
 
  private:
-  RocketServerFrameContext mainCtx;
-  boost::variant<
-      RequestResponseFrame,
-      RequestFnfFrame,
-      RequestStreamFrame,
-      RequestChannelFrame>
-      bufferedFragments_;
+  RocketServerConnection* connection_{nullptr};
+  const StreamId streamId_;
 };
-
-extern template void RocketServerFrameContext::onRequestFrame<
-    RequestResponseFrame>(RequestResponseFrame&&) &&;
-extern template void RocketServerFrameContext::onRequestFrame<RequestFnfFrame>(
-    RequestFnfFrame&&) &&;
-extern template void RocketServerFrameContext::onRequestFrame<
-    RequestStreamFrame>(RequestStreamFrame&&) &&;
-extern template void RocketServerFrameContext::onRequestFrame<
-    RequestChannelFrame>(RequestChannelFrame&&) &&;
 
 } // namespace rocket
 } // namespace thrift

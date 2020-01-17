@@ -168,37 +168,28 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   switch (frameType) {
     case FrameType::SETUP: {
-      RocketServerFrameContext frameContext(*this, streamId);
       return frameHandler_->handleSetupFrame(
-          SetupFrame(std::move(frame)), std::move(frameContext));
+          SetupFrame(std::move(frame)), *this);
     }
 
     case FrameType::REQUEST_RESPONSE: {
-      RocketServerFrameContext frameContext(*this, streamId);
-      return std::move(frameContext)
-          .onRequestFrame(
-              RequestResponseFrame(streamId, flags, cursor, std::move(frame)));
+      return handleRequestFrame(
+          RequestResponseFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::REQUEST_FNF: {
-      RocketServerFrameContext frameContext(*this, streamId);
-      return std::move(frameContext)
-          .onRequestFrame(
-              RequestFnfFrame(streamId, flags, cursor, std::move(frame)));
+      return handleRequestFrame(
+          RequestFnfFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::REQUEST_STREAM: {
-      RocketServerFrameContext frameContext(*this, streamId);
-      return std::move(frameContext)
-          .onRequestFrame(
-              RequestStreamFrame(streamId, flags, cursor, std::move(frame)));
+      return handleRequestFrame(
+          RequestStreamFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::REQUEST_CHANNEL: {
-      RocketServerFrameContext frameContext(*this, streamId);
-      return std::move(frameContext)
-          .onRequestFrame(
-              RequestChannelFrame(streamId, flags, cursor, std::move(frame)));
+      return handleRequestFrame(
+          RequestChannelFrame(streamId, flags, cursor, std::move(frame)));
     }
 
     case FrameType::KEEPALIVE: {
@@ -267,19 +258,17 @@ void RocketServerConnection::handleUntrackedFrame(
         return;
       }
 
-      auto& frameContext = it->second;
       PayloadFrame payloadFrame(streamId, flags, cursor, std::move(frame));
-
       const bool hasFollows = payloadFrame.hasFollows();
-      SCOPE_EXIT {
+      folly::variant_match(it->second, [&](auto& requestFrame) {
+        requestFrame.payload().append(std::move(payloadFrame.payload()));
         if (!hasFollows) {
+          RocketServerFrameContext(*this, streamId)
+              .onFullFrame(std::move(requestFrame));
           partialRequestFrames_.erase(streamId);
         }
-      };
-
-      // Note that frameContext is only moved out of if we're handling the
-      // final fragment.
-      return std::move(frameContext).onPayloadFrame(std::move(payloadFrame));
+      });
+      return;
     }
     case FrameType::CANCEL:
       FOLLY_FALLTHROUGH;

@@ -28,13 +28,14 @@ class RequestResponseFrame;
 class RequestStreamFrame;
 class SetupFrame;
 
+class RocketServerConnection;
 class RocketServerFrameContext;
 
 class RocketServerHandler {
  public:
   virtual ~RocketServerHandler() = default;
 
-  virtual void handleSetupFrame(SetupFrame&&, RocketServerFrameContext&&) {}
+  virtual void handleSetupFrame(SetupFrame&&, RocketServerConnection&) {}
 
   virtual void handleRequestResponseFrame(
       RequestResponseFrame&& frame,

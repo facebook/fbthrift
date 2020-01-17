@@ -155,7 +155,13 @@ class RocketServerConnection final
   Parser<RocketServerConnection> parser_{*this};
   const std::shared_ptr<RocketServerHandler> frameHandler_;
   bool setupFrameReceived_{false};
-  folly::F14NodeMap<StreamId, RocketServerPartialFrameContext>
+  folly::F14NodeMap<
+      StreamId,
+      boost::variant<
+          RequestResponseFrame,
+          RequestFnfFrame,
+          RequestStreamFrame,
+          RequestChannelFrame>>
       partialRequestFrames_;
   folly::F14FastMap<StreamId, Payload> bufferedFragments_;
 
@@ -292,6 +298,17 @@ class RocketServerConnection final
       Flags flags,
       folly::io::Cursor cursor,
       RocketSinkClientCallback& clientCallback);
+  template <typename RequestFrame>
+  void handleRequestFrame(RequestFrame&& frame) {
+    auto streamId = frame.streamId();
+    if (UNLIKELY(frame.hasFollows())) {
+      partialRequestFrames_.emplace(
+          streamId, std::forward<RequestFrame>(frame));
+    } else {
+      RocketServerFrameContext(*this, streamId)
+          .onFullFrame(std::forward<RequestFrame>(frame));
+    }
+  }
 
   friend class RocketServerFrameContext;
 };

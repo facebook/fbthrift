@@ -99,8 +99,7 @@ ThriftRocketServerHandler::shouldSample() {
 
 void ThriftRocketServerHandler::handleSetupFrame(
     SetupFrame&& frame,
-    RocketServerFrameContext&& context) {
-  auto& connection = context.connection();
+    RocketServerConnection& connection) {
   if (!frame.payload().hasNonemptyMetadata()) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP, "Missing required metadata in SETUP frame"));

@@ -55,6 +55,7 @@ class RequestResponseFrame;
 class RequestStreamFrame;
 class SetupFrame;
 
+class RocketServerConnection;
 class RocketServerFrameContext;
 
 class ThriftRocketServerHandler : public RocketServerHandler {
@@ -65,7 +66,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       const folly::AsyncTransportWrapper* transport,
       const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers);
 
-  void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&& context)
+  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection& context)
       final;
   void handleRequestResponseFrame(
       RequestResponseFrame&& frame,

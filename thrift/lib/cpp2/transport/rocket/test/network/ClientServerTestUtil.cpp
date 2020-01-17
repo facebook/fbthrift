@@ -446,7 +446,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
 class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
  public:
   explicit RocketTestServerHandler(folly::EventBase& ioEvb) : ioEvb_(ioEvb) {}
-  void handleSetupFrame(SetupFrame&& frame, RocketServerFrameContext&&) final {
+  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection&) final {
     folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Thrift major/minor version
     int16_t majorVersion;
