@@ -102,6 +102,8 @@ class ping_args:
 
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(
@@ -177,6 +179,8 @@ class ping_result:
 
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(
@@ -252,6 +256,8 @@ class pong_args:
 
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(
@@ -327,6 +333,8 @@ class pong_result:
 
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(

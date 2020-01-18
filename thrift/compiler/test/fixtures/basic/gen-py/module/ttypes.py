@@ -133,6 +133,8 @@ class MyStruct:
 
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(
@@ -147,7 +149,7 @@ class MyStruct:
       self.MyStringField = json_obj['MyStringField']
     if 'MyDataField' in json_obj and json_obj['MyDataField'] is not None:
       self.MyDataField = MyDataItem()
-      self.MyDataField.readFromJson(json_obj['MyDataField'], is_text=False, relax_enum_validation=relax_enum_validation)
+      self.MyDataField.readFromJson(json_obj['MyDataField'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
     if 'myEnum' in json_obj and json_obj['myEnum'] is not None:
       self.myEnum = json_obj['myEnum']
       if not self.myEnum in MyEnum._VALUES_TO_NAMES:
@@ -230,6 +232,8 @@ class MyDataItem:
 
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(
@@ -392,6 +396,8 @@ class MyUnion(object):
   
   def readFromJson(self, json, is_text=True, **kwargs):
     relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
+    set_cls = kwargs.pop('custom_set_cls', set)
+    dict_cls = kwargs.pop('custom_dict_cls', dict)
     if kwargs:
         extra_kwargs = ', '.join(kwargs.keys())
         raise ValueError(
@@ -416,11 +422,11 @@ class MyUnion(object):
       self.set_myEnum(myEnum)
     if 'myStruct' in obj:
       myStruct = MyStruct()
-      myStruct.readFromJson(obj['myStruct'], is_text=False, relax_enum_validation=relax_enum_validation)
+      myStruct.readFromJson(obj['myStruct'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
       self.set_myStruct(myStruct)
     if 'myDataItem' in obj:
       myDataItem = MyDataItem()
-      myDataItem.readFromJson(obj['myDataItem'], is_text=False, relax_enum_validation=relax_enum_validation)
+      myDataItem.readFromJson(obj['myDataItem'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
       self.set_myDataItem(myDataItem)
 
   def __eq__(self, other):

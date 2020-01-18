@@ -489,9 +489,10 @@ void t_py_generator::generate_json_struct(
     const string& prefix_thrift,
     const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << type_name(tstruct) << "()" << endl;
-  indent(out) << prefix_thrift << ".readFromJson(" << prefix_json
-              << ", is_text=False, relax_enum_validation=relax_enum_validation)"
-              << endl;
+  indent(out)
+      << prefix_thrift << ".readFromJson(" << prefix_json
+      << ", is_text=False, relax_enum_validation=relax_enum_validation, "
+      << "custom_set_cls=set_cls, custom_dict_cls=dict_cls)" << endl;
 }
 
 void t_py_generator::generate_json_enum(
@@ -536,7 +537,7 @@ void t_py_generator::generate_json_container(
     indent_down();
   } else if (ttype->is_set()) {
     string e = tmp("_tmp_e");
-    indent(out) << prefix_thrift << " = set()" << endl;
+    indent(out) << prefix_thrift << " = set_cls()" << endl;
 
     indent(out) << "for " << e << " in " << prefix_json << ":" << endl;
     indent_up();
@@ -553,7 +554,7 @@ void t_py_generator::generate_json_container(
     string k = tmp("_tmp_k");
     string v = tmp("_tmp_v");
     string kp = tmp("_tmp_kp");
-    indent(out) << prefix_thrift << " = {}" << endl;
+    indent(out) << prefix_thrift << " = dict_cls()" << endl;
 
     indent(out) << "for " << k << ", " << v << " in " << prefix_json
                 << ".items():" << endl;
@@ -713,6 +714,8 @@ void t_py_generator::generate_json_reader_fn_signature(ofstream& out) {
   indent(out)
       << "relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))"
       << endl;
+  indent(out) << "set_cls = kwargs.pop('custom_set_cls', set)" << endl;
+  indent(out) << "dict_cls = kwargs.pop('custom_dict_cls', dict)" << endl;
   indent(out) << "if kwargs:" << endl;
   indent(out) << "    extra_kwargs = ', '.join(kwargs.keys())" << endl;
   indent(out) << "    raise ValueError(" << endl;
