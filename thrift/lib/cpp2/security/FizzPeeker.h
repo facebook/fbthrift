@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/async/TAsyncFizzServer.h>
+#include <fizz/server/AsyncFizzServer.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/security/extensions/ThriftParametersContext.h>
@@ -83,7 +83,7 @@ class ThriftFizzAcceptorHandshakeHelper
         new apache::thrift::async::TAsyncSocket(std::move(sslSock)));
     asyncSock->cacheAddresses();
     return fizz::server::AsyncFizzServer::UniquePtr(
-        new apache::thrift::async::TAsyncFizzServer(
+        new fizz::server::AsyncFizzServer(
             std::move(asyncSock), fizzContext, extensions));
   }
 
