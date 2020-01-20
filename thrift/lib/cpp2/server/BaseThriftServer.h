@@ -28,6 +28,7 @@
 #include <folly/Memory.h>
 #include <folly/SocketAddress.h>
 #include <folly/Synchronized.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/cpp/concurrency/Thread.h>
@@ -47,7 +48,7 @@ class AdmissionStrategy;
 
 typedef std::function<void(
     folly::EventBase*,
-    std::shared_ptr<apache::thrift::async::TAsyncTransport>,
+    std::shared_ptr<folly::AsyncTransportWrapper>,
     std::unique_ptr<folly::IOBuf>)>
     getHandlerFunc;
 

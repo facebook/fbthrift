@@ -28,10 +28,10 @@
 #include <folly/fibers/FiberManager.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -103,7 +103,7 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
 }
 
 RocketClientChannel::RocketClientChannel(
-    async::TAsyncTransport::UniquePtr socket,
+    folly::AsyncTransportWrapper::UniquePtr socket,
     RequestSetupMetadata meta)
     : evb_(socket->getEventBase()),
       rclient_(rocket::RocketClient::create(
@@ -124,7 +124,7 @@ void RocketClientChannel::setFlushList(FlushList* flushList) {
 }
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
-    async::TAsyncTransport::UniquePtr socket,
+    folly::AsyncTransportWrapper::UniquePtr socket,
     RequestSetupMetadata meta) {
   return RocketClientChannel::Ptr(
       new RocketClientChannel(std::move(socket), std::move(meta)));
@@ -465,14 +465,15 @@ void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {
   }
 }
 
-async::TAsyncTransport* FOLLY_NULLABLE RocketClientChannel::getTransport() {
+folly::AsyncTransportWrapper* FOLLY_NULLABLE
+RocketClientChannel::getTransport() {
   if (!rclient_) {
     return nullptr;
   }
 
   auto* transportWrapper = rclient_->getTransportWrapper();
   return transportWrapper
-      ? transportWrapper->getUnderlyingTransport<async::TAsyncTransport>()
+      ? transportWrapper->getUnderlyingTransport<folly::AsyncTransportWrapper>()
       : nullptr;
 }
 

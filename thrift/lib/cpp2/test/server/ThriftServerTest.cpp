@@ -31,6 +31,7 @@
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/TestSSLServer.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -930,7 +931,7 @@ TEST(ThriftServer, useExistingSocketAndConnectionIdleTimeout) {
 }
 
 namespace {
-class ReadCallbackTest : public TAsyncTransport::ReadCallback {
+class ReadCallbackTest : public folly::AsyncTransportWrapper::ReadCallback {
  public:
   void getReadBuffer(void**, size_t*) override {}
   void readDataAvailable(size_t) noexcept override {}
@@ -938,7 +939,7 @@ class ReadCallbackTest : public TAsyncTransport::ReadCallback {
     eof = true;
   }
 
-  void readError(const transport::TTransportException&) noexcept override {
+  void readErr(const folly::AsyncSocketException&) noexcept override {
     eof = true;
   }
 
@@ -955,7 +956,7 @@ TEST(ThriftServer, ShutdownSocketSetTest) {
 
   std::shared_ptr<TAsyncSocket> socket2(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
-  socket2->setReadCallback(&cb);
+  socket2->setReadCB(&cb);
 
   base.tryRunAfterDelay(
       [&]() { folly::tryGetShutdownSocketSet()->shutdownAll(); }, 10);

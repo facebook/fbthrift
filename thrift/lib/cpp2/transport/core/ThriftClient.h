@@ -22,6 +22,7 @@
 #include <memory>
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
@@ -116,7 +117,7 @@ class ThriftClient : public ClientChannel {
   //
   // TODO: Refactor this to be cleaner.
 
-  apache::thrift::async::TAsyncTransport* getTransport() override;
+  folly::AsyncTransportWrapper* getTransport() override;
   bool good() override;
   SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* eventBase) override;

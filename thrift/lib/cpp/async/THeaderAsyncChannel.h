@@ -17,6 +17,7 @@
 #ifndef THRIFT_ASYNC_THEADERASYNCCHANNEL_H_
 #define THRIFT_ASYNC_THEADERASYNCCHANNEL_H_ 1
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TUnframedAsyncChannel.h>
 
 namespace apache {
@@ -69,7 +70,7 @@ class THeaderAsyncChannel
 
  public:
   explicit THeaderAsyncChannel(
-      const std::shared_ptr<TAsyncTransport>& transport)
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
       : Parent(transport) {}
 
   /**
@@ -79,7 +80,7 @@ class THeaderAsyncChannel
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<THeaderAsyncChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
     return std::shared_ptr<THeaderAsyncChannel>(
         new THeaderAsyncChannel(transport), Destructor());
   }
@@ -133,7 +134,7 @@ class THeaderAsyncChannelFactory : public TStreamAsyncChannelFactory {
   }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) override {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) override {
     std::shared_ptr<THeaderAsyncChannel> channel(
         THeaderAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 
 namespace apache {
@@ -47,7 +48,7 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   typedef std::unique_ptr<ClientChannel, folly::DelayedDestruction::Destructor>
       Ptr;
 
-  virtual apache::thrift::async::TAsyncTransport* getTransport() = 0;
+  virtual folly::AsyncTransportWrapper* getTransport() = 0;
 
   virtual bool good() = 0;
 

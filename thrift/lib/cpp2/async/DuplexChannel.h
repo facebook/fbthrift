@@ -18,6 +18,7 @@
 
 #include <memory>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 
@@ -48,7 +49,7 @@ class DuplexChannel {
 
   explicit DuplexChannel(
       Who::WhoEnum mainChannel,
-      const std::shared_ptr<async::TAsyncTransport>& transport);
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
 
   ~DuplexChannel() {
     clientChannel_->duplex_ = nullptr;
@@ -126,7 +127,7 @@ class DuplexChannel {
    public:
     DuplexCpp2Channel(
         Who::WhoEnum duplex_main_channel,
-        const std::shared_ptr<async::TAsyncTransport>& transport,
+        const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
         std::unique_ptr<FramingHandler> framingHandler)
         : Cpp2Channel(transport, std::move(framingHandler)),
           duplexMainChannel_(duplex_main_channel),

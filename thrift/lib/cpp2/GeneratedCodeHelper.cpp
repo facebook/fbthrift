@@ -24,7 +24,6 @@
 using namespace std;
 using namespace folly;
 using namespace apache::thrift;
-using namespace apache::thrift::async;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 

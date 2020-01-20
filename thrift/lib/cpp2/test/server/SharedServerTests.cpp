@@ -22,6 +22,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
@@ -195,7 +196,7 @@ class SharedServerTests
     if (!sst) {
       startServer();
     }
-    socket = TAsyncTransport::UniquePtr(
+    socket = folly::AsyncTransportWrapper::UniquePtr(
         new TAsyncSocket(base.get(), *sst->getAddress()));
   }
 
@@ -240,7 +241,7 @@ class SharedServerTests
   std::shared_ptr<BaseThriftServer> server{nullptr};
   std::unique_ptr<ScopedServerThread> sst{nullptr};
 
-  TAsyncTransport::UniquePtr socket{nullptr};
+  folly::AsyncTransportWrapper::UniquePtr socket{nullptr};
   apache::thrift::ClientChannel::Ptr channel{nullptr};
   std::unique_ptr<TestServiceAsyncClient> client{nullptr};
 };

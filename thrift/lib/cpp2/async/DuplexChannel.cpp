@@ -18,7 +18,6 @@
 
 #include <folly/io/Cursor.h>
 
-using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
 using folly::IOBuf;
 using folly::IOBufQueue;
@@ -34,7 +33,7 @@ namespace thrift {
 
 DuplexChannel::DuplexChannel(
     Who::WhoEnum who,
-    const shared_ptr<TAsyncTransport>& transport)
+    const shared_ptr<folly::AsyncTransportWrapper>& transport)
     : cpp2Channel_(
           new DuplexCpp2Channel(
               who,

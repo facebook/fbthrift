@@ -20,6 +20,7 @@
 #include <memory>
 #include <unordered_map>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -50,14 +51,14 @@ class HeaderServerChannel : public ServerChannel,
 
  public:
   explicit HeaderServerChannel(
-      const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
 
   explicit HeaderServerChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
-  static std::
-      unique_ptr<HeaderServerChannel, folly::DelayedDestruction::Destructor>
-      newChannel(const std::shared_ptr<apache::thrift::async::TAsyncTransport>&
-                     transport) {
+  static std::unique_ptr<
+      HeaderServerChannel,
+      folly::DelayedDestruction::Destructor>
+  newChannel(const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
     return std::
         unique_ptr<HeaderServerChannel, folly::DelayedDestruction::Destructor>(
             new HeaderServerChannel(transport));
@@ -66,12 +67,11 @@ class HeaderServerChannel : public ServerChannel,
   // DelayedDestruction methods
   void destroy() override;
 
-  apache::thrift::async::TAsyncTransport* getTransport() {
+  folly::AsyncTransportWrapper* getTransport() {
     return cpp2Channel_->getTransport();
   }
 
-  void setTransport(
-      std::shared_ptr<apache::thrift::async::TAsyncTransport> transport) {
+  void setTransport(std::shared_ptr<folly::AsyncTransportWrapper> transport) {
     cpp2Channel_->setTransport(transport);
   }
 
@@ -228,7 +228,7 @@ class HeaderServerChannel : public ServerChannel,
  private:
   static std::string getTHeaderPayloadString(folly::IOBuf* buf);
   static std::string getTransportDebugString(
-      apache::thrift::async::TAsyncTransport* transport);
+      folly::AsyncTransportWrapper* transport);
 
   ResponseChannel::Callback* callback_;
 

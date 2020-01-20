@@ -20,6 +20,7 @@
 #include <string>
 #include <unordered_map>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <proxygen/lib/http/codec/HTTPCodec.h>
 #include <proxygen/lib/http/codec/HTTPSettings.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
@@ -71,7 +72,7 @@ class H2ClientConnection : public ClientConnectionIf,
   };
 
   static std::unique_ptr<ClientConnectionIf> newHTTP2Connection(
-      async::TAsyncTransport::UniquePtr transport,
+      folly::AsyncTransportWrapper::UniquePtr transport,
       FlowControlSettings flowControlSettings = FlowControlSettings());
 
   virtual ~H2ClientConnection() override;
@@ -91,7 +92,7 @@ class H2ClientConnection : public ClientConnectionIf,
   bool isStable();
   void setIsStable();
 
-  apache::thrift::async::TAsyncTransport* getTransport() override;
+  folly::AsyncTransportWrapper* getTransport() override;
   bool good() override;
   ClientChannel::SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* evb) override;
@@ -107,7 +108,7 @@ class H2ClientConnection : public ClientConnectionIf,
 
  private:
   H2ClientConnection(
-      async::TAsyncTransport::UniquePtr transport,
+      folly::AsyncTransportWrapper::UniquePtr transport,
       std::unique_ptr<proxygen::HTTPCodec> codec,
       FlowControlSettings flowControlSettings);
 

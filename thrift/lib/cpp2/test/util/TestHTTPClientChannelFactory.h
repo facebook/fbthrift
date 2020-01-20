@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 #include <thrift/lib/cpp2/test/util/TestClientChannelFactory.h>
 
@@ -26,7 +26,7 @@ struct TestHTTPClientChannelFactory : public TestClientChannelFactory {
   ~TestHTTPClientChannelFactory() override {}
 
   apache::thrift::ClientChannel::Ptr create(
-      apache::thrift::async::TAsyncTransport::UniquePtr socket) override {
+      folly::AsyncTransportWrapper::UniquePtr socket) override {
     auto channel =
         apache::thrift::HTTPClientChannel::newHTTP2Channel(std::move(socket));
 

@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
@@ -40,7 +41,7 @@ class InMemoryConnection : public ClientConnectionIf {
   void setCloseCallback(ThriftClient* client, CloseCallback* cb) override;
   folly::EventBase* getEventBase() const override;
 
-  apache::thrift::async::TAsyncTransport* getTransport() override;
+  folly::AsyncTransportWrapper* getTransport() override;
   bool good() override;
   ClientChannel::SaturationStatus getSaturationStatus() override;
   void attachEventBase(folly::EventBase* evb) override;

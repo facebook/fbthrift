@@ -17,60 +17,17 @@
 #pragma once
 
 #include <fizz/client/AsyncFizzClient.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 
 namespace apache {
 namespace thrift {
 namespace async {
 
-class TAsyncFizzClient : public virtual fizz::client::AsyncFizzClient,
-                         public TAsyncTransport {
+class TAsyncFizzClient : public virtual fizz::client::AsyncFizzClient {
  public:
   using UniquePtr =
       std::unique_ptr<TAsyncFizzClient, folly::DelayedDestruction::Destructor>;
-  TAsyncFizzClient(
-      folly::AsyncTransportWrapper::UniquePtr sock,
-      std::shared_ptr<const fizz::client::FizzClientContext> ctx,
-      const std::shared_ptr<fizz::ClientExtensions>& ext = nullptr)
-      : fizz::client::AsyncFizzClient(std::move(sock), std::move(ctx), ext) {}
 
-  TAsyncFizzClient(
-      folly::EventBase* evb,
-      std::shared_ptr<const fizz::client::FizzClientContext> ctx,
-      const std::shared_ptr<fizz::ClientExtensions>& ext = nullptr)
-      : fizz::client::AsyncFizzClient(evb, std::move(ctx), ext) {}
-
-  void setReadCB(AsyncTransportWrapper::ReadCallback* callback) override {
-    fizz::client::AsyncFizzClient::setReadCB(callback);
-  }
-
-  folly::AsyncTransportWrapper::ReadCallback* getReadCallback() const override {
-    return fizz::client::AsyncFizzClient::getReadCallback();
-  }
-
-  void write(
-      AsyncTransportWrapper::WriteCallback* callback,
-      const void* buf,
-      size_t bytes,
-      folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    fizz::client::AsyncFizzClient::write(callback, buf, bytes, flags);
-  }
-  void writev(
-      AsyncTransportWrapper::WriteCallback* callback,
-      const iovec* vec,
-      size_t count,
-      folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    fizz::client::AsyncFizzClient::writev(callback, vec, count, flags);
-  }
-  void writeChain(
-      AsyncTransportWrapper::WriteCallback* callback,
-      std::unique_ptr<folly::IOBuf>&& buf,
-      folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    fizz::client::AsyncFizzClient::writeChain(callback, std::move(buf), flags);
-  }
-  const AsyncTransportWrapper* getWrappedTransport() const override {
-    return fizz::client::AsyncFizzClient::getWrappedTransport();
-  }
+  using fizz::client::AsyncFizzClient::AsyncFizzClient;
 
   void setPeerCertificate(
       std::unique_ptr<const folly::AsyncTransportCertificate> cert) {

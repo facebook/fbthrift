@@ -33,13 +33,12 @@ using namespace folly::io;
 using namespace apache::thrift::transport;
 using folly::EventBase;
 using namespace apache::thrift::concurrency;
-using apache::thrift::async::TAsyncTransport;
 
 namespace apache {
 namespace thrift {
 
 Cpp2Channel::Cpp2Channel(
-    const std::shared_ptr<TAsyncTransport>& transport,
+    const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
     std::unique_ptr<FramingHandler> framingHandler)
     : transport_(transport),
       recvCallback_(nullptr),
@@ -179,7 +178,7 @@ void Cpp2Channel::writeError(
 }
 
 void Cpp2Channel::processReadEOF() noexcept {
-  transport_->setReadCallback(nullptr);
+  transport_->setReadCB(nullptr);
 
   VLOG(5) << "Got an EOF on channel";
   if (recvCallback_ && !eofInvoked_) {
@@ -237,7 +236,7 @@ void Cpp2Channel::setReceiveCallback(RecvCallback* callback) {
   recvCallback_ = callback;
 
   if (!transport_->good()) {
-    transport_->setReadCallback(nullptr);
+    transport_->setReadCB(nullptr);
     return;
   }
 

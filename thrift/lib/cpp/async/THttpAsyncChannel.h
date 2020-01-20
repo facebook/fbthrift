@@ -18,6 +18,7 @@
 #define THRIFT_ASYNC_THTTPASYNCCHANNEL_H_ 1
 
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
@@ -46,8 +47,8 @@ class THttpACWriteRequest
       TAsyncEventChannel* channel);
 
   void write(
-      TAsyncTransport* transport,
-      TAsyncTransport::WriteCallback* callback) noexcept;
+      folly::AsyncTransportWrapper* transport,
+      folly::AsyncTransportWrapper::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
   void writeError(
@@ -118,7 +119,8 @@ class THttpAsyncChannel : public TStreamAsyncChannel<
   std::shared_ptr<apache::thrift::util::THttpParser> parser_;
 
  public:
-  explicit THttpAsyncChannel(const std::shared_ptr<TAsyncTransport>& transport)
+  explicit THttpAsyncChannel(
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
       : Parent(transport) {}
 
   /**
@@ -128,7 +130,7 @@ class THttpAsyncChannel : public TStreamAsyncChannel<
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<THttpAsyncChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
     return std::shared_ptr<THttpAsyncChannel>(
         new THttpAsyncChannel(transport), Destructor());
   }
@@ -183,7 +185,7 @@ class THttpAsyncChannelFactory : public TStreamAsyncChannelFactory {
   }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) override {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) override {
     std::shared_ptr<THttpAsyncChannel> channel(
         THttpAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

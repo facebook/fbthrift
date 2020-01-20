@@ -34,7 +34,6 @@ using namespace apache::thrift::transport;
 using namespace apache::thrift;
 using apache::thrift::TApplicationException;
 using apache::thrift::async::TAsyncSocket;
-using apache::thrift::async::TAsyncTransport;
 using apache::thrift::protocol::PROTOCOL_TYPES;
 using apache::thrift::server::TServerObserver;
 using folly::EventBase;
@@ -45,7 +44,7 @@ namespace thrift {
 std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 
 HeaderServerChannel::HeaderServerChannel(
-    const std::shared_ptr<TAsyncTransport>& transport)
+    const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
     : HeaderServerChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
           transport,
           make_unique<ServerFramingHandler>(*this)))) {}
@@ -170,7 +169,7 @@ std::string HeaderServerChannel::getTHeaderPayloadString(IOBuf* buf) {
 }
 
 std::string HeaderServerChannel::getTransportDebugString(
-    TAsyncTransport* transport) {
+    folly::AsyncTransportWrapper* transport) {
   if (!transport) {
     return std::string();
   }

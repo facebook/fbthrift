@@ -17,6 +17,7 @@
 #ifndef THRIFT_ASYNC_TUNFRAMEDASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TUNFRAMEDASYNCCHANNEL_H_ 1
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
 namespace apache {
@@ -40,8 +41,8 @@ class TUnframedACWriteRequest
       TAsyncEventChannel* channel);
 
   void write(
-      TAsyncTransport* transport,
-      TAsyncTransport::WriteCallback* callback) noexcept;
+      folly::AsyncTransportWrapper* transport,
+      folly::AsyncTransportWrapper::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
   void writeError(
@@ -134,7 +135,7 @@ class TUnframedAsyncChannel
 
  public:
   explicit TUnframedAsyncChannel(
-      const std::shared_ptr<TAsyncTransport>& transport)
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
       : Parent(transport) {}
 
   /**
@@ -144,9 +145,9 @@ class TUnframedAsyncChannel
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<Self> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
-    return std::shared_ptr<Self>(
-        new Self(transport), typename Self::Destructor());
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
+    return std::shared_ptr<Self>(new Self(transport),
+                                   typename Self::Destructor());
   }
 
   /// size in bytes beyond which we'll reject a given message.

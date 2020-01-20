@@ -19,7 +19,6 @@
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
 namespace apache {
@@ -28,7 +27,7 @@ namespace async {
 
 // Wrapper around folly's AsyncSocket to maintain backwards compatibility:
 // Converts exceptions to thrift's TTransportException type.
-class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
+class TAsyncSocket : public virtual folly::AsyncSocket {
  public:
   typedef std::unique_ptr<TAsyncSocket, Destructor> UniquePtr;
 
@@ -115,11 +114,6 @@ class TAsyncSocket : public virtual folly::AsyncSocket, public TAsyncTransport {
       connectError(tex);
     }
   };
-
-  // Read and write methods that aren't part of folly::AsyncTransport
-  void setReadCallback(TAsyncTransport::ReadCallback* callback) override {
-    AsyncSocket::setReadCB(callback);
-  }
 
   void setIsAccepted(bool accepted) {
     accepted_ = accepted;

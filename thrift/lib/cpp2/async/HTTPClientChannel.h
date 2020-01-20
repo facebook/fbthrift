@@ -20,13 +20,13 @@
 #include <memory>
 #include <unordered_map>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 #include <proxygen/lib/http/HTTPConnector.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 
@@ -50,12 +50,12 @@ class HTTPClientChannel : public ClientChannel,
       std::unique_ptr<HTTPClientChannel, folly::DelayedDestruction::Destructor>;
 
   static HTTPClientChannel::Ptr newHTTP1xChannel(
-      async::TAsyncTransport::UniquePtr transport,
+      folly::AsyncTransportWrapper::UniquePtr transport,
       const std::string& httpHost,
       const std::string& httpUrl);
 
   static HTTPClientChannel::Ptr newHTTP2Channel(
-      async::TAsyncTransport::UniquePtr transport);
+      folly::AsyncTransportWrapper::UniquePtr transport);
 
   void setHTTPHost(const std::string& host) {
     httpHost_ = host;
@@ -132,9 +132,9 @@ class HTTPClientChannel : public ClientChannel,
     return protocolId_;
   }
 
-  async::TAsyncTransport* getTransport() override {
+  folly::AsyncTransportWrapper* getTransport() override {
     if (httpSession_) {
-      return dynamic_cast<async::TAsyncTransport*>(
+      return dynamic_cast<folly::AsyncTransportWrapper*>(
           httpSession_->getTransport());
     } else {
       return nullptr;
@@ -158,7 +158,7 @@ class HTTPClientChannel : public ClientChannel,
 
  private:
   HTTPClientChannel(
-      async::TAsyncTransport::UniquePtr transport,
+      folly::AsyncTransportWrapper::UniquePtr transport,
       std::unique_ptr<proxygen::HTTPCodec> codec);
 
   ~HTTPClientChannel() override;

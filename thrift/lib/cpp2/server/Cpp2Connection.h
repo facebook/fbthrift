@@ -22,6 +22,7 @@
 
 #include <folly/Optional.h>
 #include <folly/SocketAddress.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -58,7 +59,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
    *        should be nullptr in normal mode
    */
   Cpp2Connection(
-      const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport,
       const folly::SocketAddress* address,
       std::shared_ptr<Cpp2Worker> worker,
       const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
@@ -120,7 +121,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
   }
   Cpp2ConnContext context_;
 
-  std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
+  std::shared_ptr<folly::AsyncTransportWrapper> transport_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
 

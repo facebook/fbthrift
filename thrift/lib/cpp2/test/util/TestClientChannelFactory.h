@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 
 struct TestClientChannelFactory {
@@ -25,7 +25,7 @@ struct TestClientChannelFactory {
   virtual ~TestClientChannelFactory() {}
 
   virtual apache::thrift::ClientChannel::Ptr create(
-      apache::thrift::async::TAsyncTransport::UniquePtr socket) = 0;
+      folly::AsyncTransportWrapper::UniquePtr socket) = 0;
 
   TestClientChannelFactory& setProtocolId(
       apache::thrift::protocol::PROTOCOL_TYPES protocol) {

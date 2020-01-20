@@ -21,6 +21,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/AsyncTimeout.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <folly/io/async/test/TestSSLServer.h>
@@ -121,13 +122,13 @@ private:
 
 template <typename Channel>
 unique_ptr<Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<TAsyncTransport>& transport) {
+    const shared_ptr<folly::AsyncTransportWrapper>& transport) {
   return Channel::newChannel(transport);
 }
 
 template <>
 unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<TAsyncTransport>& transport) {
+    const shared_ptr<folly::AsyncTransportWrapper>& transport) {
   return Cpp2Channel::newChannel(transport, make_unique<TestFramingHandler>());
 }
 
@@ -1099,7 +1100,7 @@ TEST(Channel, ClientCloseOnErrorTest) {
       .run();
 }
 
-class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
+class DestroyAsyncTransport : public folly::AsyncTransportWrapper {
  public:
   DestroyAsyncTransport() : cb_(nullptr) { }
   void setReadCB(
@@ -1178,7 +1179,7 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
 
 TEST(Channel, DestroyInEOF) {
   auto t = new DestroyAsyncTransport;
-  std::shared_ptr<TAsyncTransport> transport(t);
+  std::shared_ptr<folly::AsyncTransportWrapper> transport(t);
   auto channel = createChannel<Cpp2Channel>(transport);
   DestroyRecvCallback drc(std::move(channel));
   t->invokeEOF();

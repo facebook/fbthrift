@@ -20,8 +20,8 @@
 
 #include <memory>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
@@ -89,7 +89,7 @@ class ClientConnectionIf {
   // They are called from corresponding "ThriftClient" methods, which
   // in turn can be used from any client side connection management
   // framework.
-  virtual apache::thrift::async::TAsyncTransport* getTransport() = 0;
+  virtual folly::AsyncTransportWrapper* getTransport() = 0;
   virtual bool good() = 0;
   virtual ClientChannel::SaturationStatus getSaturationStatus() = 0;
   virtual void attachEventBase(folly::EventBase* evb) = 0;

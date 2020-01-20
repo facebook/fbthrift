@@ -20,6 +20,7 @@
 #include <memory>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
@@ -28,14 +29,6 @@
 namespace folly {
 class IOBuf;
 }
-
-namespace apache {
-namespace thrift {
-namespace async {
-class TAsyncTransport;
-}
-} // namespace thrift
-} // namespace apache
 
 using SamplingStatus = apache::thrift::server::TServerObserver::SamplingStatus;
 
@@ -100,7 +93,7 @@ class MessageChannel : virtual public folly::DelayedDestruction {
    */
   virtual void setReceiveCallback(RecvCallback*) = 0;
 
-  apache::thrift::async::TAsyncTransport* getTransport() {
+  folly::AsyncTransportWrapper* getTransport() {
     return nullptr;
   }
 };

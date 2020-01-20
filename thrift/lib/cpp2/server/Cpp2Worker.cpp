@@ -140,7 +140,7 @@ void Cpp2Worker::handleHeader(
   }
 }
 
-std::shared_ptr<async::TAsyncTransport> Cpp2Worker::createThriftTransport(
+std::shared_ptr<folly::AsyncTransportWrapper> Cpp2Worker::createThriftTransport(
     folly::AsyncTransportWrapper::UniquePtr sock) {
   auto fizzServer = dynamic_cast<async::TAsyncFizzServer*>(sock.get());
   if (fizzServer) {

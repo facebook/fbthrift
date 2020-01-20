@@ -35,7 +35,6 @@ using std::make_unique;
 using std::pair;
 using std::unique_ptr;
 using namespace apache::thrift::transport;
-using apache::thrift::async::TAsyncTransport;
 using apache::thrift::transport::THeader;
 using folly::EventBase;
 using HResClock = std::chrono::high_resolution_clock;
@@ -50,7 +49,7 @@ const std::chrono::milliseconds HTTPClientChannel::kDefaultTransactionTimeout =
     std::chrono::milliseconds(500);
 
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
-    async::TAsyncTransport::UniquePtr transport,
+    folly::AsyncTransportWrapper::UniquePtr transport,
     const std::string& httpHost,
     const std::string& httpUrl) {
   HTTPClientChannel::Ptr channel(new HTTPClientChannel(
@@ -63,7 +62,7 @@ HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
 }
 
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
-    async::TAsyncTransport::UniquePtr transport) {
+    folly::AsyncTransportWrapper::UniquePtr transport) {
   return HTTPClientChannel::Ptr(new HTTPClientChannel(
       std::move(transport),
       std::make_unique<proxygen::HTTP2Codec>(
@@ -71,7 +70,7 @@ HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
 }
 
 HTTPClientChannel::HTTPClientChannel(
-    async::TAsyncTransport::UniquePtr transport,
+    folly::AsyncTransportWrapper::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
     : evb_(transport->getEventBase()) {
   auto localAddress = transport->getLocalAddress();

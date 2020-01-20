@@ -26,7 +26,7 @@ namespace async {
 
 template <typename WriteRequest_, typename ReadState_>
 TStreamAsyncChannel<WriteRequest_, ReadState_>::TStreamAsyncChannel(
-    const std::shared_ptr<TAsyncTransport>& transport)
+    const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
     : folly::AsyncTimeout(transport->getEventBase()),
       transport_(transport),
       writeReqHead_(nullptr),
@@ -39,7 +39,7 @@ TStreamAsyncChannel<WriteRequest_, ReadState_>::TStreamAsyncChannel(
       errorType_(
           transport::TTransportException::TTransportExceptionType::UNKNOWN) {}
 
-template <typename WriteRequest_, typename ReadState_>
+template<typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::destroy() {
   // When destroy is called, close the channel immediately
   closeNow();
@@ -160,7 +160,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::recvMessage(
   // start reading from the transport
   // Note that setReadCallback() may invoke our read callback methods
   // immediately, so the read may complete before setReadCallback() returns.
-  transport_->setReadCallback(this);
+  transport_->setReadCB(this);
 }
 
 template <typename WriteRequest_, typename ReadState_>
@@ -181,7 +181,7 @@ template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::close() {
   DestructorGuard dg(this); // transport::close can invoke callbacks
 
-  transport_->setReadCallback(nullptr);
+  transport_->setReadCB(nullptr);
   transport_->close();
 
   if (readCallback_) {
@@ -196,7 +196,7 @@ template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::closeNow() {
   DestructorGuard dg(this); // transport::closeNow can invoke callbacks
 
-  transport_->setReadCallback(nullptr);
+  transport_->setReadCB(nullptr);
   transport_->closeNow();
 
   if (readCallback_) {
@@ -227,7 +227,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::detachEventBase() {
   // detaching from the event base.
   if (transport_->getReadCallback() == this) {
     cancelTimeout();
-    transport_->setReadCallback(nullptr);
+    transport_->setReadCB(nullptr);
   }
 
   folly::AsyncTimeout::detachEventBase();
@@ -279,8 +279,8 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::readEOF() noexcept {
 }
 
 template <typename WriteRequest_, typename ReadState_>
-void TStreamAsyncChannel<WriteRequest_, ReadState_>::readError(
-    const transport::TTransportException&) noexcept {
+void TStreamAsyncChannel<WriteRequest_, ReadState_>::readErr(
+    const folly::AsyncSocketException&) noexcept {
   // readCallback_ may be nullptr if readEOF() is invoked while the read
   // callback is already running inside invokeReadDataAvailable(), since
   // invokeReadDataAvailable() leaves the transport read callback installed
@@ -305,20 +305,25 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeSuccess() noexcept {
 }
 
 template <typename WriteRequest_, typename ReadState_>
-void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeError(
+void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeErr(
     size_t bytesWritten,
-    const transport::TTransportException& ex) noexcept {
+    const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
 
+  transport::TTransportException tex(
+      transport::TTransportException::TTransportExceptionType(ex.getType()),
+      ex.what(),
+      ex.getErrno());
+
   // Set exception type
-  errorType_ = ex.getType();
+  errorType_ = tex.getType();
 
   if (errorType_ == transport::TTransportException::TIMED_OUT) {
     timedOut_ = true;
   }
 
   WriteRequest_* req = popWriteRequest();
-  req->writeError(bytesWritten, ex);
+  req->writeError(bytesWritten, tex);
   delete req;
 }
 
@@ -339,7 +344,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::timeoutExpired() noexcept {
   }
   // Close the transport.  It isn't usable anymore, since we are leaving
   // it in a state with a partial message outstanding.
-  transport_->setReadCallback(nullptr);
+  transport_->setReadCB(nullptr);
   transport_->close();
 
   // TODO: It would be nice not to have to always log an error message here;
@@ -368,7 +373,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
     // Make sure we do this after clearing our callbacks, so that the
     // channel won't call our readEOF() method.
     cancelTimeout();
-    transport_->setReadCallback(nullptr);
+    transport_->setReadCB(nullptr);
 
     std::string addressStr;
     try {
@@ -403,11 +408,11 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
   invokeReadCallback(readCallback_, "read callback");
 
   // Note that we cleared readCallback_ and readErrorCallback_ before invoking
-  // the callback, but left ourself installed as the TAsyncTransport read
+  // the callback, but left ourself installed as the AsyncTransportWrapper read
   // callback.
   //
-  // This allows us to avoid changing the TAsyncTransport read callback if the
-  // channel read callback immediately called recvMessage() again.  This is
+  // This allows us to avoid changing the AsyncTransportWrapper read callback if
+  // the channel read callback immediately called recvMessage() again.  This is
   // fairly common, and we avoid 2 unnecessary epoll_ctl() calls by not
   // changing the transport read callback.  This results in a noticeable
   // performance improvement.
@@ -424,7 +429,7 @@ bool TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadDataAvailable(
   if (transport_->getEventBase() == ourEventBase && !readCallback_) {
     if (readCallbackQ_.empty()) {
       cancelTimeout();
-      transport_->setReadCallback(nullptr);
+      transport_->setReadCB(nullptr);
     } else {
       // There are queued readers, pop one.  This block should have the same
       // effect as if recvMessage were called

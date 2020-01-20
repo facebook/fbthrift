@@ -22,6 +22,7 @@
 #include <memory>
 #include <unordered_map>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
@@ -54,7 +55,7 @@ class HeaderClientChannel : public ClientChannel,
 
  public:
   explicit HeaderClientChannel(
-      const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport);
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport);
 
   explicit HeaderClientChannel(const std::shared_ptr<Cpp2Channel>& cpp2Channel);
 
@@ -63,8 +64,7 @@ class HeaderClientChannel : public ClientChannel,
           Ptr;
 
   static Ptr newChannel(
-      const std::shared_ptr<apache::thrift::async::TAsyncTransport>&
-          transport) {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
     return Ptr(new HeaderClientChannel(transport));
   }
 
@@ -80,7 +80,7 @@ class HeaderClientChannel : public ClientChannel,
   // DelayedDestruction methods
   void destroy() override;
 
-  apache::thrift::async::TAsyncTransport* getTransport() override {
+  folly::AsyncTransportWrapper* getTransport() override {
     return cpp2Channel_->getTransport();
   }
 

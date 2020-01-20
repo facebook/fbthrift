@@ -19,6 +19,7 @@
 
 #include <functional>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
@@ -26,8 +27,6 @@
 namespace apache {
 namespace thrift {
 namespace async {
-
-class TAsyncTransport;
 
 /**
  * TAsyncChannel defines an asynchronous API for message-based I/O.
@@ -147,7 +146,7 @@ class TAsyncChannel {
 
   // TODO(dreiss): Make this nonvirtual when TFramedSocketAsyncChannel gets
   // renamed to TFramedAsyncChannel.
-  virtual std::shared_ptr<TAsyncTransport> getTransport() = 0;
+  virtual std::shared_ptr<folly::AsyncTransportWrapper> getTransport() = 0;
 };
 
 } // namespace async

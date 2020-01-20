@@ -20,11 +20,11 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/io/async/AsyncTimeout.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/SocketPair.h>
 #include <folly/io/async/test/Util.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp/async/TBinaryAsyncChannel.h>
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -40,7 +40,6 @@ using std::vector;
 
 using apache::thrift::async::TAsyncChannel;
 using apache::thrift::async::TAsyncSocket;
-using apache::thrift::async::TAsyncTransport;
 using apache::thrift::async::TBinaryAsyncChannel;
 using apache::thrift::async::TFramedAsyncChannel;
 using apache::thrift::protocol::TBinaryProtocolT;
@@ -236,7 +235,7 @@ struct ChunkInfo {
  */
 using ChunkSchedule = vector<ChunkInfo>;
 
-class ChunkSender : private TAsyncTransport::WriteCallback,
+class ChunkSender : private AsyncTransportWrapper::WriteCallback,
                     private AsyncTimeout {
  public:
   ChunkSender(
@@ -325,9 +324,9 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
     }
   }
 
-  void writeError(
+  void writeErr(
       size_t /* bytesWritten */,
-      const TTransportException&) noexcept override {
+      const AsyncSocketException&) noexcept override {
     error_ = true;
   }
 
@@ -365,7 +364,7 @@ class MultiMessageSize : public vector<int> {
   }
 };
 
-class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
+class MultiMessageSenderReceiver : private AsyncTransportWrapper::WriteCallback,
                                    private AsyncTimeout {
  public:
   MultiMessageSenderReceiver(
@@ -459,9 +458,9 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
     }
   }
 
-  void writeError(
+  void writeErr(
       size_t /* bytesWritten */,
-      const TTransportException&) noexcept override {
+      const AsyncSocketException&) noexcept override {
     writeError_ = true;
   }
 

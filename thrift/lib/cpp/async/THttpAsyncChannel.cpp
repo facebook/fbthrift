@@ -38,8 +38,8 @@ THttpACWriteRequest::THttpACWriteRequest(
 }
 
 void THttpACWriteRequest::write(
-    TAsyncTransport* transport,
-    TAsyncTransport::WriteCallback* callback) noexcept {
+    folly::AsyncTransportWrapper* transport,
+    folly::AsyncTransportWrapper::WriteCallback* callback) noexcept {
   uint32_t len = buffer_.available_read();
   // We can call wrapBuffer (instead of having to copy the buffer) because
   // buffer_ last longer than the IOBuf that we are creating.

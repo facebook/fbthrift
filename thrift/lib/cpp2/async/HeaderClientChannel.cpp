@@ -29,7 +29,6 @@ using std::make_unique;
 using std::pair;
 using std::unique_ptr;
 using namespace apache::thrift::transport;
-using apache::thrift::async::TAsyncTransport;
 using folly::EventBase;
 using folly::RequestContext;
 using HResClock = std::chrono::high_resolution_clock;
@@ -41,7 +40,7 @@ namespace thrift {
 template class ChannelCallbacks::TwowayCallback<HeaderClientChannel>;
 
 HeaderClientChannel::HeaderClientChannel(
-    const std::shared_ptr<TAsyncTransport>& transport)
+    const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
     : HeaderClientChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
           transport,
           make_unique<ClientFramingHandler>(*this)))) {}

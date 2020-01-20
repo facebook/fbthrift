@@ -22,12 +22,12 @@
 
 #include <folly/ScopeGuard.h>
 #include <folly/fibers/FiberManagerMap.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 
 #include <yarpl/flowable/Flowable.h>
 #include <yarpl/flowable/Subscriber.h>
 
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/async/ClientChannel.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -61,7 +61,7 @@ class RocketClientChannel final : public ClientChannel {
       unique_ptr<RocketClientChannel, folly::DelayedDestruction::Destructor>;
 
   static Ptr newChannel(
-      async::TAsyncTransport::UniquePtr socket,
+      folly::AsyncTransportWrapper::UniquePtr socket,
       RequestSetupMetadata meta = RequestSetupMetadata());
 
   void sendRequestResponse(
@@ -102,7 +102,7 @@ class RocketClientChannel final : public ClientChannel {
     protocolId_ = protocolId;
   }
 
-  async::TAsyncTransport* FOLLY_NULLABLE getTransport() override;
+  folly::AsyncTransportWrapper* FOLLY_NULLABLE getTransport() override;
   bool good() override;
 
   size_t inflightRequestsAndStreams() const;
@@ -161,7 +161,7 @@ class RocketClientChannel final : public ClientChannel {
   const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
 
   RocketClientChannel(
-      async::TAsyncTransport::UniquePtr socket,
+      folly::AsyncTransportWrapper::UniquePtr socket,
       RequestSetupMetadata meta);
 
   RocketClientChannel(const RocketClientChannel&) = delete;

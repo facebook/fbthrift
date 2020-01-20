@@ -30,7 +30,6 @@
 namespace apache {
 namespace thrift {
 
-using apache::thrift::async::TAsyncTransport;
 using apache::thrift::protocol::PROTOCOL_TYPES;
 using apache::thrift::transport::THeader;
 using apache::thrift::transport::TTransportException;
@@ -203,7 +202,7 @@ void ThriftClient::setCloseCallback(CloseCallback* cb) {
   connection_->setCloseCallback(this, cb);
 }
 
-TAsyncTransport* ThriftClient::getTransport() {
+folly::AsyncTransportWrapper* ThriftClient::getTransport() {
   return connection_->getTransport();
 }
 

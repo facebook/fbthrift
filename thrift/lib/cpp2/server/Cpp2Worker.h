@@ -19,6 +19,7 @@
 #include <unordered_set>
 
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventHandler.h>
 #include <folly/io/async/HHWheelTimer.h>
@@ -170,7 +171,7 @@ class Cpp2Worker : public wangle::Acceptor,
       wangle::SecureTransportType,
       const wangle::TransportInfo&) override;
 
-  virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(
+  virtual std::shared_ptr<folly::AsyncTransportWrapper> createThriftTransport(
       folly::AsyncTransportWrapper::UniquePtr);
 
   void markSocketAccepted(async::TAsyncSocket* sock);

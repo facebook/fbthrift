@@ -56,7 +56,7 @@ folly::EventBase* InMemoryConnection::getEventBase() const {
   return runner_.getEventBase();
 }
 
-apache::thrift::async::TAsyncTransport* InMemoryConnection::getTransport() {
+folly::AsyncTransportWrapper* InMemoryConnection::getTransport() {
   LOG(FATAL) << "Method should not be called";
 }
 

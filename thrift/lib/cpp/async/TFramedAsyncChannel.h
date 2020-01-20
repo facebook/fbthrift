@@ -17,6 +17,7 @@
 #ifndef THRIFT_ASYNC_TFRAMEDASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TFRAMEDASYNCCHANNEL_H_ 1
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.h>
 
 namespace apache {
@@ -38,8 +39,8 @@ class TFramedACWriteRequest
       TAsyncEventChannel* channel);
 
   void write(
-      TAsyncTransport* transport,
-      TAsyncTransport::WriteCallback* callback) noexcept;
+      folly::AsyncTransportWrapper* transport,
+      folly::AsyncTransportWrapper::WriteCallback* callback) noexcept;
 
   void writeSuccess() noexcept;
   void writeError(
@@ -134,7 +135,7 @@ class TFramedAsyncChannel : public TStreamAsyncChannel<
 
  public:
   explicit TFramedAsyncChannel(
-      const std::shared_ptr<TAsyncTransport>& transport)
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport)
       : Parent(transport) {}
 
   /**
@@ -144,7 +145,7 @@ class TFramedAsyncChannel : public TStreamAsyncChannel<
    * destructor is protected and cannot be invoked directly.
    */
   static std::shared_ptr<TFramedAsyncChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
     return std::shared_ptr<TFramedAsyncChannel>(
         new TFramedAsyncChannel(transport), Destructor());
   }
@@ -186,7 +187,7 @@ class TFramedAsyncChannelFactory : public TStreamAsyncChannelFactory {
   }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
-      const std::shared_ptr<TAsyncTransport>& transport) override {
+      const std::shared_ptr<folly::AsyncTransportWrapper>& transport) override {
     std::shared_ptr<TFramedAsyncChannel> channel(
         TFramedAsyncChannel::newChannel(transport));
     transport->setSendTimeout(sendTimeout_);

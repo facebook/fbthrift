@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
 
+#include <folly/io/async/AsyncTransport.h>
 #include <folly/portability/GTest.h>
 
 #include <proxygen/httpserver/HTTPServer.h>
@@ -154,7 +155,7 @@ TEST(HTTPClientChannelTest, SimpleTestAsync) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -184,7 +185,7 @@ TEST(HTTPClientChannelTest, SimpleTestSync) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -201,7 +202,7 @@ TEST(HTTPClientChannelTest, LongResponse) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -223,7 +224,7 @@ TEST(HTTPClientChannelTest, ClientTimeout) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   channel->setTimeout(1);
@@ -248,7 +249,7 @@ TEST(HTTPClientChannelTest, NoBodyResponse) {
   folly::EventBase eb;
   folly::SocketAddress addr;
   server.getAddress(&addr);
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
@@ -266,7 +267,7 @@ TEST(HTTPClientChannelTest, NoGoodChannel) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
 
   auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
 
@@ -282,7 +283,7 @@ TEST(HTTPClientChannelTest, NoGoodChannel2) {
   auto const addr = runner.getAddress();
 
   folly::EventBase eb;
-  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+  folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
 
   auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
 
@@ -302,7 +303,7 @@ TEST(HTTPClientChannelTest, EarlyShutdown) {
   // smooth shutdown
   {
     folly::EventBase eb;
-    TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, addr));
+    folly::AsyncTransportWrapper::UniquePtr socket(new TAsyncSocket(&eb, addr));
     auto channel = HTTPClientChannel::newHTTP1xChannel(
         std::move(socket), "127.0.0.1", "/foobar");
     TestServiceAsyncClient client(std::move(channel));

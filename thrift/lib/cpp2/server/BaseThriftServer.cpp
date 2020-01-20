@@ -37,7 +37,6 @@ namespace thrift {
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
-using namespace apache::thrift::async;
 using namespace std;
 using std::shared_ptr;
 

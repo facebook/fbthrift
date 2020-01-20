@@ -17,6 +17,7 @@
 #ifndef THRIFT_ASYNC_TZLIBASYNCCHANNEL_H_
 #define THRIFT_ASYNC_TZLIBASYNCCHANNEL_H_ 1
 
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TAsyncEventChannel.h>
 #include <thrift/lib/cpp/transport/TZlibTransport.h>
 
@@ -70,7 +71,7 @@ class TZlibAsyncChannel : public TAsyncEventChannel {
       transport::TMemoryBuffer* sendBuf,
       transport::TMemoryBuffer* recvBuf) override;
 
-  std::shared_ptr<TAsyncTransport> getTransport() override {
+  std::shared_ptr<folly::AsyncTransportWrapper> getTransport() override {
     return channel_->getTransport();
   }
 

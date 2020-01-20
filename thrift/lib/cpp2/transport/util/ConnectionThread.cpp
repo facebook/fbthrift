@@ -20,9 +20,9 @@
 #include <glog/logging.h>
 
 #include <folly/Conv.h>
+#include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/async/TAsyncTransport.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 
 DEFINE_string(transport, "http2", "The transport to use (http2)");
@@ -33,7 +33,6 @@ namespace thrift {
 
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
-using apache::thrift::async::TAsyncTransport;
 
 ConnectionThread::~ConnectionThread() {
   getEventBase()->runInEventBaseThreadAndWait(
