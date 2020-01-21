@@ -204,7 +204,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
       }
       return alive;
     }
-    stream->onStreamCancel();
+    if (stream) {
+      stream->onStreamCancel();
+    }
     return false;
   }
 
@@ -351,7 +353,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
       StreamServerCallback* stream) {
     if (!checkResponseSize(*buf)) {
       sendResponseTooBigEx();
-      stream->onStreamCancel();
+      if (stream) {
+        stream->onStreamCancel();
+      }
       return false;
     }
     return sendStreamThriftResponse(
