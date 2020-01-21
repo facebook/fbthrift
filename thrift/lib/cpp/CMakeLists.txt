@@ -108,7 +108,6 @@ add_library(
   async/TAsyncSSLSocketFactory.cpp
   async/TBinaryAsyncChannel.cpp
   async/TFramedAsyncChannel.cpp
-  async/THeaderAsyncChannel.cpp
   async/THttpAsyncChannel.cpp
   async/TUnframedAsyncChannel.cpp
   async/TZlibAsyncChannel.cpp
