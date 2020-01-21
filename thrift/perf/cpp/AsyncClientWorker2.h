@@ -19,15 +19,11 @@
 
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/SSLContext.h>
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/test/loadgen/Worker.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
 using apache::thrift::loadgen::Worker;
-using apache::thrift::protocol::TBinaryProtocolFactory;
-using apache::thrift::protocol::THeaderProtocolFactory;
 using apache::thrift::test::ClientLoadConfig;
 
 namespace apache {
@@ -42,14 +38,7 @@ class AsyncClientWorker2
  public:
   AsyncClientWorker2()
       : eb_(),
-        binProtoFactory_(),
-        duplexProtoFactory_(apache::thrift::protocol::T_BINARY_PROTOCOL, true),
         sslContext_(new folly::SSLContext()) {
-    std::bitset<CLIENT_TYPES_LEN> clientTypes;
-    clientTypes[THRIFT_FRAMED_DEPRECATED] = 1;
-    clientTypes[THRIFT_HEADER_CLIENT_TYPE] = 1;
-
-    duplexProtoFactory_.setClientTypes(clientTypes);
     setupSSLContext();
   }
 
@@ -68,8 +57,6 @@ class AsyncClientWorker2
   void setupSSLContext();
 
   folly::EventBase eb_;
-  TBinaryProtocolFactory binProtoFactory_;
-  THeaderProtocolFactory duplexProtoFactory_;
   std::shared_ptr<folly::SSLContext> sslContext_;
 
   struct SessionDeleter {

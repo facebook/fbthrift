@@ -23,7 +23,6 @@
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 #include <thrift/lib/cpp2/async/HTTPClientChannel.h>
