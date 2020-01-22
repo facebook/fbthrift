@@ -321,5 +321,11 @@ void Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
     LOG(ERROR) << "Failed to join outstanding requests.";
   }
 }
+
+Cpp2Worker::ActiveRequestsGuard Cpp2Worker::getActiveRequestsGuard() {
+  DCHECK(!stopping_ || activeRequests_);
+  ++activeRequests_;
+  return Cpp2Worker::ActiveRequestsGuard(this);
+}
 } // namespace thrift
 } // namespace apache

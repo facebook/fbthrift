@@ -212,6 +212,8 @@ class Cpp2Connection : public ResponseChannel::Callback,
     QueueTimeout queueTimeout_;
     TaskTimeout taskTimeout_;
 
+    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
+
     // keep last
     ActiveRequestsRegistry::DebugStub debugStub_;
     void cancelTimeout() {

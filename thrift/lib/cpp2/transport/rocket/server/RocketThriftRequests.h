@@ -23,6 +23,7 @@
 #include <folly/Function.h>
 
 #include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
 
@@ -55,7 +56,8 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       ActiveRequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
       intptr_t rootRequestContextId,
-      RocketServerFrameContext&& context);
+      RocketServerFrameContext&& context,
+      Cpp2Worker::ActiveRequestsGuard activeRequestsGuard);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -81,6 +83,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
+  Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 
   // keep last
   ActiveRequestsRegistry::DebugStub debugStub_;
@@ -142,7 +145,8 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf> debugPayload,
       intptr_t rootRequestContextId,
       RocketStreamClientCallback* clientCallback,
-      std::shared_ptr<AsyncProcessor> cpp2Processor);
+      std::shared_ptr<AsyncProcessor> cpp2Processor,
+      Cpp2Worker::ActiveRequestsGuard activeRequestsGuard);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -195,6 +199,8 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   const std::shared_ptr<Cpp2ConnContext> connContext_;
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
 
+  Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
+
   // keep last
   ActiveRequestsRegistry::DebugStub debugStub_;
 };
@@ -212,7 +218,8 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf> debugPayload,
       intptr_t rootRequestContextId,
       RocketSinkClientCallback* clientCallback,
-      std::shared_ptr<AsyncProcessor> cpp2Processor);
+      std::shared_ptr<AsyncProcessor> cpp2Processor,
+      Cpp2Worker::ActiveRequestsGuard activeRequestsGuard);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -254,6 +261,8 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
   // reference.
   const std::shared_ptr<Cpp2ConnContext> connContext_;
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
+
+  Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 
   // A tracing information embedded in request obejcts, we want to keep this
   // always as the last member of the class.

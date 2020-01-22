@@ -135,7 +135,7 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
 
 void Cpp2Connection::setServerHeaders(
     HeaderServerChannel::HeaderRequest& request) {
-  if (getWorker()->stopping_) {
+  if (getWorker()->isStopping()) {
     request.getHeader()->setHeader("connection", "goaway");
   }
 
@@ -316,7 +316,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
     return;
   }
 
-  if (worker_->stopping_) {
+  if (worker_->isStopping()) {
     killRequest(
         *req,
         TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
@@ -355,7 +355,6 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   }
   auto up2r = std::unique_ptr<ResponseChannelRequest>(t2r);
   activeRequests_.insert(t2r);
-  ++worker_->activeRequests_;
 
   if (observer) {
     observer->receivedRequest();
@@ -422,6 +421,7 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       // Note: tricky ordering here; see the note on connection_ in the class
       // definition.
       reqContext_(&connection_->context_, req_->getHeader()),
+      activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()),
       debugStub_(
           *connection_->getWorker()->getRequestsRegistry(),
           *this,
@@ -577,10 +577,6 @@ void Cpp2Connection::Cpp2Request::setLatencyHeader(
 Cpp2Connection::Cpp2Request::~Cpp2Request() {
   connection_->removeRequest(this);
   cancelTimeout();
-  if (--connection_->getWorker()->activeRequests_ == 0 &&
-      connection_->getWorker()->stopping_) {
-    connection_->getWorker()->stopBaton_.post();
-  }
   connection_->getWorker()->getServer()->decActiveRequests();
 }
 

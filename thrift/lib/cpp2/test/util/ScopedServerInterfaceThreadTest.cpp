@@ -23,6 +23,7 @@
 #include <folly/stop_watch.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/util/gen-cpp2/SimpleService.h>
 
@@ -134,7 +135,9 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
   static std::unique_ptr<AsyncClientT> newClient(
       ScopedServerInterfaceThread& ssit) {
     return ssit.newClient<AsyncClientT>(nullptr, [](auto socket) {
-      return Channel::newChannel(std::move(socket));
+      auto channel = Channel::newChannel(std::move(socket));
+      channel->setTimeout(0);
+      return channel;
     });
   }
 };
@@ -175,7 +178,9 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
 
 using TestTypes = ::testing::Types<
     ChannelAndService<HeaderClientChannel, SlowSimpleServiceImpl>,
-    ChannelAndService<HeaderClientChannel, SlowSimpleServiceImplSemiFuture>>;
+    ChannelAndService<HeaderClientChannel, SlowSimpleServiceImplSemiFuture>,
+    ChannelAndService<RocketClientChannel, SlowSimpleServiceImpl>,
+    ChannelAndService<RocketClientChannel, SlowSimpleServiceImplSemiFuture>>;
 TYPED_TEST_CASE(ScopedServerInterfaceThreadTest, TestTypes);
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {

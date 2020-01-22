@@ -53,10 +53,12 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     ActiveRequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
-    RocketServerFrameContext&& context)
+    RocketServerFrameContext&& context,
+    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
+      activeRequestsGuard_(std::move(activeRequestsGuard)),
       debugStub_(
           reqRegistry,
           *this,
@@ -171,12 +173,14 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketStreamClientCallback* clientCallback,
-    std::shared_ptr<AsyncProcessor> cpp2Processor)
+    std::shared_ptr<AsyncProcessor> cpp2Processor,
+    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)),
+      activeRequestsGuard_(std::move(activeRequestsGuard)),
       debugStub_(
           reqRegistry,
           *this,
@@ -255,12 +259,14 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketSinkClientCallback* clientCallback,
-    std::shared_ptr<AsyncProcessor> cpp2Processor)
+    std::shared_ptr<AsyncProcessor> cpp2Processor,
+    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)),
+      activeRequestsGuard_(std::move(activeRequestsGuard)),
       debugStub_(
           reqRegistry,
           *this,

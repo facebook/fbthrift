@@ -127,6 +127,17 @@ class Cpp2Worker : public wangle::Acceptor,
     return stopping_;
   }
 
+  struct ActiveRequestsDecrement {
+    void operator()(Cpp2Worker* worker) {
+      if (--worker->activeRequests_ == 0 && worker->stopping_) {
+        worker->stopBaton_.post();
+      }
+    }
+  };
+  using ActiveRequestsGuard =
+      std::unique_ptr<Cpp2Worker, ActiveRequestsDecrement>;
+  ActiveRequestsGuard getActiveRequestsGuard();
+
  protected:
   Cpp2Worker(
       ThriftServer* server,
