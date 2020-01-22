@@ -76,7 +76,6 @@ add_library(
 
   transport/TTransportException.cpp
   transport/TFDTransport.cpp
-  transport/THeaderTransport.cpp
   transport/THttpTransport.cpp
   transport/THttpClient.cpp
   transport/THttpServer.cpp
