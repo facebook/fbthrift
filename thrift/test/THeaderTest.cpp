@@ -14,39 +14,14 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/protocol/TBinaryProtocol.h>
-#include <thrift/lib/cpp/protocol/TCompactProtocol.h>
-#include <thrift/lib/cpp/protocol/THeaderProtocol.h>
-#include <thrift/lib/cpp/transport/TBufferTransports.h>
-
+#include <folly/io/IOBufQueue.h>
 #include <folly/portability/GTest.h>
 
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+
 using namespace std;
-using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
-
-// Listed individually to make it easy to see in the unit runner
-
-TEST(THeaderTest, unframedBadRead) {
-  auto buffer = make_shared<TMemoryBuffer>();
-  auto transport = make_shared<THeaderTransport>(buffer);
-  auto protocol = make_shared<THeaderProtocol>(transport);
-  string name = "test";
-  TMessageType messageType = T_CALL;
-  int32_t seqId = 0;
-  uint8_t buf1 = 0x80;
-  uint8_t buf2 = 0x01;
-  uint8_t buf3 = 0x00;
-  uint8_t buf4 = 0x00;
-  buffer->write(&buf1, 1);
-  buffer->write(&buf2, 1);
-  buffer->write(&buf3, 1);
-  buffer->write(&buf4, 1);
-
-  EXPECT_THROW(
-      protocol->readMessageBegin(name, messageType, seqId),
-      TTransportException);
-}
 
 TEST(THeaderTest, removeBadHeaderStringSize) {
   uint8_t badHeader[] = {
