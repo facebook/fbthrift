@@ -28,7 +28,11 @@ class async_protocol_manager:
         self.coro = coro
 
     def __await__(self):
-        raise TypeError("use `async with` instead of `with async`")
+        async def as_protocol_manager():
+            _, protocol = await self.coro
+            return protocol_manager(protocol)
+
+        return as_protocol_manager().__await__()
 
     __iter__ = __await__
 
@@ -57,6 +61,16 @@ def create_client(
 
     async with create_client(smc2_client, port=1421) as smc:
         await smc.getStatus()
+
+    This can be used in the old way:
+
+    with (await create_client(smc2_client, port=1421)) as smc:
+        await smc.getStatus()
+
+    or even the old deprecated way:
+
+    with (yield from create_client(smc2_client, port=1421) as smc:
+        yield from smc.getStatus()
 
     :param client_klass: thrift Client class
     :param host: hostname/ip, None = loopback

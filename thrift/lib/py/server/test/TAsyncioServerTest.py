@@ -268,13 +268,13 @@ class TAsyncioServerTest(unittest.TestCase):
 
     async def _make_out_of_order_calls(self, sock, loop):
         port = sock.getsockname()[1]
-        client_manager = create_client(
+        client_manager = await create_client(
             Sleep.Client,
             host='localhost',
             port=port,
             loop=loop,
         )
-        async with client_manager as client:
+        with client_manager as client:
             futures = [
                 client.echo(str(delay), delay * .1)
                 for delay in [3, 2, 1]
@@ -309,14 +309,14 @@ class TAsyncioServerTest(unittest.TestCase):
 
     async def _assert_transport_is_closed_on_error(self, sock, loop):
         port = sock.getsockname()[1]
-        client_manager = create_client(
+        client_manager = await create_client(
             Sleep.Client,
             host='localhost',
             port=port,
             loop=loop,
         )
         try:
-            async with client_manager as client:
+            with client_manager as client:
                 raise Exception('expected exception from test')
         except Exception:
             self.assertFalse(client._oprot.trans.isOpen())
