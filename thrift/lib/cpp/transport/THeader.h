@@ -379,8 +379,6 @@ class THeader {
       uint32_t sz,
       folly::IOBufQueue* queue);
 
-  std::unique_ptr<folly::IOBufQueue> queue_;
-
   // Http client parser
   std::shared_ptr<apache::thrift::util::THttpClientParser> httpClientParser_;
 

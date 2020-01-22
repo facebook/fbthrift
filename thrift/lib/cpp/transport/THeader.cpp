@@ -72,8 +72,7 @@ std::string getReadableChars(Cursor c, size_t limit) {
 }
 
 THeader::THeader(int options)
-    : queue_(new folly::IOBufQueue),
-      protoId_(T_COMPACT_PROTOCOL),
+    : protoId_(T_COMPACT_PROTOCOL),
       protoVersion_(-1),
       clientType_(THRIFT_HEADER_CLIENT_TYPE),
       forceClientType_(false),
