@@ -26,6 +26,7 @@
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace {
 
 class t_json_experimental_generator : public t_mstch_generator {
  public:
@@ -68,8 +69,12 @@ class json_experimental_program : public mstch_program {
         {
             {"program:py_namespace",
              &json_experimental_program::get_py_namespace},
+            {"program:namespaces", &json_experimental_program::get_namespaces},
+            {"program:namespaces?", &json_experimental_program::has_namespaces},
             {"program:wiki_address",
              &json_experimental_program::get_wiki_address},
+            {"program:docstring?", &json_experimental_program::has_docstring},
+            {"program:docstring", &json_experimental_program::get_docstring},
             {"program:normalizedIncludePrefix",
              &json_experimental_program::include_prefix},
         });
@@ -77,9 +82,28 @@ class json_experimental_program : public mstch_program {
   mstch::node get_py_namespace() {
     return program_->get_namespace("py");
   }
+  mstch::node get_namespaces() {
+    mstch::array result;
+    auto last = program_->get_namespaces().size();
+    for (auto it : program_->get_namespaces()) {
+      result.push_back(mstch::map{
+          {"key", it.first}, {"value", it.second}, {"last?", (--last) == 0}});
+    }
+    return result;
+  }
+  mstch::node has_namespaces() {
+    return !program_->get_namespaces().empty();
+  }
   mstch::node get_wiki_address() {
     return program_->get_namespace("wiki");
   }
+  mstch::node has_docstring() {
+    return !program_->get_doc().empty();
+  }
+  mstch::node get_docstring() {
+    return program_->get_doc();
+  }
+
   mstch::node include_prefix() {
     auto prefix = program_->get_include_prefix();
     if (!prefix.empty()) {
@@ -194,6 +218,124 @@ class enum_value_json_experimental_generator : public enum_value_generator {
       int32_t /*index*/ = 0) const override {
     return std::make_shared<json_experimental_enum_value>(
         enm_value, generators, cache, pos);
+  }
+};
+
+// trim all white spaces and commas from end (in place)
+static inline void rtrim(std::string& s) {
+  s.erase(
+      std::find_if(
+          s.rbegin(),
+          s.rend(),
+          [](int ch) { return !(ch == ' ' || ch == ','); })
+          .base(),
+      s.end());
+}
+
+static inline std::string to_string(t_const_value const* value) {
+  auto stringify_list = [](const auto& value) {
+    std::string result;
+    for (const auto& v : value) {
+      result += to_string(v) + ", ";
+    }
+    rtrim(result);
+    return "[" + result + "]";
+  };
+
+  auto stringify_map = [](const auto& value) {
+    std::string result;
+    for (const auto& v : value) {
+      result += to_string(v.first) + ": " + to_string(v.second) + ", ";
+    }
+    rtrim(result);
+    return "{" + result + "}";
+  };
+
+  switch (value->get_type()) {
+    case mstch_const_value::cv::CV_BOOL:
+      return value->get_bool() ? "true" : "false";
+    case mstch_const_value::cv::CV_INTEGER:
+      return std::to_string(value->get_integer());
+    case mstch_const_value::cv::CV_DOUBLE:
+      return std::to_string(value->get_double());
+    case mstch_const_value::cv::CV_STRING:
+      return "\"" + value->get_string() + "\"";
+    case mstch_const_value::cv::CV_LIST:
+      return stringify_list(value->get_list());
+    case mstch_const_value::cv::CV_MAP:
+      return stringify_map(value->get_map());
+  }
+  return "";
+}
+
+class json_experimental_const_value : public mstch_const_value {
+ public:
+  json_experimental_const_value(
+      t_const_value const* const_value,
+      t_const const* current_const,
+      t_type const* expected_type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_const_value(
+            const_value,
+            current_const,
+            expected_type,
+            generators,
+            cache,
+            pos,
+            index) {
+    register_methods(
+        this,
+        {
+            {"value:lineno", &json_experimental_const_value::get_lineno},
+            {"value:typeName", &json_experimental_const_value::get_typename},
+            {"value:stringValueAny",
+             &json_experimental_const_value::string_value_any},
+            {"value:docstring?", &json_experimental_const_value::has_docstring},
+            {"value:docstring", &json_experimental_const_value::get_docstring},
+        });
+  }
+  mstch::node get_lineno() {
+    return current_const_->get_lineno();
+  }
+  mstch::node has_docstring() {
+    return current_const_->has_doc();
+  }
+  mstch::node get_docstring() {
+    return current_const_->get_doc();
+  }
+
+  mstch::node get_typename() {
+    return current_const_->get_type()->get_true_type()->get_full_name();
+  }
+
+  mstch::node string_value_any() {
+    return to_string(const_value_);
+  }
+};
+
+class const_value_json_experimental_generator : public const_value_generator {
+ public:
+  const_value_json_experimental_generator() = default;
+  ~const_value_json_experimental_generator() override = default;
+  std::shared_ptr<mstch_base> generate(
+      t_const_value const* const_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0,
+      t_const const* current_const = nullptr,
+      t_type const* expected_type = nullptr) const override {
+    return std::make_shared<json_experimental_const_value>(
+        const_value,
+        current_const,
+        expected_type,
+        generators,
+        cache,
+        pos,
+        index);
   }
 };
 
@@ -398,6 +540,8 @@ void t_json_experimental_generator::set_mstch_generators() {
       std::make_unique<enum_json_experimental_generator>());
   generators_->set_enum_value_generator(
       std::make_unique<enum_value_json_experimental_generator>());
+  generators_->set_const_value_generator(
+      std::make_unique<const_value_json_experimental_generator>());
   generators_->set_struct_generator(
       std::make_unique<struct_json_experimental_generator>());
   generators_->set_field_generator(
@@ -407,6 +551,8 @@ void t_json_experimental_generator::set_mstch_generators() {
   generators_->set_function_generator(
       std::make_unique<function_json_experimental_generator>());
 }
+
+} // namespace
 
 THRIFT_REGISTER_GENERATOR(json_experimental, "JSON_EXPERIMENTAL", "");
 

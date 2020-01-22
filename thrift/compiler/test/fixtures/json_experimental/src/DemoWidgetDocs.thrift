@@ -16,6 +16,7 @@
 
 namespace py thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs
 namespace wiki Thrift.DemoWidgetDocs
+namespace php thrift_php_demo
 
  /**
   * What kinds of widgets can we buy and sell?

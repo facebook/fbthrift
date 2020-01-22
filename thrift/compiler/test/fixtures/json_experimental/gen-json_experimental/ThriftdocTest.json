@@ -1,5 +1,69 @@
 {
   "thrift_module" : "ThriftdocTest",
+  "namespaces": {
+    "cpp": "thrift.test",
+    "java": "thrift.test",
+    "json": "thrift.test.doc",
+    "py": "thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest",
+    "wiki": "Thrift.ThrifdocTest"
+  },
+  "constants": {
+      "INT32CONSTANT": {
+        "name": "INT32CONSTANT",
+        "type": "i32",
+        "value": 9853,
+        "docstring": "You can document constants now too.  Yeehaw!\n",
+        "lineno": 89
+      },
+      "INT16CONSTANT": {
+        "name": "INT16CONSTANT",
+        "type": "i16",
+        "value": 1616,
+        "lineno": 90
+      },
+      "MAPCONSTANT": {
+        "name": "MAPCONSTANT",
+        "type": "map<string, string>",
+        "value": {"hello": "world", "goodnight": "moon"},
+        "docstring": "Everyone get in on the docu-action!\n",
+        "lineno": 92
+      },
+      "BOOLCONSTANT": {
+        "name": "BOOLCONSTANT",
+        "type": "bool",
+        "value": true,
+        "docstring": "A bool constant, experimental will render it as string\n",
+        "lineno": 269
+      },
+      "SIMPLE_LIST": {
+        "name": "SIMPLE_LIST",
+        "type": "list<i32>",
+        "value": [42, 73],
+        "docstring": "Simple list\n",
+        "lineno": 275
+      },
+      "COMPLICATED_LIST": {
+        "name": "COMPLICATED_LIST",
+        "type": "list<list<string>>",
+        "value": [["Rick", "Morty"], ["Brian", "Stewie"]],
+        "docstring": "Complicated list\n",
+        "lineno": 280
+      },
+      "SIMPLE_MAP": {
+        "name": "SIMPLE_MAP",
+        "type": "map<string, string>",
+        "value": {"Rick": "Genius", "Morty": "Not realy"},
+        "docstring": "Simple map\n",
+        "lineno": 286
+      },
+      "COMPLICATED_MAP": {
+        "name": "COMPLICATED_MAP",
+        "type": "map<string, list<string>>",
+        "value": {"Witcher": ["Geralt", "Yennefer"], "1984": ["2+2=5"]},
+        "docstring": "Complicated map\n",
+        "lineno": 292
+      }
+  },
   "enumerations" :
   {
       "NoDoc" : {
