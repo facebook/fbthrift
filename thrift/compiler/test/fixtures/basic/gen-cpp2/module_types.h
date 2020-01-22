@@ -278,7 +278,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 namespace cpp2 {
 class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     myEnum = 1,
     myStruct = 2,

@@ -85,7 +85,7 @@ uint32_t Empty::read(Protocol_* iprot) {
 namespace cpp2 {
 class Nada final : private apache::thrift::detail::st::ComparisonOperators<Nada> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
   } ;
 

@@ -804,7 +804,7 @@ uint32_t struct3::read(Protocol_* iprot) {
 namespace cpp2 {
 class union1 final : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     i = 1,
     d = 2,
@@ -1006,7 +1006,7 @@ uint32_t union1::read(Protocol_* iprot) {
 namespace cpp2 {
 class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     i = 1,
     d = 2,

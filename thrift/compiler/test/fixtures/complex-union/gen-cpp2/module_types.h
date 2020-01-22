@@ -143,7 +143,7 @@ typedef ::std::map<int16_t, ::std::string> containerTypedef;
 namespace cpp2 {
 class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     intValue = 1,
     stringValue = 5,
@@ -591,7 +591,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 namespace cpp2 {
 class ListUnion final : private apache::thrift::detail::st::ComparisonOperators<ListUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     intListValue = 2,
     stringListValue = 3,
@@ -821,7 +821,7 @@ uint32_t ListUnion::read(Protocol_* iprot) {
 namespace cpp2 {
 class DataUnion final : private apache::thrift::detail::st::ComparisonOperators<DataUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     binaryData = 1,
     stringData = 2,
@@ -1145,7 +1145,7 @@ uint32_t Val::read(Protocol_* iprot) {
 namespace cpp2 {
 class ValUnion final : private apache::thrift::detail::st::ComparisonOperators<ValUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     v1 = 1,
     v2 = 2,
@@ -1375,7 +1375,7 @@ uint32_t ValUnion::read(Protocol_* iprot) {
 namespace cpp2 {
 class VirtualComplexUnion : private apache::thrift::detail::st::ComparisonOperators<VirtualComplexUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     thingOne = 1,
     thingTwo = 2,
@@ -1666,7 +1666,7 @@ uint32_t NonCopyableStruct::read(Protocol_* iprot) {
 namespace cpp2 {
 class NonCopyableUnion final : private apache::thrift::detail::st::ComparisonOperators<NonCopyableUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     s = 1,
   } ;

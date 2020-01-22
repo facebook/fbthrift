@@ -269,7 +269,7 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor;
 namespace cpp2 {
 class MyUnion final : private apache::thrift::detail::st::ComparisonOperators<MyUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     anInteger = 1,
     aString = 2,

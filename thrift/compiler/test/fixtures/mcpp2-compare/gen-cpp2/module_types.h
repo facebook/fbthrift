@@ -1513,7 +1513,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 namespace some { namespace valid { namespace ns {
 class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     intValue = 7,
     stringValue = 2,
@@ -1730,7 +1730,7 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
 namespace some { namespace valid { namespace ns {
 class ComplexUnion final : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     intValue = 1,
     opt_intValue = 201,
@@ -5021,7 +5021,7 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
 namespace some { namespace valid { namespace ns {
 class FloatUnion final : private apache::thrift::detail::st::ComparisonOperators<FloatUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     floatSide = 1,
     doubleSide = 2,

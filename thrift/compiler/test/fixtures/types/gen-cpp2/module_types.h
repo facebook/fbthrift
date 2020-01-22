@@ -2197,7 +2197,7 @@ uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 class NoExceptMoveUnion final : private apache::thrift::detail::st::ComparisonOperators<NoExceptMoveUnion> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     string_field = 1,
     i32_field = 2,

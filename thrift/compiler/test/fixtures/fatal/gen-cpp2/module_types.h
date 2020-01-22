@@ -1074,7 +1074,7 @@ typedef CppHasAPhrase HasAPhrase;
 namespace test_cpp2 { namespace cpp_reflection {
 class union1 final : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     ui = 1,
     ud = 2,
@@ -1378,7 +1378,7 @@ uint32_t union1::read(Protocol_* iprot) {
 namespace test_cpp2 { namespace cpp_reflection {
 class union2 final : private apache::thrift::detail::st::ComparisonOperators<union2> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     ui_2 = 1,
     ud_2 = 2,
@@ -1682,7 +1682,7 @@ uint32_t union2::read(Protocol_* iprot) {
 namespace test_cpp2 { namespace cpp_reflection {
 class union3 final : private apache::thrift::detail::st::ComparisonOperators<union3> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     ui_3 = 1,
     ud_3 = 2,
@@ -2068,7 +2068,7 @@ uint32_t structA::read(Protocol_* iprot) {
 namespace test_cpp2 { namespace cpp_reflection {
 class unionA final : private apache::thrift::detail::st::ComparisonOperators<unionA> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     i = 1,
     d = 2,
@@ -4081,7 +4081,7 @@ uint32_t annotated::read(Protocol_* iprot) {
 namespace test_cpp2 { namespace cpp_reflection {
 class union_with_special_names final : private apache::thrift::detail::st::ComparisonOperators<union_with_special_names> {
  public:
-  enum Type {
+  enum Type : int {
     __EMPTY__ = 0,
     get = 1,
     getter = 2,
