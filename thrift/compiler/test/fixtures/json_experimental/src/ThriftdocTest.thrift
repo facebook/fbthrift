@@ -27,7 +27,6 @@ namespace java thrift.test
 namespace cpp thrift.test
 namespace json thrift.test.doc
 namespace py thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest
-namespace wiki Thrift.ThrifdocTest
 
 // C++ comment
 /* c style comment */

@@ -2,8 +2,7 @@
   "thrift_module" : "DemoWidgetDocs",
   "namespaces": {
     "php": "thrift_php_demo",
-    "py": "thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs",
-    "wiki": "Thrift.DemoWidgetDocs"
+    "py": "thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs"
   },
   "enumerations" :
   {
@@ -13,24 +12,24 @@
           "FROB" : {
             "name" : "FROB",
             "docstring" : "Any small device or object (usually hand-sized) which can be manipulated.\n",
-            "lineno" : 27,
+            "lineno" : 26,
             "value" : 1
           },
           "KNOB" : {
             "name" : "KNOB",
             "docstring" : "The kind that you can use to open a door.\n",
-            "lineno" : 29,
+            "lineno" : 28,
             "value" : 2
           },
           "BOB" : {
             "name" : "BOB",
             "docstring" : "An actual person named Bob.\n",
-            "lineno" : 31,
+            "lineno" : 30,
             "value" : 3
           }
         },
         "docstring" : "What kinds of widgets can we buy and sell?\n",
-        "lineno" : 24
+        "lineno" : 23
       }
       },
   "structs" :
@@ -42,7 +41,7 @@
           "type" : {
             "name" : "type",
             "key" : 1,
-            "lineno" : 42,
+            "lineno" : 41,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "enum",
@@ -53,7 +52,7 @@
             "name" : "budgetCents",
             "docstring" : "How much can we spend on this order of widgets?\n@must _ > 0\n",
             "key" : 2,
-            "lineno" : 47,
+            "lineno" : 46,
             "required" : "opt-in-req-out",
             "type" : "i32"
           },
@@ -61,7 +60,7 @@
             "name" : "minWidgets",
             "docstring" : "Negative quantities represent sale requisitions.\n",
             "key" : 3,
-            "lineno" : 49,
+            "lineno" : 48,
             "required" : "opt-in-req-out",
             "type" : "i32"
           },
@@ -69,7 +68,7 @@
             "name" : "maxWidgets",
             "docstring" : "@must minWidgets <= _\n",
             "key" : 4,
-            "lineno" : 51,
+            "lineno" : 50,
             "required" : "opt-in-req-out",
             "type" : "i32"
           },
@@ -78,7 +77,7 @@
             "default_value" : 0,
             "docstring" : "A lower limit on the price makes sense if our logistics are not set\nup to handle massive quantities of cheap stuff.\n@must _ >= 0\n",
             "key" : 5,
-            "lineno" : 56,
+            "lineno" : 55,
             "required" : "opt-in-req-out",
             "type" : "i32"
           },
@@ -86,14 +85,14 @@
             "name" : "maxPriceCents",
             "docstring" : "Our physical security can't deal with high-value items.\n@must minPrice <= _\n",
             "key" : 6,
-            "lineno" : 60,
+            "lineno" : 59,
             "required" : "opt-in-req-out",
             "type" : "i32"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 41
+        "lineno" : 40
       },
       "WidgetOrder" : {
         "name" : "WidgetOrder",
@@ -103,7 +102,7 @@
             "name" : "requisition",
             "docstring" : "The requisition that generated this order.\n",
             "key" : 1,
-            "lineno" : 73,
+            "lineno" : 72,
             "required" : "opt-in-req-out",
             "type" : {
   "type" : "struct",
@@ -114,7 +113,7 @@
             "name" : "numWidgets",
             "docstring" : "Negative quantities represent sale orders.\n",
             "key" : 2,
-            "lineno" : 75,
+            "lineno" : 74,
             "required" : "opt-in-req-out",
             "type" : "i32"
           },
@@ -122,17 +121,17 @@
             "name" : "priceCents",
             "docstring" : "@must _ >= 0\n",
             "key" : 3,
-            "lineno" : 77,
+            "lineno" : 76,
             "required" : "opt-in-req-out",
             "type" : "i32"
           }
         },
         "is_exception" : false,
         "is_union" : false,
-        "lineno" : 71
+        "lineno" : 70
       }
       },
   "source_path" : "src/DemoWidgetDocs",
   "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs",
-  "wiki_address" : "Thrift.DemoWidgetDocs"
+  "wiki_address" : ""
 }
