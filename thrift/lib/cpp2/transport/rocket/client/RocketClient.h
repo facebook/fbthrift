@@ -123,13 +123,13 @@ class RocketClient : public folly::DelayedDestruction,
 
   // Hard close: stop reading from socket and abort all in-progress writes
   // immediately.
-  void closeNow(folly::exception_wrapper ew) noexcept;
+  void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
 
   // Initiate shutdown, but not as hard as closeNow(). Pending writes buffered
   // up within AsyncSocket will still have a chance to complete (all the way to
   // writeSuccess() or writeErr()). Other in-progress requests will be failed
   // with the exception specified by ew.
-  void close(folly::exception_wrapper ew) noexcept;
+  void close(apache::thrift::transport::TTransportException ex) noexcept;
 
   void setCloseCallback(folly::Function<void()> closeCallback) {
     closeCallback_ = std::move(closeCallback);

@@ -62,8 +62,8 @@ class RequestContextQueue {
     return !writeSendingQueue_.empty() || !writeSentQueue_.empty();
   }
 
-  void failAllScheduledWrites(folly::exception_wrapper ew);
-  void failAllSentWrites(folly::exception_wrapper ew);
+  void failAllScheduledWrites(transport::TTransportException ex);
+  void failAllSentWrites(transport::TTransportException ex);
 
   RequestContext* getRequestResponseContext(StreamId streamId);
 
@@ -96,7 +96,9 @@ class RequestContextQueue {
   // writeSuccess() or writeErr() was called.
   RequestContext::Queue writeSentQueue_;
 
-  void failQueue(RequestContext::Queue& queue, folly::exception_wrapper ew);
+  void failQueue(
+      RequestContext::Queue& queue,
+      transport::TTransportException ex);
 
   void trackIfRequestResponse(RequestContext& req) {
     if (req.isRequestResponse()) {

@@ -449,8 +449,7 @@ void RocketClientChannel::closeNow() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   if (rclient_) {
     rclient_->closeNow(
-        folly::make_exception_wrapper<transport::TTransportException>(
-            transport::TTransportException::NOT_OPEN, "Channel closing now"));
+        transport::TTransportException("RocketClientChannel::closeNow"));
     rclient_.reset();
   }
 }

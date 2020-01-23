@@ -62,13 +62,23 @@ class OnEventBaseDestructionCallback
       : client_(client) {}
 
   void onEventBaseDestruction() noexcept final {
-    client_.closeNow(folly::make_exception_wrapper<std::runtime_error>(
-        "Destroying EventBase"));
+    client_.closeNow(transport::TTransportException("Destroying EventBase"));
   }
 
  private:
   RocketClient& client_;
 };
+
+transport::TTransportException toTransportException(
+    folly::exception_wrapper ew) {
+  transport::TTransportException result;
+  if (ew.with_exception<transport::TTransportException>(
+          [&](transport::TTransportException ex) { result = std::move(ex); })) {
+    return result;
+  }
+
+  return transport::TTransportException(folly::exceptionStr(ew).toStdString());
+}
 
 } // namespace
 
@@ -90,8 +100,7 @@ RocketClient::RocketClient(
 }
 
 RocketClient::~RocketClient() {
-  closeNow(folly::make_exception_wrapper<std::runtime_error>(
-      "Destroying RocketClient"));
+  closeNow(transport::TTransportException("Destroying RocketClient"));
   eventBaseDestructionCallback_->cancel();
 
   // All outstanding request contexts should have been cleaned up in closeNow()
@@ -122,8 +131,9 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   if (UNLIKELY(frameType == FrameType::ERROR && streamId == StreamId{0})) {
     ErrorFrame errorFrame(std::move(frame));
-    return close(folly::make_exception_wrapper<RocketException>(
-        errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
+    return close(transport::TTransportException(
+        apache::thrift::transport::TTransportException::END_OF_FILE,
+        "Unhandled error frame on control stream."));
   }
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
     // constructing the METADATA_PUSH frame for validation
@@ -152,7 +162,7 @@ void RocketClient::handleRequestResponseFrame(
       return ctx.onErrorFrame(ErrorFrame(std::move(frame)));
 
     default:
-      close(folly::make_exception_wrapper<transport::TTransportException>(
+      close(transport::TTransportException(
           transport::TTransportException::TTransportExceptionType::
               NETWORK_ERROR,
           folly::to<std::string>(
@@ -184,13 +194,12 @@ void RocketClient::handleStreamChannelFrame(
       case FrameType::EXT:
         return this->handleExtFrame(serverCallback, std::move(frame));
       default:
-        this->close(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                transport::TTransportException::TTransportExceptionType::
-                    NETWORK_ERROR,
-                folly::to<std::string>(
-                    "Client attempting to handle unhandleable frame type: ",
-                    static_cast<uint8_t>(frameType))));
+        this->close(transport::TTransportException(
+            transport::TTransportException::TTransportExceptionType::
+                NETWORK_ERROR,
+            folly::to<std::string>(
+                "Client attempting to handle unhandleable frame type: ",
+                static_cast<uint8_t>(frameType))));
         return StreamChannelStatus::Alive;
     }
   });
@@ -203,7 +212,7 @@ void RocketClient::handleStreamChannelFrame(
       break;
     case StreamChannelStatus::ContractViolation:
       freeStream(streamId);
-      close(folly::make_exception_wrapper<transport::TTransportException>(
+      close(transport::TTransportException(
           transport::TTransportException::TTransportExceptionType::
               STREAMING_CONTRACT_VIOLATION,
           "Streaming contract violation. Closing the connection."));
@@ -587,7 +596,9 @@ bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
     FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
       auto writeScheduled = self->client_.scheduleWrite(self->ctx_);
       if (writeScheduled.hasException()) {
-        self->onError_(std::move(writeScheduled.exception()));
+        self->onError_(
+            toTransportException(std::move(writeScheduled.exception())));
+
         return false;
       }
 
@@ -603,7 +614,8 @@ bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
 
       auto writeCompleted = ctx_.waitForWriteToCompleteResult();
       if (writeCompleted.hasException()) {
-        onError_(std::move(writeCompleted.exception()));
+        self->onError_(
+            toTransportException(std::move(writeCompleted.exception())));
       }
     }
 
@@ -628,10 +640,10 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
   return sendFrame(
       RequestNFrame(streamId, n),
       [self = shared_from_this(),
-       g = std::move(g)](folly::exception_wrapper ew) {
+       g = std::move(g)](transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
-            << "sendRequestN failed, closing now: " << ew.what();
-        self->closeNow(std::move(ew));
+            << "sendRequestN failed, closing now: " << ex.what();
+        self->closeNow(std::move(ex));
       });
 }
 
@@ -641,10 +653,10 @@ void RocketClient::cancelStream(StreamId streamId) {
   std::ignore = sendFrame(
       CancelFrame(streamId),
       [self = shared_from_this(),
-       g = std::move(g)](folly::exception_wrapper ew) {
+       g = std::move(g)](transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
-            << "cancelStream failed, closing now: " << ew.what();
-        self->closeNow(std::move(ew));
+            << "cancelStream failed, closing now: " << ex.what();
+        self->closeNow(std::move(ex));
       });
 }
 
@@ -671,7 +683,7 @@ void RocketClient::sendPayload(
         if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000)
               << "sendPayload failed, closing now: " << resc.exception().what();
-          closeNow(std::move(resc.exception()));
+          closeNow(toTransportException(std::move(resc.exception())));
         }
       });
 }
@@ -689,7 +701,7 @@ void RocketClient::sendError(StreamId streamId, RocketException&& rex) {
         if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000)
               << "sendError failed, closing now: " << resc.exception().what();
-          closeNow(std::move(resc.exception()));
+          closeNow(toTransportException(std::move(resc.exception())));
         }
       });
 }
@@ -708,14 +720,14 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
 bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
   auto g = makeRequestCountGuard();
   auto onError = [self = shared_from_this(),
-                  g = std::move(g)](folly::exception_wrapper ew) {
+                  g = std::move(g)](transport::TTransportException ex) {
     FB_LOG_EVERY_MS(ERROR, 1000)
-        << "sendExtHeaders failed, closing now: " << ew.what();
-    self->closeNow(std::move(ew));
+        << "sendExtHeaders failed, closing now: " << ex.what();
+    self->closeNow(std::move(ex));
   };
   auto packedPayload = pack(std::move(payload));
   if (packedPayload.hasException()) {
-    onError(std::move(packedPayload.exception()));
+    onError(toTransportException(std::move(packedPayload.exception())));
     return false;
   }
 
@@ -792,7 +804,7 @@ void RocketClient::writeSuccess() noexcept {
   // In some cases, a successful write may happen after writeErr() has been
   // called on a preceding request.
   if (state_ == ConnectionState::ERROR) {
-    close(folly::make_exception_wrapper<transport::TTransportException>(
+    close(transport::TTransportException(
         transport::TTransportException::TTransportExceptionType::INTERRUPTED,
         "Already processing error"));
   }
@@ -806,14 +818,14 @@ void RocketClient::writeErr(
 
   queue_.markNextSendingBatchAsSent([](auto&&) {});
 
-  close(folly::make_exception_wrapper<std::runtime_error>(fmt::format(
+  close(transport::TTransportException(fmt::format(
       "Failed to write to remote endpoint. Wrote {} bytes."
       " AsyncSocketException: {}",
       bytesWritten,
       ex.what())));
 }
 
-void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
+void RocketClient::closeNow(transport::TTransportException ex) noexcept {
   DestructorGuard dg(this);
 
   if (auto closeCallback = std::move(closeCallback_)) {
@@ -833,9 +845,9 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   for (const auto& callback : streams) {
     callback.match([&](auto* serverCallback) {
       if (firstResponseTimeouts_.count(serverCallback->streamId())) {
-        serverCallback->onInitialError(ew);
+        serverCallback->onInitialError(ex);
       } else {
-        serverCallback->onStreamTransportError(ew);
+        serverCallback->onStreamTransportError(ex);
       }
     });
   }
@@ -843,9 +855,8 @@ void RocketClient::closeNow(folly::exception_wrapper ew) noexcept {
   bufferedFragments_.clear();
 }
 
-void RocketClient::close(folly::exception_wrapper ew) noexcept {
+void RocketClient::close(transport::TTransportException ex) noexcept {
   DestructorGuard dg(this);
-  DCHECK(ew);
 
   switch (state_) {
     case ConnectionState::CONNECTED:
@@ -860,13 +871,13 @@ void RocketClient::close(folly::exception_wrapper ew) noexcept {
       FOLLY_FALLTHROUGH;
 
     case ConnectionState::ERROR:
-      queue_.failAllSentWrites(ew);
+      queue_.failAllSentWrites(ex);
       // Once there are no more inflight requests, we can safely fail any
       // remaining scheduled requests.
       if (!queue_.hasInflightRequests()) {
-        queue_.failAllScheduledWrites(ew);
+        queue_.failAllScheduledWrites(ex);
         state_ = ConnectionState::CLOSED;
-        closeNow(std::move(ew));
+        closeNow(std::move(ex));
       }
       return;
 

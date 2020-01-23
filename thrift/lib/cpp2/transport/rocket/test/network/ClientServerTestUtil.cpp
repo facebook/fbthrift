@@ -382,7 +382,7 @@ void RocketTestClient::connect() {
 void RocketTestClient::disconnect() {
   evb_.runInEventBaseThread([client = std::move(client_)] {
     if (client) {
-      client->closeNow(folly::make_exception_wrapper<std::runtime_error>(
+      client->closeNow(apache::thrift::transport::TTransportException(
           "RocketTestClient disconnecting"));
     }
   });

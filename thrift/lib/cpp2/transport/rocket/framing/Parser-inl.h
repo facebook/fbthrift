@@ -94,13 +94,11 @@ void Parser<T>::readDataAvailable(size_t nbytes) noexcept {
       readBuffer_.trimStart(totalFrameSize);
       owner_.handleFrame(std::move(frame));
     }
-  } catch (const std::exception& ex) {
-    LOG(ERROR) << "Bad frame received, closing connection: "
-               << folly::exceptionStr(ex);
-    owner_.close(folly::exception_wrapper{std::current_exception(), ex});
   } catch (...) {
-    LOG(ERROR) << "Bad frame received, closing connection";
-    owner_.close(folly::exception_wrapper{std::current_exception()});
+    auto exceptionStr =
+        folly::exceptionStr(std::current_exception()).toStdString();
+    LOG(ERROR) << "Bad frame received, closing connection: " << exceptionStr;
+    owner_.close(transport::TTransportException(exceptionStr));
   }
 }
 
@@ -108,7 +106,7 @@ template <class T>
 void Parser<T>::readEOF() noexcept {
   folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
-  owner_.close(folly::make_exception_wrapper<transport::TTransportException>(
+  owner_.close(transport::TTransportException(
       transport::TTransportException::TTransportExceptionType::NOT_OPEN,
       "Remote end closed"));
 }
@@ -117,7 +115,7 @@ template <class T>
 void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
   folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
-  owner_.close(folly::make_exception_wrapper<transport::TTransportException>(
+  owner_.close(transport::TTransportException(
       transport::TTransportException::TTransportExceptionType(ex.getType()),
       ex.what(),
       ex.getErrno()));

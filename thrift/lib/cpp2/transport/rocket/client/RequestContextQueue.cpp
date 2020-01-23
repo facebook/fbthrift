@@ -87,25 +87,26 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
   }
 }
 
-void RequestContextQueue::failAllScheduledWrites(folly::exception_wrapper ew) {
+void RequestContextQueue::failAllScheduledWrites(
+    transport::TTransportException ex) {
   // Not safe to call if some inflight requests haven't been drained
   DCHECK(!hasInflightRequests());
-  failQueue(writeScheduledQueue_, std::move(ew));
+  failQueue(writeScheduledQueue_, std::move(ex));
 }
 
-void RequestContextQueue::failAllSentWrites(folly::exception_wrapper ew) {
-  failQueue(writeSentQueue_, std::move(ew));
+void RequestContextQueue::failAllSentWrites(transport::TTransportException ex) {
+  failQueue(writeSentQueue_, std::move(ex));
 }
 
 void RequestContextQueue::failQueue(
     RequestContext::Queue& queue,
-    folly::exception_wrapper ew) {
+    transport::TTransportException ex) {
   while (!queue.empty()) {
     auto& req = queue.front();
     queue.pop_front();
     DCHECK(!req.responsePayload_.hasValue());
     DCHECK(!req.responsePayload_.hasException());
-    req.responsePayload_ = folly::Try<Payload>(ew);
+    req.responsePayload_ = folly::Try<Payload>(ex);
     untrackIfRequestResponse(req);
     req.state_ = State::REQUEST_ABORTED;
     req.baton_.post();
