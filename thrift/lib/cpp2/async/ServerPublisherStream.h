@@ -129,6 +129,59 @@ class ServerPublisherStream : private StreamServerCallback {
     std::atomic<intptr_t> storage_{0};
   };
 
+  union CreditBuffer {
+    using Queue =
+        typename twowaybridge_detail::Queue<folly::Try<StreamPayload>>;
+    static constexpr uint64_t creditValSize = sizeof(void*) * 8 - 1;
+    static constexpr uint64_t maxCreditVal = (1ul << creditValSize) - 1;
+
+    Queue buffer;
+    struct {
+      bool isSet : 1;
+      uint64_t val : creditValSize;
+    } credits;
+
+    CreditBuffer() {
+      static_assert(
+          sizeof credits == sizeof buffer,
+          "CreditBuffer members must be the same size");
+      credits.isSet = true;
+      credits.val = 0;
+    }
+    ~CreditBuffer() {
+      if (!credits.isSet) {
+        buffer.~Queue();
+      }
+    }
+    void addCredits(int64_t delta) {
+      DCHECK(credits.isSet);
+      credits.val = std::min(maxCreditVal, credits.val + delta);
+    }
+    bool hasCredit() {
+      return credits.isSet && credits.val;
+    }
+    void storeBuffer(Queue&& buf) {
+      if (credits.isSet) {
+        new (this) Queue(std::move(buf));
+      } else {
+        buffer = std::move(buf);
+      }
+    }
+    void storeCredits(uint64_t val) {
+      if (!credits.isSet) {
+        buffer.~Queue();
+        credits.isSet = true;
+      }
+      credits.val = std::min(maxCreditVal, val);
+    }
+    Queue getBuffer() {
+      return credits.isSet ? Queue() : std::move(buffer);
+    }
+    uint64_t getCredits() {
+      return credits.isSet ? credits.val : 0;
+    }
+  };
+
  public:
   using Ptr = std::unique_ptr<ServerPublisherStream<T>, Deleter>;
 
@@ -211,12 +264,16 @@ class ServerPublisherStream : private StreamServerCallback {
 
   bool onStreamRequestN(uint64_t credits) override {
     clientEventBase_->dcheckIsInEventBaseThread();
-    credits_ += credits;
-    if (credits_ == credits) {
+    if (!creditBuffer_.hasCredit()) {
+      // we need creditBuffer_ to hold credits before calling processPayloads
+      auto buffer = creditBuffer_.getBuffer();
+      creditBuffer_.storeCredits(credits);
       // we are responsible for waking the queue reader
-      return processPayloads();
+      return processPayloads(std::move(buffer));
+    } else {
+      creditBuffer_.addCredits(credits);
+      return true;
     }
-    return true;
   }
 
   void onStreamCancel() override {
@@ -235,24 +292,26 @@ class ServerPublisherStream : private StreamServerCallback {
   // resume processing buffered requests
   // called by onStreamRequestN when credits were previously empty,
   // otherwise by queue on publish
-  bool processPayloads() {
+  bool processPayloads(
+      typename CreditBuffer::Queue buffer = typename CreditBuffer::Queue()) {
     clientEventBase_->dcheckIsInEventBaseThread();
     DCHECK(encodeOrQueue_.isClosed());
 
     DCHECK(!queue_.isClosed());
+    DCHECK(creditBuffer_.hasCredit());
 
-    // returns stream completion status
+    // returns stream liveness
     auto processQueue = [&] {
-      for (; credits_ && !buffer_.empty(); buffer_.pop()) {
+      for (; creditBuffer_.hasCredit() && !buffer.empty(); buffer.pop()) {
         DCHECK(!queue_.isClosed());
-        auto payload = std::move(buffer_.front());
+        auto payload = std::move(buffer.front());
         if (payload.hasValue()) {
           auto alive =
               streamClientCallback_->onStreamNext(std::move(payload.value()));
-          --credits_;
           if (!alive) {
             return false;
           }
+          creditBuffer_.addCredits(-1);
         } else if (payload.hasException()) {
           streamClientCallback_->onStreamError(std::move(payload.exception()));
           close();
@@ -272,14 +331,18 @@ class ServerPublisherStream : private StreamServerCallback {
 
     DCHECK(!queue_.isClosed());
 
-    while (credits_ && !queue_.wait(this)) {
-      DCHECK(buffer_.empty());
-      buffer_ = queue_.getMessages();
+    while (creditBuffer_.hasCredit() && !queue_.wait(this)) {
+      DCHECK(buffer.empty());
+      buffer = queue_.getMessages();
       if (!processQueue()) {
         return false;
       }
     }
 
+    if (!buffer.empty()) {
+      DCHECK(!creditBuffer_.hasCredit());
+      creditBuffer_.storeBuffer(std::move(buffer));
+    }
     return true;
   }
 
@@ -308,10 +371,8 @@ class ServerPublisherStream : private StreamServerCallback {
   typename twowaybridge_detail::AtomicQueueOrPtr<folly::Try<T>, EncodeFn>
       encodeOrQueue_;
 
-  // these will be combined into a single atomic in a future diff
   // must only be read/written on client thread
-  typename Queue<StreamPayload>::MessageQueue buffer_;
-  std::atomic<uint64_t> credits_{0};
+  CreditBuffer creditBuffer_;
 };
 
 } // namespace detail
