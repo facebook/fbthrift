@@ -255,7 +255,7 @@ folly::coro::AsyncGenerator<T&&> SemiStream<T>::toAsyncGenerator(
 #endif
 
 template <typename T>
-StreamServerCallback* SemiStream<T>::toStreamServerCallbackPtr(
+StreamServerCallbackPtr SemiStream<T>::toStreamServerCallbackPtr(
     folly::EventBase& evb) && {
   class StreamServerCallbackAdaptor final : public StreamServerCallback,
                                             public SubscriberIf<T> {
@@ -317,7 +317,7 @@ StreamServerCallback* SemiStream<T>::toStreamServerCallbackPtr(
   };
 
   auto serverCallback = std::make_unique<StreamServerCallbackAdaptor>();
-  auto* serverCallbackPtr = serverCallback.get();
+  StreamServerCallbackPtr serverCallbackPtr(serverCallback.get());
 
   std::move(*this).via(&evb).subscribe(std::move(serverCallback));
 

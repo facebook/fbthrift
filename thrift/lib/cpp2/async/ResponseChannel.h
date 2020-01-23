@@ -113,7 +113,7 @@ class ResponseChannelRequest {
 
   FOLLY_NODISCARD virtual bool sendStreamReply(
       std::unique_ptr<folly::IOBuf>,
-      StreamServerCallback*,
+      StreamServerCallbackPtr,
       folly::Optional<uint32_t> = folly::none) {
     throw std::logic_error("unimplemented");
   }

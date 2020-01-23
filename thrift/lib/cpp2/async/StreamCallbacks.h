@@ -68,6 +68,15 @@ class StreamServerCallback {
   virtual void resetClientCallback(StreamClientCallback&) = 0;
 };
 
+struct StreamServerCallbackCancel {
+  void operator()(StreamServerCallback* streamServerCallback) noexcept {
+    streamServerCallback->onStreamCancel();
+  }
+};
+
+using StreamServerCallbackPtr =
+    std::unique_ptr<StreamServerCallback, StreamServerCallbackCancel>;
+
 class ChannelServerCallback {
  public:
   virtual ~ChannelServerCallback() = default;

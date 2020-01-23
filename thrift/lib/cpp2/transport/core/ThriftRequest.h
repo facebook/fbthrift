@@ -186,7 +186,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   bool sendStreamReply(
       std::unique_ptr<folly::IOBuf> response,
-      StreamServerCallback* stream,
+      StreamServerCallbackPtr stream,
       folly::Optional<uint32_t> crc32c) override final {
     if (active_.exchange(false)) {
       cancelTimeout();
@@ -195,17 +195,12 @@ class ThriftRequestCore : public ResponseChannelRequest {
         metadata.crc32c_ref() = *crc32c;
       }
       auto alive = sendReplyInternal(
-          std::move(metadata),
-          std::move(response),
-          std::exchange(stream, nullptr));
+          std::move(metadata), std::move(response), std::move(stream));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
       }
       return alive;
-    }
-    if (stream) {
-      stream->onStreamCancel();
     }
     return false;
   }
@@ -281,7 +276,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   virtual bool sendStreamThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      StreamServerCallback*) noexcept {
+      StreamServerCallbackPtr) noexcept {
     LOG(FATAL) << "sendStreamThriftResponse not implemented";
   }
 
@@ -350,16 +345,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
   bool sendReplyInternal(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
-      StreamServerCallback* stream) {
+      StreamServerCallbackPtr stream) {
     if (!checkResponseSize(*buf)) {
       sendResponseTooBigEx();
-      if (stream) {
-        stream->onStreamCancel();
-      }
       return false;
     }
     return sendStreamThriftResponse(
-        std::move(metadata), std::move(buf), std::exchange(stream, nullptr));
+        std::move(metadata), std::move(buf), std::move(stream));
   }
 
   void sendReplyInternal(

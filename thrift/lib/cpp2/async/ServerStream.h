@@ -60,7 +60,7 @@ class ServerStream {
                     .toStreamServerCallbackPtr(*clientEb);
             streamPtr->resetClientCallback(*callback);
             std::ignore = callback->onFirstResponse(
-                std::move(payload), clientEb, streamPtr);
+                std::move(payload), clientEb, streamPtr.release());
           };
         }) {}
 

@@ -175,7 +175,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   bool sendStreamThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
-      StreamServerCallback*) noexcept override;
+      StreamServerCallbackPtr) noexcept override;
 
   virtual void sendStreamThriftResponse(
       ResponseRpcMetadata&&,

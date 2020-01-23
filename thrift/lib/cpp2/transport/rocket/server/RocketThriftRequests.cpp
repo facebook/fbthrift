@@ -204,19 +204,21 @@ void ThriftServerRequestStream::sendStreamReply(
     MessageChannel::SendCallback*,
     folly::Optional<uint32_t> crc32c) noexcept {
   if (result.stream) {
-    auto* serverCallback =
+    auto serverCallback =
         std::move(result.stream).toStreamServerCallbackPtr(*getEventBase());
     // Note that onSubscribe will run after onFirstResponse
-    sendStreamReply(std::move(result.response), serverCallback, crc32c);
+    sendStreamReply(
+        std::move(result.response), std::move(serverCallback), crc32c);
   } else {
-    sendStreamReply(std::move(result.response), nullptr, crc32c);
+    sendStreamReply(
+        std::move(result.response), StreamServerCallbackPtr(), crc32c);
   }
 }
 
 bool ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
-    StreamServerCallback* stream) noexcept {
+    StreamServerCallbackPtr stream) noexcept {
   if (!stream) {
     sendSerializedError(std::move(metadata), std::move(data));
     return false;
@@ -226,7 +228,7 @@ bool ThriftServerRequestStream::sendStreamThriftResponse(
   return clientCallback_->onFirstResponse(
       FirstResponsePayload{std::move(data), std::move(metadata)},
       nullptr /* evb */,
-      stream);
+      stream.release());
 }
 
 void ThriftServerRequestStream::sendStreamThriftResponse(

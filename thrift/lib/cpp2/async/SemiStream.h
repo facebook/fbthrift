@@ -65,7 +65,7 @@ class SemiStream {
       folly::CancellationToken cancellationToken = {});
 #endif
 
-  StreamServerCallback* toStreamServerCallbackPtr(folly::EventBase& evb) &&;
+  StreamServerCallbackPtr toStreamServerCallbackPtr(folly::EventBase& evb) &&;
 
  private:
   template <typename U>
