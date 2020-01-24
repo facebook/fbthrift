@@ -22,15 +22,17 @@ import (
 	"encoding/binary"
 	"fmt"
 	"io"
+	"io/ioutil"
 )
 
 const DEFAULT_MAX_LENGTH = 16384000
 
 type FramedTransport struct {
 	transport Transport
+	framebuf  byteReader    // buffer for reading complete frames off the wire
 	buf       bytes.Buffer  // buffers the writes
 	reader    *bufio.Reader // just a buffer over the underlying transport
-	frameSize uint32        //Current remaining size of the frame. if ==0 read next frame header
+	frameSize uint32        // Current remaining size of the frame. if ==0 read next frame header
 	rBuffer   [4]byte       // used for reading
 	wBuffer   [4]byte       // used for writing
 	maxLength uint32
@@ -90,7 +92,7 @@ func (p *FramedTransport) Read(buf []byte) (l int, err error) {
 			return
 		}
 	}
-	got, err := p.reader.Read(buf)
+	got, err := p.framebuf.Read(buf)
 	p.frameSize = p.frameSize - uint32(got)
 	//sanity check
 	if p.frameSize < 0 {
@@ -109,7 +111,7 @@ func (p *FramedTransport) ReadByte() (c byte, err error) {
 	if p.frameSize < 1 {
 		return 0, NewTransportExceptionFromError(fmt.Errorf("Not enough frame size %d to read %d bytes", p.frameSize, 1))
 	}
-	c, err = p.reader.ReadByte()
+	c, err = p.framebuf.ReadByte()
 	if err == nil {
 		p.frameSize--
 	}
@@ -156,6 +158,17 @@ func (p *FramedTransport) readFrameHeader() (uint32, error) {
 	if size < 0 || size > p.maxLength {
 		return 0, NewTransportException(UNKNOWN_TRANSPORT_EXCEPTION, fmt.Sprintf("Incorrect frame size (%d)", size))
 	}
+
+	framebuf := newLimitedByteReader(p.reader, int64(size))
+	out, err := ioutil.ReadAll(framebuf)
+	if err != nil {
+		return 0, err
+	}
+	if uint32(len(out)) < size {
+		return 0, NewTransportExceptionFromError(fmt.Errorf("Unable to read full frame of size %d", size))
+	}
+	p.framebuf = newLimitedByteReader(bytes.NewBuffer(out), int64(size))
+
 	return size, nil
 }
 
