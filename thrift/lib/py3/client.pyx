@@ -92,7 +92,7 @@ cdef class Client:
         self._deferred_headers = None
         for handler in self._deferred_event_handlers:
             self.add_event_handler(handler)
-        self._deferred_headers = None
+        self._deferred_event_handlers.clear()
 
         return self
 
@@ -100,7 +100,7 @@ cdef class Client:
         self._check_connect_future()
         loop = asyncio.get_event_loop()
         future = loop.create_future()
-        userdata = (self, future)
+        userdata = (self, future, self._aexit_callback)
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._client).disconnect(),
@@ -119,8 +119,12 @@ cdef void closed_client_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata,
 ):
-    client, pyfuture = <object> userdata
+    client, pyfuture, aexit_callback = <object> userdata
     pyfuture.set_result(None)
+    # We call this here to insure its run before the async with exits, but after the future is done
+    # add_done_callback will not guarentee this behavior.
+    if aexit_callback:
+        aexit_callback()
 
 
 async def _no_op():

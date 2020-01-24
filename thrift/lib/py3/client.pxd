@@ -89,6 +89,7 @@ cdef class Client:
     cdef object _context_entered
     cdef object _connect_future
     cdef object _deferred_headers
+    cdef object _aexit_callback
     cdef vector[shared_ptr[cTProcessorEventHandler]] _deferred_event_handlers
     cdef cFollyExecutor* _executor
     cdef unique_ptr[cClientWrapper] _client
