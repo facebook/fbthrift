@@ -31,11 +31,23 @@ class IOBufTests(unittest.TestCase):
         assert m.opt_ptr is not None
         assert m2.opt_ptr is not None
 
+        # pyre-fixme[6]: Expected `Iterable[int]` for 1st param but got
+        #  `Optional[IOBuf]`.
+        # pyre-fixme[6]: Expected `Iterable[int]` for 1st param but got
+        #  `Optional[IOBuf]`.
         self.assertEqual(bytes(m.ptr), bytes(m2.ptr))
+        # pyre-fixme[6]: Expected `Iterable[int]` for 1st param but got
+        #  `Optional[IOBuf]`.
         self.assertEqual(b"abcdef", bytes(m.ptr))
 
         self.assertEqual(bytes(m.buf), bytes(m2.buf))
         self.assertEqual(b"xyzzy", bytes(m.buf))
 
+        # pyre-fixme[6]: Expected `Iterable[int]` for 1st param but got
+        #  `Optional[IOBuf]`.
+        # pyre-fixme[6]: Expected `Iterable[int]` for 1st param but got
+        #  `Optional[IOBuf]`.
         self.assertEqual(bytes(m.opt_ptr), bytes(m2.opt_ptr))
+        # pyre-fixme[6]: Expected `Iterable[int]` for 1st param but got
+        #  `Optional[IOBuf]`.
         self.assertEqual(b"pqr", bytes(m.opt_ptr))
