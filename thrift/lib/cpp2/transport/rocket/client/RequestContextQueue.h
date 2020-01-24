@@ -47,7 +47,7 @@ class RequestContextQueue {
         // REQUEST_RESPONSE request.
         writeSentQueue_.push_back(req);
       } else {
-        DCHECK(req.state() == State::RESPONSE_RECEIVED);
+        DCHECK(req.state() == State::COMPLETE);
         req.baton_.post();
       }
       foreachRequest(req);

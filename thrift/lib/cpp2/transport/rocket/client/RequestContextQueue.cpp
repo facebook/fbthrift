@@ -60,10 +60,11 @@ RequestContextQueue::getNextScheduledWritesBatch() noexcept {
 }
 
 void RequestContextQueue::abortSentRequest(RequestContext& req) noexcept {
+  DCHECK(req.isRequestResponse());
   DCHECK(req.state() == State::WRITE_SENT);
   untrackIfRequestResponse(req);
   writeSentQueue_.erase(writeSentQueue_.iterator_to(req));
-  req.state_ = State::REQUEST_ABORTED;
+  req.state_ = State::COMPLETE;
 }
 
 // For REQUEST_RESPONSE, this is called on the read path once the entire
@@ -74,7 +75,7 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
   untrackIfRequestResponse(req);
 
   if (LIKELY(req.state() == State::WRITE_SENT)) {
-    req.state_ = State::RESPONSE_RECEIVED;
+    req.state_ = State::COMPLETE;
     writeSentQueue_.erase(writeSentQueue_.iterator_to(req));
     req.baton_.post();
   } else {
@@ -83,7 +84,7 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
     // handling this request's final queue transition and posting the baton.
     DCHECK(req.isRequestResponse());
     DCHECK(req.state() == State::WRITE_SENDING);
-    req.state_ = State::RESPONSE_RECEIVED;
+    req.state_ = State::COMPLETE;
   }
 }
 
@@ -91,7 +92,13 @@ void RequestContextQueue::failAllScheduledWrites(
     transport::TTransportException ex) {
   // Not safe to call if some inflight requests haven't been drained
   DCHECK(!hasInflightRequests());
-  failQueue(writeScheduledQueue_, std::move(ex));
+  failQueue(
+      writeScheduledQueue_,
+      transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          fmt::format(
+              "Dropping unsent request. Connection closed after: {}",
+              ex.what())));
 }
 
 void RequestContextQueue::failAllSentWrites(transport::TTransportException ex) {
@@ -104,11 +111,10 @@ void RequestContextQueue::failQueue(
   while (!queue.empty()) {
     auto& req = queue.front();
     queue.pop_front();
-    DCHECK(!req.responsePayload_.hasValue());
     DCHECK(!req.responsePayload_.hasException());
     req.responsePayload_ = folly::Try<Payload>(ex);
     untrackIfRequestResponse(req);
-    req.state_ = State::REQUEST_ABORTED;
+    req.state_ = State::COMPLETE;
     req.baton_.post();
   }
 }

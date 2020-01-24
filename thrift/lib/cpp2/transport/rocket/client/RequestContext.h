@@ -50,8 +50,7 @@ class RequestContext {
     WRITE_SENDING, /* AsyncSocket::writev() called, but not yet confirmed as
                       written to the underlying socket */
     WRITE_SENT, /* Write to socket completed (possibly with error) */
-    RESPONSE_RECEIVED,
-    REQUEST_ABORTED, /* Request timed out, errored out, or was aborted */
+    COMPLETE, /* Terminal state. Result stored in responsePayload_ */
   };
 
   template <class Frame>
@@ -87,7 +86,7 @@ class RequestContext {
   void scheduleTimeoutForResponse() {
     DCHECK(isRequestResponse());
     // In some edge cases, response may arrive before write to socket finishes.
-    if (state_ != State::RESPONSE_RECEIVED) {
+    if (state_ != State::COMPLETE) {
       awaitResponseTimeoutHandler_.scheduleTimeout(awaitResponseTimeout_);
     }
   }

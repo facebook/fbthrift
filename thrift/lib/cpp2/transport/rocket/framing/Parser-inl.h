@@ -108,7 +108,8 @@ void Parser<T>::readEOF() noexcept {
 
   owner_.close(transport::TTransportException(
       transport::TTransportException::TTransportExceptionType::NOT_OPEN,
-      "Remote end closed"));
+      "Channel got EOF. Check for server hitting connection limit, "
+      "server connection idle timeout, and server crashes."));
 }
 
 template <class T>

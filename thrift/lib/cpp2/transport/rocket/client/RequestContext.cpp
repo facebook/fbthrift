@@ -39,16 +39,6 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-namespace {
-folly::exception_wrapper requestAbortedException(const folly::Try<Payload>& t) {
-  auto reason =
-      t.hasException() ? t.exception().what().toStdString() : "unknown reason";
-  return folly::make_exception_wrapper<TTransportException>(
-      TTransportException::NOT_OPEN,
-      fmt::format("Request aborted during client shutdown: {}", reason));
-}
-} // namespace
-
 folly::Try<void> RequestContext::waitForWriteToComplete() {
   baton_.wait();
   return waitForWriteToCompleteResult();
@@ -61,14 +51,11 @@ void RequestContext::waitForWriteToCompleteSchedule(
 
 folly::Try<void> RequestContext::waitForWriteToCompleteResult() {
   switch (state_) {
-    case State::RESPONSE_RECEIVED:
-      // Even though this function should only be called for no-response
-      // requests, we still use RESPONSE_RECEIVED as the terminal "expected"
-      // state for such requests.
+    case State::COMPLETE:
+      if (responsePayload_.hasException()) {
+        return folly::Try<void>(std::move(responsePayload_.exception()));
+      }
       return {};
-
-    case State::REQUEST_ABORTED:
-      return folly::Try<void>(requestAbortedException(responsePayload_));
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
@@ -96,16 +83,17 @@ folly::Try<Payload> RequestContext::waitForResponse(
       // writeSuccess() or writeErr() processed this request but a response was
       // not received within the request's allotted timeout. Terminate request
       // with timeout.
-      queue_.abortSentRequest(*this);
-      return folly::Try<Payload>(
+      DCHECK(!responsePayload_.hasException());
+      responsePayload_ = folly::Try<Payload>(
           folly::make_exception_wrapper<TTransportException>(
               TTransportException::TIMED_OUT));
+      queue_.abortSentRequest(*this);
 
-    case State::RESPONSE_RECEIVED:
+      DCHECK(state_ == State::COMPLETE);
+      FOLLY_FALLTHROUGH;
+
+    case State::COMPLETE:
       return std::move(responsePayload_);
-
-    case State::REQUEST_ABORTED:
-      return folly::Try<Payload>(requestAbortedException(responsePayload_));
 
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:

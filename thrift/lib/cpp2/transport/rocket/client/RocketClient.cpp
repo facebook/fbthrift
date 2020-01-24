@@ -818,11 +818,14 @@ void RocketClient::writeErr(
 
   queue_.markNextSendingBatchAsSent([](auto&&) {});
 
-  close(transport::TTransportException(fmt::format(
-      "Failed to write to remote endpoint. Wrote {} bytes."
-      " AsyncSocketException: {}",
-      bytesWritten,
-      ex.what())));
+  close(transport::TTransportException(
+      bytesWritten ? transport::TTransportException::UNKNOWN
+                   : transport::TTransportException::NOT_OPEN,
+      fmt::format(
+          "Failed to write to remote endpoint. Wrote {} bytes."
+          " AsyncSocketException: {}",
+          bytesWritten,
+          ex.what())));
 }
 
 void RocketClient::closeNow(transport::TTransportException ex) noexcept {

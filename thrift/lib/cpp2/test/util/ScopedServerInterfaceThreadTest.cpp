@@ -147,6 +147,13 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   ~SlowSimpleServiceImpl() override {}
   folly::Future<int64_t> future_add(int64_t a, int64_t b) override {
     requestSem_.post();
+
+    if (a + b == 6666) {
+      // A hack to avoid crashing when sleep future gets complete on
+      // Timekeeper thread shutdown.
+      return infiniteFuture().thenValue([res = a + b](auto&&) { return res; });
+    }
+
     return folly::futures::sleepUnsafe(std::chrono::milliseconds(a + b))
         .thenValue([=](auto&&) { return a + b; });
   }
@@ -156,6 +163,11 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   }
 
  private:
+  folly::Future<folly::Unit> infiniteFuture() {
+    static folly::Indestructible<folly::SharedPromise<folly::Unit>> promise;
+    return promise->getFuture();
+  }
+
   folly::LifoSem requestSem_;
 };
 
@@ -202,6 +214,34 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 
   EXPECT_GE(timer.elapsed().count(), 6000);
   EXPECT_EQ(6000, std::move(future).get());
+}
+
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsTimeout) {
+  auto serviceImpl = this->newService();
+
+  folly::Optional<ScopedServerInterfaceThread> ssit(
+      folly::in_place, serviceImpl, "::1", 0, [](auto& thriftServer) {
+        thriftServer.setWorkersJoinTimeout(std::chrono::seconds{1});
+      });
+
+  auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
+
+  auto future = cli->semifuture_add(6000, 666);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  ssit.reset();
+
+  try {
+    std::move(future).get();
+    FAIL() << "Request didn't fail";
+  } catch (const apache::thrift::transport::TTransportException& ex) {
+    EXPECT_EQ(
+        apache::thrift::transport::TTransportException::END_OF_FILE,
+        ex.getType())
+        << "Unexpected exception: " << folly::exceptionStr(ex);
+  }
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsCancel) {
