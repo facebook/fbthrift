@@ -87,6 +87,14 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
           worker_->getServer()->getClientIdentityHook())),
       setupFrameHandlers_(handlers) {}
 
+ThriftRocketServerHandler::~ThriftRocketServerHandler() {
+  if (serverConfigs_) {
+    if (auto* observer = serverConfigs_->getObserver()) {
+      observer->connClosed();
+    }
+  }
+}
+
 apache::thrift::server::TServerObserver::SamplingStatus
 ThriftRocketServerHandler::shouldSample() {
   bool isServerSamplingEnabled =

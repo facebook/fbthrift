@@ -257,6 +257,7 @@ void TransportCompatibilityTest::callSleep(
 void TransportCompatibilityTest::TestConnectionStats() {
   connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
     EXPECT_EQ(0, server_->observer_->connAccepted_);
+    EXPECT_EQ(0, server_->observer_->connClosed_);
     EXPECT_EQ(0, server_->observer_->activeConns_);
 
     EXPECT_CALL(*handler_.get(), sumTwoNumbers_(1, 2)).Times(1);
@@ -264,6 +265,20 @@ void TransportCompatibilityTest::TestConnectionStats() {
 
     EXPECT_EQ(1, server_->observer_->connAccepted_);
     EXPECT_EQ(server_->numIOThreads_, server_->observer_->activeConns_);
+
+    folly::Baton<> connCloseBaton;
+    server_->observer_->connClosedNotifBaton = &connCloseBaton;
+
+    // Close the connection to trigger connClosed event on the server.
+    auto* channel = client->getChannel();
+    auto* evb = channel->getEventBase();
+    evb->runInEventBaseThread([client = std::move(client)] {
+      dynamic_cast<ClientChannel*>(client->getChannel())->closeNow();
+    });
+
+    ASSERT_TRUE(connCloseBaton.try_wait_for(std::chrono::seconds(10)));
+
+    EXPECT_EQ(1, server_->observer_->connClosed_);
   });
 }
 

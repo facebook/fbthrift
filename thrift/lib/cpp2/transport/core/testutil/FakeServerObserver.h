@@ -18,6 +18,7 @@
 
 #include <atomic>
 
+#include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 
 namespace apache {
@@ -26,6 +27,7 @@ namespace thrift {
 class FakeServerObserver : public apache::thrift::server::TServerObserver {
  public:
   std::atomic<size_t> connAccepted_{0};
+  std::atomic<size_t> connClosed_{0};
   std::atomic<size_t> connDropped_{0};
   std::atomic<size_t> connRejected_{0};
   std::atomic<size_t> activeConns_{0};
@@ -41,10 +43,19 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
   std::atomic<size_t> callCompleted_{0};
   std::atomic<size_t> protocolError_{0};
 
+  folly::Baton<>* connClosedNotifBaton{nullptr};
+
   FakeServerObserver() : TServerObserver(1) {}
 
   void connAccepted() override {
     ++connAccepted_;
+  }
+
+  void connClosed() override {
+    ++connClosed_;
+    if (connClosedNotifBaton) {
+      connClosedNotifBaton->post();
+    }
   }
 
   void connDropped() override {

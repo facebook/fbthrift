@@ -83,6 +83,10 @@ Cpp2Connection::~Cpp2Connection() {
     handler->connectionDestroyed(&context_);
   }
 
+  if (auto* observer = worker_->getServer()->getObserver()) {
+    observer->connClosed();
+  }
+
   channel_.reset();
 }
 

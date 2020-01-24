@@ -66,6 +66,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
       const folly::AsyncTransportWrapper* transport,
       const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers);
 
+  ~ThriftRocketServerHandler() override;
+
   void handleSetupFrame(SetupFrame&& frame, RocketServerConnection& context)
       final;
   void handleRequestResponseFrame(

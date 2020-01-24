@@ -46,10 +46,13 @@ namespace {
 class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
                                    public proxygen::SimpleController {
  public:
-  explicit HTTP2RoutingSessionManager(ThriftProcessor* processor)
+  explicit HTTP2RoutingSessionManager(
+      ThriftProcessor* processor,
+      const server::ServerConfigs& serverConfigs)
       : proxygen::HTTPSession::InfoCallback(),
         proxygen::SimpleController(/*acceptor=*/nullptr),
-        processor_(processor) {}
+        processor_(processor),
+        serverConfigs_(serverConfigs) {}
 
   ~HTTP2RoutingSessionManager() override = default;
 
@@ -104,6 +107,9 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
 
   void detachSession(const proxygen::HTTPSessionBase*) override {
     VLOG(4) << "HTTP2RoutingSessionManager::detachSession";
+    if (auto* observer = serverConfigs_.getObserver()) {
+      observer->connClosed();
+    }
     // Session destroyed, so self destroy.
     delete this;
   }
@@ -112,6 +118,7 @@ class HTTP2RoutingSessionManager : public proxygen::HTTPSession::InfoCallback,
 
  private:
   ThriftProcessor* processor_;
+  const server::ServerConfigs& serverConfigs_;
 };
 
 } // anonymous namespace
@@ -157,11 +164,12 @@ void HTTP2RoutingHandler::handleConnection(
     wangle::TransportInfo const& tinfo,
     std::shared_ptr<Cpp2Worker>) {
   // Create the DownstreamSession manager.
-  auto sessionManager = new HTTP2RoutingSessionManager(processor_);
+  auto sessionManager =
+      new HTTP2RoutingSessionManager(processor_, serverConfigs_);
   // Create the DownstreamSession
   // A const_cast is needed to match wangle and proxygen APIs
   auto h2codec = std::make_unique<proxygen::HTTP2Codec>(
-    proxygen::TransportDirection::DOWNSTREAM);
+      proxygen::TransportDirection::DOWNSTREAM);
   h2codec->setAddDateHeaderToResponse(false);
   auto session = sessionManager->createSession(
       std::move(sock),

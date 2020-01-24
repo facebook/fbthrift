@@ -92,6 +92,8 @@ class TServerObserver {
 
   virtual void connRejected() {}
 
+  virtual void connClosed() {}
+
   virtual void activeConnections(int32_t /*numConnections*/) {}
 
   virtual void tlsError() {}
