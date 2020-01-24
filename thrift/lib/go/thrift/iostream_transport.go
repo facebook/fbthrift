@@ -81,6 +81,14 @@ func NewStreamTransportR(r io.Reader) *StreamTransport {
 	return &StreamTransport{Reader: bufio.NewReader(r)}
 }
 
+func NewStreamTransportLimitedR(r io.Reader, n int) *StreamTransport {
+	r = &io.LimitedReader{
+		R: bufio.NewReader(r),
+		N: int64(n),
+	}
+	return &StreamTransport{Reader: r}
+}
+
 func NewStreamTransportW(w io.Writer) *StreamTransport {
 	return &StreamTransport{Writer: bufio.NewWriter(w)}
 }
@@ -205,5 +213,9 @@ func (p *StreamTransport) WriteString(s string) (n int, err error) {
 }
 
 func (p *StreamTransport) RemainingBytes() (num_bytes uint64) {
+	if r, ok := p.Reader.(*io.LimitedReader); ok {
+		return uint64(r.N)
+	}
+
 	return UnknownRemaining // the truth is, we just don't know unless framed is used
 }
