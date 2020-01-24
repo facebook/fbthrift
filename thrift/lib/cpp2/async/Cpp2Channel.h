@@ -28,7 +28,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/FramingHandler.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
-#include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
 #include <thrift/lib/cpp2/async/TAsyncTransportHandler.h>
 #include <wangle/channel/Handler.h>
 #include <wangle/channel/OutputBufferingHandler.h>
@@ -153,7 +152,6 @@ class Cpp2Channel
           apache::thrift::transport::THeader*>,
       TAsyncTransportHandler,
       wangle::OutputBufferingHandler,
-      PcapLoggingHandler,
       FramingHandler,
       Cpp2Channel>
       Pipeline;

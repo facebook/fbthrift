@@ -23,7 +23,6 @@
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <thrift/lib/cpp2/async/PcapLoggingHandler.h>
 
 using folly::IOBuf;
 using folly::IOBufQueue;
@@ -46,11 +45,9 @@ Cpp2Channel::Cpp2Channel(
       outputBufferingHandler_(
           std::make_shared<wangle::OutputBufferingHandler>()),
       framingHandler_(std::move(framingHandler)) {
-  auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>();
   pipeline_ = Pipeline::create(
       TAsyncTransportHandler(transport),
       outputBufferingHandler_,
-      pcapLoggingHandler,
       framingHandler_,
       this);
   // Let the pipeline know that this handler owns the pipeline itself.
