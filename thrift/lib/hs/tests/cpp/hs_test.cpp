@@ -49,7 +49,7 @@ void deleteMB(TMemoryBuffer* mb) {
 
 // Allocate a new TestStruct object from Haskell
 TestStruct* getStructPtr() {
-  TestStruct *testStruct = new TestStruct();
+  TestStruct* testStruct = new TestStruct();
   return testStruct;
 }
 
@@ -58,7 +58,7 @@ void freeTestStruct(TestStruct* ts) {
   delete ts;
 }
 
-Foo *getFooPtr() {
+Foo* getFooPtr() {
   return new Foo();
 }
 
@@ -84,14 +84,14 @@ void fillStruct(TestStruct* dest, CTestStruct* source) {
   dest->f_i32 = source->f_i32;
   dest->f_i64 = source->f_i64;
   dest->f_double = source->f_double;
-  dest->f_list = std::vector<int16_t>(source->f_list,
-                                      source->f_list + source->f_list_len);
+  dest->f_list =
+      std::vector<int16_t>(source->f_list, source->f_list + source->f_list_len);
   dest->f_map = std::map<int16_t, int32_t>();
   for (int j = 0; j < source->f_map_len; j++)
     dest->f_map[source->f_map_keys[j]] = source->f_map_vals[j];
   dest->f_string = std::string(source->f_string);
-  dest->f_set = std::set<int8_t>(source->f_set,
-                                 source->f_set + source->f_set_len);
+  dest->f_set =
+      std::set<int8_t>(source->f_set, source->f_set + source->f_set_len);
   dest->o_i32_ref() = source->o_i32;
   dest->__isset.o_i32 = source->o_isset;
   dest->foo = Foo(*source->foo);
@@ -138,14 +138,14 @@ void freeBuffers(CTestStruct* obj) {
 }
 
 // Serialize a TestStruct using TBinaryProtocol
-void serializeBinary(TMemoryBuffer *mt, TestStruct *obj) {
+void serializeBinary(TMemoryBuffer* mt, TestStruct* obj) {
   auto buf = BinarySerializer::serialize<IOBufQueue>(*obj).move();
   auto range = buf->coalesce();
   mt->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TBinaryProtocol
-TestStruct* deserializeBinary(TMemoryBuffer *mt) {
+TestStruct* deserializeBinary(TMemoryBuffer* mt) {
   auto buf = mt->wrapBufferAsIOBuf();
   auto res = std::make_unique<TestStruct>();
   BinarySerializer::deserialize(buf.get(), *res);
@@ -153,14 +153,14 @@ TestStruct* deserializeBinary(TMemoryBuffer *mt) {
 }
 
 // Serialize a TestStruct using TCompactProtocol
-void serializeCompact(TMemoryBuffer *mt, TestStruct *obj) {
+void serializeCompact(TMemoryBuffer* mt, TestStruct* obj) {
   auto buf = CompactSerializer::serialize<IOBufQueue>(*obj).move();
   auto range = buf->coalesce();
   mt->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TCompactProtocol
-TestStruct* deserializeCompact(TMemoryBuffer *mt) {
+TestStruct* deserializeCompact(TMemoryBuffer* mt) {
   auto buf = mt->wrapBufferAsIOBuf();
   auto res = std::make_unique<TestStruct>();
   CompactSerializer::deserialize(buf.get(), *res);
@@ -168,14 +168,14 @@ TestStruct* deserializeCompact(TMemoryBuffer *mt) {
 }
 
 // Serialize a TestStruct using TJSONProtocol
-void serializeJSON(TMemoryBuffer *mb, TestStruct *obj) {
+void serializeJSON(TMemoryBuffer* mb, TestStruct* obj) {
   auto buf = JSONSerializer::serialize<IOBufQueue>(*obj).move();
   auto range = buf->coalesce();
   mb->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TJSONProtocol
-TestStruct* deserializeJSON(TMemoryBuffer *mb) {
+TestStruct* deserializeJSON(TMemoryBuffer* mb) {
   auto buf = mb->wrapBufferAsIOBuf();
   auto res = std::make_unique<TestStruct>();
   JSONSerializer::deserialize(buf.get(), *res);
@@ -183,14 +183,14 @@ TestStruct* deserializeJSON(TMemoryBuffer *mb) {
 }
 
 // Serialize a TestStruct using TSimpleJSONProtocol
-void serializeSimpleJSON(TMemoryBuffer *mb, TestStruct *obj) {
+void serializeSimpleJSON(TMemoryBuffer* mb, TestStruct* obj) {
   auto buf = SimpleJSONSerializer::serialize<IOBufQueue>(*obj).move();
   auto range = buf->coalesce();
   mb->write(range.data(), range.size());
 }
 
 // Deserialize a TestStruct using TSimpleJSONProtocol
-TestStruct* deserializeSimpleJSON(TMemoryBuffer *mb) {
+TestStruct* deserializeSimpleJSON(TMemoryBuffer* mb) {
   auto buf = mb->wrapBufferAsIOBuf();
   auto res = std::make_unique<TestStruct>();
   SimpleJSONSerializer::deserialize(buf.get(), *res);

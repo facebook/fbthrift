@@ -23,30 +23,32 @@
 extern "C" {
 
 struct CTestStruct {
-  bool        f_bool;
-  int8_t      f_byte;
-  float       f_float;
-  int16_t     f_i16;
-  int32_t     f_i32;
-  int64_t     f_i64;
-  double      f_double;
-  int16_t*    f_list;
-  int         f_list_len;
-  int16_t*    f_map_keys;
-  int32_t*    f_map_vals;
-  int         f_map_len;
+  bool f_bool;
+  int8_t f_byte;
+  float f_float;
+  int16_t f_i16;
+  int32_t f_i32;
+  int64_t f_i64;
+  double f_double;
+  int16_t* f_list;
+  int f_list_len;
+  int16_t* f_map_keys;
+  int32_t* f_map_vals;
+  int f_map_len;
   const char* f_string;
-  int8_t*     f_set;
-  int         f_set_len;
-  int         o_i32;
-  bool        o_isset;
+  int8_t* f_set;
+  int f_set_len;
+  int o_i32;
+  bool o_isset;
   apache::thrift::test::Foo* foo;
 };
 
 apache::thrift::transport::TMemoryBuffer* newMB();
 uint32_t readMB(apache::thrift::transport::TMemoryBuffer*, uint8_t*, uint32_t);
-void writeMB(apache::thrift::transport::TMemoryBuffer*,
-               const uint8_t*, uint32_t);
+void writeMB(
+    apache::thrift::transport::TMemoryBuffer*,
+    const uint8_t*,
+    uint32_t);
 void deleteMB(apache::thrift::transport::TMemoryBuffer*);
 
 apache::thrift::test::TestStruct* getTestStruct();
