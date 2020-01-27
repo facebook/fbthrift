@@ -181,7 +181,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
     RocketServerFrameContext&& context) {
   auto makeRequestResponse =
       [&](RequestRpcMetadata&& md,
-          Payload&& debugPayload,
+          std::unique_ptr<folly::IOBuf> debugPayload,
           const folly::RequestContext* ctx,
           Cpp2Worker::ActiveRequestsGuard activeRequestsGuard) {
         // Note, we're passing connContext by reference and rely on the next
@@ -195,7 +195,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
             std::move(md),
             *connContext_,
             *activeRequestsRegistry_,
-            std::move(debugPayload).data(),
+            std::move(debugPayload),
             ctx->getRootId(),
             std::move(context),
             std::move(activeRequestsGuard));
@@ -210,7 +210,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
     RocketServerFrameContext&& context) {
   auto makeRequestFnf =
       [&](RequestRpcMetadata&& md,
-          Payload&& debugPayload,
+          std::unique_ptr<folly::IOBuf> debugPayload,
           const folly::RequestContext* ctx,
           Cpp2Worker::ActiveRequestsGuard activeRequestsGuard) {
         // Note, we're passing connContext by reference and rely on a complex
@@ -222,7 +222,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
             std::move(md),
             *connContext_,
             *activeRequestsRegistry_,
-            std::move(debugPayload).data(),
+            std::move(debugPayload),
             ctx->getRootId(),
             std::move(context),
             [keepAlive = cpp2Processor_,
@@ -237,7 +237,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
     RocketStreamClientCallback* clientCallback) {
   auto makeRequestStream =
       [&](RequestRpcMetadata&& md,
-          Payload&& debugPayload,
+          std::unique_ptr<folly::IOBuf> debugPayload,
           const folly::RequestContext* ctx,
           Cpp2Worker::ActiveRequestsGuard activeRequestsGuard) {
         return std::make_unique<ThriftServerRequestStream>(
@@ -246,7 +246,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
             std::move(md),
             connContext_,
             *activeRequestsRegistry_,
-            std::move(debugPayload).data(),
+            std::move(debugPayload),
             ctx->getRootId(),
             clientCallback,
             cpp2Processor_,
@@ -261,7 +261,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
     RocketSinkClientCallback* clientCallback) {
   auto makeRequestSink =
       [&](RequestRpcMetadata&& md,
-          Payload&& debugPayload,
+          std::unique_ptr<folly::IOBuf> debugPayload,
           const folly::RequestContext* ctx,
           Cpp2Worker::ActiveRequestsGuard activeRequestsGuard) {
         return std::make_unique<ThriftServerRequestSink>(
@@ -270,7 +270,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
             std::move(md),
             connContext_,
             *activeRequestsRegistry_,
-            std::move(debugPayload).data(),
+            std::move(debugPayload),
             ctx->getRootId(),
             clientCallback,
             cpp2Processor_,
@@ -291,9 +291,14 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   RequestRpcMetadata metadata;
   const bool parseOk = deserializeMetadata(payload, metadata);
-  auto debugPayload =
-      Payload::makeCombined(payload.buffer()->clone(), payload.metadataSize());
-  const bool validMetadata = parseOk && isMetadataValid(metadata);
+  bool validMetadata = parseOk && isMetadataValid(metadata);
+
+  // it is not safe get debug payload if metadata is not valid, the metadata
+  // size may be unbounded.
+  auto debugPayload = validMetadata
+      ? Payload::makeCombined(payload.buffer()->clone(), payload.metadataSize())
+            .data()
+      : nullptr;
 
   if (!validMetadata) {
     handleRequestWithBadMetadata(makeRequest(

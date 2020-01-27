@@ -164,11 +164,9 @@ class ActiveRequestsRegistry {
 
    private:
     uint64_t getPayloadSize() const {
-      DCHECK(payload_.hasData());
       return payload_.dataSize();
     }
     void releasePayload() {
-      DCHECK(payload_.hasData());
       payload_.releaseData();
     }
     const ResponseChannelRequest* req_;
