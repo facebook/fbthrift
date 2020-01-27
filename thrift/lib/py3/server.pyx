@@ -253,8 +253,9 @@ cdef class ConnectionContext:
     @staticmethod
     cdef ConnectionContext create(Cpp2ConnContext* ctx):
         inst = <ConnectionContext>ConnectionContext.__new__(ConnectionContext)
-        inst._ctx = ctx
-        inst._peer_address = _get_SocketAddress(ctx.getPeerAddress())
+        if ctx:
+            inst._ctx = ctx
+            inst._peer_address = _get_SocketAddress(ctx.getPeerAddress())
         return inst
 
     @property
