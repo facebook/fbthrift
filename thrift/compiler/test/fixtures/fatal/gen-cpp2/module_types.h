@@ -2014,6 +2014,38 @@ class structA final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const structA& rhs) const;
   bool operator<(const structA& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> a_ref() const& {
+    return {a, __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> a_ref() const&& {
+    return {std::move(a), __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> a_ref() & {
+    return {a, __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> a_ref() && {
+    return {std::move(a), __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> b_ref() const& {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> b_ref() const&& {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> b_ref() & {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> b_ref() && {
+    return {std::move(b), __isset.b};
+  }
+
   int32_t get_a() const {
     return a;
   }
@@ -2459,6 +2491,38 @@ class structB final : private apache::thrift::detail::st::ComparisonOperators<st
   bool operator==(const structB& rhs) const;
   bool operator<(const structB& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const double&> c_ref() const& {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const double&&> c_ref() const&& {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<double&> c_ref() & {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<double&&> c_ref() && {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const bool&> d_ref() const& {
+    return {d, __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const bool&&> d_ref() const&& {
+    return {std::move(d), __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<bool&> d_ref() & {
+    return {d, __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<bool&&> d_ref() && {
+    return {std::move(d), __isset.d};
+  }
+
   double get_c() const {
     return c;
   }
@@ -2622,6 +2686,486 @@ class structC final : private apache::thrift::detail::st::ComparisonOperators<st
   } __isset = {};
   bool operator==(const structC& rhs) const;
   bool operator<(const structC& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> a_ref() const& {
+    return {a, __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> a_ref() const&& {
+    return {std::move(a), __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> a_ref() & {
+    return {a, __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> a_ref() && {
+    return {std::move(a), __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> b_ref() const& {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> b_ref() const&& {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> b_ref() & {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> b_ref() && {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const double&> c_ref() const& {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const double&&> c_ref() const&& {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<double&> c_ref() & {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<double&&> c_ref() && {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const bool&> d_ref() const& {
+    return {d, __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const bool&&> d_ref() const&& {
+    return {std::move(d), __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<bool&> d_ref() & {
+    return {d, __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<bool&&> d_ref() && {
+    return {std::move(d), __isset.d};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&> e_ref() const& {
+    return {e, __isset.e};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&&> e_ref() const&& {
+    return {std::move(e), __isset.e};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&> e_ref() & {
+    return {e, __isset.e};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&&> e_ref() && {
+    return {std::move(e), __isset.e};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum2&> f_ref() const& {
+    return {f, __isset.f};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum2&&> f_ref() const&& {
+    return {std::move(f), __isset.f};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum2&> f_ref() & {
+    return {f, __isset.f};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum2&&> f_ref() && {
+    return {std::move(f), __isset.f};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union1&> g_ref() const& {
+    return {g, __isset.g};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union1&&> g_ref() const&& {
+    return {std::move(g), __isset.g};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union1&> g_ref() & {
+    return {g, __isset.g};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union1&&> g_ref() && {
+    return {std::move(g), __isset.g};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::unionA&> h_ref() const& {
+    return {h, __isset.h};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::unionA&&> h_ref() const&& {
+    return {std::move(h), __isset.h};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::unionA&> h_ref() & {
+    return {h, __isset.h};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::unionA&&> h_ref() && {
+    return {std::move(h), __isset.h};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::unionA&> i_ref() const& {
+    return {i, __isset.i};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::unionA&&> i_ref() const&& {
+    return {std::move(i), __isset.i};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::unionA&> i_ref() & {
+    return {i, __isset.i};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::unionA&&> i_ref() && {
+    return {std::move(i), __isset.i};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&> j_ref() const& {
+    return {j, __isset.j};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&&> j_ref() const&& {
+    return {std::move(j), __isset.j};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&> j_ref() & {
+    return {j, __isset.j};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&&> j_ref() && {
+    return {std::move(j), __isset.j};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&> j1_ref() const& {
+    return {j1, __isset.j1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&&> j1_ref() const&& {
+    return {std::move(j1), __isset.j1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&> j1_ref() & {
+    return {j1, __isset.j1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&&> j1_ref() && {
+    return {std::move(j1), __isset.j1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector< ::test_cpp2::cpp_reflection::enum1>&> j2_ref() const& {
+    return {j2, __isset.j2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector< ::test_cpp2::cpp_reflection::enum1>&&> j2_ref() const&& {
+    return {std::move(j2), __isset.j2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector< ::test_cpp2::cpp_reflection::enum1>&> j2_ref() & {
+    return {j2, __isset.j2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector< ::test_cpp2::cpp_reflection::enum1>&&> j2_ref() && {
+    return {std::move(j2), __isset.j2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector< ::test_cpp2::cpp_reflection::structA>&> j3_ref() const& {
+    return {j3, __isset.j3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector< ::test_cpp2::cpp_reflection::structA>&&> j3_ref() const&& {
+    return {std::move(j3), __isset.j3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector< ::test_cpp2::cpp_reflection::structA>&> j3_ref() & {
+    return {j3, __isset.j3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector< ::test_cpp2::cpp_reflection::structA>&&> j3_ref() && {
+    return {std::move(j3), __isset.j3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<int32_t>&> k_ref() const& {
+    return {k, __isset.k};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<int32_t>&&> k_ref() const&& {
+    return {std::move(k), __isset.k};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<int32_t>&> k_ref() & {
+    return {k, __isset.k};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<int32_t>&&> k_ref() && {
+    return {std::move(k), __isset.k};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<int32_t>&> k1_ref() const& {
+    return {k1, __isset.k1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<int32_t>&&> k1_ref() const&& {
+    return {std::move(k1), __isset.k1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<int32_t>&> k1_ref() & {
+    return {k1, __isset.k1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<int32_t>&&> k1_ref() && {
+    return {std::move(k1), __isset.k1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set< ::test_cpp2::cpp_reflection::enum2>&> k2_ref() const& {
+    return {k2, __isset.k2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set< ::test_cpp2::cpp_reflection::enum2>&&> k2_ref() const&& {
+    return {std::move(k2), __isset.k2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set< ::test_cpp2::cpp_reflection::enum2>&> k2_ref() & {
+    return {k2, __isset.k2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set< ::test_cpp2::cpp_reflection::enum2>&&> k2_ref() && {
+    return {std::move(k2), __isset.k2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set< ::test_cpp2::cpp_reflection::structB>&> k3_ref() const& {
+    return {k3, __isset.k3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set< ::test_cpp2::cpp_reflection::structB>&&> k3_ref() const&& {
+    return {std::move(k3), __isset.k3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set< ::test_cpp2::cpp_reflection::structB>&> k3_ref() & {
+    return {k3, __isset.k3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set< ::test_cpp2::cpp_reflection::structB>&&> k3_ref() && {
+    return {std::move(k3), __isset.k3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t, int32_t>&> l_ref() const& {
+    return {l, __isset.l};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t, int32_t>&&> l_ref() const&& {
+    return {std::move(l), __isset.l};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t, int32_t>&> l_ref() & {
+    return {l, __isset.l};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t, int32_t>&&> l_ref() && {
+    return {std::move(l), __isset.l};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t, int32_t>&> l1_ref() const& {
+    return {l1, __isset.l1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t, int32_t>&&> l1_ref() const&& {
+    return {std::move(l1), __isset.l1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t, int32_t>&> l1_ref() & {
+    return {l1, __isset.l1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t, int32_t>&&> l1_ref() && {
+    return {std::move(l1), __isset.l1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>&> l2_ref() const& {
+    return {l2, __isset.l2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>&&> l2_ref() const&& {
+    return {std::move(l2), __isset.l2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>&> l2_ref() & {
+    return {l2, __isset.l2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>&&> l2_ref() && {
+    return {std::move(l2), __isset.l2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>&> l3_ref() const& {
+    return {l3, __isset.l3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>&&> l3_ref() const&& {
+    return {std::move(l3), __isset.l3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>&> l3_ref() & {
+    return {l3, __isset.l3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>&&> l3_ref() && {
+    return {std::move(l3), __isset.l3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>&> m1_ref() const& {
+    return {m1, __isset.m1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>&&> m1_ref() const&& {
+    return {std::move(m1), __isset.m1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>&> m1_ref() & {
+    return {m1, __isset.m1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>&&> m1_ref() && {
+    return {std::move(m1), __isset.m1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>&> m2_ref() const& {
+    return {m2, __isset.m2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>&&> m2_ref() const&& {
+    return {std::move(m2), __isset.m2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>&> m2_ref() & {
+    return {m2, __isset.m2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>&&> m2_ref() && {
+    return {std::move(m2), __isset.m2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>&> m3_ref() const& {
+    return {m3, __isset.m3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>&&> m3_ref() const&& {
+    return {std::move(m3), __isset.m3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>&> m3_ref() & {
+    return {m3, __isset.m3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>&&> m3_ref() && {
+    return {std::move(m3), __isset.m3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string, int32_t>&> n1_ref() const& {
+    return {n1, __isset.n1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string, int32_t>&&> n1_ref() const&& {
+    return {std::move(n1), __isset.n1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string, int32_t>&> n1_ref() & {
+    return {n1, __isset.n1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string, int32_t>&&> n1_ref() && {
+    return {std::move(n1), __isset.n1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>&> n2_ref() const& {
+    return {n2, __isset.n2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>&&> n2_ref() const&& {
+    return {std::move(n2), __isset.n2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>&> n2_ref() & {
+    return {n2, __isset.n2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>&&> n2_ref() && {
+    return {std::move(n2), __isset.n2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&> n3_ref() const& {
+    return {n3, __isset.n3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&&> n3_ref() const&& {
+    return {std::move(n3), __isset.n3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&> n3_ref() & {
+    return {n3, __isset.n3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&&> n3_ref() && {
+    return {std::move(n3), __isset.n3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>&> o1_ref() const& {
+    return {o1, __isset.o1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>&&> o1_ref() const&& {
+    return {std::move(o1), __isset.o1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>&> o1_ref() & {
+    return {o1, __isset.o1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>&&> o1_ref() && {
+    return {std::move(o1), __isset.o1};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>&> o2_ref() const& {
+    return {o2, __isset.o2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>&&> o2_ref() const&& {
+    return {std::move(o2), __isset.o2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>&> o2_ref() & {
+    return {o2, __isset.o2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>&&> o2_ref() && {
+    return {std::move(o2), __isset.o2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>&> o3_ref() const& {
+    return {o3, __isset.o3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>&&> o3_ref() const&& {
+    return {std::move(o3), __isset.o3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>&> o3_ref() & {
+    return {o3, __isset.o3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>&&> o3_ref() && {
+    return {std::move(o3), __isset.o3};
+  }
 
   int32_t get_a() const {
     return a;
@@ -2990,6 +3534,22 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
     return {std::move(field1), __isset.field1};
   }
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&> field2_ref() const& {
+    return {field2, __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&&> field2_ref() const&& {
+    return {std::move(field2), __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&> field2_ref() & {
+    return {field2, __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&&> field2_ref() && {
+    return {std::move(field2), __isset.field2};
+  }
+
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const  ::test_cpp2::cpp_reflection::union1&> field4_ref() const& {
     return {field4, __isset.field4};
   }
@@ -3004,6 +3564,22 @@ class struct1 final : private apache::thrift::detail::st::ComparisonOperators<st
 
   FOLLY_ERASE ::apache::thrift::optional_field_ref< ::test_cpp2::cpp_reflection::union1&&> field4_ref() && {
     return {std::move(field4), __isset.field4};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&> field5_ref() const& {
+    return {field5, __isset.field5};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&&> field5_ref() const&& {
+    return {std::move(field5), __isset.field5};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&> field5_ref() & {
+    return {field5, __isset.field5};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&&> field5_ref() && {
+    return {std::move(field5), __isset.field5};
   }
 
   int32_t get_field0() const {
@@ -3143,6 +3719,118 @@ class struct2 final : private apache::thrift::detail::st::ComparisonOperators<st
   } __isset = {};
   bool operator==(const struct2& rhs) const;
   bool operator<(const struct2& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> fieldA_ref() const& {
+    return {fieldA, __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> fieldA_ref() const&& {
+    return {std::move(fieldA), __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> fieldA_ref() & {
+    return {fieldA, __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> fieldA_ref() && {
+    return {std::move(fieldA), __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> fieldB_ref() const& {
+    return {fieldB, __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> fieldB_ref() const&& {
+    return {std::move(fieldB), __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> fieldB_ref() & {
+    return {fieldB, __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> fieldB_ref() && {
+    return {std::move(fieldB), __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&> fieldC_ref() const& {
+    return {fieldC, __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&&> fieldC_ref() const&& {
+    return {std::move(fieldC), __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&> fieldC_ref() & {
+    return {fieldC, __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&&> fieldC_ref() && {
+    return {std::move(fieldC), __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum2&> fieldD_ref() const& {
+    return {fieldD, __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum2&&> fieldD_ref() const&& {
+    return {std::move(fieldD), __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum2&> fieldD_ref() & {
+    return {fieldD, __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum2&&> fieldD_ref() && {
+    return {std::move(fieldD), __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union1&> fieldE_ref() const& {
+    return {fieldE, __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union1&&> fieldE_ref() const&& {
+    return {std::move(fieldE), __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union1&> fieldE_ref() & {
+    return {fieldE, __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union1&&> fieldE_ref() && {
+    return {std::move(fieldE), __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&> fieldF_ref() const& {
+    return {fieldF, __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&&> fieldF_ref() const&& {
+    return {std::move(fieldF), __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&> fieldF_ref() & {
+    return {fieldF, __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&&> fieldF_ref() && {
+    return {std::move(fieldF), __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::struct1&> fieldG_ref() const& {
+    return {fieldG, __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::struct1&&> fieldG_ref() const&& {
+    return {std::move(fieldG), __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::struct1&> fieldG_ref() & {
+    return {fieldG, __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::struct1&&> fieldG_ref() && {
+    return {std::move(fieldG), __isset.fieldG};
+  }
 
   int32_t get_fieldA() const {
     return fieldA;
@@ -3323,6 +4011,294 @@ class struct3 final : private apache::thrift::detail::st::ComparisonOperators<st
   } __isset = {};
   bool operator==(const struct3& rhs) const;
   bool operator<(const struct3& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> fieldA_ref() const& {
+    return {fieldA, __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> fieldA_ref() const&& {
+    return {std::move(fieldA), __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> fieldA_ref() & {
+    return {fieldA, __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> fieldA_ref() && {
+    return {std::move(fieldA), __isset.fieldA};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> fieldB_ref() const& {
+    return {fieldB, __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> fieldB_ref() const&& {
+    return {std::move(fieldB), __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> fieldB_ref() & {
+    return {fieldB, __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> fieldB_ref() && {
+    return {std::move(fieldB), __isset.fieldB};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&> fieldC_ref() const& {
+    return {fieldC, __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&&> fieldC_ref() const&& {
+    return {std::move(fieldC), __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&> fieldC_ref() & {
+    return {fieldC, __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&&> fieldC_ref() && {
+    return {std::move(fieldC), __isset.fieldC};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum2&> fieldD_ref() const& {
+    return {fieldD, __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum2&&> fieldD_ref() const&& {
+    return {std::move(fieldD), __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum2&> fieldD_ref() & {
+    return {fieldD, __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum2&&> fieldD_ref() && {
+    return {std::move(fieldD), __isset.fieldD};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union1&> fieldE_ref() const& {
+    return {fieldE, __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union1&&> fieldE_ref() const&& {
+    return {std::move(fieldE), __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union1&> fieldE_ref() & {
+    return {fieldE, __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union1&&> fieldE_ref() && {
+    return {std::move(fieldE), __isset.fieldE};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&> fieldF_ref() const& {
+    return {fieldF, __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&&> fieldF_ref() const&& {
+    return {std::move(fieldF), __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&> fieldF_ref() & {
+    return {fieldF, __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&&> fieldF_ref() && {
+    return {std::move(fieldF), __isset.fieldF};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::struct1&> fieldG_ref() const& {
+    return {fieldG, __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::struct1&&> fieldG_ref() const&& {
+    return {std::move(fieldG), __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::struct1&> fieldG_ref() & {
+    return {fieldG, __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::struct1&&> fieldG_ref() && {
+    return {std::move(fieldG), __isset.fieldG};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&> fieldH_ref() const& {
+    return {fieldH, __isset.fieldH};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::union2&&> fieldH_ref() const&& {
+    return {std::move(fieldH), __isset.fieldH};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&> fieldH_ref() & {
+    return {fieldH, __isset.fieldH};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::union2&&> fieldH_ref() && {
+    return {std::move(fieldH), __isset.fieldH};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&> fieldI_ref() const& {
+    return {fieldI, __isset.fieldI};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<int32_t>&&> fieldI_ref() const&& {
+    return {std::move(fieldI), __isset.fieldI};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&> fieldI_ref() & {
+    return {fieldI, __isset.fieldI};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<int32_t>&&> fieldI_ref() && {
+    return {std::move(fieldI), __isset.fieldI};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<::std::string>&> fieldJ_ref() const& {
+    return {fieldJ, __isset.fieldJ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<::std::string>&&> fieldJ_ref() const&& {
+    return {std::move(fieldJ), __isset.fieldJ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<::std::string>&> fieldJ_ref() & {
+    return {fieldJ, __isset.fieldJ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<::std::string>&&> fieldJ_ref() && {
+    return {std::move(fieldJ), __isset.fieldJ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<::std::string>&> fieldK_ref() const& {
+    return {fieldK, __isset.fieldK};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector<::std::string>&&> fieldK_ref() const&& {
+    return {std::move(fieldK), __isset.fieldK};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<::std::string>&> fieldK_ref() & {
+    return {fieldK, __isset.fieldK};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector<::std::string>&&> fieldK_ref() && {
+    return {std::move(fieldK), __isset.fieldK};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector< ::test_cpp2::cpp_reflection::structA>&> fieldL_ref() const& {
+    return {fieldL, __isset.fieldL};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::vector< ::test_cpp2::cpp_reflection::structA>&&> fieldL_ref() const&& {
+    return {std::move(fieldL), __isset.fieldL};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector< ::test_cpp2::cpp_reflection::structA>&> fieldL_ref() & {
+    return {fieldL, __isset.fieldL};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::vector< ::test_cpp2::cpp_reflection::structA>&&> fieldL_ref() && {
+    return {std::move(fieldL), __isset.fieldL};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<int32_t>&> fieldM_ref() const& {
+    return {fieldM, __isset.fieldM};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<int32_t>&&> fieldM_ref() const&& {
+    return {std::move(fieldM), __isset.fieldM};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<int32_t>&> fieldM_ref() & {
+    return {fieldM, __isset.fieldM};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<int32_t>&&> fieldM_ref() && {
+    return {std::move(fieldM), __isset.fieldM};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<::std::string>&> fieldN_ref() const& {
+    return {fieldN, __isset.fieldN};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<::std::string>&&> fieldN_ref() const&& {
+    return {std::move(fieldN), __isset.fieldN};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<::std::string>&> fieldN_ref() & {
+    return {fieldN, __isset.fieldN};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<::std::string>&&> fieldN_ref() && {
+    return {std::move(fieldN), __isset.fieldN};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<::std::string>&> fieldO_ref() const& {
+    return {fieldO, __isset.fieldO};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set<::std::string>&&> fieldO_ref() const&& {
+    return {std::move(fieldO), __isset.fieldO};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<::std::string>&> fieldO_ref() & {
+    return {fieldO, __isset.fieldO};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set<::std::string>&&> fieldO_ref() && {
+    return {std::move(fieldO), __isset.fieldO};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set< ::test_cpp2::cpp_reflection::structB>&> fieldP_ref() const& {
+    return {fieldP, __isset.fieldP};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::set< ::test_cpp2::cpp_reflection::structB>&&> fieldP_ref() const&& {
+    return {std::move(fieldP), __isset.fieldP};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set< ::test_cpp2::cpp_reflection::structB>&> fieldP_ref() & {
+    return {fieldP, __isset.fieldP};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::set< ::test_cpp2::cpp_reflection::structB>&&> fieldP_ref() && {
+    return {std::move(fieldP), __isset.fieldP};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>&> fieldQ_ref() const& {
+    return {fieldQ, __isset.fieldQ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>&&> fieldQ_ref() const&& {
+    return {std::move(fieldQ), __isset.fieldQ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>&> fieldQ_ref() & {
+    return {fieldQ, __isset.fieldQ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>&&> fieldQ_ref() && {
+    return {std::move(fieldQ), __isset.fieldQ};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&> fieldR_ref() const& {
+    return {fieldR, __isset.fieldR};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&&> fieldR_ref() const&& {
+    return {std::move(fieldR), __isset.fieldR};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&> fieldR_ref() & {
+    return {fieldR, __isset.fieldR};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>&&> fieldR_ref() && {
+    return {std::move(fieldR), __isset.fieldR};
+  }
 
   int32_t get_fieldA() const {
     return fieldA;
@@ -3572,6 +4548,22 @@ class struct4 final : private apache::thrift::detail::st::ComparisonOperators<st
     return {std::move(field1), __isset.field1};
   }
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&> field2_ref() const& {
+    return {field2, __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&&> field2_ref() const&& {
+    return {std::move(field2), __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&> field2_ref() & {
+    return {field2, __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&&> field2_ref() && {
+    return {std::move(field2), __isset.field2};
+  }
+
   int32_t get_field0() const {
     return field0;
   }
@@ -3691,6 +4683,54 @@ class struct5 final : private apache::thrift::detail::st::ComparisonOperators<st
     return {std::move(field1), __isset.field1};
   }
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&> field2_ref() const& {
+    return {field2, __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::enum1&&> field2_ref() const&& {
+    return {std::move(field2), __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&> field2_ref() & {
+    return {field2, __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::enum1&&> field2_ref() && {
+    return {std::move(field2), __isset.field2};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::structA&> field3_ref() const& {
+    return {field3, __isset.field3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::structA&&> field3_ref() const&& {
+    return {std::move(field3), __isset.field3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::structA&> field3_ref() & {
+    return {field3, __isset.field3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::structA&&> field3_ref() && {
+    return {std::move(field3), __isset.field3};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::structB&> field4_ref() const& {
+    return {field4, __isset.field4};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::structB&&> field4_ref() const&& {
+    return {std::move(field4), __isset.field4};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::structB&> field4_ref() & {
+    return {field4, __isset.field4};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::structB&&> field4_ref() && {
+    return {std::move(field4), __isset.field4};
+  }
+
   int32_t get_field0() const {
     return field0;
   }
@@ -3797,6 +4837,22 @@ class struct_binary final : private apache::thrift::detail::st::ComparisonOperat
   bool operator==(const struct_binary& rhs) const;
   bool operator<(const struct_binary& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> bi_ref() const& {
+    return {bi, __isset.bi};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> bi_ref() const&& {
+    return {std::move(bi), __isset.bi};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> bi_ref() & {
+    return {bi, __isset.bi};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> bi_ref() && {
+    return {std::move(bi), __isset.bi};
+  }
+
   const ::std::string& get_bi() const& {
     return bi;
   }
@@ -3871,6 +4927,54 @@ class dep_A_struct final : private apache::thrift::detail::st::ComparisonOperato
   } __isset = {};
   bool operator==(const dep_A_struct& rhs) const;
   bool operator<(const dep_A_struct& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_B_struct&> b_ref() const& {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_B_struct&&> b_ref() const&& {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_B_struct&> b_ref() & {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_B_struct&&> b_ref() && {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_C_struct&> c_ref() const& {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_C_struct&&> c_ref() const&& {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_C_struct&> c_ref() & {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_C_struct&&> c_ref() && {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> i_a_ref() const& {
+    return {i_a, __isset.i_a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> i_a_ref() const&& {
+    return {std::move(i_a), __isset.i_a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> i_a_ref() & {
+    return {i_a, __isset.i_a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> i_a_ref() && {
+    return {std::move(i_a), __isset.i_a};
+  }
   const  ::test_cpp2::cpp_reflection::dep_B_struct& get_b() const&;
    ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
 
@@ -3959,6 +5063,54 @@ class dep_B_struct final : private apache::thrift::detail::st::ComparisonOperato
   } __isset = {};
   bool operator==(const dep_B_struct& rhs) const;
   bool operator<(const dep_B_struct& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_B_struct&> b_ref() const& {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_B_struct&&> b_ref() const&& {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_B_struct&> b_ref() & {
+    return {b, __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_B_struct&&> b_ref() && {
+    return {std::move(b), __isset.b};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_C_struct&> c_ref() const& {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::dep_C_struct&&> c_ref() const&& {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_C_struct&> c_ref() & {
+    return {c, __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::dep_C_struct&&> c_ref() && {
+    return {std::move(c), __isset.c};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> i_a_ref() const& {
+    return {i_a, __isset.i_a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> i_a_ref() const&& {
+    return {std::move(i_a), __isset.i_a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> i_a_ref() & {
+    return {i_a, __isset.i_a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> i_a_ref() && {
+    return {std::move(i_a), __isset.i_a};
+  }
   const  ::test_cpp2::cpp_reflection::dep_B_struct& get_b() const&;
    ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
 
@@ -4041,6 +5193,22 @@ class annotated final : private apache::thrift::detail::st::ComparisonOperators<
   } __isset = {};
   bool operator==(const annotated& rhs) const;
   bool operator<(const annotated& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> a_ref() const& {
+    return {a, __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> a_ref() const&& {
+    return {std::move(a), __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> a_ref() & {
+    return {a, __isset.a};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> a_ref() && {
+    return {std::move(a), __isset.a};
+  }
 
   int32_t get_a() const {
     return a;
@@ -5560,6 +6728,454 @@ class struct_with_special_names final : private apache::thrift::detail::st::Comp
   bool operator==(const struct_with_special_names& rhs) const;
   bool operator<(const struct_with_special_names& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> get_ref() const& {
+    return {get, __isset.get};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> get_ref() const&& {
+    return {std::move(get), __isset.get};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> get_ref() & {
+    return {get, __isset.get};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> get_ref() && {
+    return {std::move(get), __isset.get};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> getter_ref() const& {
+    return {getter, __isset.getter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> getter_ref() const&& {
+    return {std::move(getter), __isset.getter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> getter_ref() & {
+    return {getter, __isset.getter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> getter_ref() && {
+    return {std::move(getter), __isset.getter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> lists_ref() const& {
+    return {lists, __isset.lists};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> lists_ref() const&& {
+    return {std::move(lists), __isset.lists};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> lists_ref() & {
+    return {lists, __isset.lists};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> lists_ref() && {
+    return {std::move(lists), __isset.lists};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> maps_ref() const& {
+    return {maps, __isset.maps};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> maps_ref() const&& {
+    return {std::move(maps), __isset.maps};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> maps_ref() & {
+    return {maps, __isset.maps};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> maps_ref() && {
+    return {std::move(maps), __isset.maps};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> name_ref() const& {
+    return {name, __isset.name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> name_ref() const&& {
+    return {std::move(name), __isset.name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> name_ref() & {
+    return {name, __isset.name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> name_ref() && {
+    return {std::move(name), __isset.name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> name_to_value_ref() const& {
+    return {name_to_value, __isset.name_to_value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> name_to_value_ref() const&& {
+    return {std::move(name_to_value), __isset.name_to_value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> name_to_value_ref() & {
+    return {name_to_value, __isset.name_to_value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> name_to_value_ref() && {
+    return {std::move(name_to_value), __isset.name_to_value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> names_ref() const& {
+    return {names, __isset.names};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> names_ref() const&& {
+    return {std::move(names), __isset.names};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> names_ref() & {
+    return {names, __isset.names};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> names_ref() && {
+    return {std::move(names), __isset.names};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> prefix_tree_ref() const& {
+    return {prefix_tree, __isset.prefix_tree};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> prefix_tree_ref() const&& {
+    return {std::move(prefix_tree), __isset.prefix_tree};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> prefix_tree_ref() & {
+    return {prefix_tree, __isset.prefix_tree};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> prefix_tree_ref() && {
+    return {std::move(prefix_tree), __isset.prefix_tree};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> sets_ref() const& {
+    return {sets, __isset.sets};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> sets_ref() const&& {
+    return {std::move(sets), __isset.sets};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> sets_ref() & {
+    return {sets, __isset.sets};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> sets_ref() && {
+    return {std::move(sets), __isset.sets};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> setter_ref() const& {
+    return {setter, __isset.setter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> setter_ref() const&& {
+    return {std::move(setter), __isset.setter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> setter_ref() & {
+    return {setter, __isset.setter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> setter_ref() && {
+    return {std::move(setter), __isset.setter};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> str_ref() const& {
+    return {str, __isset.str};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> str_ref() const&& {
+    return {std::move(str), __isset.str};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> str_ref() & {
+    return {str, __isset.str};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> str_ref() && {
+    return {std::move(str), __isset.str};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> strings_ref() const& {
+    return {strings, __isset.strings};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> strings_ref() const&& {
+    return {std::move(strings), __isset.strings};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> strings_ref() & {
+    return {strings, __isset.strings};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> strings_ref() && {
+    return {std::move(strings), __isset.strings};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> type_ref() const& {
+    return {type, __isset.type};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> type_ref() const&& {
+    return {std::move(type), __isset.type};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> type_ref() & {
+    return {type, __isset.type};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> type_ref() && {
+    return {std::move(type), __isset.type};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> value_ref() const& {
+    return {value, __isset.value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> value_ref() const&& {
+    return {std::move(value), __isset.value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> value_ref() & {
+    return {value, __isset.value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> value_ref() && {
+    return {std::move(value), __isset.value};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> value_to_name_ref() const& {
+    return {value_to_name, __isset.value_to_name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> value_to_name_ref() const&& {
+    return {std::move(value_to_name), __isset.value_to_name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> value_to_name_ref() & {
+    return {value_to_name, __isset.value_to_name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> value_to_name_ref() && {
+    return {std::move(value_to_name), __isset.value_to_name};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> values_ref() const& {
+    return {values, __isset.values};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> values_ref() const&& {
+    return {std::move(values), __isset.values};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> values_ref() & {
+    return {values, __isset.values};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> values_ref() && {
+    return {std::move(values), __isset.values};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> id_ref() const& {
+    return {id, __isset.id};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> id_ref() const&& {
+    return {std::move(id), __isset.id};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> id_ref() & {
+    return {id, __isset.id};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> id_ref() && {
+    return {std::move(id), __isset.id};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> ids_ref() const& {
+    return {ids, __isset.ids};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> ids_ref() const&& {
+    return {std::move(ids), __isset.ids};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> ids_ref() & {
+    return {ids, __isset.ids};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> ids_ref() && {
+    return {std::move(ids), __isset.ids};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> descriptor_ref() const& {
+    return {descriptor, __isset.descriptor};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> descriptor_ref() const&& {
+    return {std::move(descriptor), __isset.descriptor};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> descriptor_ref() & {
+    return {descriptor, __isset.descriptor};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> descriptor_ref() && {
+    return {std::move(descriptor), __isset.descriptor};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> descriptors_ref() const& {
+    return {descriptors, __isset.descriptors};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> descriptors_ref() const&& {
+    return {std::move(descriptors), __isset.descriptors};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> descriptors_ref() & {
+    return {descriptors, __isset.descriptors};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> descriptors_ref() && {
+    return {std::move(descriptors), __isset.descriptors};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> key_ref() const& {
+    return {key, __isset.key};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> key_ref() const&& {
+    return {std::move(key), __isset.key};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> key_ref() & {
+    return {key, __isset.key};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> key_ref() && {
+    return {std::move(key), __isset.key};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> keys_ref() const& {
+    return {keys, __isset.keys};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> keys_ref() const&& {
+    return {std::move(keys), __isset.keys};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> keys_ref() & {
+    return {keys, __isset.keys};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> keys_ref() && {
+    return {std::move(keys), __isset.keys};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> annotation_ref() const& {
+    return {annotation, __isset.annotation};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> annotation_ref() const&& {
+    return {std::move(annotation), __isset.annotation};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> annotation_ref() & {
+    return {annotation, __isset.annotation};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> annotation_ref() && {
+    return {std::move(annotation), __isset.annotation};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> annotations_ref() const& {
+    return {annotations, __isset.annotations};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> annotations_ref() const&& {
+    return {std::move(annotations), __isset.annotations};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> annotations_ref() & {
+    return {annotations, __isset.annotations};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> annotations_ref() && {
+    return {std::move(annotations), __isset.annotations};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> member_ref() const& {
+    return {member, __isset.member};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> member_ref() const&& {
+    return {std::move(member), __isset.member};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> member_ref() & {
+    return {member, __isset.member};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> member_ref() && {
+    return {std::move(member), __isset.member};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> members_ref() const& {
+    return {members, __isset.members};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> members_ref() const&& {
+    return {std::move(members), __isset.members};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> members_ref() & {
+    return {members, __isset.members};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> members_ref() && {
+    return {std::move(members), __isset.members};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> field_ref() const& {
+    return {field, __isset.field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> field_ref() const&& {
+    return {std::move(field), __isset.field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> field_ref() & {
+    return {field, __isset.field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> field_ref() && {
+    return {std::move(field), __isset.field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> fields_ref() const& {
+    return {fields, __isset.fields};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> fields_ref() const&& {
+    return {std::move(fields), __isset.fields};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> fields_ref() & {
+    return {fields, __isset.fields};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> fields_ref() && {
+    return {std::move(fields), __isset.fields};
+  }
+
   int32_t get_get() const {
     return get;
   }
@@ -5908,6 +7524,86 @@ class struct_with_indirections final : private apache::thrift::detail::st::Compa
   } __isset = {};
   bool operator==(const struct_with_indirections& rhs) const;
   bool operator<(const struct_with_indirections& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> real_ref() const& {
+    return {real, __isset.real};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> real_ref() const&& {
+    return {std::move(real), __isset.real};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> real_ref() & {
+    return {real, __isset.real};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> real_ref() && {
+    return {std::move(real), __isset.real};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::FakeI32&> fake_ref() const& {
+    return {fake, __isset.fake};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::FakeI32&&> fake_ref() const&& {
+    return {std::move(fake), __isset.fake};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::FakeI32&> fake_ref() & {
+    return {fake, __isset.fake};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::FakeI32&&> fake_ref() && {
+    return {std::move(fake), __isset.fake};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::HasANumber&> number_ref() const& {
+    return {number, __isset.number};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::HasANumber&&> number_ref() const&& {
+    return {std::move(number), __isset.number};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::HasANumber&> number_ref() & {
+    return {number, __isset.number};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::HasANumber&&> number_ref() && {
+    return {std::move(number), __isset.number};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::HasAResult&> result_ref() const& {
+    return {result, __isset.result};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::HasAResult&&> result_ref() const&& {
+    return {std::move(result), __isset.result};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::HasAResult&> result_ref() & {
+    return {result, __isset.result};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::HasAResult&&> result_ref() && {
+    return {std::move(result), __isset.result};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::HasAPhrase&> phrase_ref() const& {
+    return {phrase, __isset.phrase};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::test_cpp2::cpp_reflection::HasAPhrase&&> phrase_ref() const&& {
+    return {std::move(phrase), __isset.phrase};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::HasAPhrase&> phrase_ref() & {
+    return {phrase, __isset.phrase};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::test_cpp2::cpp_reflection::HasAPhrase&&> phrase_ref() && {
+    return {std::move(phrase), __isset.phrase};
+  }
 
   int32_t get_real() const {
     return real;

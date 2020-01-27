@@ -85,6 +85,54 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   } __isset = {};
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&> MyIncludedField_ref() const& {
+    return {MyIncludedField, __isset.MyIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&&> MyIncludedField_ref() const&& {
+    return {std::move(MyIncludedField), __isset.MyIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&> MyIncludedField_ref() & {
+    return {MyIncludedField, __isset.MyIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&&> MyIncludedField_ref() && {
+    return {std::move(MyIncludedField), __isset.MyIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&> MyOtherIncludedField_ref() const& {
+    return {MyOtherIncludedField, __isset.MyOtherIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::Included&&> MyOtherIncludedField_ref() const&& {
+    return {std::move(MyOtherIncludedField), __isset.MyOtherIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&> MyOtherIncludedField_ref() & {
+    return {MyOtherIncludedField, __isset.MyOtherIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::Included&&> MyOtherIncludedField_ref() && {
+    return {std::move(MyOtherIncludedField), __isset.MyOtherIncludedField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::IncludedInt64&> MyIncludedInt_ref() const& {
+    return {MyIncludedInt, __isset.MyIncludedInt};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::IncludedInt64&&> MyIncludedInt_ref() const&& {
+    return {std::move(MyIncludedInt), __isset.MyIncludedInt};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::IncludedInt64&> MyIncludedInt_ref() & {
+    return {MyIncludedInt, __isset.MyIncludedInt};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::IncludedInt64&&> MyIncludedInt_ref() && {
+    return {std::move(MyIncludedInt), __isset.MyIncludedInt};
+  }
   const  ::cpp2::Included& get_MyIncludedField() const&;
    ::cpp2::Included get_MyIncludedField() &&;
 

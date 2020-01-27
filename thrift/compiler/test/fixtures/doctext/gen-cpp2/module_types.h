@@ -116,6 +116,22 @@ class A final : private apache::thrift::detail::st::ComparisonOperators<A> {
   bool operator==(const A& rhs) const;
   bool operator<(const A& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> useless_field_ref() const& {
+    return {useless_field, __isset.useless_field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> useless_field_ref() const&& {
+    return {std::move(useless_field), __isset.useless_field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> useless_field_ref() & {
+    return {useless_field, __isset.useless_field};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> useless_field_ref() && {
+    return {std::move(useless_field), __isset.useless_field};
+  }
+
   int32_t get_useless_field() const {
     return useless_field;
   }

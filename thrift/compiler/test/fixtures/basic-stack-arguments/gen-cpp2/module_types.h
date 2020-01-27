@@ -125,6 +125,38 @@ class MyStruct final : private apache::thrift::detail::st::ComparisonOperators<M
   bool operator==(const MyStruct& rhs) const;
   bool operator<(const MyStruct& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> MyIntField_ref() const& {
+    return {MyIntField, __isset.MyIntField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> MyIntField_ref() const&& {
+    return {std::move(MyIntField), __isset.MyIntField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> MyIntField_ref() & {
+    return {MyIntField, __isset.MyIntField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> MyIntField_ref() && {
+    return {std::move(MyIntField), __isset.MyIntField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> MyStringField_ref() const& {
+    return {MyStringField, __isset.MyStringField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> MyStringField_ref() const&& {
+    return {std::move(MyStringField), __isset.MyStringField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> MyStringField_ref() & {
+    return {MyStringField, __isset.MyStringField};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> MyStringField_ref() && {
+    return {std::move(MyStringField), __isset.MyStringField};
+  }
+
   int64_t get_MyIntField() const {
     return MyIntField;
   }

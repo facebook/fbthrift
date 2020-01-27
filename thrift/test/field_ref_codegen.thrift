@@ -19,4 +19,5 @@ namespace cpp2 apache.thrift.test
 struct test_struct {
   1: optional i64 foo;
   2: optional i64 ref (cpp.ref = "true");
+  3: i64 bar;
 }

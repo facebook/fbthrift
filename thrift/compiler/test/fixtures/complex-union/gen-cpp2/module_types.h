@@ -1082,6 +1082,54 @@ class Val final : private apache::thrift::detail::st::ComparisonOperators<Val> {
   bool operator==(const Val& rhs) const;
   bool operator<(const Val& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> strVal_ref() const& {
+    return {strVal, __isset.strVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> strVal_ref() const&& {
+    return {std::move(strVal), __isset.strVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> strVal_ref() & {
+    return {strVal, __isset.strVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> strVal_ref() && {
+    return {std::move(strVal), __isset.strVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&> intVal_ref() const& {
+    return {intVal, __isset.intVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int32_t&&> intVal_ref() const&& {
+    return {std::move(intVal), __isset.intVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&> intVal_ref() & {
+    return {intVal, __isset.intVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int32_t&&> intVal_ref() && {
+    return {std::move(intVal), __isset.intVal};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::containerTypedef&> typedefValue_ref() const& {
+    return {typedefValue, __isset.typedefValue};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const  ::cpp2::containerTypedef&&> typedefValue_ref() const&& {
+    return {std::move(typedefValue), __isset.typedefValue};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::containerTypedef&> typedefValue_ref() & {
+    return {typedefValue, __isset.typedefValue};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref< ::cpp2::containerTypedef&&> typedefValue_ref() && {
+    return {std::move(typedefValue), __isset.typedefValue};
+  }
+
   const ::std::string& get_strVal() const& {
     return strVal;
   }
@@ -1626,6 +1674,22 @@ class NonCopyableStruct final : private apache::thrift::detail::st::ComparisonOp
   } __isset = {};
   bool operator==(const NonCopyableStruct& rhs) const;
   bool operator<(const NonCopyableStruct& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> num_ref() const& {
+    return {num, __isset.num};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> num_ref() const&& {
+    return {std::move(num), __isset.num};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> num_ref() & {
+    return {num, __isset.num};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> num_ref() && {
+    return {std::move(num), __isset.num};
+  }
 
   int64_t get_num() const {
     return num;

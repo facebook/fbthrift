@@ -103,6 +103,22 @@ class InitialResponse final : private apache::thrift::detail::st::ComparisonOper
   bool operator==(const InitialResponse& rhs) const;
   bool operator<(const InitialResponse& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> content_ref() const& {
+    return {content, __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> content_ref() const&& {
+    return {std::move(content), __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> content_ref() & {
+    return {content, __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> content_ref() && {
+    return {std::move(content), __isset.content};
+  }
+
   const ::std::string& get_content() const& {
     return content;
   }
@@ -170,6 +186,22 @@ class FinalResponse final : private apache::thrift::detail::st::ComparisonOperat
   } __isset = {};
   bool operator==(const FinalResponse& rhs) const;
   bool operator<(const FinalResponse& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> content_ref() const& {
+    return {content, __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> content_ref() const&& {
+    return {std::move(content), __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> content_ref() & {
+    return {content, __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> content_ref() && {
+    return {std::move(content), __isset.content};
+  }
 
   const ::std::string& get_content() const& {
     return content;
@@ -239,6 +271,22 @@ class SinkPayload final : private apache::thrift::detail::st::ComparisonOperator
   bool operator==(const SinkPayload& rhs) const;
   bool operator<(const SinkPayload& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> content_ref() const& {
+    return {content, __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> content_ref() const&& {
+    return {std::move(content), __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> content_ref() & {
+    return {content, __isset.content};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> content_ref() && {
+    return {std::move(content), __isset.content};
+  }
+
   const ::std::string& get_content() const& {
     return content;
   }
@@ -307,6 +355,22 @@ class CompatibleWithKeywordSink final : private apache::thrift::detail::st::Comp
   bool operator==(const CompatibleWithKeywordSink& rhs) const;
   bool operator<(const CompatibleWithKeywordSink& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> sink_ref() const& {
+    return {sink, __isset.sink};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> sink_ref() const&& {
+    return {std::move(sink), __isset.sink};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> sink_ref() & {
+    return {sink, __isset.sink};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> sink_ref() && {
+    return {std::move(sink), __isset.sink};
+  }
+
   const ::std::string& get_sink() const& {
     return sink;
   }
@@ -374,6 +438,22 @@ class InitialException final : private apache::thrift::detail::st::ComparisonOpe
   } __isset = {};
   bool operator==(const InitialException& rhs) const;
   bool operator<(const InitialException& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> reason_ref() const& {
+    return {reason, __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> reason_ref() const&& {
+    return {std::move(reason), __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> reason_ref() & {
+    return {reason, __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> reason_ref() && {
+    return {std::move(reason), __isset.reason};
+  }
 
   const ::std::string& get_reason() const& {
     return reason;
@@ -447,6 +527,22 @@ class SinkException1 final : private apache::thrift::detail::st::ComparisonOpera
   bool operator==(const SinkException1& rhs) const;
   bool operator<(const SinkException1& rhs) const;
 
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&> reason_ref() const& {
+    return {reason, __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const ::std::string&&> reason_ref() const&& {
+    return {std::move(reason), __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&> reason_ref() & {
+    return {reason, __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<::std::string&&> reason_ref() && {
+    return {std::move(reason), __isset.reason};
+  }
+
   const ::std::string& get_reason() const& {
     return reason;
   }
@@ -519,6 +615,22 @@ class SinkException2 final : private apache::thrift::detail::st::ComparisonOpera
   } __isset = {};
   bool operator==(const SinkException2& rhs) const;
   bool operator<(const SinkException2& rhs) const;
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&> reason_ref() const& {
+    return {reason, __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<const int64_t&&> reason_ref() const&& {
+    return {std::move(reason), __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&> reason_ref() & {
+    return {reason, __isset.reason};
+  }
+
+  FOLLY_ERASE ::apache::thrift::field_ref<int64_t&&> reason_ref() && {
+    return {std::move(reason), __isset.reason};
+  }
 
   int64_t get_reason() const {
     return reason;
