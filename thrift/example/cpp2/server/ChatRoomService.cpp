@@ -55,9 +55,9 @@ void ChatRoomServiceHandler::sendMessage(
 
   msg.timestamp = (int64_t)time(nullptr);
 
-  messageBuffer_.withWLock([&](auto& lockedMessage) {
+  messageBuffer_.withWLock([&](auto& lockedMessage) { //
     lockedMessage.push_back(msg);
   });
 }
-} // chatroom
-} // example
+} // namespace chatroom
+} // namespace example

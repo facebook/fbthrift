@@ -44,5 +44,5 @@ class ChatRoomServiceHandler : virtual public ChatRoomServiceSvIf {
   folly::Synchronized<std::vector<Message>> messageBuffer_ =
       folly::Synchronized<std::vector<Message>>();
 };
-} // chatroom
-} // example
+} // namespace chatroom
+} // namespace example

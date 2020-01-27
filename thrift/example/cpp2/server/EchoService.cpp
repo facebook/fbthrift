@@ -24,5 +24,5 @@ void EchoHandler::echo(
     std::unique_ptr<std::string> message) {
   response = *message;
 }
-} // chatroom
-} // example
+} // namespace chatroom
+} // namespace example
