@@ -20,4 +20,5 @@ struct TestStruct {
   1: optional list<i64> i64_list,
   2: optional set<i32> i32_set,
   3: optional map<i32,i16> i32_i16_map,
+  4: optional string a_string,
 }

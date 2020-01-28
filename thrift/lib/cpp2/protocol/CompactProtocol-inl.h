@@ -672,6 +672,9 @@ void CompactProtocolReader::readStringSize(int32_t& size) {
 template <typename StrType>
 void CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
   if (static_cast<int32_t>(in_.length()) < size) {
+    if (!in_.canAdvance(size)) {
+      protocol::TProtocolException::throwTruncatedData();
+    }
     str.reserve(size); // only reserve for multi iter case below
   }
   str.clear();

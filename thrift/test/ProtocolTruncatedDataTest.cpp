@@ -77,3 +77,19 @@ TEST(ProtocolTruncatedDataTest, TruncatedMap) {
   testPartialDataHandling<CompactSerializer>(
       s, 3 /* headers */ + 30 * 2 /* 2b / kv pair */);
 }
+
+TEST(ProtocolTruncatedDataTest, TuncatedString_Compact) {
+  TestStruct s;
+  s.a_string_ref() = "foobarbazstring";
+
+  testPartialDataHandling<CompactSerializer>(
+      s, 2 /* field & length header */ + s.a_string_ref()->size());
+}
+
+TEST(ProtocolTruncatedDataTest, TuncatedString_Binary) {
+  TestStruct s;
+  s.a_string_ref() = "foobarbazstring";
+
+  testPartialDataHandling<BinarySerializer>(
+      s, 7 /* field & length header */ + s.a_string_ref()->size());
+}
