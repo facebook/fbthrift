@@ -83,7 +83,9 @@ class ServerStream {
   }
 
   // Helpers for unit testing your service handler
-  ClientBufferedStream<T> toClientStream(size_t bufferSize = 100) &&;
+  ClientBufferedStream<T> toClientStream(
+      folly::EventBase* evb = folly::getEventBase(),
+      size_t bufferSize = 100) &&;
   // Blocks until the stream completes, calling the provided function
   // on each value and on the error / completion event.
   void consumeInline(folly::Function<void(folly::Try<T>&&)> consumer) && {

@@ -22,7 +22,9 @@ namespace apache {
 namespace thrift {
 
 template <typename T>
-ClientBufferedStream<T> ServerStream<T>::toClientStream(size_t bufferSize) && {
+ClientBufferedStream<T> ServerStream<T>::toClientStream(
+    folly::EventBase* eb,
+    size_t bufferSize) && {
   struct : public detail::ClientStreamBridge::FirstResponseCallback {
     void onFirstResponse(
         FirstResponsePayload&&,
@@ -60,7 +62,6 @@ ClientBufferedStream<T> ServerStream<T>::toClientStream(size_t bufferSize) && {
     }
   };
 
-  auto eb = folly::getEventBase();
   eb->add([factory = (*this)(eb, encode), eb, streamBridge]() mutable {
     factory({nullptr, {}}, streamBridge, eb);
   });
