@@ -382,6 +382,15 @@ struct ProtocolReaderWireTypeInfo<NimbleProtocolReader> {
 } // namespace detail
 
 template <>
+inline bool canReadNElements(
+    NimbleProtocolReader& /* prot */,
+    uint32_t /* n */,
+    std::initializer_list<detail::nimble::NimbleType> /* types */) {
+  // TODO: implement canReadNElements for NimbleProtocol
+  return true;
+}
+
+template <>
 inline void skip<NimbleProtocolReader, detail::nimble::NimbleType>(
     NimbleProtocolReader& /* prot */,
     detail::nimble::NimbleType /* arg_type */) {

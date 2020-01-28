@@ -185,6 +185,23 @@ void skip(Protocol_& prot, WireType arg_type) {
   }
 }
 
+/**
+ * Check if the remaining part of buffers contain least necessary amount of
+ * bytes to encode N elements of given type.
+ *
+ * Note: this is a lightweight lower bound check, it doesn't necessary mean
+ *       that we would actually succeed at reading N items.
+ */
+template <class Protocol_>
+inline bool canReadNElements(
+    Protocol_& prot,
+    uint32_t n,
+    std::initializer_list<
+        typename detail::ProtocolReaderWireTypeInfo<Protocol_>::WireType>
+        types) {
+  return prot.getCursor().canAdvance(n * types.size());
+}
+
 /*
  * Skip n tuples - used for skpping lists, sets, maps.
  *

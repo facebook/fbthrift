@@ -75,6 +75,13 @@ namespace protocol {
       TProtocolException::INVALID_DATA,
       "The field stream contains corrupted data");
 }
+
+[[noreturn]] void TProtocolException::throwTruncatedData() {
+  throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      "Not enough bytes to read the entire message, the data appears to be "
+      "truncated");
+}
 } // namespace protocol
 } // namespace thrift
 } // namespace apache

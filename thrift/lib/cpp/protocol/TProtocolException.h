@@ -107,6 +107,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
   [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);
   [[noreturn]] static void throwInvalidSkipType(TType type);
   [[noreturn]] static void throwInvalidFieldData();
+  [[noreturn]] static void throwTruncatedData();
 
  protected:
   /**

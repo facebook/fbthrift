@@ -532,6 +532,10 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       if (reported_type != WireTypeInfo::fromTType(elem_methods::ttype_value)) {
         apache::thrift::skip_n(protocol, list_size, {reported_type});
       } else {
+        if (!canReadNElements(protocol, list_size, {reported_type})) {
+          protocol::TProtocolException::throwTruncatedData();
+        }
+
         using traits = std::iterator_traits<typename Type::iterator>;
         using cat = typename traits::iterator_category;
         if (reserve_if_possible(&out, list_size) ||
@@ -619,6 +623,9 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       if (reported_type != WireTypeInfo::fromTType(elem_methods::ttype_value)) {
         apache::thrift::skip_n(protocol, set_size, {reported_type});
       } else {
+        if (!canReadNElements(protocol, set_size, {reported_type})) {
+          protocol::TProtocolException::throwTruncatedData();
+        }
         auto const vreader = [&protocol](auto& value) {
           elem_methods::read(protocol, value);
         };
@@ -722,6 +729,10 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
         apache::thrift::skip_n(
             protocol, map_size, {rpt_key_type, rpt_mapped_type});
       } else {
+        if (!canReadNElements(
+                protocol, map_size, {rpt_key_type, rpt_mapped_type})) {
+          protocol::TProtocolException::throwTruncatedData();
+        }
         auto const kreader = [&protocol](auto& key) {
           key_methods::read(protocol, key);
         };
