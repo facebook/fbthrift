@@ -171,8 +171,8 @@ TEST(DebugString, SimpleTypes) {
         3: i16 = 32767
         4: i32 = 2000111222
         5: i64 = 8000111222
-        6: double = 123
-        7: float = -123
+        6: double = 123.0
+        7: float = -123.0
         8: string = "hi"
         9: string = "bin"
       })");
