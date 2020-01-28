@@ -24,6 +24,7 @@ from cython.operator cimport dereference as deref
 from folly.futures cimport bridgeFutureWith
 from folly cimport cFollyTry, cFollyPromise, cFollyUnit
 from folly.executor cimport get_executor
+import folly.executor
 from cpython.ref cimport PyObject
 from libcpp cimport nullptr
 import asyncio
@@ -49,9 +50,11 @@ cdef class Client:
     Base class for all thrift clients
     """
     def __cinit__(Client self):
-        self._executor = get_executor()
-        self._deferred_headers = {}
         loop = asyncio.get_event_loop()
+        self._executor = get_executor()
+        # Keep a reference to the executor for the life of the client
+        self._executor_wrapper = folly.executor.loop_to_q[loop]
+        self._deferred_headers = {}
         self._connect_future = loop.create_future()
 
     cdef const type_info* _typeid(self):

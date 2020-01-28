@@ -33,6 +33,7 @@ from libcpp cimport bool
 # This is just here to make the cython compile happy.
 from asyncio import InvalidStateError as asyncio_InvalidStateError
 from thrift.py3.common cimport PROTOCOL_TYPES
+from folly.executor cimport AsyncioExecutor
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h":
     cpdef enum ClientType "CLIENT_TYPE":
@@ -92,6 +93,7 @@ cdef class Client:
     cdef object _aexit_callback
     cdef vector[shared_ptr[cTProcessorEventHandler]] _deferred_event_handlers
     cdef cFollyExecutor* _executor
+    cdef AsyncioExecutor _executor_wrapper
     cdef unique_ptr[cClientWrapper] _client
     cdef inline _check_connect_future(self):
         if not self._connect_future.done():
