@@ -159,8 +159,8 @@ TEST(DebugString, SimpleTypes) {
   ms.myI16_ref() = 32767;
   ms.myI32_ref() = 2000111222;
   ms.myI64_ref() = 8000111222;
-  ms.myDouble_ref() = 123.0;
-  ms.myFloat_ref() = -123.0;
+  ms.myDouble_ref() = 123.1;
+  ms.myFloat_ref() = -123.1;
   ms.myString_ref() = "hi";
   ms.myBinary_ref() = "bin";
 
@@ -171,8 +171,8 @@ TEST(DebugString, SimpleTypes) {
         3: i16 = 32767
         4: i32 = 2000111222
         5: i64 = 8000111222
-        6: double = 123.0
-        7: float = -123.0
+        6: double = 123.1
+        7: float = -123.1
         8: string = "hi"
         9: string = "bin"
       })");
