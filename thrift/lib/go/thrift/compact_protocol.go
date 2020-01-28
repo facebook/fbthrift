@@ -412,6 +412,7 @@ func (p *CompactProtocol) ReadFieldBegin() (name string, typeId Type, id int16, 
 	if (t & 0x0f) == STOP {
 		return "", STOP, 0, nil
 	}
+
 	// mask off the 4 MSB of the type header. it could contain a field id delta.
 	modifier := int16((t & 0xf0) >> 4)
 	if modifier == 0 {
@@ -457,10 +458,6 @@ func (p *CompactProtocol) ReadMapBegin() (keyType Type, valueType Type, size int
 		err = invalidDataLength
 		return
 	}
-	if uint64(size32*2) > p.trans.RemainingBytes() || p.trans.RemainingBytes() == UnknownRemaining {
-		err = invalidDataLength
-		return
-	}
 	size = int(size32)
 
 	keyAndValueType := byte(STOP)
@@ -499,11 +496,6 @@ func (p *CompactProtocol) ReadListBegin() (elemType Type, size int, err error) {
 		}
 		size = int(size2)
 	}
-	if uint64(size) > p.trans.RemainingBytes() || p.trans.RemainingBytes() == UnknownRemaining {
-		err = invalidDataLength
-		return
-	}
-
 	elemType, e := p.getType(compactType(size_and_type))
 	if e != nil {
 		err = NewProtocolException(e)
@@ -604,7 +596,7 @@ func (p *CompactProtocol) ReadString() (value string, err error) {
 	if length < 0 {
 		return "", invalidDataLength
 	}
-	if uint64(length) > p.trans.RemainingBytes() || p.trans.RemainingBytes() == UnknownRemaining {
+	if uint64(length) > p.trans.RemainingBytes() {
 		return "", invalidDataLength
 	}
 
@@ -633,7 +625,7 @@ func (p *CompactProtocol) ReadBinary() (value []byte, err error) {
 	if length < 0 {
 		return nil, invalidDataLength
 	}
-	if uint64(length) > p.trans.RemainingBytes() || p.trans.RemainingBytes() == UnknownRemaining {
+	if uint64(length) > p.trans.RemainingBytes() {
 		return nil, invalidDataLength
 	}
 
