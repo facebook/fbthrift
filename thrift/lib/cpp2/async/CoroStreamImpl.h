@@ -113,89 +113,93 @@ class CoroStreamImpl : public StreamImplIf {
           subscriber->onSubscribe(std::move(subscription));
         });
     auto executor = sharedState_->subscribeExecutor_.get();
-    folly::coro::co_invoke(
-        [subscriber = std::move(sharedSubscriber),
-         self = std::move(*this)]() mutable -> folly::coro::Task<void> {
-          while (true) {
-            while (
-                self.sharedState_->requested_ == 0 &&
-                !self.sharedState_->cancelSource_.isCancellationRequested()) {
-              co_await self.sharedState_->baton_;
-              self.sharedState_->baton_.reset();
-            }
-
-            if (self.sharedState_->cancelSource_.isCancellationRequested()) {
-              self.sharedState_->observeExecutor_->add(
-                  [subscriber = std::move(subscriber)]() {
-                    // destory subscriber on observeExecutor_ thread
-                  });
-              co_return;
-            }
-
-            size_t i = 0;
-            folly::Try<Value> value;
-            try {
-              auto item = co_await self.generator_.next();
-
-              if (item.has_value()) {
-                using valueType =
-                    typename folly::coro::AsyncGenerator<T>::value_type;
-                value = folly::Try<Value>(
-                    std::make_unique<
-                        ::apache::thrift::detail::Value<valueType>>(
-                        std::move(*item)));
-
-                for (; i < self.mapFuncs_.size(); i++) {
-                  value.emplace(
-                      self.mapFuncs_[i].first(std::move(value).value()));
+    folly::coro::co_withCancellation(
+        sharedState_->cancelSource_.getToken(),
+        folly::coro::co_invoke(
+            [subscriber = std::move(sharedSubscriber),
+             self = std::move(*this)]() mutable -> folly::coro::Task<void> {
+              while (true) {
+                while (self.sharedState_->requested_ == 0 &&
+                       !self.sharedState_->cancelSource_
+                            .isCancellationRequested()) {
+                  co_await self.sharedState_->baton_;
+                  self.sharedState_->baton_.reset();
                 }
-              }
-            } catch (const std::exception& ex) {
-              value.emplaceException(std::current_exception(), ex);
-            } catch (...) {
-              value.emplaceException(std::current_exception());
-            }
 
-            if (value.hasValue()) {
-              self.sharedState_->observeExecutor_->add(
-                  [subscriber,
-                   keepAlive = self.sharedState_->observeExecutor_.copy(),
-                   value = std::move(value)]() mutable {
-                    subscriber->onNext(std::move(value).value());
-                  });
-            } else if (value.hasException()) {
-              for (; i < self.mapFuncs_.size(); i++) {
+                if (self.sharedState_->cancelSource_
+                        .isCancellationRequested()) {
+                  self.sharedState_->observeExecutor_->add(
+                      [subscriber = std::move(subscriber)]() {
+                        // destory subscriber on observeExecutor_ thread
+                      });
+                  co_return;
+                }
+
+                size_t i = 0;
+                folly::Try<Value> value;
                 try {
-                  value.emplaceException(
-                      self.mapFuncs_[i].second(std::move(value).exception()));
+                  auto item = co_await self.generator_.next();
+
+                  if (item.has_value()) {
+                    using valueType =
+                        typename folly::coro::AsyncGenerator<T>::value_type;
+                    value = folly::Try<Value>(
+                        std::make_unique<
+                            ::apache::thrift::detail::Value<valueType>>(
+                            std::move(*item)));
+
+                    for (; i < self.mapFuncs_.size(); i++) {
+                      value.emplace(
+                          self.mapFuncs_[i].first(std::move(value).value()));
+                    }
+                  }
                 } catch (const std::exception& ex) {
                   value.emplaceException(std::current_exception(), ex);
                 } catch (...) {
                   value.emplaceException(std::current_exception());
                 }
-              }
-              self.sharedState_->observeExecutor_->add(
-                  [subscriber = std::move(subscriber),
-                   keepAlive = self.sharedState_->observeExecutor_.copy(),
-                   value = std::move(value)]() mutable {
-                    subscriber->onError(std::move(value).exception());
-                  });
-              co_return;
-            } else {
-              self.sharedState_->observeExecutor_->add(
-                  [subscriber = std::move(subscriber),
-                   keepAlive =
-                       self.sharedState_->observeExecutor_.copy()]() mutable {
-                    subscriber->onComplete();
-                  });
-              co_return;
-            }
 
-            if (self.sharedState_->requested_ != Stream<T>::kNoFlowControl) {
-              self.sharedState_->requested_--;
-            }
-          }
-        })
+                if (value.hasValue()) {
+                  self.sharedState_->observeExecutor_->add(
+                      [subscriber,
+                       keepAlive = self.sharedState_->observeExecutor_.copy(),
+                       value = std::move(value)]() mutable {
+                        subscriber->onNext(std::move(value).value());
+                      });
+                } else if (value.hasException()) {
+                  for (; i < self.mapFuncs_.size(); i++) {
+                    try {
+                      value.emplaceException(self.mapFuncs_[i].second(
+                          std::move(value).exception()));
+                    } catch (const std::exception& ex) {
+                      value.emplaceException(std::current_exception(), ex);
+                    } catch (...) {
+                      value.emplaceException(std::current_exception());
+                    }
+                  }
+                  self.sharedState_->observeExecutor_->add(
+                      [subscriber = std::move(subscriber),
+                       keepAlive = self.sharedState_->observeExecutor_.copy(),
+                       value = std::move(value)]() mutable {
+                        subscriber->onError(std::move(value).exception());
+                      });
+                  co_return;
+                } else {
+                  self.sharedState_->observeExecutor_->add(
+                      [subscriber = std::move(subscriber),
+                       keepAlive = self.sharedState_->observeExecutor_
+                                       .copy()]() mutable {
+                        subscriber->onComplete();
+                      });
+                  co_return;
+                }
+
+                if (self.sharedState_->requested_ !=
+                    Stream<T>::kNoFlowControl) {
+                  self.sharedState_->requested_--;
+                }
+              }
+            }))
         .scheduleOn(std::move(executor))
         .start();
   }
