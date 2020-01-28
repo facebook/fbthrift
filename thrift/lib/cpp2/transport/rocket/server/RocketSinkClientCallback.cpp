@@ -72,12 +72,22 @@ void RocketSinkClientCallback::onFirstResponse(
 
 void RocketSinkClientCallback::onFirstResponseError(
     folly::exception_wrapper ew) {
-  ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
-    connection_.sendPayload(
-        streamId_,
-        Payload::makeFromData(std::move(encodedError.encoded)),
-        Flags::none().next(true).complete(true));
-  });
+  bool isEncodedError =
+      ew.with_exception<thrift::detail::EncodedError>([&](auto&& encodedError) {
+        if (encodedError.encoded) {
+          connection_.sendPayload(
+              streamId_,
+              Payload::makeFromData(std::move(encodedError.encoded)),
+              Flags::none().next(true).complete(true));
+        } else {
+          connection_.sendError(
+              streamId_,
+              RocketException(
+                  ErrorCode::INVALID, "serialization failed for response"));
+        }
+      });
+  DCHECK(isEncodedError);
+
   auto& connection = connection_;
   connection_.freeStream(streamId_);
   connection.decInflightRequests();

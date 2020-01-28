@@ -80,7 +80,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
   std::unique_ptr<folly::IOBuf> compressed;
   // only compress response if compressionAlgo is negotiated during TLS
   // handshake and the response size is greater than minCompressTypes
-  if (compressionAlgo.hasValue() &&
+  if (compressionAlgo.hasValue() && data &&
       data->computeChainDataLength() >= connection.getMinCompressBytes()) {
     folly::io::CodecType compressCodec;
     switch (*compressionAlgo) {
@@ -99,9 +99,15 @@ void ThriftServerRequestResponse::sendThriftResponse(
   } else {
     compressed = std::move(data);
   }
-  std::move(context_).sendPayload(
-      makePayload(metadata, std::move(compressed)),
-      Flags::none().next(true).complete(true));
+
+  if (compressed) {
+    std::move(context_).sendPayload(
+        makePayload(metadata, std::move(compressed)),
+        Flags::none().next(true).complete(true));
+  } else {
+    std::move(context_).sendError(RocketException(
+        ErrorCode::INVALID, "serialization failed for response"));
+  }
 }
 
 void ThriftServerRequestResponse::sendStreamThriftResponse(

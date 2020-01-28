@@ -428,7 +428,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
       if (tae.getType() ==
               TApplicationException::TApplicationExceptionType::UNKNOWN &&
-          !checkResponseSize(*exbuf)) {
+          exbuf && !checkResponseSize(*exbuf)) {
         sendResponseTooBigEx();
         return;
       }
