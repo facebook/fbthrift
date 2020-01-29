@@ -19,7 +19,7 @@ package com.facebook.thrift.protocol;
 import com.facebook.thrift.TByteArrayOutputStream;
 import com.facebook.thrift.TException;
 import com.facebook.thrift.transport.TTransport;
-import java.nio.charset.StandardCharsets;
+import com.facebook.thrift.utils.StandardCharsets;
 import java.util.Stack;
 
 /**
