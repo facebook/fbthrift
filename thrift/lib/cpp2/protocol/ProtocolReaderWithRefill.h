@@ -28,6 +28,9 @@ namespace thrift {
 template <typename ProtocolT>
 class ProtocolReaderWithRefill;
 
+class CompactProtocolReaderWithRefill;
+class BinaryProtocolReaderWithRefill;
+
 using VirtualBinaryReader = ProtocolReaderWithRefill<BinaryProtocolReader>;
 using VirtualCompactReader = ProtocolReaderWithRefill<CompactProtocolReader>;
 using Refiller =
@@ -70,6 +73,10 @@ class ProtocolReaderWithRefill : public VirtualReader<ProtocolT> {
   Refiller refiller_;
   std::unique_ptr<folly::IOBuf> buffer_;
   uint32_t bufferLength_;
+
+  template <class Protocol>
+  friend bool
+  canReadNElements(Protocol&, uint32_t, std::initializer_list<TType>);
 };
 
 class CompactProtocolReaderWithRefill : public VirtualCompactReader {
@@ -431,6 +438,24 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
     protocol_.in_.clone(str, size);
   }
 };
+
+template <>
+inline bool canReadNElements(
+    CompactProtocolReaderWithRefill& prot,
+    uint32_t n,
+    std::initializer_list<TType> /* types */) {
+  prot.ensureBuffer(n);
+  return true;
+}
+
+template <>
+inline bool canReadNElements(
+    BinaryProtocolReaderWithRefill& prot,
+    uint32_t n,
+    std::initializer_list<TType> /* types */) {
+  prot.ensureBuffer(n);
+  return true;
+}
 
 } // namespace thrift
 } // namespace apache
