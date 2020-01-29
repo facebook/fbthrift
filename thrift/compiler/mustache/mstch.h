@@ -60,9 +60,9 @@ class object_t {
 
  protected:
   template <class S>
-  void register_methods(S* s, std::map<std::string, N (S::*)()> methods) {
-    for (auto& item : methods) {
-      this->methods.insert({item.first, std::bind(item.second, s)});
+  void register_methods(S* s, std::map<std::string, N (S::*)()> methods_) {
+    for (auto& item : methods_) {
+      methods.insert({item.first, std::bind(item.second, s)});
     }
   }
 
