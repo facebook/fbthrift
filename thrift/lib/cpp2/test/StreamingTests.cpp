@@ -165,7 +165,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamGeneratorCompiles) {
   DiffTypesStreamingServiceServerStream service;
 
   bool done = false;
-  service.downloadObject(0).consumeInline(
+  service.downloadObject(0).toClientStream().subscribeInline(
       [first = true, &done](folly::Try<int32_t>&& t) mutable {
         if (first) {
           EXPECT_EQ(*t, 42);
@@ -194,7 +194,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
   DiffTypesStreamingServiceServerStream service;
 
   bool done = false;
-  service.downloadObject(0).consumeInline(
+  service.downloadObject(0).toClientStream().subscribeInline(
       [first = true, &done](folly::Try<int32_t>&& t) mutable {
         if (first) {
           EXPECT_EQ(*t, 42);
@@ -223,7 +223,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
   DiffTypesStreamingServiceServerStream service;
 
   bool done = false;
-  service.downloadObject(0).consumeInline(
+  service.downloadObject(0).toClientStream().subscribeInline(
       [first = true, &done](folly::Try<int32_t>&& t) mutable {
         if (first) {
           EXPECT_EQ(*t, 42);
@@ -233,38 +233,6 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
           done = true;
         }
       });
-  EXPECT_TRUE(done);
-}
-
-TEST(StreamingTest, SubscribeWrapper) {
-  class DiffTypesStreamingServiceServerStream
-      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
-   public:
-    apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
-      auto [stream, ptr] =
-          apache::thrift::ServerStream<int32_t>::createPublisher([] {});
-      ptr.next(42);
-      std::move(ptr).complete();
-      return std::move(stream);
-    }
-  };
-  DiffTypesStreamingServiceServerStream service;
-
-  bool done = false, first = true;
-  service.downloadObject(0)
-      .subscribe(
-          [&first](auto&& t) mutable {
-            EXPECT_TRUE(first);
-            EXPECT_EQ(t, 42);
-            first = false;
-          },
-          [](auto&&) { FAIL(); },
-          [&first, &done]() mutable {
-            EXPECT_FALSE(first);
-            EXPECT_FALSE(done);
-            done = true;
-          })
-      .join();
   EXPECT_TRUE(done);
 }
 
@@ -282,7 +250,7 @@ TEST(StreamingTest, WrapperToAsyncGenerator) {
     }
   };
   DiffTypesStreamingServiceServerStream service;
-  auto gen = service.downloadObject(0).toAsyncGenerator();
+  auto gen = service.downloadObject(0).toClientStream().toAsyncGenerator();
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto next = co_await gen.next();
     EXPECT_EQ(*next, 42);

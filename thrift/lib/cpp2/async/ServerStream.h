@@ -82,40 +82,10 @@ class ServerStream {
     return std::move(pair.first);
   }
 
-  // Helpers for unit testing your service handler
+  // Helper for unit testing your service handler
   ClientBufferedStream<T> toClientStream(
       folly::EventBase* evb = folly::getEventBase(),
       size_t bufferSize = 100) &&;
-  // Blocks until the stream completes, calling the provided function
-  // on each value and on the error / completion event.
-  void consumeInline(folly::Function<void(folly::Try<T>&&)> consumer) && {
-    std::move(*this).toClientStream().subscribeInline(std::move(consumer));
-  }
-#if FOLLY_HAS_COROUTINES
-  folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
-    return std::move(*this).toClientStream().toAsyncGenerator();
-  }
-#endif
-  // Don't add new calls to this. Helper for migration.
-  auto subscribe(
-      folly::Function<void(T&&)> onValue,
-      folly::Function<void(folly::exception_wrapper)> onError =
-          [](folly::exception_wrapper) {},
-      folly::Function<void()> onComplete = [] {}) && {
-    return std::move(*this).toClientStream().subscribeExTry(
-        folly::getEventBase(),
-        [onValue = std::move(onValue),
-         onError = std::move(onError),
-         onComplete = std::move(onComplete)](folly::Try<T>&& t) mutable {
-          if (t.hasValue()) {
-            onValue(std::move(*t));
-          } else if (t.hasException()) {
-            onError(t.exception());
-          } else {
-            onComplete();
-          }
-        });
-  }
 
   detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,
