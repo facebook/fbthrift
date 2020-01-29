@@ -31,9 +31,7 @@ namespace benchmarks {
 
 using apache::thrift::HandlerCallback;
 using apache::thrift::HandlerCallbackBase;
-using apache::thrift::SemiStream;
-using apache::thrift::Stream;
-using apache::thrift::toStream;
+using apache::thrift::ServerStream;
 
 class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
  public:
@@ -91,55 +89,14 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     stats_->add(kDownload_);
   }
 
-  Stream<Chunk2> streamDownload() override {
-    class Subscription : public yarpl::flowable::Subscription {
-     public:
-      Subscription(QPSStats* stats) : stats_(stats) {
-        stats_->registerCounter(ks_Request_);
-      }
-
-      void request(int64_t cnt) override {
-        // not the amount of requests but number of requests!
-        stats_->add(ks_Request_);
-        requested_ += cnt;
-      }
-      void cancel() override {
-        requested_ = -1;
-      }
-
-      std::atomic<int32_t> requested_{0};
-      std::string ks_Request_ = "s_request";
-      QPSStats* stats_;
-    };
-
-    return toStream(
-        yarpl::flowable::Flowable<Chunk2>::fromPublisher(
-            [this](auto subscriber) mutable {
-              if (FLAGS_chunk_size > 0) {
-                auto subscription = std::make_shared<Subscription>(stats_);
-                subscriber->onSubscribe(subscription);
-
-                subscriber =
-                    std::make_shared<rsocket::ScheduledSubscriber<Chunk2>>(
-                        subscriber,
-                        *folly::EventBaseManager::get()->getEventBase());
-                std::thread([subscriber, subscription, this]() {
-                  int32_t requested = 0;
-                  while ((requested = subscription->requested_) != -1) {
-                    if (requested == 0) {
-                      std::this_thread::sleep_for(std::chrono::milliseconds(1));
-                    } else {
-                      subscriber->onNext(chunk_);
-                      --subscription->requested_;
-                      stats_->add(ks_Upload_);
-                    }
-                  }
-                  subscriber->onComplete();
-                })
-                    .detach();
-              }
-            }),
-        folly::EventBaseManager::get()->getEventBase());
+  ServerStream<Chunk2> streamDownload() override {
+    return folly::coro::
+        co_invoke([this]() -> folly::coro::AsyncGenerator<Chunk2&&> {
+          while (true) {
+            co_yield folly::copy(chunk_);
+            stats_->add(ks_Upload_);
+          }
+        });
   }
 
  private:

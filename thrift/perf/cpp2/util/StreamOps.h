@@ -180,6 +180,7 @@ class StreamDownload {
     apache::thrift::RpcOptions rpcOptions;
     rpcOptions.setQueueTimeout(std::chrono::seconds(10));
     rpcOptions.setTimeout(std::chrono::seconds(10));
+    rpcOptions.setChunkBufferSize(FLAGS_batch_size);
 
     class Subscription : public yarpl::flowable::Subscription {
      public:
@@ -201,20 +202,21 @@ class StreamDownload {
       QPSStats* stats_;
     };
 
-    auto output = client->sync_streamDownload(rpcOptions);
-    apache::thrift::toFlowable(
-        std::move(output).via(folly::EventBaseManager::get()->getEventBase()))
-        ->subscribe(
-            // next
-            [this](auto) { stats_->add(download_); },
-            // error
-            [this, &outstandingOps](const auto&) mutable {
-              stats_->add(fatal_);
-              --outstandingOps;
-            },
-            // complete
-            [&outstandingOps]() mutable { --outstandingOps; },
-            FLAGS_batch_size);
+    client->sync_streamDownload(rpcOptions)
+        .subscribeExTry(
+            folly::EventBaseManager::get()->getEventBase(),
+            [this, &outstandingOps](auto&& t) {
+              if (t.hasValue()) {
+                stats_->add(download_);
+              } else if (t.hasException()) {
+                stats_->add(fatal_);
+                --outstandingOps;
+
+              } else {
+                --outstandingOps;
+              }
+            })
+        .detach();
   }
 
   void asyncReceived(AsyncClient*, ClientReceiveState&&) {}
