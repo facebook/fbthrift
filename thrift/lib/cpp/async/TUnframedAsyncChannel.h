@@ -146,8 +146,8 @@ class TUnframedAsyncChannel
    */
   static std::shared_ptr<Self> newChannel(
       const std::shared_ptr<folly::AsyncTransportWrapper>& transport) {
-    return std::shared_ptr<Self>(new Self(transport),
-                                   typename Self::Destructor());
+    return std::shared_ptr<Self>(
+        new Self(transport), typename Self::Destructor());
   }
 
   /// size in bytes beyond which we'll reject a given message.

@@ -39,7 +39,7 @@ TStreamAsyncChannel<WriteRequest_, ReadState_>::TStreamAsyncChannel(
       errorType_(
           transport::TTransportException::TTransportExceptionType::UNKNOWN) {}
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::destroy() {
   // When destroy is called, close the channel immediately
   closeNow();
