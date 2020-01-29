@@ -432,6 +432,22 @@ class BinaryProtocolReaderWithRefill : public VirtualBinaryReader {
   }
 };
 
+template <>
+inline bool canReadNElements(
+    CompactProtocolReaderWithRefill& /* prot */,
+    uint32_t /* n */,
+    std::initializer_list<TType> /* types */) {
+  return true;
+}
+
+template <>
+inline bool canReadNElements(
+    BinaryProtocolReaderWithRefill& /* prot */,
+    uint32_t /* n */,
+    std::initializer_list<TType> /* types */) {
+  return true;
+}
+
 } // namespace thrift
 } // namespace apache
 
