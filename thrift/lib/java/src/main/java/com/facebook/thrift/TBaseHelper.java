@@ -1241,4 +1241,15 @@ public final class TBaseHelper {
     }
     return tField;
   }
+
+  public static int getEnumValueOrZero(TEnum tEnum) {
+    return getEnumValueOrDefault(tEnum, 0);
+  }
+
+  public static int getEnumValueOrDefault(TEnum tEnum, int defaultValue) {
+    if (tEnum == null) {
+      return defaultValue;
+    }
+    return tEnum.getValue();
+  }
 }
