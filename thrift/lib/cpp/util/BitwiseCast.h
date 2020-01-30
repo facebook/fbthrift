@@ -17,7 +17,6 @@
 #ifndef THRIFT_UTIL_BITWISECAST_H_
 #define THRIFT_UTIL_BITWISECAST_H_
 
-
 // Use this to get around strict aliasing rules.
 // For example, uint64_t i = bitwise_cast<uint64_t>(returns_double());
 // The most obvious implementation is to just cast a pointer,
@@ -30,22 +29,22 @@ static inline To bitwise_cast(From from) {
   static_assert(sizeof(From) == sizeof(To), "");
 
   // BAD!!!  These are all broken with -O2.
-  //return *reinterpret_cast<To*>(&from);  // BAD!!!
-  //return *static_cast<To*>(static_cast<void*>(&from));  // BAD!!!
-  //return *(To*)(void*)&from;  // BAD!!!
+  // return *reinterpret_cast<To*>(&from);  // BAD!!!
+  // return *static_cast<To*>(static_cast<void*>(&from));  // BAD!!!
+  // return *(To*)(void*)&from;  // BAD!!!
 
   // Super clean and partially blessed by section 3.9 of the standard.
-  //unsigned char c[sizeof(from)];
-  //memcpy(c, &from, sizeof(from));
-  //To to;
-  //memcpy(&to, c, sizeof(c));
-  //return to;
+  // unsigned char c[sizeof(from)];
+  // memcpy(c, &from, sizeof(from));
+  // To to;
+  // memcpy(&to, c, sizeof(c));
+  // return to;
 
   // Slightly more questionable.
   // Same code emitted by GCC.
-  //To to;
-  //memcpy(&to, &from, sizeof(from));
-  //return to;
+  // To to;
+  // memcpy(&to, &from, sizeof(from));
+  // return to;
 
   // Technically undefined, but almost universally supported,
   // and the most efficient implementation.

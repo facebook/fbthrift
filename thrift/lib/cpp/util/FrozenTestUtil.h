@@ -17,18 +17,22 @@
 #ifndef THRIFT_LIB_CPP_UTIL_FROZENTESTUTIL_H_
 #define THRIFT_LIB_CPP_UTIL_FROZENTESTUTIL_H_
 
-#include <thrift/lib/cpp/util/FrozenUtil.h>
 #include <folly/experimental/TestUtil.h>
+#include <thrift/lib/cpp/util/FrozenUtil.h>
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 
-template<class T>
+template <class T>
 folly::test::TemporaryFile freezeToTempFile(const T& value) {
   folly::test::TemporaryFile tmp;
   freezeToFile(value, tmp.fd());
   return tmp;
 }
 
-}}} // !apache::thrift::test
+} // namespace util
+} // namespace thrift
+} // namespace apache
 
 #endif // include guard

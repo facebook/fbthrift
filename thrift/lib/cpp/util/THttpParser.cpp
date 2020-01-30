@@ -22,27 +22,29 @@
 #include <folly/Conv.h>
 #include <folly/String.h>
 
+#include <cassert>
 #include <cstdlib>
 #include <sstream>
-#include <cassert>
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 
 using namespace std;
 using namespace folly;
-using apache::thrift::transport::TTransportException;
 using apache::thrift::transport::TMemoryBuffer;
+using apache::thrift::transport::TTransportException;
 
 const int THttpParser::CRLF_LEN = 2;
 const char* const CRLF = "\r\n";
 
 THttpParser::THttpParser()
-  : httpPos_(0)
-  , httpBufLen_(0)
-  , httpBufSize_(1024)
-  , state_(HTTP_PARSE_START)
-  , maxSize_(0x7fffffff)
-  , dataBuf_(nullptr) {
+    : httpPos_(0),
+      httpBufLen_(0),
+      httpBufSize_(1024),
+      state_(HTTP_PARSE_START),
+      maxSize_(0x7fffffff),
+      dataBuf_(nullptr) {
   httpBuf_ = (char*)std::malloc(httpBufSize_ + 1);
   if (httpBuf_ == nullptr) {
     throw std::bad_alloc();
@@ -57,8 +59,7 @@ THttpParser::~THttpParser() {
   }
 }
 
-void THttpParser::getReadBuffer(void** bufReturn,
-                                size_t* lenReturn) {
+void THttpParser::getReadBuffer(void** bufReturn, size_t* lenReturn) {
   assert(httpBufLen_ <= httpBufSize_);
   uint32_t avail = httpBufSize_ - httpBufLen_;
   if (avail <= (httpBufSize_ / 4)) {
@@ -167,8 +168,9 @@ void THttpParser::checkMessageSize(uint32_t more, bool added) {
   uint32_t messageSize = partialMessageSize_ + more;
   if (messageSize > maxSize_) {
     T_ERROR("THttpParser: partial message size of %d rejected", messageSize);
-    throw TTransportException(TTransportException::CORRUPTED_DATA,
-                              "rejected overly large  http message");
+    throw TTransportException(
+        TTransportException::CORRUPTED_DATA,
+        "rejected overly large  http message");
   }
   if (added) {
     partialMessageSize_ = messageSize;
@@ -279,7 +281,7 @@ THttpParser::HttpParseResult THttpParser::parseContent() {
   assert(httpPos_ <= httpBufLen_);
   size_t avail = httpBufLen_ - httpPos_;
   if (avail > 0 && avail >= contentLength_) {
-    //copy all of them to the data buf
+    // copy all of them to the data buf
     assert(dataBuf_ != nullptr);
     dataBuf_->write((uint8_t*)(httpBuf_ + httpPos_), contentLength_);
     httpPos_ += contentLength_;
@@ -432,4 +434,6 @@ void THttpClientParser::appendHeadersToQueue(
   }
 }
 
-}}}
+} // namespace util
+} // namespace thrift
+} // namespace apache

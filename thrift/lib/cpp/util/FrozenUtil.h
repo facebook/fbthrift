@@ -21,33 +21,34 @@
 #include <folly/system/MemoryMapping.h>
 #include <thrift/lib/cpp/Frozen.h>
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 
-template<class T,
-         class Frozen = typename Freezer<T>::FrozenType>
-const Frozen* freezeToFile(const T& value,
-                           const folly::MemoryMapping& mapping);
+template <class T, class Frozen = typename Freezer<T>::FrozenType>
+const Frozen* freezeToFile(const T& value, const folly::MemoryMapping& mapping);
 
-template<class T>
+template <class T>
 void freezeToFile(const T& value, folly::File file);
 
-template<class T>
+template <class T>
 void freezeToFile(const T& value, int fd);
 
-template<class T>
-void freezeToSparseFile(const T& value,
-                        folly::File file,
-                        size_t sparseSize = 1L << 30 /* 1 GB */);
+template <class T>
+void freezeToSparseFile(
+    const T& value,
+    folly::File file,
+    size_t sparseSize = 1L << 30 /* 1 GB */);
 
-template<class T,
-         class Frozen = typename Freezer<T>::FrozenType>
+template <class T, class Frozen = typename Freezer<T>::FrozenType>
 const Frozen* mapFrozen(folly::ByteRange mapping);
 
-template<class T,
-         class Frozen = typename Freezer<T>::FrozenType>
+template <class T, class Frozen = typename Freezer<T>::FrozenType>
 const Frozen* mapFrozen(const folly::MemoryMapping& mapping);
 
-}}} // apache::thrift
+} // namespace util
+} // namespace thrift
+} // namespace apache
 
 #include <thrift/lib/cpp/util/FrozenUtil-inl.h>
 

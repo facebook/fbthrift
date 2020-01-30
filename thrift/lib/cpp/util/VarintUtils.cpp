@@ -19,14 +19,16 @@
 
 #include <stdint.h>
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 
 /**
  * Read an i16 from the wire as a varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 3 bytes.
  */
-uint32_t readVarint16(uint8_t const* ptr, int16_t* i16,
-                      uint8_t const* boundary) {
+uint32_t
+readVarint16(uint8_t const* ptr, int16_t* i16, uint8_t const* boundary) {
   int64_t val;
   uint32_t rsize = readVarint64(ptr, &val, boundary);
   *i16 = (int16_t)val;
@@ -37,8 +39,8 @@ uint32_t readVarint16(uint8_t const* ptr, int16_t* i16,
  * Read an i32 from the wire as a varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 5 bytes.
  */
-uint32_t readVarint32(uint8_t const* ptr, int32_t* i32,
-                      uint8_t const* boundary) {
+uint32_t
+readVarint32(uint8_t const* ptr, int32_t* i32, uint8_t const* boundary) {
   int64_t val;
   uint32_t rsize = readVarint64(ptr, &val, boundary);
   *i32 = (int32_t)val;
@@ -50,8 +52,8 @@ uint32_t readVarint32(uint8_t const* ptr, int32_t* i32,
  * if there is another byte to follow. This can read up to 10 bytes.
  * Caller is responsible for advancing ptr after call.
  */
-uint32_t readVarint64(uint8_t const* ptr, int64_t* i64,
-                      uint8_t const* boundary) {
+uint32_t
+readVarint64(uint8_t const* ptr, int64_t* i64, uint8_t const* boundary) {
   uint32_t rsize = 0;
   uint64_t val = 0;
   int shift = 0;
@@ -59,8 +61,8 @@ uint32_t readVarint64(uint8_t const* ptr, int64_t* i64,
   while (true) {
     if (ptr == boundary) {
       throw TApplicationException(
-        TApplicationException::INVALID_MESSAGE_TYPE,
-        "Trying to read past header boundary");
+          TApplicationException::INVALID_MESSAGE_TYPE,
+          "Trying to read past header boundary");
     }
     uint8_t byte = *(ptr++);
     rsize++;
@@ -103,9 +105,11 @@ uint32_t writeVarint16(uint16_t n, uint8_t* pkt) {
 }
 
 namespace detail {
-  [[noreturn]] void throwInvalidVarint() {
-    throw std::out_of_range("invalid varint read");
-  }
+[[noreturn]] void throwInvalidVarint() {
+  throw std::out_of_range("invalid varint read");
 }
+} // namespace detail
 
-}}} // apache::thrift::util
+} // namespace util
+} // namespace thrift
+} // namespace apache

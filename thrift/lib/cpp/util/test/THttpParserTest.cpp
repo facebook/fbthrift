@@ -23,13 +23,11 @@
 
 namespace {
 
-class THttpClientParserTest : public testing::Test{};
+class THttpClientParserTest : public testing::Test {};
 
 using HeaderMap = std::map<std::string, std::string>;
 
-void write(
-    apache::thrift::util::THttpParser& parser,
-    folly::StringPiece text) {
+void write(apache::thrift::util::THttpParser& parser, folly::StringPiece text) {
   while (!text.empty()) {
     void* buf = nullptr;
     size_t len = 0;

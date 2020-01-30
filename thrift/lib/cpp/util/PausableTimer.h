@@ -21,37 +21,41 @@
 
 #include <folly/portability/SysTime.h>
 
-namespace apache { namespace thrift { namespace util {
+namespace apache {
+namespace thrift {
+namespace util {
 
 class PausableTimer {
-  public:
-    explicit PausableTimer(int timeLimit=0);
+ public:
+  explicit PausableTimer(int timeLimit = 0);
 
-    void reset();
-    void start();
-    void stop();
+  void reset();
+  void start();
+  void stop();
 
-    // isTimeLimitFinite_ && totalTimed_ > timeLimit_
-    bool hasExceededTimeLimit();
+  // isTimeLimitFinite_ && totalTimed_ > timeLimit_
+  bool hasExceededTimeLimit();
 
-    // limit_in_microseconds == 0 implies there is no time limit to
-    // exceed, i.e. that this method will return false.
-    bool didLastRunningTimeExceedLimit(uint64_t limit_in_microseconds);
+  // limit_in_microseconds == 0 implies there is no time limit to
+  // exceed, i.e. that this method will return false.
+  bool didLastRunningTimeExceedLimit(uint64_t limit_in_microseconds);
 
-  private:
-    bool isTimeLimitFinite_;
-    bool paused_;
-    struct timeval timeLimit_;
+ private:
+  bool isTimeLimitFinite_;
+  bool paused_;
+  struct timeval timeLimit_;
 
-    // time at which timer went from paused to running (not paused)
-    // state
-    struct timeval startTime_;
+  // time at which timer went from paused to running (not paused)
+  // state
+  struct timeval startTime_;
 
-    // time timer has run, i.e. not been paused, since last reset
-    struct timeval totalTimed_;
+  // time timer has run, i.e. not been paused, since last reset
+  struct timeval totalTimed_;
 
-    // time elapsed between latest pause and the start before it
-    struct timeval lastRunningTime_;
+  // time elapsed between latest pause and the start before it
+  struct timeval lastRunningTime_;
 };
 
-}}}
+} // namespace util
+} // namespace thrift
+} // namespace apache

@@ -25,19 +25,20 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace util {
 
 /**
  * Parses an enum name to the enum type
  */
-template<typename String, typename EnumType>
+template <typename String, typename EnumType>
 bool tryParseEnum(const String& name, EnumType* out) {
   return TEnumTraits<EnumType>::findValue(name.c_str(), out);
 }
 
-template<typename EnumType>
+template <typename EnumType>
 bool tryParseEnum(const char* name, EnumType* out) {
   return TEnumTraits<EnumType>::findValue(name, out);
 }
@@ -46,11 +47,11 @@ bool tryParseEnum(const char* name, EnumType* out) {
  * Returns the human-readable name for an Enum type.
  * WARNING! By default it returns nullptr if the value is not in enum.
  */
-template<typename EnumType>
-const char* enumName(EnumType value,
-                     const char* defaultName = nullptr) {
+template <typename EnumType>
+const char* enumName(EnumType value, const char* defaultName = nullptr) {
   const char* name = TEnumTraits<EnumType>::findName(value);
-  if (!name) return defaultName;
+  if (!name)
+    return defaultName;
   return name;
 }
 
@@ -64,6 +65,8 @@ std::string enumNameSafe(EnumType value) {
   return name ? name : folly::to<std::string>(static_cast<int32_t>(value));
 }
 
-}}} // apache::thrift::util
+} // namespace util
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_UTIL_ENUMUTILS_H_ 1
