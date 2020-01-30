@@ -61,6 +61,20 @@
         "value": {"Witcher": ["Geralt", "Yennefer"], "1984": ["2+2=5"]},
         "docstring": "Complicated map\n",
         "lineno": 291
+      },
+      "MULTI_LINE_STR": {
+        "name": "MULTI_LINE_STR",
+        "type": "string",
+        "value": "Line 1\nLine 2\n...\\\nLast",
+        "docstring": "String const split on multiple lines by '\\'\n",
+        "lineno": 298
+      },
+      "WEIRD_STR": {
+        "name": "WEIRD_STR",
+        "type": "string",
+        "value": "How much is 15\\u00c2\\u00b0C in \\\\ F",
+        "docstring": "String with escapes an unicodes.\nBasic testing of https://www.ietf.org/rfc/rfc4627.txt\n",
+        "lineno": 307
       }
   },
   "enumerations" :

@@ -292,4 +292,19 @@ const map<string, list<string>> COMPLICATED_MAP = {
   "Witcher": ["Geralt", "Yennefer"],
   "1984": ["2+2=5"]}
 
+/**
+  String const split on multiple lines by '\'
+*/
+const string MULTI_LINE_STR = "Line 1
+Line 2
+...\
+Last"
+
+/**
+  String with escapes an unicodes.
+  Basic testing of https://www.ietf.org/rfc/rfc4627.txt
+*/
+const string WEIRD_STR = "How much is 15\u00c2\u00b0C in \\ F"
+
+
 /* THE END */

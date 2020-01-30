@@ -22,6 +22,7 @@
 
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
+#include <thrift/compiler/util.h>
 
 namespace apache {
 namespace thrift {
@@ -251,6 +252,12 @@ static inline std::string to_string(t_const_value const* value) {
     return "{" + result + "}";
   };
 
+  auto escape_string = [](const std::string& value) {
+    std::stringstream ss;
+    json_quote_ascii(ss, value);
+    return ss.str();
+  };
+
   switch (value->get_type()) {
     case mstch_const_value::cv::CV_BOOL:
       return value->get_bool() ? "true" : "false";
@@ -259,7 +266,7 @@ static inline std::string to_string(t_const_value const* value) {
     case mstch_const_value::cv::CV_DOUBLE:
       return std::to_string(value->get_double());
     case mstch_const_value::cv::CV_STRING:
-      return "\"" + value->get_string() + "\"";
+      return escape_string(value->get_string());
     case mstch_const_value::cv::CV_LIST:
       return stringify_list(value->get_list());
     case mstch_const_value::cv::CV_MAP:
