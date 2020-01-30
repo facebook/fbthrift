@@ -57,7 +57,7 @@ class TestSinkService : public TestSinkServiceSvIf {
   void purge() override;
 
  private:
- std::atomic<int> activeSinks_{0};
+  std::atomic<int> activeSinks_{0};
 };
 
 } // namespace testservice

@@ -195,7 +195,6 @@ TEST_F(SinkServiceTest, ClientTimeoutNoLeak) {
       });
 }
 
-
 TEST_F(SinkServiceTest, AssignmentNoLeak) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
