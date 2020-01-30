@@ -23,7 +23,9 @@ namespace folly {
 class SocketAddress;
 }
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * A TRpcTransport adds a getPeerAddress() method to the base TTransport
@@ -34,14 +36,16 @@ class TRpcTransport : public TTransport {
   /**
    * Get the address of the peer to which this transport is connected.
    *
-   * @return Returns a pointer to a folly::SocketAddress.  This struct is owned by
-   *         the TRpcTransport and is guaranteed to remain valid for the
-   *         lifetime of the TRpcTransport.  It is guaranteed to return
-   *         non-nullptr.  (On error, a TTransportException will be raised.)
+   * @return Returns a pointer to a folly::SocketAddress.  This struct is owned
+   * by the TRpcTransport and is guaranteed to remain valid for the lifetime of
+   * the TRpcTransport.  It is guaranteed to return non-nullptr.  (On error, a
+   * TTransportException will be raised.)
    */
   virtual const folly::SocketAddress* getPeerAddress() = 0;
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // THRIFT_TRANSPORT_TRPCTRANSPORT_H_

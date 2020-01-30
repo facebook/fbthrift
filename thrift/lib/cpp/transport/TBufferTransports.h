@@ -26,8 +26,9 @@
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
-
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * Base class for all transports that use read/write buffers for performance.
@@ -40,9 +41,7 @@ namespace apache { namespace thrift { namespace transport {
  *
  */
 class TBufferBase : public TVirtualTransport<TBufferBase> {
-
  public:
-
   /**
    * Fast-path read.
    *
@@ -120,14 +119,12 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
         consumeEnd();
       }
     } else {
-      throw TTransportException(TTransportException::BAD_ARGS,
-                                "consume did not follow a borrow.");
+      throw TTransportException(
+          TTransportException::BAD_ARGS, "consume did not follow a borrow.");
     }
   }
 
-
  protected:
-
   /// Slow path read.
   virtual uint32_t readSlow(uint8_t* buf, uint32_t len) = 0;
 
@@ -135,7 +132,7 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
   virtual void writeSlow(const uint8_t* buf, uint32_t len) = 0;
 
   /// consumeEnd, invoked when all data has been consumed.
-  virtual void consumeEnd() { }
+  virtual void consumeEnd() {}
   /**
    * Slow path borrow.
    *
@@ -151,11 +148,7 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
    * the concrete class to set up pointers correctly.
    */
   TBufferBase()
-    : rBase_(nullptr)
-    , rBound_(nullptr)
-    , wBase_(nullptr)
-    , wBound_(nullptr)
-  {}
+      : rBase_(nullptr), rBound_(nullptr), wBase_(nullptr), wBound_(nullptr) {}
 
   /// Convenience mutator for setting the read buffer.
   void setReadBuffer(uint8_t* buf, uint32_t len) {
@@ -166,7 +159,7 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
   /// Convenience mutator for setting the write buffer.
   void setWriteBuffer(uint8_t* buf, uint32_t len) {
     wBase_ = buf;
-    wBound_ = buf+len;
+    wBound_ = buf + len;
   }
 
   ~TBufferBase() override {}
@@ -182,7 +175,6 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
   uint8_t* wBound_;
 };
 
-
 /**
  * Buffered transport. For reads it will read more data than is requested
  * and will serve future data out of a local buffer. For writes, data is
@@ -190,36 +182,33 @@ class TBufferBase : public TVirtualTransport<TBufferBase> {
  *
  */
 class TBufferedTransport
-  : public TVirtualTransport<TBufferedTransport, TBufferBase> {
+    : public TVirtualTransport<TBufferedTransport, TBufferBase> {
  public:
-
   static const int DEFAULT_BUFFER_SIZE = 512;
 
   /// Use default buffer sizes.
   explicit TBufferedTransport(std::shared_ptr<TTransport> transport)
-    : transport_(transport)
-    , rBufSize_(DEFAULT_BUFFER_SIZE)
-    , wBufSize_(DEFAULT_BUFFER_SIZE)
-    , wBufResetSize_(0)
-    , wBufResetEveryN_(0)
-    , wBufResetCount_(0)
-    , rBuf_(new uint8_t[rBufSize_])
-    , wBuf_(new uint8_t[wBufSize_])
-  {
+      : transport_(transport),
+        rBufSize_(DEFAULT_BUFFER_SIZE),
+        wBufSize_(DEFAULT_BUFFER_SIZE),
+        wBufResetSize_(0),
+        wBufResetEveryN_(0),
+        wBufResetCount_(0),
+        rBuf_(new uint8_t[rBufSize_]),
+        wBuf_(new uint8_t[wBufSize_]) {
     initPointers();
   }
 
   /// Use specified buffer sizes.
   TBufferedTransport(std::shared_ptr<TTransport> transport, uint32_t sz)
-    : transport_(transport)
-    , rBufSize_(sz)
-    , wBufSize_(sz)
-    , wBufResetSize_(0)
-    , wBufResetEveryN_(0)
-    , wBufResetCount_(0)
-    , rBuf_(new uint8_t[rBufSize_])
-    , wBuf_(new uint8_t[wBufSize_])
-  {
+      : transport_(transport),
+        rBufSize_(sz),
+        wBufSize_(sz),
+        wBufResetSize_(0),
+        wBufResetEveryN_(0),
+        wBufResetCount_(0),
+        rBuf_(new uint8_t[rBufSize_]),
+        wBuf_(new uint8_t[wBufSize_]) {
     initPointers();
   }
 
@@ -233,27 +222,33 @@ class TBufferedTransport
    * @param reset_every_n Reset the buffer after every N calls to flush().
    *                      If set to zero (default), no reset is done.
    */
-  TBufferedTransport(std::shared_ptr<TTransport> transport, uint32_t rsz,
-                     uint32_t wsz, uint32_t reset_sz = 0,
-                     uint32_t reset_every_n = 0)
-    : transport_(transport)
-    , rBufSize_(rsz)
-    , wBufSize_(wsz)
-    , wBufResetSize_(reset_sz)
-    , wBufResetEveryN_(reset_every_n)
-    , wBufResetCount_(0)
-    , rBuf_(new uint8_t[rBufSize_])
-    , wBuf_(new uint8_t[wBufSize_])
-  {
+  TBufferedTransport(
+      std::shared_ptr<TTransport> transport,
+      uint32_t rsz,
+      uint32_t wsz,
+      uint32_t reset_sz = 0,
+      uint32_t reset_every_n = 0)
+      : transport_(transport),
+        rBufSize_(rsz),
+        wBufSize_(wsz),
+        wBufResetSize_(reset_sz),
+        wBufResetEveryN_(reset_every_n),
+        wBufResetCount_(0),
+        rBuf_(new uint8_t[rBufSize_]),
+        wBuf_(new uint8_t[wBufSize_]) {
     initPointers();
   }
 
   // Tries to put some data back in the beginning of the read buffer.
   void putBack(uint8_t* buf, uint32_t len);
 
-  void open() override { transport_->open(); }
+  void open() override {
+    transport_->open();
+  }
 
-  bool isOpen() override { return transport_->isOpen(); }
+  bool isOpen() override {
+    return transport_->isOpen();
+  }
 
   bool peek() override {
     if (rBase_ == rBound_) {
@@ -316,7 +311,6 @@ class TBufferedTransport
   std::unique_ptr<uint8_t[]> wBuf_;
 };
 
-
 /**
  * Wraps a transport into a buffered one.
  *
@@ -334,9 +328,7 @@ class TBufferedTransportFactory : public TTransportFactory {
       std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new TBufferedTransport(trans));
   }
-
 };
-
 
 /**
  * Framed transport. All writes go into an in-memory buffer until flush is
@@ -346,25 +338,21 @@ class TBufferedTransportFactory : public TTransportFactory {
  *
  */
 class TFramedTransport
-  : public TVirtualTransport<TFramedTransport, TBufferBase> {
-
+    : public TVirtualTransport<TFramedTransport, TBufferBase> {
  public:
-
   static const int DEFAULT_BUFFER_SIZE = 512;
-
 
   /// Use default buffer sizes.
   explicit TFramedTransport(std::shared_ptr<TTransport> transport)
-    : transport_(transport)
-    , rBufSize_(0)
-    , wBufSize_(DEFAULT_BUFFER_SIZE)
-    , wBufResetSize_(0)
-    , wBufResetEveryN_(0)
-    , wBufResetCount_(0)
-    , maxFrameSize_(0x7fffffff)
-    , rBuf_()
-    , wBuf_(new uint8_t[wBufSize_])
-  {
+      : transport_(transport),
+        rBufSize_(0),
+        wBufSize_(DEFAULT_BUFFER_SIZE),
+        wBufResetSize_(0),
+        wBufResetEveryN_(0),
+        wBufResetCount_(0),
+        maxFrameSize_(0x7fffffff),
+        rBuf_(),
+        wBuf_(new uint8_t[wBufSize_]) {
     initPointers();
   }
 
@@ -377,28 +365,36 @@ class TFramedTransport
    * @param reset_every_n Reset the buffer after every N calls to flush().
    *                      If set to zero (default), no reset is done.
    */
-  TFramedTransport(std::shared_ptr<TTransport> transport, uint32_t sz,
-                   uint32_t reset_sz = 0, uint32_t reset_every_n = 0,
-                   uint32_t max_frame_size = 0x7fffffff)
-    : transport_(transport)
-    , rBufSize_(0)
-    , wBufSize_(sz)
-    , wBufResetSize_(reset_sz)
-    , wBufResetEveryN_(reset_every_n)
-    , wBufResetCount_(0)
-    , maxFrameSize_(max_frame_size)
-    , rBuf_()
-    , wBuf_(new uint8_t[wBufSize_])
-  {
+  TFramedTransport(
+      std::shared_ptr<TTransport> transport,
+      uint32_t sz,
+      uint32_t reset_sz = 0,
+      uint32_t reset_every_n = 0,
+      uint32_t max_frame_size = 0x7fffffff)
+      : transport_(transport),
+        rBufSize_(0),
+        wBufSize_(sz),
+        wBufResetSize_(reset_sz),
+        wBufResetEveryN_(reset_every_n),
+        wBufResetCount_(0),
+        maxFrameSize_(max_frame_size),
+        rBuf_(),
+        wBuf_(new uint8_t[wBufSize_]) {
     assert(wBufResetSize_ == 0 || wBufSize_ <= wBufResetSize_);
     initPointers();
   }
 
-  void open() override { transport_->open(); }
+  void open() override {
+    transport_->open();
+  }
 
-  bool isOpen() override { return transport_->isOpen(); }
+  bool isOpen() override {
+    return transport_->isOpen();
+  }
 
-  bool peek() override { return (rBase_ < rBound_) || transport_->peek(); }
+  bool peek() override {
+    return (rBase_ < rBound_) || transport_->peek();
+  }
 
   void close() override {
     flush();
@@ -430,15 +426,14 @@ class TFramedTransport
  protected:
   /// Constructor for subclassing.
   TFramedTransport()
-    : rBufSize_(0)
-    , wBufSize_(DEFAULT_BUFFER_SIZE)
-    , wBufResetSize_(0)
-    , wBufResetEveryN_(0)
-    , wBufResetCount_(0)
-    , maxFrameSize_(0x7fffffff)
-    , rBuf_()
-    , wBuf_(new uint8_t[wBufSize_])
-  {
+      : rBufSize_(0),
+        wBufSize_(DEFAULT_BUFFER_SIZE),
+        wBufResetSize_(0),
+        wBufResetEveryN_(0),
+        wBufResetCount_(0),
+        maxFrameSize_(0x7fffffff),
+        rBuf_(),
+        wBuf_(new uint8_t[wBufSize_]) {
     initPointers();
   }
 
@@ -493,9 +488,7 @@ class TFramedTransportFactory : public TTransportFactory {
       std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new TFramedTransport(trans));
   }
-
 };
-
 
 /**
  * A memory buffer is a transport that simply reads from and writes to an
@@ -508,9 +501,8 @@ class TFramedTransportFactory : public TTransportFactory {
  */
 class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
  private:
-
   TMemoryBuffer(const TMemoryBuffer&);
-  TMemoryBuffer &operator=(const TMemoryBuffer&);
+  TMemoryBuffer& operator=(const TMemoryBuffer&);
 
   // Common initialization done by all constructors.
   void initCommon(uint8_t* buf, uint32_t size, bool owner, uint32_t wPos) {
@@ -562,10 +554,10 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
    *   and will be responsible for freeing it.
    *   The memory must have been allocated with malloc.
    */
-  enum MemoryPolicy
-  { OBSERVE = 1
-  , COPY = 2
-  , TAKE_OWNERSHIP = 3
+  enum MemoryPolicy {
+    OBSERVE = 1,
+    COPY = 2,
+    TAKE_OWNERSHIP = 3,
   };
 
   /**
@@ -598,8 +590,9 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
    */
   TMemoryBuffer(uint8_t* buf, uint32_t sz, MemoryPolicy policy = OBSERVE) {
     if (buf == nullptr && sz != 0) {
-      throw TTransportException(TTransportException::BAD_ARGS,
-                                "TMemoryBuffer given null buffer with non-zero size.");
+      throw TTransportException(
+          TTransportException::BAD_ARGS,
+          "TMemoryBuffer given null buffer with non-zero size.");
     }
 
     switch (policy) {
@@ -612,14 +605,18 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
         this->write(buf, sz);
         break;
       default:
-        throw TTransportException(TTransportException::BAD_ARGS,
-                                  "Invalid MemoryPolicy for TMemoryBuffer");
+        throw TTransportException(
+            TTransportException::BAD_ARGS,
+            "Invalid MemoryPolicy for TMemoryBuffer");
     }
   }
 
-  explicit TMemoryBuffer(TMemoryBuffer *buffer) {
-    initCommon(buffer->rBase_, buffer->available_read(), false,
-               buffer->available_read());
+  explicit TMemoryBuffer(TMemoryBuffer* buffer) {
+    initCommon(
+        buffer->rBase_,
+        buffer->available_read(),
+        false,
+        buffer->available_read());
     // Have to set buffer_ appropriately so this buffer can take ownership
     // later if necessary.  initCommon sets all other state correctly.
     buffer_ = buffer->buffer_;
@@ -627,10 +624,12 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     linkedBuffer_->observe(this);
   }
 
-  ~TMemoryBuffer() override { cleanup(); }
+  ~TMemoryBuffer() override {
+    cleanup();
+  }
 
   // Set this buffer to observe the next length bytes of buffer.
-  void link(TMemoryBuffer *buffer, uint32_t length) {
+  void link(TMemoryBuffer* buffer, uint32_t length) {
     assert(length <= buffer->available_read());
     cleanup();
     initCommon(buffer->rBase_, length, false, length);
@@ -639,15 +638,21 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     linkedBuffer_->observe(this);
   }
 
-  bool isOpen() override { return true; }
+  bool isOpen() override {
+    return true;
+  }
 
-  bool peek() override { return (rBase_ < wBase_); }
+  bool peek() override {
+    return (rBase_ < wBase_);
+  }
 
   void open() override {}
 
   void close() override {}
 
-  uint32_t getBufferSize() const { return bufferSize_; }
+  uint32_t getBufferSize() const {
+    return bufferSize_;
+  }
 
   // TODO(dreiss): Make bufPtr const.
   void getBuffer(uint8_t** bufPtr, uint32_t* sz) const {
@@ -716,7 +721,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   //
   // Calls that reset an apparently empty buffer are delayed until all
   // observers are detached.
-  void observe(TMemoryBuffer *observer) {
+  void observe(TMemoryBuffer* observer) {
     if (observer != nullptr) {
       observers_.push_back(observer);
     }
@@ -725,15 +730,17 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
 
   // Remove an observer of the memory in this buffer.  If there is a pending
   // consumeEnd call, process it
-  void unobserve(TMemoryBuffer *observer) {
+  void unobserve(TMemoryBuffer* observer) {
     if (UNLIKELY(observerCount_ == 0)) {
-        throw TTransportException("Tried to unobserve a buffer with no "
-                                  "observers");
+      throw TTransportException(
+          "Tried to unobserve a buffer with no "
+          "observers");
     }
     bool found = false;
     if (observer != nullptr) {
-      for(TMemoryBufferContainer::iterator it = observers_.begin();
-          it != observers_.end(); ++it) {
+      for (TMemoryBufferContainer::iterator it = observers_.begin();
+           it != observers_.end();
+           ++it) {
         if (*it == observer) {
           observers_.erase(it);
           found = true;
@@ -742,12 +749,13 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
       }
     }
     if (!found) {
-      throw TTransportException("Tried to remove an observer that was not "
-                                "observing the buffer");
+      throw TTransportException(
+          "Tried to remove an observer that was not "
+          "observing the buffer");
     }
     observerCount_--;
     if (observerCount_ == 0 && rBase_ == wBase_) {
-        consumeEnd();
+      consumeEnd();
     }
   }
 
@@ -808,7 +816,9 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   }
 
   // Return number of bytes written
-  uint32_t writeEnd() override { return wBase_ - buffer_; }
+  uint32_t writeEnd() override {
+    return wBase_ - buffer_;
+  }
 
   uint32_t available_read() const {
     // Remember, wBase_ is the real rBound_.
@@ -868,7 +878,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
       }
       *buf = buffer_;
     } else {
-      *buf = (uint8_t *)malloc(*buflen);
+      *buf = (uint8_t*)malloc(*buflen);
       if (*buf == nullptr) {
         throw std::bad_alloc();
       }
@@ -881,22 +891,22 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
  protected:
   void swap(TMemoryBuffer& that) {
     using std::swap;
-    swap(buffer_,     that.buffer_);
+    swap(buffer_, that.buffer_);
     swap(bufferSize_, that.bufferSize_);
 
-    swap(rBase_,      that.rBase_);
-    swap(rBound_,     that.rBound_);
-    swap(wBase_,      that.wBase_);
-    swap(wBound_,     that.wBound_);
+    swap(rBase_, that.rBase_);
+    swap(rBound_, that.rBound_);
+    swap(wBase_, that.wBase_);
+    swap(wBound_, that.wBound_);
 
-    swap(owner_,      that.owner_);
-    swap(linkedBuffer_,  that.linkedBuffer_);
+    swap(owner_, that.owner_);
+    swap(linkedBuffer_, that.linkedBuffer_);
     swap(observerCount_, that.observerCount_);
     observers_.swap(that.observers_);
-    for (auto buf:  observers_) {
+    for (auto buf : observers_) {
       buf->linkedBuffer_ = this;
     }
-    for (auto buf: that.observers_) {
+    for (auto buf : that.observers_) {
       buf->linkedBuffer_ = &that;
     }
     if (linkedBuffer_ != nullptr) {
@@ -910,7 +920,7 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   }
 
   void transferOwnership() {
-    TMemoryBuffer *newOwner = nullptr;
+    TMemoryBuffer* newOwner = nullptr;
     assert(!observers_.empty());
     // The optimal case is to make the new owner the TMemoryBuffer
     // with the longest life-span.  Use FIFO as a hueristic and assign
@@ -920,7 +930,8 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
     newOwner->owner_ = true;
     newOwner->linkedBuffer_ = nullptr;
     for (TMemoryBufferContainer::iterator it = observers_.begin();
-        it != observers_.end(); ++it) {
+         it != observers_.end();
+         ++it) {
       (*it)->linkedBuffer_ = newOwner;
       // It's possible that an observer has other observers
       newOwner->observers_.push_back(*it);
@@ -970,17 +981,19 @@ class TMemoryBuffer : public TVirtualTransport<TMemoryBuffer, TBufferBase> {
   // Is this object the owner of the buffer?
   bool owner_;
 
-  TMemoryBuffer *linkedBuffer_;
+  TMemoryBuffer* linkedBuffer_;
   uint32_t observerCount_;
   // The container is a vector (rather than a list) for performance
   // reasons despite the O(N) penalty in unobserve.  The vec keeps the
   // overhead lower in the common case, which is a single observer.
-  typedef std::vector<TMemoryBuffer *> TMemoryBufferContainer;
+  typedef std::vector<TMemoryBuffer*> TMemoryBufferContainer;
   TMemoryBufferContainer observers_;
   // Don't forget to update constructors, initCommon, and swap if
   // you add new members.
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_TRANSPORT_TBUFFERTRANSPORTS_H_

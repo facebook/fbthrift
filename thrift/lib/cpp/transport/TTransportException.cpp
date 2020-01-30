@@ -18,7 +18,8 @@
 
 using std::string;
 
-namespace apache { namespace thrift { namespace transport {
-
-}}} // apache::thrift::transport
-
+namespace apache {
+namespace thrift {
+namespace transport {}
+} // namespace thrift
+} // namespace apache

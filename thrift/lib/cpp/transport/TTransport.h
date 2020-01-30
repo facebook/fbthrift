@@ -17,39 +17,41 @@
 #ifndef THRIFT_TRANSPORT_TTRANSPORT_H
 #define THRIFT_TRANSPORT_TTRANSPORT_H 1
 
-#include <thrift/lib/cpp/Thrift.h>
 #include <memory>
-#include <thrift/lib/cpp/transport/TTransportException.h>
 #include <string>
-#include <folly/Conv.h>
 
-namespace apache { namespace thrift { namespace transport {
+#include <folly/Conv.h>
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/transport/TTransportException.h>
+
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * Helper template to hoist readAll implementation out of TTransport
  */
 template <class Transport_>
-uint32_t readAll(Transport_ &trans, uint8_t* buf, uint32_t len) {
+uint32_t readAll(Transport_& trans, uint8_t* buf, uint32_t len) {
   uint32_t have = 0;
   uint32_t get = 0;
 
   while (have < len) {
-    get = trans.read(buf+have, len-have);
+    get = trans.read(buf + have, len - have);
     if (get <= 0) {
       throw TTransportException(
           TTransportException::END_OF_FILE,
           folly::to<std::string>(
-            "No more data to read. Attempted blocking readAll for ",
-            len,
-            " bytes, but only able to fetch ",
-            have));
+              "No more data to read. Attempted blocking readAll for ",
+              len,
+              " bytes, but only able to fetch ",
+              have));
     }
     have += get;
   }
 
   return have;
 }
-
 
 /**
  * Generic interface for a method of transporting data. A TTransport may be
@@ -89,14 +91,16 @@ class TTransport {
    * @throws TTransportException if opening failed
    */
   virtual void open() {
-    throw TTransportException(TTransportException::NOT_OPEN, "Cannot open base TTransport.");
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "Cannot open base TTransport.");
   }
 
   /**
    * Closes the transport.
    */
   virtual void close() {
-    throw TTransportException(TTransportException::NOT_OPEN, "Cannot close base TTransport.");
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "Cannot close base TTransport.");
   }
 
   /**
@@ -111,8 +115,8 @@ class TTransport {
     return read_virt(buf, len);
   }
   virtual uint32_t read_virt(uint8_t* /* buf */, uint32_t /* len */) {
-    throw TTransportException(TTransportException::NOT_OPEN,
-                              "Base TTransport cannot read.");
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "Base TTransport cannot read.");
   }
 
   /**
@@ -158,8 +162,8 @@ class TTransport {
     write_virt(buf, len);
   }
   virtual void write_virt(const uint8_t* /* buf */, uint32_t /* len */) {
-    throw TTransportException(TTransportException::NOT_OPEN,
-                              "Base TTransport cannot write.");
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "Base TTransport cannot write.");
   }
 
   /**
@@ -244,8 +248,8 @@ class TTransport {
     consume_virt(len);
   }
   virtual void consume_virt(uint32_t /* len */) {
-    throw TTransportException(TTransportException::NOT_OPEN,
-                              "Base TTransport cannot consume.");
+    throw TTransportException(
+        TTransportException::NOT_OPEN, "Base TTransport cannot consume.");
   }
 
  protected:
@@ -270,10 +274,10 @@ class TTransportFactory {
   /**
    * Default implementation does nothing, just returns the transport given.
    */
-  virtual std::shared_ptr<TTransport> getTransport(std::shared_ptr<TTransport> trans) {
+  virtual std::shared_ptr<TTransport> getTransport(
+      std::shared_ptr<TTransport> trans) {
     return trans;
   }
-
 };
 
 /**
@@ -284,8 +288,8 @@ class TTransportFactory {
  * TTransportPair.first = Input Transport
  * TTransportPair.second = Output Transport
  */
-typedef std::pair<std::shared_ptr<TTransport>,
-                  std::shared_ptr<TTransport> > TTransportPair;
+typedef std::pair<std::shared_ptr<TTransport>, std::shared_ptr<TTransport>>
+    TTransportPair;
 
 class TDuplexTransportFactory {
  public:
@@ -300,7 +304,6 @@ class TDuplexTransportFactory {
   virtual TTransportPair getTransport(TTransportPair transports) {
     return std::make_pair(transports.first, transports.second);
   }
-
 };
 
 /**
@@ -314,21 +317,21 @@ class TSingleTransportFactory : public TDuplexTransportFactory {
     factory_.reset(new Factory_());
   }
 
-  explicit TSingleTransportFactory(
-    std::shared_ptr<Factory_> factory) :
-      factory_(factory) {}
+  explicit TSingleTransportFactory(std::shared_ptr<Factory_> factory)
+      : factory_(factory) {}
 
   TTransportPair getTransport(std::shared_ptr<TTransport> trans) override {
-    return std::make_pair(factory_->getTransport(trans),
-                          factory_->getTransport(trans));
+    return std::make_pair(
+        factory_->getTransport(trans), factory_->getTransport(trans));
   }
 
   TTransportPair getTransport(TTransportPair transports) override {
-    return std::make_pair(factory_->getTransport(transports.first),
-                          factory_->getTransport(transports.second));
+    return std::make_pair(
+        factory_->getTransport(transports.first),
+        factory_->getTransport(transports.second));
   }
- private:
 
+ private:
   std::shared_ptr<Factory_> factory_;
 };
 
@@ -339,26 +342,29 @@ class TSingleTransportFactory : public TDuplexTransportFactory {
 class TDualTransportFactory : public TDuplexTransportFactory {
  public:
   TDualTransportFactory(
-    std::shared_ptr<TTransportFactory> inputFactory,
-    std::shared_ptr<TTransportFactory> outputFactory) :
-      inputFactory_(inputFactory),
-      outputFactory_(outputFactory) {}
+      std::shared_ptr<TTransportFactory> inputFactory,
+      std::shared_ptr<TTransportFactory> outputFactory)
+      : inputFactory_(inputFactory), outputFactory_(outputFactory) {}
 
   TTransportPair getTransport(std::shared_ptr<TTransport> trans) override {
-    return std::make_pair(inputFactory_->getTransport(trans),
-                          outputFactory_->getTransport(trans));
+    return std::make_pair(
+        inputFactory_->getTransport(trans),
+        outputFactory_->getTransport(trans));
   }
 
   TTransportPair getTransport(TTransportPair transports) override {
-    return std::make_pair(inputFactory_->getTransport(transports.first),
-                          outputFactory_->getTransport(transports.second));
+    return std::make_pair(
+        inputFactory_->getTransport(transports.first),
+        outputFactory_->getTransport(transports.second));
   }
- private:
 
+ private:
   std::shared_ptr<TTransportFactory> inputFactory_;
   std::shared_ptr<TTransportFactory> outputFactory_;
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_TRANSPORT_TTRANSPORT_H

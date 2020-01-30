@@ -24,7 +24,9 @@
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * Dead-simple wrapper around a file descriptor.
@@ -32,15 +34,13 @@ namespace apache { namespace thrift { namespace transport {
  */
 class TFDTransport : public TVirtualTransport<TFDTransport> {
  public:
-  enum ClosePolicy
-  { NO_CLOSE_ON_DESTROY = 0
-  , CLOSE_ON_DESTROY = 1
+  enum ClosePolicy {
+    NO_CLOSE_ON_DESTROY = 0,
+    CLOSE_ON_DESTROY = 1,
   };
 
   explicit TFDTransport(int fd, ClosePolicy close_policy = NO_CLOSE_ON_DESTROY)
-    : fd_(fd)
-    , close_policy_(close_policy)
-  {}
+      : fd_(fd), close_policy_(close_policy) {}
 
   ~TFDTransport() override {
     if (close_policy_ == CLOSE_ON_DESTROY) {
@@ -48,7 +48,9 @@ class TFDTransport : public TVirtualTransport<TFDTransport> {
     }
   }
 
-  bool isOpen() override { return fd_ >= 0; }
+  bool isOpen() override {
+    return fd_ >= 0;
+  }
 
   void open() override {}
 
@@ -58,14 +60,20 @@ class TFDTransport : public TVirtualTransport<TFDTransport> {
 
   void write(const uint8_t* buf, uint32_t len);
 
-  void setFD(int fd) { fd_ = fd; }
-  int getFD() { return fd_; }
+  void setFD(int fd) {
+    fd_ = fd;
+  }
+  int getFD() {
+    return fd_;
+  }
 
  protected:
   int fd_;
   ClosePolicy close_policy_;
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_TRANSPORT_TFDTRANSPORT_H_

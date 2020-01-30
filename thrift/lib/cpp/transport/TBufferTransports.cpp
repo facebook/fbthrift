@@ -22,16 +22,19 @@
 
 using std::string;
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 void TBufferedTransport::putBack(uint8_t* buf, uint32_t len) {
   assert(len < rBufSize_);
 
   // Check that len fits.
   // We push rBase_ back below to rBuf_.get()
-  if (rBound_ + len > rBufSize_  + rBase_) {
-    throw TTransportException(TTransportException::BAD_ARGS,
-                              "TBufferedTransport called with oversize buf");
+  if (rBound_ + len > rBufSize_ + rBase_) {
+    throw TTransportException(
+        TTransportException::BAD_ARGS,
+        "TBufferedTransport called with oversize buf");
   }
 
   // Reset the buffer to initial position, moving any unread data.
@@ -108,7 +111,7 @@ void TBufferedTransport::writeSlow(const uint8_t* buf, uint32_t len) {
   // The case where we have to do two syscalls.
   // This case also covers the case where the buffer is empty,
   // but it is clearer (I think) to think of it as two separate cases.
-  if ((have_bytes + len >= 2*wBufSize_) || (have_bytes == 0)) {
+  if ((have_bytes + len >= 2 * wBufSize_) || (have_bytes == 0)) {
     // TODO(dreiss): writev
     if (have_bytes > 0) {
       transport_->write(wBuf_.get(), have_bytes);
@@ -131,14 +134,15 @@ void TBufferedTransport::writeSlow(const uint8_t* buf, uint32_t len) {
   return;
 }
 
-const uint8_t* TBufferedTransport::borrowSlow(uint8_t* /*buf*/,
-                                              uint32_t* /*len*/) {
+const uint8_t* TBufferedTransport::borrowSlow(
+    uint8_t* /*buf*/,
+    uint32_t* /*len*/) {
   // Simply return nullptr.  We don't know if there is actually data available
   // on the underlying transport, so calling read() might block.
   return nullptr;
 }
 
-void TBufferedTransport::flush()  {
+void TBufferedTransport::flush() {
   // Write out any data waiting in the write buffer.
   uint32_t have_bytes = wBase_ - wBuf_.get();
   if (have_bytes > 0) {
@@ -222,9 +226,10 @@ bool TFramedTransport::readFrame(uint32_t /*minFrameSize*/) {
         return false;
       } else {
         // EOF after a partial frame header.  Raise an exception.
-        throw TTransportException(TTransportException::END_OF_FILE,
-                                  "No more data to read after "
-                                  "partial frame header.");
+        throw TTransportException(
+            TTransportException::END_OF_FILE,
+            "No more data to read after "
+            "partial frame header.");
       }
     }
     size_bytes_read += bytes_read;
@@ -251,7 +256,8 @@ void TFramedTransport::writeSlow(const uint8_t* buf, uint32_t len) {
   uint32_t have = wBase_ - wBuf_.get();
   uint32_t new_size = wBufSize_;
   if (len + have < have /* overflow */ || len + have > 0x7fffffff) {
-    throw TTransportException(TTransportException::BAD_ARGS,
+    throw TTransportException(
+        TTransportException::BAD_ARGS,
         "Attempted to write over 2 GB to TFramedTransport.");
   }
   while (new_size < len + have) {
@@ -278,7 +284,7 @@ void TFramedTransport::writeSlow(const uint8_t* buf, uint32_t len) {
   wBase_ += len;
 }
 
-void TFramedTransport::flush()  {
+void TFramedTransport::flush() {
   int32_t sz_hbo, sz_nbo;
   assert(wBufSize_ > sizeof(sz_nbo));
 
@@ -295,7 +301,7 @@ void TFramedTransport::flush()  {
     wBase_ = wBuf_.get() + sizeof(sz_nbo);
 
     // Write size and frame body.
-    transport_->write(wBuf_.get(), sizeof(sz_nbo)+sz_hbo);
+    transport_->write(wBuf_.get(), sizeof(sz_nbo) + sz_hbo);
   }
 
   // Flush the underlying transport.
@@ -323,8 +329,9 @@ uint32_t TFramedTransport::writeEnd() {
   return wBase_ - wBuf_.get();
 }
 
-const uint8_t* TFramedTransport::borrowSlow(uint8_t* /*buf*/,
-                                            uint32_t* /*len*/) {
+const uint8_t* TFramedTransport::borrowSlow(
+    uint8_t* /*buf*/,
+    uint32_t* /*len*/) {
   // Don't try to be clever with shifting buffers.
   // If the fast path failed let the protocol use its slow path.
   // Besides, who is going to try to borrow across messages?
@@ -336,7 +343,10 @@ uint32_t TFramedTransport::readEnd() {
   return rBound_ - rBuf_.get() + sizeof(uint32_t);
 }
 
-void TMemoryBuffer::computeRead(uint32_t len, uint8_t** out_start, uint32_t* out_give) {
+void TMemoryBuffer::computeRead(
+    uint32_t len,
+    uint8_t** out_start,
+    uint32_t* out_give) {
   // Correct rBound_ so we can use the fast path in the future.
   rBound_ = wBase_;
 
@@ -443,10 +453,10 @@ void TMemoryBuffer::ensureCanWrite(uint32_t len) {
       new_buffer = buffer_;
     }
   }
-  offset = (uint8_t *)new_buffer - rBase_;
+  offset = (uint8_t*)new_buffer - rBase_;
   bufferSize_ = new_size;
 
-  buffer_ = (uint8_t *)new_buffer;
+  buffer_ = (uint8_t*)new_buffer;
   rBase_ += offset;
   rBound_ += offset;
   wBase_ += offset;
@@ -478,4 +488,6 @@ const uint8_t* TMemoryBuffer::borrowSlow(uint8_t* /*buf*/, uint32_t* len) {
   return nullptr;
 }
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache

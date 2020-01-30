@@ -18,12 +18,15 @@
 
 #include <cstdlib>
 #include <sstream>
+
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 
 #include <thrift/lib/cpp/transport/TSocket.h>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 using std::string;
 
@@ -35,22 +38,24 @@ const string THttpClient::kHostHeader = "Host";
 const string THttpClient::kTransferEncodingHeader = "Transfer-Encoding";
 const string THttpClient::kUserAgentHeader = "User-Agent";
 
-THttpClient::THttpClient(const std::shared_ptr<TTransport>& transport,
-                         const string& host, const string& path) :
-    THttpTransport(transport),
-    host_(host),
-    path_(path),
-    connectionClosedByServer_(false) {
+THttpClient::THttpClient(
+    const std::shared_ptr<TTransport>& transport,
+    const string& host,
+    const string& path)
+    : THttpTransport(transport),
+      host_(host),
+      path_(path),
+      connectionClosedByServer_(false) {
   setHeader(kUserAgentHeader, "C++/THttpClient");
   setHeader(kContentTypeHeader, "application/x-thrift");
   setHeader(kAcceptHeader, "application/x-thrift");
 }
 
-THttpClient::THttpClient(const string& host, int port, const string& path) :
-    THttpTransport(std::shared_ptr<TTransport>(new TSocket(host, port))),
-    host_(host),
-    path_(path),
-    connectionClosedByServer_(false) {
+THttpClient::THttpClient(const string& host, int port, const string& path)
+    : THttpTransport(std::shared_ptr<TTransport>(new TSocket(host, port))),
+      host_(host),
+      path_(path),
+      connectionClosedByServer_(false) {
   setHeader(kUserAgentHeader, "C++/THttpClient");
   setHeader(kContentTypeHeader, "application/x-thrift");
   setHeader(kAcceptHeader, "application/x-thrift");
@@ -67,7 +72,7 @@ void THttpClient::parseHeader(char* header) {
   if (colon == nullptr || colon == header) {
     return;
   }
-  const char* value = colon+1;
+  const char* value = colon + 1;
   while (*value == ' ') {
     value++;
   }
@@ -78,7 +83,7 @@ void THttpClient::parseHeader(char* header) {
   responseHeaders_[name] = value;
 
   if (boost::iequals(name, kTransferEncodingHeader)) {
-    if(boost::iequals(value, "chunked")) {
+    if (boost::iequals(value, "chunked")) {
       chunked_ = true;
     }
   } else if (boost::iequals(name, kContentLengthHeader)) {
@@ -133,7 +138,7 @@ void THttpClient::endParsingHeaders() {
 }
 
 void THttpClient::flush() {
-  if(connectionClosedByServer_) {
+  if (connectionClosedByServer_) {
     close();
     open();
     connectionClosedByServer_ = false;
@@ -146,14 +151,12 @@ void THttpClient::flush() {
 
   // Construct the HTTP header
   std::ostringstream h;
-  h <<
-    "POST " << path_ << " HTTP/1.1" << CRLF <<
-    kHostHeader << ": " << host_ << CRLF;
+  h << "POST " << path_ << " HTTP/1.1" << CRLF << kHostHeader << ": " << host_
+    << CRLF;
   for (const auto& header : requestHeaders_) {
     h << header.first << ": " << header.second << CRLF;
   }
-  h << kContentLengthHeader << ": " << len << CRLF <<
-    CRLF;
+  h << kContentLengthHeader << ": " << len << CRLF << CRLF;
   string header = h.str();
 
   // Write the header, then the data, then flush
@@ -173,4 +176,6 @@ void THttpClient::setUserAgent(const std::string& userAgent) {
   setHeader(kUserAgentHeader, userAgent);
 }
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache

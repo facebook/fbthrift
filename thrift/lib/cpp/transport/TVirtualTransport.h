@@ -19,8 +19,9 @@
 
 #include <thrift/lib/cpp/transport/TTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
-
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * Helper class that provides default implementations of TTransport methods.
@@ -38,7 +39,7 @@ namespace apache { namespace thrift { namespace transport {
  * TVirtualTransport::read_virt() calls read(), and TTransport::read() calls
  * read_virt().)
  */
-template <class Super_=TTransport>
+template <class Super_ = TTransport>
 class TTransportDefaults : public Super_ {
  public:
   /*
@@ -82,7 +83,7 @@ class TTransportDefaults : public Super_ {
  *
  * @author Chad Walters <chad@powerset.com>
  */
-template < class Transport_, class Super_=TTransportDefaults<TTransport> >
+template <class Transport_, class Super_ = TTransportDefaults<TTransport>>
 class TVirtualTransport : public Super_ {
  public:
   /*
@@ -133,12 +134,14 @@ class TVirtualTransport : public Super_ {
    * additional versions can be added as needed.
    */
   template <typename Arg_>
-  TVirtualTransport(Arg_ const& arg) : Super_(arg) { }
+  TVirtualTransport(Arg_ const& arg) : Super_(arg) {}
 
   template <typename Arg1_, typename Arg2_>
-  TVirtualTransport(Arg1_ const& a1, Arg2_ const& a2) : Super_(a1, a2) { }
+  TVirtualTransport(Arg1_ const& a1, Arg2_ const& a2) : Super_(a1, a2) {}
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_TRANSPORT_TVIRTUALTRANSPORT_H_

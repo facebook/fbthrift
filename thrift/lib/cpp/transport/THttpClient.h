@@ -19,10 +19,11 @@
 
 #include <thrift/lib/cpp/transport/THttpTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 class THttpClient : public THttpTransport {
-
   typedef std::map<std::string, std::string> StringToStringMap;
 
  public:
@@ -32,9 +33,10 @@ class THttpClient : public THttpTransport {
    *
    * The path must be non-empty and start with "/".
    */
-  THttpClient(const std::shared_ptr<TTransport>& transport,
-              const std::string& host,
-              const std::string& path);
+  THttpClient(
+      const std::shared_ptr<TTransport>& transport,
+      const std::string& host,
+      const std::string& path);
   THttpClient(const std::string& host, int port, const std::string& path);
 
   ~THttpClient() override;
@@ -89,7 +91,6 @@ class THttpClient : public THttpTransport {
   const static std::string kUserAgentHeader;
 
  protected:
-
   std::string host_;
   const std::string path_;
   bool connectionClosedByServer_;
@@ -103,6 +104,8 @@ class THttpClient : public THttpTransport {
   void endParsingHeaders() override;
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_TRANSPORT_THTTPCLIENT_H_

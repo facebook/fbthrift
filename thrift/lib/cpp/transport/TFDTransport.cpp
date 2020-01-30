@@ -23,7 +23,9 @@
 
 using namespace std;
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 void TFDTransport::close() {
   if (!isOpen()) {
@@ -35,9 +37,8 @@ void TFDTransport::close() {
   fd_ = -1;
   // Have to check uncaught_exception because this is called in the destructor.
   if (rv < 0 && !std::uncaught_exception()) {
-    throw TTransportException(TTransportException::UNKNOWN,
-                              "TFDTransport::close()",
-                              errno_copy);
+    throw TTransportException(
+        TTransportException::UNKNOWN, "TFDTransport::close()", errno_copy);
   }
 }
 
@@ -53,9 +54,8 @@ uint32_t TFDTransport::read(uint8_t* buf, uint32_t len) {
         continue;
       }
       int errno_copy = errno;
-      throw TTransportException(TTransportException::UNKNOWN,
-                                "TFDTransport::read()",
-                                errno_copy);
+      throw TTransportException(
+          TTransportException::UNKNOWN, "TFDTransport::read()", errno_copy);
     }
     return rv;
   }
@@ -67,12 +67,11 @@ void TFDTransport::write(const uint8_t* buf, uint32_t len) {
 
     if (rv < 0) {
       int errno_copy = errno;
-      throw TTransportException(TTransportException::UNKNOWN,
-                                "TFDTransport::write()",
-                                errno_copy);
+      throw TTransportException(
+          TTransportException::UNKNOWN, "TFDTransport::write()", errno_copy);
     } else if (rv == 0) {
-      throw TTransportException(TTransportException::END_OF_FILE,
-                                "TFDTransport::write()");
+      throw TTransportException(
+          TTransportException::END_OF_FILE, "TFDTransport::write()");
     }
 
     buf += rv;
@@ -80,4 +79,6 @@ void TFDTransport::write(const uint8_t* buf, uint32_t len) {
   }
 }
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache

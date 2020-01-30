@@ -19,7 +19,9 @@
 
 #include <thrift/lib/cpp/transport/THttpTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 class THttpServer : public THttpTransport {
  public:
@@ -30,12 +32,10 @@ class THttpServer : public THttpTransport {
   void flush() override;
 
  protected:
-
   void readHeaders();
   void parseHeader(char* header) override;
   bool parseStatusLine(char* status) override;
   std::string getTimeRFC1123();
-
 };
 
 /**
@@ -54,9 +54,10 @@ class THttpServerTransportFactory : public TTransportFactory {
       std::shared_ptr<TTransport> trans) override {
     return std::shared_ptr<TTransport>(new THttpServer(trans));
   }
-
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_TRANSPORT_THTTPSERVER_H_

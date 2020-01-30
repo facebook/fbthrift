@@ -22,7 +22,10 @@
 #include <thrift/lib/cpp/transport/TTransport.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
-namespace apache { namespace thrift { namespace transport { namespace test {
+namespace apache {
+namespace thrift {
+namespace transport {
+namespace test {
 
 /**
  * This class is only meant for testing.  It wraps another transport.
@@ -33,25 +36,31 @@ namespace apache { namespace thrift { namespace transport { namespace test {
 class TShortReadTransport : public TVirtualTransport<TShortReadTransport> {
  public:
   TShortReadTransport(std::shared_ptr<TTransport> transport, double full_prob)
-    : transport_(transport)
-    , fullProb_(full_prob)
-  {}
+      : transport_(transport), fullProb_(full_prob) {}
 
-  bool isOpen() override { return transport_->isOpen(); }
+  bool isOpen() override {
+    return transport_->isOpen();
+  }
 
-  bool peek() override { return transport_->peek(); }
+  bool peek() override {
+    return transport_->peek();
+  }
 
-  void open() override { transport_->open(); }
+  void open() override {
+    transport_->open();
+  }
 
-  void close() override { transport_->close(); }
+  void close() override {
+    transport_->close();
+  }
 
   uint32_t read(uint8_t* buf, uint32_t len) {
     if (len == 0) {
       return 0;
     }
 
-    if (rand()/(double)RAND_MAX >= fullProb_) {
-      len = 1 + rand()%len;
+    if (rand() / (double)RAND_MAX >= fullProb_) {
+      len = 1 + rand() % len;
     }
     return transport_->read(buf, len);
   }
@@ -60,7 +69,9 @@ class TShortReadTransport : public TVirtualTransport<TShortReadTransport> {
     transport_->write(buf, len);
   }
 
-  void flush() override { transport_->flush(); }
+  void flush() override {
+    transport_->flush();
+  }
 
   const uint8_t* borrow(uint8_t* buf, uint32_t* len) {
     return transport_->borrow(buf, len);
@@ -79,6 +90,9 @@ class TShortReadTransport : public TVirtualTransport<TShortReadTransport> {
   double fullProb_;
 };
 
-}}}} // apache::thrift::transport::test
+} // namespace test
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef _THRIFT_TRANSPORT_TSHORTREADTRANSPORT_H_

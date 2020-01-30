@@ -20,7 +20,9 @@
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/TVirtualTransport.h>
 
-namespace apache { namespace thrift { namespace transport {
+namespace apache {
+namespace thrift {
+namespace transport {
 
 /**
  * HTTP implementation of the thrift transport. This was irritating
@@ -35,13 +37,21 @@ class THttpTransport : public TVirtualTransport<THttpTransport> {
 
   ~THttpTransport() override;
 
-  void open() override { transport_->open(); }
+  void open() override {
+    transport_->open();
+  }
 
-  bool isOpen() override { return transport_->isOpen(); }
+  bool isOpen() override {
+    return transport_->isOpen();
+  }
 
-  bool peek() override { return transport_->peek(); }
+  bool peek() override {
+    return transport_->peek();
+  }
 
-  void close() override { transport_->close(); }
+  void close() override {
+    transport_->close();
+  }
 
   uint32_t read(uint8_t* buf, uint32_t len);
 
@@ -56,7 +66,6 @@ class THttpTransport : public TVirtualTransport<THttpTransport> {
   }
 
  protected:
-
   std::shared_ptr<TTransport> transport_;
 
   TMemoryBuffer writeBuffer_;
@@ -79,10 +88,10 @@ class THttpTransport : public TVirtualTransport<THttpTransport> {
   char* readLine();
 
   void readHeaders();
-  virtual void beginParsingHeaders() { }
+  virtual void beginParsingHeaders() {}
   virtual void parseHeader(char* header) = 0;
   virtual bool parseStatusLine(char* status) = 0;
-  virtual void endParsingHeaders() { }
+  virtual void endParsingHeaders() {}
 
   uint32_t readChunked();
   void readChunkedFooters();
@@ -97,6 +106,8 @@ class THttpTransport : public TVirtualTransport<THttpTransport> {
   static const int CRLF_LEN;
 };
 
-}}} // apache::thrift::transport
+} // namespace transport
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_TRANSPORT_THTTPCLIENT_H_
