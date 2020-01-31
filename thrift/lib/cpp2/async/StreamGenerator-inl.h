@@ -17,16 +17,8 @@
 #pragma once
 
 #include <folly/Optional.h>
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/AsyncGenerator.h>
-#include <folly/experimental/coro/Task.h>
-#endif
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
-
-#if FOLLY_HAS_COROUTINES
-#include <thrift/lib/cpp2/async/CoroStreamImpl.h>
-#endif
 
 #include <yarpl/Flowable.h>
 #include <yarpl/flowable/EmitterFlowable.h>
@@ -238,49 +230,6 @@ auto StreamGenerator::create(
 
   return toStream(std::move(flowable), std::move(executor));
 }
-
-#if FOLLY_HAS_COROUTINES
-template <
-    typename Generator,
-    std::enable_if_t<
-        folly::detail::is_instantiation_of_v<
-            folly::coro::AsyncGenerator,
-            typename folly::invoke_result_t<std::decay_t<Generator>&>>,
-        int>>
-auto StreamGenerator::create(
-    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-    Generator&& generator)
-    -> Stream<
-        typename folly::invoke_result_t<std::decay_t<Generator>&>::value_type> {
-  return toCoroStream(
-      folly::coro::co_invoke(std::forward<Generator>(generator)),
-      std::move(executor));
-}
-
-template <
-    typename Generator,
-    std::enable_if_t<
-        folly::detail::is_instantiation_of_v<
-            folly::coro::AsyncGenerator,
-            typename folly::invoke_result_t<
-                std::decay_t<Generator>&,
-                folly::CancellationToken>>,
-        int>>
-auto StreamGenerator::create(
-    folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
-    Generator&& generator)
-    -> Stream<typename folly::invoke_result_t<
-        std::decay_t<Generator>&,
-        folly::CancellationToken>::value_type> {
-  folly::CancellationSource source;
-  auto token = source.getToken();
-  return toCoroStream(
-      folly::coro::co_invoke(
-          std::forward<Generator>(generator), std::move(token)),
-      std::move(executor),
-      std::move(source));
-}
-#endif
 
 } // namespace thrift
 } // namespace apache
