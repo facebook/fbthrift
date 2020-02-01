@@ -290,7 +290,8 @@ void ThriftRocketServerHandler::handleRequestCommon(
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   RequestRpcMetadata metadata;
-  const bool parseOk = deserializeMetadata(payload, metadata);
+  const bool parseOk = payload.metadataSize() <= payload.buffer()->length() &&
+      deserializeMetadata(payload, metadata);
   bool validMetadata = parseOk && isMetadataValid(metadata);
 
   // it is not safe get debug payload if metadata is not valid, the metadata

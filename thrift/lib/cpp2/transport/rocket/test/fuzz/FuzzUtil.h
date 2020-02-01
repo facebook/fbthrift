@@ -16,10 +16,14 @@
 
 #include <folly/ExceptionWrapper.h>
 
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
+#include <thrift/lib/cpp2/transport/rocket/server/ThriftRocketServerHandler.h>
 
 namespace apache {
 namespace thrift {
@@ -99,35 +103,36 @@ class FakeTransport final : public folly::AsyncTransportWrapper {
   folly::EventBase* eventBase_;
 };
 
-class FakeServerHandler final
-    : public apache::thrift::rocket::RocketServerHandler {
+class FakeProcessor final : public apache::thrift::AsyncProcessor {
  public:
-  void handleRequestResponseFrame(
-      apache::thrift::rocket::RequestResponseFrame&&,
-      apache::thrift::rocket::RocketServerFrameContext&&) override {
-    LOG(INFO) << "handleRequestResponseFrame";
+  // not used by rocket
+  bool isOnewayMethod(
+      const folly::IOBuf*,
+      const apache::thrift::transport::THeader*) override {
+    return false;
   }
 
-  void handleRequestFnfFrame(
-      apache::thrift::rocket::RequestFnfFrame&&,
-      apache::thrift::rocket::RocketServerFrameContext&&) override {}
-
-  void handleRequestStreamFrame(
-      apache::thrift::rocket::RequestStreamFrame&&,
-      apache::thrift::rocket::RocketStreamClientCallback* cb) override {
-    // avoid cb leak
-    LOG(INFO) << "handleRequestStreamFrame";
-    folly::exception_wrapper ex;
-    cb->onFirstResponseError(std::move(ex));
+  void process(
+      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
+      std::unique_ptr<folly::IOBuf>,
+      apache::thrift::protocol::PROTOCOL_TYPES,
+      apache::thrift::Cpp2RequestContext*,
+      folly::EventBase*,
+      apache::thrift::concurrency::ThreadManager*) {
+    req->sendErrorWrapped(
+        folly::make_exception_wrapper<apache::thrift::TApplicationException>(
+            apache::thrift::TApplicationException::TApplicationExceptionType::
+                INTERNAL_ERROR,
+            "place holder"),
+        "1" /* doesnt matter */);
   }
+};
 
-  void handleRequestChannelFrame(
-      apache::thrift::rocket::RequestChannelFrame&&,
-      apache::thrift::rocket::RocketSinkClientCallback* cb) override {
-    // avoid cb leak
-    LOG(INFO) << "handleRequestChannelFrame";
-    folly::exception_wrapper ex;
-    cb->onFirstResponseError(std::move(ex));
+class FakeProcessorFactory final
+    : public apache::thrift::AsyncProcessorFactory {
+ public:
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
+    return std::make_unique<FakeProcessor>();
   }
 };
 
@@ -135,12 +140,20 @@ void testOneInput(
     const uint8_t* Data,
     size_t Size,
     folly::AsyncTransportWrapper::UniquePtr sock) {
-  auto connection = new RocketServerConnection(
+  auto* const sockPtr = sock.get();
+  apache::thrift::ThriftServer server;
+  server.setProcessorFactory(std::make_shared<FakeProcessorFactory>());
+  auto worker = apache::thrift::Cpp2Worker::create(&server);
+  std::vector<std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>> v;
+  folly::SocketAddress address;
+  auto connection = new apache::thrift::rocket::RocketServerConnection(
       std::move(sock),
-      std::make_shared<FakeServerHandler>(),
+      std::make_shared<apache::thrift::rocket::ThriftRocketServerHandler>(
+          worker, address, sockPtr, v),
       std::chrono::milliseconds::zero());
   folly::DelayedDestruction::DestructorGuard dg(connection);
-  Parser<RocketServerConnection> p(*connection);
+  apache::thrift::rocket::Parser<apache::thrift::rocket::RocketServerConnection>
+      p(*connection);
   size_t left = Size;
   while (left != 0) {
     void* buffer;
@@ -152,7 +165,7 @@ void testOneInput(
     Data += lenToRead;
     left -= lenToRead;
   }
-  connection->destroy();
+  connection->close(folly::exception_wrapper());
 }
 
 } // namespace test
