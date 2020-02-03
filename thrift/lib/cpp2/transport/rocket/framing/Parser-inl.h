@@ -107,7 +107,7 @@ void Parser<T>::readEOF() noexcept {
   folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
   owner_.close(transport::TTransportException(
-      transport::TTransportException::TTransportExceptionType::NOT_OPEN,
+      transport::TTransportException::TTransportExceptionType::END_OF_FILE,
       "Channel got EOF. Check for server hitting connection limit, "
       "server connection idle timeout, and server crashes."));
 }

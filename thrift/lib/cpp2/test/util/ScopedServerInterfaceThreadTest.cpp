@@ -140,6 +140,22 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
       return channel;
     });
   }
+
+  template <typename AsyncClientT>
+  static std::unique_ptr<AsyncClientT> newRawClient(
+      folly::EventBase* evb,
+      ScopedServerInterfaceThread& ssit) {
+    return std::make_unique<AsyncClientT>(
+        folly::via(
+            evb,
+            [&] {
+              auto channel = Channel::newChannel(async::TAsyncSocket::UniquePtr(
+                  new async::TAsyncSocket(evb, ssit.getAddress())));
+              channel->setTimeout(0);
+              return channel;
+            })
+            .get());
+  }
 };
 
 class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
@@ -242,6 +258,49 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsTimeout) {
         ex.getType())
         << "Unexpected exception: " << folly::exceptionStr(ex);
   }
+}
+
+TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
+  auto serviceImpl = this->newService();
+
+  folly::Optional<ScopedServerInterfaceThread> ssit(
+      folly::in_place, serviceImpl, "::1", 0, [](auto& thriftServer) {
+        thriftServer.setWorkersJoinTimeout(std::chrono::seconds{1});
+      });
+
+  folly::ScopedEventBaseThread evbThread;
+
+  auto cli = this->template newRawClient<SimpleServiceAsyncClient>(
+      evbThread.getEventBase(), *ssit);
+  SCOPE_EXIT {
+    folly::via(evbThread.getEventBase(), [cli = std::move(cli)] {});
+  };
+
+  auto future = cli->semifuture_add(6000, 666);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  folly::via(
+      evbThread.getEventBase(),
+      [&] {
+        dynamic_cast<ClientChannel*>(cli->getChannel())
+            ->getTransport()
+            ->closeNow();
+      })
+      .get();
+
+  try {
+    std::move(future).get();
+    FAIL() << "Request didn't fail";
+  } catch (const apache::thrift::transport::TTransportException& ex) {
+    EXPECT_EQ(
+        apache::thrift::transport::TTransportException::END_OF_FILE,
+        ex.getType())
+        << "Unexpected exception: " << folly::exceptionStr(ex);
+  }
+
+  ssit.reset();
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsCancel) {
