@@ -82,6 +82,7 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
     {{/field:type}}
     {{/struct:fields}}
 
+    __EMPTY__: int = ...
     {{#struct:fields}}
     {{#field:type}}
     {{field:capitalizedName}}: int = ...
