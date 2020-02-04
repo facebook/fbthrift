@@ -503,6 +503,8 @@ void RocketClientChannel::attachEventBase(folly::EventBase* evb) {
 
 void RocketClientChannel::detachEventBase() {
   DCHECK(isDetachable());
+  DCHECK(getDestructorGuardCount() == 0);
+
   if (rclient_) {
     rclient_->detachEventBase();
   }

@@ -92,6 +92,7 @@ RocketClient::RocketClient(
       setupFrame_(std::move(setupFrame)),
       parser_(*this),
       writeLoopCallback_(*this),
+      detachableLoopCallback_(*this),
       eventBaseDestructionCallback_(
           std::make_unique<OnEventBaseDestructionCallback>(*this)) {
   DCHECK(socket_ != nullptr);
@@ -102,6 +103,7 @@ RocketClient::RocketClient(
 RocketClient::~RocketClient() {
   closeNow(transport::TTransportException("Destroying RocketClient"));
   eventBaseDestructionCallback_->cancel();
+  detachableLoopCallback_.cancelLoopCallback();
 
   // All outstanding request contexts should have been cleaned up in closeNow()
   DCHECK(!queue_.hasInflightRequests());
@@ -963,14 +965,22 @@ void RocketClient::attachEventBase(folly::EventBase& evb) {
 }
 
 void RocketClient::detachEventBase() {
+  DCHECK(getDestructorGuardCount() == 0);
   DCHECK(evb_);
   evb_->dcheckIsInEventBaseThread();
   DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
   eventBaseDestructionCallback_->cancel();
+  detachableLoopCallback_.cancelLoopCallback();
   socket_->detachEventBase();
   fm_ = nullptr;
   evb_ = nullptr;
   flushList_ = nullptr;
+}
+
+void RocketClient::DetachableLoopCallback::runLoopCallback() noexcept {
+  if (client_.onDetachable_ && client_.isDetachable()) {
+    client_.onDetachable_();
+  }
 }
 
 } // namespace rocket

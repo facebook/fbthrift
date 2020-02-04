@@ -173,9 +173,13 @@ class RocketClient : public folly::DelayedDestruction,
   }
 
   void notifyIfDetachable() {
-    if (onDetachable_ && isDetachable()) {
-      onDetachable_();
+    if (!onDetachable_ || !isDetachable()) {
+      return;
     }
+    if (detachableLoopCallback_.isLoopCallbackScheduled()) {
+      return;
+    }
+    evb_->runInLoop(&detachableLoopCallback_);
   }
 
   /**
@@ -359,6 +363,15 @@ class RocketClient : public folly::DelayedDestruction,
     bool rescheduled_{false};
   };
   WriteLoopCallback writeLoopCallback_;
+  class DetachableLoopCallback : public folly::EventBase::LoopCallback {
+   public:
+    explicit DetachableLoopCallback(RocketClient& client) : client_(client) {}
+    void runLoopCallback() noexcept override;
+
+   private:
+    RocketClient& client_;
+  };
+  DetachableLoopCallback detachableLoopCallback_;
 
   std::unique_ptr<folly::EventBase::OnDestructionCallback>
       eventBaseDestructionCallback_;
