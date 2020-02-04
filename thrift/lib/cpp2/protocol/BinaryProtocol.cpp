@@ -37,8 +37,8 @@ namespace thrift {
       folly::to<std::string>("Bad version identifier, sz=", sz));
 }
 
-    [[noreturn]] void BinaryProtocolReader::throwMissingVersionIdentifier(
-        int32_t sz) {
+[[noreturn]] void BinaryProtocolReader::throwMissingVersionIdentifier(
+    int32_t sz) {
   throw TProtocolException(
       TProtocolException::BAD_VERSION,
       folly::to<std::string>(

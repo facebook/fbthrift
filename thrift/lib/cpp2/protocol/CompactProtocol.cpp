@@ -32,8 +32,8 @@ namespace thrift {
 }
 
 [[noreturn]] void CompactProtocolReader::throwBadType(uint8_t const type) {
-  throw TProtocolException(folly::to<std::string>(
-        "don't know what type: ", type));
+  throw TProtocolException(
+      folly::to<std::string>("don't know what type: ", type));
 }
 
 void CompactProtocolReader::readFieldBeginWithStateMediumSlow(

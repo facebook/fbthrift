@@ -29,9 +29,9 @@ namespace json {
       TProtocolException::NEGATIVE_SIZE, folly::to<std::string>(size, " < 0"));
 }
 
-    [[noreturn]] void throwExceededSizeLimit(
-        int64_t const size,
-        int64_t const sizeMax) {
+[[noreturn]] void throwExceededSizeLimit(
+    int64_t const size,
+    int64_t const sizeMax) {
   throw TProtocolException(
       TProtocolException::SIZE_LIMIT,
       folly::to<std::string>(size, " is too large (", sizeMax, ")"));

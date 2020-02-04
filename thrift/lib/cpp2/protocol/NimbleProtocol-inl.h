@@ -318,8 +318,7 @@ inline void NimbleProtocolReader::readMapBegin(
   }
 }
 
-inline void NimbleProtocolReader::readMapEnd() {
-}
+inline void NimbleProtocolReader::readMapEnd() {}
 
 inline void NimbleProtocolReader::readListBegin(
     NimbleType& elemType,
@@ -332,8 +331,7 @@ inline void NimbleProtocolReader::readListBegin(
   }
 }
 
-inline void NimbleProtocolReader::readListEnd() {
-}
+inline void NimbleProtocolReader::readListEnd() {}
 
 inline void NimbleProtocolReader::readSetBegin(
     NimbleType& elemType,
