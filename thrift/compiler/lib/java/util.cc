@@ -35,7 +35,7 @@ std::string mangle_java_name(const std::string& ref, bool capitalize) {
   bool acronym = ref.size() > 1 && std::isupper(ref[0]) && std::isupper(ref[1]);
   bool downcase = !capitalize && !acronym;
   for (typename std::string::size_type i = 0; i < ref.size(); ++i) {
-    if (ref[i] == '_' && i < ref.size() - 1) {
+    if (ref[i] == '_') {
       upcase = true;
       continue;
     } else {
