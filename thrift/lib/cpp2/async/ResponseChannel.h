@@ -184,8 +184,6 @@ class ResponseChannel : virtual public folly::DelayedDestruction {
 
   class Callback {
    public:
-    virtual void requestReceived(std::unique_ptr<ResponseChannelRequest>&&) = 0;
-
     /**
      * reason is empty if closed due to EOF, or a pointer to an exception
      * if closed due to some sort of error.

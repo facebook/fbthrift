@@ -76,15 +76,7 @@ class HeaderServerChannel : public ServerChannel,
   }
 
   // Server interface from ResponseChannel
-  void setCallback(ResponseChannel::Callback* callback) override {
-    callback_ = callback;
-
-    if (callback) {
-      cpp2Channel_->setReceiveCallback(this);
-    } else {
-      cpp2Channel_->setReceiveCallback(nullptr);
-    }
-  }
+  void setCallback(ResponseChannel::Callback* callback) override;
 
   virtual void sendMessage(
       Cpp2Channel::SendCallback* callback,
@@ -186,6 +178,11 @@ class HeaderServerChannel : public ServerChannel,
     std::atomic<bool> active_;
   };
 
+  class Callback : public ResponseChannel::Callback {
+   public:
+    virtual void requestReceived(std::unique_ptr<HeaderRequest>&&) = 0;
+  };
+
   void setSampleRate(uint32_t sampleRate) {
     sampleRate_ = sampleRate;
   }
@@ -230,7 +227,7 @@ class HeaderServerChannel : public ServerChannel,
   static std::string getTransportDebugString(
       folly::AsyncTransportWrapper* transport);
 
-  ResponseChannel::Callback* callback_;
+  HeaderServerChannel::Callback* callback_;
 
   // For backwards-compatible in-order responses support
   std::unordered_map<

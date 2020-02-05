@@ -469,5 +469,17 @@ void HeaderServerChannel::messageReceiveErrorWrapped(
   }
 }
 
+void HeaderServerChannel::setCallback(ResponseChannel::Callback* callback) {
+  HeaderServerChannel::Callback* cob = dynamic_cast<Callback*>(callback);
+  DCHECK(!!cob == !!callback); // assert that dynamic cast succeeded
+  callback_ = cob;
+
+  if (cob) {
+    cpp2Channel_->setReceiveCallback(this);
+  } else {
+    cpp2Channel_->setReceiveCallback(nullptr);
+  }
+}
+
 } // namespace thrift
 } // namespace apache

@@ -305,12 +305,13 @@ uint32_t TestRequestCallback::reply_ = 0;
 uint32_t TestRequestCallback::replyBytes_ = 0;
 uint32_t TestRequestCallback::replyError_ = 0;
 
-class ResponseCallback : public ResponseChannel::Callback {
+class ResponseCallback : public HeaderServerChannel::Callback {
  public:
   ResponseCallback()
       : serverClosed_(false), oneway_(0), request_(0), requestBytes_(0) {}
 
-  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
+  void requestReceived(
+      unique_ptr<HeaderServerChannel::HeaderRequest>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->computeChainDataLength();
     if (req->isOneway()) {
@@ -592,7 +593,7 @@ class InOrderTest
       TestRequestCallback::onResponse(std::move(state));
     }
 
-    void requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
+    void requestReceived(unique_ptr<ResponseChannelRequest> req) {
       c_->request_++;
       c_->requestBytes_ += req->getBuf()->computeChainDataLength();
       if (c_->firstbuf_) {
@@ -672,7 +673,8 @@ class BadSeqIdTest
     BadSeqIdTest* c_;
   };
 
-  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
+  void requestReceived(
+      unique_ptr<HeaderServerChannel::HeaderRequest>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->computeChainDataLength();
     if (req->isOneway()) {
@@ -770,7 +772,8 @@ class TimeoutTest
     channel1_->setCallback(nullptr);
   }
 
-  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
+  void requestReceived(
+      unique_ptr<HeaderServerChannel::HeaderRequest>&& req) override {
     request_++;
     requestBytes_ += req->getBuf()->computeChainDataLength();
     // Don't respond, let it time out
@@ -849,7 +852,8 @@ class OptionsTimeoutTest
     EXPECT_EQ(oneway_, 0);
   }
 
-  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override {
+  void requestReceived(
+      unique_ptr<HeaderServerChannel::HeaderRequest>&& req) override {
     if (request_ == 0) {
       request_++;
       requestBytes_ += req->getBuf()->computeChainDataLength();
@@ -962,7 +966,7 @@ TEST(Channel, ServerCloseTest) {
 }
 
 class ClientCloseOnErrorTest;
-class InvalidResponseCallback : public ResponseChannel::Callback {
+class InvalidResponseCallback : public HeaderServerChannel::Callback {
  public:
   explicit InvalidResponseCallback(ClientCloseOnErrorTest* self)
       : self_(self), request_(0), requestBytes_(0) {}
@@ -973,7 +977,8 @@ class InvalidResponseCallback : public ResponseChannel::Callback {
     return *this;
   }
 
-  void requestReceived(unique_ptr<ResponseChannelRequest>&& req) override;
+  void requestReceived(
+      unique_ptr<HeaderServerChannel::HeaderRequest>&& req) override;
   void channelClosed(folly::exception_wrapper&&) override {}
 
  protected:
@@ -1056,7 +1061,7 @@ class ClientCloseOnErrorTest
 };
 
 void InvalidResponseCallback::requestReceived(
-    unique_ptr<ResponseChannelRequest>&& req) {
+    unique_ptr<HeaderServerChannel::HeaderRequest>&& req) {
   request_++;
   requestBytes_ += req->getBuf()->computeChainDataLength();
   if (closeSocketInResponse_) {

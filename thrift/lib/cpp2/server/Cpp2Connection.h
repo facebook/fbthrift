@@ -46,7 +46,7 @@ constexpr folly::StringPiece kProcessLatencyHeader("process_latency_us");
  * Represents a connection that is handled via libevent. This connection
  * essentially encapsulates a socket that has some associated libevent state.
  */
-class Cpp2Connection : public ResponseChannel::Callback,
+class Cpp2Connection : public HeaderServerChannel::Callback,
                        public wangle::ManagedConnection {
  public:
   /**
@@ -67,8 +67,9 @@ class Cpp2Connection : public ResponseChannel::Callback,
   /// Destructor -- close down the connection.
   ~Cpp2Connection() override;
 
-  // ResponseChannel callbacks
-  void requestReceived(std::unique_ptr<ResponseChannelRequest>&&) override;
+  // HeaderServerChannel callbacks
+  void requestReceived(
+      std::unique_ptr<HeaderServerChannel::HeaderRequest>&&) override;
   void channelClosed(folly::exception_wrapper&&) override;
 
   void start() {
@@ -254,7 +255,7 @@ class Cpp2Connection : public ResponseChannel::Callback,
 
   void removeRequest(Cpp2Request* req);
   void killRequest(
-      ResponseChannelRequest& req,
+      std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
       TApplicationException::TApplicationExceptionType reason,
       const std::string& errorCode,
       const char* comment);

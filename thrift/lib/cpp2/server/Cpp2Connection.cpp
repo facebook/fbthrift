@@ -179,7 +179,7 @@ bool Cpp2Connection::pending() {
 }
 
 void Cpp2Connection::killRequest(
-    ResponseChannelRequest& req,
+    std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     TApplicationException::TApplicationExceptionType reason,
     const std::string& errorCode,
     const char* comment) {
@@ -197,28 +197,28 @@ void Cpp2Connection::killRequest(
   }
 
   // Nothing to do for Thrift oneway request.
-  if (req.isOneway()) {
+  if (req->isOneway()) {
     return;
   }
 
-  auto header_req = static_cast<HeaderServerChannel::HeaderRequest*>(&req);
-  setServerHeaders(*header_req);
+  setServerHeaders(*req);
 
   // Thrift1 oneway request doesn't use ONEWAY_REQUEST_ID and
   // may end up here. No need to send error back for such requests
-  if (!processor_->isOnewayMethod(req.getBuf(), header_req->getHeader())) {
-    header_req->sendErrorWrapped(
+  if (!processor_->isOnewayMethod(req->getBuf(), req->getHeader())) {
+    req->sendErrorWrapped(
         folly::make_exception_wrapper<TApplicationException>(reason, comment),
         errorCode,
         nullptr);
   } else {
     // Send an empty response so reqId will be handled properly
-    req.sendReply(std::unique_ptr<folly::IOBuf>());
+    req->sendReply(std::unique_ptr<folly::IOBuf>());
   }
 }
 
 // Response Channel callbacks
-void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
+void Cpp2Connection::requestReceived(
+    unique_ptr<HeaderServerChannel::HeaderRequest>&& hreq) {
   auto baseReqCtx = processor_->getBaseContextForRequest();
   auto reqCtx = baseReqCtx ? RequestContext::copyAsRoot(*baseReqCtx)
                            : std::make_shared<folly::RequestContext>();
@@ -239,7 +239,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
       break;
     case ThriftServer::InjectedFailure::ERROR:
       killRequest(
-          *req,
+          std::move(hreq),
           TApplicationException::TApplicationExceptionType::INJECTED_FAILURE,
           kInjectedFailureErrorCode,
           "injected failure");
@@ -253,11 +253,10 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
       return;
   }
 
-  auto* hreq = static_cast<HeaderServerChannel::HeaderRequest*>(req.get());
   bool useHttpHandler = false;
   // Any POST not for / should go to the status handler
   if (hreq->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
-    auto buf = req->getBuf();
+    auto buf = hreq->getBuf();
     // 7 == length of "POST / " - we are matching on the path
     if (buf->length() >= 7 &&
         0 == strncmp(reinterpret_cast<const char*>(buf->data()), "POST", 4) &&
@@ -280,7 +279,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
 
   if (useHttpHandler && worker_->getServer()->getGetHandler()) {
     worker_->getServer()->getGetHandler()(
-        worker_->getEventBase(), transport_, req->extractBuf());
+        worker_->getEventBase(), transport_, hreq->extractBuf());
 
     // Close the channel, since the handler now owns the socket.
     channel_->setCallback(nullptr);
@@ -301,7 +300,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   const std::string& methodName = msgBegin.methodName;
   if (server->isOverloaded(&hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
-        *req,
+        std::move(hreq),
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
         server->getOverloadedErrorCode(),
         "loadshedding request");
@@ -313,7 +312,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
       admissionStrategy->select(methodName, hreq->getHeader());
   if (!admissionController->admit()) {
     killRequest(
-        *req,
+        std::move(hreq),
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
         server->getOverloadedErrorCode(),
         "adaptive loadshedding rejection");
@@ -322,7 +321,7 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
 
   if (worker_->isStopping()) {
     killRequest(
-        *req,
+        std::move(hreq),
         TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
         kQueueOverloadedErrorCode,
         "server shutting down");
@@ -330,10 +329,10 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   }
 
   server->incActiveRequests();
-  auto samplingStatus = req->timestamps_.getSamplingStatus();
+  auto samplingStatus = hreq->timestamps_.getSamplingStatus();
   if (samplingStatus.isEnabled()) {
     // Expensive operations; happens only when sampling is enabled
-    req->timestamps_.processBegin =
+    hreq->timestamps_.processBegin =
         apache::thrift::concurrency::Util::currentTimeUsec();
     if (samplingStatus.isEnabledByServer() && observer) {
       observer->queuedRequests(threadManager_->pendingTaskCount());
@@ -352,22 +351,22 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   debugPayloadQueue.append(buf->clone());
   debugPayloadQueue.trimStart(msgBegin.size);
 
-  Cpp2Request* t2r = new Cpp2Request(
-      std::move(req), this_, debugPayloadQueue.move(), reqCtx->getRootId());
+  std::chrono::milliseconds queueTimeout;
+  std::chrono::milliseconds taskTimeout;
+  auto differentTimeouts = server->getTaskExpireTimeForRequest(
+      *(hreq->getHeader()), queueTimeout, taskTimeout);
+
+  auto t2r = std::make_unique<Cpp2Request>(
+      std::move(hreq), this_, debugPayloadQueue.move(), reqCtx->getRootId());
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
   }
-  auto up2r = std::unique_ptr<ResponseChannelRequest>(t2r);
-  activeRequests_.insert(t2r);
+  activeRequests_.insert(t2r.get());
 
   if (observer) {
     observer->receivedRequest();
   }
 
-  std::chrono::milliseconds queueTimeout;
-  std::chrono::milliseconds taskTimeout;
-  auto differentTimeouts = server->getTaskExpireTimeForRequest(
-      *(hreq->getHeader()), queueTimeout, taskTimeout);
   if (differentTimeouts) {
     if (queueTimeout > std::chrono::milliseconds(0)) {
       scheduleTimeout(&t2r->queueTimeout_, queueTimeout);
@@ -381,13 +380,14 @@ void Cpp2Connection::requestReceived(unique_ptr<ResponseChannelRequest>&& req) {
   reqContext->setRequestTimeout(taskTimeout);
 
   try {
+    std::unique_ptr<ResponseChannelRequest> req = std::move(t2r);
     if (!apache::thrift::detail::ap::setupRequestContextWithMessageBegin(
-            msgBegin, protoId, up2r, reqContext, worker_->getEventBase())) {
+            msgBegin, protoId, req, reqContext, worker_->getEventBase())) {
       return;
     }
 
     processor_->process(
-        std::move(up2r),
+        std::move(req),
         std::move(buf),
         protoId,
         reqContext,
