@@ -18,15 +18,17 @@
 #include <vector>
 
 #include <glog/logging.h>
-#include <folly/portability/GTest.h>
 
 #include <folly/Benchmark.h>
+#include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/ProtocolBenchmark_types.h>
 
-namespace apache { namespace thrift { namespace test {
+namespace apache {
+namespace thrift {
+namespace test {
 
 constexpr size_t kElementCount = 10000;
 constexpr size_t kLargeElementCount = 10;
@@ -87,16 +89,16 @@ void writerBenchmark(const BenchmarkObject& obj, int iters) {
   }
 }
 
-#define X1(proto, kind) \
-  BENCHMARK(proto##_##kind, n) { \
+#define X1(proto, kind)                      \
+  BENCHMARK(proto##_##kind, n) {             \
     writerBenchmark<proto##Writer>(kind, n); \
   }
 
-#define X(proto) \
-  X1(proto, ints) \
-  X1(proto, smallStrings) \
-  X1(proto, largeStrings) \
-  X1(proto, intStructs) \
+#define X(proto)                \
+  X1(proto, ints)               \
+  X1(proto, smallStrings)       \
+  X1(proto, largeStrings)       \
+  X1(proto, intStructs)         \
   X1(proto, smallStringStructs) \
   X1(proto, largeStringStructs)
 
@@ -106,9 +108,11 @@ X(CompactProtocol)
 #undef X
 #undef X1
 
-}}}  // namespaces
+} // namespace test
+} // namespace thrift
+} // namespace apache
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   testing::InitGoogleTest(&argc, argv);
   gflags::ParseCommandLineFlags(&argc, &argv, true);
   auto ret = RUN_ALL_TESTS();

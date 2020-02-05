@@ -22,8 +22,8 @@
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
-#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 
 #include <boost/lexical_cast.hpp>
 
@@ -42,7 +42,9 @@ class TestServiceHandler : public TestServiceSvIf {
     _return = "test" + boost::lexical_cast<std::string>(size);
   }
 
-  void noResponse(int64_t size) override { usleep(size); }
+  void noResponse(int64_t size) override {
+    usleep(size);
+  }
 
   void echoRequest(string& _return, std::unique_ptr<string> req) override {
     _return = *req + "ccccccccccccccccccccccccccccccccccccccccccccc";
@@ -52,11 +54,15 @@ class TestServiceHandler : public TestServiceSvIf {
     _return = string(4096, 'a');
   }
 
-  void eventBaseAsync(string& _return) override { _return = "hello world"; }
+  void eventBaseAsync(string& _return) override {
+    _return = "hello world";
+  }
 
   void notCalledBack() override {}
   void voidResponse() override {}
-  int32_t processHeader() override { return 1; }
+  int32_t processHeader() override {
+    return 1;
+  }
   void echoIOBuf(
       std::unique_ptr<folly::IOBuf>& /*_return*/,
       std::unique_ptr<folly::IOBuf> /*buf*/) override {}

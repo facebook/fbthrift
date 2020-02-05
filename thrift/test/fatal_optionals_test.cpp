@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/fatal_optionals_types.h>
-#include <thrift/test/gen-cpp2/fatal_optionals_fatal.h>
-
 #include <folly/portability/GTest.h>
+
+#include <thrift/test/gen-cpp2/fatal_optionals_fatal.h>
+#include <thrift/test/gen-cpp2/fatal_optionals_types.h>
 
 class FatalOptionalsTest : public testing::Test {};
 

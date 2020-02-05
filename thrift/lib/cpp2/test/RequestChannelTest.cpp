@@ -18,16 +18,17 @@
 
 #include <memory>
 #include <thread>
+
 #include <folly/Memory.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
+#include <folly/portability/GMock.h>
+#include <folly/portability/GTest.h>
+
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-
-#include <folly/portability/GTest.h>
-#include <folly/portability/GMock.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace std;
 using namespace std::chrono;
@@ -51,13 +52,12 @@ class FunctionSendRecvRequestCallbackTest : public Test {
   EventBase* eb{EventBaseManager::get()->getEventBase()};
   ScopedBoundPort bound;
   shared_ptr<TestServiceServerMock> handler{
-    make_shared<TestServiceServerMock>()};
+      make_shared<TestServiceServerMock>()};
   ScopedServerInterfaceThread runner{handler};
 
-  unique_ptr<TestServiceAsyncClient> newClient(
-      SocketAddress const& addr) {
+  unique_ptr<TestServiceAsyncClient> newClient(SocketAddress const& addr) {
     return make_unique<TestServiceAsyncClient>(
-      HeaderClientChannel::newChannel(TAsyncSocket::newSocket(eb, addr)));
+        HeaderClientChannel::newChannel(TAsyncSocket::newSocket(eb, addr)));
   }
 
   exception_wrapper ew;
@@ -104,7 +104,9 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   RpcOptions opts;
   opts.setTimeout(milliseconds(1));
   auto done = make_shared<Baton<>>();
-  SCOPE_EXIT { done->post(); };
+  SCOPE_EXIT {
+    done->post();
+  };
   EXPECT_CALL(*handler, voidResponse()).WillOnce(Invoke([done] {
     EXPECT_TRUE(done->try_wait_for(seconds(1)));
   }));
@@ -136,14 +138,15 @@ class FunctionSendCallbackTest : public Test {
   unique_ptr<TestServiceAsyncClient> getClient(
       const folly::SocketAddress& addr) {
     return make_unique<TestServiceAsyncClient>(
-      HeaderClientChannel::newChannel(TAsyncSocket::newSocket(&eb, addr)));
+        HeaderClientChannel::newChannel(TAsyncSocket::newSocket(&eb, addr)));
   }
   void sendOnewayMessage(
       const folly::SocketAddress& addr,
       function<void(ClientReceiveState&&)> cb) {
     auto client = getClient(addr);
-    client->noResponse(make_unique<FunctionSendCallback>(move(cb)),
-                       68 /* without loss of generality */);
+    client->noResponse(
+        make_unique<FunctionSendCallback>(move(cb)),
+        68 /* without loss of generality */);
     eb.loop();
   }
   EventBase eb;

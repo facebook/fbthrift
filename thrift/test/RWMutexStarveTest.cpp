@@ -33,12 +33,15 @@ namespace {
 
 class Locker : public Runnable {
  protected:
-  Locker(shared_ptr<ReadWriteMutex> rwlock, bool writer) :
-    rwlock_(rwlock), writer_(writer),
-    started_(false), gotLock_(false), signaled_(false) { }
+  Locker(shared_ptr<ReadWriteMutex> rwlock, bool writer)
+      : rwlock_(rwlock),
+        writer_(writer),
+        started_(false),
+        gotLock_(false),
+        signaled_(false) {}
 
  public:
- void run() override {
+  void run() override {
     started_ = true;
     if (writer_) {
       rwlock_->acquireWrite();
@@ -52,9 +55,15 @@ class Locker : public Runnable {
     rwlock_->release();
   }
 
-  bool started() const { return started_; }
-  bool gotLock() const { return gotLock_; }
-  void signal() { signaled_ = true; }
+  bool started() const {
+    return started_;
+  }
+  bool gotLock() const {
+    return gotLock_;
+  }
+  void signal() {
+    signaled_ = true;
+  }
 
  protected:
   shared_ptr<ReadWriteMutex> rwlock_;
@@ -74,10 +83,10 @@ class Writer : public Locker {
   explicit Writer(shared_ptr<ReadWriteMutex> rwlock) : Locker(rwlock, true) {}
 };
 
-class RWMutexStarveTest :
-  public testing::TestWithParam<PosixThreadFactory::POLICY> {};
+class RWMutexStarveTest
+    : public testing::TestWithParam<PosixThreadFactory::POLICY> {};
 
-}
+} // namespace
 
 TEST_P(RWMutexStarveTest, test_starve) {
   // the man pages for pthread_wrlock_rdlock suggest that any OS guarantee about
@@ -150,6 +159,6 @@ INSTANTIATE_TEST_CASE_P(
     RWMutexStarveTest,
     RWMutexStarveTest,
     testing::Values(
-      PosixThreadFactory::POLICY::OTHER,
-      PosixThreadFactory::POLICY::FIFO,
-      PosixThreadFactory::POLICY::ROUND_ROBIN));
+        PosixThreadFactory::POLICY::OTHER,
+        PosixThreadFactory::POLICY::FIFO,
+        PosixThreadFactory::POLICY::ROUND_ROBIN));

@@ -36,7 +36,8 @@ TEST(ViewHelperTest, TestThaw) {
   strct.boolField = true;
   strct.listField = {"bar", "baz"};
   strct.mapField = {
-      {0, "a"}, {1, "b"},
+      {0, "a"},
+      {1, "b"},
   };
   strct.enumField = TestEnum::Foo;
 

@@ -27,19 +27,17 @@ TEST(reflection_deps, recursive_dependencies) {
   using namespace apache::thrift;
   EXPECT_SAME<type_class::structure, reflect_type_class<dep_A_struct>>();
 
-  using b_type = typename std::decay<
-    decltype(std::declval<dep_A_struct>().b)
-  >::type;
+  using b_type =
+      typename std::decay<decltype(std::declval<dep_A_struct>().b)>::type;
   EXPECT_SAME<type_class::structure, reflect_type_class<b_type>>();
 
-  using c_type = typename std::decay<
-    decltype(std::declval<dep_A_struct>().c)
-  >::type;
+  using c_type =
+      typename std::decay<decltype(std::declval<dep_A_struct>().c)>::type;
   EXPECT_SAME<type_class::structure, reflect_type_class<c_type>>();
 
   using d_type = typename std::decay<decltype(std::declval<c_type>().d)>::type;
   EXPECT_SAME<type_class::structure, reflect_type_class<d_type>>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

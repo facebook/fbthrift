@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <iostream>
 #include <cmath>
+#include <iostream>
 
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/test/gen-cpp2/DebugProtoTest_constants.h>

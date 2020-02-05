@@ -50,7 +50,9 @@ class SizeGenerator {
 class ConstantSizeGenerator : public SizeGenerator {
  public:
   /* implicit */ ConstantSizeGenerator(uint32_t value) : value_(value) {}
-  uint32_t nextSize() override { return value_; }
+  uint32_t nextSize() override {
+    return value_;
+  }
   string describe() const override {
     return to<string>(value_);
   }
@@ -61,17 +63,22 @@ class ConstantSizeGenerator : public SizeGenerator {
 
 class RandomSizeGenerator : public SizeGenerator {
  public:
-  RandomSizeGenerator(uint32_t min, uint32_t max) :
-    dist_(min, max) {}
+  RandomSizeGenerator(uint32_t min, uint32_t max) : dist_(min, max) {}
 
-  uint32_t nextSize() override { return dist_(rng_); }
+  uint32_t nextSize() override {
+    return dist_(rng_);
+  }
 
   string describe() const override {
     return sformat("rand({}, {})", getMin(), getMax());
   }
 
-  uint32_t getMin() const { return dist_.min(); }
-  uint32_t getMax() const { return dist_.max(); }
+  uint32_t getMin() const {
+    return dist_.min();
+  }
+  uint32_t getMax() const {
+    return dist_.max();
+  }
 
  private:
   mt19937 rng_;
@@ -87,13 +94,17 @@ class RandomSizeGenerator : public SizeGenerator {
  */
 class GenericSizeGenerator : public SizeGenerator {
  public:
-  /* implicit */ GenericSizeGenerator(uint32_t value) :
-    generator_(make_shared<ConstantSizeGenerator>(value)) {}
-  GenericSizeGenerator(uint32_t min, uint32_t max) :
-    generator_(make_shared<RandomSizeGenerator>(min, max)) {}
+  /* implicit */ GenericSizeGenerator(uint32_t value)
+      : generator_(make_shared<ConstantSizeGenerator>(value)) {}
+  GenericSizeGenerator(uint32_t min, uint32_t max)
+      : generator_(make_shared<RandomSizeGenerator>(min, max)) {}
 
-  uint32_t nextSize() override { return generator_->nextSize(); }
-  string describe() const override { return generator_->describe(); }
+  uint32_t nextSize() override {
+    return generator_->nextSize();
+  }
+  string describe() const override {
+    return generator_->describe();
+  }
 
  private:
   shared_ptr<SizeGenerator> generator_;
@@ -123,7 +134,7 @@ class CoupledTransports {
 
  private:
   CoupledTransports(const CoupledTransports&);
-  CoupledTransports &operator=(const CoupledTransports&);
+  CoupledTransports& operator=(const CoupledTransports&);
 };
 
 /**
@@ -131,8 +142,7 @@ class CoupledTransports {
  */
 class CoupledMemoryBuffers : public CoupledTransports<TMemoryBuffer> {
  public:
-  CoupledMemoryBuffers() :
-    buf(make_shared<TMemoryBuffer>()) {
+  CoupledMemoryBuffers() : buf(make_shared<TMemoryBuffer>()) {
     in = buf;
     out = buf;
   }
@@ -163,34 +173,29 @@ class CoupledWrapperTransportsT : public CoupledTransports<WrapperTransport_> {
  * Coupled TBufferedTransports.
  */
 template <class InnerTransport_>
-class CoupledBufferedTransportsT :
-  public CoupledWrapperTransportsT<TBufferedTransport, InnerTransport_> {
-};
+class CoupledBufferedTransportsT
+    : public CoupledWrapperTransportsT<TBufferedTransport, InnerTransport_> {};
 
 typedef CoupledBufferedTransportsT<CoupledMemoryBuffers>
-  CoupledBufferedTransports;
+    CoupledBufferedTransports;
 
 /**
  * Coupled TFramedTransports.
  */
 template <class InnerTransport_>
-class CoupledFramedTransportsT :
-  public CoupledWrapperTransportsT<TFramedTransport, InnerTransport_> {
-};
+class CoupledFramedTransportsT
+    : public CoupledWrapperTransportsT<TFramedTransport, InnerTransport_> {};
 
-typedef CoupledFramedTransportsT<CoupledMemoryBuffers>
-  CoupledFramedTransports;
+typedef CoupledFramedTransportsT<CoupledMemoryBuffers> CoupledFramedTransports;
 
 /**
  * Coupled TZlibTransports.
  */
 template <class InnerTransport_>
-class CoupledZlibTransportsT :
-  public CoupledWrapperTransportsT<TZlibTransport, InnerTransport_> {
-};
+class CoupledZlibTransportsT
+    : public CoupledWrapperTransportsT<TZlibTransport, InnerTransport_> {};
 
-typedef CoupledZlibTransportsT<CoupledMemoryBuffers>
-  CoupledZlibTransports;
+typedef CoupledZlibTransportsT<CoupledMemoryBuffers> CoupledZlibTransports;
 
 /**
  * Coupled TFDTransports.
@@ -283,12 +288,14 @@ using IdentityT = T;
  **************************************************************************/
 
 struct TriggerInfo {
-  TriggerInfo(int seconds, const shared_ptr<TTransport>& transport,
-              uint32_t writeLength) :
-    timeoutSeconds(seconds),
-    transport(transport),
-    writeLength(writeLength),
-    next(nullptr) {}
+  TriggerInfo(
+      int seconds,
+      const shared_ptr<TTransport>& transport,
+      uint32_t writeLength)
+      : timeoutSeconds(seconds),
+        transport(transport),
+        writeLength(writeLength),
+        next(nullptr) {}
 
   int timeoutSeconds;
   shared_ptr<TTransport> transport;
@@ -351,9 +358,10 @@ void set_alarm() {
  * would require slightly more complicated sorting, rather than just appending
  * to the end.)
  */
-void add_trigger(unsigned int seconds,
-                 const shared_ptr<TTransport> &transport,
-                 uint32_t write_len) {
+void add_trigger(
+    unsigned int seconds,
+    const shared_ptr<TTransport>& transport,
+    uint32_t write_len) {
   TriggerInfo* info = new TriggerInfo(seconds, transport, write_len);
 
   if (triggerInfo == nullptr) {
@@ -373,7 +381,7 @@ void add_trigger(unsigned int seconds,
 }
 
 void clear_triggers() {
-  TriggerInfo *info = triggerInfo;
+  TriggerInfo* info = triggerInfo;
   alarm(0);
   triggerInfo = nullptr;
   numTriggersFired = 0;
@@ -385,9 +393,10 @@ void clear_triggers() {
   }
 }
 
-void set_trigger(unsigned int seconds,
-                 const shared_ptr<TTransport> &transport,
-                 uint32_t write_len) {
+void set_trigger(
+    unsigned int seconds,
+    const shared_ptr<TTransport>& transport,
+    uint32_t write_len) {
   clear_triggers();
   add_trigger(seconds, transport, write_len);
 }
@@ -420,12 +429,13 @@ void set_trigger(unsigned int seconds,
  *   there are never more than maxOutstanding bytes waiting to be read back.
  */
 template <class CoupledTransports>
-void test_rw(uint32_t totalSize,
-             GenericSizeGenerator wSizeGenerator,
-             GenericSizeGenerator rSizeGenerator,
-             GenericSizeGenerator wChunkGenerator = 0,
-             GenericSizeGenerator rChunkGenerator = 0,
-             uint32_t maxOutstanding = 0) {
+void test_rw(
+    uint32_t totalSize,
+    GenericSizeGenerator wSizeGenerator,
+    GenericSizeGenerator rSizeGenerator,
+    GenericSizeGenerator wChunkGenerator = 0,
+    GenericSizeGenerator rChunkGenerator = 0,
+    uint32_t maxOutstanding = 0) {
   // adjust totalSize by the specified FLAGS_size_multiplier first
   totalSize = static_cast<uint32_t>(totalSize * FLAGS_size_multiplier);
 
@@ -505,9 +515,9 @@ void test_rw(uint32_t totalSize,
       }
 
       ASSERT_GT(bytes_read, 0)
-        << "read(pos=" << total_read << ", size=" << read_size << ") "
-        << "returned " << bytes_read << "; written so far: "
-        << total_written << " / " << totalSize << " bytes";
+          << "read(pos=" << total_read << ", size=" << read_size << ") "
+          << "returned " << bytes_read << "; written so far: " << total_written
+          << " / " << totalSize << " bytes";
       chunk_read += bytes_read;
       total_read += bytes_read;
     }
@@ -516,7 +526,6 @@ void test_rw(uint32_t totalSize,
   // make sure the data read back is identical to the data written
   EXPECT_EQ(0, memcmp(rbuf.data(), wbuf.data(), totalSize));
 }
-
 
 template <class CoupledTransports>
 void test_read_part_available() {
@@ -704,7 +713,7 @@ class TransportTest : public testing::Test {
   }
 };
 
-}
+} // namespace
 
 /**************************************************************************
  * Test case generation
@@ -712,109 +721,120 @@ class TransportTest : public testing::Test {
  * Pretty ugly and annoying.
  **************************************************************************/
 
-#define TEST_RW_4_A( \
-    Template, CoupledTransports, totalSize, wSizeGen, rSizeGen) \
-    TEST_F(TransportTest, \
-        Template##_##CoupledTransports##_##\
-        totalSize##_##wSizeGen##_##rSizeGen) { \
-      test_rw<Template<CoupledTransports>>(totalSize, wSizeGen, rSizeGen); \
-    } \
-
-#define TEST_RW_4(CoupledTransports, ...) \
-    /* Add the test as specified, to test the non-virtual function calls */ \
-    TEST_RW_4_A(IdentityT, CoupledTransports, __VA_ARGS__) \
-    /* \
-     * Also test using the transport as a TTransport*, to test \
-     * the read_virt()/write_virt() calls \
-     */ \
-    TEST_RW_4_A(CoupledTTransports, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TBufferedTransport */ \
-    TEST_RW_4_A(CoupledBufferedTransportsT, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TFramedTransports */ \
-    TEST_RW_4_A(CoupledFramedTransportsT, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TZlibTransport */ \
-    TEST_RW_4_A(CoupledZlibTransportsT, CoupledTransports, __VA_ARGS__) \
-
-#define TEST_RW_6_A( \
-    Template, CoupledTransports, \
-    totalSize, wSizeGen, rSizeGen, wChunkSizeGen, rChunkSizeGen) \
-    TEST_F(TransportTest, \
-        Template##_##CoupledTransports##_##\
-        totalSize##_##wSizeGen##_##rSizeGen##_##\
-        wChunkSizeGen##_##rChunkSizeGen) { \
-      test_rw<Template<CoupledTransports>>( \
-          totalSize, wSizeGen, rSizeGen, wChunkSizeGen, rChunkSizeGen); \
-    } \
-
-#define TEST_RW_6(CoupledTransports, ...) \
-    /* Add the test as specified, to test the non-virtual function calls */ \
-    TEST_RW_6_A(IdentityT, CoupledTransports, __VA_ARGS__) \
-    /* \
-     * Also test using the transport as a TTransport*, to test \
-     * the read_virt()/write_virt() calls \
-     */ \
-    TEST_RW_6_A(CoupledTTransports, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TBufferedTransport */ \
-    TEST_RW_6_A(CoupledBufferedTransportsT, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TFramedTransports */ \
-    TEST_RW_6_A(CoupledFramedTransportsT, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TZlibTransport */ \
-    TEST_RW_6_A(CoupledZlibTransportsT, CoupledTransports, __VA_ARGS__) \
-
-#define TEST_RW_7_A( \
-    Template, CoupledTransports, \
-    totalSize, wSizeGen, rSizeGen, wChunkSizeGen, rChunkSizeGen, \
-    maxOutstanding) \
-    TEST_F(TransportTest, \
-        Template##_##CoupledTransports##_##\
-        totalSize##_##wSizeGen##_##rSizeGen##_##\
-        wChunkSizeGen##_##rChunkSizeGen##_##maxOutstanding) { \
-      test_rw<Template<CoupledTransports>>( \
-          totalSize, wSizeGen, rSizeGen, wChunkSizeGen, rChunkSizeGen, \
-          maxOutstanding); \
-    } \
-
-#define TEST_RW_7(CoupledTransports, ...) \
-    /* Add the test as specified, to test the non-virtual function calls */ \
-    TEST_RW_7_A(IdentityT, CoupledTransports, __VA_ARGS__) \
-    /* \
-     * Also test using the transport as a TTransport*, to test \
-     * the read_virt()/write_virt() calls \
-     */ \
-    TEST_RW_7_A(CoupledTTransports, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TBufferedTransport */ \
-    TEST_RW_7_A(CoupledBufferedTransportsT, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TFramedTransports */ \
-    TEST_RW_7_A(CoupledFramedTransportsT, CoupledTransports, __VA_ARGS__) \
-    /* Test wrapping the transport with TZlibTransport */ \
-    TEST_RW_7_A(CoupledZlibTransportsT, CoupledTransports, __VA_ARGS__) \
-
-#define TEST_BLOCKING_BEHAVIOR_B(Template, CoupledTransports, func) \
-  TEST_F(TransportTest, \
-      Blocking_##Template##_##CoupledTransports##_##func) { \
-    test_##func<Template<CoupledTransports>>(); \
+#define TEST_RW_4_A(                                                            \
+    Template, CoupledTransports, totalSize, wSizeGen, rSizeGen)                 \
+  TEST_F(                                                                       \
+      TransportTest,                                                            \
+      Template##_##CoupledTransports##_##totalSize##_##wSizeGen##_##rSizeGen) { \
+    test_rw<Template<CoupledTransports>>(totalSize, wSizeGen, rSizeGen);        \
   }
 
-#define TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, func) \
-  TEST_BLOCKING_BEHAVIOR_B(IdentityT, CoupledTransports, func) \
-  TEST_BLOCKING_BEHAVIOR_B(CoupledTTransports, CoupledTransports, func) \
-  TEST_BLOCKING_BEHAVIOR_B( \
-      CoupledBufferedTransportsT, CoupledTransports, func) \
-  TEST_BLOCKING_BEHAVIOR_B(CoupledFramedTransportsT, CoupledTransports, func) \
-  TEST_BLOCKING_BEHAVIOR_B(CoupledZlibTransportsT, CoupledTransports, func) \
+#define TEST_RW_4(CoupledTransports, ...)                                 \
+  /* Add the test as specified, to test the non-virtual function calls */ \
+  TEST_RW_4_A(IdentityT, CoupledTransports, __VA_ARGS__)                  \
+  /*                                                                      \
+   * Also test using the transport as a TTransport*, to test              \
+   * the read_virt()/write_virt() calls                                   \
+   */                                                                     \
+  TEST_RW_4_A(CoupledTTransports, CoupledTransports, __VA_ARGS__)         \
+  /* Test wrapping the transport with TBufferedTransport */               \
+  TEST_RW_4_A(CoupledBufferedTransportsT, CoupledTransports, __VA_ARGS__) \
+  /* Test wrapping the transport with TFramedTransports */                \
+  TEST_RW_4_A(CoupledFramedTransportsT, CoupledTransports, __VA_ARGS__)   \
+  /* Test wrapping the transport with TZlibTransport */                   \
+  TEST_RW_4_A(CoupledZlibTransportsT, CoupledTransports, __VA_ARGS__)
 
-#define TEST_BLOCKING_BEHAVIOR(CoupledTransports) \
-  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_part_available) \
+#define TEST_RW_6_A(                                                                                                \
+    Template,                                                                                                       \
+    CoupledTransports,                                                                                              \
+    totalSize,                                                                                                      \
+    wSizeGen,                                                                                                       \
+    rSizeGen,                                                                                                       \
+    wChunkSizeGen,                                                                                                  \
+    rChunkSizeGen)                                                                                                  \
+  TEST_F(                                                                                                           \
+      TransportTest,                                                                                                \
+      Template##_##CoupledTransports##_##totalSize##_##wSizeGen##_##rSizeGen##_##wChunkSizeGen##_##rChunkSizeGen) { \
+    test_rw<Template<CoupledTransports>>(                                                                           \
+        totalSize, wSizeGen, rSizeGen, wChunkSizeGen, rChunkSizeGen);                                               \
+  }
+
+#define TEST_RW_6(CoupledTransports, ...)                                 \
+  /* Add the test as specified, to test the non-virtual function calls */ \
+  TEST_RW_6_A(IdentityT, CoupledTransports, __VA_ARGS__)                  \
+  /*                                                                      \
+   * Also test using the transport as a TTransport*, to test              \
+   * the read_virt()/write_virt() calls                                   \
+   */                                                                     \
+  TEST_RW_6_A(CoupledTTransports, CoupledTransports, __VA_ARGS__)         \
+  /* Test wrapping the transport with TBufferedTransport */               \
+  TEST_RW_6_A(CoupledBufferedTransportsT, CoupledTransports, __VA_ARGS__) \
+  /* Test wrapping the transport with TFramedTransports */                \
+  TEST_RW_6_A(CoupledFramedTransportsT, CoupledTransports, __VA_ARGS__)   \
+  /* Test wrapping the transport with TZlibTransport */                   \
+  TEST_RW_6_A(CoupledZlibTransportsT, CoupledTransports, __VA_ARGS__)
+
+#define TEST_RW_7_A(                                                                                                                   \
+    Template,                                                                                                                          \
+    CoupledTransports,                                                                                                                 \
+    totalSize,                                                                                                                         \
+    wSizeGen,                                                                                                                          \
+    rSizeGen,                                                                                                                          \
+    wChunkSizeGen,                                                                                                                     \
+    rChunkSizeGen,                                                                                                                     \
+    maxOutstanding)                                                                                                                    \
+  TEST_F(                                                                                                                              \
+      TransportTest,                                                                                                                   \
+      Template##_##CoupledTransports##_##totalSize##_##wSizeGen##_##rSizeGen##_##wChunkSizeGen##_##rChunkSizeGen##_##maxOutstanding) { \
+    test_rw<Template<CoupledTransports>>(                                                                                              \
+        totalSize,                                                                                                                     \
+        wSizeGen,                                                                                                                      \
+        rSizeGen,                                                                                                                      \
+        wChunkSizeGen,                                                                                                                 \
+        rChunkSizeGen,                                                                                                                 \
+        maxOutstanding);                                                                                                               \
+  }
+
+#define TEST_RW_7(CoupledTransports, ...)                                 \
+  /* Add the test as specified, to test the non-virtual function calls */ \
+  TEST_RW_7_A(IdentityT, CoupledTransports, __VA_ARGS__)                  \
+  /*                                                                      \
+   * Also test using the transport as a TTransport*, to test              \
+   * the read_virt()/write_virt() calls                                   \
+   */                                                                     \
+  TEST_RW_7_A(CoupledTTransports, CoupledTransports, __VA_ARGS__)         \
+  /* Test wrapping the transport with TBufferedTransport */               \
+  TEST_RW_7_A(CoupledBufferedTransportsT, CoupledTransports, __VA_ARGS__) \
+  /* Test wrapping the transport with TFramedTransports */                \
+  TEST_RW_7_A(CoupledFramedTransportsT, CoupledTransports, __VA_ARGS__)   \
+  /* Test wrapping the transport with TZlibTransport */                   \
+  TEST_RW_7_A(CoupledZlibTransportsT, CoupledTransports, __VA_ARGS__)
+
+#define TEST_BLOCKING_BEHAVIOR_B(Template, CoupledTransports, func)           \
+  TEST_F(TransportTest, Blocking_##Template##_##CoupledTransports##_##func) { \
+    test_##func<Template<CoupledTransports>>();                               \
+  }
+
+#define TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, func)                     \
+  TEST_BLOCKING_BEHAVIOR_B(IdentityT, CoupledTransports, func)                \
+  TEST_BLOCKING_BEHAVIOR_B(CoupledTTransports, CoupledTransports, func)       \
+  TEST_BLOCKING_BEHAVIOR_B(                                                   \
+      CoupledBufferedTransportsT, CoupledTransports, func)                    \
+  TEST_BLOCKING_BEHAVIOR_B(CoupledFramedTransportsT, CoupledTransports, func) \
+  TEST_BLOCKING_BEHAVIOR_B(CoupledZlibTransportsT, CoupledTransports, func)
+
+#define TEST_BLOCKING_BEHAVIOR(CoupledTransports)                            \
+  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_part_available)           \
   TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_part_available_in_chunks) \
-  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_partial_midframe) \
-  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_none_available) \
-  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, borrow_part_available) \
-  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, borrow_none_available) \
+  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_partial_midframe)         \
+  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, read_none_available)           \
+  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, borrow_part_available)         \
+  TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, borrow_none_available)
 
 static GenericSizeGenerator rand4k(1, 4096);
-static constexpr size_t kConst16K = 1024*16;
-static constexpr size_t kConst256K = 1024*256;
-static constexpr size_t kConst1024K = 1024*1024;
+static constexpr size_t kConst16K = 1024 * 16;
+static constexpr size_t kConst256K = 1024 * 256;
+static constexpr size_t kConst1024K = 1024 * 1024;
 static constexpr uint32_t kFdMaxOutstanding = 4096;
 static constexpr uint32_t kSocketMaxOutstanding = 4096;
 
@@ -835,54 +855,150 @@ TEST_BLOCKING_BEHAVIOR(CoupledMemoryBuffers)
 // Since CoupledFDTransports tests with a pipe, writes will block
 // if there is too much outstanding unread data in the pipe.
 TEST_RW_7(CoupledFDTransports, kConst1024K, 0, 0, 0, 0, kFdMaxOutstanding)
-TEST_RW_7(CoupledFDTransports,
-    kConst256K, rand4k, rand4k, 0, 0, kFdMaxOutstanding)
+TEST_RW_7(
+    CoupledFDTransports,
+    kConst256K,
+    rand4k,
+    rand4k,
+    0,
+    0,
+    kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports, kConst256K, 167, 163, 0, 0, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports, kConst16K, 1, 1, 0, 0, kFdMaxOutstanding)
 
-TEST_RW_7(CoupledFDTransports,
-    kConst256K, 0, 0, rand4k, rand4k, kFdMaxOutstanding)
-TEST_RW_7(CoupledFDTransports,
-    kConst256K, rand4k, rand4k, rand4k, rand4k, kFdMaxOutstanding)
-TEST_RW_7(CoupledFDTransports,
-    kConst256K, 167, 163, rand4k, rand4k, kFdMaxOutstanding)
-TEST_RW_7(CoupledFDTransports,
-    kConst16K, 1, 1, rand4k, rand4k, kFdMaxOutstanding)
+TEST_RW_7(
+    CoupledFDTransports,
+    kConst256K,
+    0,
+    0,
+    rand4k,
+    rand4k,
+    kFdMaxOutstanding)
+TEST_RW_7(
+    CoupledFDTransports,
+    kConst256K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k,
+    kFdMaxOutstanding)
+TEST_RW_7(
+    CoupledFDTransports,
+    kConst256K,
+    167,
+    163,
+    rand4k,
+    rand4k,
+    kFdMaxOutstanding)
+TEST_RW_7(
+    CoupledFDTransports,
+    kConst16K,
+    1,
+    1,
+    rand4k,
+    rand4k,
+    kFdMaxOutstanding)
 
 TEST_BLOCKING_BEHAVIOR(CoupledFDTransports)
 
 // TSocket tests
-TEST_RW_7(CoupledSocketTransports,
-    kConst1024K, 0, 0, 0, 0, kSocketMaxOutstanding)
-TEST_RW_7(CoupledSocketTransports,
-    kConst256K, rand4k, rand4k, 0, 0, kSocketMaxOutstanding)
-TEST_RW_7(CoupledSocketTransports,
-    kConst256K, 167, 163, 0, 0, kSocketMaxOutstanding)
+TEST_RW_7(
+    CoupledSocketTransports,
+    kConst1024K,
+    0,
+    0,
+    0,
+    0,
+    kSocketMaxOutstanding)
+TEST_RW_7(
+    CoupledSocketTransports,
+    kConst256K,
+    rand4k,
+    rand4k,
+    0,
+    0,
+    kSocketMaxOutstanding)
+TEST_RW_7(
+    CoupledSocketTransports,
+    kConst256K,
+    167,
+    163,
+    0,
+    0,
+    kSocketMaxOutstanding)
 // Doh.  Apparently writing to a socket has some additional overhead for
 // each send() call.  If we have more than ~100 outstanding 1-byte write
 // requests, additional send() calls start blocking.
 TEST_RW_7(CoupledSocketTransports, kConst16K, 1, 1, 0, 0, 100)
-TEST_RW_7(CoupledSocketTransports,
-    kConst256K, 0, 0, rand4k, rand4k, kSocketMaxOutstanding)
-TEST_RW_7(CoupledSocketTransports,
-    kConst256K, rand4k, rand4k, rand4k, rand4k, kSocketMaxOutstanding)
-TEST_RW_7(CoupledSocketTransports,
-    kConst256K, 167, 163, rand4k, rand4k, kSocketMaxOutstanding)
+TEST_RW_7(
+    CoupledSocketTransports,
+    kConst256K,
+    0,
+    0,
+    rand4k,
+    rand4k,
+    kSocketMaxOutstanding)
+TEST_RW_7(
+    CoupledSocketTransports,
+    kConst256K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k,
+    kSocketMaxOutstanding)
+TEST_RW_7(
+    CoupledSocketTransports,
+    kConst256K,
+    167,
+    163,
+    rand4k,
+    rand4k,
+    kSocketMaxOutstanding)
 TEST_RW_7(CoupledSocketTransports, kConst16K, 1, 1, rand4k, rand4k, 100)
 
 TEST_BLOCKING_BEHAVIOR(CoupledSocketTransports)
 
 // Add some tests that access TBufferedTransport and TFramedTransport
 // via TTransport pointers and TBufferBase pointers.
-TEST_RW_6_A(CoupledTTransports, CoupledBufferedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k)
-TEST_RW_6_A(CoupledBufferBases, CoupledBufferedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k)
-TEST_RW_6_A(CoupledTTransports, CoupledFramedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k)
-TEST_RW_6_A(CoupledBufferBases, CoupledFramedTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k)
+TEST_RW_6_A(
+    CoupledTTransports,
+    CoupledBufferedTransports,
+    kConst1024K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k)
+TEST_RW_6_A(
+    CoupledBufferBases,
+    CoupledBufferedTransports,
+    kConst1024K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k)
+TEST_RW_6_A(
+    CoupledTTransports,
+    CoupledFramedTransports,
+    kConst1024K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k)
+TEST_RW_6_A(
+    CoupledBufferBases,
+    CoupledFramedTransports,
+    kConst1024K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k)
 
 // Test using TZlibTransport via a TTransport pointer
-TEST_RW_6_A(CoupledTTransports, CoupledZlibTransports,
-    kConst1024K, rand4k, rand4k, rand4k, rand4k)
+TEST_RW_6_A(
+    CoupledTTransports,
+    CoupledZlibTransports,
+    kConst1024K,
+    rand4k,
+    rand4k,
+    rand4k,
+    rand4k)

@@ -35,6 +35,6 @@ struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
     return number < that.number;
   }
 };
-}
-}
-}
+} // namespace test
+} // namespace thrift
+} // namespace apache

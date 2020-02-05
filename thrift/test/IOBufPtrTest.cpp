@@ -19,28 +19,31 @@
 #include <thread>
 
 #include <glog/logging.h>
-#include <folly/portability/GTest.h>
 
 #include <folly/Memory.h>
 #include <folly/io/IOBufQueue.h>
+#include <folly/portability/GTest.h>
+
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/test/gen-cpp2/IOBufPtrTestService.h>
 
-namespace thrift { namespace test { namespace iobufptr {
+namespace thrift {
+namespace test {
+namespace iobufptr {
 
 class IOBufPtrTestService : public IOBufPtrTestServiceSvIf {
  public:
   void async_tm_combine(
-      std::unique_ptr<apache::thrift::HandlerCallback<
-          std::unique_ptr<IOBufPtr>>> callback,
+      std::unique_ptr<
+          apache::thrift::HandlerCallback<std::unique_ptr<IOBufPtr>>> callback,
       std::unique_ptr<Request> req) override;
 };
 
 void IOBufPtrTestService::async_tm_combine(
-    std::unique_ptr<apache::thrift::HandlerCallback<
-        std::unique_ptr<IOBufPtr>>> callback,
+    std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<IOBufPtr>>>
+        callback,
     std::unique_ptr<Request> req) {
   folly::IOBufQueue queue;
   queue.append("(");
@@ -50,8 +53,7 @@ void IOBufPtrTestService::async_tm_combine(
   queue.append(")+(");
   queue.append(req->three.clone());
   queue.append(")");
-  callback.release()->resultInThread(
-      std::make_unique<IOBufPtr>(queue.move()));
+  callback.release()->resultInThread(std::make_unique<IOBufPtr>(queue.move()));
 }
 
 class IOBufPtrTest : public ::testing::Test {
@@ -90,12 +92,11 @@ IOBufPtrTest::IOBufPtrTest() : serverEventBase_(nullptr) {
   }
 
   auto socket = apache::thrift::async::TAsyncSocket::newSocket(
-      getEventBase(),
-      getServerAddress());
+      getEventBase(), getServerAddress());
 
   auto channel = apache::thrift::HeaderClientChannel::newChannel(socket);
-  client_ = std::make_unique<IOBufPtrTestServiceAsyncClient>(
-      std::move(channel));
+  client_ =
+      std::make_unique<IOBufPtrTestServiceAsyncClient>(std::move(channel));
 }
 
 IOBufPtrTest::~IOBufPtrTest() {
@@ -104,10 +105,12 @@ IOBufPtrTest::~IOBufPtrTest() {
 }
 
 void IOBufPtrTest::serverThreadLoop() {
-  server_.setPort(0);  // pick one
+  server_.setPort(0); // pick one
   server_.setInterface(std::make_unique<IOBufPtrTestService>());
   server_.setup();
-  SCOPE_EXIT { server_.cleanUp(); };
+  SCOPE_EXIT {
+    server_.cleanUp();
+  };
   {
     std::unique_lock<std::mutex> lock(mutex_);
     serverEventBase_ = server_.getEventBaseManager()->getEventBase();
@@ -128,11 +131,11 @@ TEST_F(IOBufPtrTest, Simple) {
     req.one = folly::IOBuf::wrapBuffer("meow", 4);
     req.two = folly::IOBuf::wrapBuffer("woof", 4);
     EXPECT_TRUE(
-      apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(
-        req.one, req.one));
+        apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(
+            req.one, req.one));
     EXPECT_FALSE(
-      apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(
-        req.one, req.two));
+        apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(
+            req.one, req.two));
     req.three = folly::IOBuf(folly::IOBuf::WRAP_BUFFER, "oink", 4);
     IOBufPtr resp;
     client()->sync_combine(resp, req);
@@ -140,4 +143,6 @@ TEST_F(IOBufPtrTest, Simple) {
   }
 }
 
-}}}  // namespaces
+} // namespace iobufptr
+} // namespace test
+} // namespace thrift

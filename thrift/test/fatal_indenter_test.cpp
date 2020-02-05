@@ -26,12 +26,12 @@ TEST(fatal_indenter, arbitrary_push_depth) {
   auto indenter = apache::thrift::make_indenter(out, "  ");
 
   std::string expected =
-    "  1.2\n"
-    "    2.2\n"
-    "    3.2\n"
-    "        4.4\n"
-    "      5.3\n"
-    "6.0";
+      "  1.2\n"
+      "    2.2\n"
+      "    3.2\n"
+      "        4.4\n"
+      "      5.3\n"
+      "6.0";
 
   indenter.push();
   indenter << "1.2";
@@ -59,12 +59,12 @@ TEST(fatal_indenter, set_margin) {
   auto indenter = apache::thrift::make_indenter(out, "  ");
 
   std::string expected =
-    "a  1.2\n"
-    "a    2.2\n"
-    "b    3.2\n"
-    "         4.4\n"
-    "      5.3\n"
-    "c6.0";
+      "a  1.2\n"
+      "a    2.2\n"
+      "b    3.2\n"
+      "         4.4\n"
+      "      5.3\n"
+      "c6.0";
 
   indenter.push();
   indenter.set_margin("a");

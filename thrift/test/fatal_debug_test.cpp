@@ -25,7 +25,6 @@
 #include <string>
 #include <vector>
 
-
 namespace test_cpp2 {
 namespace cpp_reflection {
 
@@ -98,7 +97,7 @@ struct3 test_data() {
 }
 
 struct test_callback {
-  explicit test_callback(std::vector<std::string> &out): out_(out) {}
+  explicit test_callback(std::vector<std::string>& out) : out_(out) {}
 
   template <typename T>
   void operator()(
@@ -109,23 +108,22 @@ struct test_callback {
     out_.emplace_back(path.data(), path.size());
   }
 
-private:
-  std::vector<std::string> &out_;
+ private:
+  std::vector<std::string>& out_;
 };
 
-#define TEST_IMPL(LHS, RHS, ...) \
-  do { \
-    std::vector<std::string> const expected{__VA_ARGS__}; \
-    \
-    std::vector<std::string> actual; \
-    actual.reserve(expected.size()); \
-    \
-    EXPECT_EQ( \
-      expected.empty(), \
-      (apache::thrift::debug_equals(LHS, RHS, test_callback(actual))) \
-    ); \
-    \
-    EXPECT_EQ(expected, actual); \
+#define TEST_IMPL(LHS, RHS, ...)                                          \
+  do {                                                                    \
+    std::vector<std::string> const expected{__VA_ARGS__};                 \
+                                                                          \
+    std::vector<std::string> actual;                                      \
+    actual.reserve(expected.size());                                      \
+                                                                          \
+    EXPECT_EQ(                                                            \
+        expected.empty(),                                                 \
+        (apache::thrift::debug_equals(LHS, RHS, test_callback(actual)))); \
+                                                                          \
+    EXPECT_EQ(expected, actual);                                          \
   } while (false)
 
 TEST(fatal_debug, equal) {
@@ -321,10 +319,10 @@ TEST(fatal_debug, fieldS) {
   auto pod = test_data();
   pod.fieldS = {{"123", "456"}, {"abc", "ABC"}, {"ghi", "GHI"}};
   TEST_IMPL(
-    pod,
-    test_data(),
-    "$.fieldS[\"0x676869\"]" /* missing */,
-    "$.fieldS[\"0x646566\"]" /* extra  */);
+      pod,
+      test_data(),
+      "$.fieldS[\"0x676869\"]" /* missing */,
+      "$.fieldS[\"0x646566\"]" /* extra  */);
 }
 
 TEST(fatal_debug, struct_binary) {

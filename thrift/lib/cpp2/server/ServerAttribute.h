@@ -68,7 +68,6 @@ class ServerAttributeBase {
     }
   }
 
-
   folly::Optional<T> fromBaseline_;
   folly::Optional<T> fromOverride_;
   T default_;

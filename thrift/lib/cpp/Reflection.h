@@ -29,7 +29,7 @@ namespace reflection {
 namespace detail {
 const size_t kTypeBits = 5;
 const uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
-}  // namespace detail
+} // namespace detail
 
 inline int64_t makeTypeId(Type type, uint64_t hash) {
   return static_cast<int64_t>(
@@ -44,8 +44,8 @@ inline bool isBaseType(Type type) {
   return (type <= Type::TYPE_DOUBLE) || (type == Type::TYPE_FLOAT);
 }
 
-}  // namespace reflection
-}  // namespace thrift
-}  // namespace apache
+} // namespace reflection
+} // namespace thrift
+} // namespace apache
 
 #endif /* THRIFT_LIB_CPP_REFLECTION_H_ */

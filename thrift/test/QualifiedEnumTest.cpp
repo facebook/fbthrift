@@ -27,8 +27,8 @@ TEST(QualifiedEnums, Defaults) {
   MyQualifiedStruct empty;
 
   BinaryProtocolWriter protWriter;
-  size_t bufSize = Cpp2Ops<MyQualifiedStruct>::serializedSize(&protWriter,
-                                                              &empty);
+  size_t bufSize =
+      Cpp2Ops<MyQualifiedStruct>::serializedSize(&protWriter, &empty);
   folly::IOBufQueue queue;
   protWriter.setOutput(&queue, bufSize);
   Cpp2Ops<MyQualifiedStruct>::write(&protWriter, &empty);

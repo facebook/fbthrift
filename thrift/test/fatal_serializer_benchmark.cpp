@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <folly/init/Init.h>
 #include <folly/Benchmark.h>
+#include <folly/init/Init.h>
 
 #include <thrift/test/gen-cpp2/simple_reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/simple_reflection_types_custom_protocol.h>
@@ -35,30 +35,29 @@ using BinaryPair = RWPair<BinaryProtocolReader, BinaryProtocolWriter, false>;
 using CompactPair = RWPair<CompactProtocolReader, CompactProtocolWriter, false>;
 
 DEFINE_int32(
-  seed, 0,
-  "Specify random seed to run benchmarks with. Random seed used by default"
-);
+    seed,
+    0,
+    "Specify random seed to run benchmarks with. Random seed used by default");
 
 template <typename PairType>
 struct harness {
-    struct7 a;
-    MultiProtocolTestConcrete<PairType> rw;
-    std::mt19937 gen;
+  struct7 a;
+  MultiProtocolTestConcrete<PairType> rw;
+  std::mt19937 gen;
 
-    harness() : gen(std::mt19937(FLAGS_seed))
-    {
-      populator::populator_opts opts;
-      populator::populate(a, opts, gen);
-    }
+  harness() : gen(std::mt19937(FLAGS_seed)) {
+    populator::populator_opts opts;
+    populator::populate(a, opts, gen);
+  }
 };
 
 BENCHMARK(Binary_OldSerialiserWriter, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<BinaryPair> h;
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       h.a.write(&h.rw.writer);
     });
   }
@@ -67,10 +66,10 @@ BENCHMARK(Binary_OldSerialiserWriter, iters) {
 BENCHMARK_RELATIVE(Binary_NewSerializerWriter, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<BinaryPair> h;
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       serializer_write(h.a, h.rw.writer);
     });
   }
@@ -79,12 +78,12 @@ BENCHMARK_RELATIVE(Binary_NewSerializerWriter, iters) {
 BENCHMARK(Binary_OldSerialiserReader, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<BinaryPair> h;
     h.a.write(&h.rw.writer);
     h.rw.prep_read();
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       h.a.read(&h.rw.reader);
     });
   }
@@ -93,12 +92,12 @@ BENCHMARK(Binary_OldSerialiserReader, iters) {
 BENCHMARK_RELATIVE(Binary_NewSerializerReader, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<BinaryPair> h;
     serializer_write(h.a, h.rw.writer);
     h.rw.prep_read();
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       serializer_read(h.a, h.rw.reader);
     });
   }
@@ -107,10 +106,10 @@ BENCHMARK_RELATIVE(Binary_NewSerializerReader, iters) {
 BENCHMARK(Compact_OldSerialiserWriter, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<CompactPair> h;
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       h.a.write(&h.rw.writer);
     });
   }
@@ -119,10 +118,10 @@ BENCHMARK(Compact_OldSerialiserWriter, iters) {
 BENCHMARK_RELATIVE(Compact_NewSerializerWriter, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<CompactPair> h;
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       serializer_write(h.a, h.rw.writer);
     });
   }
@@ -131,12 +130,12 @@ BENCHMARK_RELATIVE(Compact_NewSerializerWriter, iters) {
 BENCHMARK(Compact_OldSerialiserReader, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<CompactPair> h;
     h.a.write(&h.rw.writer);
     h.rw.prep_read();
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       h.a.read(&h.rw.reader);
     });
   }
@@ -145,12 +144,12 @@ BENCHMARK(Compact_OldSerialiserReader, iters) {
 BENCHMARK_RELATIVE(Compact_NewSerializerReader, iters) {
   folly::BenchmarkSuspender braces;
 
-  while(iters--) {
+  while (iters--) {
     harness<CompactPair> h;
     serializer_write(h.a, h.rw.writer);
     h.rw.prep_read();
 
-    braces.dismissing([&] {
+    braces.dismissing([&] { //
       serializer_read(h.a, h.rw.reader);
     });
   }

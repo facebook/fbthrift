@@ -17,19 +17,20 @@
 #include <thrift/lib/cpp/EventHandlerBase.h>
 #include <algorithm>
 
-using std::vector;
 using std::remove;
 using std::shared_ptr;
+using std::vector;
 
 using RWMutex = folly::SharedMutex;
 using RLock = RWMutex::ReadHolder;
 using WLock = RWMutex::WriteHolder;
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 TProcessorBase::TProcessorBase() {
   RLock lock{getRWMutex()};
-  for (auto factory: getFactories()) {
+  for (auto factory : getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
       addEventHandler(handler);
@@ -40,24 +41,20 @@ TProcessorBase::TProcessorBase() {
 void TProcessorBase::addProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
   WLock lock{getRWMutex()};
-  assert(find(getFactories().begin(),
-              getFactories().end(),
-              factory) ==
-         getFactories().end());
+  assert(
+      find(getFactories().begin(), getFactories().end(), factory) ==
+      getFactories().end());
   getFactories().push_back(factory);
 }
 
 void TProcessorBase::removeProcessorEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
   WLock lock{getRWMutex()};
-  assert(find(getFactories().begin(),
-              getFactories().end(),
-              factory) !=
-         getFactories().end());
+  assert(
+      find(getFactories().begin(), getFactories().end(), factory) !=
+      getFactories().end());
   getFactories().erase(
-      remove(getFactories().begin(),
-             getFactories().end(),
-             factory),
+      remove(getFactories().begin(), getFactories().end(), factory),
       getFactories().end());
 }
 
@@ -69,7 +66,7 @@ RWMutex& TProcessorBase::getRWMutex() {
 vector<shared_ptr<TProcessorEventHandlerFactory>>&
 TProcessorBase::getFactories() {
   static vector<shared_ptr<TProcessorEventHandlerFactory>>* factories =
-    new vector<shared_ptr<TProcessorEventHandlerFactory>>();
+      new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
 }
 
@@ -77,7 +74,7 @@ TClientBase::TClientBase() {
   // Automatically ask all registered factories to produce an event
   // handler, and attach the handlers
   RLock lock{getRWMutex()};
-  for (auto factory: getFactories()) {
+  for (auto factory : getFactories()) {
     auto handler = factory->getEventHandler();
     if (handler) {
       addEventHandler(handler);
@@ -88,24 +85,20 @@ TClientBase::TClientBase() {
 void TClientBase::addClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
   WLock lock{getRWMutex()};
-  assert(find(getFactories().begin(),
-              getFactories().end(),
-              factory) ==
-         getFactories().end());
+  assert(
+      find(getFactories().begin(), getFactories().end(), factory) ==
+      getFactories().end());
   getFactories().push_back(factory);
 }
 
 void TClientBase::removeClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
   WLock lock{getRWMutex()};
-  assert(find(getFactories().begin(),
-              getFactories().end(),
-              factory) !=
-         getFactories().end());
+  assert(
+      find(getFactories().begin(), getFactories().end(), factory) !=
+      getFactories().end());
   getFactories().erase(
-      remove(getFactories().begin(),
-             getFactories().end(),
-             factory),
+      remove(getFactories().begin(), getFactories().end(), factory),
       getFactories().end());
 }
 
@@ -113,11 +106,11 @@ RWMutex& TClientBase::getRWMutex() {
   static auto* mutex = new RWMutex{};
   return *mutex;
 }
-vector<shared_ptr<TProcessorEventHandlerFactory>>&
-TClientBase::getFactories() {
+vector<shared_ptr<TProcessorEventHandlerFactory>>& TClientBase::getFactories() {
   static vector<shared_ptr<TProcessorEventHandlerFactory>>* factories =
-    new vector<shared_ptr<TProcessorEventHandlerFactory>>();
+      new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache

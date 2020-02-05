@@ -16,23 +16,22 @@
 
 #include <cstdlib>
 #include <stdexcept>
-#include <Thrift.h>
-#include <transport/TFDTransport.h>
-using apache::thrift::transport::TTransportException;
-using apache::thrift::transport::TFDTransport;
 
-class DummyException : public std::exception {
-};
+#include <thrift/lib/cpp/Thrift.h>
+#include <thrift/lib/cpp/transport/TFDTransport.h>
+
+using apache::thrift::transport::TFDTransport;
+using apache::thrift::transport::TTransportException;
+
+class DummyException : public std::exception {};
 
 int main() {
-  {
+  { //
     TFDTransport t(256, TFDTransport::NO_CLOSE_ON_DESTROY);
   }
 
   try {
-    {
-      TFDTransport t(256, TFDTransport::CLOSE_ON_DESTROY);
-    }
+    TFDTransport t(256, TFDTransport::CLOSE_ON_DESTROY);
     std::abort();
   } catch (TTransportException) {
   }
@@ -49,5 +48,4 @@ int main() {
   }
 
   return 0;
-
 }

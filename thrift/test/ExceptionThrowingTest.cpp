@@ -46,8 +46,8 @@ class ExceptionThrowingHandler : public ExceptionThrowingServiceSvIf {
 std::unique_ptr<ScopedServerThread> createThriftServer() {
   auto server = std::make_shared<ThriftServer>();
   server->setPort(0);
-  server->setInterface(std::unique_ptr<ExceptionThrowingHandler>(
-    new ExceptionThrowingHandler));
+  server->setInterface(
+      std::unique_ptr<ExceptionThrowingHandler>(new ExceptionThrowingHandler));
   return std::make_unique<ScopedServerThread>(server);
 }
 
@@ -55,8 +55,8 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
   EventBase eb;
   auto serverThread = createThriftServer();
   auto* serverAddr = serverThread->getAddress();
-  std::shared_ptr<TAsyncSocket> socket(TAsyncSocket::newSocket(
-      &eb, *serverAddr));
+  std::shared_ptr<TAsyncSocket> socket(
+      TAsyncSocket::newSocket(&eb, *serverAddr));
   auto channel = HeaderClientChannel::newChannel(socket);
   ExceptionThrowingServiceAsyncClient client(std::move(channel));
 

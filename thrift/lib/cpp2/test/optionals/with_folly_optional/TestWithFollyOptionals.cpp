@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
+#include <folly/portability/GTest.h>
+
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 #include <thrift/lib/cpp2/test/optionals/with_folly_optional/gen-cpp2/FollyOptionals_types.h>
 #include <thrift/lib/cpp2/test/optionals/with_folly_optional/gen-cpp2/FollyOptionals_types_custom_protocol.h>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
 

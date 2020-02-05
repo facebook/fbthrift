@@ -30,7 +30,7 @@ using namespace apache::thrift::test;
  */
 
 class Handler : public MyLeafSvIf {
-public:
+ public:
   Future<string> future_doRoot() override {
     return makeFuture(string("root"));
   }

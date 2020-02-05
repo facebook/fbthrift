@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
+#include <folly/portability/GTest.h>
+
 #include <thrift/lib/cpp2/reflection/debug.h>
 #include <thrift/lib/cpp2/reflection/merge.h>
 #include <thrift/lib/cpp2/reflection/pretty_print.h>
-
 #include <thrift/test/gen-cpp2/fatal_merge_constants.h>
-#include <thrift/test/gen-cpp2/fatal_merge_types.h>
 #include <thrift/test/gen-cpp2/fatal_merge_fatal_types.h>
-
-#include <folly/portability/GTest.h>
+#include <thrift/test/gen-cpp2/fatal_merge_types.h>
 
 using namespace apache::thrift::test;
 using apache::thrift::debug_equals;
@@ -32,7 +31,7 @@ namespace {
 
 class FatalMergeTest : public testing::Test {};
 
-}
+} // namespace
 
 #define TEST_GROUP(name, constant)                                  \
   TEST_F(FatalMergeTest, name##_copy) {                             \

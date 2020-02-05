@@ -40,13 +40,11 @@ class ThrowCtorType : public std::string {
 
   // the move ctor is not annotated with "noexcept"
   [[noreturn]] ThrowCtorType(ThrowCtorType&& other)
-    : std::string(std::move(other)) {
-    throw (1);
+      : std::string(std::move(other)) {
+    throw(1);
   }
 
-  explicit ThrowCtorType(std::string&& other)
-    : std::string(std::move(other)) {
-  }
+  explicit ThrowCtorType(std::string&& other) : std::string(std::move(other)) {}
 
   ThrowCtorType& operator=(const ThrowCtorType& other) = default;
   ThrowCtorType& operator=(const std::string& /* other */) {

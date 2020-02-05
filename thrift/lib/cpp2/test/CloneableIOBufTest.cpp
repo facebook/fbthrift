@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/CloneableIOBuf.h>
+
+#include <folly/portability/GTest.h>
 
 using namespace folly;
 using namespace apache::thrift;

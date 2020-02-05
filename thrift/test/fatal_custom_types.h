@@ -30,4 +30,4 @@ struct custom_compat_structA {
   std::string b;
 };
 
-} // namespace test_cpp_reflection {
+} // namespace test_cpp_reflection

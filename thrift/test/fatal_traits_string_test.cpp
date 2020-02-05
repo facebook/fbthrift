@@ -24,5 +24,5 @@ TEST(reflection, thrift_std_string_traits) {
   apache::thrift::test_thrift_string_traits<std::string>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

@@ -25,13 +25,12 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;
+using folly::fbstring;
+using folly::StringPiece;
+using std::map;
 using std::string;
 using std::unordered_map;
 using std::vector;
-using std::map;
-using std::unordered_map;
-using folly::fbstring;
-using folly::StringPiece;
 
 auto hasher = std::hash<int64_t>();
 
@@ -83,8 +82,7 @@ TEST(Frozen, Basic) {
     const byte* const frozenLocation =
         static_cast<const byte*>(static_cast<const void*>(freezeResult));
     // verify that freeze didn't yeild a different address.
-    EXPECT_EQ(freezeLocation - &bytes[0],
-                      frozenLocation - &bytes[0]);
+    EXPECT_EQ(freezeLocation - &bytes[0], frozenLocation - &bytes[0]);
 
     std::vector<byte> copy(bytes);
     byte* copyBuffer = &bytes[misalign];
@@ -120,30 +118,22 @@ TEST(Frozen, FieldOrdering) {
   p.a = 0x012345;
   p.b = 0x0678;
   p.c = 0x09;
-  EXPECT_LT(static_cast<void*>(&p.a),
-                 static_cast<void*>(&p.b));
-  EXPECT_LT(static_cast<void*>(&p.b),
-                 static_cast<void*>(&p.c));
+  EXPECT_LT(static_cast<void*>(&p.a), static_cast<void*>(&p.b));
+  EXPECT_LT(static_cast<void*>(&p.b), static_cast<void*>(&p.c));
   auto pf = freeze(p);
   auto& f = *pf;
   EXPECT_EQ(sizeof(f.__isset), 1);
-  EXPECT_EQ(sizeof(f),
-                    sizeof(int32_t) +
-                    sizeof(int16_t) +
-                    sizeof(uint8_t) +
-                    1);
-  EXPECT_LT(static_cast<const void*>(&f.a),
-                 static_cast<const void*>(&f.b));
-  EXPECT_LT(static_cast<const void*>(&f.b),
-                 static_cast<const void*>(&f.c));
+  EXPECT_EQ(sizeof(f), sizeof(int32_t) + sizeof(int16_t) + sizeof(uint8_t) + 1);
+  EXPECT_LT(static_cast<const void*>(&f.a), static_cast<const void*>(&f.b));
+  EXPECT_LT(static_cast<const void*>(&f.b), static_cast<const void*>(&f.c));
 }
 
 TEST(Frozen, IntHashMap) {
-  std::unordered_map<int, int> umap {
-    { 1, 2 },
-    { 3, 4 },
-    { 7, 8 },
-    { 5, 6 },
+  std::unordered_map<int, int> umap{
+      {1, 2},
+      {3, 4},
+      {7, 8},
+      {5, 6},
   };
   auto pfmap = freeze(umap);
   auto& fmap = *pfmap;
@@ -176,11 +166,11 @@ TEST(Frozen, IntHashMap) {
 }
 
 TEST(Frozen, StringHashMap) {
-  std::unordered_map<string, int> umap {
-    { "1", 2 },
-    { "3", 4 },
-    { "7", 8 },
-    { "5", 6 },
+  std::unordered_map<string, int> umap{
+      {"1", 2},
+      {"3", 4},
+      {"7", 8},
+      {"5", 6},
   };
   auto pfmap = freeze(umap);
   auto& fmap = *pfmap;
@@ -248,12 +238,11 @@ TEST(Frozen, StringHashMapBig) {
   }
 }
 
-
 TEST(Frozen, LookupDemo) {
   unordered_map<string, vector<string>> roots{
-    {"1", {"1", "2", "3"}},
-    {"2", {"4", "5", "6", "7", "8"}},
-    {"3", {"9", "10", "11", "12", "13", "14", "15"}},
+      {"1", {"1", "2", "3"}},
+      {"2", {"4", "5", "6", "7", "8"}},
+      {"3", {"9", "10", "11", "12", "13", "14", "15"}},
   };
   size_t bytes = frozenSize(roots);
   // corresponding source data: >500 by
@@ -263,11 +252,11 @@ TEST(Frozen, LookupDemo) {
 }
 
 TEST(Frozen, StringMap) {
-  map<string, int> tmap {
-    { "1", 2 },
-    { "3", 4 },
-    { "7", 8 },
-    { "5", 6 },
+  map<string, int> tmap{
+      {"1", 2},
+      {"3", 4},
+      {"7", 8},
+      {"5", 6},
   };
   auto pfmap = freeze(tmap);
   auto& fmap = *pfmap;
@@ -314,7 +303,7 @@ TEST(Frozen, StringMap) {
 }
 
 TEST(Frozen, SetString) {
-  std::set<string> tset { "1", "3", "7", "5" };
+  std::set<string> tset{"1", "3", "7", "5"};
   auto pfset = freeze(tset);
   auto& fset = *pfset;
   auto b = fset.begin();
@@ -351,7 +340,7 @@ TEST(Frozen, SetString) {
 }
 
 TEST(Frozen, VectorInt) {
-  std::vector<int> tvect { 1, 3, 7, 5 };
+  std::vector<int> tvect{1, 3, 7, 5};
   auto pfvect = freeze(tvect);
   auto& fvect = *pfvect;
   auto b = fvect.begin();
@@ -376,7 +365,7 @@ TEST(Frozen, RelativePtr) {
   CHECK_LT((void*)&locals.rptr, (void*)&locals.after);
 
   locals.rptr.reset(&locals.after);
-  EXPECT_EQ(locals.rptr.get(), &locals.after);      // basics
+  EXPECT_EQ(locals.rptr.get(), &locals.after); // basics
   locals.rptr.reset(&locals.after - 8 + (1 << 30)); // within 4GB = okay
 
   // pointing to lower addresses = underflow
@@ -386,11 +375,11 @@ TEST(Frozen, RelativePtr) {
 }
 
 TEST(Frozen, Utf8StringMap) {
-  map<string, int> tmap {
-    { u8"anxiety", 1 },
-    { u8"a\u00F1onuevo", 2 },
-    { u8"aot", 3 },
-    { u8"bacon", 4 },
+  map<string, int> tmap{
+      {u8"anxiety", 1},
+      {u8"a\u00F1onuevo", 2},
+      {u8"aot", 3},
+      {u8"bacon", 4},
   };
   auto pfmap = freeze(tmap);
   auto& fmap = *pfmap;

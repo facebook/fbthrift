@@ -17,14 +17,16 @@
 #ifndef THRIFT_TPROCESSOR_H_
 #define THRIFT_TPROCESSOR_H_ 1
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <thrift/lib/cpp/EventHandlerBase.h>
-#include <thrift/lib/cpp/server/TConnectionContext.h>
-#include <thrift/lib/cpp/protocol/TProtocol.h>
-#include <memory>
 
-namespace apache { namespace thrift {
+#include <thrift/lib/cpp/EventHandlerBase.h>
+#include <thrift/lib/cpp/protocol/TProtocol.h>
+#include <thrift/lib/cpp/server/TConnectionContext.h>
+
+namespace apache {
+namespace thrift {
 
 /**
  * A processor is a generic object that acts upon two streams of data, one
@@ -36,12 +38,14 @@ class TProcessor : public TProcessorBase {
  public:
   virtual ~TProcessor() {}
 
-  virtual bool process(std::shared_ptr<protocol::TProtocol> in,
-                       std::shared_ptr<protocol::TProtocol> out,
-                       TConnectionContext* connectionContext) = 0;
+  virtual bool process(
+      std::shared_ptr<protocol::TProtocol> in,
+      std::shared_ptr<protocol::TProtocol> out,
+      TConnectionContext* connectionContext) = 0;
 
-  bool process(std::shared_ptr<apache::thrift::protocol::TProtocol> io,
-               TConnectionContext* connectionContext) {
+  bool process(
+      std::shared_ptr<apache::thrift::protocol::TProtocol> io,
+      TConnectionContext* connectionContext) {
     return process(io, io, connectionContext);
   }
 
@@ -67,8 +71,8 @@ class TProcessorFactory {
 class TSingletonProcessorFactory : public TProcessorFactory {
  public:
   explicit TSingletonProcessorFactory(
-    const std::shared_ptr<TProcessor>& processor) :
-      processor_(processor) {}
+      const std::shared_ptr<TProcessor>& processor)
+      : processor_(processor) {}
 
   std::shared_ptr<TProcessor> getProcessor(
       server::TConnectionContext*) override {
@@ -95,23 +99,24 @@ class TSingletonProcessorFactory : public TProcessorFactory {
  * parameter to a shared_ptr, so that factory->releaseHandler() will be called
  * when the object is no longer needed, instead of deleting the pointer.
  */
-template<typename HandlerFactory_>
+template <typename HandlerFactory_>
 class ReleaseHandler {
  public:
-   explicit ReleaseHandler(
-     const std::shared_ptr<HandlerFactory_>& handlerFactory) :
-       handlerFactory_(handlerFactory) {}
+  explicit ReleaseHandler(
+      const std::shared_ptr<HandlerFactory_>& handlerFactory)
+      : handlerFactory_(handlerFactory) {}
 
-   void operator()(typename HandlerFactory_::Handler* handler) {
-     if (handler) {
-       handlerFactory_->releaseHandler(handler);
-     }
-   }
+  void operator()(typename HandlerFactory_::Handler* handler) {
+    if (handler) {
+      handlerFactory_->releaseHandler(handler);
+    }
+  }
 
  private:
-   std::shared_ptr<HandlerFactory_> handlerFactory_;
+  std::shared_ptr<HandlerFactory_> handlerFactory_;
 };
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_TPROCESSOR_H_

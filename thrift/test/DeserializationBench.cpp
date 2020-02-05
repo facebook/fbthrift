@@ -181,9 +181,7 @@ BENCHMARK(CompactDeserialization, iters) {
 
     // Deserialize, timed:
     cpp2::StructA obj2;
-    braces.dismissing([&] {
-      serializer::deserialize(buf.get(), obj2);
-    });
+    braces.dismissing([&] { serializer::deserialize(buf.get(), obj2); });
   }
 }
 

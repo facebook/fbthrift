@@ -309,7 +309,7 @@
 #endif
 
 /* Define to the sub-directory in which libtool stores uninstalled libraries.
-   */
+ */
 #ifndef THRIFT_LT_OBJDIR
 #define THRIFT_LT_OBJDIR ".libs/"
 #endif
@@ -364,12 +364,12 @@
 
 /* Define to the type of args 2, 3 and 4 for `select'. */
 #ifndef THRIFT_SELECT_TYPE_ARG234
-#define THRIFT_SELECT_TYPE_ARG234 (fd_set *)
+#define THRIFT_SELECT_TYPE_ARG234 (fd_set*)
 #endif
 
 /* Define to the type of arg 5 for `select'. */
 #ifndef THRIFT_SELECT_TYPE_ARG5
-#define THRIFT_SELECT_TYPE_ARG5 (struct timeval *)
+#define THRIFT_SELECT_TYPE_ARG5 (struct timeval*)
 #endif
 
 /* Indicates the effect of the right shift operator on negative signed

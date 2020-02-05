@@ -22,8 +22,8 @@
 #include <memory>
 #include <set>
 #include <type_traits>
-#include <vector>
 #include <unordered_map>
+#include <vector>
 
 #include <folly/FBString.h>
 #include <folly/Range.h>
@@ -64,13 +64,14 @@
  * See below for details on Frozen<T> and Freezer<T>, and for more information
  * see 'Thrift/Frozen' on the wiki.
  */
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 /**
  * Frozen<T> - This is simply a canonical type name for naming the frozen
  * counterpart for a given mutable type.
  */
-template<class T, class = void>
+template <class T, class = void>
 struct Frozen;
 
 /**
@@ -78,7 +79,7 @@ struct Frozen;
  * mapping from T and its instances to its frozen counterparts and its
  * instances.
  */
-template<class T, class = void>
+template <class T, class = void>
 struct Freezer {
   // The type which a frozen value thaws back into, usually just T.
   typedef T ThawedType;
@@ -96,9 +97,7 @@ struct Freezer {
   // Freeze 'src' into 'dst' recursively, using 'buffer' for additional storage.
   // 'buffer' must be advanced by specializations of this class if the spare
   // space is used.
-  static void freezeImpl(const ThawedType& src,
-                         FrozenType& dst,
-                         byte*& buffer);
+  static void freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer);
 
   // Thaw 'src' into 'dst' recursively. Specializations of this class wil
   // recurse to each field, thawing each of their fields recursively.
@@ -108,7 +107,7 @@ struct Freezer {
 /**
  * TrivialFreezer<T> - Freezer for POD types, which are simply copied.
  */
-template<class T>
+template <class T>
 struct TrivialFreezer {
   // The type which a frozen value thaws back into, usually just T.
   typedef T ThawedType;
@@ -143,35 +142,35 @@ struct TrivialFreezer {
 /**
  * Freezer<POD> - Use trivial Freezer.
  */
-template<class T>
-struct Freezer<T,
-               typename std::enable_if<
-                 std::is_pod<T>::value
-                 && !std::is_const<T>::value
-               >::type> : TrivialFreezer<T> {};
+template <class T>
+struct Freezer<
+    T,
+    typename std::enable_if<
+        std::is_pod<T>::value && !std::is_const<T>::value>::type>
+    : TrivialFreezer<T> {};
 
 /**
  * Freezer specialization for const T. Primarily a pass-through to Freezer<T>,
  * but const-ness removed to enable thawing.
  */
-template<class T>
+template <class T>
 struct Freezer<const T, void> : Freezer<T, void> {};
 
 /**
  * extraSize - Dispatch to Freezer<T>'s extraSizeImpl to calculate addition
  * space needed for 'src'.
  */
-template<class T>
+template <class T>
 size_t extraSize(const T& src) {
   return Freezer<T>::extraSizeImpl(src);
 }
 
-template<class T>
+template <class T>
 T unaligned_ptr_cast(void* ptr) {
   return static_cast<T>(ptr);
 }
 
-template<class T>
+template <class T>
 const T unaligned_ptr_cast(const void* ptr) {
   return static_cast<const T>(ptr);
 }
@@ -181,11 +180,15 @@ namespace frzn_dtl {
 // frozen size of implementation //
 template <typename T>
 struct z {
-  static constexpr inline std::size_t size() { return sizeof(T); }
-  static constexpr inline std::size_t alignment() { return alignof(T); }
+  static constexpr inline std::size_t size() {
+    return sizeof(T);
+  }
+  static constexpr inline std::size_t alignment() {
+    return alignof(T);
+  }
 };
 
-} // namespace frzn_dtl {
+} // namespace frzn_dtl
 
 template <typename T>
 using FrozenSizeOf = frzn_dtl::z<typename std::decay<T>::type>;
@@ -193,7 +196,7 @@ using FrozenSizeOf = frzn_dtl::z<typename std::decay<T>::type>;
 /**
  * frozenSize - Total space needed to store a frozen representation of 'src'.
  */
-template<class T>
+template <class T>
 size_t frozenSize(const T& src) {
   return FrozenSizeOf<typename Freezer<T>::FrozenType>::size() + extraSize(src);
 }
@@ -206,8 +209,7 @@ const Frozen<T>& frozenView(const void* blob) {
 /**
  * freeze(...) - Freeze 'src' into 'dst', consuming 'buffer' for extra space.
  */
-template<class T,
-         class FrozenType = typename Freezer<T>::FrozenType>
+template <class T, class FrozenType = typename Freezer<T>::FrozenType>
 void freeze(const T& src, FrozenType& dst, byte*& buffer) {
   Freezer<T>::freezeImpl(src, dst, buffer);
 }
@@ -215,10 +217,8 @@ void freeze(const T& src, FrozenType& dst, byte*& buffer) {
 /**
  * freeze(...) - Freeze 'src' by consuming memory pointed to by 'buffer'.
  */
-template<class T,
-         class FrozenType = typename Freezer<T>::FrozenType>
-const FrozenType*
-freeze(const T& src, byte*& buffer) {
+template <class T, class FrozenType = typename Freezer<T>::FrozenType>
+const FrozenType* freeze(const T& src, byte*& buffer) {
   // NOTE(tjackson): This pointer will not necessarily be aligned with
   //                 alignof(FrozenType).
   FrozenType* frozen = unaligned_ptr_cast<FrozenType*>(buffer);
@@ -233,8 +233,7 @@ struct FrozenTypeDeleter {
   }
 };
 
-template<class T,
-         class FrozenType = typename Freezer<T>::FrozenType>
+template <class T, class FrozenType = typename Freezer<T>::FrozenType>
 using FrozenTypeUPtr = std::unique_ptr<const FrozenType, FrozenTypeDeleter>;
 
 // Enables disambiguated calls to freeze(), which also exists in frozen2
@@ -244,10 +243,8 @@ enum class Frozen1 { Marker };
  * freeze(...) - Freeze 'src' into a newly-allocated buffer owned by a
  * unique_ptr.
  */
-template<class T,
-         class FrozenType = typename Freezer<T>::FrozenType>
-FrozenTypeUPtr<T, FrozenType>
-freeze(const T& src, Frozen1 = Frozen1::Marker) {
+template <class T, class FrozenType = typename Freezer<T>::FrozenType>
+FrozenTypeUPtr<T, FrozenType> freeze(const T& src, Frozen1 = Frozen1::Marker) {
   // find how much space we need
   size_t size = frozenSize(src);
   // allocate it
@@ -271,16 +268,17 @@ freeze(const T& src, Frozen1 = Frozen1::Marker) {
 /**
  * thaw(...) - Thaw a given frozen into its mutable counterpart.
  */
-template<class ThawedType>
-void thaw(const typename Freezer<ThawedType>::FrozenType& frozen,
-          ThawedType& thawed) {
+template <class ThawedType>
+void thaw(
+    const typename Freezer<ThawedType>::FrozenType& frozen,
+    ThawedType& thawed) {
   Freezer<ThawedType>::thawImpl(frozen, thawed);
 }
 
 /**
  * thaw(...) - Thaw a given frozen into its mutable counterpart.
  */
-template<class ThawedType>
+template <class ThawedType>
 ThawedType thaw(const Frozen<ThawedType>& frozen) {
   ThawedType thawed;
   Freezer<ThawedType>::thawImpl(frozen, thawed);
@@ -291,21 +289,22 @@ ThawedType thaw(const Frozen<ThawedType>& frozen) {
  * Freezer<std::pair<A, B>> - Freezer for pairs of values, frozen as
  * std::pair<Frozen<A>, Frozen<B>> with the help of Freezer<A> and Freezer<B>.
  */
-template<class A, class B>
+template <class A, class B>
 struct Freezer<std::pair<A, B>> {
-  typedef std::pair<typename Freezer<A>::ThawedType,
-                    typename Freezer<B>::ThawedType> ThawedType;
-  typedef std::pair<typename Freezer<A>::FrozenType,
-                    typename Freezer<B>::FrozenType> FrozenType;
+  typedef typename Freezer<A>::ThawedType ThawedFirst;
+  typedef typename Freezer<B>::ThawedType ThawedSecond;
+  typedef std::pair<ThawedFirst, ThawedSecond> ThawedType;
+  typedef typename Freezer<A>::FrozenType FrozenFirst;
+  typedef typename Freezer<B>::FrozenType FrozenSecond;
+  typedef std::pair<FrozenFirst, FrozenSecond> FrozenType;
 
   static constexpr size_t extraSizeImpl(const ThawedType& src) {
     return Freezer<A>::extraSizeImpl(src.first) +
-           Freezer<B>::extraSizeImpl(src.second);
+        Freezer<B>::extraSizeImpl(src.second);
   }
 
-  static void freezeImpl(const ThawedType& src,
-                         FrozenType& dst,
-                         byte*& buffer) {
+  static void
+  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer) {
     Freezer<A>::freezeImpl(src.first, dst.first, buffer);
     Freezer<B>::freezeImpl(src.second, dst.second, buffer);
   }
@@ -324,7 +323,7 @@ struct t {
   using type = const FrozenItem*;
 };
 
-} // namespace frzn_dtl {
+} // namespace frzn_dtl
 
 template <typename FrozenItem>
 using FrozenIterator = typename frzn_dtl::t<FrozenItem>::type;
@@ -337,21 +336,25 @@ using FrozenIterator = typename frzn_dtl::t<FrozenItem>::type;
  * The memory pointed to by FrozenRange is usually located at addresses just
  * higher than the address of the FrozenRange itself.
  */
-template<class ThawedItem,
-         class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
+template <
+    class ThawedItem,
+    class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
 struct FrozenRange {
   typedef const FrozenItem value_type;
   typedef FrozenIterator<FrozenItem> iterator;
   typedef FrozenIterator<FrozenItem> const_iterator;
 
-  FrozenRange()
-    : begin_(nullptr), end_(nullptr) {}
+  FrozenRange() : begin_(nullptr), end_(nullptr) {}
 
   FrozenRange(const_iterator begin, const_iterator end)
-    : begin_(begin), end_(end) {}
+      : begin_(begin), end_(end) {}
 
-  const_iterator begin() const { return const_iterator(begin_.get()); }
-  const_iterator end() const { return const_iterator(end_.get()); }
+  const_iterator begin() const {
+    return const_iterator(begin_.get());
+  }
+  const_iterator end() const {
+    return const_iterator(end_.get());
+  }
 
   const value_type& front() const {
     if (size() == 0) {
@@ -370,7 +373,9 @@ struct FrozenRange {
   size_t size() const {
     return end() - begin();
   }
-  bool empty() const { return end_.get() == begin_.get(); }
+  bool empty() const {
+    return end_.get() == begin_.get();
+  }
 
   const value_type& operator[](int i) const {
     return *(begin() + i);
@@ -423,11 +428,11 @@ struct FrozenRange {
 
 namespace detail {
 
-template<class T>
-struct IsFrozenRange : std::false_type { };
+template <class T>
+struct IsFrozenRange : std::false_type {};
 
-template<class ThawedItem, class FrozenItem>
-struct IsFrozenRange<FrozenRange<ThawedItem, FrozenItem>> : std::true_type { };
+template <class ThawedItem, class FrozenItem>
+struct IsFrozenRange<FrozenRange<ThawedItem, FrozenItem>> : std::true_type {};
 
 } // namespace detail
 
@@ -435,56 +440,55 @@ struct IsFrozenRange<FrozenRange<ThawedItem, FrozenItem>> : std::true_type { };
  * Operator overloads to facilitate comparison and sorting of FrozenRange's.
  * Primarily needed for inclusion in std::map's.
  */
-template<class ThawedString>
-bool operator==(const FrozenRange<char, ThawedString>& str,
-                const char* cstr) {
+template <class ThawedString>
+bool operator==(const FrozenRange<char, ThawedString>& str, const char* cstr) {
   return str == folly::StringPiece(cstr);
 }
 
-template<class ThawedString>
-bool operator==(const char* cstr,
-                FrozenRange<char, ThawedString>& str) {
+template <class ThawedString>
+bool operator==(const char* cstr, FrozenRange<char, ThawedString>& str) {
   return str == folly::StringPiece(cstr);
 }
 
-template<class ThawedString>
-bool operator<(const FrozenRange<char, ThawedString>& str,
-               const char* cstr) {
+template <class ThawedString>
+bool operator<(const FrozenRange<char, ThawedString>& str, const char* cstr) {
   return str < folly::StringPiece(cstr);
 }
 
-template<class ThawedString>
-bool operator<(const char* cstr,
-               const FrozenRange<char, ThawedString>& str) {
+template <class ThawedString>
+bool operator<(const char* cstr, const FrozenRange<char, ThawedString>& str) {
   return folly::StringPiece(cstr) < str;
 }
 
-template<class ThawedItem,
-         class FrozenItem,
-         class Range,
-         class = decltype(std::declval<Range>().begin())>
+template <
+    class ThawedItem,
+    class FrozenItem,
+    class Range,
+    class = decltype(std::declval<Range>().begin())>
 typename std::enable_if<!detail::IsFrozenRange<Range>::value, bool>::type
-operator<(const Range& range,
-          const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+operator<(
+    const Range& range,
+    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return frozen > range;
 }
 
-template<class ThawedItem,
-         class FrozenItem,
-         class Range,
-         class = decltype(std::declval<Range>().begin())>
+template <
+    class ThawedItem,
+    class FrozenItem,
+    class Range,
+    class = decltype(std::declval<Range>().begin())>
 typename std::enable_if<!detail::IsFrozenRange<Range>::value, bool>::type
-operator==(const Range& range,
-           const FrozenRange<ThawedItem, FrozenItem>& frozen) {
-  return range.size() == frozen.size()
-    && std::equal(range.begin(), range.end(), frozen.begin());
+operator==(
+    const Range& range,
+    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+  return range.size() == frozen.size() &&
+      std::equal(range.begin(), range.end(), frozen.begin());
 }
 
-template<class Ostream,
-         class ThawedItem,
-         class FrozenItem>
-Ostream& operator<<(Ostream& os,
-                    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+template <class Ostream, class ThawedItem, class FrozenItem>
+Ostream& operator<<(
+    Ostream& os,
+    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   for (auto& item : frozen) {
     os << item;
   }
@@ -494,9 +498,10 @@ Ostream& operator<<(Ostream& os,
 /**
  * RangeFreezer - Helper type for freezing range-like types.
  */
-template<class ThawedItem,
-         class Container,
-         class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
+template <
+    class ThawedItem,
+    class Container,
+    class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
 struct RangeFreezer {
   typedef Container ThawedType;
   typedef FrozenRange<ThawedItem> FrozenType;
@@ -511,12 +516,11 @@ struct RangeFreezer {
     return size;
   }
 
-  static void freezeImpl(const ThawedType& src,
-                         FrozenType& dst,
-                         byte*& buffer) {
+  static void
+  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer) {
     size_t size = src.size();
     if (!size) {
-      //point to [nullptr, nullptr) if the range is empty.
+      // point to [nullptr, nullptr) if the range is empty.
       dst.reset(nullptr, nullptr);
       return;
     }
@@ -547,8 +551,7 @@ struct RangeFreezer {
  * values of any type which may be compared to the key, though may not be of
  * type K.
  */
-template<class K,
-         class V>
+template <class K, class V>
 struct FrozenMap : FrozenRange<std::pair<const K, V>> {
   typedef typename Freezer<K>::FrozenType key_type;
   typedef typename Freezer<V>::FrozenType mapped_type;
@@ -556,7 +559,7 @@ struct FrozenMap : FrozenRange<std::pair<const K, V>> {
   typedef FrozenIterator<value_type> iterator;
   typedef FrozenIterator<value_type> const_iterator;
 
-  template<class Key>
+  template <class Key>
   const mapped_type& at(const Key& key) const {
     auto found = find(key);
     if (found == this->end()) {
@@ -565,42 +568,41 @@ struct FrozenMap : FrozenRange<std::pair<const K, V>> {
     return found->second;
   }
 
-  template<class Key>
+  template <class Key>
   const_iterator find(const Key& key) const {
     auto found = lower_bound(key);
-    if (found != this->end() &&
-        found->first == key) {
+    if (found != this->end() && found->first == key) {
       return found;
     } else {
       return this->end();
     }
   }
 
-  template<class Key>
+  template <class Key>
   const_iterator lower_bound(const Key& key) const {
-    return std::lower_bound(this->begin(), this->end(),
-                            key, KeyComparator<Key>());
+    return std::lower_bound(
+        this->begin(), this->end(), key, KeyComparator<Key>());
   }
 
-  template<class Key>
+  template <class Key>
   const_iterator upper_bound(const Key& key) const {
-    return std::upper_bound(this->begin(), this->end(),
-                            key, KeyComparator<Key>());
+    return std::upper_bound(
+        this->begin(), this->end(), key, KeyComparator<Key>());
   }
 
-  template<class Key>
+  template <class Key>
   std::pair<const_iterator, const_iterator> equal_range(const Key& key) const {
-    return std::equal_range(this->begin(), this->end(),
-                            key, KeyComparator<Key>());
+    return std::equal_range(
+        this->begin(), this->end(), key, KeyComparator<Key>());
   }
 
-  template<class Key>
+  template <class Key>
   size_t count(const Key& key) const {
     return find(key) != this->end() ? 1 : 0;
   }
 
  private:
-  template<class Key>
+  template <class Key>
   struct KeyComparator {
     bool operator()(const value_type& a, const Key& b) const {
       return a.first < b;
@@ -614,9 +616,7 @@ struct FrozenMap : FrozenRange<std::pair<const K, V>> {
 /**
  * Freezer<Map<K, V>> - Freezes map<K, V> into the above Frozen<map<K, V>>.
  */
-template<class K,
-         class V,
-         class MapType>
+template <class K, class V, class MapType>
 struct MapFreezer : public RangeFreezer<std::pair<const K, V>, MapType> {
   typedef MapType ThawedType;
   typedef FrozenMap<K, V> FrozenType;
@@ -635,9 +635,7 @@ struct MapFreezer : public RangeFreezer<std::pair<const K, V>, MapType> {
 namespace detail {
 
 struct BlockIndex {
-  BlockIndex()
-    : offset(0),
-      mask(0) {}
+  BlockIndex() : offset(0), mask(0) {}
 
   uint64_t offset;
   uint64_t mask;
@@ -661,7 +659,7 @@ struct DeprecatedStringPieceHash {
   }
 };
 
-} // detail
+} // namespace detail
 
 inline size_t frozenHash(folly::StringPiece sp) {
   return detail::DeprecatedStringPieceHash()(sp);
@@ -675,18 +673,18 @@ inline size_t frozenHash(size_t i) {
   return std::hash<size_t>()(i) * 3; // avoid contiguous hash values
 }
 
-template<>
-struct Freezer<detail::BlockIndex, void>
-  : TrivialFreezer<detail::BlockIndex> {};
+template <>
+struct Freezer<detail::BlockIndex, void> : TrivialFreezer<detail::BlockIndex> {
+};
 
 /**
  * FrozenHashMap<...> - A sparsehash-based hashtable for frozen HashMaps.
  */
-template<class K,
-         class V>
+template <class K, class V>
 struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
  private:
   typedef FrozenRange<std::pair<const K, V>> Base;
+
  public:
   typedef typename Freezer<K>::FrozenType key_type;
   typedef typename Freezer<V>::FrozenType mapped_type;
@@ -694,7 +692,7 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
   typedef FrozenIterator<value_type> iterator;
   typedef FrozenIterator<value_type> const_iterator;
 
-  template<class Key>
+  template <class Key>
   const_iterator find(const Key& key) const {
     auto h = frozenHash(key);
     auto chunks = blockIndex.size();
@@ -719,7 +717,7 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
         if (LIKELY(minor < bits)) {
           h += p; // same block shortcut
         } else {
-          --p; //undo
+          --p; // undo
           break;
         }
       }
@@ -727,7 +725,7 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
     return this->end();
   }
 
-  template<class Key>
+  template <class Key>
   const mapped_type& at(const Key& key) const {
     auto found = find(key);
     if (found == this->end()) {
@@ -736,7 +734,7 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
     return found->second;
   }
 
-  template<class Key>
+  template <class Key>
   std::pair<const_iterator, const_iterator> equal_range(const Key& key) const {
     const_iterator found = find(key);
     if (found == this->end()) {
@@ -746,7 +744,7 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
     }
   }
 
-  template<class Key>
+  template <class Key>
   size_t count(const Key& key) const {
     return find(key) != this->end() ? 1 : 0;
   }
@@ -757,8 +755,9 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
   }
 
   FrozenRange<detail::BlockIndex> blockIndex;
+
  private:
-  template<class Key>
+  template <class Key>
   struct KeyComparator {
     bool operator()(const value_type& a, const Key& b) const {
       return a.first < b;
@@ -767,7 +766,6 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
       return a < b.first;
     }
   };
-
 };
 
 /**
@@ -787,9 +785,8 @@ struct HashMapFreezer {
     return size_t(size * 2.0 + bits - 1) / bits;
   }
 
-  static void freezeImpl(const ThawedType& src,
-                         FrozenType& dst,
-                         byte*& buffer) {
+  static void
+  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer) {
     size_t size = src.size();
     if (!size) {
       // point to [nullptr, nullptr) if the range is empty.
@@ -807,7 +804,7 @@ struct HashMapFreezer {
 
     for (auto& item : src) {
       size_t h = frozenHash(item.first);
-      for (size_t p = 0; ; h += ++p) { // quadratic probing
+      for (size_t p = 0;; h += ++p) { // quadratic probing
         const ThawedItem** bucket = &index[h % buckets];
         if (*bucket) {
           if (p == buckets) {
@@ -874,40 +871,40 @@ struct HashMapFreezer {
  * values of any type which may be compared to the item, though may not be of
  * type T.
  */
-template<class ThawedItem,
-         class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
+template <
+    class ThawedItem,
+    class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
 struct FrozenSet : public FrozenRange<ThawedItem, FrozenItem> {
   typedef const FrozenItem value_type;
   typedef value_type* iterator;
   typedef value_type* const_iterator;
 
-  template<class Key>
+  template <class Key>
   const_iterator find(const Key& key) const {
     auto found = lower_bound(key);
-    if (found != this->end() &&
-        *found == key) {
+    if (found != this->end() && *found == key) {
       return found;
     } else {
       return this->end();
     }
   }
 
-  template<class Key>
+  template <class Key>
   const_iterator lower_bound(const Key& key) const {
     return std::lower_bound(this->begin(), this->end(), key);
   }
 
-  template<class Key>
+  template <class Key>
   const_iterator upper_bound(const Key& key) const {
     return std::upper_bound(this->begin(), this->end(), key);
   }
 
-  template<class Key>
+  template <class Key>
   std::pair<const_iterator, const_iterator> equal_range(const Key& key) const {
     return std::equal_range(this->begin(), this->end(), key);
   }
 
-  template<class Key>
+  template <class Key>
   size_t count(const Key& key) const {
     return find(key) != this->end() ? 1 : 0;
   }
@@ -916,8 +913,7 @@ struct FrozenSet : public FrozenRange<ThawedItem, FrozenItem> {
 /**
  * Freezer<std::set<T>> - Freezes set<T> into the above Frozen<set<T>>.
  */
-template<class ThawedItem,
-         class SetType>
+template <class ThawedItem, class SetType>
 struct SetFreezer : public RangeFreezer<ThawedItem, SetType> {
   typedef SetType ThawedType;
   typedef FrozenSet<ThawedItem> FrozenType;
@@ -932,39 +928,35 @@ struct SetFreezer : public RangeFreezer<ThawedItem, SetType> {
   }
 };
 
-template<>
-struct Freezer<std::string, void>
-  : RangeFreezer<char, std::string> {};
+template <>
+struct Freezer<std::string, void> : RangeFreezer<char, std::string> {};
 
-template<>
-struct Freezer<folly::fbstring, void>
-  : RangeFreezer<char, folly::fbstring> {};
+template <>
+struct Freezer<folly::fbstring, void> : RangeFreezer<char, folly::fbstring> {};
 
-template<>
+template <>
 struct Freezer<folly::StringPiece, void>
-  : public RangeFreezer<char, folly::StringPiece> {};
+    : public RangeFreezer<char, folly::StringPiece> {};
 
-template<class K, class V>
-struct Freezer<std::map<K, V>, void>
-  : MapFreezer<K, V, std::map<K, V>> {};
+template <class K, class V>
+struct Freezer<std::map<K, V>, void> : MapFreezer<K, V, std::map<K, V>> {};
 
-template<class K, class V>
+template <class K, class V>
 struct Freezer<std::unordered_map<K, V>, void>
-  : HashMapFreezer<K, V, std::unordered_map<K, V>> {};
+    : HashMapFreezer<K, V, std::unordered_map<K, V>> {};
 
-template<class T>
-struct Freezer<std::vector<T>, void>
-  : RangeFreezer<T, std::vector<T>> {};
+template <class T>
+struct Freezer<std::vector<T>, void> : RangeFreezer<T, std::vector<T>> {};
 
-template<class T>
-struct Freezer<std::set<T>, void>
-  : SetFreezer<T, std::set<T>> {};
+template <class T>
+struct Freezer<std::set<T>, void> : SetFreezer<T, std::set<T>> {};
 
-std::unique_ptr<const FrozenRange<char>, FrozenTypeDeleter>
-inline freezeStr(folly::StringPiece str) {
+std::unique_ptr<const FrozenRange<char>, FrozenTypeDeleter> inline freezeStr(
+    folly::StringPiece str) {
   return freeze(str);
 }
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_LIB_CPP_FROZEN_H_

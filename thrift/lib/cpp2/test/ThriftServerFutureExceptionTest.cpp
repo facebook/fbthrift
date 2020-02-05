@@ -26,7 +26,7 @@ using namespace apache::thrift::test;
 
 class Lulz : public runtime_error {
  public:
-  explicit Lulz(const string& msg) : runtime_error(msg) { }
+  explicit Lulz(const string& msg) : runtime_error(msg) {}
 };
 
 namespace {
@@ -36,11 +36,12 @@ using AppExnType = AppExn::TApplicationExceptionType;
 
 class RaiserHandler : public RaiserSvIf {
  public:
-  explicit RaiserHandler(function<Future<Unit>()> go)
-    : go_(move(go)) { }
+  explicit RaiserHandler(function<Future<Unit>()> go) : go_(move(go)) {}
 
  private:
-  Future<Unit> future_doRaise() override { return go_(); }
+  Future<Unit> future_doRaise() override {
+    return go_();
+  }
 
   function<Future<Unit>()> go_;
 };
@@ -71,13 +72,13 @@ TEST_F(ThriftServerFutureExceptionTest, fiery_return) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
-      EXPECT_EQ("rofl", e.message);
-      EXPECT_EQ("::apache::thrift::test::Fiery", string(e.what()));
+    EXPECT_EQ("rofl", e.message);
+    EXPECT_EQ("::apache::thrift::test::Fiery", string(e.what()));
   }));
 }
 
 TEST_F(ThriftServerFutureExceptionTest, fiery_throw) {
-  auto go = [&] () -> Future<Unit> { throw makeFiery("rofl"); };
+  auto go = [&]() -> Future<Unit> { throw makeFiery("rofl"); };
 
   auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
@@ -85,8 +86,8 @@ TEST_F(ThriftServerFutureExceptionTest, fiery_throw) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const Fiery& e) {
-      EXPECT_EQ("rofl", e.message);
-      EXPECT_EQ("::apache::thrift::test::Fiery", string(e.what()));
+    EXPECT_EQ("rofl", e.message);
+    EXPECT_EQ("::apache::thrift::test::Fiery", string(e.what()));
   }));
 }
 
@@ -99,13 +100,13 @@ TEST_F(ThriftServerFutureExceptionTest, lulz_return) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const AppExn& e) {
-      EXPECT_EQ(AppExnType::UNKNOWN, e.getType());
-      EXPECT_EQ("Lulz: rofl", string(e.what()));
+    EXPECT_EQ(AppExnType::UNKNOWN, e.getType());
+    EXPECT_EQ("Lulz: rofl", string(e.what()));
   }));
 }
 
 TEST_F(ThriftServerFutureExceptionTest, lulz_throw) {
-  auto go = [&] () -> Future<Unit> { throw Lulz("rofl"); };
+  auto go = [&]() -> Future<Unit> { throw Lulz("rofl"); };
 
   auto handler = make_shared<RaiserHandler>(go);
   ScopedServerInterfaceThread runner(handler);
@@ -113,9 +114,9 @@ TEST_F(ThriftServerFutureExceptionTest, lulz_throw) {
   auto client = runner.newClient<RaiserAsyncClient>(&eb);
 
   EXPECT_TRUE(exn(client->future_doRaise(), [&](const AppExn& e) {
-      EXPECT_EQ(AppExnType::UNKNOWN, e.getType());
-      EXPECT_EQ("Lulz: rofl", string(e.what()));
+    EXPECT_EQ(AppExnType::UNKNOWN, e.getType());
+    EXPECT_EQ("Lulz: rofl", string(e.what()));
   }));
 }
 
-}  // namespace
+} // namespace

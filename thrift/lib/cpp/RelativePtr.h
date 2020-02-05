@@ -19,16 +19,17 @@
 
 #include <glog/logging.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 typedef uint8_t byte;
 
 // Relative Ptr - The key to relocatable object graphs
 // TODO: expose 'OffsetType' as a type parameter in freeze()
-template<class T,
-         class OffsetType = uint32_t>
+template <class T, class OffsetType = uint32_t>
 class RelativePtr {
   OffsetType offset_;
+
  public:
   RelativePtr() {
     reset(nullptr);
@@ -68,6 +69,7 @@ class RelativePtr {
   }
 };
 
-}} //apache::thrfit
+} // namespace thrift
+} // namespace apache
 
-#endif//THRIFT_RELATIVEPTR_H_
+#endif // THRIFT_RELATIVEPTR_H_

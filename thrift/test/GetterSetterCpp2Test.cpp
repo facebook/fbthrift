@@ -30,7 +30,7 @@ using namespace thrift::test::getter_setter::cpp2;
 
 TEST(GetterSetter, BasicOptionalFields) {
   GetterSetterTest obj;
-  std::vector<int32_t> vec = { 1, 2, 3 };
+  std::vector<int32_t> vec = {1, 2, 3};
   auto buf = std::make_unique<folly::IOBuf>();
 
   EXPECT_FALSE(obj.__isset.optionalInt);
@@ -53,7 +53,7 @@ TEST(GetterSetter, BasicOptionalFields) {
 
 TEST(GetterSetter, BasicDefaultFields) {
   GetterSetterTest obj;
-  std::vector<int32_t> vec = { 1, 2, 3 };
+  std::vector<int32_t> vec = {1, 2, 3};
   folly::StringPiece str("abc123");
   auto buf = std::make_unique<folly::IOBuf>(folly::IOBuf::WRAP_BUFFER, str);
 

@@ -22,7 +22,8 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 
-namespace thrift { namespace test {
+namespace thrift {
+namespace test {
 
 /**
  * We serialize the first four bytes of the data_ string into the intData
@@ -62,11 +63,13 @@ class MyCustomUnion {
   std::string data_;
 };
 
-}}
+} // namespace test
+} // namespace thrift
 
 ////////////////////////////////////////////////////////////////////////////////
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 template <>
 class Cpp2Ops<::thrift::test::MyCustomStruct> {
@@ -265,4 +268,5 @@ class Cpp2Ops<::thrift::test::MyCustomUnion> {
     return apache::thrift::protocol::T_STRUCT;
   }
 };
-}}
+} // namespace thrift
+} // namespace apache

@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/fatal_reflection_indirection_fatal.h>
-
+#include <folly/Traits.h>
+#include <folly/Utility.h>
 #include <folly/portability/GTest.h>
 
-#include <folly/Utility.h>
-#include <folly/Traits.h>
 #include <thrift/lib/cpp2/reflection/internal/test_helpers.h>
+#include <thrift/test/gen-cpp2/fatal_reflection_indirection_fatal.h>
 
 namespace {
 
 class FatalReflectionIndirectionTest : public testing::Test {};
-}
+} // namespace
 
 using type = reflection_indirection::struct_with_indirections;
 using info = apache::thrift::reflect_struct<type>;
@@ -34,17 +33,14 @@ TEST_F(FatalReflectionIndirectionTest, sanity_check_no_indirection) {
   using member = info::member::real;
 
   EXPECT_SAME<
-    std::int32_t &,
-    decltype(member::getter::ref(std::declval<type &>()))
-  >();
+      std::int32_t&,
+      decltype(member::getter::ref(std::declval<type&>()))>();
   EXPECT_SAME<
-    std::int32_t &&,
-    decltype(member::getter::ref(std::declval<type &&>()))
-  >();
+      std::int32_t&&,
+      decltype(member::getter::ref(std::declval<type&&>()))>();
   EXPECT_SAME<
-    std::int32_t const&,
-    decltype(member::getter::ref(std::declval<type const&>()))
-  >();
+      std::int32_t const&,
+      decltype(member::getter::ref(std::declval<type const&>()))>();
 
   type obj;
   member::getter::ref(obj) = 12;
@@ -61,17 +57,14 @@ TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
   using member = info::member::fake;
 
   EXPECT_SAME<
-    std::int32_t &,
-    decltype(member::getter::ref(std::declval<type &>()))
-  >();
+      std::int32_t&,
+      decltype(member::getter::ref(std::declval<type&>()))>();
   EXPECT_SAME<
-    std::int32_t &&,
-    decltype(member::getter::ref(std::declval<type &&>()))
-  >();
+      std::int32_t&&,
+      decltype(member::getter::ref(std::declval<type&&>()))>();
   EXPECT_SAME<
-    std::int32_t const&,
-    decltype(member::getter::ref(std::declval<type const&>()))
-  >();
+      std::int32_t const&,
+      decltype(member::getter::ref(std::declval<type const&>()))>();
 
   type obj;
   member::getter::ref(obj) = 15;
@@ -88,17 +81,14 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
   using member = info::member::number;
 
   EXPECT_SAME<
-    std::int32_t &,
-    decltype(member::getter::ref(std::declval<type &>()))
-  >();
+      std::int32_t&,
+      decltype(member::getter::ref(std::declval<type&>()))>();
   EXPECT_SAME<
-    std::int32_t &&,
-    decltype(member::getter::ref(std::declval<type &&>()))
-  >();
+      std::int32_t&&,
+      decltype(member::getter::ref(std::declval<type&&>()))>();
   EXPECT_SAME<
-    std::int32_t const&,
-    decltype(member::getter::ref(std::declval<type const&>()))
-  >();
+      std::int32_t const&,
+      decltype(member::getter::ref(std::declval<type const&>()))>();
 
   type obj;
   member::getter::ref(obj) = -43;
@@ -115,17 +105,14 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
   using member = info::member::result;
 
   EXPECT_SAME<
-    std::int32_t &,
-    decltype(member::getter::ref(std::declval<type &>()))
-  >();
+      std::int32_t&,
+      decltype(member::getter::ref(std::declval<type&>()))>();
   EXPECT_SAME<
-    std::int32_t &&,
-    decltype(member::getter::ref(std::declval<type &&>()))
-  >();
+      std::int32_t&&,
+      decltype(member::getter::ref(std::declval<type&&>()))>();
   EXPECT_SAME<
-    std::int32_t const&,
-    decltype(member::getter::ref(std::declval<type const&>()))
-  >();
+      std::int32_t const&,
+      decltype(member::getter::ref(std::declval<type const&>()))>();
 
   type obj;
   member::getter::ref(obj) = -2;
@@ -142,17 +129,14 @@ TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
   using member = info::member::phrase;
 
   EXPECT_SAME<
-    std::string &,
-    decltype(member::getter::ref(std::declval<type &>()))
-  >();
+      std::string&,
+      decltype(member::getter::ref(std::declval<type&>()))>();
   EXPECT_SAME<
-    std::string &&,
-    decltype(member::getter::ref(std::declval<type &&>()))
-  >();
+      std::string&&,
+      decltype(member::getter::ref(std::declval<type&&>()))>();
   EXPECT_SAME<
-    std::string const&,
-    decltype(member::getter::ref(std::declval<type const&>()))
-  >();
+      std::string const&,
+      decltype(member::getter::ref(std::declval<type const&>()))>();
 
   type obj;
   member::getter::ref(obj) = "hello";

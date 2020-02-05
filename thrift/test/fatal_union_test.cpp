@@ -50,14 +50,12 @@ TEST(fatal_union, variants) {
   EXPECT_SAME<uei, traits::ids::ue>();
 
   EXPECT_SAME<
-    fatal::list<uii, udi, usi, uei>,
-    fatal::transform<traits::descriptors, fatal::get_type::id>
-  >();
+      fatal::list<uii, udi, usi, uei>,
+      fatal::transform<traits::descriptors, fatal::get_type::id>>();
 
   EXPECT_SAME<
-    fatal::list<std::int32_t, double, std::string, enum1>,
-    fatal::transform<traits::descriptors, fatal::get_type::type>
-  >();
+      fatal::list<std::int32_t, double, std::string, enum1>,
+      fatal::transform<traits::descriptors, fatal::get_type::type>>();
 }
 
 TEST(fatal_union, by_id) {
@@ -75,9 +73,9 @@ TEST(fatal_union, by_id) {
   EXPECT_SAME<enum1, traits::type<uei>>();
 
   union1 u;
-  union1 const &uc = u;
-  union1 &ul = u;
-  union1 &&ur = std::move(u);
+  union1 const& uc = u;
+  union1& ul = u;
+  union1&& ur = std::move(u);
   EXPECT_TRUE(vtraits::empty(u));
   EXPECT_TRUE(vtraits::empty(uc));
   EXPECT_TRUE(vtraits::empty(ul));
@@ -159,9 +157,9 @@ TEST(fatal_union, by_type) {
   EXPECT_SAME<enum1, traits::type<enum1>>();
 
   union1 u;
-  union1 const &uc = u;
-  union1 &ul = u;
-  union1 &&ur = std::move(u);
+  union1 const& uc = u;
+  union1& ul = u;
+  union1&& ur = std::move(u);
   EXPECT_TRUE(vtraits::empty(u));
   EXPECT_TRUE(vtraits::empty(uc));
   EXPECT_TRUE(vtraits::empty(ul));
@@ -235,19 +233,16 @@ FATAL_S(unionA_annotation2v, "some text here");
 
 TEST(fatal_union, annotations) {
   EXPECT_SAME<
-    fatal::list<>,
-    apache::thrift::reflect_variant<union1>::annotations::map
-  >();
+      fatal::list<>,
+      apache::thrift::reflect_variant<union1>::annotations::map>();
 
   EXPECT_SAME<
-    fatal::list<>,
-    apache::thrift::reflect_variant<union2>::annotations::map
-  >();
+      fatal::list<>,
+      apache::thrift::reflect_variant<union2>::annotations::map>();
 
   EXPECT_SAME<
-    fatal::list<>,
-    apache::thrift::reflect_variant<union3>::annotations::map
-  >();
+      fatal::list<>,
+      apache::thrift::reflect_variant<union3>::annotations::map>();
 
   using actual_unionA = apache::thrift::reflect_variant<unionA>::annotations;
 
@@ -257,18 +252,10 @@ TEST(fatal_union, annotations) {
   EXPECT_SAME<unionA_annotation2v, actual_unionA::values::sample_annotation>();
 
   EXPECT_SAME<
-    fatal::list<
-      apache::thrift::annotation<
-        unionA_annotation1k,
-        unionA_annotation1v
-      >,
-      apache::thrift::annotation<
-        unionA_annotation2k,
-        unionA_annotation2v
-      >
-    >,
-    actual_unionA::map
-  >();
+      fatal::list<
+          apache::thrift::annotation<unionA_annotation1k, unionA_annotation1v>,
+          apache::thrift::annotation<unionA_annotation2k, unionA_annotation2v>>,
+      actual_unionA::map>();
 }
 
 TEST(fatal_union, by_name) {
@@ -305,5 +292,5 @@ TEST(fatal_union, by_field_id) {
   EXPECT_EQ(10, member_info::get(u));
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

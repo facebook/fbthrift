@@ -49,15 +49,17 @@ TEST(TNoExceptMoveCtorTest, simple) {
 
   // Check thrift struct default move ctor not "noexcept" if a user defined
   // type data member is not "noexcept move ctor".
-  nxMoveCtor = std::is_nothrow_constructible<TThrowCtorType,
-      TThrowCtorType&&>::value;
+  nxMoveCtor =
+      std::is_nothrow_constructible<TThrowCtorType, TThrowCtorType&&>::value;
   EXPECT_EQ(nxMoveCtor, false);
-  nxMoveCtor = std::is_nothrow_constructible<MayThrowInDefMoveCtorStruct,
+  nxMoveCtor = std::is_nothrow_constructible<
+      MayThrowInDefMoveCtorStruct,
       MayThrowInDefMoveCtorStruct&&>::value;
   EXPECT_EQ(nxMoveCtor, false);
 
   // Check cpp.noexcept_move_ctor works.
-  nxMoveCtor = std::is_nothrow_constructible<MayThrowInDefMoveCtorStructEx,
+  nxMoveCtor = std::is_nothrow_constructible<
+      MayThrowInDefMoveCtorStructEx,
       MayThrowInDefMoveCtorStructEx&&>::value;
   EXPECT_EQ(nxMoveCtor, true);
 }

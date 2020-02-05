@@ -521,8 +521,10 @@ Layout<T> maximumLayout() {
 class FieldCycleHolder {
  public:
   template <class T, class D>
-  Field<T>*
-  pushCycle(std::unique_ptr<Field<T>, D>& owned, int32_t key, const char* name) {
+  Field<T>* pushCycle(
+      std::unique_ptr<Field<T>, D>& owned,
+      int32_t key,
+      const char* name) {
     auto& slot = cyclicFields_[typeid(T)];
     if (slot.refCount++ == 0) {
       if (!owned) {

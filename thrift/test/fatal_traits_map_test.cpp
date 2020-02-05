@@ -28,5 +28,5 @@ TEST(reflection, thrift_std_unordered_map_traits) {
   apache::thrift::test_thrift_map_traits<std::unordered_map<int, int>>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

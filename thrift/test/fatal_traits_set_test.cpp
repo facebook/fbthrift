@@ -28,5 +28,5 @@ TEST(reflection, thrift_std_unordered_set_traits) {
   apache::thrift::test_thrift_set_traits<std::unordered_set<int>>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

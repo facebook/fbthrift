@@ -23,6 +23,7 @@ namespace apache {
 namespace thrift {
 namespace frozen {
 
+// clang-format off
 FROZEN_TYPE(
   ::apache::thrift::TApplicationException,
   FROZEN_FIELD(message, 1, std::string)
@@ -37,5 +38,7 @@ FROZEN_TYPE(
     FROZEN_LOAD_FIELD(message, 1)
     FROZEN_LOAD_FIELD(type, 2)));
 }
-}
-} // apache::thrift::frozen
+// clang-format on
+
+} // namespace thrift
+} // namespace apache

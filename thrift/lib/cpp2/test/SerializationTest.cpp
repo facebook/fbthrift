@@ -339,9 +339,9 @@ void testIOBufSharingUnmanagedBuffer() {
 
   for (unsigned int i = 0; i < 4; ++i) {
     ExternalBufferSharing serializationSharing =
-      i & 1 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
+        i & 1 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
     ExternalBufferSharing deserializationSharing =
-      i & 2 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
+        i & 2 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
 
     folly::IOBufQueue q;
     Serializer::serialize(s, &q, serializationSharing);
@@ -379,9 +379,9 @@ void testIOBufSharingManagedBuffer() {
 
   for (unsigned int i = 0; i < 4; ++i) {
     ExternalBufferSharing serializationSharing =
-      i & 1 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
+        i & 1 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
     ExternalBufferSharing deserializationSharing =
-      i & 2 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
+        i & 2 ? SHARE_EXTERNAL_BUFFER : COPY_EXTERNAL_BUFFER;
 
     folly::IOBufQueue q;
     Serializer::serialize(s, &q, serializationSharing);
@@ -403,7 +403,7 @@ void testIOBufSharingManagedBuffer() {
   }
 }
 
-}  // namespace
+} // namespace
 
 TEST(SerializationTest, CompactSerializerIOBufSharingUnmanagedBuffer) {
   testIOBufSharingUnmanagedBuffer<CompactSerializer>();

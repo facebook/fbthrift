@@ -16,13 +16,15 @@
 
 #include <string>
 #include <unordered_map>
+
 #include <folly/portability/GTest.h>
-#include <thrift/test/gen-cpp2/OpaqueTest_types.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/test/gen-cpp2/OpaqueTest_types.h>
 
 using namespace apache::thrift::test;
 
-template<class T>
+template <class T>
 T getTestStruct() {
   T a;
   a.d1 = OpaqueDouble1{123.0};
@@ -40,15 +42,15 @@ OpaqueTestStruct getTestStruct() {
   return getTestStruct<OpaqueTestStruct>();
 }
 
-template<typename T>
+template <typename T>
 void checkTypedefs() {
   EXPECT_FALSE((std::is_same<double, decltype(T::d1)>::value));
   EXPECT_FALSE((std::is_same<double, decltype(T::d2)>::value));
-  EXPECT_FALSE((std::is_same<double,
-                             decltype(T::dmap.begin()->second)>::value));
+  EXPECT_FALSE(
+      (std::is_same<double, decltype(T::dmap.begin()->second)>::value));
   EXPECT_FALSE((std::is_same<int64_t, decltype(T::ids[0])>::value));
-  EXPECT_TRUE((std::is_same<decltype(T::d1),
-                            decltype(T::dmap.begin()->second)>::value));
+  EXPECT_TRUE((
+      std::is_same<decltype(T::d1), decltype(T::dmap.begin()->second)>::value));
 }
 
 TEST(Opaque, Typedefs) {

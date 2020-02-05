@@ -27,6 +27,7 @@ namespace thrift {
 
 class ContextStack {
   friend class EventHandlerBase;
+
  public:
   explicit ContextStack(const char* method)
       : serviceName_(""), method_(method) {}

@@ -25,11 +25,10 @@
 
 using namespace apache::thrift;
 using namespace FrozenTypes;
-using folly::StringPiece;
 using folly::fbstring;
+using folly::StringPiece;
 using std::map;
 using std::string;
-using std::unordered_map;
 using std::unordered_map;
 using std::vector;
 

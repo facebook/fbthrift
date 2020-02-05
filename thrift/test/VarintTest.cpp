@@ -31,9 +31,15 @@ TEST(VarintTest, Varint) {
   int64_t v = 1;
   writeVarint(wcursor, 0);
   for (int bit = 0; bit < 64; bit++, v <<= int(bit < 64)) {
-    if (bit < 8)  writeVarint(wcursor, int8_t(v));
-    if (bit < 16) writeVarint(wcursor, int16_t(v));
-    if (bit < 32) writeVarint(wcursor, int32_t(v));
+    if (bit < 8) {
+      writeVarint(wcursor, int8_t(v));
+    }
+    if (bit < 16) {
+      writeVarint(wcursor, int16_t(v));
+    }
+    if (bit < 32) {
+      writeVarint(wcursor, int32_t(v));
+    }
     writeVarint(wcursor, v);
   }
   int32_t oversize = 1000000;
@@ -42,9 +48,15 @@ TEST(VarintTest, Varint) {
   EXPECT_EQ(0, readVarint<int8_t>(rcursor));
   v = 1;
   for (int bit = 0; bit < 64; bit++, v <<= int(bit < 64)) {
-    if (bit < 8)  { EXPECT_EQ(int8_t(v),  readVarint<int8_t>(rcursor)); }
-    if (bit < 16) { EXPECT_EQ(int16_t(v), readVarint<int16_t>(rcursor)); }
-    if (bit < 32) { EXPECT_EQ(int32_t(v), readVarint<int32_t>(rcursor)); }
+    if (bit < 8) {
+      EXPECT_EQ(int8_t(v), readVarint<int8_t>(rcursor));
+    }
+    if (bit < 16) {
+      EXPECT_EQ(int16_t(v), readVarint<int16_t>(rcursor));
+    }
+    if (bit < 32) {
+      EXPECT_EQ(int32_t(v), readVarint<int32_t>(rcursor));
+    }
     EXPECT_EQ(v, readVarint<int64_t>(rcursor));
   }
   EXPECT_THROW(readVarint<uint8_t>(rcursor), out_of_range);

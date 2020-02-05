@@ -22,12 +22,12 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService2.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService3.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
 
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -44,17 +44,17 @@ using namespace apache::thrift::async;
 using apache::thrift::TApplicationException;
 
 class SampleServiceHandler : public SampleServiceSvIf {
-public:
- int32_t return42(const MyArgs&, int32_t) override {
-   return 42;
- }
+ public:
+  int32_t return42(const MyArgs&, int32_t) override {
+    return 42;
+  }
 };
 
 std::shared_ptr<ThriftServer> getServer() {
   auto server = std::make_shared<ThriftServer>();
   server->setPort(0);
-  server->setInterface(std::unique_ptr<SampleServiceHandler>(
-                        new SampleServiceHandler));
+  server->setInterface(
+      std::unique_ptr<SampleServiceHandler>(new SampleServiceHandler));
   return server;
 }
 
@@ -86,7 +86,7 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
     /* second call (with all_is_set) should succeed */
     EXPECT_EQ(42, client.sync_return42(all_is_set, 5));
     return ret;
-  } catch(...) {
+  } catch (...) {
     /* second call (with all_is_set) should succeed */
     EXPECT_EQ(42, client.sync_return42(all_is_set, 5));
     throw;
@@ -98,13 +98,15 @@ TEST(ProcessorExceptionTest, ok_if_required_set) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_scalar_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.s = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.s = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_inner_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.i = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.i = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_inner_field_required_missing) {
@@ -114,18 +116,21 @@ TEST(ProcessorExceptionTest, throw_if_inner_field_required_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.l = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.l = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.m = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.m = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_of_struct_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.li = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.li = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_inner_required_missing) {
@@ -135,8 +140,9 @@ TEST(ProcessorExceptionTest, throw_if_list_inner_required_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_of_struct_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.mi = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.mi = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_inner_required_missing) {
@@ -146,8 +152,9 @@ TEST(ProcessorExceptionTest, throw_if_map_inner_required_missing) {
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_key_required_missing) {
-  EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.complex_key = false;}),
-    TApplicationException);
+  EXPECT_THROW(
+      call_return42([](MyArgs2& a) { a.__isset.complex_key = false; }),
+      TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_method_missing) {

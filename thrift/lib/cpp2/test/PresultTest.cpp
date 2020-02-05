@@ -30,60 +30,93 @@ using apache::thrift::transport::TTransportException;
 class PresultServiceInterface : public PresultServiceSvIf {
  public:
   void methodVoid() override {}
-  bool methodBool(bool x) override { return x; }
-  int8_t methodByte(int8_t x) override { return x; }
-  int16_t methodI16(int16_t x) override { return x; }
-  int32_t methodI32(int32_t x) override { return x; }
-  int64_t methodI64(int64_t x) override { return x; }
-  float methodFloat(float x) override { return x; }
-  double methodDouble(double x) override { return x; }
-  Enum methodEnum(Enum x) override { return x; }
-  void methodString(std::string& ret,
-      std::unique_ptr<std::string> x) override
-  { ret = *x; }
+  bool methodBool(bool x) override {
+    return x;
+  }
+  int8_t methodByte(int8_t x) override {
+    return x;
+  }
+  int16_t methodI16(int16_t x) override {
+    return x;
+  }
+  int32_t methodI32(int32_t x) override {
+    return x;
+  }
+  int64_t methodI64(int64_t x) override {
+    return x;
+  }
+  float methodFloat(float x) override {
+    return x;
+  }
+  double methodDouble(double x) override {
+    return x;
+  }
+  Enum methodEnum(Enum x) override {
+    return x;
+  }
+  void methodString(std::string& ret, std::unique_ptr<std::string> x) override {
+    ret = *x;
+  }
 
-  void methodBinary(std::string& ret,
-      std::unique_ptr<std::string> x) override
-  { ret = *x; }
+  void methodBinary(std::string& ret, std::unique_ptr<std::string> x) override {
+    ret = *x;
+  }
 
-  void methodIOBuf(folly::IOBuf& ret,
-      std::unique_ptr<folly::IOBuf> x) override
-  { ret = std::move(*x); }
+  void methodIOBuf(folly::IOBuf& ret, std::unique_ptr<folly::IOBuf> x)
+      override {
+    ret = std::move(*x);
+  }
 
-  void methodIOBufPtr(std::unique_ptr<folly::IOBuf>& ret,
-      std::unique_ptr<std::unique_ptr<folly::IOBuf>> x) override
-  { ret = std::move(*x); }
+  void methodIOBufPtr(
+      std::unique_ptr<folly::IOBuf>& ret,
+      std::unique_ptr<std::unique_ptr<folly::IOBuf>> x) override {
+    ret = std::move(*x);
+  }
 
-  void methodList(std::vector<int32_t>& ret,
-      std::unique_ptr<std::vector<int32_t>> x) override
-  { ret = *x; }
+  void methodList(
+      std::vector<int32_t>& ret,
+      std::unique_ptr<std::vector<int32_t>> x) override {
+    ret = *x;
+  }
 
-  void methodListBool(std::vector<bool>& ret,
-      std::unique_ptr<std::vector<bool>> x) override
-  { ret = *x; }
+  void methodListBool(
+      std::vector<bool>& ret,
+      std::unique_ptr<std::vector<bool>> x) override {
+    ret = *x;
+  }
 
-  void methodDeque(std::deque<int32_t>& ret,
-      std::unique_ptr<std::deque<int32_t>> x) override
-  { ret = *x; }
+  void methodDeque(
+      std::deque<int32_t>& ret,
+      std::unique_ptr<std::deque<int32_t>> x) override {
+    ret = *x;
+  }
 
-  void methodMap(std::map<int32_t, int64_t>& ret,
-      std::unique_ptr<std::map<int32_t, int64_t>> x) override
-  { ret = *x; }
+  void methodMap(
+      std::map<int32_t, int64_t>& ret,
+      std::unique_ptr<std::map<int32_t, int64_t>> x) override {
+    ret = *x;
+  }
 
-  void methodUnorderedMap(std::unordered_map<int32_t, int64_t>& ret,
-      std::unique_ptr<std::unordered_map<int32_t, int64_t>> x) override
-  { ret = *x; }
+  void methodUnorderedMap(
+      std::unordered_map<int32_t, int64_t>& ret,
+      std::unique_ptr<std::unordered_map<int32_t, int64_t>> x) override {
+    ret = *x;
+  }
 
-  void methodSet(std::set<int32_t>& ret,
-      std::unique_ptr<std::set<int32_t>> x) override
-  { ret = *x; }
+  void methodSet(std::set<int32_t>& ret, std::unique_ptr<std::set<int32_t>> x)
+      override {
+    ret = *x;
+  }
 
-  void methodUnorderedSet(std::unordered_set<int32_t>& ret,
-      std::unique_ptr<std::unordered_set<int32_t>> x) override
-  { ret = *x; }
+  void methodUnorderedSet(
+      std::unordered_set<int32_t>& ret,
+      std::unique_ptr<std::unordered_set<int32_t>> x) override {
+    ret = *x;
+  }
 
-  void methodStruct(Struct& ret, std::unique_ptr<Struct> x) override
-  { ret = *x; }
+  void methodStruct(Struct& ret, std::unique_ptr<Struct> x) override {
+    ret = *x;
+  }
 
   void methodException(Struct& /* ret */, int32_t which) override {
     if (which) {
@@ -94,7 +127,9 @@ class PresultServiceInterface : public PresultServiceSvIf {
   }
 };
 
-std::shared_ptr<PresultServiceAsyncClient> getClient(const ScopedServerThread& sst, folly::EventBase& eb) {
+std::shared_ptr<PresultServiceAsyncClient> getClient(
+    const ScopedServerThread& sst,
+    folly::EventBase& eb) {
   auto socket = TAsyncSocket::newSocket(&eb, *sst.getAddress());
   auto channel = HeaderClientChannel::newChannel(socket);
   auto client = std::make_shared<PresultServiceAsyncClient>(std::move(channel));
@@ -116,8 +151,8 @@ void run(int& count, F&& f) {
   f().thenValue([&count](auto&&) { count--; });
 }
 
-
-#define F(method, ...) [client]{return client->future_##method(__VA_ARGS__);}, ##__VA_ARGS__
+#define F(method, ...) \
+  [client] { return client->future_##method(__VA_ARGS__); }, ##__VA_ARGS__
 
 TEST(Presult, Presult) {
   folly::EventBase eb;
@@ -131,20 +166,23 @@ TEST(Presult, Presult) {
   run(count, F(methodBool, true));
   run(count, F(methodByte, 5));
   run(count, F(methodI16, 2000));
-  run(count, F(methodI32, 1<<20));
-  run(count, F(methodI64, 1L<<40));
+  run(count, F(methodI32, 1 << 20));
+  run(count, F(methodI64, 1L << 40));
   run(count, F(methodFloat, 3.14f));
   run(count, F(methodDouble, 2.71));
   run(count, F(methodEnum, Enum::Value2));
   run(count, F(methodString, std::string("hello")));
   run(count, F(methodBinary, std::string("binary")));
-  run(count, F(methodList, std::vector<int32_t>({1,2,3})));
+  run(count, F(methodList, std::vector<int32_t>({1, 2, 3})));
   run(count, F(methodListBool, std::vector<bool>({true, false, true})));
-  run(count, F(methodDeque, std::deque<int32_t>({1,2,3})));
-  run(count, F(methodMap, std::map<int32_t, int64_t>({{1,11}, {2,22}, {3,33}})));
-  run(count, F(methodUnorderedMap, std::unordered_map<int32_t, int64_t>({{1,11}, {2,22}, {3,33}})));
-  run(count, F(methodSet, std::set<int32_t>({1,2,3})));
-  run(count, F(methodUnorderedSet, std::unordered_set<int32_t>({1,2,3})));
+  run(count, F(methodDeque, std::deque<int32_t>({1, 2, 3})));
+  run(count,
+      F(methodMap, std::map<int32_t, int64_t>({{1, 11}, {2, 22}, {3, 33}})));
+  run(count,
+      F(methodUnorderedMap,
+        std::unordered_map<int32_t, int64_t>({{1, 11}, {2, 22}, {3, 33}})));
+  run(count, F(methodSet, std::set<int32_t>({1, 2, 3})));
+  run(count, F(methodUnorderedSet, std::unordered_set<int32_t>({1, 2, 3})));
   run(count, F(methodStruct, Struct(FRAGILE, 5)));
 
   {

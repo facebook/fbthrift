@@ -58,8 +58,9 @@ TEST(SwapTest, test_swap_xtruct2) {
   EXPECT_EQ(a.i32_thing, 0xdeadbeef);
 }
 
-void check_simple(const apache::thrift::test::Simple &s1,
-                  const apache::thrift::test::Simple &s2) {
+void check_simple(
+    const apache::thrift::test::Simple& s1,
+    const apache::thrift::test::Simple& s2) {
   // Explicitly compare the fields, since the generated == operator
   // ignores optional fields that are marked as not set.  Also,
   // this allows us to use the EXPECT_EQ, so the values are printed

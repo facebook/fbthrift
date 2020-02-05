@@ -29,13 +29,12 @@ OneOfEach ooe;
 unique_ptr<IOBuf> buf;
 
 template <typename TBufferType_>
-void runTestWrite(int iters)
-{
+void runTestWrite(int iters) {
   TBufferType_ prot;
   size_t bufSize = ooe.serializedSizeZC(&prot);
   folly::IOBufQueue queue;
 
-  for (int i = 0; i < iters; i ++) {
+  for (int i = 0; i < iters; i++) {
     queue.clear();
     prot.setOutput(&queue, bufSize);
     ooe.write(&prot);
@@ -65,15 +64,15 @@ BENCHMARK(runTestRead_BinaryProtocolReader, iters) {
 int main(int argc, char** argv) {
   folly::Init init(&argc, &argv);
 
-  ooe.im_true   = true;
-  ooe.im_false  = false;
-  ooe.a_bite    = 0xd6;
+  ooe.im_true = true;
+  ooe.im_false = false;
+  ooe.a_bite = 0xd6;
   ooe.integer16 = 27000;
   ooe.integer32 = 1 << 24;
   ooe.integer64 = (uint64_t)6000 * 1000 * 1000;
   ooe.double_precision = M_PI;
-  ooe.some_characters  = "JSON THIS! \"\1";
-  ooe.zomg_unicode     = "\xd7\n\a\t";
+  ooe.some_characters = "JSON THIS! \"\1";
+  ooe.zomg_unicode = "\xd7\n\a\t";
   ooe.base64 = "\1\2\3\255";
   ooe.string_string_map["one"] = "two";
   ooe.string_string_hash_map["three"] = "four";

@@ -36,9 +36,7 @@ namespace thrift {
 class AsyncClientWorker2
     : public Worker<test::LoadTestAsyncClient, ClientLoadConfig> {
  public:
-  AsyncClientWorker2()
-      : eb_(),
-        sslContext_(new folly::SSLContext()) {
+  AsyncClientWorker2() : eb_(), sslContext_(new folly::SSLContext()) {
     setupSSLContext();
   }
 

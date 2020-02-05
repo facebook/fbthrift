@@ -21,7 +21,7 @@ namespace std {
 static void PrintTo(deque<int>::iterator it, ostream* o) {
   *o << "deque-iterator<" << *it << ">";
 }
-}
+} // namespace std
 
 namespace test_cpp2 {
 namespace cpp_reflection {
@@ -34,5 +34,5 @@ TEST(reflection, thrift_std_vector_traits) {
   apache::thrift::test_thrift_list_traits<std::vector<int>>();
 }
 
-} // namespace cpp_reflection {
-} // namespace test_cpp2 {
+} // namespace cpp_reflection
+} // namespace test_cpp2

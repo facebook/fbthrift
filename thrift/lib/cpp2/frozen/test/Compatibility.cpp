@@ -15,6 +15,7 @@
  */
 
 #include <glog/logging.h>
+
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>

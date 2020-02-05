@@ -22,10 +22,10 @@
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;
-using std::string;
-using std::vector;
 using folly::fbstring;
 using folly::StringPiece;
+using std::string;
+using std::vector;
 
 Team testValue() {
   Team team;
@@ -123,19 +123,18 @@ BENCHMARK_RELATIVE(DeserializerBinary, iters) {
 BENCHMARK_DRAW_LINE();
 
 const int nEntries = 10000000;
-auto entries = []{
+auto entries = [] {
   std::vector<std::pair<int, int>> entries(nEntries);
   for (size_t i = 0; i < nEntries; ++i) {
     entries[i].first = i;
   }
   std::random_shuffle(entries.begin(), entries.end());
   for (int i = 0; i < nEntries; ++i) {
-
     entries[i].second = i;
   }
   return entries;
 }();
-auto shuffled = []{
+auto shuffled = [] {
   auto shuffled = entries;
   std::random_shuffle(shuffled.begin(), shuffled.end());
   return shuffled;
@@ -165,7 +164,6 @@ BENCHMARK(thawedMap, iters) {
     }
   }
 }
-
 
 BENCHMARK_RELATIVE(frozenMap, iters) {
   while (iters--) {
@@ -222,7 +220,8 @@ auto bigMap = [] {
   return bigMap;
 }();
 std::map<std::string, std::pair<std::string, std::string>> bigHashMap(
-  bigMap.begin(), bigMap.end());
+    bigMap.begin(),
+    bigMap.end());
 
 BENCHMARK(FreezeBigMap, iters) {
   int k = 0;

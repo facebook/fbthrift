@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/FutureService.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/util/ScopedServerThread.h>
-
-#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
-#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include <atomic>
+#include <memory>
 
 #include <boost/lexical_cast.hpp>
-#include <memory>
-#include <atomic>
 
 #include <folly/Executor.h>
 #include <folly/MapUtil.h>
 #include <folly/executors/ManualExecutor.h>
+#include <folly/io/async/EventBase.h>
+#include <folly/portability/GTest.h>
+
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/FutureService.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::concurrency;
@@ -51,14 +50,14 @@ class TestInterface : public FutureServiceSvIf {
     Promise<std::unique_ptr<std::string>> p;
     auto f = p.getFuture();
 
-    auto func = [ p = std::move(p), size ]() mutable {
+    auto func = [p = std::move(p), size]() mutable {
       std::unique_ptr<std::string> _return(
-        new std::string("test" + boost::lexical_cast<std::string>(size)));
+          new std::string("test" + boost::lexical_cast<std::string>(size)));
       p.setValue(std::move(_return));
     };
 
     RequestEventBase::get()->runInEventBaseThread(
-        [ func = std::move(func), size ]() mutable {
+        [func = std::move(func), size]() mutable {
           RequestEventBase::get()->tryRunAfterDelay(std::move(func), size);
         });
 
@@ -69,11 +68,9 @@ class TestInterface : public FutureServiceSvIf {
     Promise<Unit> p;
     auto f = p.getFuture();
 
-    auto func = [p = std::move(p)]() mutable {
-      p.setValue();
-    };
+    auto func = [p = std::move(p)]() mutable { p.setValue(); };
     RequestEventBase::get()->runInEventBaseThread(
-        [ func = std::move(func), size ]() mutable {
+        [func = std::move(func), size]() mutable {
           RequestEventBase::get()->tryRunAfterDelay(std::move(func), size);
         });
     return f;
@@ -133,7 +130,7 @@ TEST(ThriftServer, FutureExceptions) {
   ScopedServerThread sst(factory.create());
   EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   FutureServiceAsyncClient client(std::move(channel));
@@ -169,7 +166,7 @@ TEST(ThriftServer, FutureClientTest) {
   ScopedServerThread sst(factory.create());
   EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->setTimeout(10000);
@@ -268,7 +265,7 @@ TEST(ThriftServer, FutureGetOrderTest) {
   ScopedServerThread sst(factory.create());
   EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->setTimeout(10000);
@@ -304,7 +301,7 @@ TEST(ThriftServer, OnewayFutureClientTest) {
   ScopedServerThread sst(factory.create());
   EventBase base;
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto channel = HeaderClientChannel::newChannel(socket);
   FutureServiceAsyncClient client(std::move(channel));
@@ -339,8 +336,8 @@ TEST(ThriftServer, FutureHeaderClientTest) {
 
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader("foo", "bar");
-  auto future = client->header_future_echoRequest(rpcOptions, "hi")
-    .waitVia(&eb);
+  auto future =
+      client->header_future_echoRequest(rpcOptions, "hi").waitVia(&eb);
 
   const auto& headers = future.value().second->getHeaders();
   EXPECT_EQ(get_default(headers, "header_from_server"), "1");

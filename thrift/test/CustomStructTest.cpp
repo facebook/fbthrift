@@ -15,11 +15,12 @@
  */
 
 #include <string>
-#include <folly/portability/GTest.h>
+
 #include <folly/io/async/EventBaseManager.h>
+#include <folly/portability/GTest.h>
+
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
-
 #include <thrift/test/gen-cpp2/CustomStruct.h>
 
 using namespace apache::thrift;
@@ -58,7 +59,6 @@ class CustomStructHandler : public CustomStructSvIf {
   }
 };
 
-
 TEST(CustomStructs, RoundTripContainer) {
   Container expected = createContainer();
 
@@ -76,7 +76,6 @@ TEST(CustomStructs, RoundTripContainer) {
   EXPECT_EQ(expected, actual);
 }
 
-
 TEST(CustomStructs, RoundTripEmptyContainer) {
   Container expected;
 
@@ -93,7 +92,6 @@ TEST(CustomStructs, RoundTripEmptyContainer) {
   Cpp2Ops<Container>::read(&protReader, &actual);
   EXPECT_EQ(expected, actual);
 }
-
 
 TEST(CustomStructs, SerializeOverHandler) {
   ScopedServerInterfaceThread runner(std::make_shared<CustomStructHandler>());

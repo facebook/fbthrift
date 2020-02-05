@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <stdbool.h>
 #include <ruby.h>
+#include <stdbool.h>
 
 void Init_struct();
 void Init_union();

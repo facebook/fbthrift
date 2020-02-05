@@ -15,9 +15,11 @@
  */
 
 #include <memory>
+
+#include <folly/portability/GTest.h>
+
 #include <thrift/lib/cpp2/test/gen-cpp2/TestServiceStack.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
-#include <folly/portability/GTest.h>
 
 using namespace std;
 using namespace folly;

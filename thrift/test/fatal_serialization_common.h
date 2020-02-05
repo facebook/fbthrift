@@ -16,13 +16,13 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
-#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/JSONProtocol.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-
 #include <folly/Traits.h>
 #include <folly/portability/GTest.h>
+
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/JSONProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 namespace apache {
 namespace thrift {
@@ -36,24 +36,23 @@ struct RWPair {
 };
 
 using protocol_type_pairs = ::testing::Types<
-  RWPair<SimpleJSONProtocolReader, SimpleJSONProtocolWriter, true>,
-  RWPair<JSONProtocolReader, JSONProtocolWriter, true>,
-  RWPair<BinaryProtocolReader, BinaryProtocolWriter, false>,
-  RWPair<CompactProtocolReader, CompactProtocolWriter, false>
->;
+    RWPair<SimpleJSONProtocolReader, SimpleJSONProtocolWriter, true>,
+    RWPair<JSONProtocolReader, JSONProtocolWriter, true>,
+    RWPair<BinaryProtocolReader, BinaryProtocolWriter, false>,
+    RWPair<CompactProtocolReader, CompactProtocolWriter, false>>;
 
 template <bool printable>
 void print_underlying(folly::IOBuf const& buffer, int vlog_level = 5) {
-  if(VLOG_IS_ON(vlog_level)) {
+  if (VLOG_IS_ON(vlog_level)) {
     folly::ByteRange range(buffer.data(), buffer.length());
-    if(printable) {
+    if (printable) {
       VLOG(vlog_level) << "buffer: "
-        << std::string((const char*)range.data(), range.size());
+                       << std::string((const char*)range.data(), range.size());
     } else {
       std::ostringstream out;
-      for(size_t i = 0; i < range.size(); i++) {
-        out << std::setw(2) << std::setfill('0')
-                << std::hex << (int)range.data()[i] << " ";
+      for (size_t i = 0; i < range.size(); i++) {
+        out << std::setw(2) << std::setfill('0') << std::hex
+            << (int)range.data()[i] << " ";
       }
       VLOG(vlog_level) << "buffer: " << out.str();
     }
@@ -106,6 +105,6 @@ struct CompareProtocolTest : public ::testing::Test {
   }
 };
 
-}
-}
-}
+} // namespace test
+} // namespace thrift
+} // namespace apache

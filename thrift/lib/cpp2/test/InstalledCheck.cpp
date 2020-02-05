@@ -14,20 +14,19 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/util/ScopedServerThread.h>
-
-#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
-#include <thrift/lib/cpp2/test/util/TestInterface.h>
-
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
+
+#include <folly/io/async/EventBase.h>
+
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/test/util/TestInterface.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
@@ -44,7 +43,7 @@ int SyncClientTest() {
   folly::EventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, "127.0.0.1", port));
+      TAsyncSocket::newSocket(&base, "127.0.0.1", port));
 
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -55,6 +54,5 @@ int SyncClientTest() {
 }
 
 int main(int argc, char** argv) {
-
   return SyncClientTest();
 }

@@ -41,9 +41,16 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
   class Foo {
    public:
     explicit Foo(std::int32_t& obj) : obj_(obj) {}
-    std::int32_t& result() & { return obj_; }
-    std::int32_t&& result() && { return std::move(obj_); }
-    std::int32_t const& result() const& { return obj_; }
+    std::int32_t& result() & {
+      return obj_;
+    }
+    std::int32_t&& result() && {
+      return std::move(obj_);
+    }
+    std::int32_t const& result() const& {
+      return obj_;
+    }
+
    private:
     std::int32_t& obj_;
   };
@@ -63,9 +70,15 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
     return result_ < that.result_;
   }
 
-  Foo& foo() & { return foo_; }
-  Foo&& foo() && { return static_cast<Foo&&>(foo_); }
-  Foo const& foo() const& { return foo_; }
+  Foo& foo() & {
+    return foo_;
+  }
+  Foo&& foo() && {
+    return static_cast<Foo&&>(foo_);
+  }
+  Foo const& foo() const& {
+    return foo_;
+  }
 
  private:
   std::int32_t result_{};
@@ -83,4 +96,4 @@ struct CppHasAPhrase : private boost::totally_ordered<CppHasAPhrase> {
     return phrase < that.phrase;
   }
 };
-}
+} // namespace reflection_indirection

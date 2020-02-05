@@ -14,91 +14,94 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/async/FutureRequest.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/DuplexChannel.h>
+#include <atomic>
+#include <memory>
+
+#include <boost/lexical_cast.hpp>
 
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/portability/GTest.h>
+
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <thrift/lib/cpp2/util/ScopedServerThread.h>
-
+#include <thrift/lib/cpp2/async/DuplexChannel.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DuplexClient.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DuplexService.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
-
-#include <boost/lexical_cast.hpp>
-#include <memory>
-#include <atomic>
+#include <thrift/lib/cpp2/util/ScopedServerThread.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 using namespace apache::thrift::async;
 using namespace folly;
+using std::make_shared;
 using std::shared_ptr;
 using std::unique_ptr;
-using std::make_shared;
 
 class DuplexClientInterface : public DuplexClientSvIf {
-public:
+ public:
   DuplexClientInterface(int32_t first, int32_t count, bool& success)
-    : expectIndex_(first), lastIndex_(first + count), success_(success)
-  {}
+      : expectIndex_(first), lastIndex_(first + count), success_(success) {}
 
-  void async_tm_update(unique_ptr<HandlerCallback<int32_t>> callback,
-                       int32_t currentIndex) override {
+  void async_tm_update(
+      unique_ptr<HandlerCallback<int32_t>> callback,
+      int32_t currentIndex) override {
     auto callbackp = callback.release();
     EXPECT_EQ(currentIndex, expectIndex_);
     expectIndex_++;
-    EventBase *eb = callbackp->getEventBase();
+    EventBase* eb = callbackp->getEventBase();
     callbackp->resultInThread(currentIndex);
     if (expectIndex_ == lastIndex_) {
       success_ = true;
       eb->runInEventBaseThread([eb] { eb->terminateLoopSoon(); });
     }
   }
-private:
+
+ private:
   int32_t expectIndex_;
   int32_t lastIndex_;
   bool& success_;
 };
 
 class Updater {
-public:
-  Updater(shared_ptr<DuplexClientAsyncClient> client,
-          EventBase* eb,
-          int32_t startIndex,
-          int32_t numUpdates,
-          int32_t interval)
-    : client_(client)
-    , eb_(eb)
-    , startIndex_(startIndex)
-    , numUpdates_(numUpdates)
-    , interval_(interval)
-  {}
+ public:
+  Updater(
+      shared_ptr<DuplexClientAsyncClient> client,
+      EventBase* eb,
+      int32_t startIndex,
+      int32_t numUpdates,
+      int32_t interval)
+      : client_(client),
+        eb_(eb),
+        startIndex_(startIndex),
+        numUpdates_(numUpdates),
+        interval_(interval) {}
 
   void update() {
     int32_t si = startIndex_;
-    client_->update([si](ClientReceiveState&& state) {
-      EXPECT_FALSE(state.isException());
-      int32_t res = DuplexClientAsyncClient::recv_update(state);
-      EXPECT_EQ(res, si);
-    }, startIndex_);
+    client_->update(
+        [si](ClientReceiveState&& state) {
+          EXPECT_FALSE(state.isException());
+          int32_t res = DuplexClientAsyncClient::recv_update(state);
+          EXPECT_EQ(res, si);
+        },
+        startIndex_);
     startIndex_++;
     numUpdates_--;
     if (numUpdates_ > 0) {
       Updater updater(*this);
-      eb_->tryRunAfterDelay([updater]() mutable {
-        updater.update();
-      }, interval_);
+      eb_->tryRunAfterDelay(
+          [updater]() mutable { updater.update(); }, interval_);
     }
   }
-private:
+
+ private:
   shared_ptr<DuplexClientAsyncClient> client_;
   EventBase* eb_;
   int32_t startIndex_;
@@ -107,11 +110,11 @@ private:
 };
 
 class DuplexServiceInterface : public DuplexServiceSvIf {
-  void async_tm_registerForUpdates(unique_ptr<HandlerCallback<bool>> callback,
-                                   int32_t startIndex,
-                                   int32_t numUpdates,
-                                   int32_t interval) override {
-
+  void async_tm_registerForUpdates(
+      unique_ptr<HandlerCallback<bool>> callback,
+      int32_t startIndex,
+      int32_t numUpdates,
+      int32_t interval) override {
     auto callbackp = callback.release();
     auto ctx = callbackp->getConnectionContext()->getConnectionContext();
     CHECK(ctx != nullptr);
@@ -125,37 +128,42 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
     callbackp->resultInThread(true);
   }
 
-  void async_tm_regularMethod(unique_ptr<HandlerCallback<int32_t>> callback,
-                              int32_t val) override {
+  void async_tm_regularMethod(
+      unique_ptr<HandlerCallback<int32_t>> callback,
+      int32_t val) override {
     callback.release()->resultInThread(val * 2);
   }
 };
 
 TEST(Duplex, DuplexTest) {
-  enum {START=1, COUNT=10, INTERVAL=5};
+  enum { START = 1, COUNT = 10, INTERVAL = 5 };
   apache::thrift::TestThriftServerFactory<DuplexServiceInterface> factory;
   factory.duplex(true);
   ScopedServerThread sst(factory.create());
   EventBase base;
 
   std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+      TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   auto duplexChannel =
-     std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
+      std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
   DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
 
   bool success = false;
   ThriftServer clients_server(duplexChannel->getServerChannel());
-  clients_server.setInterface(std::make_shared<DuplexClientInterface>(
-      START, COUNT, success));
+  clients_server.setInterface(
+      std::make_shared<DuplexClientInterface>(START, COUNT, success));
   clients_server.serve();
 
-  client.registerForUpdates([](ClientReceiveState&& state) {
-    EXPECT_FALSE(state.isException());
-    bool res = DuplexServiceAsyncClient::recv_registerForUpdates(state);
-    EXPECT_TRUE(res);
-  }, START, COUNT, INTERVAL);
+  client.registerForUpdates(
+      [](ClientReceiveState&& state) {
+        EXPECT_FALSE(state.isException());
+        bool res = DuplexServiceAsyncClient::recv_registerForUpdates(state);
+        EXPECT_TRUE(res);
+      },
+      START,
+      COUNT,
+      INTERVAL);
 
   // fail on time out
   base.tryRunAfterDelay([] { ADD_FAILURE(); }, 5000);

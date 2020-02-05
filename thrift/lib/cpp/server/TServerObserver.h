@@ -26,7 +26,6 @@ namespace server {
 
 class TServerObserver {
  public:
-
   virtual ~TServerObserver() {}
 
   TServerObserver() : sampleRate_(0) {}

@@ -44,17 +44,16 @@ TYPED_TEST_CASE(CompareProtocolTest, protocol_type_pairs);
 template <typename Type, typename Protocol>
 void expect_same_serialized_size(Type& type, Protocol& protocol) {
   EXPECT_EQ(
-    Cpp2Ops<Type>::serializedSize(&protocol, &type),
-    serializer_serialized_size(type, protocol)
-  );
+      Cpp2Ops<Type>::serializedSize(&protocol, &type),
+      serializer_serialized_size(type, protocol));
   EXPECT_EQ(
-    Cpp2Ops<Type>::serializedSizeZC(&protocol, &type),
-    serializer_serialized_size_zc(type, protocol)
-  );
+      Cpp2Ops<Type>::serializedSizeZC(&protocol, &type),
+      serializer_serialized_size_zc(type, protocol));
 }
 
 // simply tests if we can compile the structs related to services
-namespace service_reflection { namespace cpp2 {
+namespace service_reflection {
+namespace cpp2 {
 TYPED_TEST(MultiProtocolTest, service_reflection_test) {
   struct1 a;
   serializer_write(a, this->writer);
@@ -66,9 +65,11 @@ TYPED_TEST(MultiProtocolTest, service_reflection_test) {
   EXPECT_EQ(a, b);
   expect_same_serialized_size(a, this->writer);
 }
-}} // namespcae service_reflection::cpp2
+} // namespace cpp2
+} // namespace service_reflection
 
-namespace test_cpp2 { namespace simple_cpp_reflection {
+namespace test_cpp2 {
+namespace simple_cpp_reflection {
 
 void init_struct_1(struct1& a) {
   a.field0 = 10;
@@ -189,7 +190,7 @@ TYPED_TEST(MultiProtocolTest, test_blank_default_ref_field) {
   this->debug_buffer();
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(smallstruct(),   *(b.def_nested));
+  EXPECT_EQ(smallstruct(), *(b.def_nested));
   EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
   EXPECT_EQ(*(a.req_nested), *(b.req_nested));
   expect_same_serialized_size(a, this->writer);
@@ -210,7 +211,7 @@ TYPED_TEST(MultiProtocolTest, test_blank_optional_ref_field) {
 
   // null optional fields are deserialized to nullptr
   EXPECT_EQ(*(a.def_nested), *(b.def_nested));
-  EXPECT_EQ(nullptr,           b.opt_nested.get());
+  EXPECT_EQ(nullptr, b.opt_nested.get());
   EXPECT_EQ(*(a.req_nested), *(b.req_nested));
   expect_same_serialized_size(a, this->writer);
 }
@@ -230,7 +231,7 @@ TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
 
   EXPECT_EQ(*(a.def_nested), *(b.def_nested));
   EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
-  EXPECT_EQ(smallstruct(),   *(b.req_nested));
+  EXPECT_EQ(smallstruct(), *(b.req_nested));
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -256,7 +257,7 @@ TYPED_TEST(CompareProtocolTest, test_struct_xfer) {
   this->debug_buffer();
 
   const std::size_t legacy_read_xfer = b1.read(&this->st1.reader);
-  const std::size_t new_read_xfer    = serializer_read(b2, this->st2.reader);
+  const std::size_t new_read_xfer = serializer_read(b2, this->st2.reader);
 
   EXPECT_EQ(legacy_read_xfer, new_read_xfer);
   EXPECT_EQ(b1, b2);
@@ -271,7 +272,7 @@ TYPED_TEST(CompareProtocolTest, test_larger_containers) {
   init_struct_1(a2);
 
   std::map<int32_t, std::string> large_map;
-  for(int32_t i = 0; i < 1000; i++) {
+  for (int32_t i = 0; i < 1000; i++) {
     large_map.emplace(i, std::string("string"));
   }
 
@@ -280,9 +281,7 @@ TYPED_TEST(CompareProtocolTest, test_larger_containers) {
 
   EXPECT_EQ(a1, a2);
   EXPECT_EQ(
-    a1.write(&this->st1.writer),
-    serializer_write(a2, this->st2.writer)
-  );
+      a1.write(&this->st1.writer), serializer_write(a2, this->st2.writer));
 
   this->prep_read();
   this->debug_buffer();
@@ -290,10 +289,7 @@ TYPED_TEST(CompareProtocolTest, test_larger_containers) {
   struct1 b1;
   struct1 b2;
 
-  EXPECT_EQ(
-    b1.read(&this->st1.reader),
-    serializer_read(b2, this->st2.reader)
-  );
+  EXPECT_EQ(b1.read(&this->st1.reader), serializer_read(b2, this->st2.reader));
   EXPECT_EQ(b1, b2);
   expect_same_serialized_size(a1, this->st1.writer);
 }
@@ -318,15 +314,14 @@ TYPED_TEST(CompareProtocolTest, test_union_xfer) {
 }
 
 namespace {
-  const std::array<uint8_t, 5> test_buffer{{0xBA, 0xDB, 0xEE, 0xF0, 0x42}};
-  const folly::ByteRange test_range(test_buffer.begin(), test_buffer.end());
-  const folly::StringPiece test_string(test_range);
+const std::array<uint8_t, 5> test_buffer{{0xBA, 0xDB, 0xEE, 0xF0, 0x42}};
+const folly::ByteRange test_range(test_buffer.begin(), test_buffer.end());
+const folly::StringPiece test_string(test_range);
 
-  const std::array<uint8_t, 6> test_buffer2
-    {{0xFA, 0xCE, 0xB0, 0x01, 0x10, 0x0C}};
-  const folly::ByteRange test_range2(test_buffer2.begin(), test_buffer2.end());
-  const folly::StringPiece test_string2(test_range2);
-}
+const std::array<uint8_t, 6> test_buffer2{{0xFA, 0xCE, 0xB0, 0x01, 0x10, 0x0C}};
+const folly::ByteRange test_range2(test_buffer2.begin(), test_buffer2.end());
+const folly::StringPiece test_string2(test_range2);
+} // namespace
 
 TYPED_TEST(MultiProtocolTest, test_binary_containers) {
   struct5 a, b;
@@ -408,7 +403,7 @@ TYPED_TEST(MultiProtocolTest, shared_const_ptr_test) {
 
 template <typename Pair>
 class UnionTest : public TypedTestCommon<Pair> {
-protected:
+ protected:
   union1 a, b;
 
   void xfer() {
@@ -440,8 +435,8 @@ TYPED_TEST(UnionTest, can_read_refstrings) {
   this->a.set_field_string_ref("also reference strings!");
   this->xfer();
   EXPECT_EQ(
-    *(this->b.get_field_string_ref().get()),
-    *(this->a.get_field_string_ref().get()));
+      *(this->b.get_field_string_ref().get()),
+      *(this->a.get_field_string_ref().get()));
   expect_same_serialized_size(this->a, this->writer);
 }
 TYPED_TEST(UnionTest, can_read_iobufs) {
@@ -461,7 +456,7 @@ TYPED_TEST(UnionTest, can_read_nestedstructs) {
 
 template <typename Pair>
 class BinaryInContainersTest : public TypedTestCommon<Pair> {
-protected:
+ protected:
   struct5_listworkaround a, b;
 
   void xfer() {
@@ -475,15 +470,14 @@ TYPED_TEST_CASE(BinaryInContainersTest, protocol_type_pairs);
 TYPED_TEST(BinaryInContainersTest, lists_of_binary_fields_work) {
   this->a.binary_list_field = {test_string.str()};
   this->a.binary_map_field1 = {
-    {5,     test_string.str()},
-    {-9999, test_string2.str()}};
+      {5, test_string.str()},
+      {-9999, test_string2.str()},
+  };
 
   this->xfer();
 
   EXPECT_EQ(
-    std::vector<std::string>({test_string.str()}),
-    this->b.binary_list_field
-  );
+      std::vector<std::string>({test_string.str()}), this->b.binary_list_field);
   expect_same_serialized_size(this->a, this->writer);
 }
 
@@ -495,10 +489,10 @@ struct SimpleJsonTest : public ::testing::Test {
     underlying = folly::IOBuf::copyBuffer(str);
     reader.setInput(underlying.get());
 
-    if(VLOG_IS_ON(5)) {
+    if (VLOG_IS_ON(5)) {
       auto range = underlying->coalesce();
       VLOG(5) << "buffer: "
-        << std::string((const char*)range.data(), range.size());
+              << std::string((const char*)range.data(), range.size());
     }
   }
 };
@@ -509,8 +503,7 @@ TEST_F(SimpleJsonTest, throws_on_unset_required_value) {
     struct2 a;
     serializer_read(a, reader);
     ADD_FAILURE() << "didn't throw!";
-  }
-  catch(TProtocolException& e) {
+  } catch (TProtocolException& e) {
     EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
   }
 }
@@ -532,10 +525,8 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   EXPECT_EQ("", a.def_string);
 }
 TEST_F(SimpleJsonTest, sets_opt_members) {
-  set_input("{"
-    KVS("req_string","required")","
-    KVS("opt_string","optional")
-  "}");
+  set_input(
+      "{" KVS("req_string", "required") "," KVS("opt_string", "optional") "}");
   struct2 a;
   serializer_read(a, reader);
   EXPECT_TRUE(a.__isset.opt_string); // gcc bug?
@@ -545,18 +536,17 @@ TEST_F(SimpleJsonTest, sets_opt_members) {
   EXPECT_EQ("", a.def_string);
 }
 TEST_F(SimpleJsonTest, sets_def_members) {
-  set_input("{"
-    KVS("req_string","required")","
-    KVS("def_string", "default")
-  "}");
+  set_input(
+      "{" KVS("req_string", "required") "," KVS("def_string", "default") "}");
   struct2 a;
   serializer_read(a, reader);
   EXPECT_FALSE(a.__isset.opt_string);
-  EXPECT_TRUE( a.__isset.def_string);
+  EXPECT_TRUE(a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("default", a.def_string);
 }
 TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
+  // clang-format off
   set_input("{"
     KV("opt_nested", "{"
       KV("f1", "10")
@@ -565,18 +555,19 @@ TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
       KV("f1", "5")
     "}")
   "}");
+  // clang-format on
 
   struct3 a;
 
   try {
     serializer_read(a, reader);
     ADD_FAILURE() << "didn't throw!";
-  }
-  catch(TProtocolException& e) {
+  } catch (TProtocolException& e) {
     EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
   }
 }
 TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
+  // clang-format off
   set_input("{"
     KV("opt_nested", "{"
       KV("f1", "10")
@@ -588,6 +579,7 @@ TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
       KV("f1", "15")
     "}")
   "}");
+  // clang-format on
 
   struct3 a;
   serializer_read(a, reader);
@@ -596,4 +588,5 @@ TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
   EXPECT_EQ(15, a.req_nested->f1);
 }
 #undef KV
-} } /* namespace cpp_reflection::test_cpp2 */
+} // namespace simple_cpp_reflection
+} // namespace test_cpp2

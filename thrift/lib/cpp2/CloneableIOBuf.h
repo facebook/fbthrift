@@ -18,10 +18,12 @@
 #define THRIFT_CLONEABLE_IOBUF_H_
 
 #include <memory>
+
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/Thrift.h>
 
-namespace apache { namespace thrift {
+namespace apache {
+namespace thrift {
 
 namespace detail {
 
@@ -29,28 +31,25 @@ namespace detail {
 // copy constructor
 template <typename T, typename Deleter = std::default_delete<T>>
 class CloneableUniquePtr : public std::unique_ptr<T, Deleter> {
-public:
+ public:
   typedef std::unique_ptr<T, Deleter> Base;
-  CloneableUniquePtr()
-    : std::unique_ptr<T, Deleter>() {}
+  CloneableUniquePtr() : std::unique_ptr<T, Deleter>() {}
   explicit CloneableUniquePtr(std::nullptr_t)
-    : std::unique_ptr<T, Deleter>(nullptr) {}
+      : std::unique_ptr<T, Deleter>(nullptr) {}
   explicit CloneableUniquePtr(typename Base::pointer p)
-    : std::unique_ptr<T, Deleter>(p) {}
-  template<typename D>
+      : std::unique_ptr<T, Deleter>(p) {}
+  template <typename D>
   CloneableUniquePtr(typename Base::pointer p, D&& d)
-    : std::unique_ptr<T, Deleter>(p, std::forward<D>(d)) {}
+      : std::unique_ptr<T, Deleter>(p, std::forward<D>(d)) {}
   explicit CloneableUniquePtr(Base&& other)
-    : std::unique_ptr<T, Deleter>(std::move(other)) {}
+      : std::unique_ptr<T, Deleter>(std::move(other)) {}
   explicit CloneableUniquePtr(CloneableUniquePtr&& other) noexcept
-    : std::unique_ptr<T, Deleter>(std::move(other)) {}
+      : std::unique_ptr<T, Deleter>(std::move(other)) {}
 
   explicit CloneableUniquePtr(const Base& other)
-    : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {
-  }
+      : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {}
   CloneableUniquePtr(const CloneableUniquePtr<T, Deleter>& other)
-    : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {
-  }
+      : std::unique_ptr<T, Deleter>(other ? other->clone() : nullptr) {}
 
   CloneableUniquePtr& operator=(CloneableUniquePtr&& other) {
     Base::operator=(std::move(other));
@@ -83,10 +82,11 @@ void swap(
   return swap(static_cast<base&>(lhs), static_cast<base&>(rhs));
 }
 
-}
+} // namespace detail
 
 typedef detail::CloneableUniquePtr<folly::IOBuf> CloneableIOBuf;
 
-}} // apache::thrift
+} // namespace thrift
+} // namespace apache
 
 #endif // #ifndef THRIFT_CLONEABLE_IOBUF_H_

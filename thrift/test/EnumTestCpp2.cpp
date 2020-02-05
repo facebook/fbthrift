@@ -15,10 +15,11 @@
  */
 
 #include <unordered_set>
-#include <thrift/test/gen-cpp2/EnumTest_types.h>
-#include <thrift/lib/cpp/util/EnumUtils.h>
 
 #include <folly/portability/GTest.h>
+
+#include <thrift/lib/cpp/util/EnumUtils.h>
+#include <thrift/test/gen-cpp2/EnumTest_types.h>
 
 using apache::thrift::TEnumTraits;
 using namespace apache::thrift::util;
