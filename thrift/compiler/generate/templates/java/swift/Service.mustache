@@ -34,7 +34,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         @Override void close();
 
         {{#service:functions}}
-        {{^function:any_streams?}}
+        {{^function:any_streams?}}{{^function:returns_sink?}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
                       oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                       exception = { {{/first?}}
@@ -45,7 +45,7 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{^last?}}
 
         {{/last?}}
-        {{/function:any_streams?}}
+        {{/function:returns_sink?}}{{/function:any_streams?}}
         {{/service:functions}}
     }
     @Override void close();
