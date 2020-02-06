@@ -83,11 +83,8 @@ folly::Try<Payload> RequestContext::waitForResponse(
       // writeSuccess() or writeErr() processed this request but a response was
       // not received within the request's allotted timeout. Terminate request
       // with timeout.
-      DCHECK(!responsePayload_.hasException());
-      responsePayload_ = folly::Try<Payload>(
-          folly::make_exception_wrapper<TTransportException>(
-              TTransportException::TIMED_OUT));
-      queue_.abortSentRequest(*this);
+      queue_.abortSentRequest(
+          *this, TTransportException(TTransportException::TIMED_OUT));
 
       DCHECK(state_ == State::COMPLETE);
       FOLLY_FALLTHROUGH;

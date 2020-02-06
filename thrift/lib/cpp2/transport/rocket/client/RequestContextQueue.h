@@ -60,7 +60,9 @@ class RequestContextQueue {
     }
   }
 
-  void abortSentRequest(RequestContext& req) noexcept;
+  void abortSentRequest(
+      RequestContext& req,
+      transport::TTransportException ex) noexcept;
 
   void markAsResponded(RequestContext& req) noexcept;
 

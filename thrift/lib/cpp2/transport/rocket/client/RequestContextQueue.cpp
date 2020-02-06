@@ -59,12 +59,16 @@ RequestContextQueue::getNextScheduledWritesBatch() noexcept {
   return batchBuf;
 }
 
-void RequestContextQueue::abortSentRequest(RequestContext& req) noexcept {
-  DCHECK(req.isRequestResponse());
+void RequestContextQueue::abortSentRequest(
+    RequestContext& req,
+    transport::TTransportException ex) noexcept {
+  if (req.state_ == State::COMPLETE) {
+    return;
+  }
   DCHECK(req.state() == State::WRITE_SENT);
-  untrackIfRequestResponse(req);
-  writeSentQueue_.erase(writeSentQueue_.iterator_to(req));
-  req.state_ = State::COMPLETE;
+  DCHECK(!req.responsePayload_.hasException());
+  req.responsePayload_ = folly::Try<Payload>(std::move(ex));
+  markAsResponded(req);
 }
 
 // For REQUEST_RESPONSE, this is called on the read path once the entire

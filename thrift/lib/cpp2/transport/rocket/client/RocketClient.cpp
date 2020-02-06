@@ -810,11 +810,22 @@ void RocketClient::writeErr(
   DestructorGuard dg(this);
   DCHECK(state_ != ConnectionState::CLOSED);
 
-  queue_.markNextSendingBatchAsSent([](auto&&) {});
+  queue_.markNextSendingBatchAsSent([&](auto& req) {
+    if (bytesWritten == 0) {
+      queue_.abortSentRequest(
+          req,
+          transport::TTransportException(
+              transport::TTransportException::NOT_OPEN,
+              fmt::format(
+                  "Failed to write to remote endpoint. Wrote {} bytes."
+                  " AsyncSocketException: {}",
+                  bytesWritten,
+                  ex.what())));
+    }
+  });
 
   close(transport::TTransportException(
-      bytesWritten ? transport::TTransportException::UNKNOWN
-                   : transport::TTransportException::NOT_OPEN,
+      transport::TTransportException::UNKNOWN,
       fmt::format(
           "Failed to write to remote endpoint. Wrote {} bytes."
           " AsyncSocketException: {}",

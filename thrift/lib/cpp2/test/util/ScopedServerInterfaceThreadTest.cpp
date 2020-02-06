@@ -260,6 +260,42 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsTimeout) {
   }
 }
 
+TYPED_TEST(ScopedServerInterfaceThreadTest, writeError) {
+  auto serviceImpl = this->newService();
+
+  ScopedServerInterfaceThread ssit(serviceImpl);
+
+  folly::ScopedEventBaseThread evbThread;
+
+  auto cli = this->template newRawClient<SimpleServiceAsyncClient>(
+      evbThread.getEventBase(), ssit);
+  SCOPE_EXIT {
+    folly::via(evbThread.getEventBase(), [cli = std::move(cli)] {});
+  };
+
+  auto future = cli->semifuture_add(2000, 0);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  folly::via(evbThread.getEventBase(), [&] {
+    dynamic_cast<ClientChannel*>(cli->getChannel())
+        ->getTransport()
+        ->shutdownWrite();
+  });
+
+  cli->semifuture_add(2000, 0);
+
+  try {
+    std::move(future).get();
+    FAIL() << "Request didn't fail";
+  } catch (const apache::thrift::transport::TTransportException& ex) {
+    EXPECT_NE(
+        apache::thrift::transport::TTransportException::NOT_OPEN, ex.getType())
+        << "Unexpected exception: " << folly::exceptionStr(ex);
+  }
+}
+
 TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
   auto serviceImpl = this->newService();
 
