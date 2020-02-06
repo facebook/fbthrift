@@ -31,6 +31,12 @@ class RequestContextQueue {
  public:
   RequestContextQueue() = default;
 
+  ~RequestContextQueue() {
+    DCHECK(writeScheduledQueue_.empty());
+    DCHECK(writeSendingQueue_.empty());
+    DCHECK(writeSentQueue_.empty());
+  }
+
   void enqueueScheduledWrite(RequestContext& req) noexcept;
 
   std::unique_ptr<folly::IOBuf> getNextScheduledWritesBatch() noexcept;
@@ -58,8 +64,8 @@ class RequestContextQueue {
 
   void markAsResponded(RequestContext& req) noexcept;
 
-  bool hasInflightRequests() const noexcept {
-    return !writeSendingQueue_.empty() || !writeSentQueue_.empty();
+  bool hasInflightWrites() const noexcept {
+    return !writeSendingQueue_.empty();
   }
 
   void failAllScheduledWrites(transport::TTransportException ex);

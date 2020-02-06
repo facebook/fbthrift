@@ -484,7 +484,7 @@ TEST_F(RocketNetworkTest, RequestStreamCloseClient) {
               [&](auto ew) {
                 onErrorCalled = true;
                 expectTransportExceptionType(
-                    TTransportException::TTransportExceptionType::END_OF_FILE,
+                    TTransportException::TTransportExceptionType::UNKNOWN,
                     std::move(ew));
               });
 

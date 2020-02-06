@@ -90,8 +90,6 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
 
 void RequestContextQueue::failAllScheduledWrites(
     transport::TTransportException ex) {
-  // Not safe to call if some inflight requests haven't been drained
-  DCHECK(!hasInflightRequests());
   failQueue(
       writeScheduledQueue_,
       transport::TTransportException(

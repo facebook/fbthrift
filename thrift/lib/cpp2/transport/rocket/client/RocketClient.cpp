@@ -93,6 +93,7 @@ RocketClient::RocketClient(
       parser_(*this),
       writeLoopCallback_(*this),
       detachableLoopCallback_(*this),
+      closeLoopCallback_(*this),
       eventBaseDestructionCallback_(
           std::make_unique<OnEventBaseDestructionCallback>(*this)) {
   DCHECK(socket_ != nullptr);
@@ -106,7 +107,6 @@ RocketClient::~RocketClient() {
   detachableLoopCallback_.cancelLoopCallback();
 
   // All outstanding request contexts should have been cleaned up in closeNow()
-  DCHECK(!queue_.hasInflightRequests());
   DCHECK(streams_.empty());
 }
 
@@ -645,7 +645,7 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
        g = std::move(g)](transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "sendRequestN failed, closing now: " << ex.what();
-        self->closeNow(std::move(ex));
+        self->close(std::move(ex));
       });
 }
 
@@ -658,7 +658,7 @@ void RocketClient::cancelStream(StreamId streamId) {
        g = std::move(g)](transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "cancelStream failed, closing now: " << ex.what();
-        self->closeNow(std::move(ex));
+        self->close(std::move(ex));
       });
 }
 
@@ -685,7 +685,7 @@ void RocketClient::sendPayload(
         if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000)
               << "sendPayload failed, closing now: " << resc.exception().what();
-          closeNow(toTransportException(std::move(resc.exception())));
+          close(toTransportException(std::move(resc.exception())));
         }
       });
 }
@@ -703,7 +703,7 @@ void RocketClient::sendError(StreamId streamId, RocketException&& rex) {
         if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000)
               << "sendError failed, closing now: " << resc.exception().what();
-          closeNow(toTransportException(std::move(resc.exception())));
+          close(toTransportException(std::move(resc.exception())));
         }
       });
 }
@@ -725,7 +725,7 @@ bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
                   g = std::move(g)](transport::TTransportException ex) {
     FB_LOG_EVERY_MS(ERROR, 1000)
         << "sendExtHeaders failed, closing now: " << ex.what();
-    self->closeNow(std::move(ex));
+    self->close(std::move(ex));
   };
   auto packedPayload = pack(std::move(payload));
   if (packedPayload.hasException()) {
@@ -802,14 +802,6 @@ void RocketClient::writeSuccess() noexcept {
       queue_.markAsResponded(req);
     }
   });
-
-  // In some cases, a successful write may happen after writeErr() has been
-  // called on a preceding request.
-  if (state_ == ConnectionState::ERROR) {
-    close(transport::TTransportException(
-        transport::TTransportException::TTransportExceptionType::INTERRUPTED,
-        "Already processing error"));
-  }
 }
 
 void RocketClient::writeErr(
@@ -831,16 +823,62 @@ void RocketClient::writeErr(
 }
 
 void RocketClient::closeNow(transport::TTransportException ex) noexcept {
+  DCHECK(getDestructorGuardCount() == 0);
   DestructorGuard dg(this);
+
+  if (state_ == ConnectionState::CLOSED) {
+    return;
+  }
+
+  closeLoopCallback_.cancelLoopCallback();
+
+  setError(ex);
+  closeNowImpl();
+}
+
+void RocketClient::close(transport::TTransportException ex) noexcept {
+  DestructorGuard dg(this);
+
+  if (!setError(std::move(ex))) {
+    return;
+  }
+  evb_->runInLoop(&closeLoopCallback_);
+}
+
+bool RocketClient::setError(transport::TTransportException ex) noexcept {
+  DestructorGuard dg(this);
+
+  if (state_ != ConnectionState::CONNECTED) {
+    return false;
+  }
+
+  error_ = std::move(ex);
+  state_ = ConnectionState::ERROR;
+
+  if (evb_) {
+    socket_->setReadCB(nullptr);
+  }
+
+  writeLoopCallback_.cancelLoopCallback();
+  queue_.failAllScheduledWrites(error_);
+  queue_.failAllSentWrites(error_);
+  return true;
+}
+
+void RocketClient::closeNowImpl() noexcept {
+  DestructorGuard dg(this);
+
+  DCHECK(state_ == ConnectionState::ERROR);
+  state_ = ConnectionState::CLOSED;
 
   if (auto closeCallback = std::move(closeCallback_)) {
     closeCallback();
   }
 
-  if (socket_) {
-    socket_->closeNow();
-    socket_.reset();
-  }
+  DCHECK(socket_);
+
+  socket_->closeNow();
+  socket_.reset();
 
   // Move streams_ into a local copy before iterating and erasing. Note that
   // flowable->onError() may itself attempt to erase an element of streams_,
@@ -850,45 +888,14 @@ void RocketClient::closeNow(transport::TTransportException ex) noexcept {
   for (const auto& callback : streams) {
     callback.match([&](auto* serverCallback) {
       if (firstResponseTimeouts_.count(serverCallback->streamId())) {
-        serverCallback->onInitialError(ex);
+        serverCallback->onInitialError(error_);
       } else {
-        serverCallback->onStreamTransportError(ex);
+        serverCallback->onStreamTransportError(error_);
       }
     });
   }
   firstResponseTimeouts_.clear();
   bufferedFragments_.clear();
-}
-
-void RocketClient::close(transport::TTransportException ex) noexcept {
-  DestructorGuard dg(this);
-
-  switch (state_) {
-    case ConnectionState::CONNECTED:
-      writeLoopCallback_.cancelLoopCallback();
-
-      state_ = ConnectionState::ERROR;
-      socket_->setReadCB(nullptr);
-      // We'll still wait for any pending writes buffered up within
-      // AsyncSocket to complete (with either writeSuccess() or writeErr()).
-      socket_->close();
-
-      FOLLY_FALLTHROUGH;
-
-    case ConnectionState::ERROR:
-      queue_.failAllSentWrites(ex);
-      // Once there are no more inflight requests, we can safely fail any
-      // remaining scheduled requests.
-      if (!queue_.hasInflightRequests()) {
-        queue_.failAllScheduledWrites(ex);
-        state_ = ConnectionState::CLOSED;
-        closeNow(std::move(ex));
-      }
-      return;
-
-    case ConnectionState::CLOSED:
-      LOG(FATAL) << "close() called on an already CLOSED connection";
-  };
 }
 
 bool RocketClient::streamExists(StreamId streamId) const {
@@ -981,6 +988,10 @@ void RocketClient::DetachableLoopCallback::runLoopCallback() noexcept {
   if (client_.onDetachable_ && client_.isDetachable()) {
     client_.onDetachable_();
   }
+}
+
+void RocketClient::CloseLoopCallback::runLoopCallback() noexcept {
+  client_.closeNowImpl();
 }
 
 } // namespace rocket

@@ -121,14 +121,11 @@ class RocketClient : public folly::DelayedDestruction,
       size_t bytesWritten,
       const folly::AsyncSocketException& e) noexcept override;
 
-  // Hard close: stop reading from socket and abort all in-progress writes
-  // immediately.
+  // Close the connection and fail all the requests *inline*. This should not be
+  // called inline from any of the callbacks triggered by RocketClient.
   void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
 
-  // Initiate shutdown, but not as hard as closeNow(). Pending writes buffered
-  // up within AsyncSocket will still have a chance to complete (all the way to
-  // writeSuccess() or writeErr()). Other in-progress requests will be failed
-  // with the exception specified by ew.
+  // Request connection close and fail all the requests.
   void close(apache::thrift::transport::TTransportException ex) noexcept;
 
   void setCloseCallback(folly::Function<void()> closeCallback) {
@@ -223,6 +220,7 @@ class RocketClient : public folly::DelayedDestruction,
   };
   // Client must be constructed with an already open socket
   ConnectionState state_{ConnectionState::CONNECTED};
+  transport::TTransportException error_;
 
   RequestContextQueue queue_;
 
@@ -372,6 +370,15 @@ class RocketClient : public folly::DelayedDestruction,
     RocketClient& client_;
   };
   DetachableLoopCallback detachableLoopCallback_;
+  class CloseLoopCallback : public folly::EventBase::LoopCallback {
+   public:
+    explicit CloseLoopCallback(RocketClient& client) : client_(client) {}
+    void runLoopCallback() noexcept override;
+
+   private:
+    RocketClient& client_;
+  };
+  CloseLoopCallback closeLoopCallback_;
 
   std::unique_ptr<folly::EventBase::OnDestructionCallback>
       eventBaseDestructionCallback_;
@@ -460,6 +467,9 @@ class RocketClient : public folly::DelayedDestruction,
       }
     });
   }
+
+  bool setError(apache::thrift::transport::TTransportException ex) noexcept;
+  void closeNowImpl() noexcept;
 
   template <class T>
   friend class Parser;
