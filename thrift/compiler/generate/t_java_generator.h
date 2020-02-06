@@ -316,6 +316,13 @@ class t_java_generator : public t_oop_generator {
   std::string constant_name(std::string name);
 
  protected:
+  // indicate if we can generate the method
+  // E.g. Java doesn't support streaming, so all streaming methods are skipped
+  bool can_generate_method(t_function* func) {
+    return !func->get_returntype()->is_streamresponse() &&
+        !func->get_returntype()->is_sink();
+  }
+
   std::string namespace_key_;
   bool generate_field_metadata_ = true;
   bool generate_immutable_structs_ = false;

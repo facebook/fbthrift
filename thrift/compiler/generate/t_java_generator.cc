@@ -2272,6 +2272,10 @@ void t_java_generator::generate_service_interface(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
+
     generate_java_doc(f_service_, *f_iter);
     indent(f_service_) << "public " << function_signature(*f_iter) << ";"
                        << endl
@@ -2296,6 +2300,9 @@ void t_java_generator::generate_service_async_interface(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
     indent(f_service_) << "public "
                        << function_signature_async(
                               *f_iter, "resultHandler", true)
@@ -2315,6 +2322,9 @@ void t_java_generator::generate_service_helpers(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
     t_struct* ts = (*f_iter)->get_arglist();
     StructGenParams params;
     params.in_class = true;
@@ -2387,6 +2397,9 @@ void t_java_generator::generate_service_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
     string funname = (*f_iter)->get_name();
     string service_func_name =
         "\"" + tservice->get_name() + "." + (*f_iter)->get_name() + "\"";
@@ -2592,6 +2605,9 @@ void t_java_generator::generate_service_async_client(t_service* tservice) {
   vector<t_function*> functions = tservice->get_functions();
   vector<t_function*>::const_iterator f_iter;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
     string funname = (*f_iter)->get_name();
     t_type* ret_type = (*f_iter)->get_returntype();
     t_struct* arg_struct = (*f_iter)->get_arglist();
@@ -2851,6 +2867,9 @@ void t_java_generator::generate_service_server(t_service* tservice) {
 
   // Generate the process subfunctions
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
+    if (!can_generate_method(*f_iter)) {
+      continue;
+    }
     generate_process_function(tservice, *f_iter);
   }
 
