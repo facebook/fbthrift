@@ -380,7 +380,7 @@ void Cpp2Connection::requestReceived(
   reqContext->setRequestTimeout(taskTimeout);
 
   try {
-    std::unique_ptr<ResponseChannelRequest> req = std::move(t2r);
+    ResponseChannelRequest::UniquePtr req = std::move(t2r);
     if (!apache::thrift::detail::ap::setupRequestContextWithMessageBegin(
             msgBegin, protoId, req, reqContext, worker_->getEventBase())) {
       return;
@@ -416,11 +416,11 @@ void Cpp2Connection::removeRequest(Cpp2Request* req) {
 }
 
 Cpp2Connection::Cpp2Request::Cpp2Request(
-    ResponseChannelRequest::UniquePtr req,
+    std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     std::shared_ptr<Cpp2Connection> con,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId)
-    : req_(static_cast<HeaderServerChannel::HeaderRequest*>(req.release())),
+    : req_(std::move(req)),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
       // definition.

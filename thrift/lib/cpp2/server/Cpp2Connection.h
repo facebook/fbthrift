@@ -149,7 +149,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     friend class TaskTimeout;
 
     Cpp2Request(
-        ResponseChannelRequest::UniquePtr req,
+        std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
         std::shared_ptr<Cpp2Connection> con,
         std::unique_ptr<folly::IOBuf> debugPayload,
         intptr_t rootRequestContextId);
