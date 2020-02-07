@@ -132,6 +132,5 @@
       }
       },
   "source_path" : "src/DemoWidgetDocs",
-  "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs",
-  "wiki_address" : ""
+  "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.DemoWidgetDocs"
 }

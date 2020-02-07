@@ -638,6 +638,5 @@
       }
       },
   "source_path" : "src/ThriftdocTest",
-  "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest",
-  "wiki_address" : ""
+  "py_namespace" : "thrift.compiler.test.fixtures.json_experimental.src.ThriftdocTest"
 }

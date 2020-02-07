@@ -72,8 +72,6 @@ class json_experimental_program : public mstch_program {
              &json_experimental_program::get_py_namespace},
             {"program:namespaces", &json_experimental_program::get_namespaces},
             {"program:namespaces?", &json_experimental_program::has_namespaces},
-            {"program:wiki_address",
-             &json_experimental_program::get_wiki_address},
             {"program:docstring?", &json_experimental_program::has_docstring},
             {"program:docstring", &json_experimental_program::get_docstring},
             {"program:normalizedIncludePrefix",
@@ -94,9 +92,6 @@ class json_experimental_program : public mstch_program {
   }
   mstch::node has_namespaces() {
     return !program_->get_namespaces().empty();
-  }
-  mstch::node get_wiki_address() {
-    return program_->get_namespace("wiki");
   }
   mstch::node has_docstring() {
     return !program_->get_doc().empty();
