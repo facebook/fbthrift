@@ -95,7 +95,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   void closeWhenIdle() override {
     stop();
   }
-  void dropConnection() override {
+  void dropConnection(const std::string& /* errorMsg */ = "") override {
     stop();
   }
   void dumpConnectionState(uint8_t /* loglevel */) override {}

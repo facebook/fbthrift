@@ -167,7 +167,7 @@ class PeekingManager : public wangle::ManagedConnection,
     dropConnection();
   }
 
-  void dropConnection() override {
+  void dropConnection(const std::string& /* errorMsg */ = "") override {
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
     if (socket_) {

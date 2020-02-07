@@ -274,7 +274,7 @@ class RocketServerConnection final
   bool isBusy() const final;
   void notifyPendingShutdown() final;
   void closeWhenIdle() final;
-  void dropConnection() final;
+  void dropConnection(const std::string& errorMsg = "") final;
   void dumpConnectionState(uint8_t) final {}
   folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
 

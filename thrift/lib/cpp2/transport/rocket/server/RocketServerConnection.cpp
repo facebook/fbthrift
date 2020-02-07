@@ -501,7 +501,7 @@ bool RocketServerConnection::isBusy() const {
 // calling closeWhenIdle().
 void RocketServerConnection::notifyPendingShutdown() {}
 
-void RocketServerConnection::dropConnection() {
+void RocketServerConnection::dropConnection(const std::string& /* errorMsg */) {
   close(folly::make_exception_wrapper<transport::TTransportException>(
       transport::TTransportException::TTransportExceptionType::INTERRUPTED,
       "Dropping connection"));
