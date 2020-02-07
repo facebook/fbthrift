@@ -28,7 +28,6 @@
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
 #include <folly/executors/IOThreadPoolExecutor.h>
-#include <folly/experimental/observer/Observer.h>
 #include <folly/io/ShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
@@ -75,9 +74,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
                      public wangle::ServerBootstrap<Pipeline> {
  private:
   //! SSL context
-  folly::Optional<folly::observer::Observer<wangle::SSLContextConfig>>
-      sslContextObserver_;
-  folly::observer::CallbackHandle sslCallbackHandle_;
+  std::shared_ptr<wangle::SSLContextConfig> sslContext_;
   folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
 
   folly::Optional<bool> reusePort_;
@@ -339,41 +336,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   /**
-   * Set the SSLContextConfig on the thrift server.
+   *
    */
   void setSSLConfig(std::shared_ptr<wangle::SSLContextConfig> context) {
     CHECK(configMutable());
     if (context) {
-      setSSLConfig(folly::observer::makeObserver(
-          [context = std::move(context)]() { return *context; }));
+      context->isDefault = true;
     }
+    sslContext_ = context;
     updateCertsToWatch();
-  }
-
-  /**
-   * Set the SSLContextConfig on the thrift server. Note that the thrift server
-   * keeps an observer on the SSLContextConfig. Whenever the SSLContextConfig
-   * has an update, the observer callback would reset SSLContextConfig on all
-   * acceptors.
-   */
-  void setSSLConfig(
-      folly::observer::Observer<wangle::SSLContextConfig> contextObserver) {
-    sslContextObserver_ = folly::observer::makeObserver(
-        [observer = std::move(contextObserver)]() {
-          auto context = **observer;
-          context.isDefault = true;
-          return context;
-        });
-    sslCallbackHandle_.cancel();
-    sslCallbackHandle_ = sslContextObserver_->addCallback([&](auto ssl) {
-      forEachWorker([&](wangle::Acceptor* acceptor) {
-        for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
-          sslContext = *ssl;
-        }
-        acceptor->resetSSLContextConfigs();
-      });
-      updateCertsToWatch();
-    });
   }
 
   void setFizzConfig(wangle::FizzConfig config) {
@@ -450,9 +421,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return reusePort_;
   }
 
-  folly::Optional<folly::observer::Observer<wangle::SSLContextConfig>>
-  getSSLConfig() const {
-    return sslContextObserver_;
+  std::shared_ptr<wangle::SSLContextConfig> getSSLConfig() const {
+    return sslContext_;
   }
 
   folly::Optional<wangle::TLSTicketKeySeeds> getTicketSeeds() const {
@@ -473,8 +443,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   wangle::ServerSocketConfig getServerSocketConfig() {
     wangle::ServerSocketConfig config;
-    if (sslContextObserver_.hasValue()) {
-      config.sslContextConfigs.push_back(*sslContextObserver_->getSnapshot());
+    if (getSSLConfig()) {
+      config.sslContextConfigs.push_back(*getSSLConfig());
     }
     if (sslCacheOptions_) {
       config.sslCacheOptions = *sslCacheOptions_;

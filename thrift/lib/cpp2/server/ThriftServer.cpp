@@ -565,15 +565,14 @@ void ThriftServer::updateTLSCert() {
 
 void ThriftServer::updateCertsToWatch() {
   std::set<std::string> certPaths;
-  if (sslContextObserver_.hasValue()) {
-    auto sslContext = *sslContextObserver_->getSnapshot();
-    if (!sslContext.certificates.empty()) {
-      const auto& cert = sslContext.certificates[0];
+  if (sslContext_) {
+    if (!sslContext_->certificates.empty()) {
+      const auto& cert = sslContext_->certificates[0];
       certPaths.insert(cert.certPath);
       certPaths.insert(cert.keyPath);
       certPaths.insert(cert.passwordPath);
     }
-    certPaths.insert(sslContext.clientCAFile);
+    certPaths.insert(sslContext_->clientCAFile);
   }
   auto& processor = getCredProcessor();
   processor.setCertPathsToWatch(std::move(certPaths));
