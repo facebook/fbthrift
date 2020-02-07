@@ -132,6 +132,13 @@ TEST(field_ref_test, access_default_value) {
   EXPECT_EQ(*s.name(), "default");
 }
 
+TEST(field_ref_test, has_value) {
+  auto s = TestStruct();
+  EXPECT_FALSE(s.name().has_value());
+  s.name() = "foo";
+  EXPECT_TRUE(s.name().has_value());
+}
+
 TEST(field_ref_test, assign) {
   auto s = TestStruct();
   EXPECT_FALSE(s.name().is_set());

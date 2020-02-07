@@ -99,6 +99,13 @@ class field_ref {
     other.is_set_ = false;
   }
 
+  // Returns true iff the field is set. field_ref doesn't provide conversion to
+  // bool to avoid confusion between checking if the field is set and getting
+  // the field's value, particularly for bool fields.
+  FOLLY_ERASE bool has_value() const noexcept {
+    return is_set_;
+  }
+
   FOLLY_ERASE bool is_set() const noexcept {
     return is_set_;
   }
