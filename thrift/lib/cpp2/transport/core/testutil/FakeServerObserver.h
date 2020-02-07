@@ -123,6 +123,8 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
   void protocolError() override {
     ++protocolError_;
   }
+
+  void tlsWithClientCert() override {}
 };
 } // namespace thrift
 } // namespace apache

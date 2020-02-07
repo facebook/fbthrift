@@ -237,6 +237,9 @@ void Cpp2Worker::updateSSLStats(
       if (pskType && *pskType == fizz::PskType::Resumption) {
         observer->tlsResumption();
       }
+      if (fizz->getPeerCertificate()) {
+        observer->tlsWithClientCert();
+      }
     } else {
       observer->tlsError();
     }
@@ -249,6 +252,9 @@ void Cpp2Worker::updateSSLStats(
       observer->tlsComplete();
       if (socket->getSSLSessionReused()) {
         observer->tlsResumption();
+      }
+      if (socket->getPeerCertificate()) {
+        observer->tlsWithClientCert();
       }
     } else {
       observer->tlsError();

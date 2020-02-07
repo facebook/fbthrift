@@ -125,6 +125,8 @@ class TServerObserver {
 
   virtual void protocolError() {}
 
+  virtual void tlsWithClientCert() {}
+
   // The observer has to specify a sample rate for callCompleted notifications
   inline uint32_t getSampleRate() const {
     return sampleRate_;

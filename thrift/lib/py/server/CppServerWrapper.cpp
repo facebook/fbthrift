@@ -208,6 +208,9 @@ class CppServerObserver : public TServerObserver {
   void callCompleted(const CallTimestamps& runtimes) override {
     this->call("callCompleted", runtimes);
   }
+  void tlsWithClientCert() override {
+    this->call("tlsWithClientCert");
+  }
 
  private:
   template <class... Types>
