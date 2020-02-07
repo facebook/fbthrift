@@ -165,6 +165,5 @@ struct ThriftMetadata {
 }
 
 service ThriftMetadataService {
-  ThriftMetadata getRpcMetadata(); // deprecated
-  ThriftServiceMetadataResponse getServiceMetadata();
+  ThriftServiceMetadataResponse getThriftServiceMetadata()
 }
