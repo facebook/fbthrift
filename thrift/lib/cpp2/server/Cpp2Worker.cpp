@@ -167,7 +167,6 @@ std::shared_ptr<folly::AsyncTransportWrapper> Cpp2Worker::createThriftTransport(
 }
 
 void Cpp2Worker::markSocketAccepted(TAsyncSocket* sock) {
-  sock->setIsAccepted(true);
   sock->setShutdownSocketSet(server_->wShutdownSocketSet_);
 }
 
