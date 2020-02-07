@@ -416,7 +416,7 @@ void Cpp2Connection::removeRequest(Cpp2Request* req) {
 }
 
 Cpp2Connection::Cpp2Request::Cpp2Request(
-    std::unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     std::shared_ptr<Cpp2Connection> con,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId)

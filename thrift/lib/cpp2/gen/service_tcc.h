@@ -68,7 +68,7 @@ std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
 template <typename Prot>
 void process_handle_exn_deserialization(
     std::exception const& ex,
-    std::unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
     char const* const method) {
@@ -96,7 +96,7 @@ void process_handle_exn_deserialization(
 template <typename Prot>
 void process_throw_wrapped_handler_error(
     folly::exception_wrapper const& ew,
-    std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
+    apache::thrift::ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     ContextStack* const stack,
     char const* const method) {

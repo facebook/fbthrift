@@ -65,6 +65,8 @@ namespace thrift {
 
 class ResponseChannelRequest {
  public:
+  using UniquePtr = std::unique_ptr<ResponseChannelRequest>;
+
   folly::IOBuf* getBuf() {
     return buf_.get();
   }

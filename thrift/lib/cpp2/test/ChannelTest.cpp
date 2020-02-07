@@ -593,7 +593,7 @@ class InOrderTest
       TestRequestCallback::onResponse(std::move(state));
     }
 
-    void requestReceived(unique_ptr<ResponseChannelRequest> req) {
+    void requestReceived(ResponseChannelRequest::UniquePtr req) {
       c_->request_++;
       c_->requestBytes_ += req->getBuf()->computeChainDataLength();
       if (c_->firstbuf_) {
@@ -637,7 +637,7 @@ class InOrderTest
   }
 
  private:
-  std::unique_ptr<ResponseChannelRequest> firstbuf_;
+  ResponseChannelRequest::UniquePtr firstbuf_;
   size_t len_;
 };
 

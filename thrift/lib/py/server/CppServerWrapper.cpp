@@ -248,7 +248,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
   // Create a task and add it to thread manager's queue. Essentially the same
   // as GeneratedAsyncProcessor's processInThread method.
   void process(
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       Cpp2RequestContext* context,
@@ -265,8 +265,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
     tm->add(std::make_shared<apache::thrift::PriorityEventTask>(
         priority,
         [=, buf = std::move(buf)](
-            std::unique_ptr<apache::thrift::ResponseChannelRequest>
-                req_up) mutable {
+            apache::thrift::ResponseChannelRequest::UniquePtr req_up) mutable {
           SCOPE_EXIT {
             eb->runInEventBaseThread(
                 [req_up = std::move(req_up)]() mutable { req_up = {}; });

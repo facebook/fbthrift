@@ -38,6 +38,7 @@ class Cpp2ConnContext;
 class Cpp2Worker;
 class RequestRpcMetadata;
 class ThriftRequestCore;
+using ThriftRequestCoreUniquePtr = std::unique_ptr<ThriftRequestCore>;
 
 namespace concurrency {
 class ThreadManager;
@@ -104,13 +105,12 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   void handleRequestCommon(Payload&& payload, F&& makeRequest);
 
   FOLLY_NOINLINE void handleRequestWithBadMetadata(
-      std::unique_ptr<ThriftRequestCore> request);
+      ThriftRequestCoreUniquePtr request);
   FOLLY_NOINLINE void handleRequestWithBadChecksum(
-      std::unique_ptr<ThriftRequestCore> request);
+      ThriftRequestCoreUniquePtr request);
   FOLLY_NOINLINE void handleRequestOverloadedServer(
-      std::unique_ptr<ThriftRequestCore> request);
-  FOLLY_NOINLINE void handleServerShutdown(
-      std::unique_ptr<ThriftRequestCore> request);
+      ThriftRequestCoreUniquePtr request);
+  FOLLY_NOINLINE void handleServerShutdown(ThriftRequestCoreUniquePtr request);
 };
 
 } // namespace rocket

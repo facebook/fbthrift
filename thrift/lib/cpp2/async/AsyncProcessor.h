@@ -47,9 +47,9 @@ namespace thrift {
 class EventTask : public virtual apache::thrift::concurrency::Runnable {
  public:
   EventTask(
-      folly::Function<void(
-          std::unique_ptr<apache::thrift::ResponseChannelRequest>)>&& taskFunc,
-      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
+      folly::Function<void(apache::thrift::ResponseChannelRequest::UniquePtr)>&&
+          taskFunc,
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway)
       : taskFunc_(std::move(taskFunc)),
@@ -101,9 +101,9 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
   }
 
  private:
-  folly::Function<void(std::unique_ptr<apache::thrift::ResponseChannelRequest>)>
+  folly::Function<void(apache::thrift::ResponseChannelRequest::UniquePtr)>
       taskFunc_;
-  std::unique_ptr<apache::thrift::ResponseChannelRequest> req_;
+  apache::thrift::ResponseChannelRequest::UniquePtr req_;
   folly::EventBase* base_;
   bool oneway_;
 };
@@ -113,9 +113,9 @@ class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
  public:
   PriorityEventTask(
       apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-      folly::Function<void(
-          std::unique_ptr<apache::thrift::ResponseChannelRequest>)>&& taskFunc,
-      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
+      folly::Function<void(apache::thrift::ResponseChannelRequest::UniquePtr)>&&
+          taskFunc,
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
       folly::EventBase* base,
       bool oneway)
       : EventTask(std::move(taskFunc), std::move(req), base, oneway),
@@ -136,7 +136,7 @@ class AsyncProcessor : public TProcessorBase {
   virtual ~AsyncProcessor() {}
 
   virtual void process(
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       Cpp2RequestContext* context,
@@ -160,7 +160,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   template <typename Derived>
   using ProcessFunc = void (Derived::*)(
-      std::unique_ptr<apache::thrift::ResponseChannelRequest>,
+      apache::thrift::ResponseChannelRequest::UniquePtr,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::Cpp2RequestContext* context,
       folly::EventBase* eb,
@@ -221,7 +221,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       typename ProcessFunc,
       typename ChildType>
   static void processInThread(
-      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::Cpp2RequestContext* ctx,
       folly::EventBase* eb,
@@ -253,8 +253,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         std::make_shared<apache::thrift::PriorityEventTask>(
             pri,
             [=, buf = std::move(buf)](
-                std::unique_ptr<apache::thrift::ResponseChannelRequest>
-                    rq) mutable {
+                apache::thrift::ResponseChannelRequest::UniquePtr rq) mutable {
               if (rq->getTimestamps().getSamplingStatus().isEnabled()) {
                 // Since this request was queued, reset the processBegin
                 // time to the actual start time, and not the queue time.
@@ -464,7 +463,7 @@ class ServerInterface : public AsyncProcessorFactory {
 class HandlerCallbackBase {
  protected:
   typedef void (*exnw_ptr)(
-      std::unique_ptr<ResponseChannelRequest>,
+      ResponseChannelRequest::UniquePtr,
       int32_t protoSeqId,
       apache::thrift::ContextStack*,
       folly::exception_wrapper,
@@ -475,7 +474,7 @@ class HandlerCallbackBase {
       : eb_(nullptr), tm_(nullptr), reqCtx_(nullptr), protoSeqId_(0) {}
 
   HandlerCallbackBase(
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       exnw_ptr ewp,
       folly::EventBase* eb,
@@ -710,7 +709,7 @@ class HandlerCallbackBase {
 #endif
 
   // Required for this call
-  std::unique_ptr<ResponseChannelRequest> req_;
+  ResponseChannelRequest::UniquePtr req_;
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
 
   // May be null in a oneway call
@@ -865,7 +864,7 @@ class HandlerCallback : public HandlerCallbackBase {
   HandlerCallback() : cp_(nullptr) {}
 
   HandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       cob_ptr cp,
       exnw_ptr ewp,
@@ -960,7 +959,7 @@ class HandlerCallback<void> : public HandlerCallbackBase {
   HandlerCallback() : cp_(nullptr) {}
 
   HandlerCallback(
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<apache::thrift::ContextStack> ctx,
       cob_ptr cp,
       exnw_ptr ewp,

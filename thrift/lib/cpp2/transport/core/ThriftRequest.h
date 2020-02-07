@@ -518,6 +518,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   std::chrono::milliseconds clientTimeout_{0};
 };
 
+using ThriftRequestCoreUniquePtr = std::unique_ptr<ThriftRequestCore>;
+
 class ThriftRequest final : public ThriftRequestCore {
  public:
   ThriftRequest(

@@ -67,7 +67,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     const char* func,
     const TApplicationException::TApplicationExceptionType type,
     const string& msg,
-    unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* ctx,
     EventBase* eb,
     int32_t protoSeqId) {
@@ -107,7 +107,7 @@ template struct helper<CompactProtocolReader, CompactProtocolWriter>;
 template <typename ProtocolReader>
 static bool setupRequestContextWithMessageBegin(
     const MessageBegin& msgBegin,
-    std::unique_ptr<ResponseChannelRequest>& req,
+    ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
   using h = helper_r<ProtocolReader>;
@@ -139,7 +139,7 @@ static bool setupRequestContextWithMessageBegin(
 bool setupRequestContextWithMessageBegin(
     const MessageBegin& msgBegin,
     protocol::PROTOCOL_TYPES protType,
-    std::unique_ptr<ResponseChannelRequest>& req,
+    ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb) {
   switch (protType) {

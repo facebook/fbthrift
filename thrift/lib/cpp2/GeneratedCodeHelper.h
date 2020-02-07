@@ -827,7 +827,7 @@ struct helper {
       const char* func,
       const TApplicationException::TApplicationExceptionType type,
       const std::string& msg,
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       int32_t protoSeqId);
@@ -851,7 +851,7 @@ typename std::enable_if<is_root_async_processor<Processor>::value>::type
 process_missing(
     Processor*,
     const std::string& fname,
-    std::unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     std::unique_ptr<folly::IOBuf>,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -869,7 +869,7 @@ typename std::enable_if<!is_root_async_processor<Processor>::value>::type
 process_missing(
     Processor* processor,
     const std::string& /*fname*/,
-    std::unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -897,7 +897,7 @@ struct MessageBegin {
 bool setupRequestContextWithMessageBegin(
     const MessageBegin& msgBegin,
     protocol::PROTOCOL_TYPES protType,
-    std::unique_ptr<ResponseChannelRequest>& req,
+    ResponseChannelRequest::UniquePtr& req,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb);
 
@@ -910,7 +910,7 @@ void process_pmap(
     Processor* proc,
     const typename GeneratedAsyncProcessor::ProcessMap<
         GeneratedAsyncProcessor::ProcessFunc<Processor>>& pmap,
-    std::unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     std::unique_ptr<folly::IOBuf> buf,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
@@ -937,7 +937,7 @@ void process_pmap(
 template <class Processor>
 void process(
     Processor* processor,
-    std::unique_ptr<ResponseChannelRequest> req,
+    ResponseChannelRequest::UniquePtr req,
     std::unique_ptr<folly::IOBuf> buf,
     protocol::PROTOCOL_TYPES protType,
     Cpp2RequestContext* ctx,

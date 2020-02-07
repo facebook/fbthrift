@@ -366,7 +366,7 @@ void ThriftRocketServerHandler::handleRequestCommon(
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadMetadata(
-    std::unique_ptr<ThriftRequestCore> request) {
+    ThriftRequestCoreUniquePtr request) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->taskKilled();
   }
@@ -378,7 +378,7 @@ void ThriftRocketServerHandler::handleRequestWithBadMetadata(
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadChecksum(
-    std::unique_ptr<ThriftRequestCore> request) {
+    ThriftRequestCoreUniquePtr request) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->taskKilled();
   }
@@ -389,7 +389,7 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
 }
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
-    std::unique_ptr<ThriftRequestCore> request) {
+    ThriftRequestCoreUniquePtr request) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
     observer->taskKilled();
@@ -401,7 +401,7 @@ void ThriftRocketServerHandler::handleRequestOverloadedServer(
 }
 
 void ThriftRocketServerHandler::handleServerShutdown(
-    std::unique_ptr<ThriftRequestCore> request) {
+    ThriftRequestCoreUniquePtr request) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->taskKilled();
   }

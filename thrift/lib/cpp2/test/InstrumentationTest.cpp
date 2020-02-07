@@ -68,7 +68,7 @@ class InstrumentationTestProcessor
    * method handlers.
    */
   void process(
-      std::unique_ptr<ResponseChannelRequest> req,
+      ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<folly::IOBuf> buf,
       apache::thrift::protocol::PROTOCOL_TYPES protType,
       apache::thrift::Cpp2RequestContext* context,
