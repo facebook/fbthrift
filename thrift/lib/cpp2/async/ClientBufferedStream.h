@@ -24,6 +24,11 @@
 #include <folly/experimental/coro/Baton.h>
 #endif // FOLLY_HAS_COROUTINES
 
+namespace yarpl {
+namespace flowable {
+class ClientBufferedStreamShim;
+}
+} // namespace yarpl
 namespace apache {
 namespace thrift {
 
@@ -354,7 +359,9 @@ class ClientBufferedStream {
   detail::ClientStreamBridge::ClientPtr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
   int32_t bufferSize_{0};
-};
+
+  friend class yarpl::flowable::ClientBufferedStreamShim;
+}; // namespace thrift
 
 template <typename Response, typename StreamElement>
 struct ResponseAndClientBufferedStream {
