@@ -30,8 +30,7 @@ void RequestChannel::sendRequestAsync(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr callback,
-    RpcKind kind,
-    bool useClientStreamBridge) {
+    RpcKind kind) {
   auto eb = getEventBase();
   if (!eb || eb->isInEventBaseThread()) {
     switch (kind) {
@@ -44,19 +43,12 @@ void RequestChannel::sendRequestAsync(
             rpcOptions, std::move(buf), std::move(header), std::move(callback));
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-        if (useClientStreamBridge) {
-          auto streamCallback = createStreamClientCallback(
-              std::move(callback), rpcOptions.getChunkBufferSize());
-          sendRequestStream(
-              rpcOptions, std::move(buf), std::move(header), streamCallback);
-        } else {
-          rpcOptions.setChunkBufferSize(0);
-          sendRequestStream(
-              rpcOptions,
-              std::move(buf),
-              std::move(header),
-              std::move(callback));
-        }
+        sendRequestStream(
+            rpcOptions,
+            std::move(buf),
+            std::move(header),
+            createStreamClientCallback(
+                std::move(callback), rpcOptions.getChunkBufferSize()));
         break;
       default:
         folly::assume_unreachable();
@@ -68,8 +60,7 @@ void RequestChannel::sendRequestAsync(
                               buf = std::move(buf),
                               header = std::move(header),
                               callback = std::move(callback),
-                              kind,
-                              useClientStreamBridge]() mutable {
+                              kind]() mutable {
       switch (kind) {
         case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
           sendRequestNoResponse(
@@ -86,19 +77,12 @@ void RequestChannel::sendRequestAsync(
               std::move(callback));
           break;
         case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-          if (useClientStreamBridge) {
-            auto streamCallback = createStreamClientCallback(
-                std::move(callback), rpcOptions.getChunkBufferSize());
-            sendRequestStream(
-                rpcOptions, std::move(buf), std::move(header), streamCallback);
-          } else {
-            rpcOptions.setChunkBufferSize(0);
-            sendRequestStream(
-                rpcOptions,
-                std::move(buf),
-                std::move(header),
-                std::move(callback));
-          }
+          sendRequestStream(
+              rpcOptions,
+              std::move(buf),
+              std::move(header),
+              createStreamClientCallback(
+                  std::move(callback), rpcOptions.getChunkBufferSize()));
           break;
         default:
           folly::assume_unreachable();

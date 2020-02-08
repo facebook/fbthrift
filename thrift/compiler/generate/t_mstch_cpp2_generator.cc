@@ -1153,9 +1153,6 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:coroutines?", &mstch_cpp2_service::coroutines},
-            {"service:client_buffered_stream?",
-             &mstch_cpp2_service::client_buffered_stream},
-            {"service:server_stream?", &mstch_cpp2_service::server_stream},
         });
   }
   std::string get_service_namespace(t_program const* program) override {
@@ -1214,12 +1211,6 @@ class mstch_cpp2_service : public mstch_service {
     return std::any_of(funs.begin(), funs.end(), [](auto fun) {
       return fun->annotations_.count("cpp.coroutine");
     });
-  }
-  mstch::node client_buffered_stream() {
-    return cache_->parsed_options_.count("deprecated_client_streams") == 0;
-  }
-  mstch::node server_stream() {
-    return cache_->parsed_options_.count("deprecated_server_streams") == 0;
   }
 };
 

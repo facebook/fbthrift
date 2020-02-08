@@ -73,8 +73,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr,
-      RpcKind kind,
-      bool useClientStreamBridge = false);
+      RpcKind kind);
 
   void sendRequestAsync(
       apache::thrift::RpcOptions&,
@@ -287,17 +286,11 @@ void clientSendT(
     const char* methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
     folly::FunctionRef<size_t(Protocol*)> sizefunc,
-    RpcKind kind,
-    bool useClientStreamBridge = false) {
+    RpcKind kind) {
   auto buf = preprocessSendT(
       prot, rpcOptions, ctx, *header, methodName, writefunc, sizefunc);
   channel->sendRequestAsync(
-      rpcOptions,
-      std::move(buf),
-      std::move(header),
-      std::move(callback),
-      kind,
-      useClientStreamBridge);
+      rpcOptions, std::move(buf), std::move(header), std::move(callback), kind);
 }
 
 template <class Protocol>

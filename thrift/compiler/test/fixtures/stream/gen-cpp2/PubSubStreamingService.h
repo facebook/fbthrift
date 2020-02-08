@@ -30,27 +30,27 @@ namespace cpp2 {
 class PubSubStreamingServiceSvAsyncIf {
  public:
   virtual ~PubSubStreamingServiceSvAsyncIf() {}
-  virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) = 0;
-  virtual folly::Future<apache::thrift::Stream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) = 0;
-  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) = 0;
-  virtual void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) = 0;
-  virtual folly::Future<apache::thrift::Stream<int32_t>> future_streamthrows(int32_t foo) = 0;
-  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_streamthrows(int32_t foo) = 0;
-  virtual void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) = 0;
-  virtual folly::Future<apache::thrift::Stream<int32_t>> future_boththrows(int32_t foo) = 0;
-  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_boththrows(int32_t foo) = 0;
-  virtual void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>> callback, int32_t foo) = 0;
-  virtual folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) = 0;
-  virtual folly::SemiFuture<apache::thrift::ResponseAndStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) = 0;
-  virtual void async_tm_streamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) = 0;
-  virtual folly::Future<apache::thrift::Stream<int32_t>> future_streamleftthrows(int32_t foo) = 0;
-  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_streamleftthrows(int32_t foo) = 0;
-  virtual void async_tm_bothleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) = 0;
-  virtual folly::Future<apache::thrift::Stream<int32_t>> future_bothleftthrows(int32_t foo) = 0;
-  virtual folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_bothleftthrows(int32_t foo) = 0;
-  virtual void async_tm_responseandstreamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>> callback, int32_t foo) = 0;
-  virtual folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamleftthrows(int32_t foo) = 0;
-  virtual folly::SemiFuture<apache::thrift::ResponseAndStream<int32_t,int32_t>> semifuture_responseandstreamleftthrows(int32_t foo) = 0;
+  virtual void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) = 0;
+  virtual folly::Future<apache::thrift::ServerStream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) = 0;
+  virtual folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) = 0;
+  virtual void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) = 0;
+  virtual folly::Future<apache::thrift::ServerStream<int32_t>> future_streamthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_streamthrows(int32_t foo) = 0;
+  virtual void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) = 0;
+  virtual folly::Future<apache::thrift::ServerStream<int32_t>> future_boththrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_boththrows(int32_t foo) = 0;
+  virtual void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) = 0;
+  virtual folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) = 0;
+  virtual void async_tm_streamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) = 0;
+  virtual folly::Future<apache::thrift::ServerStream<int32_t>> future_streamleftthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_streamleftthrows(int32_t foo) = 0;
+  virtual void async_tm_bothleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) = 0;
+  virtual folly::Future<apache::thrift::ServerStream<int32_t>> future_bothleftthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_bothleftthrows(int32_t foo) = 0;
+  virtual void async_tm_responseandstreamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) = 0;
+  virtual folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamleftthrows(int32_t foo) = 0;
+  virtual folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> semifuture_responseandstreamleftthrows(int32_t foo) = 0;
 };
 
 class PubSubStreamingServiceAsyncProcessor;
@@ -59,34 +59,34 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
  public:
   typedef PubSubStreamingServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual apache::thrift::Stream<int32_t> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/);
-  folly::Future<apache::thrift::Stream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) override;
-  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) override;
-  void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) override;
-  virtual apache::thrift::Stream<int32_t> streamthrows(int32_t /*foo*/);
-  folly::Future<apache::thrift::Stream<int32_t>> future_streamthrows(int32_t foo) override;
-  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_streamthrows(int32_t foo) override;
-  void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) override;
-  virtual apache::thrift::Stream<int32_t> boththrows(int32_t /*foo*/);
-  folly::Future<apache::thrift::Stream<int32_t>> future_boththrows(int32_t foo) override;
-  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_boththrows(int32_t foo) override;
-  void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) override;
-  virtual apache::thrift::ResponseAndStream<int32_t,int32_t> responseandstreamthrows(int32_t /*foo*/);
-  folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) override;
-  folly::SemiFuture<apache::thrift::ResponseAndStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) override;
-  void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>> callback, int32_t foo) override;
-  virtual apache::thrift::Stream<int32_t> streamleftthrows(int32_t /*foo*/);
-  folly::Future<apache::thrift::Stream<int32_t>> future_streamleftthrows(int32_t foo) override;
-  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_streamleftthrows(int32_t foo) override;
-  void async_tm_streamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) override;
-  virtual apache::thrift::Stream<int32_t> bothleftthrows(int32_t /*foo*/);
-  folly::Future<apache::thrift::Stream<int32_t>> future_bothleftthrows(int32_t foo) override;
-  folly::SemiFuture<apache::thrift::Stream<int32_t>> semifuture_bothleftthrows(int32_t foo) override;
-  void async_tm_bothleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::Stream<int32_t>>> callback, int32_t foo) override;
-  virtual apache::thrift::ResponseAndStream<int32_t,int32_t> responseandstreamleftthrows(int32_t /*foo*/);
-  folly::Future<apache::thrift::ResponseAndStream<int32_t,int32_t>> future_responseandstreamleftthrows(int32_t foo) override;
-  folly::SemiFuture<apache::thrift::ResponseAndStream<int32_t,int32_t>> semifuture_responseandstreamleftthrows(int32_t foo) override;
-  void async_tm_responseandstreamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndStream<int32_t,int32_t>>> callback, int32_t foo) override;
+  virtual apache::thrift::ServerStream<int32_t> returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/);
+  folly::Future<apache::thrift::ServerStream<int32_t>> future_returnstream(int32_t i32_from, int32_t i32_to) override;
+  folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_returnstream(int32_t i32_from, int32_t i32_to) override;
+  void async_tm_returnstream(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t i32_from, int32_t i32_to) override;
+  virtual apache::thrift::ServerStream<int32_t> streamthrows(int32_t /*foo*/);
+  folly::Future<apache::thrift::ServerStream<int32_t>> future_streamthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_streamthrows(int32_t foo) override;
+  void async_tm_streamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) override;
+  virtual apache::thrift::ServerStream<int32_t> boththrows(int32_t /*foo*/);
+  folly::Future<apache::thrift::ServerStream<int32_t>> future_boththrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_boththrows(int32_t foo) override;
+  void async_tm_boththrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) override;
+  virtual apache::thrift::ResponseAndServerStream<int32_t,int32_t> responseandstreamthrows(int32_t /*foo*/);
+  folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) override;
+  void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) override;
+  virtual apache::thrift::ServerStream<int32_t> streamleftthrows(int32_t /*foo*/);
+  folly::Future<apache::thrift::ServerStream<int32_t>> future_streamleftthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_streamleftthrows(int32_t foo) override;
+  void async_tm_streamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) override;
+  virtual apache::thrift::ServerStream<int32_t> bothleftthrows(int32_t /*foo*/);
+  folly::Future<apache::thrift::ServerStream<int32_t>> future_bothleftthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ServerStream<int32_t>> semifuture_bothleftthrows(int32_t foo) override;
+  void async_tm_bothleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ServerStream<int32_t>>> callback, int32_t foo) override;
+  virtual apache::thrift::ResponseAndServerStream<int32_t,int32_t> responseandstreamleftthrows(int32_t /*foo*/);
+  folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamleftthrows(int32_t foo) override;
+  folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> semifuture_responseandstreamleftthrows(int32_t foo) override;
+  void async_tm_responseandstreamleftthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) override;
   template <typename T>
   std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
   createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
@@ -136,7 +136,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_returnstream(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_returnstream(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_returnstream(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -144,7 +144,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_streamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_streamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_streamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_streamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -152,7 +152,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_boththrows(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_boththrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_boththrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_boththrows(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -160,7 +160,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_responseandstreamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_responseandstreamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::ResponseAndStream<int32_t,int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_responseandstreamthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ResponseAndServerStream<int32_t,int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_responseandstreamthrows(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -168,7 +168,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_streamleftthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_streamleftthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_streamleftthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_streamleftthrows(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -176,7 +176,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_bothleftthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_bothleftthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::Stream<int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_bothleftthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ServerStream<int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_bothleftthrows(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -184,7 +184,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_responseandstreamleftthrows(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static apache::thrift::ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue> return_responseandstreamleftthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, apache::thrift::ResponseAndStream<int32_t,int32_t> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_responseandstreamleftthrows(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<folly::SequencedExecutor> executor, apache::thrift::ResponseAndServerStream<int32_t,int32_t> _return);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_responseandstreamleftthrows(apache::thrift::ResponseChannelRequest::UniquePtr req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
