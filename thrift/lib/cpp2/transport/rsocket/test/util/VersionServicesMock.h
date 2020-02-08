@@ -36,19 +36,20 @@ class OldServiceMock : public OldVersionSvIf {
 
   void DeletedMethod() {}
 
-  apache::thrift::Stream<Message> DeletedStreamMethod() {
+  apache::thrift::ServerStream<Message> DeletedStreamMethod() {
     return createStreamGenerator(
         []() -> folly::Optional<Message> { return folly::none; });
   }
 
-  apache::thrift::ResponseAndStream<Message, Message>
+  apache::thrift::ResponseAndServerStream<Message, Message>
   DeletedResponseAndStreamMethod() {
     return {{}, createStreamGenerator([]() -> folly::Optional<Message> {
               return folly::none;
             })};
   }
 
-  apache::thrift::Stream<int32_t> Range(int32_t from, int32_t length) override {
+  apache::thrift::ServerStream<int32_t> Range(int32_t from, int32_t length)
+      override {
     return createStreamGenerator(
         [first = from,
          last = from + length]() mutable -> folly::Optional<int32_t> {
@@ -59,17 +60,17 @@ class OldServiceMock : public OldVersionSvIf {
         });
   }
 
-  apache::thrift::ResponseAndStream<int32_t, int32_t>
+  apache::thrift::ResponseAndServerStream<int32_t, int32_t>
   RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
     return {number + 1, Range(from, length)};
   }
 
-  apache::thrift::Stream<Message> StreamToRequestResponse() override {
+  apache::thrift::ServerStream<Message> StreamToRequestResponse() override {
     return createStreamGenerator(
         []() -> folly::Optional<Message> { return folly::none; });
   }
 
-  apache::thrift::ResponseAndStream<Message, Message>
+  apache::thrift::ResponseAndServerStream<Message, Message>
   ResponseandStreamToRequestResponse() override {
     Message response;
     response.message = "Message";
@@ -101,7 +102,8 @@ class NewServiceMock : public NewVersionSvIf {
     return i + 1;
   }
 
-  apache::thrift::Stream<int32_t> Range(int32_t from, int32_t length) override {
+  apache::thrift::ServerStream<int32_t> Range(int32_t from, int32_t length)
+      override {
     return createStreamGenerator(
         [first = from,
          last = from + length]() mutable -> folly::Optional<int32_t> {
@@ -112,7 +114,7 @@ class NewServiceMock : public NewVersionSvIf {
         });
   }
 
-  apache::thrift::ResponseAndStream<int32_t, int32_t>
+  apache::thrift::ResponseAndServerStream<int32_t, int32_t>
   RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
     return {number + 1, Range(from, length)};
   }
@@ -126,14 +128,14 @@ class NewServiceMock : public NewVersionSvIf {
     LOG(DFATAL) << "ResponseandStreamToRequestResponse should not be executed";
   }
 
-  apache::thrift::Stream<Message> RequestResponseToStream() override {
+  apache::thrift::ServerStream<Message> RequestResponseToStream() override {
     LOG(DFATAL) << "RequestResponseToStream should not be executed";
 
     return createStreamGenerator(
         []() -> folly::Optional<Message> { return folly::none; });
   }
 
-  apache::thrift::ResponseAndStream<Message, Message>
+  apache::thrift::ResponseAndServerStream<Message, Message>
   RequestResponseToResponseandStream() override {
     LOG(DFATAL) << "RequestResponseToStream should not be executed";
 

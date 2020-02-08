@@ -64,7 +64,7 @@ int32_t TestServiceMock::echo(int32_t value) {
   return value;
 }
 
-Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
+ServerStream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
   return createStreamGenerator([from, to]() mutable -> folly::Optional<int> {
     if (from >= to) {
       return folly::none;
@@ -73,7 +73,7 @@ Stream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
   });
 }
 
-Stream<int32_t>
+ServerStream<int32_t>
 TestServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
   return createStreamGenerator([=]() mutable -> folly::Optional<int> {
     if (from >= to) {
@@ -85,7 +85,7 @@ TestServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
   });
 }
 
-Stream<int32_t> TestServiceMock::slowCancellation() {
+ServerStream<int32_t> TestServiceMock::slowCancellation() {
   class Slow {
    public:
     ~Slow() {
@@ -99,7 +99,7 @@ Stream<int32_t> TestServiceMock::slowCancellation() {
       });
 }
 
-ResponseAndStream<int32_t, int32_t> TestServiceMock::leakCheck(
+ResponseAndServerStream<int32_t, int32_t> TestServiceMock::leakCheck(
     int32_t from,
     int32_t to) {
   return {LeakDetector::getInstanceCount(),
@@ -109,7 +109,7 @@ ResponseAndStream<int32_t, int32_t> TestServiceMock::leakCheck(
               &executor_)};
 }
 
-ResponseAndStream<int32_t, int32_t>
+ResponseAndServerStream<int32_t, int32_t>
 TestServiceMock::leakCheckWithSleep(int32_t from, int32_t to, int32_t sleepMs) {
   std::this_thread::sleep_for(std::chrono::milliseconds{sleepMs});
   return leakCheck(from, to);
@@ -119,15 +119,15 @@ int32_t TestServiceMock::instanceCount() {
   return LeakDetector::getInstanceCount();
 }
 
-Stream<Message> TestServiceMock::returnNullptr() {
-  return {};
+ServerStream<Message> TestServiceMock::returnNullptr() {
+  return ServerStream<Message>::createEmpty();
 }
 
-ResponseAndStream<int, Message> TestServiceMock::throwError() {
+ResponseAndServerStream<int, Message> TestServiceMock::throwError() {
   throw Error();
 }
 
-apache::thrift::ResponseAndStream<int32_t, int32_t>
+apache::thrift::ResponseAndServerStream<int32_t, int32_t>
 TestServiceMock::sleepWithResponse(int32_t timeMs) {
   /* sleep override */
   std::this_thread::sleep_for(std::chrono::milliseconds(timeMs));
@@ -137,12 +137,12 @@ TestServiceMock::sleepWithResponse(int32_t timeMs) {
               &executor_)};
 }
 
-apache::thrift::Stream<int32_t> TestServiceMock::sleepWithoutResponse(
+apache::thrift::ServerStream<int32_t> TestServiceMock::sleepWithoutResponse(
     int32_t timeMs) {
   return std::move(sleepWithResponse(timeMs).stream);
 }
 
-apache::thrift::ResponseAndStream<int32_t, int32_t>
+apache::thrift::ResponseAndServerStream<int32_t, int32_t>
 TestServiceMock::streamServerSlow() {
   return {1,
           apache::thrift::StreamGenerator::create(
@@ -178,14 +178,15 @@ void TestServiceMock::sendMessage(
   }
 }
 
-apache::thrift::Stream<int32_t> TestServiceMock::registerToMessages() {
+apache::thrift::ServerStream<int32_t> TestServiceMock::registerToMessages() {
   auto streamAndPublisher = createStreamPublisher<int32_t>([] {});
   messages_ = std::make_unique<apache::thrift::StreamPublisher<int32_t>>(
       std::move(streamAndPublisher.second));
   return std::move(streamAndPublisher.first);
 }
 
-apache::thrift::Stream<Message> TestServiceMock::streamThrows(int32_t whichEx) {
+apache::thrift::ServerStream<Message> TestServiceMock::streamThrows(
+    int32_t whichEx) {
   if (whichEx == 0) {
     SecondEx ex;
     ex.set_errCode(0);
@@ -208,12 +209,12 @@ apache::thrift::Stream<Message> TestServiceMock::streamThrows(int32_t whichEx) {
   });
 }
 
-apache::thrift::ResponseAndStream<int32_t, Message>
+apache::thrift::ResponseAndServerStream<int32_t, Message>
 TestServiceMock::responseAndStreamThrows(int32_t whichEx) {
   return {1, streamThrows(whichEx)};
 }
 
-apache::thrift::Stream<int32_t> TestServiceMock::requestWithBlob(
+apache::thrift::ServerStream<int32_t> TestServiceMock::requestWithBlob(
     std::unique_ptr<folly::IOBuf>) {
   return createStreamGenerator(
       []() mutable -> folly::Optional<int> { return folly::none; });

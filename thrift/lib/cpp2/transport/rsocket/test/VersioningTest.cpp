@@ -111,23 +111,27 @@ TEST_F(VersioningTest, SameRequestResponse) {
 TEST_F(VersioningTest, SameStream) {
   auto oldLambda = [this](std::unique_ptr<OldVersionAsyncClient> client) {
     auto stream = client->sync_Range(5, 5);
-    auto subscription =
-        std::move(stream)
-            .via(&executor_)
-            .subscribe(
-                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL() << "no error is expected"; });
+    auto subscription = std::move(stream).subscribeExTry(
+        &executor_, [init = 5](auto&& value) mutable {
+          if (value.hasValue()) {
+            EXPECT_EQ(init++, *value);
+          } else if (value.hasException()) {
+            FAIL() << "no error is expected";
+          }
+        });
     std::move(subscription).join();
   };
 
   auto newLambda = [this](std::unique_ptr<NewVersionAsyncClient> client) {
     auto stream = client->sync_Range(5, 5);
-    auto subscription =
-        std::move(stream)
-            .via(&executor_)
-            .subscribe(
-                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL() << "no error is expected"; });
+    auto subscription = std::move(stream).subscribeExTry(
+        &executor_, [init = 5](auto&& value) mutable {
+          if (value.hasValue()) {
+            EXPECT_EQ(init++, *value);
+          } else if (value.hasException()) {
+            FAIL() << "no error is expected";
+          }
+        });
     std::move(subscription).join();
   };
 
@@ -143,10 +147,13 @@ TEST_F(VersioningTest, SameResponseAndStream) {
     EXPECT_EQ(-1, streamAndResponse.response);
     auto subscription =
         std::move(streamAndResponse.stream)
-            .via(&executor_)
-            .subscribe(
-                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL() << "no error is expected"; });
+            .subscribeExTry(&executor_, [init = 5](auto&& value) mutable {
+              if (value.hasValue()) {
+                EXPECT_EQ(init++, *value);
+              } else if (value.hasException()) {
+                FAIL() << "no error is expected";
+              }
+            });
     std::move(subscription).join();
   };
 
@@ -155,10 +162,13 @@ TEST_F(VersioningTest, SameResponseAndStream) {
     EXPECT_EQ(-1, streamAndResponse.response);
     auto subscription =
         std::move(streamAndResponse.stream)
-            .via(&executor_)
-            .subscribe(
-                [init = 5](auto value) mutable { EXPECT_EQ(init++, value); },
-                [](auto) { FAIL() << "no error is expected"; });
+            .subscribeExTry(&executor_, [init = 5](auto&& value) mutable {
+              if (value.hasValue()) {
+                EXPECT_EQ(init++, *value);
+              } else if (value.hasException()) {
+                FAIL() << "no error is expected";
+              }
+            });
     std::move(subscription).join();
   };
 
@@ -205,9 +215,8 @@ TEST_F(VersioningTest, StreamToRequestResponse) {
   connectToOldServer([](std::unique_ptr<OldVersionAsyncClient> client) {
     folly::ScopedEventBaseThread clientThread;
     auto messages = client->sync_StreamToRequestResponse();
-    auto subs = std::move(messages)
-                    .via(clientThread.getEventBase())
-                    .subscribe([](Message) {});
+    auto subs = std::move(messages).subscribeExTry(
+        clientThread.getEventBase(), [](auto&&) {});
     std::move(subs).join();
   });
 
@@ -242,9 +251,8 @@ TEST_F(VersioningTest, ResponseandStreamToRequestResponse) {
     folly::ScopedEventBaseThread clientThread;
     auto result = client->sync_ResponseandStreamToRequestResponse();
     auto messages = std::move(result.stream);
-    auto subs = std::move(messages)
-                    .via(clientThread.getEventBase())
-                    .subscribe([](Message) {});
+    auto subs = std::move(messages).subscribeExTry(
+        clientThread.getEventBase(), [](auto&&) {});
     std::move(subs).join();
   });
 

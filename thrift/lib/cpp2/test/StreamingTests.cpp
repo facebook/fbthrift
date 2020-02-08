@@ -21,7 +21,6 @@
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingService.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingServiceServerStream.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/BlockingWait.h>
@@ -36,11 +35,14 @@ class DiffTypesStreamingService
   explicit DiffTypesStreamingService(folly::EventBase& evb) : evb_(evb) {}
 
   apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
-    return toStream(yarpl::flowable::Flowable<int32_t>::just(42), &evb_);
+    return []() -> folly::coro::AsyncGenerator<int32_t&&> {
+      co_yield 42;
+    }
+    ();
   }
 
-  apache::thrift::SemiStream<int32_t> clientDownloadObject(int64_t) {
-    return toStream(yarpl::flowable::Flowable<int32_t>::just(42), &evb_);
+  apache::thrift::ClientBufferedStream<int32_t> clientDownloadObject(int64_t) {
+    return downloadObject(0).toClientStream(&evb_);
   }
 
  protected:
@@ -49,19 +51,19 @@ class DiffTypesStreamingService
 };
 
 TEST(StreamingTest, DifferentStreamClientCompiles) {
-  folly::EventBase evb_;
+  folly::ScopedEventBaseThread evb_;
 
   std::unique_ptr<streaming_tests::DiffTypesStreamingServiceAsyncClient>
       client = nullptr;
 
-  DiffTypesStreamingService service(evb_);
-  apache::thrift::SemiStream<int32_t> result;
+  DiffTypesStreamingService service(*evb_.getEventBase());
+  apache::thrift::ClientBufferedStream<int32_t> result;
   if (client) { // just to also test compilation of the client side.
     result = client->sync_downloadObject(123L);
   } else {
     result = service.clientDownloadObject(123L);
   }
-  auto subscription = std::move(result).via(&evb_).subscribe([](int32_t) {});
+  auto subscription = std::move(result).subscribeExTry(&evb_, [](auto&&) {});
   subscription.cancel();
   std::move(subscription).detach();
 }
@@ -151,9 +153,9 @@ TEST(StreamingTest, StreamPublisherNoSubscription) {
 }
 
 #if FOLLY_HAS_COROUTINES
-TEST(StreamingTest, DiffTypesStreamingServiceServerStreamGeneratorCompiles) {
-  class DiffTypesStreamingServiceServerStream
-      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+TEST(StreamingTest, DiffTypesStreamingServiceGeneratorCompiles) {
+  class DiffTypesStreamingService
+      : public streaming_tests::DiffTypesStreamingServiceSvIf {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
       return []() -> folly::coro::AsyncGenerator<int32_t&&> {
@@ -162,7 +164,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamGeneratorCompiles) {
       ();
     }
   };
-  DiffTypesStreamingServiceServerStream service;
+  DiffTypesStreamingService service;
 
   bool done = false;
   service.downloadObject(0).toClientStream().subscribeInline(
@@ -179,9 +181,9 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamGeneratorCompiles) {
 }
 #endif
 
-TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
-  class DiffTypesStreamingServiceServerStream
-      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+TEST(StreamingTest, DiffTypesStreamingServicePublisherCompiles) {
+  class DiffTypesStreamingService
+      : public streaming_tests::DiffTypesStreamingServiceSvIf {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
       auto [stream, ptr] =
@@ -191,7 +193,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
       return std::move(stream);
     }
   };
-  DiffTypesStreamingServiceServerStream service;
+  DiffTypesStreamingService service;
 
   bool done = false;
   service.downloadObject(0).toClientStream().subscribeInline(
@@ -208,8 +210,8 @@ TEST(StreamingTest, DiffTypesStreamingServiceServerStreamPublisherCompiles) {
 }
 
 TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
-  class DiffTypesStreamingServiceServerStream
-      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+  class DiffTypesStreamingService
+      : public streaming_tests::DiffTypesStreamingServiceSvIf {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
       auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
@@ -220,7 +222,7 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
     }
     folly::ScopedEventBaseThread executor;
   };
-  DiffTypesStreamingServiceServerStream service;
+  DiffTypesStreamingService service;
 
   bool done = false;
   service.downloadObject(0).toClientStream().subscribeInline(
@@ -238,8 +240,8 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
 
 #if FOLLY_HAS_COROUTINES
 TEST(StreamingTest, WrapperToAsyncGenerator) {
-  class DiffTypesStreamingServiceServerStream
-      : public streaming_tests::DiffTypesStreamingServiceServerStreamSvIf {
+  class DiffTypesStreamingService
+      : public streaming_tests::DiffTypesStreamingServiceSvIf {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
       auto [stream, ptr] =
@@ -249,7 +251,7 @@ TEST(StreamingTest, WrapperToAsyncGenerator) {
       return std::move(stream);
     }
   };
-  DiffTypesStreamingServiceServerStream service;
+  DiffTypesStreamingService service;
   auto gen = service.downloadObject(0).toClientStream().toAsyncGenerator();
   folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
     auto next = co_await gen.next();
