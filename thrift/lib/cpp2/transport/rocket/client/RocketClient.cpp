@@ -54,21 +54,6 @@ namespace rocket {
 
 class RocketClientWriteCallback;
 
-namespace {
-class OnEventBaseDestructionCallback
-    : public folly::EventBase::OnDestructionCallback {
- public:
-  explicit OnEventBaseDestructionCallback(RocketClient& client)
-      : client_(client) {}
-
-  void onEventBaseDestruction() noexcept final {
-    client_.closeNow(transport::TTransportException("Destroying EventBase"));
-  }
-
- private:
-  RocketClient& client_;
-};
-
 transport::TTransportException toTransportException(
     folly::exception_wrapper ew) {
   transport::TTransportException result;
@@ -79,8 +64,6 @@ transport::TTransportException toTransportException(
 
   return transport::TTransportException(folly::exceptionStr(ew).toStdString());
 }
-
-} // namespace
 
 RocketClient::RocketClient(
     folly::EventBase& evb,
@@ -94,29 +77,26 @@ RocketClient::RocketClient(
       writeLoopCallback_(*this),
       detachableLoopCallback_(*this),
       closeLoopCallback_(*this),
-      eventBaseDestructionCallback_(
-          std::make_unique<OnEventBaseDestructionCallback>(*this)) {
+      eventBaseDestructionCallback_(*this) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
-  evb_->runOnDestruction(*eventBaseDestructionCallback_);
+  evb_->runOnDestruction(eventBaseDestructionCallback_);
 }
 
 RocketClient::~RocketClient() {
   closeNow(transport::TTransportException("Destroying RocketClient"));
-  eventBaseDestructionCallback_->cancel();
+  eventBaseDestructionCallback_.cancel();
   detachableLoopCallback_.cancelLoopCallback();
 
   // All outstanding request contexts should have been cleaned up in closeNow()
   DCHECK(streams_.empty());
 }
 
-std::shared_ptr<RocketClient> RocketClient::create(
+RocketClient::Ptr RocketClient::create(
     folly::EventBase& evb,
     folly::AsyncTransportWrapper::UniquePtr socket,
     std::unique_ptr<SetupFrame> setupFrame) {
-  return std::shared_ptr<RocketClient>(
-      new RocketClient(evb, std::move(socket), std::move(setupFrame)),
-      DelayedDestruction::Destructor());
+  return Ptr(new RocketClient(evb, std::move(socket), std::move(setupFrame)));
 }
 
 void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -641,11 +621,11 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
 
   return sendFrame(
       RequestNFrame(streamId, n),
-      [self = shared_from_this(),
-       g = std::move(g)](transport::TTransportException ex) {
+      [dg = DestructorGuard(this), this, g = std::move(g)](
+          transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "sendRequestN failed, closing now: " << ex.what();
-        self->close(std::move(ex));
+        close(std::move(ex));
       });
 }
 
@@ -654,11 +634,11 @@ void RocketClient::cancelStream(StreamId streamId) {
   freeStream(streamId);
   std::ignore = sendFrame(
       CancelFrame(streamId),
-      [self = shared_from_this(),
-       g = std::move(g)](transport::TTransportException ex) {
+      [dg = DestructorGuard(this), this, g = std::move(g)](
+          transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "cancelStream failed, closing now: " << ex.what();
-        self->close(std::move(ex));
+        close(std::move(ex));
       });
 }
 
@@ -679,8 +659,8 @@ void RocketClient::sendPayload(
 
         return sendPayloadSync(streamId, std::move(payload.value()), flags);
       },
-      [this,
-       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
+      [dg = DestructorGuard(this),
+       this](folly::Try<folly::Try<void>>&& result) {
         auto resc = collapseTry(std::move(result));
         if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000)
@@ -697,8 +677,8 @@ void RocketClient::sendError(StreamId streamId, RocketException&& rex) {
       [this, g = std::move(g), streamId, rex = std::move(rex)]() mutable {
         return sendErrorSync(streamId, std::move(rex));
       },
-      [this,
-       keepAlive = shared_from_this()](folly::Try<folly::Try<void>>&& result) {
+      [dg = DestructorGuard(this),
+       this](folly::Try<folly::Try<void>>&& result) {
         auto resc = collapseTry(std::move(result));
         if (resc.hasException()) {
           FB_LOG_EVERY_MS(ERROR, 1000)
@@ -721,11 +701,11 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
 
 bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
   auto g = makeRequestCountGuard();
-  auto onError = [self = shared_from_this(),
-                  g = std::move(g)](transport::TTransportException ex) {
+  auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
+                     transport::TTransportException ex) {
     FB_LOG_EVERY_MS(ERROR, 1000)
         << "sendExtHeaders failed, closing now: " << ex.what();
-    self->close(std::move(ex));
+    close(std::move(ex));
   };
   auto packedPayload = pack(std::move(payload));
   if (packedPayload.hasException()) {
@@ -834,33 +814,22 @@ void RocketClient::writeErr(
 }
 
 void RocketClient::closeNow(transport::TTransportException ex) noexcept {
-  DCHECK(getDestructorGuardCount() == 0);
   DestructorGuard dg(this);
 
   if (state_ == ConnectionState::CLOSED) {
     return;
   }
 
+  close(ex);
   closeLoopCallback_.cancelLoopCallback();
-
-  setError(ex);
   closeNowImpl();
 }
 
 void RocketClient::close(transport::TTransportException ex) noexcept {
   DestructorGuard dg(this);
 
-  if (!setError(std::move(ex))) {
-    return;
-  }
-  evb_->runInLoop(&closeLoopCallback_);
-}
-
-bool RocketClient::setError(transport::TTransportException ex) noexcept {
-  DestructorGuard dg(this);
-
   if (state_ != ConnectionState::CONNECTED) {
-    return false;
+    return;
   }
 
   error_ = std::move(ex);
@@ -873,7 +842,10 @@ bool RocketClient::setError(transport::TTransportException ex) noexcept {
   writeLoopCallback_.cancelLoopCallback();
   queue_.failAllScheduledWrites(error_);
   queue_.failAllSentWrites(error_);
-  return true;
+
+  if (evb_) {
+    evb_->runInLoop(&closeLoopCallback_);
+  }
 }
 
 void RocketClient::closeNowImpl() noexcept {
@@ -979,7 +951,7 @@ void RocketClient::attachEventBase(folly::EventBase& evb) {
   evb_ = &evb;
   fm_ = &folly::fibers::getFiberManager(*evb_);
   socket_->attachEventBase(evb_);
-  evb_->runOnDestruction(*eventBaseDestructionCallback_);
+  evb_->runOnDestruction(eventBaseDestructionCallback_);
 }
 
 void RocketClient::detachEventBase() {
@@ -987,7 +959,7 @@ void RocketClient::detachEventBase() {
   DCHECK(evb_);
   evb_->dcheckIsInEventBaseThread();
   DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
-  eventBaseDestructionCallback_->cancel();
+  eventBaseDestructionCallback_.cancel();
   detachableLoopCallback_.cancelLoopCallback();
   socket_->detachEventBase();
   fm_ = nullptr;
@@ -1003,6 +975,11 @@ void RocketClient::DetachableLoopCallback::runLoopCallback() noexcept {
 
 void RocketClient::CloseLoopCallback::runLoopCallback() noexcept {
   client_.closeNowImpl();
+}
+
+void RocketClient::OnEventBaseDestructionCallback::
+    onEventBaseDestruction() noexcept {
+  client_.closeNow(transport::TTransportException("Destroying EventBase"));
 }
 
 } // namespace rocket

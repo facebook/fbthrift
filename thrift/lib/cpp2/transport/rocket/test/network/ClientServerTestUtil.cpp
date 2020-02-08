@@ -380,12 +380,7 @@ void RocketTestClient::connect() {
 }
 
 void RocketTestClient::disconnect() {
-  evb_.runInEventBaseThread([client = std::move(client_)] {
-    if (client) {
-      client->closeNow(apache::thrift::transport::TTransportException(
-          "RocketTestClient disconnecting"));
-    }
-  });
+  evb_.runInEventBaseThread([client = std::move(client_)] {});
 }
 
 namespace {

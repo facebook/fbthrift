@@ -101,7 +101,7 @@ class RocketTestClient {
   folly::ScopedEventBaseThread evbThread_;
   folly::EventBase& evb_;
   folly::fibers::FiberManager& fm_;
-  std::shared_ptr<RocketClient> client_;
+  std::unique_ptr<RocketClient, folly::DelayedDestruction::Destructor> client_;
   const folly::SocketAddress serverAddr_;
 };
 

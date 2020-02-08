@@ -148,7 +148,8 @@ class RocketClientChannel final : public ClientChannel {
   static constexpr std::chrono::milliseconds kDefaultRpcTimeout{500};
 
   folly::EventBase* evb_{nullptr};
-  std::shared_ptr<rocket::RocketClient> rclient_;
+  std::unique_ptr<rocket::RocketClient, folly::DelayedDestruction::Destructor>
+      rclient_;
   uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
   folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;

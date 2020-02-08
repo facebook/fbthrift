@@ -267,14 +267,17 @@ void RocketClientChannel::sendSingleRequestNoResponse(
     RequestClientCallback::Ptr cb) {
   auto& cbRef = *cb;
 
-  auto sendRequestFunc = [&cbRef,
-                          rclient = rclient_,
-                          requestPayload = rocket::makePayload(
-                              metadata, std::move(buf))]() mutable {
-    OnWriteSuccess writeCallback(cbRef);
-    return rclient->sendRequestFnfSync(
-        std::move(requestPayload), &writeCallback);
-  };
+  auto sendRequestFunc =
+      [&cbRef,
+       rclientGuard =
+           folly::DelayedDestruction::DestructorGuard(rclient_.get()),
+       rclientPtr = rclient_.get(),
+       requestPayload =
+           rocket::makePayload(metadata, std::move(buf))]() mutable {
+        OnWriteSuccess writeCallback(cbRef);
+        return rclientPtr->sendRequestFnfSync(
+            std::move(requestPayload), &writeCallback);
+      };
 
   auto finallyFunc = [cb = std::move(cb),
                       g = inflightGuard()](folly::Try<void>&& result) mutable {
@@ -306,15 +309,18 @@ void RocketClientChannel::sendSingleRequestSingleResponse(
     RequestClientCallback::Ptr cb) {
   auto& cbRef = *cb;
 
-  auto sendRequestFunc = [&cbRef,
-                          timeout,
-                          rclient = rclient_,
-                          requestPayload = rocket::makePayload(
-                              metadata, std::move(buf))]() mutable {
-    OnWriteSuccess writeCallback(cbRef);
-    return rclient->sendRequestResponseSync(
-        std::move(requestPayload), timeout, &writeCallback);
-  };
+  auto sendRequestFunc =
+      [&cbRef,
+       timeout,
+       rclientGuard =
+           folly::DelayedDestruction::DestructorGuard(rclient_.get()),
+       rclientPtr = rclient_.get(),
+       requestPayload =
+           rocket::makePayload(metadata, std::move(buf))]() mutable {
+        OnWriteSuccess writeCallback(cbRef);
+        return rclientPtr->sendRequestResponseSync(
+            std::move(requestPayload), timeout, &writeCallback);
+      };
 
   auto finallyFunc = [cb = std::move(cb), g = inflightGuard()](
                          folly::Try<rocket::Payload>&& response) mutable {
@@ -447,11 +453,7 @@ ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {
 
 void RocketClientChannel::closeNow() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  if (rclient_) {
-    rclient_->closeNow(
-        transport::TTransportException("RocketClientChannel::closeNow"));
-    rclient_.reset();
-  }
+  rclient_.reset();
 }
 
 void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {

@@ -58,8 +58,7 @@ namespace rocket {
 class RocketClientWriteCallback;
 
 class RocketClient : public folly::DelayedDestruction,
-                     private folly::AsyncTransportWrapper::WriteCallback,
-                     public std::enable_shared_from_this<RocketClient> {
+                     private folly::AsyncTransportWrapper::WriteCallback {
  public:
   using FlushList = boost::intrusive::list<
       folly::EventBase::LoopCallback,
@@ -72,7 +71,9 @@ class RocketClient : public folly::DelayedDestruction,
 
   ~RocketClient() override;
 
-  static std::shared_ptr<RocketClient> create(
+  using Ptr =
+      std::unique_ptr<RocketClient, folly::DelayedDestruction::Destructor>;
+  static Ptr create(
       folly::EventBase& evb,
       folly::AsyncTransportWrapper::UniquePtr socket,
       std::unique_ptr<SetupFrame> setupFrame);
@@ -120,13 +121,6 @@ class RocketClient : public folly::DelayedDestruction,
   void writeErr(
       size_t bytesWritten,
       const folly::AsyncSocketException& e) noexcept override;
-
-  // Close the connection and fail all the requests *inline*. This should not be
-  // called inline from any of the callbacks triggered by RocketClient.
-  void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
-
-  // Request connection close and fail all the requests.
-  void close(apache::thrift::transport::TTransportException ex) noexcept;
 
   void setCloseCallback(folly::Function<void()> closeCallback) {
     closeCallback_ = std::move(closeCallback);
@@ -379,9 +373,18 @@ class RocketClient : public folly::DelayedDestruction,
     RocketClient& client_;
   };
   CloseLoopCallback closeLoopCallback_;
+  class OnEventBaseDestructionCallback
+      : public folly::EventBase::OnDestructionCallback {
+   public:
+    explicit OnEventBaseDestructionCallback(RocketClient& client)
+        : client_(client) {}
 
-  std::unique_ptr<folly::EventBase::OnDestructionCallback>
-      eventBaseDestructionCallback_;
+    void onEventBaseDestruction() noexcept override final;
+
+   private:
+    RocketClient& client_;
+  };
+  OnEventBaseDestructionCallback eventBaseDestructionCallback_;
   folly::Function<void()> closeCallback_;
 
   RocketClient(
@@ -467,6 +470,12 @@ class RocketClient : public folly::DelayedDestruction,
       }
     });
   }
+
+  // Request connection close and fail all the requests.
+  void close(apache::thrift::transport::TTransportException ex) noexcept;
+  // Close the connection and fail all the requests *inline*. This should not be
+  // called inline from any of the callbacks triggered by RocketClient.
+  void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
 
   bool setError(apache::thrift::transport::TTransportException ex) noexcept;
   void closeNowImpl() noexcept;
