@@ -49,6 +49,7 @@ class RocketServerFrameContext;
 class ThriftServerRequestResponse final : public ThriftRequestCore {
  public:
   ThriftServerRequestResponse(
+      ActiveRequestsRegistry::DebugStub& debugStubToInit,
       folly::EventBase& evb,
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
@@ -84,9 +85,6 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
   Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
-
-  // keep last
-  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 // Object corresponding to rsocket REQUEST_FNF request (one-way request) handled
@@ -94,6 +92,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
 class ThriftServerRequestFnf final : public ThriftRequestCore {
  public:
   ThriftServerRequestFnf(
+      ActiveRequestsRegistry::DebugStub& debugStubToInit,
       folly::EventBase& evb,
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
@@ -127,9 +126,6 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
   folly::Function<void()> onComplete_;
-
-  // keep last
-  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 // Object corresponding to rsocket REQUEST_STREAM request (initial request to
@@ -137,6 +133,7 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
 class ThriftServerRequestStream final : public ThriftRequestCore {
  public:
   ThriftServerRequestStream(
+      ActiveRequestsRegistry::DebugStub& debugStubToInit,
       folly::EventBase& evb,
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
@@ -200,9 +197,6 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
 
   Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
-
-  // keep last
-  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 // Object corresponding to rsocket sink (REQUEST_CHANNEL) request (initial
@@ -210,6 +204,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
 class ThriftServerRequestSink final : public ThriftRequestCore {
  public:
   ThriftServerRequestSink(
+      ActiveRequestsRegistry::DebugStub& debugStubToInit,
       folly::EventBase& evb,
       server::ServerConfigs& serverConfigs,
       RequestRpcMetadata&& metadata,
@@ -263,10 +258,6 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
 
   Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
-
-  // A tracing information embedded in request obejcts, we want to keep this
-  // always as the last member of the class.
-  ActiveRequestsRegistry::DebugStub debugStub_;
 };
 
 } // namespace rocket

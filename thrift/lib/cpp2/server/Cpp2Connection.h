@@ -149,6 +149,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     friend class TaskTimeout;
 
     Cpp2Request(
+        ActiveRequestsRegistry::DebugStub& debugStubToInit,
         std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
         std::shared_ptr<Cpp2Connection> con,
         std::unique_ptr<folly::IOBuf> debugPayload,
@@ -215,8 +216,6 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
     Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 
-    // keep last
-    ActiveRequestsRegistry::DebugStub debugStub_;
     void cancelTimeout() {
       queueTimeout_.cancelTimeout();
       taskTimeout_.cancelTimeout();

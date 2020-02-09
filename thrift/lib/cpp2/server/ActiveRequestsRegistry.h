@@ -80,19 +80,18 @@ class ActiveRequestsRegistry {
 
  public:
   /**
-   * A piece of information which should be embedded into thrift request
-   * objects.
+   * A small piece of information associated with those thrift requests that
+   * we are tracking in the registry. The stub lives alongside the request
+   * in the same chunk of memory.
+   * Requests Registry is just a fancy list of such DebugStubs.
    *
    * DebugStub tracks request payload to its corresponding thrift
-   * request. Handles to the payloads can be optinally released by its
+   * request. Handles to the payloads can be optionally released by its
    * parent request registry, indicating the payload memory has been reclaimed
    * to control memory usage. DebugStub should be unlinked from lists
    * only during:
    *   1. Destruction of DebugStub.
    *   2. Memory collection from ActiveRequestsRegistry.
-   *
-   * NOTE: Place this as the last member of a request object to ensure we never
-   *       try to examine half destructed objects.
    */
   class DebugStub {
     friend class ActiveRequestsRegistry;
@@ -180,6 +179,44 @@ class ActiveRequestsRegistry {
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
   };
+
+  class Deleter {
+   public:
+    Deleter(DebugStub* stub = nullptr) : stub_(stub) {}
+    template <typename U>
+    /* implicit */ Deleter(std::default_delete<U>&&) : stub_(nullptr) {}
+
+    template <typename T>
+    void operator()(T* p) {
+      if (!stub_) {
+        delete p;
+      } else {
+        p->~T();
+        stub_->~DebugStub();
+        free(stub_);
+      }
+    }
+
+    template <typename U>
+    Deleter& operator=(std::default_delete<U>&&) {
+      stub_ = nullptr;
+      return *this;
+    }
+
+   private:
+    DebugStub* stub_;
+  };
+
+  template <typename T, typename... Args>
+  static std::unique_ptr<T, Deleter> makeRequest(Args&&... args) {
+    static_assert(std::is_base_of<ResponseChannelRequest, T>::value, "");
+    auto offset = sizeof(std::aligned_storage_t<sizeof(DebugStub), alignof(T)>);
+    DebugStub* pStub = reinterpret_cast<DebugStub*>(malloc(offset + sizeof(T)));
+    T* pT = reinterpret_cast<T*>(reinterpret_cast<char*>(pStub) + offset);
+    new (pT) T(*pStub, std::forward<Args>(args)...);
+    return std::unique_ptr<T, Deleter>(pT, pStub);
+  }
+
   using ActiveRequestDebugStubList =
       folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsRegistryHook_>;
   using ActiveRequestPayloadList =

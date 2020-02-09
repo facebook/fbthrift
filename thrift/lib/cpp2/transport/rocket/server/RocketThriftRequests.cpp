@@ -46,6 +46,7 @@ namespace thrift {
 namespace rocket {
 
 ThriftServerRequestResponse::ThriftServerRequestResponse(
+    ActiveRequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
@@ -58,14 +59,14 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
-      activeRequestsGuard_(std::move(activeRequestsGuard)),
-      debugStub_(
-          reqRegistry,
-          *this,
-          *getRequestContext(),
-          getProtoId(),
-          std::move(debugPayload),
-          rootRequestContextId) {
+      activeRequestsGuard_(std::move(activeRequestsGuard)) {
+  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+      reqRegistry,
+      *this,
+      *getRequestContext(),
+      getProtoId(),
+      std::move(debugPayload),
+      rootRequestContextId);
   scheduleTimeouts();
 }
 
@@ -124,6 +125,7 @@ void ThriftServerRequestResponse::sendSerializedError(
 }
 
 ThriftServerRequestFnf::ThriftServerRequestFnf(
+    ActiveRequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
@@ -136,14 +138,14 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)),
-      onComplete_(std::move(onComplete)),
-      debugStub_(
-          reqRegistry,
-          *this,
-          *getRequestContext(),
-          getProtoId(),
-          std::move(debugPayload),
-          rootRequestContextId) {
+      onComplete_(std::move(onComplete)) {
+  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+      reqRegistry,
+      *this,
+      *getRequestContext(),
+      getProtoId(),
+      std::move(debugPayload),
+      rootRequestContextId);
   scheduleTimeouts();
 }
 
@@ -171,6 +173,7 @@ void ThriftServerRequestFnf::sendSerializedError(
     std::unique_ptr<folly::IOBuf>) noexcept {}
 
 ThriftServerRequestStream::ThriftServerRequestStream(
+    ActiveRequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
@@ -186,14 +189,14 @@ ThriftServerRequestStream::ThriftServerRequestStream(
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)),
-      activeRequestsGuard_(std::move(activeRequestsGuard)),
-      debugStub_(
-          reqRegistry,
-          *this,
-          *getRequestContext(),
-          getProtoId(),
-          std::move(debugPayload),
-          rootRequestContextId) {
+      activeRequestsGuard_(std::move(activeRequestsGuard)) {
+  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+      reqRegistry,
+      *this,
+      *getRequestContext(),
+      getProtoId(),
+      std::move(debugPayload),
+      rootRequestContextId);
   scheduleTimeouts();
 }
 
@@ -259,6 +262,7 @@ void ThriftServerRequestStream::sendSerializedError(
 }
 
 ThriftServerRequestSink::ThriftServerRequestSink(
+    ActiveRequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
@@ -274,14 +278,14 @@ ThriftServerRequestSink::ThriftServerRequestSink(
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)),
-      activeRequestsGuard_(std::move(activeRequestsGuard)),
-      debugStub_(
-          reqRegistry,
-          *this,
-          *getRequestContext(),
-          getProtoId(),
-          std::move(debugPayload),
-          rootRequestContextId) {
+      activeRequestsGuard_(std::move(activeRequestsGuard)) {
+  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+      reqRegistry,
+      *this,
+      *getRequestContext(),
+      getProtoId(),
+      std::move(debugPayload),
+      rootRequestContextId);
   scheduleTimeouts();
 }
 

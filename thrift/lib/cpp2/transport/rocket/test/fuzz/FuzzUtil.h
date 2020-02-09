@@ -113,7 +113,7 @@ class FakeProcessor final : public apache::thrift::AsyncProcessor {
   }
 
   void process(
-      std::unique_ptr<apache::thrift::ResponseChannelRequest> req,
+      apache::thrift::ResponseChannelRequest::UniquePtr req,
       std::unique_ptr<folly::IOBuf>,
       apache::thrift::protocol::PROTOCOL_TYPES,
       apache::thrift::Cpp2RequestContext*,

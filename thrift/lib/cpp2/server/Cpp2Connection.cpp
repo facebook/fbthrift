@@ -356,7 +356,7 @@ void Cpp2Connection::requestReceived(
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
       *(hreq->getHeader()), queueTimeout, taskTimeout);
 
-  auto t2r = std::make_unique<Cpp2Request>(
+  auto t2r = ActiveRequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq), this_, debugPayloadQueue.move(), reqCtx->getRootId());
   if (admissionController) {
     t2r->setAdmissionController(std::move(admissionController));
@@ -416,6 +416,7 @@ void Cpp2Connection::removeRequest(Cpp2Request* req) {
 }
 
 Cpp2Connection::Cpp2Request::Cpp2Request(
+    ActiveRequestsRegistry::DebugStub& debugStubToInit,
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     std::shared_ptr<Cpp2Connection> con,
     std::unique_ptr<folly::IOBuf> debugPayload,
@@ -425,14 +426,14 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       // Note: tricky ordering here; see the note on connection_ in the class
       // definition.
       reqContext_(&connection_->context_, req_->getHeader()),
-      activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()),
-      debugStub_(
-          *connection_->getWorker()->getRequestsRegistry(),
-          *this,
-          reqContext_,
-          protocol::PROTOCOL_TYPES(req_->getHeader()->getProtocolId()),
-          std::move(debugPayload),
-          rootRequestContextId) {
+      activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()) {
+  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+      *connection_->getWorker()->getRequestsRegistry(),
+      *this,
+      reqContext_,
+      protocol::PROTOCOL_TYPES(req_->getHeader()->getProtocolId()),
+      std::move(debugPayload),
+      rootRequestContextId);
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }

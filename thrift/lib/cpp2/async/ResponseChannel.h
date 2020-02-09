@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
+#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
 #endif
@@ -65,7 +66,8 @@ namespace thrift {
 
 class ResponseChannelRequest {
  public:
-  using UniquePtr = std::unique_ptr<ResponseChannelRequest>;
+  using UniquePtr =
+      std::unique_ptr<ResponseChannelRequest, ActiveRequestsRegistry::Deleter>;
 
   folly::IOBuf* getBuf() {
     return buf_.get();
