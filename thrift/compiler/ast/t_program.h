@@ -101,6 +101,10 @@ class t_program : public t_doc {
     placeholder_typedefs_.push_back(std::move(ptd));
   }
 
+  void add_unnamed_typedef(std::unique_ptr<t_typedef> td) {
+    unnamed_typedefs_.push_back(std::move(td));
+  }
+
   void add_unnamed_type(std::unique_ptr<t_type> ut) {
     unnamed_types_.push_back(std::move(ut));
   }
@@ -267,6 +271,7 @@ class t_program : public t_doc {
    * duration of the program's lifetime, and subsequently destroyed.
    */
   std::vector<std::unique_ptr<t_typedef>> placeholder_typedefs_;
+  std::vector<std::unique_ptr<t_typedef>> unnamed_typedefs_;
   std::vector<std::unique_ptr<t_type>> unnamed_types_;
 
   std::vector<t_typedef*> typedefs_raw_;

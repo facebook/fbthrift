@@ -1343,8 +1343,11 @@ FieldType:
         }
         // Create typedef in case we have annotations on the type.
         if ($$ != nullptr && $2 != nullptr) {
-          $$ = new t_typedef(const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
-          $$->annotations_ = $2->annotations_;
+          auto td = new t_typedef(
+              const_cast<t_program*>($$->get_program()), $$, $$->get_name(), driver.scope_cache);
+          td->annotations_ = $2->annotations_;
+          $$ = td;
+          driver.program->add_unnamed_typedef(std::unique_ptr<t_typedef>{td});
           delete $2;
         }
         if ($$ == nullptr) {
