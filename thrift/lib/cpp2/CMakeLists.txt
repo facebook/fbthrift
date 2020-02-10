@@ -125,6 +125,7 @@ add_library(
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
   ${RpcMetadata-cpp2-SOURCES}
+  ${metadata-cpp2-SOURCES}
   ${rsocket-cpp2-SOURCES}
 )
 add_dependencies(thriftcpp2 Config-cpp2-target RpcMetadata-cpp2-target)

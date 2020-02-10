@@ -236,6 +236,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void set_mstch_generators();
   void generate_reflection(t_program const* program);
   void generate_constants(t_program const* program);
+  void generate_metadata(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
 
@@ -1333,6 +1334,7 @@ class mstch_cpp2_program : public mstch_program {
              &mstch_cpp2_program::aliases_to_struct},
             {"program:enforce_required?",
              &mstch_cpp2_program::enforce_required},
+            {"program:gen_metadata?", &mstch_cpp2_program::gen_metadata},
         });
   }
   std::string get_program_namespace(t_program const* program) override {
@@ -1691,6 +1693,9 @@ class mstch_cpp2_program : public mstch_program {
   mstch::node enforce_required() {
     return cache_->parsed_options_.count("deprecated_enforce_required") != 0;
   }
+  mstch::node gen_metadata() {
+    return cache_->parsed_options_.count("no_metadata") == 0;
+  }
 
  private:
   std::unique_ptr<std::vector<t_struct*>> sorted_objects_;
@@ -1958,6 +1963,7 @@ void t_mstch_cpp2_generator::generate_program() {
   for (const auto* service : program->get_services()) {
     generate_service(service);
   }
+  generate_metadata(program);
 }
 
 void t_mstch_cpp2_generator::set_mstch_generators() {
@@ -1992,6 +1998,22 @@ void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
       cache_->programs_[id], "module_constants.h", name + "_constants.h");
   render_to_file(
       cache_->programs_[id], "module_constants.cpp", name + "_constants.cpp");
+}
+
+void t_mstch_cpp2_generator::generate_metadata(const t_program* program) {
+  auto name = program->get_name();
+  const auto& id = program->get_path();
+  if (!cache_->programs_.count(id)) {
+    cache_->programs_[id] =
+        generators_->program_generator_->generate(program, generators_, cache_);
+  }
+
+  render_to_file(
+      cache_->programs_[id], "module_metadata.h", name + "_metadata.h");
+  if (cache_->parsed_options_.count("no_metadata") == 0) {
+    render_to_file(
+        cache_->programs_[id], "module_metadata.cpp", name + "_metadata.cpp");
+  }
 }
 
 void t_mstch_cpp2_generator::generate_reflection(t_program const* program) {

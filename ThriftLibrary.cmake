@@ -210,12 +210,14 @@ macro(thrift_generate
   set("${file_name}-${language}-HEADERS"
     ${output_path}/gen-${language}/${file_name}_constants.h
     ${output_path}/gen-${language}/${file_name}_data.h
+    ${output_path}/gen-${language}/${file_name}_metadata.h
     ${output_path}/gen-${language}/${file_name}_types.h
     ${output_path}/gen-${language}/${file_name}_types.tcc
   )
   set("${file_name}-${language}-SOURCES"
     ${output_path}/gen-${language}/${file_name}_constants.cpp
     ${output_path}/gen-${language}/${file_name}_data.cpp
+    ${output_path}/gen-${language}/${file_name}_metadata.cpp
     ${output_path}/gen-${language}/${file_name}_types.cpp
   )
   foreach(service ${services})
@@ -255,7 +257,7 @@ macro(thrift_generate
       -o ${output_path}
       ${thrift_include_directories}
       "${file_path}/${file_name}.thrift"
-    DEPENDS 
+    DEPENDS
       ${THRIFT1}
       "${file_path}/${file_name}.thrift"
     COMMENT "Generating ${file_name} files. Output: ${output_path}"
