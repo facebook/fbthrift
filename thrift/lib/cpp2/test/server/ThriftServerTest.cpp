@@ -494,13 +494,29 @@ void doServerOverloadedTest(MakeClientFunc&& makeClient) {
         return true;
       });
 
+  // avoid compressing loadshedding errors even if compression is enabled
+  static_cast<ThriftServer*>(&runner.getThriftServer())
+      ->setMinCompressBytes(100);
+
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader(kClientLoggingHeader.str(), "");
-  EXPECT_ANY_THROW(client->sync_voidResponse(rpcOptions));
+  try {
+    client->sync_voidResponse(rpcOptions);
+    FAIL() << "Expected that the service call throws TApplicationException";
+  } catch (const apache::thrift::TApplicationException& ex) {
+    EXPECT_EQ(
+        ex.getType(),
+        apache::thrift::TApplicationException::TApplicationExceptionType::
+            LOADSHEDDING);
 
-  // Latency headers are NOT set, when server is overloaded
-  validateLatencyHeaders(
-      rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+    // Latency headers are NOT set, when server is overloaded
+    validateLatencyHeaders(
+        rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+  } catch (...) {
+    FAIL()
+        << "Expected that the service call throws TApplicationException, got "
+        << std::current_exception;
+  }
 }
 } // namespace
 
@@ -510,11 +526,39 @@ TEST(ThriftServer, LatencyHeader_ServerOverloaded_HeaderClientChannel) {
   });
 }
 
+TEST(
+    ThriftServer,
+    LatencyHeader_ServerOverloaded_HeaderClientChannel_WithCompression) {
+  doServerOverloadedTest([](auto& runner, auto* evb) {
+    return runner.template newClient<TestServiceAsyncClient>(
+        evb, [](auto socket) mutable {
+          auto channel = HeaderClientChannel::newChannel(std::move(socket));
+          channel->setTransform(
+              apache::thrift::transport::THeader::ZSTD_TRANSFORM);
+          return channel;
+        });
+  });
+}
+
 TEST(ThriftServer, LatencyHeader_ServerOverloaded_RocketClientChannel) {
   doServerOverloadedTest([](auto& runner, auto* evb) {
     return runner.template newClient<TestServiceAsyncClient>(
         evb, [](auto socket) mutable {
           return RocketClientChannel::newChannel(std::move(socket));
+        });
+  });
+}
+
+TEST(
+    ThriftServer,
+    LatencyHeader_ServerOverloaded_RocketClientChannel_WithCompression) {
+  doServerOverloadedTest([](auto& runner, auto* evb) {
+    return runner.template newClient<TestServiceAsyncClient>(
+        evb, [](auto socket) mutable {
+          auto channel = RocketClientChannel::newChannel(std::move(socket));
+          channel->setNegotiatedCompressionAlgorithm(
+              CompressionAlgorithm::ZSTD);
+          return channel;
         });
   });
 }

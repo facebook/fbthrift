@@ -294,7 +294,6 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
   ew.with_exception([&](TApplicationException& tae) {
     std::unique_ptr<folly::IOBuf> exbuf;
     uint16_t proto = header_->getProtocolId();
-    auto transforms = header_->getWriteTransforms();
     try {
       exbuf = serializeError(proto, tae, getBuf());
     } catch (const TProtocolException& pe) {
@@ -304,7 +303,9 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
       return;
     }
     exbuf = THeader::transform(
-        std::move(exbuf), transforms, header_->getMinCompressBytes());
+        std::move(exbuf),
+        header_->getWriteTransforms(),
+        header_->getMinCompressBytes());
     sendReply(std::move(exbuf), cb);
   });
 }
