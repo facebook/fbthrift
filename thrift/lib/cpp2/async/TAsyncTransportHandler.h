@@ -139,13 +139,9 @@ class TAsyncTransportHandler
   }
 
   void readErr(const folly::AsyncSocketException& ex) noexcept override {
-    transport::TTransportException tex(
-        transport::TTransportException::TTransportExceptionType(ex.getType()),
-        ex.what(),
-        ex.getErrno());
     getContext()->fireReadException(
         folly::make_exception_wrapper<transport::TTransportException>(
-            std::move(tex)));
+            transport::TTransportException(ex)));
   }
 
  private:
@@ -170,11 +166,7 @@ class TAsyncTransportHandler
     void writeErr(
         size_t /*bytesWritten*/,
         const folly::AsyncSocketException& ex) noexcept override {
-      transport::TTransportException tex(
-          transport::TTransportException::TTransportExceptionType(ex.getType()),
-          ex.what(),
-          ex.getErrno());
-      promise_.setException(tex);
+      promise_.setException(transport::TTransportException(ex));
       delete this;
     }
 

@@ -18,6 +18,7 @@
 #define _THRIFT_TRANSPORT_TTRANSPORTEXCEPTION_H_ 1
 
 #include <folly/Conv.h>
+#include <folly/io/async/AsyncSocketException.h>
 
 #include <thrift/lib/cpp/Thrift.h>
 
@@ -96,6 +97,12 @@ class TTransportException : public apache::thrift::TLibraryException {
         type_(type),
         errno_(errno_copy),
         options_(0) {}
+
+  explicit TTransportException(const folly::AsyncSocketException& ex)
+      : TTransportException(
+            TTransportExceptionType(ex.getType()),
+            ex.what(),
+            ex.getErrno()) {}
 
   ~TTransportException() throw() override {}
 

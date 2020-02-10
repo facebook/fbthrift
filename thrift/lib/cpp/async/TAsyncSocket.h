@@ -106,12 +106,7 @@ class TAsyncSocket : public virtual folly::AsyncSocket {
 
    private:
     void connectErr(const folly::AsyncSocketException& ex) noexcept override {
-      transport::TTransportException tex(
-          transport::TTransportException::TTransportExceptionType(ex.getType()),
-          ex.what(),
-          ex.getErrno());
-
-      connectError(tex);
+      connectError(transport::TTransportException(ex));
     }
   };
 };

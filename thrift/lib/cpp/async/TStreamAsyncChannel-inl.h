@@ -310,10 +310,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeErr(
     const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
 
-  transport::TTransportException tex(
-      transport::TTransportException::TTransportExceptionType(ex.getType()),
-      ex.what(),
-      ex.getErrno());
+  transport::TTransportException tex(ex);
 
   // Set exception type
   errorType_ = tex.getType();

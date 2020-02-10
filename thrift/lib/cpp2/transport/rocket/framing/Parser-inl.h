@@ -116,10 +116,7 @@ template <class T>
 void Parser<T>::readErr(const folly::AsyncSocketException& ex) noexcept {
   folly::DelayedDestruction::DestructorGuard dg(&this->owner_);
 
-  owner_.close(transport::TTransportException(
-      transport::TTransportException::TTransportExceptionType(ex.getType()),
-      ex.what(),
-      ex.getErrno()));
+  owner_.close(transport::TTransportException(ex));
 }
 
 template <class T>

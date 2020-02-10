@@ -132,12 +132,9 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket, public TAsyncSocket {
     void handshakeErr(
         folly::AsyncSSLSocket* sock,
         const folly::AsyncSocketException& ex) noexcept override {
-      transport::TTransportException tex(
-          transport::TTransportException::TTransportExceptionType(ex.getType()),
-          ex.what(),
-          ex.getErrno());
-
-      handshakeError(static_cast<TAsyncSSLSocket*>(sock), tex);
+      handshakeError(
+          static_cast<TAsyncSSLSocket*>(sock),
+          transport::TTransportException(ex));
     }
   };
 
