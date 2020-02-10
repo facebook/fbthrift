@@ -152,6 +152,9 @@ pub mod types {
 
 }
 
+pub mod dependencies {
+}
+
 pub mod services {
     pub mod raiser {
         use fbthrift::{
@@ -656,11 +659,17 @@ pub mod client {
     }
 
     impl<P, T> RaiserImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -703,7 +712,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -751,7 +760,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -799,7 +808,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -847,7 +856,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -876,6 +885,37 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> Raiser for T
+    where
+        T: AsRef<dyn Raiser + 'a>,
+        T: Send,
+    {
+        fn doBland(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().doBland(
+            )
+        }
+        fn doRaise(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().doRaise(
+            )
+        }
+        fn get200(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+            self.as_ref().get200(
+            )
+        }
+        fn get500(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+            self.as_ref().get500(
+            )
         }
     }
 

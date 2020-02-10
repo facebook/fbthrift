@@ -258,6 +258,10 @@ class mstch_rust_program : public mstch_program {
             {"program:serde?", &mstch_rust_program::rust_serde},
             {"program:multifile?", &mstch_rust_program::rust_multifile},
             {"program:crate", &mstch_rust_program::rust_crate},
+            {"program:package", &mstch_rust_program::rust_package},
+            {"program:includes", &mstch_rust_program::rust_includes},
+            {"program:anyServiceWithoutParent?",
+             &mstch_rust_program::rust_any_service_without_parent},
         });
   }
   mstch::node rust_has_types() {
@@ -279,6 +283,25 @@ class mstch_rust_program : public mstch_program {
       return "crate::" + mangle(program_->get_name());
     }
     return std::string("crate");
+  }
+  mstch::node rust_package() {
+    return get_import_name(program_, options_);
+  }
+  mstch::node rust_includes() {
+    mstch::array includes;
+    for (auto* program : program_->get_included_programs()) {
+      includes.push_back(generators_->program_generator_->generate(
+          program, generators_, cache_, pos_));
+    }
+    return includes;
+  }
+  mstch::node rust_any_service_without_parent() {
+    for (const t_service* service : program_->get_services()) {
+      if (service->get_extends() == nullptr) {
+        return true;
+      }
+    }
+    return false;
   }
 
  private:
@@ -344,6 +367,8 @@ class mstch_rust_service : public mstch_service {
             {"service:snake", &mstch_rust_service::rust_snake},
             {"service:requestContext?",
              &mstch_rust_service::rust_request_context},
+            {"service:extendedServices",
+             &mstch_rust_service::rust_extended_services},
         });
   }
   mstch::node rust_package() {
@@ -358,6 +383,32 @@ class mstch_rust_service : public mstch_service {
   }
   mstch::node rust_request_context() {
     return service_->annotations_.count("rust.request_context") > 0;
+  }
+  mstch::node rust_extended_services() {
+    mstch::array extended_services;
+    const t_service* service = service_;
+    std::string type_prefix =
+        get_import_name(service_->get_program(), options_);
+    std::string as_ref_impl = "&self.parent";
+    while (true) {
+      const t_service* parent_service = service->get_extends();
+      if (parent_service == nullptr) {
+        break;
+      }
+      if (parent_service->get_program() != service->get_program()) {
+        type_prefix +=
+            "::dependencies::" + parent_service->get_program()->get_name();
+      }
+      mstch::map node;
+      node["extendedService:packagePrefix"] = type_prefix;
+      node["extendedService:asRefImpl"] = as_ref_impl;
+      node["extendedService:service"] =
+          generate_cached_extended_service(parent_service);
+      extended_services.push_back(node);
+      as_ref_impl = "self.parent.as_ref()";
+      service = parent_service;
+    }
+    return extended_services;
   }
 
  private:

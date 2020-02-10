@@ -573,17 +573,26 @@ mstch::node mstch_service::functions() {
 mstch::node mstch_service::extends() {
   auto const* extends = service_->get_extends();
   if (extends) {
-    std::string id = extends->get_program()->get_name() +
-        get_service_namespace(extends->get_program());
-    return generate_elements_cached(
-        std::vector<t_service const*>{extends},
-        generators_->service_generator_.get(),
-        cache_->services_,
-        id,
-        generators_,
-        cache_);
+    return generate_cached_extended_service(extends);
   }
   return mstch::node();
+}
+
+mstch::node mstch_service::generate_cached_extended_service(
+    const t_service* service) {
+  std::string id = service->get_program()->get_name() +
+      get_service_namespace(service->get_program());
+  size_t element_index = 0;
+  size_t element_count = 1;
+  return generate_element_cached(
+      service,
+      generators_->service_generator_.get(),
+      cache_->services_,
+      id,
+      element_index,
+      element_count,
+      generators_,
+      cache_);
 }
 
 mstch::node mstch_typedef::type() {

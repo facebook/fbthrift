@@ -295,6 +295,9 @@ pub mod types {
     }
 }
 
+pub mod dependencies {
+}
+
 pub mod services {
     pub mod my_service {
         use fbthrift::{
@@ -861,11 +864,17 @@ pub mod client {
     }
 
     impl<P, T> MyServiceImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -920,7 +929,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -968,7 +977,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1020,7 +1029,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1072,7 +1081,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1128,7 +1137,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1184,7 +1193,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1213,6 +1222,61 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyService for T
+    where
+        T: AsRef<dyn MyService + 'a>,
+        T: Send,
+    {
+        fn ping(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().ping(
+            )
+        }
+        fn getRandomData(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+            self.as_ref().getRandomData(
+            )
+        }
+        fn hasDataById(
+            &self,
+            arg_id: i64,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
+            self.as_ref().hasDataById(
+                arg_id,
+            )
+        }
+        fn getDataById(
+            &self,
+            arg_id: i64,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+            self.as_ref().getDataById(
+                arg_id,
+            )
+        }
+        fn putDataById(
+            &self,
+            arg_id: i64,
+            arg_data: &str,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().putDataById(
+                arg_id,
+                arg_data,
+            )
+        }
+        fn lobDataById(
+            &self,
+            arg_id: i64,
+            arg_data: &str,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().lobDataById(
+                arg_id,
+                arg_data,
+            )
         }
     }
 

@@ -169,6 +169,9 @@ pub mod types {
 
 }
 
+pub mod dependencies {
+}
+
 pub mod services {
     pub mod my_service {
         use fbthrift::{
@@ -1101,11 +1104,17 @@ pub mod client {
     }
 
     impl<P, T> MyServiceImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -1163,7 +1172,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1211,7 +1220,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1263,7 +1272,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1315,7 +1324,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1371,7 +1380,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1427,7 +1436,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1475,7 +1484,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1504,6 +1513,67 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyService for T
+    where
+        T: AsRef<dyn MyService + 'a>,
+        T: Send,
+    {
+        fn ping(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().ping(
+            )
+        }
+        fn getRandomData(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+            self.as_ref().getRandomData(
+            )
+        }
+        fn hasDataById(
+            &self,
+            arg_id: i64,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<bool>> + Send + 'static>> {
+            self.as_ref().hasDataById(
+                arg_id,
+            )
+        }
+        fn getDataById(
+            &self,
+            arg_id: i64,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
+            self.as_ref().getDataById(
+                arg_id,
+            )
+        }
+        fn putDataById(
+            &self,
+            arg_id: i64,
+            arg_data: &str,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().putDataById(
+                arg_id,
+                arg_data,
+            )
+        }
+        fn lobDataById(
+            &self,
+            arg_id: i64,
+            arg_data: &str,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().lobDataById(
+                arg_id,
+                arg_data,
+            )
+        }
+        fn doNothing(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().doNothing(
+            )
         }
     }
 
@@ -1554,11 +1624,17 @@ pub mod client {
     }
 
     impl<P, T> MyServicePrioParentImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -1595,7 +1671,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1643,7 +1719,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1672,6 +1748,25 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyServicePrioParent for T
+    where
+        T: AsRef<dyn MyServicePrioParent + 'a>,
+        T: Send,
+    {
+        fn ping(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().ping(
+            )
+        }
+        fn pong(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().pong(
+            )
         }
     }
 
@@ -1718,20 +1813,36 @@ pub mod client {
     }
 
     pub struct MyServicePrioChildImpl<P, T> {
-        transport: T,
-        _phantom: PhantomData<fn() -> P>,
+        parent: crate::client::MyServicePrioParentImpl<P, T>,
     }
 
     impl<P, T> MyServicePrioChildImpl<P, T> {
-        pub fn new(transport: T) -> Self {
-            Self {
-                transport,
-                _phantom: PhantomData,
-            }
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            let parent = crate::client::MyServicePrioParentImpl::<P, T>::new(transport);
+            Self { parent }
+        }
+
+        pub fn transport(&self) -> &T {
+            self.parent.transport()
         }
     }
 
-    pub trait MyServicePrioChild: Send {
+    impl<P, T> AsRef<dyn crate::client::MyServicePrioParent + 'static> for MyServicePrioChildImpl<P, T>
+    where
+        P: Protocol,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyServicePrioParent + 'static)
+        {
+            &self.parent
+        }
+    }
+
+    pub trait MyServicePrioChild: crate::client::MyServicePrioParent + Send {
         fn pang(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
@@ -1761,7 +1872,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1790,6 +1901,20 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyServicePrioChild for T
+    where
+        T: AsRef<dyn MyServicePrioChild + 'a>,
+        T: crate::client::MyServicePrioParent,
+        T: Send,
+    {
+        fn pang(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().pang(
+            )
         }
     }
 
@@ -3461,6 +3586,7 @@ pub mod mock {
     }
 
     pub struct MyServicePrioChild<'mock> {
+        pub parent: crate::mock::MyServicePrioParent<'mock>,
         pub pang: my_service_prio_child::pang<'mock>,
         _marker: PhantomData<&'mock ()>,
     }
@@ -3468,6 +3594,7 @@ pub mod mock {
     impl dyn super::client::MyServicePrioChild {
         pub fn mock<'mock>() -> MyServicePrioChild<'mock> {
             MyServicePrioChild {
+                parent: crate::client::MyServicePrioParent::mock(),
                 pang: my_service_prio_child::pang::unimplemented(),
                 _marker: PhantomData,
             }
@@ -3485,6 +3612,14 @@ pub mod mock {
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyServicePrioChildPangError(error),
                 ))))
+        }
+    }
+
+    #[async_trait]
+    impl<'mock> AsRef<dyn crate::client::MyServicePrioParent + 'mock> for MyServicePrioChild<'mock>
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyServicePrioParent + 'mock) {
+            self
         }
     }
 

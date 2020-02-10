@@ -17,27 +17,75 @@
 }}
 
     use fbthrift::*;
+    {{#program:anyServiceWithoutParent?}}
     use std::marker::PhantomData;
+    {{/program:anyServiceWithoutParent?}}
     use std::sync::Arc;{{!
 }}{{#program:services}}
 
     pub struct {{service:name}}Impl<P, T> {
-        {{^service:functions?}}_{{/service:functions?}}{{!
-        }}transport: T,
+        {{#service:extends}}
+        parent: {{service:package}}::client::{{service:name}}Impl<P, T>,
+        {{/service:extends}}
+        {{^service:extends}}
+        transport: T,
         _phantom: PhantomData<fn() -> P>,
+        {{/service:extends}}
     }
 
     impl<P, T> {{service:name}}Impl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            {{#service:extends}}
+            let parent = {{service:package}}::client::{{service:name}}Impl::<P, T>::new(transport);
+            Self { parent }
+            {{/service:extends}}
+            {{^service:extends}}
             Self {
-                {{^service:functions?}}_transport: {{/service:functions?}}{{!
-                }}transport,
+                transport,
                 _phantom: PhantomData,
             }
+            {{/service:extends}}
+        }
+
+        pub fn transport(&self) -> &T {
+            {{#service:extends}}
+            self.parent.transport()
+            {{/service:extends}}
+            {{^service:extends}}
+            &self.transport
+            {{/service:extends}}
         }
     }
 
-    pub trait {{service:name}}: Send {{>lib/block}}{{!
+    {{#service:extendedServices}}
+    impl<P, T> {{!
+        }}{{#extendedService:service}}{{!
+        }}AsRef<dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'static> {{!
+        }}{{/extendedService:service}}{{!
+        }}for {{service:name}}Impl<P, T>
+    where
+        P: Protocol,
+        T: Transport,
+        {{! require P::Frame and T to have compatible DecBuf and EncBuf::Final }}
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+    {
+        fn as_ref(&self) -> &(dyn {{#extendedService:service}}{{!
+            }}{{extendedService:packagePrefix}}::client::{{service:name}}{{!
+            }}{{/extendedService:service}}{{!
+            }} + 'static)
+        {
+            {{extendedService:asRefImpl}}
+        }
+    }
+
+    {{/service:extendedServices}}
+    pub trait {{service:name}}: {{!
+        }}{{#service:extends}}{{service:package}}::client::{{service:name}} + {{/service:extends}}{{!
+        }}Send {{>lib/block}}{{!
+
         }}{{#service:functions}}
         fn {{function:name}}(
             &self,{{!
@@ -91,7 +139,7 @@
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -122,6 +170,34 @@
                     }(de)
                 }))
                 .boxed()
+        }
+        {{/service:functions}}
+    }
+
+    impl<'a, T> {{service:name}} for T
+    where
+        T: AsRef<dyn {{service:name}} + 'a>,
+        {{#service:extendedServices}}
+        {{#extendedService:service}}
+        T: {{extendedService:packagePrefix}}::client::{{service:name}},
+        {{/extendedService:service}}
+        {{/service:extendedServices}}
+        T: Send,
+    {
+        {{#service:functions}}
+        fn {{function:name}}(
+            &self,
+            {{#function:args}}
+            arg_{{field:name}}: {{>lib/arg}},
+            {{/function:args}}
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
+            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+        }}>> + Send + 'static>> {
+            self.as_ref().{{function:name}}(
+                {{#function:args}}
+                arg_{{field:name}},
+                {{/function:args}}
+            )
         }
         {{/service:functions}}
     }

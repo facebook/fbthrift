@@ -4,6 +4,9 @@
 
 pub use self::errors::*;
 
+pub mod dependencies {
+}
+
 pub mod services {
     pub mod my_root {
         use fbthrift::{
@@ -302,11 +305,17 @@ pub mod client {
     }
 
     impl<P, T> MyRootImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -340,7 +349,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -369,6 +378,19 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyRoot for T
+    where
+        T: AsRef<dyn MyRoot + 'a>,
+        T: Send,
+    {
+        fn do_root(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().do_root(
+            )
         }
     }
 
@@ -414,20 +436,36 @@ pub mod client {
     }
 
     pub struct MyNodeImpl<P, T> {
-        transport: T,
-        _phantom: PhantomData<fn() -> P>,
+        parent: crate::client::MyRootImpl<P, T>,
     }
 
     impl<P, T> MyNodeImpl<P, T> {
-        pub fn new(transport: T) -> Self {
-            Self {
-                transport,
-                _phantom: PhantomData,
-            }
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            let parent = crate::client::MyRootImpl::<P, T>::new(transport);
+            Self { parent }
+        }
+
+        pub fn transport(&self) -> &T {
+            self.parent.transport()
         }
     }
 
-    pub trait MyNode: Send {
+    impl<P, T> AsRef<dyn crate::client::MyRoot + 'static> for MyNodeImpl<P, T>
+    where
+        P: Protocol,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
+        {
+            &self.parent
+        }
+    }
+
+    pub trait MyNode: crate::client::MyRoot + Send {
         fn do_mid(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
@@ -457,7 +495,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -486,6 +524,20 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyNode for T
+    where
+        T: AsRef<dyn MyNode + 'a>,
+        T: crate::client::MyRoot,
+        T: Send,
+    {
+        fn do_mid(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().do_mid(
+            )
         }
     }
 
@@ -531,20 +583,49 @@ pub mod client {
     }
 
     pub struct MyLeafImpl<P, T> {
-        transport: T,
-        _phantom: PhantomData<fn() -> P>,
+        parent: crate::client::MyNodeImpl<P, T>,
     }
 
     impl<P, T> MyLeafImpl<P, T> {
-        pub fn new(transport: T) -> Self {
-            Self {
-                transport,
-                _phantom: PhantomData,
-            }
+        pub fn new(
+            transport: T,
+        ) -> Self {
+            let parent = crate::client::MyNodeImpl::<P, T>::new(transport);
+            Self { parent }
+        }
+
+        pub fn transport(&self) -> &T {
+            self.parent.transport()
         }
     }
 
-    pub trait MyLeaf: Send {
+    impl<P, T> AsRef<dyn crate::client::MyNode + 'static> for MyLeafImpl<P, T>
+    where
+        P: Protocol,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyNode + 'static)
+        {
+            &self.parent
+        }
+    }
+
+    impl<P, T> AsRef<dyn crate::client::MyRoot + 'static> for MyLeafImpl<P, T>
+    where
+        P: Protocol,
+        T: Transport,
+        P::Frame: Framing<DecBuf = FramingDecoded<T>>,
+        ProtocolEncoded<P>: BufMutExt<Final = FramingEncodedFinal<T>>,
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
+        {
+            self.parent.as_ref()
+        }
+    }
+
+    pub trait MyLeaf: crate::client::MyNode + Send {
         fn do_leaf(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>>;
@@ -574,7 +655,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -603,6 +684,21 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> MyLeaf for T
+    where
+        T: AsRef<dyn MyLeaf + 'a>,
+        T: crate::client::MyNode,
+        T: crate::client::MyRoot,
+        T: Send,
+    {
+        fn do_leaf(
+            &self,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().do_leaf(
+            )
         }
     }
 
@@ -1414,6 +1510,7 @@ pub mod mock {
     }
 
     pub struct MyNode<'mock> {
+        pub parent: crate::mock::MyRoot<'mock>,
         pub do_mid: my_node::do_mid<'mock>,
         _marker: PhantomData<&'mock ()>,
     }
@@ -1421,6 +1518,7 @@ pub mod mock {
     impl dyn super::client::MyNode {
         pub fn mock<'mock>() -> MyNode<'mock> {
             MyNode {
+                parent: crate::client::MyRoot::mock(),
                 do_mid: my_node::do_mid::unimplemented(),
                 _marker: PhantomData,
             }
@@ -1438,6 +1536,14 @@ pub mod mock {
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyNodeDoMidError(error),
                 ))))
+        }
+    }
+
+    #[async_trait]
+    impl<'mock> AsRef<dyn crate::client::MyRoot + 'mock> for MyNode<'mock>
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'mock) {
+            self
         }
     }
 
@@ -1485,6 +1591,7 @@ pub mod mock {
     }
 
     pub struct MyLeaf<'mock> {
+        pub parent: crate::mock::MyNode<'mock>,
         pub do_leaf: my_leaf::do_leaf<'mock>,
         _marker: PhantomData<&'mock ()>,
     }
@@ -1492,6 +1599,7 @@ pub mod mock {
     impl dyn super::client::MyLeaf {
         pub fn mock<'mock>() -> MyLeaf<'mock> {
             MyLeaf {
+                parent: crate::client::MyNode::mock(),
                 do_leaf: my_leaf::do_leaf::unimplemented(),
                 _marker: PhantomData,
             }
@@ -1509,6 +1617,22 @@ pub mod mock {
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyLeafDoLeafError(error),
                 ))))
+        }
+    }
+
+    #[async_trait]
+    impl<'mock> AsRef<dyn crate::client::MyNode + 'mock> for MyLeaf<'mock>
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyNode + 'mock) {
+            self
+        }
+    }
+
+    #[async_trait]
+    impl<'mock> AsRef<dyn crate::client::MyRoot + 'mock> for MyLeaf<'mock>
+    {
+        fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'mock) {
+            self
         }
     }
 

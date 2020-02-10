@@ -347,6 +347,25 @@ class mstch_base : public mstch::object {
     return a;
   }
 
+  template <typename Item, typename Generator, typename Cache>
+  static mstch::node generate_element_cached(
+      Item const& item,
+      Generator const* generator,
+      Cache& c,
+      std::string const& id,
+      size_t element_index,
+      size_t element_count,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache) {
+    std::string elem_id = id + item->get_name();
+    auto pos = element_position(element_index, element_count);
+    if (!c.count(elem_id)) {
+      c[elem_id] =
+          generator->generate(item, generators, cache, pos, element_index);
+    }
+    return c[elem_id];
+  }
+
   template <typename Container, typename Generator, typename Cache>
   static mstch::array generate_elements_cached(
       Container const& container,
@@ -357,13 +376,15 @@ class mstch_base : public mstch::object {
       std::shared_ptr<mstch_cache> cache) {
     mstch::array a;
     for (size_t i = 0; i < container.size(); ++i) {
-      auto pos = element_position(i, container.size());
-      std::string elem_id = id + container[i]->get_name();
-      if (!c.count(elem_id)) {
-        c[elem_id] =
-            generator->generate(container[i], generators, cache, pos, i);
-      }
-      a.push_back(c[elem_id]);
+      a.push_back(generate_element_cached(
+          container[i],
+          generator,
+          c,
+          id,
+          i,
+          container.size(),
+          generators,
+          cache));
     }
     return a;
   }
@@ -1025,6 +1046,8 @@ class mstch_service : public mstch_base {
 
  protected:
   t_service const* service_;
+
+  mstch::node generate_cached_extended_service(const t_service* service);
 };
 
 class mstch_typedef : public mstch_base {

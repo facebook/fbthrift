@@ -4,6 +4,9 @@
 
 pub use self::errors::*;
 
+pub mod dependencies {
+}
+
 pub mod services {
     pub mod nested_containers {
         use fbthrift::{
@@ -464,11 +467,17 @@ pub mod client {
     }
 
     impl<P, T> NestedContainersImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -523,7 +532,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -575,7 +584,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -627,7 +636,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -679,7 +688,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -731,7 +740,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -760,6 +769,53 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> NestedContainers for T
+    where
+        T: AsRef<dyn NestedContainers + 'a>,
+        T: Send,
+    {
+        fn mapList(
+            &self,
+            arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().mapList(
+                arg_foo,
+            )
+        }
+        fn mapSet(
+            &self,
+            arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().mapSet(
+                arg_foo,
+            )
+        }
+        fn listMap(
+            &self,
+            arg_foo: &[std::collections::BTreeMap<i32, i32>],
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().listMap(
+                arg_foo,
+            )
+        }
+        fn listSet(
+            &self,
+            arg_foo: &[std::collections::BTreeSet<i32>],
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().listSet(
+                arg_foo,
+            )
+        }
+        fn turtles(
+            &self,
+            arg_foo: &[Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>],
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
+            self.as_ref().turtles(
+                arg_foo,
+            )
         }
     }
 

@@ -1668,6 +1668,10 @@ pub mod types {
     }
 }
 
+pub mod dependencies {
+    pub use include as include;
+}
+
 pub mod services {
     pub mod some_service {
         use fbthrift::{
@@ -1876,11 +1880,17 @@ pub mod client {
     }
 
     impl<P, T> SomeServiceImpl<P, T> {
-        pub fn new(transport: T) -> Self {
+        pub fn new(
+            transport: T,
+        ) -> Self {
             Self {
                 transport,
                 _phantom: PhantomData,
             }
+        }
+
+        pub fn transport(&self) -> &T {
+            &self.transport
         }
     }
 
@@ -1923,7 +1933,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -1975,7 +1985,7 @@ pub mod client {
                     p.write_struct_end();
                 },
             ));
-            self.transport
+            self.transport()
                 .call(request)
                 .and_then(|reply| futures_preview::future::ready({
                     let de = P::deserializer(reply);
@@ -2004,6 +2014,29 @@ pub mod client {
                     }(de)
                 }))
                 .boxed()
+        }
+    }
+
+    impl<'a, T> SomeService for T
+    where
+        T: AsRef<dyn SomeService + 'a>,
+        T: Send,
+    {
+        fn bounce_map(
+            &self,
+            arg_m: &include::types::SomeMap,
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
+            self.as_ref().bounce_map(
+                arg_m,
+            )
+        }
+        fn binary_keyed_map(
+            &self,
+            arg_r: &[i64],
+        ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
+            self.as_ref().binary_keyed_map(
+                arg_r,
+            )
         }
     }
 
