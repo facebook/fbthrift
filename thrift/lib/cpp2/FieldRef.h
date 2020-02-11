@@ -123,6 +123,12 @@ class field_ref {
     return &value_;
   }
 
+  template <typename Index>
+  FOLLY_ERASE auto operator[](const Index& index)
+      -> decltype(std::declval<reference_type>()[index]) const {
+    return value_[index];
+  }
+
  private:
   value_type& value_;
   detail::is_set_t<value_type>& is_set_;

@@ -302,6 +302,12 @@ TEST(field_ref_test, move) {
   EXPECT_EQ(p.get(), rawp);
 }
 
+TEST(field_ref_test, subscript) {
+  TestStruct s;
+  char c = s.name()[0];
+  (void)c;
+}
+
 TEST(optional_field_ref_test, access_default_value) {
   auto s = TestStruct();
   EXPECT_THROW(*s.opt_name(), bad_field_access);
