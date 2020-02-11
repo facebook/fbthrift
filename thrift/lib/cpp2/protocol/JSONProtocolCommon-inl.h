@@ -115,7 +115,7 @@ uint32_t JSONProtocolWriterCommon::writeSerializedData(
     return 0;
   }
   out_.insert(buf->clone());
-  return buf->computeChainDataLength();
+  return folly::to_narrow(buf->computeChainDataLength());
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeByte(int8_t /*val*/) const {
@@ -145,7 +145,7 @@ uint32_t JSONProtocolWriterCommon::serializedSizeFloat(float /*val*/) const {
 
 uint32_t JSONProtocolWriterCommon::serializedSizeString(
     folly::StringPiece str) const {
-  return str.size() * 6 + 3;
+  return static_cast<uint32_t>(str.size()) * 6 + 3;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
@@ -155,7 +155,7 @@ uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
 
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
     folly::ByteRange v) const {
-  return v.size() * 6 + 3;
+  return static_cast<uint32_t>(v.size()) * 6 + 3;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
@@ -169,7 +169,7 @@ uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     TProtocolException::throwExceededSizeLimit();
   }
-  return size * 6 + 3;
+  return static_cast<uint32_t>(size) * 6 + 3;
 }
 
 uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
@@ -325,7 +325,8 @@ uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
     len -= 3;
   }
   if (len) { // Handle remainder
-    base64_encode(bytes, len, b);
+    DCHECK_LE(len, std::numeric_limits<int>::max());
+    base64_encode(bytes, folly::to_narrow(len), b);
     for (uint32_t i = 0; i < len + 1; i++) {
       out_.write(b[i]);
     }
@@ -339,7 +340,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONBase64(folly::ByteRange v) {
 uint32_t JSONProtocolWriterCommon::writeJSONBool(bool val) {
   const auto& out = val ? detail::json::kJSONTrue : detail::json::kJSONFalse;
   out_.push((const uint8_t*)out.data(), out.size());
-  return out.size();
+  return folly::to_narrow(out.size());
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONInt(int64_t num) {
@@ -438,7 +439,8 @@ void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
     folly::io::Cursor& snapshot,
     std::unique_ptr<folly::IOBuf>& ser) {
-  int32_t size = folly::io::Cursor(in_) - snapshot;
+  int32_t size =
+      folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
 
   if (ser) {
     std::unique_ptr<folly::IOBuf> newBuf;
@@ -777,7 +779,7 @@ void JSONProtocolReaderCommon::readJSONBase64(StrType& str) {
   std::string tmp;
   readJSONString(tmp);
   uint8_t* b = (uint8_t*)tmp.c_str();
-  uint32_t len = tmp.length();
+  uint32_t len = folly::to_narrow(tmp.length());
   str.clear();
   while (len >= 4) {
     base64_decode(b, 4);

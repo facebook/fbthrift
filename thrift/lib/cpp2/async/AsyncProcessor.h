@@ -211,7 +211,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     smsg.protocolType = prot->protocolType();
     smsg.buffer = queue.front();
     ctx->onWriteData(smsg);
-    ctx->postWrite(queue.chainLength());
+    DCHECK_LE(queue.chainLength(), std::numeric_limits<int>::max());
+    ctx->postWrite(folly::to_narrow(queue.chainLength()));
     return queue;
   }
 

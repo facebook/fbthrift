@@ -293,7 +293,7 @@ uint32_t CompactProtocolWriter::writeBinary(folly::StringPiece str) {
 }
 
 uint32_t CompactProtocolWriter::writeBinary(folly::ByteRange str) {
-  uint32_t size = str.size();
+  uint32_t size = folly::to_narrow(str.size());
   uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
   out_.push(str.data(), size);
   return result + size;
@@ -321,7 +321,7 @@ uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
   } else {
     out_.insert(str);
   }
-  return result + size;
+  return result + static_cast<uint32_t>(size);
 }
 
 /**
@@ -423,7 +423,7 @@ uint32_t CompactProtocolWriter::serializedSizeBinary(
 
 uint32_t CompactProtocolWriter::serializedSizeBinary(folly::ByteRange v) const {
   // I32{length of string} + binary{string contents}
-  return serializedSizeI32() + v.size();
+  return serializedSizeI32() + static_cast<uint32_t>(v.size());
 }
 
 uint32_t CompactProtocolWriter::serializedSizeBinary(
@@ -437,7 +437,7 @@ uint32_t CompactProtocolWriter::serializedSizeBinary(
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     TProtocolException::throwExceededSizeLimit();
   }
-  return serializedSizeI32() + size;
+  return serializedSizeI32() + static_cast<uint32_t>(size);
 }
 
 uint32_t CompactProtocolWriter::serializedSizeZCBinary(
@@ -459,7 +459,7 @@ uint32_t CompactProtocolWriter::serializedSizeZCBinary(IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   return (size > folly::IOBufQueue::kMaxPackCopy)
       ? serializedSizeI32() // too big to pack: size only
-      : size + serializedSizeI32(); // size + packed data
+      : static_cast<uint32_t>(size) + serializedSizeI32(); // size + packed data
 }
 
 /**

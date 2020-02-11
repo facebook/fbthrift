@@ -153,7 +153,8 @@ inline uint32_t NimbleProtocolWriter::writeBinary(folly::StringPiece str) {
 }
 
 inline uint32_t NimbleProtocolWriter::writeBinary(folly::ByteRange str) {
-  encoder_.encodeSizeChunk(str.size());
+  DCHECK_LE(str.size(), std::numeric_limits<int>::max());
+  encoder_.encodeSizeChunk(folly::to_narrow(str.size()));
   encoder_.encodeBinary(str.data(), str.size());
   return 0;
 }
@@ -169,7 +170,8 @@ inline uint32_t NimbleProtocolWriter::writeBinary(
 
 inline uint32_t NimbleProtocolWriter::writeBinary(const folly::IOBuf& str) {
   size_t size = str.computeChainDataLength();
-  encoder_.encodeSizeChunk(size);
+  DCHECK_LE(size, std::numeric_limits<int>::max());
+  encoder_.encodeSizeChunk(folly::to_narrow(size));
   encoder_.encodeBinary(str.data(), size);
   return 0;
 }

@@ -112,7 +112,7 @@ uint32_t SimpleJSONProtocolWriter::serializedFieldSize(
     TType /*fieldType*/,
     int16_t /*fieldId*/) const {
   // string plus ":"
-  return strlen(name) * 6 + 3;
+  return static_cast<uint32_t>(strlen(name)) * 6 + 3;
 }
 
 uint32_t SimpleJSONProtocolWriter::serializedStructSize(

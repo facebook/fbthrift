@@ -157,7 +157,7 @@ uint32_t BinaryProtocolWriter::writeBinary(folly::StringPiece str) {
 }
 
 uint32_t BinaryProtocolWriter::writeBinary(folly::ByteRange v) {
-  uint32_t size = v.size();
+  uint32_t size = folly::to_narrow(v.size());
   uint32_t result = writeI32((int32_t)size);
   out_.push(v.data(), size);
   return result + size;
@@ -186,7 +186,7 @@ uint32_t BinaryProtocolWriter::writeBinary(const folly::IOBuf& str) {
   } else {
     out_.insert(str);
   }
-  return result + size;
+  return result + static_cast<uint32_t>(size);
 }
 
 uint32_t BinaryProtocolWriter::writeSerializedData(
@@ -201,7 +201,7 @@ uint32_t BinaryProtocolWriter::writeSerializedData(
     clone->makeManaged();
   }
   out_.insert(std::move(clone));
-  return buf->computeChainDataLength();
+  return folly::to_narrow(buf->computeChainDataLength());
 }
 
 /**
@@ -304,7 +304,7 @@ uint32_t BinaryProtocolWriter::serializedSizeBinary(
 uint32_t BinaryProtocolWriter::serializedSizeBinary(
     folly::ByteRange str) const {
   // I32{length of string} + binary{string contents}
-  return serializedSizeI32() + str.size();
+  return serializedSizeI32() + static_cast<uint32_t>(str.size());
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeBinary(
@@ -318,7 +318,7 @@ uint32_t BinaryProtocolWriter::serializedSizeBinary(
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
     TProtocolException::throwExceededSizeLimit();
   }
-  return serializedSizeI32() + size;
+  return serializedSizeI32() + static_cast<uint32_t>(size);
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
@@ -339,7 +339,7 @@ uint32_t BinaryProtocolWriter::serializedSizeZCBinary(
   size_t size = v.computeChainDataLength();
   return (size > folly::IOBufQueue::kMaxPackCopy)
       ? serializedSizeI32() // too big to pack: size only
-      : size + serializedSizeI32(); // size + packed data
+      : static_cast<uint32_t>(size) + serializedSizeI32(); // size + packed data
 }
 
 uint32_t BinaryProtocolWriter::serializedSizeSerializedData(
@@ -576,7 +576,8 @@ void BinaryProtocolReader::readStringBody(StrType& str, int32_t size) {
 uint32_t BinaryProtocolReader::readFromPositionAndAppend(
     Cursor& snapshot,
     std::unique_ptr<IOBuf>& ser) {
-  int32_t size = folly::io::Cursor(in_) - snapshot;
+  int32_t size =
+      folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
 
   if (ser) {
     std::unique_ptr<IOBuf> newBuf;
