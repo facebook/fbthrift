@@ -176,16 +176,16 @@ class Stream {
 
   template <
       typename OnNext,
-      typename = typename std::enable_if<
-          folly::is_invocable<OnNext, T&&>::value>::type>
+      typename =
+          typename std::enable_if<folly::is_invocable_v<OnNext, T&&>>::type>
   Subscription subscribe(OnNext&& onNext, int64_t batch = kDefaultBatchSize) &&;
 
   template <
       typename OnNext,
       typename OnError,
       typename = typename std::enable_if<
-          folly::is_invocable<OnNext, T&&>::value &&
-          folly::is_invocable<OnError, folly::exception_wrapper>::value>::type>
+          folly::is_invocable_v<OnNext, T&&> &&
+          folly::is_invocable_v<OnError, folly::exception_wrapper>>::type>
   Subscription subscribe(
       OnNext&& onNext,
       OnError&& onError,
@@ -196,9 +196,9 @@ class Stream {
       typename OnError,
       typename OnComplete,
       typename = typename std::enable_if<
-          folly::is_invocable<OnNext, T&&>::value &&
-          folly::is_invocable<OnError, folly::exception_wrapper>::value &&
-          folly::is_invocable<OnComplete>::value>::type>
+          folly::is_invocable_v<OnNext, T&&> &&
+          folly::is_invocable_v<OnError, folly::exception_wrapper> &&
+          folly::is_invocable_v<OnComplete>>::type>
   Subscription subscribe(
       OnNext&& onNext,
       OnError&& onError,
@@ -212,12 +212,12 @@ class Stream {
   template <
       typename Subscriber,
       typename = typename std::enable_if<
-          folly::is_invocable<onNextInvoker, Subscriber, T&&>::value &&
-          folly::is_invocable<
+          folly::is_invocable_v<onNextInvoker, Subscriber, T&&> &&
+          folly::is_invocable_v<
               onErrorInvoker,
               Subscriber,
-              folly::exception_wrapper>::value &&
-          folly::is_invocable<onCompleteInvoker, Subscriber>::value>::type,
+              folly::exception_wrapper> &&
+          folly::is_invocable_v<onCompleteInvoker, Subscriber>>::type,
       typename = void>
   Subscription subscribe(
       Subscriber&& subscriber,

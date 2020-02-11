@@ -144,9 +144,8 @@ struct assign_isset_<A, true> {
   }
 };
 template <typename A, typename S>
-using assign_isset = assign_isset_<
-    A,
-    folly::is_invocable<assign_isset_<A, true>, S&, bool>::value>;
+using assign_isset =
+    assign_isset_<A, folly::is_invocable_v<assign_isset_<A, true>, S&, bool>>;
 
 template <typename F, typename T>
 FOLLY_ERASE void assign_struct_field(F& f, T&& t) {
