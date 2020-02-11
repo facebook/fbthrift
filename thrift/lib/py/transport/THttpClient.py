@@ -17,7 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from .TTransport import *
+from thrift.transport.TTransport import *
 
 import os
 import socket
@@ -34,7 +34,7 @@ if sys.version_info[0] >= 3:
 else:
     from cStringIO import StringIO
     import urlparse
-    import httplib
+    import httplib  # @manual
     import urllib
 
 class THttpClient(TTransportBase):

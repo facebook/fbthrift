@@ -18,7 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import sys
-from .TProtocol import *
+from thrift.protocol.TProtocol import *
 from struct import pack, unpack
 
 __all__ = [
