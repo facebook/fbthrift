@@ -28,8 +28,8 @@ public boolean equals(Object o) {
 
     return
         {{#struct:fields}}
-        {{#field:type}}{{#type:binary?}}Arrays{{/type:binary?}}{{^type:binary?}}Objects{{/type:binary?}}{{/field:type}}{{!
-        }}.equals({{field:javaName}}, other.{{field:javaName}}) &&
+        {{#field:type}}{{^type:javaType}}{{#type:binary?}}Arrays{{/type:binary?}}{{^type:binary?}}Objects{{/type:binary?}}{{/type:javaType}}{{!
+        }}{{#type:javaType}}Objects{{/type:javaType}}{{/field:type}}.equals({{field:javaName}}, other.{{field:javaName}}) &&
         {{/struct:fields}}
         true;
 }

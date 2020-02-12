@@ -14,7 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:typedef?}}{{!
+}}{{#type:javaType}}{{!
+  }}{{type:javaType}}{{!
+}}{{/type:javaType}}{{!
+}}{{^type:javaType}}{{!
+  }}{{#type:typedef?}}{{!
     }}{{#type:typedefType}}{{> BoxedType}}{{/type:typedefType}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
@@ -48,4 +52,4 @@
     }}{{#type:enum?}}{{!
         }}{{#type:enum}}{{enum:javaPackage}}.{{enum:javaCapitalName}}{{/type:enum}}{{!
     }}{{/type:enum?}}{{!
-}}{{/type:typedef?}}
+}}{{/type:typedef?}}{{/type:javaType}}

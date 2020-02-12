@@ -126,7 +126,7 @@ public final class TypeRemapped {
             Objects.equals(lsMap, other.lsMap) &&
             Objects.equals(ioMap, other.ioMap) &&
             Objects.equals(bigInteger, other.bigInteger) &&
-            Arrays.equals(binaryTestBuffer, other.binaryTestBuffer) &&
+            Objects.equals(binaryTestBuffer, other.binaryTestBuffer) &&
             true;
     }
     

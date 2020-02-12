@@ -587,8 +587,8 @@ class mstch_swift_type : public mstch_type {
         type_->is_double() || type_->is_float();
   }
   mstch::node java_type() {
-    if (type_->annotations_.count("java.swift.type")) {
-      return type_->annotations_.at("java.swift.type");
+    if (type_->get_true_type()->annotations_.count("java.swift.type")) {
+      return type_->get_true_type()->annotations_.at("java.swift.type");
     }
     return mstch::node();
   }
