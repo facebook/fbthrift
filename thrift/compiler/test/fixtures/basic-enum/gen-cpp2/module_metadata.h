@@ -14,4 +14,20 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+template <>
+class EnumMetadata<::test::fixtures::enumstrict::EmptyEnum> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test::fixtures::enumstrict::MyEnum> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test::fixtures::enumstrict::MyBigEnum> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+
 } // apache::thrift::detail::md

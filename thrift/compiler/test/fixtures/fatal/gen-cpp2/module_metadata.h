@@ -16,4 +16,25 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+template <>
+class EnumMetadata<::test_cpp2::cpp_reflection::enum1> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test_cpp2::cpp_reflection::enum2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test_cpp2::cpp_reflection::enum3> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::test_cpp2::cpp_reflection::enum_with_special_names> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+
 } // apache::thrift::detail::md

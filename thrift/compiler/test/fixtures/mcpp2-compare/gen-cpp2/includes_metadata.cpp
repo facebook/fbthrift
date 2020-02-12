@@ -10,4 +10,16 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+void EnumMetadata<::a::different::ns::AnEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("includes.AnEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "includes.AnEnum";
+  for (const auto& p : ::a::different::ns::_AnEnum_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
 } // apache::thrift::detail::md

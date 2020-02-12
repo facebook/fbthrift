@@ -14,4 +14,30 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+template <>
+class EnumMetadata<::facebook::ns::qwerty::AnEnumA> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::facebook::ns::qwerty::AnEnumB> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::facebook::ns::qwerty::AnEnumC> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::facebook::ns::qwerty::AnEnumD> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::facebook::ns::qwerty::AnEnumE> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+
 } // apache::thrift::detail::md

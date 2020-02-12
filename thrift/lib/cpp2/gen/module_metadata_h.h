@@ -17,3 +17,17 @@
 #pragma once
 
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
+
+namespace apache::thrift {
+namespace metadata {
+class ThriftMetadata;
+}
+
+namespace detail::md {
+template <typename T>
+class EnumMetadata {
+ public:
+  static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
+};
+} // namespace detail::md
+} // namespace apache::thrift

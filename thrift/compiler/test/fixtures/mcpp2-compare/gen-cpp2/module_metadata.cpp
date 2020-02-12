@@ -10,4 +10,49 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+void EnumMetadata<::some::valid::ns::MyEnumA>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.MyEnumA", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.MyEnumA";
+  for (const auto& p : ::some::valid::ns::_MyEnumA_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::some::valid::ns::AnnotatedEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.AnnotatedEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.AnnotatedEnum";
+  for (const auto& p : ::some::valid::ns::_AnnotatedEnum_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::some::valid::ns::AnnotatedEnum2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.AnnotatedEnum2", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.AnnotatedEnum2";
+  for (const auto& p : ::some::valid::ns::_AnnotatedEnum2_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::some::valid::ns::MyEnumB>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.MyEnumB", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.MyEnumB";
+  for (const auto& p : ::some::valid::ns::_MyEnumB_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
 } // apache::thrift::detail::md

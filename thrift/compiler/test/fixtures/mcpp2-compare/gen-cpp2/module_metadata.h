@@ -15,4 +15,25 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+template <>
+class EnumMetadata<::some::valid::ns::MyEnumA> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::some::valid::ns::AnnotatedEnum> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::some::valid::ns::AnnotatedEnum2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class EnumMetadata<::some::valid::ns::MyEnumB> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+
 } // apache::thrift::detail::md

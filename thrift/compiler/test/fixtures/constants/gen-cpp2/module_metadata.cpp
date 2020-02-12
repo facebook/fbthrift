@@ -10,4 +10,38 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+void EnumMetadata<::cpp2::EmptyEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.EmptyEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.EmptyEnum";
+  for (const auto& p : ::cpp2::_EmptyEnum_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::cpp2::City>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.City", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.City";
+  for (const auto& p : ::cpp2::_City_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::cpp2::Company>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.Company", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.Company";
+  for (const auto& p : ::cpp2::_Company_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
 } // apache::thrift::detail::md

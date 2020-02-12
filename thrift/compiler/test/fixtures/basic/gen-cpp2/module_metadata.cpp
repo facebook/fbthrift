@@ -10,4 +10,16 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.MyEnum";
+  for (const auto& p : ::cpp2::_MyEnum_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
 } // apache::thrift::detail::md

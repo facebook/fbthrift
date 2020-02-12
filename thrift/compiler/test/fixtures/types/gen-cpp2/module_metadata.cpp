@@ -10,4 +10,49 @@ namespace apache::thrift::detail::md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
+void EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.has_bitwise_ops", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.has_bitwise_ops";
+  for (const auto& p : ::apache::thrift::fixtures::types::_has_bitwise_ops_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::apache::thrift::fixtures::types::is_unscoped>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.is_unscoped", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.is_unscoped";
+  for (const auto& p : ::apache::thrift::fixtures::types::_is_unscoped_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::apache::thrift::fixtures::types::MyForwardRefEnum>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.MyForwardRefEnum", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.MyForwardRefEnum";
+  for (const auto& p : ::apache::thrift::fixtures::types::_MyForwardRefEnum_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+void EnumMetadata<::apache::thrift::fixtures::types::MyEnumA>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.enums.emplace("module.MyEnumA", ::apache::thrift::metadata::ThriftEnum{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftEnum& enum_metadata = res.first->second;
+  enum_metadata.name = "module.MyEnumA";
+  for (const auto& p : ::apache::thrift::fixtures::types::_MyEnumA_VALUES_TO_NAMES) {
+    enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
 } // apache::thrift::detail::md
