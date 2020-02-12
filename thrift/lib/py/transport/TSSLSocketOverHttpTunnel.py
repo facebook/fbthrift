@@ -20,8 +20,8 @@ from __future__ import unicode_literals
 import socket
 import ssl
 
-from thrift.transport.TSocketOverHttpTunnel import TSocketOverHttpTunnel
-from thrift.transport.TTransport import TTransportException
+from .TSocketOverHttpTunnel import TSocketOverHttpTunnel
+from .TTransport import TTransportException
 
 class TSSLSocketOverHttpTunnel(TSocketOverHttpTunnel):
     def __init__(self, host, port, proxy_host, proxy_port,

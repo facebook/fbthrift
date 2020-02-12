@@ -17,8 +17,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from thrift.protocol.TProtocol import TProtocolBase, TProtocolException
-from thrift.Thrift import TType
+from .TProtocol import TProtocolBase, TProtocolException, TType
 import json, base64, sys
 
 __all__ = ['TJSONProtocol', 'TJSONProtocolFactory']

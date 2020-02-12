@@ -25,7 +25,7 @@ if sys.version_info[0] >= 3:
     from io import BytesIO as StringIO
     PY3 = True
 else:
-    import BaseHTTPServer  # @manual
+    import BaseHTTPServer
     from cStringIO import StringIO
     PY3 = False
 
@@ -34,9 +34,7 @@ import zlib
 
 from thrift.Thrift import TApplicationException
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
-from thrift.transport.TTransport import (
-    TTransportException, TTransportBase, CReadableTransport
-)
+from .TTransport import TTransportException, TTransportBase, CReadableTransport
 from thrift.protocol.TCompactProtocol import (
     getVarint, readVarint, TCompactProtocol
 )
@@ -60,7 +58,7 @@ except ImportError:
 
 # Import the zstd module if it is available
 try:
-    import zstd  # @manual
+    import zstd
 except ImportError:
     # If zstd is not available, don't fail immediately.
     # Only raise an error if we actually ever need to perform zstd

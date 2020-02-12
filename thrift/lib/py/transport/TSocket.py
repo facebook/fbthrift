@@ -18,7 +18,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 
-from thrift.transport.TTransport import TTransportBase, TTransportException, \
+from .TTransport import TTransportBase, TTransportException, \
         TServerTransportBase
 import os
 import errno
@@ -272,7 +272,7 @@ class TSocket(TSocketBase):
                 self.setCloseOnExec(self.close_on_exec)
                 try:
                     handle.connect(address)
-                except socket.error:
+                except socket.error as e:
                     self.close()
                     if res is not res0[-1]:
                         continue

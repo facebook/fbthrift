@@ -17,10 +17,10 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-from thrift.protocol.TProtocol import TProtocolBase, TProtocolException
+from .TProtocol import TProtocolBase, TProtocolException
 from thrift.Thrift import TApplicationException, TMessageType
-from thrift.protocol.TBinaryProtocol import TBinaryProtocolAccelerated
-from thrift.protocol.TCompactProtocol import TCompactProtocolAccelerated
+from .TBinaryProtocol import TBinaryProtocolAccelerated
+from .TCompactProtocol import TCompactProtocolAccelerated
 from thrift.transport.THeaderTransport import THeaderTransport, CLIENT_TYPE
 
 

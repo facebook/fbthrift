@@ -36,7 +36,7 @@ import six.moves as sm
 from six.moves.urllib.parse import urlparse
 
 try:
-    from ServiceRouter import ConnConfigs, ServiceOptions, ServiceRouter  # @manual
+    from ServiceRouter import ConnConfigs, ServiceOptions, ServiceRouter
     SR_AVAILABLE = True
 except ImportError:
     SR_AVAILABLE = False
@@ -44,7 +44,8 @@ except ImportError:
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
 from thrift.protocol import TBinaryProtocol, TCompactProtocol, THeaderProtocol
-from thrift.util import randomizer
+
+from . import randomizer
 
 if six.PY3:
     from importlib.machinery import SourceFileLoader

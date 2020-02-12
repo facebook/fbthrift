@@ -21,7 +21,7 @@ from base64 import b64encode, b64decode
 import json
 import sys
 
-from thrift.protocol.TProtocol import TProtocolBase, TProtocolException
+from .TProtocol import TProtocolBase, TProtocolException
 from thrift.Thrift import TType
 
 JSON_OBJECT_START = b'{'
