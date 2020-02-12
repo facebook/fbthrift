@@ -231,23 +231,6 @@ TEST_F(StreamingTest, ClientStreamBridge) {
       EXPECT_EQ(10, expected);
     }
 
-    {
-      struct TriCallback {
-        void operator()(int32_t i) {
-          EXPECT_EQ(expected++, i);
-        }
-        void operator()(folly::exception_wrapper&&) {}
-        void operator()() {
-          EXPECT_EQ(10, expected);
-        }
-        int expected{0};
-      };
-
-      client->sync_range(0, 10)
-          .subscribeExCallback(&executor_, TriCallback{})
-          .join();
-    }
-
     // test cancellation
     {
       auto bufferedStream = client->sync_range(0, 10);

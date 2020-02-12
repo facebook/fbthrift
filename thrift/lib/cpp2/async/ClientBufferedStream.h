@@ -125,21 +125,6 @@ class ClientBufferedStream {
     return sub;
   }
 
-  template <typename Callback>
-  auto subscribeExCallback(folly::Executor::KeepAlive<> e, Callback&& cb) && {
-    return std::move(*this).subscribeExTry(
-        std::move(e),
-        [cb = std::forward<Callback>(cb)](folly::Try<T>&& t) mutable {
-          if (t.hasValue()) {
-            cb(std::move(t.value()));
-          } else if (t.hasException()) {
-            cb(std::move(t.exception()));
-          } else {
-            cb();
-          }
-        });
-  }
-
  private:
 #if FOLLY_HAS_COROUTINES
   static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
