@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -22,6 +27,8 @@ public final class Nada {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("Nada");
     
     @ThriftConstructor
     public Nada() {
@@ -75,4 +82,22 @@ public final class Nada {
 
     public interface Visitor {
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      writeValue(oprot);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
+    private void writeValue(TProtocol oprot) throws TException {
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+    }
+    
 }

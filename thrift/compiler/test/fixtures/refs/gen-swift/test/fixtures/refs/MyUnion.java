@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -24,6 +29,12 @@ public final class MyUnion {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
+    public static final int _ANINTEGER = 1;
+    private static final TField AN_INTEGER_FIELD_DESC = new TField("anInteger", TType.I32, (short)1);
+    public static final int _ASTRING = 2;
+    private static final TField A_STRING_FIELD_DESC = new TField("aString", TType.STRING, (short)2);
     
     @ThriftConstructor
     public MyUnion() {
@@ -139,4 +150,36 @@ public final class MyUnion {
         void visitAnInteger(int anInteger);
         void visitAString(String aString);
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      writeValue(oprot);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
+    private void writeValue(TProtocol oprot) throws TException {
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      case _ANINTEGER: {
+        oprot.writeFieldBegin(AN_INTEGER_FIELD_DESC);
+        int anInteger = (int)this.value;
+        oprot.writeI32(anInteger);
+        oprot.writeFieldEnd();
+        return;
+      }
+      case _ASTRING: {
+        oprot.writeFieldBegin(A_STRING_FIELD_DESC);
+        String aString = (String)this.value;
+        oprot.writeString(aString);
+        oprot.writeFieldEnd();
+        return;
+      }
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+    }
+    
 }

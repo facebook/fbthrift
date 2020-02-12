@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -72,9 +76,16 @@ public final class StructWithSharedConst {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("StructWithSharedConst");
     private final test.fixtures.refs.MyField optSharedConst;
+    public static final int _OPT_SHARED_CONST = 1;
+    private static final TField OPT_SHARED_CONST_FIELD_DESC = new TField("optSharedConst", TType.STRUCT, (short)1);
     private final test.fixtures.refs.MyField sharedConst;
+    public static final int _SHARED_CONST = 2;
+    private static final TField SHARED_CONST_FIELD_DESC = new TField("sharedConst", TType.STRUCT, (short)2);
     private final test.fixtures.refs.MyField reqSharedConst;
+    public static final int _REQ_SHARED_CONST = 3;
+    private static final TField REQ_SHARED_CONST_FIELD_DESC = new TField("reqSharedConst", TType.STRUCT, (short)3);
 
     
     @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
@@ -120,6 +131,27 @@ public final class StructWithSharedConst {
             sharedConst,
             reqSharedConst
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.optSharedConst != null) {
+        oprot.writeFieldBegin(OPT_SHARED_CONST_FIELD_DESC);
+        this.optSharedConst.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.sharedConst != null) {
+        oprot.writeFieldBegin(SHARED_CONST_FIELD_DESC);
+        this.sharedConst.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.reqSharedConst != null) {
+        oprot.writeFieldBegin(REQ_SHARED_CONST_FIELD_DESC);
+        this.reqSharedConst.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

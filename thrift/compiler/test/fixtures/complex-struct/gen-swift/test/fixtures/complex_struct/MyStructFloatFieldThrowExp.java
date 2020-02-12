@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -83,10 +87,19 @@ public final class MyStructFloatFieldThrowExp {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyStructFloatFieldThrowExp");
     private final long myLongField;
+    public static final int _MYLONGFIELD = 1;
+    private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
     private final byte myByteField;
+    public static final int _MYBYTEFIELD = 2;
+    private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("myByteField", TType.BYTE, (short)2);
     private final String myStringField;
+    public static final int _MYSTRINGFIELD = 3;
+    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)3);
     private final float myFloatField;
+    public static final int _MYFLOATFIELD = 4;
+    private static final TField MY_FLOAT_FIELD_FIELD_DESC = null;
 
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
@@ -138,6 +151,26 @@ public final class MyStructFloatFieldThrowExp {
             myStringField,
             myFloatField
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
+      oprot.writeI64(this.myLongField);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_BYTE_FIELD_FIELD_DESC);
+      oprot.writeByte(this.myByteField);
+      oprot.writeFieldEnd();
+      if (this.myStringField != null) {
+        oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
+        oprot.writeString(this.myStringField);
+        oprot.writeFieldEnd();
+      }
+      if (MY_FLOAT_FIELD_FIELD_DESC == null){
+        throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:myFloatField Type:float");
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -26,6 +31,16 @@ public final class MyUnion {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
+    public static final int _MYENUM = 1;
+    private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)1);
+    public static final int _MYSTRUCT = 2;
+    private static final TField MY_STRUCT_FIELD_DESC = new TField("myStruct", TType.STRUCT, (short)2);
+    public static final int _MYDATAITEM = 3;
+    private static final TField MY_DATA_ITEM_FIELD_DESC = new TField("myDataItem", TType.STRUCT, (short)3);
+    public static final int _COMPLEXNESTEDSTRUCT = 4;
+    private static final TField COMPLEX_NESTED_STRUCT_FIELD_DESC = new TField("complexNestedStruct", TType.STRUCT, (short)4);
     
     @ThriftConstructor
     public MyUnion() {
@@ -203,4 +218,50 @@ public final class MyUnion {
         void visitMyDataItem(test.fixtures.complex_struct.MyDataItem myDataItem);
         void visitComplexNestedStruct(test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct);
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      writeValue(oprot);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
+    private void writeValue(TProtocol oprot) throws TException {
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      case _MYENUM: {
+        oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
+        test.fixtures.complex_struct.MyEnum myEnum = (test.fixtures.complex_struct.MyEnum)this.value;
+        oprot.writeI32(myEnum == null ? 0 : myEnum.getValue());
+        oprot.writeFieldEnd();
+        return;
+      }
+      case _MYSTRUCT: {
+        oprot.writeFieldBegin(MY_STRUCT_FIELD_DESC);
+        test.fixtures.complex_struct.MyStruct myStruct = (test.fixtures.complex_struct.MyStruct)this.value;
+        myStruct.write0(oprot);
+        oprot.writeFieldEnd();
+        return;
+      }
+      case _MYDATAITEM: {
+        oprot.writeFieldBegin(MY_DATA_ITEM_FIELD_DESC);
+        test.fixtures.complex_struct.MyDataItem myDataItem = (test.fixtures.complex_struct.MyDataItem)this.value;
+        myDataItem.write0(oprot);
+        oprot.writeFieldEnd();
+        return;
+      }
+      case _COMPLEXNESTEDSTRUCT: {
+        oprot.writeFieldBegin(COMPLEX_NESTED_STRUCT_FIELD_DESC);
+        test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct = (test.fixtures.complex_struct.ComplexNestedStruct)this.value;
+        complexNestedStruct.write0(oprot);
+        oprot.writeFieldEnd();
+        return;
+      }
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+    }
+    
 }

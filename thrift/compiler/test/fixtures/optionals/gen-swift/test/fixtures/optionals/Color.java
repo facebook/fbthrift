@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -83,10 +87,19 @@ public final class Color {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("Color");
     private final double red;
+    public static final int _RED = 1;
+    private static final TField RED_FIELD_DESC = new TField("red", TType.DOUBLE, (short)1);
     private final double green;
+    public static final int _GREEN = 2;
+    private static final TField GREEN_FIELD_DESC = new TField("green", TType.DOUBLE, (short)2);
     private final double blue;
+    public static final int _BLUE = 3;
+    private static final TField BLUE_FIELD_DESC = new TField("blue", TType.DOUBLE, (short)3);
     private final double alpha;
+    public static final int _ALPHA = 4;
+    private static final TField ALPHA_FIELD_DESC = new TField("alpha", TType.DOUBLE, (short)4);
 
     
     @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
@@ -138,6 +151,24 @@ public final class Color {
             blue,
             alpha
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(RED_FIELD_DESC);
+      oprot.writeDouble(this.red);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(GREEN_FIELD_DESC);
+      oprot.writeDouble(this.green);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(BLUE_FIELD_DESC);
+      oprot.writeDouble(this.blue);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(ALPHA_FIELD_DESC);
+      oprot.writeDouble(this.alpha);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

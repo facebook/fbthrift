@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -61,8 +65,13 @@ public final class Struct1 {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("struct1");
     private final int a;
+    public static final int _A = 1;
+    private static final TField A_FIELD_DESC = new TField("a", TType.I32, (short)1);
     private final String b;
+    public static final int _B = 2;
+    private static final TField B_FIELD_DESC = new TField("b", TType.STRING, (short)2);
 
     
     @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
@@ -102,6 +111,20 @@ public final class Struct1 {
             a,
             b
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(A_FIELD_DESC);
+      oprot.writeI32(this.a);
+      oprot.writeFieldEnd();
+      if (this.b != null) {
+        oprot.writeFieldBegin(B_FIELD_DESC);
+        oprot.writeString(this.b);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -94,11 +98,22 @@ public final class Vehicle {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("Vehicle");
     private final test.fixtures.optionals.Color color;
+    public static final int _COLOR = 1;
+    private static final TField COLOR_FIELD_DESC = new TField("color", TType.STRUCT, (short)1);
     private final String licensePlate;
+    public static final int _LICENSEPLATE = 2;
+    private static final TField LICENSE_PLATE_FIELD_DESC = new TField("licensePlate", TType.STRING, (short)2);
     private final String description;
+    public static final int _DESCRIPTION = 3;
+    private static final TField DESCRIPTION_FIELD_DESC = new TField("description", TType.STRING, (short)3);
     private final String name;
+    public static final int _NAME = 4;
+    private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)4);
     private final Boolean hasAC;
+    public static final int _HASAC = 5;
+    private static final TField HAS_AC_FIELD_DESC = new TField("hasAC", TType.BOOL, (short)5);
 
     
     @ThriftField(value=1, name="color", requiredness=Requiredness.NONE)
@@ -156,6 +171,37 @@ public final class Vehicle {
             name,
             hasAC
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.color != null) {
+        oprot.writeFieldBegin(COLOR_FIELD_DESC);
+        this.color.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.licensePlate != null) {
+        oprot.writeFieldBegin(LICENSE_PLATE_FIELD_DESC);
+        oprot.writeString(this.licensePlate);
+        oprot.writeFieldEnd();
+      }
+      if (this.description != null) {
+        oprot.writeFieldBegin(DESCRIPTION_FIELD_DESC);
+        oprot.writeString(this.description);
+        oprot.writeFieldEnd();
+      }
+      if (this.name != null) {
+        oprot.writeFieldBegin(NAME_FIELD_DESC);
+        oprot.writeString(this.name);
+        oprot.writeFieldEnd();
+      }
+      if (this.hasAC != null) {
+        oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
+        oprot.writeBool(this.hasAC);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

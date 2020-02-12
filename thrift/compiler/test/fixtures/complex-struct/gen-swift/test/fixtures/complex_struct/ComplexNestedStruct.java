@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -237,24 +241,61 @@ public final class ComplexNestedStruct {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("ComplexNestedStruct");
     private final Set<Set<Integer>> setOfSetOfInt;
+    public static final int _SETOFSETOFINT = 1;
+    private static final TField SET_OF_SET_OF_INT_FIELD_DESC = new TField("setOfSetOfInt", TType.SET, (short)1);
     private final List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum;
+    public static final int _LISTOFLISTOFLISTOFLISTOFENUM = 2;
+    private static final TField LISTOF_LIST_OF_LIST_OF_LIST_OF_ENUM_FIELD_DESC = new TField("listofListOfListOfListOfEnum", TType.LIST, (short)2);
     private final List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct;
+    public static final int _LISTOFLISTOFMYSTRUCT = 3;
+    private static final TField LIST_OF_LIST_OF_MY_STRUCT_FIELD_DESC = new TField("listOfListOfMyStruct", TType.LIST, (short)3);
     private final Set<List<List<Long>>> setOfListOfListOfLong;
+    public static final int _SETOFLISTOFLISTOFLONG = 4;
+    private static final TField SET_OF_LIST_OF_LIST_OF_LONG_FIELD_DESC = new TField("setOfListOfListOfLong", TType.SET, (short)4);
     private final Set<Set<Set<Long>>> setOfSetOfsetOfLong;
+    public static final int _SETOFSETOFSETOFLONG = 5;
+    private static final TField SET_OF_SET_OFSET_OF_LONG_FIELD_DESC = new TField("setOfSetOfsetOfLong", TType.SET, (short)5);
     private final Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong;
+    public static final int _MAPSTRUCTLISTOFLISTOFLONG = 6;
+    private static final TField MAP_STRUCT_LIST_OF_LIST_OF_LONG_FIELD_DESC = new TField("mapStructListOfListOfLong", TType.MAP, (short)6);
     private final Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt;
+    public static final int _MKEYSTRUCTVALINT = 7;
+    private static final TField M_KEY_STRUCT_VAL_INT_FIELD_DESC = new TField("mKeyStructValInt", TType.MAP, (short)7);
     private final List<Map<Integer, Integer>> listOfMapKeyIntValInt;
+    public static final int _LISTOFMAPKEYINTVALINT = 8;
+    private static final TField LIST_OF_MAP_KEY_INT_VAL_INT_FIELD_DESC = new TField("listOfMapKeyIntValInt", TType.LIST, (short)8);
     private final List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList;
+    public static final int _LISTOFMAPKEYSTRVALLIST = 9;
+    private static final TField LIST_OF_MAP_KEY_STR_VAL_LIST_FIELD_DESC = new TField("listOfMapKeyStrValList", TType.LIST, (short)9);
     private final Map<Set<Integer>, Long> mapKeySetValLong;
+    public static final int _MAPKEYSETVALLONG = 10;
+    private static final TField MAP_KEY_SET_VAL_LONG_FIELD_DESC = new TField("mapKeySetValLong", TType.MAP, (short)10);
     private final Map<List<String>, Integer> mapKeyListValLong;
+    public static final int _MAPKEYLISTVALLONG = 11;
+    private static final TField MAP_KEY_LIST_VAL_LONG_FIELD_DESC = new TField("mapKeyListValLong", TType.MAP, (short)11);
     private final Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap;
+    public static final int _MAPKEYMAPVALMAP = 12;
+    private static final TField MAP_KEY_MAP_VAL_MAP_FIELD_DESC = new TField("mapKeyMapValMap", TType.MAP, (short)12);
     private final Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap;
+    public static final int _MAPKEYSETVALMAP = 13;
+    private static final TField MAP_KEY_SET_VAL_MAP_FIELD_DESC = new TField("mapKeySetValMap", TType.MAP, (short)13);
     private final Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
+    public static final int _NESTEDMAPS = 14;
+    private static final TField NESTED_MAPS_FIELD_DESC = new TField("nestedMaps", TType.MAP, (short)14);
     private final Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
+    public static final int _MAPKEYINTVALLIST = 15;
+    private static final TField MAP_KEY_INT_VAL_LIST_FIELD_DESC = new TField("mapKeyIntValList", TType.MAP, (short)15);
     private final Map<Integer, Set<Boolean>> mapKeyIntValSet;
+    public static final int _MAPKEYINTVALSET = 16;
+    private static final TField MAP_KEY_INT_VAL_SET_FIELD_DESC = new TField("mapKeyIntValSet", TType.MAP, (short)16);
     private final Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt;
+    public static final int _MAPKEYSETVALINT = 17;
+    private static final TField MAP_KEY_SET_VAL_INT_FIELD_DESC = new TField("mapKeySetValInt", TType.MAP, (short)17);
     private final Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet;
+    public static final int _MAPKEYLISTVALSET = 18;
+    private static final TField MAP_KEY_LIST_VAL_SET_FIELD_DESC = new TField("mapKeyListValSet", TType.MAP, (short)18);
 
     
     @ThriftField(value=1, name="setOfSetOfInt", requiredness=Requiredness.NONE)
@@ -390,6 +431,368 @@ public final class ComplexNestedStruct {
             mapKeySetValInt,
             mapKeyListValSet
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.setOfSetOfInt != null) {
+        oprot.writeFieldBegin(SET_OF_SET_OF_INT_FIELD_DESC);
+        Set<Set<Integer>> _iter0 = this.setOfSetOfInt;
+        oprot.writeSetBegin(new TSet(TType.SET, _iter0.size()));
+        for (Set<Integer> _iter1 : _iter0) {
+          oprot.writeSetBegin(new TSet(TType.I32, _iter1.size()));
+        for (int _iter2 : _iter1) {
+          oprot.writeI32(_iter2);
+        }
+        oprot.writeSetEnd();
+        }
+        oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.listofListOfListOfListOfEnum != null) {
+        oprot.writeFieldBegin(LISTOF_LIST_OF_LIST_OF_LIST_OF_ENUM_FIELD_DESC);
+        List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> _iter0 = this.listofListOfListOfListOfEnum;
+        oprot.writeListBegin(new TList(TType.LIST, _iter0.size()));
+        for (List<List<List<test.fixtures.complex_struct.MyEnum>>> _iter1 : _iter0) {
+          oprot.writeListBegin(new TList(TType.LIST, _iter1.size()));
+        for (List<List<test.fixtures.complex_struct.MyEnum>> _iter2 : _iter1) {
+          oprot.writeListBegin(new TList(TType.LIST, _iter2.size()));
+        for (List<test.fixtures.complex_struct.MyEnum> _iter3 : _iter2) {
+          oprot.writeListBegin(new TList(TType.I32, _iter3.size()));
+        for (test.fixtures.complex_struct.MyEnum _iter4 : _iter3) {
+          oprot.writeI32(_iter4 == null ? 0 : _iter4.getValue());
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.listOfListOfMyStruct != null) {
+        oprot.writeFieldBegin(LIST_OF_LIST_OF_MY_STRUCT_FIELD_DESC);
+        List<List<test.fixtures.complex_struct.MyStruct>> _iter0 = this.listOfListOfMyStruct;
+        oprot.writeListBegin(new TList(TType.LIST, _iter0.size()));
+        for (List<test.fixtures.complex_struct.MyStruct> _iter1 : _iter0) {
+          oprot.writeListBegin(new TList(TType.STRUCT, _iter1.size()));
+        for (test.fixtures.complex_struct.MyStruct _iter2 : _iter1) {
+          _iter2.write0(oprot);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.setOfListOfListOfLong != null) {
+        oprot.writeFieldBegin(SET_OF_LIST_OF_LIST_OF_LONG_FIELD_DESC);
+        Set<List<List<Long>>> _iter0 = this.setOfListOfListOfLong;
+        oprot.writeSetBegin(new TSet(TType.LIST, _iter0.size()));
+        for (List<List<Long>> _iter1 : _iter0) {
+          oprot.writeListBegin(new TList(TType.LIST, _iter1.size()));
+        for (List<Long> _iter2 : _iter1) {
+          oprot.writeListBegin(new TList(TType.I64, _iter2.size()));
+        for (long _iter3 : _iter2) {
+          oprot.writeI64(_iter3);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.setOfSetOfsetOfLong != null) {
+        oprot.writeFieldBegin(SET_OF_SET_OFSET_OF_LONG_FIELD_DESC);
+        Set<Set<Set<Long>>> _iter0 = this.setOfSetOfsetOfLong;
+        oprot.writeSetBegin(new TSet(TType.SET, _iter0.size()));
+        for (Set<Set<Long>> _iter1 : _iter0) {
+          oprot.writeSetBegin(new TSet(TType.SET, _iter1.size()));
+        for (Set<Long> _iter2 : _iter1) {
+          oprot.writeSetBegin(new TSet(TType.I64, _iter2.size()));
+        for (long _iter3 : _iter2) {
+          oprot.writeI64(_iter3);
+        }
+        oprot.writeSetEnd();
+        }
+        oprot.writeSetEnd();
+        }
+        oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapStructListOfListOfLong != null) {
+        oprot.writeFieldBegin(MAP_STRUCT_LIST_OF_LIST_OF_LONG_FIELD_DESC);
+        Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> _iter0 = this.mapStructListOfListOfLong;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
+        for (Map.Entry<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+
+          oprot.writeListBegin(new TList(TType.LIST, _iter1.getValue().size()));
+        for (List<test.fixtures.complex_struct.MyStruct> _iter2 : _iter1.getValue()) {
+          oprot.writeListBegin(new TList(TType.STRUCT, _iter2.size()));
+        for (test.fixtures.complex_struct.MyStruct _iter3 : _iter2) {
+          _iter3.write0(oprot);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mKeyStructValInt != null) {
+        oprot.writeFieldBegin(M_KEY_STRUCT_VAL_INT_FIELD_DESC);
+        Map<test.fixtures.complex_struct.MyStruct, Integer> _iter0 = this.mKeyStructValInt;
+        oprot.writeMapBegin(new TMap(TType.STRUCT, TType.I32, _iter0.size()));
+        for (Map.Entry<test.fixtures.complex_struct.MyStruct, Integer> _iter1 : _iter0.entrySet()) {
+          _iter1.getKey().write0(oprot);
+          oprot.writeI32(_iter1.getValue());
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.listOfMapKeyIntValInt != null) {
+        oprot.writeFieldBegin(LIST_OF_MAP_KEY_INT_VAL_INT_FIELD_DESC);
+        List<Map<Integer, Integer>> _iter0 = this.listOfMapKeyIntValInt;
+        oprot.writeListBegin(new TList(TType.MAP, _iter0.size()));
+        for (Map<Integer, Integer> _iter1 : _iter0) {
+          oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter1.size()));
+        for (Map.Entry<Integer, Integer> _iter2 : _iter1.entrySet()) {
+          oprot.writeI32(_iter2.getKey());
+          oprot.writeI32(_iter2.getValue());
+
+        }
+        oprot.writeMapEnd();
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.listOfMapKeyStrValList != null) {
+        oprot.writeFieldBegin(LIST_OF_MAP_KEY_STR_VAL_LIST_FIELD_DESC);
+        List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> _iter0 = this.listOfMapKeyStrValList;
+        oprot.writeListBegin(new TList(TType.MAP, _iter0.size()));
+        for (Map<String, List<test.fixtures.complex_struct.MyStruct>> _iter1 : _iter0) {
+          oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter1.size()));
+        for (Map.Entry<String, List<test.fixtures.complex_struct.MyStruct>> _iter2 : _iter1.entrySet()) {
+          oprot.writeString(_iter2.getKey());
+
+          oprot.writeListBegin(new TList(TType.STRUCT, _iter2.getValue().size()));
+        for (test.fixtures.complex_struct.MyStruct _iter3 : _iter2.getValue()) {
+          _iter3.write0(oprot);
+        }
+        oprot.writeListEnd();
+
+        }
+        oprot.writeMapEnd();
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeySetValLong != null) {
+        oprot.writeFieldBegin(MAP_KEY_SET_VAL_LONG_FIELD_DESC);
+        Map<Set<Integer>, Long> _iter0 = this.mapKeySetValLong;
+        oprot.writeMapBegin(new TMap(TType.SET, TType.I64, _iter0.size()));
+        for (Map.Entry<Set<Integer>, Long> _iter1 : _iter0.entrySet()) {
+          oprot.writeSetBegin(new TSet(TType.I32, _iter1.getKey().size()));
+        for (int _iter2 : _iter1.getKey()) {
+          oprot.writeI32(_iter2);
+        }
+        oprot.writeSetEnd();
+                    oprot.writeI64(_iter1.getValue());
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeyListValLong != null) {
+        oprot.writeFieldBegin(MAP_KEY_LIST_VAL_LONG_FIELD_DESC);
+        Map<List<String>, Integer> _iter0 = this.mapKeyListValLong;
+        oprot.writeMapBegin(new TMap(TType.LIST, TType.I32, _iter0.size()));
+        for (Map.Entry<List<String>, Integer> _iter1 : _iter0.entrySet()) {
+          oprot.writeListBegin(new TList(TType.STRING, _iter1.getKey().size()));
+        for (String _iter2 : _iter1.getKey()) {
+          oprot.writeString(_iter2);
+        }
+        oprot.writeListEnd();
+                    oprot.writeI32(_iter1.getValue());
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeyMapValMap != null) {
+        oprot.writeFieldBegin(MAP_KEY_MAP_VAL_MAP_FIELD_DESC);
+        Map<Map<Integer, String>, Map<Integer, String>> _iter0 = this.mapKeyMapValMap;
+        oprot.writeMapBegin(new TMap(TType.MAP, TType.MAP, _iter0.size()));
+        for (Map.Entry<Map<Integer, String>, Map<Integer, String>> _iter1 : _iter0.entrySet()) {
+          oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter1.getKey().size()));
+        for (Map.Entry<Integer, String> _iter2 : _iter1.getKey().entrySet()) {
+          oprot.writeI32(_iter2.getKey());
+          oprot.writeString(_iter2.getValue());
+
+        }
+        oprot.writeMapEnd();
+          
+          oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter1.getValue().size()));
+        for (Map.Entry<Integer, String> _iter2 : _iter1.getValue().entrySet()) {
+          oprot.writeI32(_iter2.getKey());
+          oprot.writeString(_iter2.getValue());
+
+        }
+        oprot.writeMapEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeySetValMap != null) {
+        oprot.writeFieldBegin(MAP_KEY_SET_VAL_MAP_FIELD_DESC);
+        Map<Set<List<Integer>>, Map<List<Set<String>>, String>> _iter0 = this.mapKeySetValMap;
+        oprot.writeMapBegin(new TMap(TType.SET, TType.MAP, _iter0.size()));
+        for (Map.Entry<Set<List<Integer>>, Map<List<Set<String>>, String>> _iter1 : _iter0.entrySet()) {
+          oprot.writeSetBegin(new TSet(TType.LIST, _iter1.getKey().size()));
+        for (List<Integer> _iter2 : _iter1.getKey()) {
+          oprot.writeListBegin(new TList(TType.I32, _iter2.size()));
+        for (int _iter3 : _iter2) {
+          oprot.writeI32(_iter3);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeSetEnd();
+          
+          oprot.writeMapBegin(new TMap(TType.LIST, TType.STRING, _iter1.getValue().size()));
+        for (Map.Entry<List<Set<String>>, String> _iter2 : _iter1.getValue().entrySet()) {
+          oprot.writeListBegin(new TList(TType.SET, _iter2.getKey().size()));
+        for (Set<String> _iter3 : _iter2.getKey()) {
+          oprot.writeSetBegin(new TSet(TType.STRING, _iter3.size()));
+        for (String _iter4 : _iter3) {
+          oprot.writeString(_iter4);
+        }
+        oprot.writeSetEnd();
+        }
+        oprot.writeListEnd();
+                    oprot.writeString(_iter2.getValue());
+
+        }
+        oprot.writeMapEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.nestedMaps != null) {
+        oprot.writeFieldBegin(NESTED_MAPS_FIELD_DESC);
+        Map<Map<Map<Integer, String>, String>, Map<Integer, String>> _iter0 = this.nestedMaps;
+        oprot.writeMapBegin(new TMap(TType.MAP, TType.MAP, _iter0.size()));
+        for (Map.Entry<Map<Map<Integer, String>, String>, Map<Integer, String>> _iter1 : _iter0.entrySet()) {
+          oprot.writeMapBegin(new TMap(TType.MAP, TType.STRING, _iter1.getKey().size()));
+        for (Map.Entry<Map<Integer, String>, String> _iter2 : _iter1.getKey().entrySet()) {
+          oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter2.getKey().size()));
+        for (Map.Entry<Integer, String> _iter3 : _iter2.getKey().entrySet()) {
+          oprot.writeI32(_iter3.getKey());
+          oprot.writeString(_iter3.getValue());
+
+        }
+        oprot.writeMapEnd();
+                    oprot.writeString(_iter2.getValue());
+
+        }
+        oprot.writeMapEnd();
+          
+          oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter1.getValue().size()));
+        for (Map.Entry<Integer, String> _iter2 : _iter1.getValue().entrySet()) {
+          oprot.writeI32(_iter2.getKey());
+          oprot.writeString(_iter2.getValue());
+
+        }
+        oprot.writeMapEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeyIntValList != null) {
+        oprot.writeFieldBegin(MAP_KEY_INT_VAL_LIST_FIELD_DESC);
+        Map<Integer, List<test.fixtures.complex_struct.MyStruct>> _iter0 = this.mapKeyIntValList;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
+        for (Map.Entry<Integer, List<test.fixtures.complex_struct.MyStruct>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+
+          oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
+        for (test.fixtures.complex_struct.MyStruct _iter2 : _iter1.getValue()) {
+          _iter2.write0(oprot);
+        }
+        oprot.writeListEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeyIntValSet != null) {
+        oprot.writeFieldBegin(MAP_KEY_INT_VAL_SET_FIELD_DESC);
+        Map<Integer, Set<Boolean>> _iter0 = this.mapKeyIntValSet;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.SET, _iter0.size()));
+        for (Map.Entry<Integer, Set<Boolean>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+
+          oprot.writeSetBegin(new TSet(TType.BOOL, _iter1.getValue().size()));
+        for (boolean _iter2 : _iter1.getValue()) {
+          oprot.writeBool(_iter2);
+        }
+        oprot.writeSetEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeySetValInt != null) {
+        oprot.writeFieldBegin(MAP_KEY_SET_VAL_INT_FIELD_DESC);
+        Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> _iter0 = this.mapKeySetValInt;
+        oprot.writeMapBegin(new TMap(TType.SET, TType.I32, _iter0.size()));
+        for (Map.Entry<Set<Boolean>, test.fixtures.complex_struct.MyEnum> _iter1 : _iter0.entrySet()) {
+          oprot.writeSetBegin(new TSet(TType.BOOL, _iter1.getKey().size()));
+        for (boolean _iter2 : _iter1.getKey()) {
+          oprot.writeBool(_iter2);
+        }
+        oprot.writeSetEnd();
+                    oprot.writeI32(_iter1 == null ? 0 : _iter1.getValue().getValue());
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.mapKeyListValSet != null) {
+        oprot.writeFieldBegin(MAP_KEY_LIST_VAL_SET_FIELD_DESC);
+        Map<List<Integer>, Set<Map<Double, String>>> _iter0 = this.mapKeyListValSet;
+        oprot.writeMapBegin(new TMap(TType.LIST, TType.SET, _iter0.size()));
+        for (Map.Entry<List<Integer>, Set<Map<Double, String>>> _iter1 : _iter0.entrySet()) {
+          oprot.writeListBegin(new TList(TType.I32, _iter1.getKey().size()));
+        for (int _iter2 : _iter1.getKey()) {
+          oprot.writeI32(_iter2);
+        }
+        oprot.writeListEnd();
+          
+          oprot.writeSetBegin(new TSet(TType.MAP, _iter1.getValue().size()));
+        for (Map<Double, String> _iter2 : _iter1.getValue()) {
+          oprot.writeMapBegin(new TMap(TType.DOUBLE, TType.STRING, _iter2.size()));
+        for (Map.Entry<Double, String> _iter3 : _iter2.entrySet()) {
+          oprot.writeDouble(_iter3.getKey());
+          oprot.writeString(_iter3.getValue());
+
+        }
+        oprot.writeMapEnd();
+        }
+        oprot.writeSetEnd();
+
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

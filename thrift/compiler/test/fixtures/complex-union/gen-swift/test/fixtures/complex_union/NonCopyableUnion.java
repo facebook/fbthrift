@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -23,6 +28,10 @@ public final class NonCopyableUnion {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
+    public static final int _S = 1;
+    private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
     
     @ThriftConstructor
     public NonCopyableUnion() {
@@ -107,4 +116,29 @@ public final class NonCopyableUnion {
     public interface Visitor {
         void visitS(test.fixtures.complex_union.NonCopyableStruct s);
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      writeValue(oprot);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
+    private void writeValue(TProtocol oprot) throws TException {
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      case _S: {
+        oprot.writeFieldBegin(S_FIELD_DESC);
+        test.fixtures.complex_union.NonCopyableStruct s = (test.fixtures.complex_union.NonCopyableStruct)this.value;
+        s.write0(oprot);
+        oprot.writeFieldEnd();
+        return;
+      }
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+    }
+    
 }

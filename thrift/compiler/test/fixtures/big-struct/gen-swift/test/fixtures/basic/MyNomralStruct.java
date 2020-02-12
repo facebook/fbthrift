@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -369,36 +373,97 @@ public final class MyNomralStruct {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyNomralStruct");
     private final String msg1;
+    public static final int _MSG1 = 1;
+    private static final TField MSG1_FIELD_DESC = new TField("msg1", TType.STRING, (short)1);
     private final String msg2;
+    public static final int _MSG2 = 2;
+    private static final TField MSG2_FIELD_DESC = new TField("msg2", TType.STRING, (short)2);
     private final String msg3;
+    public static final int _MSG3 = 3;
+    private static final TField MSG3_FIELD_DESC = new TField("msg3", TType.STRING, (short)3);
     private final String msg4;
+    public static final int _MSG4 = 4;
+    private static final TField MSG4_FIELD_DESC = new TField("msg4", TType.STRING, (short)4);
     private final String msg5;
+    public static final int _MSG5 = 5;
+    private static final TField MSG5_FIELD_DESC = new TField("msg5", TType.STRING, (short)5);
     private final String msg6;
+    public static final int _MSG6 = 6;
+    private static final TField MSG6_FIELD_DESC = new TField("msg6", TType.STRING, (short)6);
     private final String msg7;
+    public static final int _MSG7 = 7;
+    private static final TField MSG7_FIELD_DESC = new TField("msg7", TType.STRING, (short)7);
     private final String msg8;
+    public static final int _MSG8 = 8;
+    private static final TField MSG8_FIELD_DESC = new TField("msg8", TType.STRING, (short)8);
     private final String msg9;
+    public static final int _MSG9 = 9;
+    private static final TField MSG9_FIELD_DESC = new TField("msg9", TType.STRING, (short)9);
     private final int myIntField10;
+    public static final int _MYINTFIELD10 = 10;
+    private static final TField MY_INT_FIELD10_FIELD_DESC = new TField("myIntField10", TType.I32, (short)10);
     private final int myIntField11;
+    public static final int _MYINTFIELD11 = 11;
+    private static final TField MY_INT_FIELD11_FIELD_DESC = new TField("myIntField11", TType.I32, (short)11);
     private final int myIntField12;
+    public static final int _MYINTFIELD12 = 12;
+    private static final TField MY_INT_FIELD12_FIELD_DESC = new TField("myIntField12", TType.I32, (short)12);
     private final int myIntField13;
+    public static final int _MYINTFIELD13 = 13;
+    private static final TField MY_INT_FIELD13_FIELD_DESC = new TField("myIntField13", TType.I32, (short)13);
     private final int myIntField14;
+    public static final int _MYINTFIELD14 = 14;
+    private static final TField MY_INT_FIELD14_FIELD_DESC = new TField("myIntField14", TType.I32, (short)14);
     private final int myIntField15;
+    public static final int _MYINTFIELD15 = 15;
+    private static final TField MY_INT_FIELD15_FIELD_DESC = new TField("myIntField15", TType.I32, (short)15);
     private final int myIntField16;
+    public static final int _MYINTFIELD16 = 16;
+    private static final TField MY_INT_FIELD16_FIELD_DESC = new TField("myIntField16", TType.I32, (short)16);
     private final int myIntField17;
+    public static final int _MYINTFIELD17 = 17;
+    private static final TField MY_INT_FIELD17_FIELD_DESC = new TField("myIntField17", TType.I32, (short)17);
     private final int myIntField18;
+    public static final int _MYINTFIELD18 = 18;
+    private static final TField MY_INT_FIELD18_FIELD_DESC = new TField("myIntField18", TType.I32, (short)18);
     private final int myIntField19;
+    public static final int _MYINTFIELD19 = 19;
+    private static final TField MY_INT_FIELD19_FIELD_DESC = new TField("myIntField19", TType.I32, (short)19);
     private final int myIntField20;
+    public static final int _MYINTFIELD20 = 20;
+    private static final TField MY_INT_FIELD20_FIELD_DESC = new TField("myIntField20", TType.I32, (short)20);
     private final double myDoubleField21;
+    public static final int _MYDOUBLEFIELD21 = 21;
+    private static final TField MY_DOUBLE_FIELD21_FIELD_DESC = new TField("myDoubleField21", TType.DOUBLE, (short)21);
     private final double myDoubleField22;
+    public static final int _MYDOUBLEFIELD22 = 22;
+    private static final TField MY_DOUBLE_FIELD22_FIELD_DESC = new TField("myDoubleField22", TType.DOUBLE, (short)22);
     private final double myDoubleField23;
+    public static final int _MYDOUBLEFIELD23 = 23;
+    private static final TField MY_DOUBLE_FIELD23_FIELD_DESC = new TField("myDoubleField23", TType.DOUBLE, (short)23);
     private final double myDoubleField24;
+    public static final int _MYDOUBLEFIELD24 = 24;
+    private static final TField MY_DOUBLE_FIELD24_FIELD_DESC = new TField("myDoubleField24", TType.DOUBLE, (short)24);
     private final double myDoubleField25;
+    public static final int _MYDOUBLEFIELD25 = 25;
+    private static final TField MY_DOUBLE_FIELD25_FIELD_DESC = new TField("myDoubleField25", TType.DOUBLE, (short)25);
     private final double myDoubleField26;
+    public static final int _MYDOUBLEFIELD26 = 26;
+    private static final TField MY_DOUBLE_FIELD26_FIELD_DESC = new TField("myDoubleField26", TType.DOUBLE, (short)26);
     private final double myDoubleField27;
+    public static final int _MYDOUBLEFIELD27 = 27;
+    private static final TField MY_DOUBLE_FIELD27_FIELD_DESC = new TField("myDoubleField27", TType.DOUBLE, (short)27);
     private final double myDoubleField28;
+    public static final int _MYDOUBLEFIELD28 = 28;
+    private static final TField MY_DOUBLE_FIELD28_FIELD_DESC = new TField("myDoubleField28", TType.DOUBLE, (short)28);
     private final double myDoubleField29;
+    public static final int _MYDOUBLEFIELD29 = 29;
+    private static final TField MY_DOUBLE_FIELD29_FIELD_DESC = new TField("myDoubleField29", TType.DOUBLE, (short)29);
     private final double myDoubleField30;
+    public static final int _MYDOUBLEFIELD30 = 30;
+    private static final TField MY_DOUBLE_FIELD30_FIELD_DESC = new TField("myDoubleField30", TType.DOUBLE, (short)30);
 
     
     @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
@@ -606,6 +671,120 @@ public final class MyNomralStruct {
             myDoubleField29,
             myDoubleField30
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.msg1 != null) {
+        oprot.writeFieldBegin(MSG1_FIELD_DESC);
+        oprot.writeString(this.msg1);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg2 != null) {
+        oprot.writeFieldBegin(MSG2_FIELD_DESC);
+        oprot.writeString(this.msg2);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg3 != null) {
+        oprot.writeFieldBegin(MSG3_FIELD_DESC);
+        oprot.writeString(this.msg3);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg4 != null) {
+        oprot.writeFieldBegin(MSG4_FIELD_DESC);
+        oprot.writeString(this.msg4);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg5 != null) {
+        oprot.writeFieldBegin(MSG5_FIELD_DESC);
+        oprot.writeString(this.msg5);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg6 != null) {
+        oprot.writeFieldBegin(MSG6_FIELD_DESC);
+        oprot.writeString(this.msg6);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg7 != null) {
+        oprot.writeFieldBegin(MSG7_FIELD_DESC);
+        oprot.writeString(this.msg7);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg8 != null) {
+        oprot.writeFieldBegin(MSG8_FIELD_DESC);
+        oprot.writeString(this.msg8);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg9 != null) {
+        oprot.writeFieldBegin(MSG9_FIELD_DESC);
+        oprot.writeString(this.msg9);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
+      oprot.writeI32(this.myIntField10);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
+      oprot.writeI32(this.myIntField11);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
+      oprot.writeI32(this.myIntField12);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
+      oprot.writeI32(this.myIntField13);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
+      oprot.writeI32(this.myIntField14);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
+      oprot.writeI32(this.myIntField15);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
+      oprot.writeI32(this.myIntField16);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
+      oprot.writeI32(this.myIntField17);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
+      oprot.writeI32(this.myIntField18);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
+      oprot.writeI32(this.myIntField19);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
+      oprot.writeI32(this.myIntField20);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField21);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField22);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField23);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField24);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField25);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField26);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField27);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField28);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField29);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField30);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

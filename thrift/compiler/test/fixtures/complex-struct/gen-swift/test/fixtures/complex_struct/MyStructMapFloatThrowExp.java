@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -61,8 +65,13 @@ public final class MyStructMapFloatThrowExp {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyStructMapFloatThrowExp");
     private final long myLongField;
+    public static final int _MYLONGFIELD = 1;
+    private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
     private final Map<Integer, List<List<Float>>> mapListOfFloats;
+    public static final int _MAPLISTOFFLOATS = 2;
+    private static final TField MAP_LIST_OF_FLOATS_FIELD_DESC = null;
 
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
@@ -102,6 +111,18 @@ public final class MyStructMapFloatThrowExp {
             myLongField,
             mapListOfFloats
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
+      oprot.writeI64(this.myLongField);
+      oprot.writeFieldEnd();
+      if (MAP_LIST_OF_FLOATS_FIELD_DESC == null){
+        throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:mapListOfFloats Type:Map<Integer, List<List<Float>>>");
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

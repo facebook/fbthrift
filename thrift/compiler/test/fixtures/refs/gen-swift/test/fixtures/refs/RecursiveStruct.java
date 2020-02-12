@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -50,7 +54,10 @@ public final class RecursiveStruct {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("RecursiveStruct");
     private final List<test.fixtures.refs.RecursiveStruct> mes;
+    public static final int _MES = 1;
+    private static final TField MES_FIELD_DESC = new TField("mes", TType.LIST, (short)1);
 
     
     @ThriftField(value=1, name="mes", requiredness=Requiredness.OPTIONAL, isRecursive=Recursiveness.TRUE)
@@ -84,6 +91,22 @@ public final class RecursiveStruct {
         return Arrays.deepHashCode(new Object[] {
             mes
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.mes != null) {
+        oprot.writeFieldBegin(MES_FIELD_DESC);
+        List<test.fixtures.refs.RecursiveStruct> _iter0 = this.mes;
+        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
+        for (test.fixtures.refs.RecursiveStruct _iter1 : _iter0) {
+          _iter1.write0(oprot);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }
