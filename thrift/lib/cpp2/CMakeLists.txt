@@ -27,8 +27,22 @@ set(LIB_CPP2_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 # the directories/files to avoid this type of hack
 #
 get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
+get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(rsocket-cpp2-SOURCES GLOBAL PROPERTY rsocket-cpp2-SOURCES)
+
+bypass_source_check("${metadata-cpp2-SOURCES}")
+add_library(
+  thriftmetadata
+
+  ${metadata-cpp2-SOURCES}
+)
+add_dependencies(thriftmetadata metadata-cpp2-target)
+target_link_libraries(
+  thriftmetadata
+  PUBLIC
+    Folly::folly
+)
 
 bypass_source_check("${frozen-cpp2-SOURCES}")
 add_library(
@@ -39,11 +53,12 @@ add_library(
   frozen/schema/MemorySchema.cpp
   ${frozen-cpp2-SOURCES}
 )
-add_dependencies(thriftfrozen2 frozen-cpp2-target)
+add_dependencies(thriftfrozen2 frozen-cpp2-target thriftmetadata)
 target_link_libraries(
   thriftfrozen2
   PUBLIC
     Folly::folly
+    thriftmetadata
     ${GLOG_LIBRARIES}
     ${LIBGFLAGS_LIBRARY}
 )
@@ -128,11 +143,17 @@ add_library(
   ${metadata-cpp2-SOURCES}
   ${rsocket-cpp2-SOURCES}
 )
-add_dependencies(thriftcpp2 Config-cpp2-target RpcMetadata-cpp2-target)
+add_dependencies(
+  thriftcpp2
+  Config-cpp2-target
+  RpcMetadata-cpp2-target
+  thriftmetadata
+)
 target_link_libraries(
   thriftcpp2
   PUBLIC
     thrift
+    thriftmetadata
     thriftfrozen2
     thriftprotocol
 )
@@ -162,6 +183,7 @@ install(
 
 install(
   TARGETS
+    thriftmetadata
     thriftfrozen2
     thriftprotocol
     thriftcpp2
