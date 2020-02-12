@@ -93,9 +93,6 @@ public class PubSubStreamingService {
       processMap_.put("streamthrows", new streamthrows());
       processMap_.put("boththrows", new boththrows());
       processMap_.put("responseandstreamthrows", new responseandstreamthrows());
-      processMap_.put("streamleftthrows", new streamleftthrows());
-      processMap_.put("bothleftthrows", new bothleftthrows());
-      processMap_.put("responseandstreamleftthrows", new responseandstreamleftthrows());
     }
 
     protected static interface ProcessFunction {

@@ -105,69 +105,6 @@ foo    ]() mutable {
   return future;
 }
 
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_streamleftthrows(
-  int32_t foo
-) {
-  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
-  folly::via(
-    this->executor,
-    [this, ctx,
-     promise = std::move(promise),
-foo    ]() mutable {
-        call_cy_PubSubStreamingService_streamleftthrows(
-            this->if_object,
-            ctx,
-            std::move(promise),
-            foo        );
-    });
-
-  return future;
-}
-
-folly::Future<apache::thrift::ServerStream<int32_t>> PubSubStreamingServiceWrapper::future_bothleftthrows(
-  int32_t foo
-) {
-  folly::Promise<apache::thrift::ServerStream<int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
-  folly::via(
-    this->executor,
-    [this, ctx,
-     promise = std::move(promise),
-foo    ]() mutable {
-        call_cy_PubSubStreamingService_bothleftthrows(
-            this->if_object,
-            ctx,
-            std::move(promise),
-            foo        );
-    });
-
-  return future;
-}
-
-folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> PubSubStreamingServiceWrapper::future_responseandstreamleftthrows(
-  int32_t foo
-) {
-  folly::Promise<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> promise;
-  auto future = promise.getFuture();
-  auto ctx = getConnectionContext();
-  folly::via(
-    this->executor,
-    [this, ctx,
-     promise = std::move(promise),
-foo    ]() mutable {
-        call_cy_PubSubStreamingService_responseandstreamleftthrows(
-            this->if_object,
-            ctx,
-            std::move(promise),
-            foo        );
-    });
-
-  return future;
-}
-
 std::shared_ptr<apache::thrift::ServerInterface> PubSubStreamingServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<PubSubStreamingServiceWrapper>(if_object, exc);
 }

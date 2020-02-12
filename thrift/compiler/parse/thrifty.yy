@@ -213,7 +213,6 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %token tok_typedef
 %token tok_struct
 %token tok_xception
-%token tok_streamthrows
 %token tok_throws
 %token tok_extends
 %token tok_service
@@ -254,7 +253,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_type*>          FieldType
 %type<t_type*>          ResponseAndStreamReturnType
 %type<t_type*>          ResponseAndSinkReturnType
-%type<t_stream_response*> 
+%type<t_stream_response*>
                         StreamReturnType
 %type<t_sink*>          SinkReturnType
 %type<t_typestructpair> SinkFieldType
@@ -287,8 +286,7 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
 %type<t_field*>         Param
 
 %type<t_struct*>        Throws
-%type<t_struct*>        StreamThrows
-%type<t_structpair>     ThrowsThrows
+%type<t_struct*>        MaybeThrows
 %type<t_service*>       Extends
 %type<bool>             Oneway
 
@@ -977,33 +975,26 @@ FunctionList:
     }
 
 Function:
-  CaptureDocText Oneway FunctionType tok_identifier "(" ParamList ")" ThrowsThrows FunctionAnnotations CommaOrSemicolonOptional
+  CaptureDocText Oneway FunctionType tok_identifier "(" ParamList ")" MaybeThrows FunctionAnnotations CommaOrSemicolonOptional
     {
       $6->set_name(std::string($4) + "_args");
       auto* rettype = $3;
       auto* arglist = $6;
-      auto* streamthrows = $8.second;
-      if (rettype && rettype->is_streamresponse() && static_cast<t_stream_response*>(rettype)->has_throws_struct()) {
-        if (streamthrows) {
-          driver.yyerror("Function \"%s\" has multiple stream throws structs", $4.c_str());
-          driver.end_parsing();
-        }
-        streamthrows = static_cast<t_stream_response*>(rettype)->get_throws_struct();
-      }
+      t_struct* streamthrows = rettype && rettype->is_streamresponse() ? static_cast<t_stream_response*>(rettype)->get_throws_struct() : nullptr;
       t_function* func;
       if (rettype && rettype->is_sink()) {
         func = new t_function(
           static_cast<t_sink*>(rettype),
           $4,
           std::unique_ptr<t_struct>(arglist),
-          std::unique_ptr<t_struct>($8.first)
+          std::unique_ptr<t_struct>($8)
         );
       } else {
         func = new t_function(
           rettype,
           $4,
           std::unique_ptr<t_struct>(arglist),
-          std::unique_ptr<t_struct>($8.first),
+          std::unique_ptr<t_struct>($8),
           std::unique_ptr<t_struct>(streamthrows),
           $2
         );
@@ -1062,22 +1053,6 @@ Oneway:
       $$ = false;
     }
 
-ThrowsThrows:
-  Throws StreamThrows
-		{
-			$$ = std::make_pair($1, $2);
-		}
-| Throws
-		{
-			$$ = std::make_pair($1, nullptr);
-		}
-| StreamThrows
-    {
-      $$ = std::make_pair(new t_struct(driver.program), $1);
-    }
-|   {
-			$$ = std::make_pair(new t_struct(driver.program), nullptr);
-		}
 
 Throws:
   tok_throws "(" FieldList ")"
@@ -1085,12 +1060,14 @@ Throws:
       driver.debug("Throws -> tok_throws ( FieldList )");
       $$ = $3;
     }
-StreamThrows:
-  tok_streamthrows "(" FieldList ")"
-    {
-      driver.debug("StreamThrows -> 'stream throws' ( FieldList )");
-      $$ = $3;
-    }
+MaybeThrows:
+  Throws
+		{
+			$$ = $1;
+		}
+|   {
+			$$ = new t_struct(driver.program);
+		}
 
 FieldList:
   FieldList Field

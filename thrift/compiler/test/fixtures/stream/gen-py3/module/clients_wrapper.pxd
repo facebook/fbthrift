@@ -48,10 +48,4 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
       int32_t arg_foo,)
     cFollyFuture[cResponseAndClientBufferedStream[int32_t,int32_t]] responseandstreamthrows(cRpcOptions, 
       int32_t arg_foo,)
-    cFollyFuture[cClientBufferedStream[int32_t]] streamleftthrows(cRpcOptions, 
-      int32_t arg_foo,)
-    cFollyFuture[cClientBufferedStream[int32_t]] bothleftthrows(cRpcOptions, 
-      int32_t arg_foo,)
-    cFollyFuture[cResponseAndClientBufferedStream[int32_t,int32_t]] responseandstreamleftthrows(cRpcOptions, 
-      int32_t arg_foo,)
 

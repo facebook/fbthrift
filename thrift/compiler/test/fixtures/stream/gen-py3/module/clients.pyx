@@ -106,49 +106,6 @@ cdef void PubSubStreamingService_responseandstreamthrows_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
-cdef void PubSubStreamingService_streamleftthrows_callback(
-    cFollyTry[cClientBufferedStream[int32_t]]&& result,
-    PyObject* userdata
-):
-    client, pyfuture, options = <object> userdata  
-    if result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
-    else:
-        try:
-            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
-        except Exception as ex:
-            pyfuture.set_exception(ex.with_traceback(None))
-
-cdef void PubSubStreamingService_bothleftthrows_callback(
-    cFollyTry[cClientBufferedStream[int32_t]]&& result,
-    PyObject* userdata
-):
-    client, pyfuture, options = <object> userdata  
-    if result.hasException[_module_types.cFooEx]():
-        pyfuture.set_exception(_module_types.FooEx.create(try_make_shared_exception[_module_types.cFooEx](result.exception())))
-    elif result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
-    else:
-        try:
-            pyfuture.set_result(_module_types.ClientBufferedStream__i32.create(result.value(), options))
-        except Exception as ex:
-            pyfuture.set_exception(ex.with_traceback(None))
-
-cdef void PubSubStreamingService_responseandstreamleftthrows_callback(
-    cFollyTry[cResponseAndClientBufferedStream[int32_t,int32_t]]&& result,
-    PyObject* userdata
-):
-    client, pyfuture, options = <object> userdata  
-    if result.hasException[_module_types.cFooEx]():
-        pyfuture.set_exception(_module_types.FooEx.create(try_make_shared_exception[_module_types.cFooEx](result.exception())))
-    elif result.hasException():
-        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
-    else:
-        try:
-            pyfuture.set_result(_module_types.ResponseAndClientBufferedStream__i32_i32.create(result.value(), options))
-        except Exception as ex:
-            pyfuture.set_exception(ex.with_traceback(None))
-
 
 cdef object _PubSubStreamingService_annotations = _py_types.MappingProxyType({
 })
@@ -276,84 +233,6 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         )
         return asyncio_shield(__future)
 
-    @cython.always_allow_keywords(True)
-    def streamleftthrows(
-            PubSubStreamingService self,
-            foo not None,
-            __RpcOptions rpc_options=None
-    ):
-        if rpc_options is None:
-            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
-        if not isinstance(foo, int):
-            raise TypeError(f'foo is not a {int !r}.')
-        else:
-            foo = <int32_t> foo
-        self._check_connect_future()
-        __loop = asyncio_get_event_loop()
-        __future = __loop.create_future()
-        __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[int32_t]](
-            self._executor,
-            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).streamleftthrows(rpc_options._cpp_obj, 
-                foo,
-            ),
-            PubSubStreamingService_streamleftthrows_callback,
-            <PyObject *> __userdata
-        )
-        return asyncio_shield(__future)
-
-    @cython.always_allow_keywords(True)
-    def bothleftthrows(
-            PubSubStreamingService self,
-            foo not None,
-            __RpcOptions rpc_options=None
-    ):
-        if rpc_options is None:
-            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
-        if not isinstance(foo, int):
-            raise TypeError(f'foo is not a {int !r}.')
-        else:
-            foo = <int32_t> foo
-        self._check_connect_future()
-        __loop = asyncio_get_event_loop()
-        __future = __loop.create_future()
-        __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[int32_t]](
-            self._executor,
-            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).bothleftthrows(rpc_options._cpp_obj, 
-                foo,
-            ),
-            PubSubStreamingService_bothleftthrows_callback,
-            <PyObject *> __userdata
-        )
-        return asyncio_shield(__future)
-
-    @cython.always_allow_keywords(True)
-    def responseandstreamleftthrows(
-            PubSubStreamingService self,
-            foo not None,
-            __RpcOptions rpc_options=None
-    ):
-        if rpc_options is None:
-            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
-        if not isinstance(foo, int):
-            raise TypeError(f'foo is not a {int !r}.')
-        else:
-            foo = <int32_t> foo
-        self._check_connect_future()
-        __loop = asyncio_get_event_loop()
-        __future = __loop.create_future()
-        __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cResponseAndClientBufferedStream[int32_t,int32_t]](
-            self._executor,
-            down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamleftthrows(rpc_options._cpp_obj, 
-                foo,
-            ),
-            PubSubStreamingService_responseandstreamleftthrows_callback,
-            <PyObject *> __userdata
-        )
-        return asyncio_shield(__future)
-
 
     @staticmethod
     def __get_reflection_for_returnstream():
@@ -439,65 +318,6 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
             }),
         )
 
-    @staticmethod
-    def __get_reflection_for_streamleftthrows():
-        return __MethodSpec(
-            name="streamleftthrows",
-            arguments=[
-                __ArgumentSpec(
-                    name="foo",
-                    type=int,
-                    annotations=_py_types.MappingProxyType({
-                    }),
-                ),
-            ],
-            result=_module_types.ClientBufferedStream__i32,
-            exceptions=[
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
-        )
-
-    @staticmethod
-    def __get_reflection_for_bothleftthrows():
-        return __MethodSpec(
-            name="bothleftthrows",
-            arguments=[
-                __ArgumentSpec(
-                    name="foo",
-                    type=int,
-                    annotations=_py_types.MappingProxyType({
-                    }),
-                ),
-            ],
-            result=_module_types.ClientBufferedStream__i32,
-            exceptions=[
-                _module_types.FooEx,
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
-        )
-
-    @staticmethod
-    def __get_reflection_for_responseandstreamleftthrows():
-        return __MethodSpec(
-            name="responseandstreamleftthrows",
-            arguments=[
-                __ArgumentSpec(
-                    name="foo",
-                    type=int,
-                    annotations=_py_types.MappingProxyType({
-                    }),
-                ),
-            ],
-            result=_module_types.ResponseAndClientBufferedStream__i32_i32,
-            exceptions=[
-                _module_types.FooEx,
-            ],
-            annotations=_py_types.MappingProxyType({
-            }),
-        )
-
     @classmethod
     def __get_reflection__(cls):
         return __InterfaceSpec(
@@ -507,9 +327,6 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
                 cls.__get_reflection_for_streamthrows(),
                 cls.__get_reflection_for_boththrows(),
                 cls.__get_reflection_for_responseandstreamthrows(),
-                cls.__get_reflection_for_streamleftthrows(),
-                cls.__get_reflection_for_bothleftthrows(),
-                cls.__get_reflection_for_responseandstreamleftthrows(),
             ],
             annotations=_py_types.MappingProxyType({
             }),

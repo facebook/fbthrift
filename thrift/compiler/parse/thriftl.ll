@@ -192,12 +192,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "union"              { return apache::thrift::compiler::yy::parser::make_tok_union();                }
 "exception"          { return apache::thrift::compiler::yy::parser::make_tok_xception();             }
 "extends"            { return apache::thrift::compiler::yy::parser::make_tok_extends();              }
-"stream throws"      {
-  /* this is a hack; lex doesn't allow whitespace in trailing context,
-   * so match entire "stream throws" as a token
-   */
-  return apache::thrift::compiler::yy::parser::make_tok_streamthrows();
-}
 "throws"             { return apache::thrift::compiler::yy::parser::make_tok_throws();               }
 "service"            {
   service_encountered = true;

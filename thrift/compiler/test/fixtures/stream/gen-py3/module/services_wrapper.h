@@ -33,15 +33,6 @@ class PubSubStreamingServiceWrapper : virtual public PubSubStreamingServiceSvIf 
     folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamthrows(
         int32_t foo
     ) override;
-    folly::Future<apache::thrift::ServerStream<int32_t>> future_streamleftthrows(
-        int32_t foo
-    ) override;
-    folly::Future<apache::thrift::ServerStream<int32_t>> future_bothleftthrows(
-        int32_t foo
-    ) override;
-    folly::Future<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> future_responseandstreamleftthrows(
-        int32_t foo
-    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> PubSubStreamingServiceInterface(PyObject *if_object, folly::Executor *exc);
