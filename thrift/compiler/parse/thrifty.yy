@@ -166,18 +166,8 @@ using t_typestructpair = std::pair<t_type*, t_struct*>;
  */
 %token tok_include
 %token tok_namespace
-%token tok_cpp_namespace
 %token tok_cpp_include
 %token tok_hs_include
-%token tok_php_namespace
-%token tok_py_module
-%token tok_perl_package
-%token tok_java_package
-%token tok_ruby_namespace
-%token tok_smalltalk_category
-%token tok_smalltalk_prefix
-%token tok_cocoa_prefix
-%token tok_csharp_namespace
 
 /**
  * Base datatype keywords
@@ -366,15 +356,6 @@ Header:
         driver.program->set_namespace($2, $3);
       }
     }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_cpp_namespace tok_identifier
-    {
-      driver.warning(1, "'cpp_namespace' is deprecated. Use 'namespace cpp' instead");
-      driver.debug("Header -> tok_cpp_namespace tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("cpp", $2);
-      }
-    }
 | tok_cpp_include tok_literal
     {
       driver.debug("Header -> tok_cpp_include tok_literal");
@@ -387,86 +368,6 @@ Header:
       driver.debug("Header -> tok_hs_include tok_literal");
       // Do nothing. This syntax is handled by the hs compiler
     }
-| tok_php_namespace tok_identifier
-    {
-      driver.warning(1, "'php_namespace' is deprecated. Use 'namespace php' instead");
-      driver.debug("Header -> tok_php_namespace tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("php", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_py_module tok_identifier
-    {
-      driver.warning(1, "'py_module' is deprecated. Use 'namespace py' instead");
-      driver.debug("Header -> tok_py_module tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("py", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_perl_package tok_identifier
-    {
-      driver.warning(1, "'perl_package' is deprecated. Use 'namespace perl' instead");
-      driver.debug("Header -> tok_perl_namespace tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("perl", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_ruby_namespace tok_identifier
-    {
-      driver.warning(1, "'ruby_namespace' is deprecated. Use 'namespace rb' instead");
-      driver.debug("Header -> tok_ruby_namespace tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("rb", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_smalltalk_category tok_st_identifier
-    {
-      driver.warning(1, "'smalltalk_category' is deprecated. Use 'namespace smalltalk.category' instead");
-      driver.debug("Header -> tok_smalltalk_category tok_st_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("smalltalk.category", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_smalltalk_prefix tok_identifier
-    {
-      driver.warning(1, "'smalltalk_prefix' is deprecated. Use 'namespace smalltalk.prefix' instead");
-      driver.debug("Header -> tok_smalltalk_prefix tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("smalltalk.prefix", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_java_package tok_identifier
-    {
-      driver.warning(1, "'java_package' is deprecated. Use 'namespace java' instead");
-      driver.debug("Header -> tok_java_package tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("java", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_cocoa_prefix tok_identifier
-    {
-      driver.warning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
-      driver.debug("Header -> tok_cocoa_prefix tok_identifier");
-      if (driver.mode == parsing_mode::PROGRAM) {
-        driver.program->set_namespace("cocoa", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_csharp_namespace tok_identifier
-   {
-     driver.warning(1, "'csharp_namespace' is deprecated. Use 'namespace csharp' instead");
-     driver.debug("Header -> tok_csharp_namespace tok_identifier");
-     if (driver.mode == parsing_mode::PROGRAM) {
-       driver.program->set_namespace("csharp", $2);
-     }
-   }
 
 Include:
   tok_include tok_literal

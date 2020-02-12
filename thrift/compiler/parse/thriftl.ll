@@ -152,18 +152,8 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "true"               { return apache::thrift::compiler::yy::parser::make_tok_bool_constant(1); }
 
 "namespace"          { return apache::thrift::compiler::yy::parser::make_tok_namespace();            }
-"cpp_namespace"      { return apache::thrift::compiler::yy::parser::make_tok_cpp_namespace();        }
 "cpp_include"        { return apache::thrift::compiler::yy::parser::make_tok_cpp_include();          }
 "hs_include"         { return apache::thrift::compiler::yy::parser::make_tok_hs_include();           }
-"java_package"       { return apache::thrift::compiler::yy::parser::make_tok_java_package();         }
-"cocoa_prefix"       { return apache::thrift::compiler::yy::parser::make_tok_cocoa_prefix();         }
-"csharp_namespace"   { return apache::thrift::compiler::yy::parser::make_tok_csharp_namespace();     }
-"php_namespace"      { return apache::thrift::compiler::yy::parser::make_tok_php_namespace();        }
-"py_module"          { return apache::thrift::compiler::yy::parser::make_tok_py_module();            }
-"perl_package"       { return apache::thrift::compiler::yy::parser::make_tok_perl_package();         }
-"ruby_namespace"     { return apache::thrift::compiler::yy::parser::make_tok_ruby_namespace();       }
-"smalltalk_category" { return apache::thrift::compiler::yy::parser::make_tok_smalltalk_category();   }
-"smalltalk_prefix"   { return apache::thrift::compiler::yy::parser::make_tok_smalltalk_prefix();     }
 "include"            { return apache::thrift::compiler::yy::parser::make_tok_include();              }
 "void"               { return apache::thrift::compiler::yy::parser::make_tok_void();                 }
 "bool"               { return apache::thrift::compiler::yy::parser::make_tok_bool();                 }
