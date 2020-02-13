@@ -54,12 +54,10 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     ActiveRequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
-    RocketServerFrameContext&& context,
-    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard)
+    RocketServerFrameContext&& context)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
-      context_(std::move(context)),
-      activeRequestsGuard_(std::move(activeRequestsGuard)) {
+      context_(std::move(context)) {
   new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
       reqRegistry,
       *this,
@@ -182,14 +180,12 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketStreamClientCallback* clientCallback,
-    std::shared_ptr<AsyncProcessor> cpp2Processor,
-    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard)
+    std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
-      cpp2Processor_(std::move(cpp2Processor)),
-      activeRequestsGuard_(std::move(activeRequestsGuard)) {
+      cpp2Processor_(std::move(cpp2Processor)) {
   new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
       reqRegistry,
       *this,
@@ -271,14 +267,12 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketSinkClientCallback* clientCallback,
-    std::shared_ptr<AsyncProcessor> cpp2Processor,
-    Cpp2Worker::ActiveRequestsGuard activeRequestsGuard)
+    std::shared_ptr<AsyncProcessor> cpp2Processor)
     : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
       evb_(evb),
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
-      cpp2Processor_(std::move(cpp2Processor)),
-      activeRequestsGuard_(std::move(activeRequestsGuard)) {
+      cpp2Processor_(std::move(cpp2Processor)) {
   new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
       reqRegistry,
       *this,

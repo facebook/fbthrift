@@ -86,7 +86,7 @@ RocketSinkClientCallback& RocketServerConnection::createSinkClientCallback(
 void RocketServerConnection::send(std::unique_ptr<folly::IOBuf> data) {
   evb_.dcheckIsInEventBaseThread();
 
-  if (state_ != ConnectionState::ALIVE) {
+  if (state_ != ConnectionState::ALIVE && state_ != ConnectionState::DRAINING) {
     return;
   }
 
@@ -101,8 +101,17 @@ RocketServerConnection::~RocketServerConnection() {
 }
 
 bool RocketServerConnection::closeIfNeeded() {
-  if (state_ != ConnectionState::CLOSING || inflightWrites_ != 0 ||
-      inflightRequests_ != 0 || inflightSinkFinalResponses_ != 0) {
+  if (state_ == ConnectionState::DRAINING && inflightRequests_ == 0 &&
+      inflightSinkFinalResponses_ == 0) {
+    DestructorGuard dg(this);
+    // Immediately stop processing new requests
+    socket_->setReadCB(nullptr);
+
+    state_ = ConnectionState::CLOSING;
+    return closeIfNeeded();
+  }
+
+  if (state_ != ConnectionState::CLOSING || isBusy()) {
     return false;
   }
 
@@ -139,7 +148,7 @@ bool RocketServerConnection::closeIfNeeded() {
 void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
   DestructorGuard dg(this);
 
-  if (state_ != ConnectionState::ALIVE) {
+  if (state_ != ConnectionState::ALIVE && state_ != ConnectionState::DRAINING) {
     return;
   }
 
@@ -465,6 +474,7 @@ void RocketServerConnection::handleSinkFrame(
 
 void RocketServerConnection::close(folly::exception_wrapper ew) {
   if (state_ == ConnectionState::CLOSING || state_ == ConnectionState::CLOSED) {
+    closeIfNeeded();
     return;
   }
 
@@ -499,7 +509,14 @@ bool RocketServerConnection::isBusy() const {
 // period has elapsed, closeWhenIdle() will be called for each connection. Note
 // that ConnectionManager waits for a connection to become un-busy before
 // calling closeWhenIdle().
-void RocketServerConnection::notifyPendingShutdown() {}
+void RocketServerConnection::notifyPendingShutdown() {
+  if (state_ != ConnectionState::ALIVE) {
+    return;
+  }
+
+  state_ = ConnectionState::DRAINING;
+  closeIfNeeded();
+}
 
 void RocketServerConnection::dropConnection(const std::string& /* errorMsg */) {
   close(folly::make_exception_wrapper<transport::TTransportException>(

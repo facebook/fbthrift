@@ -180,7 +180,10 @@ class RocketServerConnection final
 
   enum class ConnectionState : uint8_t {
     ALIVE,
-    CLOSING,
+    DRAINING, // Rejecting all new requests, waiting for inflight requests to
+              // complete.
+    CLOSING, // No longer reading form the socket, waiting for pending writes to
+             // complete.
     CLOSED,
   };
   ConnectionState state_{ConnectionState::ALIVE};

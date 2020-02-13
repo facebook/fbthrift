@@ -18,4 +18,6 @@ namespace cpp apache.thrift.util
 
 service SimpleService {
   i64 add(1: i64 a, 2: i64 b)
+
+  string echoSlow(1: string message, 2: i64 sleepMs)
 }

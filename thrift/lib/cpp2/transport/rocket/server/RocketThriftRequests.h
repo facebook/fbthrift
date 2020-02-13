@@ -57,8 +57,7 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       ActiveRequestsRegistry& reqRegistry,
       std::unique_ptr<folly::IOBuf> debugPayload,
       intptr_t rootRequestContextId,
-      RocketServerFrameContext&& context,
-      Cpp2Worker::ActiveRequestsGuard activeRequestsGuard);
+      RocketServerFrameContext&& context);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -84,7 +83,6 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
  private:
   folly::EventBase& evb_;
   RocketServerFrameContext context_;
-  Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 };
 
 // Object corresponding to rsocket REQUEST_FNF request (one-way request) handled
@@ -142,8 +140,7 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf> debugPayload,
       intptr_t rootRequestContextId,
       RocketStreamClientCallback* clientCallback,
-      std::shared_ptr<AsyncProcessor> cpp2Processor,
-      Cpp2Worker::ActiveRequestsGuard activeRequestsGuard);
+      std::shared_ptr<AsyncProcessor> cpp2Processor);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -195,8 +192,6 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
   // reference.
   const std::shared_ptr<Cpp2ConnContext> connContext_;
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
-
-  Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 };
 
 // Object corresponding to rsocket sink (REQUEST_CHANNEL) request (initial
@@ -213,8 +208,7 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf> debugPayload,
       intptr_t rootRequestContextId,
       RocketSinkClientCallback* clientCallback,
-      std::shared_ptr<AsyncProcessor> cpp2Processor,
-      Cpp2Worker::ActiveRequestsGuard activeRequestsGuard);
+      std::shared_ptr<AsyncProcessor> cpp2Processor);
 
   void sendThriftResponse(
       ResponseRpcMetadata&&,
@@ -256,8 +250,6 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
   // reference.
   const std::shared_ptr<Cpp2ConnContext> connContext_;
   const std::shared_ptr<AsyncProcessor> cpp2Processor_;
-
-  Cpp2Worker::ActiveRequestsGuard activeRequestsGuard_;
 };
 
 } // namespace rocket

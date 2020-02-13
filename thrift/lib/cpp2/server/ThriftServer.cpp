@@ -470,6 +470,12 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
+  forEachWorker([&](wangle::Acceptor* acceptor) {
+    if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
+      worker->requestStop();
+    }
+  });
+
   auto sockets = getSockets();
   std::atomic<size_t> remaining(1 + sockets.size());
   folly::Baton<> done;
@@ -507,11 +513,6 @@ void ThriftServer::stopWorkers() {
 }
 
 void ThriftServer::stopCPUWorkers() {
-  forEachWorker([&](wangle::Acceptor* acceptor) {
-    if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
-      worker->requestStop();
-    }
-  });
   auto deadline = std::chrono::system_clock::now() + workersJoinTimeout_;
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {

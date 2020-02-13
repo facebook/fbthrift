@@ -166,6 +166,7 @@ void testOneInput(
     left -= lenToRead;
   }
   connection->close(folly::exception_wrapper());
+  sockPtr->getEventBase()->loop();
 }
 
 } // namespace test

@@ -21,6 +21,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
 #include <folly/stop_watch.h>
+#include <folly/test/TestUtils.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
@@ -156,6 +157,10 @@ struct ScopedServerInterfaceThreadTest : public testing::Test {
             })
             .get());
   }
+
+  static bool isHeaderTransport() {
+    return std::is_same_v<HeaderClientChannel, Channel>;
+  }
 };
 
 class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
@@ -172,6 +177,16 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
 
     return folly::futures::sleepUnsafe(std::chrono::milliseconds(a + b))
         .thenValue([=](auto&&) { return a + b; });
+  }
+
+  folly::Future<std::unique_ptr<std::string>> future_echoSlow(
+      std::unique_ptr<std::string> message,
+      int64_t sleepMs) override {
+    requestSem_.post();
+    return folly::futures::sleepUnsafe(std::chrono::milliseconds(sleepMs))
+        .thenValue([message = std::move(message)](auto&&) mutable {
+          return std::move(message);
+        });
   }
 
   void waitForRequest() {
@@ -194,6 +209,16 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(a + b))
         .deferValue([=](auto&&) { return a + b; });
+  }
+
+  folly::SemiFuture<std::unique_ptr<std::string>> semifuture_echoSlow(
+      std::unique_ptr<std::string> message,
+      int64_t sleepMs) override {
+    requestSem_.post();
+    return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
+        .deferValue([message = std::move(message)](auto&&) mutable {
+          return std::move(message);
+        });
   }
 
   void waitForRequest() {
@@ -230,6 +255,32 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 
   EXPECT_GE(timer.elapsed().count(), 6000);
   EXPECT_EQ(6000, std::move(future).get());
+}
+
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsLargeMessage) {
+  SKIP_IF(this->isHeaderTransport())
+      << "Clean shutdown is not implemented for Header transport";
+
+  std::string message(10000000, 'a');
+
+  auto serviceImpl = this->newService();
+
+  folly::Optional<ScopedServerInterfaceThread> ssit(
+      folly::in_place, serviceImpl);
+
+  auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
+
+  folly::stop_watch<std::chrono::milliseconds> timer;
+
+  auto future = cli->semifuture_echoSlow(message, 2000);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  ssit.reset();
+
+  EXPECT_GE(timer.elapsed().count(), 2000);
+  EXPECT_EQ(message, std::move(future).get(std::chrono::seconds(10)));
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsTimeout) {
