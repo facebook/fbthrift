@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/RequestId.h>
 #include <atomic>
 
@@ -33,13 +34,62 @@ std::atomic<uint32_t> nextRegistryId{0};
 
 ActiveRequestsRegistry::ActiveRequestsRegistry(
     uint64_t requestPayloadMem,
-    uint64_t totalPayloadMem)
+    uint64_t totalPayloadMem,
+    uint16_t finishedRequestsLimit)
     : registryId_(nextRegistryId++),
       payloadMemoryLimitPerRequest_(requestPayloadMem),
-      payloadMemoryLimitTotal_(totalPayloadMem) {}
+      payloadMemoryLimitTotal_(totalPayloadMem),
+      finishedRequestsLimit_(finishedRequestsLimit) {}
+
+ActiveRequestsRegistry::~ActiveRequestsRegistry() {
+  while (!reqFinishedList_.empty()) {
+    reqFinishedList_.front().dispose();
+  }
+}
 
 RequestId ActiveRequestsRegistry::genRequestId() {
   return RequestId(registryId_, (nextLocalId_++) & RequestLocalIdMax);
+}
+
+void ActiveRequestsRegistry::moveToFinishedList(
+    ActiveRequestsRegistry::DebugStub& stub) {
+  stub.activeRequestsRegistryHook_.unlink();
+  stub.prepareAsFinished();
+  ++finishedRequestsCount_;
+  reqFinishedList_.push_back(stub);
+}
+
+void ActiveRequestsRegistry::evictFromFinishedList() {
+  if (finishedRequestsCount_ > finishedRequestsLimit_) {
+    --finishedRequestsCount_;
+    reqFinishedList_.front().dispose();
+  }
+}
+
+const std::string& ActiveRequestsRegistry::DebugStub::getMethodName() const {
+  return methodNameIfFinished_.empty() ? getRequestContext().getMethodName()
+                                       : methodNameIfFinished_;
+}
+
+const folly::SocketAddress* ActiveRequestsRegistry::DebugStub::getPeerAddress()
+    const {
+  return methodNameIfFinished_.empty() ? getRequestContext().getPeerAddress()
+                                       : &peerAddressIfFinished_;
+}
+
+void ActiveRequestsRegistry::DebugStub::prepareAsFinished() {
+  finished_ = std::chrono::steady_clock::now();
+  methodNameIfFinished_ =
+      const_cast<Cpp2RequestContext*>(reqContext_)->releaseMethodName();
+  peerAddressIfFinished_ =
+      *const_cast<Cpp2RequestContext*>(reqContext_)->getPeerAddress();
+  reqContext_ = nullptr;
+  req_ = nullptr;
+}
+
+void ActiveRequestsRegistry::DebugStub::dispose() {
+  this->~DebugStub();
+  free(this);
 }
 
 } // namespace thrift

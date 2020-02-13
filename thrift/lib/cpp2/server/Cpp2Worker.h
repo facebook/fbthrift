@@ -148,7 +148,8 @@ class Cpp2Worker : public wangle::Acceptor,
         activeRequests_(0),
         requestsRegistry_(std::make_shared<ActiveRequestsRegistry>(
             server_->getMaxDebugPayloadMemoryPerRequest(),
-            server_->getMaxDebugPayloadMemoryPerWorker())) {
+            server_->getMaxDebugPayloadMemoryPerWorker(),
+            server_->getMaxFinishedDebugPayloadsPerWorker())) {
     setGracefulShutdownTimeout(server->workersJoinTimeout_);
   }
 

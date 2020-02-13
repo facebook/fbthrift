@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/IntrusiveList.h>
+#include <folly/SocketAddress.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -138,6 +139,10 @@ class ActiveRequestsRegistry {
       return timestamp_;
     }
 
+    std::chrono::steady_clock::time_point getFinished() const {
+      return finished_;
+    }
+
     const RequestId& getRequestId() const {
       return reqId_;
     }
@@ -145,6 +150,9 @@ class ActiveRequestsRegistry {
     intptr_t getRootRequestContextId() const {
       return rootRequestContextId_;
     }
+
+    const std::string& getMethodName() const;
+    const folly::SocketAddress* getPeerAddress() const;
 
     /**
      * Clones the payload buffer to data accessors. If the buffer is already
@@ -168,11 +176,19 @@ class ActiveRequestsRegistry {
     void releasePayload() {
       payload_.releaseData();
     }
+
+    void prepareAsFinished();
+    void dispose();
+
+    std::string methodNameIfFinished_;
+    folly::SocketAddress peerAddressIfFinished_;
     const ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
     const protocol::PROTOCOL_TYPES protoId_;
     DebugPayload payload_;
     std::chrono::steady_clock::time_point timestamp_;
+    std::chrono::steady_clock::time_point finished_{
+        std::chrono::steady_clock::duration::zero()};
     ActiveRequestsRegistry* registry_;
     const RequestId reqId_;
     const intptr_t rootRequestContextId_;
@@ -191,9 +207,15 @@ class ActiveRequestsRegistry {
       if (!stub_) {
         delete p;
       } else {
-        p->~T();
-        stub_->~DebugStub();
-        free(stub_);
+        auto registry = stub_->registry_;
+        if (registry->finishedRequestsLimit_) {
+          registry->moveToFinishedList(*stub_);
+          p->~ResponseChannelRequest();
+          registry->evictFromFinishedList();
+        } else {
+          p->~ResponseChannelRequest();
+          stub_->dispose();
+        }
       }
     }
 
@@ -222,15 +244,23 @@ class ActiveRequestsRegistry {
   using ActiveRequestPayloadList =
       folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsPayloadHook_>;
 
-  ActiveRequestsRegistry(uint64_t requestPayloadMem, uint64_t totalPayloadMem);
+  ActiveRequestsRegistry(
+      uint64_t requestPayloadMem,
+      uint64_t totalPayloadMem,
+      uint16_t finishedRequestsLimit);
+  ~ActiveRequestsRegistry();
 
-  const ActiveRequestDebugStubList& getDebugStubList() {
-    return reqDebugStubList_;
+  const ActiveRequestDebugStubList& getActive() {
+    return reqActiveList_;
+  }
+
+  const ActiveRequestDebugStubList& getFinished() {
+    return reqFinishedList_;
   }
 
   void registerStub(DebugStub& req) {
     uint64_t payloadSize = req.getPayloadSize();
-    reqDebugStubList_.push_back(req);
+    reqActiveList_.push_back(req);
     if (payloadSize > payloadMemoryLimitPerRequest_) {
       req.releasePayload();
       return;
@@ -241,6 +271,9 @@ class ActiveRequestsRegistry {
   }
 
  private:
+  void moveToFinishedList(DebugStub& stub);
+  void evictFromFinishedList();
+
   void evictStubPayloads() {
     while (payloadMemoryUsage_ > payloadMemoryLimitTotal_) {
       auto& stub = nextStubToEvict();
@@ -264,8 +297,11 @@ class ActiveRequestsRegistry {
   uint64_t payloadMemoryLimitPerRequest_;
   uint64_t payloadMemoryLimitTotal_;
   uint64_t payloadMemoryUsage_{0};
-  ActiveRequestDebugStubList reqDebugStubList_;
+  ActiveRequestDebugStubList reqActiveList_;
   ActiveRequestPayloadList reqPayloadList_;
+  ActiveRequestDebugStubList reqFinishedList_;
+  uint16_t finishedRequestsCount_{0};
+  uint16_t finishedRequestsLimit_;
 };
 
 } // namespace thrift

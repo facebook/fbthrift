@@ -219,6 +219,11 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   ServerAttribute<uint64_t> maxDebugPayloadMemoryPerWorker_{0x1000000}; // 16MB
 
   /**
+   * The maximum number of debug payloads to track after request has finished.
+   */
+  ServerAttribute<uint16_t> maxFinishedDebugPayloadsPerWorker_{10};
+
+  /**
    * Batch all writes withing given time interval.
    * (0 == disabled)
    */
@@ -975,6 +980,25 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE) {
     CHECK(configMutable());
     maxDebugPayloadMemoryPerWorker_.set(limit, source);
+  }
+
+  /**
+   * Return the maximum memory usage by each worker to keep track of debug
+   * payloads.
+   */
+  uint16_t getMaxFinishedDebugPayloadsPerWorker() {
+    return maxFinishedDebugPayloadsPerWorker_.get();
+  }
+
+  /**
+   * Set the maximum memory usage by each worker to keep track of debug
+   * payloads.
+   */
+  void setMaxFinishedDebugPayloadsPerWorker(
+      uint16_t limit,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    CHECK(configMutable());
+    maxFinishedDebugPayloadsPerWorker_.set(limit, source);
   }
 
   /**
