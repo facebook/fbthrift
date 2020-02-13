@@ -33,6 +33,7 @@
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/lang/Exception.h>
@@ -80,6 +81,9 @@ RocketClient::RocketClient(
       eventBaseDestructionCallback_(*this) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
+  if (auto socket = dynamic_cast<folly::AsyncSocket*>(socket_.get())) {
+    socket->setCloseOnFailedWrite(false);
+  }
   evb_->runOnDestruction(eventBaseDestructionCallback_);
 }
 
@@ -835,15 +839,11 @@ void RocketClient::close(transport::TTransportException ex) noexcept {
   error_ = std::move(ex);
   state_ = ConnectionState::ERROR;
 
-  if (evb_) {
-    socket_->setReadCB(nullptr);
-  }
-
   writeLoopCallback_.cancelLoopCallback();
   queue_.failAllScheduledWrites(error_);
-  queue_.failAllSentWrites(error_);
 
   if (evb_) {
+    socket_->setReadCB(&closeLoopCallback_);
     evb_->runInLoop(&closeLoopCallback_);
   }
 }
@@ -862,6 +862,8 @@ void RocketClient::closeNowImpl() noexcept {
 
   socket_->closeNow();
   socket_.reset();
+
+  queue_.failAllSentWrites(error_);
 
   // Move streams_ into a local copy before iterating and erasing. Note that
   // flowable->onError() may itself attempt to erase an element of streams_,
@@ -974,7 +976,34 @@ void RocketClient::DetachableLoopCallback::runLoopCallback() noexcept {
 }
 
 void RocketClient::CloseLoopCallback::runLoopCallback() noexcept {
+  if (std::exchange(reschedule_, false)) {
+    client_.evb_->runInLoop(this);
+    return;
+  }
   client_.closeNowImpl();
+}
+
+void RocketClient::CloseLoopCallback::getReadBuffer(
+    void** bufout,
+    size_t* lenout) {
+  client_.parser_.getReadBuffer(bufout, lenout);
+}
+
+void RocketClient::CloseLoopCallback::readDataAvailable(
+    size_t nbytes) noexcept {
+  reschedule_ = true;
+  client_.parser_.readDataAvailable(nbytes);
+}
+
+void RocketClient::CloseLoopCallback::readEOF() noexcept {
+  reschedule_ = false;
+  client_.parser_.readEOF();
+}
+
+void RocketClient::CloseLoopCallback::readErr(
+    const folly::AsyncSocketException& ex) noexcept {
+  reschedule_ = false;
+  client_.parser_.readErr(ex);
 }
 
 void RocketClient::OnEventBaseDestructionCallback::

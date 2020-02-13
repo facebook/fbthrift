@@ -347,6 +347,56 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, writeError) {
   }
 }
 
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
+  SKIP_IF(this->isHeaderTransport())
+      << "Clean shutdown is not implemented for Header transport";
+
+  std::string message(100, 'a');
+
+  bool stopping{false};
+  folly::Function<void()> spamServer;
+  auto serviceImpl = this->newService();
+
+  folly::Optional<ScopedServerInterfaceThread> ssit(
+      folly::in_place, serviceImpl);
+
+  folly::Optional<folly::ScopedEventBaseThread> evbThread(folly::in_place);
+  auto evb = evbThread->getEventBase();
+  auto cli = this->template newRawClient<SimpleServiceAsyncClient>(evb, *ssit);
+
+  auto future = cli->semifuture_echoSlow(message, 2000);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  constexpr size_t kRequestsPerLoop = 20;
+
+  // Make sure that there're enough in-flight writes so that we see a write
+  // error before seeing an EOF.
+  spamServer = [&] {
+    evb->add([&] {
+      if (stopping) {
+        return;
+      }
+      for (size_t i = 0; i < kRequestsPerLoop; ++i) {
+        cli->semifuture_add(2000, 0);
+      }
+      spamServer();
+    });
+  };
+  spamServer();
+
+  ssit.reset();
+
+  EXPECT_EQ(message, std::move(future).get());
+
+  evb->add([&] {
+    stopping = true;
+    cli.reset();
+  });
+  evbThread.reset();
+}
+
 TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
   auto serviceImpl = this->newService();
 
