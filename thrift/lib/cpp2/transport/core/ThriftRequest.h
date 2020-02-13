@@ -277,7 +277,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>,
       StreamServerCallbackPtr) noexcept {
-    LOG(FATAL) << "sendStreamThriftResponse not implemented";
+    folly::terminate_with<std::runtime_error>(
+        "sendStreamThriftResponse not implemented");
   }
 
   virtual void sendStreamThriftResponse(
