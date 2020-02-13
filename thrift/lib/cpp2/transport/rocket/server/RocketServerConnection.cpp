@@ -56,7 +56,8 @@ RocketServerConnection::RocketServerConnection(
       socket_(std::move(socket)),
       frameHandler_(std::move(frameHandler)),
       streamStarvationTimeout_(streamStarvationTimeout),
-      writeBatcher_(*this, writeBatchingInterval, writeBatchingSize) {
+      writeBatcher_(*this, writeBatchingInterval, writeBatchingSize),
+      socketDrainer_(*this) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
@@ -98,6 +99,7 @@ RocketServerConnection::~RocketServerConnection() {
   DCHECK(inflightWrites_ == 0);
   DCHECK(inflightSinkFinalResponses_ == 0);
   DCHECK(writeBatcher_.empty());
+  socket_.reset();
 }
 
 bool RocketServerConnection::closeIfNeeded() {
@@ -140,8 +142,8 @@ bool RocketServerConnection::closeIfNeeded() {
 
   writeBatcher_.drain();
 
-  socket_.reset();
-  destroy();
+  socketDrainer_.activate();
+
   return true;
 }
 

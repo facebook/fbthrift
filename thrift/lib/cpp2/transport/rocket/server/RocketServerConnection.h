@@ -27,6 +27,7 @@
 #include <folly/ExceptionWrapper.h>
 #include <folly/container/F14Map.h>
 #include <folly/io/IOBuf.h>
+#include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
@@ -262,6 +263,54 @@ class RocketServerConnection final
     size_t bufferedWritesCount_{0};
   };
   WriteBatcher writeBatcher_;
+  class SocketDrainer : private folly::HHWheelTimer::Callback {
+   public:
+    explicit SocketDrainer(RocketServerConnection& connection)
+        : connection_(connection) {}
+
+    void activate() {
+      deadline_ = std::chrono::steady_clock::now() + kTimeout;
+      tryClose();
+    }
+
+   private:
+    void tryClose() {
+      if (shouldClose()) {
+        connection_.destroy();
+        return;
+      }
+      connection_.evb_.timer().scheduleTimeout(this, kRetryInterval);
+    }
+
+    bool shouldClose() {
+      if (std::chrono::steady_clock::now() >= deadline_) {
+        return true;
+      }
+
+      if (auto socket =
+              dynamic_cast<folly::AsyncSocket*>(connection_.socket_.get())) {
+        tcp_info info;
+        socklen_t infolen = sizeof(info);
+        if (socket->getSockOpt(SOL_TCP, TCP_INFO, &info, &infolen)) {
+          return true;
+        }
+        DCHECK(infolen == sizeof(info));
+        return info.tcpi_unacked == 0;
+      }
+
+      return true;
+    }
+
+    void timeoutExpired() noexcept final {
+      tryClose();
+    }
+
+    RocketServerConnection& connection_;
+    std::chrono::steady_clock::time_point deadline_;
+    static constexpr std::chrono::milliseconds kRetryInterval{50};
+    static constexpr std::chrono::seconds kTimeout{1};
+  };
+  SocketDrainer socketDrainer_;
 
   ~RocketServerConnection();
 

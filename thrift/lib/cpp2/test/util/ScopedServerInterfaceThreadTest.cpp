@@ -351,7 +351,7 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
   SKIP_IF(this->isHeaderTransport())
       << "Clean shutdown is not implemented for Header transport";
 
-  std::string message(100, 'a');
+  std::string message(10000000, 'a');
 
   bool stopping{false};
   folly::Function<void()> spamServer;
@@ -395,6 +395,43 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
     cli.reset();
   });
   evbThread.reset();
+}
+
+TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsDetachedConnection) {
+  auto serviceImpl = this->newService();
+
+  folly::Optional<ScopedServerInterfaceThread> ssit(
+      folly::in_place, serviceImpl, "::1");
+
+  folly::ScopedEventBaseThread evbThread;
+
+  auto cli = this->template newRawClient<SimpleServiceAsyncClient>(
+      evbThread.getEventBase(), *ssit);
+  SCOPE_EXIT {
+    folly::via(evbThread.getEventBase(), [cli = std::move(cli)] {});
+  };
+
+  folly::stop_watch<std::chrono::milliseconds> timer;
+
+  auto future = cli->semifuture_add(2000, 0);
+
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
+
+  folly::Baton<> blockBaton;
+
+  folly::via(evbThread.getEventBase(), [&] { blockBaton.wait(); });
+
+  ssit.reset();
+
+  EXPECT_GE(timer.elapsed().count(), 2000);
+  EXPECT_LE(timer.elapsed().count(), 10000);
+
+  EXPECT_FALSE(future.isReady());
+
+  blockBaton.post();
+
+  EXPECT_EQ(2000, std::move(future).get());
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
