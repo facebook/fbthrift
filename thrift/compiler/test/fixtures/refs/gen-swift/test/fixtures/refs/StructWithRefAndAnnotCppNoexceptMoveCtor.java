@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -54,10 +50,7 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("StructWithRefAndAnnotCppNoexceptMoveCtor");
     private final test.fixtures.refs.Empty defField;
-    public static final int _DEF_FIELD = 1;
-    private static final TField DEF_FIELD_FIELD_DESC = new TField("defField", TType.STRUCT, (short)1);
 
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
@@ -91,17 +84,6 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
         return Arrays.deepHashCode(new Object[] {
             defField
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.defField != null) {
-        oprot.writeFieldBegin(DEF_FIELD_FIELD_DESC);
-        this.defField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

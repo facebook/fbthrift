@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -87,19 +83,10 @@ public final class Foo {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("Foo");
     private final int myInteger;
-    public static final int _MYINTEGER = 1;
-    private static final TField MY_INTEGER_FIELD_DESC = new TField("myInteger", TType.I32, (short)1);
     private final String myString;
-    public static final int _MYSTRING = 2;
-    private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)2);
     private final List<Boolean> myBools;
-    public static final int _MYBOOLS = 3;
-    private static final TField MY_BOOLS_FIELD_DESC = new TField("myBools", TType.LIST, (short)3);
     private final List<Integer> myNumbers;
-    public static final int _MYNUMBERS = 4;
-    private static final TField MY_NUMBERS_FIELD_DESC = new TField("myNumbers", TType.LIST, (short)4);
 
     
     @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
@@ -151,40 +138,6 @@ public final class Foo {
             myBools,
             myNumbers
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(MY_INTEGER_FIELD_DESC);
-      oprot.writeI32(this.myInteger);
-      oprot.writeFieldEnd();
-      if (this.myString != null) {
-        oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
-        oprot.writeString(this.myString);
-        oprot.writeFieldEnd();
-      }
-      if (this.myBools != null) {
-        oprot.writeFieldBegin(MY_BOOLS_FIELD_DESC);
-        List<Boolean> _iter0 = this.myBools;
-        oprot.writeListBegin(new TList(TType.BOOL, _iter0.size()));
-        for (boolean _iter1 : _iter0) {
-          oprot.writeBool(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.myNumbers != null) {
-        oprot.writeFieldBegin(MY_NUMBERS_FIELD_DESC);
-        List<Integer> _iter0 = this.myNumbers;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

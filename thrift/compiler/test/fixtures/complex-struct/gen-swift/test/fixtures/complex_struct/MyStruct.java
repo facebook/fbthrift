@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -340,88 +336,33 @@ public final class MyStruct {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long myIntField;
-    public static final int _MYINTFIELD = 1;
-    private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
     private final String myStringField;
-    public static final int _MYSTRINGFIELD = 2;
-    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)2);
     private final test.fixtures.complex_struct.MyDataItem myDataField;
-    public static final int _MYDATAFIELD = 3;
-    private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("myDataField", TType.STRUCT, (short)3);
     private final test.fixtures.complex_struct.MyEnum myEnum;
-    public static final int _MYENUM = 4;
-    private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
     private final boolean myBoolField;
-    public static final int _MYBOOLFIELD = 5;
-    private static final TField MY_BOOL_FIELD_FIELD_DESC = new TField("myBoolField", TType.BOOL, (short)5);
     private final byte myByteField;
-    public static final int _MYBYTEFIELD = 6;
-    private static final TField MY_BYTE_FIELD_FIELD_DESC = new TField("myByteField", TType.BYTE, (short)6);
     private final short myShortField;
-    public static final int _MYSHORTFIELD = 7;
-    private static final TField MY_SHORT_FIELD_FIELD_DESC = new TField("myShortField", TType.I16, (short)7);
     private final long myLongField;
-    public static final int _MYLONGFIELD = 8;
-    private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)8);
     private final double myDoubleField;
-    public static final int _MYDOUBLEFIELD = 9;
-    private static final TField MY_DOUBLE_FIELD_FIELD_DESC = new TField("myDoubleField", TType.DOUBLE, (short)9);
     private final List<Double> lDouble;
-    public static final int _LDOUBLE = 10;
-    private static final TField L_DOUBLE_FIELD_DESC = new TField("lDouble", TType.LIST, (short)10);
     private final List<Short> lShort;
-    public static final int _LSHORT = 11;
-    private static final TField L_SHORT_FIELD_DESC = new TField("lShort", TType.LIST, (short)11);
     private final List<Integer> lInteger;
-    public static final int _LINTEGER = 12;
-    private static final TField L_INTEGER_FIELD_DESC = new TField("lInteger", TType.LIST, (short)12);
     private final List<Long> lLong;
-    public static final int _LLONG = 13;
-    private static final TField L_LONG_FIELD_DESC = new TField("lLong", TType.LIST, (short)13);
     private final List<String> lString;
-    public static final int _LSTRING = 14;
-    private static final TField L_STRING_FIELD_DESC = new TField("lString", TType.LIST, (short)14);
     private final List<Boolean> lBool;
-    public static final int _LBOOL = 15;
-    private static final TField L_BOOL_FIELD_DESC = new TField("lBool", TType.LIST, (short)15);
     private final List<Byte> lByte;
-    public static final int _LBYTE = 16;
-    private static final TField L_BYTE_FIELD_DESC = new TField("lByte", TType.LIST, (short)16);
     private final Map<Short, String> mShortString;
-    public static final int _MSHORTSTRING = 17;
-    private static final TField M_SHORT_STRING_FIELD_DESC = new TField("mShortString", TType.MAP, (short)17);
     private final Map<Integer, String> mIntegerString;
-    public static final int _MINTEGERSTRING = 18;
-    private static final TField M_INTEGER_STRING_FIELD_DESC = new TField("mIntegerString", TType.MAP, (short)18);
     private final Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
-    public static final int _MSTRINGMYSTRUCT = 19;
-    private static final TField M_STRING_MY_STRUCT_FIELD_DESC = new TField("mStringMyStruct", TType.MAP, (short)19);
     private final Map<String, Boolean> mStringBool;
-    public static final int _MSTRINGBOOL = 20;
-    private static final TField M_STRING_BOOL_FIELD_DESC = new TField("mStringBool", TType.MAP, (short)20);
     private final Map<Integer, Integer> mIntegerInteger;
-    public static final int _MINTEGERINTEGER = 21;
-    private static final TField M_INTEGER_INTEGER_FIELD_DESC = new TField("mIntegerInteger", TType.MAP, (short)21);
     private final Map<Integer, Boolean> mIntegerBool;
-    public static final int _MINTEGERBOOL = 22;
-    private static final TField M_INTEGER_BOOL_FIELD_DESC = new TField("mIntegerBool", TType.MAP, (short)22);
     private final Set<Short> sShort;
-    public static final int _SSHORT = 23;
-    private static final TField S_SHORT_FIELD_DESC = new TField("sShort", TType.SET, (short)23);
     private final Set<test.fixtures.complex_struct.MyStruct> sMyStruct;
-    public static final int _SMYSTRUCT = 24;
-    private static final TField S_MY_STRUCT_FIELD_DESC = new TField("sMyStruct", TType.SET, (short)24);
     private final Set<Long> sLong;
-    public static final int _SLONG = 25;
-    private static final TField S_LONG_FIELD_DESC = new TField("sLong", TType.SET, (short)25);
     private final Set<String> sString;
-    public static final int _SSTRING = 26;
-    private static final TField S_STRING_FIELD_DESC = new TField("sString", TType.SET, (short)26);
     private final Set<Byte> sByte;
-    public static final int _SBYTE = 27;
-    private static final TField S_BYTE_FIELD_DESC = new TField("sByte", TType.SET, (short)27);
 
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
@@ -611,235 +552,6 @@ public final class MyStruct {
             sString,
             sByte
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
-      oprot.writeI64(this.myIntField);
-      oprot.writeFieldEnd();
-      if (this.myStringField != null) {
-        oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
-        oprot.writeString(this.myStringField);
-        oprot.writeFieldEnd();
-      }
-      if (this.myDataField != null) {
-        oprot.writeFieldBegin(MY_DATA_FIELD_FIELD_DESC);
-        this.myDataField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
-      oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(MY_BOOL_FIELD_FIELD_DESC);
-      oprot.writeBool(this.myBoolField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(MY_BYTE_FIELD_FIELD_DESC);
-      oprot.writeByte(this.myByteField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(MY_SHORT_FIELD_FIELD_DESC);
-      oprot.writeI16(this.myShortField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
-      oprot.writeI64(this.myLongField);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(MY_DOUBLE_FIELD_FIELD_DESC);
-      oprot.writeDouble(this.myDoubleField);
-      oprot.writeFieldEnd();
-      if (this.lDouble != null) {
-        oprot.writeFieldBegin(L_DOUBLE_FIELD_DESC);
-        List<Double> _iter0 = this.lDouble;
-        oprot.writeListBegin(new TList(TType.DOUBLE, _iter0.size()));
-        for (double _iter1 : _iter0) {
-          oprot.writeDouble(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.lShort != null) {
-        oprot.writeFieldBegin(L_SHORT_FIELD_DESC);
-        List<Short> _iter0 = this.lShort;
-        oprot.writeListBegin(new TList(TType.I16, _iter0.size()));
-        for (short _iter1 : _iter0) {
-          oprot.writeI16(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.lInteger != null) {
-        oprot.writeFieldBegin(L_INTEGER_FIELD_DESC);
-        List<Integer> _iter0 = this.lInteger;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.lLong != null) {
-        oprot.writeFieldBegin(L_LONG_FIELD_DESC);
-        List<Long> _iter0 = this.lLong;
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-        for (long _iter1 : _iter0) {
-          oprot.writeI64(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.lString != null) {
-        oprot.writeFieldBegin(L_STRING_FIELD_DESC);
-        List<String> _iter0 = this.lString;
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-        for (String _iter1 : _iter0) {
-          oprot.writeString(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.lBool != null) {
-        oprot.writeFieldBegin(L_BOOL_FIELD_DESC);
-        List<Boolean> _iter0 = this.lBool;
-        oprot.writeListBegin(new TList(TType.BOOL, _iter0.size()));
-        for (boolean _iter1 : _iter0) {
-          oprot.writeBool(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.lByte != null) {
-        oprot.writeFieldBegin(L_BYTE_FIELD_DESC);
-        List<Byte> _iter0 = this.lByte;
-        oprot.writeListBegin(new TList(TType.BYTE, _iter0.size()));
-        for (byte _iter1 : _iter0) {
-          oprot.writeByte(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mShortString != null) {
-        oprot.writeFieldBegin(M_SHORT_STRING_FIELD_DESC);
-        Map<Short, String> _iter0 = this.mShortString;
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
-        for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
-          oprot.writeI16(_iter1.getKey());
-          oprot.writeString(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mIntegerString != null) {
-        oprot.writeFieldBegin(M_INTEGER_STRING_FIELD_DESC);
-        Map<Integer, String> _iter0 = this.mIntegerString;
-        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
-        for (Map.Entry<Integer, String> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-          oprot.writeString(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mStringMyStruct != null) {
-        oprot.writeFieldBegin(M_STRING_MY_STRUCT_FIELD_DESC);
-        Map<String, test.fixtures.complex_struct.MyStruct> _iter0 = this.mStringMyStruct;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-        for (Map.Entry<String, test.fixtures.complex_struct.MyStruct> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          _iter1.getValue().write0(oprot);
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mStringBool != null) {
-        oprot.writeFieldBegin(M_STRING_BOOL_FIELD_DESC);
-        Map<String, Boolean> _iter0 = this.mStringBool;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.BOOL, _iter0.size()));
-        for (Map.Entry<String, Boolean> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          oprot.writeBool(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mIntegerInteger != null) {
-        oprot.writeFieldBegin(M_INTEGER_INTEGER_FIELD_DESC);
-        Map<Integer, Integer> _iter0 = this.mIntegerInteger;
-        oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter0.size()));
-        for (Map.Entry<Integer, Integer> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-          oprot.writeI32(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mIntegerBool != null) {
-        oprot.writeFieldBegin(M_INTEGER_BOOL_FIELD_DESC);
-        Map<Integer, Boolean> _iter0 = this.mIntegerBool;
-        oprot.writeMapBegin(new TMap(TType.I32, TType.BOOL, _iter0.size()));
-        for (Map.Entry<Integer, Boolean> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-          oprot.writeBool(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.sShort != null) {
-        oprot.writeFieldBegin(S_SHORT_FIELD_DESC);
-        Set<Short> _iter0 = this.sShort;
-        oprot.writeSetBegin(new TSet(TType.I16, _iter0.size()));
-        for (short _iter1 : _iter0) {
-          oprot.writeI16(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.sMyStruct != null) {
-        oprot.writeFieldBegin(S_MY_STRUCT_FIELD_DESC);
-        Set<test.fixtures.complex_struct.MyStruct> _iter0 = this.sMyStruct;
-        oprot.writeSetBegin(new TSet(TType.STRUCT, _iter0.size()));
-        for (test.fixtures.complex_struct.MyStruct _iter1 : _iter0) {
-          _iter1.write0(oprot);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.sLong != null) {
-        oprot.writeFieldBegin(S_LONG_FIELD_DESC);
-        Set<Long> _iter0 = this.sLong;
-        oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
-        for (long _iter1 : _iter0) {
-          oprot.writeI64(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.sString != null) {
-        oprot.writeFieldBegin(S_STRING_FIELD_DESC);
-        Set<String> _iter0 = this.sString;
-        oprot.writeSetBegin(new TSet(TType.STRING, _iter0.size()));
-        for (String _iter1 : _iter0) {
-          oprot.writeString(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.sByte != null) {
-        oprot.writeFieldBegin(S_BYTE_FIELD_DESC);
-        Set<Byte> _iter0 = this.sByte;
-        oprot.writeSetBegin(new TSet(TType.BYTE, _iter0.size()));
-        for (byte _iter1 : _iter0) {
-          oprot.writeByte(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -76,16 +72,9 @@ public final class StructWithRefTypeUnique {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("StructWithRefTypeUnique");
     private final test.fixtures.refs.Empty defField;
-    public static final int _DEF_FIELD = 1;
-    private static final TField DEF_FIELD_FIELD_DESC = new TField("defField", TType.STRUCT, (short)1);
     private final test.fixtures.refs.Empty optField;
-    public static final int _OPT_FIELD = 2;
-    private static final TField OPT_FIELD_FIELD_DESC = new TField("optField", TType.STRUCT, (short)2);
     private final test.fixtures.refs.Empty reqField;
-    public static final int _REQ_FIELD = 3;
-    private static final TField REQ_FIELD_FIELD_DESC = new TField("reqField", TType.STRUCT, (short)3);
 
     
     @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
@@ -131,27 +120,6 @@ public final class StructWithRefTypeUnique {
             optField,
             reqField
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.defField != null) {
-        oprot.writeFieldBegin(DEF_FIELD_FIELD_DESC);
-        this.defField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.optField != null) {
-        oprot.writeFieldBegin(OPT_FIELD_FIELD_DESC);
-        this.optField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.reqField != null) {
-        oprot.writeFieldBegin(REQ_FIELD_FIELD_DESC);
-        this.reqField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -41,7 +37,6 @@ public final class Empty {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("Empty");
 
 
     @Override
@@ -69,12 +64,6 @@ public final class Empty {
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

@@ -23,11 +23,6 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -114,7 +109,4 @@ public final class {{struct:javaCapitalName}} {
         void visit{{field:javaCapitalName}}({{> FieldType}} {{field:javaName}});
     {{/struct:fields}}
     }
-
-    {{> union/UnionWrite}}
-
 }

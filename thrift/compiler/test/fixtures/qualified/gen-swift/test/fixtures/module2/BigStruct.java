@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -65,13 +61,8 @@ public final class BigStruct {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("BigStruct");
     private final test.fixtures.module2.Struct s;
-    public static final int _S = 1;
-    private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)1);
     private final int id;
-    public static final int _ID = 2;
-    private static final TField ID_FIELD_DESC = new TField("id", TType.I32, (short)2);
 
     
     @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
@@ -111,20 +102,6 @@ public final class BigStruct {
             s,
             id
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.s != null) {
-        oprot.writeFieldBegin(S_FIELD_DESC);
-        this.s.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(ID_FIELD_DESC);
-      oprot.writeI32(this.id);
-      oprot.writeFieldEnd();
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

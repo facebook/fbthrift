@@ -210,7 +210,6 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:javaCapitalName", &mstch_swift_struct::java_capital_name},
             {"struct:javaAnnotations?",
              &mstch_swift_struct::has_java_annotations},
-            {"struct:isUnion?", &mstch_swift_struct::is_struct_union},
             {"struct:javaAnnotations", &mstch_swift_struct::java_annotations},
         });
   }
@@ -220,9 +219,6 @@ class mstch_swift_struct : public mstch_struct {
   mstch::node is_extend_runtime_exception() {
     return cache_->parsed_options_.count("legacy_extend_runtime_exception") !=
         0;
-  }
-  mstch::node is_struct_union() {
-    return strct_->is_union();
   }
   mstch::node is_union_field_type_unique() {
     std::set<std::string> field_types;
@@ -322,7 +318,6 @@ class mstch_swift_field : public mstch_field {
             {"field:javaName", &mstch_swift_field::java_name},
             {"field:javaCapitalName", &mstch_swift_field::java_capital_name},
             {"field:javaDefaultValue", &mstch_swift_field::java_default_value},
-            {"field:javaAllCapsName", &mstch_swift_field::java_all_caps_name},
             {"field:recursive?", &mstch_swift_field::is_recursive_reference},
             {"field:negativeId?", &mstch_swift_field::is_negative_id},
             {"field:javaAnnotations?",
@@ -332,79 +327,13 @@ class mstch_swift_field : public mstch_field {
             // streams types are handled and runtimes are unified
             {"field:isSupportedApacheType?",
              &mstch_swift_field::is_supported_apache_type},
-            {"field:javaTFieldName", &mstch_swift_field::java_tfield_name},
-            {"field:isNullableOrOptionalNotEnum?",
-             &mstch_swift_field::is_nullable_or_optional_not_enum},
-            {"field:nestedDepth", &mstch_swift_field::get_nested_depth},
-            {"field:nestedDepth++", &mstch_swift_field::increment_nested_depth},
-            {"field:nestedDepth--", &mstch_swift_field::decrement_nested_depth},
-            {"field:prevNestedDepth",
-             &mstch_swift_field::preceding_nested_depth},
-            {"field:isContainer?", &mstch_swift_field::is_container},
-            {"field:isNested?", &mstch_swift_field::get_nested_container_flag},
-            {"field:setIsNested",
-             &mstch_swift_field::set_nested_container_flag},
-            {"field:typeFieldName", &mstch_swift_field::type_field_name},
         });
-  }
-
-  int32_t nestedDepth = 0;
-  bool isNestedContainerFlag = false;
-
-  mstch::node get_nested_depth() {
-    return nestedDepth;
-  }
-  mstch::node preceding_nested_depth() {
-    return (nestedDepth - 1);
-  }
-  mstch::node get_nested_container_flag() {
-    return isNestedContainerFlag;
-  }
-  mstch::node set_nested_container_flag() {
-    isNestedContainerFlag = true;
-    return mstch::node();
-  }
-  mstch::node increment_nested_depth() {
-    nestedDepth++;
-    return mstch::node();
-  }
-  mstch::node decrement_nested_depth() {
-    nestedDepth--;
-    return mstch::node();
-  }
-  mstch::node is_nullable_or_optional_not_enum() {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
-      return true;
-    }
-    const t_type* field_type = field_->get_type()->get_true_type();
-    return !(
-        field_type->is_bool() || field_type->is_byte() ||
-        field_type->is_i16() || field_type->is_i32() || field_type->is_i64() ||
-        field_type->is_double() || field_type->is_enum());
-  }
-
-  mstch::node is_container() {
-    return field_->get_type()->get_true_type()->is_container();
   }
   mstch::node java_name() {
     return get_java_swift_name(field_);
   }
-
-  mstch::node type_field_name() {
-    auto type_name = field_->get_type()->get_full_name();
-    return java::mangle_java_name(type_name, true);
-  }
-
-  mstch::node java_tfield_name() {
-    return constant_name(field_->get_name()) + "_FIELD_DESC";
-  }
   mstch::node java_capital_name() {
     return java::mangle_java_name(field_->get_name(), true);
-  }
-  mstch::node java_all_caps_name() {
-    auto field_name = field_->get_name();
-    boost::to_upper(field_name);
-    return field_name;
   }
   mstch::node java_default_value() {
     return default_value_for_field(field_);
@@ -479,23 +408,6 @@ class mstch_swift_field : public mstch_field {
   mstch::node has_java_annotations() {
     return field_->annotations_.find("java.swift.annotations") !=
         field_->annotations_.end();
-  }
-  std::string constant_name(string name) {
-    string constant_str;
-
-    bool is_first = true;
-    bool was_previous_char_upper = false;
-    for (string::iterator iter = name.begin(); iter != name.end(); ++iter) {
-      string::value_type character = (*iter);
-      bool is_upper = isupper(character);
-      if (is_upper && !is_first && !was_previous_char_upper) {
-        constant_str += '_';
-      }
-      constant_str += toupper(character);
-      is_first = false;
-      was_previous_char_upper = is_upper;
-    }
-    return constant_str;
   }
   mstch::node java_annotations() {
     return get_java_annotation(field_);
@@ -666,42 +578,9 @@ class mstch_swift_type : public mstch_type {
         this,
         {
             {"type:primitive?", &mstch_swift_type::is_primitive},
-            {"type:isContainer?", &mstch_swift_type::is_container_type},
             {"type:javaType", &mstch_swift_type::java_type},
-            {"type:setIsMapKey", &mstch_swift_type::set_is_map_key},
-            {"type:isMapKey?", &mstch_swift_type::get_map_key_flag},
-            {"type:setIsMapValue", &mstch_swift_type::set_is_map_value},
-            {"type:isMapValue?", &mstch_swift_type::get_map_value_flag},
-            {"type:setIsNotMap", &mstch_swift_type::set_is_not_map},
         });
   }
-  bool isMapValueFlag = false;
-  bool isMapKeyFlag = false;
-
-  mstch::node set_is_not_map() {
-    isMapValueFlag = false;
-    isMapKeyFlag = false;
-    return mstch::node();
-  }
-  mstch::node get_map_value_flag() {
-    return isMapValueFlag;
-  }
-  mstch::node get_map_key_flag() {
-    return isMapKeyFlag;
-  }
-  mstch::node set_is_map_value() {
-    isMapValueFlag = true;
-    return mstch::node();
-  }
-  mstch::node set_is_map_key() {
-    isMapKeyFlag = true;
-    return mstch::node();
-  }
-
-  mstch::node is_container_type() {
-    return type_->get_true_type()->is_container();
-  }
-
   mstch::node is_primitive() {
     return type_->is_void() || type_->is_bool() || type_->is_byte() ||
         type_->is_i16() || type_->is_i32() || type_->is_i64() ||

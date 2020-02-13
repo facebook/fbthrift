@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -65,13 +61,8 @@ public final class Included {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("Included");
     private final long myIntField;
-    public static final int _MYINTFIELD = 1;
-    private static final TField MY_INT_FIELD_FIELD_DESC = new TField("myIntField", TType.I64, (short)1);
     private final test.fixtures.includes.transitive.Foo myTransitiveField;
-    public static final int _MYTRANSITIVEFIELD = 2;
-    private static final TField MY_TRANSITIVE_FIELD_FIELD_DESC = new TField("myTransitiveField", TType.STRUCT, (short)2);
 
     
     @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
@@ -111,20 +102,6 @@ public final class Included {
             myIntField,
             myTransitiveField
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(MY_INT_FIELD_FIELD_DESC);
-      oprot.writeI64(this.myIntField);
-      oprot.writeFieldEnd();
-      if (this.myTransitiveField != null) {
-        oprot.writeFieldBegin(MY_TRANSITIVE_FIELD_FIELD_DESC);
-        this.myTransitiveField.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

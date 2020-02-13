@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -76,16 +72,9 @@ public final class MyField {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("MyField");
     private final Long optValue;
-    public static final int _OPT_VALUE = 1;
-    private static final TField OPT_VALUE_FIELD_DESC = new TField("optValue", TType.I64, (short)1);
     private final long value;
-    public static final int _VALUE = 2;
-    private static final TField VALUE_FIELD_DESC = new TField("value", TType.I64, (short)2);
     private final long reqValue;
-    public static final int _REQ_VALUE = 3;
-    private static final TField REQ_VALUE_FIELD_DESC = new TField("reqValue", TType.I64, (short)3);
 
     
     @ThriftField(value=1, name="opt_value", requiredness=Requiredness.OPTIONAL)
@@ -131,23 +120,6 @@ public final class MyField {
             value,
             reqValue
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.optValue != null) {
-        oprot.writeFieldBegin(OPT_VALUE_FIELD_DESC);
-        oprot.writeI64(this.optValue);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(VALUE_FIELD_DESC);
-      oprot.writeI64(this.value);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(REQ_VALUE_FIELD_DESC);
-      oprot.writeI64(this.reqValue);
-      oprot.writeFieldEnd();
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

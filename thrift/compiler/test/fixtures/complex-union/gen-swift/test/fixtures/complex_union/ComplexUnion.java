@@ -11,11 +11,6 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -33,20 +28,6 @@ public final class ComplexUnion {
     }
     private Object value;
     private short id;
-    
-    private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
-    public static final int _INTVALUE = 1;
-    private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
-    public static final int _STRINGVALUE = 5;
-    private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)5);
-    public static final int _INTLISTVALUE = 2;
-    private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)2);
-    public static final int _STRINGLISTVALUE = 3;
-    private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)3);
-    public static final int _TYPEDEFVALUE = 9;
-    private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
-    public static final int _STRINGREF = 14;
-    private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)14);
     
     @ThriftConstructor
     public ComplexUnion() {
@@ -280,78 +261,4 @@ public final class ComplexUnion {
         void visitTypedefValue(Map<Short, String> typedefValue);
         void visitStringRef(String stringRef);
     }
-
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      writeValue(oprot);
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-    
-    private void writeValue(TProtocol oprot) throws TException {
-      if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
-      }
-      switch (this.id) {
-      case _INTVALUE: {
-        oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
-        long intValue = (long)this.value;
-        oprot.writeI64(intValue);
-        oprot.writeFieldEnd();
-        return;
-      }
-      case _STRINGVALUE: {
-        oprot.writeFieldBegin(STRING_VALUE_FIELD_DESC);
-        String stringValue = (String)this.value;
-        oprot.writeString(stringValue);
-        oprot.writeFieldEnd();
-        return;
-      }
-      case _INTLISTVALUE: {
-        oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
-        List<Long> _iter0 = (List<Long>)this.value;
-        oprot.writeListBegin(new TList(TType.I64, _iter0.size()));
-        for (long _iter1 : _iter0) {
-          oprot.writeI64(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        return;
-      }
-      case _STRINGLISTVALUE: {
-        oprot.writeFieldBegin(STRING_LIST_VALUE_FIELD_DESC);
-        List<String> _iter0 = (List<String>)this.value;
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-        for (String _iter1 : _iter0) {
-          oprot.writeString(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-        return;
-      }
-      case _TYPEDEFVALUE: {
-        oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
-        Map<Short, String> _iter0 = (Map<Short, String>)this.value;
-        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
-        for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
-          oprot.writeI16(_iter1.getKey());
-          oprot.writeString(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-        return;
-      }
-      case _STRINGREF: {
-        oprot.writeFieldBegin(STRING_REF_FIELD_DESC);
-        String stringRef = (String)this.value;
-        oprot.writeString(stringRef);
-        oprot.writeFieldEnd();
-        return;
-      }
-      default:
-          throw new IllegalStateException("Cannot write union with unknown field ");
-      }
-    }
-    
 }

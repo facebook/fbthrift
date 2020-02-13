@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -87,19 +83,10 @@ public final class MyStruct {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long major;
-    public static final int _MAJOR = 1;
-    private static final TField MAJOR_FIELD_DESC = new TField("major", TType.I64, (short)1);
     private final String _package;
-    public static final int _PACKAGE = 2;
-    private static final TField PACKAGE_FIELD_DESC = new TField("_package", TType.STRING, (short)2);
     private final String annotationWithQuote;
-    public static final int _ANNOTATION_WITH_QUOTE = 3;
-    private static final TField ANNOTATION_WITH_QUOTE_FIELD_DESC = new TField("annotationWithQuote", TType.STRING, (short)3);
     private final String class_;
-    public static final int _CLASS_ = 4;
-    private static final TField CLASS__FIELD_DESC = new TField("class_", TType.STRING, (short)4);
 
     
     @ThriftField(value=1, name="major", requiredness=Requiredness.NONE)
@@ -151,30 +138,6 @@ public final class MyStruct {
             annotationWithQuote,
             class_
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(MAJOR_FIELD_DESC);
-      oprot.writeI64(this.major);
-      oprot.writeFieldEnd();
-      if (this._package != null) {
-        oprot.writeFieldBegin(PACKAGE_FIELD_DESC);
-        oprot.writeString(this._package);
-        oprot.writeFieldEnd();
-      }
-      if (this.annotationWithQuote != null) {
-        oprot.writeFieldBegin(ANNOTATION_WITH_QUOTE_FIELD_DESC);
-        oprot.writeString(this.annotationWithQuote);
-        oprot.writeFieldEnd();
-      }
-      if (this.class_ != null) {
-        oprot.writeFieldBegin(CLASS__FIELD_DESC);
-        oprot.writeString(this.class_);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -65,13 +61,8 @@ public final class Struct {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("Struct");
     private final test.fixtures.module0.Struct first;
-    public static final int _FIRST = 1;
-    private static final TField FIRST_FIELD_DESC = new TField("first", TType.STRUCT, (short)1);
     private final test.fixtures.module1.Struct second;
-    public static final int _SECOND = 2;
-    private static final TField SECOND_FIELD_DESC = new TField("second", TType.STRUCT, (short)2);
 
     
     @ThriftField(value=1, name="first", requiredness=Requiredness.NONE)
@@ -111,22 +102,6 @@ public final class Struct {
             first,
             second
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.first != null) {
-        oprot.writeFieldBegin(FIRST_FIELD_DESC);
-        this.first.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.second != null) {
-        oprot.writeFieldBegin(SECOND_FIELD_DESC);
-        this.second.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

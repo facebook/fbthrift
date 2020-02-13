@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -109,25 +105,12 @@ public final class StructWithContainers {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("StructWithContainers");
     private final List<Integer> listRef;
-    public static final int _LIST_REF = 1;
-    private static final TField LIST_REF_FIELD_DESC = new TField("listRef", TType.LIST, (short)1);
     private final Set<Integer> setRef;
-    public static final int _SET_REF = 2;
-    private static final TField SET_REF_FIELD_DESC = new TField("setRef", TType.SET, (short)2);
     private final Map<Integer, Integer> mapRef;
-    public static final int _MAP_REF = 3;
-    private static final TField MAP_REF_FIELD_DESC = new TField("mapRef", TType.MAP, (short)3);
     private final List<Integer> listRefUnique;
-    public static final int _LIST_REF_UNIQUE = 4;
-    private static final TField LIST_REF_UNIQUE_FIELD_DESC = new TField("listRefUnique", TType.LIST, (short)4);
     private final Set<Integer> setRefShared;
-    public static final int _SET_REF_SHARED = 5;
-    private static final TField SET_REF_SHARED_FIELD_DESC = new TField("setRefShared", TType.SET, (short)5);
     private final List<Integer> listRefSharedConst;
-    public static final int _LIST_REF_SHARED_CONST = 6;
-    private static final TField LIST_REF_SHARED_CONST_FIELD_DESC = new TField("listRefSharedConst", TType.LIST, (short)6);
 
     
     @ThriftField(value=1, name="list_ref", requiredness=Requiredness.NONE)
@@ -191,74 +174,6 @@ public final class StructWithContainers {
             setRefShared,
             listRefSharedConst
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.listRef != null) {
-        oprot.writeFieldBegin(LIST_REF_FIELD_DESC);
-        List<Integer> _iter0 = this.listRef;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.setRef != null) {
-        oprot.writeFieldBegin(SET_REF_FIELD_DESC);
-        Set<Integer> _iter0 = this.setRef;
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapRef != null) {
-        oprot.writeFieldBegin(MAP_REF_FIELD_DESC);
-        Map<Integer, Integer> _iter0 = this.mapRef;
-        oprot.writeMapBegin(new TMap(TType.I32, TType.I32, _iter0.size()));
-        for (Map.Entry<Integer, Integer> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-          oprot.writeI32(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listRefUnique != null) {
-        oprot.writeFieldBegin(LIST_REF_UNIQUE_FIELD_DESC);
-        List<Integer> _iter0 = this.listRefUnique;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.setRefShared != null) {
-        oprot.writeFieldBegin(SET_REF_SHARED_FIELD_DESC);
-        Set<Integer> _iter0 = this.setRefShared;
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listRefSharedConst != null) {
-        oprot.writeFieldBegin(LIST_REF_SHARED_CONST_FIELD_DESC);
-        List<Integer> _iter0 = this.listRefSharedConst;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

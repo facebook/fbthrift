@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -461,121 +457,44 @@ public final class B {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("B");
     private final test.fixtures.shapes.A justAnA;
-    public static final int _JUST_AN_A = 1;
-    private static final TField JUST_AN__A_FIELD_DESC = new TField("justAnA", TType.STRUCT, (short)1);
     private final Set<Integer> setOfI32;
-    public static final int _SET_OF_I32 = 2;
-    private static final TField SET_OF_I32_FIELD_DESC = new TField("setOfI32", TType.SET, (short)2);
     private final List<Integer> listOfI32;
-    public static final int _LIST_OF_I32 = 3;
-    private static final TField LIST_OF_I32_FIELD_DESC = new TField("listOfI32", TType.LIST, (short)3);
     private final List<String> listOfString;
-    public static final int _LIST_OF_STRING = 4;
-    private static final TField LIST_OF_STRING_FIELD_DESC = new TField("listOfString", TType.LIST, (short)4);
     private final Map<String, Integer> mapOfStringToI32;
-    public static final int _MAP_OF_STRING_TO_I32 = 5;
-    private static final TField MAP_OF_STRING_TO_I32_FIELD_DESC = new TField("mapOfStringToI32", TType.MAP, (short)5);
     private final Map<String, test.fixtures.shapes.A> mapOfStringToA;
-    public static final int _MAP_OF_STRING_TO_A = 6;
-    private static final TField MAP_OF_STRING_TO__A_FIELD_DESC = new TField("mapOfStringToA", TType.MAP, (short)6);
     private final Map<String, List<Integer>> mapOfStringToListOfI32;
-    public static final int _MAP_OF_STRING_TO_LIST_OF_I32 = 7;
-    private static final TField MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC = new TField("mapOfStringToListOfI32", TType.MAP, (short)7);
     private final Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
-    public static final int _MAP_OF_STRING_TO_LIST_OF_A = 8;
-    private static final TField MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC = new TField("mapOfStringToListOfA", TType.MAP, (short)8);
     private final Map<String, Set<Integer>> mapOfStringToSetOfI32;
-    public static final int _MAP_OF_STRING_TO_SET_OF_I32 = 9;
-    private static final TField MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC = new TField("mapOfStringToSetOfI32", TType.MAP, (short)9);
     private final Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
-    public static final int _MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32 = 10;
-    private static final TField MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC = new TField("mapOfStringToMapOfStringToI32", TType.MAP, (short)10);
     private final Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
-    public static final int _MAP_OF_STRING_TO_MAP_OF_STRING_TO_A = 11;
-    private static final TField MAP_OF_STRING_TO_MAP_OF_STRING_TO__A_FIELD_DESC = new TField("mapOfStringToMapOfStringToA", TType.MAP, (short)11);
     private final List<Set<Integer>> listOfSetOfI32;
-    public static final int _LIST_OF_SET_OF_I32 = 12;
-    private static final TField LIST_OF_SET_OF_I32_FIELD_DESC = new TField("listOfSetOfI32", TType.LIST, (short)12);
     private final List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA;
-    public static final int _LIST_OF_MAP_OF_STRING_TO_LIST_OF_A = 13;
-    private static final TField LIST_OF_MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC = new TField("listOfMapOfStringToListOfA", TType.LIST, (short)13);
     private final List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA;
-    public static final int _LIST_OF_MAP_OF_STRING_TO_A = 14;
-    private static final TField LIST_OF_MAP_OF_STRING_TO__A_FIELD_DESC = new TField("listOfMapOfStringToA", TType.LIST, (short)14);
     private final List<test.fixtures.shapes.B> listOfSelf;
-    public static final int _LIST_OF_SELF = 15;
-    private static final TField LIST_OF_SELF_FIELD_DESC = new TField("listOfSelf", TType.LIST, (short)15);
     private final Map<String, test.fixtures.shapes.B> mapOfStringToSelf;
-    public static final int _MAP_OF_STRING_TO_SELF = 16;
-    private static final TField MAP_OF_STRING_TO_SELF_FIELD_DESC = new TField("mapOfStringToSelf", TType.MAP, (short)16);
     private final test.fixtures.shapes.Enum justAnEnum;
-    public static final int _JUST_AN_ENUM = 17;
-    private static final TField JUST_AN_ENUM_FIELD_DESC = new TField("justAnEnum", TType.I32, (short)17);
     private final test.fixtures.shapes.Union justAUnion;
-    public static final int _JUST_A_UNION = 18;
-    private static final TField JUST_A_UNION_FIELD_DESC = new TField("justAUnion", TType.STRUCT, (short)18);
     private final test.fixtures.shapes.A optionalJustAnA;
-    public static final int _OPTIONAL_JUST_AN_A = 51;
-    private static final TField OPTIONAL_JUST_AN__A_FIELD_DESC = new TField("optionalJustAnA", TType.STRUCT, (short)51);
     private final Set<Integer> optionalSetOfI32;
-    public static final int _OPTIONAL_SET_OF_I32 = 52;
-    private static final TField OPTIONAL_SET_OF_I32_FIELD_DESC = new TField("optionalSetOfI32", TType.SET, (short)52);
     private final List<Integer> optionalListOfI32;
-    public static final int _OPTIONAL_LIST_OF_I32 = 53;
-    private static final TField OPTIONAL_LIST_OF_I32_FIELD_DESC = new TField("optionalListOfI32", TType.LIST, (short)53);
     private final List<String> optionalListOfString;
-    public static final int _OPTIONAL_LIST_OF_STRING = 54;
-    private static final TField OPTIONAL_LIST_OF_STRING_FIELD_DESC = new TField("optionalListOfString", TType.LIST, (short)54);
     private final Map<String, Integer> optionalMapOfStringToI32;
-    public static final int _OPTIONAL_MAP_OF_STRING_TO_I32 = 55;
-    private static final TField OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC = new TField("optionalMapOfStringToI32", TType.MAP, (short)55);
     private final Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
-    public static final int _OPTIONAL_MAP_OF_STRING_TO_A = 56;
-    private static final TField OPTIONAL_MAP_OF_STRING_TO__A_FIELD_DESC = new TField("optionalMapOfStringToA", TType.MAP, (short)56);
     private final Map<String, List<Integer>> optionalMapOfStringToListOfI32;
-    public static final int _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32 = 57;
-    private static final TField OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC = new TField("optionalMapOfStringToListOfI32", TType.MAP, (short)57);
     private final Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
-    public static final int _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A = 58;
-    private static final TField OPTIONAL_MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC = new TField("optionalMapOfStringToListOfA", TType.MAP, (short)58);
     private final Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
-    public static final int _OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32 = 59;
-    private static final TField OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC = new TField("optionalMapOfStringToSetOfI32", TType.MAP, (short)59);
     private final test.fixtures.shapes.Enum optionalEnum;
-    public static final int _OPTIONAL_ENUM = 60;
-    private static final TField OPTIONAL_ENUM_FIELD_DESC = new TField("optionalEnum", TType.I32, (short)60);
     private final test.fixtures.shapes.Enum requiredEnumWithDefault;
-    public static final int _REQUIRED_ENUM_WITH_DEFAULT = 70;
-    private static final TField REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC = new TField("requiredEnumWithDefault", TType.I32, (short)70);
     private final String stringWithDefaultValue;
-    public static final int _STRING_WITH_DEFAULT_VALUE = 80;
-    private static final TField STRING_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("stringWithDefaultValue", TType.STRING, (short)80);
     private final int i32WithDefaultValue;
-    public static final int _I32_WITH_DEFAULT_VALUE = 81;
-    private static final TField I32_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("i32WithDefaultValue", TType.I32, (short)81);
     private final double doubleWithDefaultValue;
-    public static final int _DOUBLE_WITH_DEFAULT_VALUE = 82;
-    private static final TField DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("doubleWithDefaultValue", TType.DOUBLE, (short)82);
     private final test.fixtures.shapes.Enum enumWithDefaultValue;
-    public static final int _ENUM_WITH_DEFAULT_VALUE = 83;
-    private static final TField ENUM_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("enumWithDefaultValue", TType.I32, (short)83);
     private final test.fixtures.shapes.A aWithDefaultValue;
-    public static final int _A_WITH_DEFAULT_VALUE = 84;
-    private static final TField A_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("aWithDefaultValue", TType.STRUCT, (short)84);
     private final Set<Integer> setOfI32WithDefaultValue;
-    public static final int _SET_OF_I32_WITH_DEFAULT_VALUE = 85;
-    private static final TField SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("setOfI32WithDefaultValue", TType.SET, (short)85);
     private final Map<Integer, String> mapOfI32ToStringWithDefaultValue;
-    public static final int _MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE = 86;
-    private static final TField MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("mapOfI32ToStringWithDefaultValue", TType.MAP, (short)86);
     private final List<String> listOfStringWithDefaultValue;
-    public static final int _LIST_OF_STRING_WITH_DEFAULT_VALUE = 87;
-    private static final TField LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("listOfStringWithDefaultValue", TType.LIST, (short)87);
     private final Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
-    public static final int _MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE = 88;
-    private static final TField MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC = new TField("mapOfStringToListOfI32WithDefaultValue", TType.MAP, (short)88);
 
     
     @ThriftField(value=1, name="just_an_A", requiredness=Requiredness.NONE)
@@ -831,427 +750,6 @@ public final class B {
             listOfStringWithDefaultValue,
             mapOfStringToListOfI32WithDefaultValue
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.justAnA != null) {
-        oprot.writeFieldBegin(JUST_AN__A_FIELD_DESC);
-        this.justAnA.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.setOfI32 != null) {
-        oprot.writeFieldBegin(SET_OF_I32_FIELD_DESC);
-        Set<Integer> _iter0 = this.setOfI32;
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfI32 != null) {
-        oprot.writeFieldBegin(LIST_OF_I32_FIELD_DESC);
-        List<Integer> _iter0 = this.listOfI32;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfString != null) {
-        oprot.writeFieldBegin(LIST_OF_STRING_FIELD_DESC);
-        List<String> _iter0 = this.listOfString;
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-        for (String _iter1 : _iter0) {
-          oprot.writeString(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToI32 != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_I32_FIELD_DESC);
-        Map<String, Integer> _iter0 = this.mapOfStringToI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
-        for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          oprot.writeI32(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToA != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO__A_FIELD_DESC);
-        Map<String, test.fixtures.shapes.A> _iter0 = this.mapOfStringToA;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-        for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          _iter1.getValue().write0(oprot);
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToListOfI32 != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-        Map<String, List<Integer>> _iter0 = this.mapOfStringToListOfI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-        for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-        }
-        oprot.writeListEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToListOfA != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC);
-        Map<String, List<test.fixtures.shapes.A>> _iter0 = this.mapOfStringToListOfA;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-        for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-        for (test.fixtures.shapes.A _iter2 : _iter1.getValue()) {
-          _iter2.write0(oprot);
-        }
-        oprot.writeListEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToSetOfI32 != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-        Map<String, Set<Integer>> _iter0 = this.mapOfStringToSetOfI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
-        for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeSetBegin(new TSet(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-        }
-        oprot.writeSetEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToMapOfStringToI32 != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32_FIELD_DESC);
-        Map<String, Map<String, Integer>> _iter0 = this.mapOfStringToMapOfStringToI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
-        for (Map.Entry<String, Map<String, Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter1.getValue().size()));
-        for (Map.Entry<String, Integer> _iter2 : _iter1.getValue().entrySet()) {
-          oprot.writeString(_iter2.getKey());
-          oprot.writeI32(_iter2.getValue());
-
-        }
-        oprot.writeMapEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToMapOfStringToA != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_MAP_OF_STRING_TO__A_FIELD_DESC);
-        Map<String, Map<String, test.fixtures.shapes.A>> _iter0 = this.mapOfStringToMapOfStringToA;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.MAP, _iter0.size()));
-        for (Map.Entry<String, Map<String, test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter1.getValue().size()));
-        for (Map.Entry<String, test.fixtures.shapes.A> _iter2 : _iter1.getValue().entrySet()) {
-          oprot.writeString(_iter2.getKey());
-          _iter2.getValue().write0(oprot);
-
-        }
-        oprot.writeMapEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfSetOfI32 != null) {
-        oprot.writeFieldBegin(LIST_OF_SET_OF_I32_FIELD_DESC);
-        List<Set<Integer>> _iter0 = this.listOfSetOfI32;
-        oprot.writeListBegin(new TList(TType.SET, _iter0.size()));
-        for (Set<Integer> _iter1 : _iter0) {
-          oprot.writeSetBegin(new TSet(TType.I32, _iter1.size()));
-        for (int _iter2 : _iter1) {
-          oprot.writeI32(_iter2);
-        }
-        oprot.writeSetEnd();
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfMapOfStringToListOfA != null) {
-        oprot.writeFieldBegin(LIST_OF_MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC);
-        List<Map<String, List<test.fixtures.shapes.A>>> _iter0 = this.listOfMapOfStringToListOfA;
-        oprot.writeListBegin(new TList(TType.MAP, _iter0.size()));
-        for (Map<String, List<test.fixtures.shapes.A>> _iter1 : _iter0) {
-          oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter1.size()));
-        for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter2 : _iter1.entrySet()) {
-          oprot.writeString(_iter2.getKey());
-
-          oprot.writeListBegin(new TList(TType.STRUCT, _iter2.getValue().size()));
-        for (test.fixtures.shapes.A _iter3 : _iter2.getValue()) {
-          _iter3.write0(oprot);
-        }
-        oprot.writeListEnd();
-
-        }
-        oprot.writeMapEnd();
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfMapOfStringToA != null) {
-        oprot.writeFieldBegin(LIST_OF_MAP_OF_STRING_TO__A_FIELD_DESC);
-        List<Map<String, test.fixtures.shapes.A>> _iter0 = this.listOfMapOfStringToA;
-        oprot.writeListBegin(new TList(TType.MAP, _iter0.size()));
-        for (Map<String, test.fixtures.shapes.A> _iter1 : _iter0) {
-          oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter1.size()));
-        for (Map.Entry<String, test.fixtures.shapes.A> _iter2 : _iter1.entrySet()) {
-          oprot.writeString(_iter2.getKey());
-          _iter2.getValue().write0(oprot);
-
-        }
-        oprot.writeMapEnd();
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfSelf != null) {
-        oprot.writeFieldBegin(LIST_OF_SELF_FIELD_DESC);
-        List<test.fixtures.shapes.B> _iter0 = this.listOfSelf;
-        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
-        for (test.fixtures.shapes.B _iter1 : _iter0) {
-          _iter1.write0(oprot);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToSelf != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_SELF_FIELD_DESC);
-        Map<String, test.fixtures.shapes.B> _iter0 = this.mapOfStringToSelf;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-        for (Map.Entry<String, test.fixtures.shapes.B> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          _iter1.getValue().write0(oprot);
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(JUST_AN_ENUM_FIELD_DESC);
-      oprot.writeI32(this.justAnEnum == null ? 0 : this.justAnEnum.getValue());
-      oprot.writeFieldEnd();
-      if (this.justAUnion != null) {
-        oprot.writeFieldBegin(JUST_A_UNION_FIELD_DESC);
-        this.justAUnion.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalJustAnA != null) {
-        oprot.writeFieldBegin(OPTIONAL_JUST_AN__A_FIELD_DESC);
-        this.optionalJustAnA.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalSetOfI32 != null) {
-        oprot.writeFieldBegin(OPTIONAL_SET_OF_I32_FIELD_DESC);
-        Set<Integer> _iter0 = this.optionalSetOfI32;
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalListOfI32 != null) {
-        oprot.writeFieldBegin(OPTIONAL_LIST_OF_I32_FIELD_DESC);
-        List<Integer> _iter0 = this.optionalListOfI32;
-        oprot.writeListBegin(new TList(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalListOfString != null) {
-        oprot.writeFieldBegin(OPTIONAL_LIST_OF_STRING_FIELD_DESC);
-        List<String> _iter0 = this.optionalListOfString;
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-        for (String _iter1 : _iter0) {
-          oprot.writeString(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalMapOfStringToI32 != null) {
-        oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_I32_FIELD_DESC);
-        Map<String, Integer> _iter0 = this.optionalMapOfStringToI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.I32, _iter0.size()));
-        for (Map.Entry<String, Integer> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          oprot.writeI32(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalMapOfStringToA != null) {
-        oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO__A_FIELD_DESC);
-        Map<String, test.fixtures.shapes.A> _iter0 = this.optionalMapOfStringToA;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRUCT, _iter0.size()));
-        for (Map.Entry<String, test.fixtures.shapes.A> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-          _iter1.getValue().write0(oprot);
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalMapOfStringToListOfI32 != null) {
-        oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32_FIELD_DESC);
-        Map<String, List<Integer>> _iter0 = this.optionalMapOfStringToListOfI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-        for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-        }
-        oprot.writeListEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalMapOfStringToListOfA != null) {
-        oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_LIST_OF__A_FIELD_DESC);
-        Map<String, List<test.fixtures.shapes.A>> _iter0 = this.optionalMapOfStringToListOfA;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-        for (Map.Entry<String, List<test.fixtures.shapes.A>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
-        for (test.fixtures.shapes.A _iter2 : _iter1.getValue()) {
-          _iter2.write0(oprot);
-        }
-        oprot.writeListEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalMapOfStringToSetOfI32 != null) {
-        oprot.writeFieldBegin(OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32_FIELD_DESC);
-        Map<String, Set<Integer>> _iter0 = this.optionalMapOfStringToSetOfI32;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.SET, _iter0.size()));
-        for (Map.Entry<String, Set<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeSetBegin(new TSet(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-        }
-        oprot.writeSetEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.optionalEnum != null) {
-        oprot.writeFieldBegin(OPTIONAL_ENUM_FIELD_DESC);
-        oprot.writeI32(this.optionalEnum == null ? 0 : this.optionalEnum.getValue());
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(REQUIRED_ENUM_WITH_DEFAULT_FIELD_DESC);
-      oprot.writeI32(this.requiredEnumWithDefault == null ? 0 : this.requiredEnumWithDefault.getValue());
-      oprot.writeFieldEnd();
-      if (this.stringWithDefaultValue != null) {
-        oprot.writeFieldBegin(STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-        oprot.writeString(this.stringWithDefaultValue);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldBegin(I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-      oprot.writeI32(this.i32WithDefaultValue);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(DOUBLE_WITH_DEFAULT_VALUE_FIELD_DESC);
-      oprot.writeDouble(this.doubleWithDefaultValue);
-      oprot.writeFieldEnd();
-      oprot.writeFieldBegin(ENUM_WITH_DEFAULT_VALUE_FIELD_DESC);
-      oprot.writeI32(this.enumWithDefaultValue == null ? 0 : this.enumWithDefaultValue.getValue());
-      oprot.writeFieldEnd();
-      if (this.aWithDefaultValue != null) {
-        oprot.writeFieldBegin(A_WITH_DEFAULT_VALUE_FIELD_DESC);
-        this.aWithDefaultValue.write0(oprot);
-        oprot.writeFieldEnd();
-      }
-      if (this.setOfI32WithDefaultValue != null) {
-        oprot.writeFieldBegin(SET_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-        Set<Integer> _iter0 = this.setOfI32WithDefaultValue;
-        oprot.writeSetBegin(new TSet(TType.I32, _iter0.size()));
-        for (int _iter1 : _iter0) {
-          oprot.writeI32(_iter1);
-        }
-        oprot.writeSetEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfI32ToStringWithDefaultValue != null) {
-        oprot.writeFieldBegin(MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-        Map<Integer, String> _iter0 = this.mapOfI32ToStringWithDefaultValue;
-        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
-        for (Map.Entry<Integer, String> _iter1 : _iter0.entrySet()) {
-          oprot.writeI32(_iter1.getKey());
-          oprot.writeString(_iter1.getValue());
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.listOfStringWithDefaultValue != null) {
-        oprot.writeFieldBegin(LIST_OF_STRING_WITH_DEFAULT_VALUE_FIELD_DESC);
-        List<String> _iter0 = this.listOfStringWithDefaultValue;
-        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
-        for (String _iter1 : _iter0) {
-          oprot.writeString(_iter1);
-        }
-        oprot.writeListEnd();
-        oprot.writeFieldEnd();
-      }
-      if (this.mapOfStringToListOfI32WithDefaultValue != null) {
-        oprot.writeFieldBegin(MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE_FIELD_DESC);
-        Map<String, List<Integer>> _iter0 = this.mapOfStringToListOfI32WithDefaultValue;
-        oprot.writeMapBegin(new TMap(TType.STRING, TType.LIST, _iter0.size()));
-        for (Map.Entry<String, List<Integer>> _iter1 : _iter0.entrySet()) {
-          oprot.writeString(_iter1.getKey());
-
-          oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
-        for (int _iter2 : _iter1.getValue()) {
-          oprot.writeI32(_iter2);
-        }
-        oprot.writeListEnd();
-
-        }
-        oprot.writeMapEnd();
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }

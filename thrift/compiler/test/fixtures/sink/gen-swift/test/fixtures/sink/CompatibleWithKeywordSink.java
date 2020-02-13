@@ -11,11 +11,7 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-import org.apache.thrift.*;
-import org.apache.thrift.async.*;
-import org.apache.thrift.server.*;
-import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.*;
+
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -54,10 +50,7 @@ public final class CompatibleWithKeywordSink {
         }
     }
     
-    private static final TStruct STRUCT_DESC = new TStruct("CompatibleWithKeywordSink");
     private final String sink;
-    public static final int _SINK = 1;
-    private static final TField SINK_FIELD_DESC = new TField("sink", TType.STRING, (short)1);
 
     
     @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
@@ -91,17 +84,6 @@ public final class CompatibleWithKeywordSink {
         return Arrays.deepHashCode(new Object[] {
             sink
         });
-    }
-    
-    public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.sink != null) {
-        oprot.writeFieldBegin(SINK_FIELD_DESC);
-        oprot.writeString(this.sink);
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
     }
     
 }
