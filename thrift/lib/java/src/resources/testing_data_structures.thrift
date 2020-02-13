@@ -39,34 +39,6 @@ struct NestedStruct {
   5: MySimpleUnion myUnion,
 }
 
-struct ComplexNestedStruct {
-  1: set<set<i32>> setOfSetOfInt,
-  2: list<list<SmallEnum>> listOfListOfEnum,
-  3: list<list<MySimpleStruct>> listOfListOfMyStruct,
-  4: set<list<list<string>>> setOfListOfListOfString,
-  5: map<i32,list<list<SmallEnum>>> mapKeyIntValListOfListOfEnum,
-  6: map<map<i32,string>,map<string,string>> mapKeyMapValMap,
-  7: MySimpleUnion myUnion,
-}
-
-struct SimpleStructTypes  {
-  1: string msg,
-  2: bool b,
-  3: byte y,
-  4: i16 i,
-  5: i32 j,
-  6: i64 k,
-  7: double d,
-}
-
-struct SimpleCollectionStruct {
-   1: list<double> lDouble,
-   2: list<i16> lShort,
-   3: map<i32,string> mIntegerString,
-   4: map<string,string> mStringString,
-   5: set<i64> sLong,
-}
-
 enum SmallEnum {
   RED = 1,
   BLUE = 2,
