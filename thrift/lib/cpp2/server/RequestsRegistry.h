@@ -33,7 +33,7 @@ class ResponseChannelRequest;
 /**
  * Stores a list of request stubs in memory.
  *
- * Each IO worker stores a single ActiveRequestsRegistry instance as its
+ * Each IO worker stores a single RequestsRegistry instance as its
  * member, so that it can intercept and insert request data into the registry.
  *
  * Note that read operations to the request list should be always executed in
@@ -41,7 +41,7 @@ class ResponseChannelRequest;
  * most of the time reads should be issued to the event base which the
  * corresponding registry belongs to, as a task.
  */
-class ActiveRequestsRegistry {
+class RequestsRegistry {
   /**
    * A wrapper class for request payload we are tracking, to encapsulate the
    * details of processing and storing the real request buffer.
@@ -92,14 +92,14 @@ class ActiveRequestsRegistry {
    * to control memory usage. DebugStub should be unlinked from lists
    * only during:
    *   1. Destruction of DebugStub.
-   *   2. Memory collection from ActiveRequestsRegistry.
+   *   2. Memory collection from RequestsRegistry.
    */
   class DebugStub {
-    friend class ActiveRequestsRegistry;
+    friend class RequestsRegistry;
 
    public:
     DebugStub(
-        ActiveRequestsRegistry& reqRegistry,
+        RequestsRegistry& reqRegistry,
         const ResponseChannelRequest& req,
         const Cpp2RequestContext& reqContext,
         protocol::PROTOCOL_TYPES protoId,
@@ -157,9 +157,9 @@ class ActiveRequestsRegistry {
     /**
      * Clones the payload buffer to data accessors. If the buffer is already
      * released by memory collection, returns an empty unique_ptr.
-     * Since ActiveRequestsRegistry doesn'y provide synchronization by default,
+     * Since RequestsRegistry doesn'y provide synchronization by default,
      * this should be called from the IO worker which also owns the same
-     * ActiveRequestsRegistry.
+     * RequestsRegistry.
      */
     std::unique_ptr<folly::IOBuf> clonePayload() const {
       return payload_.cloneData();
@@ -189,7 +189,7 @@ class ActiveRequestsRegistry {
     std::chrono::steady_clock::time_point timestamp_;
     std::chrono::steady_clock::time_point finished_{
         std::chrono::steady_clock::duration::zero()};
-    ActiveRequestsRegistry* registry_;
+    RequestsRegistry* registry_;
     const RequestId reqId_;
     const intptr_t rootRequestContextId_;
     folly::IntrusiveListHook activeRequestsPayloadHook_;
@@ -244,11 +244,11 @@ class ActiveRequestsRegistry {
   using ActiveRequestPayloadList =
       folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsPayloadHook_>;
 
-  ActiveRequestsRegistry(
+  RequestsRegistry(
       uint64_t requestPayloadMem,
       uint64_t totalPayloadMem,
       uint16_t finishedRequestsLimit);
-  ~ActiveRequestsRegistry();
+  ~RequestsRegistry();
 
   const ActiveRequestDebugStubList& getActive() {
     return reqActiveList_;

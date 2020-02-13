@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
+#include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/RequestId.h>
 #include <atomic>
@@ -32,7 +32,7 @@ const uint64_t RequestLocalIdMax = (1ull << RequestLocalIdBits) - 1;
 std::atomic<uint32_t> nextRegistryId{0};
 } // namespace
 
-ActiveRequestsRegistry::ActiveRequestsRegistry(
+RequestsRegistry::RequestsRegistry(
     uint64_t requestPayloadMem,
     uint64_t totalPayloadMem,
     uint16_t finishedRequestsLimit)
@@ -41,43 +41,42 @@ ActiveRequestsRegistry::ActiveRequestsRegistry(
       payloadMemoryLimitTotal_(totalPayloadMem),
       finishedRequestsLimit_(finishedRequestsLimit) {}
 
-ActiveRequestsRegistry::~ActiveRequestsRegistry() {
+RequestsRegistry::~RequestsRegistry() {
   while (!reqFinishedList_.empty()) {
     reqFinishedList_.front().dispose();
   }
 }
 
-RequestId ActiveRequestsRegistry::genRequestId() {
+RequestId RequestsRegistry::genRequestId() {
   return RequestId(registryId_, (nextLocalId_++) & RequestLocalIdMax);
 }
 
-void ActiveRequestsRegistry::moveToFinishedList(
-    ActiveRequestsRegistry::DebugStub& stub) {
+void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
   stub.activeRequestsRegistryHook_.unlink();
   stub.prepareAsFinished();
   ++finishedRequestsCount_;
   reqFinishedList_.push_back(stub);
 }
 
-void ActiveRequestsRegistry::evictFromFinishedList() {
+void RequestsRegistry::evictFromFinishedList() {
   if (finishedRequestsCount_ > finishedRequestsLimit_) {
     --finishedRequestsCount_;
     reqFinishedList_.front().dispose();
   }
 }
 
-const std::string& ActiveRequestsRegistry::DebugStub::getMethodName() const {
+const std::string& RequestsRegistry::DebugStub::getMethodName() const {
   return methodNameIfFinished_.empty() ? getRequestContext().getMethodName()
                                        : methodNameIfFinished_;
 }
 
-const folly::SocketAddress* ActiveRequestsRegistry::DebugStub::getPeerAddress()
+const folly::SocketAddress* RequestsRegistry::DebugStub::getPeerAddress()
     const {
   return methodNameIfFinished_.empty() ? getRequestContext().getPeerAddress()
                                        : &peerAddressIfFinished_;
 }
 
-void ActiveRequestsRegistry::DebugStub::prepareAsFinished() {
+void RequestsRegistry::DebugStub::prepareAsFinished() {
   finished_ = std::chrono::steady_clock::now();
   methodNameIfFinished_ =
       const_cast<Cpp2RequestContext*>(reqContext_)->releaseMethodName();
@@ -87,7 +86,7 @@ void ActiveRequestsRegistry::DebugStub::prepareAsFinished() {
   req_ = nullptr;
 }
 
-void ActiveRequestsRegistry::DebugStub::dispose() {
+void RequestsRegistry::DebugStub::dispose() {
   this->~DebugStub();
   free(this);
 }

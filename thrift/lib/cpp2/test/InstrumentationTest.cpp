@@ -168,8 +168,8 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
  public:
   explicit DebuggingFrameHandler(ThriftServer& server)
       : origServer_(server), reqRegistry_([] {
-          auto p = new ActiveRequestsRegistry(0, 0, 0);
-          return new std::shared_ptr<ActiveRequestsRegistry>(p);
+          auto p = new RequestsRegistry(0, 0, 0);
+          return new std::shared_ptr<RequestsRegistry>(p);
         }) {
     auto tf =
         std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
@@ -193,7 +193,7 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
   ThriftServer& origServer_;
   DebugInterface debug_;
   std::shared_ptr<ThreadManager> tm_;
-  folly::ThreadLocal<std::shared_ptr<ActiveRequestsRegistry>> reqRegistry_;
+  folly::ThreadLocal<std::shared_ptr<RequestsRegistry>> reqRegistry_;
 };
 
 class RequestInstrumentationTest : public testing::Test {

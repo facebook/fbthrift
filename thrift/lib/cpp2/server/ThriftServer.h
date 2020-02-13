@@ -40,8 +40,8 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
-#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -831,7 +831,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   class RequestSnapshot {
    public:
-    explicit RequestSnapshot(const ActiveRequestsRegistry::DebugStub& stub)
+    explicit RequestSnapshot(const RequestsRegistry::DebugStub& stub)
         : methodName_(stub.getMethodName()),
           creationTimestamp_(stub.getTimestamp()),
           finishedTimestamp_(stub.getFinished()),

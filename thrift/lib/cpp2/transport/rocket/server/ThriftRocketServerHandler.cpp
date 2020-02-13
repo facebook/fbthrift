@@ -188,7 +188,7 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
     // stores RocketServerFrameContext, which keeps refcount on
     // RocketServerConnection, which in turn keeps ThriftRocketServerHandler
     // alive, which in turn keeps connContext_ alive.
-    return ActiveRequestsRegistry::makeRequest<ThriftServerRequestResponse>(
+    return RequestsRegistry::makeRequest<ThriftServerRequestResponse>(
         *eventBase_,
         *serverConfigs_,
         std::move(md),
@@ -212,7 +212,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
     // Note, we're passing connContext by reference and rely on a complex
     // chain of ownership (see handleRequestResponseFrame for detailed
     // explanation).
-    return ActiveRequestsRegistry::makeRequest<ThriftServerRequestFnf>(
+    return RequestsRegistry::makeRequest<ThriftServerRequestFnf>(
         *eventBase_,
         *serverConfigs_,
         std::move(md),
@@ -233,7 +233,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
                                std::unique_ptr<folly::IOBuf> debugPayload,
                                const folly::RequestContext* ctx) {
-    return ActiveRequestsRegistry::makeRequest<ThriftServerRequestStream>(
+    return RequestsRegistry::makeRequest<ThriftServerRequestStream>(
         *eventBase_,
         *serverConfigs_,
         std::move(md),
@@ -254,7 +254,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
                              std::unique_ptr<folly::IOBuf> debugPayload,
                              const folly::RequestContext* ctx) {
-    return ActiveRequestsRegistry::makeRequest<ThriftServerRequestSink>(
+    return RequestsRegistry::makeRequest<ThriftServerRequestSink>(
         *eventBase_,
         *serverConfigs_,
         std::move(md),

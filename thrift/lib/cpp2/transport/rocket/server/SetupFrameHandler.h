@@ -30,7 +30,7 @@ class AsyncProcessor;
 class Cpp2Worker;
 class RequestSetupMetadata;
 class ThriftServer;
-class ActiveRequestsRegistry;
+class RequestsRegistry;
 
 namespace concurrency {
 class ThreadManager;
@@ -47,7 +47,7 @@ struct ProcessorInfo {
       std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor,
       std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager,
       server::ServerConfigs& serverConfigs,
-      std::shared_ptr<ActiveRequestsRegistry> activeRequestsRegistry)
+      std::shared_ptr<RequestsRegistry> activeRequestsRegistry)
       : cpp2Processor_(std::move(cpp2Processor)),
         threadManager_(std::move(threadManager)),
         serverConfigs_(serverConfigs),
@@ -56,7 +56,7 @@ struct ProcessorInfo {
   std::unique_ptr<apache::thrift::AsyncProcessor> cpp2Processor_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
   server::ServerConfigs& serverConfigs_;
-  std::shared_ptr<ActiveRequestsRegistry> activeRequestsRegistry_;
+  std::shared_ptr<RequestsRegistry> activeRequestsRegistry_;
 };
 
 /*
