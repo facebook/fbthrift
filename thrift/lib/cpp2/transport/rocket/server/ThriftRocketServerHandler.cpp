@@ -393,7 +393,7 @@ void ThriftRocketServerHandler::handleServerShutdown(
   }
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::INTERNAL_ERROR, "server shutting down"),
+          TApplicationException::LOADSHEDDING, "server shutting down"),
       kQueueOverloadedErrorCode);
 }
 } // namespace rocket

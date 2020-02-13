@@ -58,6 +58,11 @@ enum class ErrorCode : uint32_t {
   CANCELED = 0x00000203,
   // The request is invalid. Stream ID MUST be > 0.
   INVALID = 0x00000204,
+  // The connection is being terminated. Stream ID MUST be 0. Sender of this
+  // frame MUST not send any other frames after this frame. Sender guarantees
+  // that if it hasn't responded to a request before sending this frame, then
+  // it didn't process that request.
+  CONNECTION_DRAIN_COMPLETE = 0xFB000000,
   // Reserved for extension use.
   RESERVED_EXT = 0xFFFFFFFF,
 };

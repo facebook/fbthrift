@@ -117,9 +117,22 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   if (UNLIKELY(frameType == FrameType::ERROR && streamId == StreamId{0})) {
     ErrorFrame errorFrame(std::move(frame));
-    return close(transport::TTransportException(
-        apache::thrift::transport::TTransportException::END_OF_FILE,
-        "Unhandled error frame on control stream."));
+    switch (errorFrame.errorCode()) {
+      case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
+        auto drainEx = transport::TTransportException(
+            apache::thrift::transport::TTransportException::NOT_OPEN,
+            "Server shutdown.");
+        if (state_ == ConnectionState::ERROR) {
+          error_ = std::move(drainEx);
+        } else {
+          close(drainEx);
+        }
+      } break;
+      default:
+        return close(transport::TTransportException(
+            apache::thrift::transport::TTransportException::END_OF_FILE,
+            "Unhandled error frame on control stream."));
+    }
   }
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
     // constructing the METADATA_PUSH frame for validation

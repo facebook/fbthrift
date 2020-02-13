@@ -48,6 +48,8 @@ folly::StringPiece toString(ErrorCode ec) {
       return "INVALID";
     case ErrorCode::RESERVED_EXT:
       return "RESERVED_EXT";
+    case ErrorCode::CONNECTION_DRAIN_COMPLETE:
+      return "CONNECTION_DRAIN_COMPLETE";
   }
   return "UNKNOWN";
 }

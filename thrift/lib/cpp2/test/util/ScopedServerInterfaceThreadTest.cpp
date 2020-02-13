@@ -379,7 +379,47 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
         return;
       }
       for (size_t i = 0; i < kRequestsPerLoop; ++i) {
-        cli->semifuture_add(2000, 0);
+        apache::thrift::RpcOptions rpcOptions;
+        cli->header_future_add(rpcOptions, 2000, 0).thenTry([](auto&& t) {
+          if (t.hasValue()) {
+            auto& header = *t->second;
+            const auto& readHeaders = header.getHeaders();
+            if (auto exHeader = folly::get_ptr(readHeaders, "ex")) {
+              if (*exHeader != kOverloadedErrorCode &&
+                  *exHeader != kQueueOverloadedErrorCode) {
+                FAIL() << "Non-retriable server error: " << *exHeader;
+              }
+            }
+            EXPECT_EQ(2000, t->first);
+            return;
+          }
+          DCHECK(t.hasException());
+          if (!t.exception()
+                   .template with_exception<
+                       apache::thrift::transport::
+                           TTransportException>([](auto&& ex) {
+                     if (ex.getType() !=
+                         apache::thrift::transport::TTransportException::
+                             NOT_OPEN) {
+                       FAIL()
+                           << "Non-retriable TTransportException exception: "
+                           << ex.what() << ". Exception type: " << ex.getType();
+                     }
+                   }) &&
+              !t.exception()
+                   .template with_exception<
+                       apache::thrift::TApplicationException>([](auto&& ex) {
+                     if (ex.getType() !=
+                         apache::thrift::TApplicationException::LOADSHEDDING) {
+                       FAIL()
+                           << "Non-retriable TApplicationException exception: "
+                           << ex.what() << ". Exception type: " << ex.getType();
+                     }
+                   })) {
+            FAIL() << "Unexpected exception: "
+                   << folly::exceptionStr(t.exception());
+          }
+        });
       }
       spamServer();
     });

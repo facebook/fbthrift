@@ -109,6 +109,9 @@ bool RocketServerConnection::closeIfNeeded() {
     // Immediately stop processing new requests
     socket_->setReadCB(nullptr);
 
+    sendError(
+        StreamId{0}, RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
+
     state_ = ConnectionState::CLOSING;
     return closeIfNeeded();
   }
