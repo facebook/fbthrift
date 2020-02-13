@@ -37,27 +37,23 @@ class OldServiceMock : public OldVersionSvIf {
   void DeletedMethod() {}
 
   apache::thrift::ServerStream<Message> DeletedStreamMethod() {
-    return createStreamGenerator(
-        []() -> folly::Optional<Message> { return folly::none; });
+    return apache::thrift::ServerStream<Message>::createEmpty();
   }
 
   apache::thrift::ResponseAndServerStream<Message, Message>
   DeletedResponseAndStreamMethod() {
-    return {{}, createStreamGenerator([]() -> folly::Optional<Message> {
-              return folly::none;
-            })};
+    return {{}, apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
   apache::thrift::ServerStream<int32_t> Range(int32_t from, int32_t length)
       override {
-    return createStreamGenerator(
-        [first = from,
-         last = from + length]() mutable -> folly::Optional<int32_t> {
-          if (first >= last) {
-            return folly::none;
-          }
-          return first++;
-        });
+    auto [stream, publisher] =
+        apache::thrift::ServerStream<int32_t>::createPublisher();
+    for (int i = from; i < from + length; ++i) {
+      publisher.next(i);
+    }
+    std::move(publisher).complete();
+    return std::move(stream);
   }
 
   apache::thrift::ResponseAndServerStream<int32_t, int32_t>
@@ -66,8 +62,7 @@ class OldServiceMock : public OldVersionSvIf {
   }
 
   apache::thrift::ServerStream<Message> StreamToRequestResponse() override {
-    return createStreamGenerator(
-        []() -> folly::Optional<Message> { return folly::none; });
+    return apache::thrift::ServerStream<Message>::createEmpty();
   }
 
   apache::thrift::ResponseAndServerStream<Message, Message>
@@ -76,8 +71,7 @@ class OldServiceMock : public OldVersionSvIf {
     response.message = "Message";
     response.__isset.message = true;
     return {std::move(response),
-            createStreamGenerator(
-                []() -> folly::Optional<Message> { return folly::none; })};
+            apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
   void RequestResponseToStream(Message& response) override {
@@ -104,14 +98,13 @@ class NewServiceMock : public NewVersionSvIf {
 
   apache::thrift::ServerStream<int32_t> Range(int32_t from, int32_t length)
       override {
-    return createStreamGenerator(
-        [first = from,
-         last = from + length]() mutable -> folly::Optional<int32_t> {
-          if (first >= last) {
-            return folly::none;
-          }
-          return first++;
-        });
+    auto [stream, publisher] =
+        apache::thrift::ServerStream<int32_t>::createPublisher();
+    for (int i = from; i < from + length; ++i) {
+      publisher.next(i);
+    }
+    std::move(publisher).complete();
+    return std::move(stream);
   }
 
   apache::thrift::ResponseAndServerStream<int32_t, int32_t>
@@ -131,17 +124,14 @@ class NewServiceMock : public NewVersionSvIf {
   apache::thrift::ServerStream<Message> RequestResponseToStream() override {
     LOG(DFATAL) << "RequestResponseToStream should not be executed";
 
-    return createStreamGenerator(
-        []() -> folly::Optional<Message> { return folly::none; });
+    return apache::thrift::ServerStream<Message>::createEmpty();
   }
 
   apache::thrift::ResponseAndServerStream<Message, Message>
   RequestResponseToResponseandStream() override {
     LOG(DFATAL) << "RequestResponseToStream should not be executed";
 
-    return {Message{}, createStreamGenerator([]() -> folly::Optional<Message> {
-              return folly::none;
-            })};
+    return {Message{}, apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
  protected:

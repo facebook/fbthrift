@@ -65,24 +65,44 @@ int32_t TestServiceMock::echo(int32_t value) {
 }
 
 ServerStream<int32_t> TestServiceMock::range(int32_t from, int32_t to) {
-  return createStreamGenerator([from, to]() mutable -> folly::Optional<int> {
-    if (from >= to) {
-      return folly::none;
-    }
-    return from++;
-  });
+  auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
+  for (; from < to; ++from) {
+    publisher.next(from);
+  }
+  std::move(publisher).complete();
+  return std::move(stream);
 }
 
 ServerStream<int32_t>
 TestServiceMock::slowRange(int32_t from, int32_t to, int32_t millis) {
-  return createStreamGenerator([=]() mutable -> folly::Optional<int> {
-    if (from >= to) {
-      return folly::none;
-    }
-    /* sleep override */
-    std::this_thread::sleep_for(std::chrono::milliseconds{millis});
-    return from++;
-  });
+  auto [stream, publisher] = ServerStream<int32_t>::createPublisher();
+  auto eb = folly::getEventBase();
+  std::shared_ptr<std::function<void(decltype(publisher), int32_t)>> schedule =
+      std::make_shared<std::function<void(decltype(publisher), int32_t)>>();
+  *schedule =
+      [=,
+       schedule =
+           std::weak_ptr<std::function<void(decltype(publisher), int32_t)>>(
+               schedule)](auto publisher, int32_t from) {
+        publisher.next(from);
+        if (++from < to) {
+          folly::futures::sleep(std::chrono::milliseconds(millis))
+              .via(eb)
+              .thenValue([=,
+                          publisher = std::move(publisher),
+                          schedule = schedule.lock()](auto) mutable {
+                (*schedule)(std::move(publisher), from);
+              });
+        } else {
+          std::move(publisher).complete();
+        }
+      };
+  folly::futures::sleep(std::chrono::milliseconds(millis))
+      .via(eb)
+      .thenValue([=, publisher = std::move(publisher)](auto) mutable {
+        (*schedule)(std::move(publisher), from);
+      });
+  return std::move(stream);
 }
 
 ServerStream<int32_t> TestServiceMock::slowCancellation() {
@@ -93,20 +113,33 @@ ServerStream<int32_t> TestServiceMock::slowCancellation() {
       std::this_thread::sleep_for(std::chrono::milliseconds{10});
     }
   };
-  return createStreamGenerator(
-      [slow = std::make_unique<Slow>()]() -> folly::Optional<int> {
+#if FOLLY_HAS_COROUTINES
+  return folly::coro::co_invoke(
+      [slow = std::make_unique<Slow>()]()
+          -> folly::coro::AsyncGenerator<int32_t&&> {
         LOG(FATAL) << "Should not be called";
       });
+#else
+  return ServerStream<int32_t>::createEmpty();
+#endif
 }
 
 ResponseAndServerStream<int32_t, int32_t> TestServiceMock::leakCheck(
     int32_t from,
     int32_t to) {
-  return {LeakDetector::getInstanceCount(),
-          toStream(
-              Flowable<>::range(from, to)->map(
-                  [detector = LeakDetector()](auto i) { return (int32_t)i; }),
-              &executor_)};
+#if FOLLY_HAS_COROUTINES
+  auto stream = folly::coro::co_invoke([
+    =,
+    detector = LeakDetector()
+  ]() -> folly::coro::AsyncGenerator<int32_t&&> {
+    for (int i = from; i < to; ++i) {
+      co_yield std::move(i);
+    }
+  });
+#else
+  auto stream = ServerStream<int32_t>::createEmpty();
+#endif
+  return {LeakDetector::getInstanceCount(), std::move(stream)};
 }
 
 ResponseAndServerStream<int32_t, int32_t>
@@ -144,19 +177,20 @@ apache::thrift::ServerStream<int32_t> TestServiceMock::sleepWithoutResponse(
 
 apache::thrift::ResponseAndServerStream<int32_t, int32_t>
 TestServiceMock::streamServerSlow() {
-  return {1,
-          apache::thrift::StreamGenerator::create(
-              folly::getKeepAliveToken(executor_.getEventBase()),
-              [detector = LeakDetector(),
-               b = true]() mutable -> folly::SemiFuture<folly::Optional<int>> {
-                if (std::exchange(b, false)) {
-                  return folly::futures::sleep(std::chrono::milliseconds(1000))
-                      .deferValue([](folly::Unit&&) {
-                        return folly::Optional<int>(1);
-                      });
-                }
-                return folly::makeSemiFuture(folly::Optional<int>(1));
-              })};
+#if FOLLY_HAS_COROUTINES
+  auto stream = folly::coro::co_invoke([
+    =,
+    detector = LeakDetector()
+  ]() -> folly::coro::AsyncGenerator<int32_t&&> {
+    co_await folly::futures::sleep(std::chrono::milliseconds(1000));
+    while (true) {
+      co_yield 1;
+    }
+  });
+#else
+  auto stream = ServerStream<int32_t>::createEmpty();
+#endif
+  return {1, std::move(stream)};
 }
 
 void TestServiceMock::sendMessage(
@@ -179,8 +213,8 @@ void TestServiceMock::sendMessage(
 }
 
 apache::thrift::ServerStream<int32_t> TestServiceMock::registerToMessages() {
-  auto streamAndPublisher = createStreamPublisher<int32_t>([] {});
-  messages_ = std::make_unique<apache::thrift::StreamPublisher<int32_t>>(
+  auto streamAndPublisher = ServerStream<int32_t>::createPublisher();
+  messages_ = std::make_unique<apache::thrift::ServerStreamPublisher<int32_t>>(
       std::move(streamAndPublisher.second));
   return std::move(streamAndPublisher.first);
 }
@@ -193,20 +227,21 @@ apache::thrift::ServerStream<Message> TestServiceMock::streamThrows(
     throw ex;
   }
 
-  return createStreamGenerator([whichEx]() -> folly::Optional<Message> {
-    if (whichEx == 1) {
-      FirstEx ex;
-      ex.set_errMsg("FirstEx");
-      ex.set_errCode(1);
-      throw ex;
-    } else if (whichEx == 2) {
-      SecondEx ex;
-      ex.set_errCode(2);
-      throw ex;
-    } else {
-      throw std::runtime_error("random error");
-    }
-  });
+  auto streamAndPublisher = ServerStream<Message>::createPublisher();
+  if (whichEx == 1) {
+    FirstEx ex;
+    ex.set_errMsg("FirstEx");
+    ex.set_errCode(1);
+    std::move(streamAndPublisher.second).complete(ex);
+  } else if (whichEx == 2) {
+    SecondEx ex;
+    ex.set_errCode(2);
+    std::move(streamAndPublisher.second).complete(ex);
+  } else {
+    std::move(streamAndPublisher.second)
+        .complete(std::runtime_error("random error"));
+  }
+  return std::move(streamAndPublisher.first);
 }
 
 apache::thrift::ResponseAndServerStream<int32_t, Message>
@@ -216,8 +251,7 @@ TestServiceMock::responseAndStreamThrows(int32_t whichEx) {
 
 apache::thrift::ServerStream<int32_t> TestServiceMock::requestWithBlob(
     std::unique_ptr<folly::IOBuf>) {
-  return createStreamGenerator(
-      []() mutable -> folly::Optional<int> { return folly::none; });
+  return apache::thrift::ServerStream<int32_t>::createEmpty();
 }
 
 } // namespace testservice

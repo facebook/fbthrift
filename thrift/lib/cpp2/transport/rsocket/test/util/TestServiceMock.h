@@ -67,7 +67,7 @@ class TestServiceMock : public StreamServiceSvIf {
  protected:
   folly::ScopedEventBaseThread executor_;
 
-  std::unique_ptr<apache::thrift::StreamPublisher<int32_t>> messages_;
+  std::unique_ptr<apache::thrift::ServerStreamPublisher<int32_t>> messages_;
 };
 
 } // namespace testservice
