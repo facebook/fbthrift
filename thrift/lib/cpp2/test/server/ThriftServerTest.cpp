@@ -31,6 +31,8 @@
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/AsyncSocketException.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/TestSSLServer.h>
@@ -193,16 +195,15 @@ TEST(ThriftServer, ResponseTooBigTest) {
   }
 }
 
-class TestConnCallback : public TAsyncSocket::ConnectCallback {
+class TestConnCallback : public folly::AsyncSocket::ConnectCallback {
  public:
   void connectSuccess() noexcept override {}
 
-  void connectError(
-      const transport::TTransportException& ex) noexcept override {
-    exception.reset(new transport::TTransportException(ex));
+  void connectErr(const folly::AsyncSocketException& ex) noexcept override {
+    exception.reset(new folly::AsyncSocketException(ex));
   }
 
-  std::unique_ptr<transport::TTransportException> exception;
+  std::unique_ptr<folly::AsyncSocketException> exception;
 };
 
 TEST(ThriftServer, SSLClientOnPlaintextServerTest) {

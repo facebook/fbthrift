@@ -26,9 +26,8 @@ namespace py3 {
 using apache::thrift::async::TAsyncSocket;
 using apache::thrift::async::TAsyncSSLSocket;
 
-class ConnectHandler
-    : public apache::thrift::async::TAsyncSocket::ConnectCallback,
-      public folly::DelayedDestruction {
+class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
+                       public folly::DelayedDestruction {
  protected:
   ~ConnectHandler() = default;
 
@@ -85,12 +84,10 @@ class ConnectHandler
     }());
   }
 
-  void connectError(const apache::thrift::transport::TTransportException&
-                        ex) noexcept override {
+  void connectErr(const folly::AsyncSocketException& ex) noexcept override {
+    using apache::thrift::transport::TTransportException;
     UniquePtr p(this);
-    // TAsyncSocket::connectErr explicitly creates a TTransportException
-    //  so runtime exception type is always same as static type.
-    promise_.setException(ex);
+    promise_.setException(TTransportException(ex));
   }
 
  private:

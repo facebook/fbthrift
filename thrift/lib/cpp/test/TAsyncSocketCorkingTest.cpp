@@ -22,6 +22,8 @@
 #include <folly/Conv.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/AsyncSocket.h>
+#include <folly/io/async/AsyncSocketException.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
@@ -60,15 +62,15 @@ class AcceptCallback : public AsyncServerSocket::AcceptCallback {
   std::function<void(int)> fn_;
 };
 
-class ConnectCallback : public TAsyncSocket::ConnectCallback {
+class ConnectCallback : public folly::AsyncSocket::ConnectCallback {
  public:
   explicit ConnectCallback(const std::function<void()>& fn) : fn_(fn) {}
 
   void connectSuccess() noexcept override {
     fn_();
   }
-  void connectError(const TTransportException& ex) noexcept override {
-    LOG(FATAL) << "connectError(): " << ex.what();
+  void connectErr(const folly::AsyncSocketException& ex) noexcept override {
+    LOG(FATAL) << "connectErr(): " << ex.what();
   }
 
  private:

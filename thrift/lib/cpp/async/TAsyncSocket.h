@@ -85,30 +85,6 @@ class TAsyncSocket : public virtual folly::AsyncSocket {
     return std::shared_ptr<TAsyncSocket>(
         new TAsyncSocket(evb, fd), Destructor());
   }
-
-  class ConnectCallback : public folly::AsyncSocket::ConnectCallback {
-   public:
-    ~ConnectCallback() override {}
-
-    /**
-     * connectSuccess() will be invoked when the connection has been
-     * successfully established.
-     */
-    void connectSuccess() noexcept override = 0;
-
-    /**
-     * connectError() will be invoked if the connection attempt fails.
-     *
-     * @param ex        An exception describing the error that occurred.
-     */
-    virtual void connectError(
-        const transport::TTransportException& ex) noexcept = 0;
-
-   private:
-    void connectErr(const folly::AsyncSocketException& ex) noexcept override {
-      connectError(transport::TTransportException(ex));
-    }
-  };
 };
 
 typedef folly::WriteFlags WriteFlags;
