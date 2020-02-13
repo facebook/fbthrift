@@ -31,6 +31,7 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/net/NetOps.h>
 
 #include <wangle/acceptor/ManagedConnection.h>
 
@@ -287,16 +288,18 @@ class RocketServerConnection final
         return true;
       }
 
+#if defined(__linux__)
       if (auto socket =
               dynamic_cast<folly::AsyncSocket*>(connection_.socket_.get())) {
         tcp_info info;
         socklen_t infolen = sizeof(info);
-        if (socket->getSockOpt(SOL_TCP, TCP_INFO, &info, &infolen)) {
+        if (socket->getSockOpt(IPPROTO_TCP, TCP_INFO, &info, &infolen)) {
           return true;
         }
         DCHECK(infolen == sizeof(info));
         return info.tcpi_unacked == 0;
       }
+#endif
 
       return true;
     }
