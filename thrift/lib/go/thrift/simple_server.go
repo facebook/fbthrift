@@ -194,16 +194,7 @@ func (p *SimpleServer) addConnInfo(ctx context.Context, client Transport) contex
 	if p.processorFactoryContext == nil {
 		return ctx
 	}
-	s, ok := client.(*Socket)
-	if !ok {
-		return ctx
-	}
-	ctx = context.WithValue(ctx, connInfoKey, ConnInfo{
-		LocalAddr:  s.Conn().LocalAddr(),
-		RemoteAddr: s.Conn().RemoteAddr(),
-		netConn:    s.Conn(),
-	})
-	return ctx
+	return WithConnInfo(ctx, client)
 }
 
 // Serve starts listening on the transport and accepting new connections
@@ -265,7 +256,7 @@ func (p *SimpleServer) processRequests(ctx context.Context, client Transport) er
 
 	// Store the input protocol on the context so handlers can query headers.
 	// See HeadersFromContext.
-	ctx = context.WithValue(ctx, protocolKey, inputProtocol)
+	ctx = WithProtocol(ctx, inputProtocol)
 
 	defer func() {
 		if err := recover(); err != nil {

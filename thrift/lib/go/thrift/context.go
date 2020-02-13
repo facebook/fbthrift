@@ -71,6 +71,20 @@ func (c ConnInfo) TLS() *tls.ConnectionState {
 	return &cs
 }
 
+// WithConnInfo adds connection info (from a thrift.Transport) to context, if applicable
+func WithConnInfo(ctx context.Context, client Transport) context.Context {
+	s, ok := client.(*Socket)
+	if !ok {
+		return ctx
+	}
+	ctx = context.WithValue(ctx, connInfoKey, ConnInfo{
+		LocalAddr:  s.Conn().LocalAddr(),
+		RemoteAddr: s.Conn().RemoteAddr(),
+		netConn:    s.Conn(),
+	})
+	return ctx
+}
+
 // ConnInfoFromContext extracts and returns ConnInfo from context.
 func ConnInfoFromContext(ctx context.Context) (ConnInfo, bool) {
 	v, ok := ctx.Value(connInfoKey).(ConnInfo)
@@ -88,6 +102,11 @@ func headerProtocolFromContext(ctx context.Context) *HeaderProtocol {
 		return nil
 	}
 	return v
+}
+
+// WithProtocol attaches thrift protocol to a context
+func WithProtocol(ctx context.Context, proto Protocol) context.Context {
+	return context.WithValue(ctx, protocolKey, proto)
 }
 
 // HeadersFromContext extracts headers for this message, both per-message
