@@ -677,10 +677,7 @@ ThriftServer::snapshotActiveRequests() {
         worker->getEventBase(),
         [reqRegistry = worker->getRequestsRegistry()]() {
           std::vector<RequestSnapshot> reqSnapshots;
-          for (const auto& stub : reqRegistry->getActive()) {
-            reqSnapshots.emplace_back(stub);
-          }
-          for (const auto& stub : reqRegistry->getFinished()) {
+          for (const auto& stub : reqRegistry->getDebugStubList()) {
             reqSnapshots.emplace_back(stub);
           }
           return reqSnapshots;

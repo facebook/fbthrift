@@ -40,8 +40,8 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
+#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
-#include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
@@ -831,13 +831,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   class RequestSnapshot {
    public:
-    explicit RequestSnapshot(const RequestsRegistry::DebugStub& stub)
-        : methodName_(stub.getMethodName()),
+    explicit RequestSnapshot(const ActiveRequestsRegistry::DebugStub& stub)
+        : methodName_(stub.getRequestContext().getMethodName()),
           creationTimestamp_(stub.getTimestamp()),
-          finishedTimestamp_(stub.getFinished()),
           protoId_(stub.getProtoId()),
           payload_(std::move(*stub.clonePayload())),
-          peerAddress_(*stub.getPeerAddress()),
+          peerAddress_(*stub.getRequestContext().getPeerAddress()),
           rootRequestContextId_(stub.getRootRequestContextId()),
           reqId_(stub.getRequestId().toString()) {}
 
@@ -847,10 +846,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
     std::chrono::steady_clock::time_point getCreationTimestamp() const {
       return creationTimestamp_;
-    }
-
-    std::chrono::steady_clock::time_point getFinishedTimestamp() const {
-      return finishedTimestamp_;
     }
 
     intptr_t getRootRequestContextId() const {
@@ -879,7 +874,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    private:
     const std::string methodName_;
     const std::chrono::steady_clock::time_point creationTimestamp_;
-    const std::chrono::steady_clock::time_point finishedTimestamp_;
     const protocol::PROTOCOL_TYPES protoId_;
     folly::IOBuf payload_;
     folly::SocketAddress peerAddress_;

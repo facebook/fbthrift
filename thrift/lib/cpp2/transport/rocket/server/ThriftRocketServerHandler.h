@@ -23,7 +23,7 @@
 #include <folly/SocketAddress.h>
 
 #include <thrift/lib/cpp/server/TServerObserver.h>
-#include <thrift/lib/cpp2/server/RequestsRegistry.h>
+#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 
@@ -40,7 +40,7 @@ class Cpp2Worker;
 class RequestRpcMetadata;
 class ThriftRequestCore;
 using ThriftRequestCoreUniquePtr =
-    std::unique_ptr<ThriftRequestCore, RequestsRegistry::Deleter>;
+    std::unique_ptr<ThriftRequestCore, ActiveRequestsRegistry::Deleter>;
 
 namespace concurrency {
 class ThreadManager;
@@ -98,7 +98,7 @@ class ThriftRocketServerHandler : public RocketServerHandler {
   std::shared_ptr<AsyncProcessor> cpp2Processor_;
   std::shared_ptr<concurrency::ThreadManager> threadManager_;
   server::ServerConfigs* serverConfigs_ = nullptr;
-  std::shared_ptr<RequestsRegistry> activeRequestsRegistry_;
+  std::shared_ptr<ActiveRequestsRegistry> activeRequestsRegistry_;
   folly::EventBase* eventBase_;
 
   uint32_t sampleRate_{0};

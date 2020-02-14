@@ -28,9 +28,9 @@
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp2/async/DuplexChannel.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
+#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
-#include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <wangle/acceptor/ManagedConnection.h>
@@ -149,7 +149,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     friend class TaskTimeout;
 
     Cpp2Request(
-        RequestsRegistry::DebugStub& debugStubToInit,
+        ActiveRequestsRegistry::DebugStub& debugStubToInit,
         std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
         std::shared_ptr<Cpp2Connection> con,
         std::unique_ptr<folly::IOBuf> debugPayload,

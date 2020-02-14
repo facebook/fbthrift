@@ -21,7 +21,7 @@ namespace apache {
 namespace thrift {
 
 class RequestId {
-  friend class RequestsRegistry;
+  friend class ActiveRequestsRegistry;
 
  public:
   RequestId(const RequestId&) = delete;

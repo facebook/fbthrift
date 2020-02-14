@@ -413,10 +413,6 @@ class Cpp2RequestContext : public apache::thrift::server::TConnectionContext {
     return methodName_;
   }
 
-  std::string releaseMethodName() {
-    return std::move(methodName_);
-  }
-
   void setProtoSeqId(int32_t protoSeqId) {
     protoSeqId_ = protoSeqId;
   }

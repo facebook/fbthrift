@@ -168,8 +168,8 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
  public:
   explicit DebuggingFrameHandler(ThriftServer& server)
       : origServer_(server), reqRegistry_([] {
-          auto p = new RequestsRegistry(0, 0, 0);
-          return new std::shared_ptr<RequestsRegistry>(p);
+          auto p = new ActiveRequestsRegistry(0, 0);
+          return new std::shared_ptr<ActiveRequestsRegistry>(p);
         }) {
     auto tf =
         std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
@@ -193,35 +193,26 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
   ThriftServer& origServer_;
   DebugInterface debug_;
   std::shared_ptr<ThreadManager> tm_;
-  folly::ThreadLocal<std::shared_ptr<RequestsRegistry>> reqRegistry_;
+  folly::ThreadLocal<std::shared_ptr<ActiveRequestsRegistry>> reqRegistry_;
 };
 
 class RequestInstrumentationTest : public testing::Test {
  protected:
-  RequestInstrumentationTest() {}
-
-  void SetUp() override {
-    impl_ = std::make_unique<Impl>();
-  }
-
-  std::shared_ptr<TestInterface> handler() {
-    return impl_->handler_;
-  }
-  apache::thrift::ScopedServerInterfaceThread& server() {
-    return impl_->server_;
-  }
-  ThriftServer* thriftServer() {
-    return impl_->thriftServer_;
+  RequestInstrumentationTest()
+      : handler_(std::make_shared<TestInterface>()),
+        server_(handler_, "::1", 0),
+        thriftServer_(dynamic_cast<ThriftServer*>(&server_.getThriftServer())) {
+    EXPECT_NE(thriftServer_, nullptr);
   }
 
   std::vector<ThriftServer::RequestSnapshot> getRequestSnapshots(
       size_t reqNum) {
     SCOPE_EXIT {
-      handler()->stopRequests();
+      handler_->stopRequests();
     };
-    handler()->waitForRequests(reqNum);
+    handler_->waitForRequests(reqNum);
 
-    auto serverReqSnapshots = thriftServer()->snapshotActiveRequests().get();
+    auto serverReqSnapshots = thriftServer_->snapshotActiveRequests().get();
 
     EXPECT_EQ(serverReqSnapshots.size(), reqNum);
     return serverReqSnapshots;
@@ -238,45 +229,14 @@ class RequestInstrumentationTest : public testing::Test {
     return results;
   }
 
-  auto makeHeaderClient() {
-    return server().newClient<InstrumentationTestServiceAsyncClient>(
-        nullptr, [&](auto socket) mutable {
-          return HeaderClientChannel::newChannel(std::move(socket));
-        });
-  }
-  auto makeRocketClient() {
-    return server().newClient<InstrumentationTestServiceAsyncClient>(
-        nullptr, [&](auto socket) mutable {
-          return RocketClientChannel::newChannel(std::move(socket));
-        });
-  }
-
-  auto makeDebugClient() {
-    return server().newClient<DebugTestServiceAsyncClient>(
-        nullptr, [](auto socket) mutable {
-          RequestSetupMetadata meta;
-          meta.set_interfaceKind(InterfaceKind::DEBUGGING);
-          return apache::thrift::RocketClientChannel::newChannel(
-              std::move(socket), std::move(meta));
-        });
-  }
-
-  struct Impl {
-    Impl(ScopedServerInterfaceThread::ServerConfigCb&& serverCfgCob = {})
-        : handler_(std::make_shared<TestInterface>()),
-          server_(handler_, "::1", 0, std::move(serverCfgCob)),
-          thriftServer_(
-              dynamic_cast<ThriftServer*>(&server_.getThriftServer())) {}
-    std::shared_ptr<TestInterface> handler_;
-    apache::thrift::ScopedServerInterfaceThread server_;
-    ThriftServer* thriftServer_;
-  };
-  std::unique_ptr<Impl> impl_;
+  std::shared_ptr<TestInterface> handler_;
+  apache::thrift::ScopedServerInterfaceThread server_;
+  ThriftServer* thriftServer_;
 };
 
 TEST_F(RequestInstrumentationTest, simpleRocketRequestTest) {
   size_t reqNum = 5;
-  auto client = server().newClient<InstrumentationTestServiceAsyncClient>(
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
       nullptr, [](auto socket) mutable {
         return apache::thrift::RocketClientChannel::newChannel(
             std::move(socket));
@@ -286,7 +246,7 @@ TEST_F(RequestInstrumentationTest, simpleRocketRequestTest) {
     client->semifuture_sendStreamingRequest();
     client->semifuture_sendRequest();
   }
-  handler()->waitForRequests(2 * reqNum);
+  handler_->waitForRequests(2 * reqNum);
 
   // we expect all requests to get off the thread, eventually
   int attempt = 0;
@@ -305,17 +265,17 @@ TEST_F(RequestInstrumentationTest, simpleRocketRequestTest) {
 }
 
 TEST_F(RequestInstrumentationTest, threadSnapshot) {
-  auto client = server().newClient<InstrumentationTestServiceAsyncClient>(
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
       nullptr, [](auto socket) mutable {
         return apache::thrift::RocketClientChannel::newChannel(
             std::move(socket));
       });
 
   client->semifuture_sendRequest();
-  handler()->waitForRequests(1);
+  handler_->waitForRequests(1);
   client->semifuture_wait(0, true, false);
 
-  handler()->waitForRequests(2);
+  handler_->waitForRequests(2);
   auto onThreadReqs = getRootIdsOnThreads();
   auto allReqs = getRequestSnapshots(2);
   EXPECT_EQ(1, onThreadReqs.size());
@@ -331,12 +291,16 @@ TEST_F(RequestInstrumentationTest, threadSnapshot) {
 }
 
 TEST_F(RequestInstrumentationTest, threadSnapshotWithShallowRC) {
-  auto client = makeRocketClient();
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket));
+      });
 
   client->semifuture_sendRequest();
-  handler()->waitForRequests(1);
+  handler_->waitForRequests(1);
   client->semifuture_wait(0, true, true);
-  handler()->waitForRequests(2);
+  handler_->waitForRequests(2);
 
   auto onThreadReqs = getRootIdsOnThreads();
   auto allReqs = getRequestSnapshots(2);
@@ -356,17 +320,29 @@ TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
   size_t reqNum = 5;
 
   // inject our setup frame handler for rocket connections
-  for (const auto& rh : *thriftServer()->getRoutingHandlers()) {
+  for (const auto& rh : *thriftServer_->getRoutingHandlers()) {
     auto rs = dynamic_cast<RSRoutingHandler*>(rh.get());
     if (rs != nullptr) {
       rs->addSetupFrameHandler(
-          std::make_unique<DebuggingFrameHandler>(*thriftServer()));
+          std::make_unique<DebuggingFrameHandler>(*thriftServer_));
       break;
     }
   }
 
-  auto client = makeRocketClient();
-  auto debugClient = makeDebugClient();
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket));
+      });
+  auto debugClient = server_.newClient<DebugTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        RequestSetupMetadata meta;
+        meta.set_interfaceKind(InterfaceKind::DEBUGGING);
+
+        return apache::thrift::RocketClientChannel::newChannel(
+            std::move(socket), std::move(meta));
+      });
+
   for (size_t i = 0; i < reqNum; i++) {
     client->semifuture_sendStreamingRequest();
     client->semifuture_sendRequest();
@@ -384,7 +360,11 @@ TEST_F(RequestInstrumentationTest, debugInterfaceTest) {
 
 TEST_F(RequestInstrumentationTest, simpleHeaderRequestTest) {
   size_t reqNum = 5;
-  auto client = makeHeaderClient();
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>(
+      nullptr, [](auto socket) mutable {
+        return apache::thrift::HeaderClientChannel::newChannel(
+            std::move(socket));
+      });
 
   for (size_t i = 0; i < reqNum; i++) {
     client->semifuture_sendRequest();
@@ -393,17 +373,13 @@ TEST_F(RequestInstrumentationTest, simpleHeaderRequestTest) {
   for (auto& reqSnapshot : getRequestSnapshots(reqNum)) {
     EXPECT_EQ(reqSnapshot.getMethodName(), "sendRequest");
     EXPECT_NE(reqSnapshot.getRootRequestContextId(), 0);
-    EXPECT_EQ(
-        reqSnapshot.getFinishedTimestamp(),
-        std::chrono::steady_clock::time_point{
-            std::chrono::steady_clock::duration::zero()});
   }
 }
 
 TEST_F(RequestInstrumentationTest, requestPayloadTest) {
   std::array<std::string, 4> strList = {
       "apache", "thrift", "test", "InstrumentationTest"};
-  auto client = makeHeaderClient();
+  auto client = server_.newClient<InstrumentationTestServiceAsyncClient>();
 
   std::vector<folly::SemiFuture<folly::IOBuf>> tasks;
   int32_t reqId = 0;
@@ -443,60 +419,3 @@ TEST_F(ServerInstrumentationTest, simpleServerTest) {
   }
   EXPECT_EQ(ServerInstrumentation::getServerCount(), 1);
 }
-
-class RequestInstrumentationTestP
-    : public RequestInstrumentationTest,
-      public ::testing::WithParamInterface<std::tuple<int, int, bool>> {
- protected:
-  size_t finishedRequestsLimit;
-  size_t reqNum;
-  bool rocket;
-  void SetUp() override {
-    std::tie(finishedRequestsLimit, reqNum, rocket) = GetParam();
-    impl_ = std::make_unique<Impl>([&](auto& ts) {
-      ts.setMaxFinishedDebugPayloadsPerWorker(finishedRequestsLimit);
-    });
-  }
-};
-
-TEST_P(RequestInstrumentationTestP, FinishedRequests) {
-  auto client = rocket ? makeRocketClient() : makeHeaderClient();
-
-  for (size_t i = 0; i < reqNum; i++) {
-    client->semifuture_sendRequest();
-  }
-
-  handler()->waitForRequests(reqNum);
-  handler()->stopRequests();
-
-  // we expect all requests to stop now ...
-  {
-    size_t expected = std::min(reqNum, finishedRequestsLimit);
-    int i = 0;
-    while (i < 5 &&
-           thriftServer()->snapshotActiveRequests().get().size() != expected) {
-      sleep(1);
-      i++;
-    }
-    EXPECT_LT(i, 5);
-  }
-
-  auto serverReqSnapshots = thriftServer()->snapshotActiveRequests().get();
-  EXPECT_EQ(serverReqSnapshots.size(), std::min(reqNum, finishedRequestsLimit));
-  for (auto& req : serverReqSnapshots) {
-    EXPECT_EQ(req.getMethodName(), "sendRequest");
-    EXPECT_NE(req.getRootRequestContextId(), 0);
-    EXPECT_NE(
-        req.getFinishedTimestamp(),
-        std::chrono::steady_clock::time_point{
-            std::chrono::steady_clock::duration::zero()});
-  }
-}
-
-INSTANTIATE_TEST_CASE_P(
-    FinishedRequestsSequence,
-    RequestInstrumentationTestP,
-    testing::Combine(
-        testing::Values(0, 3, 20),
-        testing::Values(3, 10),
-        testing::Values(true, false)));
