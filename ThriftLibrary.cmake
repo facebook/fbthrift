@@ -217,9 +217,14 @@ macro(thrift_generate
   set("${file_name}-${language}-SOURCES"
     ${output_path}/gen-${language}/${file_name}_constants.cpp
     ${output_path}/gen-${language}/${file_name}_data.cpp
-    ${output_path}/gen-${language}/${file_name}_metadata.cpp
     ${output_path}/gen-${language}/${file_name}_types.cpp
   )
+  if(NOT "${options}" MATCHES "no_metadata")
+    set("${file_name}-${language}-SOURCES"
+      ${${file_name}-${language}-SOURCES}
+      ${output_path}/gen-${language}/${file_name}_metadata.cpp
+    )
+  endif()
   foreach(service ${services})
     set("${file_name}-${language}-HEADERS"
       ${${file_name}-${language}-HEADERS}

@@ -16,7 +16,7 @@ thrift_generate(
   "reflection" #file_name
   "" #services
   "cpp2" #language
-  "templates" #options
+  "templates,no_metadata" #options
   "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
   "${CMAKE_CURRENT_BINARY_DIR}" #output_path
   "thrift/lib/thrift" #include_prefix
