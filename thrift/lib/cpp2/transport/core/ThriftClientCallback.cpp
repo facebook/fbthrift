@@ -75,29 +75,6 @@ void ThriftClientCallback::onThriftResponse(
   }
 }
 
-void ThriftClientCallback::onThriftResponse(
-    ResponseRpcMetadata&& metadata,
-    std::unique_ptr<IOBuf> payload,
-    Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept {
-  DCHECK(!evb_ || evb_->isInEventBaseThread());
-  cancelTimeout();
-  if (active_) {
-    active_ = false;
-    auto tHeader = std::make_unique<transport::THeader>();
-    tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-    detail::fillTHeaderFromResponseRpcMetadata(metadata, *tHeader);
-    ClientReceiveState crs(
-        -1,
-        ResponseAndSemiStream<
-            std::unique_ptr<folly::IOBuf>,
-            std::unique_ptr<folly::IOBuf>>{std::move(payload),
-                                           std::move(stream)},
-        std::move(tHeader),
-        nullptr);
-    cb_.release()->onResponse(std::move(crs));
-  }
-}
-
 void ThriftClientCallback::onError(exception_wrapper ex) noexcept {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   cancelTimeout();

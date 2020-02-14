@@ -58,11 +58,6 @@ class ThriftClientCallback final : public folly::HHWheelTimer::Callback {
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> payload) noexcept;
 
-  void onThriftResponse(
-      ResponseRpcMetadata&& metadata,
-      std::unique_ptr<folly::IOBuf> payload,
-      Stream<std::unique_ptr<folly::IOBuf>> stream) noexcept;
-
   // Called from the channel in case of an error RPC (instead of
   // calling "onThriftResponse()").
   //

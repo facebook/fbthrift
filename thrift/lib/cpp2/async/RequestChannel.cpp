@@ -20,7 +20,6 @@
 #include <folly/fibers/Fiber.h>
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
-#include <thrift/lib/cpp2/transport/rocket/client/ClientCallbackFlowable.h>
 
 namespace apache {
 namespace thrift {
@@ -118,13 +117,8 @@ void RequestChannel::sendRequestStream(
     std::unique_ptr<folly::IOBuf> buf,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto chunkTimeout = rpcOptions.getChunkTimeout();
-  auto callback = std::make_unique<ThriftClientCallback>(
-      nullptr, false, std::move(cb), std::chrono::milliseconds::zero());
-  auto clientCallBackFlowable = std::make_shared<ClientCallbackFlowable>(
-      std::move(callback), chunkTimeout);
-  clientCallBackFlowable->init();
-  StreamClientCallback* clientCallback = clientCallBackFlowable.get();
+  StreamClientCallback* clientCallback = createStreamClientCallback(
+      std::move(cb), rpcOptions.getChunkBufferSize());
   sendRequestStream(
       rpcOptions, std::move(buf), std::move(header), clientCallback);
 }
