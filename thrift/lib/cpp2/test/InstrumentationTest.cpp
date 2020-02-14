@@ -469,6 +469,18 @@ TEST_P(RequestInstrumentationTestP, FinishedRequests) {
   handler()->waitForRequests(reqNum);
   handler()->stopRequests();
 
+  // we expect all requests to stop now ...
+  {
+    size_t expected = std::min(reqNum, finishedRequestsLimit);
+    int i = 0;
+    while (i < 5 &&
+           thriftServer()->snapshotActiveRequests().get().size() != expected) {
+      sleep(1);
+      i++;
+    }
+    EXPECT_LT(i, 5);
+  }
+
   auto serverReqSnapshots = thriftServer()->snapshotActiveRequests().get();
   EXPECT_EQ(serverReqSnapshots.size(), std::min(reqNum, finishedRequestsLimit));
   for (auto& req : serverReqSnapshots) {
