@@ -12,8 +12,10 @@
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_metadata.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 template <>
@@ -37,4 +39,7 @@ class EnumMetadata<::test_cpp2::cpp_reflection::enum_with_special_names> {
   static void gen(ThriftMetadata& metadata);
 };
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

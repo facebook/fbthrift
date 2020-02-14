@@ -6,8 +6,10 @@
  */
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 void EnumMetadata<::some::valid::ns::MyEnumA>::gen(ThriftMetadata& metadata) {
@@ -55,4 +57,7 @@ void EnumMetadata<::some::valid::ns::MyEnumB>::gen(ThriftMetadata& metadata) {
   }
 }
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

@@ -6,8 +6,10 @@
  */
 #include "thrift/compiler/test/fixtures/basic-enum/gen-cpp2/module_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 void EnumMetadata<::test::fixtures::enumstrict::EmptyEnum>::gen(ThriftMetadata& metadata) {
@@ -44,4 +46,7 @@ void EnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::gen(ThriftMetadata& 
   }
 }
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

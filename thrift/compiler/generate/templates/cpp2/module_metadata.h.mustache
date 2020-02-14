@@ -25,8 +25,10 @@
 <%/program:thrift_includes%>
 
 <%#program:gen_metadata?%>
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 <%#program:enums%>
@@ -37,5 +39,8 @@ class EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>> {
 };
 <%/program:enums%>
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache
 <%/program:gen_metadata?%>

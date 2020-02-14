@@ -11,8 +11,10 @@
 #include <thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 template <>
@@ -36,4 +38,7 @@ class EnumMetadata<::some::valid::ns::MyEnumB> {
   static void gen(ThriftMetadata& metadata);
 };
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

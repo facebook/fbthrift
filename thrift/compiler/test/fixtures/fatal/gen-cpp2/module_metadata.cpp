@@ -6,8 +6,10 @@
  */
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 void EnumMetadata<::test_cpp2::cpp_reflection::enum1>::gen(ThriftMetadata& metadata) {
@@ -55,4 +57,7 @@ void EnumMetadata<::test_cpp2::cpp_reflection::enum_with_special_names>::gen(Thr
   }
 }
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

@@ -17,8 +17,10 @@
 %><% > Autogen%>
 #include "<%program:include_prefix%><%program:name%>_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 <%#program:enums%>
@@ -35,4 +37,7 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata
 }
 <%/program:enums%>
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

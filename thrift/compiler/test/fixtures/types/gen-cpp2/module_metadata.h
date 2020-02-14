@@ -11,8 +11,10 @@
 #include <thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h>
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 template <>
@@ -36,4 +38,7 @@ class EnumMetadata<::apache::thrift::fixtures::types::MyEnumA> {
   static void gen(ThriftMetadata& metadata);
 };
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

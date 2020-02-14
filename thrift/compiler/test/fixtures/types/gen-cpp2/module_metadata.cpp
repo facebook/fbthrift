@@ -6,8 +6,10 @@
  */
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 void EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops>::gen(ThriftMetadata& metadata) {
@@ -55,4 +57,7 @@ void EnumMetadata<::apache::thrift::fixtures::types::MyEnumA>::gen(ThriftMetadat
   }
 }
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

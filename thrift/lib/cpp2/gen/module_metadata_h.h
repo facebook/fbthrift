@@ -18,16 +18,20 @@
 
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
-namespace apache::thrift {
+namespace apache {
+namespace thrift {
 namespace metadata {
 class ThriftMetadata;
 }
 
-namespace detail::md {
+namespace detail {
+namespace md {
 template <typename T>
 class EnumMetadata {
  public:
   static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
 };
-} // namespace detail::md
-} // namespace apache::thrift
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache

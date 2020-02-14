@@ -11,9 +11,14 @@
 #include <thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.h>
 #include "other/gen-cpp2/matching_module_name_metadata.h"
 
-namespace apache::thrift::detail::md {
-
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
 
-} // apache::thrift::detail::md
+} // namespace md
+} // namespace detail
+} // namespace thrift
+} // namespace apache
