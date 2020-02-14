@@ -470,30 +470,22 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
-  forEachWorker([&](wangle::Acceptor* acceptor) {
-    if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
-      worker->requestStop();
+  {
+    auto sockets = getSockets();
+    folly::Baton<> done;
+    SCOPE_EXIT {
+      done.wait();
+    };
+    std::shared_ptr<folly::Baton<>> doneGuard(
+        &done, [](folly::Baton<>* done) { done->post(); });
+
+    for (auto& socket : sockets) {
+      // Stop accepting new connections
+      auto eb = socket->getEventBase();
+      eb->runInEventBaseThread([socket = std::move(socket), doneGuard] {
+        socket->pauseAccepting();
+      });
     }
-  });
-
-  auto sockets = getSockets();
-  std::atomic<size_t> remaining(1 + sockets.size());
-  folly::Baton<> done;
-
-  auto defer_wait = folly::makeGuard([&] { done.wait(); });
-  auto maybe_post = [&] { --remaining ? void() : done.post(); };
-  maybe_post();
-  for (auto& socket : sockets) {
-    // Stop accepting new connections
-    auto eb = socket->getEventBase();
-    eb->runInEventBaseThread(
-        [socket = std::move(socket), g = folly::makeGuard(maybe_post)] {
-          socket->pauseAccepting();
-
-          // Close the listening socket
-          // This will also cause the workers to stop
-          socket->stopAccepting();
-        });
   }
 
   if (stopWorkersOnStopListening_) {
@@ -513,6 +505,32 @@ void ThriftServer::stopWorkers() {
 }
 
 void ThriftServer::stopCPUWorkers() {
+  forEachWorker([&](wangle::Acceptor* acceptor) {
+    if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
+      worker->requestStop();
+    }
+  });
+
+  {
+    auto sockets = getSockets();
+    folly::Baton<> done;
+    SCOPE_EXIT {
+      done.wait();
+    };
+    std::shared_ptr<folly::Baton<>> doneGuard(
+        &done, [](folly::Baton<>* done) { done->post(); });
+
+    for (auto& socket : sockets) {
+      // Stop accepting new connections
+      auto eb = socket->getEventBase();
+      eb->runInEventBaseThread([socket = std::move(socket), doneGuard] {
+        // Close the listening socket
+        // This will also cause the workers to stop
+        socket->stopAccepting();
+      });
+    }
+  }
+
   auto deadline = std::chrono::system_clock::now() + workersJoinTimeout_;
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
