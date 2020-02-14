@@ -73,7 +73,6 @@ add_library(
   protocol/JSONProtocolCommon.cpp
   protocol/JSONProtocol.cpp
   protocol/Serializer.cpp
-  protocol/SimpleJSONProtocol.cpp
   protocol/VirtualProtocol.cpp
 )
 target_link_libraries(
