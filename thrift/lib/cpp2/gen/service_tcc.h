@@ -80,7 +80,8 @@ void process_handle_exn_deserialization(
   eb->runInEventBaseThread(
       [buf = std::move(buf), req = std::move(req)]() mutable {
         if (req->isStream()) {
-          req->sendStreamReply({std::move(buf), {}});
+          std::ignore = req->sendStreamReply(
+              std::move(buf), StreamServerCallbackPtr(nullptr));
         } else if (req->isSink()) {
 #if FOLLY_HAS_COROUTINES
           req->sendSinkReply(std::move(buf), {});
@@ -106,7 +107,8 @@ void process_throw_wrapped_handler_error(
   TApplicationException x(ew.what().toStdString());
   auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
   if (req->isStream()) {
-    req->sendStreamReply({std::move(buf), {}});
+    std::ignore =
+        req->sendStreamReply(std::move(buf), StreamServerCallbackPtr(nullptr));
   } else if (req->isSink()) {
 #if FOLLY_HAS_COROUTINES
     req->sendSinkReply(std::move(buf), {});

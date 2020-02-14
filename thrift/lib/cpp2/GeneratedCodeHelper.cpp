@@ -84,8 +84,8 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     eb->runInEventBaseThread(
         [que = move(queue), request = move(req)]() mutable {
           if (request->isStream()) {
-            request->sendStreamReply(
-                {que.move(), SemiStream<std::unique_ptr<folly::IOBuf>>{}});
+            std::ignore = request->sendStreamReply(
+                que.move(), StreamServerCallbackPtr(nullptr));
           } else if (request->isSink()) {
 #if FOLLY_HAS_COROUTINES
             request->sendSinkReply(que.move(), {});

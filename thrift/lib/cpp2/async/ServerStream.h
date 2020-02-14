@@ -22,9 +22,9 @@
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
-#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
 #include <thrift/lib/cpp2/async/ServerPublisherStream.h>
+#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
@@ -56,8 +56,7 @@ class ServerStream {
                      StreamClientCallback* callback,
                      folly::EventBase* clientEb) mutable {
             auto streamPtr =
-                SemiStream<std::unique_ptr<folly::IOBuf>>(std::move(stream))
-                    .toStreamServerCallbackPtr(*clientEb);
+                std::move(stream).toStreamServerCallbackPtr(*clientEb);
             streamPtr->resetClientCallback(*callback);
             std::ignore = callback->onFirstResponse(
                 std::move(payload), clientEb, streamPtr.release());

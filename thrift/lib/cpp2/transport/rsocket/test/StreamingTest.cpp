@@ -950,17 +950,6 @@ TEST_F(StreamingTest, ServerCompletesFirstResponseAfterClientTimeout) {
   waitNoLeak(&client);
 }
 
-TEST_F(BlockStreamingTest, StreamBlockTaskQueue) {
-  // TODO (T61528332) fails due to incompabitibility b/w serverstream / rsocket
-  return;
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
-    std::vector<apache::thrift::ClientBufferedStream<int32_t>> streams;
-    for (int ind = 0; ind < 1000; ind++) {
-      streams.push_back(client->sync_slowCancellation());
-    }
-  });
-}
-
 TEST_F(StreamingTest, CloseClientWithMultipleActiveStreams) {
   connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
 #if FOLLY_HAS_COROUTINES

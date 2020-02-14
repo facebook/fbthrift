@@ -41,10 +41,8 @@
 
 #include <wangle/acceptor/Acceptor.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
-#include <yarpl/Flowable.h>
 
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -58,10 +56,7 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketStreamClientCallback.h>
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
-
-using namespace yarpl::flowable;
 
 namespace apache {
 namespace thrift {
@@ -193,133 +188,61 @@ folly::Try<void> RocketTestClient::sendRequestFnfSync(
   return response;
 }
 
-folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
-    Payload request) {
+folly::Try<ClientBufferedStream<Payload>>
+RocketTestClient::sendRequestStreamSync(Payload request) {
   constexpr std::chrono::milliseconds kFirstResponseTimeout{500};
   constexpr std::chrono::milliseconds kChunkTimeout{500};
 
-  class TestStreamClientCallback final
-      : public yarpl::flowable::Flowable<Payload>,
-        public StreamClientCallback {
-   private:
-    class Subscription final : public yarpl::flowable::Subscription {
-     public:
-      explicit Subscription(std::shared_ptr<TestStreamClientCallback> flowable)
-          : flowable_(std::move(flowable)) {}
-
-      void request(int64_t n) override {
-        if (!flowable_) {
-          return;
-        }
-        n = std::min<int64_t>(
-            std::max<int64_t>(0, n), std::numeric_limits<int32_t>::max());
-        std::ignore = flowable_->serverCallback_->onStreamRequestN(n);
-      }
-
-      void cancel() override {
-        flowable_->serverCallback_->onStreamCancel();
-        flowable_.reset();
-      }
-
-     private:
-      std::shared_ptr<TestStreamClientCallback> flowable_;
-    };
-
+  class TestStreamCallback final
+      : public ::apache::thrift::detail::ClientStreamBridge::
+            FirstResponseCallback {
    public:
-    TestStreamClientCallback(
+    TestStreamCallback(
         std::chrono::milliseconds chunkTimeout,
-        folly::Promise<SemiStream<Payload>> p)
+        folly::Promise<ClientBufferedStream<Payload>> p)
         : chunkTimeout_(chunkTimeout), p_(std::move(p)) {}
 
-    void init() {
-      self_ = this->ref_from_this(this);
-    }
-
-    // Flowable interface
-    void subscribe(std::shared_ptr<yarpl::flowable::Subscriber<Payload>>
-                       subscriber) override {
-      subscriber_ = std::move(subscriber);
-      auto subscription =
-          std::make_shared<Subscription>(this->ref_from_this(this));
-      subscriber_->onSubscribe(std::move(subscription));
-      if (pendingComplete_) {
-        onStreamComplete();
-      }
-      if (pendingError_) {
-        onStreamError(std::move(pendingError_));
-      }
-    }
-
     // ClientCallback interface
-    bool onFirstResponse(
+    void onFirstResponse(
         FirstResponsePayload&& firstPayload,
-        folly::EventBase* evb,
-        StreamServerCallback* serverCallback) override {
-      serverCallback_ = serverCallback;
-      auto self = std::move(self_);
-      self = self->timeout(*evb, chunkTimeout_, chunkTimeout_, [] {
-        return transport::TTransportException(
-            transport::TTransportException::TTransportExceptionType::TIMED_OUT);
-      });
+        ::apache::thrift::detail::ClientStreamBridge::ClientPtr
+            clientStreamBridge) override {
       if (getRange(*firstPayload.payload) == "error:application") {
         p_.setException(
             folly::make_exception_wrapper<thrift::detail::EncodedError>(
                 std::move(firstPayload.payload)));
-        self_.reset();
       } else {
-        p_.setValue(toStream(std::move(self), evb));
+        p_.setValue(ClientBufferedStream<Payload>(
+            std::move(clientStreamBridge),
+            [](folly::Try<StreamPayload>&& v) {
+              if (v.hasValue()) {
+                return folly::Try<Payload>(
+                    Payload::makeFromData(std::move(v->payload)));
+              } else if (v.hasException()) {
+                return folly::Try<Payload>(std::move(v.exception()));
+              } else {
+                return folly::Try<Payload>();
+              }
+            },
+            100));
       }
-      return true;
+      delete this;
     }
 
     void onFirstResponseError(folly::exception_wrapper ew) override {
       p_.setException(std::move(ew));
-      self_.reset();
-    }
-
-    bool onStreamNext(StreamPayload&& payload) override {
-      subscriber_->onNext(Payload::makeFromData(std::move(payload.payload)));
-      return true;
-    }
-
-    void onStreamError(folly::exception_wrapper ew) override {
-      if (!subscriber_) {
-        pendingError_ = std::move(ew);
-        return;
-      }
-      subscriber_->onError(std::move(ew));
-    }
-
-    void onStreamComplete() override {
-      if (subscriber_) {
-        subscriber_->onComplete();
-      } else {
-        pendingComplete_ = true;
-      }
-    }
-
-    void resetServerCallback(StreamServerCallback& serverCallback) override {
-      serverCallback_ = &serverCallback;
+      delete this;
     }
 
    private:
     std::chrono::milliseconds chunkTimeout_;
-    folly::Promise<SemiStream<Payload>> p_;
-
-    std::shared_ptr<yarpl::flowable::Subscriber<Payload>> subscriber_;
-    StreamServerCallback* serverCallback_{nullptr};
-    std::shared_ptr<yarpl::flowable::Flowable<Payload>> self_;
-
-    bool pendingComplete_{false};
-    folly::exception_wrapper pendingError_;
+    folly::Promise<ClientBufferedStream<Payload>> p_;
   };
 
-  folly::Promise<SemiStream<Payload>> p;
+  folly::Promise<ClientBufferedStream<Payload>> p;
   auto sf = p.getSemiFuture();
 
-  auto clientCallback =
-      std::make_shared<TestStreamClientCallback>(kChunkTimeout, std::move(p));
-  clientCallback->init();
+  auto clientCallback = new TestStreamCallback(kChunkTimeout, std::move(p));
 
   evb_.runInEventBaseThread([&] {
     fm_.addTask([&] {
@@ -328,7 +251,7 @@ folly::Try<SemiStream<Payload>> RocketTestClient::sendRequestStreamSync(
           kFirstResponseTimeout,
           kChunkTimeout,
           0,
-          clientCallback.get());
+          ::apache::thrift::detail::ClientStreamBridge::create(clientCallback));
     });
   });
 

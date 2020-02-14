@@ -412,10 +412,6 @@ namespace detail {
 namespace ap {
 
 template <typename Protocol, typename PResult, typename T>
-apache::thrift::SemiStream<T> decode_stream(
-    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream);
-
-template <typename Protocol, typename PResult, typename T>
 folly::Try<T> decode_stream_element(
     folly::Try<apache::thrift::StreamPayload>&& payload);
 
@@ -548,63 +544,6 @@ folly::exception_wrapper recv_wrapped(
   }
   if (ew) {
     ctx->handlerErrorWrapped(ew);
-  }
-  return ew;
-}
-
-template <typename PResult, typename Protocol, typename Response, typename Item>
-folly::exception_wrapper recv_wrapped(
-    const char* method,
-    Protocol* prot,
-    ClientReceiveState& state,
-    apache::thrift::ResponseAndSemiStream<Response, Item>& _return) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
-  apache::thrift::ContextStack* ctx = state.ctx();
-
-  typename PResult::FieldsType result;
-  result.template get<0>().value = &_return.response;
-
-  auto ew = recv_wrapped_helper(method, prot, state, result);
-  if (!ew) {
-    ew = apache::thrift::detail::ac::extract_exn<true>(result);
-  }
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-
-  if (!ew) {
-    _return.stream = detail::ap::
-        decode_stream<Protocol, typename PResult::StreamPResultType, Item>(
-            state.extractStream());
-  }
-  return ew;
-}
-
-template <typename PResult, typename Protocol, typename Item>
-folly::exception_wrapper recv_wrapped(
-    const char* method,
-    Protocol* prot,
-    ClientReceiveState& state,
-    apache::thrift::SemiStream<Item>& _return) {
-  prot->setInput(state.buf());
-  auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
-  apache::thrift::ContextStack* ctx = state.ctx();
-
-  typename PResult::FieldsType result;
-
-  auto ew = recv_wrapped_helper(method, prot, state, result);
-  if (!ew) {
-    ew = apache::thrift::detail::ac::extract_exn<false>(result);
-  }
-  if (ew) {
-    ctx->handlerErrorWrapped(ew);
-  }
-
-  if (!ew) {
-    _return = detail::ap::
-        decode_stream<Protocol, typename PResult::StreamPResultType, Item>(
-            state.extractStream());
   }
   return ew;
 }
@@ -1102,18 +1041,6 @@ ServerStreamFactory encode_server_stream(
   return stream(
       std::move(serverExecutor),
       encode_server_stream_payload<Protocol, PResult, T, ErrorMapFunc>);
-}
-
-template <typename Protocol, typename PResult, typename T>
-apache::thrift::SemiStream<T> decode_stream(
-    apache::thrift::SemiStream<std::unique_ptr<folly::IOBuf>>&& stream) {
-  return std::move(stream).map(
-      [](std::unique_ptr<folly::IOBuf>&& buf) mutable {
-        return decode_stream_payload<Protocol, PResult, T>(*buf.get());
-      },
-      [](folly::exception_wrapper&& ew) {
-        return decode_stream_exception<Protocol, PResult, T>(std::move(ew));
-      });
 }
 
 template <typename Protocol, typename PResult, typename T>

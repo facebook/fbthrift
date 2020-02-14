@@ -26,7 +26,6 @@
 #include <folly/io/async/ScopedEventBaseThread.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
-#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #include <thrift/lib/cpp2/transport/rsocket/test/util/gen-cpp2/StreamService.h>
@@ -68,67 +67,6 @@ TEST(YarplStreamImplTest, Basic) {
   auto flowable2 = toFlowable(std::move(stream2));
 
   EXPECT_EQ(run(flowable2), std::vector<int>({12 * 2, 34 * 2, 56 * 2, 98 * 2}));
-}
-
-TEST(YarplStreamImplTest, SemiStream) {
-  folly::ScopedEventBaseThread evbThread;
-  folly::ScopedEventBaseThread evbThread2;
-
-  auto flowable = Flowable<>::justN({12, 34, 56, 98});
-  auto stream = toStream(std::move(flowable), evbThread.getEventBase());
-  SemiStream<int> stream2 = std::move(stream).map([&](int x) {
-    EXPECT_TRUE(evbThread.getEventBase()->inRunningEventBaseThread());
-    return x * 2;
-  });
-  auto streamString = std::move(stream2).map([&](int x) {
-    EXPECT_TRUE(evbThread2.getEventBase()->inRunningEventBaseThread());
-    return folly::to<std::string>(x);
-  });
-  auto flowableString =
-      toFlowable(std::move(streamString).via(evbThread2.getEventBase()));
-
-  EXPECT_EQ(
-      run(flowableString),
-      std::vector<std::string>({"24", "68", "112", "196"}));
-}
-
-TEST(YarplStreamImplTest, EncodeDecode) {
-  folly::ScopedEventBaseThread evbThread;
-
-  Message mIn;
-  mIn.set_message("Test Message");
-  mIn.set_timestamp(2015);
-
-  auto flowable = Flowable<>::justN({mIn});
-  auto inStream = toStream(std::move(flowable), evbThread.getEventBase());
-
-  using PResult =
-      ThriftPresult<true, FieldData<0, protocol::T_STRUCT, Message*>>;
-  // Encode in the thread of the flowable, namely at the user's thread
-  auto encodedStream =
-      detail::ap::encode_stream<
-          CompactProtocolWriter,
-          PResult,
-          detail::ap::EmptyExMapType>(std::move(inStream))
-          .map([](folly::IOBufQueue&& in) mutable { return in.move(); });
-
-  // No event base is involved, as this is a defered decoding
-  auto decodedStream =
-      detail::ap::decode_stream<CompactProtocolReader, PResult, Message>(
-          SemiStream<std::unique_ptr<folly::IOBuf>>(std::move(encodedStream)));
-
-  // Actual decode operation happens at the given user thread
-  auto flowableOut =
-      toFlowable(std::move(decodedStream).via(evbThread.getEventBase()));
-
-  auto subscriber = std::make_shared<TestSubscriber<Message>>(1);
-  flowableOut->subscribe(subscriber);
-
-  subscriber->awaitTerminalEvent(std::chrono::seconds(1));
-
-  Message mOut = std::move(subscriber->values()[0]);
-  ASSERT_STREQ(mIn.get_message().c_str(), mOut.get_message().c_str());
-  ASSERT_EQ(mIn.get_timestamp(), mOut.get_timestamp());
 }
 
 } // namespace thrift

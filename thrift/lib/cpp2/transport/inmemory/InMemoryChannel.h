@@ -37,14 +37,6 @@ class InMemoryChannel : public ThriftChannelIf {
       std::unique_ptr<folly::IOBuf> payload,
       std::unique_ptr<ThriftClientCallback> callback) noexcept override;
 
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&&,
-      std::unique_ptr<folly::IOBuf>,
-      apache::thrift::SemiStream<
-          std::unique_ptr<folly::IOBuf>>) noexcept override {
-    LOG(FATAL) << "Inmemory transport layer doesn't support streaming yet";
-  }
-
   folly::EventBase* getEventBase() noexcept override;
 
  private:

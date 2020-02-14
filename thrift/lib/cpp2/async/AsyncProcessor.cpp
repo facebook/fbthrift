@@ -23,27 +23,6 @@ constexpr std::chrono::seconds ServerInterface::BlockingThreadManager::kTimeout;
 thread_local RequestParams ServerInterface::requestParams_;
 
 void HandlerCallbackBase::sendReply(
-    ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue>&&
-        responseAndStream) {
-  auto& queue = responseAndStream.response;
-  auto& stream = responseAndStream.stream;
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
-  auto stream_ =
-      std::move(stream).map([](auto&& value) mutable { return value.move(); });
-  if (getEventBase()->isInEventBaseThread()) {
-    req_->sendStreamReply({queue.move(), std::move(stream_)}, nullptr, crc32c);
-  } else {
-    getEventBase()->runInEventBaseThread([req = std::move(req_),
-                                          queue = std::move(queue),
-                                          stream = std::move(stream_),
-                                          crc32c]() mutable {
-      req->sendStreamReply({queue.move(), std::move(stream)}, nullptr, crc32c);
-    });
-  }
-}
-
-void HandlerCallbackBase::sendReply(
     ResponseAndServerStreamFactory&& responseAndStream) {
   auto& queue = responseAndStream.response;
   auto& stream = responseAndStream.stream;

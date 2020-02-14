@@ -27,7 +27,7 @@ void <%service:name%>AsyncProcessor::process_<%function:cpp_name%>(apache::thrif
 <%#function:oneway?%><%#function:eb%>
   if (!req->isOneway()) {
     if (req->isStream()) {
-      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+      std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
     } else {
       req->sendReply(std::unique_ptr<folly::IOBuf>());
     }
@@ -260,12 +260,12 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:cpp_name%>(apache:
   <%#function:returns_stream?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result.fields);
   queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendStreamReply({queue.move(), {}});
+  std::ignore = req->sendStreamReply(queue.move(), apache::thrift::StreamServerCallbackPtr(nullptr));
   <%/function:returns_stream?%>
   <%#function:returns_sink?%>
   auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result.fields);
   queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendSinkReply(queue.move(), {});
+  req->sendSinkReply(queue.move(), {});
   <%/function:returns_sink?%>
 <%/function:exceptions?%>
 }

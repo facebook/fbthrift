@@ -26,7 +26,6 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 
-#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
@@ -109,13 +108,6 @@ void ThriftServerRequestResponse::sendThriftResponse(
   }
 }
 
-void ThriftServerRequestResponse::sendStreamThriftResponse(
-    ResponseRpcMetadata&&,
-    std::unique_ptr<folly::IOBuf>,
-    SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
-  LOG(FATAL) << "Single-response requests cannot send stream responses";
-}
-
 void ThriftServerRequestResponse::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
@@ -159,13 +151,6 @@ void ThriftServerRequestFnf::sendThriftResponse(
   LOG(FATAL) << "One-way requests cannot send responses";
 }
 
-void ThriftServerRequestFnf::sendStreamThriftResponse(
-    ResponseRpcMetadata&&,
-    std::unique_ptr<folly::IOBuf>,
-    SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
-  LOG(FATAL) << "One-way requests cannot send stream responses";
-}
-
 void ThriftServerRequestFnf::sendSerializedError(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {}
@@ -200,24 +185,6 @@ void ThriftServerRequestStream::sendThriftResponse(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {
   LOG(FATAL) << "Stream requests must respond via sendStreamThriftResponse";
-}
-
-void ThriftServerRequestStream::sendStreamReply(
-    ResponseAndSemiStream<
-        std::unique_ptr<folly::IOBuf>,
-        std::unique_ptr<folly::IOBuf>>&& result,
-    MessageChannel::SendCallback*,
-    folly::Optional<uint32_t> crc32c) noexcept {
-  if (result.stream) {
-    auto serverCallback =
-        std::move(result.stream).toStreamServerCallbackPtr(*getEventBase());
-    // Note that onSubscribe will run after onFirstResponse
-    sendStreamReply(
-        std::move(result.response), std::move(serverCallback), crc32c);
-  } else {
-    sendStreamReply(
-        std::move(result.response), StreamServerCallbackPtr(), crc32c);
-  }
 }
 
 bool ThriftServerRequestStream::sendStreamThriftResponse(
@@ -287,13 +254,6 @@ void ThriftServerRequestSink::sendThriftResponse(
     ResponseRpcMetadata&&,
     std::unique_ptr<folly::IOBuf>) noexcept {
   LOG(FATAL) << "Sink requests must respond via sendSinkThriftResponse";
-}
-
-void ThriftServerRequestSink::sendStreamThriftResponse(
-    ResponseRpcMetadata&&,
-    std::unique_ptr<folly::IOBuf>,
-    SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept {
-  LOG(FATAL) << "Sink requests cannot send stream responses";
 }
 
 void ThriftServerRequestSink::sendSerializedError(

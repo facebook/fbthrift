@@ -35,8 +35,6 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestCallback.h>
-#include <thrift/lib/cpp2/async/SemiStream.h>
-#include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Checksum.h>

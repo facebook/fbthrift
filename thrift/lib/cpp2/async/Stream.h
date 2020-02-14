@@ -77,9 +77,6 @@ class StreamImplIf {
 };
 } // namespace detail
 
-template <typename T>
-class SemiStream;
-
 class Subscription {
  public:
   Subscription(Subscription&&) = default;
@@ -225,10 +222,11 @@ class Stream {
 
   void subscribe(std::unique_ptr<SubscriberIf<T>>) &&;
 
+  StreamServerCallbackPtr toStreamServerCallbackPtr(folly::EventBase& evb) &&;
+
  private:
   template <typename U>
   friend class Stream;
-  friend class SemiStream<T>;
 
   Stream(
       std::unique_ptr<detail::StreamImplIf> impl,

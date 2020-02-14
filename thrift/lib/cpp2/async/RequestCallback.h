@@ -28,7 +28,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
-#include <thrift/lib/cpp2/async/SemiStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 
 namespace apache {
@@ -46,18 +45,6 @@ class ClientReceiveState {
         ctx_(std::move(_ctx)),
         buf_(std::move(_buf)),
         header_(std::move(_header)) {}
-  ClientReceiveState(
-      uint16_t _protocolId,
-      ResponseAndSemiStream<
-          std::unique_ptr<folly::IOBuf>,
-          std::unique_ptr<folly::IOBuf>> bufAndStream,
-      std::unique_ptr<apache::thrift::transport::THeader> _header,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx)
-      : protocolId_(_protocolId),
-        ctx_(std::move(_ctx)),
-        buf_(std::move(bufAndStream.response)),
-        header_(std::move(_header)),
-        stream_(std::move(bufAndStream.stream)) {}
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> buf,
@@ -114,10 +101,6 @@ class ClientReceiveState {
     return std::move(buf_);
   }
 
-  SemiStream<std::unique_ptr<folly::IOBuf>> extractStream() {
-    return std::move(stream_);
-  }
-
   detail::ClientStreamBridge::ClientPtr extractStreamBridge() {
     return std::move(streamBridge_);
   }
@@ -160,7 +143,6 @@ class ClientReceiveState {
   std::unique_ptr<folly::IOBuf> buf_;
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   folly::exception_wrapper excw_;
-  SemiStream<std::unique_ptr<folly::IOBuf>> stream_;
   detail::ClientStreamBridge::ClientPtr streamBridge_;
   detail::ClientSinkBridge::Ptr sink_;
   int32_t chunkBufferSize_;

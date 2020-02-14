@@ -25,7 +25,7 @@
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 
-#include <thrift/lib/cpp2/async/SemiStream.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
@@ -72,7 +72,8 @@ class RocketTestClient {
       Payload request,
       RocketClientWriteCallback* writeCallback = nullptr);
 
-  folly::Try<SemiStream<Payload>> sendRequestStreamSync(Payload request);
+  folly::Try<ClientBufferedStream<Payload>> sendRequestStreamSync(
+      Payload request);
   void sendRequestChannel(ChannelClientCallback* callback, Payload request);
   void sendRequestSink(SinkClientCallback* callback, Payload request);
 

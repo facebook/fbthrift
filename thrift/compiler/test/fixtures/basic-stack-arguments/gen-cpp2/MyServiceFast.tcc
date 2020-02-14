@@ -169,7 +169,7 @@ template <typename ProtocolIn_, typename ProtocolOut_>
 void MyServiceFastAsyncProcessor::process_lobDataById(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   if (!req->isOneway()) {
     if (req->isStream()) {
-      req->sendStreamReply({std::unique_ptr<folly::IOBuf>(), {}});
+      std::ignore = req->sendStreamReply(std::unique_ptr<folly::IOBuf>(), apache::thrift::StreamServerCallbackPtr(nullptr));
     } else {
       req->sendReply(std::unique_ptr<folly::IOBuf>());
     }

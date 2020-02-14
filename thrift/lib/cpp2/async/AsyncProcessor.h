@@ -698,9 +698,6 @@ class HandlerCallbackBase {
     }
   }
 
-  void sendReply(ResponseAndStream<folly::IOBufQueue, folly::IOBufQueue>&&
-                     responseAndStream);
-
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
 #if FOLLY_HAS_COROUTINES

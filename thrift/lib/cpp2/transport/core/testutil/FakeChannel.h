@@ -51,14 +51,6 @@ class FakeChannel : public ThriftChannelIf {
     LOG(FATAL) << "sendThriftRequest() unused in this fake object.";
   }
 
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&& /*metadata*/,
-      std::unique_ptr<folly::IOBuf> /*response*/,
-      apache::thrift::SemiStream<
-          std::unique_ptr<folly::IOBuf>> /*stream*/) noexcept override {
-    LOG(FATAL) << "sendStreamThriftResponse() unused in this fake object.";
-  }
-
   folly::EventBase* getEventBase() noexcept override {
     return evb_.get();
   }

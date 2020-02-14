@@ -84,14 +84,6 @@ class H2Channel : public ThriftChannelIf {
   // object.
   virtual void onH2StreamClosed(proxygen::ProxygenError /*error*/) noexcept {}
 
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&&,
-      std::unique_ptr<folly::IOBuf>,
-      apache::thrift::SemiStream<
-          std::unique_ptr<folly::IOBuf>>) noexcept override {
-    LOG(FATAL) << "Http2 transport layer doesn't support streaming yet";
-  }
-
  protected:
   // Encodes Thrift headers to be HTTP compliant.
   void encodeHeaders(

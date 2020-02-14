@@ -63,11 +63,6 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&&,
-      std::unique_ptr<folly::IOBuf>,
-      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
-
   void sendSerializedError(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
@@ -107,11 +102,6 @@ class ThriftServerRequestFnf final : public ThriftRequestCore {
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&&,
-      std::unique_ptr<folly::IOBuf>,
-      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
-
   void sendSerializedError(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override;
@@ -147,20 +137,6 @@ class ThriftServerRequestStream final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf>) noexcept override;
 
   using ThriftRequestCore::sendStreamReply;
-
-  void sendStreamReply(
-      ResponseAndSemiStream<
-          std::unique_ptr<folly::IOBuf>,
-          std::unique_ptr<folly::IOBuf>>&&,
-      MessageChannel::SendCallback*,
-      folly::Optional<uint32_t>) noexcept override;
-
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&&,
-      std::unique_ptr<folly::IOBuf>,
-      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override {
-    std::terminate();
-  }
 
   void sendSerializedError(
       ResponseRpcMetadata&& metadata,
@@ -213,11 +189,6 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
   void sendThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;
-
-  void sendStreamThriftResponse(
-      ResponseRpcMetadata&&,
-      std::unique_ptr<folly::IOBuf>,
-      SemiStream<std::unique_ptr<folly::IOBuf>>) noexcept override;
 
   void sendSerializedError(
       ResponseRpcMetadata&& metadata,
