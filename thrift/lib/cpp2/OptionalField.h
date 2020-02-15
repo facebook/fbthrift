@@ -58,68 +58,28 @@ class DeprecatedOptionalField : public folly::Optional<T> {
     return *this;
   }
 
-  template <typename L, typename R>
-  friend bool operator==(
-      const DeprecatedOptionalField<L>& lhs,
-      const DeprecatedOptionalField<R>& rhs);
-  template <typename L, typename R>
-  friend bool operator!=(
-      const DeprecatedOptionalField<L>& lhs,
-      const DeprecatedOptionalField<R>& rhs);
-  template <typename U>
-  friend bool operator==(
-      const DeprecatedOptionalField<U>& lhs,
-      const folly::Optional<U>& rhs);
-  template <typename U>
-  friend bool operator==(
-      const folly::Optional<U>& lhs,
-      const DeprecatedOptionalField<U>& rhs);
-  template <typename U>
-  friend bool operator!=(
-      const DeprecatedOptionalField<U>& lhs,
-      const folly::Optional<U>& rhs);
-  template <typename U>
-  friend bool operator!=(
-      const folly::Optional<U>& lhs,
-      const DeprecatedOptionalField<U>& rhs);
+#define THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(OP)              \
+  template <class U>                                                       \
+  bool operator OP(const DeprecatedOptionalField<U>& rhs) const {          \
+    return toFolly() OP rhs.toFolly();                                     \
+  }                                                                        \
+  template <class U>                                                       \
+  friend bool operator OP(                                                 \
+      const folly::Optional<U>& lhs, const DeprecatedOptionalField& rhs) { \
+    return lhs OP rhs.toFolly();                                           \
+  }                                                                        \
+  template <class U>                                                       \
+  bool operator OP(const folly::Optional<U>& rhs) const {                  \
+    return toFolly() OP rhs;                                               \
+  }
+  THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(==)
+  THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(!=)
+  THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(<)
+  THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(<=)
+  THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(>)
+  THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP(>=)
+#undef THRIFT_DETAIL_DEPRECATED_OPTIONAL_FIELD_DEFINE_OP
 };
-
-template <typename L, typename R>
-bool operator==(
-    const DeprecatedOptionalField<L>& lhs,
-    const DeprecatedOptionalField<R>& rhs) {
-  return lhs.toFolly() == rhs.toFolly();
-}
-template <typename L, typename R>
-bool operator!=(
-    const DeprecatedOptionalField<L>& lhs,
-    const DeprecatedOptionalField<R>& rhs) {
-  return lhs.toFolly() != rhs.toFolly();
-}
-template <typename U>
-bool operator==(
-    const DeprecatedOptionalField<U>& lhs,
-    const folly::Optional<U>& rhs) {
-  return lhs.toFolly() == rhs;
-}
-template <typename U>
-bool operator==(
-    const folly::Optional<U>& lhs,
-    const DeprecatedOptionalField<U>& rhs) {
-  return lhs == rhs.toFolly();
-}
-template <typename U>
-bool operator!=(
-    const DeprecatedOptionalField<U>& lhs,
-    const folly::Optional<U>& rhs) {
-  return lhs.toFolly() != rhs;
-}
-template <typename U>
-bool operator!=(
-    const folly::Optional<U>& lhs,
-    const DeprecatedOptionalField<U>& rhs) {
-  return lhs != rhs.toFolly();
-}
 
 template <class T>
 folly::Optional<T> castToFolly(const DeprecatedOptionalField<T>& t) {
