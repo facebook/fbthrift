@@ -50,12 +50,5 @@
         std::move(onCanceled),
         bufferSizeLimit);
   }
-  template <typename Generator>
-  auto createStreamGenerator(Generator&& generator) {
-    return apache::thrift::StreamGenerator::create(
-        folly::SerialExecutor::create(
-          getBlockingThreadManager()),
-        std::forward<Generator>(generator));
-  }
 <%/service:any_streams?%>
 };
