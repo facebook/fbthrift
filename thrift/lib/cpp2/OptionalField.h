@@ -19,6 +19,7 @@
 #include <folly/Optional.h>
 #include <folly/Portability.h>
 #include <type_traits>
+#include <utility>
 
 namespace apache {
 namespace thrift {
@@ -30,13 +31,32 @@ namespace thrift {
 template <typename T>
 class DeprecatedOptionalField : public folly::Optional<T> {
  private:
-  const folly::Optional<T>& toFolly() const {
+  using Base = folly::Optional<T>;
+  const Base& toFolly() const {
     return *this;
   }
 
  public:
-  using folly::Optional<T>::Optional;
-  using folly::Optional<T>::operator=;
+  using Base::Base;
+
+  // Copy/Move constructors are not inherited
+  DeprecatedOptionalField(const Base& t) noexcept(
+      std::is_nothrow_copy_constructible<Base>::value)
+      : Base(t) {}
+  DeprecatedOptionalField(Base&& t) noexcept(
+      std::is_nothrow_move_constructible<Base>::value)
+      : Base(std::move(t)) {}
+
+  // Use perfect forwarding to hide Base::operator=(Base&&),
+  // Otherwise `s.foo = {};` will be ambiguous between
+  // default copy ctor and Base::operator=(Base&&).
+  template <class U>
+  auto& operator=(U&& u) noexcept(
+      noexcept(std::declval<DeprecatedOptionalField>().Base::operator=(
+          std::forward<U>(u)))) {
+    Base::operator=(std::forward<U>(u));
+    return *this;
+  }
 
   template <typename L, typename R>
   friend bool operator==(
