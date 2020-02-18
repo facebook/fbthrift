@@ -7,8 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
-#include <thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h>
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_metadata.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_metadata.h"
 

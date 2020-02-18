@@ -7,6 +7,5 @@
 #pragma once
 
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
-#include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
-#include <thrift/compiler/test/fixtures/no_metadata/gen-cpp2/module_types.h>
+#include "thrift/compiler/test/fixtures/no_metadata/gen-cpp2/module_types.h"
 
