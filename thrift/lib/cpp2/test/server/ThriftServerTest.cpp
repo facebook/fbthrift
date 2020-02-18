@@ -28,7 +28,6 @@
 #include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/executors/GlobalExecutor.h>
-#include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncSocket.h>

@@ -17,7 +17,6 @@
 #pragma once
 
 #include <folly/Portability.h>
-#include <folly/fibers/Baton.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>

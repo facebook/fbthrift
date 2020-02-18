@@ -15,10 +15,6 @@
  */
 
 #include <thrift/lib/cpp2/async/RequestChannel.h>
-
-#include <folly/fibers/Baton.h>
-#include <folly/fibers/Fiber.h>
-
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
 namespace apache {
