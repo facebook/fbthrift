@@ -17,7 +17,11 @@ namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
-
+template <>
+class StructMetadata<::matching_module_name::MyStruct> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_metadata.h"
 
 namespace apache {
@@ -11,6 +12,8 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void EnumMetadata<::a::different::ns::AnEnum>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("includes.AnEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -21,6 +24,49 @@ void EnumMetadata<::a::different::ns::AnEnum>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "includes.AnEnum";
   for (const auto& p : ::a::different::ns::_AnEnum_VALUES_TO_NAMES) {
     enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
+void StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("includes.AStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& includes_AStruct = res.first->second;
+  includes_AStruct.name = "includes.AStruct";
+  includes_AStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  includes_AStruct_fields[] = {
+    {1, "FieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : includes_AStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    includes_AStruct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("includes.AStructB", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& includes_AStructB = res.first->second;
+  includes_AStructB.name = "includes.AStructB";
+  includes_AStructB.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  includes_AStructB_fields[] = {
+    {1, "FieldA", false, std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct", metadata)},
+  };
+  for (const auto& f : includes_AStructB_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    includes_AStructB.fields.push_back(std::move(field));
   }
 }
 

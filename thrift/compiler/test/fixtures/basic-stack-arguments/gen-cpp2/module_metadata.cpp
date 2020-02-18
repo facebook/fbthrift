@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,6 +12,8 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.MyEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -21,6 +24,29 @@ void EnumMetadata<::cpp2::MyEnum>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "module.MyEnum";
   for (const auto& p : ::cpp2::_MyEnum_VALUES_TO_NAMES) {
     enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
+void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
+  module_MyStruct.name = "module.MyStruct";
+  module_MyStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_MyStruct_fields[] = {
+    {1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_MyStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_MyStruct.fields.push_back(std::move(field));
   }
 }
 

@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/templated-deserialize/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,6 +12,8 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void EnumMetadata<::cpp2::MyEnumA>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.MyEnumA", ::apache::thrift::metadata::ThriftEnum{});
@@ -21,6 +24,71 @@ void EnumMetadata<::cpp2::MyEnumA>::gen(ThriftMetadata& metadata) {
   enum_metadata.name = "module.MyEnumA";
   for (const auto& p : ::cpp2::_MyEnumA_VALUES_TO_NAMES) {
     enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
+void StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.SmallStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_SmallStruct = res.first->second;
+  module_SmallStruct.name = "module.SmallStruct";
+  module_SmallStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SmallStruct_fields[] = {
+    {1, "small_A", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {2, "small_B", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module_SmallStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_SmallStruct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.containerStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_containerStruct = res.first->second;
+  module_containerStruct.name = "module.containerStruct";
+  module_containerStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_containerStruct_fields[] = {
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
+    {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {6, "fieldF", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))))},
+    {7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))))},
+    {8, "fieldH", false, std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
+    {9, "fieldI", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {10, "fieldJ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
+    {11, "fieldK", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))))},
+    {12, "fieldL", false, std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))))},
+    {13, "fieldM", false, std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
+    {14, "fieldN", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::I64)))},
+    {15, "fieldO", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)))},
+    {16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
+    {17, "fieldQ", false, std::make_unique<Enum< ::cpp2::MyEnumA>>("module.MyEnumA", metadata)},
+    {18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
+    {19, "fieldS", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)},
+    {20, "fieldT", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)},
+    {21, "fieldU", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)},
+    {23, "fieldX", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)},
+  };
+  for (const auto& f : module_containerStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_containerStruct.fields.push_back(std::move(field));
   }
 }
 

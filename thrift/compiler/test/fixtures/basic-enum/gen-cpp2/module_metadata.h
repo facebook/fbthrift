@@ -31,7 +31,11 @@ class EnumMetadata<::test::fixtures::enumstrict::MyBigEnum> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
-
+template <>
+class StructMetadata<::test::fixtures::enumstrict::MyStruct> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

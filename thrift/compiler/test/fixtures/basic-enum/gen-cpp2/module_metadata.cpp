@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/basic-enum/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,6 +12,8 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void EnumMetadata<::test::fixtures::enumstrict::EmptyEnum>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.EmptyEnum", ::apache::thrift::metadata::ThriftEnum{});
@@ -43,6 +46,29 @@ void EnumMetadata<::test::fixtures::enumstrict::MyBigEnum>::gen(ThriftMetadata& 
   enum_metadata.name = "module.MyBigEnum";
   for (const auto& p : ::test::fixtures::enumstrict::_MyBigEnum_VALUES_TO_NAMES) {
     enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
+void StructMetadata<::test::fixtures::enumstrict::MyStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.MyStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_MyStruct = res.first->second;
+  module_MyStruct.name = "module.MyStruct";
+  module_MyStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_MyStruct_fields[] = {
+    {1, "myEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyEnum>>("module.MyEnum", metadata)},
+    {2, "myBigEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyBigEnum>>("module.MyBigEnum", metadata)},
+  };
+  for (const auto& f : module_MyStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_MyStruct.fields.push_back(std::move(field));
   }
 }
 

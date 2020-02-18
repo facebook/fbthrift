@@ -41,7 +41,11 @@ class EnumMetadata<::facebook::ns::qwerty::AnEnumE> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
-
+template <>
+class StructMetadata<::facebook::ns::qwerty::SomeStruct> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

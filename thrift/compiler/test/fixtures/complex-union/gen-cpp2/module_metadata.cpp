@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/complex-union/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,7 +12,189 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ComplexUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ComplexUnion = res.first->second;
+  module_ComplexUnion.name = "module.ComplexUnion";
+  module_ComplexUnion.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ComplexUnion_fields[] = {
+    {1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {5, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
+    {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I16), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
+    {14, "stringRef", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_ComplexUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_ComplexUnion.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ListUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ListUnion = res.first->second;
+  module_ListUnion.name = "module.ListUnion";
+  module_ListUnion.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ListUnion_fields[] = {
+    {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
+    {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+  };
+  for (const auto& f : module_ListUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_ListUnion.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.DataUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_DataUnion = res.first->second;
+  module_DataUnion.name = "module.DataUnion";
+  module_DataUnion.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_DataUnion_fields[] = {
+    {1, "binaryData", false, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
+    {2, "stringData", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_DataUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_DataUnion.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Val", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Val = res.first->second;
+  module_Val.name = "module.Val";
+  module_Val.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_Val_fields[] = {
+    {1, "strVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {2, "intVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I16), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
+  };
+  for (const auto& f : module_Val_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_Val.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.ValUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_ValUnion = res.first->second;
+  module_ValUnion.name = "module.ValUnion";
+  module_ValUnion.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_ValUnion_fields[] = {
+    {1, "v1", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val", metadata)},
+    {2, "v2", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val", metadata)},
+  };
+  for (const auto& f : module_ValUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_ValUnion.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.VirtualComplexUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_VirtualComplexUnion = res.first->second;
+  module_VirtualComplexUnion.name = "module.VirtualComplexUnion";
+  module_VirtualComplexUnion.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_VirtualComplexUnion_fields[] = {
+    {1, "thingOne", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {2, "thingTwo", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_VirtualComplexUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_VirtualComplexUnion.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.NonCopyableStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_NonCopyableStruct = res.first->second;
+  module_NonCopyableStruct.name = "module.NonCopyableStruct";
+  module_NonCopyableStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_NonCopyableStruct_fields[] = {
+    {1, "num", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+  };
+  for (const auto& f : module_NonCopyableStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_NonCopyableStruct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.NonCopyableUnion", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_NonCopyableUnion = res.first->second;
+  module_NonCopyableUnion.name = "module.NonCopyableUnion";
+  module_NonCopyableUnion.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_NonCopyableUnion_fields[] = {
+    {1, "s", false, std::make_unique<Struct< ::cpp2::NonCopyableStruct>>("module.NonCopyableStruct", metadata)},
+  };
+  for (const auto& f : module_NonCopyableUnion_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_NonCopyableUnion.fields.push_back(std::move(field));
+  }
+}
 
 } // namespace md
 } // namespace detail

@@ -16,7 +16,16 @@ namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
-
+template <>
+class StructMetadata<::cpp2::House> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::Field> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

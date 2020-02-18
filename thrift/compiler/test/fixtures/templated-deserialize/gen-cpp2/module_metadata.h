@@ -21,7 +21,16 @@ class EnumMetadata<::cpp2::MyEnumA> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
-
+template <>
+class StructMetadata<::cpp2::SmallStruct> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::containerStruct> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

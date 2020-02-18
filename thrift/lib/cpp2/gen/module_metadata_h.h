@@ -31,6 +31,17 @@ class EnumMetadata {
  public:
   static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
 };
+template <typename T>
+class StructMetadata {
+ public:
+  static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
+};
+
+template <typename T>
+class ExceptionMetadata {
+ public:
+  static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

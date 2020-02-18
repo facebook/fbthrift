@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,8 +12,110 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 
+void StructMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Banal", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Banal = res.first->second;
+  module_Banal.name = "module.Banal";
+  module_Banal.is_union = false;
+}
+void StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Fiery", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Fiery = res.first->second;
+  module_Fiery.name = "module.Fiery";
+  module_Fiery.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_Fiery_fields[] = {
+    {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_Fiery_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_Fiery.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.Serious", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_Serious = res.first->second;
+  module_Serious.name = "module.Serious";
+  module_Serious.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_Serious_fields[] = {
+    {1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_Serious_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_Serious.fields.push_back(std::move(field));
+  }
+}
+
+void ExceptionMetadata<::cpp2::Banal>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.Banal", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_Banal = res.first->second;
+  module_Banal.name = "module.Banal";
+}
+void ExceptionMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.Fiery", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_Fiery = res.first->second;
+  module_Fiery.name = "module.Fiery";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_Fiery_fields[] = {
+    {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_Fiery_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_Fiery.fields.push_back(std::move(field));
+  }
+}
+void ExceptionMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.Serious", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_Serious = res.first->second;
+  module_Serious.name = "module.Serious";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_Serious_fields[] = {
+    {1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_Serious_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_Serious.fields.push_back(std::move(field));
+  }
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

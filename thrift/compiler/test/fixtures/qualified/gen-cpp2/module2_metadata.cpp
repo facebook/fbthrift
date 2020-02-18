@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module2_metadata.h"
 
 namespace apache {
@@ -11,7 +12,54 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module2.Struct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module2_Struct = res.first->second;
+  module2_Struct.name = "module2.Struct";
+  module2_Struct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module2_Struct_fields[] = {
+    {1, "first", false, std::make_unique<Struct< ::module0::Struct>>("module0.Struct", metadata)},
+    {2, "second", false, std::make_unique<Struct< ::module1::Struct>>("module1.Struct", metadata)},
+  };
+  for (const auto& f : module2_Struct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module2_Struct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module2.BigStruct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module2_BigStruct = res.first->second;
+  module2_BigStruct.name = "module2.BigStruct";
+  module2_BigStruct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module2_BigStruct_fields[] = {
+    {1, "s", false, std::make_unique<Struct< ::module2::Struct>>("module2.Struct", metadata)},
+    {2, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module2_BigStruct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module2_BigStruct.fields.push_back(std::move(field));
+  }
+}
 
 } // namespace md
 } // namespace detail

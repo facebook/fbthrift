@@ -21,7 +21,21 @@ class EnumMetadata<::cpp2::Animal> {
  public:
   static void gen(ThriftMetadata& metadata);
 };
-
+template <>
+class StructMetadata<::cpp2::Color> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::Vehicle> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::Person> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

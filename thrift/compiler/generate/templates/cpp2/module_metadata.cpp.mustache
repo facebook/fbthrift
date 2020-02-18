@@ -15,6 +15,7 @@
   limitations under the License.
 
 %><% > Autogen%>
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "<%program:include_prefix%><%program:name%>_metadata.h"
 
 namespace apache {
@@ -22,6 +23,8 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 <%#program:enums%>
 void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata& metadata) {
@@ -37,6 +40,62 @@ void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata
 }
 <%/program:enums%>
 
+<%#program:structs%>
+void StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& <%struct:metadata_name%> = res.first->second;
+  <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
+  <%struct:metadata_name%>.is_union = <%struct:union?%>;
+<%#struct:fields?%>
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  <%struct:metadata_name%>_fields[] = {
+<%#struct:fields%>
+    <% > metadata/field_gen%>
+<%/struct:fields%>
+  };
+  for (const auto& f : <%struct:metadata_name%>_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    <%struct:metadata_name%>.fields.push_back(std::move(field));
+  }
+<%/struct:fields?%>
+}
+<%/program:structs%>
+
+<%#program:structs%>
+<%#struct:exception?%>
+void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("<%program:name%>.<%struct:name%>", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& <%struct:metadata_name%> = res.first->second;
+  <%struct:metadata_name%>.name = "<%program:name%>.<%struct:name%>";
+<%#struct:fields?%>
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  <%struct:metadata_name%>_fields[] = {
+<%#struct:fields%>
+    <% > metadata/field_gen%>
+<%/struct:fields%>
+  };
+  for (const auto& f : <%struct:metadata_name%>_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    <%struct:metadata_name%>.fields.push_back(std::move(field));
+  }
+<%/struct:fields?%>
+}
+<%/struct:exception?%>
+<%/program:structs%>
 } // namespace md
 } // namespace detail
 } // namespace thrift

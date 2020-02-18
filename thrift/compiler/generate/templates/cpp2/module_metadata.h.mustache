@@ -38,7 +38,22 @@ class EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>> {
   static void gen(ThriftMetadata& metadata);
 };
 <%/program:enums%>
-
+<%#program:structs%>
+template <>
+class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+<%/program:structs%>
+<%#program:structs%>
+<%#struct:exception?%>
+template <>
+class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+<%/struct:exception?%>
+<%/program:structs%>
 } // namespace md
 } // namespace detail
 } // namespace thrift

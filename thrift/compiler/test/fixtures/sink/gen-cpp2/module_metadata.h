@@ -16,7 +16,56 @@ namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 
-
+template <>
+class StructMetadata<::cpp2::InitialResponse> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::FinalResponse> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::SinkPayload> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::CompatibleWithKeywordSink> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::InitialException> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::SinkException1> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::SinkException2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::InitialException> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::SinkException1> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::SinkException2> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_metadata.h"
 
 namespace apache {
@@ -11,7 +12,43 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
+
+void StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("extra_services.containerStruct2", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& extra_services_containerStruct2 = res.first->second;
+  extra_services_containerStruct2.name = "extra_services.containerStruct2";
+  extra_services_containerStruct2.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  extra_services_containerStruct2_fields[] = {
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {101, "req_fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {201, "opt_fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
+    {102, "req_fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
+    {202, "opt_fieldB", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
+    {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {103, "req_fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {203, "opt_fieldC", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {105, "req_fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {205, "opt_fieldE", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : extra_services_containerStruct2_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    extra_services_containerStruct2.fields.push_back(std::move(field));
+  }
+}
 
 } // namespace md
 } // namespace detail

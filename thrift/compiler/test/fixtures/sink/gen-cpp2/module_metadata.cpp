@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,8 +12,218 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 
+void StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.InitialResponse", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_InitialResponse = res.first->second;
+  module_InitialResponse.name = "module.InitialResponse";
+  module_InitialResponse.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_InitialResponse_fields[] = {
+    {1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_InitialResponse_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_InitialResponse.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.FinalResponse", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_FinalResponse = res.first->second;
+  module_FinalResponse.name = "module.FinalResponse";
+  module_FinalResponse.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_FinalResponse_fields[] = {
+    {1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_FinalResponse_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_FinalResponse.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.SinkPayload", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_SinkPayload = res.first->second;
+  module_SinkPayload.name = "module.SinkPayload";
+  module_SinkPayload.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SinkPayload_fields[] = {
+    {1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_SinkPayload_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_SinkPayload.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.CompatibleWithKeywordSink", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_CompatibleWithKeywordSink = res.first->second;
+  module_CompatibleWithKeywordSink.name = "module.CompatibleWithKeywordSink";
+  module_CompatibleWithKeywordSink.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_CompatibleWithKeywordSink_fields[] = {
+    {1, "sink", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_CompatibleWithKeywordSink_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_CompatibleWithKeywordSink.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.InitialException", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_InitialException = res.first->second;
+  module_InitialException.name = "module.InitialException";
+  module_InitialException.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_InitialException_fields[] = {
+    {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_InitialException_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_InitialException.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.SinkException1", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_SinkException1 = res.first->second;
+  module_SinkException1.name = "module.SinkException1";
+  module_SinkException1.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SinkException1_fields[] = {
+    {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_SinkException1_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_SinkException1.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.SinkException2", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_SinkException2 = res.first->second;
+  module_SinkException2.name = "module.SinkException2";
+  module_SinkException2.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SinkException2_fields[] = {
+    {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+  };
+  for (const auto& f : module_SinkException2_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_SinkException2.fields.push_back(std::move(field));
+  }
+}
+
+void ExceptionMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.InitialException", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_InitialException = res.first->second;
+  module_InitialException.name = "module.InitialException";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_InitialException_fields[] = {
+    {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_InitialException_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_InitialException.fields.push_back(std::move(field));
+  }
+}
+void ExceptionMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.SinkException1", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_SinkException1 = res.first->second;
+  module_SinkException1.name = "module.SinkException1";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SinkException1_fields[] = {
+    {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_SinkException1_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_SinkException1.fields.push_back(std::move(field));
+  }
+}
+void ExceptionMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions.emplace("module.SinkException2", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_SinkException2 = res.first->second;
+  module_SinkException2.name = "module.SinkException2";
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_SinkException2_fields[] = {
+    {1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+  };
+  for (const auto& f : module_SinkException2_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_SinkException2.fields.push_back(std::move(field));
+  }
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

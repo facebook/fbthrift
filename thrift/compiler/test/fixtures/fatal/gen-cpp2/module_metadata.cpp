@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+#include <thrift/lib/cpp2/gen/module_metadata_cpp.h>
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_metadata.h"
 
 namespace apache {
@@ -11,6 +12,8 @@ namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
+using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 void EnumMetadata<::test_cpp2::cpp_reflection::enum1>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.enum1", ::apache::thrift::metadata::ThriftEnum{});
@@ -54,6 +57,547 @@ void EnumMetadata<::test_cpp2::cpp_reflection::enum_with_special_names>::gen(Thr
   enum_metadata.name = "module.enum_with_special_names";
   for (const auto& p : ::test_cpp2::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES) {
     enum_metadata.elements.emplace(static_cast<int32_t>(p.first), p.second) ;
+  }
+}
+
+void StructMetadata<::test_cpp2::cpp_reflection::union1>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.union1", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_union1 = res.first->second;
+  module_union1.name = "module.union1";
+  module_union1.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_union1_fields[] = {
+    {1, "ui", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "ud", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {3, "us", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {4, "ue", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+  };
+  for (const auto& f : module_union1_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_union1.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::union2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.union2", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_union2 = res.first->second;
+  module_union2.name = "module.union2";
+  module_union2.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_union2_fields[] = {
+    {1, "ui_2", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "ud_2", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {3, "us_2", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {4, "ue_2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+  };
+  for (const auto& f : module_union2_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_union2.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::union3>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.union3", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_union3 = res.first->second;
+  module_union3.name = "module.union3";
+  module_union3.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_union3_fields[] = {
+    {1, "ui_3", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "ud_3", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {3, "us_3", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {4, "ue_3", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+  };
+  for (const auto& f : module_union3_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_union3.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::structA>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.structA", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_structA = res.first->second;
+  module_structA.name = "module.structA";
+  module_structA.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_structA_fields[] = {
+    {1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+  };
+  for (const auto& f : module_structA_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_structA.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::unionA>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.unionA", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_unionA = res.first->second;
+  module_unionA.name = "module.unionA";
+  module_unionA.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_unionA_fields[] = {
+    {1, "i", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {3, "s", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {4, "e", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {5, "a", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata)},
+  };
+  for (const auto& f : module_unionA_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_unionA.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::structB>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.structB", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_structB = res.first->second;
+  module_structB.name = "module.structB";
+  module_structB.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_structB_fields[] = {
+    {1, "c", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {2, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+  };
+  for (const auto& f : module_structB_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_structB.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::structC>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.structC", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_structC = res.first->second;
+  module_structC.name = "module.structC";
+  module_structC.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_structC_fields[] = {
+    {1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {3, "c", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {4, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {5, "e", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {6, "f", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2", metadata)},
+    {7, "g", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1", metadata)},
+    {8, "h", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::unionA>>("module.unionA", metadata)},
+    {9, "i", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::unionA>>("module.unionA", metadata)},
+    {10, "j", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {11, "j1", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {12, "j2", false, std::make_unique<List>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata))},
+    {13, "j3", false, std::make_unique<List>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata))},
+    {14, "k", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {15, "k1", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {16, "k2", false, std::make_unique<Set>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2", metadata))},
+    {17, "k3", false, std::make_unique<Set>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+    {18, "l", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {19, "l1", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {20, "l2", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata))},
+    {21, "l3", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+    {22, "m1", false, std::make_unique<Map>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {23, "m2", false, std::make_unique<Map>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2", metadata))},
+    {24, "m3", false, std::make_unique<Map>(std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+    {25, "n1", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {26, "n2", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata))},
+    {27, "n3", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+    {28, "o1", false, std::make_unique<Map>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {29, "o2", false, std::make_unique<Map>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata), std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata))},
+    {30, "o3", false, std::make_unique<Map>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+  };
+  for (const auto& f : module_structC_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_structC.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct1>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct1", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct1 = res.first->second;
+  module_struct1.name = "module.struct1";
+  module_struct1.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct1_fields[] = {
+    {1, "field0", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {3, "field2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {4, "field3", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2", metadata)},
+    {5, "field4", true, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1", metadata)},
+    {6, "field5", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2", metadata)},
+  };
+  for (const auto& f : module_struct1_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct1.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct2>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct2", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct2 = res.first->second;
+  module_struct2.name = "module.struct2";
+  module_struct2.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct2_fields[] = {
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "fieldB", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {3, "fieldC", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {4, "fieldD", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2", metadata)},
+    {5, "fieldE", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1", metadata)},
+    {6, "fieldF", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2", metadata)},
+    {7, "fieldG", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata)},
+  };
+  for (const auto& f : module_struct2_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct2.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct3>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct3", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct3 = res.first->second;
+  module_struct3.name = "module.struct3";
+  module_struct3.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct3_fields[] = {
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "fieldB", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {3, "fieldC", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {4, "fieldD", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum2>>("module.enum2", metadata)},
+    {5, "fieldE", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union1>>("module.union1", metadata)},
+    {6, "fieldF", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2", metadata)},
+    {7, "fieldG", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata)},
+    {8, "fieldH", false, std::make_unique<Union< ::test_cpp2::cpp_reflection::union2>>("module.union2", metadata)},
+    {9, "fieldI", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {10, "fieldJ", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {11, "fieldK", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {12, "fieldL", false, std::make_unique<List>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata))},
+    {13, "fieldM", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {14, "fieldN", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {15, "fieldO", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {16, "fieldP", false, std::make_unique<Set>(std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+    {17, "fieldQ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata))},
+    {18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata))},
+  };
+  for (const auto& f : module_struct3_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct3.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct4>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct4", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct4 = res.first->second;
+  module_struct4.name = "module.struct4";
+  module_struct4.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct4_fields[] = {
+    {1, "field0", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {3, "field2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {6, "field3", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata)},
+  };
+  for (const auto& f : module_struct4_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct4.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct5>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct5", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct5 = res.first->second;
+  module_struct5.name = "module.struct5";
+  module_struct5.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct5_fields[] = {
+    {1, "field0", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "field1", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {3, "field2", false, std::make_unique<Enum< ::test_cpp2::cpp_reflection::enum1>>("module.enum1", metadata)},
+    {4, "field3", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structA>>("module.structA", metadata)},
+    {5, "field4", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::structB>>("module.structB", metadata)},
+  };
+  for (const auto& f : module_struct5_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct5.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct_binary>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct_binary", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct_binary = res.first->second;
+  module_struct_binary.name = "module.struct_binary";
+  module_struct_binary.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct_binary_fields[] = {
+    {1, "bi", false, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
+  };
+  for (const auto& f : module_struct_binary_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct_binary.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::dep_A_struct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.dep_A_struct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_dep_A_struct = res.first->second;
+  module_dep_A_struct.name = "module.dep_A_struct";
+  module_dep_A_struct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_dep_A_struct_fields[] = {
+    {1, "b", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_B_struct>>("reflection_dep_B.dep_B_struct", metadata)},
+    {2, "c", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_C_struct>>("reflection_dep_C.dep_C_struct", metadata)},
+    {3, "i_a", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module_dep_A_struct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_dep_A_struct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::dep_B_struct>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.dep_B_struct", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_dep_B_struct = res.first->second;
+  module_dep_B_struct.name = "module.dep_B_struct";
+  module_dep_B_struct.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_dep_B_struct_fields[] = {
+    {1, "b", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_B_struct>>("reflection_dep_B.dep_B_struct", metadata)},
+    {2, "c", false, std::make_unique<Struct< ::test_cpp2::cpp_reflection::dep_C_struct>>("reflection_dep_C.dep_C_struct", metadata)},
+    {3, "i_a", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module_dep_B_struct_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_dep_B_struct.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::annotated>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.annotated", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_annotated = res.first->second;
+  module_annotated.name = "module.annotated";
+  module_annotated.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_annotated_fields[] = {
+    {1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module_annotated_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_annotated.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::union_with_special_names>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.union_with_special_names", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_union_with_special_names = res.first->second;
+  module_union_with_special_names.name = "module.union_with_special_names";
+  module_union_with_special_names.is_union = true;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_union_with_special_names_fields[] = {
+    {1, "get", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "getter", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {3, "lists", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {4, "maps", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {5, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {6, "name_to_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {7, "names", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {8, "prefix_tree", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {9, "sets", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {10, "setter", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {11, "str", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {12, "strings", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {13, "type", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {14, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {15, "value_to_name", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {16, "values", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {17, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {18, "ids", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {19, "descriptor", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {20, "descriptors", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {21, "key", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {22, "keys", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {23, "annotation", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {24, "annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {25, "member", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {26, "members", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {27, "field", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {28, "fields", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module_union_with_special_names_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_union_with_special_names.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct_with_special_names>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct_with_special_names", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct_with_special_names = res.first->second;
+  module_struct_with_special_names.name = "module.struct_with_special_names";
+  module_struct_with_special_names.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct_with_special_names_fields[] = {
+    {1, "get", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "getter", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {3, "lists", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {4, "maps", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {5, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {6, "name_to_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {7, "names", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {8, "prefix_tree", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {9, "sets", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {10, "setter", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {11, "str", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {12, "strings", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {13, "type", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {14, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {15, "value_to_name", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {16, "values", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {17, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {18, "ids", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {19, "descriptor", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {20, "descriptors", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {21, "key", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {22, "keys", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {23, "annotation", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {24, "annotations", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {25, "member", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {26, "members", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {27, "field", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {28, "fields", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+  };
+  for (const auto& f : module_struct_with_special_names_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct_with_special_names.fields.push_back(std::move(field));
+  }
+}
+void StructMetadata<::test_cpp2::cpp_reflection::struct_with_indirections>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs.emplace("module.struct_with_indirections", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_struct_with_indirections = res.first->second;
+  module_struct_with_indirections.name = "module.struct_with_indirections";
+  module_struct_with_indirections.is_union = false;
+  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  module_struct_with_indirections_fields[] = {
+    {1, "real", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "fake", false, std::make_unique<Typedef>("module.FakeI32", std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {3, "number", false, std::make_unique<Typedef>("module.HasANumber", std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {4, "result", false, std::make_unique<Typedef>("module.HasAResult", std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {5, "phrase", false, std::make_unique<Typedef>("module.HasAPhrase", std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+  };
+  for (const auto& f : module_struct_with_indirections_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id = std::get<0>(f);
+    field.name = std::get<1>(f);
+    field.is_optional = std::get<2>(f);
+    std::get<3>(f)->initialize(field.type);
+    module_struct_with_indirections.fields.push_back(std::move(field));
   }
 }
 
