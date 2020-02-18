@@ -66,7 +66,7 @@ class ClientBufferedStream {
       }
 
      private:
-      folly::fibers::Baton baton;
+      folly::Baton<> baton;
     };
 
     while (true) {
