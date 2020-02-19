@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -20,6 +21,10 @@ __property__ = property
 
 
 class Included(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    MyIntField: Final[int] = ...
+
+    MyTransitiveField: Final[_transitive_types.Foo] = ...
+
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=None,
@@ -41,11 +46,6 @@ class Included(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __gt__(self, other: 'Included') -> bool: ...
     def __le__(self, other: 'Included') -> bool: ...
     def __ge__(self, other: 'Included') -> bool: ...
-
-    @__property__
-    def MyIntField(self) -> int: ...
-    @__property__
-    def MyTransitiveField(self) -> _transitive_types.Foo: ...
 
 
 ExampleIncluded: Included = ...

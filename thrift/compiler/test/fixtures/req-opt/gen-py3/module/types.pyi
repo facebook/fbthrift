@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -19,6 +20,14 @@ __property__ = property
 
 
 class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    myInteger: Final[int] = ...
+
+    myString: Final[_typing.Optional[str]] = ...
+
+    myBools: Final[_typing.Sequence[bool]] = ...
+
+    myNumbers: Final[_typing.Sequence[int]] = ...
+
     def __init__(
         self, *,
         myInteger: int,
@@ -44,15 +53,6 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tu
     def __gt__(self, other: 'Foo') -> bool: ...
     def __le__(self, other: 'Foo') -> bool: ...
     def __ge__(self, other: 'Foo') -> bool: ...
-
-    @__property__
-    def myInteger(self) -> int: ...
-    @__property__
-    def myString(self) -> _typing.Optional[str]: ...
-    @__property__
-    def myBools(self) -> _typing.Sequence[bool]: ...
-    @__property__
-    def myNumbers(self) -> _typing.Sequence[int]: ...
 
 
 _List__boolT = _typing.TypeVar('_List__boolT', bound=_typing.Sequence[bool])

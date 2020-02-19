@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -21,6 +22,10 @@ __property__ = property
 
 
 class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    first: Final[_module0_types.Struct] = ...
+
+    second: Final[_module1_types.Struct] = ...
+
     def __init__(
         self, *,
         first: _typing.Optional[_module0_types.Struct]=None,
@@ -43,13 +48,12 @@ class Struct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing
     def __le__(self, other: 'Struct') -> bool: ...
     def __ge__(self, other: 'Struct') -> bool: ...
 
-    @__property__
-    def first(self) -> _module0_types.Struct: ...
-    @__property__
-    def second(self) -> _module1_types.Struct: ...
-
 
 class BigStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    s: Final['Struct'] = ...
+
+    id: Final[int] = ...
+
     def __init__(
         self, *,
         s: _typing.Optional['Struct']=None,
@@ -71,11 +75,6 @@ class BigStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typ
     def __gt__(self, other: 'BigStruct') -> bool: ...
     def __le__(self, other: 'BigStruct') -> bool: ...
     def __ge__(self, other: 'BigStruct') -> bool: ...
-
-    @__property__
-    def s(self) -> 'Struct': ...
-    @__property__
-    def id(self) -> int: ...
 
 
 c2: Struct = ...

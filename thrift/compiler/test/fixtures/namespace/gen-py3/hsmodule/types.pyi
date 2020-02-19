@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -19,6 +20,8 @@ __property__ = property
 
 
 class HsFoo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    MyInt: Final[int] = ...
+
     def __init__(
         self, *,
         MyInt: _typing.Optional[int]=None
@@ -38,8 +41,5 @@ class HsFoo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
     def __gt__(self, other: 'HsFoo') -> bool: ...
     def __le__(self, other: 'HsFoo') -> bool: ...
     def __ge__(self, other: 'HsFoo') -> bool: ...
-
-    @__property__
-    def MyInt(self) -> int: ...
 
 

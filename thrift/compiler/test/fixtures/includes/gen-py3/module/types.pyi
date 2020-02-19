@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -20,6 +21,12 @@ __property__ = property
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    MyIncludedField: Final[_includes_types.Included] = ...
+
+    MyOtherIncludedField: Final[_includes_types.Included] = ...
+
+    MyIncludedInt: Final[int] = ...
+
     def __init__(
         self, *,
         MyIncludedField: _typing.Optional[_includes_types.Included]=None,
@@ -43,12 +50,5 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __gt__(self, other: 'MyStruct') -> bool: ...
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
-
-    @__property__
-    def MyIncludedField(self) -> _includes_types.Included: ...
-    @__property__
-    def MyOtherIncludedField(self) -> _includes_types.Included: ...
-    @__property__
-    def MyIncludedInt(self) -> int: ...
 
 

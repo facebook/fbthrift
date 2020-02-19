@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -20,6 +21,8 @@ __property__ = property
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    field: Final[str] = ...
+
     def __init__(
         self, *,
         field: _typing.Optional[str]=None
@@ -40,11 +43,16 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
 
-    @__property__
-    def field(self) -> str: ...
-
 
 class Combo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    listOfOurMyStructLists: Final[_typing.Sequence[_typing.Sequence['MyStruct']]] = ...
+
+    theirMyStructList: Final[_typing.Sequence[_module_types.MyStruct]] = ...
+
+    ourMyStructList: Final[_typing.Sequence['MyStruct']] = ...
+
+    listOfTheirMyStructList: Final[_typing.Sequence[_typing.Sequence[_module_types.MyStruct]]] = ...
+
     def __init__(
         self, *,
         listOfOurMyStructLists: _typing.Optional[_typing.Sequence[_typing.Sequence['MyStruct']]]=None,
@@ -70,15 +78,6 @@ class Combo(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
     def __gt__(self, other: 'Combo') -> bool: ...
     def __le__(self, other: 'Combo') -> bool: ...
     def __ge__(self, other: 'Combo') -> bool: ...
-
-    @__property__
-    def listOfOurMyStructLists(self) -> _typing.Sequence[_typing.Sequence['MyStruct']]: ...
-    @__property__
-    def theirMyStructList(self) -> _typing.Sequence[_module_types.MyStruct]: ...
-    @__property__
-    def ourMyStructList(self) -> _typing.Sequence['MyStruct']: ...
-    @__property__
-    def listOfTheirMyStructList(self) -> _typing.Sequence[_typing.Sequence[_module_types.MyStruct]]: ...
 
 
 _List__MyStructT = _typing.TypeVar('_List__MyStructT', bound=_typing.Sequence['MyStruct'])

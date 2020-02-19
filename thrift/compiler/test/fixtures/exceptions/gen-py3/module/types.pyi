@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -33,8 +34,9 @@ class Banal(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __ge__(self, other: 'Banal') -> bool: ...
 
 
-
 class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    message: Final[str] = ...
+
     def __init__(
         self, *,
         message: str
@@ -49,11 +51,10 @@ class Fiery(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __le__(self, other: 'Fiery') -> bool: ...
     def __ge__(self, other: 'Fiery') -> bool: ...
 
-    @__property__
-    def message(self) -> str: ...
-
 
 class Serious(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    sonnet: Final[_typing.Optional[str]] = ...
+
     def __init__(
         self, *,
         sonnet: _typing.Optional[str]=None
@@ -67,8 +68,5 @@ class Serious(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_t
     def __gt__(self, other: 'Serious') -> bool: ...
     def __le__(self, other: 'Serious') -> bool: ...
     def __ge__(self, other: 'Serious') -> bool: ...
-
-    @__property__
-    def sonnet(self) -> _typing.Optional[str]: ...
 
 

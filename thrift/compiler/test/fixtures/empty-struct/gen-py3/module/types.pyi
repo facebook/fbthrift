@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -36,7 +37,6 @@ class Empty(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.
     def __gt__(self, other: 'Empty') -> bool: ...
     def __le__(self, other: 'Empty') -> bool: ...
     def __ge__(self, other: 'Empty') -> bool: ...
-
 
 
 class Nada(thrift.py3.types.Union, _typing.Hashable):

@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -32,7 +33,6 @@ class FooEx(thrift.py3.exceptions.Error, _typing.Hashable, _typing.Iterable[_typ
     def __gt__(self, other: 'FooEx') -> bool: ...
     def __le__(self, other: 'FooEx') -> bool: ...
     def __ge__(self, other: 'FooEx') -> bool: ...
-
 
 
 

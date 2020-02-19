@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -51,6 +52,10 @@ class MyBigEnum(thrift.py3.types.Enum):
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    myEnum: Final[MyEnum] = ...
+
+    myBigEnum: Final[MyBigEnum] = ...
+
     def __init__(
         self, *,
         myEnum: _typing.Optional[MyEnum]=None,
@@ -72,11 +77,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __gt__(self, other: 'MyStruct') -> bool: ...
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
-
-    @__property__
-    def myEnum(self) -> MyEnum: ...
-    @__property__
-    def myBigEnum(self) -> MyBigEnum: ...
 
 
 kOne: MyEnum = ...

@@ -10,6 +10,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -24,6 +25,10 @@ class MyEnum(thrift.py3.types.Enum):
 
 
 class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+    MyIntField: Final[int] = ...
+
+    MyStringField: Final[str] = ...
+
     def __init__(
         self, *,
         MyIntField: _typing.Optional[int]=None,
@@ -45,10 +50,5 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     def __gt__(self, other: 'MyStruct') -> bool: ...
     def __le__(self, other: 'MyStruct') -> bool: ...
     def __ge__(self, other: 'MyStruct') -> bool: ...
-
-    @__property__
-    def MyIntField(self) -> int: ...
-    @__property__
-    def MyStringField(self) -> str: ...
 
 

@@ -26,6 +26,7 @@ import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import NOTSET, NOTSETTYPE
 import typing as _typing
+from typing_extensions import Final
 
 import sys
 import itertools
@@ -55,6 +56,12 @@ class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum
 {{/program:enums}}
 {{#program:structs}}
 class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:union?}}, _typing.Iterable[_typing.Tuple[str, _typing.Any]]{{/struct:union?}}):
+    {{#struct:fields}}
+    {{field:py_name}}: Final[{{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
+            }}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{!
+            }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}] = ...
+
+    {{/struct:fields}}
     def __init__(
         self, {{#struct:fields?}}*{{/struct:fields?}}{{#struct:fields}},
         {{field:py_name}}: {{^field:requireValue?}}_typing.Optional[{{/field:requireValue?}}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{^field:requireValue?}}]=None{{/field:requireValue?}}{{/struct:fields}}
@@ -80,14 +87,8 @@ class {{struct:name}}({{> types/PythonStructClass}}, _typing.Hashable{{^struct:u
     def __le__(self, other: '{{struct:name}}') -> bool: ...
     def __ge__(self, other: '{{struct:name}}') -> bool: ...
     {{/struct:is_struct_orderable?}}
-
-    {{#struct:fields}}
-    @__property__
-    def {{field:py_name}}(self) -> {{#field:PEP484Optional?}}_typing.Optional[{{/field:PEP484Optional?}}{{!
-        }}{{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{!
-        }}{{#field:PEP484Optional?}}]{{/field:PEP484Optional?}}: ...
-    {{/struct:fields}}
     {{#struct:union?}}
+
     class Type(thrift.py3.types.Enum):
         EMPTY: {{struct:name}}.Type = ...
     {{#struct:fields}}
