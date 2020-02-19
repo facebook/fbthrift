@@ -131,7 +131,7 @@ mod test {
     use super::*;
     use crate::bufext::BufMutExt;
     use bufsize::SizeCounter;
-    use bytes::buf::Chain;
+    use bytes::buf::ext::Chain;
     use bytes::BytesMut;
     use quickcheck::quickcheck;
     use std::io::Cursor;

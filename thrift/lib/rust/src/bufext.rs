@@ -30,6 +30,12 @@ impl BufExt for Cursor<Bytes> {
     }
 }
 
+impl BufExt for Cursor<bytes_old::Bytes> {
+    fn reset(self) -> Self {
+        Cursor::new(self.into_inner())
+    }
+}
+
 pub trait BufMutExt: BufMut {
     type Final: Send + 'static;
 
@@ -63,12 +69,12 @@ impl BufMutExt for SizeCounter {
 
     #[inline]
     fn put_varint_u64(&mut self, v: u64) {
-        self.put_uint_be(v, varint::u64_len(v));
+        self.put_uint(v, varint::u64_len(v));
     }
 
     #[inline]
     fn put_varint_i64(&mut self, v: i64) {
-        self.put_int_be(v, varint::u64_len(varint::zigzag(v)));
+        self.put_int(v, varint::u64_len(varint::zigzag(v)));
     }
 
     #[inline]

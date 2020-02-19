@@ -107,7 +107,7 @@ impl<B> BinaryProtocolSerializer<B> {
 
 impl<B: BufMutExt> BinaryProtocolSerializer<B> {
     fn write_u32(&mut self, value: u32) {
-        self.buffer.put_u32_be(value)
+        self.buffer.put_u32(value)
     }
 }
 
@@ -154,7 +154,7 @@ impl<B: Buf> BinaryProtocolDeserializer<B> {
     fn read_u32(&mut self) -> Result<u32> {
         ensure_err!(self.buffer.remaining() >= 4, ProtocolError::EOF);
 
-        Ok(self.buffer.get_u32_be())
+        Ok(self.buffer.get_u32())
     }
 }
 
@@ -227,23 +227,23 @@ impl<B: BufMutExt> ProtocolWriter for BinaryProtocolSerializer<B> {
     }
 
     fn write_i16(&mut self, value: i16) {
-        self.buffer.put_i16_be(value)
+        self.buffer.put_i16(value)
     }
 
     fn write_i32(&mut self, value: i32) {
-        self.buffer.put_i32_be(value)
+        self.buffer.put_i32(value)
     }
 
     fn write_i64(&mut self, value: i64) {
-        self.buffer.put_i64_be(value)
+        self.buffer.put_i64(value)
     }
 
     fn write_double(&mut self, value: f64) {
-        self.buffer.put_f64_be(value)
+        self.buffer.put_f64(value)
     }
 
     fn write_float(&mut self, value: f32) {
-        self.buffer.put_f32_be(value)
+        self.buffer.put_f32(value)
     }
 
     fn write_string(&mut self, value: &str) {
@@ -374,31 +374,31 @@ impl<B: Buf> ProtocolReader for BinaryProtocolDeserializer<B> {
     fn read_i16(&mut self) -> Result<i16> {
         ensure_err!(self.buffer.remaining() >= 2, ProtocolError::EOF);
 
-        Ok(self.buffer.get_i16_be())
+        Ok(self.buffer.get_i16())
     }
 
     fn read_i32(&mut self) -> Result<i32> {
         ensure_err!(self.buffer.remaining() >= 4, ProtocolError::EOF);
 
-        Ok(self.buffer.get_i32_be())
+        Ok(self.buffer.get_i32())
     }
 
     fn read_i64(&mut self) -> Result<i64> {
         ensure_err!(self.buffer.remaining() >= 8, ProtocolError::EOF);
 
-        Ok(self.buffer.get_i64_be())
+        Ok(self.buffer.get_i64())
     }
 
     fn read_double(&mut self) -> Result<f64> {
         ensure_err!(self.buffer.remaining() >= 8, ProtocolError::EOF);
 
-        Ok(self.buffer.get_f64_be())
+        Ok(self.buffer.get_f64())
     }
 
     fn read_float(&mut self) -> Result<f32> {
         ensure_err!(self.buffer.remaining() >= 4, ProtocolError::EOF);
 
-        Ok(self.buffer.get_f32_be())
+        Ok(self.buffer.get_f32())
     }
 
     fn read_string(&mut self) -> Result<String> {

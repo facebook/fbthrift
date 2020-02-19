@@ -20,6 +20,7 @@ use super::{
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
 use crate::{CompactProtocol, Protocol, ProtocolReader, ProtocolWriter};
+use bytes::buf::BufExt;
 use bytes::Bytes;
 use std::{convert::TryFrom, io::Cursor, u8};
 
@@ -491,7 +492,6 @@ fn deserializer_underflow() {
 #[test]
 fn read_binary_from_chained_buffer() {
     use crate::compact_protocol::CompactProtocolDeserializer;
-    use bytes::Buf;
 
     let buf1 = Cursor::new(b"\x05hello\x06 ");
     let buf2 = Cursor::new(b"world");

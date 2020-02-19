@@ -444,12 +444,12 @@ impl<B: BufMutExt> ProtocolWriter for CompactProtocolSerializer<B> {
 
     fn write_double(&mut self, value: f64) {
         self.write_field_id(CType::Double);
-        self.buffer.put_f64_be(value)
+        self.buffer.put_f64(value)
     }
 
     fn write_float(&mut self, value: f32) {
         self.write_field_id(CType::Float);
-        self.buffer.put_f32_be(value)
+        self.buffer.put_f32(value)
     }
 
     #[inline]
@@ -713,13 +713,13 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
     fn read_double(&mut self) -> Result<f64> {
         ensure_err!(self.buffer.remaining() >= 8, ProtocolError::EOF);
 
-        Ok(self.buffer.get_f64_be())
+        Ok(self.buffer.get_f64())
     }
 
     fn read_float(&mut self) -> Result<f32> {
         ensure_err!(self.buffer.remaining() >= 4, ProtocolError::EOF);
 
-        Ok(self.buffer.get_f32_be())
+        Ok(self.buffer.get_f32())
     }
 
     fn read_string(&mut self) -> Result<String> {
