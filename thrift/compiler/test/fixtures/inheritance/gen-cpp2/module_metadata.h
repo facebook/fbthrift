@@ -9,12 +9,45 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_types.h"
 
+namespace cpp2 {
+class MyRootSvIf;
+} // cpp2
+namespace cpp2 {
+class MyNodeSvIf;
+} // cpp2
+namespace cpp2 {
+class MyLeafSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
+template <>
+class ServiceMetadata<::cpp2::MyRootSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_do_root(ThriftMetadata& metadata, ThriftService& context);
+};
+template <>
+class ServiceMetadata<::cpp2::MyNodeSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_do_mid(ThriftMetadata& metadata, ThriftService& context);
+};
+template <>
+class ServiceMetadata<::cpp2::MyLeafSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_do_leaf(ThriftMetadata& metadata, ThriftService& context);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

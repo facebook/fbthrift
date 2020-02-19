@@ -9,11 +9,14 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_types.h"
 
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class StructMetadata<::cpp2::ReflectionStruct> {

@@ -9,11 +9,17 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_types.h"
 
+namespace cpp2 {
+class RaiserSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class StructMetadata<::cpp2::Banal> {
@@ -44,6 +50,16 @@ template <>
 class ExceptionMetadata<::cpp2::Serious> {
  public:
   static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ServiceMetadata<::cpp2::RaiserSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_doBland(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_doRaise(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_get200(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_get500(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

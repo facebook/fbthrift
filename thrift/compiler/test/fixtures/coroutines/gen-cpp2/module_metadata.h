@@ -9,12 +9,29 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/coroutines/gen-cpp2/module_types.h"
 
+namespace cpp2 {
+class MyServiceSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
+template <>
+class ServiceMetadata<::cpp2::MyServiceSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_ping(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_getRandomData(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_hasDataById(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_getDataById(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_putDataById(ThriftMetadata& metadata, ThriftService& context);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

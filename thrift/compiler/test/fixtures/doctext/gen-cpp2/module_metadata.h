@@ -9,11 +9,17 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_types.h"
 
+namespace cpp2 {
+class CSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class EnumMetadata<::cpp2::B> {
@@ -24,6 +30,13 @@ template <>
 class StructMetadata<::cpp2::A> {
  public:
   static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ServiceMetadata<::cpp2::CSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_f(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

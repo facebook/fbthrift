@@ -25,6 +25,9 @@ namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
 using ThriftType = ::apache::thrift::metadata::ThriftType;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 <%#program:enums%>
 void EnumMetadata<<% > common/namespace_cpp2%><%enum:name%>>::gen(ThriftMetadata& metadata) {
@@ -96,6 +99,62 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
 }
 <%/struct:exception?%>
 <%/program:structs%>
+<%#program:services%>
+<%#service:functions%>
+void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "<%function:name%>";
+<%#function:returnType%>
+  auto func_ret_type = <% > metadata/type_gen%>;
+  func_ret_type->initialize(func.returnType);
+<%/function:returnType%>
+<%#function:args%>
+  <% > metadata/func_field_gen%>
+func.arguments.push_back(std::move(<% > metadata/func_field_name%>));
+<%/function:args%>
+<%#function:exceptions%>
+  <% > metadata/func_field_gen%>
+func.exceptions.push_back(std::move(<% > metadata/func_field_name%>));
+<%#field:type%>
+<%#type:struct?%>
+  ExceptionMetadata<<% > common/type_namespace_cpp2%><%type:name%>>::gen(metadata);
+<%/type:struct?%>
+<%/field:type%>
+<%/function:exceptions%>
+  service.functions.push_back(std::move(func));
+}
+<%/service:functions%>
+
+void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService <%service:metadata_name%>;
+  <%service:metadata_name%>.name = "<%program:name%>.<%service:name%>";
+<%#service:functions?%>
+  static const ThriftFunctionGenerator functions[] = {
+<%#service:functions%>
+    ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen_<%function:cpp_name%>,
+<%/service:functions%>
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, <%service:metadata_name%>);
+  }
+<%/service:functions?%>
+<%#service:extends?%>
+  <%service:metadata_name%>.set_parent("<%#service:extends%><%service:program_name%>.<%service:name%><%/service:extends%>");
+<%#service:extends%>
+  ThriftServiceContext <%service:metadata_name%>_parent_context;
+  ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(metadata, <%service:metadata_name%>_parent_context);
+  auto <%service:metadata_name%>_parent_name = <%service:metadata_name%>_parent_context.get_service_info().get_name();
+  metadata.services.emplace(std::move(<%service:metadata_name%>_parent_name), std::move(<%service:metadata_name%>_parent_context.service_info));
+<%/service:extends%>
+<%/service:extends?%>
+  context.set_service_info(std::move(<%service:metadata_name%>));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("<%program:name%>");
+  context.set_module(std::move(module));
+}
+<%/program:services%>
 } // namespace md
 } // namespace detail
 } // namespace thrift

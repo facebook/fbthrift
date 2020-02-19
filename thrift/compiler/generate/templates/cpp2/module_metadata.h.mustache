@@ -23,12 +23,20 @@
 #include "<%program:include_prefix%><%program:name%>_metadata.h"
 <%/program:thrift_includes%>
 
+<%#program:services%>
+namespace <% > common/service_namespace_cpp2%> {
+class <%service:name%>SvIf;
+} // <% > common/service_namespace_cpp2%>
+<%/program:services%>
+
 <%#program:gen_metadata?%>
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 <%#program:enums%>
 template <>
@@ -53,6 +61,17 @@ class ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
 };
 <%/struct:exception?%>
 <%/program:structs%>
+<%#program:services%>
+template <>
+class ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+<%#service:functions%>
+  static void gen_<%function:cpp_name%>(ThriftMetadata& metadata, ThriftService& context);
+<%/service:functions%>
+};
+<%/program:services%>
 } // namespace md
 } // namespace detail
 } // namespace thrift

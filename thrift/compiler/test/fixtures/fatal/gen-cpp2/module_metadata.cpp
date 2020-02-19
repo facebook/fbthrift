@@ -14,6 +14,9 @@ namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
 using ThriftType = ::apache::thrift::metadata::ThriftType;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::test_cpp2::cpp_reflection::enum1>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.enum1", ::apache::thrift::metadata::ThriftEnum{});
@@ -601,6 +604,669 @@ void StructMetadata<::test_cpp2::cpp_reflection::struct_with_indirections>::gen(
   }
 }
 
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method1(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "method1";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "method2";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service1_method2_x_1;
+  module_service1_method2_x_1.id = 1;
+  module_service1_method2_x_1.name = "x";
+  module_service1_method2_x_1.is_optional = false;
+  auto module_service1_method2_x_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service1_method2_x_1_type->initialize(module_service1_method2_x_1.type);
+  func.arguments.push_back(std::move(module_service1_method2_x_1));
+  ::apache::thrift::metadata::ThriftField module_service1_method2_y_2;
+  module_service1_method2_y_2.id = 2;
+  module_service1_method2_y_2.name = "y";
+  module_service1_method2_y_2.is_optional = false;
+  auto module_service1_method2_y_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service1_method2_y_2_type->initialize(module_service1_method2_y_2.type);
+  func.arguments.push_back(std::move(module_service1_method2_y_2));
+  ::apache::thrift::metadata::ThriftField module_service1_method2_z_3;
+  module_service1_method2_z_3.id = 3;
+  module_service1_method2_z_3.name = "z";
+  module_service1_method2_z_3.is_optional = false;
+  auto module_service1_method2_z_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service1_method2_z_3_type->initialize(module_service1_method2_z_3.type);
+  func.arguments.push_back(std::move(module_service1_method2_z_3));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "method3";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "method4";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service1_method4_i_1;
+  module_service1_method4_i_1.id = 1;
+  module_service1_method4_i_1.name = "i";
+  module_service1_method4_i_1.is_optional = false;
+  auto module_service1_method4_i_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service1_method4_i_1_type->initialize(module_service1_method4_i_1.type);
+  func.arguments.push_back(std::move(module_service1_method4_i_1));
+  ::apache::thrift::metadata::ThriftField module_service1_method4_j_2;
+  module_service1_method4_j_2.id = 2;
+  module_service1_method4_j_2.name = "j";
+  module_service1_method4_j_2.is_optional = false;
+  auto module_service1_method4_j_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service1_method4_j_2_type->initialize(module_service1_method4_j_2.type);
+  func.arguments.push_back(std::move(module_service1_method4_j_2));
+  ::apache::thrift::metadata::ThriftField module_service1_method4_k_3;
+  module_service1_method4_k_3.id = 3;
+  module_service1_method4_k_3.name = "k";
+  module_service1_method4_k_3.is_optional = false;
+  auto module_service1_method4_k_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service1_method4_k_3_type->initialize(module_service1_method4_k_3.type);
+  func.arguments.push_back(std::move(module_service1_method4_k_3));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "method5";
+  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2", metadata);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "method6";
+  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2", metadata);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service1_method6_l_1;
+  module_service1_method6_l_1.id = 1;
+  module_service1_method6_l_1.name = "l";
+  module_service1_method6_l_1.is_optional = false;
+  auto module_service1_method6_l_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service1_method6_l_1_type->initialize(module_service1_method6_l_1.type);
+  func.arguments.push_back(std::move(module_service1_method6_l_1));
+  ::apache::thrift::metadata::ThriftField module_service1_method6_m_2;
+  module_service1_method6_m_2.id = 2;
+  module_service1_method6_m_2.name = "m";
+  module_service1_method6_m_2.is_optional = false;
+  auto module_service1_method6_m_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service1_method6_m_2_type->initialize(module_service1_method6_m_2.type);
+  func.arguments.push_back(std::move(module_service1_method6_m_2));
+  ::apache::thrift::metadata::ThriftField module_service1_method6_n_3;
+  module_service1_method6_n_3.id = 3;
+  module_service1_method6_n_3.name = "n";
+  module_service1_method6_n_3.is_optional = false;
+  auto module_service1_method6_n_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service1_method6_n_3_type->initialize(module_service1_method6_n_3.type);
+  func.arguments.push_back(std::move(module_service1_method6_n_3));
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_service1;
+  module_service1.name = "module.service1";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method1,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method2,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method3,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method4,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method5,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf>::gen_method6,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_service1);
+  }
+  context.set_service_info(std::move(module_service1));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodA";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodB";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service2_methodB_x_1;
+  module_service2_methodB_x_1.id = 1;
+  module_service2_methodB_x_1.name = "x";
+  module_service2_methodB_x_1.is_optional = false;
+  auto module_service2_methodB_x_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service2_methodB_x_1_type->initialize(module_service2_methodB_x_1.type);
+  func.arguments.push_back(std::move(module_service2_methodB_x_1));
+  ::apache::thrift::metadata::ThriftField module_service2_methodB_y_2;
+  module_service2_methodB_y_2.id = 2;
+  module_service2_methodB_y_2.name = "y";
+  module_service2_methodB_y_2.is_optional = false;
+  auto module_service2_methodB_y_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service2_methodB_y_2_type->initialize(module_service2_methodB_y_2.type);
+  func.arguments.push_back(std::move(module_service2_methodB_y_2));
+  ::apache::thrift::metadata::ThriftField module_service2_methodB_z_3;
+  module_service2_methodB_z_3.id = 3;
+  module_service2_methodB_z_3.name = "z";
+  module_service2_methodB_z_3.is_optional = false;
+  auto module_service2_methodB_z_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service2_methodB_z_3_type->initialize(module_service2_methodB_z_3.type);
+  func.arguments.push_back(std::move(module_service2_methodB_z_3));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodC";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodD";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service2_methodD_i_1;
+  module_service2_methodD_i_1.id = 1;
+  module_service2_methodD_i_1.name = "i";
+  module_service2_methodD_i_1.is_optional = false;
+  auto module_service2_methodD_i_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service2_methodD_i_1_type->initialize(module_service2_methodD_i_1.type);
+  func.arguments.push_back(std::move(module_service2_methodD_i_1));
+  ::apache::thrift::metadata::ThriftField module_service2_methodD_j_2;
+  module_service2_methodD_j_2.id = 2;
+  module_service2_methodD_j_2.name = "j";
+  module_service2_methodD_j_2.is_optional = false;
+  auto module_service2_methodD_j_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service2_methodD_j_2_type->initialize(module_service2_methodD_j_2.type);
+  func.arguments.push_back(std::move(module_service2_methodD_j_2));
+  ::apache::thrift::metadata::ThriftField module_service2_methodD_k_3;
+  module_service2_methodD_k_3.id = 3;
+  module_service2_methodD_k_3.name = "k";
+  module_service2_methodD_k_3.is_optional = false;
+  auto module_service2_methodD_k_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service2_methodD_k_3_type->initialize(module_service2_methodD_k_3.type);
+  func.arguments.push_back(std::move(module_service2_methodD_k_3));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodE";
+  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2", metadata);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodF";
+  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2", metadata);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service2_methodF_l_1;
+  module_service2_methodF_l_1.id = 1;
+  module_service2_methodF_l_1.name = "l";
+  module_service2_methodF_l_1.is_optional = false;
+  auto module_service2_methodF_l_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service2_methodF_l_1_type->initialize(module_service2_methodF_l_1.type);
+  func.arguments.push_back(std::move(module_service2_methodF_l_1));
+  ::apache::thrift::metadata::ThriftField module_service2_methodF_m_2;
+  module_service2_methodF_m_2.id = 2;
+  module_service2_methodF_m_2.name = "m";
+  module_service2_methodF_m_2.is_optional = false;
+  auto module_service2_methodF_m_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service2_methodF_m_2_type->initialize(module_service2_methodF_m_2.type);
+  func.arguments.push_back(std::move(module_service2_methodF_m_2));
+  ::apache::thrift::metadata::ThriftField module_service2_methodF_n_3;
+  module_service2_methodF_n_3.id = 3;
+  module_service2_methodF_n_3.name = "n";
+  module_service2_methodF_n_3.is_optional = false;
+  auto module_service2_methodF_n_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service2_methodF_n_3_type->initialize(module_service2_methodF_n_3.type);
+  func.arguments.push_back(std::move(module_service2_methodF_n_3));
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_service2;
+  module_service2.name = "module.service2";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodA,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodB,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodC,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodD,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodE,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf>::gen_methodF,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_service2);
+  }
+  context.set_service_info(std::move(module_service2));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodA";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodB";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service3_methodB_x_1;
+  module_service3_methodB_x_1.id = 1;
+  module_service3_methodB_x_1.name = "x";
+  module_service3_methodB_x_1.is_optional = false;
+  auto module_service3_methodB_x_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service3_methodB_x_1_type->initialize(module_service3_methodB_x_1.type);
+  func.arguments.push_back(std::move(module_service3_methodB_x_1));
+  ::apache::thrift::metadata::ThriftField module_service3_methodB_y_2;
+  module_service3_methodB_y_2.id = 2;
+  module_service3_methodB_y_2.name = "y";
+  module_service3_methodB_y_2.is_optional = false;
+  auto module_service3_methodB_y_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service3_methodB_y_2_type->initialize(module_service3_methodB_y_2.type);
+  func.arguments.push_back(std::move(module_service3_methodB_y_2));
+  ::apache::thrift::metadata::ThriftField module_service3_methodB_z_3;
+  module_service3_methodB_z_3.id = 3;
+  module_service3_methodB_z_3.name = "z";
+  module_service3_methodB_z_3.is_optional = false;
+  auto module_service3_methodB_z_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service3_methodB_z_3_type->initialize(module_service3_methodB_z_3.type);
+  func.arguments.push_back(std::move(module_service3_methodB_z_3));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodC";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodD";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service3_methodD_i_1;
+  module_service3_methodD_i_1.id = 1;
+  module_service3_methodD_i_1.name = "i";
+  module_service3_methodD_i_1.is_optional = false;
+  auto module_service3_methodD_i_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service3_methodD_i_1_type->initialize(module_service3_methodD_i_1.type);
+  func.arguments.push_back(std::move(module_service3_methodD_i_1));
+  ::apache::thrift::metadata::ThriftField module_service3_methodD_j_2;
+  module_service3_methodD_j_2.id = 2;
+  module_service3_methodD_j_2.name = "j";
+  module_service3_methodD_j_2.is_optional = false;
+  auto module_service3_methodD_j_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service3_methodD_j_2_type->initialize(module_service3_methodD_j_2.type);
+  func.arguments.push_back(std::move(module_service3_methodD_j_2));
+  ::apache::thrift::metadata::ThriftField module_service3_methodD_k_3;
+  module_service3_methodD_k_3.id = 3;
+  module_service3_methodD_k_3.name = "k";
+  module_service3_methodD_k_3.is_optional = false;
+  auto module_service3_methodD_k_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service3_methodD_k_3_type->initialize(module_service3_methodD_k_3.type);
+  func.arguments.push_back(std::move(module_service3_methodD_k_3));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodE";
+  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct2>>("module.struct2", metadata);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "methodF";
+  auto func_ret_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct3>>("module.struct3", metadata);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_service3_methodF_l_1;
+  module_service3_methodF_l_1.id = 1;
+  module_service3_methodF_l_1.name = "l";
+  module_service3_methodF_l_1.is_optional = false;
+  auto module_service3_methodF_l_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  module_service3_methodF_l_1_type->initialize(module_service3_methodF_l_1.type);
+  func.arguments.push_back(std::move(module_service3_methodF_l_1));
+  ::apache::thrift::metadata::ThriftField module_service3_methodF_m_2;
+  module_service3_methodF_m_2.id = 2;
+  module_service3_methodF_m_2.name = "m";
+  module_service3_methodF_m_2.is_optional = false;
+  auto module_service3_methodF_m_2_type = std::make_unique<Struct< ::test_cpp2::cpp_reflection::struct1>>("module.struct1", metadata);
+  module_service3_methodF_m_2_type->initialize(module_service3_methodF_m_2.type);
+  func.arguments.push_back(std::move(module_service3_methodF_m_2));
+  ::apache::thrift::metadata::ThriftField module_service3_methodF_n_3;
+  module_service3_methodF_n_3.id = 3;
+  module_service3_methodF_n_3.name = "n";
+  module_service3_methodF_n_3.is_optional = false;
+  auto module_service3_methodF_n_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  module_service3_methodF_n_3_type->initialize(module_service3_methodF_n_3.type);
+  func.arguments.push_back(std::move(module_service3_methodF_n_3));
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_service3;
+  module_service3.name = "module.service3";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodA,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodB,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodC,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodD,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodE,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf>::gen_methodF,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_service3);
+  }
+  context.set_service_info(std::move(module_service3));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_get(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "get";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_getter(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "getter";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_lists(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "lists";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_maps(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "maps";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "name";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name_to_value(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "name_to_value";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_names(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "names";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_prefix_tree(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "prefix_tree";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_sets(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "sets";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_setter(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "setter";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_str(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "str";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_strings(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "strings";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_type(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "type";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "value";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value_to_name(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "value_to_name";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_values(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "values";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_id(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "id";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_ids(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "ids";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptor(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "descriptor";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptors(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "descriptors";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_key(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "key";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_keys(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "keys";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotation(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "annotation";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotations(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "annotations";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_member(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "member";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_members(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "members";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_field(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "field";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_fields(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "fields";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_service_with_special_names;
+  module_service_with_special_names.name = "module.service_with_special_names";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_get,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_getter,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_lists,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_maps,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_name_to_value,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_names,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_prefix_tree,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_sets,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_setter,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_str,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_strings,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_type,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_value_to_name,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_values,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_id,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_ids,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptor,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_descriptors,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_key,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_keys,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotation,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_annotations,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_member,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_members,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_field,
+    ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf>::gen_fields,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_service_with_special_names);
+  }
+  context.set_service_info(std::move(module_service_with_special_names));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

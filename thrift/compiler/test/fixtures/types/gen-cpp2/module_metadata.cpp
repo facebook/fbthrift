@@ -14,6 +14,9 @@ namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
 using ThriftType = ::apache::thrift::metadata::ThriftType;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 void EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops>::gen(ThriftMetadata& metadata) {
   auto res = metadata.enums.emplace("module.has_bitwise_ops", ::apache::thrift::metadata::ThriftEnum{});
@@ -508,6 +511,53 @@ void StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>::gen(T
   }
 }
 
+void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "bounce_map";
+  auto func_ret_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_SomeService_bounce_map_m_1;
+  module_SomeService_bounce_map_m_1.id = 1;
+  module_SomeService_bounce_map_m_1.name = "m";
+  module_SomeService_bounce_map_m_1.is_optional = false;
+  auto module_SomeService_bounce_map_m_1_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  module_SomeService_bounce_map_m_1_type->initialize(module_SomeService_bounce_map_m_1.type);
+  func.arguments.push_back(std::move(module_SomeService_bounce_map_m_1));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "binary_keyed_map";
+  auto func_ret_type = std::make_unique<Map>(std::make_unique<Typedef>("module.TBinary", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField module_SomeService_binary_keyed_map_r_1;
+  module_SomeService_binary_keyed_map_r_1.id = 1;
+  module_SomeService_binary_keyed_map_r_1.name = "r";
+  module_SomeService_binary_keyed_map_r_1.is_optional = false;
+  auto module_SomeService_binary_keyed_map_r_1_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  module_SomeService_binary_keyed_map_r_1_type->initialize(module_SomeService_binary_keyed_map_r_1.type);
+  func.arguments.push_back(std::move(module_SomeService_binary_keyed_map_r_1));
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_SomeService;
+  module_SomeService.name = "module.SomeService";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bounce_map,
+    ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_binary_keyed_map,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_SomeService);
+  }
+  context.set_service_info(std::move(module_SomeService));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

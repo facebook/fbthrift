@@ -11,11 +11,14 @@
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module0_metadata.h"
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp2/module1_metadata.h"
 
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class StructMetadata<::module2::Struct> {

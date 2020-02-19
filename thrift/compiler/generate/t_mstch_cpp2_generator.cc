@@ -1172,6 +1172,7 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
             {"service:coroutines?", &mstch_cpp2_service::coroutines},
+            {"service:metadata_name", &mstch_cpp2_service::metadata_name},
         });
   }
   std::string get_service_namespace(t_program const* program) override {
@@ -1230,6 +1231,9 @@ class mstch_cpp2_service : public mstch_service {
     return std::any_of(funs.begin(), funs.end(), [](auto fun) {
       return fun->annotations_.count("cpp.coroutine");
     });
+  }
+  mstch::node metadata_name() {
+    return service_->get_program()->get_name() + "_" + service_->get_name();
   }
 };
 

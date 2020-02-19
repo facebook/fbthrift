@@ -10,11 +10,17 @@
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_metadata.h"
 
+namespace apache::thrift::fixtures::types {
+class SomeServiceSvIf;
+} // apache::thrift::fixtures::types
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class EnumMetadata<::apache::thrift::fixtures::types::has_bitwise_ops> {
@@ -140,6 +146,14 @@ template <>
 class StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion> {
  public:
   static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_bounce_map(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

@@ -42,6 +42,14 @@ class ExceptionMetadata {
  public:
   static void gen(::apache::thrift::metadata::ThriftMetadata&) {}
 };
+
+template <typename T>
+class ServiceMetadata {
+ public:
+  static void gen(
+      ::apache::thrift::metadata::ThriftMetadata&,
+      ::apache::thrift::metadata::ThriftServiceContext&) {}
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

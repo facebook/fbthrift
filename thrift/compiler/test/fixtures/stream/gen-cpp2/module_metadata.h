@@ -9,11 +9,17 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_types.h"
 
+namespace cpp2 {
+class PubSubStreamingServiceSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class StructMetadata<::cpp2::FooEx> {
@@ -24,6 +30,16 @@ template <>
 class ExceptionMetadata<::cpp2::FooEx> {
  public:
   static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_returnstream(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_streamthrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_boththrows(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_responseandstreamthrows(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md
 } // namespace detail

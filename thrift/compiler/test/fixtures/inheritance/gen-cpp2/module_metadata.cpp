@@ -14,9 +14,94 @@ namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
 using ThriftType = ::apache::thrift::metadata::ThriftType;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
 
+void ServiceMetadata<::cpp2::MyRootSvIf>::gen_do_root(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "do_root";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::cpp2::MyRootSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_MyRoot;
+  module_MyRoot.name = "module.MyRoot";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::cpp2::MyRootSvIf>::gen_do_root,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_MyRoot);
+  }
+  context.set_service_info(std::move(module_MyRoot));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
+void ServiceMetadata<::cpp2::MyNodeSvIf>::gen_do_mid(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "do_mid";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::cpp2::MyNodeSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_MyNode;
+  module_MyNode.name = "module.MyNode";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::cpp2::MyNodeSvIf>::gen_do_mid,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_MyNode);
+  }
+  module_MyNode.set_parent("module.MyRoot");
+  ThriftServiceContext module_MyRoot_parent_context;
+  ServiceMetadata<::cpp2::MyRootSvIf>::gen(metadata, module_MyRoot_parent_context);
+  auto module_MyRoot_parent_name = module_MyRoot_parent_context.get_service_info().get_name();
+  metadata.services.emplace(std::move(module_MyRoot_parent_name), std::move(module_MyRoot_parent_context.service_info));
+  context.set_service_info(std::move(module_MyNode));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
+void ServiceMetadata<::cpp2::MyLeafSvIf>::gen_do_leaf(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "do_leaf";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::cpp2::MyLeafSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService module_MyLeaf;
+  module_MyLeaf.name = "module.MyLeaf";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::cpp2::MyLeafSvIf>::gen_do_leaf,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, module_MyLeaf);
+  }
+  module_MyLeaf.set_parent("module.MyNode");
+  ThriftServiceContext module_MyNode_parent_context;
+  ServiceMetadata<::cpp2::MyNodeSvIf>::gen(metadata, module_MyNode_parent_context);
+  auto module_MyNode_parent_name = module_MyNode_parent_context.get_service_info().get_name();
+  metadata.services.emplace(std::move(module_MyNode_parent_name), std::move(module_MyNode_parent_context.service_info));
+  context.set_service_info(std::move(module_MyLeaf));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("module");
+  context.set_module(std::move(module));
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

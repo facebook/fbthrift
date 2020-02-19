@@ -14,9 +14,73 @@ namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftPrimitiveType = ::apache::thrift::metadata::ThriftPrimitiveType;
 using ThriftType = ::apache::thrift::metadata::ThriftType;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
 
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_query(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "query";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField service_MyService_query_s_1;
+  service_MyService_query_s_1.id = 1;
+  service_MyService_query_s_1.name = "s";
+  service_MyService_query_s_1.is_optional = false;
+  auto service_MyService_query_s_1_type = std::make_unique<Struct< ::cpp2::MyStruct>>("module.MyStruct", metadata);
+  service_MyService_query_s_1_type->initialize(service_MyService_query_s_1.type);
+  func.arguments.push_back(std::move(service_MyService_query_s_1));
+  ::apache::thrift::metadata::ThriftField service_MyService_query_i_2;
+  service_MyService_query_i_2.id = 2;
+  service_MyService_query_i_2.name = "i";
+  service_MyService_query_i_2.is_optional = false;
+  auto service_MyService_query_i_2_type = std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata);
+  service_MyService_query_i_2_type->initialize(service_MyService_query_i_2.type);
+  func.arguments.push_back(std::move(service_MyService_query_i_2));
+  service.functions.push_back(std::move(func));
+}
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_has_arg_docs(ThriftMetadata& metadata, ThriftService& service) {
+  ::apache::thrift::metadata::ThriftFunction func;
+  (void)metadata;
+  func.name = "has_arg_docs";
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  func_ret_type->initialize(func.returnType);
+  ::apache::thrift::metadata::ThriftField service_MyService_has_arg_docs_s_1;
+  service_MyService_has_arg_docs_s_1.id = 1;
+  service_MyService_has_arg_docs_s_1.name = "s";
+  service_MyService_has_arg_docs_s_1.is_optional = false;
+  auto service_MyService_has_arg_docs_s_1_type = std::make_unique<Struct< ::cpp2::MyStruct>>("module.MyStruct", metadata);
+  service_MyService_has_arg_docs_s_1_type->initialize(service_MyService_has_arg_docs_s_1.type);
+  func.arguments.push_back(std::move(service_MyService_has_arg_docs_s_1));
+  ::apache::thrift::metadata::ThriftField service_MyService_has_arg_docs_i_2;
+  service_MyService_has_arg_docs_i_2.id = 2;
+  service_MyService_has_arg_docs_i_2.name = "i";
+  service_MyService_has_arg_docs_i_2.is_optional = false;
+  auto service_MyService_has_arg_docs_i_2_type = std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata);
+  service_MyService_has_arg_docs_i_2_type->initialize(service_MyService_has_arg_docs_i_2.type);
+  func.arguments.push_back(std::move(service_MyService_has_arg_docs_i_2));
+  service.functions.push_back(std::move(func));
+}
+
+void ServiceMetadata<::cpp2::MyServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+  (void) metadata;
+  ::apache::thrift::metadata::ThriftService service_MyService;
+  service_MyService.name = "service.MyService";
+  static const ThriftFunctionGenerator functions[] = {
+    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_query,
+    ServiceMetadata<::cpp2::MyServiceSvIf>::gen_has_arg_docs,
+  };
+  for (auto& function_gen : functions) {
+    function_gen(metadata, service_MyService);
+  }
+  context.set_service_info(std::move(service_MyService));
+  ::apache::thrift::metadata::ThriftModuleContext module;
+  module.set_name("service");
+  context.set_module(std::move(module));
+}
 } // namespace md
 } // namespace detail
 } // namespace thrift

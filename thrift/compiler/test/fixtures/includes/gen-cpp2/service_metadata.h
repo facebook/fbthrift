@@ -11,12 +11,26 @@
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/module_metadata.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_metadata.h"
 
+namespace cpp2 {
+class MyServiceSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
+template <>
+class ServiceMetadata<::cpp2::MyServiceSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_query(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_has_arg_docs(ThriftMetadata& metadata, ThriftService& context);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

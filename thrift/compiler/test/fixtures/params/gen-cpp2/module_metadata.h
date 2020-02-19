@@ -9,12 +9,29 @@
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/module_types.h"
 
+namespace cpp2 {
+class NestedContainersSvIf;
+} // cpp2
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
+template <>
+class ServiceMetadata<::cpp2::NestedContainersSvIf> {
+ public:
+  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+ private:
+  static void gen_mapList(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_mapSet(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_listMap(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_listSet(ThriftMetadata& metadata, ThriftService& context);
+  static void gen_turtles(ThriftMetadata& metadata, ThriftService& context);
+};
 } // namespace md
 } // namespace detail
 } // namespace thrift

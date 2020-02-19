@@ -10,11 +10,14 @@
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.h"
 #include "other/gen-cpp2/matching_module_name_metadata.h"
 
+
 namespace apache {
 namespace thrift {
 namespace detail {
 namespace md {
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
+using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftService = ::apache::thrift::metadata::ThriftService;
 
 template <>
 class StructMetadata<::matching_module_name::MyStruct> {

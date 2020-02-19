@@ -14,4 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>::<%#program:namespace_cpp2%><%namespace:name%><%^last?%>::<%/last?%><%/program:namespace_cpp2%><% > common/service_namespace_cpp2%>::
+%>::apache::thrift::metadata::ThriftField <% > metadata/func_field_name%>;
+<% > metadata/func_field_name%>.id = <%field:key%>;
+<% > metadata/func_field_name%>.name = "<%field:name%>";
+<% > metadata/func_field_name%>.is_optional = false;
+<%#field:type%>
+auto <% > metadata/func_field_name%>_type = <% > metadata/type_gen%>;
+<% > metadata/func_field_name%>_type->initialize(<% > metadata/func_field_name%>.type);
+<%/field:type%>
+
