@@ -87,7 +87,7 @@ class Subscription {
   }
 
   void detach() && {
-    joinFuture_.clear();
+    joinFuture_.reset();
   }
 
   void join() && {
@@ -96,7 +96,7 @@ class Subscription {
 
   folly::Future<folly::Unit> futureJoin() && {
     auto joinFuture = std::move(*joinFuture_);
-    joinFuture_.clear();
+    joinFuture_.reset();
     return joinFuture;
   }
 

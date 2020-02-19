@@ -433,7 +433,7 @@ void ThriftServer::cleanUp() {
 
   // It is users duty to make sure that setup() call
   // should have returned before doing this cleanup
-  idleServer_.clear();
+  idleServer_.reset();
   serveEventBase_ = nullptr;
   stopListening();
 
@@ -548,7 +548,7 @@ void ThriftServer::handleSetupFailure(void) {
   ServerBootstrap::stop();
 
   // avoid crash on stop()
-  idleServer_.clear();
+  idleServer_.reset();
   serveEventBase_ = nullptr;
 }
 
