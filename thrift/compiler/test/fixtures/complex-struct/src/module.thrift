@@ -132,3 +132,27 @@ struct TypeRemapped {
   3: i32 (java.swift.type = "java.math.BigInteger") BigInteger,
   4: binary (java.swift.type = "java.nio.ByteBuffer" ) binaryTestBuffer,
 }
+
+exception emptyXcep { }
+
+exception reqXcep {
+  1: required string message,
+  2: required i32 errorCode,
+}
+
+exception optXcep {
+  1: optional string message,
+  2: optional i32 errorCode,
+}
+
+exception complexException {
+  1: string message,
+  2: list<string> listStrings,
+  3: MyEnum  errorEnum,
+  4: optional MyUnion unionError,
+  5: MyStruct structError,
+  6: map<i64, string> (
+    java.swift.type =
+    "it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>")
+    lsMap,
+}
