@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.h"
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.tcc"
-
+#include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> PubSubStreamingServiceSvIf::getProcessor() {
   return std::make_unique<PubSubStreamingServiceAsyncProcessor>(this);
 }
+
 
 apache::thrift::ServerStream<int32_t> PubSubStreamingServiceSvIf::returnstream(int32_t /*i32_from*/, int32_t /*i32_to*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("returnstream");
@@ -84,6 +85,10 @@ void PubSubStreamingServiceSvIf::async_tm_responseandstreamthrows(std::unique_pt
 
 const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {
   return "PubSubStreamingService";
+}
+
+void PubSubStreamingServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<PubSubStreamingServiceSvIf>::gen(response.metadata, response.context);
 }
 
 void PubSubStreamingServiceAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

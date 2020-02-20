@@ -53,6 +53,7 @@ class MyServicePrioChildSvNull : public MyServicePrioChildSvIf, virtual public :
 class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsyncProcessor {
  public:
   const char* getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::cpp2::MyServicePrioParentAsyncProcessor;
  protected:
   MyServicePrioChildSvIf* iface_;

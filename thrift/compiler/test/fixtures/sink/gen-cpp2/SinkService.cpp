@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/SinkService.h"
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/SinkService.tcc"
-
+#include "thrift/compiler/test/fixtures/sink/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> SinkServiceSvIf::getProcessor() {
   return std::make_unique<SinkServiceAsyncProcessor>(this);
 }
+
 
 apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkServiceSvIf::method() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("method");
@@ -142,6 +143,10 @@ apache::thrift::SinkConsumer< ::cpp2::SinkPayload, ::cpp2::FinalResponse> SinkSe
 
 const char* SinkServiceAsyncProcessor::getServiceName() {
   return "SinkService";
+}
+
+void SinkServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<SinkServiceSvIf>::gen(response.metadata, response.context);
 }
 
 void SinkServiceAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

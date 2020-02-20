@@ -95,6 +95,7 @@ class service1SvNull : public service1SvIf {
 class service1AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   const char* getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
   service1SvIf* iface_;

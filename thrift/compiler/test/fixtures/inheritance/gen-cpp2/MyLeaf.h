@@ -53,6 +53,7 @@ class MyLeafSvNull : public MyLeafSvIf, virtual public ::cpp2::MyNodeSvIf {
 class MyLeafAsyncProcessor : public ::cpp2::MyNodeAsyncProcessor {
  public:
   const char* getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::cpp2::MyNodeAsyncProcessor;
  protected:
   MyLeafSvIf* iface_;

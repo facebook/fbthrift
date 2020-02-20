@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.h"
 #include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/MyServiceFast.tcc"
-
+#include "thrift/compiler/test/fixtures/basic-stack-arguments/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor() {
   return std::make_unique<MyServiceFastAsyncProcessor>(this);
 }
+
 
 bool MyServiceFastSvIf::hasDataById(int64_t /*id*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("hasDataById");
@@ -85,6 +86,10 @@ void MyServiceFastSvIf::async_eb_lobDataById(std::unique_ptr<apache::thrift::Han
 
 const char* MyServiceFastAsyncProcessor::getServiceName() {
   return "MyServiceFast";
+}
+
+void MyServiceFastAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<MyServiceFastSvIf>::gen(response.metadata, response.context);
 }
 
 void MyServiceFastAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -52,6 +52,7 @@ class CSvNull : public CSvIf {
 class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   const char* getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
   CSvIf* iface_;

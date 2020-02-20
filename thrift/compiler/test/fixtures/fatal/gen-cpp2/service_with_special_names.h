@@ -271,6 +271,7 @@ class service_with_special_namesSvNull : public service_with_special_namesSvIf {
 class service_with_special_namesAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   const char* getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = void;
  protected:
   service_with_special_namesSvIf* iface_;

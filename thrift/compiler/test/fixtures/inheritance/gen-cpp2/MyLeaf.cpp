@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyLeaf.h"
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyLeaf.tcc"
-
+#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> MyLeafSvIf::getProcessor() {
   return std::make_unique<MyLeafAsyncProcessor>(this);
 }
+
 
 void MyLeafSvIf::do_leaf() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("do_leaf");
@@ -37,6 +38,10 @@ void MyLeafSvNull::do_leaf() {
 
 const char* MyLeafAsyncProcessor::getServiceName() {
   return "MyLeaf";
+}
+
+void MyLeafAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<MyLeafSvIf>::gen(response.metadata, response.context);
 }
 
 void MyLeafAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -17,7 +17,7 @@
 %><% > Autogen%>
 #include "<%service:include_prefix%><%service:name%>.h"
 #include "<%service:include_prefix%><%service:name%>.tcc"
-
+#include "<%service:include_prefix%><%service:program_name%>_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 <% > common/namespace_cpp2_begin%>
@@ -25,11 +25,16 @@
 std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcessor() {
   return std::make_unique<<%service:name%>AsyncProcessor>(this);
 }
+
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>
 const char* <%service:name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
+}
+
+void <%service:name%>AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<<%service:name%>SvIf>::gen(response.metadata, response.context);
 }
 
 void <%service:name%>AsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -50,5 +55,3 @@ std::shared_ptr<folly::RequestContext> <%service:name%>AsyncProcessor::getBaseCo
 <% > service_cpp/compact_processmap%>
 
 <% > common/namespace_cpp2_end%>
-
-

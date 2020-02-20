@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraService.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraService.tcc"
-
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace extra { namespace svc {
 std::unique_ptr<apache::thrift::AsyncProcessor> ExtraServiceSvIf::getProcessor() {
   return std::make_unique<ExtraServiceAsyncProcessor>(this);
 }
+
 
 bool ExtraServiceSvIf::simple_function() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("simple_function");
@@ -170,6 +171,10 @@ void ExtraServiceSvIf::async_eb_oneway_void_ret_listunion_param(std::unique_ptr<
 
 const char* ExtraServiceAsyncProcessor::getServiceName() {
   return "ExtraService";
+}
+
+void ExtraServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<ExtraServiceSvIf>::gen(response.metadata, response.context);
 }
 
 void ExtraServiceAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

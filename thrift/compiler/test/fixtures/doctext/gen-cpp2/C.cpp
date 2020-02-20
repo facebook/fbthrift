@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.h"
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/C.tcc"
-
+#include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace cpp2 {
 std::unique_ptr<apache::thrift::AsyncProcessor> CSvIf::getProcessor() {
   return std::make_unique<CAsyncProcessor>(this);
 }
+
 
 void CSvIf::f() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("f");
@@ -37,6 +38,10 @@ void CSvNull::f() {
 
 const char* CAsyncProcessor::getServiceName() {
   return "C";
+}
+
+void CAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<CSvIf>::gen(response.metadata, response.context);
 }
 
 void CAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

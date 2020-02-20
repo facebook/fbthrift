@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/service1.tcc"
-
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace test_cpp2 { namespace cpp_reflection {
 std::unique_ptr<apache::thrift::AsyncProcessor> service1SvIf::getProcessor() {
   return std::make_unique<service1AsyncProcessor>(this);
 }
+
 
 void service1SvIf::method1() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("method1");
@@ -140,6 +141,10 @@ void service1SvNull::method6( ::test_cpp2::cpp_reflection::struct2& /*_return*/,
 
 const char* service1AsyncProcessor::getServiceName() {
   return "service1";
+}
+
+void service1AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<service1SvIf>::gen(response.metadata, response.context);
 }
 
 void service1AsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

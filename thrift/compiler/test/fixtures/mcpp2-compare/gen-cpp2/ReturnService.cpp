@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ReturnService.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ReturnService.tcc"
-
+#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace some { namespace valid { namespace ns {
 std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor() {
   return std::make_unique<ReturnServiceAsyncProcessor>(this);
 }
+
 
 void ReturnServiceSvIf::noReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("noReturn");
@@ -429,6 +430,10 @@ void ReturnServiceSvNull::readData( ::some::valid::ns::IOBufPtr& /*_return*/, in
 
 const char* ReturnServiceAsyncProcessor::getServiceName() {
   return "ReturnService";
+}
+
+void ReturnServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<ReturnServiceSvIf>::gen(response.metadata, response.context);
 }
 
 void ReturnServiceAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -40,6 +40,7 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+#include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -150,6 +151,9 @@ class AsyncProcessor : public TProcessorBase {
   virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
     return nullptr;
   }
+
+  virtual void getServiceMetadata(
+      apache::thrift::metadata::ThriftServiceMetadataResponse&) {}
 };
 
 class GeneratedAsyncProcessor : public AsyncProcessor {

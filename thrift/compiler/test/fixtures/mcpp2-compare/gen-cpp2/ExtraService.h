@@ -109,6 +109,7 @@ class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public ::some::valid
 class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncProcessor {
  public:
   const char* getServiceName() override;
+  void getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) override;
   using BaseAsyncProcessor = ::some::valid::ns::ParamServiceAsyncProcessor;
  protected:
   ExtraServiceSvIf* iface_;

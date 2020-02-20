@@ -6,13 +6,14 @@
  */
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/SomeService.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/SomeService.tcc"
-
+#include "thrift/compiler/test/fixtures/types/gen-cpp2/module_metadata.h"
 #include <thrift/lib/cpp2/gen/service_cpp.h>
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 std::unique_ptr<apache::thrift::AsyncProcessor> SomeServiceSvIf::getProcessor() {
   return std::make_unique<SomeServiceAsyncProcessor>(this);
 }
+
 
 void SomeServiceSvIf::bounce_map( ::apache::thrift::fixtures::types::SomeMap& /*_return*/, std::unique_ptr< ::apache::thrift::fixtures::types::SomeMap> /*m*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("bounce_map");
@@ -56,6 +57,10 @@ void SomeServiceSvNull::binary_keyed_map(::std::map< ::apache::thrift::fixtures:
 
 const char* SomeServiceAsyncProcessor::getServiceName() {
   return "SomeService";
+}
+
+void SomeServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  ::apache::thrift::detail::md::ServiceMetadata<SomeServiceSvIf>::gen(response.metadata, response.context);
 }
 
 void SomeServiceAsyncProcessor::process(apache::thrift::ResponseChannelRequest::UniquePtr req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
