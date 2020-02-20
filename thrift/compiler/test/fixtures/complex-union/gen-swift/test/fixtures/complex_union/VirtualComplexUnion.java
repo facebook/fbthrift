@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -24,6 +29,12 @@ public final class VirtualComplexUnion {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
+    public static final int _THINGONE = 1;
+    private static final TField THING_ONE_FIELD_DESC = new TField("thingOne", TType.STRING, (short)1);
+    public static final int _THINGTWO = 2;
+    private static final TField THING_TWO_FIELD_DESC = new TField("thingTwo", TType.STRING, (short)2);
     
     @ThriftConstructor
     public VirtualComplexUnion() {
@@ -137,4 +148,32 @@ public final class VirtualComplexUnion {
         void visitThingOne(String thingOne);
         void visitThingTwo(String thingTwo);
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      case _THINGONE: {
+        oprot.writeFieldBegin(THING_ONE_FIELD_DESC);
+        String thingOne = (String)this.value;
+        oprot.writeString(thingOne);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _THINGTWO: {
+        oprot.writeFieldBegin(THING_TWO_FIELD_DESC);
+        String thingTwo = (String)this.value;
+        oprot.writeString(thingTwo);
+        oprot.writeFieldEnd();
+        break;
+      }
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
 }

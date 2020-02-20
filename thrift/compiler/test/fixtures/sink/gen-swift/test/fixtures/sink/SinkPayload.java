@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -50,7 +54,10 @@ public final class SinkPayload {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("SinkPayload");
     private final String content;
+    public static final int _CONTENT = 1;
+    private static final TField CONTENT_FIELD_DESC = new TField("content", TType.STRING, (short)1);
 
     
     @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
@@ -84,6 +91,17 @@ public final class SinkPayload {
         return Arrays.deepHashCode(new Object[] {
             content
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.content != null) {
+        oprot.writeFieldBegin(CONTENT_FIELD_DESC);
+        oprot.writeString(this.content);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

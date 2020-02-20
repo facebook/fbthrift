@@ -11,11 +11,24 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @ThriftStruct("Serious")
 public final class Serious extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
+
+    private static final TStruct STRUCT_DESC = new TStruct("Serious");
+    private final String sonnet;
+    public static final int _SONNET = 1;
+    private static final TField SONNET_FIELD_DESC = new TField("sonnet", TType.STRING, (short)1);
 
     @ThriftConstructor
     public Serious(
@@ -50,9 +63,19 @@ public final class Serious extends java.lang.RuntimeException {
         }
     }
     
-    private final String sonnet;
-
     
     @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.sonnet != null) {
+        oprot.writeFieldBegin(SONNET_FIELD_DESC);
+        oprot.writeString(this.sonnet);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
+    
+}

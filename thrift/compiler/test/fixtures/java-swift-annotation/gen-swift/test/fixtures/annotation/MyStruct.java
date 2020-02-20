@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -83,10 +87,19 @@ public final class MyStruct {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyStruct");
     private final long intField;
+    public static final int _INTFIELD = 1;
+    private static final TField INT_FIELD_FIELD_DESC = new TField("intField", TType.I64, (short)1);
     private final String stringField;
+    public static final int _STRINGFIELD = 2;
+    private static final TField STRING_FIELD_FIELD_DESC = new TField("stringField", TType.STRING, (short)2);
     @com.foo.Ignored private final String detailField;
+    public static final int _DETAILFIELD = 3;
+    private static final TField DETAIL_FIELD_FIELD_DESC = new TField("detailField", TType.STRING, (short)3);
     @com.foo.Ignored private final com.foo.FastIntLongMap detailMap;
+    public static final int _DETAILMAP = 4;
+    private static final TField DETAIL_MAP_FIELD_DESC = new TField("detailMap", TType.MAP, (short)4);
 
     
     @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -138,6 +151,36 @@ public final class MyStruct {
             detailField,
             detailMap
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(INT_FIELD_FIELD_DESC);
+      oprot.writeI64(this.intField);
+      oprot.writeFieldEnd();
+      if (this.stringField != null) {
+        oprot.writeFieldBegin(STRING_FIELD_FIELD_DESC);
+        oprot.writeString(this.stringField);
+        oprot.writeFieldEnd();
+      }
+      if (this.detailField != null) {
+        oprot.writeFieldBegin(DETAIL_FIELD_FIELD_DESC);
+        oprot.writeString(this.detailField);
+        oprot.writeFieldEnd();
+      }
+      if (this.detailMap != null) {
+        oprot.writeFieldBegin(DETAIL_MAP_FIELD_DESC);
+        com.foo.FastIntLongMap _iter0 = this.detailMap;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter0.size()));
+        for (Map.Entry<Integer, Long> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+          oprot.writeI64(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

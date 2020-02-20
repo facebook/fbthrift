@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -72,9 +76,16 @@ public final class Val {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("Val");
     private final String strVal;
+    public static final int _STRVAL = 1;
+    private static final TField STR_VAL_FIELD_DESC = new TField("strVal", TType.STRING, (short)1);
     private final int intVal;
+    public static final int _INTVAL = 2;
+    private static final TField INT_VAL_FIELD_DESC = new TField("intVal", TType.I32, (short)2);
     private final Map<Short, String> typedefValue;
+    public static final int _TYPEDEFVALUE = 9;
+    private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
 
     
     @ThriftField(value=1, name="strVal", requiredness=Requiredness.NONE)
@@ -120,6 +131,31 @@ public final class Val {
             intVal,
             typedefValue
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.strVal != null) {
+        oprot.writeFieldBegin(STR_VAL_FIELD_DESC);
+        oprot.writeString(this.strVal);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(INT_VAL_FIELD_DESC);
+      oprot.writeI32(this.intVal);
+      oprot.writeFieldEnd();
+      if (this.typedefValue != null) {
+        oprot.writeFieldBegin(TYPEDEF_VALUE_FIELD_DESC);
+        Map<Short, String> _iter0 = this.typedefValue;
+        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
+        for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI16(_iter1.getKey());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

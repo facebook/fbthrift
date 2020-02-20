@@ -11,11 +11,24 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @ThriftStruct("SinkException2")
 public final class SinkException2 extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
+
+    private static final TStruct STRUCT_DESC = new TStruct("SinkException2");
+    private final long reason;
+    public static final int _REASON = 1;
+    private static final TField REASON_FIELD_DESC = new TField("reason", TType.I64, (short)1);
 
     @ThriftConstructor
     public SinkException2(
@@ -50,9 +63,17 @@ public final class SinkException2 extends java.lang.Exception {
         }
     }
     
-    private final long reason;
-
     
     @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public long getReason() { return reason; }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(REASON_FIELD_DESC);
+      oprot.writeI64(this.reason);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
+    
+}

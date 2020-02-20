@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -2347,263 +2351,778 @@ public final class MyBigStruct {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyBigStruct");
     private String msg1;
+    public static final int _MSG1 = 1;
+    private static final TField MSG1_FIELD_DESC = new TField("msg1", TType.STRING, (short)1);
     private String msg2;
+    public static final int _MSG2 = 2;
+    private static final TField MSG2_FIELD_DESC = new TField("msg2", TType.STRING, (short)2);
     private String msg3;
+    public static final int _MSG3 = 3;
+    private static final TField MSG3_FIELD_DESC = new TField("msg3", TType.STRING, (short)3);
     private String msg4;
+    public static final int _MSG4 = 4;
+    private static final TField MSG4_FIELD_DESC = new TField("msg4", TType.STRING, (short)4);
     private String msg5;
+    public static final int _MSG5 = 5;
+    private static final TField MSG5_FIELD_DESC = new TField("msg5", TType.STRING, (short)5);
     private String msg6;
+    public static final int _MSG6 = 6;
+    private static final TField MSG6_FIELD_DESC = new TField("msg6", TType.STRING, (short)6);
     private String msg7;
+    public static final int _MSG7 = 7;
+    private static final TField MSG7_FIELD_DESC = new TField("msg7", TType.STRING, (short)7);
     private String msg8;
+    public static final int _MSG8 = 8;
+    private static final TField MSG8_FIELD_DESC = new TField("msg8", TType.STRING, (short)8);
     private String msg9;
+    public static final int _MSG9 = 9;
+    private static final TField MSG9_FIELD_DESC = new TField("msg9", TType.STRING, (short)9);
     private int myIntField10;
+    public static final int _MYINTFIELD10 = 10;
+    private static final TField MY_INT_FIELD10_FIELD_DESC = new TField("myIntField10", TType.I32, (short)10);
     private int myIntField11;
+    public static final int _MYINTFIELD11 = 11;
+    private static final TField MY_INT_FIELD11_FIELD_DESC = new TField("myIntField11", TType.I32, (short)11);
     private int myIntField12;
+    public static final int _MYINTFIELD12 = 12;
+    private static final TField MY_INT_FIELD12_FIELD_DESC = new TField("myIntField12", TType.I32, (short)12);
     private int myIntField13;
+    public static final int _MYINTFIELD13 = 13;
+    private static final TField MY_INT_FIELD13_FIELD_DESC = new TField("myIntField13", TType.I32, (short)13);
     private int myIntField14;
+    public static final int _MYINTFIELD14 = 14;
+    private static final TField MY_INT_FIELD14_FIELD_DESC = new TField("myIntField14", TType.I32, (short)14);
     private int myIntField15;
+    public static final int _MYINTFIELD15 = 15;
+    private static final TField MY_INT_FIELD15_FIELD_DESC = new TField("myIntField15", TType.I32, (short)15);
     private int myIntField16;
+    public static final int _MYINTFIELD16 = 16;
+    private static final TField MY_INT_FIELD16_FIELD_DESC = new TField("myIntField16", TType.I32, (short)16);
     private int myIntField17;
+    public static final int _MYINTFIELD17 = 17;
+    private static final TField MY_INT_FIELD17_FIELD_DESC = new TField("myIntField17", TType.I32, (short)17);
     private int myIntField18;
+    public static final int _MYINTFIELD18 = 18;
+    private static final TField MY_INT_FIELD18_FIELD_DESC = new TField("myIntField18", TType.I32, (short)18);
     private int myIntField19;
+    public static final int _MYINTFIELD19 = 19;
+    private static final TField MY_INT_FIELD19_FIELD_DESC = new TField("myIntField19", TType.I32, (short)19);
     private int myIntField20;
+    public static final int _MYINTFIELD20 = 20;
+    private static final TField MY_INT_FIELD20_FIELD_DESC = new TField("myIntField20", TType.I32, (short)20);
     private double myDoubleField21;
+    public static final int _MYDOUBLEFIELD21 = 21;
+    private static final TField MY_DOUBLE_FIELD21_FIELD_DESC = new TField("myDoubleField21", TType.DOUBLE, (short)21);
     private double myDoubleField22;
+    public static final int _MYDOUBLEFIELD22 = 22;
+    private static final TField MY_DOUBLE_FIELD22_FIELD_DESC = new TField("myDoubleField22", TType.DOUBLE, (short)22);
     private double myDoubleField23;
+    public static final int _MYDOUBLEFIELD23 = 23;
+    private static final TField MY_DOUBLE_FIELD23_FIELD_DESC = new TField("myDoubleField23", TType.DOUBLE, (short)23);
     private double myDoubleField24;
+    public static final int _MYDOUBLEFIELD24 = 24;
+    private static final TField MY_DOUBLE_FIELD24_FIELD_DESC = new TField("myDoubleField24", TType.DOUBLE, (short)24);
     private double myDoubleField25;
+    public static final int _MYDOUBLEFIELD25 = 25;
+    private static final TField MY_DOUBLE_FIELD25_FIELD_DESC = new TField("myDoubleField25", TType.DOUBLE, (short)25);
     private double myDoubleField26;
+    public static final int _MYDOUBLEFIELD26 = 26;
+    private static final TField MY_DOUBLE_FIELD26_FIELD_DESC = new TField("myDoubleField26", TType.DOUBLE, (short)26);
     private double myDoubleField27;
+    public static final int _MYDOUBLEFIELD27 = 27;
+    private static final TField MY_DOUBLE_FIELD27_FIELD_DESC = new TField("myDoubleField27", TType.DOUBLE, (short)27);
     private double myDoubleField28;
+    public static final int _MYDOUBLEFIELD28 = 28;
+    private static final TField MY_DOUBLE_FIELD28_FIELD_DESC = new TField("myDoubleField28", TType.DOUBLE, (short)28);
     private double myDoubleField29;
+    public static final int _MYDOUBLEFIELD29 = 29;
+    private static final TField MY_DOUBLE_FIELD29_FIELD_DESC = new TField("myDoubleField29", TType.DOUBLE, (short)29);
     private double myDoubleField30;
+    public static final int _MYDOUBLEFIELD30 = 30;
+    private static final TField MY_DOUBLE_FIELD30_FIELD_DESC = new TField("myDoubleField30", TType.DOUBLE, (short)30);
     private String msg31;
+    public static final int _MSG31 = 31;
+    private static final TField MSG31_FIELD_DESC = new TField("msg31", TType.STRING, (short)31);
     private String msg32;
+    public static final int _MSG32 = 32;
+    private static final TField MSG32_FIELD_DESC = new TField("msg32", TType.STRING, (short)32);
     private String msg33;
+    public static final int _MSG33 = 33;
+    private static final TField MSG33_FIELD_DESC = new TField("msg33", TType.STRING, (short)33);
     private String msg34;
+    public static final int _MSG34 = 34;
+    private static final TField MSG34_FIELD_DESC = new TField("msg34", TType.STRING, (short)34);
     private String msg35;
+    public static final int _MSG35 = 35;
+    private static final TField MSG35_FIELD_DESC = new TField("msg35", TType.STRING, (short)35);
     private String msg36;
+    public static final int _MSG36 = 36;
+    private static final TField MSG36_FIELD_DESC = new TField("msg36", TType.STRING, (short)36);
     private String msg37;
+    public static final int _MSG37 = 37;
+    private static final TField MSG37_FIELD_DESC = new TField("msg37", TType.STRING, (short)37);
     private String msg38;
+    public static final int _MSG38 = 38;
+    private static final TField MSG38_FIELD_DESC = new TField("msg38", TType.STRING, (short)38);
     private String msg39;
+    public static final int _MSG39 = 39;
+    private static final TField MSG39_FIELD_DESC = new TField("msg39", TType.STRING, (short)39);
     private String msg40;
+    public static final int _MSG40 = 40;
+    private static final TField MSG40_FIELD_DESC = new TField("msg40", TType.STRING, (short)40);
     private String msg41;
+    public static final int _MSG41 = 41;
+    private static final TField MSG41_FIELD_DESC = new TField("msg41", TType.STRING, (short)41);
     private String msg42;
+    public static final int _MSG42 = 42;
+    private static final TField MSG42_FIELD_DESC = new TField("msg42", TType.STRING, (short)42);
     private String msg43;
+    public static final int _MSG43 = 43;
+    private static final TField MSG43_FIELD_DESC = new TField("msg43", TType.STRING, (short)43);
     private String msg44;
+    public static final int _MSG44 = 44;
+    private static final TField MSG44_FIELD_DESC = new TField("msg44", TType.STRING, (short)44);
     private String msg45;
+    public static final int _MSG45 = 45;
+    private static final TField MSG45_FIELD_DESC = new TField("msg45", TType.STRING, (short)45);
     private String msg46;
+    public static final int _MSG46 = 46;
+    private static final TField MSG46_FIELD_DESC = new TField("msg46", TType.STRING, (short)46);
     private String msg47;
+    public static final int _MSG47 = 47;
+    private static final TField MSG47_FIELD_DESC = new TField("msg47", TType.STRING, (short)47);
     private String msg48;
+    public static final int _MSG48 = 48;
+    private static final TField MSG48_FIELD_DESC = new TField("msg48", TType.STRING, (short)48);
     private String msg49;
+    public static final int _MSG49 = 49;
+    private static final TField MSG49_FIELD_DESC = new TField("msg49", TType.STRING, (short)49);
     private String msg50;
+    public static final int _MSG50 = 50;
+    private static final TField MSG50_FIELD_DESC = new TField("msg50", TType.STRING, (short)50);
     private String msg51;
+    public static final int _MSG51 = 51;
+    private static final TField MSG51_FIELD_DESC = new TField("msg51", TType.STRING, (short)51);
     private String msg52;
+    public static final int _MSG52 = 52;
+    private static final TField MSG52_FIELD_DESC = new TField("msg52", TType.STRING, (short)52);
     private String msg53;
+    public static final int _MSG53 = 53;
+    private static final TField MSG53_FIELD_DESC = new TField("msg53", TType.STRING, (short)53);
     private String msg54;
+    public static final int _MSG54 = 54;
+    private static final TField MSG54_FIELD_DESC = new TField("msg54", TType.STRING, (short)54);
     private String msg55;
+    public static final int _MSG55 = 55;
+    private static final TField MSG55_FIELD_DESC = new TField("msg55", TType.STRING, (short)55);
     private String msg56;
+    public static final int _MSG56 = 56;
+    private static final TField MSG56_FIELD_DESC = new TField("msg56", TType.STRING, (short)56);
     private String msg57;
+    public static final int _MSG57 = 57;
+    private static final TField MSG57_FIELD_DESC = new TField("msg57", TType.STRING, (short)57);
     private String msg58;
+    public static final int _MSG58 = 58;
+    private static final TField MSG58_FIELD_DESC = new TField("msg58", TType.STRING, (short)58);
     private String msg59;
+    public static final int _MSG59 = 59;
+    private static final TField MSG59_FIELD_DESC = new TField("msg59", TType.STRING, (short)59);
     private String msg60;
+    public static final int _MSG60 = 60;
+    private static final TField MSG60_FIELD_DESC = new TField("msg60", TType.STRING, (short)60);
     private String msg61;
+    public static final int _MSG61 = 61;
+    private static final TField MSG61_FIELD_DESC = new TField("msg61", TType.STRING, (short)61);
     private String msg62;
+    public static final int _MSG62 = 62;
+    private static final TField MSG62_FIELD_DESC = new TField("msg62", TType.STRING, (short)62);
     private String msg63;
+    public static final int _MSG63 = 63;
+    private static final TField MSG63_FIELD_DESC = new TField("msg63", TType.STRING, (short)63);
     private String msg64;
+    public static final int _MSG64 = 64;
+    private static final TField MSG64_FIELD_DESC = new TField("msg64", TType.STRING, (short)64);
     private String msg65;
+    public static final int _MSG65 = 65;
+    private static final TField MSG65_FIELD_DESC = new TField("msg65", TType.STRING, (short)65);
     private String msg66;
+    public static final int _MSG66 = 66;
+    private static final TField MSG66_FIELD_DESC = new TField("msg66", TType.STRING, (short)66);
     private String msg67;
+    public static final int _MSG67 = 67;
+    private static final TField MSG67_FIELD_DESC = new TField("msg67", TType.STRING, (short)67);
     private String msg68;
+    public static final int _MSG68 = 68;
+    private static final TField MSG68_FIELD_DESC = new TField("msg68", TType.STRING, (short)68);
     private String msg69;
+    public static final int _MSG69 = 69;
+    private static final TField MSG69_FIELD_DESC = new TField("msg69", TType.STRING, (short)69);
     private String msg70;
+    public static final int _MSG70 = 70;
+    private static final TField MSG70_FIELD_DESC = new TField("msg70", TType.STRING, (short)70);
     private String msg71;
+    public static final int _MSG71 = 71;
+    private static final TField MSG71_FIELD_DESC = new TField("msg71", TType.STRING, (short)71);
     private String msg72;
+    public static final int _MSG72 = 72;
+    private static final TField MSG72_FIELD_DESC = new TField("msg72", TType.STRING, (short)72);
     private String msg73;
+    public static final int _MSG73 = 73;
+    private static final TField MSG73_FIELD_DESC = new TField("msg73", TType.STRING, (short)73);
     private String msg74;
+    public static final int _MSG74 = 74;
+    private static final TField MSG74_FIELD_DESC = new TField("msg74", TType.STRING, (short)74);
     private String msg75;
+    public static final int _MSG75 = 75;
+    private static final TField MSG75_FIELD_DESC = new TField("msg75", TType.STRING, (short)75);
     private String msg76;
+    public static final int _MSG76 = 76;
+    private static final TField MSG76_FIELD_DESC = new TField("msg76", TType.STRING, (short)76);
     private String msg77;
+    public static final int _MSG77 = 77;
+    private static final TField MSG77_FIELD_DESC = new TField("msg77", TType.STRING, (short)77);
     private String msg78;
+    public static final int _MSG78 = 78;
+    private static final TField MSG78_FIELD_DESC = new TField("msg78", TType.STRING, (short)78);
     private String msg79;
+    public static final int _MSG79 = 79;
+    private static final TField MSG79_FIELD_DESC = new TField("msg79", TType.STRING, (short)79);
     private String msg80;
+    public static final int _MSG80 = 80;
+    private static final TField MSG80_FIELD_DESC = new TField("msg80", TType.STRING, (short)80);
     private String msg81;
+    public static final int _MSG81 = 81;
+    private static final TField MSG81_FIELD_DESC = new TField("msg81", TType.STRING, (short)81);
     private String msg82;
+    public static final int _MSG82 = 82;
+    private static final TField MSG82_FIELD_DESC = new TField("msg82", TType.STRING, (short)82);
     private String msg83;
+    public static final int _MSG83 = 83;
+    private static final TField MSG83_FIELD_DESC = new TField("msg83", TType.STRING, (short)83);
     private String msg84;
+    public static final int _MSG84 = 84;
+    private static final TField MSG84_FIELD_DESC = new TField("msg84", TType.STRING, (short)84);
     private String msg85;
+    public static final int _MSG85 = 85;
+    private static final TField MSG85_FIELD_DESC = new TField("msg85", TType.STRING, (short)85);
     private String msg86;
+    public static final int _MSG86 = 86;
+    private static final TField MSG86_FIELD_DESC = new TField("msg86", TType.STRING, (short)86);
     private String msg87;
+    public static final int _MSG87 = 87;
+    private static final TField MSG87_FIELD_DESC = new TField("msg87", TType.STRING, (short)87);
     private String msg88;
+    public static final int _MSG88 = 88;
+    private static final TField MSG88_FIELD_DESC = new TField("msg88", TType.STRING, (short)88);
     private String msg89;
+    public static final int _MSG89 = 89;
+    private static final TField MSG89_FIELD_DESC = new TField("msg89", TType.STRING, (short)89);
     private String msg90;
+    public static final int _MSG90 = 90;
+    private static final TField MSG90_FIELD_DESC = new TField("msg90", TType.STRING, (short)90);
     private String msg91;
+    public static final int _MSG91 = 91;
+    private static final TField MSG91_FIELD_DESC = new TField("msg91", TType.STRING, (short)91);
     private String msg92;
+    public static final int _MSG92 = 92;
+    private static final TField MSG92_FIELD_DESC = new TField("msg92", TType.STRING, (short)92);
     private String msg93;
+    public static final int _MSG93 = 93;
+    private static final TField MSG93_FIELD_DESC = new TField("msg93", TType.STRING, (short)93);
     private String msg94;
+    public static final int _MSG94 = 94;
+    private static final TField MSG94_FIELD_DESC = new TField("msg94", TType.STRING, (short)94);
     private String msg95;
+    public static final int _MSG95 = 95;
+    private static final TField MSG95_FIELD_DESC = new TField("msg95", TType.STRING, (short)95);
     private String msg96;
+    public static final int _MSG96 = 96;
+    private static final TField MSG96_FIELD_DESC = new TField("msg96", TType.STRING, (short)96);
     private String msg97;
+    public static final int _MSG97 = 97;
+    private static final TField MSG97_FIELD_DESC = new TField("msg97", TType.STRING, (short)97);
     private String msg98;
+    public static final int _MSG98 = 98;
+    private static final TField MSG98_FIELD_DESC = new TField("msg98", TType.STRING, (short)98);
     private String msg99;
+    public static final int _MSG99 = 99;
+    private static final TField MSG99_FIELD_DESC = new TField("msg99", TType.STRING, (short)99);
     private String msg100;
+    public static final int _MSG100 = 100;
+    private static final TField MSG100_FIELD_DESC = new TField("msg100", TType.STRING, (short)100);
     private String msg101;
+    public static final int _MSG101 = 101;
+    private static final TField MSG101_FIELD_DESC = new TField("msg101", TType.STRING, (short)101);
     private String msg102;
+    public static final int _MSG102 = 102;
+    private static final TField MSG102_FIELD_DESC = new TField("msg102", TType.STRING, (short)102);
     private String msg103;
+    public static final int _MSG103 = 103;
+    private static final TField MSG103_FIELD_DESC = new TField("msg103", TType.STRING, (short)103);
     private String msg104;
+    public static final int _MSG104 = 104;
+    private static final TField MSG104_FIELD_DESC = new TField("msg104", TType.STRING, (short)104);
     private String msg105;
+    public static final int _MSG105 = 105;
+    private static final TField MSG105_FIELD_DESC = new TField("msg105", TType.STRING, (short)105);
     private String msg106;
+    public static final int _MSG106 = 106;
+    private static final TField MSG106_FIELD_DESC = new TField("msg106", TType.STRING, (short)106);
     private String msg107;
+    public static final int _MSG107 = 107;
+    private static final TField MSG107_FIELD_DESC = new TField("msg107", TType.STRING, (short)107);
     private String msg108;
+    public static final int _MSG108 = 108;
+    private static final TField MSG108_FIELD_DESC = new TField("msg108", TType.STRING, (short)108);
     private String msg109;
+    public static final int _MSG109 = 109;
+    private static final TField MSG109_FIELD_DESC = new TField("msg109", TType.STRING, (short)109);
     private String msg110;
+    public static final int _MSG110 = 110;
+    private static final TField MSG110_FIELD_DESC = new TField("msg110", TType.STRING, (short)110);
     private String msg111;
+    public static final int _MSG111 = 111;
+    private static final TField MSG111_FIELD_DESC = new TField("msg111", TType.STRING, (short)111);
     private String msg112;
+    public static final int _MSG112 = 112;
+    private static final TField MSG112_FIELD_DESC = new TField("msg112", TType.STRING, (short)112);
     private String msg113;
+    public static final int _MSG113 = 113;
+    private static final TField MSG113_FIELD_DESC = new TField("msg113", TType.STRING, (short)113);
     private String msg114;
+    public static final int _MSG114 = 114;
+    private static final TField MSG114_FIELD_DESC = new TField("msg114", TType.STRING, (short)114);
     private String msg115;
+    public static final int _MSG115 = 115;
+    private static final TField MSG115_FIELD_DESC = new TField("msg115", TType.STRING, (short)115);
     private String msg116;
+    public static final int _MSG116 = 116;
+    private static final TField MSG116_FIELD_DESC = new TField("msg116", TType.STRING, (short)116);
     private String msg117;
+    public static final int _MSG117 = 117;
+    private static final TField MSG117_FIELD_DESC = new TField("msg117", TType.STRING, (short)117);
     private String msg118;
+    public static final int _MSG118 = 118;
+    private static final TField MSG118_FIELD_DESC = new TField("msg118", TType.STRING, (short)118);
     private String msg119;
+    public static final int _MSG119 = 119;
+    private static final TField MSG119_FIELD_DESC = new TField("msg119", TType.STRING, (short)119);
     private String msg120;
+    public static final int _MSG120 = 120;
+    private static final TField MSG120_FIELD_DESC = new TField("msg120", TType.STRING, (short)120);
     private String msg121;
+    public static final int _MSG121 = 121;
+    private static final TField MSG121_FIELD_DESC = new TField("msg121", TType.STRING, (short)121);
     private String msg122;
+    public static final int _MSG122 = 122;
+    private static final TField MSG122_FIELD_DESC = new TField("msg122", TType.STRING, (short)122);
     private String msg123;
+    public static final int _MSG123 = 123;
+    private static final TField MSG123_FIELD_DESC = new TField("msg123", TType.STRING, (short)123);
     private String msg124;
+    public static final int _MSG124 = 124;
+    private static final TField MSG124_FIELD_DESC = new TField("msg124", TType.STRING, (short)124);
     private String msg125;
+    public static final int _MSG125 = 125;
+    private static final TField MSG125_FIELD_DESC = new TField("msg125", TType.STRING, (short)125);
     private String msg126;
+    public static final int _MSG126 = 126;
+    private static final TField MSG126_FIELD_DESC = new TField("msg126", TType.STRING, (short)126);
     private String msg127;
+    public static final int _MSG127 = 127;
+    private static final TField MSG127_FIELD_DESC = new TField("msg127", TType.STRING, (short)127);
     private String msg128;
+    public static final int _MSG128 = 128;
+    private static final TField MSG128_FIELD_DESC = new TField("msg128", TType.STRING, (short)128);
     private String msg129;
+    public static final int _MSG129 = 129;
+    private static final TField MSG129_FIELD_DESC = new TField("msg129", TType.STRING, (short)129);
     private String msg130;
+    public static final int _MSG130 = 130;
+    private static final TField MSG130_FIELD_DESC = new TField("msg130", TType.STRING, (short)130);
     private String msg131;
+    public static final int _MSG131 = 131;
+    private static final TField MSG131_FIELD_DESC = new TField("msg131", TType.STRING, (short)131);
     private String msg132;
+    public static final int _MSG132 = 132;
+    private static final TField MSG132_FIELD_DESC = new TField("msg132", TType.STRING, (short)132);
     private String msg133;
+    public static final int _MSG133 = 133;
+    private static final TField MSG133_FIELD_DESC = new TField("msg133", TType.STRING, (short)133);
     private String msg134;
+    public static final int _MSG134 = 134;
+    private static final TField MSG134_FIELD_DESC = new TField("msg134", TType.STRING, (short)134);
     private String msg135;
+    public static final int _MSG135 = 135;
+    private static final TField MSG135_FIELD_DESC = new TField("msg135", TType.STRING, (short)135);
     private String msg136;
+    public static final int _MSG136 = 136;
+    private static final TField MSG136_FIELD_DESC = new TField("msg136", TType.STRING, (short)136);
     private String msg137;
+    public static final int _MSG137 = 137;
+    private static final TField MSG137_FIELD_DESC = new TField("msg137", TType.STRING, (short)137);
     private String msg138;
+    public static final int _MSG138 = 138;
+    private static final TField MSG138_FIELD_DESC = new TField("msg138", TType.STRING, (short)138);
     private String msg139;
+    public static final int _MSG139 = 139;
+    private static final TField MSG139_FIELD_DESC = new TField("msg139", TType.STRING, (short)139);
     private String msg140;
+    public static final int _MSG140 = 140;
+    private static final TField MSG140_FIELD_DESC = new TField("msg140", TType.STRING, (short)140);
     private String msg141;
+    public static final int _MSG141 = 141;
+    private static final TField MSG141_FIELD_DESC = new TField("msg141", TType.STRING, (short)141);
     private String msg142;
+    public static final int _MSG142 = 142;
+    private static final TField MSG142_FIELD_DESC = new TField("msg142", TType.STRING, (short)142);
     private String msg143;
+    public static final int _MSG143 = 143;
+    private static final TField MSG143_FIELD_DESC = new TField("msg143", TType.STRING, (short)143);
     private String msg144;
+    public static final int _MSG144 = 144;
+    private static final TField MSG144_FIELD_DESC = new TField("msg144", TType.STRING, (short)144);
     private String msg145;
+    public static final int _MSG145 = 145;
+    private static final TField MSG145_FIELD_DESC = new TField("msg145", TType.STRING, (short)145);
     private String msg146;
+    public static final int _MSG146 = 146;
+    private static final TField MSG146_FIELD_DESC = new TField("msg146", TType.STRING, (short)146);
     private String msg147;
+    public static final int _MSG147 = 147;
+    private static final TField MSG147_FIELD_DESC = new TField("msg147", TType.STRING, (short)147);
     private String msg148;
+    public static final int _MSG148 = 148;
+    private static final TField MSG148_FIELD_DESC = new TField("msg148", TType.STRING, (short)148);
     private String msg149;
+    public static final int _MSG149 = 149;
+    private static final TField MSG149_FIELD_DESC = new TField("msg149", TType.STRING, (short)149);
     private String msg150;
+    public static final int _MSG150 = 150;
+    private static final TField MSG150_FIELD_DESC = new TField("msg150", TType.STRING, (short)150);
     private String msg151;
+    public static final int _MSG151 = 151;
+    private static final TField MSG151_FIELD_DESC = new TField("msg151", TType.STRING, (short)151);
     private String msg152;
+    public static final int _MSG152 = 152;
+    private static final TField MSG152_FIELD_DESC = new TField("msg152", TType.STRING, (short)152);
     private String msg153;
+    public static final int _MSG153 = 153;
+    private static final TField MSG153_FIELD_DESC = new TField("msg153", TType.STRING, (short)153);
     private String msg154;
+    public static final int _MSG154 = 154;
+    private static final TField MSG154_FIELD_DESC = new TField("msg154", TType.STRING, (short)154);
     private String msg155;
+    public static final int _MSG155 = 155;
+    private static final TField MSG155_FIELD_DESC = new TField("msg155", TType.STRING, (short)155);
     private String msg156;
+    public static final int _MSG156 = 156;
+    private static final TField MSG156_FIELD_DESC = new TField("msg156", TType.STRING, (short)156);
     private String msg157;
+    public static final int _MSG157 = 157;
+    private static final TField MSG157_FIELD_DESC = new TField("msg157", TType.STRING, (short)157);
     private String msg158;
+    public static final int _MSG158 = 158;
+    private static final TField MSG158_FIELD_DESC = new TField("msg158", TType.STRING, (short)158);
     private String msg159;
+    public static final int _MSG159 = 159;
+    private static final TField MSG159_FIELD_DESC = new TField("msg159", TType.STRING, (short)159);
     private String msg160;
+    public static final int _MSG160 = 160;
+    private static final TField MSG160_FIELD_DESC = new TField("msg160", TType.STRING, (short)160);
     private String msg161;
+    public static final int _MSG161 = 161;
+    private static final TField MSG161_FIELD_DESC = new TField("msg161", TType.STRING, (short)161);
     private String msg162;
+    public static final int _MSG162 = 162;
+    private static final TField MSG162_FIELD_DESC = new TField("msg162", TType.STRING, (short)162);
     private String msg163;
+    public static final int _MSG163 = 163;
+    private static final TField MSG163_FIELD_DESC = new TField("msg163", TType.STRING, (short)163);
     private String msg164;
+    public static final int _MSG164 = 164;
+    private static final TField MSG164_FIELD_DESC = new TField("msg164", TType.STRING, (short)164);
     private String msg165;
+    public static final int _MSG165 = 165;
+    private static final TField MSG165_FIELD_DESC = new TField("msg165", TType.STRING, (short)165);
     private String msg166;
+    public static final int _MSG166 = 166;
+    private static final TField MSG166_FIELD_DESC = new TField("msg166", TType.STRING, (short)166);
     private String msg167;
+    public static final int _MSG167 = 167;
+    private static final TField MSG167_FIELD_DESC = new TField("msg167", TType.STRING, (short)167);
     private String msg168;
+    public static final int _MSG168 = 168;
+    private static final TField MSG168_FIELD_DESC = new TField("msg168", TType.STRING, (short)168);
     private String msg169;
+    public static final int _MSG169 = 169;
+    private static final TField MSG169_FIELD_DESC = new TField("msg169", TType.STRING, (short)169);
     private String msg170;
+    public static final int _MSG170 = 170;
+    private static final TField MSG170_FIELD_DESC = new TField("msg170", TType.STRING, (short)170);
     private String msg171;
+    public static final int _MSG171 = 171;
+    private static final TField MSG171_FIELD_DESC = new TField("msg171", TType.STRING, (short)171);
     private String msg172;
+    public static final int _MSG172 = 172;
+    private static final TField MSG172_FIELD_DESC = new TField("msg172", TType.STRING, (short)172);
     private String msg173;
+    public static final int _MSG173 = 173;
+    private static final TField MSG173_FIELD_DESC = new TField("msg173", TType.STRING, (short)173);
     private String msg174;
+    public static final int _MSG174 = 174;
+    private static final TField MSG174_FIELD_DESC = new TField("msg174", TType.STRING, (short)174);
     private String msg175;
+    public static final int _MSG175 = 175;
+    private static final TField MSG175_FIELD_DESC = new TField("msg175", TType.STRING, (short)175);
     private String msg176;
+    public static final int _MSG176 = 176;
+    private static final TField MSG176_FIELD_DESC = new TField("msg176", TType.STRING, (short)176);
     private String msg177;
+    public static final int _MSG177 = 177;
+    private static final TField MSG177_FIELD_DESC = new TField("msg177", TType.STRING, (short)177);
     private String msg178;
+    public static final int _MSG178 = 178;
+    private static final TField MSG178_FIELD_DESC = new TField("msg178", TType.STRING, (short)178);
     private String msg179;
+    public static final int _MSG179 = 179;
+    private static final TField MSG179_FIELD_DESC = new TField("msg179", TType.STRING, (short)179);
     private String msg180;
+    public static final int _MSG180 = 180;
+    private static final TField MSG180_FIELD_DESC = new TField("msg180", TType.STRING, (short)180);
     private String msg181;
+    public static final int _MSG181 = 181;
+    private static final TField MSG181_FIELD_DESC = new TField("msg181", TType.STRING, (short)181);
     private String msg182;
+    public static final int _MSG182 = 182;
+    private static final TField MSG182_FIELD_DESC = new TField("msg182", TType.STRING, (short)182);
     private String msg183;
+    public static final int _MSG183 = 183;
+    private static final TField MSG183_FIELD_DESC = new TField("msg183", TType.STRING, (short)183);
     private String msg184;
+    public static final int _MSG184 = 184;
+    private static final TField MSG184_FIELD_DESC = new TField("msg184", TType.STRING, (short)184);
     private String msg185;
+    public static final int _MSG185 = 185;
+    private static final TField MSG185_FIELD_DESC = new TField("msg185", TType.STRING, (short)185);
     private String msg186;
+    public static final int _MSG186 = 186;
+    private static final TField MSG186_FIELD_DESC = new TField("msg186", TType.STRING, (short)186);
     private String msg187;
+    public static final int _MSG187 = 187;
+    private static final TField MSG187_FIELD_DESC = new TField("msg187", TType.STRING, (short)187);
     private String msg188;
+    public static final int _MSG188 = 188;
+    private static final TField MSG188_FIELD_DESC = new TField("msg188", TType.STRING, (short)188);
     private String msg189;
+    public static final int _MSG189 = 189;
+    private static final TField MSG189_FIELD_DESC = new TField("msg189", TType.STRING, (short)189);
     private String msg190;
+    public static final int _MSG190 = 190;
+    private static final TField MSG190_FIELD_DESC = new TField("msg190", TType.STRING, (short)190);
     private String msg191;
+    public static final int _MSG191 = 191;
+    private static final TField MSG191_FIELD_DESC = new TField("msg191", TType.STRING, (short)191);
     private String msg192;
+    public static final int _MSG192 = 192;
+    private static final TField MSG192_FIELD_DESC = new TField("msg192", TType.STRING, (short)192);
     private String msg193;
+    public static final int _MSG193 = 193;
+    private static final TField MSG193_FIELD_DESC = new TField("msg193", TType.STRING, (short)193);
     private String msg194;
+    public static final int _MSG194 = 194;
+    private static final TField MSG194_FIELD_DESC = new TField("msg194", TType.STRING, (short)194);
     private String msg195;
+    public static final int _MSG195 = 195;
+    private static final TField MSG195_FIELD_DESC = new TField("msg195", TType.STRING, (short)195);
     private String msg196;
+    public static final int _MSG196 = 196;
+    private static final TField MSG196_FIELD_DESC = new TField("msg196", TType.STRING, (short)196);
     private String msg197;
+    public static final int _MSG197 = 197;
+    private static final TField MSG197_FIELD_DESC = new TField("msg197", TType.STRING, (short)197);
     private String msg198;
+    public static final int _MSG198 = 198;
+    private static final TField MSG198_FIELD_DESC = new TField("msg198", TType.STRING, (short)198);
     private String msg199;
+    public static final int _MSG199 = 199;
+    private static final TField MSG199_FIELD_DESC = new TField("msg199", TType.STRING, (short)199);
     private String msg200;
+    public static final int _MSG200 = 200;
+    private static final TField MSG200_FIELD_DESC = new TField("msg200", TType.STRING, (short)200);
     private String msg201;
+    public static final int _MSG201 = 201;
+    private static final TField MSG201_FIELD_DESC = new TField("msg201", TType.STRING, (short)201);
     private String msg202;
+    public static final int _MSG202 = 202;
+    private static final TField MSG202_FIELD_DESC = new TField("msg202", TType.STRING, (short)202);
     private String msg203;
+    public static final int _MSG203 = 203;
+    private static final TField MSG203_FIELD_DESC = new TField("msg203", TType.STRING, (short)203);
     private String msg204;
+    public static final int _MSG204 = 204;
+    private static final TField MSG204_FIELD_DESC = new TField("msg204", TType.STRING, (short)204);
     private String msg205;
+    public static final int _MSG205 = 205;
+    private static final TField MSG205_FIELD_DESC = new TField("msg205", TType.STRING, (short)205);
     private String msg206;
+    public static final int _MSG206 = 206;
+    private static final TField MSG206_FIELD_DESC = new TField("msg206", TType.STRING, (short)206);
     private String msg207;
+    public static final int _MSG207 = 207;
+    private static final TField MSG207_FIELD_DESC = new TField("msg207", TType.STRING, (short)207);
     private String msg208;
+    public static final int _MSG208 = 208;
+    private static final TField MSG208_FIELD_DESC = new TField("msg208", TType.STRING, (short)208);
     private String msg209;
+    public static final int _MSG209 = 209;
+    private static final TField MSG209_FIELD_DESC = new TField("msg209", TType.STRING, (short)209);
     private String msg210;
+    public static final int _MSG210 = 210;
+    private static final TField MSG210_FIELD_DESC = new TField("msg210", TType.STRING, (short)210);
     private String msg211;
+    public static final int _MSG211 = 211;
+    private static final TField MSG211_FIELD_DESC = new TField("msg211", TType.STRING, (short)211);
     private String msg212;
+    public static final int _MSG212 = 212;
+    private static final TField MSG212_FIELD_DESC = new TField("msg212", TType.STRING, (short)212);
     private String msg213;
+    public static final int _MSG213 = 213;
+    private static final TField MSG213_FIELD_DESC = new TField("msg213", TType.STRING, (short)213);
     private String msg214;
+    public static final int _MSG214 = 214;
+    private static final TField MSG214_FIELD_DESC = new TField("msg214", TType.STRING, (short)214);
     private String msg215;
+    public static final int _MSG215 = 215;
+    private static final TField MSG215_FIELD_DESC = new TField("msg215", TType.STRING, (short)215);
     private String msg216;
+    public static final int _MSG216 = 216;
+    private static final TField MSG216_FIELD_DESC = new TField("msg216", TType.STRING, (short)216);
     private String msg217;
+    public static final int _MSG217 = 217;
+    private static final TField MSG217_FIELD_DESC = new TField("msg217", TType.STRING, (short)217);
     private String msg218;
+    public static final int _MSG218 = 218;
+    private static final TField MSG218_FIELD_DESC = new TField("msg218", TType.STRING, (short)218);
     private String msg219;
+    public static final int _MSG219 = 219;
+    private static final TField MSG219_FIELD_DESC = new TField("msg219", TType.STRING, (short)219);
     private String msg220;
+    public static final int _MSG220 = 220;
+    private static final TField MSG220_FIELD_DESC = new TField("msg220", TType.STRING, (short)220);
     private String msg221;
+    public static final int _MSG221 = 221;
+    private static final TField MSG221_FIELD_DESC = new TField("msg221", TType.STRING, (short)221);
     private String msg222;
+    public static final int _MSG222 = 222;
+    private static final TField MSG222_FIELD_DESC = new TField("msg222", TType.STRING, (short)222);
     private String msg223;
+    public static final int _MSG223 = 223;
+    private static final TField MSG223_FIELD_DESC = new TField("msg223", TType.STRING, (short)223);
     private String msg224;
+    public static final int _MSG224 = 224;
+    private static final TField MSG224_FIELD_DESC = new TField("msg224", TType.STRING, (short)224);
     private String msg225;
+    public static final int _MSG225 = 225;
+    private static final TField MSG225_FIELD_DESC = new TField("msg225", TType.STRING, (short)225);
     private String msg226;
+    public static final int _MSG226 = 226;
+    private static final TField MSG226_FIELD_DESC = new TField("msg226", TType.STRING, (short)226);
     private String msg227;
+    public static final int _MSG227 = 227;
+    private static final TField MSG227_FIELD_DESC = new TField("msg227", TType.STRING, (short)227);
     private String msg228;
+    public static final int _MSG228 = 228;
+    private static final TField MSG228_FIELD_DESC = new TField("msg228", TType.STRING, (short)228);
     private String msg229;
+    public static final int _MSG229 = 229;
+    private static final TField MSG229_FIELD_DESC = new TField("msg229", TType.STRING, (short)229);
     private String msg230;
+    public static final int _MSG230 = 230;
+    private static final TField MSG230_FIELD_DESC = new TField("msg230", TType.STRING, (short)230);
     private String msg231;
+    public static final int _MSG231 = 231;
+    private static final TField MSG231_FIELD_DESC = new TField("msg231", TType.STRING, (short)231);
     private String msg232;
+    public static final int _MSG232 = 232;
+    private static final TField MSG232_FIELD_DESC = new TField("msg232", TType.STRING, (short)232);
     private String msg233;
+    public static final int _MSG233 = 233;
+    private static final TField MSG233_FIELD_DESC = new TField("msg233", TType.STRING, (short)233);
     private String msg234;
+    public static final int _MSG234 = 234;
+    private static final TField MSG234_FIELD_DESC = new TField("msg234", TType.STRING, (short)234);
     private String msg235;
+    public static final int _MSG235 = 235;
+    private static final TField MSG235_FIELD_DESC = new TField("msg235", TType.STRING, (short)235);
     private String msg236;
+    public static final int _MSG236 = 236;
+    private static final TField MSG236_FIELD_DESC = new TField("msg236", TType.STRING, (short)236);
     private String msg237;
+    public static final int _MSG237 = 237;
+    private static final TField MSG237_FIELD_DESC = new TField("msg237", TType.STRING, (short)237);
     private String msg238;
+    public static final int _MSG238 = 238;
+    private static final TField MSG238_FIELD_DESC = new TField("msg238", TType.STRING, (short)238);
     private String msg239;
+    public static final int _MSG239 = 239;
+    private static final TField MSG239_FIELD_DESC = new TField("msg239", TType.STRING, (short)239);
     private String msg240;
+    public static final int _MSG240 = 240;
+    private static final TField MSG240_FIELD_DESC = new TField("msg240", TType.STRING, (short)240);
     private String msg241;
+    public static final int _MSG241 = 241;
+    private static final TField MSG241_FIELD_DESC = new TField("msg241", TType.STRING, (short)241);
     private String msg242;
+    public static final int _MSG242 = 242;
+    private static final TField MSG242_FIELD_DESC = new TField("msg242", TType.STRING, (short)242);
     private String msg243;
+    public static final int _MSG243 = 243;
+    private static final TField MSG243_FIELD_DESC = new TField("msg243", TType.STRING, (short)243);
     private String msg244;
+    public static final int _MSG244 = 244;
+    private static final TField MSG244_FIELD_DESC = new TField("msg244", TType.STRING, (short)244);
     private String msg245;
+    public static final int _MSG245 = 245;
+    private static final TField MSG245_FIELD_DESC = new TField("msg245", TType.STRING, (short)245);
     private String msg246;
+    public static final int _MSG246 = 246;
+    private static final TField MSG246_FIELD_DESC = new TField("msg246", TType.STRING, (short)246);
     private String msg247;
+    public static final int _MSG247 = 247;
+    private static final TField MSG247_FIELD_DESC = new TField("msg247", TType.STRING, (short)247);
     private String msg248;
+    public static final int _MSG248 = 248;
+    private static final TField MSG248_FIELD_DESC = new TField("msg248", TType.STRING, (short)248);
     private String msg249;
+    public static final int _MSG249 = 249;
+    private static final TField MSG249_FIELD_DESC = new TField("msg249", TType.STRING, (short)249);
     private String msg250;
+    public static final int _MSG250 = 250;
+    private static final TField MSG250_FIELD_DESC = new TField("msg250", TType.STRING, (short)250);
     private String msg251;
+    public static final int _MSG251 = 251;
+    private static final TField MSG251_FIELD_DESC = new TField("msg251", TType.STRING, (short)251);
     private String msg252;
+    public static final int _MSG252 = 252;
+    private static final TField MSG252_FIELD_DESC = new TField("msg252", TType.STRING, (short)252);
     private String msg253;
+    public static final int _MSG253 = 253;
+    private static final TField MSG253_FIELD_DESC = new TField("msg253", TType.STRING, (short)253);
     private String msg254;
+    public static final int _MSG254 = 254;
+    private static final TField MSG254_FIELD_DESC = new TField("msg254", TType.STRING, (short)254);
     private String msg255;
+    public static final int _MSG255 = 255;
+    private static final TField MSG255_FIELD_DESC = new TField("msg255", TType.STRING, (short)255);
     private String msg256;
+    public static final int _MSG256 = 256;
+    private static final TField MSG256_FIELD_DESC = new TField("msg256", TType.STRING, (short)256);
     private String msg257;
+    public static final int _MSG257 = 257;
+    private static final TField MSG257_FIELD_DESC = new TField("msg257", TType.STRING, (short)257);
 
     
     @ThriftField(value=1, name="msg1", requiredness=Requiredness.NONE)
@@ -4173,6 +4692,1255 @@ public final class MyBigStruct {
             msg256,
             msg257
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.msg1 != null) {
+        oprot.writeFieldBegin(MSG1_FIELD_DESC);
+        oprot.writeString(this.msg1);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg2 != null) {
+        oprot.writeFieldBegin(MSG2_FIELD_DESC);
+        oprot.writeString(this.msg2);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg3 != null) {
+        oprot.writeFieldBegin(MSG3_FIELD_DESC);
+        oprot.writeString(this.msg3);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg4 != null) {
+        oprot.writeFieldBegin(MSG4_FIELD_DESC);
+        oprot.writeString(this.msg4);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg5 != null) {
+        oprot.writeFieldBegin(MSG5_FIELD_DESC);
+        oprot.writeString(this.msg5);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg6 != null) {
+        oprot.writeFieldBegin(MSG6_FIELD_DESC);
+        oprot.writeString(this.msg6);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg7 != null) {
+        oprot.writeFieldBegin(MSG7_FIELD_DESC);
+        oprot.writeString(this.msg7);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg8 != null) {
+        oprot.writeFieldBegin(MSG8_FIELD_DESC);
+        oprot.writeString(this.msg8);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg9 != null) {
+        oprot.writeFieldBegin(MSG9_FIELD_DESC);
+        oprot.writeString(this.msg9);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(MY_INT_FIELD10_FIELD_DESC);
+      oprot.writeI32(this.myIntField10);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD11_FIELD_DESC);
+      oprot.writeI32(this.myIntField11);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD12_FIELD_DESC);
+      oprot.writeI32(this.myIntField12);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD13_FIELD_DESC);
+      oprot.writeI32(this.myIntField13);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD14_FIELD_DESC);
+      oprot.writeI32(this.myIntField14);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD15_FIELD_DESC);
+      oprot.writeI32(this.myIntField15);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD16_FIELD_DESC);
+      oprot.writeI32(this.myIntField16);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD17_FIELD_DESC);
+      oprot.writeI32(this.myIntField17);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD18_FIELD_DESC);
+      oprot.writeI32(this.myIntField18);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD19_FIELD_DESC);
+      oprot.writeI32(this.myIntField19);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_INT_FIELD20_FIELD_DESC);
+      oprot.writeI32(this.myIntField20);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD21_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField21);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD22_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField22);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD23_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField23);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD24_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField24);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD25_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField25);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD26_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField26);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD27_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField27);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD28_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField28);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD29_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField29);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_DOUBLE_FIELD30_FIELD_DESC);
+      oprot.writeDouble(this.myDoubleField30);
+      oprot.writeFieldEnd();
+      if (this.msg31 != null) {
+        oprot.writeFieldBegin(MSG31_FIELD_DESC);
+        oprot.writeString(this.msg31);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg32 != null) {
+        oprot.writeFieldBegin(MSG32_FIELD_DESC);
+        oprot.writeString(this.msg32);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg33 != null) {
+        oprot.writeFieldBegin(MSG33_FIELD_DESC);
+        oprot.writeString(this.msg33);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg34 != null) {
+        oprot.writeFieldBegin(MSG34_FIELD_DESC);
+        oprot.writeString(this.msg34);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg35 != null) {
+        oprot.writeFieldBegin(MSG35_FIELD_DESC);
+        oprot.writeString(this.msg35);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg36 != null) {
+        oprot.writeFieldBegin(MSG36_FIELD_DESC);
+        oprot.writeString(this.msg36);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg37 != null) {
+        oprot.writeFieldBegin(MSG37_FIELD_DESC);
+        oprot.writeString(this.msg37);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg38 != null) {
+        oprot.writeFieldBegin(MSG38_FIELD_DESC);
+        oprot.writeString(this.msg38);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg39 != null) {
+        oprot.writeFieldBegin(MSG39_FIELD_DESC);
+        oprot.writeString(this.msg39);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg40 != null) {
+        oprot.writeFieldBegin(MSG40_FIELD_DESC);
+        oprot.writeString(this.msg40);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg41 != null) {
+        oprot.writeFieldBegin(MSG41_FIELD_DESC);
+        oprot.writeString(this.msg41);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg42 != null) {
+        oprot.writeFieldBegin(MSG42_FIELD_DESC);
+        oprot.writeString(this.msg42);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg43 != null) {
+        oprot.writeFieldBegin(MSG43_FIELD_DESC);
+        oprot.writeString(this.msg43);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg44 != null) {
+        oprot.writeFieldBegin(MSG44_FIELD_DESC);
+        oprot.writeString(this.msg44);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg45 != null) {
+        oprot.writeFieldBegin(MSG45_FIELD_DESC);
+        oprot.writeString(this.msg45);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg46 != null) {
+        oprot.writeFieldBegin(MSG46_FIELD_DESC);
+        oprot.writeString(this.msg46);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg47 != null) {
+        oprot.writeFieldBegin(MSG47_FIELD_DESC);
+        oprot.writeString(this.msg47);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg48 != null) {
+        oprot.writeFieldBegin(MSG48_FIELD_DESC);
+        oprot.writeString(this.msg48);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg49 != null) {
+        oprot.writeFieldBegin(MSG49_FIELD_DESC);
+        oprot.writeString(this.msg49);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg50 != null) {
+        oprot.writeFieldBegin(MSG50_FIELD_DESC);
+        oprot.writeString(this.msg50);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg51 != null) {
+        oprot.writeFieldBegin(MSG51_FIELD_DESC);
+        oprot.writeString(this.msg51);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg52 != null) {
+        oprot.writeFieldBegin(MSG52_FIELD_DESC);
+        oprot.writeString(this.msg52);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg53 != null) {
+        oprot.writeFieldBegin(MSG53_FIELD_DESC);
+        oprot.writeString(this.msg53);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg54 != null) {
+        oprot.writeFieldBegin(MSG54_FIELD_DESC);
+        oprot.writeString(this.msg54);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg55 != null) {
+        oprot.writeFieldBegin(MSG55_FIELD_DESC);
+        oprot.writeString(this.msg55);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg56 != null) {
+        oprot.writeFieldBegin(MSG56_FIELD_DESC);
+        oprot.writeString(this.msg56);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg57 != null) {
+        oprot.writeFieldBegin(MSG57_FIELD_DESC);
+        oprot.writeString(this.msg57);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg58 != null) {
+        oprot.writeFieldBegin(MSG58_FIELD_DESC);
+        oprot.writeString(this.msg58);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg59 != null) {
+        oprot.writeFieldBegin(MSG59_FIELD_DESC);
+        oprot.writeString(this.msg59);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg60 != null) {
+        oprot.writeFieldBegin(MSG60_FIELD_DESC);
+        oprot.writeString(this.msg60);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg61 != null) {
+        oprot.writeFieldBegin(MSG61_FIELD_DESC);
+        oprot.writeString(this.msg61);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg62 != null) {
+        oprot.writeFieldBegin(MSG62_FIELD_DESC);
+        oprot.writeString(this.msg62);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg63 != null) {
+        oprot.writeFieldBegin(MSG63_FIELD_DESC);
+        oprot.writeString(this.msg63);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg64 != null) {
+        oprot.writeFieldBegin(MSG64_FIELD_DESC);
+        oprot.writeString(this.msg64);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg65 != null) {
+        oprot.writeFieldBegin(MSG65_FIELD_DESC);
+        oprot.writeString(this.msg65);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg66 != null) {
+        oprot.writeFieldBegin(MSG66_FIELD_DESC);
+        oprot.writeString(this.msg66);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg67 != null) {
+        oprot.writeFieldBegin(MSG67_FIELD_DESC);
+        oprot.writeString(this.msg67);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg68 != null) {
+        oprot.writeFieldBegin(MSG68_FIELD_DESC);
+        oprot.writeString(this.msg68);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg69 != null) {
+        oprot.writeFieldBegin(MSG69_FIELD_DESC);
+        oprot.writeString(this.msg69);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg70 != null) {
+        oprot.writeFieldBegin(MSG70_FIELD_DESC);
+        oprot.writeString(this.msg70);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg71 != null) {
+        oprot.writeFieldBegin(MSG71_FIELD_DESC);
+        oprot.writeString(this.msg71);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg72 != null) {
+        oprot.writeFieldBegin(MSG72_FIELD_DESC);
+        oprot.writeString(this.msg72);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg73 != null) {
+        oprot.writeFieldBegin(MSG73_FIELD_DESC);
+        oprot.writeString(this.msg73);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg74 != null) {
+        oprot.writeFieldBegin(MSG74_FIELD_DESC);
+        oprot.writeString(this.msg74);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg75 != null) {
+        oprot.writeFieldBegin(MSG75_FIELD_DESC);
+        oprot.writeString(this.msg75);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg76 != null) {
+        oprot.writeFieldBegin(MSG76_FIELD_DESC);
+        oprot.writeString(this.msg76);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg77 != null) {
+        oprot.writeFieldBegin(MSG77_FIELD_DESC);
+        oprot.writeString(this.msg77);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg78 != null) {
+        oprot.writeFieldBegin(MSG78_FIELD_DESC);
+        oprot.writeString(this.msg78);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg79 != null) {
+        oprot.writeFieldBegin(MSG79_FIELD_DESC);
+        oprot.writeString(this.msg79);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg80 != null) {
+        oprot.writeFieldBegin(MSG80_FIELD_DESC);
+        oprot.writeString(this.msg80);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg81 != null) {
+        oprot.writeFieldBegin(MSG81_FIELD_DESC);
+        oprot.writeString(this.msg81);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg82 != null) {
+        oprot.writeFieldBegin(MSG82_FIELD_DESC);
+        oprot.writeString(this.msg82);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg83 != null) {
+        oprot.writeFieldBegin(MSG83_FIELD_DESC);
+        oprot.writeString(this.msg83);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg84 != null) {
+        oprot.writeFieldBegin(MSG84_FIELD_DESC);
+        oprot.writeString(this.msg84);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg85 != null) {
+        oprot.writeFieldBegin(MSG85_FIELD_DESC);
+        oprot.writeString(this.msg85);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg86 != null) {
+        oprot.writeFieldBegin(MSG86_FIELD_DESC);
+        oprot.writeString(this.msg86);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg87 != null) {
+        oprot.writeFieldBegin(MSG87_FIELD_DESC);
+        oprot.writeString(this.msg87);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg88 != null) {
+        oprot.writeFieldBegin(MSG88_FIELD_DESC);
+        oprot.writeString(this.msg88);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg89 != null) {
+        oprot.writeFieldBegin(MSG89_FIELD_DESC);
+        oprot.writeString(this.msg89);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg90 != null) {
+        oprot.writeFieldBegin(MSG90_FIELD_DESC);
+        oprot.writeString(this.msg90);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg91 != null) {
+        oprot.writeFieldBegin(MSG91_FIELD_DESC);
+        oprot.writeString(this.msg91);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg92 != null) {
+        oprot.writeFieldBegin(MSG92_FIELD_DESC);
+        oprot.writeString(this.msg92);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg93 != null) {
+        oprot.writeFieldBegin(MSG93_FIELD_DESC);
+        oprot.writeString(this.msg93);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg94 != null) {
+        oprot.writeFieldBegin(MSG94_FIELD_DESC);
+        oprot.writeString(this.msg94);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg95 != null) {
+        oprot.writeFieldBegin(MSG95_FIELD_DESC);
+        oprot.writeString(this.msg95);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg96 != null) {
+        oprot.writeFieldBegin(MSG96_FIELD_DESC);
+        oprot.writeString(this.msg96);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg97 != null) {
+        oprot.writeFieldBegin(MSG97_FIELD_DESC);
+        oprot.writeString(this.msg97);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg98 != null) {
+        oprot.writeFieldBegin(MSG98_FIELD_DESC);
+        oprot.writeString(this.msg98);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg99 != null) {
+        oprot.writeFieldBegin(MSG99_FIELD_DESC);
+        oprot.writeString(this.msg99);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg100 != null) {
+        oprot.writeFieldBegin(MSG100_FIELD_DESC);
+        oprot.writeString(this.msg100);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg101 != null) {
+        oprot.writeFieldBegin(MSG101_FIELD_DESC);
+        oprot.writeString(this.msg101);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg102 != null) {
+        oprot.writeFieldBegin(MSG102_FIELD_DESC);
+        oprot.writeString(this.msg102);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg103 != null) {
+        oprot.writeFieldBegin(MSG103_FIELD_DESC);
+        oprot.writeString(this.msg103);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg104 != null) {
+        oprot.writeFieldBegin(MSG104_FIELD_DESC);
+        oprot.writeString(this.msg104);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg105 != null) {
+        oprot.writeFieldBegin(MSG105_FIELD_DESC);
+        oprot.writeString(this.msg105);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg106 != null) {
+        oprot.writeFieldBegin(MSG106_FIELD_DESC);
+        oprot.writeString(this.msg106);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg107 != null) {
+        oprot.writeFieldBegin(MSG107_FIELD_DESC);
+        oprot.writeString(this.msg107);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg108 != null) {
+        oprot.writeFieldBegin(MSG108_FIELD_DESC);
+        oprot.writeString(this.msg108);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg109 != null) {
+        oprot.writeFieldBegin(MSG109_FIELD_DESC);
+        oprot.writeString(this.msg109);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg110 != null) {
+        oprot.writeFieldBegin(MSG110_FIELD_DESC);
+        oprot.writeString(this.msg110);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg111 != null) {
+        oprot.writeFieldBegin(MSG111_FIELD_DESC);
+        oprot.writeString(this.msg111);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg112 != null) {
+        oprot.writeFieldBegin(MSG112_FIELD_DESC);
+        oprot.writeString(this.msg112);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg113 != null) {
+        oprot.writeFieldBegin(MSG113_FIELD_DESC);
+        oprot.writeString(this.msg113);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg114 != null) {
+        oprot.writeFieldBegin(MSG114_FIELD_DESC);
+        oprot.writeString(this.msg114);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg115 != null) {
+        oprot.writeFieldBegin(MSG115_FIELD_DESC);
+        oprot.writeString(this.msg115);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg116 != null) {
+        oprot.writeFieldBegin(MSG116_FIELD_DESC);
+        oprot.writeString(this.msg116);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg117 != null) {
+        oprot.writeFieldBegin(MSG117_FIELD_DESC);
+        oprot.writeString(this.msg117);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg118 != null) {
+        oprot.writeFieldBegin(MSG118_FIELD_DESC);
+        oprot.writeString(this.msg118);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg119 != null) {
+        oprot.writeFieldBegin(MSG119_FIELD_DESC);
+        oprot.writeString(this.msg119);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg120 != null) {
+        oprot.writeFieldBegin(MSG120_FIELD_DESC);
+        oprot.writeString(this.msg120);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg121 != null) {
+        oprot.writeFieldBegin(MSG121_FIELD_DESC);
+        oprot.writeString(this.msg121);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg122 != null) {
+        oprot.writeFieldBegin(MSG122_FIELD_DESC);
+        oprot.writeString(this.msg122);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg123 != null) {
+        oprot.writeFieldBegin(MSG123_FIELD_DESC);
+        oprot.writeString(this.msg123);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg124 != null) {
+        oprot.writeFieldBegin(MSG124_FIELD_DESC);
+        oprot.writeString(this.msg124);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg125 != null) {
+        oprot.writeFieldBegin(MSG125_FIELD_DESC);
+        oprot.writeString(this.msg125);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg126 != null) {
+        oprot.writeFieldBegin(MSG126_FIELD_DESC);
+        oprot.writeString(this.msg126);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg127 != null) {
+        oprot.writeFieldBegin(MSG127_FIELD_DESC);
+        oprot.writeString(this.msg127);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg128 != null) {
+        oprot.writeFieldBegin(MSG128_FIELD_DESC);
+        oprot.writeString(this.msg128);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg129 != null) {
+        oprot.writeFieldBegin(MSG129_FIELD_DESC);
+        oprot.writeString(this.msg129);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg130 != null) {
+        oprot.writeFieldBegin(MSG130_FIELD_DESC);
+        oprot.writeString(this.msg130);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg131 != null) {
+        oprot.writeFieldBegin(MSG131_FIELD_DESC);
+        oprot.writeString(this.msg131);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg132 != null) {
+        oprot.writeFieldBegin(MSG132_FIELD_DESC);
+        oprot.writeString(this.msg132);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg133 != null) {
+        oprot.writeFieldBegin(MSG133_FIELD_DESC);
+        oprot.writeString(this.msg133);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg134 != null) {
+        oprot.writeFieldBegin(MSG134_FIELD_DESC);
+        oprot.writeString(this.msg134);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg135 != null) {
+        oprot.writeFieldBegin(MSG135_FIELD_DESC);
+        oprot.writeString(this.msg135);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg136 != null) {
+        oprot.writeFieldBegin(MSG136_FIELD_DESC);
+        oprot.writeString(this.msg136);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg137 != null) {
+        oprot.writeFieldBegin(MSG137_FIELD_DESC);
+        oprot.writeString(this.msg137);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg138 != null) {
+        oprot.writeFieldBegin(MSG138_FIELD_DESC);
+        oprot.writeString(this.msg138);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg139 != null) {
+        oprot.writeFieldBegin(MSG139_FIELD_DESC);
+        oprot.writeString(this.msg139);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg140 != null) {
+        oprot.writeFieldBegin(MSG140_FIELD_DESC);
+        oprot.writeString(this.msg140);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg141 != null) {
+        oprot.writeFieldBegin(MSG141_FIELD_DESC);
+        oprot.writeString(this.msg141);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg142 != null) {
+        oprot.writeFieldBegin(MSG142_FIELD_DESC);
+        oprot.writeString(this.msg142);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg143 != null) {
+        oprot.writeFieldBegin(MSG143_FIELD_DESC);
+        oprot.writeString(this.msg143);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg144 != null) {
+        oprot.writeFieldBegin(MSG144_FIELD_DESC);
+        oprot.writeString(this.msg144);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg145 != null) {
+        oprot.writeFieldBegin(MSG145_FIELD_DESC);
+        oprot.writeString(this.msg145);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg146 != null) {
+        oprot.writeFieldBegin(MSG146_FIELD_DESC);
+        oprot.writeString(this.msg146);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg147 != null) {
+        oprot.writeFieldBegin(MSG147_FIELD_DESC);
+        oprot.writeString(this.msg147);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg148 != null) {
+        oprot.writeFieldBegin(MSG148_FIELD_DESC);
+        oprot.writeString(this.msg148);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg149 != null) {
+        oprot.writeFieldBegin(MSG149_FIELD_DESC);
+        oprot.writeString(this.msg149);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg150 != null) {
+        oprot.writeFieldBegin(MSG150_FIELD_DESC);
+        oprot.writeString(this.msg150);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg151 != null) {
+        oprot.writeFieldBegin(MSG151_FIELD_DESC);
+        oprot.writeString(this.msg151);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg152 != null) {
+        oprot.writeFieldBegin(MSG152_FIELD_DESC);
+        oprot.writeString(this.msg152);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg153 != null) {
+        oprot.writeFieldBegin(MSG153_FIELD_DESC);
+        oprot.writeString(this.msg153);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg154 != null) {
+        oprot.writeFieldBegin(MSG154_FIELD_DESC);
+        oprot.writeString(this.msg154);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg155 != null) {
+        oprot.writeFieldBegin(MSG155_FIELD_DESC);
+        oprot.writeString(this.msg155);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg156 != null) {
+        oprot.writeFieldBegin(MSG156_FIELD_DESC);
+        oprot.writeString(this.msg156);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg157 != null) {
+        oprot.writeFieldBegin(MSG157_FIELD_DESC);
+        oprot.writeString(this.msg157);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg158 != null) {
+        oprot.writeFieldBegin(MSG158_FIELD_DESC);
+        oprot.writeString(this.msg158);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg159 != null) {
+        oprot.writeFieldBegin(MSG159_FIELD_DESC);
+        oprot.writeString(this.msg159);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg160 != null) {
+        oprot.writeFieldBegin(MSG160_FIELD_DESC);
+        oprot.writeString(this.msg160);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg161 != null) {
+        oprot.writeFieldBegin(MSG161_FIELD_DESC);
+        oprot.writeString(this.msg161);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg162 != null) {
+        oprot.writeFieldBegin(MSG162_FIELD_DESC);
+        oprot.writeString(this.msg162);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg163 != null) {
+        oprot.writeFieldBegin(MSG163_FIELD_DESC);
+        oprot.writeString(this.msg163);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg164 != null) {
+        oprot.writeFieldBegin(MSG164_FIELD_DESC);
+        oprot.writeString(this.msg164);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg165 != null) {
+        oprot.writeFieldBegin(MSG165_FIELD_DESC);
+        oprot.writeString(this.msg165);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg166 != null) {
+        oprot.writeFieldBegin(MSG166_FIELD_DESC);
+        oprot.writeString(this.msg166);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg167 != null) {
+        oprot.writeFieldBegin(MSG167_FIELD_DESC);
+        oprot.writeString(this.msg167);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg168 != null) {
+        oprot.writeFieldBegin(MSG168_FIELD_DESC);
+        oprot.writeString(this.msg168);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg169 != null) {
+        oprot.writeFieldBegin(MSG169_FIELD_DESC);
+        oprot.writeString(this.msg169);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg170 != null) {
+        oprot.writeFieldBegin(MSG170_FIELD_DESC);
+        oprot.writeString(this.msg170);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg171 != null) {
+        oprot.writeFieldBegin(MSG171_FIELD_DESC);
+        oprot.writeString(this.msg171);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg172 != null) {
+        oprot.writeFieldBegin(MSG172_FIELD_DESC);
+        oprot.writeString(this.msg172);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg173 != null) {
+        oprot.writeFieldBegin(MSG173_FIELD_DESC);
+        oprot.writeString(this.msg173);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg174 != null) {
+        oprot.writeFieldBegin(MSG174_FIELD_DESC);
+        oprot.writeString(this.msg174);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg175 != null) {
+        oprot.writeFieldBegin(MSG175_FIELD_DESC);
+        oprot.writeString(this.msg175);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg176 != null) {
+        oprot.writeFieldBegin(MSG176_FIELD_DESC);
+        oprot.writeString(this.msg176);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg177 != null) {
+        oprot.writeFieldBegin(MSG177_FIELD_DESC);
+        oprot.writeString(this.msg177);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg178 != null) {
+        oprot.writeFieldBegin(MSG178_FIELD_DESC);
+        oprot.writeString(this.msg178);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg179 != null) {
+        oprot.writeFieldBegin(MSG179_FIELD_DESC);
+        oprot.writeString(this.msg179);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg180 != null) {
+        oprot.writeFieldBegin(MSG180_FIELD_DESC);
+        oprot.writeString(this.msg180);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg181 != null) {
+        oprot.writeFieldBegin(MSG181_FIELD_DESC);
+        oprot.writeString(this.msg181);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg182 != null) {
+        oprot.writeFieldBegin(MSG182_FIELD_DESC);
+        oprot.writeString(this.msg182);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg183 != null) {
+        oprot.writeFieldBegin(MSG183_FIELD_DESC);
+        oprot.writeString(this.msg183);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg184 != null) {
+        oprot.writeFieldBegin(MSG184_FIELD_DESC);
+        oprot.writeString(this.msg184);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg185 != null) {
+        oprot.writeFieldBegin(MSG185_FIELD_DESC);
+        oprot.writeString(this.msg185);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg186 != null) {
+        oprot.writeFieldBegin(MSG186_FIELD_DESC);
+        oprot.writeString(this.msg186);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg187 != null) {
+        oprot.writeFieldBegin(MSG187_FIELD_DESC);
+        oprot.writeString(this.msg187);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg188 != null) {
+        oprot.writeFieldBegin(MSG188_FIELD_DESC);
+        oprot.writeString(this.msg188);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg189 != null) {
+        oprot.writeFieldBegin(MSG189_FIELD_DESC);
+        oprot.writeString(this.msg189);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg190 != null) {
+        oprot.writeFieldBegin(MSG190_FIELD_DESC);
+        oprot.writeString(this.msg190);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg191 != null) {
+        oprot.writeFieldBegin(MSG191_FIELD_DESC);
+        oprot.writeString(this.msg191);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg192 != null) {
+        oprot.writeFieldBegin(MSG192_FIELD_DESC);
+        oprot.writeString(this.msg192);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg193 != null) {
+        oprot.writeFieldBegin(MSG193_FIELD_DESC);
+        oprot.writeString(this.msg193);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg194 != null) {
+        oprot.writeFieldBegin(MSG194_FIELD_DESC);
+        oprot.writeString(this.msg194);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg195 != null) {
+        oprot.writeFieldBegin(MSG195_FIELD_DESC);
+        oprot.writeString(this.msg195);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg196 != null) {
+        oprot.writeFieldBegin(MSG196_FIELD_DESC);
+        oprot.writeString(this.msg196);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg197 != null) {
+        oprot.writeFieldBegin(MSG197_FIELD_DESC);
+        oprot.writeString(this.msg197);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg198 != null) {
+        oprot.writeFieldBegin(MSG198_FIELD_DESC);
+        oprot.writeString(this.msg198);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg199 != null) {
+        oprot.writeFieldBegin(MSG199_FIELD_DESC);
+        oprot.writeString(this.msg199);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg200 != null) {
+        oprot.writeFieldBegin(MSG200_FIELD_DESC);
+        oprot.writeString(this.msg200);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg201 != null) {
+        oprot.writeFieldBegin(MSG201_FIELD_DESC);
+        oprot.writeString(this.msg201);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg202 != null) {
+        oprot.writeFieldBegin(MSG202_FIELD_DESC);
+        oprot.writeString(this.msg202);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg203 != null) {
+        oprot.writeFieldBegin(MSG203_FIELD_DESC);
+        oprot.writeString(this.msg203);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg204 != null) {
+        oprot.writeFieldBegin(MSG204_FIELD_DESC);
+        oprot.writeString(this.msg204);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg205 != null) {
+        oprot.writeFieldBegin(MSG205_FIELD_DESC);
+        oprot.writeString(this.msg205);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg206 != null) {
+        oprot.writeFieldBegin(MSG206_FIELD_DESC);
+        oprot.writeString(this.msg206);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg207 != null) {
+        oprot.writeFieldBegin(MSG207_FIELD_DESC);
+        oprot.writeString(this.msg207);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg208 != null) {
+        oprot.writeFieldBegin(MSG208_FIELD_DESC);
+        oprot.writeString(this.msg208);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg209 != null) {
+        oprot.writeFieldBegin(MSG209_FIELD_DESC);
+        oprot.writeString(this.msg209);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg210 != null) {
+        oprot.writeFieldBegin(MSG210_FIELD_DESC);
+        oprot.writeString(this.msg210);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg211 != null) {
+        oprot.writeFieldBegin(MSG211_FIELD_DESC);
+        oprot.writeString(this.msg211);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg212 != null) {
+        oprot.writeFieldBegin(MSG212_FIELD_DESC);
+        oprot.writeString(this.msg212);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg213 != null) {
+        oprot.writeFieldBegin(MSG213_FIELD_DESC);
+        oprot.writeString(this.msg213);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg214 != null) {
+        oprot.writeFieldBegin(MSG214_FIELD_DESC);
+        oprot.writeString(this.msg214);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg215 != null) {
+        oprot.writeFieldBegin(MSG215_FIELD_DESC);
+        oprot.writeString(this.msg215);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg216 != null) {
+        oprot.writeFieldBegin(MSG216_FIELD_DESC);
+        oprot.writeString(this.msg216);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg217 != null) {
+        oprot.writeFieldBegin(MSG217_FIELD_DESC);
+        oprot.writeString(this.msg217);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg218 != null) {
+        oprot.writeFieldBegin(MSG218_FIELD_DESC);
+        oprot.writeString(this.msg218);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg219 != null) {
+        oprot.writeFieldBegin(MSG219_FIELD_DESC);
+        oprot.writeString(this.msg219);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg220 != null) {
+        oprot.writeFieldBegin(MSG220_FIELD_DESC);
+        oprot.writeString(this.msg220);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg221 != null) {
+        oprot.writeFieldBegin(MSG221_FIELD_DESC);
+        oprot.writeString(this.msg221);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg222 != null) {
+        oprot.writeFieldBegin(MSG222_FIELD_DESC);
+        oprot.writeString(this.msg222);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg223 != null) {
+        oprot.writeFieldBegin(MSG223_FIELD_DESC);
+        oprot.writeString(this.msg223);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg224 != null) {
+        oprot.writeFieldBegin(MSG224_FIELD_DESC);
+        oprot.writeString(this.msg224);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg225 != null) {
+        oprot.writeFieldBegin(MSG225_FIELD_DESC);
+        oprot.writeString(this.msg225);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg226 != null) {
+        oprot.writeFieldBegin(MSG226_FIELD_DESC);
+        oprot.writeString(this.msg226);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg227 != null) {
+        oprot.writeFieldBegin(MSG227_FIELD_DESC);
+        oprot.writeString(this.msg227);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg228 != null) {
+        oprot.writeFieldBegin(MSG228_FIELD_DESC);
+        oprot.writeString(this.msg228);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg229 != null) {
+        oprot.writeFieldBegin(MSG229_FIELD_DESC);
+        oprot.writeString(this.msg229);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg230 != null) {
+        oprot.writeFieldBegin(MSG230_FIELD_DESC);
+        oprot.writeString(this.msg230);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg231 != null) {
+        oprot.writeFieldBegin(MSG231_FIELD_DESC);
+        oprot.writeString(this.msg231);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg232 != null) {
+        oprot.writeFieldBegin(MSG232_FIELD_DESC);
+        oprot.writeString(this.msg232);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg233 != null) {
+        oprot.writeFieldBegin(MSG233_FIELD_DESC);
+        oprot.writeString(this.msg233);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg234 != null) {
+        oprot.writeFieldBegin(MSG234_FIELD_DESC);
+        oprot.writeString(this.msg234);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg235 != null) {
+        oprot.writeFieldBegin(MSG235_FIELD_DESC);
+        oprot.writeString(this.msg235);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg236 != null) {
+        oprot.writeFieldBegin(MSG236_FIELD_DESC);
+        oprot.writeString(this.msg236);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg237 != null) {
+        oprot.writeFieldBegin(MSG237_FIELD_DESC);
+        oprot.writeString(this.msg237);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg238 != null) {
+        oprot.writeFieldBegin(MSG238_FIELD_DESC);
+        oprot.writeString(this.msg238);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg239 != null) {
+        oprot.writeFieldBegin(MSG239_FIELD_DESC);
+        oprot.writeString(this.msg239);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg240 != null) {
+        oprot.writeFieldBegin(MSG240_FIELD_DESC);
+        oprot.writeString(this.msg240);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg241 != null) {
+        oprot.writeFieldBegin(MSG241_FIELD_DESC);
+        oprot.writeString(this.msg241);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg242 != null) {
+        oprot.writeFieldBegin(MSG242_FIELD_DESC);
+        oprot.writeString(this.msg242);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg243 != null) {
+        oprot.writeFieldBegin(MSG243_FIELD_DESC);
+        oprot.writeString(this.msg243);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg244 != null) {
+        oprot.writeFieldBegin(MSG244_FIELD_DESC);
+        oprot.writeString(this.msg244);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg245 != null) {
+        oprot.writeFieldBegin(MSG245_FIELD_DESC);
+        oprot.writeString(this.msg245);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg246 != null) {
+        oprot.writeFieldBegin(MSG246_FIELD_DESC);
+        oprot.writeString(this.msg246);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg247 != null) {
+        oprot.writeFieldBegin(MSG247_FIELD_DESC);
+        oprot.writeString(this.msg247);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg248 != null) {
+        oprot.writeFieldBegin(MSG248_FIELD_DESC);
+        oprot.writeString(this.msg248);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg249 != null) {
+        oprot.writeFieldBegin(MSG249_FIELD_DESC);
+        oprot.writeString(this.msg249);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg250 != null) {
+        oprot.writeFieldBegin(MSG250_FIELD_DESC);
+        oprot.writeString(this.msg250);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg251 != null) {
+        oprot.writeFieldBegin(MSG251_FIELD_DESC);
+        oprot.writeString(this.msg251);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg252 != null) {
+        oprot.writeFieldBegin(MSG252_FIELD_DESC);
+        oprot.writeString(this.msg252);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg253 != null) {
+        oprot.writeFieldBegin(MSG253_FIELD_DESC);
+        oprot.writeString(this.msg253);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg254 != null) {
+        oprot.writeFieldBegin(MSG254_FIELD_DESC);
+        oprot.writeString(this.msg254);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg255 != null) {
+        oprot.writeFieldBegin(MSG255_FIELD_DESC);
+        oprot.writeString(this.msg255);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg256 != null) {
+        oprot.writeFieldBegin(MSG256_FIELD_DESC);
+        oprot.writeString(this.msg256);
+        oprot.writeFieldEnd();
+      }
+      if (this.msg257 != null) {
+        oprot.writeFieldBegin(MSG257_FIELD_DESC);
+        oprot.writeString(this.msg257);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

@@ -23,6 +23,14 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -32,8 +40,13 @@ public final class {{struct:javaCapitalName}} {
     @ThriftConstructor
     public {{struct:javaCapitalName}}() {}
 
+    private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
     {{#struct:fields}}
     private {{> FieldType}} {{field:javaName}};
+    public static final int _{{field:javaAllCapsName}} = {{field:key}};
+    private static final TField {{field:javaTFieldName}} = {{#field:isSupportedApacheType?}}{{!
+    }}new TField("{{field:javaName}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});{{/field:isSupportedApacheType?}}{{!
+    }}{{^field:isSupportedApacheType?}}null;{{/field:isSupportedApacheType?}}
     {{/struct:fields}}
 
     {{#struct:fields}}
@@ -47,5 +60,7 @@ public final class {{struct:javaCapitalName}} {
     {{> struct/StructEquals}}
 
     {{> struct/StructHashCode}}
+
+    {{> struct/StructWrite}}
 
 }

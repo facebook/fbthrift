@@ -11,11 +11,27 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @ThriftStruct("reqXcep")
 public final class ReqXcep extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
+
+    private static final TStruct STRUCT_DESC = new TStruct("reqXcep");
+    private final String message;
+    public static final int _MESSAGE = 1;
+    private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.STRING, (short)1);
+    private final int errorCode;
+    public static final int _ERRORCODE = 2;
+    private static final TField ERROR_CODE_FIELD_DESC = new TField("errorCode", TType.I32, (short)2);
 
     @ThriftConstructor
     public ReqXcep(
@@ -61,13 +77,25 @@ public final class ReqXcep extends java.lang.Exception {
         }
     }
     
-    private final String message;
-    private final int errorCode;
-
     
     @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
         
     @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
     public int getErrorCode() { return errorCode; }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.message != null) {
+        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+        oprot.writeString(this.message);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(ERROR_CODE_FIELD_DESC);
+      oprot.writeI32(this.errorCode);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
+    
+}

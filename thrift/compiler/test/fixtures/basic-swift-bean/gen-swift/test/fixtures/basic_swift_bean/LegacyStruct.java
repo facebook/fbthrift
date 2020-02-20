@@ -11,6 +11,14 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -20,8 +28,13 @@ public final class LegacyStruct {
     @ThriftConstructor
     public LegacyStruct() {}
 
+    private static final TStruct STRUCT_DESC = new TStruct("LegacyStruct");
     private int normal;
+    public static final int _NORMAL = 1;
+    private static final TField NORMAL_FIELD_DESC = new TField("normal", TType.I32, (short)1);
     private int bad;
+    public static final int _BAD = -1;
+    private static final TField BAD_FIELD_DESC = new TField("bad", TType.I32, (short)-1);
 
     
     @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
@@ -73,6 +86,18 @@ public final class LegacyStruct {
             normal,
             bad
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(NORMAL_FIELD_DESC);
+      oprot.writeI32(this.normal);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(BAD_FIELD_DESC);
+      oprot.writeI32(this.bad);
+      oprot.writeFieldEnd();
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -72,9 +76,16 @@ public final class Internship {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("Internship");
     private final int weeks;
+    public static final int _WEEKS = 1;
+    private static final TField WEEKS_FIELD_DESC = new TField("weeks", TType.I32, (short)1);
     private final String title;
+    public static final int _TITLE = 2;
+    private static final TField TITLE_FIELD_DESC = new TField("title", TType.STRING, (short)2);
     private final test.fixtures.constants.Company employer;
+    public static final int _EMPLOYER = 3;
+    private static final TField EMPLOYER_FIELD_DESC = new TField("employer", TType.I32, (short)3);
 
     
     @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
@@ -120,6 +131,25 @@ public final class Internship {
             title,
             employer
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(WEEKS_FIELD_DESC);
+      oprot.writeI32(this.weeks);
+      oprot.writeFieldEnd();
+      if (this.title != null) {
+        oprot.writeFieldBegin(TITLE_FIELD_DESC);
+        oprot.writeString(this.title);
+        oprot.writeFieldEnd();
+      }
+      if (this.employer != null) {
+        oprot.writeFieldBegin(EMPLOYER_FIELD_DESC);
+        oprot.writeI32(this.employer == null ? 0 : this.employer.getValue());
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

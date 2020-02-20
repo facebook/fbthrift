@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -138,15 +142,34 @@ public final class MyStructTypeDef {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyStructTypeDef");
     private final long myLongField;
+    public static final int _MYLONGFIELD = 1;
+    private static final TField MY_LONG_FIELD_FIELD_DESC = new TField("myLongField", TType.I64, (short)1);
     private final long myLongTypeDef;
+    public static final int _MYLONGTYPEDEF = 2;
+    private static final TField MY_LONG_TYPE_DEF_FIELD_DESC = new TField("myLongTypeDef", TType.I64, (short)2);
     private final String myStringField;
+    public static final int _MYSTRINGFIELD = 3;
+    private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("myStringField", TType.STRING, (short)3);
     private final String myStringTypedef;
+    public static final int _MYSTRINGTYPEDEF = 4;
+    private static final TField MY_STRING_TYPEDEF_FIELD_DESC = new TField("myStringTypedef", TType.STRING, (short)4);
     private final Map<Short, String> myMapField;
+    public static final int _MYMAPFIELD = 5;
+    private static final TField MY_MAP_FIELD_FIELD_DESC = new TField("myMapField", TType.MAP, (short)5);
     private final Map<Short, String> myMapTypedef;
+    public static final int _MYMAPTYPEDEF = 6;
+    private static final TField MY_MAP_TYPEDEF_FIELD_DESC = new TField("myMapTypedef", TType.MAP, (short)6);
     private final List<Double> myListField;
+    public static final int _MYLISTFIELD = 7;
+    private static final TField MY_LIST_FIELD_FIELD_DESC = new TField("myListField", TType.LIST, (short)7);
     private final List<Double> myListTypedef;
+    public static final int _MYLISTTYPEDEF = 8;
+    private static final TField MY_LIST_TYPEDEF_FIELD_DESC = new TField("myListTypedef", TType.LIST, (short)8);
     private final Map<Short, List<List<Double>>> myMapListOfTypeDef;
+    public static final int _MYMAPLISTOFTYPEDEF = 9;
+    private static final TField MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC = new TField("myMapListOfTypeDef", TType.MAP, (short)9);
 
     
     @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
@@ -228,6 +251,90 @@ public final class MyStructTypeDef {
             myListTypedef,
             myMapListOfTypeDef
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(MY_LONG_FIELD_FIELD_DESC);
+      oprot.writeI64(this.myLongField);
+      oprot.writeFieldEnd();
+      oprot.writeFieldBegin(MY_LONG_TYPE_DEF_FIELD_DESC);
+      oprot.writeI64(this.myLongTypeDef);
+      oprot.writeFieldEnd();
+      if (this.myStringField != null) {
+        oprot.writeFieldBegin(MY_STRING_FIELD_FIELD_DESC);
+        oprot.writeString(this.myStringField);
+        oprot.writeFieldEnd();
+      }
+      if (this.myStringTypedef != null) {
+        oprot.writeFieldBegin(MY_STRING_TYPEDEF_FIELD_DESC);
+        oprot.writeString(this.myStringTypedef);
+        oprot.writeFieldEnd();
+      }
+      if (this.myMapField != null) {
+        oprot.writeFieldBegin(MY_MAP_FIELD_FIELD_DESC);
+        Map<Short, String> _iter0 = this.myMapField;
+        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
+        for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI16(_iter1.getKey());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myMapTypedef != null) {
+        oprot.writeFieldBegin(MY_MAP_TYPEDEF_FIELD_DESC);
+        Map<Short, String> _iter0 = this.myMapTypedef;
+        oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, _iter0.size()));
+        for (Map.Entry<Short, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI16(_iter1.getKey());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myListField != null) {
+        oprot.writeFieldBegin(MY_LIST_FIELD_FIELD_DESC);
+        List<Double> _iter0 = this.myListField;
+        oprot.writeListBegin(new TList(TType.DOUBLE, _iter0.size()));
+        for (double _iter1 : _iter0) {
+          oprot.writeDouble(_iter1);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myListTypedef != null) {
+        oprot.writeFieldBegin(MY_LIST_TYPEDEF_FIELD_DESC);
+        List<Double> _iter0 = this.myListTypedef;
+        oprot.writeListBegin(new TList(TType.DOUBLE, _iter0.size()));
+        for (double _iter1 : _iter0) {
+          oprot.writeDouble(_iter1);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myMapListOfTypeDef != null) {
+        oprot.writeFieldBegin(MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
+        Map<Short, List<List<Double>>> _iter0 = this.myMapListOfTypeDef;
+        oprot.writeMapBegin(new TMap(TType.I16, TType.LIST, _iter0.size()));
+        for (Map.Entry<Short, List<List<Double>>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI16(_iter1.getKey());
+          
+          oprot.writeListBegin(new TList(TType.LIST, _iter1.getValue().size()));
+        for (List<Double> _iter2 : _iter1.getValue()) {
+          oprot.writeListBegin(new TList(TType.DOUBLE, _iter2.size()));
+        for (double _iter3 : _iter2) {
+          oprot.writeDouble(_iter3);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

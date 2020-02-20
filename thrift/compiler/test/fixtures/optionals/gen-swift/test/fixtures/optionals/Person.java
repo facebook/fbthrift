@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -149,16 +153,37 @@ public final class Person {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("Person");
     private final long id;
+    public static final int _ID = 1;
+    private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
     private final String name;
+    public static final int _NAME = 2;
+    private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)2);
     private final Short age;
+    public static final int _AGE = 3;
+    private static final TField AGE_FIELD_DESC = new TField("age", TType.I16, (short)3);
     private final String address;
+    public static final int _ADDRESS = 4;
+    private static final TField ADDRESS_FIELD_DESC = new TField("address", TType.STRING, (short)4);
     private final test.fixtures.optionals.Color favoriteColor;
+    public static final int _FAVORITECOLOR = 5;
+    private static final TField FAVORITE_COLOR_FIELD_DESC = new TField("favoriteColor", TType.STRUCT, (short)5);
     private final Set<Long> friends;
+    public static final int _FRIENDS = 6;
+    private static final TField FRIENDS_FIELD_DESC = new TField("friends", TType.SET, (short)6);
     private final Long bestFriend;
+    public static final int _BESTFRIEND = 7;
+    private static final TField BEST_FRIEND_FIELD_DESC = new TField("bestFriend", TType.I64, (short)7);
     private final Map<test.fixtures.optionals.Animal, String> petNames;
+    public static final int _PETNAMES = 8;
+    private static final TField PET_NAMES_FIELD_DESC = new TField("petNames", TType.MAP, (short)8);
     private final test.fixtures.optionals.Animal afraidOfAnimal;
+    public static final int _AFRAIDOFANIMAL = 9;
+    private static final TField AFRAID_OF_ANIMAL_FIELD_DESC = new TField("afraidOfAnimal", TType.I32, (short)9);
     private final List<test.fixtures.optionals.Vehicle> vehicles;
+    public static final int _VEHICLES = 10;
+    private static final TField VEHICLES_FIELD_DESC = new TField("vehicles", TType.LIST, (short)10);
 
     
     @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
@@ -246,6 +271,76 @@ public final class Person {
             afraidOfAnimal,
             vehicles
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldBegin(ID_FIELD_DESC);
+      oprot.writeI64(this.id);
+      oprot.writeFieldEnd();
+      if (this.name != null) {
+        oprot.writeFieldBegin(NAME_FIELD_DESC);
+        oprot.writeString(this.name);
+        oprot.writeFieldEnd();
+      }
+      if (this.age != null) {
+        oprot.writeFieldBegin(AGE_FIELD_DESC);
+        oprot.writeI16(this.age);
+        oprot.writeFieldEnd();
+      }
+      if (this.address != null) {
+        oprot.writeFieldBegin(ADDRESS_FIELD_DESC);
+        oprot.writeString(this.address);
+        oprot.writeFieldEnd();
+      }
+      if (this.favoriteColor != null) {
+        oprot.writeFieldBegin(FAVORITE_COLOR_FIELD_DESC);
+        this.favoriteColor.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.friends != null) {
+        oprot.writeFieldBegin(FRIENDS_FIELD_DESC);
+        Set<Long> _iter0 = this.friends;
+        oprot.writeSetBegin(new TSet(TType.I64, _iter0.size()));
+        for (long _iter1 : _iter0) {
+          oprot.writeI64(_iter1);
+        }
+        oprot.writeSetEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.bestFriend != null) {
+        oprot.writeFieldBegin(BEST_FRIEND_FIELD_DESC);
+        oprot.writeI64(this.bestFriend);
+        oprot.writeFieldEnd();
+      }
+      if (this.petNames != null) {
+        oprot.writeFieldBegin(PET_NAMES_FIELD_DESC);
+        Map<test.fixtures.optionals.Animal, String> _iter0 = this.petNames;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.STRING, _iter0.size()));
+        for (Map.Entry<test.fixtures.optionals.Animal, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1 == null ? 0 : _iter1.getKey().getValue());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.afraidOfAnimal != null) {
+        oprot.writeFieldBegin(AFRAID_OF_ANIMAL_FIELD_DESC);
+        oprot.writeI32(this.afraidOfAnimal == null ? 0 : this.afraidOfAnimal.getValue());
+        oprot.writeFieldEnd();
+      }
+      if (this.vehicles != null) {
+        oprot.writeFieldBegin(VEHICLES_FIELD_DESC);
+        List<test.fixtures.optionals.Vehicle> _iter0 = this.vehicles;
+        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
+        for (test.fixtures.optionals.Vehicle _iter1 : _iter0) {
+          _iter1.write0(oprot);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

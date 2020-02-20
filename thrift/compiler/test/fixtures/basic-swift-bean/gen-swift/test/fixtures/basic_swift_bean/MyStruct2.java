@@ -11,6 +11,14 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -20,8 +28,13 @@ public final class MyStruct2 {
     @ThriftConstructor
     public MyStruct2() {}
 
+    private static final TStruct STRUCT_DESC = new TStruct("MyStruct2");
     private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
+    public static final int _MYSTRUCT1 = 1;
+    private static final TField MY_STRUCT1_FIELD_DESC = new TField("myStruct1", TType.STRUCT, (short)1);
     private String myString;
+    public static final int _MYSTRING = 2;
+    private static final TField MY_STRING_FIELD_DESC = new TField("myString", TType.STRING, (short)2);
 
     
     @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
@@ -73,6 +86,22 @@ public final class MyStruct2 {
             myStruct1,
             myString
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.myStruct1 != null) {
+        oprot.writeFieldBegin(MY_STRUCT1_FIELD_DESC);
+        this.myStruct1.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.myString != null) {
+        oprot.writeFieldBegin(MY_STRING_FIELD_DESC);
+        oprot.writeString(this.myString);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

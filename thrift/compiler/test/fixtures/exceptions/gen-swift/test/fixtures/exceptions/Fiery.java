@@ -11,11 +11,24 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @ThriftStruct("Fiery")
 public final class Fiery extends java.lang.RuntimeException {
     private static final long serialVersionUID = 1L;
+
+    private static final TStruct STRUCT_DESC = new TStruct("Fiery");
+    private final String message;
+    public static final int _MESSAGE = 1;
+    private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.STRING, (short)1);
 
     @ThriftConstructor
     public Fiery(
@@ -50,9 +63,19 @@ public final class Fiery extends java.lang.RuntimeException {
         }
     }
     
-    private final String message;
-
     
     @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.message != null) {
+        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+        oprot.writeString(this.message);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
+    
+}

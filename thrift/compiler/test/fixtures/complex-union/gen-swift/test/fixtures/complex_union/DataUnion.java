@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -24,6 +29,12 @@ public final class DataUnion {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
+    public static final int _BINARYDATA = 1;
+    private static final TField BINARY_DATA_FIELD_DESC = new TField("binaryData", TType.STRING, (short)1);
+    public static final int _STRINGDATA = 2;
+    private static final TField STRING_DATA_FIELD_DESC = new TField("stringData", TType.STRING, (short)2);
     
     @ThriftConstructor
     public DataUnion() {
@@ -139,4 +150,32 @@ public final class DataUnion {
         void visitBinaryData(byte[] binaryData);
         void visitStringData(String stringData);
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      case _BINARYDATA: {
+        oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
+        byte[] binaryData = (byte[])this.value;
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(binaryData));
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _STRINGDATA: {
+        oprot.writeFieldBegin(STRING_DATA_FIELD_DESC);
+        String stringData = (String)this.value;
+        oprot.writeString(stringData);
+        oprot.writeFieldEnd();
+        break;
+      }
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
 }

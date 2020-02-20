@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -61,8 +65,13 @@ public final class MyMapping {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("MyMapping");
     private final com.foo.FastLongStringMap lsMap;
+    public static final int _LSMAP = 1;
+    private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)1);
     private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
+    public static final int _IOMAP = 2;
+    private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
 
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
@@ -102,6 +111,40 @@ public final class MyMapping {
             lsMap,
             ioMap
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.lsMap != null) {
+        oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
+        com.foo.FastLongStringMap _iter0 = this.lsMap;
+        oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
+        for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI64(_iter1.getKey());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.ioMap != null) {
+        oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
+        com.foo.FastIntObjectMap<com.foo.FastIntLongMap> _iter0 = this.ioMap;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
+        for (Map.Entry<Integer, com.foo.FastIntLongMap> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+          
+          oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter1.getValue().size()));
+        for (Map.Entry<Integer, Long> _iter2 : _iter1.getValue().entrySet()) {
+          oprot.writeI32(_iter2.getKey());
+          oprot.writeI64(_iter2.getValue());
+        }
+        oprot.writeMapEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

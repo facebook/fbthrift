@@ -11,6 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -26,6 +31,16 @@ public final class Union2 {
     }
     private Object value;
     private short id;
+    
+    private static final TStruct STRUCT_DESC = new TStruct("union2");
+    public static final int _I = 1;
+    private static final TField I_FIELD_DESC = new TField("i", TType.I32, (short)1);
+    public static final int _D = 2;
+    private static final TField D_FIELD_DESC = new TField("d", TType.DOUBLE, (short)2);
+    public static final int _S = 3;
+    private static final TField S_FIELD_DESC = new TField("s", TType.STRUCT, (short)3);
+    public static final int _U = 4;
+    private static final TField U_FIELD_DESC = new TField("u", TType.STRUCT, (short)4);
     
     @ThriftConstructor
     public Union2() {
@@ -203,4 +218,46 @@ public final class Union2 {
         void visitS(test.fixtures.constants.Struct1 s);
         void visitU(test.fixtures.constants.Union1 u);
     }
+
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.id != 0 && this.value == null ){
+         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+      }
+      switch (this.id) {
+      case _I: {
+        oprot.writeFieldBegin(I_FIELD_DESC);
+        int i = (int)this.value;
+        oprot.writeI32(i);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _D: {
+        oprot.writeFieldBegin(D_FIELD_DESC);
+        double d = (double)this.value;
+        oprot.writeDouble(d);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _S: {
+        oprot.writeFieldBegin(S_FIELD_DESC);
+        test.fixtures.constants.Struct1 s = (test.fixtures.constants.Struct1)this.value;
+        s.write0(oprot);
+        oprot.writeFieldEnd();
+        break;
+      }
+      case _U: {
+        oprot.writeFieldBegin(U_FIELD_DESC);
+        test.fixtures.constants.Union1 u = (test.fixtures.constants.Union1)this.value;
+        u.write0(oprot);
+        oprot.writeFieldEnd();
+        break;
+      }
+      default:
+          throw new IllegalStateException("Cannot write union with unknown field ");
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
 }

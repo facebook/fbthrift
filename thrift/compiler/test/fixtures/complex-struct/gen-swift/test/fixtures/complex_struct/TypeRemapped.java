@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -83,10 +87,19 @@ public final class TypeRemapped {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("TypeRemapped");
     private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
+    public static final int _LSMAP = 1;
+    private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)1);
     private final it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> ioMap;
+    public static final int _IOMAP = 2;
+    private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
     private final java.math.BigInteger bigInteger;
+    public static final int _BIGINTEGER = 3;
+    private static final TField BIG_INTEGER_FIELD_DESC = new TField("bigInteger", TType.I32, (short)3);
     private final java.nio.ByteBuffer binaryTestBuffer;
+    public static final int _BINARYTESTBUFFER = 4;
+    private static final TField BINARY_TEST_BUFFER_FIELD_DESC = new TField("binaryTestBuffer", TType.STRING, (short)4);
 
     
     @ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
@@ -138,6 +151,48 @@ public final class TypeRemapped {
             bigInteger,
             binaryTestBuffer
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.lsMap != null) {
+        oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
+        it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = this.lsMap;
+        oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
+        for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI64(_iter1.getKey());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.ioMap != null) {
+        oprot.writeFieldBegin(IO_MAP_FIELD_DESC);
+        it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _iter0 = this.ioMap;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.MAP, _iter0.size()));
+        for (Map.Entry<Integer, it.unimi.dsi.fastutil.ints.Int2LongArrayMap> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+          
+          oprot.writeMapBegin(new TMap(TType.I32, TType.I64, _iter1.getValue().size()));
+        for (Map.Entry<Integer, Long> _iter2 : _iter1.getValue().entrySet()) {
+          oprot.writeI32(_iter2.getKey());
+          oprot.writeI64(_iter2.getValue());
+        }
+        oprot.writeMapEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(BIG_INTEGER_FIELD_DESC);
+      oprot.writeI32(this.bigInteger);
+      oprot.writeFieldEnd();
+      if (this.binaryTestBuffer != null) {
+        oprot.writeFieldBegin(BINARY_TEST_BUFFER_FIELD_DESC);
+        oprot.writeBinary((this.binaryTestBuffer));
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

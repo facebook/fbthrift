@@ -11,11 +11,21 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @ThriftStruct("emptyXcep")
 public final class EmptyXcep extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
+
+    private static final TStruct STRUCT_DESC = new TStruct("emptyXcep");
 
     @ThriftConstructor
     public EmptyXcep(
@@ -38,4 +48,10 @@ public final class EmptyXcep extends java.lang.Exception {
     }
     
 
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
+    }
+    
 }

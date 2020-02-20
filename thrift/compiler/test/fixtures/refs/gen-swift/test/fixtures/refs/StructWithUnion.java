@@ -11,7 +11,11 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
-
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -72,9 +76,16 @@ public final class StructWithUnion {
         }
     }
     
+    private static final TStruct STRUCT_DESC = new TStruct("StructWithUnion");
     private final test.fixtures.refs.MyUnion u;
+    public static final int _U = 1;
+    private static final TField U_FIELD_DESC = new TField("u", TType.STRUCT, (short)1);
     private final double aDouble;
+    public static final int _ADOUBLE = 2;
+    private static final TField A_DOUBLE_FIELD_DESC = new TField("aDouble", TType.DOUBLE, (short)2);
     private final test.fixtures.refs.MyField f;
+    public static final int _F = 3;
+    private static final TField F_FIELD_DESC = new TField("f", TType.STRUCT, (short)3);
 
     
     @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
@@ -120,6 +131,25 @@ public final class StructWithUnion {
             aDouble,
             f
         });
+    }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.u != null) {
+        oprot.writeFieldBegin(U_FIELD_DESC);
+        this.u.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(A_DOUBLE_FIELD_DESC);
+      oprot.writeDouble(this.aDouble);
+      oprot.writeFieldEnd();
+      if (this.f != null) {
+        oprot.writeFieldBegin(F_FIELD_DESC);
+        this.f.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
     
 }

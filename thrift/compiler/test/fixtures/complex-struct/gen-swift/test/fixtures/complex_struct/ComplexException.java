@@ -11,11 +11,39 @@ import com.facebook.swift.codec.*;
 import com.facebook.swift.codec.ThriftField.Requiredness;
 import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
+import org.apache.thrift.*;
+import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
+import org.apache.thrift.server.*;
+import org.apache.thrift.transport.*;
+import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
 @ThriftStruct("complexException")
 public final class ComplexException extends java.lang.Exception {
     private static final long serialVersionUID = 1L;
+
+    private static final TStruct STRUCT_DESC = new TStruct("complexException");
+    private final String message;
+    public static final int _MESSAGE = 1;
+    private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.STRING, (short)1);
+    private final List<String> listStrings;
+    public static final int _LISTSTRINGS = 2;
+    private static final TField LIST_STRINGS_FIELD_DESC = new TField("listStrings", TType.LIST, (short)2);
+    private final test.fixtures.complex_struct.MyEnum errorEnum;
+    public static final int _ERRORENUM = 3;
+    private static final TField ERROR_ENUM_FIELD_DESC = new TField("errorEnum", TType.I32, (short)3);
+    private final test.fixtures.complex_struct.MyUnion unionError;
+    public static final int _UNIONERROR = 4;
+    private static final TField UNION_ERROR_FIELD_DESC = new TField("unionError", TType.STRUCT, (short)4);
+    private final test.fixtures.complex_struct.MyStruct structError;
+    public static final int _STRUCTERROR = 5;
+    private static final TField STRUCT_ERROR_FIELD_DESC = new TField("structError", TType.STRUCT, (short)5);
+    private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
+    public static final int _LSMAP = 6;
+    private static final TField LS_MAP_FIELD_DESC = new TField("lsMap", TType.MAP, (short)6);
 
     @ThriftConstructor
     public ComplexException(
@@ -105,13 +133,6 @@ public final class ComplexException extends java.lang.Exception {
         }
     }
     
-    private final String message;
-    private final List<String> listStrings;
-    private final test.fixtures.complex_struct.MyEnum errorEnum;
-    private final test.fixtures.complex_struct.MyUnion unionError;
-    private final test.fixtures.complex_struct.MyStruct structError;
-    private final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
-
     
     @ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
     public String getMessage() { return message; }
@@ -130,4 +151,50 @@ public final class ComplexException extends java.lang.Exception {
         
     @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
+    
+    public void write0(TProtocol oprot) throws TException {
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.message != null) {
+        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+        oprot.writeString(this.message);
+        oprot.writeFieldEnd();
+      }
+      if (this.listStrings != null) {
+        oprot.writeFieldBegin(LIST_STRINGS_FIELD_DESC);
+        List<String> _iter0 = this.listStrings;
+        oprot.writeListBegin(new TList(TType.STRING, _iter0.size()));
+        for (String _iter1 : _iter0) {
+          oprot.writeString(_iter1);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(ERROR_ENUM_FIELD_DESC);
+      oprot.writeI32(this.errorEnum == null ? 0 : this.errorEnum.getValue());
+      oprot.writeFieldEnd();
+      if (this.unionError != null) {
+        oprot.writeFieldBegin(UNION_ERROR_FIELD_DESC);
+        this.unionError.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.structError != null) {
+        oprot.writeFieldBegin(STRUCT_ERROR_FIELD_DESC);
+        this.structError.write0(oprot);
+        oprot.writeFieldEnd();
+      }
+      if (this.lsMap != null) {
+        oprot.writeFieldBegin(LS_MAP_FIELD_DESC);
+        it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter0 = this.lsMap;
+        oprot.writeMapBegin(new TMap(TType.I64, TType.STRING, _iter0.size()));
+        for (Map.Entry<Long, String> _iter1 : _iter0.entrySet()) {
+          oprot.writeI64(_iter1.getKey());
+          oprot.writeString(_iter1.getValue());
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldStop();
+      oprot.writeStructEnd();
     }
+    
+}
