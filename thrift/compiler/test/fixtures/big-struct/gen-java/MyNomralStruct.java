@@ -299,6 +299,296 @@ public class MyNomralStruct implements TBase, java.io.Serializable, Cloneable, C
     setMyDoubleField30IsSet(true);
   }
 
+  public static class Builder {
+    private String msg1;
+    private String msg2;
+    private String msg3;
+    private String msg4;
+    private String msg5;
+    private String msg6;
+    private String msg7;
+    private String msg8;
+    private String msg9;
+    private int myIntField10;
+    private int myIntField11;
+    private int myIntField12;
+    private int myIntField13;
+    private int myIntField14;
+    private int myIntField15;
+    private int myIntField16;
+    private int myIntField17;
+    private int myIntField18;
+    private int myIntField19;
+    private int myIntField20;
+    private double myDoubleField21;
+    private double myDoubleField22;
+    private double myDoubleField23;
+    private double myDoubleField24;
+    private double myDoubleField25;
+    private double myDoubleField26;
+    private double myDoubleField27;
+    private double myDoubleField28;
+    private double myDoubleField29;
+    private double myDoubleField30;
+
+    BitSet __optional_isset = new BitSet(21);
+
+    public Builder() {
+    }
+
+    public Builder setMsg1(final String msg1) {
+      this.msg1 = msg1;
+      return this;
+    }
+
+    public Builder setMsg2(final String msg2) {
+      this.msg2 = msg2;
+      return this;
+    }
+
+    public Builder setMsg3(final String msg3) {
+      this.msg3 = msg3;
+      return this;
+    }
+
+    public Builder setMsg4(final String msg4) {
+      this.msg4 = msg4;
+      return this;
+    }
+
+    public Builder setMsg5(final String msg5) {
+      this.msg5 = msg5;
+      return this;
+    }
+
+    public Builder setMsg6(final String msg6) {
+      this.msg6 = msg6;
+      return this;
+    }
+
+    public Builder setMsg7(final String msg7) {
+      this.msg7 = msg7;
+      return this;
+    }
+
+    public Builder setMsg8(final String msg8) {
+      this.msg8 = msg8;
+      return this;
+    }
+
+    public Builder setMsg9(final String msg9) {
+      this.msg9 = msg9;
+      return this;
+    }
+
+    public Builder setMyIntField10(final int myIntField10) {
+      this.myIntField10 = myIntField10;
+      __optional_isset.set(__MYINTFIELD10_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField11(final int myIntField11) {
+      this.myIntField11 = myIntField11;
+      __optional_isset.set(__MYINTFIELD11_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField12(final int myIntField12) {
+      this.myIntField12 = myIntField12;
+      __optional_isset.set(__MYINTFIELD12_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField13(final int myIntField13) {
+      this.myIntField13 = myIntField13;
+      __optional_isset.set(__MYINTFIELD13_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField14(final int myIntField14) {
+      this.myIntField14 = myIntField14;
+      __optional_isset.set(__MYINTFIELD14_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField15(final int myIntField15) {
+      this.myIntField15 = myIntField15;
+      __optional_isset.set(__MYINTFIELD15_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField16(final int myIntField16) {
+      this.myIntField16 = myIntField16;
+      __optional_isset.set(__MYINTFIELD16_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField17(final int myIntField17) {
+      this.myIntField17 = myIntField17;
+      __optional_isset.set(__MYINTFIELD17_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField18(final int myIntField18) {
+      this.myIntField18 = myIntField18;
+      __optional_isset.set(__MYINTFIELD18_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField19(final int myIntField19) {
+      this.myIntField19 = myIntField19;
+      __optional_isset.set(__MYINTFIELD19_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField20(final int myIntField20) {
+      this.myIntField20 = myIntField20;
+      __optional_isset.set(__MYINTFIELD20_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField21(final double myDoubleField21) {
+      this.myDoubleField21 = myDoubleField21;
+      __optional_isset.set(__MYDOUBLEFIELD21_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField22(final double myDoubleField22) {
+      this.myDoubleField22 = myDoubleField22;
+      __optional_isset.set(__MYDOUBLEFIELD22_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField23(final double myDoubleField23) {
+      this.myDoubleField23 = myDoubleField23;
+      __optional_isset.set(__MYDOUBLEFIELD23_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField24(final double myDoubleField24) {
+      this.myDoubleField24 = myDoubleField24;
+      __optional_isset.set(__MYDOUBLEFIELD24_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField25(final double myDoubleField25) {
+      this.myDoubleField25 = myDoubleField25;
+      __optional_isset.set(__MYDOUBLEFIELD25_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField26(final double myDoubleField26) {
+      this.myDoubleField26 = myDoubleField26;
+      __optional_isset.set(__MYDOUBLEFIELD26_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField27(final double myDoubleField27) {
+      this.myDoubleField27 = myDoubleField27;
+      __optional_isset.set(__MYDOUBLEFIELD27_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField28(final double myDoubleField28) {
+      this.myDoubleField28 = myDoubleField28;
+      __optional_isset.set(__MYDOUBLEFIELD28_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField29(final double myDoubleField29) {
+      this.myDoubleField29 = myDoubleField29;
+      __optional_isset.set(__MYDOUBLEFIELD29_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField30(final double myDoubleField30) {
+      this.myDoubleField30 = myDoubleField30;
+      __optional_isset.set(__MYDOUBLEFIELD30_ISSET_ID, true);
+      return this;
+    }
+
+    public MyNomralStruct build() {
+      MyNomralStruct result = new MyNomralStruct();
+      result.setMsg1(this.msg1);
+      result.setMsg2(this.msg2);
+      result.setMsg3(this.msg3);
+      result.setMsg4(this.msg4);
+      result.setMsg5(this.msg5);
+      result.setMsg6(this.msg6);
+      result.setMsg7(this.msg7);
+      result.setMsg8(this.msg8);
+      result.setMsg9(this.msg9);
+      if (__optional_isset.get(__MYINTFIELD10_ISSET_ID)) {
+        result.setMyIntField10(this.myIntField10);
+      }
+      if (__optional_isset.get(__MYINTFIELD11_ISSET_ID)) {
+        result.setMyIntField11(this.myIntField11);
+      }
+      if (__optional_isset.get(__MYINTFIELD12_ISSET_ID)) {
+        result.setMyIntField12(this.myIntField12);
+      }
+      if (__optional_isset.get(__MYINTFIELD13_ISSET_ID)) {
+        result.setMyIntField13(this.myIntField13);
+      }
+      if (__optional_isset.get(__MYINTFIELD14_ISSET_ID)) {
+        result.setMyIntField14(this.myIntField14);
+      }
+      if (__optional_isset.get(__MYINTFIELD15_ISSET_ID)) {
+        result.setMyIntField15(this.myIntField15);
+      }
+      if (__optional_isset.get(__MYINTFIELD16_ISSET_ID)) {
+        result.setMyIntField16(this.myIntField16);
+      }
+      if (__optional_isset.get(__MYINTFIELD17_ISSET_ID)) {
+        result.setMyIntField17(this.myIntField17);
+      }
+      if (__optional_isset.get(__MYINTFIELD18_ISSET_ID)) {
+        result.setMyIntField18(this.myIntField18);
+      }
+      if (__optional_isset.get(__MYINTFIELD19_ISSET_ID)) {
+        result.setMyIntField19(this.myIntField19);
+      }
+      if (__optional_isset.get(__MYINTFIELD20_ISSET_ID)) {
+        result.setMyIntField20(this.myIntField20);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD21_ISSET_ID)) {
+        result.setMyDoubleField21(this.myDoubleField21);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD22_ISSET_ID)) {
+        result.setMyDoubleField22(this.myDoubleField22);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD23_ISSET_ID)) {
+        result.setMyDoubleField23(this.myDoubleField23);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD24_ISSET_ID)) {
+        result.setMyDoubleField24(this.myDoubleField24);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD25_ISSET_ID)) {
+        result.setMyDoubleField25(this.myDoubleField25);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD26_ISSET_ID)) {
+        result.setMyDoubleField26(this.myDoubleField26);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD27_ISSET_ID)) {
+        result.setMyDoubleField27(this.myDoubleField27);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD28_ISSET_ID)) {
+        result.setMyDoubleField28(this.myDoubleField28);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD29_ISSET_ID)) {
+        result.setMyDoubleField29(this.myDoubleField29);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD30_ISSET_ID)) {
+        result.setMyDoubleField30(this.myDoubleField30);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

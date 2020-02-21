@@ -93,6 +93,61 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     setHasACIsSet(true);
   }
 
+  public static class Builder {
+    private Color color;
+    private String licensePlate;
+    private String description;
+    private String name;
+    private boolean hasAC;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setColor(final Color color) {
+      this.color = color;
+      return this;
+    }
+
+    public Builder setLicensePlate(final String licensePlate) {
+      this.licensePlate = licensePlate;
+      return this;
+    }
+
+    public Builder setDescription(final String description) {
+      this.description = description;
+      return this;
+    }
+
+    public Builder setName(final String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder setHasAC(final boolean hasAC) {
+      this.hasAC = hasAC;
+      __optional_isset.set(__HASAC_ISSET_ID, true);
+      return this;
+    }
+
+    public Vehicle build() {
+      Vehicle result = new Vehicle();
+      result.setColor(this.color);
+      result.setLicensePlate(this.licensePlate);
+      result.setDescription(this.description);
+      result.setName(this.name);
+      if (__optional_isset.get(__HASAC_ISSET_ID)) {
+        result.setHasAC(this.hasAC);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

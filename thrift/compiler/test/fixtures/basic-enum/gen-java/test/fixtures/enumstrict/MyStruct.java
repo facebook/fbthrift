@@ -77,6 +77,43 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     setMyBigEnumIsSet(true);
   }
 
+  public static class Builder {
+    private MyEnum myEnum;
+    private MyBigEnum myBigEnum;
+
+    BitSet __optional_isset = new BitSet(2);
+
+    public Builder() {
+    }
+
+    public Builder setMyEnum(final MyEnum myEnum) {
+      this.myEnum = myEnum;
+      __optional_isset.set(__MYENUM_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyBigEnum(final MyBigEnum myBigEnum) {
+      this.myBigEnum = myBigEnum;
+      __optional_isset.set(__MYBIGENUM_ISSET_ID, true);
+      return this;
+    }
+
+    public MyStruct build() {
+      MyStruct result = new MyStruct();
+      if (__optional_isset.get(__MYENUM_ISSET_ID)) {
+        result.setMyEnum(this.myEnum);
+      }
+      if (__optional_isset.get(__MYBIGENUM_ISSET_ID)) {
+        result.setMyBigEnum(this.myBigEnum);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

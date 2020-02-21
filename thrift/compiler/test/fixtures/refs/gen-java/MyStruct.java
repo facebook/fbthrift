@@ -83,6 +83,42 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.req_ref = req_ref;
   }
 
+  public static class Builder {
+    private MyField opt_ref;
+    private MyField ref;
+    private MyField req_ref;
+
+    public Builder() {
+    }
+
+    public Builder setOpt_ref(final MyField opt_ref) {
+      this.opt_ref = opt_ref;
+      return this;
+    }
+
+    public Builder setRef(final MyField ref) {
+      this.ref = ref;
+      return this;
+    }
+
+    public Builder setReq_ref(final MyField req_ref) {
+      this.req_ref = req_ref;
+      return this;
+    }
+
+    public MyStruct build() {
+      MyStruct result = new MyStruct();
+      result.setOpt_ref(this.opt_ref);
+      result.setRef(this.ref);
+      result.setReq_ref(this.req_ref);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

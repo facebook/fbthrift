@@ -83,6 +83,42 @@ public class StructWithSharedConst implements TBase, java.io.Serializable, Clone
     this.req_shared_const = req_shared_const;
   }
 
+  public static class Builder {
+    private MyField opt_shared_const;
+    private MyField shared_const;
+    private MyField req_shared_const;
+
+    public Builder() {
+    }
+
+    public Builder setOpt_shared_const(final MyField opt_shared_const) {
+      this.opt_shared_const = opt_shared_const;
+      return this;
+    }
+
+    public Builder setShared_const(final MyField shared_const) {
+      this.shared_const = shared_const;
+      return this;
+    }
+
+    public Builder setReq_shared_const(final MyField req_shared_const) {
+      this.req_shared_const = req_shared_const;
+      return this;
+    }
+
+    public StructWithSharedConst build() {
+      StructWithSharedConst result = new StructWithSharedConst();
+      result.setOpt_shared_const(this.opt_shared_const);
+      result.setShared_const(this.shared_const);
+      result.setReq_shared_const(this.req_shared_const);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

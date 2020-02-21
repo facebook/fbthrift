@@ -38,6 +38,21 @@ public class Empty implements TBase, java.io.Serializable, Cloneable, Comparable
   public Empty() {
   }
 
+  public static class Builder {
+
+    public Builder() {
+    }
+
+    public Empty build() {
+      Empty result = new Empty();
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

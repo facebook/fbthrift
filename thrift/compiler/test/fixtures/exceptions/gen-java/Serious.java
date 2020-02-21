@@ -53,6 +53,28 @@ public class Serious extends Exception implements TBase, java.io.Serializable, C
     this.sonnet = sonnet;
   }
 
+  public static class Builder {
+    private String sonnet;
+
+    public Builder() {
+    }
+
+    public Builder setSonnet(final String sonnet) {
+      this.sonnet = sonnet;
+      return this;
+    }
+
+    public Serious build() {
+      Serious result = new Serious();
+      result.setSonnet(this.sonnet);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

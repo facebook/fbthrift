@@ -56,6 +56,33 @@ public class NonCopyableStruct implements TBase, java.io.Serializable, Cloneable
     setNumIsSet(true);
   }
 
+  public static class Builder {
+    private long num;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setNum(final long num) {
+      this.num = num;
+      __optional_isset.set(__NUM_ISSET_ID, true);
+      return this;
+    }
+
+    public NonCopyableStruct build() {
+      NonCopyableStruct result = new NonCopyableStruct();
+      if (__optional_isset.get(__NUM_ISSET_ID)) {
+        result.setNum(this.num);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -34,6 +34,30 @@ public class Foo implements TBase, java.io.Serializable, Cloneable {
     this.a = a;
   }
 
+  public static class Builder {
+    private Long a;
+
+    public Builder() {
+        this.a = 2L;
+
+    }
+
+    public Builder setA(final Long a) {
+      this.a = a;
+      return this;
+    }
+
+    public Foo build() {
+      return new Foo(
+        this.a
+      );
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -67,6 +67,40 @@ public class MyStructMapFloatThrowExp implements TBase, java.io.Serializable, Cl
     this.mapListOfFloats = mapListOfFloats;
   }
 
+  public static class Builder {
+    private long myLongField;
+    private Map<Integer,List<List<Float>>> mapListOfFloats;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setMyLongField(final long myLongField) {
+      this.myLongField = myLongField;
+      __optional_isset.set(__MYLONGFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMapListOfFloats(final Map<Integer,List<List<Float>>> mapListOfFloats) {
+      this.mapListOfFloats = mapListOfFloats;
+      return this;
+    }
+
+    public MyStructMapFloatThrowExp build() {
+      MyStructMapFloatThrowExp result = new MyStructMapFloatThrowExp();
+      if (__optional_isset.get(__MYLONGFIELD_ISSET_ID)) {
+        result.setMyLongField(this.myLongField);
+      }
+      result.setMapListOfFloats(this.mapListOfFloats);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

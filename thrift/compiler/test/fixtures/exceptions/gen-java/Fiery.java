@@ -53,6 +53,28 @@ public class Fiery extends Exception implements TBase, java.io.Serializable, Clo
     this.message = message;
   }
 
+  public static class Builder {
+    private String message;
+
+    public Builder() {
+    }
+
+    public Builder setMessage(final String message) {
+      this.message = message;
+      return this;
+    }
+
+    public Fiery build() {
+      Fiery result = new Fiery();
+      result.setMessage(this.message);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -124,6 +124,92 @@ public class MyStructTypeDef implements TBase, java.io.Serializable, Cloneable, 
     this.myMapListOfTypeDef = myMapListOfTypeDef;
   }
 
+  public static class Builder {
+    private long myLongField;
+    private long myLongTypeDef;
+    private String myStringField;
+    private String myStringTypedef;
+    private Map<Short,String> myMapField;
+    private Map<Short,String> myMapTypedef;
+    private List<Double> myListField;
+    private List<Double> myListTypedef;
+    private Map<Short,List<List<Double>>> myMapListOfTypeDef;
+
+    BitSet __optional_isset = new BitSet(2);
+
+    public Builder() {
+    }
+
+    public Builder setMyLongField(final long myLongField) {
+      this.myLongField = myLongField;
+      __optional_isset.set(__MYLONGFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyLongTypeDef(final long myLongTypeDef) {
+      this.myLongTypeDef = myLongTypeDef;
+      __optional_isset.set(__MYLONGTYPEDEF_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyStringField(final String myStringField) {
+      this.myStringField = myStringField;
+      return this;
+    }
+
+    public Builder setMyStringTypedef(final String myStringTypedef) {
+      this.myStringTypedef = myStringTypedef;
+      return this;
+    }
+
+    public Builder setMyMapField(final Map<Short,String> myMapField) {
+      this.myMapField = myMapField;
+      return this;
+    }
+
+    public Builder setMyMapTypedef(final Map<Short,String> myMapTypedef) {
+      this.myMapTypedef = myMapTypedef;
+      return this;
+    }
+
+    public Builder setMyListField(final List<Double> myListField) {
+      this.myListField = myListField;
+      return this;
+    }
+
+    public Builder setMyListTypedef(final List<Double> myListTypedef) {
+      this.myListTypedef = myListTypedef;
+      return this;
+    }
+
+    public Builder setMyMapListOfTypeDef(final Map<Short,List<List<Double>>> myMapListOfTypeDef) {
+      this.myMapListOfTypeDef = myMapListOfTypeDef;
+      return this;
+    }
+
+    public MyStructTypeDef build() {
+      MyStructTypeDef result = new MyStructTypeDef();
+      if (__optional_isset.get(__MYLONGFIELD_ISSET_ID)) {
+        result.setMyLongField(this.myLongField);
+      }
+      if (__optional_isset.get(__MYLONGTYPEDEF_ISSET_ID)) {
+        result.setMyLongTypeDef(this.myLongTypeDef);
+      }
+      result.setMyStringField(this.myStringField);
+      result.setMyStringTypedef(this.myStringTypedef);
+      result.setMyMapField(this.myMapField);
+      result.setMyMapTypedef(this.myMapTypedef);
+      result.setMyListField(this.myListField);
+      result.setMyListTypedef(this.myListTypedef);
+      result.setMyMapListOfTypeDef(this.myMapListOfTypeDef);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

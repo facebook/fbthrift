@@ -83,6 +83,54 @@ public class TypeRemapped implements TBase, java.io.Serializable, Cloneable, Com
     this.binaryTestBuffer = binaryTestBuffer;
   }
 
+  public static class Builder {
+    private Map<Long,String> lsMap;
+    private Map<Integer,Map<Integer,Long>> ioMap;
+    private int BigInteger;
+    private byte[] binaryTestBuffer;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setLsMap(final Map<Long,String> lsMap) {
+      this.lsMap = lsMap;
+      return this;
+    }
+
+    public Builder setIoMap(final Map<Integer,Map<Integer,Long>> ioMap) {
+      this.ioMap = ioMap;
+      return this;
+    }
+
+    public Builder setBigInteger(final int BigInteger) {
+      this.BigInteger = BigInteger;
+      __optional_isset.set(__BIGINTEGER_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setBinaryTestBuffer(final byte[] binaryTestBuffer) {
+      this.binaryTestBuffer = binaryTestBuffer;
+      return this;
+    }
+
+    public TypeRemapped build() {
+      TypeRemapped result = new TypeRemapped();
+      result.setLsMap(this.lsMap);
+      result.setIoMap(this.ioMap);
+      if (__optional_isset.get(__BIGINTEGER_ISSET_ID)) {
+        result.setBigInteger(this.BigInteger);
+      }
+      result.setBinaryTestBuffer(this.binaryTestBuffer);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -242,6 +242,147 @@ public class ComplexNestedStruct implements TBase, java.io.Serializable, Cloneab
     this.mapKeyListValSet = mapKeyListValSet;
   }
 
+  public static class Builder {
+    private Set<Set<Integer>> setOfSetOfInt;
+    private List<List<List<List<MyEnum>>>> listofListOfListOfListOfEnum;
+    private List<List<MyStruct>> listOfListOfMyStruct;
+    private Set<List<List<Long>>> setOfListOfListOfLong;
+    private Set<Set<Set<Long>>> setOfSetOfsetOfLong;
+    private Map<Integer,List<List<MyStruct>>> mapStructListOfListOfLong;
+    private Map<MyStruct,Integer> mKeyStructValInt;
+    private List<Map<Integer,Integer>> listOfMapKeyIntValInt;
+    private List<Map<String,List<MyStruct>>> listOfMapKeyStrValList;
+    private Map<Set<Integer>,Long> mapKeySetValLong;
+    private Map<List<String>,Integer> mapKeyListValLong;
+    private Map<Map<Integer,String>,Map<Integer,String>> mapKeyMapValMap;
+    private Map<Set<List<Integer>>,Map<List<Set<String>>,String>> mapKeySetValMap;
+    private Map<Map<Map<Integer,String>,String>,Map<Integer,String>> NestedMaps;
+    private Map<Integer,List<MyStruct>> mapKeyIntValList;
+    private Map<Integer,Set<Boolean>> mapKeyIntValSet;
+    private Map<Set<Boolean>,MyEnum> mapKeySetValInt;
+    private Map<List<Integer>,Set<Map<Double,String>>> mapKeyListValSet;
+
+    public Builder() {
+    }
+
+    public Builder setSetOfSetOfInt(final Set<Set<Integer>> setOfSetOfInt) {
+      this.setOfSetOfInt = setOfSetOfInt;
+      return this;
+    }
+
+    public Builder setListofListOfListOfListOfEnum(final List<List<List<List<MyEnum>>>> listofListOfListOfListOfEnum) {
+      this.listofListOfListOfListOfEnum = listofListOfListOfListOfEnum;
+      return this;
+    }
+
+    public Builder setListOfListOfMyStruct(final List<List<MyStruct>> listOfListOfMyStruct) {
+      this.listOfListOfMyStruct = listOfListOfMyStruct;
+      return this;
+    }
+
+    public Builder setSetOfListOfListOfLong(final Set<List<List<Long>>> setOfListOfListOfLong) {
+      this.setOfListOfListOfLong = setOfListOfListOfLong;
+      return this;
+    }
+
+    public Builder setSetOfSetOfsetOfLong(final Set<Set<Set<Long>>> setOfSetOfsetOfLong) {
+      this.setOfSetOfsetOfLong = setOfSetOfsetOfLong;
+      return this;
+    }
+
+    public Builder setMapStructListOfListOfLong(final Map<Integer,List<List<MyStruct>>> mapStructListOfListOfLong) {
+      this.mapStructListOfListOfLong = mapStructListOfListOfLong;
+      return this;
+    }
+
+    public Builder setMKeyStructValInt(final Map<MyStruct,Integer> mKeyStructValInt) {
+      this.mKeyStructValInt = mKeyStructValInt;
+      return this;
+    }
+
+    public Builder setListOfMapKeyIntValInt(final List<Map<Integer,Integer>> listOfMapKeyIntValInt) {
+      this.listOfMapKeyIntValInt = listOfMapKeyIntValInt;
+      return this;
+    }
+
+    public Builder setListOfMapKeyStrValList(final List<Map<String,List<MyStruct>>> listOfMapKeyStrValList) {
+      this.listOfMapKeyStrValList = listOfMapKeyStrValList;
+      return this;
+    }
+
+    public Builder setMapKeySetValLong(final Map<Set<Integer>,Long> mapKeySetValLong) {
+      this.mapKeySetValLong = mapKeySetValLong;
+      return this;
+    }
+
+    public Builder setMapKeyListValLong(final Map<List<String>,Integer> mapKeyListValLong) {
+      this.mapKeyListValLong = mapKeyListValLong;
+      return this;
+    }
+
+    public Builder setMapKeyMapValMap(final Map<Map<Integer,String>,Map<Integer,String>> mapKeyMapValMap) {
+      this.mapKeyMapValMap = mapKeyMapValMap;
+      return this;
+    }
+
+    public Builder setMapKeySetValMap(final Map<Set<List<Integer>>,Map<List<Set<String>>,String>> mapKeySetValMap) {
+      this.mapKeySetValMap = mapKeySetValMap;
+      return this;
+    }
+
+    public Builder setNestedMaps(final Map<Map<Map<Integer,String>,String>,Map<Integer,String>> NestedMaps) {
+      this.NestedMaps = NestedMaps;
+      return this;
+    }
+
+    public Builder setMapKeyIntValList(final Map<Integer,List<MyStruct>> mapKeyIntValList) {
+      this.mapKeyIntValList = mapKeyIntValList;
+      return this;
+    }
+
+    public Builder setMapKeyIntValSet(final Map<Integer,Set<Boolean>> mapKeyIntValSet) {
+      this.mapKeyIntValSet = mapKeyIntValSet;
+      return this;
+    }
+
+    public Builder setMapKeySetValInt(final Map<Set<Boolean>,MyEnum> mapKeySetValInt) {
+      this.mapKeySetValInt = mapKeySetValInt;
+      return this;
+    }
+
+    public Builder setMapKeyListValSet(final Map<List<Integer>,Set<Map<Double,String>>> mapKeyListValSet) {
+      this.mapKeyListValSet = mapKeyListValSet;
+      return this;
+    }
+
+    public ComplexNestedStruct build() {
+      ComplexNestedStruct result = new ComplexNestedStruct();
+      result.setSetOfSetOfInt(this.setOfSetOfInt);
+      result.setListofListOfListOfListOfEnum(this.listofListOfListOfListOfEnum);
+      result.setListOfListOfMyStruct(this.listOfListOfMyStruct);
+      result.setSetOfListOfListOfLong(this.setOfListOfListOfLong);
+      result.setSetOfSetOfsetOfLong(this.setOfSetOfsetOfLong);
+      result.setMapStructListOfListOfLong(this.mapStructListOfListOfLong);
+      result.setMKeyStructValInt(this.mKeyStructValInt);
+      result.setListOfMapKeyIntValInt(this.listOfMapKeyIntValInt);
+      result.setListOfMapKeyStrValList(this.listOfMapKeyStrValList);
+      result.setMapKeySetValLong(this.mapKeySetValLong);
+      result.setMapKeyListValLong(this.mapKeyListValLong);
+      result.setMapKeyMapValMap(this.mapKeyMapValMap);
+      result.setMapKeySetValMap(this.mapKeySetValMap);
+      result.setNestedMaps(this.NestedMaps);
+      result.setMapKeyIntValList(this.mapKeyIntValList);
+      result.setMapKeyIntValSet(this.mapKeyIntValSet);
+      result.setMapKeySetValInt(this.mapKeySetValInt);
+      result.setMapKeyListValSet(this.mapKeyListValSet);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

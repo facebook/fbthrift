@@ -93,6 +93,53 @@ public class MyField implements TBase, java.io.Serializable, Cloneable, Comparab
     setReq_valueIsSet(true);
   }
 
+  public static class Builder {
+    private long opt_value;
+    private long value;
+    private long req_value;
+
+    BitSet __optional_isset = new BitSet(3);
+
+    public Builder() {
+    }
+
+    public Builder setOpt_value(final long opt_value) {
+      this.opt_value = opt_value;
+      __optional_isset.set(__OPT_VALUE_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setValue(final long value) {
+      this.value = value;
+      __optional_isset.set(__VALUE_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setReq_value(final long req_value) {
+      this.req_value = req_value;
+      __optional_isset.set(__REQ_VALUE_ISSET_ID, true);
+      return this;
+    }
+
+    public MyField build() {
+      MyField result = new MyField();
+      if (__optional_isset.get(__OPT_VALUE_ISSET_ID)) {
+        result.setOpt_value(this.opt_value);
+      }
+      if (__optional_isset.get(__VALUE_ISSET_ID)) {
+        result.setValue(this.value);
+      }
+      if (__optional_isset.get(__REQ_VALUE_ISSET_ID)) {
+        result.setReq_value(this.req_value);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

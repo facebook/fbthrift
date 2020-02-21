@@ -83,6 +83,42 @@ public class StructWithRefTypeShared implements TBase, java.io.Serializable, Clo
     this.req_field = req_field;
   }
 
+  public static class Builder {
+    private Empty def_field;
+    private Empty opt_field;
+    private Empty req_field;
+
+    public Builder() {
+    }
+
+    public Builder setDef_field(final Empty def_field) {
+      this.def_field = def_field;
+      return this;
+    }
+
+    public Builder setOpt_field(final Empty opt_field) {
+      this.opt_field = opt_field;
+      return this;
+    }
+
+    public Builder setReq_field(final Empty req_field) {
+      this.req_field = req_field;
+      return this;
+    }
+
+    public StructWithRefTypeShared build() {
+      StructWithRefTypeShared result = new StructWithRefTypeShared();
+      result.setDef_field(this.def_field);
+      result.setOpt_field(this.opt_field);
+      result.setReq_field(this.req_field);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

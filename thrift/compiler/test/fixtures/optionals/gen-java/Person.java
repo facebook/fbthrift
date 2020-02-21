@@ -143,6 +143,105 @@ public class Person implements TBase, java.io.Serializable, Cloneable, Comparabl
     this.vehicles = vehicles;
   }
 
+  public static class Builder {
+    private long id;
+    private String name;
+    private short age;
+    private String address;
+    private Color favoriteColor;
+    private Set<Long> friends;
+    private long bestFriend;
+    private Map<Animal,String> petNames;
+    private Animal afraidOfAnimal;
+    private List<Vehicle> vehicles;
+
+    BitSet __optional_isset = new BitSet(4);
+
+    public Builder() {
+    }
+
+    public Builder setId(final long id) {
+      this.id = id;
+      __optional_isset.set(__ID_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setName(final String name) {
+      this.name = name;
+      return this;
+    }
+
+    public Builder setAge(final short age) {
+      this.age = age;
+      __optional_isset.set(__AGE_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setAddress(final String address) {
+      this.address = address;
+      return this;
+    }
+
+    public Builder setFavoriteColor(final Color favoriteColor) {
+      this.favoriteColor = favoriteColor;
+      return this;
+    }
+
+    public Builder setFriends(final Set<Long> friends) {
+      this.friends = friends;
+      return this;
+    }
+
+    public Builder setBestFriend(final long bestFriend) {
+      this.bestFriend = bestFriend;
+      __optional_isset.set(__BESTFRIEND_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setPetNames(final Map<Animal,String> petNames) {
+      this.petNames = petNames;
+      return this;
+    }
+
+    public Builder setAfraidOfAnimal(final Animal afraidOfAnimal) {
+      this.afraidOfAnimal = afraidOfAnimal;
+      __optional_isset.set(__AFRAIDOFANIMAL_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setVehicles(final List<Vehicle> vehicles) {
+      this.vehicles = vehicles;
+      return this;
+    }
+
+    public Person build() {
+      Person result = new Person();
+      if (__optional_isset.get(__ID_ISSET_ID)) {
+        result.setId(this.id);
+      }
+      result.setName(this.name);
+      if (__optional_isset.get(__AGE_ISSET_ID)) {
+        result.setAge(this.age);
+      }
+      result.setAddress(this.address);
+      result.setFavoriteColor(this.favoriteColor);
+      result.setFriends(this.friends);
+      if (__optional_isset.get(__BESTFRIEND_ISSET_ID)) {
+        result.setBestFriend(this.bestFriend);
+      }
+      result.setPetNames(this.petNames);
+      if (__optional_isset.get(__AFRAIDOFANIMAL_ISSET_ID)) {
+        result.setAfraidOfAnimal(this.afraidOfAnimal);
+      }
+      result.setVehicles(this.vehicles);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -85,6 +85,57 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     setMyEnumIsSet(true);
   }
 
+  public static class Builder {
+    private long MyIntField;
+    private String MyStringField;
+    private MyDataItem MyDataField;
+    private MyEnum myEnum;
+
+    BitSet __optional_isset = new BitSet(2);
+
+    public Builder() {
+    }
+
+    public Builder setMyIntField(final long MyIntField) {
+      this.MyIntField = MyIntField;
+      __optional_isset.set(__MYINTFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyStringField(final String MyStringField) {
+      this.MyStringField = MyStringField;
+      return this;
+    }
+
+    public Builder setMyDataField(final MyDataItem MyDataField) {
+      this.MyDataField = MyDataField;
+      return this;
+    }
+
+    public Builder setMyEnum(final MyEnum myEnum) {
+      this.myEnum = myEnum;
+      __optional_isset.set(__MYENUM_ISSET_ID, true);
+      return this;
+    }
+
+    public MyStruct build() {
+      MyStruct result = new MyStruct();
+      if (__optional_isset.get(__MYINTFIELD_ISSET_ID)) {
+        result.setMyIntField(this.MyIntField);
+      }
+      result.setMyStringField(this.MyStringField);
+      result.setMyDataField(this.MyDataField);
+      if (__optional_isset.get(__MYENUM_ISSET_ID)) {
+        result.setMyEnum(this.myEnum);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

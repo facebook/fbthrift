@@ -1348,544 +1348,1883 @@ public class MyBigStruct implements TBase, java.io.Serializable, Cloneable, Comp
   public MyBigStruct() {
   }
 
-  public MyBigStruct(
-    String msg1,
-    String msg2,
-    String msg3,
-    String msg4,
-    String msg5,
-    String msg6,
-    String msg7,
-    String msg8,
-    String msg9,
-    int myIntField10,
-    int myIntField11,
-    int myIntField12,
-    int myIntField13,
-    int myIntField14,
-    int myIntField15,
-    int myIntField16,
-    int myIntField17,
-    int myIntField18,
-    int myIntField19,
-    int myIntField20,
-    double myDoubleField21,
-    double myDoubleField22,
-    double myDoubleField23,
-    double myDoubleField24,
-    double myDoubleField25,
-    double myDoubleField26,
-    double myDoubleField27,
-    double myDoubleField28,
-    double myDoubleField29,
-    double myDoubleField30,
-    String msg31,
-    String msg32,
-    String msg33,
-    String msg34,
-    String msg35,
-    String msg36,
-    String msg37,
-    String msg38,
-    String msg39,
-    String msg40,
-    String msg41,
-    String msg42,
-    String msg43,
-    String msg44,
-    String msg45,
-    String msg46,
-    String msg47,
-    String msg48,
-    String msg49,
-    String msg50,
-    String msg51,
-    String msg52,
-    String msg53,
-    String msg54,
-    String msg55,
-    String msg56,
-    String msg57,
-    String msg58,
-    String msg59,
-    String msg60,
-    String msg61,
-    String msg62,
-    String msg63,
-    String msg64,
-    String msg65,
-    String msg66,
-    String msg67,
-    String msg68,
-    String msg69,
-    String msg70,
-    String msg71,
-    String msg72,
-    String msg73,
-    String msg74,
-    String msg75,
-    String msg76,
-    String msg77,
-    String msg78,
-    String msg79,
-    String msg80,
-    String msg81,
-    String msg82,
-    String msg83,
-    String msg84,
-    String msg85,
-    String msg86,
-    String msg87,
-    String msg88,
-    String msg89,
-    String msg90,
-    String msg91,
-    String msg92,
-    String msg93,
-    String msg94,
-    String msg95,
-    String msg96,
-    String msg97,
-    String msg98,
-    String msg99,
-    String msg100,
-    String msg101,
-    String msg102,
-    String msg103,
-    String msg104,
-    String msg105,
-    String msg106,
-    String msg107,
-    String msg108,
-    String msg109,
-    String msg110,
-    String msg111,
-    String msg112,
-    String msg113,
-    String msg114,
-    String msg115,
-    String msg116,
-    String msg117,
-    String msg118,
-    String msg119,
-    String msg120,
-    String msg121,
-    String msg122,
-    String msg123,
-    String msg124,
-    String msg125,
-    String msg126,
-    String msg127,
-    String msg128,
-    String msg129,
-    String msg130,
-    String msg131,
-    String msg132,
-    String msg133,
-    String msg134,
-    String msg135,
-    String msg136,
-    String msg137,
-    String msg138,
-    String msg139,
-    String msg140,
-    String msg141,
-    String msg142,
-    String msg143,
-    String msg144,
-    String msg145,
-    String msg146,
-    String msg147,
-    String msg148,
-    String msg149,
-    String msg150,
-    String msg151,
-    String msg152,
-    String msg153,
-    String msg154,
-    String msg155,
-    String msg156,
-    String msg157,
-    String msg158,
-    String msg159,
-    String msg160,
-    String msg161,
-    String msg162,
-    String msg163,
-    String msg164,
-    String msg165,
-    String msg166,
-    String msg167,
-    String msg168,
-    String msg169,
-    String msg170,
-    String msg171,
-    String msg172,
-    String msg173,
-    String msg174,
-    String msg175,
-    String msg176,
-    String msg177,
-    String msg178,
-    String msg179,
-    String msg180,
-    String msg181,
-    String msg182,
-    String msg183,
-    String msg184,
-    String msg185,
-    String msg186,
-    String msg187,
-    String msg188,
-    String msg189,
-    String msg190,
-    String msg191,
-    String msg192,
-    String msg193,
-    String msg194,
-    String msg195,
-    String msg196,
-    String msg197,
-    String msg198,
-    String msg199,
-    String msg200,
-    String msg201,
-    String msg202,
-    String msg203,
-    String msg204,
-    String msg205,
-    String msg206,
-    String msg207,
-    String msg208,
-    String msg209,
-    String msg210,
-    String msg211,
-    String msg212,
-    String msg213,
-    String msg214,
-    String msg215,
-    String msg216,
-    String msg217,
-    String msg218,
-    String msg219,
-    String msg220,
-    String msg221,
-    String msg222,
-    String msg223,
-    String msg224,
-    String msg225,
-    String msg226,
-    String msg227,
-    String msg228,
-    String msg229,
-    String msg230,
-    String msg231,
-    String msg232,
-    String msg233,
-    String msg234,
-    String msg235,
-    String msg236,
-    String msg237,
-    String msg238,
-    String msg239,
-    String msg240,
-    String msg241,
-    String msg242,
-    String msg243,
-    String msg244,
-    String msg245,
-    String msg246,
-    String msg247,
-    String msg248,
-    String msg249,
-    String msg250,
-    String msg251,
-    String msg252,
-    String msg253,
-    String msg254,
-    String msg255,
-    String msg256,
-    String msg257)
-  {
-    this();
-    this.msg1 = msg1;
-    this.msg2 = msg2;
-    this.msg3 = msg3;
-    this.msg4 = msg4;
-    this.msg5 = msg5;
-    this.msg6 = msg6;
-    this.msg7 = msg7;
-    this.msg8 = msg8;
-    this.msg9 = msg9;
-    this.myIntField10 = myIntField10;
-    setMyIntField10IsSet(true);
-    this.myIntField11 = myIntField11;
-    setMyIntField11IsSet(true);
-    this.myIntField12 = myIntField12;
-    setMyIntField12IsSet(true);
-    this.myIntField13 = myIntField13;
-    setMyIntField13IsSet(true);
-    this.myIntField14 = myIntField14;
-    setMyIntField14IsSet(true);
-    this.myIntField15 = myIntField15;
-    setMyIntField15IsSet(true);
-    this.myIntField16 = myIntField16;
-    setMyIntField16IsSet(true);
-    this.myIntField17 = myIntField17;
-    setMyIntField17IsSet(true);
-    this.myIntField18 = myIntField18;
-    setMyIntField18IsSet(true);
-    this.myIntField19 = myIntField19;
-    setMyIntField19IsSet(true);
-    this.myIntField20 = myIntField20;
-    setMyIntField20IsSet(true);
-    this.myDoubleField21 = myDoubleField21;
-    setMyDoubleField21IsSet(true);
-    this.myDoubleField22 = myDoubleField22;
-    setMyDoubleField22IsSet(true);
-    this.myDoubleField23 = myDoubleField23;
-    setMyDoubleField23IsSet(true);
-    this.myDoubleField24 = myDoubleField24;
-    setMyDoubleField24IsSet(true);
-    this.myDoubleField25 = myDoubleField25;
-    setMyDoubleField25IsSet(true);
-    this.myDoubleField26 = myDoubleField26;
-    setMyDoubleField26IsSet(true);
-    this.myDoubleField27 = myDoubleField27;
-    setMyDoubleField27IsSet(true);
-    this.myDoubleField28 = myDoubleField28;
-    setMyDoubleField28IsSet(true);
-    this.myDoubleField29 = myDoubleField29;
-    setMyDoubleField29IsSet(true);
-    this.myDoubleField30 = myDoubleField30;
-    setMyDoubleField30IsSet(true);
-    this.msg31 = msg31;
-    this.msg32 = msg32;
-    this.msg33 = msg33;
-    this.msg34 = msg34;
-    this.msg35 = msg35;
-    this.msg36 = msg36;
-    this.msg37 = msg37;
-    this.msg38 = msg38;
-    this.msg39 = msg39;
-    this.msg40 = msg40;
-    this.msg41 = msg41;
-    this.msg42 = msg42;
-    this.msg43 = msg43;
-    this.msg44 = msg44;
-    this.msg45 = msg45;
-    this.msg46 = msg46;
-    this.msg47 = msg47;
-    this.msg48 = msg48;
-    this.msg49 = msg49;
-    this.msg50 = msg50;
-    this.msg51 = msg51;
-    this.msg52 = msg52;
-    this.msg53 = msg53;
-    this.msg54 = msg54;
-    this.msg55 = msg55;
-    this.msg56 = msg56;
-    this.msg57 = msg57;
-    this.msg58 = msg58;
-    this.msg59 = msg59;
-    this.msg60 = msg60;
-    this.msg61 = msg61;
-    this.msg62 = msg62;
-    this.msg63 = msg63;
-    this.msg64 = msg64;
-    this.msg65 = msg65;
-    this.msg66 = msg66;
-    this.msg67 = msg67;
-    this.msg68 = msg68;
-    this.msg69 = msg69;
-    this.msg70 = msg70;
-    this.msg71 = msg71;
-    this.msg72 = msg72;
-    this.msg73 = msg73;
-    this.msg74 = msg74;
-    this.msg75 = msg75;
-    this.msg76 = msg76;
-    this.msg77 = msg77;
-    this.msg78 = msg78;
-    this.msg79 = msg79;
-    this.msg80 = msg80;
-    this.msg81 = msg81;
-    this.msg82 = msg82;
-    this.msg83 = msg83;
-    this.msg84 = msg84;
-    this.msg85 = msg85;
-    this.msg86 = msg86;
-    this.msg87 = msg87;
-    this.msg88 = msg88;
-    this.msg89 = msg89;
-    this.msg90 = msg90;
-    this.msg91 = msg91;
-    this.msg92 = msg92;
-    this.msg93 = msg93;
-    this.msg94 = msg94;
-    this.msg95 = msg95;
-    this.msg96 = msg96;
-    this.msg97 = msg97;
-    this.msg98 = msg98;
-    this.msg99 = msg99;
-    this.msg100 = msg100;
-    this.msg101 = msg101;
-    this.msg102 = msg102;
-    this.msg103 = msg103;
-    this.msg104 = msg104;
-    this.msg105 = msg105;
-    this.msg106 = msg106;
-    this.msg107 = msg107;
-    this.msg108 = msg108;
-    this.msg109 = msg109;
-    this.msg110 = msg110;
-    this.msg111 = msg111;
-    this.msg112 = msg112;
-    this.msg113 = msg113;
-    this.msg114 = msg114;
-    this.msg115 = msg115;
-    this.msg116 = msg116;
-    this.msg117 = msg117;
-    this.msg118 = msg118;
-    this.msg119 = msg119;
-    this.msg120 = msg120;
-    this.msg121 = msg121;
-    this.msg122 = msg122;
-    this.msg123 = msg123;
-    this.msg124 = msg124;
-    this.msg125 = msg125;
-    this.msg126 = msg126;
-    this.msg127 = msg127;
-    this.msg128 = msg128;
-    this.msg129 = msg129;
-    this.msg130 = msg130;
-    this.msg131 = msg131;
-    this.msg132 = msg132;
-    this.msg133 = msg133;
-    this.msg134 = msg134;
-    this.msg135 = msg135;
-    this.msg136 = msg136;
-    this.msg137 = msg137;
-    this.msg138 = msg138;
-    this.msg139 = msg139;
-    this.msg140 = msg140;
-    this.msg141 = msg141;
-    this.msg142 = msg142;
-    this.msg143 = msg143;
-    this.msg144 = msg144;
-    this.msg145 = msg145;
-    this.msg146 = msg146;
-    this.msg147 = msg147;
-    this.msg148 = msg148;
-    this.msg149 = msg149;
-    this.msg150 = msg150;
-    this.msg151 = msg151;
-    this.msg152 = msg152;
-    this.msg153 = msg153;
-    this.msg154 = msg154;
-    this.msg155 = msg155;
-    this.msg156 = msg156;
-    this.msg157 = msg157;
-    this.msg158 = msg158;
-    this.msg159 = msg159;
-    this.msg160 = msg160;
-    this.msg161 = msg161;
-    this.msg162 = msg162;
-    this.msg163 = msg163;
-    this.msg164 = msg164;
-    this.msg165 = msg165;
-    this.msg166 = msg166;
-    this.msg167 = msg167;
-    this.msg168 = msg168;
-    this.msg169 = msg169;
-    this.msg170 = msg170;
-    this.msg171 = msg171;
-    this.msg172 = msg172;
-    this.msg173 = msg173;
-    this.msg174 = msg174;
-    this.msg175 = msg175;
-    this.msg176 = msg176;
-    this.msg177 = msg177;
-    this.msg178 = msg178;
-    this.msg179 = msg179;
-    this.msg180 = msg180;
-    this.msg181 = msg181;
-    this.msg182 = msg182;
-    this.msg183 = msg183;
-    this.msg184 = msg184;
-    this.msg185 = msg185;
-    this.msg186 = msg186;
-    this.msg187 = msg187;
-    this.msg188 = msg188;
-    this.msg189 = msg189;
-    this.msg190 = msg190;
-    this.msg191 = msg191;
-    this.msg192 = msg192;
-    this.msg193 = msg193;
-    this.msg194 = msg194;
-    this.msg195 = msg195;
-    this.msg196 = msg196;
-    this.msg197 = msg197;
-    this.msg198 = msg198;
-    this.msg199 = msg199;
-    this.msg200 = msg200;
-    this.msg201 = msg201;
-    this.msg202 = msg202;
-    this.msg203 = msg203;
-    this.msg204 = msg204;
-    this.msg205 = msg205;
-    this.msg206 = msg206;
-    this.msg207 = msg207;
-    this.msg208 = msg208;
-    this.msg209 = msg209;
-    this.msg210 = msg210;
-    this.msg211 = msg211;
-    this.msg212 = msg212;
-    this.msg213 = msg213;
-    this.msg214 = msg214;
-    this.msg215 = msg215;
-    this.msg216 = msg216;
-    this.msg217 = msg217;
-    this.msg218 = msg218;
-    this.msg219 = msg219;
-    this.msg220 = msg220;
-    this.msg221 = msg221;
-    this.msg222 = msg222;
-    this.msg223 = msg223;
-    this.msg224 = msg224;
-    this.msg225 = msg225;
-    this.msg226 = msg226;
-    this.msg227 = msg227;
-    this.msg228 = msg228;
-    this.msg229 = msg229;
-    this.msg230 = msg230;
-    this.msg231 = msg231;
-    this.msg232 = msg232;
-    this.msg233 = msg233;
-    this.msg234 = msg234;
-    this.msg235 = msg235;
-    this.msg236 = msg236;
-    this.msg237 = msg237;
-    this.msg238 = msg238;
-    this.msg239 = msg239;
-    this.msg240 = msg240;
-    this.msg241 = msg241;
-    this.msg242 = msg242;
-    this.msg243 = msg243;
-    this.msg244 = msg244;
-    this.msg245 = msg245;
-    this.msg246 = msg246;
-    this.msg247 = msg247;
-    this.msg248 = msg248;
-    this.msg249 = msg249;
-    this.msg250 = msg250;
-    this.msg251 = msg251;
-    this.msg252 = msg252;
-    this.msg253 = msg253;
-    this.msg254 = msg254;
-    this.msg255 = msg255;
-    this.msg256 = msg256;
-    this.msg257 = msg257;
+  public static class Builder {
+    private String msg1;
+    private String msg2;
+    private String msg3;
+    private String msg4;
+    private String msg5;
+    private String msg6;
+    private String msg7;
+    private String msg8;
+    private String msg9;
+    private int myIntField10;
+    private int myIntField11;
+    private int myIntField12;
+    private int myIntField13;
+    private int myIntField14;
+    private int myIntField15;
+    private int myIntField16;
+    private int myIntField17;
+    private int myIntField18;
+    private int myIntField19;
+    private int myIntField20;
+    private double myDoubleField21;
+    private double myDoubleField22;
+    private double myDoubleField23;
+    private double myDoubleField24;
+    private double myDoubleField25;
+    private double myDoubleField26;
+    private double myDoubleField27;
+    private double myDoubleField28;
+    private double myDoubleField29;
+    private double myDoubleField30;
+    private String msg31;
+    private String msg32;
+    private String msg33;
+    private String msg34;
+    private String msg35;
+    private String msg36;
+    private String msg37;
+    private String msg38;
+    private String msg39;
+    private String msg40;
+    private String msg41;
+    private String msg42;
+    private String msg43;
+    private String msg44;
+    private String msg45;
+    private String msg46;
+    private String msg47;
+    private String msg48;
+    private String msg49;
+    private String msg50;
+    private String msg51;
+    private String msg52;
+    private String msg53;
+    private String msg54;
+    private String msg55;
+    private String msg56;
+    private String msg57;
+    private String msg58;
+    private String msg59;
+    private String msg60;
+    private String msg61;
+    private String msg62;
+    private String msg63;
+    private String msg64;
+    private String msg65;
+    private String msg66;
+    private String msg67;
+    private String msg68;
+    private String msg69;
+    private String msg70;
+    private String msg71;
+    private String msg72;
+    private String msg73;
+    private String msg74;
+    private String msg75;
+    private String msg76;
+    private String msg77;
+    private String msg78;
+    private String msg79;
+    private String msg80;
+    private String msg81;
+    private String msg82;
+    private String msg83;
+    private String msg84;
+    private String msg85;
+    private String msg86;
+    private String msg87;
+    private String msg88;
+    private String msg89;
+    private String msg90;
+    private String msg91;
+    private String msg92;
+    private String msg93;
+    private String msg94;
+    private String msg95;
+    private String msg96;
+    private String msg97;
+    private String msg98;
+    private String msg99;
+    private String msg100;
+    private String msg101;
+    private String msg102;
+    private String msg103;
+    private String msg104;
+    private String msg105;
+    private String msg106;
+    private String msg107;
+    private String msg108;
+    private String msg109;
+    private String msg110;
+    private String msg111;
+    private String msg112;
+    private String msg113;
+    private String msg114;
+    private String msg115;
+    private String msg116;
+    private String msg117;
+    private String msg118;
+    private String msg119;
+    private String msg120;
+    private String msg121;
+    private String msg122;
+    private String msg123;
+    private String msg124;
+    private String msg125;
+    private String msg126;
+    private String msg127;
+    private String msg128;
+    private String msg129;
+    private String msg130;
+    private String msg131;
+    private String msg132;
+    private String msg133;
+    private String msg134;
+    private String msg135;
+    private String msg136;
+    private String msg137;
+    private String msg138;
+    private String msg139;
+    private String msg140;
+    private String msg141;
+    private String msg142;
+    private String msg143;
+    private String msg144;
+    private String msg145;
+    private String msg146;
+    private String msg147;
+    private String msg148;
+    private String msg149;
+    private String msg150;
+    private String msg151;
+    private String msg152;
+    private String msg153;
+    private String msg154;
+    private String msg155;
+    private String msg156;
+    private String msg157;
+    private String msg158;
+    private String msg159;
+    private String msg160;
+    private String msg161;
+    private String msg162;
+    private String msg163;
+    private String msg164;
+    private String msg165;
+    private String msg166;
+    private String msg167;
+    private String msg168;
+    private String msg169;
+    private String msg170;
+    private String msg171;
+    private String msg172;
+    private String msg173;
+    private String msg174;
+    private String msg175;
+    private String msg176;
+    private String msg177;
+    private String msg178;
+    private String msg179;
+    private String msg180;
+    private String msg181;
+    private String msg182;
+    private String msg183;
+    private String msg184;
+    private String msg185;
+    private String msg186;
+    private String msg187;
+    private String msg188;
+    private String msg189;
+    private String msg190;
+    private String msg191;
+    private String msg192;
+    private String msg193;
+    private String msg194;
+    private String msg195;
+    private String msg196;
+    private String msg197;
+    private String msg198;
+    private String msg199;
+    private String msg200;
+    private String msg201;
+    private String msg202;
+    private String msg203;
+    private String msg204;
+    private String msg205;
+    private String msg206;
+    private String msg207;
+    private String msg208;
+    private String msg209;
+    private String msg210;
+    private String msg211;
+    private String msg212;
+    private String msg213;
+    private String msg214;
+    private String msg215;
+    private String msg216;
+    private String msg217;
+    private String msg218;
+    private String msg219;
+    private String msg220;
+    private String msg221;
+    private String msg222;
+    private String msg223;
+    private String msg224;
+    private String msg225;
+    private String msg226;
+    private String msg227;
+    private String msg228;
+    private String msg229;
+    private String msg230;
+    private String msg231;
+    private String msg232;
+    private String msg233;
+    private String msg234;
+    private String msg235;
+    private String msg236;
+    private String msg237;
+    private String msg238;
+    private String msg239;
+    private String msg240;
+    private String msg241;
+    private String msg242;
+    private String msg243;
+    private String msg244;
+    private String msg245;
+    private String msg246;
+    private String msg247;
+    private String msg248;
+    private String msg249;
+    private String msg250;
+    private String msg251;
+    private String msg252;
+    private String msg253;
+    private String msg254;
+    private String msg255;
+    private String msg256;
+    private String msg257;
+
+    BitSet __optional_isset = new BitSet(21);
+
+    public Builder() {
+    }
+
+    public Builder setMsg1(final String msg1) {
+      this.msg1 = msg1;
+      return this;
+    }
+
+    public Builder setMsg2(final String msg2) {
+      this.msg2 = msg2;
+      return this;
+    }
+
+    public Builder setMsg3(final String msg3) {
+      this.msg3 = msg3;
+      return this;
+    }
+
+    public Builder setMsg4(final String msg4) {
+      this.msg4 = msg4;
+      return this;
+    }
+
+    public Builder setMsg5(final String msg5) {
+      this.msg5 = msg5;
+      return this;
+    }
+
+    public Builder setMsg6(final String msg6) {
+      this.msg6 = msg6;
+      return this;
+    }
+
+    public Builder setMsg7(final String msg7) {
+      this.msg7 = msg7;
+      return this;
+    }
+
+    public Builder setMsg8(final String msg8) {
+      this.msg8 = msg8;
+      return this;
+    }
+
+    public Builder setMsg9(final String msg9) {
+      this.msg9 = msg9;
+      return this;
+    }
+
+    public Builder setMyIntField10(final int myIntField10) {
+      this.myIntField10 = myIntField10;
+      __optional_isset.set(__MYINTFIELD10_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField11(final int myIntField11) {
+      this.myIntField11 = myIntField11;
+      __optional_isset.set(__MYINTFIELD11_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField12(final int myIntField12) {
+      this.myIntField12 = myIntField12;
+      __optional_isset.set(__MYINTFIELD12_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField13(final int myIntField13) {
+      this.myIntField13 = myIntField13;
+      __optional_isset.set(__MYINTFIELD13_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField14(final int myIntField14) {
+      this.myIntField14 = myIntField14;
+      __optional_isset.set(__MYINTFIELD14_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField15(final int myIntField15) {
+      this.myIntField15 = myIntField15;
+      __optional_isset.set(__MYINTFIELD15_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField16(final int myIntField16) {
+      this.myIntField16 = myIntField16;
+      __optional_isset.set(__MYINTFIELD16_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField17(final int myIntField17) {
+      this.myIntField17 = myIntField17;
+      __optional_isset.set(__MYINTFIELD17_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField18(final int myIntField18) {
+      this.myIntField18 = myIntField18;
+      __optional_isset.set(__MYINTFIELD18_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField19(final int myIntField19) {
+      this.myIntField19 = myIntField19;
+      __optional_isset.set(__MYINTFIELD19_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyIntField20(final int myIntField20) {
+      this.myIntField20 = myIntField20;
+      __optional_isset.set(__MYINTFIELD20_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField21(final double myDoubleField21) {
+      this.myDoubleField21 = myDoubleField21;
+      __optional_isset.set(__MYDOUBLEFIELD21_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField22(final double myDoubleField22) {
+      this.myDoubleField22 = myDoubleField22;
+      __optional_isset.set(__MYDOUBLEFIELD22_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField23(final double myDoubleField23) {
+      this.myDoubleField23 = myDoubleField23;
+      __optional_isset.set(__MYDOUBLEFIELD23_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField24(final double myDoubleField24) {
+      this.myDoubleField24 = myDoubleField24;
+      __optional_isset.set(__MYDOUBLEFIELD24_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField25(final double myDoubleField25) {
+      this.myDoubleField25 = myDoubleField25;
+      __optional_isset.set(__MYDOUBLEFIELD25_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField26(final double myDoubleField26) {
+      this.myDoubleField26 = myDoubleField26;
+      __optional_isset.set(__MYDOUBLEFIELD26_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField27(final double myDoubleField27) {
+      this.myDoubleField27 = myDoubleField27;
+      __optional_isset.set(__MYDOUBLEFIELD27_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField28(final double myDoubleField28) {
+      this.myDoubleField28 = myDoubleField28;
+      __optional_isset.set(__MYDOUBLEFIELD28_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField29(final double myDoubleField29) {
+      this.myDoubleField29 = myDoubleField29;
+      __optional_isset.set(__MYDOUBLEFIELD29_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField30(final double myDoubleField30) {
+      this.myDoubleField30 = myDoubleField30;
+      __optional_isset.set(__MYDOUBLEFIELD30_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMsg31(final String msg31) {
+      this.msg31 = msg31;
+      return this;
+    }
+
+    public Builder setMsg32(final String msg32) {
+      this.msg32 = msg32;
+      return this;
+    }
+
+    public Builder setMsg33(final String msg33) {
+      this.msg33 = msg33;
+      return this;
+    }
+
+    public Builder setMsg34(final String msg34) {
+      this.msg34 = msg34;
+      return this;
+    }
+
+    public Builder setMsg35(final String msg35) {
+      this.msg35 = msg35;
+      return this;
+    }
+
+    public Builder setMsg36(final String msg36) {
+      this.msg36 = msg36;
+      return this;
+    }
+
+    public Builder setMsg37(final String msg37) {
+      this.msg37 = msg37;
+      return this;
+    }
+
+    public Builder setMsg38(final String msg38) {
+      this.msg38 = msg38;
+      return this;
+    }
+
+    public Builder setMsg39(final String msg39) {
+      this.msg39 = msg39;
+      return this;
+    }
+
+    public Builder setMsg40(final String msg40) {
+      this.msg40 = msg40;
+      return this;
+    }
+
+    public Builder setMsg41(final String msg41) {
+      this.msg41 = msg41;
+      return this;
+    }
+
+    public Builder setMsg42(final String msg42) {
+      this.msg42 = msg42;
+      return this;
+    }
+
+    public Builder setMsg43(final String msg43) {
+      this.msg43 = msg43;
+      return this;
+    }
+
+    public Builder setMsg44(final String msg44) {
+      this.msg44 = msg44;
+      return this;
+    }
+
+    public Builder setMsg45(final String msg45) {
+      this.msg45 = msg45;
+      return this;
+    }
+
+    public Builder setMsg46(final String msg46) {
+      this.msg46 = msg46;
+      return this;
+    }
+
+    public Builder setMsg47(final String msg47) {
+      this.msg47 = msg47;
+      return this;
+    }
+
+    public Builder setMsg48(final String msg48) {
+      this.msg48 = msg48;
+      return this;
+    }
+
+    public Builder setMsg49(final String msg49) {
+      this.msg49 = msg49;
+      return this;
+    }
+
+    public Builder setMsg50(final String msg50) {
+      this.msg50 = msg50;
+      return this;
+    }
+
+    public Builder setMsg51(final String msg51) {
+      this.msg51 = msg51;
+      return this;
+    }
+
+    public Builder setMsg52(final String msg52) {
+      this.msg52 = msg52;
+      return this;
+    }
+
+    public Builder setMsg53(final String msg53) {
+      this.msg53 = msg53;
+      return this;
+    }
+
+    public Builder setMsg54(final String msg54) {
+      this.msg54 = msg54;
+      return this;
+    }
+
+    public Builder setMsg55(final String msg55) {
+      this.msg55 = msg55;
+      return this;
+    }
+
+    public Builder setMsg56(final String msg56) {
+      this.msg56 = msg56;
+      return this;
+    }
+
+    public Builder setMsg57(final String msg57) {
+      this.msg57 = msg57;
+      return this;
+    }
+
+    public Builder setMsg58(final String msg58) {
+      this.msg58 = msg58;
+      return this;
+    }
+
+    public Builder setMsg59(final String msg59) {
+      this.msg59 = msg59;
+      return this;
+    }
+
+    public Builder setMsg60(final String msg60) {
+      this.msg60 = msg60;
+      return this;
+    }
+
+    public Builder setMsg61(final String msg61) {
+      this.msg61 = msg61;
+      return this;
+    }
+
+    public Builder setMsg62(final String msg62) {
+      this.msg62 = msg62;
+      return this;
+    }
+
+    public Builder setMsg63(final String msg63) {
+      this.msg63 = msg63;
+      return this;
+    }
+
+    public Builder setMsg64(final String msg64) {
+      this.msg64 = msg64;
+      return this;
+    }
+
+    public Builder setMsg65(final String msg65) {
+      this.msg65 = msg65;
+      return this;
+    }
+
+    public Builder setMsg66(final String msg66) {
+      this.msg66 = msg66;
+      return this;
+    }
+
+    public Builder setMsg67(final String msg67) {
+      this.msg67 = msg67;
+      return this;
+    }
+
+    public Builder setMsg68(final String msg68) {
+      this.msg68 = msg68;
+      return this;
+    }
+
+    public Builder setMsg69(final String msg69) {
+      this.msg69 = msg69;
+      return this;
+    }
+
+    public Builder setMsg70(final String msg70) {
+      this.msg70 = msg70;
+      return this;
+    }
+
+    public Builder setMsg71(final String msg71) {
+      this.msg71 = msg71;
+      return this;
+    }
+
+    public Builder setMsg72(final String msg72) {
+      this.msg72 = msg72;
+      return this;
+    }
+
+    public Builder setMsg73(final String msg73) {
+      this.msg73 = msg73;
+      return this;
+    }
+
+    public Builder setMsg74(final String msg74) {
+      this.msg74 = msg74;
+      return this;
+    }
+
+    public Builder setMsg75(final String msg75) {
+      this.msg75 = msg75;
+      return this;
+    }
+
+    public Builder setMsg76(final String msg76) {
+      this.msg76 = msg76;
+      return this;
+    }
+
+    public Builder setMsg77(final String msg77) {
+      this.msg77 = msg77;
+      return this;
+    }
+
+    public Builder setMsg78(final String msg78) {
+      this.msg78 = msg78;
+      return this;
+    }
+
+    public Builder setMsg79(final String msg79) {
+      this.msg79 = msg79;
+      return this;
+    }
+
+    public Builder setMsg80(final String msg80) {
+      this.msg80 = msg80;
+      return this;
+    }
+
+    public Builder setMsg81(final String msg81) {
+      this.msg81 = msg81;
+      return this;
+    }
+
+    public Builder setMsg82(final String msg82) {
+      this.msg82 = msg82;
+      return this;
+    }
+
+    public Builder setMsg83(final String msg83) {
+      this.msg83 = msg83;
+      return this;
+    }
+
+    public Builder setMsg84(final String msg84) {
+      this.msg84 = msg84;
+      return this;
+    }
+
+    public Builder setMsg85(final String msg85) {
+      this.msg85 = msg85;
+      return this;
+    }
+
+    public Builder setMsg86(final String msg86) {
+      this.msg86 = msg86;
+      return this;
+    }
+
+    public Builder setMsg87(final String msg87) {
+      this.msg87 = msg87;
+      return this;
+    }
+
+    public Builder setMsg88(final String msg88) {
+      this.msg88 = msg88;
+      return this;
+    }
+
+    public Builder setMsg89(final String msg89) {
+      this.msg89 = msg89;
+      return this;
+    }
+
+    public Builder setMsg90(final String msg90) {
+      this.msg90 = msg90;
+      return this;
+    }
+
+    public Builder setMsg91(final String msg91) {
+      this.msg91 = msg91;
+      return this;
+    }
+
+    public Builder setMsg92(final String msg92) {
+      this.msg92 = msg92;
+      return this;
+    }
+
+    public Builder setMsg93(final String msg93) {
+      this.msg93 = msg93;
+      return this;
+    }
+
+    public Builder setMsg94(final String msg94) {
+      this.msg94 = msg94;
+      return this;
+    }
+
+    public Builder setMsg95(final String msg95) {
+      this.msg95 = msg95;
+      return this;
+    }
+
+    public Builder setMsg96(final String msg96) {
+      this.msg96 = msg96;
+      return this;
+    }
+
+    public Builder setMsg97(final String msg97) {
+      this.msg97 = msg97;
+      return this;
+    }
+
+    public Builder setMsg98(final String msg98) {
+      this.msg98 = msg98;
+      return this;
+    }
+
+    public Builder setMsg99(final String msg99) {
+      this.msg99 = msg99;
+      return this;
+    }
+
+    public Builder setMsg100(final String msg100) {
+      this.msg100 = msg100;
+      return this;
+    }
+
+    public Builder setMsg101(final String msg101) {
+      this.msg101 = msg101;
+      return this;
+    }
+
+    public Builder setMsg102(final String msg102) {
+      this.msg102 = msg102;
+      return this;
+    }
+
+    public Builder setMsg103(final String msg103) {
+      this.msg103 = msg103;
+      return this;
+    }
+
+    public Builder setMsg104(final String msg104) {
+      this.msg104 = msg104;
+      return this;
+    }
+
+    public Builder setMsg105(final String msg105) {
+      this.msg105 = msg105;
+      return this;
+    }
+
+    public Builder setMsg106(final String msg106) {
+      this.msg106 = msg106;
+      return this;
+    }
+
+    public Builder setMsg107(final String msg107) {
+      this.msg107 = msg107;
+      return this;
+    }
+
+    public Builder setMsg108(final String msg108) {
+      this.msg108 = msg108;
+      return this;
+    }
+
+    public Builder setMsg109(final String msg109) {
+      this.msg109 = msg109;
+      return this;
+    }
+
+    public Builder setMsg110(final String msg110) {
+      this.msg110 = msg110;
+      return this;
+    }
+
+    public Builder setMsg111(final String msg111) {
+      this.msg111 = msg111;
+      return this;
+    }
+
+    public Builder setMsg112(final String msg112) {
+      this.msg112 = msg112;
+      return this;
+    }
+
+    public Builder setMsg113(final String msg113) {
+      this.msg113 = msg113;
+      return this;
+    }
+
+    public Builder setMsg114(final String msg114) {
+      this.msg114 = msg114;
+      return this;
+    }
+
+    public Builder setMsg115(final String msg115) {
+      this.msg115 = msg115;
+      return this;
+    }
+
+    public Builder setMsg116(final String msg116) {
+      this.msg116 = msg116;
+      return this;
+    }
+
+    public Builder setMsg117(final String msg117) {
+      this.msg117 = msg117;
+      return this;
+    }
+
+    public Builder setMsg118(final String msg118) {
+      this.msg118 = msg118;
+      return this;
+    }
+
+    public Builder setMsg119(final String msg119) {
+      this.msg119 = msg119;
+      return this;
+    }
+
+    public Builder setMsg120(final String msg120) {
+      this.msg120 = msg120;
+      return this;
+    }
+
+    public Builder setMsg121(final String msg121) {
+      this.msg121 = msg121;
+      return this;
+    }
+
+    public Builder setMsg122(final String msg122) {
+      this.msg122 = msg122;
+      return this;
+    }
+
+    public Builder setMsg123(final String msg123) {
+      this.msg123 = msg123;
+      return this;
+    }
+
+    public Builder setMsg124(final String msg124) {
+      this.msg124 = msg124;
+      return this;
+    }
+
+    public Builder setMsg125(final String msg125) {
+      this.msg125 = msg125;
+      return this;
+    }
+
+    public Builder setMsg126(final String msg126) {
+      this.msg126 = msg126;
+      return this;
+    }
+
+    public Builder setMsg127(final String msg127) {
+      this.msg127 = msg127;
+      return this;
+    }
+
+    public Builder setMsg128(final String msg128) {
+      this.msg128 = msg128;
+      return this;
+    }
+
+    public Builder setMsg129(final String msg129) {
+      this.msg129 = msg129;
+      return this;
+    }
+
+    public Builder setMsg130(final String msg130) {
+      this.msg130 = msg130;
+      return this;
+    }
+
+    public Builder setMsg131(final String msg131) {
+      this.msg131 = msg131;
+      return this;
+    }
+
+    public Builder setMsg132(final String msg132) {
+      this.msg132 = msg132;
+      return this;
+    }
+
+    public Builder setMsg133(final String msg133) {
+      this.msg133 = msg133;
+      return this;
+    }
+
+    public Builder setMsg134(final String msg134) {
+      this.msg134 = msg134;
+      return this;
+    }
+
+    public Builder setMsg135(final String msg135) {
+      this.msg135 = msg135;
+      return this;
+    }
+
+    public Builder setMsg136(final String msg136) {
+      this.msg136 = msg136;
+      return this;
+    }
+
+    public Builder setMsg137(final String msg137) {
+      this.msg137 = msg137;
+      return this;
+    }
+
+    public Builder setMsg138(final String msg138) {
+      this.msg138 = msg138;
+      return this;
+    }
+
+    public Builder setMsg139(final String msg139) {
+      this.msg139 = msg139;
+      return this;
+    }
+
+    public Builder setMsg140(final String msg140) {
+      this.msg140 = msg140;
+      return this;
+    }
+
+    public Builder setMsg141(final String msg141) {
+      this.msg141 = msg141;
+      return this;
+    }
+
+    public Builder setMsg142(final String msg142) {
+      this.msg142 = msg142;
+      return this;
+    }
+
+    public Builder setMsg143(final String msg143) {
+      this.msg143 = msg143;
+      return this;
+    }
+
+    public Builder setMsg144(final String msg144) {
+      this.msg144 = msg144;
+      return this;
+    }
+
+    public Builder setMsg145(final String msg145) {
+      this.msg145 = msg145;
+      return this;
+    }
+
+    public Builder setMsg146(final String msg146) {
+      this.msg146 = msg146;
+      return this;
+    }
+
+    public Builder setMsg147(final String msg147) {
+      this.msg147 = msg147;
+      return this;
+    }
+
+    public Builder setMsg148(final String msg148) {
+      this.msg148 = msg148;
+      return this;
+    }
+
+    public Builder setMsg149(final String msg149) {
+      this.msg149 = msg149;
+      return this;
+    }
+
+    public Builder setMsg150(final String msg150) {
+      this.msg150 = msg150;
+      return this;
+    }
+
+    public Builder setMsg151(final String msg151) {
+      this.msg151 = msg151;
+      return this;
+    }
+
+    public Builder setMsg152(final String msg152) {
+      this.msg152 = msg152;
+      return this;
+    }
+
+    public Builder setMsg153(final String msg153) {
+      this.msg153 = msg153;
+      return this;
+    }
+
+    public Builder setMsg154(final String msg154) {
+      this.msg154 = msg154;
+      return this;
+    }
+
+    public Builder setMsg155(final String msg155) {
+      this.msg155 = msg155;
+      return this;
+    }
+
+    public Builder setMsg156(final String msg156) {
+      this.msg156 = msg156;
+      return this;
+    }
+
+    public Builder setMsg157(final String msg157) {
+      this.msg157 = msg157;
+      return this;
+    }
+
+    public Builder setMsg158(final String msg158) {
+      this.msg158 = msg158;
+      return this;
+    }
+
+    public Builder setMsg159(final String msg159) {
+      this.msg159 = msg159;
+      return this;
+    }
+
+    public Builder setMsg160(final String msg160) {
+      this.msg160 = msg160;
+      return this;
+    }
+
+    public Builder setMsg161(final String msg161) {
+      this.msg161 = msg161;
+      return this;
+    }
+
+    public Builder setMsg162(final String msg162) {
+      this.msg162 = msg162;
+      return this;
+    }
+
+    public Builder setMsg163(final String msg163) {
+      this.msg163 = msg163;
+      return this;
+    }
+
+    public Builder setMsg164(final String msg164) {
+      this.msg164 = msg164;
+      return this;
+    }
+
+    public Builder setMsg165(final String msg165) {
+      this.msg165 = msg165;
+      return this;
+    }
+
+    public Builder setMsg166(final String msg166) {
+      this.msg166 = msg166;
+      return this;
+    }
+
+    public Builder setMsg167(final String msg167) {
+      this.msg167 = msg167;
+      return this;
+    }
+
+    public Builder setMsg168(final String msg168) {
+      this.msg168 = msg168;
+      return this;
+    }
+
+    public Builder setMsg169(final String msg169) {
+      this.msg169 = msg169;
+      return this;
+    }
+
+    public Builder setMsg170(final String msg170) {
+      this.msg170 = msg170;
+      return this;
+    }
+
+    public Builder setMsg171(final String msg171) {
+      this.msg171 = msg171;
+      return this;
+    }
+
+    public Builder setMsg172(final String msg172) {
+      this.msg172 = msg172;
+      return this;
+    }
+
+    public Builder setMsg173(final String msg173) {
+      this.msg173 = msg173;
+      return this;
+    }
+
+    public Builder setMsg174(final String msg174) {
+      this.msg174 = msg174;
+      return this;
+    }
+
+    public Builder setMsg175(final String msg175) {
+      this.msg175 = msg175;
+      return this;
+    }
+
+    public Builder setMsg176(final String msg176) {
+      this.msg176 = msg176;
+      return this;
+    }
+
+    public Builder setMsg177(final String msg177) {
+      this.msg177 = msg177;
+      return this;
+    }
+
+    public Builder setMsg178(final String msg178) {
+      this.msg178 = msg178;
+      return this;
+    }
+
+    public Builder setMsg179(final String msg179) {
+      this.msg179 = msg179;
+      return this;
+    }
+
+    public Builder setMsg180(final String msg180) {
+      this.msg180 = msg180;
+      return this;
+    }
+
+    public Builder setMsg181(final String msg181) {
+      this.msg181 = msg181;
+      return this;
+    }
+
+    public Builder setMsg182(final String msg182) {
+      this.msg182 = msg182;
+      return this;
+    }
+
+    public Builder setMsg183(final String msg183) {
+      this.msg183 = msg183;
+      return this;
+    }
+
+    public Builder setMsg184(final String msg184) {
+      this.msg184 = msg184;
+      return this;
+    }
+
+    public Builder setMsg185(final String msg185) {
+      this.msg185 = msg185;
+      return this;
+    }
+
+    public Builder setMsg186(final String msg186) {
+      this.msg186 = msg186;
+      return this;
+    }
+
+    public Builder setMsg187(final String msg187) {
+      this.msg187 = msg187;
+      return this;
+    }
+
+    public Builder setMsg188(final String msg188) {
+      this.msg188 = msg188;
+      return this;
+    }
+
+    public Builder setMsg189(final String msg189) {
+      this.msg189 = msg189;
+      return this;
+    }
+
+    public Builder setMsg190(final String msg190) {
+      this.msg190 = msg190;
+      return this;
+    }
+
+    public Builder setMsg191(final String msg191) {
+      this.msg191 = msg191;
+      return this;
+    }
+
+    public Builder setMsg192(final String msg192) {
+      this.msg192 = msg192;
+      return this;
+    }
+
+    public Builder setMsg193(final String msg193) {
+      this.msg193 = msg193;
+      return this;
+    }
+
+    public Builder setMsg194(final String msg194) {
+      this.msg194 = msg194;
+      return this;
+    }
+
+    public Builder setMsg195(final String msg195) {
+      this.msg195 = msg195;
+      return this;
+    }
+
+    public Builder setMsg196(final String msg196) {
+      this.msg196 = msg196;
+      return this;
+    }
+
+    public Builder setMsg197(final String msg197) {
+      this.msg197 = msg197;
+      return this;
+    }
+
+    public Builder setMsg198(final String msg198) {
+      this.msg198 = msg198;
+      return this;
+    }
+
+    public Builder setMsg199(final String msg199) {
+      this.msg199 = msg199;
+      return this;
+    }
+
+    public Builder setMsg200(final String msg200) {
+      this.msg200 = msg200;
+      return this;
+    }
+
+    public Builder setMsg201(final String msg201) {
+      this.msg201 = msg201;
+      return this;
+    }
+
+    public Builder setMsg202(final String msg202) {
+      this.msg202 = msg202;
+      return this;
+    }
+
+    public Builder setMsg203(final String msg203) {
+      this.msg203 = msg203;
+      return this;
+    }
+
+    public Builder setMsg204(final String msg204) {
+      this.msg204 = msg204;
+      return this;
+    }
+
+    public Builder setMsg205(final String msg205) {
+      this.msg205 = msg205;
+      return this;
+    }
+
+    public Builder setMsg206(final String msg206) {
+      this.msg206 = msg206;
+      return this;
+    }
+
+    public Builder setMsg207(final String msg207) {
+      this.msg207 = msg207;
+      return this;
+    }
+
+    public Builder setMsg208(final String msg208) {
+      this.msg208 = msg208;
+      return this;
+    }
+
+    public Builder setMsg209(final String msg209) {
+      this.msg209 = msg209;
+      return this;
+    }
+
+    public Builder setMsg210(final String msg210) {
+      this.msg210 = msg210;
+      return this;
+    }
+
+    public Builder setMsg211(final String msg211) {
+      this.msg211 = msg211;
+      return this;
+    }
+
+    public Builder setMsg212(final String msg212) {
+      this.msg212 = msg212;
+      return this;
+    }
+
+    public Builder setMsg213(final String msg213) {
+      this.msg213 = msg213;
+      return this;
+    }
+
+    public Builder setMsg214(final String msg214) {
+      this.msg214 = msg214;
+      return this;
+    }
+
+    public Builder setMsg215(final String msg215) {
+      this.msg215 = msg215;
+      return this;
+    }
+
+    public Builder setMsg216(final String msg216) {
+      this.msg216 = msg216;
+      return this;
+    }
+
+    public Builder setMsg217(final String msg217) {
+      this.msg217 = msg217;
+      return this;
+    }
+
+    public Builder setMsg218(final String msg218) {
+      this.msg218 = msg218;
+      return this;
+    }
+
+    public Builder setMsg219(final String msg219) {
+      this.msg219 = msg219;
+      return this;
+    }
+
+    public Builder setMsg220(final String msg220) {
+      this.msg220 = msg220;
+      return this;
+    }
+
+    public Builder setMsg221(final String msg221) {
+      this.msg221 = msg221;
+      return this;
+    }
+
+    public Builder setMsg222(final String msg222) {
+      this.msg222 = msg222;
+      return this;
+    }
+
+    public Builder setMsg223(final String msg223) {
+      this.msg223 = msg223;
+      return this;
+    }
+
+    public Builder setMsg224(final String msg224) {
+      this.msg224 = msg224;
+      return this;
+    }
+
+    public Builder setMsg225(final String msg225) {
+      this.msg225 = msg225;
+      return this;
+    }
+
+    public Builder setMsg226(final String msg226) {
+      this.msg226 = msg226;
+      return this;
+    }
+
+    public Builder setMsg227(final String msg227) {
+      this.msg227 = msg227;
+      return this;
+    }
+
+    public Builder setMsg228(final String msg228) {
+      this.msg228 = msg228;
+      return this;
+    }
+
+    public Builder setMsg229(final String msg229) {
+      this.msg229 = msg229;
+      return this;
+    }
+
+    public Builder setMsg230(final String msg230) {
+      this.msg230 = msg230;
+      return this;
+    }
+
+    public Builder setMsg231(final String msg231) {
+      this.msg231 = msg231;
+      return this;
+    }
+
+    public Builder setMsg232(final String msg232) {
+      this.msg232 = msg232;
+      return this;
+    }
+
+    public Builder setMsg233(final String msg233) {
+      this.msg233 = msg233;
+      return this;
+    }
+
+    public Builder setMsg234(final String msg234) {
+      this.msg234 = msg234;
+      return this;
+    }
+
+    public Builder setMsg235(final String msg235) {
+      this.msg235 = msg235;
+      return this;
+    }
+
+    public Builder setMsg236(final String msg236) {
+      this.msg236 = msg236;
+      return this;
+    }
+
+    public Builder setMsg237(final String msg237) {
+      this.msg237 = msg237;
+      return this;
+    }
+
+    public Builder setMsg238(final String msg238) {
+      this.msg238 = msg238;
+      return this;
+    }
+
+    public Builder setMsg239(final String msg239) {
+      this.msg239 = msg239;
+      return this;
+    }
+
+    public Builder setMsg240(final String msg240) {
+      this.msg240 = msg240;
+      return this;
+    }
+
+    public Builder setMsg241(final String msg241) {
+      this.msg241 = msg241;
+      return this;
+    }
+
+    public Builder setMsg242(final String msg242) {
+      this.msg242 = msg242;
+      return this;
+    }
+
+    public Builder setMsg243(final String msg243) {
+      this.msg243 = msg243;
+      return this;
+    }
+
+    public Builder setMsg244(final String msg244) {
+      this.msg244 = msg244;
+      return this;
+    }
+
+    public Builder setMsg245(final String msg245) {
+      this.msg245 = msg245;
+      return this;
+    }
+
+    public Builder setMsg246(final String msg246) {
+      this.msg246 = msg246;
+      return this;
+    }
+
+    public Builder setMsg247(final String msg247) {
+      this.msg247 = msg247;
+      return this;
+    }
+
+    public Builder setMsg248(final String msg248) {
+      this.msg248 = msg248;
+      return this;
+    }
+
+    public Builder setMsg249(final String msg249) {
+      this.msg249 = msg249;
+      return this;
+    }
+
+    public Builder setMsg250(final String msg250) {
+      this.msg250 = msg250;
+      return this;
+    }
+
+    public Builder setMsg251(final String msg251) {
+      this.msg251 = msg251;
+      return this;
+    }
+
+    public Builder setMsg252(final String msg252) {
+      this.msg252 = msg252;
+      return this;
+    }
+
+    public Builder setMsg253(final String msg253) {
+      this.msg253 = msg253;
+      return this;
+    }
+
+    public Builder setMsg254(final String msg254) {
+      this.msg254 = msg254;
+      return this;
+    }
+
+    public Builder setMsg255(final String msg255) {
+      this.msg255 = msg255;
+      return this;
+    }
+
+    public Builder setMsg256(final String msg256) {
+      this.msg256 = msg256;
+      return this;
+    }
+
+    public Builder setMsg257(final String msg257) {
+      this.msg257 = msg257;
+      return this;
+    }
+
+    public MyBigStruct build() {
+      MyBigStruct result = new MyBigStruct();
+      result.setMsg1(this.msg1);
+      result.setMsg2(this.msg2);
+      result.setMsg3(this.msg3);
+      result.setMsg4(this.msg4);
+      result.setMsg5(this.msg5);
+      result.setMsg6(this.msg6);
+      result.setMsg7(this.msg7);
+      result.setMsg8(this.msg8);
+      result.setMsg9(this.msg9);
+      if (__optional_isset.get(__MYINTFIELD10_ISSET_ID)) {
+        result.setMyIntField10(this.myIntField10);
+      }
+      if (__optional_isset.get(__MYINTFIELD11_ISSET_ID)) {
+        result.setMyIntField11(this.myIntField11);
+      }
+      if (__optional_isset.get(__MYINTFIELD12_ISSET_ID)) {
+        result.setMyIntField12(this.myIntField12);
+      }
+      if (__optional_isset.get(__MYINTFIELD13_ISSET_ID)) {
+        result.setMyIntField13(this.myIntField13);
+      }
+      if (__optional_isset.get(__MYINTFIELD14_ISSET_ID)) {
+        result.setMyIntField14(this.myIntField14);
+      }
+      if (__optional_isset.get(__MYINTFIELD15_ISSET_ID)) {
+        result.setMyIntField15(this.myIntField15);
+      }
+      if (__optional_isset.get(__MYINTFIELD16_ISSET_ID)) {
+        result.setMyIntField16(this.myIntField16);
+      }
+      if (__optional_isset.get(__MYINTFIELD17_ISSET_ID)) {
+        result.setMyIntField17(this.myIntField17);
+      }
+      if (__optional_isset.get(__MYINTFIELD18_ISSET_ID)) {
+        result.setMyIntField18(this.myIntField18);
+      }
+      if (__optional_isset.get(__MYINTFIELD19_ISSET_ID)) {
+        result.setMyIntField19(this.myIntField19);
+      }
+      if (__optional_isset.get(__MYINTFIELD20_ISSET_ID)) {
+        result.setMyIntField20(this.myIntField20);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD21_ISSET_ID)) {
+        result.setMyDoubleField21(this.myDoubleField21);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD22_ISSET_ID)) {
+        result.setMyDoubleField22(this.myDoubleField22);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD23_ISSET_ID)) {
+        result.setMyDoubleField23(this.myDoubleField23);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD24_ISSET_ID)) {
+        result.setMyDoubleField24(this.myDoubleField24);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD25_ISSET_ID)) {
+        result.setMyDoubleField25(this.myDoubleField25);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD26_ISSET_ID)) {
+        result.setMyDoubleField26(this.myDoubleField26);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD27_ISSET_ID)) {
+        result.setMyDoubleField27(this.myDoubleField27);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD28_ISSET_ID)) {
+        result.setMyDoubleField28(this.myDoubleField28);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD29_ISSET_ID)) {
+        result.setMyDoubleField29(this.myDoubleField29);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD30_ISSET_ID)) {
+        result.setMyDoubleField30(this.myDoubleField30);
+      }
+      result.setMsg31(this.msg31);
+      result.setMsg32(this.msg32);
+      result.setMsg33(this.msg33);
+      result.setMsg34(this.msg34);
+      result.setMsg35(this.msg35);
+      result.setMsg36(this.msg36);
+      result.setMsg37(this.msg37);
+      result.setMsg38(this.msg38);
+      result.setMsg39(this.msg39);
+      result.setMsg40(this.msg40);
+      result.setMsg41(this.msg41);
+      result.setMsg42(this.msg42);
+      result.setMsg43(this.msg43);
+      result.setMsg44(this.msg44);
+      result.setMsg45(this.msg45);
+      result.setMsg46(this.msg46);
+      result.setMsg47(this.msg47);
+      result.setMsg48(this.msg48);
+      result.setMsg49(this.msg49);
+      result.setMsg50(this.msg50);
+      result.setMsg51(this.msg51);
+      result.setMsg52(this.msg52);
+      result.setMsg53(this.msg53);
+      result.setMsg54(this.msg54);
+      result.setMsg55(this.msg55);
+      result.setMsg56(this.msg56);
+      result.setMsg57(this.msg57);
+      result.setMsg58(this.msg58);
+      result.setMsg59(this.msg59);
+      result.setMsg60(this.msg60);
+      result.setMsg61(this.msg61);
+      result.setMsg62(this.msg62);
+      result.setMsg63(this.msg63);
+      result.setMsg64(this.msg64);
+      result.setMsg65(this.msg65);
+      result.setMsg66(this.msg66);
+      result.setMsg67(this.msg67);
+      result.setMsg68(this.msg68);
+      result.setMsg69(this.msg69);
+      result.setMsg70(this.msg70);
+      result.setMsg71(this.msg71);
+      result.setMsg72(this.msg72);
+      result.setMsg73(this.msg73);
+      result.setMsg74(this.msg74);
+      result.setMsg75(this.msg75);
+      result.setMsg76(this.msg76);
+      result.setMsg77(this.msg77);
+      result.setMsg78(this.msg78);
+      result.setMsg79(this.msg79);
+      result.setMsg80(this.msg80);
+      result.setMsg81(this.msg81);
+      result.setMsg82(this.msg82);
+      result.setMsg83(this.msg83);
+      result.setMsg84(this.msg84);
+      result.setMsg85(this.msg85);
+      result.setMsg86(this.msg86);
+      result.setMsg87(this.msg87);
+      result.setMsg88(this.msg88);
+      result.setMsg89(this.msg89);
+      result.setMsg90(this.msg90);
+      result.setMsg91(this.msg91);
+      result.setMsg92(this.msg92);
+      result.setMsg93(this.msg93);
+      result.setMsg94(this.msg94);
+      result.setMsg95(this.msg95);
+      result.setMsg96(this.msg96);
+      result.setMsg97(this.msg97);
+      result.setMsg98(this.msg98);
+      result.setMsg99(this.msg99);
+      result.setMsg100(this.msg100);
+      result.setMsg101(this.msg101);
+      result.setMsg102(this.msg102);
+      result.setMsg103(this.msg103);
+      result.setMsg104(this.msg104);
+      result.setMsg105(this.msg105);
+      result.setMsg106(this.msg106);
+      result.setMsg107(this.msg107);
+      result.setMsg108(this.msg108);
+      result.setMsg109(this.msg109);
+      result.setMsg110(this.msg110);
+      result.setMsg111(this.msg111);
+      result.setMsg112(this.msg112);
+      result.setMsg113(this.msg113);
+      result.setMsg114(this.msg114);
+      result.setMsg115(this.msg115);
+      result.setMsg116(this.msg116);
+      result.setMsg117(this.msg117);
+      result.setMsg118(this.msg118);
+      result.setMsg119(this.msg119);
+      result.setMsg120(this.msg120);
+      result.setMsg121(this.msg121);
+      result.setMsg122(this.msg122);
+      result.setMsg123(this.msg123);
+      result.setMsg124(this.msg124);
+      result.setMsg125(this.msg125);
+      result.setMsg126(this.msg126);
+      result.setMsg127(this.msg127);
+      result.setMsg128(this.msg128);
+      result.setMsg129(this.msg129);
+      result.setMsg130(this.msg130);
+      result.setMsg131(this.msg131);
+      result.setMsg132(this.msg132);
+      result.setMsg133(this.msg133);
+      result.setMsg134(this.msg134);
+      result.setMsg135(this.msg135);
+      result.setMsg136(this.msg136);
+      result.setMsg137(this.msg137);
+      result.setMsg138(this.msg138);
+      result.setMsg139(this.msg139);
+      result.setMsg140(this.msg140);
+      result.setMsg141(this.msg141);
+      result.setMsg142(this.msg142);
+      result.setMsg143(this.msg143);
+      result.setMsg144(this.msg144);
+      result.setMsg145(this.msg145);
+      result.setMsg146(this.msg146);
+      result.setMsg147(this.msg147);
+      result.setMsg148(this.msg148);
+      result.setMsg149(this.msg149);
+      result.setMsg150(this.msg150);
+      result.setMsg151(this.msg151);
+      result.setMsg152(this.msg152);
+      result.setMsg153(this.msg153);
+      result.setMsg154(this.msg154);
+      result.setMsg155(this.msg155);
+      result.setMsg156(this.msg156);
+      result.setMsg157(this.msg157);
+      result.setMsg158(this.msg158);
+      result.setMsg159(this.msg159);
+      result.setMsg160(this.msg160);
+      result.setMsg161(this.msg161);
+      result.setMsg162(this.msg162);
+      result.setMsg163(this.msg163);
+      result.setMsg164(this.msg164);
+      result.setMsg165(this.msg165);
+      result.setMsg166(this.msg166);
+      result.setMsg167(this.msg167);
+      result.setMsg168(this.msg168);
+      result.setMsg169(this.msg169);
+      result.setMsg170(this.msg170);
+      result.setMsg171(this.msg171);
+      result.setMsg172(this.msg172);
+      result.setMsg173(this.msg173);
+      result.setMsg174(this.msg174);
+      result.setMsg175(this.msg175);
+      result.setMsg176(this.msg176);
+      result.setMsg177(this.msg177);
+      result.setMsg178(this.msg178);
+      result.setMsg179(this.msg179);
+      result.setMsg180(this.msg180);
+      result.setMsg181(this.msg181);
+      result.setMsg182(this.msg182);
+      result.setMsg183(this.msg183);
+      result.setMsg184(this.msg184);
+      result.setMsg185(this.msg185);
+      result.setMsg186(this.msg186);
+      result.setMsg187(this.msg187);
+      result.setMsg188(this.msg188);
+      result.setMsg189(this.msg189);
+      result.setMsg190(this.msg190);
+      result.setMsg191(this.msg191);
+      result.setMsg192(this.msg192);
+      result.setMsg193(this.msg193);
+      result.setMsg194(this.msg194);
+      result.setMsg195(this.msg195);
+      result.setMsg196(this.msg196);
+      result.setMsg197(this.msg197);
+      result.setMsg198(this.msg198);
+      result.setMsg199(this.msg199);
+      result.setMsg200(this.msg200);
+      result.setMsg201(this.msg201);
+      result.setMsg202(this.msg202);
+      result.setMsg203(this.msg203);
+      result.setMsg204(this.msg204);
+      result.setMsg205(this.msg205);
+      result.setMsg206(this.msg206);
+      result.setMsg207(this.msg207);
+      result.setMsg208(this.msg208);
+      result.setMsg209(this.msg209);
+      result.setMsg210(this.msg210);
+      result.setMsg211(this.msg211);
+      result.setMsg212(this.msg212);
+      result.setMsg213(this.msg213);
+      result.setMsg214(this.msg214);
+      result.setMsg215(this.msg215);
+      result.setMsg216(this.msg216);
+      result.setMsg217(this.msg217);
+      result.setMsg218(this.msg218);
+      result.setMsg219(this.msg219);
+      result.setMsg220(this.msg220);
+      result.setMsg221(this.msg221);
+      result.setMsg222(this.msg222);
+      result.setMsg223(this.msg223);
+      result.setMsg224(this.msg224);
+      result.setMsg225(this.msg225);
+      result.setMsg226(this.msg226);
+      result.setMsg227(this.msg227);
+      result.setMsg228(this.msg228);
+      result.setMsg229(this.msg229);
+      result.setMsg230(this.msg230);
+      result.setMsg231(this.msg231);
+      result.setMsg232(this.msg232);
+      result.setMsg233(this.msg233);
+      result.setMsg234(this.msg234);
+      result.setMsg235(this.msg235);
+      result.setMsg236(this.msg236);
+      result.setMsg237(this.msg237);
+      result.setMsg238(this.msg238);
+      result.setMsg239(this.msg239);
+      result.setMsg240(this.msg240);
+      result.setMsg241(this.msg241);
+      result.setMsg242(this.msg242);
+      result.setMsg243(this.msg243);
+      result.setMsg244(this.msg244);
+      result.setMsg245(this.msg245);
+      result.setMsg246(this.msg246);
+      result.setMsg247(this.msg247);
+      result.setMsg248(this.msg248);
+      result.setMsg249(this.msg249);
+      result.setMsg250(this.msg250);
+      result.setMsg251(this.msg251);
+      result.setMsg252(this.msg252);
+      result.setMsg253(this.msg253);
+      result.setMsg254(this.msg254);
+      result.setMsg255(this.msg255);
+      result.setMsg256(this.msg256);
+      result.setMsg257(this.msg257);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
   }
 
   /**

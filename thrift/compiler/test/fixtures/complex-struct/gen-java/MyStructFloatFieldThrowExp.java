@@ -81,6 +81,60 @@ public class MyStructFloatFieldThrowExp implements TBase, java.io.Serializable, 
     setMyFloatFieldIsSet(true);
   }
 
+  public static class Builder {
+    private long myLongField;
+    private byte MyByteField;
+    private String myStringField;
+    private float myFloatField;
+
+    BitSet __optional_isset = new BitSet(3);
+
+    public Builder() {
+    }
+
+    public Builder setMyLongField(final long myLongField) {
+      this.myLongField = myLongField;
+      __optional_isset.set(__MYLONGFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyByteField(final byte MyByteField) {
+      this.MyByteField = MyByteField;
+      __optional_isset.set(__MYBYTEFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyStringField(final String myStringField) {
+      this.myStringField = myStringField;
+      return this;
+    }
+
+    public Builder setMyFloatField(final float myFloatField) {
+      this.myFloatField = myFloatField;
+      __optional_isset.set(__MYFLOATFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public MyStructFloatFieldThrowExp build() {
+      MyStructFloatFieldThrowExp result = new MyStructFloatFieldThrowExp();
+      if (__optional_isset.get(__MYLONGFIELD_ISSET_ID)) {
+        result.setMyLongField(this.myLongField);
+      }
+      if (__optional_isset.get(__MYBYTEFIELD_ISSET_ID)) {
+        result.setMyByteField(this.MyByteField);
+      }
+      result.setMyStringField(this.myStringField);
+      if (__optional_isset.get(__MYFLOATFIELD_ISSET_ID)) {
+        result.setMyFloatField(this.myFloatField);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

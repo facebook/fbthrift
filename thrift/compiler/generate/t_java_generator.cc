@@ -557,6 +557,7 @@ void t_java_generator::generate_java_struct(
   StructGenParams params;
   params.is_exception = is_exception;
   params.gen_immutable = generate_immutable_structs_;
+  params.gen_builder = true;
   generate_java_struct_definition(f_struct, tstruct, params);
   f_struct.close();
 }
@@ -1067,6 +1068,121 @@ void t_java_generator::generate_java_constructor(
 }
 
 /**
+ * Generates code for a constructor for a tstruct, using the Builder pattern.
+ */
+void t_java_generator::generate_java_constructor_using_builder(
+    ofstream& out,
+    t_struct* tstruct,
+    const vector<t_field*>& fields,
+    uint32_t bitset_size,
+    bool useDefaultConstructor) {
+  vector<t_field*>::const_iterator m_iter;
+
+  // BEGIN Create inner Builder class
+  indent(out) << "public static class Builder {" << endl;
+  indent_up();
+  // - List builder fields
+  for (m_iter = fields.begin(); m_iter != fields.end(); ++m_iter) {
+    indent(out) << "private " << type_name((*m_iter)->get_type()) << " "
+                << (*m_iter)->get_name() << ";" << endl;
+  }
+  out << endl;
+
+  if (bitset_size > 0) {
+    indent(out) << "BitSet __optional_isset = new BitSet(" << bitset_size
+                << ");" << endl
+                << endl;
+  }
+
+  // - Define Builder constructor
+  indent(out) << "public Builder() {" << endl;
+  if (!useDefaultConstructor) {
+    for (m_iter = fields.begin(); m_iter != fields.end(); ++m_iter) {
+      t_type* t = (*m_iter)->get_type()->get_true_type();
+      if ((*m_iter)->get_value() != nullptr) {
+        print_const_value(
+            indent(out),
+            "this." + (*m_iter)->get_name(),
+            t,
+            (*m_iter)->get_value(),
+            true,
+            true);
+      }
+    }
+  }
+  indent(out) << "}" << endl;
+  out << endl;
+
+  // - Define field builder methods
+  for (m_iter = fields.begin(); m_iter != fields.end(); ++m_iter) {
+    auto methodName = (*m_iter)->get_name();
+    methodName[0] = toupper(methodName[0]);
+    indent(out) << "public Builder set" << methodName << "(final "
+                << type_name((*m_iter)->get_type()) << " "
+                << (*m_iter)->get_name() << ") {" << endl;
+    indent_up();
+    indent(out) << "this." << (*m_iter)->get_name() << " = "
+                << (*m_iter)->get_name() << ";" << endl;
+    if (!type_can_be_null((*m_iter)->get_type())) {
+      indent(out) << "__optional_isset.set(" << isset_field_id(*m_iter)
+                  << ", true);" << endl;
+    }
+    indent(out) << "return this;" << endl;
+    indent_down();
+    indent(out) << "}" << endl << endl;
+  }
+  // - Define build() method
+  indent(out) << "public " << tstruct->get_name() << " build() {" << endl;
+  indent_up();
+  if (useDefaultConstructor) {
+    indent(out) << tstruct->get_name() << " result = new "
+                << tstruct->get_name() << "();" << endl;
+
+    for (m_iter = fields.begin(); m_iter != fields.end(); ++m_iter) {
+      auto methodName = (*m_iter)->get_name();
+      methodName[0] = toupper(methodName[0]);
+      if (!type_can_be_null((*m_iter)->get_type())) {
+        // if field is set (check the bitset), set the field value
+        indent(out) << "if (__optional_isset.get(" << isset_field_id(*m_iter)
+                    << ")) {" << endl;
+        indent_up();
+      }
+      indent(out) << "result.set" << methodName << "(this."
+                  << (*m_iter)->get_name() << ");" << endl;
+      if (!type_can_be_null((*m_iter)->get_type())) {
+        indent_down();
+        indent(out) << "}" << endl;
+      }
+    }
+    indent(out) << "return result;" << endl;
+  } else {
+    // android
+
+    indent(out) << "return new " << tstruct->get_name() << "(" << endl;
+    indent_up();
+    for (m_iter = fields.begin(); m_iter != fields.end(); ++m_iter) {
+      auto isLast = m_iter + 1 == fields.end();
+      indent(out) << "this." << (*m_iter)->get_name() << (isLast ? "" : ",")
+                  << endl;
+    }
+    indent_down();
+    indent(out) << ");" << endl;
+  }
+  indent_down();
+  indent(out) << "}" << endl;
+  // END Create inner Builder class
+  indent_down();
+  indent(out) << "}" << endl << endl;
+
+  // Create static builder() method for ease of use
+  indent(out) << "public static Builder builder() {" << endl;
+  indent_up();
+  indent(out) << "return new Builder();" << endl;
+  indent_down();
+  indent(out) << "}" << endl << endl;
+}
+
+/**
  * Java struct definition. This has various parameters, as it could be
  * generated standalone or inside another class as a helper. If it
  * is a helper than it is a static class.
@@ -1123,6 +1239,7 @@ void t_java_generator::generate_java_struct_definition(
   }
   generate_field_name_constants(out, tstruct);
 
+  uint32_t bitset_size = 0;
   if (!params.gen_immutable) {
     // isset data
     if (members.size() > 0) {
@@ -1130,18 +1247,17 @@ void t_java_generator::generate_java_struct_definition(
 
       indent(out) << "// isset id assignments" << endl;
 
-      int i = 0;
       for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
         if (!type_can_be_null((*m_iter)->get_type())) {
           indent(out) << "private static final int " << isset_field_id(*m_iter)
-                      << " = " << i << ";" << endl;
-          i++;
+                      << " = " << bitset_size << ";" << endl;
+          bitset_size++;
         }
       }
 
-      if (i > 0) {
-        indent(out) << "private BitSet __isset_bit_vector = new BitSet(" << i
-                    << ");" << endl;
+      if (bitset_size > 0) {
+        indent(out) << "private BitSet __isset_bit_vector = new BitSet("
+                    << bitset_size << ");" << endl;
       }
 
       out << endl;
@@ -1172,7 +1288,8 @@ void t_java_generator::generate_java_struct_definition(
     }
   }
 
-  if (params.gen_immutable) {
+  if (params.gen_immutable &&
+      members.size() <= MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
     // Constructor for all fields
     generate_java_constructor(out, tstruct, members);
   } else {
@@ -1194,20 +1311,27 @@ void t_java_generator::generate_java_struct_definition(
     indent_down();
     indent(out) << "}" << endl << endl;
 
-    if (!required_members.empty()) {
+    if (!required_members.empty() &&
+        required_members.size() <= MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
       // Constructor for all required fields
       generate_java_constructor(out, tstruct, required_members);
     }
 
-    if (non_optional_members.size() > required_members.size()) {
+    if (non_optional_members.size() > required_members.size() &&
+        non_optional_members.size() <= MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
       // Constructor for all non-optional fields
       generate_java_constructor(out, tstruct, non_optional_members);
     }
 
-    if (members.size() > non_optional_members.size()) {
+    if (members.size() > non_optional_members.size() &&
+        members.size() <= MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
       // Constructor for all fields
       generate_java_constructor(out, tstruct, members);
     }
+  }
+  if (params.gen_builder || members.size() > MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
+    generate_java_constructor_using_builder(
+        out, tstruct, members, bitset_size, !params.gen_immutable);
   }
 
   // copy constructor

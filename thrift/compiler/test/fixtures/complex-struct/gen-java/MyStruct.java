@@ -278,6 +278,233 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.sByte = sByte;
   }
 
+  public static class Builder {
+    private long MyIntField;
+    private String MyStringField;
+    private MyDataItem MyDataField;
+    private MyEnum myEnum;
+    private boolean MyBoolField;
+    private byte MyByteField;
+    private short MyShortField;
+    private long MyLongField;
+    private double MyDoubleField;
+    private List<Double> lDouble;
+    private List<Short> lShort;
+    private List<Integer> lInteger;
+    private List<Long> lLong;
+    private List<String> lString;
+    private List<Boolean> lBool;
+    private List<Byte> lByte;
+    private Map<Short,String> mShortString;
+    private Map<Integer,String> mIntegerString;
+    private Map<String,MyStruct> mStringMyStruct;
+    private Map<String,Boolean> mStringBool;
+    private Map<Integer,Integer> mIntegerInteger;
+    private Map<Integer,Boolean> mIntegerBool;
+    private Set<Short> sShort;
+    private Set<MyStruct> sMyStruct;
+    private Set<Long> sLong;
+    private Set<String> sString;
+    private Set<Byte> sByte;
+
+    BitSet __optional_isset = new BitSet(7);
+
+    public Builder() {
+    }
+
+    public Builder setMyIntField(final long MyIntField) {
+      this.MyIntField = MyIntField;
+      __optional_isset.set(__MYINTFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyStringField(final String MyStringField) {
+      this.MyStringField = MyStringField;
+      return this;
+    }
+
+    public Builder setMyDataField(final MyDataItem MyDataField) {
+      this.MyDataField = MyDataField;
+      return this;
+    }
+
+    public Builder setMyEnum(final MyEnum myEnum) {
+      this.myEnum = myEnum;
+      __optional_isset.set(__MYENUM_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyBoolField(final boolean MyBoolField) {
+      this.MyBoolField = MyBoolField;
+      __optional_isset.set(__MYBOOLFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyByteField(final byte MyByteField) {
+      this.MyByteField = MyByteField;
+      __optional_isset.set(__MYBYTEFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyShortField(final short MyShortField) {
+      this.MyShortField = MyShortField;
+      __optional_isset.set(__MYSHORTFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyLongField(final long MyLongField) {
+      this.MyLongField = MyLongField;
+      __optional_isset.set(__MYLONGFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setMyDoubleField(final double MyDoubleField) {
+      this.MyDoubleField = MyDoubleField;
+      __optional_isset.set(__MYDOUBLEFIELD_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setLDouble(final List<Double> lDouble) {
+      this.lDouble = lDouble;
+      return this;
+    }
+
+    public Builder setLShort(final List<Short> lShort) {
+      this.lShort = lShort;
+      return this;
+    }
+
+    public Builder setLInteger(final List<Integer> lInteger) {
+      this.lInteger = lInteger;
+      return this;
+    }
+
+    public Builder setLLong(final List<Long> lLong) {
+      this.lLong = lLong;
+      return this;
+    }
+
+    public Builder setLString(final List<String> lString) {
+      this.lString = lString;
+      return this;
+    }
+
+    public Builder setLBool(final List<Boolean> lBool) {
+      this.lBool = lBool;
+      return this;
+    }
+
+    public Builder setLByte(final List<Byte> lByte) {
+      this.lByte = lByte;
+      return this;
+    }
+
+    public Builder setMShortString(final Map<Short,String> mShortString) {
+      this.mShortString = mShortString;
+      return this;
+    }
+
+    public Builder setMIntegerString(final Map<Integer,String> mIntegerString) {
+      this.mIntegerString = mIntegerString;
+      return this;
+    }
+
+    public Builder setMStringMyStruct(final Map<String,MyStruct> mStringMyStruct) {
+      this.mStringMyStruct = mStringMyStruct;
+      return this;
+    }
+
+    public Builder setMStringBool(final Map<String,Boolean> mStringBool) {
+      this.mStringBool = mStringBool;
+      return this;
+    }
+
+    public Builder setMIntegerInteger(final Map<Integer,Integer> mIntegerInteger) {
+      this.mIntegerInteger = mIntegerInteger;
+      return this;
+    }
+
+    public Builder setMIntegerBool(final Map<Integer,Boolean> mIntegerBool) {
+      this.mIntegerBool = mIntegerBool;
+      return this;
+    }
+
+    public Builder setSShort(final Set<Short> sShort) {
+      this.sShort = sShort;
+      return this;
+    }
+
+    public Builder setSMyStruct(final Set<MyStruct> sMyStruct) {
+      this.sMyStruct = sMyStruct;
+      return this;
+    }
+
+    public Builder setSLong(final Set<Long> sLong) {
+      this.sLong = sLong;
+      return this;
+    }
+
+    public Builder setSString(final Set<String> sString) {
+      this.sString = sString;
+      return this;
+    }
+
+    public Builder setSByte(final Set<Byte> sByte) {
+      this.sByte = sByte;
+      return this;
+    }
+
+    public MyStruct build() {
+      MyStruct result = new MyStruct();
+      if (__optional_isset.get(__MYINTFIELD_ISSET_ID)) {
+        result.setMyIntField(this.MyIntField);
+      }
+      result.setMyStringField(this.MyStringField);
+      result.setMyDataField(this.MyDataField);
+      if (__optional_isset.get(__MYENUM_ISSET_ID)) {
+        result.setMyEnum(this.myEnum);
+      }
+      if (__optional_isset.get(__MYBOOLFIELD_ISSET_ID)) {
+        result.setMyBoolField(this.MyBoolField);
+      }
+      if (__optional_isset.get(__MYBYTEFIELD_ISSET_ID)) {
+        result.setMyByteField(this.MyByteField);
+      }
+      if (__optional_isset.get(__MYSHORTFIELD_ISSET_ID)) {
+        result.setMyShortField(this.MyShortField);
+      }
+      if (__optional_isset.get(__MYLONGFIELD_ISSET_ID)) {
+        result.setMyLongField(this.MyLongField);
+      }
+      if (__optional_isset.get(__MYDOUBLEFIELD_ISSET_ID)) {
+        result.setMyDoubleField(this.MyDoubleField);
+      }
+      result.setLDouble(this.lDouble);
+      result.setLShort(this.lShort);
+      result.setLInteger(this.lInteger);
+      result.setLLong(this.lLong);
+      result.setLString(this.lString);
+      result.setLBool(this.lBool);
+      result.setLByte(this.lByte);
+      result.setMShortString(this.mShortString);
+      result.setMIntegerString(this.mIntegerString);
+      result.setMStringMyStruct(this.mStringMyStruct);
+      result.setMStringBool(this.mStringBool);
+      result.setMIntegerInteger(this.mIntegerInteger);
+      result.setMIntegerBool(this.mIntegerBool);
+      result.setSShort(this.sShort);
+      result.setSMyStruct(this.sMyStruct);
+      result.setSLong(this.sLong);
+      result.setSString(this.sString);
+      result.setSByte(this.sByte);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -36,6 +36,7 @@ struct StructGenParams {
   bool in_class = false;
   bool is_result = false;
   bool gen_immutable = false;
+  bool gen_builder = false;
 };
 
 /**
@@ -99,6 +100,12 @@ class t_java_generator : public t_oop_generator {
       std::ofstream& out,
       t_struct* tstruct,
       const std::vector<t_field*>& fields);
+  void generate_java_constructor_using_builder(
+      std::ofstream& out,
+      t_struct* tstruct,
+      const std::vector<t_field*>& fields,
+      uint32_t bitset_size,
+      bool useDefaultConstructor);
   void generate_java_struct_definition(
       std::ofstream& out,
       t_struct* tstruct,
@@ -334,6 +341,8 @@ class t_java_generator : public t_oop_generator {
   std::string package_name_;
   std::ofstream f_service_;
   std::string package_dir_;
+
+  static constexpr size_t MAX_NUM_JAVA_CONSTRUCTOR_PARAMS = 127;
 };
 
 } // namespace compiler

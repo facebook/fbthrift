@@ -38,6 +38,21 @@ public class Banal extends Exception implements TBase, java.io.Serializable, Clo
   public Banal() {
   }
 
+  public static class Builder {
+
+    public Builder() {
+    }
+
+    public Banal build() {
+      Banal result = new Banal();
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

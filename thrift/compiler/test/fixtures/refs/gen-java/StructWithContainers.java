@@ -95,6 +95,63 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
     this.list_ref_shared_const = list_ref_shared_const;
   }
 
+  public static class Builder {
+    private List<Integer> list_ref;
+    private Set<Integer> set_ref;
+    private Map<Integer,Integer> map_ref;
+    private List<Integer> list_ref_unique;
+    private Set<Integer> set_ref_shared;
+    private List<Integer> list_ref_shared_const;
+
+    public Builder() {
+    }
+
+    public Builder setList_ref(final List<Integer> list_ref) {
+      this.list_ref = list_ref;
+      return this;
+    }
+
+    public Builder setSet_ref(final Set<Integer> set_ref) {
+      this.set_ref = set_ref;
+      return this;
+    }
+
+    public Builder setMap_ref(final Map<Integer,Integer> map_ref) {
+      this.map_ref = map_ref;
+      return this;
+    }
+
+    public Builder setList_ref_unique(final List<Integer> list_ref_unique) {
+      this.list_ref_unique = list_ref_unique;
+      return this;
+    }
+
+    public Builder setSet_ref_shared(final Set<Integer> set_ref_shared) {
+      this.set_ref_shared = set_ref_shared;
+      return this;
+    }
+
+    public Builder setList_ref_shared_const(final List<Integer> list_ref_shared_const) {
+      this.list_ref_shared_const = list_ref_shared_const;
+      return this;
+    }
+
+    public StructWithContainers build() {
+      StructWithContainers result = new StructWithContainers();
+      result.setList_ref(this.list_ref);
+      result.setSet_ref(this.set_ref);
+      result.setMap_ref(this.map_ref);
+      result.setList_ref_unique(this.list_ref_unique);
+      result.setSet_ref_shared(this.set_ref_shared);
+      result.setList_ref_shared_const(this.list_ref_shared_const);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

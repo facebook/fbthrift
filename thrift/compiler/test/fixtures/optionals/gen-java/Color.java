@@ -83,6 +83,63 @@ public class Color implements TBase, java.io.Serializable, Cloneable, Comparable
     setAlphaIsSet(true);
   }
 
+  public static class Builder {
+    private double red;
+    private double green;
+    private double blue;
+    private double alpha;
+
+    BitSet __optional_isset = new BitSet(4);
+
+    public Builder() {
+    }
+
+    public Builder setRed(final double red) {
+      this.red = red;
+      __optional_isset.set(__RED_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setGreen(final double green) {
+      this.green = green;
+      __optional_isset.set(__GREEN_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setBlue(final double blue) {
+      this.blue = blue;
+      __optional_isset.set(__BLUE_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setAlpha(final double alpha) {
+      this.alpha = alpha;
+      __optional_isset.set(__ALPHA_ISSET_ID, true);
+      return this;
+    }
+
+    public Color build() {
+      Color result = new Color();
+      if (__optional_isset.get(__RED_ISSET_ID)) {
+        result.setRed(this.red);
+      }
+      if (__optional_isset.get(__GREEN_ISSET_ID)) {
+        result.setGreen(this.green);
+      }
+      if (__optional_isset.get(__BLUE_ISSET_ID)) {
+        result.setBlue(this.blue);
+      }
+      if (__optional_isset.get(__ALPHA_ISSET_ID)) {
+        result.setAlpha(this.alpha);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

@@ -44,6 +44,51 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.MyIncludedInt = MyIncludedInt;
   }
 
+  public static class Builder {
+    private one.two.three.Included MyIncludedField;
+    private one.two.three.Included MyOtherIncludedField;
+    private Long MyIncludedInt;
+
+    public Builder() {
+        this.MyIncludedField = new one.two.three.Included();
+    this.MyIncludedField.setMyIntField(2L);
+    Foo tmp0 = new Foo();
+    tmp0.setA(2L);
+
+    this.MyIncludedField.setMyTransitiveField(tmp0);
+
+        this.MyIncludedInt = 42L;
+
+    }
+
+    public Builder setMyIncludedField(final one.two.three.Included MyIncludedField) {
+      this.MyIncludedField = MyIncludedField;
+      return this;
+    }
+
+    public Builder setMyOtherIncludedField(final one.two.three.Included MyOtherIncludedField) {
+      this.MyOtherIncludedField = MyOtherIncludedField;
+      return this;
+    }
+
+    public Builder setMyIncludedInt(final Long MyIncludedInt) {
+      this.MyIncludedInt = MyIncludedInt;
+      return this;
+    }
+
+    public MyStruct build() {
+      return new MyStruct(
+        this.MyIncludedField,
+        this.MyOtherIncludedField,
+        this.MyIncludedInt
+      );
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

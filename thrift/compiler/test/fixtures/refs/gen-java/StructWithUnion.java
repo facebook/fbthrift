@@ -70,6 +70,47 @@ public class StructWithUnion implements TBase, java.io.Serializable, Cloneable, 
     this.f = f;
   }
 
+  public static class Builder {
+    private MyUnion u;
+    private double aDouble;
+    private MyField f;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setU(final MyUnion u) {
+      this.u = u;
+      return this;
+    }
+
+    public Builder setADouble(final double aDouble) {
+      this.aDouble = aDouble;
+      __optional_isset.set(__ADOUBLE_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setF(final MyField f) {
+      this.f = f;
+      return this;
+    }
+
+    public StructWithUnion build() {
+      StructWithUnion result = new StructWithUnion();
+      result.setU(this.u);
+      if (__optional_isset.get(__ADOUBLE_ISSET_ID)) {
+        result.setADouble(this.aDouble);
+      }
+      result.setF(this.f);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

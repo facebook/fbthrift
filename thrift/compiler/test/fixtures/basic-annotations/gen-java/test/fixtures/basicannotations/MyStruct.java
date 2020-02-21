@@ -79,6 +79,54 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     this.class_ = class_;
   }
 
+  public static class Builder {
+    private long major;
+    private String package;
+    private String annotation_with_quote;
+    private String class_;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setMajor(final long major) {
+      this.major = major;
+      __optional_isset.set(__MAJOR_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setPackage(final String package) {
+      this.package = package;
+      return this;
+    }
+
+    public Builder setAnnotation_with_quote(final String annotation_with_quote) {
+      this.annotation_with_quote = annotation_with_quote;
+      return this;
+    }
+
+    public Builder setClass_(final String class_) {
+      this.class_ = class_;
+      return this;
+    }
+
+    public MyStruct build() {
+      MyStruct result = new MyStruct();
+      if (__optional_isset.get(__MAJOR_ISSET_ID)) {
+        result.setMajor(this.major);
+      }
+      result.setPackage(this.package);
+      result.setAnnotation_with_quote(this.annotation_with_quote);
+      result.setClass_(this.class_);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

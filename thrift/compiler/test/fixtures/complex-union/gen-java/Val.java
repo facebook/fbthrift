@@ -72,6 +72,47 @@ public class Val implements TBase, java.io.Serializable, Cloneable, Comparable<V
     this.typedefValue = typedefValue;
   }
 
+  public static class Builder {
+    private String strVal;
+    private int intVal;
+    private Map<Short,String> typedefValue;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setStrVal(final String strVal) {
+      this.strVal = strVal;
+      return this;
+    }
+
+    public Builder setIntVal(final int intVal) {
+      this.intVal = intVal;
+      __optional_isset.set(__INTVAL_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setTypedefValue(final Map<Short,String> typedefValue) {
+      this.typedefValue = typedefValue;
+      return this;
+    }
+
+    public Val build() {
+      Val result = new Val();
+      result.setStrVal(this.strVal);
+      if (__optional_isset.get(__INTVAL_ISSET_ID)) {
+        result.setIntVal(this.intVal);
+      }
+      result.setTypedefValue(this.typedefValue);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */
