@@ -177,7 +177,8 @@ void RocketSinkClientCallback::setChunkTimeout(
 
 void RocketSinkClientCallback::timeoutExpired() noexcept {
   auto ex = TApplicationException(
-      TApplicationException::TApplicationExceptionType::TIMEOUT);
+      TApplicationException::TApplicationExceptionType::TIMEOUT,
+      "Sink chunk timeout");
   onSinkError(folly::make_exception_wrapper<TApplicationException>(ex));
   onFinalResponseError(folly::make_exception_wrapper<rocket::RocketException>(
       rocket::ErrorCode::APPLICATION_ERROR,

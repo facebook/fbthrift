@@ -208,7 +208,8 @@ void RocketStreamClientCallback::timeoutExpired() noexcept {
       serializeErrorStruct(
           protoId_,
           TApplicationException(
-              TApplicationException::TApplicationExceptionType::TIMEOUT))));
+              TApplicationException::TApplicationExceptionType::TIMEOUT,
+              "Stream expire timeout(no credit from client)"))));
 }
 
 void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {
