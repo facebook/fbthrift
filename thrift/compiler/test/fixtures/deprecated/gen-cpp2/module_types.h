@@ -88,7 +88,7 @@ class House final : private apache::thrift::detail::st::ComparisonOperators<Hous
  public:
   ::std::string houseName;
  public:
-  apache::thrift::DeprecatedOptionalField<::std::set< ::cpp2::ColorID>> houseColors;
+  folly::Optional<::std::set< ::cpp2::ColorID>> houseColors;
 
  public:
   bool operator==(const House& rhs) const;

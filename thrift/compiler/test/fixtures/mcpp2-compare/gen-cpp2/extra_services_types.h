@@ -128,19 +128,19 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
  public:
   bool req_fieldA;
  public:
-  apache::thrift::DeprecatedOptionalField<bool> opt_fieldA;
+  folly::Optional<bool> opt_fieldA;
  public:
   ::std::map<::std::string, bool> fieldB;
  public:
   ::std::map<::std::string, bool> req_fieldB;
  public:
-  apache::thrift::DeprecatedOptionalField<::std::map<::std::string, bool>> opt_fieldB;
+  folly::Optional<::std::map<::std::string, bool>> opt_fieldB;
  public:
   ::std::set<int32_t> fieldC;
  public:
   ::std::set<int32_t> req_fieldC;
  public:
-  apache::thrift::DeprecatedOptionalField<::std::set<int32_t>> opt_fieldC;
+  folly::Optional<::std::set<int32_t>> opt_fieldC;
  public:
   ::std::string fieldD;
  public:
@@ -148,7 +148,7 @@ class containerStruct2 final : private apache::thrift::detail::st::ComparisonOpe
  public:
   ::std::string req_fieldE;
  public:
-  apache::thrift::DeprecatedOptionalField<::std::string> opt_fieldE;
+  folly::Optional<::std::string> opt_fieldE;
 
  public:
   bool operator==(const containerStruct2& rhs) const;
