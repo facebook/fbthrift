@@ -34,7 +34,8 @@ namespace reflection_impl {
 template <typename T>
 struct is_optional : std::false_type {};
 template <typename T>
-struct is_optional<folly::Optional<T>> : std::true_type {};
+struct is_optional<apache::thrift::DeprecatedOptionalField<T>>
+    : std::true_type {};
 
 template <typename T>
 using isset_of = decltype(std::declval<T>().__isset);
