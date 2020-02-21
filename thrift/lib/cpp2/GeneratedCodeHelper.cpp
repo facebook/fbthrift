@@ -43,7 +43,7 @@ namespace detail {
 namespace ap {
 
 template <typename ProtocolReader, typename ProtocolWriter>
-IOBufQueue helper<ProtocolReader, ProtocolWriter>::write_exn(
+std::unique_ptr<folly::IOBuf> helper<ProtocolReader, ProtocolWriter>::write_exn(
     const char* method,
     ProtocolWriter* prot,
     int32_t protoSeqId,
@@ -59,7 +59,7 @@ IOBufQueue helper<ProtocolReader, ProtocolWriter>::write_exn(
   prot->writeMessageBegin(method, T_EXCEPTION, protoSeqId);
   detail::serializeExceptionBody(prot, &x);
   prot->writeMessageEnd();
-  return queue;
+  return std::move(queue).move();
 }
 
 template <typename ProtocolReader, typename ProtocolWriter>
@@ -75,25 +75,24 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
   if (req) {
     LOG(ERROR) << msg << " in function " << func;
     TApplicationException x(type, msg);
-    IOBufQueue queue = helper_w<ProtocolWriter>::write_exn(
-        func, &oprot, protoSeqId, nullptr, x);
-    queue.append(THeader::transform(
-        queue.move(),
+    auto payload = THeader::transform(
+        helper_w<ProtocolWriter>::write_exn(
+            func, &oprot, protoSeqId, nullptr, x),
         ctx->getHeader()->getWriteTransforms(),
-        ctx->getHeader()->getMinCompressBytes()));
+        ctx->getHeader()->getMinCompressBytes());
     eb->runInEventBaseThread(
-        [que = move(queue), request = move(req)]() mutable {
+        [payload = move(payload), request = move(req)]() mutable {
           if (request->isStream()) {
             std::ignore = request->sendStreamReply(
-                que.move(), StreamServerCallbackPtr(nullptr));
+                std::move(payload), StreamServerCallbackPtr(nullptr));
           } else if (request->isSink()) {
 #if FOLLY_HAS_COROUTINES
-            request->sendSinkReply(que.move(), {});
+            request->sendSinkReply(std::move(payload), {});
 #else
             DCHECK(false);
 #endif
           } else {
-            request->sendReply(que.move());
+            request->sendReply(std::move(payload));
           }
         });
   } else {
