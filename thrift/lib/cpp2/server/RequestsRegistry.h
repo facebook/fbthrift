@@ -178,7 +178,9 @@ class RequestsRegistry {
     }
 
     void prepareAsFinished();
-    void dispose();
+
+    void incRef() noexcept;
+    void decRef() noexcept;
 
     std::string methodNameIfFinished_;
     folly::SocketAddress peerAddressIfFinished_;
@@ -194,6 +196,7 @@ class RequestsRegistry {
     const intptr_t rootRequestContextId_;
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
+    size_t refCount_{1};
   };
 
   class Deleter {
@@ -207,15 +210,11 @@ class RequestsRegistry {
       if (!stub_) {
         delete p;
       } else {
-        auto registry = stub_->registry_;
-        if (registry->finishedRequestsLimit_) {
-          registry->moveToFinishedList(*stub_);
-          p->~ResponseChannelRequest();
-          registry->evictFromFinishedList();
-        } else {
-          p->~ResponseChannelRequest();
-          stub_->dispose();
-        }
+        stub_->registry_->moveToFinishedList(*stub_);
+        p->~T();
+        // We release ownership over the stub, but it still may be held alive
+        // by reqFinishedList_
+        stub_->decRef();
       }
     }
 
@@ -272,7 +271,6 @@ class RequestsRegistry {
 
  private:
   void moveToFinishedList(DebugStub& stub);
-  void evictFromFinishedList();
 
   void evictStubPayloads() {
     while (payloadMemoryUsage_ > payloadMemoryLimitTotal_) {

@@ -43,8 +43,12 @@ RequestsRegistry::RequestsRegistry(
 
 RequestsRegistry::~RequestsRegistry() {
   while (!reqFinishedList_.empty()) {
-    reqFinishedList_.front().dispose();
+    --finishedRequestsCount_;
+    auto& front = reqFinishedList_.front();
+    reqFinishedList_.pop_front();
+    front.decRef();
   }
+  DCHECK(finishedRequestsCount_ == 0);
 }
 
 RequestId RequestsRegistry::genRequestId() {
@@ -52,16 +56,22 @@ RequestId RequestsRegistry::genRequestId() {
 }
 
 void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
+  if (finishedRequestsLimit_ == 0) {
+    return;
+  }
+  
   stub.activeRequestsRegistryHook_.unlink();
+  stub.incRef();
   stub.prepareAsFinished();
   ++finishedRequestsCount_;
   reqFinishedList_.push_back(stub);
-}
 
-void RequestsRegistry::evictFromFinishedList() {
   if (finishedRequestsCount_ > finishedRequestsLimit_) {
+    DCHECK(finishedRequestsLimit_ > 0);
     --finishedRequestsCount_;
-    reqFinishedList_.front().dispose();
+    auto& front = reqFinishedList_.front();
+    reqFinishedList_.pop_front();
+    front.decRef();
   }
 }
 
@@ -86,9 +96,15 @@ void RequestsRegistry::DebugStub::prepareAsFinished() {
   req_ = nullptr;
 }
 
-void RequestsRegistry::DebugStub::dispose() {
-  this->~DebugStub();
-  free(this);
+void RequestsRegistry::DebugStub::incRef() noexcept {
+  refCount_++;
+}
+
+void RequestsRegistry::DebugStub::decRef() noexcept {
+  if (--refCount_ == 0) {
+    this->~DebugStub();
+    free(this);
+  }
 }
 
 } // namespace thrift
