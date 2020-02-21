@@ -21,16 +21,16 @@ namespace php tmeta
 namespace go thrift.lib.thrift.metadata
 
 enum ThriftPrimitiveType {
-  BOOL = 1;
-  BYTE = 2;
-  I16 = 3;
-  I32 = 4;
-  I64 = 5;
-  FLOAT = 6;
-  DOUBLE = 7;
-  BINARY = 8;
-  STRING = 9;
-  VOID = 10;
+  THRIFT_BOOL_TYPE = 1;
+  THRIFT_BYTE_TYPE = 2;
+  THRIFT_I16_TYPE = 3;
+  THRIFT_I32_TYPE = 4;
+  THRIFT_I64_TYPE = 5;
+  THRIFT_FLOAT_TYPE = 6;
+  THRIFT_DOUBLE_TYPE = 7;
+  THRIFT_BINARY_TYPE = 8;
+  THRIFT_STRING_TYPE = 9;
+  THRIFT_VOID_TYPE = 10;
 }
 
 struct ThriftListType {

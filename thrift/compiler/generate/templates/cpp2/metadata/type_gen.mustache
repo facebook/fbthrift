@@ -20,16 +20,16 @@
 %><%^type:typedef?%><%!
 %><%#type:base?%><%!
 %>std::make_unique<Primitive>(<%!
-%><%#type:bool?%>ThriftPrimitiveType::BOOL<%/type:bool?%><%!
-%><%#type:byte?%>ThriftPrimitiveType::BYTE<%/type:byte?%><%!
-%><%#type:i16?%>ThriftPrimitiveType::I16<%/type:i16?%><%!
-%><%#type:i32?%>ThriftPrimitiveType::I32<%/type:i32?%><%!
-%><%#type:i64?%>ThriftPrimitiveType::I64<%/type:i64?%><%!
-%><%#type:float?%>ThriftPrimitiveType::FLOAT<%/type:float?%><%!
-%><%#type:double?%>ThriftPrimitiveType::DOUBLE<%/type:double?%><%!
-%><%#type:binary?%>ThriftPrimitiveType::BINARY<%/type:binary?%><%!
-%><%#type:string?%>ThriftPrimitiveType::STRING<%/type:string?%><%!
-%><%#type:void?%>ThriftPrimitiveType::VOID<%/type:void?%>)<%!
+%><%#type:bool?%>ThriftPrimitiveType::THRIFT_BOOL_TYPE<%/type:bool?%><%!
+%><%#type:byte?%>ThriftPrimitiveType::THRIFT_BYTE_TYPE<%/type:byte?%><%!
+%><%#type:i16?%>ThriftPrimitiveType::THRIFT_I16_TYPE<%/type:i16?%><%!
+%><%#type:i32?%>ThriftPrimitiveType::THRIFT_I32_TYPE<%/type:i32?%><%!
+%><%#type:i64?%>ThriftPrimitiveType::THRIFT_I64_TYPE<%/type:i64?%><%!
+%><%#type:float?%>ThriftPrimitiveType::THRIFT_FLOAT_TYPE<%/type:float?%><%!
+%><%#type:double?%>ThriftPrimitiveType::THRIFT_DOUBLE_TYPE<%/type:double?%><%!
+%><%#type:binary?%>ThriftPrimitiveType::THRIFT_BINARY_TYPE<%/type:binary?%><%!
+%><%#type:string?%>ThriftPrimitiveType::THRIFT_STRING_TYPE<%/type:string?%><%!
+%><%#type:void?%>ThriftPrimitiveType::THRIFT_VOID_TYPE<%/type:void?%>)<%!
 %><%/type:base?%><%!
 %><%^type:base?%><%!
 %><%#type:list?%>std::make_unique<List>(<%#type:listElemType%><% > metadata/type_gen%><%/type:listElemType%>)<%/type:list?%><%!

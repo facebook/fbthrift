@@ -24,7 +24,7 @@ void ServiceMetadata<::cpp2::MyRootSvIf>::gen_do_root(ThriftMetadata& metadata, 
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "do_root";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -48,7 +48,7 @@ void ServiceMetadata<::cpp2::MyNodeSvIf>::gen_do_mid(ThriftMetadata& metadata, T
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "do_mid";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -77,7 +77,7 @@ void ServiceMetadata<::cpp2::MyLeafSvIf>::gen_do_leaf(ThriftMetadata& metadata, 
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "do_leaf";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }

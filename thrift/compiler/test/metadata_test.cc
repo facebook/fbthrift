@@ -65,7 +65,7 @@ class MetadataCodegenTest : public testing::Test {
   checkFieldString(const ThriftField& field, int key, const std::string& name) {
     auto type = checkField(field, key, name);
     EXPECT_FALSE(field.is_optional);
-    EXPECT_EQ(type.get_t_primitive(), ThriftPrimitiveType::STRING);
+    EXPECT_EQ(type.get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
   }
   ThriftMetadata metadata_;
 };
@@ -78,15 +78,15 @@ TEST_F(MetadataCodegenTest, structTest) {
   ThriftEnum e = metadata_.enums.at(enumName);
   EXPECT_EQ(e.name, enumName);
   EXPECT_EQ(e.elements.size(), 10);
-  EXPECT_EQ(e.elements.at(1), "BOOL");
-  EXPECT_EQ(e.elements.at(2), "BYTE");
-  EXPECT_EQ(e.elements.at(3), "I16");
-  EXPECT_EQ(e.elements.at(4), "I32");
-  EXPECT_EQ(e.elements.at(5), "I64");
-  EXPECT_EQ(e.elements.at(6), "FLOAT");
-  EXPECT_EQ(e.elements.at(8), "BINARY");
-  EXPECT_EQ(e.elements.at(9), "STRING");
-  EXPECT_EQ(e.elements.at(10), "VOID");
+  EXPECT_EQ(e.elements.at(1), "THRIFT_BOOL_TYPE");
+  EXPECT_EQ(e.elements.at(2), "THRIFT_BYTE_TYPE");
+  EXPECT_EQ(e.elements.at(3), "THRIFT_I16_TYPE");
+  EXPECT_EQ(e.elements.at(4), "THRIFT_I32_TYPE");
+  EXPECT_EQ(e.elements.at(5), "THRIFT_I64_TYPE");
+  EXPECT_EQ(e.elements.at(6), "THRIFT_FLOAT_TYPE");
+  EXPECT_EQ(e.elements.at(8), "THRIFT_BINARY_TYPE");
+  EXPECT_EQ(e.elements.at(9), "THRIFT_STRING_TYPE");
+  EXPECT_EQ(e.elements.at(10), "THRIFT_VOID_TYPE");
 
   EXPECT_EQ(metadata_.structs.size(), 11);
 

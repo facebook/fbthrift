@@ -40,7 +40,7 @@ void StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) 
   includes_AStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   includes_AStruct_fields[] = {
-    {1, "FieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {1, "FieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : includes_AStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

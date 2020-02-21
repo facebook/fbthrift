@@ -29,7 +29,7 @@ void StructMetadata<::cpp2::ReflectionStruct>::gen(ThriftMetadata& metadata) {
   reflection_ReflectionStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   reflection_ReflectionStruct_fields[] = {
-    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : reflection_ReflectionStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

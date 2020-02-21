@@ -29,7 +29,7 @@ void StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   module_Foo.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Foo_fields[] = {
-    {1, "bar", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {1, "bar", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : module_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;

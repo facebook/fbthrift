@@ -38,7 +38,7 @@ void StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
   module_Fiery.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Fiery_fields[] = {
-    {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_Fiery_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -59,7 +59,7 @@ void StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
   module_Serious.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Serious_fields[] = {
-    {1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_Serious_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -88,7 +88,7 @@ void ExceptionMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
   module_Fiery.name = "module.Fiery";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Fiery_fields[] = {
-    {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_Fiery_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -108,7 +108,7 @@ void ExceptionMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
   module_Serious.name = "module.Serious";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Serious_fields[] = {
-    {1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "sonnet", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_Serious_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -123,7 +123,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland(ThriftMetadata& metadata, 
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "doBland";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -131,7 +131,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, 
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "doRaise";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_b_1;
   module_Raiser_doRaise_b_1.id = 1;
@@ -163,7 +163,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get200(ThriftMetadata& metadata, T
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "get200";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -171,7 +171,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, T
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "get500";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_f_1;
   module_Raiser_get500_f_1.id = 1;

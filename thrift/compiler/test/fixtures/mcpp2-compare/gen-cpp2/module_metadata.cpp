@@ -82,7 +82,7 @@ void StructMetadata<::some::valid::ns::ASimpleStruct>::gen(ThriftMetadata& metad
   module_ASimpleStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ASimpleStruct_fields[] = {
-    {1, "boolField", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {1, "boolField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
   };
   for (const auto& f : module_ASimpleStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -103,7 +103,7 @@ void StructMetadata<::some::valid::ns::ASimpleStructNoexcept>::gen(ThriftMetadat
   module_ASimpleStructNoexcept.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ASimpleStructNoexcept_fields[] = {
-    {1, "boolField", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {1, "boolField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
   };
   for (const auto& f : module_ASimpleStructNoexcept_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -124,15 +124,15 @@ void StructMetadata<::some::valid::ns::MyStruct>::gen(ThriftMetadata& metadata) 
   module_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStruct_fields[] = {
-    {1, "MyBoolField", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {2, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {3, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {4, "MyStringField2", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {5, "MyBinaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
-    {6, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
-    {7, "MyBinaryField3", false, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
-    {8, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::BINARY))},
-    {9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata), std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {1, "MyBoolField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {2, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {3, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {4, "MyStringField2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {5, "MyBinaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)},
+    {6, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)},
+    {7, "MyBinaryField3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)},
+    {8, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE))},
+    {9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -153,8 +153,8 @@ void StructMetadata<::some::valid::ns::SimpleUnion>::gen(ThriftMetadata& metadat
   module_SimpleUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_SimpleUnion_fields[] = {
-    {7, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {2, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {7, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {2, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_SimpleUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -175,18 +175,18 @@ void StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metada
   module_ComplexUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ComplexUnion_fields[] = {
-    {1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {201, "opt_intValue", true, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {3, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {203, "opt_stringValue", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {4, "intValue2", false, std::make_unique<Primitive>(ThriftPrimitiveType::I16)},
-    {6, "intValue3", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {7, "doubelValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
-    {8, "boolValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {9, "union_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {10, "union_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {11, "union_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {211, "opt_union_map", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {201, "opt_intValue", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {3, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {203, "opt_stringValue", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {4, "intValue2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE)},
+    {6, "intValue3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {7, "doubelValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)},
+    {8, "boolValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {9, "union_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {10, "union_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {11, "union_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {211, "opt_union_map", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
     {12, "enum_field", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata)},
     {13, "enum_container", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata))},
     {14, "a_struct", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata)},
@@ -196,9 +196,9 @@ void StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metada
     {17, "a_union_list", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion", metadata))},
     {18, "a_union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion", metadata)))},
     {19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion", metadata))))},
-    {20, "MyBinaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
-    {21, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
-    {23, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::BINARY))},
+    {20, "MyBinaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)},
+    {21, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)},
+    {23, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE))},
     {24, "ref_field", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata)},
     {25, "ref_field2", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata)},
     {26, "excp_field", false, std::make_unique<Typedef>("module.AnException", std::make_unique<Struct< ::some::valid::ns::AnException>>("module.AnException", metadata))},
@@ -222,14 +222,14 @@ void StructMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadat
   module_AnException.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_AnException_fields[] = {
-    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {2, "message2", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {102, "req_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {3, "exception_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {4, "exception_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {5, "exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {105, "req_exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {2, "message2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {102, "req_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {3, "exception_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {4, "exception_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {5, "exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {105, "req_exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
     {6, "enum_field", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata)},
     {7, "enum_container", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata))},
     {8, "a_struct", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata)},
@@ -257,9 +257,9 @@ void StructMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata& me
   module_AnotherException.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_AnotherException_fields[] = {
-    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {2, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {2, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_AnotherException_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -280,28 +280,28 @@ void StructMetadata<::some::valid::ns::containerStruct>::gen(ThriftMetadata& met
   module_containerStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_containerStruct_fields[] = {
-    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {101, "req_fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {201, "opt_fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
-    {102, "req_fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
-    {202, "opt_fieldB", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
-    {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {103, "req_fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {203, "opt_fieldC", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {105, "req_fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {205, "opt_fieldE", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {6, "fieldF", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
-    {7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))))},
-    {8, "fieldH", false, std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
-    {9, "fieldI", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {10, "fieldJ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
-    {11, "fieldK", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))))},
-    {12, "fieldL", false, std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))))},
-    {13, "fieldM", false, std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
-    {14, "fieldN", false, std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {101, "req_fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {201, "opt_fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))},
+    {102, "req_fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))},
+    {202, "opt_fieldB", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))},
+    {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {103, "req_fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {203, "opt_fieldC", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {105, "req_fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {205, "opt_fieldE", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {6, "fieldF", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))},
+    {7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))))},
+    {8, "fieldH", false, std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))},
+    {9, "fieldI", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {10, "fieldJ", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))},
+    {11, "fieldK", false, std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))))},
+    {12, "fieldL", false, std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))))},
+    {13, "fieldM", false, std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
+    {14, "fieldN", false, std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
     {15, "fieldO", false, std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty", metadata), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata))))},
     {16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.mostComplexTypeDef", std::make_unique<List>(std::make_unique<Typedef>("module.complexStructTypeDef", std::make_unique<List>(std::make_unique<Map>(std::make_unique<Struct< ::some::valid::ns::Empty>>("module.Empty", metadata), std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata)))))))},
     {17, "fieldQ", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata)},
@@ -321,11 +321,11 @@ void StructMetadata<::some::valid::ns::containerStruct>::gen(ThriftMetadata& met
     {26, "fieldY", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::ComplexUnion>>("module.ComplexUnion", metadata))},
     {27, "fieldZ", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion", metadata)))},
     {28, "fieldAA", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion", metadata))))},
-    {29, "fieldAB", false, std::make_unique<Map>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)), std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
+    {29, "fieldAB", false, std::make_unique<Map>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)), std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))},
     {30, "fieldAC", false, std::make_unique<Typedef>("module.MyEnumB", std::make_unique<Enum< ::some::valid::ns::MyEnumB>>("module.MyEnumB", metadata))},
     {31, "fieldAD", false, std::make_unique<Enum< ::a::different::ns::AnEnum>>("includes.AnEnum", metadata)},
-    {32, "fieldAE", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {33, "fieldSD", false, std::make_unique<Typedef>("module.IndirectionD", std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {32, "fieldAE", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {33, "fieldSD", false, std::make_unique<Typedef>("module.IndirectionD", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
   };
   for (const auto& f : module_containerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -346,7 +346,7 @@ void StructMetadata<::some::valid::ns::MyIncludedStruct>::gen(ThriftMetadata& me
   module_MyIncludedStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyIncludedStruct_fields[] = {
-    {1, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
+    {1, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
     {2, "MyIncludedStruct", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct", metadata))},
     {3, "ARefField", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct", metadata))},
     {4, "ARequiredField", false, std::make_unique<Typedef>("module.AStruct", std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct", metadata))},
@@ -373,42 +373,42 @@ void StructMetadata<::some::valid::ns::AnnotatedStruct>::gen(ThriftMetadata& met
     {1, "no_annotation", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {2, "cpp_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {3, "cpp2_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
-    {4, "container_with_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
+    {4, "container_with_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
     {5, "req_cpp_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {6, "req_cpp2_unique_ref", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
-    {7, "req_container_with_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {7, "req_container_with_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
     {8, "opt_cpp_unique_ref", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {9, "opt_cpp2_unique_ref", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
-    {10, "opt_container_with_ref", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {10, "opt_container_with_ref", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
     {11, "ref_type_unique", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {12, "ref_type_shared", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
-    {13, "ref_type_const", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
+    {13, "ref_type_const", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
     {14, "req_ref_type_shared", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {15, "req_ref_type_const", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
-    {16, "req_ref_type_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {16, "req_ref_type_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
     {17, "opt_ref_type_const", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
     {18, "opt_ref_type_unique", true, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
-    {19, "opt_ref_type_shared", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {20, "base_type", false, std::make_unique<Typedef>("module.CppFakeI32", std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {21, "list_type", false, std::make_unique<Typedef>("module.FollySmallVectorI64", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I64)))},
-    {22, "set_type", false, std::make_unique<Typedef>("module.SortedVectorSetString", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
-    {23, "map_type", false, std::make_unique<Typedef>("module.FakeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I64), std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)))},
-    {24, "map_struct_type", false, std::make_unique<Typedef>("module.UnorderedMapStruct", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)))},
-    {25, "iobuf_type", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)))},
-    {26, "iobuf_ptr", false, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)))},
-    {27, "list_i32_template", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {28, "list_string_template", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
-    {29, "set_template", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
-    {30, "map_template", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I64), std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
-    {31, "typedef_list_template", false, std::make_unique<Typedef>("module.std_list", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
-    {32, "typedef_deque_template", false, std::make_unique<Typedef>("module.std_deque", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
-    {33, "typedef_set_template", false, std::make_unique<Typedef>("module.folly_set", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
-    {34, "typedef_map_template", false, std::make_unique<Typedef>("module.folly_map", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I64), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
-    {35, "indirection_a", false, std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {36, "indirection_b", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)))},
-    {37, "indirection_c", false, std::make_unique<Set>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::I32)))},
-    {38, "iobuf_type_val", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)))},
-    {39, "iobuf_ptr_val", false, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)))},
+    {19, "opt_ref_type_shared", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {20, "base_type", false, std::make_unique<Typedef>("module.CppFakeI32", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {21, "list_type", false, std::make_unique<Typedef>("module.FollySmallVectorI64", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)))},
+    {22, "set_type", false, std::make_unique<Typedef>("module.SortedVectorSetString", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
+    {23, "map_type", false, std::make_unique<Typedef>("module.FakeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)))},
+    {24, "map_struct_type", false, std::make_unique<Typedef>("module.UnorderedMapStruct", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)))},
+    {25, "iobuf_type", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)))},
+    {26, "iobuf_ptr", false, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)))},
+    {27, "list_i32_template", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {28, "list_string_template", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
+    {29, "set_template", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
+    {30, "map_template", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
+    {31, "typedef_list_template", false, std::make_unique<Typedef>("module.std_list", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))},
+    {32, "typedef_deque_template", false, std::make_unique<Typedef>("module.std_deque", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
+    {33, "typedef_set_template", false, std::make_unique<Typedef>("module.folly_set", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
+    {34, "typedef_map_template", false, std::make_unique<Typedef>("module.folly_map", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
+    {35, "indirection_a", false, std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {36, "indirection_b", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)))},
+    {37, "indirection_c", false, std::make_unique<Set>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))},
+    {38, "iobuf_type_val", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)))},
+    {39, "iobuf_ptr_val", false, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)))},
     {40, "struct_struct", false, std::make_unique<Struct< ::some::valid::ns::containerStruct>>("module.containerStruct", metadata)},
   };
   for (const auto& f : module_AnnotatedStruct_fields) {
@@ -430,8 +430,8 @@ void StructMetadata<::some::valid::ns::ComplexContainerStruct>::gen(ThriftMetada
   module_ComplexContainerStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ComplexContainerStruct_fields[] = {
-    {1, "map_of_iobufs", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY))))},
-    {2, "map_of_iobuf_ptrs", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY))))},
+    {1, "map_of_iobufs", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE))))},
+    {2, "map_of_iobuf_ptrs", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE))))},
   };
   for (const auto& f : module_ComplexContainerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -452,8 +452,8 @@ void StructMetadata<::some::valid::ns::FloatStruct>::gen(ThriftMetadata& metadat
   module_FloatStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_FloatStruct_fields[] = {
-    {1, "floatField", false, std::make_unique<Primitive>(ThriftPrimitiveType::FLOAT)},
-    {2, "doubleField", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {1, "floatField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)},
+    {2, "doubleField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)},
   };
   for (const auto& f : module_FloatStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -474,8 +474,8 @@ void StructMetadata<::some::valid::ns::FloatUnion>::gen(ThriftMetadata& metadata
   module_FloatUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_FloatUnion_fields[] = {
-    {1, "floatSide", false, std::make_unique<Primitive>(ThriftPrimitiveType::FLOAT)},
-    {2, "doubleSide", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {1, "floatSide", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE)},
+    {2, "doubleSide", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)},
   };
   for (const auto& f : module_FloatUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -496,7 +496,7 @@ void StructMetadata<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::gen(Th
   module_AllRequiredNoExceptMoveCtrStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_AllRequiredNoExceptMoveCtrStruct_fields[] = {
-    {1, "intField", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {1, "intField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
   };
   for (const auto& f : module_AllRequiredNoExceptMoveCtrStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -517,14 +517,14 @@ void ExceptionMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& meta
   module_AnException.name = "module.AnException";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_AnException_fields[] = {
-    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {2, "message2", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {102, "req_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {3, "exception_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {4, "exception_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {5, "exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {105, "req_exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {2, "message2", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {102, "req_message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {3, "exception_list", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {4, "exception_set", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {5, "exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {105, "req_exception_map", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
     {6, "enum_field", false, std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata)},
     {7, "enum_container", false, std::make_unique<List>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA", metadata))},
     {8, "a_struct", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct", metadata)},
@@ -551,9 +551,9 @@ void ExceptionMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata&
   module_AnotherException.name = "module.AnotherException";
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_AnotherException_fields[] = {
-    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {2, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {101, "req_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {2, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_AnotherException_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -578,7 +578,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn(ThriftM
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "noReturn";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -586,7 +586,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_boolReturn(Thrif
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "boolReturn";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -594,7 +594,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i16Return(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "i16Return";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I16);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -602,7 +602,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i32Return(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "i32Return";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -610,7 +610,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_i64Return(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "i64Return";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -618,7 +618,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_floatReturn(Thri
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "floatReturn";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::FLOAT);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -626,7 +626,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_doubleReturn(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "doubleReturn";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -634,7 +634,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_stringReturn(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "stringReturn";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -642,7 +642,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_binaryReturn(Thr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "binaryReturn";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BINARY);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -650,7 +650,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_mapReturn(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "mapReturn";
-  auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -658,7 +658,7 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_simpleTypedefRet
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "simpleTypedefReturn";
-  auto func_ret_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  auto func_ret_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -730,13 +730,13 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readDataEb(Thrif
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "readDataEb";
-  auto func_ret_type = std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)));
+  auto func_ret_type = std::make_unique<Typedef>("module.IOBuf", std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ReturnService_readDataEb_size_1;
   module_ReturnService_readDataEb_size_1.id = 1;
   module_ReturnService_readDataEb_size_1.name = "size";
   module_ReturnService_readDataEb_size_1.is_optional = false;
-  auto module_ReturnService_readDataEb_size_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto module_ReturnService_readDataEb_size_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_ReturnService_readDataEb_size_1_type->initialize(module_ReturnService_readDataEb_size_1.type);
   func.arguments.push_back(std::move(module_ReturnService_readDataEb_size_1));
   service.functions.push_back(std::move(func));
@@ -745,13 +745,13 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readData(ThriftM
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "readData";
-  auto func_ret_type = std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)));
+  auto func_ret_type = std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ReturnService_readData_size_1;
   module_ReturnService_readData_size_1.id = 1;
   module_ReturnService_readData_size_1.name = "size";
   module_ReturnService_readData_size_1.is_optional = false;
-  auto module_ReturnService_readData_size_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto module_ReturnService_readData_size_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_ReturnService_readData_size_1_type->initialize(module_ReturnService_readData_size_1.type);
   func.arguments.push_back(std::move(module_ReturnService_readData_size_1));
   service.functions.push_back(std::move(func));
@@ -796,13 +796,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_para
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_i16_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_i16_param_param1_1;
   module_ParamService_void_ret_i16_param_param1_1.id = 1;
   module_ParamService_void_ret_i16_param_param1_1.name = "param1";
   module_ParamService_void_ret_i16_param_param1_1.is_optional = false;
-  auto module_ParamService_void_ret_i16_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I16);
+  auto module_ParamService_void_ret_i16_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE);
   module_ParamService_void_ret_i16_param_param1_1_type->initialize(module_ParamService_void_ret_i16_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_i16_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -811,20 +811,20 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_byte_i16
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_byte_i16_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_byte_i16_param_param1_1;
   module_ParamService_void_ret_byte_i16_param_param1_1.id = 1;
   module_ParamService_void_ret_byte_i16_param_param1_1.name = "param1";
   module_ParamService_void_ret_byte_i16_param_param1_1.is_optional = false;
-  auto module_ParamService_void_ret_byte_i16_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BYTE);
+  auto module_ParamService_void_ret_byte_i16_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE);
   module_ParamService_void_ret_byte_i16_param_param1_1_type->initialize(module_ParamService_void_ret_byte_i16_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_byte_i16_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_byte_i16_param_param2_2;
   module_ParamService_void_ret_byte_i16_param_param2_2.id = 2;
   module_ParamService_void_ret_byte_i16_param_param2_2.name = "param2";
   module_ParamService_void_ret_byte_i16_param_param2_2.is_optional = false;
-  auto module_ParamService_void_ret_byte_i16_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I16);
+  auto module_ParamService_void_ret_byte_i16_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE);
   module_ParamService_void_ret_byte_i16_param_param2_2_type->initialize(module_ParamService_void_ret_byte_i16_param_param2_2.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_byte_i16_param_param2_2));
   service.functions.push_back(std::move(func));
@@ -833,13 +833,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_para
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_map_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_param_param1_1;
   module_ParamService_void_ret_map_param_param1_1.id = 1;
   module_ParamService_void_ret_map_param_param1_1.name = "param1";
   module_ParamService_void_ret_map_param_param1_1.is_optional = false;
-  auto module_ParamService_void_ret_map_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto module_ParamService_void_ret_map_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   module_ParamService_void_ret_map_param_param1_1_type->initialize(module_ParamService_void_ret_map_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_map_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -848,20 +848,20 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_setl
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_map_setlist_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_setlist_param_param1_1;
   module_ParamService_void_ret_map_setlist_param_param1_1.id = 1;
   module_ParamService_void_ret_map_setlist_param_param1_1.name = "param1";
   module_ParamService_void_ret_map_setlist_param_param1_1.is_optional = false;
-  auto module_ParamService_void_ret_map_setlist_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto module_ParamService_void_ret_map_setlist_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   module_ParamService_void_ret_map_setlist_param_param1_1_type->initialize(module_ParamService_void_ret_map_setlist_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_map_setlist_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_setlist_param_param2_3;
   module_ParamService_void_ret_map_setlist_param_param2_3.id = 3;
   module_ParamService_void_ret_map_setlist_param_param2_3.name = "param2";
   module_ParamService_void_ret_map_setlist_param_param2_3.is_optional = false;
-  auto module_ParamService_void_ret_map_setlist_param_param2_3_type = std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  auto module_ParamService_void_ret_map_setlist_param_param2_3_type = std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
   module_ParamService_void_ret_map_setlist_param_param2_3_type->initialize(module_ParamService_void_ret_map_setlist_param_param2_3.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_map_setlist_param_param2_3));
   service.functions.push_back(std::move(func));
@@ -870,13 +870,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_map_type
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_map_typedef_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_map_typedef_param_param1_1;
   module_ParamService_void_ret_map_typedef_param_param1_1.id = 1;
   module_ParamService_void_ret_map_typedef_param_param1_1.name = "param1";
   module_ParamService_void_ret_map_typedef_param_param1_1.is_optional = false;
-  auto module_ParamService_void_ret_map_typedef_param_param1_1_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  auto module_ParamService_void_ret_map_typedef_param_param1_1_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
   module_ParamService_void_ret_map_typedef_param_param1_1_type->initialize(module_ParamService_void_ret_map_typedef_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_void_ret_map_typedef_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -885,7 +885,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_enum_par
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_enum_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_enum_param_param1_1;
   module_ParamService_void_ret_enum_param_param1_1.id = 1;
@@ -900,7 +900,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_struct_p
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_struct_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_struct_param_param1_1;
   module_ParamService_void_ret_struct_param_param1_1.id = 1;
@@ -915,7 +915,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_listunio
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "void_ret_listunion_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_void_ret_listunion_param_param1_1;
   module_ParamService_void_ret_listunion_param_param1_1.id = 1;
@@ -930,20 +930,20 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_i32_i64_
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "bool_ret_i32_i64_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_i32_i64_param_param1_1;
   module_ParamService_bool_ret_i32_i64_param_param1_1.id = 1;
   module_ParamService_bool_ret_i32_i64_param_param1_1.name = "param1";
   module_ParamService_bool_ret_i32_i64_param_param1_1.is_optional = false;
-  auto module_ParamService_bool_ret_i32_i64_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_bool_ret_i32_i64_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_bool_ret_i32_i64_param_param1_1_type->initialize(module_ParamService_bool_ret_i32_i64_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_bool_ret_i32_i64_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_i32_i64_param_param2_3;
   module_ParamService_bool_ret_i32_i64_param_param2_3.id = 3;
   module_ParamService_bool_ret_i32_i64_param_param2_3.name = "param2";
   module_ParamService_bool_ret_i32_i64_param_param2_3.is_optional = false;
-  auto module_ParamService_bool_ret_i32_i64_param_param2_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto module_ParamService_bool_ret_i32_i64_param_param2_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   module_ParamService_bool_ret_i32_i64_param_param2_3_type->initialize(module_ParamService_bool_ret_i32_i64_param_param2_3.type);
   func.arguments.push_back(std::move(module_ParamService_bool_ret_i32_i64_param_param2_3));
   service.functions.push_back(std::move(func));
@@ -952,13 +952,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_map_para
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "bool_ret_map_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_map_param_param1_1;
   module_ParamService_bool_ret_map_param_param1_1.id = 1;
   module_ParamService_bool_ret_map_param_param1_1.name = "param1";
   module_ParamService_bool_ret_map_param_param1_1.is_optional = false;
-  auto module_ParamService_bool_ret_map_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto module_ParamService_bool_ret_map_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   module_ParamService_bool_ret_map_param_param1_1_type->initialize(module_ParamService_bool_ret_map_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_bool_ret_map_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -967,7 +967,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_bool_ret_union_pa
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "bool_ret_union_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_bool_ret_union_param_param1_1;
   module_ParamService_bool_ret_union_param_param1_1.id = 1;
@@ -982,20 +982,20 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_float_dou
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "i64_ret_float_double_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_float_double_param_param1_1;
   module_ParamService_i64_ret_float_double_param_param1_1.id = 1;
   module_ParamService_i64_ret_float_double_param_param1_1.name = "param1";
   module_ParamService_i64_ret_float_double_param_param1_1.is_optional = false;
-  auto module_ParamService_i64_ret_float_double_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::FLOAT);
+  auto module_ParamService_i64_ret_float_double_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE);
   module_ParamService_i64_ret_float_double_param_param1_1_type->initialize(module_ParamService_i64_ret_float_double_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_float_double_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_float_double_param_param2_3;
   module_ParamService_i64_ret_float_double_param_param2_3.id = 3;
   module_ParamService_i64_ret_float_double_param_param2_3.name = "param2";
   module_ParamService_i64_ret_float_double_param_param2_3.is_optional = false;
-  auto module_ParamService_i64_ret_float_double_param_param2_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  auto module_ParamService_i64_ret_float_double_param_param2_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_ParamService_i64_ret_float_double_param_param2_3_type->initialize(module_ParamService_i64_ret_float_double_param_param2_3.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_float_double_param_param2_3));
   service.functions.push_back(std::move(func));
@@ -1004,13 +1004,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_string_ty
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "i64_ret_string_typedef_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_string_typedef_param_param1_1;
   module_ParamService_i64_ret_string_typedef_param_param1_1.id = 1;
   module_ParamService_i64_ret_string_typedef_param_param1_1.name = "param1";
   module_ParamService_i64_ret_string_typedef_param_param1_1.is_optional = false;
-  auto module_ParamService_i64_ret_string_typedef_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto module_ParamService_i64_ret_string_typedef_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_ParamService_i64_ret_string_typedef_param_param1_1_type->initialize(module_ParamService_i64_ret_string_typedef_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_string_typedef_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_string_typedef_param_param2_3;
@@ -1026,41 +1026,41 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_i64_ret_i32_i32_i
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "i64_ret_i32_i32_i32_i32_i32_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::I64);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1.id = 1;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1.name = "param1";
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1.is_optional = false;
-  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1_type->initialize(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2.id = 2;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2.name = "param2";
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2.is_optional = false;
-  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2_type->initialize(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param2_2));
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3.id = 3;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3.name = "param3";
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3.is_optional = false;
-  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3_type->initialize(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param3_3));
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4.id = 4;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4.name = "param4";
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4.is_optional = false;
-  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4_type->initialize(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param4_4));
   ::apache::thrift::metadata::ThriftField module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5.id = 5;
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5.name = "param5";
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5.is_optional = false;
-  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5_type->initialize(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5.type);
   func.arguments.push_back(std::move(module_ParamService_i64_ret_i32_i32_i32_i32_i32_param_param5_5));
   service.functions.push_back(std::move(func));
@@ -1069,7 +1069,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_double_ret_setstr
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "double_ret_setstruct_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_double_ret_setstruct_param_param1_4;
   module_ParamService_double_ret_setstruct_param_param1_4.id = 4;
@@ -1084,13 +1084,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_string_ret_string
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "string_ret_string_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_string_ret_string_param_param1_1;
   module_ParamService_string_ret_string_param_param1_1.id = 1;
   module_ParamService_string_ret_string_param_param1_1.name = "param1";
   module_ParamService_string_ret_string_param_param1_1.is_optional = false;
-  auto module_ParamService_string_ret_string_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto module_ParamService_string_ret_string_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_ParamService_string_ret_string_param_param1_1_type->initialize(module_ParamService_string_ret_string_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_string_ret_string_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1099,13 +1099,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_binary_ret_binary
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "binary_ret_binary_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BINARY);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_binary_ret_binary_param_param1_1;
   module_ParamService_binary_ret_binary_param_param1_1.id = 1;
   module_ParamService_binary_ret_binary_param_param1_1.name = "param1";
   module_ParamService_binary_ret_binary_param_param1_1.is_optional = false;
-  auto module_ParamService_binary_ret_binary_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BINARY);
+  auto module_ParamService_binary_ret_binary_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE);
   module_ParamService_binary_ret_binary_param_param1_1_type->initialize(module_ParamService_binary_ret_binary_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_binary_ret_binary_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1114,13 +1114,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_map_ret_bool_para
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "map_ret_bool_param";
-  auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_map_ret_bool_param_param1_1;
   module_ParamService_map_ret_bool_param_param1_1.id = 1;
   module_ParamService_map_ret_bool_param_param1_1.name = "param1";
   module_ParamService_map_ret_bool_param_param1_1.is_optional = false;
-  auto module_ParamService_map_ret_bool_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto module_ParamService_map_ret_bool_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   module_ParamService_map_ret_bool_param_param1_1_type->initialize(module_ParamService_map_ret_bool_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_map_ret_bool_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1129,20 +1129,20 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_list_ret_map_setl
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "list_ret_map_setlist_param";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::BOOL));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_list_ret_map_setlist_param_param1_1;
   module_ParamService_list_ret_map_setlist_param_param1_1.id = 1;
   module_ParamService_list_ret_map_setlist_param_param1_1.name = "param1";
   module_ParamService_list_ret_map_setlist_param_param1_1.is_optional = false;
-  auto module_ParamService_list_ret_map_setlist_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  auto module_ParamService_list_ret_map_setlist_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
   module_ParamService_list_ret_map_setlist_param_param1_1_type->initialize(module_ParamService_list_ret_map_setlist_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_list_ret_map_setlist_param_param1_1));
   ::apache::thrift::metadata::ThriftField module_ParamService_list_ret_map_setlist_param_param2_2;
   module_ParamService_list_ret_map_setlist_param_param2_2.id = 2;
   module_ParamService_list_ret_map_setlist_param_param2_2.name = "param2";
   module_ParamService_list_ret_map_setlist_param_param2_2.is_optional = false;
-  auto module_ParamService_list_ret_map_setlist_param_param2_2_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING));
+  auto module_ParamService_list_ret_map_setlist_param_param2_2_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE));
   module_ParamService_list_ret_map_setlist_param_param2_2_type->initialize(module_ParamService_list_ret_map_setlist_param_param2_2.type);
   func.arguments.push_back(std::move(module_ParamService_list_ret_map_setlist_param_param2_2));
   service.functions.push_back(std::move(func));
@@ -1151,13 +1151,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_mapsetlistmaplist
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "mapsetlistmapliststring_ret_listlistlist_param";
-  auto func_ret_type = std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  auto func_ret_type = std::make_unique<Map>(std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))), std::make_unique<Map>(std::make_unique<List>(std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1;
   module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1.id = 1;
   module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1.name = "param1";
   module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1.is_optional = false;
-  auto module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1_type = std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32)))));
+  auto module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1_type = std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))));
   module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1_type->initialize(module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_mapsetlistmapliststring_ret_listlistlist_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1166,13 +1166,13 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_typedef_ret_i32_p
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "typedef_ret_i32_param";
-  auto func_ret_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::I32));
+  auto func_ret_type = std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_typedef_ret_i32_param_param1_1;
   module_ParamService_typedef_ret_i32_param_param1_1.id = 1;
   module_ParamService_typedef_ret_i32_param_param1_1.name = "param1";
   module_ParamService_typedef_ret_i32_param_param1_1.is_optional = false;
-  auto module_ParamService_typedef_ret_i32_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_typedef_ret_i32_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_typedef_ret_i32_param_param1_1_type->initialize(module_ParamService_typedef_ret_i32_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_typedef_ret_i32_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1181,7 +1181,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listtypedef_ret_t
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "listtypedef_ret_typedef_param";
-  auto func_ret_type = std::make_unique<List>(std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::I32)));
+  auto func_ret_type = std::make_unique<List>(std::make_unique<Typedef>("module.simpleTypeDef", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField module_ParamService_listtypedef_ret_typedef_param_param1_1;
   module_ParamService_listtypedef_ret_typedef_param_param1_1.id = 1;
@@ -1202,7 +1202,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_p
   module_ParamService_enum_ret_double_param_param1_3.id = 3;
   module_ParamService_enum_ret_double_param_param1_3.name = "param1";
   module_ParamService_enum_ret_double_param_param1_3.is_optional = false;
-  auto module_ParamService_enum_ret_double_param_param1_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  auto module_ParamService_enum_ret_double_param_param1_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_ParamService_enum_ret_double_param_param1_3_type->initialize(module_ParamService_enum_ret_double_param_param1_3.type);
   func.arguments.push_back(std::move(module_ParamService_enum_ret_double_param_param1_3));
   service.functions.push_back(std::move(func));
@@ -1217,7 +1217,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_enum_ret_double_e
   module_ParamService_enum_ret_double_enum_param_param1_3.id = 3;
   module_ParamService_enum_ret_double_enum_param_param1_3.name = "param1";
   module_ParamService_enum_ret_double_enum_param_param1_3.is_optional = false;
-  auto module_ParamService_enum_ret_double_enum_param_param1_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE);
+  auto module_ParamService_enum_ret_double_enum_param_param1_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
   module_ParamService_enum_ret_double_enum_param_param1_3_type->initialize(module_ParamService_enum_ret_double_enum_param_param1_3.type);
   func.arguments.push_back(std::move(module_ParamService_enum_ret_double_enum_param_param1_3));
   ::apache::thrift::metadata::ThriftField module_ParamService_enum_ret_double_enum_param_param2_5;
@@ -1239,7 +1239,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listenum_ret_map_
   module_ParamService_listenum_ret_map_param_param1_1.id = 1;
   module_ParamService_listenum_ret_map_param_param1_1.name = "param1";
   module_ParamService_listenum_ret_map_param_param1_1.is_optional = false;
-  auto module_ParamService_listenum_ret_map_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto module_ParamService_listenum_ret_map_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   module_ParamService_listenum_ret_map_param_param1_1_type->initialize(module_ParamService_listenum_ret_map_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_listenum_ret_map_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1254,7 +1254,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_struct_ret_i16_pa
   module_ParamService_struct_ret_i16_param_param1_1.id = 1;
   module_ParamService_struct_ret_i16_param_param1_1.name = "param1";
   module_ParamService_struct_ret_i16_param_param1_1.is_optional = false;
-  auto module_ParamService_struct_ret_i16_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I16);
+  auto module_ParamService_struct_ret_i16_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE);
   module_ParamService_struct_ret_i16_param_param1_1_type->initialize(module_ParamService_struct_ret_i16_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_struct_ret_i16_param_param1_1));
   service.functions.push_back(std::move(func));
@@ -1269,7 +1269,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_setstruct_ret_set
   module_ParamService_setstruct_ret_set_param_param1_8.id = 8;
   module_ParamService_setstruct_ret_set_param_param1_8.name = "param1";
   module_ParamService_setstruct_ret_set_param_param1_8.is_optional = false;
-  auto module_ParamService_setstruct_ret_set_param_param1_8_type = std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING));
+  auto module_ParamService_setstruct_ret_set_param_param1_8_type = std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE));
   module_ParamService_setstruct_ret_set_param_param1_8_type->initialize(module_ParamService_setstruct_ret_set_param_param1_8.type);
   func.arguments.push_back(std::move(module_ParamService_setstruct_ret_set_param_param1_8));
   service.functions.push_back(std::move(func));
@@ -1284,14 +1284,14 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_union_ret_i32_i32
   module_ParamService_union_ret_i32_i32_param_param1_4.id = 4;
   module_ParamService_union_ret_i32_i32_param_param1_4.name = "param1";
   module_ParamService_union_ret_i32_i32_param_param1_4.is_optional = false;
-  auto module_ParamService_union_ret_i32_i32_param_param1_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_union_ret_i32_i32_param_param1_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_union_ret_i32_i32_param_param1_4_type->initialize(module_ParamService_union_ret_i32_i32_param_param1_4.type);
   func.arguments.push_back(std::move(module_ParamService_union_ret_i32_i32_param_param1_4));
   ::apache::thrift::metadata::ThriftField module_ParamService_union_ret_i32_i32_param_param2_2;
   module_ParamService_union_ret_i32_i32_param_param2_2.id = 2;
   module_ParamService_union_ret_i32_i32_param_param2_2.name = "param2";
   module_ParamService_union_ret_i32_i32_param_param2_2.is_optional = false;
-  auto module_ParamService_union_ret_i32_i32_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto module_ParamService_union_ret_i32_i32_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   module_ParamService_union_ret_i32_i32_param_param2_2_type->initialize(module_ParamService_union_ret_i32_i32_param_param2_2.type);
   func.arguments.push_back(std::move(module_ParamService_union_ret_i32_i32_param_param2_2));
   service.functions.push_back(std::move(func));
@@ -1306,7 +1306,7 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_
   module_ParamService_listunion_string_param_param1_1.id = 1;
   module_ParamService_listunion_string_param_param1_1.name = "param1";
   module_ParamService_listunion_string_param_param1_1.is_optional = false;
-  auto module_ParamService_listunion_string_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto module_ParamService_listunion_string_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_ParamService_listunion_string_param_param1_1_type->initialize(module_ParamService_listunion_string_param_param1_1.type);
   func.arguments.push_back(std::move(module_ParamService_listunion_string_param_param1_1));
   service.functions.push_back(std::move(func));

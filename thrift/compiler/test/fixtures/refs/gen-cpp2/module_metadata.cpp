@@ -40,8 +40,8 @@ void StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   module_MyUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyUnion_fields[] = {
-    {1, "anInteger", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {2, "aString", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "anInteger", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {2, "aString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -62,9 +62,9 @@ void StructMetadata<::cpp2::MyField>::gen(ThriftMetadata& metadata) {
   module_MyField.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyField_fields[] = {
-    {1, "opt_value", true, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {2, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {3, "req_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {1, "opt_value", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {2, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {3, "req_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
   };
   for (const auto& f : module_MyField_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -109,7 +109,7 @@ void StructMetadata<::cpp2::StructWithUnion>::gen(ThriftMetadata& metadata) {
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithUnion_fields[] = {
     {1, "u", false, std::make_unique<Union< ::cpp2::MyUnion>>("module.MyUnion", metadata)},
-    {2, "aDouble", false, std::make_unique<Primitive>(ThriftPrimitiveType::DOUBLE)},
+    {2, "aDouble", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)},
     {3, "f", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
   };
   for (const auto& f : module_StructWithUnion_fields) {
@@ -152,12 +152,12 @@ void StructMetadata<::cpp2::StructWithContainers>::gen(ThriftMetadata& metadata)
   module_StructWithContainers.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithContainers_fields[] = {
-    {1, "list_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {2, "set_ref", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {3, "map_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {4, "list_ref_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {5, "set_ref_shared", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {6, "list_ref_shared_const", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
+    {1, "list_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {2, "set_ref", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {3, "map_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {4, "list_ref_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {5, "set_ref_shared", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {6, "list_ref_shared_const", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
   };
   for (const auto& f : module_StructWithContainers_fields) {
     ::apache::thrift::metadata::ThriftField field;

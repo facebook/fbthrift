@@ -29,19 +29,19 @@ void StructMetadata<::extra::svc::containerStruct2>::gen(ThriftMetadata& metadat
   extra_services_containerStruct2.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   extra_services_containerStruct2_fields[] = {
-    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {101, "req_fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {201, "opt_fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
-    {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
-    {102, "req_fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
-    {202, "opt_fieldB", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::BOOL))},
-    {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {103, "req_fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {203, "opt_fieldC", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::I32))},
-    {4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {105, "req_fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {205, "opt_fieldE", true, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {101, "req_fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {201, "opt_fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
+    {2, "fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))},
+    {102, "req_fieldB", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))},
+    {202, "opt_fieldB", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))},
+    {3, "fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {103, "req_fieldC", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {203, "opt_fieldC", true, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    {4, "fieldD", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {5, "fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {105, "req_fieldE", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {205, "opt_fieldE", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : extra_services_containerStruct2_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -57,7 +57,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_simple_function(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "simple_function";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -65,7 +65,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "throws_function";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function_ex_1;
   extra_services_ExtraService_throws_function_ex_1.id = 1;
@@ -89,13 +89,13 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function2(Thrif
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "throws_function2";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function2_param1_1;
   extra_services_ExtraService_throws_function2_param1_1.id = 1;
   extra_services_ExtraService_throws_function2_param1_1.name = "param1";
   extra_services_ExtraService_throws_function2_param1_1.is_optional = false;
-  auto extra_services_ExtraService_throws_function2_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto extra_services_ExtraService_throws_function2_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   extra_services_ExtraService_throws_function2_param1_1_type->initialize(extra_services_ExtraService_throws_function2_param1_1.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_throws_function2_param1_1));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function2_ex_1;
@@ -120,20 +120,20 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_throws_function3(Thrif
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "throws_function3";
-  auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I32), std::make_unique<Primitive>(ThriftPrimitiveType::STRING));
+  auto func_ret_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE));
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function3_param1_1;
   extra_services_ExtraService_throws_function3_param1_1.id = 1;
   extra_services_ExtraService_throws_function3_param1_1.name = "param1";
   extra_services_ExtraService_throws_function3_param1_1.is_optional = false;
-  auto extra_services_ExtraService_throws_function3_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::BOOL);
+  auto extra_services_ExtraService_throws_function3_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE);
   extra_services_ExtraService_throws_function3_param1_1_type->initialize(extra_services_ExtraService_throws_function3_param1_1.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_throws_function3_param1_1));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function3_param2_3;
   extra_services_ExtraService_throws_function3_param2_3.id = 3;
   extra_services_ExtraService_throws_function3_param2_3.name = "param2";
   extra_services_ExtraService_throws_function3_param2_3.is_optional = false;
-  auto extra_services_ExtraService_throws_function3_param2_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::STRING);
+  auto extra_services_ExtraService_throws_function3_param2_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   extra_services_ExtraService_throws_function3_param2_3_type->initialize(extra_services_ExtraService_throws_function3_param2_3.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_throws_function3_param2_3));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_throws_function3_ex_2;
@@ -158,7 +158,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret(Thrift
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "oneway_void_ret";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }
@@ -166,41 +166,41 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_i32_i3
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "oneway_void_ret_i32_i32_i32_i32_i32_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1.id = 1;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1.name = "param1";
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1_type->initialize(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param1_1));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2.id = 2;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2.name = "param2";
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2_type->initialize(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param2_2));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3.id = 3;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3.name = "param3";
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3_type->initialize(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param3_3));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4.id = 4;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4.name = "param4";
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4_type->initialize(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param4_4));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5.id = 5;
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5.name = "param5";
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::I32);
+  auto extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE);
   extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5_type->initialize(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_i32_i32_i32_i32_i32_param_param5_5));
   service.functions.push_back(std::move(func));
@@ -209,20 +209,20 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_map_se
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "oneway_void_ret_map_setlist_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1.id = 1;
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1.name = "param1";
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING), std::make_unique<Primitive>(ThriftPrimitiveType::I64));
+  auto extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1_type = std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1_type->initialize(extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_map_setlist_param_param1_1));
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3;
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3.id = 3;
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3.name = "param2";
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3.is_optional = false;
-  auto extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3_type = std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING)));
+  auto extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3_type = std::make_unique<Set>(std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
   extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3_type->initialize(extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3.type);
   func.arguments.push_back(std::move(extra_services_ExtraService_oneway_void_ret_map_setlist_param_param2_3));
   service.functions.push_back(std::move(func));
@@ -231,7 +231,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_struct
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "oneway_void_ret_struct_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_struct_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_struct_param_param1_1.id = 1;
@@ -246,7 +246,7 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_listun
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "oneway_void_ret_listunion_param";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   ::apache::thrift::metadata::ThriftField extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1;
   extra_services_ExtraService_oneway_void_ret_listunion_param_param1_1.id = 1;

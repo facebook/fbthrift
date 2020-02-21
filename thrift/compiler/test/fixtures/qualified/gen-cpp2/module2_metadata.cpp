@@ -52,7 +52,7 @@ void StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module2_BigStruct_fields[] = {
     {1, "s", false, std::make_unique<Struct< ::module2::Struct>>("module2.Struct", metadata)},
-    {2, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {2, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : module2_BigStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

@@ -29,9 +29,9 @@ void StructMetadata<::cpp2::House>::gen(ThriftMetadata& metadata) {
   module_House.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_House_fields[] = {
-    {1, "id", false, std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {2, "houseName", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {3, "houseColors", true, std::make_unique<Set>(std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::I64)))},
+    {1, "id", false, std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {2, "houseName", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {3, "houseColors", true, std::make_unique<Set>(std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)))},
   };
   for (const auto& f : module_House_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -52,8 +52,8 @@ void StructMetadata<::cpp2::Field>::gen(ThriftMetadata& metadata) {
   module_Field.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Field_fields[] = {
-    {1, "id", false, std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {2, "fieldType", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {1, "id", false, std::make_unique<Typedef>("module.ColorID", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {2, "fieldType", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : module_Field_fields) {
     ::apache::thrift::metadata::ThriftField field;

@@ -84,7 +84,7 @@ void StructMetadata<::facebook::ns::qwerty::SomeStruct>::gen(ThriftMetadata& met
   enums_SomeStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   enums_SomeStruct_fields[] = {
-    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : enums_SomeStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

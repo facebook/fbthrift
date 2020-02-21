@@ -40,7 +40,7 @@ void StructMetadata<::cpp2::A>::gen(ThriftMetadata& metadata) {
   module_A.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_A_fields[] = {
-    {1, "useless_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
+    {1, "useless_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
   };
   for (const auto& f : module_A_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -56,7 +56,7 @@ void ServiceMetadata<::cpp2::CSvIf>::gen_f(ThriftMetadata& metadata, ThriftServi
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "f";
-  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::VOID);
+  auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
   func_ret_type->initialize(func.returnType);
   service.functions.push_back(std::move(func));
 }

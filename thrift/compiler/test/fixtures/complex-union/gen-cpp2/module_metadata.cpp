@@ -29,12 +29,12 @@ void StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
   module_ComplexUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ComplexUnion_fields[] = {
-    {1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {5, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
-    {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I16), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
-    {14, "stringRef", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "intValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {5, "stringValue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
+    {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
+    {14, "stringRef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_ComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -55,8 +55,8 @@ void StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
   module_ListUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ListUnion_fields[] = {
-    {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::I64))},
-    {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::STRING))},
+    {2, "intListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    {3, "stringListValue", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))},
   };
   for (const auto& f : module_ListUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -77,8 +77,8 @@ void StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
   module_DataUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_DataUnion_fields[] = {
-    {1, "binaryData", false, std::make_unique<Primitive>(ThriftPrimitiveType::BINARY)},
-    {2, "stringData", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "binaryData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)},
+    {2, "stringData", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_DataUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -99,9 +99,9 @@ void StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
   module_Val.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_Val_fields[] = {
-    {1, "strVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {2, "intVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::I16), std::make_unique<Primitive>(ThriftPrimitiveType::STRING)))},
+    {1, "strVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {2, "intVal", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {9, "typedefValue", false, std::make_unique<Typedef>("module.containerTypedef", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)))},
   };
   for (const auto& f : module_Val_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -144,8 +144,8 @@ void StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) 
   module_VirtualComplexUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_VirtualComplexUnion_fields[] = {
-    {1, "thingOne", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
-    {2, "thingTwo", false, std::make_unique<Primitive>(ThriftPrimitiveType::STRING)},
+    {1, "thingOne", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    {2, "thingTwo", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
   };
   for (const auto& f : module_VirtualComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -166,7 +166,7 @@ void StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
   module_NonCopyableStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_NonCopyableStruct_fields[] = {
-    {1, "num", false, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
+    {1, "num", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
   };
   for (const auto& f : module_NonCopyableStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

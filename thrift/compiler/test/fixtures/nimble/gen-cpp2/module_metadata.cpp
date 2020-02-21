@@ -29,10 +29,10 @@ void StructMetadata<::cpp2::BasicTypes>::gen(ThriftMetadata& metadata) {
   module_BasicTypes.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_BasicTypes_fields[] = {
-    {1, "first", false, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {2, "second", true, std::make_unique<Primitive>(ThriftPrimitiveType::I32)},
-    {3, "third", true, std::make_unique<Primitive>(ThriftPrimitiveType::I64)},
-    {4, "isTrue", false, std::make_unique<Primitive>(ThriftPrimitiveType::BOOL)},
+    {1, "first", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {2, "second", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    {3, "third", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    {4, "isTrue", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE)},
   };
   for (const auto& f : module_BasicTypes_fields) {
     ::apache::thrift::metadata::ThriftField field;

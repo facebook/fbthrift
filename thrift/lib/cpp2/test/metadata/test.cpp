@@ -70,11 +70,15 @@ TEST_F(ServiceMetadataTest, ExceptionTest) {
   EXPECT_EQ(ex.fields[0].id, 1);
   EXPECT_EQ(ex.fields[0].name, "reason");
   EXPECT_EQ(ex.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(ex.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      ex.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(ex.fields[1].id, 2);
   EXPECT_EQ(ex.fields[1].name, "level");
   EXPECT_EQ(ex.fields[1].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(ex.fields[1].type.get_t_primitive(), ThriftPrimitiveType::I32);
+  EXPECT_EQ(
+      ex.fields[1].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_I32_TYPE);
 }
 
 TEST_F(ServiceMetadataTest, SimpleStructsTest) {
@@ -88,30 +92,42 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
   EXPECT_EQ(s1.fields[0].id, 1);
   EXPECT_EQ(s1.fields[0].name, "name");
   EXPECT_EQ(s1.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s1.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s1.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s1.fields[1].id, 3);
   EXPECT_EQ(s1.fields[1].name, "capital");
   EXPECT_EQ(s1.fields[1].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s1.fields[1].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s1.fields[1].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s1.fields[2].id, 10);
   EXPECT_EQ(s1.fields[2].name, "population");
   EXPECT_EQ(s1.fields[2].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s1.fields[2].type.get_t_primitive(), ThriftPrimitiveType::DOUBLE);
+  EXPECT_EQ(
+      s1.fields[2].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
 
   auto s2 = metadata.structs.at("simple_structs_test.City");
   EXPECT_EQ(s2.name, "simple_structs_test.City");
   EXPECT_EQ(s2.fields[0].id, 1);
   EXPECT_EQ(s2.fields[0].name, "name");
   EXPECT_EQ(s2.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s2.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s2.fields[1].id, 2);
   EXPECT_EQ(s2.fields[1].name, "country");
   EXPECT_EQ(s2.fields[1].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[1].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s2.fields[1].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s2.fields[2].id, 3);
   EXPECT_EQ(s2.fields[2].name, "population");
   EXPECT_EQ(s2.fields[2].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[2].type.get_t_primitive(), ThriftPrimitiveType::DOUBLE);
+  EXPECT_EQ(
+      s2.fields[2].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
 }
 
 TEST_F(ServiceMetadataTest, StructUnionTest) {
@@ -161,7 +177,9 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
   EXPECT_EQ(s1.fields[0].id, 1);
   EXPECT_EQ(s1.fields[0].name, "name");
   EXPECT_EQ(s1.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s1.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s1.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s1.fields[1].id, 2);
   EXPECT_EQ(s1.fields[1].name, "continent");
   EXPECT_EQ(s1.fields[1].type.getType(), ThriftType::Type::t_enum);
@@ -170,18 +188,24 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
   EXPECT_EQ(s1.fields[2].id, 3);
   EXPECT_EQ(s1.fields[2].name, "capital");
   EXPECT_EQ(s1.fields[2].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s1.fields[2].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s1.fields[2].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s1.fields[3].id, 4);
   EXPECT_EQ(s1.fields[3].name, "population");
   EXPECT_EQ(s1.fields[3].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s1.fields[3].type.get_t_primitive(), ThriftPrimitiveType::DOUBLE);
+  EXPECT_EQ(
+      s1.fields[3].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
 
   auto s2 = metadata.structs.at("nested_structs_test.City");
   EXPECT_EQ(s2.name, "nested_structs_test.City");
   EXPECT_EQ(s2.fields[0].id, 1);
   EXPECT_EQ(s2.fields[0].name, "name");
   EXPECT_EQ(s2.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s2.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s2.fields[1].id, 2);
   EXPECT_EQ(s2.fields[1].name, "country");
   EXPECT_EQ(s2.fields[1].type.getType(), ThriftType::Type::t_struct);
@@ -193,7 +217,9 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
   EXPECT_EQ(s3.fields[0].id, 1);
   EXPECT_EQ(s3.fields[0].name, "bar");
   EXPECT_EQ(s3.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s3.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s3.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s3.fields[1].id, 2);
   EXPECT_EQ(s3.fields[1].name, "foos");
   auto listType = s3.fields[1].type;
@@ -243,17 +269,19 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   EXPECT_EQ(utype1->getType(), ThriftType::Type::t_map);
   auto keyType1 = utype1->get_t_map().keyType.get();
   EXPECT_EQ(keyType1->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(keyType1->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      keyType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
   auto valType1 = utype1->get_t_map().valueType.get();
   EXPECT_EQ(valType1->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(valType1->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      valType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s1.fields[4].id, 5);
   EXPECT_EQ(s1.fields[4].name, "coolString");
   EXPECT_EQ(s1.fields[4].type.getType(), ThriftType::Type::t_typedef);
   EXPECT_EQ(s1.fields[4].type.get_t_typedef().name, "include_test.CoolString");
   auto utype2 = s1.fields[4].type.get_t_typedef().underlyingType.get();
   EXPECT_EQ(utype2->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(utype2->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(utype2->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
 
   // Included enums
   auto e2 = metadata.enums.at("enum_test.Continent");
@@ -272,30 +300,42 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   EXPECT_EQ(s2.fields[0].id, 1);
   EXPECT_EQ(s2.fields[0].name, "name");
   EXPECT_EQ(s2.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s2.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s2.fields[1].id, 3);
   EXPECT_EQ(s2.fields[1].name, "capital");
   EXPECT_EQ(s2.fields[1].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[1].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s2.fields[1].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s2.fields[2].id, 10);
   EXPECT_EQ(s2.fields[2].name, "population");
   EXPECT_EQ(s2.fields[2].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s2.fields[2].type.get_t_primitive(), ThriftPrimitiveType::DOUBLE);
+  EXPECT_EQ(
+      s2.fields[2].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
 
   auto s3 = metadata.structs.at("simple_structs_test.City");
   EXPECT_EQ(s3.name, "simple_structs_test.City");
   EXPECT_EQ(s3.fields[0].id, 1);
   EXPECT_EQ(s3.fields[0].name, "name");
   EXPECT_EQ(s3.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s3.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s3.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s3.fields[1].id, 2);
   EXPECT_EQ(s3.fields[1].name, "country");
   EXPECT_EQ(s3.fields[1].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s3.fields[1].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      s3.fields[1].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(s3.fields[2].id, 3);
   EXPECT_EQ(s3.fields[2].name, "population");
   EXPECT_EQ(s3.fields[2].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(s3.fields[2].type.get_t_primitive(), ThriftPrimitiveType::DOUBLE);
+  EXPECT_EQ(
+      s3.fields[2].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
 
   // Included exceptions
   auto ex1 = metadata.exceptions.at("exception_test.RuntimeException");
@@ -303,11 +343,15 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
   EXPECT_EQ(ex1.fields[0].id, 1);
   EXPECT_EQ(ex1.fields[0].name, "reason");
   EXPECT_EQ(ex1.fields[0].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(ex1.fields[0].type.get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      ex1.fields[0].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_STRING_TYPE);
   EXPECT_EQ(ex1.fields[1].id, 2);
   EXPECT_EQ(ex1.fields[1].name, "level");
   EXPECT_EQ(ex1.fields[1].type.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(ex1.fields[1].type.get_t_primitive(), ThriftPrimitiveType::I32);
+  EXPECT_EQ(
+      ex1.fields[1].type.get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_I32_TYPE);
 }
 
 TEST_F(ServiceMetadataTest, TypedefTest) {
@@ -327,10 +371,12 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
   EXPECT_EQ(utype1->getType(), ThriftType::Type::t_map);
   auto keyType1 = utype1->get_t_map().keyType.get();
   EXPECT_EQ(keyType1->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(keyType1->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      keyType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
   auto valType1 = utype1->get_t_map().valueType.get();
   EXPECT_EQ(valType1->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(valType1->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      valType1->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
 
   // list<map<i32,string>>
   EXPECT_EQ(s1.fields[1].id, 2);
@@ -343,10 +389,11 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
   EXPECT_EQ(elemType->getType(), ThriftType::Type::t_map);
   auto elemKey = elemType->get_t_map().keyType.get();
   EXPECT_EQ(elemKey->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(elemKey->get_t_primitive(), ThriftPrimitiveType::I32);
+  EXPECT_EQ(elemKey->get_t_primitive(), ThriftPrimitiveType::THRIFT_I32_TYPE);
   auto elemValue = elemType->get_t_map().valueType.get();
   EXPECT_EQ(elemValue->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(elemValue->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      elemValue->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
 
   // map<list<string>, map<i32, list<i64>>>
   EXPECT_EQ(s1.fields[2].id, 3);
@@ -358,20 +405,24 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
   // Map key
   auto keyType3 = utype3->get_t_map().keyType.get();
   EXPECT_EQ(keyType3->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(keyType3->get_t_primitive(), ThriftPrimitiveType::STRING);
+  EXPECT_EQ(
+      keyType3->get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
   // Map value (also a map)
   auto valueType3 = utype3->get_t_map().valueType.get();
   EXPECT_EQ(valueType3->getType(), ThriftType::Type::t_map);
   // Inner map's key (i32)
   auto valueKeyType = valueType3->get_t_map().keyType.get();
   EXPECT_EQ(valueKeyType->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(valueKeyType->get_t_primitive(), ThriftPrimitiveType::I32);
+  EXPECT_EQ(
+      valueKeyType->get_t_primitive(), ThriftPrimitiveType::THRIFT_I32_TYPE);
   // Inner map's value (list<i64>)
   auto valueValType = valueType3->get_t_map().valueType.get();
   EXPECT_EQ(valueValType->getType(), ThriftType::Type::t_list);
   auto valueValElemType = valueValType->get_t_list().valueType.get();
   EXPECT_EQ(valueValElemType->getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(valueValElemType->get_t_primitive(), ThriftPrimitiveType::I64);
+  EXPECT_EQ(
+      valueValElemType->get_t_primitive(),
+      ThriftPrimitiveType::THRIFT_I64_TYPE);
 }
 
 TEST_F(ServiceMetadataTest, ServiceTest) {
@@ -386,7 +437,8 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   const auto& f = p.functions[0];
   EXPECT_EQ(f.name, "parentFun");
   EXPECT_EQ(f.returnType.getType(), ThriftType::Type::t_primitive);
-  EXPECT_EQ(f.returnType.get_t_primitive(), ThriftPrimitiveType::I32);
+  EXPECT_EQ(
+      f.returnType.get_t_primitive(), ThriftPrimitiveType::THRIFT_I32_TYPE);
   EXPECT_EQ(f.arguments.size(), 0);
   EXPECT_EQ(f.exceptions.size(), 0);
 
