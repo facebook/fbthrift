@@ -78,10 +78,35 @@ inline ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
   switch (static_cast<ExtFrameType>(extFrameType)) {
     case ExtFrameType::HEADERS_PUSH:
       return static_cast<ExtFrameType>(extFrameType);
-
+    case ExtFrameType::ALIGNED_PAGE:
+      return static_cast<ExtFrameType>(extFrameType);
     default:
       return ExtFrameType::UNKNOWN;
   }
+}
+
+inline bool
+alignTo4k(folly::IOBuf& buffer, size_t startOffset, size_t frameSize) {
+  constexpr int kPageSize = 4096;
+  size_t padding = kPageSize - startOffset % kPageSize;
+  size_t allocationSize = padding + std::max(buffer.length(), frameSize);
+
+  void* rawbuf = nullptr;
+  if (posix_memalign(&rawbuf, kPageSize, allocationSize)) {
+    LOG(ERROR) << "Allocating : " << kPageSize
+               << " aligned memory of size: " << allocationSize << " failed!";
+    return false;
+  }
+  DCHECK(rawbuf);
+
+  auto iobuf = folly::IOBuf::takeOwnership(
+      static_cast<void*>(rawbuf), allocationSize, allocationSize);
+
+  iobuf->trimStart(padding);
+  iobuf->trimEnd(allocationSize - buffer.length() - padding);
+  memcpy(iobuf->writableData(), buffer.writableData(), buffer.length());
+  buffer = *std::move(iobuf);
+  return true;
 }
 
 } // namespace rocket

@@ -355,6 +355,7 @@ void RocketServerConnection::handleStreamFrame(
           std::ignore = serverCallback.onSinkHeaders(std::move(*headers));
           return;
         }
+        case ExtFrameType::ALIGNED_PAGE:
         case ExtFrameType::UNKNOWN:
           if (extFrame.hasIgnore()) {
             return;
@@ -404,43 +405,47 @@ void RocketServerConnection::handleSinkFrame(
     }
   }
 
+  auto handleSinkPayload = [&](PayloadFrame&& payloadFrame) {
+    const bool next = payloadFrame.hasNext();
+    const bool complete = payloadFrame.hasComplete();
+    if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
+      bool notViolateContract = true;
+      if (next) {
+        auto streamPayload =
+            rocket::unpack<StreamPayload>(std::move(*fullPayload));
+        if (streamPayload.hasException()) {
+          notViolateContract =
+              clientCallback.onSinkError(std::move(streamPayload.exception()));
+          if (notViolateContract) {
+            freeStream(streamId);
+          }
+        } else {
+          notViolateContract =
+              clientCallback.onSinkNext(std::move(*streamPayload));
+        }
+      }
+
+      if (complete) {
+        // it is possible final repsonse(error) sent from serverCallback,
+        // serverCallback may be already destoryed.
+        if (streams_.find(streamId) != streams_.end()) {
+          notViolateContract = clientCallback.onSinkComplete();
+        }
+      }
+
+      if (!notViolateContract) {
+        close(folly::make_exception_wrapper<transport::TTransportException>(
+            transport::TTransportException::TTransportExceptionType::
+                STREAMING_CONTRACT_VIOLATION,
+            "receiving sink payload frame after sink completion"));
+      }
+    }
+  };
+
   switch (frameType) {
     case FrameType::PAYLOAD: {
       PayloadFrame payloadFrame(streamId, flags, cursor, std::move(frame));
-      const bool next = payloadFrame.hasNext();
-      const bool complete = payloadFrame.hasComplete();
-      if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
-        bool notViolateContract = true;
-        if (next) {
-          auto streamPayload =
-              rocket::unpack<StreamPayload>(std::move(*fullPayload));
-          if (streamPayload.hasException()) {
-            notViolateContract = clientCallback.onSinkError(
-                std::move(streamPayload.exception()));
-            if (notViolateContract) {
-              freeStream(streamId);
-            }
-          } else {
-            notViolateContract =
-                clientCallback.onSinkNext(std::move(*streamPayload));
-          }
-        }
-
-        if (complete) {
-          // it is possible final repsonse(error) sent from serverCallback,
-          // serverCallback may be already destoryed.
-          if (streams_.find(streamId) != streams_.end()) {
-            notViolateContract = clientCallback.onSinkComplete();
-          }
-        }
-
-        if (!notViolateContract) {
-          close(folly::make_exception_wrapper<transport::TTransportException>(
-              transport::TTransportException::TTransportExceptionType::
-                  STREAMING_CONTRACT_VIOLATION,
-              "receiving sink payload frame after sink completion"));
-        }
-      }
+      handleSinkPayload(std::move(payloadFrame));
     } break;
 
     case FrameType::ERROR: {
@@ -470,6 +475,16 @@ void RocketServerConnection::handleSinkFrame(
       clientCallback.onStreamCancel();
       return freeStream(streamId);
     } break;
+
+    case FrameType::EXT: {
+      ExtFrame extFrame(streamId, flags, cursor, std::move(frame));
+      if (extFrame.extFrameType() == ExtFrameType::ALIGNED_PAGE) {
+        PayloadFrame payloadFrame(
+            streamId, std::move(extFrame.payload()), flags);
+        handleSinkPayload(std::move(payloadFrame));
+        break;
+      }
+    }
 
     default:
       close(folly::make_exception_wrapper<RocketException>(
@@ -515,8 +530,8 @@ bool RocketServerConnection::isBusy() const {
 
 // On graceful shutdown, ConnectionManager will first fire the
 // notifyPendingShutdown() callback for each connection. Then, after the drain
-// period has elapsed, closeWhenIdle() will be called for each connection. Note
-// that ConnectionManager waits for a connection to become un-busy before
+// period has elapsed, closeWhenIdle() will be called for each connection.
+// Note that ConnectionManager waits for a connection to become un-busy before
 // calling closeWhenIdle().
 void RocketServerConnection::notifyPendingShutdown() {
   if (state_ != ConnectionState::ALIVE) {
@@ -638,7 +653,8 @@ void RocketServerConnection::freeStream(StreamId streamId) {
 
   auto it = streams_.find(streamId);
   if (it != streams_.end()) {
-    // Avoid potentially erasing from streams_ map recursively via closeIfNeeded
+    // Avoid potentially erasing from streams_ map recursively via
+    // closeIfNeeded
     auto ctx = std::move(*it);
     streams_.erase(it);
   }

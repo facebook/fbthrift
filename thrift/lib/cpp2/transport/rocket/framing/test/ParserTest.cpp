@@ -75,6 +75,33 @@ TEST(ParserTest, noResizeBufferReadBufEqMaxTest) {
   EXPECT_EQ(parser.getReadBufferSize(), Parser<FakeOwner>::kMaxBufferSize * 2);
 }
 
+TEST(ParserTest, AlignmentTest) {
+  std::string s = "1234567890";
+  auto iobuf = folly::IOBuf::copyBuffer(s);
+  auto res = alignTo4k(
+      *iobuf, 4 /* 4 should be the first on 4k aligned address */, 1000);
+  EXPECT_TRUE(res);
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(iobuf->data() + 4) % 4096u, 0);
+  EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 1000);
+  EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+
+  iobuf = folly::IOBuf::copyBuffer(s);
+  // it is possible the aligned part has not been received yet
+  res = alignTo4k(*iobuf, 256, 1000);
+  EXPECT_TRUE(res);
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(iobuf->data() + 256) % 4096u, 0);
+  EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 1000);
+  EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+
+  iobuf = folly::IOBuf::copyBuffer(s);
+  // it is also possible the frame is smaller than received data
+  res = alignTo4k(*iobuf, 4, 7);
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(iobuf->data() + 4) % 4096u, 0);
+  EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 10);
+  EXPECT_EQ(iobuf->tailroom(), 0);
+  EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+}
+
 } // namespace rocket
 } // namespace thrift
 } // namespace apache
