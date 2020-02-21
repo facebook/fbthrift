@@ -10,9 +10,12 @@
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_metadata.h"
 
-namespace apache::thrift::fixtures::types {
+namespace apache {
+namespace thrift {
+namespace fixtures {
+namespace types {
 class SomeServiceSvIf;
-} // apache::thrift::fixtures::types
+}}}} // namespace apache::thrift::fixtures::types
 
 namespace apache {
 namespace thrift {

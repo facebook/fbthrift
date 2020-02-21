@@ -11,18 +11,22 @@
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_B_metadata.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/reflection_dep_C_metadata.h"
 
-namespace test_cpp2::cpp_reflection {
+namespace test_cpp2 {
+namespace cpp_reflection {
 class service1SvIf;
-} // test_cpp2::cpp_reflection
-namespace test_cpp2::cpp_reflection {
+}} // namespace test_cpp2::cpp_reflection
+namespace test_cpp2 {
+namespace cpp_reflection {
 class service2SvIf;
-} // test_cpp2::cpp_reflection
-namespace test_cpp2::cpp_reflection {
+}} // namespace test_cpp2::cpp_reflection
+namespace test_cpp2 {
+namespace cpp_reflection {
 class service3SvIf;
-} // test_cpp2::cpp_reflection
-namespace test_cpp2::cpp_reflection {
+}} // namespace test_cpp2::cpp_reflection
+namespace test_cpp2 {
+namespace cpp_reflection {
 class service_with_special_namesSvIf;
-} // test_cpp2::cpp_reflection
+}} // namespace test_cpp2::cpp_reflection
 
 namespace apache {
 namespace thrift {

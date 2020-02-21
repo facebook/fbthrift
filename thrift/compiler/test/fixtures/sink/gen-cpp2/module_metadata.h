@@ -11,7 +11,7 @@
 
 namespace cpp2 {
 class SinkServiceSvIf;
-} // cpp2
+} // namespace cpp2
 
 namespace apache {
 namespace thrift {

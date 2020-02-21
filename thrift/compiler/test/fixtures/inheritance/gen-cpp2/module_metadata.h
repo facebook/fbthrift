@@ -11,13 +11,13 @@
 
 namespace cpp2 {
 class MyRootSvIf;
-} // cpp2
+} // namespace cpp2
 namespace cpp2 {
 class MyNodeSvIf;
-} // cpp2
+} // namespace cpp2
 namespace cpp2 {
 class MyLeafSvIf;
-} // cpp2
+} // namespace cpp2
 
 namespace apache {
 namespace thrift {

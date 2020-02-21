@@ -11,7 +11,7 @@
 
 namespace cpp2 {
 class PubSubStreamingServiceSvIf;
-} // cpp2
+} // namespace cpp2
 
 namespace apache {
 namespace thrift {

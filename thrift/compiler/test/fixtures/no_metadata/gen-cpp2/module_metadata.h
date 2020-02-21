@@ -11,5 +11,5 @@
 
 namespace cpp2 {
 class MyServiceSvIf;
-} // cpp2
+} // namespace cpp2
 

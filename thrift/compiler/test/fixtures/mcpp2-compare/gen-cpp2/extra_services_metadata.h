@@ -10,9 +10,10 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
 
-namespace extra::svc {
+namespace extra {
+namespace svc {
 class ExtraServiceSvIf;
-} // extra::svc
+}} // namespace extra::svc
 
 namespace apache {
 namespace thrift {

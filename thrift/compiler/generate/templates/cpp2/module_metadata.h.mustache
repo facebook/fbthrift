@@ -24,9 +24,9 @@
 <%/program:thrift_includes%>
 
 <%#program:services%>
-namespace <% > common/service_namespace_cpp2%> {
+<% > common/service_namespace_cpp2_begin %>
 class <%service:name%>SvIf;
-} // <% > common/service_namespace_cpp2%>
+<% > common/service_namespace_cpp2_end %>
 <%/program:services%>
 
 <%#program:gen_metadata?%>

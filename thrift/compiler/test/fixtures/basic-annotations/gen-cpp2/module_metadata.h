@@ -11,13 +11,13 @@
 
 namespace cpp2 {
 class MyServiceSvIf;
-} // cpp2
+} // namespace cpp2
 namespace cpp2 {
 class MyServicePrioParentSvIf;
-} // cpp2
+} // namespace cpp2
 namespace cpp2 {
 class MyServicePrioChildSvIf;
-} // cpp2
+} // namespace cpp2
 
 namespace apache {
 namespace thrift {
