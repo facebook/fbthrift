@@ -18,6 +18,7 @@
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GTest.h>
+#include <gmock/gmock.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
@@ -31,6 +32,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/InstrumentationTestService.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include <algorithm>
 #include <atomic>
 #include <thread>
 
@@ -499,4 +501,89 @@ INSTANTIATE_TEST_CASE_P(
     testing::Combine(
         testing::Values(0, 3, 20),
         testing::Values(3, 10),
+        testing::Values(true, false)));
+
+class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
+ protected:
+  // test params
+  int finishedMax_;
+  bool requestKeepsRegistryAlive_;
+
+  void SetUp() override {
+    std::tie(finishedMax_, requestKeepsRegistryAlive_) = GetParam();
+  }
+
+  class MockRequest : public ResponseChannelRequest {
+    Cpp2ConnContext mockConnCtx_;
+    Cpp2RequestContext mockReqCtx_{&mockConnCtx_};
+
+    // mock ResponseChannelRequest so that it keeps registry alive.
+    std::shared_ptr<RequestsRegistry> registry_;
+
+   public:
+    MockRequest(
+        RequestsRegistry::DebugStub& stub,
+        std::shared_ptr<RequestsRegistry> registry)
+        : registry_(registry) {
+      new (&stub) RequestsRegistry::DebugStub(
+          *registry,
+          *this,
+          mockReqCtx_,
+          apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL,
+          std::unique_ptr<folly::IOBuf>(),
+          0);
+    }
+
+    auto registry() {
+      return registry_;
+    }
+
+    MOCK_CONST_METHOD0(isActive, bool());
+    MOCK_METHOD0(cancel, void());
+    MOCK_CONST_METHOD0(isOneway, bool());
+    MOCK_METHOD3(
+        sendReply,
+        void(
+            std::unique_ptr<folly::IOBuf>&&,
+            MessageChannel::SendCallback*,
+            folly::Optional<uint32_t>));
+    MOCK_METHOD3(
+        sendErrorWrapped,
+        void(
+            folly::exception_wrapper,
+            std::string,
+            MessageChannel::SendCallback*));
+  };
+};
+
+// Test registry destruction order. The hard case here is
+// when ResponseChannelRequest is the only thing keeping RequestsRegistry
+// alive.
+TEST_P(RegistryTests, Destruction) {
+  auto registry = std::make_shared<RequestsRegistry>(0, 0, finishedMax_);
+
+  auto req = RequestsRegistry::makeRequest<MockRequest>(registry);
+  if (requestKeepsRegistryAlive_) {
+    registry = nullptr;
+  }
+  EXPECT_EQ(req->registry()->getFinished().size(), 0);
+
+  // Create requests and "finish" them (by releasing unique_ptr).
+  auto req2 = RequestsRegistry::makeRequest<MockRequest>(req->registry());
+  req2.reset();
+  EXPECT_EQ(req->registry()->getFinished().size(), std::min(1, finishedMax_));
+
+  auto req3 = RequestsRegistry::makeRequest<MockRequest>(req->registry());
+  req3.reset();
+  EXPECT_EQ(req->registry()->getFinished().size(), std::min(2, finishedMax_));
+
+  // "finish" last active request to initiate tearing down registry.
+  req.reset();
+}
+
+INSTANTIATE_TEST_CASE_P(
+    RegistryTestsSequence,
+    RegistryTests,
+    testing::Combine(
+        testing::Values(0, 1, 2, 10),
         testing::Values(true, false)));
