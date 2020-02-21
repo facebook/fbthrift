@@ -48,6 +48,27 @@ public final class Banal extends java.lang.RuntimeException {
     }
     
 
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Banal read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Banal.Builder builder = new Banal.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       oprot.writeFieldStop();

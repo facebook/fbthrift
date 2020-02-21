@@ -84,6 +84,43 @@ public final class ReqXcep extends java.lang.Exception {
     @ThriftField(value=2, name="errorCode", requiredness=Requiredness.REQUIRED)
     public int getErrorCode() { return errorCode; }
     
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static ReqXcep read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      ReqXcep.Builder builder = new ReqXcep.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MESSAGE:
+          if (__field.type == TType.STRING) {
+            String message = oprot.readString();
+            builder.setMessage(message);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ERRORCODE:
+          if (__field.type == TType.I32) {
+            int errorCode = oprot.readI32();
+            builder.setErrorCode(errorCode);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       if (this.message != null) {

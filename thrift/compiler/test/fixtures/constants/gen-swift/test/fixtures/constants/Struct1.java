@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -111,6 +114,43 @@ public final class Struct1 {
             a,
             b
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Struct1 read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Struct1.Builder builder = new Struct1.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _A:
+          if (__field.type == TType.I32) {
+            int a = oprot.readI32();
+            builder.setA(a);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _B:
+          if (__field.type == TType.STRING) {
+            String b = oprot.readString();
+            builder.setB(b);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

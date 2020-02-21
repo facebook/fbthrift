@@ -176,4 +176,34 @@ public final class VirtualComplexUnion {
       oprot.writeStructEnd();
     }
     
+    public static VirtualComplexUnion read0(TProtocol oprot) throws TException {
+      VirtualComplexUnion res = new VirtualComplexUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _THINGONE:
+            if (__field.type == THING_ONE_FIELD_DESC.type) {
+              String thingOne = oprot.readString();
+              res.value = thingOne;
+            }
+            break;
+          case _THINGTWO:
+            if (__field.type == THING_TWO_FIELD_DESC.type) {
+              String thingTwo = oprot.readString();
+              res.value = thingTwo;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

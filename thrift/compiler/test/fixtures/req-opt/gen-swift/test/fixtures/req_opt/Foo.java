@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -151,6 +154,73 @@ public final class Foo {
             myBools,
             myNumbers
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Foo read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Foo.Builder builder = new Foo.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MYINTEGER:
+          if (__field.type == TType.I32) {
+            int myInteger = oprot.readI32();
+            builder.setMyInteger(myInteger);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYSTRING:
+          if (__field.type == TType.STRING) {
+            String myString = oprot.readString();
+            builder.setMyString(myString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYBOOLS:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Boolean> _iter1 = new ArrayList<Boolean>(Math.max(0, 2*_list1.size));
+            List<Boolean> myBools = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readBool());
+            }
+            oprot.readListEnd();
+            builder.setMyBools(myBools);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYNUMBERS:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> myNumbers = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setMyNumbers(myNumbers);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

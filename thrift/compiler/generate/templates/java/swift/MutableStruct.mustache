@@ -40,6 +40,8 @@ public final class {{struct:javaCapitalName}} {
     @ThriftConstructor
     public {{struct:javaCapitalName}}() {}
 
+    {{> struct/StructBuilder}}
+
     private static final TStruct STRUCT_DESC = new TStruct("{{struct:name}}");
     {{#struct:fields}}
     private {{> FieldType}} {{field:javaName}};
@@ -60,6 +62,8 @@ public final class {{struct:javaCapitalName}} {
     {{> struct/StructEquals}}
 
     {{> struct/StructHashCode}}
+
+    {{> struct/StructRead}}
 
     {{> struct/StructWrite}}
 

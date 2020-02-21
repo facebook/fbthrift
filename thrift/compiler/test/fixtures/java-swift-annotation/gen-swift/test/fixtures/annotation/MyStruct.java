@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -151,6 +154,71 @@ public final class MyStruct {
             detailField,
             detailMap
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyStruct.Builder builder = new MyStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _INTFIELD:
+          if (__field.type == TType.I64) {
+            long intField = oprot.readI64();
+            builder.setIntField(intField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _STRINGFIELD:
+          if (__field.type == TType.STRING) {
+            String stringField = oprot.readString();
+            builder.setStringField(stringField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _DETAILFIELD:
+          if (__field.type == TType.STRING) {
+            String detailField = oprot.readString();
+            builder.setDetailField(detailField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _DETAILMAP:
+          if (__field.type == TType.MAP) {
+            com.foo.FastIntLongMap detailMap;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            com.foo.FastIntLongMap _iter1 = new com.foo.FastIntLongMap();
+            detailMap = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                long _val1 = oprot.readI64();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setDetailMap(detailMap);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

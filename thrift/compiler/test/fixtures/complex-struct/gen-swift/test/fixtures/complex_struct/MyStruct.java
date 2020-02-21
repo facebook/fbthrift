@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -611,6 +614,399 @@ public final class MyStruct {
             sString,
             sByte
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyStruct.Builder builder = new MyStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MYINTFIELD:
+          if (__field.type == TType.I64) {
+            long myIntField = oprot.readI64();
+            builder.setMyIntField(myIntField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYSTRINGFIELD:
+          if (__field.type == TType.STRING) {
+            String myStringField = oprot.readString();
+            builder.setMyStringField(myStringField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDATAFIELD:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.complex_struct.MyDataItem myDataField = test.fixtures.complex_struct.MyDataItem.read0(oprot);
+            builder.setMyDataField(myDataField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYENUM:
+          if (__field.type == TType.I32) {
+            test.fixtures.complex_struct.MyEnum myEnum = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+            builder.setMyEnum(myEnum);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYBOOLFIELD:
+          if (__field.type == TType.BOOL) {
+            boolean myBoolField = oprot.readBool();
+            builder.setMyBoolField(myBoolField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYBYTEFIELD:
+          if (__field.type == TType.BYTE) {
+            byte myByteField = oprot.readByte();
+            builder.setMyByteField(myByteField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYSHORTFIELD:
+          if (__field.type == TType.I16) {
+            short myShortField = oprot.readI16();
+            builder.setMyShortField(myShortField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYLONGFIELD:
+          if (__field.type == TType.I64) {
+            long myLongField = oprot.readI64();
+            builder.setMyLongField(myLongField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField = oprot.readDouble();
+            builder.setMyDoubleField(myDoubleField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LDOUBLE:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Double> _iter1 = new ArrayList<Double>(Math.max(0, 2*_list1.size));
+            List<Double> lDouble = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readDouble());
+            }
+            oprot.readListEnd();
+            builder.setLDouble(lDouble);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LSHORT:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Short> _iter1 = new ArrayList<Short>(Math.max(0, 2*_list1.size));
+            List<Short> lShort = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI16());
+            }
+            oprot.readListEnd();
+            builder.setLShort(lShort);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LINTEGER:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> lInteger = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setLInteger(lInteger);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LLONG:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Long> _iter1 = new ArrayList<Long>(Math.max(0, 2*_list1.size));
+            List<Long> lLong = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI64());
+            }
+            oprot.readListEnd();
+            builder.setLLong(lLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LSTRING:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
+            List<String> lString = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readListEnd();
+            builder.setLString(lString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LBOOL:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Boolean> _iter1 = new ArrayList<Boolean>(Math.max(0, 2*_list1.size));
+            List<Boolean> lBool = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readBool());
+            }
+            oprot.readListEnd();
+            builder.setLBool(lBool);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LBYTE:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Byte> _iter1 = new ArrayList<Byte>(Math.max(0, 2*_list1.size));
+            List<Byte> lByte = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readByte());
+            }
+            oprot.readListEnd();
+            builder.setLByte(lByte);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSHORTSTRING:
+          if (__field.type == TType.MAP) {
+            Map<Short, String> mShortString;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Short, String> _iter1 = new HashMap<Short, String>(Math.max(0, 2*_map1.size));
+            mShortString = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                short _key1 = oprot.readI16();
+                String _val1 = oprot.readString();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMShortString(mShortString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MINTEGERSTRING:
+          if (__field.type == TType.MAP) {
+            Map<Integer, String> mIntegerString;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, String> _iter1 = new HashMap<Integer, String>(Math.max(0, 2*_map1.size));
+            mIntegerString = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                String _val1 = oprot.readString();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMIntegerString(mIntegerString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSTRINGMYSTRUCT:
+          if (__field.type == TType.MAP) {
+            Map<String, test.fixtures.complex_struct.MyStruct> mStringMyStruct;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, test.fixtures.complex_struct.MyStruct> _iter1 = new HashMap<String, test.fixtures.complex_struct.MyStruct>(Math.max(0, 2*_map1.size));
+            mStringMyStruct = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                test.fixtures.complex_struct.MyStruct _val1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMStringMyStruct(mStringMyStruct);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSTRINGBOOL:
+          if (__field.type == TType.MAP) {
+            Map<String, Boolean> mStringBool;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Boolean> _iter1 = new HashMap<String, Boolean>(Math.max(0, 2*_map1.size));
+            mStringBool = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                boolean _val1 = oprot.readBool();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMStringBool(mStringBool);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MINTEGERINTEGER:
+          if (__field.type == TType.MAP) {
+            Map<Integer, Integer> mIntegerInteger;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, Integer> _iter1 = new HashMap<Integer, Integer>(Math.max(0, 2*_map1.size));
+            mIntegerInteger = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                int _val1 = oprot.readI32();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMIntegerInteger(mIntegerInteger);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MINTEGERBOOL:
+          if (__field.type == TType.MAP) {
+            Map<Integer, Boolean> mIntegerBool;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, Boolean> _iter1 = new HashMap<Integer, Boolean>(Math.max(0, 2*_map1.size));
+            mIntegerBool = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                boolean _val1 = oprot.readBool();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMIntegerBool(mIntegerBool);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SSHORT:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Short> _iter1 = new HashSet<Short>(Math.max(0, 2*_set1.size));
+            Set<Short> sShort = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI16());
+            }
+            oprot.readSetEnd();
+            builder.setSShort(sShort);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SMYSTRUCT:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<test.fixtures.complex_struct.MyStruct> _iter1 = new HashSet<test.fixtures.complex_struct.MyStruct>(Math.max(0, 2*_set1.size));
+            Set<test.fixtures.complex_struct.MyStruct> sMyStruct = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(test.fixtures.complex_struct.MyStruct.read0(oprot));
+            }
+            oprot.readSetEnd();
+            builder.setSMyStruct(sMyStruct);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SLONG:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Long> _iter1 = new HashSet<Long>(Math.max(0, 2*_set1.size));
+            Set<Long> sLong = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI64());
+            }
+            oprot.readSetEnd();
+            builder.setSLong(sLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SSTRING:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<String> _iter1 = new HashSet<String>(Math.max(0, 2*_set1.size));
+            Set<String> sString = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readSetEnd();
+            builder.setSString(sString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SBYTE:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Byte> _iter1 = new HashSet<Byte>(Math.max(0, 2*_set1.size));
+            Set<Byte> sByte = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readByte());
+            }
+            oprot.readSetEnd();
+            builder.setSByte(sByte);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

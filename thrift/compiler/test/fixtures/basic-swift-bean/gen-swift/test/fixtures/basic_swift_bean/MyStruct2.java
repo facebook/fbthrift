@@ -28,6 +28,35 @@ public final class MyStruct2 {
     @ThriftConstructor
     public MyStruct2() {}
 
+    public static class Builder {
+        private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
+        @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
+        public Builder setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
+            this.myStruct1 = myStruct1;
+            return this;
+        }
+        private String myString;
+        @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
+        public Builder setMyString(String myString) {
+            this.myString = myString;
+            return this;
+        }
+    
+        public Builder() { }
+        public Builder(MyStruct2 other) {
+            this.myStruct1 = other.myStruct1;
+            this.myString = other.myString;
+        }
+    
+        @ThriftConstructor
+        public MyStruct2 build() {
+            MyStruct2 result = new MyStruct2();
+            result.myStruct1 = this.myStruct1;
+            result.myString = this.myString;
+            return result;
+        }
+    }
+    
     private static final TStruct STRUCT_DESC = new TStruct("MyStruct2");
     private test.fixtures.basic_swift_bean.MyStruct1 myStruct1;
     public static final int _MYSTRUCT1 = 1;
@@ -86,6 +115,43 @@ public final class MyStruct2 {
             myStruct1,
             myString
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyStruct2 read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyStruct2.Builder builder = new MyStruct2.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MYSTRUCT1:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.basic_swift_bean.MyStruct1 myStruct1 = test.fixtures.basic_swift_bean.MyStruct1.read0(oprot);
+            builder.setMyStruct1(myStruct1);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYSTRING:
+          if (__field.type == TType.STRING) {
+            String myString = oprot.readString();
+            builder.setMyString(myString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

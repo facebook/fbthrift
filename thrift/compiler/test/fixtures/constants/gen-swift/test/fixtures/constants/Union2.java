@@ -260,4 +260,46 @@ public final class Union2 {
       oprot.writeStructEnd();
     }
     
+    public static union2 read0(TProtocol oprot) throws TException {
+      union2 res = new union2();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _I:
+            if (__field.type == I_FIELD_DESC.type) {
+              int i = oprot.readI32();
+              res.value = i;
+            }
+            break;
+          case _D:
+            if (__field.type == D_FIELD_DESC.type) {
+              double d = oprot.readDouble();
+              res.value = d;
+            }
+            break;
+          case _S:
+            if (__field.type == S_FIELD_DESC.type) {
+              test.fixtures.constants.Struct1 s = test.fixtures.constants.Struct1.read0(oprot);
+              res.value = s;
+            }
+            break;
+          case _U:
+            if (__field.type == U_FIELD_DESC.type) {
+              test.fixtures.constants.Union1 u = test.fixtures.constants.Union1.read0(oprot);
+              res.value = u;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

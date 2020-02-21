@@ -176,4 +176,34 @@ public final class ValUnion {
       oprot.writeStructEnd();
     }
     
+    public static ValUnion read0(TProtocol oprot) throws TException {
+      ValUnion res = new ValUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _V1:
+            if (__field.type == V1_FIELD_DESC.type) {
+              test.fixtures.complex_union.Val v1 = test.fixtures.complex_union.Val.read0(oprot);
+              res.value = v1;
+            }
+            break;
+          case _V2:
+            if (__field.type == V2_FIELD_DESC.type) {
+              test.fixtures.complex_union.Val v2 = test.fixtures.complex_union.Val.read0(oprot);
+              res.value = v2;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

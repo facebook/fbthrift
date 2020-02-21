@@ -67,6 +67,35 @@ public final class InitialException extends java.lang.Exception {
     @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public String getReason() { return reason; }
     
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static InitialException read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      InitialException.Builder builder = new InitialException.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _REASON:
+          if (__field.type == TType.STRING) {
+            String reason = oprot.readString();
+            builder.setReason(reason);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       if (this.reason != null) {

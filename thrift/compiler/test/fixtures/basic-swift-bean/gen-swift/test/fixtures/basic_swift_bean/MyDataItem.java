@@ -28,6 +28,35 @@ public final class MyDataItem {
     @ThriftConstructor
     public MyDataItem() {}
 
+    public static class Builder {
+        private int field1;
+        @ThriftField(value=1, name="field1", requiredness=Requiredness.NONE)
+        public Builder setField1(int field1) {
+            this.field1 = field1;
+            return this;
+        }
+        private int field2;
+        @ThriftField(value=2, name="field2", requiredness=Requiredness.NONE)
+        public Builder setField2(int field2) {
+            this.field2 = field2;
+            return this;
+        }
+    
+        public Builder() { }
+        public Builder(MyDataItem other) {
+            this.field1 = other.field1;
+            this.field2 = other.field2;
+        }
+    
+        @ThriftConstructor
+        public MyDataItem build() {
+            MyDataItem result = new MyDataItem();
+            result.field1 = this.field1;
+            result.field2 = this.field2;
+            return result;
+        }
+    }
+    
     private static final TStruct STRUCT_DESC = new TStruct("MyDataItem");
     private int field1;
     public static final int _FIELD1 = 1;
@@ -86,6 +115,43 @@ public final class MyDataItem {
             field1,
             field2
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyDataItem read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyDataItem.Builder builder = new MyDataItem.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _FIELD1:
+          if (__field.type == TType.I32) {
+            int field1 = oprot.readI32();
+            builder.setField1(field1);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _FIELD2:
+          if (__field.type == TType.I32) {
+            int field2 = oprot.readI32();
+            builder.setField2(field2);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

@@ -152,6 +152,94 @@ public final class ComplexException extends java.lang.Exception {
     @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static ComplexException read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      ComplexException.Builder builder = new ComplexException.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MESSAGE:
+          if (__field.type == TType.STRING) {
+            String message = oprot.readString();
+            builder.setMessage(message);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LISTSTRINGS:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
+            List<String> listStrings = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readListEnd();
+            builder.setListStrings(listStrings);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ERRORENUM:
+          if (__field.type == TType.I32) {
+            test.fixtures.complex_struct.MyEnum errorEnum = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+            builder.setErrorEnum(errorEnum);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _UNIONERROR:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.complex_struct.MyUnion unionError = test.fixtures.complex_struct.MyUnion.read0(oprot);
+            builder.setUnionError(unionError);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _STRUCTERROR:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.complex_struct.MyStruct structError = test.fixtures.complex_struct.MyStruct.read0(oprot);
+            builder.setStructError(structError);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LSMAP:
+          if (__field.type == TType.MAP) {
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> _iter1 = new it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>();
+            lsMap = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                long _key1 = oprot.readI64();
+                String _val1 = oprot.readString();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setLsMap(lsMap);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       if (this.message != null) {

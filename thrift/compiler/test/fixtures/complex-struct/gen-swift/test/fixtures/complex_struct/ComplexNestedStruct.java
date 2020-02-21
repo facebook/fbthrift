@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -431,6 +434,629 @@ public final class ComplexNestedStruct {
             mapKeySetValInt,
             mapKeyListValSet
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static ComplexNestedStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      ComplexNestedStruct.Builder builder = new ComplexNestedStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _SETOFSETOFINT:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Set<Integer>> _iter1 = new HashSet<Set<Integer>>(Math.max(0, 2*_set1.size));
+            Set<Set<Integer>> setOfSetOfInt = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                TSet _set2 = oprot.readSetBegin();
+            Set<Integer> _iter2 = new HashSet<Integer>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _iter1.add(_iter2);
+            oprot.readSetEnd();
+            }
+            oprot.readSetEnd();
+            builder.setSetOfSetOfInt(setOfSetOfInt);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LISTOFLISTOFLISTOFLISTOFENUM:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> _iter1 = new ArrayList<List<List<List<test.fixtures.complex_struct.MyEnum>>>>(Math.max(0, 2*_list1.size));
+            List<List<List<List<test.fixtures.complex_struct.MyEnum>>>> listofListOfListOfListOfEnum = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                TList _list2 = oprot.readListBegin();
+            List<List<List<test.fixtures.complex_struct.MyEnum>>> _iter2 = new ArrayList<List<List<test.fixtures.complex_struct.MyEnum>>>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                TList _list3 = oprot.readListBegin();
+            List<List<test.fixtures.complex_struct.MyEnum>> _iter3 = new ArrayList<List<test.fixtures.complex_struct.MyEnum>>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                TList _list4 = oprot.readListBegin();
+            List<test.fixtures.complex_struct.MyEnum> _iter4 = new ArrayList<test.fixtures.complex_struct.MyEnum>(Math.max(0, 2*_list4.size));
+            if (_list4.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i4 = 0; _i4 < _list4.size; ++_i4) {
+                _iter4.add(test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32()));
+            }
+            _iter3.add(_iter4);
+            oprot.readListEnd();
+            }
+            _iter2.add(_iter3);
+            oprot.readListEnd();
+            }
+            _iter1.add(_iter2);
+            oprot.readListEnd();
+            }
+            oprot.readListEnd();
+            builder.setListofListOfListOfListOfEnum(listofListOfListOfListOfEnum);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LISTOFLISTOFMYSTRUCT:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<List<test.fixtures.complex_struct.MyStruct>> _iter1 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, 2*_list1.size));
+            List<List<test.fixtures.complex_struct.MyStruct>> listOfListOfMyStruct = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                TList _list2 = oprot.readListBegin();
+            List<test.fixtures.complex_struct.MyStruct> _iter2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(test.fixtures.complex_struct.MyStruct.read0(oprot));
+            }
+            _iter1.add(_iter2);
+            oprot.readListEnd();
+            }
+            oprot.readListEnd();
+            builder.setListOfListOfMyStruct(listOfListOfMyStruct);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SETOFLISTOFLISTOFLONG:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<List<List<Long>>> _iter1 = new HashSet<List<List<Long>>>(Math.max(0, 2*_set1.size));
+            Set<List<List<Long>>> setOfListOfListOfLong = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                TList _list2 = oprot.readListBegin();
+            List<List<Long>> _iter2 = new ArrayList<List<Long>>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                TList _list3 = oprot.readListBegin();
+            List<Long> _iter3 = new ArrayList<Long>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                _iter3.add(oprot.readI64());
+            }
+            _iter2.add(_iter3);
+            oprot.readListEnd();
+            }
+            _iter1.add(_iter2);
+            oprot.readListEnd();
+            }
+            oprot.readSetEnd();
+            builder.setSetOfListOfListOfLong(setOfListOfListOfLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SETOFSETOFSETOFLONG:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Set<Set<Long>>> _iter1 = new HashSet<Set<Set<Long>>>(Math.max(0, 2*_set1.size));
+            Set<Set<Set<Long>>> setOfSetOfsetOfLong = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                TSet _set2 = oprot.readSetBegin();
+            Set<Set<Long>> _iter2 = new HashSet<Set<Long>>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                TSet _set3 = oprot.readSetBegin();
+            Set<Long> _iter3 = new HashSet<Long>(Math.max(0, 2*_set3.size));
+            if (_set3.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _set3.size; ++_i3) {
+                _iter3.add(oprot.readI64());
+            }
+            _iter2.add(_iter3);
+            oprot.readSetEnd();
+            }
+            _iter1.add(_iter2);
+            oprot.readSetEnd();
+            }
+            oprot.readSetEnd();
+            builder.setSetOfSetOfsetOfLong(setOfSetOfsetOfLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPSTRUCTLISTOFLISTOFLONG:
+          if (__field.type == TType.MAP) {
+            Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> mapStructListOfListOfLong;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, List<List<test.fixtures.complex_struct.MyStruct>>> _iter1 = new HashMap<Integer, List<List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, 2*_map1.size));
+            mapStructListOfListOfLong = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                List<List<test.fixtures.complex_struct.MyStruct>> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<List<test.fixtures.complex_struct.MyStruct>> _iter2 = new ArrayList<List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                TList _list3 = oprot.readListBegin();
+            List<test.fixtures.complex_struct.MyStruct> _iter3 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                _iter3.add(test.fixtures.complex_struct.MyStruct.read0(oprot));
+            }
+            _iter2.add(_iter3);
+            oprot.readListEnd();
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapStructListOfListOfLong(mapStructListOfListOfLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MKEYSTRUCTVALINT:
+          if (__field.type == TType.MAP) {
+            Map<test.fixtures.complex_struct.MyStruct, Integer> mKeyStructValInt;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<test.fixtures.complex_struct.MyStruct, Integer> _iter1 = new HashMap<test.fixtures.complex_struct.MyStruct, Integer>(Math.max(0, 2*_map1.size));
+            mKeyStructValInt = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                test.fixtures.complex_struct.MyStruct _key1 = test.fixtures.complex_struct.MyStruct.read0(oprot);
+                int _val1 = oprot.readI32();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMKeyStructValInt(mKeyStructValInt);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LISTOFMAPKEYINTVALINT:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Map<Integer, Integer>> _iter1 = new ArrayList<Map<Integer, Integer>>(Math.max(0, 2*_list1.size));
+            List<Map<Integer, Integer>> listOfMapKeyIntValInt = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<Integer, Integer> _iter2 = new HashMap<Integer, Integer>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                int _key2 = oprot.readI32();
+                int _val2 = oprot.readI32();
+                _iter2.put(_key2, _val2);
+            }
+            _iter1.add(_iter2);
+            }
+            oprot.readMapEnd();
+            }
+            oprot.readListEnd();
+            builder.setListOfMapKeyIntValInt(listOfMapKeyIntValInt);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LISTOFMAPKEYSTRVALLIST:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> _iter1 = new ArrayList<Map<String, List<test.fixtures.complex_struct.MyStruct>>>(Math.max(0, 2*_list1.size));
+            List<Map<String, List<test.fixtures.complex_struct.MyStruct>>> listOfMapKeyStrValList = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<String, List<test.fixtures.complex_struct.MyStruct>> _iter2 = new HashMap<String, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                String _key2 = oprot.readString();
+                List<test.fixtures.complex_struct.MyStruct> _val2;
+                TList _list3 = oprot.readListBegin();
+            List<test.fixtures.complex_struct.MyStruct> _iter3 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                _iter3.add(test.fixtures.complex_struct.MyStruct.read0(oprot));
+            }
+            _val2 = _iter3;
+            oprot.readListEnd();
+                _iter2.put(_key2, _val2);
+            }
+            _iter1.add(_iter2);
+            }
+            oprot.readMapEnd();
+            }
+            oprot.readListEnd();
+            builder.setListOfMapKeyStrValList(listOfMapKeyStrValList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYSETVALLONG:
+          if (__field.type == TType.MAP) {
+            Map<Set<Integer>, Long> mapKeySetValLong;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Set<Integer>, Long> _iter1 = new HashMap<Set<Integer>, Long>(Math.max(0, 2*_map1.size));
+            mapKeySetValLong = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                Set<Integer> _key1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<Integer> _iter2 = new HashSet<Integer>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _key1 = _iter2;
+            oprot.readSetEnd();
+                                long _val1 = oprot.readI64();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeySetValLong(mapKeySetValLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYLISTVALLONG:
+          if (__field.type == TType.MAP) {
+            Map<List<String>, Integer> mapKeyListValLong;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<List<String>, Integer> _iter1 = new HashMap<List<String>, Integer>(Math.max(0, 2*_map1.size));
+            mapKeyListValLong = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                List<String> _key1;
+                TList _list2 = oprot.readListBegin();
+            List<String> _iter2 = new ArrayList<String>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readString());
+            }
+            _key1 = _iter2;
+            oprot.readListEnd();
+                                int _val1 = oprot.readI32();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeyListValLong(mapKeyListValLong);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYMAPVALMAP:
+          if (__field.type == TType.MAP) {
+            Map<Map<Integer, String>, Map<Integer, String>> mapKeyMapValMap;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Map<Integer, String>, Map<Integer, String>> _iter1 = new HashMap<Map<Integer, String>, Map<Integer, String>>(Math.max(0, 2*_map1.size));
+            mapKeyMapValMap = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                Map<Integer, String> _key1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<Integer, String> _iter2 = new HashMap<Integer, String>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                int _key2 = oprot.readI32();
+                String _val2 = oprot.readString();
+                _iter2.put(_key2, _val2);
+            }
+            _key1 = _iter2;
+            }
+            oprot.readMapEnd();
+                                Map<Integer, String> _val1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<Integer, String> _iter2 = new HashMap<Integer, String>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                int _key2 = oprot.readI32();
+                String _val2 = oprot.readString();
+                _iter2.put(_key2, _val2);
+            }
+            _val1 = _iter2;
+            }
+            oprot.readMapEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeyMapValMap(mapKeyMapValMap);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYSETVALMAP:
+          if (__field.type == TType.MAP) {
+            Map<Set<List<Integer>>, Map<List<Set<String>>, String>> mapKeySetValMap;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Set<List<Integer>>, Map<List<Set<String>>, String>> _iter1 = new HashMap<Set<List<Integer>>, Map<List<Set<String>>, String>>(Math.max(0, 2*_map1.size));
+            mapKeySetValMap = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                Set<List<Integer>> _key1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<List<Integer>> _iter2 = new HashSet<List<Integer>>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                TList _list3 = oprot.readListBegin();
+            List<Integer> _iter3 = new ArrayList<Integer>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                _iter3.add(oprot.readI32());
+            }
+            _iter2.add(_iter3);
+            oprot.readListEnd();
+            }
+            _key1 = _iter2;
+            oprot.readSetEnd();
+                                Map<List<Set<String>>, String> _val1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<List<Set<String>>, String> _iter2 = new HashMap<List<Set<String>>, String>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                List<Set<String>> _key2;
+                TList _list3 = oprot.readListBegin();
+            List<Set<String>> _iter3 = new ArrayList<Set<String>>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                TSet _set4 = oprot.readSetBegin();
+            Set<String> _iter4 = new HashSet<String>(Math.max(0, 2*_set4.size));
+            if (_set4.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i4 = 0; _i4 < _set4.size; ++_i4) {
+                _iter4.add(oprot.readString());
+            }
+            _iter3.add(_iter4);
+            oprot.readSetEnd();
+            }
+            _key2 = _iter3;
+            oprot.readListEnd();
+                                String _val2 = oprot.readString();
+                _iter2.put(_key2, _val2);
+            }
+            _val1 = _iter2;
+            }
+            oprot.readMapEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeySetValMap(mapKeySetValMap);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _NESTEDMAPS:
+          if (__field.type == TType.MAP) {
+            Map<Map<Map<Integer, String>, String>, Map<Integer, String>> nestedMaps;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Map<Map<Integer, String>, String>, Map<Integer, String>> _iter1 = new HashMap<Map<Map<Integer, String>, String>, Map<Integer, String>>(Math.max(0, 2*_map1.size));
+            nestedMaps = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                Map<Map<Integer, String>, String> _key1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<Map<Integer, String>, String> _iter2 = new HashMap<Map<Integer, String>, String>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                Map<Integer, String> _key2;
+                            {
+            TMap _map3 = oprot.readMapBegin();
+            Map<Integer, String> _iter3 = new HashMap<Integer, String>(Math.max(0, 2*_map3.size));
+            if (_map3.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _map3.size; ++_i3) {
+                int _key3 = oprot.readI32();
+                String _val3 = oprot.readString();
+                _iter3.put(_key3, _val3);
+            }
+            _key2 = _iter3;
+            }
+            oprot.readMapEnd();
+                                String _val2 = oprot.readString();
+                _iter2.put(_key2, _val2);
+            }
+            _key1 = _iter2;
+            }
+            oprot.readMapEnd();
+                                Map<Integer, String> _val1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<Integer, String> _iter2 = new HashMap<Integer, String>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                int _key2 = oprot.readI32();
+                String _val2 = oprot.readString();
+                _iter2.put(_key2, _val2);
+            }
+            _val1 = _iter2;
+            }
+            oprot.readMapEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setNestedMaps(nestedMaps);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYINTVALLIST:
+          if (__field.type == TType.MAP) {
+            Map<Integer, List<test.fixtures.complex_struct.MyStruct>> mapKeyIntValList;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, List<test.fixtures.complex_struct.MyStruct>> _iter1 = new HashMap<Integer, List<test.fixtures.complex_struct.MyStruct>>(Math.max(0, 2*_map1.size));
+            mapKeyIntValList = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                List<test.fixtures.complex_struct.MyStruct> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<test.fixtures.complex_struct.MyStruct> _iter2 = new ArrayList<test.fixtures.complex_struct.MyStruct>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(test.fixtures.complex_struct.MyStruct.read0(oprot));
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeyIntValList(mapKeyIntValList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYINTVALSET:
+          if (__field.type == TType.MAP) {
+            Map<Integer, Set<Boolean>> mapKeyIntValSet;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, Set<Boolean>> _iter1 = new HashMap<Integer, Set<Boolean>>(Math.max(0, 2*_map1.size));
+            mapKeyIntValSet = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                Set<Boolean> _val1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<Boolean> _iter2 = new HashSet<Boolean>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readBool());
+            }
+            _val1 = _iter2;
+            oprot.readSetEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeyIntValSet(mapKeyIntValSet);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYSETVALINT:
+          if (__field.type == TType.MAP) {
+            Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> mapKeySetValInt;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Set<Boolean>, test.fixtures.complex_struct.MyEnum> _iter1 = new HashMap<Set<Boolean>, test.fixtures.complex_struct.MyEnum>(Math.max(0, 2*_map1.size));
+            mapKeySetValInt = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                Set<Boolean> _key1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<Boolean> _iter2 = new HashSet<Boolean>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readBool());
+            }
+            _key1 = _iter2;
+            oprot.readSetEnd();
+                                test.fixtures.complex_struct.MyEnum _val1 = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeySetValInt(mapKeySetValInt);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAPKEYLISTVALSET:
+          if (__field.type == TType.MAP) {
+            Map<List<Integer>, Set<Map<Double, String>>> mapKeyListValSet;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<List<Integer>, Set<Map<Double, String>>> _iter1 = new HashMap<List<Integer>, Set<Map<Double, String>>>(Math.max(0, 2*_map1.size));
+            mapKeyListValSet = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                List<Integer> _key1;
+                TList _list2 = oprot.readListBegin();
+            List<Integer> _iter2 = new ArrayList<Integer>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _key1 = _iter2;
+            oprot.readListEnd();
+                                Set<Map<Double, String>> _val1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<Map<Double, String>> _iter2 = new HashSet<Map<Double, String>>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                            {
+            TMap _map3 = oprot.readMapBegin();
+            Map<Double, String> _iter3 = new HashMap<Double, String>(Math.max(0, 2*_map3.size));
+            if (_map3.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _map3.size; ++_i3) {
+                double _key3 = oprot.readDouble();
+                String _val3 = oprot.readString();
+                _iter3.put(_key3, _val3);
+            }
+            _iter2.add(_iter3);
+            }
+            oprot.readMapEnd();
+            }
+            _val1 = _iter2;
+            oprot.readSetEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapKeyListValSet(mapKeyListValSet);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

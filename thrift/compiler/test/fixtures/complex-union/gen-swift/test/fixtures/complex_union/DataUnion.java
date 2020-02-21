@@ -178,4 +178,34 @@ public final class DataUnion {
       oprot.writeStructEnd();
     }
     
+    public static DataUnion read0(TProtocol oprot) throws TException {
+      DataUnion res = new DataUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _BINARYDATA:
+            if (__field.type == BINARY_DATA_FIELD_DESC.type) {
+              byte[] binaryData = oprot.readBinary().array();
+              res.value = binaryData;
+            }
+            break;
+          case _STRINGDATA:
+            if (__field.type == STRING_DATA_FIELD_DESC.type) {
+              String stringData = oprot.readString();
+              res.value = stringData;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

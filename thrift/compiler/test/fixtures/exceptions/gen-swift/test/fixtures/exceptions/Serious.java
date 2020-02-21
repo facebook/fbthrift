@@ -67,6 +67,35 @@ public final class Serious extends java.lang.RuntimeException {
     @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
     
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Serious read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Serious.Builder builder = new Serious.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _SONNET:
+          if (__field.type == TType.STRING) {
+            String sonnet = oprot.readString();
+            builder.setSonnet(sonnet);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       if (this.sonnet != null) {

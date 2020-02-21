@@ -18,6 +18,10 @@ namespace java com.facebook.thrift.java.test
 namespace java.swift com.facebook.thrift.javaswift.test
 namespace android com.facebook.thrift.android.test
 
+typedef map<i32, i64>
+  (java.swift.type = "it.unimi.dsi.fastutil.ints.Int2LongArrayMap") FMap
+
+
 struct MySimpleStruct {
   1: i64 id,
   2: string name,
@@ -68,6 +72,7 @@ struct SimpleCollectionStruct {
 }
 
 enum SmallEnum {
+  UNKNOWN = 0, // default value
   RED = 1,
   BLUE = 2,
   GREEN = 3,
@@ -110,4 +115,34 @@ struct MyMapStruct {
 
 struct MyStringStruct {
   1: string aLongString
+}
+
+typedef i64 PersonID
+
+struct MyOptioalStruct {
+  1: PersonID id;
+  2: string name;
+  3: optional i16 ageShortOptional;
+  4: i16 ageShort;
+  5: optional i64 ageLongOptional;
+  6: i64 ageLong;
+  7: optional MySimpleStruct mySimpleStructOptional;
+  8: MySimpleStruct mySimpleStruct;
+  9: optional map<i32, string> mIntegerStringOptional;
+  10: map<i32, string> mIntegerString;
+  11: optional SmallEnum smallEnumOptional;
+  12: SmallEnum mySmallEnum;
+}
+
+struct TypeRemapped {
+  1: map<i64, string>
+  (java.swift.type =
+  "it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String>") lsMap,
+  2: map<i32, FMap> (
+    java.swift.type =
+    "it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap<it.unimi.dsi.fastutil.ints.Int2LongArrayMap>")
+    ioMap,
+  4: binary (java.swift.type = "java.nio.ByteBuffer") byteBufferForBinary,
+  5: binary  byteArrayForBinary,
+  6: list<FMap> myListOfFMaps,
 }

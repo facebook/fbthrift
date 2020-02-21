@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -171,6 +174,67 @@ public final class Vehicle {
             name,
             hasAC
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Vehicle read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Vehicle.Builder builder = new Vehicle.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _COLOR:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.optionals.Color color = test.fixtures.optionals.Color.read0(oprot);
+            builder.setColor(color);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LICENSEPLATE:
+          if (__field.type == TType.STRING) {
+            String licensePlate = oprot.readString();
+            builder.setLicensePlate(licensePlate);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _DESCRIPTION:
+          if (__field.type == TType.STRING) {
+            String description = oprot.readString();
+            builder.setDescription(description);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _NAME:
+          if (__field.type == TType.STRING) {
+            String name = oprot.readString();
+            builder.setName(name);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _HASAC:
+          if (__field.type == TType.BOOL) {
+            Boolean hasAC = oprot.readBool();
+            builder.setHasAC(hasAC);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

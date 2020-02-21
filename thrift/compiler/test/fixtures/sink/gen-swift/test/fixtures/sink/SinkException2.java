@@ -67,6 +67,35 @@ public final class SinkException2 extends java.lang.Exception {
     @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public long getReason() { return reason; }
     
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static SinkException2 read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      SinkException2.Builder builder = new SinkException2.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _REASON:
+          if (__field.type == TType.I64) {
+            long reason = oprot.readI64();
+            builder.setReason(reason);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       oprot.writeFieldBegin(REASON_FIELD_DESC);

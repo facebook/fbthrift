@@ -67,6 +67,35 @@ public final class Fiery extends java.lang.RuntimeException {
     @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
     
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Fiery read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Fiery.Builder builder = new Fiery.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MESSAGE:
+          if (__field.type == TType.STRING) {
+            String message = oprot.readString();
+            builder.setMessage(message);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
+    }
+    
     public void write0(TProtocol oprot) throws TException {
       oprot.writeStructBegin(STRUCT_DESC);
       if (this.message != null) {

@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -151,6 +154,59 @@ public final class MyStruct {
             annotationWithQuote,
             class_
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyStruct.Builder builder = new MyStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MAJOR:
+          if (__field.type == TType.I64) {
+            long major = oprot.readI64();
+            builder.setMajor(major);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _PACKAGE:
+          if (__field.type == TType.STRING) {
+            String _package = oprot.readString();
+            builder.setPackage(_package);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ANNOTATION_WITH_QUOTE:
+          if (__field.type == TType.STRING) {
+            String annotationWithQuote = oprot.readString();
+            builder.setAnnotationWithQuote(annotationWithQuote);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _CLASS_:
+          if (__field.type == TType.STRING) {
+            String class_ = oprot.readString();
+            builder.setClass_(class_);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

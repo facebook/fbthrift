@@ -25,9 +25,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -55,6 +58,8 @@ public final class {{struct:javaCapitalName}} {
     {{> struct/StructEquals}}
 
     {{> struct/StructHashCode}}
+
+    {{> struct/StructRead}}
 
     {{> struct/StructWrite}}
 

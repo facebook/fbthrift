@@ -28,6 +28,35 @@ public final class LegacyStruct {
     @ThriftConstructor
     public LegacyStruct() {}
 
+    public static class Builder {
+        private int normal;
+        @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
+        public Builder setNormal(int normal) {
+            this.normal = normal;
+            return this;
+        }
+        private int bad;
+        @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
+        public Builder setBad(int bad) {
+            this.bad = bad;
+            return this;
+        }
+    
+        public Builder() { }
+        public Builder(LegacyStruct other) {
+            this.normal = other.normal;
+            this.bad = other.bad;
+        }
+    
+        @ThriftConstructor
+        public LegacyStruct build() {
+            LegacyStruct result = new LegacyStruct();
+            result.normal = this.normal;
+            result.bad = this.bad;
+            return result;
+        }
+    }
+    
     private static final TStruct STRUCT_DESC = new TStruct("LegacyStruct");
     private int normal;
     public static final int _NORMAL = 1;
@@ -86,6 +115,43 @@ public final class LegacyStruct {
             normal,
             bad
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static LegacyStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      LegacyStruct.Builder builder = new LegacyStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _NORMAL:
+          if (__field.type == TType.I32) {
+            int normal = oprot.readI32();
+            builder.setNormal(normal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _BAD:
+          if (__field.type == TType.I32) {
+            int bad = oprot.readI32();
+            builder.setBad(bad);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

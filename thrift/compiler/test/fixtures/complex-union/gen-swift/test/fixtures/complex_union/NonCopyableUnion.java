@@ -137,4 +137,28 @@ public final class NonCopyableUnion {
       oprot.writeStructEnd();
     }
     
+    public static NonCopyableUnion read0(TProtocol oprot) throws TException {
+      NonCopyableUnion res = new NonCopyableUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _S:
+            if (__field.type == S_FIELD_DESC.type) {
+              test.fixtures.complex_union.NonCopyableStruct s = test.fixtures.complex_union.NonCopyableStruct.read0(oprot);
+              res.value = s;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

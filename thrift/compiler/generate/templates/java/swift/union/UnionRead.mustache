@@ -1,0 +1,50 @@
+{{!
+
+  Copyright (c) Facebook, Inc. and its affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+public static {{struct:name}} read0(TProtocol oprot) throws TException {
+  {{struct:name}} res = new {{struct:name}}();
+  res.value = null;
+  res.id = (short) 0;
+  oprot.readStructBegin();
+  TField __field = oprot.readFieldBegin();
+  if (__field.type != TType.STOP) {
+      switch (__field.id) {
+      {{#struct:fields}}
+      case _{{field:javaAllCapsName}}:
+        {{#field:isSupportedApacheType?}}
+        if (__field.type == {{field:javaTFieldName}}.type) {
+          {{#field:type}}
+          {{field:nestedDepth++}}{{> ReadType}}{{field:nestedDepth--}}
+          {{/field:type}}
+          res.value = {{field:javaName}};
+        }
+        break;
+        {{/field:isSupportedApacheType?}}{{!
+        }}{{^field:isSupportedApacheType?}}
+          throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:{{field:javaName}} Type:{{> FieldType}}");
+        {{/field:isSupportedApacheType?}}
+      {{/struct:fields}}
+      }
+      TProtocolUtil.skip(oprot, __field.type);
+    if (res.value != null) {
+      res.id = __field.id;
+    }
+    oprot.readFieldEnd();
+  }
+  oprot.readStructEnd();
+  return res;
+}

@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -671,6 +674,267 @@ public final class MyNomralStruct {
             myDoubleField29,
             myDoubleField30
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyNomralStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyNomralStruct.Builder builder = new MyNomralStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MSG1:
+          if (__field.type == TType.STRING) {
+            String msg1 = oprot.readString();
+            builder.setMsg1(msg1);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG2:
+          if (__field.type == TType.STRING) {
+            String msg2 = oprot.readString();
+            builder.setMsg2(msg2);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG3:
+          if (__field.type == TType.STRING) {
+            String msg3 = oprot.readString();
+            builder.setMsg3(msg3);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG4:
+          if (__field.type == TType.STRING) {
+            String msg4 = oprot.readString();
+            builder.setMsg4(msg4);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG5:
+          if (__field.type == TType.STRING) {
+            String msg5 = oprot.readString();
+            builder.setMsg5(msg5);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG6:
+          if (__field.type == TType.STRING) {
+            String msg6 = oprot.readString();
+            builder.setMsg6(msg6);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG7:
+          if (__field.type == TType.STRING) {
+            String msg7 = oprot.readString();
+            builder.setMsg7(msg7);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG8:
+          if (__field.type == TType.STRING) {
+            String msg8 = oprot.readString();
+            builder.setMsg8(msg8);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG9:
+          if (__field.type == TType.STRING) {
+            String msg9 = oprot.readString();
+            builder.setMsg9(msg9);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD10:
+          if (__field.type == TType.I32) {
+            int myIntField10 = oprot.readI32();
+            builder.setMyIntField10(myIntField10);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD11:
+          if (__field.type == TType.I32) {
+            int myIntField11 = oprot.readI32();
+            builder.setMyIntField11(myIntField11);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD12:
+          if (__field.type == TType.I32) {
+            int myIntField12 = oprot.readI32();
+            builder.setMyIntField12(myIntField12);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD13:
+          if (__field.type == TType.I32) {
+            int myIntField13 = oprot.readI32();
+            builder.setMyIntField13(myIntField13);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD14:
+          if (__field.type == TType.I32) {
+            int myIntField14 = oprot.readI32();
+            builder.setMyIntField14(myIntField14);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD15:
+          if (__field.type == TType.I32) {
+            int myIntField15 = oprot.readI32();
+            builder.setMyIntField15(myIntField15);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD16:
+          if (__field.type == TType.I32) {
+            int myIntField16 = oprot.readI32();
+            builder.setMyIntField16(myIntField16);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD17:
+          if (__field.type == TType.I32) {
+            int myIntField17 = oprot.readI32();
+            builder.setMyIntField17(myIntField17);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD18:
+          if (__field.type == TType.I32) {
+            int myIntField18 = oprot.readI32();
+            builder.setMyIntField18(myIntField18);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD19:
+          if (__field.type == TType.I32) {
+            int myIntField19 = oprot.readI32();
+            builder.setMyIntField19(myIntField19);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD20:
+          if (__field.type == TType.I32) {
+            int myIntField20 = oprot.readI32();
+            builder.setMyIntField20(myIntField20);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD21:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField21 = oprot.readDouble();
+            builder.setMyDoubleField21(myDoubleField21);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD22:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField22 = oprot.readDouble();
+            builder.setMyDoubleField22(myDoubleField22);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD23:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField23 = oprot.readDouble();
+            builder.setMyDoubleField23(myDoubleField23);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD24:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField24 = oprot.readDouble();
+            builder.setMyDoubleField24(myDoubleField24);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD25:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField25 = oprot.readDouble();
+            builder.setMyDoubleField25(myDoubleField25);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD26:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField26 = oprot.readDouble();
+            builder.setMyDoubleField26(myDoubleField26);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD27:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField27 = oprot.readDouble();
+            builder.setMyDoubleField27(myDoubleField27);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD28:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField28 = oprot.readDouble();
+            builder.setMyDoubleField28(myDoubleField28);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD29:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField29 = oprot.readDouble();
+            builder.setMyDoubleField29(myDoubleField29);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD30:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField30 = oprot.readDouble();
+            builder.setMyDoubleField30(myDoubleField30);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

@@ -184,4 +184,48 @@ public final class ListUnion {
       oprot.writeStructEnd();
     }
     
+    public static ListUnion read0(TProtocol oprot) throws TException {
+      ListUnion res = new ListUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _INTLISTVALUE:
+            if (__field.type == INT_LIST_VALUE_FIELD_DESC.type) {
+              TList _list1 = oprot.readListBegin();
+            List<Long> _iter1 = new ArrayList<Long>(Math.max(0, 2*_list1.size));
+            List<Long> intListValue = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI64());
+            }
+            oprot.readListEnd();
+              res.value = intListValue;
+            }
+            break;
+          case _STRINGLISTVALUE:
+            if (__field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              TList _list1 = oprot.readListBegin();
+            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
+            List<String> stringListValue = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readListEnd();
+              res.value = stringListValue;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

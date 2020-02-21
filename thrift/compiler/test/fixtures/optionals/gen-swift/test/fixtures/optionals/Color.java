@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -151,6 +154,59 @@ public final class Color {
             blue,
             alpha
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Color read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Color.Builder builder = new Color.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _RED:
+          if (__field.type == TType.DOUBLE) {
+            double red = oprot.readDouble();
+            builder.setRed(red);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _GREEN:
+          if (__field.type == TType.DOUBLE) {
+            double green = oprot.readDouble();
+            builder.setGreen(green);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _BLUE:
+          if (__field.type == TType.DOUBLE) {
+            double blue = oprot.readDouble();
+            builder.setBlue(blue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ALPHA:
+          if (__field.type == TType.DOUBLE) {
+            double alpha = oprot.readDouble();
+            builder.setAlpha(alpha);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

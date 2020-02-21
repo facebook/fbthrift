@@ -178,4 +178,34 @@ public final class MyUnion {
       oprot.writeStructEnd();
     }
     
+    public static MyUnion read0(TProtocol oprot) throws TException {
+      MyUnion res = new MyUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _ANINTEGER:
+            if (__field.type == AN_INTEGER_FIELD_DESC.type) {
+              int anInteger = oprot.readI32();
+              res.value = anInteger;
+            }
+            break;
+          case _ASTRING:
+            if (__field.type == A_STRING_FIELD_DESC.type) {
+              String aString = oprot.readString();
+              res.value = aString;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

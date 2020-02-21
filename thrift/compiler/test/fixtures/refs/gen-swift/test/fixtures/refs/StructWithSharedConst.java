@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -131,6 +134,51 @@ public final class StructWithSharedConst {
             sharedConst,
             reqSharedConst
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static StructWithSharedConst read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      StructWithSharedConst.Builder builder = new StructWithSharedConst.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _OPT_SHARED_CONST:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.refs.MyField optSharedConst = test.fixtures.refs.MyField.read0(oprot);
+            builder.setOptSharedConst(optSharedConst);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SHARED_CONST:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.refs.MyField sharedConst = test.fixtures.refs.MyField.read0(oprot);
+            builder.setSharedConst(sharedConst);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _REQ_SHARED_CONST:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.refs.MyField reqSharedConst = test.fixtures.refs.MyField.read0(oprot);
+            builder.setReqSharedConst(reqSharedConst);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

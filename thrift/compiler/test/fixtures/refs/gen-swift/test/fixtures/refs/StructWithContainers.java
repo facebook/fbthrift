@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -191,6 +194,122 @@ public final class StructWithContainers {
             setRefShared,
             listRefSharedConst
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static StructWithContainers read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      StructWithContainers.Builder builder = new StructWithContainers.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _LIST_REF:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> listRef = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setListRef(listRef);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SET_REF:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Integer> _iter1 = new HashSet<Integer>(Math.max(0, 2*_set1.size));
+            Set<Integer> setRef = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readSetEnd();
+            builder.setSetRef(setRef);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_REF:
+          if (__field.type == TType.MAP) {
+            Map<Integer, Integer> mapRef;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, Integer> _iter1 = new HashMap<Integer, Integer>(Math.max(0, 2*_map1.size));
+            mapRef = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                int _val1 = oprot.readI32();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapRef(mapRef);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_REF_UNIQUE:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> listRefUnique = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setListRefUnique(listRefUnique);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SET_REF_SHARED:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Integer> _iter1 = new HashSet<Integer>(Math.max(0, 2*_set1.size));
+            Set<Integer> setRefShared = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readSetEnd();
+            builder.setSetRefShared(setRefShared);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_REF_SHARED_CONST:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> listRefSharedConst = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setListRefSharedConst(listRefSharedConst);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

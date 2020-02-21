@@ -338,6 +338,7 @@ class mstch_swift_field : public mstch_field {
             {"field:nestedDepth", &mstch_swift_field::get_nested_depth},
             {"field:nestedDepth++", &mstch_swift_field::increment_nested_depth},
             {"field:nestedDepth--", &mstch_swift_field::decrement_nested_depth},
+            {"field:isFirstDepth?", &mstch_swift_field::is_first_depth},
             {"field:prevNestedDepth",
              &mstch_swift_field::preceding_nested_depth},
             {"field:isContainer?", &mstch_swift_field::is_container},
@@ -356,6 +357,9 @@ class mstch_swift_field : public mstch_field {
   }
   mstch::node preceding_nested_depth() {
     return (nestedDepth - 1);
+  }
+  mstch::node is_first_depth() {
+    return (nestedDepth == 1);
   }
   mstch::node get_nested_container_flag() {
     return isNestedContainerFlag;

@@ -219,4 +219,40 @@ public final class MyUnion {
       oprot.writeStructEnd();
     }
     
+    public static MyUnion read0(TProtocol oprot) throws TException {
+      MyUnion res = new MyUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _MYENUM:
+            if (__field.type == MY_ENUM_FIELD_DESC.type) {
+              test.fixtures.basic.MyEnum myEnum = test.fixtures.basic.MyEnum.fromInteger(oprot.readI32());
+              res.value = myEnum;
+            }
+            break;
+          case _MYSTRUCT:
+            if (__field.type == MY_STRUCT_FIELD_DESC.type) {
+              test.fixtures.basic.MyStruct myStruct = test.fixtures.basic.MyStruct.read0(oprot);
+              res.value = myStruct;
+            }
+            break;
+          case _MYDATAITEM:
+            if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
+              test.fixtures.basic.MyDataItem myDataItem = test.fixtures.basic.MyDataItem.read0(oprot);
+              res.value = myDataItem;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

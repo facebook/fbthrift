@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -4692,6 +4695,2083 @@ public final class MyBigStruct {
             msg256,
             msg257
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyBigStruct read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyBigStruct.Builder builder = new MyBigStruct.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MSG1:
+          if (__field.type == TType.STRING) {
+            String msg1 = oprot.readString();
+            builder.setMsg1(msg1);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG2:
+          if (__field.type == TType.STRING) {
+            String msg2 = oprot.readString();
+            builder.setMsg2(msg2);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG3:
+          if (__field.type == TType.STRING) {
+            String msg3 = oprot.readString();
+            builder.setMsg3(msg3);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG4:
+          if (__field.type == TType.STRING) {
+            String msg4 = oprot.readString();
+            builder.setMsg4(msg4);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG5:
+          if (__field.type == TType.STRING) {
+            String msg5 = oprot.readString();
+            builder.setMsg5(msg5);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG6:
+          if (__field.type == TType.STRING) {
+            String msg6 = oprot.readString();
+            builder.setMsg6(msg6);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG7:
+          if (__field.type == TType.STRING) {
+            String msg7 = oprot.readString();
+            builder.setMsg7(msg7);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG8:
+          if (__field.type == TType.STRING) {
+            String msg8 = oprot.readString();
+            builder.setMsg8(msg8);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG9:
+          if (__field.type == TType.STRING) {
+            String msg9 = oprot.readString();
+            builder.setMsg9(msg9);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD10:
+          if (__field.type == TType.I32) {
+            int myIntField10 = oprot.readI32();
+            builder.setMyIntField10(myIntField10);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD11:
+          if (__field.type == TType.I32) {
+            int myIntField11 = oprot.readI32();
+            builder.setMyIntField11(myIntField11);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD12:
+          if (__field.type == TType.I32) {
+            int myIntField12 = oprot.readI32();
+            builder.setMyIntField12(myIntField12);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD13:
+          if (__field.type == TType.I32) {
+            int myIntField13 = oprot.readI32();
+            builder.setMyIntField13(myIntField13);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD14:
+          if (__field.type == TType.I32) {
+            int myIntField14 = oprot.readI32();
+            builder.setMyIntField14(myIntField14);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD15:
+          if (__field.type == TType.I32) {
+            int myIntField15 = oprot.readI32();
+            builder.setMyIntField15(myIntField15);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD16:
+          if (__field.type == TType.I32) {
+            int myIntField16 = oprot.readI32();
+            builder.setMyIntField16(myIntField16);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD17:
+          if (__field.type == TType.I32) {
+            int myIntField17 = oprot.readI32();
+            builder.setMyIntField17(myIntField17);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD18:
+          if (__field.type == TType.I32) {
+            int myIntField18 = oprot.readI32();
+            builder.setMyIntField18(myIntField18);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD19:
+          if (__field.type == TType.I32) {
+            int myIntField19 = oprot.readI32();
+            builder.setMyIntField19(myIntField19);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYINTFIELD20:
+          if (__field.type == TType.I32) {
+            int myIntField20 = oprot.readI32();
+            builder.setMyIntField20(myIntField20);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD21:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField21 = oprot.readDouble();
+            builder.setMyDoubleField21(myDoubleField21);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD22:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField22 = oprot.readDouble();
+            builder.setMyDoubleField22(myDoubleField22);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD23:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField23 = oprot.readDouble();
+            builder.setMyDoubleField23(myDoubleField23);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD24:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField24 = oprot.readDouble();
+            builder.setMyDoubleField24(myDoubleField24);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD25:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField25 = oprot.readDouble();
+            builder.setMyDoubleField25(myDoubleField25);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD26:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField26 = oprot.readDouble();
+            builder.setMyDoubleField26(myDoubleField26);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD27:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField27 = oprot.readDouble();
+            builder.setMyDoubleField27(myDoubleField27);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD28:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField28 = oprot.readDouble();
+            builder.setMyDoubleField28(myDoubleField28);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD29:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField29 = oprot.readDouble();
+            builder.setMyDoubleField29(myDoubleField29);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYDOUBLEFIELD30:
+          if (__field.type == TType.DOUBLE) {
+            double myDoubleField30 = oprot.readDouble();
+            builder.setMyDoubleField30(myDoubleField30);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG31:
+          if (__field.type == TType.STRING) {
+            String msg31 = oprot.readString();
+            builder.setMsg31(msg31);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG32:
+          if (__field.type == TType.STRING) {
+            String msg32 = oprot.readString();
+            builder.setMsg32(msg32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG33:
+          if (__field.type == TType.STRING) {
+            String msg33 = oprot.readString();
+            builder.setMsg33(msg33);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG34:
+          if (__field.type == TType.STRING) {
+            String msg34 = oprot.readString();
+            builder.setMsg34(msg34);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG35:
+          if (__field.type == TType.STRING) {
+            String msg35 = oprot.readString();
+            builder.setMsg35(msg35);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG36:
+          if (__field.type == TType.STRING) {
+            String msg36 = oprot.readString();
+            builder.setMsg36(msg36);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG37:
+          if (__field.type == TType.STRING) {
+            String msg37 = oprot.readString();
+            builder.setMsg37(msg37);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG38:
+          if (__field.type == TType.STRING) {
+            String msg38 = oprot.readString();
+            builder.setMsg38(msg38);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG39:
+          if (__field.type == TType.STRING) {
+            String msg39 = oprot.readString();
+            builder.setMsg39(msg39);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG40:
+          if (__field.type == TType.STRING) {
+            String msg40 = oprot.readString();
+            builder.setMsg40(msg40);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG41:
+          if (__field.type == TType.STRING) {
+            String msg41 = oprot.readString();
+            builder.setMsg41(msg41);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG42:
+          if (__field.type == TType.STRING) {
+            String msg42 = oprot.readString();
+            builder.setMsg42(msg42);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG43:
+          if (__field.type == TType.STRING) {
+            String msg43 = oprot.readString();
+            builder.setMsg43(msg43);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG44:
+          if (__field.type == TType.STRING) {
+            String msg44 = oprot.readString();
+            builder.setMsg44(msg44);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG45:
+          if (__field.type == TType.STRING) {
+            String msg45 = oprot.readString();
+            builder.setMsg45(msg45);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG46:
+          if (__field.type == TType.STRING) {
+            String msg46 = oprot.readString();
+            builder.setMsg46(msg46);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG47:
+          if (__field.type == TType.STRING) {
+            String msg47 = oprot.readString();
+            builder.setMsg47(msg47);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG48:
+          if (__field.type == TType.STRING) {
+            String msg48 = oprot.readString();
+            builder.setMsg48(msg48);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG49:
+          if (__field.type == TType.STRING) {
+            String msg49 = oprot.readString();
+            builder.setMsg49(msg49);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG50:
+          if (__field.type == TType.STRING) {
+            String msg50 = oprot.readString();
+            builder.setMsg50(msg50);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG51:
+          if (__field.type == TType.STRING) {
+            String msg51 = oprot.readString();
+            builder.setMsg51(msg51);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG52:
+          if (__field.type == TType.STRING) {
+            String msg52 = oprot.readString();
+            builder.setMsg52(msg52);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG53:
+          if (__field.type == TType.STRING) {
+            String msg53 = oprot.readString();
+            builder.setMsg53(msg53);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG54:
+          if (__field.type == TType.STRING) {
+            String msg54 = oprot.readString();
+            builder.setMsg54(msg54);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG55:
+          if (__field.type == TType.STRING) {
+            String msg55 = oprot.readString();
+            builder.setMsg55(msg55);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG56:
+          if (__field.type == TType.STRING) {
+            String msg56 = oprot.readString();
+            builder.setMsg56(msg56);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG57:
+          if (__field.type == TType.STRING) {
+            String msg57 = oprot.readString();
+            builder.setMsg57(msg57);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG58:
+          if (__field.type == TType.STRING) {
+            String msg58 = oprot.readString();
+            builder.setMsg58(msg58);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG59:
+          if (__field.type == TType.STRING) {
+            String msg59 = oprot.readString();
+            builder.setMsg59(msg59);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG60:
+          if (__field.type == TType.STRING) {
+            String msg60 = oprot.readString();
+            builder.setMsg60(msg60);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG61:
+          if (__field.type == TType.STRING) {
+            String msg61 = oprot.readString();
+            builder.setMsg61(msg61);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG62:
+          if (__field.type == TType.STRING) {
+            String msg62 = oprot.readString();
+            builder.setMsg62(msg62);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG63:
+          if (__field.type == TType.STRING) {
+            String msg63 = oprot.readString();
+            builder.setMsg63(msg63);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG64:
+          if (__field.type == TType.STRING) {
+            String msg64 = oprot.readString();
+            builder.setMsg64(msg64);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG65:
+          if (__field.type == TType.STRING) {
+            String msg65 = oprot.readString();
+            builder.setMsg65(msg65);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG66:
+          if (__field.type == TType.STRING) {
+            String msg66 = oprot.readString();
+            builder.setMsg66(msg66);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG67:
+          if (__field.type == TType.STRING) {
+            String msg67 = oprot.readString();
+            builder.setMsg67(msg67);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG68:
+          if (__field.type == TType.STRING) {
+            String msg68 = oprot.readString();
+            builder.setMsg68(msg68);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG69:
+          if (__field.type == TType.STRING) {
+            String msg69 = oprot.readString();
+            builder.setMsg69(msg69);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG70:
+          if (__field.type == TType.STRING) {
+            String msg70 = oprot.readString();
+            builder.setMsg70(msg70);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG71:
+          if (__field.type == TType.STRING) {
+            String msg71 = oprot.readString();
+            builder.setMsg71(msg71);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG72:
+          if (__field.type == TType.STRING) {
+            String msg72 = oprot.readString();
+            builder.setMsg72(msg72);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG73:
+          if (__field.type == TType.STRING) {
+            String msg73 = oprot.readString();
+            builder.setMsg73(msg73);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG74:
+          if (__field.type == TType.STRING) {
+            String msg74 = oprot.readString();
+            builder.setMsg74(msg74);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG75:
+          if (__field.type == TType.STRING) {
+            String msg75 = oprot.readString();
+            builder.setMsg75(msg75);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG76:
+          if (__field.type == TType.STRING) {
+            String msg76 = oprot.readString();
+            builder.setMsg76(msg76);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG77:
+          if (__field.type == TType.STRING) {
+            String msg77 = oprot.readString();
+            builder.setMsg77(msg77);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG78:
+          if (__field.type == TType.STRING) {
+            String msg78 = oprot.readString();
+            builder.setMsg78(msg78);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG79:
+          if (__field.type == TType.STRING) {
+            String msg79 = oprot.readString();
+            builder.setMsg79(msg79);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG80:
+          if (__field.type == TType.STRING) {
+            String msg80 = oprot.readString();
+            builder.setMsg80(msg80);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG81:
+          if (__field.type == TType.STRING) {
+            String msg81 = oprot.readString();
+            builder.setMsg81(msg81);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG82:
+          if (__field.type == TType.STRING) {
+            String msg82 = oprot.readString();
+            builder.setMsg82(msg82);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG83:
+          if (__field.type == TType.STRING) {
+            String msg83 = oprot.readString();
+            builder.setMsg83(msg83);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG84:
+          if (__field.type == TType.STRING) {
+            String msg84 = oprot.readString();
+            builder.setMsg84(msg84);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG85:
+          if (__field.type == TType.STRING) {
+            String msg85 = oprot.readString();
+            builder.setMsg85(msg85);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG86:
+          if (__field.type == TType.STRING) {
+            String msg86 = oprot.readString();
+            builder.setMsg86(msg86);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG87:
+          if (__field.type == TType.STRING) {
+            String msg87 = oprot.readString();
+            builder.setMsg87(msg87);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG88:
+          if (__field.type == TType.STRING) {
+            String msg88 = oprot.readString();
+            builder.setMsg88(msg88);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG89:
+          if (__field.type == TType.STRING) {
+            String msg89 = oprot.readString();
+            builder.setMsg89(msg89);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG90:
+          if (__field.type == TType.STRING) {
+            String msg90 = oprot.readString();
+            builder.setMsg90(msg90);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG91:
+          if (__field.type == TType.STRING) {
+            String msg91 = oprot.readString();
+            builder.setMsg91(msg91);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG92:
+          if (__field.type == TType.STRING) {
+            String msg92 = oprot.readString();
+            builder.setMsg92(msg92);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG93:
+          if (__field.type == TType.STRING) {
+            String msg93 = oprot.readString();
+            builder.setMsg93(msg93);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG94:
+          if (__field.type == TType.STRING) {
+            String msg94 = oprot.readString();
+            builder.setMsg94(msg94);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG95:
+          if (__field.type == TType.STRING) {
+            String msg95 = oprot.readString();
+            builder.setMsg95(msg95);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG96:
+          if (__field.type == TType.STRING) {
+            String msg96 = oprot.readString();
+            builder.setMsg96(msg96);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG97:
+          if (__field.type == TType.STRING) {
+            String msg97 = oprot.readString();
+            builder.setMsg97(msg97);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG98:
+          if (__field.type == TType.STRING) {
+            String msg98 = oprot.readString();
+            builder.setMsg98(msg98);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG99:
+          if (__field.type == TType.STRING) {
+            String msg99 = oprot.readString();
+            builder.setMsg99(msg99);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG100:
+          if (__field.type == TType.STRING) {
+            String msg100 = oprot.readString();
+            builder.setMsg100(msg100);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG101:
+          if (__field.type == TType.STRING) {
+            String msg101 = oprot.readString();
+            builder.setMsg101(msg101);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG102:
+          if (__field.type == TType.STRING) {
+            String msg102 = oprot.readString();
+            builder.setMsg102(msg102);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG103:
+          if (__field.type == TType.STRING) {
+            String msg103 = oprot.readString();
+            builder.setMsg103(msg103);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG104:
+          if (__field.type == TType.STRING) {
+            String msg104 = oprot.readString();
+            builder.setMsg104(msg104);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG105:
+          if (__field.type == TType.STRING) {
+            String msg105 = oprot.readString();
+            builder.setMsg105(msg105);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG106:
+          if (__field.type == TType.STRING) {
+            String msg106 = oprot.readString();
+            builder.setMsg106(msg106);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG107:
+          if (__field.type == TType.STRING) {
+            String msg107 = oprot.readString();
+            builder.setMsg107(msg107);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG108:
+          if (__field.type == TType.STRING) {
+            String msg108 = oprot.readString();
+            builder.setMsg108(msg108);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG109:
+          if (__field.type == TType.STRING) {
+            String msg109 = oprot.readString();
+            builder.setMsg109(msg109);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG110:
+          if (__field.type == TType.STRING) {
+            String msg110 = oprot.readString();
+            builder.setMsg110(msg110);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG111:
+          if (__field.type == TType.STRING) {
+            String msg111 = oprot.readString();
+            builder.setMsg111(msg111);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG112:
+          if (__field.type == TType.STRING) {
+            String msg112 = oprot.readString();
+            builder.setMsg112(msg112);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG113:
+          if (__field.type == TType.STRING) {
+            String msg113 = oprot.readString();
+            builder.setMsg113(msg113);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG114:
+          if (__field.type == TType.STRING) {
+            String msg114 = oprot.readString();
+            builder.setMsg114(msg114);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG115:
+          if (__field.type == TType.STRING) {
+            String msg115 = oprot.readString();
+            builder.setMsg115(msg115);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG116:
+          if (__field.type == TType.STRING) {
+            String msg116 = oprot.readString();
+            builder.setMsg116(msg116);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG117:
+          if (__field.type == TType.STRING) {
+            String msg117 = oprot.readString();
+            builder.setMsg117(msg117);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG118:
+          if (__field.type == TType.STRING) {
+            String msg118 = oprot.readString();
+            builder.setMsg118(msg118);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG119:
+          if (__field.type == TType.STRING) {
+            String msg119 = oprot.readString();
+            builder.setMsg119(msg119);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG120:
+          if (__field.type == TType.STRING) {
+            String msg120 = oprot.readString();
+            builder.setMsg120(msg120);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG121:
+          if (__field.type == TType.STRING) {
+            String msg121 = oprot.readString();
+            builder.setMsg121(msg121);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG122:
+          if (__field.type == TType.STRING) {
+            String msg122 = oprot.readString();
+            builder.setMsg122(msg122);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG123:
+          if (__field.type == TType.STRING) {
+            String msg123 = oprot.readString();
+            builder.setMsg123(msg123);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG124:
+          if (__field.type == TType.STRING) {
+            String msg124 = oprot.readString();
+            builder.setMsg124(msg124);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG125:
+          if (__field.type == TType.STRING) {
+            String msg125 = oprot.readString();
+            builder.setMsg125(msg125);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG126:
+          if (__field.type == TType.STRING) {
+            String msg126 = oprot.readString();
+            builder.setMsg126(msg126);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG127:
+          if (__field.type == TType.STRING) {
+            String msg127 = oprot.readString();
+            builder.setMsg127(msg127);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG128:
+          if (__field.type == TType.STRING) {
+            String msg128 = oprot.readString();
+            builder.setMsg128(msg128);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG129:
+          if (__field.type == TType.STRING) {
+            String msg129 = oprot.readString();
+            builder.setMsg129(msg129);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG130:
+          if (__field.type == TType.STRING) {
+            String msg130 = oprot.readString();
+            builder.setMsg130(msg130);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG131:
+          if (__field.type == TType.STRING) {
+            String msg131 = oprot.readString();
+            builder.setMsg131(msg131);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG132:
+          if (__field.type == TType.STRING) {
+            String msg132 = oprot.readString();
+            builder.setMsg132(msg132);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG133:
+          if (__field.type == TType.STRING) {
+            String msg133 = oprot.readString();
+            builder.setMsg133(msg133);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG134:
+          if (__field.type == TType.STRING) {
+            String msg134 = oprot.readString();
+            builder.setMsg134(msg134);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG135:
+          if (__field.type == TType.STRING) {
+            String msg135 = oprot.readString();
+            builder.setMsg135(msg135);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG136:
+          if (__field.type == TType.STRING) {
+            String msg136 = oprot.readString();
+            builder.setMsg136(msg136);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG137:
+          if (__field.type == TType.STRING) {
+            String msg137 = oprot.readString();
+            builder.setMsg137(msg137);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG138:
+          if (__field.type == TType.STRING) {
+            String msg138 = oprot.readString();
+            builder.setMsg138(msg138);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG139:
+          if (__field.type == TType.STRING) {
+            String msg139 = oprot.readString();
+            builder.setMsg139(msg139);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG140:
+          if (__field.type == TType.STRING) {
+            String msg140 = oprot.readString();
+            builder.setMsg140(msg140);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG141:
+          if (__field.type == TType.STRING) {
+            String msg141 = oprot.readString();
+            builder.setMsg141(msg141);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG142:
+          if (__field.type == TType.STRING) {
+            String msg142 = oprot.readString();
+            builder.setMsg142(msg142);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG143:
+          if (__field.type == TType.STRING) {
+            String msg143 = oprot.readString();
+            builder.setMsg143(msg143);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG144:
+          if (__field.type == TType.STRING) {
+            String msg144 = oprot.readString();
+            builder.setMsg144(msg144);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG145:
+          if (__field.type == TType.STRING) {
+            String msg145 = oprot.readString();
+            builder.setMsg145(msg145);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG146:
+          if (__field.type == TType.STRING) {
+            String msg146 = oprot.readString();
+            builder.setMsg146(msg146);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG147:
+          if (__field.type == TType.STRING) {
+            String msg147 = oprot.readString();
+            builder.setMsg147(msg147);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG148:
+          if (__field.type == TType.STRING) {
+            String msg148 = oprot.readString();
+            builder.setMsg148(msg148);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG149:
+          if (__field.type == TType.STRING) {
+            String msg149 = oprot.readString();
+            builder.setMsg149(msg149);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG150:
+          if (__field.type == TType.STRING) {
+            String msg150 = oprot.readString();
+            builder.setMsg150(msg150);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG151:
+          if (__field.type == TType.STRING) {
+            String msg151 = oprot.readString();
+            builder.setMsg151(msg151);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG152:
+          if (__field.type == TType.STRING) {
+            String msg152 = oprot.readString();
+            builder.setMsg152(msg152);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG153:
+          if (__field.type == TType.STRING) {
+            String msg153 = oprot.readString();
+            builder.setMsg153(msg153);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG154:
+          if (__field.type == TType.STRING) {
+            String msg154 = oprot.readString();
+            builder.setMsg154(msg154);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG155:
+          if (__field.type == TType.STRING) {
+            String msg155 = oprot.readString();
+            builder.setMsg155(msg155);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG156:
+          if (__field.type == TType.STRING) {
+            String msg156 = oprot.readString();
+            builder.setMsg156(msg156);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG157:
+          if (__field.type == TType.STRING) {
+            String msg157 = oprot.readString();
+            builder.setMsg157(msg157);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG158:
+          if (__field.type == TType.STRING) {
+            String msg158 = oprot.readString();
+            builder.setMsg158(msg158);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG159:
+          if (__field.type == TType.STRING) {
+            String msg159 = oprot.readString();
+            builder.setMsg159(msg159);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG160:
+          if (__field.type == TType.STRING) {
+            String msg160 = oprot.readString();
+            builder.setMsg160(msg160);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG161:
+          if (__field.type == TType.STRING) {
+            String msg161 = oprot.readString();
+            builder.setMsg161(msg161);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG162:
+          if (__field.type == TType.STRING) {
+            String msg162 = oprot.readString();
+            builder.setMsg162(msg162);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG163:
+          if (__field.type == TType.STRING) {
+            String msg163 = oprot.readString();
+            builder.setMsg163(msg163);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG164:
+          if (__field.type == TType.STRING) {
+            String msg164 = oprot.readString();
+            builder.setMsg164(msg164);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG165:
+          if (__field.type == TType.STRING) {
+            String msg165 = oprot.readString();
+            builder.setMsg165(msg165);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG166:
+          if (__field.type == TType.STRING) {
+            String msg166 = oprot.readString();
+            builder.setMsg166(msg166);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG167:
+          if (__field.type == TType.STRING) {
+            String msg167 = oprot.readString();
+            builder.setMsg167(msg167);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG168:
+          if (__field.type == TType.STRING) {
+            String msg168 = oprot.readString();
+            builder.setMsg168(msg168);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG169:
+          if (__field.type == TType.STRING) {
+            String msg169 = oprot.readString();
+            builder.setMsg169(msg169);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG170:
+          if (__field.type == TType.STRING) {
+            String msg170 = oprot.readString();
+            builder.setMsg170(msg170);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG171:
+          if (__field.type == TType.STRING) {
+            String msg171 = oprot.readString();
+            builder.setMsg171(msg171);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG172:
+          if (__field.type == TType.STRING) {
+            String msg172 = oprot.readString();
+            builder.setMsg172(msg172);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG173:
+          if (__field.type == TType.STRING) {
+            String msg173 = oprot.readString();
+            builder.setMsg173(msg173);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG174:
+          if (__field.type == TType.STRING) {
+            String msg174 = oprot.readString();
+            builder.setMsg174(msg174);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG175:
+          if (__field.type == TType.STRING) {
+            String msg175 = oprot.readString();
+            builder.setMsg175(msg175);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG176:
+          if (__field.type == TType.STRING) {
+            String msg176 = oprot.readString();
+            builder.setMsg176(msg176);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG177:
+          if (__field.type == TType.STRING) {
+            String msg177 = oprot.readString();
+            builder.setMsg177(msg177);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG178:
+          if (__field.type == TType.STRING) {
+            String msg178 = oprot.readString();
+            builder.setMsg178(msg178);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG179:
+          if (__field.type == TType.STRING) {
+            String msg179 = oprot.readString();
+            builder.setMsg179(msg179);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG180:
+          if (__field.type == TType.STRING) {
+            String msg180 = oprot.readString();
+            builder.setMsg180(msg180);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG181:
+          if (__field.type == TType.STRING) {
+            String msg181 = oprot.readString();
+            builder.setMsg181(msg181);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG182:
+          if (__field.type == TType.STRING) {
+            String msg182 = oprot.readString();
+            builder.setMsg182(msg182);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG183:
+          if (__field.type == TType.STRING) {
+            String msg183 = oprot.readString();
+            builder.setMsg183(msg183);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG184:
+          if (__field.type == TType.STRING) {
+            String msg184 = oprot.readString();
+            builder.setMsg184(msg184);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG185:
+          if (__field.type == TType.STRING) {
+            String msg185 = oprot.readString();
+            builder.setMsg185(msg185);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG186:
+          if (__field.type == TType.STRING) {
+            String msg186 = oprot.readString();
+            builder.setMsg186(msg186);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG187:
+          if (__field.type == TType.STRING) {
+            String msg187 = oprot.readString();
+            builder.setMsg187(msg187);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG188:
+          if (__field.type == TType.STRING) {
+            String msg188 = oprot.readString();
+            builder.setMsg188(msg188);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG189:
+          if (__field.type == TType.STRING) {
+            String msg189 = oprot.readString();
+            builder.setMsg189(msg189);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG190:
+          if (__field.type == TType.STRING) {
+            String msg190 = oprot.readString();
+            builder.setMsg190(msg190);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG191:
+          if (__field.type == TType.STRING) {
+            String msg191 = oprot.readString();
+            builder.setMsg191(msg191);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG192:
+          if (__field.type == TType.STRING) {
+            String msg192 = oprot.readString();
+            builder.setMsg192(msg192);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG193:
+          if (__field.type == TType.STRING) {
+            String msg193 = oprot.readString();
+            builder.setMsg193(msg193);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG194:
+          if (__field.type == TType.STRING) {
+            String msg194 = oprot.readString();
+            builder.setMsg194(msg194);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG195:
+          if (__field.type == TType.STRING) {
+            String msg195 = oprot.readString();
+            builder.setMsg195(msg195);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG196:
+          if (__field.type == TType.STRING) {
+            String msg196 = oprot.readString();
+            builder.setMsg196(msg196);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG197:
+          if (__field.type == TType.STRING) {
+            String msg197 = oprot.readString();
+            builder.setMsg197(msg197);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG198:
+          if (__field.type == TType.STRING) {
+            String msg198 = oprot.readString();
+            builder.setMsg198(msg198);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG199:
+          if (__field.type == TType.STRING) {
+            String msg199 = oprot.readString();
+            builder.setMsg199(msg199);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG200:
+          if (__field.type == TType.STRING) {
+            String msg200 = oprot.readString();
+            builder.setMsg200(msg200);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG201:
+          if (__field.type == TType.STRING) {
+            String msg201 = oprot.readString();
+            builder.setMsg201(msg201);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG202:
+          if (__field.type == TType.STRING) {
+            String msg202 = oprot.readString();
+            builder.setMsg202(msg202);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG203:
+          if (__field.type == TType.STRING) {
+            String msg203 = oprot.readString();
+            builder.setMsg203(msg203);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG204:
+          if (__field.type == TType.STRING) {
+            String msg204 = oprot.readString();
+            builder.setMsg204(msg204);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG205:
+          if (__field.type == TType.STRING) {
+            String msg205 = oprot.readString();
+            builder.setMsg205(msg205);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG206:
+          if (__field.type == TType.STRING) {
+            String msg206 = oprot.readString();
+            builder.setMsg206(msg206);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG207:
+          if (__field.type == TType.STRING) {
+            String msg207 = oprot.readString();
+            builder.setMsg207(msg207);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG208:
+          if (__field.type == TType.STRING) {
+            String msg208 = oprot.readString();
+            builder.setMsg208(msg208);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG209:
+          if (__field.type == TType.STRING) {
+            String msg209 = oprot.readString();
+            builder.setMsg209(msg209);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG210:
+          if (__field.type == TType.STRING) {
+            String msg210 = oprot.readString();
+            builder.setMsg210(msg210);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG211:
+          if (__field.type == TType.STRING) {
+            String msg211 = oprot.readString();
+            builder.setMsg211(msg211);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG212:
+          if (__field.type == TType.STRING) {
+            String msg212 = oprot.readString();
+            builder.setMsg212(msg212);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG213:
+          if (__field.type == TType.STRING) {
+            String msg213 = oprot.readString();
+            builder.setMsg213(msg213);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG214:
+          if (__field.type == TType.STRING) {
+            String msg214 = oprot.readString();
+            builder.setMsg214(msg214);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG215:
+          if (__field.type == TType.STRING) {
+            String msg215 = oprot.readString();
+            builder.setMsg215(msg215);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG216:
+          if (__field.type == TType.STRING) {
+            String msg216 = oprot.readString();
+            builder.setMsg216(msg216);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG217:
+          if (__field.type == TType.STRING) {
+            String msg217 = oprot.readString();
+            builder.setMsg217(msg217);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG218:
+          if (__field.type == TType.STRING) {
+            String msg218 = oprot.readString();
+            builder.setMsg218(msg218);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG219:
+          if (__field.type == TType.STRING) {
+            String msg219 = oprot.readString();
+            builder.setMsg219(msg219);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG220:
+          if (__field.type == TType.STRING) {
+            String msg220 = oprot.readString();
+            builder.setMsg220(msg220);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG221:
+          if (__field.type == TType.STRING) {
+            String msg221 = oprot.readString();
+            builder.setMsg221(msg221);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG222:
+          if (__field.type == TType.STRING) {
+            String msg222 = oprot.readString();
+            builder.setMsg222(msg222);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG223:
+          if (__field.type == TType.STRING) {
+            String msg223 = oprot.readString();
+            builder.setMsg223(msg223);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG224:
+          if (__field.type == TType.STRING) {
+            String msg224 = oprot.readString();
+            builder.setMsg224(msg224);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG225:
+          if (__field.type == TType.STRING) {
+            String msg225 = oprot.readString();
+            builder.setMsg225(msg225);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG226:
+          if (__field.type == TType.STRING) {
+            String msg226 = oprot.readString();
+            builder.setMsg226(msg226);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG227:
+          if (__field.type == TType.STRING) {
+            String msg227 = oprot.readString();
+            builder.setMsg227(msg227);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG228:
+          if (__field.type == TType.STRING) {
+            String msg228 = oprot.readString();
+            builder.setMsg228(msg228);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG229:
+          if (__field.type == TType.STRING) {
+            String msg229 = oprot.readString();
+            builder.setMsg229(msg229);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG230:
+          if (__field.type == TType.STRING) {
+            String msg230 = oprot.readString();
+            builder.setMsg230(msg230);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG231:
+          if (__field.type == TType.STRING) {
+            String msg231 = oprot.readString();
+            builder.setMsg231(msg231);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG232:
+          if (__field.type == TType.STRING) {
+            String msg232 = oprot.readString();
+            builder.setMsg232(msg232);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG233:
+          if (__field.type == TType.STRING) {
+            String msg233 = oprot.readString();
+            builder.setMsg233(msg233);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG234:
+          if (__field.type == TType.STRING) {
+            String msg234 = oprot.readString();
+            builder.setMsg234(msg234);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG235:
+          if (__field.type == TType.STRING) {
+            String msg235 = oprot.readString();
+            builder.setMsg235(msg235);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG236:
+          if (__field.type == TType.STRING) {
+            String msg236 = oprot.readString();
+            builder.setMsg236(msg236);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG237:
+          if (__field.type == TType.STRING) {
+            String msg237 = oprot.readString();
+            builder.setMsg237(msg237);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG238:
+          if (__field.type == TType.STRING) {
+            String msg238 = oprot.readString();
+            builder.setMsg238(msg238);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG239:
+          if (__field.type == TType.STRING) {
+            String msg239 = oprot.readString();
+            builder.setMsg239(msg239);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG240:
+          if (__field.type == TType.STRING) {
+            String msg240 = oprot.readString();
+            builder.setMsg240(msg240);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG241:
+          if (__field.type == TType.STRING) {
+            String msg241 = oprot.readString();
+            builder.setMsg241(msg241);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG242:
+          if (__field.type == TType.STRING) {
+            String msg242 = oprot.readString();
+            builder.setMsg242(msg242);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG243:
+          if (__field.type == TType.STRING) {
+            String msg243 = oprot.readString();
+            builder.setMsg243(msg243);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG244:
+          if (__field.type == TType.STRING) {
+            String msg244 = oprot.readString();
+            builder.setMsg244(msg244);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG245:
+          if (__field.type == TType.STRING) {
+            String msg245 = oprot.readString();
+            builder.setMsg245(msg245);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG246:
+          if (__field.type == TType.STRING) {
+            String msg246 = oprot.readString();
+            builder.setMsg246(msg246);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG247:
+          if (__field.type == TType.STRING) {
+            String msg247 = oprot.readString();
+            builder.setMsg247(msg247);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG248:
+          if (__field.type == TType.STRING) {
+            String msg248 = oprot.readString();
+            builder.setMsg248(msg248);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG249:
+          if (__field.type == TType.STRING) {
+            String msg249 = oprot.readString();
+            builder.setMsg249(msg249);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG250:
+          if (__field.type == TType.STRING) {
+            String msg250 = oprot.readString();
+            builder.setMsg250(msg250);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG251:
+          if (__field.type == TType.STRING) {
+            String msg251 = oprot.readString();
+            builder.setMsg251(msg251);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG252:
+          if (__field.type == TType.STRING) {
+            String msg252 = oprot.readString();
+            builder.setMsg252(msg252);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG253:
+          if (__field.type == TType.STRING) {
+            String msg253 = oprot.readString();
+            builder.setMsg253(msg253);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG254:
+          if (__field.type == TType.STRING) {
+            String msg254 = oprot.readString();
+            builder.setMsg254(msg254);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG255:
+          if (__field.type == TType.STRING) {
+            String msg255 = oprot.readString();
+            builder.setMsg255(msg255);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG256:
+          if (__field.type == TType.STRING) {
+            String msg256 = oprot.readString();
+            builder.setMsg256(msg256);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MSG257:
+          if (__field.type == TType.STRING) {
+            String msg257 = oprot.readString();
+            builder.setMsg257(msg257);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

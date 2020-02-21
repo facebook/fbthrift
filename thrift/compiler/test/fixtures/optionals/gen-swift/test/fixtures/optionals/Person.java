@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -271,6 +274,133 @@ public final class Person {
             afraidOfAnimal,
             vehicles
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Person read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Person.Builder builder = new Person.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _ID:
+          if (__field.type == TType.I64) {
+            long id = oprot.readI64();
+            builder.setId(id);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _NAME:
+          if (__field.type == TType.STRING) {
+            String name = oprot.readString();
+            builder.setName(name);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _AGE:
+          if (__field.type == TType.I16) {
+            Short age = oprot.readI16();
+            builder.setAge(age);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ADDRESS:
+          if (__field.type == TType.STRING) {
+            String address = oprot.readString();
+            builder.setAddress(address);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _FAVORITECOLOR:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.optionals.Color favoriteColor = test.fixtures.optionals.Color.read0(oprot);
+            builder.setFavoriteColor(favoriteColor);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _FRIENDS:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Long> _iter1 = new HashSet<Long>(Math.max(0, 2*_set1.size));
+            Set<Long> friends = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI64());
+            }
+            oprot.readSetEnd();
+            builder.setFriends(friends);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _BESTFRIEND:
+          if (__field.type == TType.I64) {
+            Long bestFriend = oprot.readI64();
+            builder.setBestFriend(bestFriend);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _PETNAMES:
+          if (__field.type == TType.MAP) {
+            Map<test.fixtures.optionals.Animal, String> petNames;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<test.fixtures.optionals.Animal, String> _iter1 = new HashMap<test.fixtures.optionals.Animal, String>(Math.max(0, 2*_map1.size));
+            petNames = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                test.fixtures.optionals.Animal _key1 = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+                String _val1 = oprot.readString();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setPetNames(petNames);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _AFRAIDOFANIMAL:
+          if (__field.type == TType.I32) {
+            test.fixtures.optionals.Animal afraidOfAnimal = test.fixtures.optionals.Animal.fromInteger(oprot.readI32());
+            builder.setAfraidOfAnimal(afraidOfAnimal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _VEHICLES:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<test.fixtures.optionals.Vehicle> _iter1 = new ArrayList<test.fixtures.optionals.Vehicle>(Math.max(0, 2*_list1.size));
+            List<test.fixtures.optionals.Vehicle> vehicles = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(test.fixtures.optionals.Vehicle.read0(oprot));
+            }
+            oprot.readListEnd();
+            builder.setVehicles(vehicles);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

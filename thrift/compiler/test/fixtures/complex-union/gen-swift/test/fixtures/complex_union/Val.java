@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -131,6 +134,63 @@ public final class Val {
             intVal,
             typedefValue
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static Val read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      Val.Builder builder = new Val.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _STRVAL:
+          if (__field.type == TType.STRING) {
+            String strVal = oprot.readString();
+            builder.setStrVal(strVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _INTVAL:
+          if (__field.type == TType.I32) {
+            int intVal = oprot.readI32();
+            builder.setIntVal(intVal);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _TYPEDEFVALUE:
+          if (__field.type == TType.MAP) {
+            Map<Short, String> typedefValue;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Short, String> _iter1 = new HashMap<Short, String>(Math.max(0, 2*_map1.size));
+            typedefValue = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                short _key1 = oprot.readI16();
+                String _val1 = oprot.readString();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setTypedefValue(typedefValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -831,6 +834,712 @@ public final class B {
             listOfStringWithDefaultValue,
             mapOfStringToListOfI32WithDefaultValue
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static B read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      B.Builder builder = new B.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _JUST_AN_A:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.shapes.A justAnA = test.fixtures.shapes.A.read0(oprot);
+            builder.setJustAnA(justAnA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SET_OF_I32:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Integer> _iter1 = new HashSet<Integer>(Math.max(0, 2*_set1.size));
+            Set<Integer> setOfI32 = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readSetEnd();
+            builder.setSetOfI32(setOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_I32:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> listOfI32 = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setListOfI32(listOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_STRING:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
+            List<String> listOfString = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readListEnd();
+            builder.setListOfString(listOfString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, Integer> mapOfStringToI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Integer> _iter1 = new HashMap<String, Integer>(Math.max(0, 2*_map1.size));
+            mapOfStringToI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                int _val1 = oprot.readI32();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToI32(mapOfStringToI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_A:
+          if (__field.type == TType.MAP) {
+            Map<String, test.fixtures.shapes.A> mapOfStringToA;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, test.fixtures.shapes.A> _iter1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, 2*_map1.size));
+            mapOfStringToA = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                test.fixtures.shapes.A _val1 = test.fixtures.shapes.A.read0(oprot);
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToA(mapOfStringToA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_LIST_OF_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, List<Integer>> mapOfStringToListOfI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, List<Integer>> _iter1 = new HashMap<String, List<Integer>>(Math.max(0, 2*_map1.size));
+            mapOfStringToListOfI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                List<Integer> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<Integer> _iter2 = new ArrayList<Integer>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToListOfI32(mapOfStringToListOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_LIST_OF_A:
+          if (__field.type == TType.MAP) {
+            Map<String, List<test.fixtures.shapes.A>> mapOfStringToListOfA;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, List<test.fixtures.shapes.A>> _iter1 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, 2*_map1.size));
+            mapOfStringToListOfA = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                List<test.fixtures.shapes.A> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<test.fixtures.shapes.A> _iter2 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(test.fixtures.shapes.A.read0(oprot));
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToListOfA(mapOfStringToListOfA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_SET_OF_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, Set<Integer>> mapOfStringToSetOfI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Set<Integer>> _iter1 = new HashMap<String, Set<Integer>>(Math.max(0, 2*_map1.size));
+            mapOfStringToSetOfI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                Set<Integer> _val1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<Integer> _iter2 = new HashSet<Integer>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _val1 = _iter2;
+            oprot.readSetEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToSetOfI32(mapOfStringToSetOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_MAP_OF_STRING_TO_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, Map<String, Integer>> mapOfStringToMapOfStringToI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Map<String, Integer>> _iter1 = new HashMap<String, Map<String, Integer>>(Math.max(0, 2*_map1.size));
+            mapOfStringToMapOfStringToI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                Map<String, Integer> _val1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<String, Integer> _iter2 = new HashMap<String, Integer>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                String _key2 = oprot.readString();
+                int _val2 = oprot.readI32();
+                _iter2.put(_key2, _val2);
+            }
+            _val1 = _iter2;
+            }
+            oprot.readMapEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToMapOfStringToI32(mapOfStringToMapOfStringToI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_MAP_OF_STRING_TO_A:
+          if (__field.type == TType.MAP) {
+            Map<String, Map<String, test.fixtures.shapes.A>> mapOfStringToMapOfStringToA;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Map<String, test.fixtures.shapes.A>> _iter1 = new HashMap<String, Map<String, test.fixtures.shapes.A>>(Math.max(0, 2*_map1.size));
+            mapOfStringToMapOfStringToA = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                Map<String, test.fixtures.shapes.A> _val1;
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<String, test.fixtures.shapes.A> _iter2 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                String _key2 = oprot.readString();
+                test.fixtures.shapes.A _val2 = test.fixtures.shapes.A.read0(oprot);
+                _iter2.put(_key2, _val2);
+            }
+            _val1 = _iter2;
+            }
+            oprot.readMapEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToMapOfStringToA(mapOfStringToMapOfStringToA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_SET_OF_I32:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Set<Integer>> _iter1 = new ArrayList<Set<Integer>>(Math.max(0, 2*_list1.size));
+            List<Set<Integer>> listOfSetOfI32 = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                TSet _set2 = oprot.readSetBegin();
+            Set<Integer> _iter2 = new HashSet<Integer>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _iter1.add(_iter2);
+            oprot.readSetEnd();
+            }
+            oprot.readListEnd();
+            builder.setListOfSetOfI32(listOfSetOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_MAP_OF_STRING_TO_LIST_OF_A:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Map<String, List<test.fixtures.shapes.A>>> _iter1 = new ArrayList<Map<String, List<test.fixtures.shapes.A>>>(Math.max(0, 2*_list1.size));
+            List<Map<String, List<test.fixtures.shapes.A>>> listOfMapOfStringToListOfA = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<String, List<test.fixtures.shapes.A>> _iter2 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                String _key2 = oprot.readString();
+                List<test.fixtures.shapes.A> _val2;
+                TList _list3 = oprot.readListBegin();
+            List<test.fixtures.shapes.A> _iter3 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, 2*_list3.size));
+            if (_list3.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i3 = 0; _i3 < _list3.size; ++_i3) {
+                _iter3.add(test.fixtures.shapes.A.read0(oprot));
+            }
+            _val2 = _iter3;
+            oprot.readListEnd();
+                _iter2.put(_key2, _val2);
+            }
+            _iter1.add(_iter2);
+            }
+            oprot.readMapEnd();
+            }
+            oprot.readListEnd();
+            builder.setListOfMapOfStringToListOfA(listOfMapOfStringToListOfA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_MAP_OF_STRING_TO_A:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Map<String, test.fixtures.shapes.A>> _iter1 = new ArrayList<Map<String, test.fixtures.shapes.A>>(Math.max(0, 2*_list1.size));
+            List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                            {
+            TMap _map2 = oprot.readMapBegin();
+            Map<String, test.fixtures.shapes.A> _iter2 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, 2*_map2.size));
+            if (_map2.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _map2.size; ++_i2) {
+                String _key2 = oprot.readString();
+                test.fixtures.shapes.A _val2 = test.fixtures.shapes.A.read0(oprot);
+                _iter2.put(_key2, _val2);
+            }
+            _iter1.add(_iter2);
+            }
+            oprot.readMapEnd();
+            }
+            oprot.readListEnd();
+            builder.setListOfMapOfStringToA(listOfMapOfStringToA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_SELF:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<test.fixtures.shapes.B> _iter1 = new ArrayList<test.fixtures.shapes.B>(Math.max(0, 2*_list1.size));
+            List<test.fixtures.shapes.B> listOfSelf = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(test.fixtures.shapes.B.read0(oprot));
+            }
+            oprot.readListEnd();
+            builder.setListOfSelf(listOfSelf);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_SELF:
+          if (__field.type == TType.MAP) {
+            Map<String, test.fixtures.shapes.B> mapOfStringToSelf;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, test.fixtures.shapes.B> _iter1 = new HashMap<String, test.fixtures.shapes.B>(Math.max(0, 2*_map1.size));
+            mapOfStringToSelf = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                test.fixtures.shapes.B _val1 = test.fixtures.shapes.B.read0(oprot);
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToSelf(mapOfStringToSelf);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _JUST_AN_ENUM:
+          if (__field.type == TType.I32) {
+            test.fixtures.shapes.Enum justAnEnum = test.fixtures.shapes.Enum.fromInteger(oprot.readI32());
+            builder.setJustAnEnum(justAnEnum);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _JUST_A_UNION:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.shapes.Union justAUnion = test.fixtures.shapes.Union.read0(oprot);
+            builder.setJustAUnion(justAUnion);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_JUST_AN_A:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.shapes.A optionalJustAnA = test.fixtures.shapes.A.read0(oprot);
+            builder.setOptionalJustAnA(optionalJustAnA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_SET_OF_I32:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Integer> _iter1 = new HashSet<Integer>(Math.max(0, 2*_set1.size));
+            Set<Integer> optionalSetOfI32 = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readSetEnd();
+            builder.setOptionalSetOfI32(optionalSetOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_LIST_OF_I32:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<Integer> _iter1 = new ArrayList<Integer>(Math.max(0, 2*_list1.size));
+            List<Integer> optionalListOfI32 = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readListEnd();
+            builder.setOptionalListOfI32(optionalListOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_LIST_OF_STRING:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
+            List<String> optionalListOfString = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readListEnd();
+            builder.setOptionalListOfString(optionalListOfString);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_MAP_OF_STRING_TO_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, Integer> optionalMapOfStringToI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Integer> _iter1 = new HashMap<String, Integer>(Math.max(0, 2*_map1.size));
+            optionalMapOfStringToI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                int _val1 = oprot.readI32();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setOptionalMapOfStringToI32(optionalMapOfStringToI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_MAP_OF_STRING_TO_A:
+          if (__field.type == TType.MAP) {
+            Map<String, test.fixtures.shapes.A> optionalMapOfStringToA;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, test.fixtures.shapes.A> _iter1 = new HashMap<String, test.fixtures.shapes.A>(Math.max(0, 2*_map1.size));
+            optionalMapOfStringToA = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                test.fixtures.shapes.A _val1 = test.fixtures.shapes.A.read0(oprot);
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setOptionalMapOfStringToA(optionalMapOfStringToA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, List<Integer>> optionalMapOfStringToListOfI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, List<Integer>> _iter1 = new HashMap<String, List<Integer>>(Math.max(0, 2*_map1.size));
+            optionalMapOfStringToListOfI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                List<Integer> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<Integer> _iter2 = new ArrayList<Integer>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setOptionalMapOfStringToListOfI32(optionalMapOfStringToListOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_MAP_OF_STRING_TO_LIST_OF_A:
+          if (__field.type == TType.MAP) {
+            Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, List<test.fixtures.shapes.A>> _iter1 = new HashMap<String, List<test.fixtures.shapes.A>>(Math.max(0, 2*_map1.size));
+            optionalMapOfStringToListOfA = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                List<test.fixtures.shapes.A> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<test.fixtures.shapes.A> _iter2 = new ArrayList<test.fixtures.shapes.A>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(test.fixtures.shapes.A.read0(oprot));
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setOptionalMapOfStringToListOfA(optionalMapOfStringToListOfA);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_MAP_OF_STRING_TO_SET_OF_I32:
+          if (__field.type == TType.MAP) {
+            Map<String, Set<Integer>> optionalMapOfStringToSetOfI32;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, Set<Integer>> _iter1 = new HashMap<String, Set<Integer>>(Math.max(0, 2*_map1.size));
+            optionalMapOfStringToSetOfI32 = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                Set<Integer> _val1;
+                TSet _set2 = oprot.readSetBegin();
+            Set<Integer> _iter2 = new HashSet<Integer>(Math.max(0, 2*_set2.size));
+            if (_set2.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _set2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _val1 = _iter2;
+            oprot.readSetEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setOptionalMapOfStringToSetOfI32(optionalMapOfStringToSetOfI32);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _OPTIONAL_ENUM:
+          if (__field.type == TType.I32) {
+            test.fixtures.shapes.Enum optionalEnum = test.fixtures.shapes.Enum.fromInteger(oprot.readI32());
+            builder.setOptionalEnum(optionalEnum);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _REQUIRED_ENUM_WITH_DEFAULT:
+          if (__field.type == TType.I32) {
+            test.fixtures.shapes.Enum requiredEnumWithDefault = test.fixtures.shapes.Enum.fromInteger(oprot.readI32());
+            builder.setRequiredEnumWithDefault(requiredEnumWithDefault);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _STRING_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.STRING) {
+            String stringWithDefaultValue = oprot.readString();
+            builder.setStringWithDefaultValue(stringWithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _I32_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.I32) {
+            int i32WithDefaultValue = oprot.readI32();
+            builder.setI32WithDefaultValue(i32WithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _DOUBLE_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.DOUBLE) {
+            double doubleWithDefaultValue = oprot.readDouble();
+            builder.setDoubleWithDefaultValue(doubleWithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _ENUM_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.I32) {
+            test.fixtures.shapes.Enum enumWithDefaultValue = test.fixtures.shapes.Enum.fromInteger(oprot.readI32());
+            builder.setEnumWithDefaultValue(enumWithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _A_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.STRUCT) {
+            test.fixtures.shapes.A aWithDefaultValue = test.fixtures.shapes.A.read0(oprot);
+            builder.setAWithDefaultValue(aWithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _SET_OF_I32_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.SET) {
+            TSet _set1 = oprot.readSetBegin();
+            Set<Integer> _iter1 = new HashSet<Integer>(Math.max(0, 2*_set1.size));
+            Set<Integer> setOfI32WithDefaultValue = _iter1;
+            if (_set1.size < 0) {  throw new TException("Using an unsupported Set, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _set1.size; ++_i1) {
+                _iter1.add(oprot.readI32());
+            }
+            oprot.readSetEnd();
+            builder.setSetOfI32WithDefaultValue(setOfI32WithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_I32_TO_STRING_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.MAP) {
+            Map<Integer, String> mapOfI32ToStringWithDefaultValue;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<Integer, String> _iter1 = new HashMap<Integer, String>(Math.max(0, 2*_map1.size));
+            mapOfI32ToStringWithDefaultValue = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                int _key1 = oprot.readI32();
+                String _val1 = oprot.readString();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfI32ToStringWithDefaultValue(mapOfI32ToStringWithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _LIST_OF_STRING_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.LIST) {
+            TList _list1 = oprot.readListBegin();
+            List<String> _iter1 = new ArrayList<String>(Math.max(0, 2*_list1.size));
+            List<String> listOfStringWithDefaultValue = _iter1;
+            if (_list1.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _list1.size; ++_i1) {
+                _iter1.add(oprot.readString());
+            }
+            oprot.readListEnd();
+            builder.setListOfStringWithDefaultValue(listOfStringWithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MAP_OF_STRING_TO_LIST_OF_I32_WITH_DEFAULT_VALUE:
+          if (__field.type == TType.MAP) {
+            Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
+            {
+            TMap _map1 = oprot.readMapBegin();
+            Map<String, List<Integer>> _iter1 = new HashMap<String, List<Integer>>(Math.max(0, 2*_map1.size));
+            mapOfStringToListOfI32WithDefaultValue = _iter1;
+            if (_map1.size < 0) {  throw new TException("Using an unsupported Map, size is less than zero.");}
+            for (int _i1 = 0; _i1 < _map1.size; ++_i1) {
+                String _key1 = oprot.readString();
+                List<Integer> _val1;
+                TList _list2 = oprot.readListBegin();
+            List<Integer> _iter2 = new ArrayList<Integer>(Math.max(0, 2*_list2.size));
+            if (_list2.size < 0) {  throw new TException("Using an unsupported List, size is less than zero.");}
+            for (int _i2 = 0; _i2 < _list2.size; ++_i2) {
+                _iter2.add(oprot.readI32());
+            }
+            _val1 = _iter2;
+            oprot.readListEnd();
+                _iter1.put(_key1, _val1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMapOfStringToListOfI32WithDefaultValue(mapOfStringToListOfI32WithDefaultValue);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {

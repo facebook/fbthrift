@@ -260,4 +260,46 @@ public final class MyUnion {
       oprot.writeStructEnd();
     }
     
+    public static MyUnion read0(TProtocol oprot) throws TException {
+      MyUnion res = new MyUnion();
+      res.value = null;
+      res.id = (short) 0;
+      oprot.readStructBegin();
+      TField __field = oprot.readFieldBegin();
+      if (__field.type != TType.STOP) {
+          switch (__field.id) {
+          case _MYENUM:
+            if (__field.type == MY_ENUM_FIELD_DESC.type) {
+              test.fixtures.complex_struct.MyEnum myEnum = test.fixtures.complex_struct.MyEnum.fromInteger(oprot.readI32());
+              res.value = myEnum;
+            }
+            break;
+          case _MYSTRUCT:
+            if (__field.type == MY_STRUCT_FIELD_DESC.type) {
+              test.fixtures.complex_struct.MyStruct myStruct = test.fixtures.complex_struct.MyStruct.read0(oprot);
+              res.value = myStruct;
+            }
+            break;
+          case _MYDATAITEM:
+            if (__field.type == MY_DATA_ITEM_FIELD_DESC.type) {
+              test.fixtures.complex_struct.MyDataItem myDataItem = test.fixtures.complex_struct.MyDataItem.read0(oprot);
+              res.value = myDataItem;
+            }
+            break;
+          case _COMPLEXNESTEDSTRUCT:
+            if (__field.type == COMPLEX_NESTED_STRUCT_FIELD_DESC.type) {
+              test.fixtures.complex_struct.ComplexNestedStruct complexNestedStruct = test.fixtures.complex_struct.ComplexNestedStruct.read0(oprot);
+              res.value = complexNestedStruct;
+            }
+            break;
+          }
+          TProtocolUtil.skip(oprot, __field.type);
+        if (res.value != null) {
+          res.id = __field.id;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return res;
+    }
 }

@@ -13,9 +13,12 @@ import com.facebook.swift.codec.ThriftField.Recursiveness;
 import java.util.*;
 import org.apache.thrift.*;
 import org.apache.thrift.async.*;
+import org.apache.thrift.meta_data.*;
 import org.apache.thrift.server.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.meta_data.FieldMetaData;
+import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
@@ -151,6 +154,53 @@ public final class MyStructFloatFieldThrowExp {
             myStringField,
             myFloatField
         });
+    }
+    
+    
+      // Currently, the read0 method cannot read metadatamap for JSON styled serialization.
+      // Perhaps, it will be implemented in the future!
+    public static MyStructFloatFieldThrowExp read0(TProtocol oprot) throws TException {
+      TField __field;
+      oprot.readStructBegin();
+      MyStructFloatFieldThrowExp.Builder builder = new MyStructFloatFieldThrowExp.Builder();
+      while (true) {
+        __field = oprot.readFieldBegin();
+        if (__field.type == TType.STOP) { break; }
+        switch (__field.id) {
+        case _MYLONGFIELD:
+          if (__field.type == TType.I64) {
+            long myLongField = oprot.readI64();
+            builder.setMyLongField(myLongField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYBYTEFIELD:
+          if (__field.type == TType.BYTE) {
+            byte myByteField = oprot.readByte();
+            builder.setMyByteField(myByteField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYSTRINGFIELD:
+          if (__field.type == TType.STRING) {
+            String myStringField = oprot.readString();
+            builder.setMyStringField(myStringField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYFLOATFIELD:
+          throw new IllegalStateException("Struct contains an unsupported type in org.apache.thrift.protocol: Field:myFloatField Type:float");
+        default:
+          TProtocolUtil.skip(oprot, __field.type);
+          break;
+        }
+        oprot.readFieldEnd();
+      }
+      oprot.readStructEnd();
+      return builder.build();
     }
     
     public void write0(TProtocol oprot) throws TException {
