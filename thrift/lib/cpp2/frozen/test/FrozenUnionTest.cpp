@@ -207,5 +207,5 @@ TEST(FrozenUnion, union_get_wrong_type) {
 
   auto f = mapFrozen<TestUnion>(std::move(str));
   // get a type mismatched field should cause intenal assert fail
-  EXPECT_DEATH(f.get_aString(), "");
+  EXPECT_DEBUG_DEATH(f.get_aString(), "");
 }
