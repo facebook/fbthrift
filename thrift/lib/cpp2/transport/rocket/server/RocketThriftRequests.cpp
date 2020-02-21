@@ -45,19 +45,19 @@ namespace thrift {
 namespace rocket {
 
 ThriftServerRequestResponse::ThriftServerRequestResponse(
-    ActiveRequestsRegistry::DebugStub& debugStubToInit,
+    RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     Cpp2ConnContext& connContext,
-    ActiveRequestsRegistry& reqRegistry,
+    RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketServerFrameContext&& context)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
       evb_(evb),
       context_(std::move(context)) {
-  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+  new (&debugStubToInit) RequestsRegistry::DebugStub(
       reqRegistry,
       *this,
       *getRequestContext(),
@@ -115,12 +115,12 @@ void ThriftServerRequestResponse::sendSerializedError(
 }
 
 ThriftServerRequestFnf::ThriftServerRequestFnf(
-    ActiveRequestsRegistry::DebugStub& debugStubToInit,
+    RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     Cpp2ConnContext& connContext,
-    ActiveRequestsRegistry& reqRegistry,
+    RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketServerFrameContext&& context,
@@ -129,7 +129,7 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
       evb_(evb),
       context_(std::move(context)),
       onComplete_(std::move(onComplete)) {
-  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+  new (&debugStubToInit) RequestsRegistry::DebugStub(
       reqRegistry,
       *this,
       *getRequestContext(),
@@ -156,12 +156,12 @@ void ThriftServerRequestFnf::sendSerializedError(
     std::unique_ptr<folly::IOBuf>) noexcept {}
 
 ThriftServerRequestStream::ThriftServerRequestStream(
-    ActiveRequestsRegistry::DebugStub& debugStubToInit,
+    RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
-    ActiveRequestsRegistry& reqRegistry,
+    RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketStreamClientCallback* clientCallback,
@@ -171,7 +171,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)) {
-  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+  new (&debugStubToInit) RequestsRegistry::DebugStub(
       reqRegistry,
       *this,
       *getRequestContext(),
@@ -225,12 +225,12 @@ void ThriftServerRequestStream::sendSerializedError(
 }
 
 ThriftServerRequestSink::ThriftServerRequestSink(
-    ActiveRequestsRegistry::DebugStub& debugStubToInit,
+    RequestsRegistry::DebugStub& debugStubToInit,
     folly::EventBase& evb,
     server::ServerConfigs& serverConfigs,
     RequestRpcMetadata&& metadata,
     std::shared_ptr<Cpp2ConnContext> connContext,
-    ActiveRequestsRegistry& reqRegistry,
+    RequestsRegistry& reqRegistry,
     std::unique_ptr<folly::IOBuf> debugPayload,
     intptr_t rootRequestContextId,
     RocketSinkClientCallback* clientCallback,
@@ -240,7 +240,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
       clientCallback_(clientCallback),
       connContext_(std::move(connContext)),
       cpp2Processor_(std::move(cpp2Processor)) {
-  new (&debugStubToInit) ActiveRequestsRegistry::DebugStub(
+  new (&debugStubToInit) RequestsRegistry::DebugStub(
       reqRegistry,
       *this,
       *getRequestContext(),

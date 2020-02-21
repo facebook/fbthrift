@@ -25,7 +25,7 @@
 #include <folly/io/async/HHWheelTimer.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp2/security/FizzPeeker.h>
-#include <thrift/lib/cpp2/server/ActiveRequestsRegistry.h>
+#include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
 #include <wangle/acceptor/Acceptor.h>
@@ -119,7 +119,7 @@ class Cpp2Worker : public wangle::Acceptor,
       folly::AsyncTransportWrapper::UniquePtr sock,
       const folly::SocketAddress* addr);
 
-  std::shared_ptr<ActiveRequestsRegistry> getRequestsRegistry() {
+  std::shared_ptr<RequestsRegistry> getRequestsRegistry() {
     return requestsRegistry_;
   }
 
@@ -146,9 +146,10 @@ class Cpp2Worker : public wangle::Acceptor,
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
         activeRequests_(0),
-        requestsRegistry_(std::make_shared<ActiveRequestsRegistry>(
+        requestsRegistry_(std::make_shared<RequestsRegistry>(
             server_->getMaxDebugPayloadMemoryPerRequest(),
-            server_->getMaxDebugPayloadMemoryPerWorker())) {
+            server_->getMaxDebugPayloadMemoryPerWorker(),
+            server_->getMaxFinishedDebugPayloadsPerWorker())) {
     setGracefulShutdownTimeout(server->workersJoinTimeout_);
   }
 
@@ -246,7 +247,7 @@ class Cpp2Worker : public wangle::Acceptor,
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
   uint32_t activeRequests_;
-  std::shared_ptr<ActiveRequestsRegistry> requestsRegistry_;
+  std::shared_ptr<RequestsRegistry> requestsRegistry_;
   bool stopping_{false};
   folly::Baton<> stopBaton_;
 
