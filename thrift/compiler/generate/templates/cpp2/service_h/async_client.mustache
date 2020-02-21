@@ -84,6 +84,7 @@
 <%#function:returns_sink?%>
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(<% > service_common/function_param_list_const%>);
+folly::coro::Task<<% > types/service_type_coro%>> co_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 #endif // FOLLY_HAS_COROUTINES
 <%/function:returns_sink?%>
 <%#type:void?%>

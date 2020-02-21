@@ -133,6 +133,10 @@ void SinkServiceAsyncClient::methodImpl(apache::thrift::RpcOptions& rpcOptions, 
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_method() {
   ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_method(rpcOptions);
+}
+
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_method(apache::thrift::RpcOptions& rpcOptions) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.method");
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -227,6 +231,10 @@ void SinkServiceAsyncClient::methodAndReponseImpl(apache::thrift::RpcOptions& rp
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ResponseAndClientSink< ::cpp2::InitialResponse,  ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodAndReponse() {
   ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_methodAndReponse(rpcOptions);
+}
+
+folly::coro::Task<apache::thrift::ResponseAndClientSink< ::cpp2::InitialResponse,  ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodAndReponse(apache::thrift::RpcOptions& rpcOptions) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.methodAndReponse");
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -321,6 +329,10 @@ void SinkServiceAsyncClient::methodThrowImpl(apache::thrift::RpcOptions& rpcOpti
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodThrow() {
   ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_methodThrow(rpcOptions);
+}
+
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodThrow(apache::thrift::RpcOptions& rpcOptions) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.methodThrow");
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -415,6 +427,10 @@ void SinkServiceAsyncClient::methodSinkThrowImpl(apache::thrift::RpcOptions& rpc
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodSinkThrow() {
   ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_methodSinkThrow(rpcOptions);
+}
+
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodSinkThrow(apache::thrift::RpcOptions& rpcOptions) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.methodSinkThrow");
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -519,6 +535,10 @@ void SinkServiceAsyncClient::methodFinalThrowImpl(apache::thrift::RpcOptions& rp
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodFinalThrow() {
   ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_methodFinalThrow(rpcOptions);
+}
+
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodFinalThrow(apache::thrift::RpcOptions& rpcOptions) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.methodFinalThrow");
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
@@ -613,6 +633,10 @@ void SinkServiceAsyncClient::methodBothThrowImpl(apache::thrift::RpcOptions& rpc
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodBothThrow() {
   ::apache::thrift::RpcOptions rpcOptions;
+  co_return co_await co_methodBothThrow(rpcOptions);
+}
+
+folly::coro::Task<apache::thrift::ClientSink< ::cpp2::SinkPayload,  ::cpp2::FinalResponse>> SinkServiceAsyncClient::co_methodBothThrow(apache::thrift::RpcOptions& rpcOptions) {
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto ctx = std::make_shared<apache::thrift::detail::ac::ClientRequestContext>(protocolId, rpcOptions.releaseWriteHeaders(), this->handlers_, this->getServiceName(), "SinkService.methodBothThrow");
   auto callback = apache::thrift::detail::ClientSinkBridge::create();
