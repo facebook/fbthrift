@@ -38,6 +38,21 @@ public class emptyXcep extends Exception implements TBase, java.io.Serializable,
   public emptyXcep() {
   }
 
+  public static class Builder {
+
+    public Builder() {
+    }
+
+    public emptyXcep build() {
+      emptyXcep result = new emptyXcep();
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

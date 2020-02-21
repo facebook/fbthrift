@@ -63,6 +63,40 @@ public class reqXcep extends Exception implements TBase, java.io.Serializable, C
     setErrorCodeIsSet(true);
   }
 
+  public static class Builder {
+    private String message;
+    private int errorCode;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setMessage(final String message) {
+      this.message = message;
+      return this;
+    }
+
+    public Builder setErrorCode(final int errorCode) {
+      this.errorCode = errorCode;
+      __optional_isset.set(__ERRORCODE_ISSET_ID, true);
+      return this;
+    }
+
+    public reqXcep build() {
+      reqXcep result = new reqXcep();
+      result.setMessage(this.message);
+      if (__optional_isset.get(__ERRORCODE_ISSET_ID)) {
+        result.setErrorCode(this.errorCode);
+      }
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */

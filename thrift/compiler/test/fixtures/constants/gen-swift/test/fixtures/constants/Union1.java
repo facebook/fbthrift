@@ -178,8 +178,8 @@ public final class Union1 {
       oprot.writeStructEnd();
     }
     
-    public static union1 read0(TProtocol oprot) throws TException {
-      union1 res = new union1();
+    public static Union1 read0(TProtocol oprot) throws TException {
+      Union1 res = new Union1();
       res.value = null;
       res.id = (short) 0;
       oprot.readStructBegin();

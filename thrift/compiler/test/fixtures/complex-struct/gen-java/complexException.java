@@ -114,6 +114,68 @@ public class complexException extends Exception implements TBase, java.io.Serial
     this.lsMap = lsMap;
   }
 
+  public static class Builder {
+    private String message;
+    private List<String> listStrings;
+    private MyEnum errorEnum;
+    private MyUnion unionError;
+    private MyStruct structError;
+    private Map<Long,String> lsMap;
+
+    BitSet __optional_isset = new BitSet(1);
+
+    public Builder() {
+    }
+
+    public Builder setMessage(final String message) {
+      this.message = message;
+      return this;
+    }
+
+    public Builder setListStrings(final List<String> listStrings) {
+      this.listStrings = listStrings;
+      return this;
+    }
+
+    public Builder setErrorEnum(final MyEnum errorEnum) {
+      this.errorEnum = errorEnum;
+      __optional_isset.set(__ERRORENUM_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setUnionError(final MyUnion unionError) {
+      this.unionError = unionError;
+      return this;
+    }
+
+    public Builder setStructError(final MyStruct structError) {
+      this.structError = structError;
+      return this;
+    }
+
+    public Builder setLsMap(final Map<Long,String> lsMap) {
+      this.lsMap = lsMap;
+      return this;
+    }
+
+    public complexException build() {
+      complexException result = new complexException();
+      result.setMessage(this.message);
+      result.setListStrings(this.listStrings);
+      if (__optional_isset.get(__ERRORENUM_ISSET_ID)) {
+        result.setErrorEnum(this.errorEnum);
+      }
+      result.setUnionError(this.unionError);
+      result.setStructError(this.structError);
+      result.setLsMap(this.lsMap);
+      return result;
+    }
+  }
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
   /**
    * Performs a deep copy on <i>other</i>.
    */
