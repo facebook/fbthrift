@@ -49,7 +49,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
           AsyncSocket::ConnectCallback*,
           const folly::SocketAddress&,
           int,
-          const OptionMap&,
+          const folly::SocketOptionMap&,
           const folly::SocketAddress&));
 
   GMOCK_METHOD6_(
@@ -62,14 +62,14 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
           const folly::SocketAddress&,
           std::chrono::milliseconds,
           std::chrono::milliseconds,
-          const OptionMap&,
+          const folly::SocketOptionMap&,
           const folly::SocketAddress&));
 
   void connect(
       AsyncSocket::ConnectCallback* callback,
       const folly::SocketAddress& addr,
       int timeout = 0,
-      const OptionMap& options = emptyOptionMap,
+      const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
       const folly::SocketAddress& bindAddr = anyAddress()) noexcept override {
     connectInternal(callback, addr, timeout, options, bindAddr);
   }
@@ -79,7 +79,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
       const folly::SocketAddress& addr,
       std::chrono::milliseconds connectTimeout,
       std::chrono::milliseconds totalConnectTimeout,
-      const OptionMap& options = emptyOptionMap,
+      const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
       const folly::SocketAddress& bindAddr = anyAddress()) noexcept override {
     connectInternalWithTimeouts(
         callback, addr, connectTimeout, totalConnectTimeout, options, bindAddr);

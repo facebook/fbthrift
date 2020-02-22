@@ -48,14 +48,14 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
           AsyncSocket::ConnectCallback*,
           const folly::SocketAddress&,
           int,
-          const OptionMap&,
+          const folly::SocketOptionMap&,
           const folly::SocketAddress&));
 
   void connect(
       AsyncSocket::ConnectCallback* callback,
       const folly::SocketAddress& addr,
       int timeout = 0,
-      const OptionMap& options = emptyOptionMap,
+      const folly::SocketOptionMap& options = folly::emptySocketOptionMap,
       const folly::SocketAddress& bindAddr = anyAddress()) noexcept override {
     connectInternal(callback, addr, timeout, options, bindAddr);
   }
