@@ -31,7 +31,16 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-from thrift.util.Decorators import *
+from thrift.util.Decorators import (
+  future_process_main,
+  future_process_method,
+  process_main as thrift_process_main,
+  process_method as thrift_process_method,
+  should_run_on_thread,
+  write_results_after_future,
+  write_results_exception_callback,
+  write_results_success_callback,
+)
 
 class Iface:
   def init(self, int1=None, int2=None, int3=None, int4=None, int5=None, int6=None, int7=None, int8=None, int9=None, int10=None, int11=None, int12=None, int13=None, int14=None, int15=None, int16=None):
@@ -621,10 +630,10 @@ class Processor(Iface, TProcessor):
     l.extend(Processor._onewayMethods)
     return tuple(l)
 
-  @process_main()
+  @thrift_process_main()
   def process(self,): pass
 
-  @process_method(init_args, oneway=False)
+  @thrift_process_method(init_args, oneway=False)
   def process_init(self, args, handler_ctx):
     result = init_result()
     try:
@@ -653,10 +662,10 @@ class ContextProcessor(ContextIface, TProcessor):
     l.extend(ContextProcessor._onewayMethods)
     return tuple(l)
 
-  @process_main()
+  @thrift_process_main()
   def process(self,): pass
 
-  @process_method(init_args, oneway=False)
+  @thrift_process_method(init_args, oneway=False)
   def process_init(self, args, handler_ctx):
     result = init_result()
     try:

@@ -32,7 +32,16 @@ all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
 from concurrent.futures import Future, ThreadPoolExecutor
-from thrift.util.Decorators import *
+from thrift.util.Decorators import (
+  future_process_main,
+  future_process_method,
+  process_main as thrift_process_main,
+  process_method as thrift_process_method,
+  should_run_on_thread,
+  write_results_after_future,
+  write_results_exception_callback,
+  write_results_success_callback,
+)
 
 class Iface:
   def sleep(self, ):

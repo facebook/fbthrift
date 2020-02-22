@@ -35,7 +35,16 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-from thrift.util.Decorators import *
+from thrift.util.Decorators import (
+  future_process_main,
+  future_process_method,
+  process_main as thrift_process_main,
+  process_method as thrift_process_method,
+  should_run_on_thread,
+  write_results_after_future,
+  write_results_exception_callback,
+  write_results_success_callback,
+)
 
 class Iface:
   def ping(self, ):
@@ -1616,10 +1625,10 @@ class Processor(Iface, TProcessor):
     l.extend(Processor._onewayMethods)
     return tuple(l)
 
-  @process_main()
+  @thrift_process_main()
   def process(self,): pass
 
-  @process_method(ping_args, oneway=False)
+  @thrift_process_method(ping_args, oneway=False)
   def process_ping(self, args, handler_ctx):
     result = ping_result()
     try:
@@ -1630,7 +1639,7 @@ class Processor(Iface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(getRandomData_args, oneway=False)
+  @thrift_process_method(getRandomData_args, oneway=False)
   def process_getRandomData(self, args, handler_ctx):
     result = getRandomData_result()
     try:
@@ -1641,7 +1650,7 @@ class Processor(Iface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(hasDataById_args, oneway=False)
+  @thrift_process_method(hasDataById_args, oneway=False)
   def process_hasDataById(self, args, handler_ctx):
     result = hasDataById_result()
     try:
@@ -1652,7 +1661,7 @@ class Processor(Iface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(getDataById_args, oneway=False)
+  @thrift_process_method(getDataById_args, oneway=False)
   def process_getDataById(self, args, handler_ctx):
     result = getDataById_result()
     try:
@@ -1663,7 +1672,7 @@ class Processor(Iface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(putDataById_args, oneway=False)
+  @thrift_process_method(putDataById_args, oneway=False)
   def process_putDataById(self, args, handler_ctx):
     result = putDataById_result()
     try:
@@ -1674,7 +1683,7 @@ class Processor(Iface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(lobDataById_args, oneway=True)
+  @thrift_process_method(lobDataById_args, oneway=True)
   def process_lobDataById(self, args, handler_ctx):
     try:
       self._handler.lobDataById(args.id, args.data)
@@ -1683,7 +1692,7 @@ class Processor(Iface, TProcessor):
       self._event_handler.handlerError(handler_ctx, 'lobDataById', ex)
       result = Thrift.TApplicationException(message=str(ex))
 
-  @process_method(doNothing_args, oneway=False)
+  @thrift_process_method(doNothing_args, oneway=False)
   def process_doNothing(self, args, handler_ctx):
     result = doNothing_result()
     try:
@@ -1724,10 +1733,10 @@ class ContextProcessor(ContextIface, TProcessor):
     l.extend(ContextProcessor._onewayMethods)
     return tuple(l)
 
-  @process_main()
+  @thrift_process_main()
   def process(self,): pass
 
-  @process_method(ping_args, oneway=False)
+  @thrift_process_method(ping_args, oneway=False)
   def process_ping(self, args, handler_ctx):
     result = ping_result()
     try:
@@ -1738,7 +1747,7 @@ class ContextProcessor(ContextIface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(getRandomData_args, oneway=False)
+  @thrift_process_method(getRandomData_args, oneway=False)
   def process_getRandomData(self, args, handler_ctx):
     result = getRandomData_result()
     try:
@@ -1749,7 +1758,7 @@ class ContextProcessor(ContextIface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(hasDataById_args, oneway=False)
+  @thrift_process_method(hasDataById_args, oneway=False)
   def process_hasDataById(self, args, handler_ctx):
     result = hasDataById_result()
     try:
@@ -1760,7 +1769,7 @@ class ContextProcessor(ContextIface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(getDataById_args, oneway=False)
+  @thrift_process_method(getDataById_args, oneway=False)
   def process_getDataById(self, args, handler_ctx):
     result = getDataById_result()
     try:
@@ -1771,7 +1780,7 @@ class ContextProcessor(ContextIface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(putDataById_args, oneway=False)
+  @thrift_process_method(putDataById_args, oneway=False)
   def process_putDataById(self, args, handler_ctx):
     result = putDataById_result()
     try:
@@ -1782,7 +1791,7 @@ class ContextProcessor(ContextIface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(lobDataById_args, oneway=True)
+  @thrift_process_method(lobDataById_args, oneway=True)
   def process_lobDataById(self, args, handler_ctx):
     try:
       self._handler.lobDataById(handler_ctx, args.id, args.data)
@@ -1791,7 +1800,7 @@ class ContextProcessor(ContextIface, TProcessor):
       self._event_handler.handlerError(handler_ctx, 'lobDataById', ex)
       result = Thrift.TApplicationException(message=str(ex))
 
-  @process_method(doNothing_args, oneway=False)
+  @thrift_process_method(doNothing_args, oneway=False)
   def process_doNothing(self, args, handler_ctx):
     result = doNothing_result()
     try:

@@ -2049,7 +2049,16 @@ void t_py_generator::generate_service(t_service* tservice) {
                << "  import trollius as asyncio" << endl
                << "  from thrift.util.trollius import call_as_future" << endl;
   }
-  f_service_ << "from thrift.util.Decorators import *" << endl;
+  f_service_ << "from thrift.util.Decorators import (" << endl
+             << "  future_process_main," << endl
+             << "  future_process_method," << endl
+             << "  process_main as thrift_process_main," << endl
+             << "  process_method as thrift_process_method," << endl
+             << "  should_run_on_thread," << endl
+             << "  write_results_after_future," << endl
+             << "  write_results_exception_callback," << endl
+             << "  write_results_success_callback," << endl
+             << ")" << endl;
 
   f_service_ << endl;
 
@@ -2783,13 +2792,13 @@ void t_py_generator::generate_service_server(
 
   // Generate the server implementation
   if (gen_asyncio_) {
-    indent(f_service_) << "@process_main(asyncio=True)" << endl;
+    indent(f_service_) << "@thrift_process_main(asyncio=True)" << endl;
   } else if (gen_future_) {
     indent(f_service_) << "@future_process_main()" << endl;
   } else if (gen_twisted_) {
-    indent(f_service_) << "@process_main(twisted=True)" << endl;
+    indent(f_service_) << "@thrift_process_main(twisted=True)" << endl;
   } else {
-    indent(f_service_) << "@process_main()" << endl;
+    indent(f_service_) << "@thrift_process_main()" << endl;
   }
   indent(f_service_) << "def process(self,): pass" << endl << endl;
 
@@ -2828,7 +2837,7 @@ void t_py_generator::generate_process_function(
     indent(f_service_) << "def then_" << fn_name
                        << "(self, args, handler_ctx):" << endl;
   } else {
-    indent(f_service_) << "@process_method(" << fn_name << "_args, "
+    indent(f_service_) << "@thrift_process_method(" << fn_name << "_args, "
                        << "oneway="
                        << (tfunction->is_oneway() ? "True" : "False")
                        << (gen_asyncio_ ? ", asyncio=True" : "")

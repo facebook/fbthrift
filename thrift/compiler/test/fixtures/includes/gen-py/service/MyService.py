@@ -34,7 +34,16 @@ if not '__pypy__' in sys.builtin_module_names:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-from thrift.util.Decorators import *
+from thrift.util.Decorators import (
+  future_process_main,
+  future_process_method,
+  process_main as thrift_process_main,
+  process_method as thrift_process_method,
+  should_run_on_thread,
+  write_results_after_future,
+  write_results_exception_callback,
+  write_results_success_callback,
+)
 
 class Iface:
   """
@@ -541,10 +550,10 @@ class Processor(Iface, TProcessor):
     l.extend(Processor._onewayMethods)
     return tuple(l)
 
-  @process_main()
+  @thrift_process_main()
   def process(self,): pass
 
-  @process_method(query_args, oneway=False)
+  @thrift_process_method(query_args, oneway=False)
   def process_query(self, args, handler_ctx):
     result = query_result()
     try:
@@ -555,7 +564,7 @@ class Processor(Iface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(has_arg_docs_args, oneway=False)
+  @thrift_process_method(has_arg_docs_args, oneway=False)
   def process_has_arg_docs(self, args, handler_ctx):
     result = has_arg_docs_result()
     try:
@@ -586,10 +595,10 @@ class ContextProcessor(ContextIface, TProcessor):
     l.extend(ContextProcessor._onewayMethods)
     return tuple(l)
 
-  @process_main()
+  @thrift_process_main()
   def process(self,): pass
 
-  @process_method(query_args, oneway=False)
+  @thrift_process_method(query_args, oneway=False)
   def process_query(self, args, handler_ctx):
     result = query_result()
     try:
@@ -600,7 +609,7 @@ class ContextProcessor(ContextIface, TProcessor):
       result = Thrift.TApplicationException(message=str(ex))
     return result
 
-  @process_method(has_arg_docs_args, oneway=False)
+  @thrift_process_method(has_arg_docs_args, oneway=False)
   def process_has_arg_docs(self, args, handler_ctx):
     result = has_arg_docs_result()
     try:
