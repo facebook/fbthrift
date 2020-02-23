@@ -133,9 +133,12 @@ bool RocketServerConnection::closeIfNeeded() {
     manager->removeConnection(this);
   }
 
-  for (auto it = streams_.begin(); it != streams_.end();) {
+  while (!streams_.empty()) {
+    auto callback = std::move(streams_.begin()->second);
+    streams_.erase(streams_.begin());
+    // Calling application callback may trigger rehashing.
     folly::variant_match(
-        it->second,
+        callback,
         [](const std::unique_ptr<RocketStreamClientCallback>& callback) {
           callback->onStreamCancel();
         },
@@ -144,7 +147,7 @@ bool RocketServerConnection::closeIfNeeded() {
               TApplicationException::TApplicationExceptionType::INTERRUPTION));
           DCHECK(state) << "onSinkError called after sink complete!";
         });
-    it = streams_.erase(it);
+    frameHandler_->streamingRequestComplete();
   }
 
   writeBatcher_.drain();
@@ -657,6 +660,7 @@ void RocketServerConnection::freeStream(StreamId streamId) {
     // closeIfNeeded
     auto ctx = std::move(*it);
     streams_.erase(it);
+    frameHandler_->streamingRequestComplete();
   }
 }
 

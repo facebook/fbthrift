@@ -53,6 +53,8 @@ class RocketServerHandler {
       RequestChannelFrame&&,
       // TODO current only Sink are supported by using channel
       RocketSinkClientCallback*) = 0;
+
+  virtual void streamingRequestComplete() {}
 };
 
 } // namespace rocket

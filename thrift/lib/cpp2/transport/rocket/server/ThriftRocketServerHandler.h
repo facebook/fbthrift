@@ -88,6 +88,8 @@ class ThriftRocketServerHandler : public RocketServerHandler {
 
   apache::thrift::server::TServerObserver::SamplingStatus shouldSample();
 
+  void streamingRequestComplete() final;
+
  private:
   const std::shared_ptr<Cpp2Worker> worker_;
   const std::shared_ptr<void> connectionGuard_;

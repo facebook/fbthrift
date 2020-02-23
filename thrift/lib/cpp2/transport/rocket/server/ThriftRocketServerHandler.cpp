@@ -233,6 +233,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
                                std::unique_ptr<folly::IOBuf> debugPayload,
                                const folly::RequestContext* ctx) {
+    serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestStream>(
         *eventBase_,
         *serverConfigs_,
@@ -254,6 +255,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
                              std::unique_ptr<folly::IOBuf> debugPayload,
                              const folly::RequestContext* ctx) {
+    serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestSink>(
         *eventBase_,
         *serverConfigs_,
@@ -397,6 +399,10 @@ void ThriftRocketServerHandler::handleServerShutdown(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::LOADSHEDDING, "server shutting down"),
       kQueueOverloadedErrorCode);
+}
+
+void ThriftRocketServerHandler::streamingRequestComplete() {
+  serverConfigs_->decActiveRequests();
 }
 } // namespace rocket
 } // namespace thrift

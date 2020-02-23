@@ -970,5 +970,22 @@ TEST_F(StreamingTest, CloseClientWithMultipleActiveStreams) {
   });
 }
 
+TEST_F(StreamingTest, SetMaxRequests) {
+  server_->setMaxRequests(2);
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    apache::thrift::RpcOptions rpcOptions;
+    rpcOptions.setChunkBufferSize(0);
+    auto stream1 = client->sync_range(rpcOptions, 0, 10);
+    auto stream2 = client->sync_range(rpcOptions, 0, 10);
+
+    EXPECT_ANY_THROW(client->sync_range(rpcOptions, 0, 10));
+
+    std::move(stream2).subscribeInline([](auto&&) {});
+
+    auto stream3 = client->sync_range(rpcOptions, 0, 10);
+
+    EXPECT_ANY_THROW(client->sync_range(rpcOptions, 0, 10));
+  });
+}
 } // namespace thrift
 } // namespace apache

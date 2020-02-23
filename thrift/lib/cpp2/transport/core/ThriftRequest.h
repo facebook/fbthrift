@@ -102,13 +102,10 @@ class ThriftRequestCore : public ResponseChannelRequest {
     if (auto* observer = serverConfigs_.getObserver()) {
       observer->receivedRequest();
     }
-
-    serverConfigs_.incActiveRequests();
   }
 
   ~ThriftRequestCore() override {
     cancelTimeout();
-    serverConfigs_.decActiveRequests();
   }
 
   bool isActive() const final {
@@ -496,7 +493,12 @@ class ThriftRequest final : public ThriftRequestCore {
             }()),
         channel_(std::move(channel)),
         connContext_(std::move(connContext)) {
+    serverConfigs_.incActiveRequests();
     scheduleTimeouts();
+  }
+
+  ~ThriftRequest() {
+    serverConfigs_.decActiveRequests();
   }
 
  private:

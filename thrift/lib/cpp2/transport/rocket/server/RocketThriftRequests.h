@@ -59,6 +59,8 @@ class ThriftServerRequestResponse final : public ThriftRequestCore {
       intptr_t rootRequestContextId,
       RocketServerFrameContext&& context);
 
+  ~ThriftServerRequestResponse();
+
   void sendThriftResponse(
       ResponseRpcMetadata&&,
       std::unique_ptr<folly::IOBuf>) noexcept override;

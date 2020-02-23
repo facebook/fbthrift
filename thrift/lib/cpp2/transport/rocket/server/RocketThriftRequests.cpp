@@ -64,7 +64,12 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
       getProtoId(),
       std::move(debugPayload),
       rootRequestContextId);
+  serverConfigs_.incActiveRequests();
   scheduleTimeouts();
+}
+
+ThriftServerRequestResponse::~ThriftServerRequestResponse() {
+  serverConfigs_.decActiveRequests();
 }
 
 void ThriftServerRequestResponse::sendThriftResponse(
@@ -136,6 +141,7 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
       getProtoId(),
       std::move(debugPayload),
       rootRequestContextId);
+  serverConfigs_.incActiveRequests();
   scheduleTimeouts();
 }
 
@@ -143,6 +149,7 @@ ThriftServerRequestFnf::~ThriftServerRequestFnf() {
   if (auto f = std::move(onComplete_)) {
     f();
   }
+  serverConfigs_.decActiveRequests();
 }
 
 void ThriftServerRequestFnf::sendThriftResponse(
