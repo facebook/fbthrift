@@ -220,8 +220,10 @@ void Cpp2Connection::killRequest(
 void Cpp2Connection::requestReceived(
     unique_ptr<HeaderServerChannel::HeaderRequest>&& hreq) {
   auto baseReqCtx = processor_->getBaseContextForRequest();
-  auto reqCtx = baseReqCtx ? RequestContext::copyAsRoot(*baseReqCtx)
-                           : std::make_shared<folly::RequestContext>();
+  auto rootid = worker_->getRequestsRegistry()->genRootId();
+  auto reqCtx = baseReqCtx
+      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
+      : std::make_shared<folly::RequestContext>(rootid);
   auto handler = worker_->getServer()->getEventHandlerUnsafe();
   if (handler) {
     handler->connectionNewRequest(&context_, reqCtx.get());

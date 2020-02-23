@@ -274,8 +274,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
     Payload&& payload,
     F&& makeRequest) {
   auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
-  auto reqCtx = baseReqCtx ? folly::RequestContext::copyAsRoot(*baseReqCtx)
-                           : std::make_shared<folly::RequestContext>();
+  auto rootid = activeRequestsRegistry_->genRootId();
+  auto reqCtx = baseReqCtx
+      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
+      : std::make_shared<folly::RequestContext>(rootid);
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   RequestRpcMetadata metadata;

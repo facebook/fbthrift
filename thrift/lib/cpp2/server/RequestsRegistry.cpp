@@ -23,11 +23,13 @@ namespace apache {
 namespace thrift {
 
 namespace {
+// RequestId storage.
 // Reserve some high bits for future use. Currently the maximum id supported
 // is 10^52, so thrift servers theoretically can generate unique request id
 // for ~12 years, assuming the QPS is ~10 million.
-const size_t RequestLocalIdBits = 52;
-const uint64_t RequestLocalIdMax = (1ull << RequestLocalIdBits) - 1;
+const size_t kLsbBits = 52;
+const uint64_t kLsbMask = (1ull << kLsbBits) - 1;
+const intptr_t kMsbMask = ~kLsbMask;
 
 std::atomic<uint32_t> nextRegistryId{0};
 } // namespace
@@ -51,15 +53,23 @@ RequestsRegistry::~RequestsRegistry() {
   DCHECK(finishedRequestsCount_ == 0);
 }
 
-RequestId RequestsRegistry::genRequestId() {
-  return RequestId(registryId_, (nextLocalId_++) & RequestLocalIdMax);
+/* static */ RequestId RequestsRegistry::getRequestId(intptr_t rootid) {
+  return RequestId((rootid & kMsbMask) >> kLsbBits, (rootid & kLsbMask) >> 1);
+}
+
+intptr_t RequestsRegistry::genRootId() {
+  // Ensure rootid's LSB is always 1.
+  // This is to prevent any collision with rootids on folly::RequestsContext() -
+  // those are addresses of folly::RequestContext objects.
+  return 0x1 | ((nextLocalId_++ << 1) & kLsbMask) |
+      ((intptr_t)registryId_ << kLsbBits);
 }
 
 void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
   if (finishedRequestsLimit_ == 0) {
     return;
   }
-  
+
   stub.activeRequestsRegistryHook_.unlink();
   stub.incRef();
   stub.prepareAsFinished();

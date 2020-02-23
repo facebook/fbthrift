@@ -587,3 +587,22 @@ INSTANTIATE_TEST_CASE_P(
     testing::Combine(
         testing::Values(0, 1, 2, 10),
         testing::Values(true, false)));
+
+TEST(RegistryTests, RootId) {
+  RequestsRegistry registry(0, 0, 0);
+  auto rootid = registry.genRootId();
+  auto rootid2 = registry.genRootId();
+  EXPECT_NE(rootid, rootid2);
+  EXPECT_EQ(
+      RequestsRegistry::getRequestId(rootid).getLocalId() + 1,
+      RequestsRegistry::getRequestId(rootid2).getLocalId());
+  EXPECT_EQ(
+      RequestsRegistry::getRequestId(rootid).getRegistryId(),
+      RequestsRegistry::getRequestId(rootid2).getRegistryId());
+
+  RequestsRegistry registry2(0, 0, 0);
+  auto rootid3 = registry2.genRootId();
+  EXPECT_EQ(
+      RequestsRegistry::getRequestId(rootid).getRegistryId() + 1,
+      RequestsRegistry::getRequestId(rootid3).getRegistryId());
+}

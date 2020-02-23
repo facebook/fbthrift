@@ -111,7 +111,7 @@ class RequestsRegistry {
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
-          reqId_(reqRegistry.genRequestId()),
+          reqId_(reqRegistry.getRequestId(rootRequestContextId)),
           rootRequestContextId_(rootRequestContextId) {
       reqRegistry.registerStub(*this);
     }
@@ -238,6 +238,9 @@ class RequestsRegistry {
     return std::unique_ptr<T, Deleter>(pT, pStub);
   }
 
+  intptr_t genRootId();
+  static RequestId getRequestId(intptr_t rootid);
+
   using ActiveRequestDebugStubList =
       folly::IntrusiveList<DebugStub, &DebugStub::activeRequestsRegistryHook_>;
   using ActiveRequestPayloadList =
@@ -289,7 +292,6 @@ class RequestsRegistry {
     DCHECK(payloadMemoryUsage_ >= payloadSize);
     payloadMemoryUsage_ -= payloadSize;
   }
-  RequestId genRequestId();
   uint32_t registryId_;
   uint64_t nextLocalId_{0};
   uint64_t payloadMemoryLimitPerRequest_;
