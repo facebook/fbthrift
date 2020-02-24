@@ -402,16 +402,7 @@ class mstch_cpp2_const_value : public mstch_const_value {
             generators,
             cache,
             pos,
-            index) {
-    register_methods(
-        this,
-        {
-            {"value:index_plus_one", &mstch_cpp2_const_value::index_plus_one},
-        });
-  }
-  mstch::node index_plus_one() {
-    return std::to_string(index_ + 1);
-  }
+            index) {}
 
  private:
   bool same_type_as_expected() const override {
@@ -764,15 +755,11 @@ class mstch_cpp2_struct : public mstch_struct {
     register_methods(
         this,
         {
-            {"struct:getters_setters?", &mstch_cpp2_struct::getters_setters},
-            {"struct:base_field_or_struct?",
-             &mstch_cpp2_struct::has_base_field_or_struct},
             {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
             {"struct:fields_in_layout_order",
              &mstch_cpp2_struct::fields_in_layout_order},
             {"struct:is_struct_orderable?",
              &mstch_cpp2_struct::is_struct_orderable},
-            {"struct:fields_contain_cpp_ref?", &mstch_cpp2_struct::has_cpp_ref},
             {"struct:fields_contain_cpp_ref_unique_either?",
              &mstch_cpp2_struct::has_cpp_ref_unique_either},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
@@ -798,32 +785,6 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:legacy_type_id", &mstch_cpp2_struct::get_legacy_type_id},
             {"struct:metadata_name", &mstch_cpp2_struct::metadata_name},
         });
-  }
-  mstch::node getters_setters() {
-    for (auto const* field : strct_->get_members()) {
-      auto const* resolved_typedef = field->get_type()->get_true_type();
-      if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
-          resolved_typedef->is_struct() ||
-          field->get_req() == t_field::e_req::T_OPTIONAL) {
-        return true;
-      }
-    }
-    return false;
-  }
-  mstch::node has_base_field_or_struct() {
-    for (auto const* field : strct_->get_members()) {
-      auto const* resolved_typedef = field->get_type()->get_true_type();
-      if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
-          resolved_typedef->is_struct() ||
-          field->annotations_.count("cpp.ref") ||
-          field->annotations_.count("cpp2.ref") ||
-          field->annotations_.count("cpp.ref_type") ||
-          field->annotations_.count("cpp2.ref_type") ||
-          field->get_req() == t_field::e_req::T_OPTIONAL) {
-        return true;
-      }
-    }
-    return false;
   }
   mstch::node filtered_fields() {
     auto has_annotation = [](t_field const* field, std::string const& name) {
@@ -874,14 +835,6 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node is_struct_orderable() {
     return context_->is_orderable(*strct_) &&
         !strct_->annotations_.count("no_default_comparators");
-  }
-  mstch::node has_cpp_ref() {
-    for (auto const* f : strct_->get_members()) {
-      if (cpp2::is_cpp_ref(f)) {
-        return true;
-      }
-    }
-    return false;
   }
   mstch::node has_cpp_ref_unique_either() {
     for (auto const* f : strct_->get_members()) {
@@ -1171,7 +1124,6 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneway_functions", &mstch_cpp2_service::oneway_functions},
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
-            {"service:coroutines?", &mstch_cpp2_service::coroutines},
             {"service:metadata_name", &mstch_cpp2_service::metadata_name},
         });
   }
@@ -1226,12 +1178,6 @@ class mstch_cpp2_service : public mstch_service {
     }
     return false;
   }
-  mstch::node coroutines() {
-    auto&& funs = service_->get_functions();
-    return std::any_of(funs.begin(), funs.end(), [](auto fun) {
-      return fun->annotations_.count("cpp.coroutine");
-    });
-  }
   mstch::node metadata_name() {
     return service_->get_program()->get_name() + "_" + service_->get_name();
   }
@@ -1285,18 +1231,8 @@ class mstch_cpp2_const : public mstch_const {
     register_methods(
         this,
         {
-            {"constant:enum_value?", &mstch_cpp2_const::has_enum_value},
             {"constant:enum_value", &mstch_cpp2_const::enum_value},
         });
-  }
-  mstch::node has_enum_value() {
-    if (cnst_->get_type()->is_enum()) {
-      auto const* enm = static_cast<t_enum const*>(cnst_->get_type());
-      if (enm->find_value(cnst_->get_value()->get_integer())) {
-        return true;
-      }
-    }
-    return false;
   }
   mstch::node enum_value() {
     if (cnst_->get_type()->is_enum()) {
@@ -1333,11 +1269,9 @@ class mstch_cpp2_program : public mstch_program {
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen?", &mstch_cpp2_program::frozen},
             {"program:frozen_packed?", &mstch_cpp2_program::frozen_packed},
-            {"program:frozen2?", &mstch_cpp2_program::frozen2},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
             {"program:json?", &mstch_cpp2_program::json},
             {"program:optionals?", &mstch_cpp2_program::optionals},
-            {"program:coroutines?", &mstch_cpp2_program::coroutines},
             {"program:nimble?", &mstch_cpp2_program::nimble},
             {"program:fatal_languages", &mstch_cpp2_program::fatal_languages},
             {"program:fatal_enums", &mstch_cpp2_program::fatal_enums},
@@ -1496,9 +1430,6 @@ class mstch_cpp2_program : public mstch_program {
     auto iter = cache_->parsed_options_.find("frozen");
     return iter != cache_->parsed_options_.end() && iter->second == "packed";
   }
-  mstch::node frozen2() {
-    return cache_->parsed_options_.count("frozen2") != 0;
-  }
   mstch::node has_indirection() {
     // NOTE: this can be problematic, since typedef can be from an imported
     // thrift file.
@@ -1514,9 +1445,6 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node optionals() {
     return cache_->parsed_options_.count("optionals") != 0;
-  }
-  mstch::node coroutines() {
-    return cache_->parsed_options_.count("coroutines") != 0;
   }
   mstch::node nimble() {
     return cache_->parsed_options_.count("nimble") != 0;
