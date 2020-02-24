@@ -29,7 +29,7 @@ void StructMetadata<::matching_module_name::MyStruct>::gen(ThriftMetadata& metad
   matching_module_name_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   matching_module_name_MyStruct_fields[] = {
-    {1, "OtherStructField", false, std::make_unique<Struct< ::matching_module_name::OtherStruct>>("matching_module_name.OtherStruct", metadata)},
+    std::make_tuple(1, "OtherStructField", false, std::make_unique<Struct< ::matching_module_name::OtherStruct>>("matching_module_name.OtherStruct", metadata)),
   };
   for (const auto& f : matching_module_name_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

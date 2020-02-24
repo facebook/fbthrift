@@ -29,8 +29,8 @@ void StructMetadata<::module2::Struct>::gen(ThriftMetadata& metadata) {
   module2_Struct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module2_Struct_fields[] = {
-    {1, "first", false, std::make_unique<Struct< ::module0::Struct>>("module0.Struct", metadata)},
-    {2, "second", false, std::make_unique<Struct< ::module1::Struct>>("module1.Struct", metadata)},
+    std::make_tuple(1, "first", false, std::make_unique<Struct< ::module0::Struct>>("module0.Struct", metadata)),
+    std::make_tuple(2, "second", false, std::make_unique<Struct< ::module1::Struct>>("module1.Struct", metadata)),
   };
   for (const auto& f : module2_Struct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -51,8 +51,8 @@ void StructMetadata<::module2::BigStruct>::gen(ThriftMetadata& metadata) {
   module2_BigStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module2_BigStruct_fields[] = {
-    {1, "s", false, std::make_unique<Struct< ::module2::Struct>>("module2.Struct", metadata)},
-    {2, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
+    std::make_tuple(1, "s", false, std::make_unique<Struct< ::module2::Struct>>("module2.Struct", metadata)),
+    std::make_tuple(2, "id", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
   };
   for (const auto& f : module2_BigStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

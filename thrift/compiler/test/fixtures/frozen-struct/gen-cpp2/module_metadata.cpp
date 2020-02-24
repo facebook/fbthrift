@@ -40,12 +40,12 @@ void StructMetadata<::some::ns::ModuleA>::gen(ThriftMetadata& metadata) {
   module_ModuleA.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ModuleA_fields[] = {
-    {1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
-    {2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
-    {3, "listField", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE))},
-    {4, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
-    {5, "inclAField", false, std::make_unique<Struct< ::some::ns::IncludedA>>("include1.IncludedA", metadata)},
-    {6, "inclBField", false, std::make_unique<Struct< ::some::ns::IncludedB>>("include2.IncludedB", metadata)},
+    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(3, "listField", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE))),
+    std::make_tuple(4, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(5, "inclAField", false, std::make_unique<Struct< ::some::ns::IncludedA>>("include1.IncludedA", metadata)),
+    std::make_tuple(6, "inclBField", false, std::make_unique<Struct< ::some::ns::IncludedB>>("include2.IncludedB", metadata)),
   };
   for (const auto& f : module_ModuleA_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -66,8 +66,8 @@ void StructMetadata<::some::ns::ModuleB>::gen(ThriftMetadata& metadata) {
   module_ModuleB.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ModuleB_fields[] = {
-    {1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
-    {2, "inclEnumB", false, std::make_unique<Enum< ::some::ns::EnumB>>("module.EnumB", metadata)},
+    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(2, "inclEnumB", false, std::make_unique<Enum< ::some::ns::EnumB>>("module.EnumB", metadata)),
   };
   for (const auto& f : module_ModuleB_fields) {
     ::apache::thrift::metadata::ThriftField field;

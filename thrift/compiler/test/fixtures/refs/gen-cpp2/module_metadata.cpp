@@ -40,8 +40,8 @@ void StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   module_MyUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyUnion_fields[] = {
-    {1, "anInteger", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
-    {2, "aString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    std::make_tuple(1, "anInteger", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(2, "aString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -62,9 +62,9 @@ void StructMetadata<::cpp2::MyField>::gen(ThriftMetadata& metadata) {
   module_MyField.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyField_fields[] = {
-    {1, "opt_value", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
-    {2, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
-    {3, "req_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
+    std::make_tuple(1, "opt_value", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(2, "value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(3, "req_value", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
   };
   for (const auto& f : module_MyField_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -85,9 +85,9 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   module_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStruct_fields[] = {
-    {1, "opt_ref", true, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
-    {2, "ref", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
-    {3, "req_ref", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
+    std::make_tuple(1, "opt_ref", true, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
+    std::make_tuple(2, "ref", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
+    std::make_tuple(3, "req_ref", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -108,9 +108,9 @@ void StructMetadata<::cpp2::StructWithUnion>::gen(ThriftMetadata& metadata) {
   module_StructWithUnion.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithUnion_fields[] = {
-    {1, "u", false, std::make_unique<Union< ::cpp2::MyUnion>>("module.MyUnion", metadata)},
-    {2, "aDouble", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)},
-    {3, "f", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
+    std::make_tuple(1, "u", false, std::make_unique<Union< ::cpp2::MyUnion>>("module.MyUnion", metadata)),
+    std::make_tuple(2, "aDouble", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
+    std::make_tuple(3, "f", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
   };
   for (const auto& f : module_StructWithUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -131,7 +131,7 @@ void StructMetadata<::cpp2::RecursiveStruct>::gen(ThriftMetadata& metadata) {
   module_RecursiveStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_RecursiveStruct_fields[] = {
-    {1, "mes", true, std::make_unique<List>(std::make_unique<Typedef>("module.RecursiveStruct", std::make_unique<Struct< ::cpp2::RecursiveStruct>>("module.RecursiveStruct", metadata)))},
+    std::make_tuple(1, "mes", true, std::make_unique<List>(std::make_unique<Typedef>("module.RecursiveStruct", std::make_unique<Struct< ::cpp2::RecursiveStruct>>("module.RecursiveStruct", metadata)))),
   };
   for (const auto& f : module_RecursiveStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -152,12 +152,12 @@ void StructMetadata<::cpp2::StructWithContainers>::gen(ThriftMetadata& metadata)
   module_StructWithContainers.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithContainers_fields[] = {
-    {1, "list_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
-    {2, "set_ref", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
-    {3, "map_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
-    {4, "list_ref_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
-    {5, "set_ref_shared", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
-    {6, "list_ref_shared_const", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))},
+    std::make_tuple(1, "list_ref", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(2, "set_ref", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(3, "map_ref", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(4, "list_ref_unique", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(5, "set_ref_shared", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
+    std::make_tuple(6, "list_ref_shared_const", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
   };
   for (const auto& f : module_StructWithContainers_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -178,9 +178,9 @@ void StructMetadata<::cpp2::StructWithSharedConst>::gen(ThriftMetadata& metadata
   module_StructWithSharedConst.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithSharedConst_fields[] = {
-    {1, "opt_shared_const", true, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
-    {2, "shared_const", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
-    {3, "req_shared_const", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)},
+    std::make_tuple(1, "opt_shared_const", true, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
+    std::make_tuple(2, "shared_const", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
+    std::make_tuple(3, "req_shared_const", false, std::make_unique<Struct< ::cpp2::MyField>>("module.MyField", metadata)),
   };
   for (const auto& f : module_StructWithSharedConst_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -210,9 +210,9 @@ void StructMetadata<::cpp2::StructWithRef>::gen(ThriftMetadata& metadata) {
   module_StructWithRef.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithRef_fields[] = {
-    {1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
+    std::make_tuple(1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
   };
   for (const auto& f : module_StructWithRef_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -233,9 +233,9 @@ void StructMetadata<::cpp2::StructWithRefTypeUnique>::gen(ThriftMetadata& metada
   module_StructWithRefTypeUnique.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithRefTypeUnique_fields[] = {
-    {1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
+    std::make_tuple(1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
   };
   for (const auto& f : module_StructWithRefTypeUnique_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -256,9 +256,9 @@ void StructMetadata<::cpp2::StructWithRefTypeShared>::gen(ThriftMetadata& metada
   module_StructWithRefTypeShared.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithRefTypeShared_fields[] = {
-    {1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
+    std::make_tuple(1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
   };
   for (const auto& f : module_StructWithRefTypeShared_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -279,9 +279,9 @@ void StructMetadata<::cpp2::StructWithRefTypeSharedConst>::gen(ThriftMetadata& m
   module_StructWithRefTypeSharedConst.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithRefTypeSharedConst_fields[] = {
-    {1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
-    {3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
+    std::make_tuple(1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(2, "opt_field", true, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
+    std::make_tuple(3, "req_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
   };
   for (const auto& f : module_StructWithRefTypeSharedConst_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -302,7 +302,7 @@ void StructMetadata<::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor>::gen(Thrif
   module_StructWithRefAndAnnotCppNoexceptMoveCtor.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_StructWithRefAndAnnotCppNoexceptMoveCtor_fields[] = {
-    {1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)},
+    std::make_tuple(1, "def_field", false, std::make_unique<Struct< ::cpp2::Empty>>("module.Empty", metadata)),
   };
   for (const auto& f : module_StructWithRefAndAnnotCppNoexceptMoveCtor_fields) {
     ::apache::thrift::metadata::ThriftField field;

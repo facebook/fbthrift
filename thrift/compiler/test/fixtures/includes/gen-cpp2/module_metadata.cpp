@@ -29,9 +29,9 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   module_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStruct_fields[] = {
-    {1, "MyIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata)},
-    {2, "MyOtherIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata)},
-    {3, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))},
+    std::make_tuple(1, "MyIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata)),
+    std::make_tuple(2, "MyOtherIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata)),
+    std::make_tuple(3, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;

@@ -49,10 +49,10 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   module_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStruct_fields[] = {
-    {1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)},
-    {2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
-    {3, "MyDataField", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct< ::cpp2::MyDataItem>>("module.MyDataItem", metadata))},
-    {4, "myEnum", false, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum", metadata)},
+    std::make_tuple(1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(3, "MyDataField", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct< ::cpp2::MyDataItem>>("module.MyDataItem", metadata))),
+    std::make_tuple(4, "myEnum", false, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum", metadata)),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -73,9 +73,9 @@ void StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   module_MyUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyUnion_fields[] = {
-    {1, "myEnum", false, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum", metadata)},
-    {2, "myStruct", false, std::make_unique<Struct< ::cpp2::MyStruct>>("module.MyStruct", metadata)},
-    {3, "myDataItem", false, std::make_unique<Struct< ::cpp2::MyDataItem>>("module.MyDataItem", metadata)},
+    std::make_tuple(1, "myEnum", false, std::make_unique<Enum< ::cpp2::MyEnum>>("module.MyEnum", metadata)),
+    std::make_tuple(2, "myStruct", false, std::make_unique<Struct< ::cpp2::MyStruct>>("module.MyStruct", metadata)),
+    std::make_tuple(3, "myDataItem", false, std::make_unique<Struct< ::cpp2::MyDataItem>>("module.MyDataItem", metadata)),
   };
   for (const auto& f : module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;

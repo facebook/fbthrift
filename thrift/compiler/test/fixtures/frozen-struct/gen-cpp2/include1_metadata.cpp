@@ -29,8 +29,8 @@ void StructMetadata<::some::ns::IncludedA>::gen(ThriftMetadata& metadata) {
   include1_IncludedA.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   include1_IncludedA_fields[] = {
-    {1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)},
-    {2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)},
+    std::make_tuple(1, "i32Field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(2, "strField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
   };
   for (const auto& f : include1_IncludedA_fields) {
     ::apache::thrift::metadata::ThriftField field;
