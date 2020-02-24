@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
@@ -510,35 +511,35 @@ public final class MyStruct {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("myIntField", myIntField)
-            .add("myStringField", myStringField)
-            .add("myDataField", myDataField)
-            .add("myEnum", myEnum)
-            .add("myBoolField", myBoolField)
-            .add("myByteField", myByteField)
-            .add("myShortField", myShortField)
-            .add("myLongField", myLongField)
-            .add("myDoubleField", myDoubleField)
-            .add("lDouble", lDouble)
-            .add("lShort", lShort)
-            .add("lInteger", lInteger)
-            .add("lLong", lLong)
-            .add("lString", lString)
-            .add("lBool", lBool)
-            .add("lByte", lByte)
-            .add("mShortString", mShortString)
-            .add("mIntegerString", mIntegerString)
-            .add("mStringMyStruct", mStringMyStruct)
-            .add("mStringBool", mStringBool)
-            .add("mIntegerInteger", mIntegerInteger)
-            .add("mIntegerBool", mIntegerBool)
-            .add("sShort", sShort)
-            .add("sMyStruct", sMyStruct)
-            .add("sLong", sLong)
-            .add("sString", sString)
-            .add("sByte", sByte)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("myIntField", myIntField);
+        helper.add("myStringField", myStringField);
+        helper.add("myDataField", myDataField);
+        helper.add("myEnum", myEnum);
+        helper.add("myBoolField", myBoolField);
+        helper.add("myByteField", myByteField);
+        helper.add("myShortField", myShortField);
+        helper.add("myLongField", myLongField);
+        helper.add("myDoubleField", myDoubleField);
+        helper.add("lDouble", lDouble);
+        helper.add("lShort", lShort);
+        helper.add("lInteger", lInteger);
+        helper.add("lLong", lLong);
+        helper.add("lString", lString);
+        helper.add("lBool", lBool);
+        helper.add("lByte", lByte);
+        helper.add("mShortString", mShortString);
+        helper.add("mIntegerString", mIntegerString);
+        helper.add("mStringMyStruct", mStringMyStruct);
+        helper.add("mStringBool", mStringBool);
+        helper.add("mIntegerInteger", mIntegerInteger);
+        helper.add("mIntegerBool", mIntegerBool);
+        helper.add("sShort", sShort);
+        helper.add("sMyStruct", sMyStruct);
+        helper.add("sLong", sLong);
+        helper.add("sString", sString);
+        helper.add("sByte", sByte);
+        return helper.toString();
     }
     
     @Override

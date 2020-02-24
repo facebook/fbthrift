@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="RecursiveStruct", builder=RecursiveStruct.Builder.class)
@@ -68,9 +69,9 @@ public final class RecursiveStruct {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("mes", mes)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("mes", mes);
+        return helper.toString();
     }
     
     @Override

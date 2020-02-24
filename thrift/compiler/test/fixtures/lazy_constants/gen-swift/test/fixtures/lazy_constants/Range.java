@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="Range", builder=Range.Builder.class)
@@ -85,10 +86,10 @@ public final class Range {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("min", min)
-            .add("max", max)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("min", min);
+        helper.add("max", max);
+        return helper.toString();
     }
     
     @Override

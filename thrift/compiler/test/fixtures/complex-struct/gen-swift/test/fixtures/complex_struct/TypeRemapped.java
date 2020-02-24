@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="TypeRemapped", builder=TypeRemapped.Builder.class)
@@ -119,12 +120,12 @@ public final class TypeRemapped {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("lsMap", lsMap)
-            .add("ioMap", ioMap)
-            .add("bigInteger", bigInteger)
-            .add("binaryTestBuffer", binaryTestBuffer)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("lsMap", lsMap);
+        helper.add("ioMap", ioMap);
+        helper.add("bigInteger", bigInteger);
+        helper.add("binaryTestBuffer", binaryTestBuffer);
+        return helper.toString();
     }
     
     @Override

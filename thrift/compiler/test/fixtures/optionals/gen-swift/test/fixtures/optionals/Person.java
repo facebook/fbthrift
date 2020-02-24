@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="Person", builder=Person.Builder.class)
@@ -221,18 +222,18 @@ public final class Person {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("id", id)
-            .add("name", name)
-            .add("age", age)
-            .add("address", address)
-            .add("favoriteColor", favoriteColor)
-            .add("friends", friends)
-            .add("bestFriend", bestFriend)
-            .add("petNames", petNames)
-            .add("afraidOfAnimal", afraidOfAnimal)
-            .add("vehicles", vehicles)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("id", id);
+        helper.add("name", name);
+        helper.add("age", age);
+        helper.add("address", address);
+        helper.add("favoriteColor", favoriteColor);
+        helper.add("friends", friends);
+        helper.add("bestFriend", bestFriend);
+        helper.add("petNames", petNames);
+        helper.add("afraidOfAnimal", afraidOfAnimal);
+        helper.add("vehicles", vehicles);
+        return helper.toString();
     }
     
     @Override

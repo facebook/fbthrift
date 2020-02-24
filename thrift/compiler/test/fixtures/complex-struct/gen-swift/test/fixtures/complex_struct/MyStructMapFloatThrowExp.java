@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
@@ -85,10 +86,10 @@ public final class MyStructMapFloatThrowExp {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("myLongField", myLongField)
-            .add("mapListOfFloats", mapListOfFloats)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("myLongField", myLongField);
+        helper.add("mapListOfFloats", mapListOfFloats);
+        return helper.toString();
     }
     
     @Override

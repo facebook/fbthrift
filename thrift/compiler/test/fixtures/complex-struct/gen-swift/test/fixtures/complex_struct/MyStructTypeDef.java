@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="MyStructTypeDef", builder=MyStructTypeDef.Builder.class)
@@ -204,17 +205,17 @@ public final class MyStructTypeDef {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("myLongField", myLongField)
-            .add("myLongTypeDef", myLongTypeDef)
-            .add("myStringField", myStringField)
-            .add("myStringTypedef", myStringTypedef)
-            .add("myMapField", myMapField)
-            .add("myMapTypedef", myMapTypedef)
-            .add("myListField", myListField)
-            .add("myListTypedef", myListTypedef)
-            .add("myMapListOfTypeDef", myMapListOfTypeDef)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("myLongField", myLongField);
+        helper.add("myLongTypeDef", myLongTypeDef);
+        helper.add("myStringField", myStringField);
+        helper.add("myStringTypedef", myStringTypedef);
+        helper.add("myMapField", myMapField);
+        helper.add("myMapTypedef", myMapTypedef);
+        helper.add("myListField", myListField);
+        helper.add("myListTypedef", myListTypedef);
+        helper.add("myMapListOfTypeDef", myMapListOfTypeDef);
+        return helper.toString();
     }
     
     @Override

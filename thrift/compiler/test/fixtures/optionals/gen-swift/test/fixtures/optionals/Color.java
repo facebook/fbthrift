@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="Color", builder=Color.Builder.class)
@@ -119,12 +120,12 @@ public final class Color {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("red", red)
-            .add("green", green)
-            .add("blue", blue)
-            .add("alpha", alpha)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("red", red);
+        helper.add("green", green);
+        helper.add("blue", blue);
+        helper.add("alpha", alpha);
+        return helper.toString();
     }
     
     @Override

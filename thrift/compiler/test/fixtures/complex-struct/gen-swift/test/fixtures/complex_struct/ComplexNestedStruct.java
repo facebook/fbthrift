@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="ComplexNestedStruct", builder=ComplexNestedStruct.Builder.class)
@@ -357,26 +358,26 @@ public final class ComplexNestedStruct {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("setOfSetOfInt", setOfSetOfInt)
-            .add("listofListOfListOfListOfEnum", listofListOfListOfListOfEnum)
-            .add("listOfListOfMyStruct", listOfListOfMyStruct)
-            .add("setOfListOfListOfLong", setOfListOfListOfLong)
-            .add("setOfSetOfsetOfLong", setOfSetOfsetOfLong)
-            .add("mapStructListOfListOfLong", mapStructListOfListOfLong)
-            .add("mKeyStructValInt", mKeyStructValInt)
-            .add("listOfMapKeyIntValInt", listOfMapKeyIntValInt)
-            .add("listOfMapKeyStrValList", listOfMapKeyStrValList)
-            .add("mapKeySetValLong", mapKeySetValLong)
-            .add("mapKeyListValLong", mapKeyListValLong)
-            .add("mapKeyMapValMap", mapKeyMapValMap)
-            .add("mapKeySetValMap", mapKeySetValMap)
-            .add("nestedMaps", nestedMaps)
-            .add("mapKeyIntValList", mapKeyIntValList)
-            .add("mapKeyIntValSet", mapKeyIntValSet)
-            .add("mapKeySetValInt", mapKeySetValInt)
-            .add("mapKeyListValSet", mapKeyListValSet)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("setOfSetOfInt", setOfSetOfInt);
+        helper.add("listofListOfListOfListOfEnum", listofListOfListOfListOfEnum);
+        helper.add("listOfListOfMyStruct", listOfListOfMyStruct);
+        helper.add("setOfListOfListOfLong", setOfListOfListOfLong);
+        helper.add("setOfSetOfsetOfLong", setOfSetOfsetOfLong);
+        helper.add("mapStructListOfListOfLong", mapStructListOfListOfLong);
+        helper.add("mKeyStructValInt", mKeyStructValInt);
+        helper.add("listOfMapKeyIntValInt", listOfMapKeyIntValInt);
+        helper.add("listOfMapKeyStrValList", listOfMapKeyStrValList);
+        helper.add("mapKeySetValLong", mapKeySetValLong);
+        helper.add("mapKeyListValLong", mapKeyListValLong);
+        helper.add("mapKeyMapValMap", mapKeyMapValMap);
+        helper.add("mapKeySetValMap", mapKeySetValMap);
+        helper.add("nestedMaps", nestedMaps);
+        helper.add("mapKeyIntValList", mapKeyIntValList);
+        helper.add("mapKeyIntValSet", mapKeyIntValSet);
+        helper.add("mapKeySetValInt", mapKeySetValInt);
+        helper.add("mapKeyListValSet", mapKeyListValSet);
+        return helper.toString();
     }
     
     @Override

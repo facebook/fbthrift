@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
@@ -102,11 +103,11 @@ public final class StructWithUnion {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("u", u)
-            .add("aDouble", aDouble)
-            .add("f", f)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("u", u);
+        helper.add("aDouble", aDouble);
+        helper.add("f", f);
+        return helper.toString();
     }
     
     @Override

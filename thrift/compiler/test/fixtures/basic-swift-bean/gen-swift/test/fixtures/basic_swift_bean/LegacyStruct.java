@@ -86,10 +86,10 @@ public final class LegacyStruct {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("normal", normal)
-            .add("bad", bad)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("normal", normal);
+        helper.add("bad", bad);
+        return helper.toString();
     }
     
     @Override

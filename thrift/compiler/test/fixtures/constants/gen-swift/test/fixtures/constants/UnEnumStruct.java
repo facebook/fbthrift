@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="UnEnumStruct", builder=UnEnumStruct.Builder.class)
@@ -68,9 +69,9 @@ public final class UnEnumStruct {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("city", city)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("city", city);
+        return helper.toString();
     }
     
     @Override

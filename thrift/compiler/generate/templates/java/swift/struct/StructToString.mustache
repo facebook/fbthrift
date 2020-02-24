@@ -17,10 +17,10 @@
 }}
 @Override
 public String toString() {
-    return toStringHelper(this)
-        {{#struct:fields}}
-        .add("{{field:javaName}}", {{field:javaName}})
-        {{/struct:fields}}
-        .toString();
+    ToStringHelper helper = toStringHelper(this);
+    {{#struct:fields}}
+    helper.add("{{field:javaName}}", {{field:javaName}});
+    {{/struct:fields}}
+    return helper.toString();
 }
 {{! terminate with newline }}

@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="StructWithRefTypeShared", builder=StructWithRefTypeShared.Builder.class)
@@ -102,11 +103,11 @@ public final class StructWithRefTypeShared {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("defField", defField)
-            .add("optField", optField)
-            .add("reqField", reqField)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("defField", defField);
+        helper.add("optField", optField);
+        helper.add("reqField", reqField);
+        return helper.toString();
     }
     
     @Override

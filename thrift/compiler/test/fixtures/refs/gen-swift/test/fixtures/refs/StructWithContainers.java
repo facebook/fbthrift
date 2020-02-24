@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="StructWithContainers", builder=StructWithContainers.Builder.class)
@@ -153,14 +154,14 @@ public final class StructWithContainers {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("listRef", listRef)
-            .add("setRef", setRef)
-            .add("mapRef", mapRef)
-            .add("listRefUnique", listRefUnique)
-            .add("setRefShared", setRefShared)
-            .add("listRefSharedConst", listRefSharedConst)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("listRef", listRef);
+        helper.add("setRef", setRef);
+        helper.add("mapRef", mapRef);
+        helper.add("listRefUnique", listRefUnique);
+        helper.add("setRefShared", setRefShared);
+        helper.add("listRefSharedConst", listRefSharedConst);
+        return helper.toString();
     }
     
     @Override

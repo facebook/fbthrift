@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="Included", builder=Included.Builder.class)
@@ -85,10 +86,10 @@ public final class Included {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("myIntField", myIntField)
-            .add("myTransitiveField", myTransitiveField)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("myIntField", myIntField);
+        helper.add("myTransitiveField", myTransitiveField);
+        return helper.toString();
     }
     
     @Override

@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="MyNomralStruct", builder=MyNomralStruct.Builder.class)
@@ -561,38 +562,38 @@ public final class MyNomralStruct {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("msg1", msg1)
-            .add("msg2", msg2)
-            .add("msg3", msg3)
-            .add("msg4", msg4)
-            .add("msg5", msg5)
-            .add("msg6", msg6)
-            .add("msg7", msg7)
-            .add("msg8", msg8)
-            .add("msg9", msg9)
-            .add("myIntField10", myIntField10)
-            .add("myIntField11", myIntField11)
-            .add("myIntField12", myIntField12)
-            .add("myIntField13", myIntField13)
-            .add("myIntField14", myIntField14)
-            .add("myIntField15", myIntField15)
-            .add("myIntField16", myIntField16)
-            .add("myIntField17", myIntField17)
-            .add("myIntField18", myIntField18)
-            .add("myIntField19", myIntField19)
-            .add("myIntField20", myIntField20)
-            .add("myDoubleField21", myDoubleField21)
-            .add("myDoubleField22", myDoubleField22)
-            .add("myDoubleField23", myDoubleField23)
-            .add("myDoubleField24", myDoubleField24)
-            .add("myDoubleField25", myDoubleField25)
-            .add("myDoubleField26", myDoubleField26)
-            .add("myDoubleField27", myDoubleField27)
-            .add("myDoubleField28", myDoubleField28)
-            .add("myDoubleField29", myDoubleField29)
-            .add("myDoubleField30", myDoubleField30)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("msg1", msg1);
+        helper.add("msg2", msg2);
+        helper.add("msg3", msg3);
+        helper.add("msg4", msg4);
+        helper.add("msg5", msg5);
+        helper.add("msg6", msg6);
+        helper.add("msg7", msg7);
+        helper.add("msg8", msg8);
+        helper.add("msg9", msg9);
+        helper.add("myIntField10", myIntField10);
+        helper.add("myIntField11", myIntField11);
+        helper.add("myIntField12", myIntField12);
+        helper.add("myIntField13", myIntField13);
+        helper.add("myIntField14", myIntField14);
+        helper.add("myIntField15", myIntField15);
+        helper.add("myIntField16", myIntField16);
+        helper.add("myIntField17", myIntField17);
+        helper.add("myIntField18", myIntField18);
+        helper.add("myIntField19", myIntField19);
+        helper.add("myIntField20", myIntField20);
+        helper.add("myDoubleField21", myDoubleField21);
+        helper.add("myDoubleField22", myDoubleField22);
+        helper.add("myDoubleField23", myDoubleField23);
+        helper.add("myDoubleField24", myDoubleField24);
+        helper.add("myDoubleField25", myDoubleField25);
+        helper.add("myDoubleField26", myDoubleField26);
+        helper.add("myDoubleField27", myDoubleField27);
+        helper.add("myDoubleField28", myDoubleField28);
+        helper.add("myDoubleField29", myDoubleField29);
+        helper.add("myDoubleField30", myDoubleField30);
+        return helper.toString();
     }
     
     @Override

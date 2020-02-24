@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="B", builder=B.Builder.class)
@@ -697,46 +698,46 @@ public final class B {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("justAnA", justAnA)
-            .add("setOfI32", setOfI32)
-            .add("listOfI32", listOfI32)
-            .add("listOfString", listOfString)
-            .add("mapOfStringToI32", mapOfStringToI32)
-            .add("mapOfStringToA", mapOfStringToA)
-            .add("mapOfStringToListOfI32", mapOfStringToListOfI32)
-            .add("mapOfStringToListOfA", mapOfStringToListOfA)
-            .add("mapOfStringToSetOfI32", mapOfStringToSetOfI32)
-            .add("mapOfStringToMapOfStringToI32", mapOfStringToMapOfStringToI32)
-            .add("mapOfStringToMapOfStringToA", mapOfStringToMapOfStringToA)
-            .add("listOfSetOfI32", listOfSetOfI32)
-            .add("listOfMapOfStringToListOfA", listOfMapOfStringToListOfA)
-            .add("listOfMapOfStringToA", listOfMapOfStringToA)
-            .add("listOfSelf", listOfSelf)
-            .add("mapOfStringToSelf", mapOfStringToSelf)
-            .add("justAnEnum", justAnEnum)
-            .add("justAUnion", justAUnion)
-            .add("optionalJustAnA", optionalJustAnA)
-            .add("optionalSetOfI32", optionalSetOfI32)
-            .add("optionalListOfI32", optionalListOfI32)
-            .add("optionalListOfString", optionalListOfString)
-            .add("optionalMapOfStringToI32", optionalMapOfStringToI32)
-            .add("optionalMapOfStringToA", optionalMapOfStringToA)
-            .add("optionalMapOfStringToListOfI32", optionalMapOfStringToListOfI32)
-            .add("optionalMapOfStringToListOfA", optionalMapOfStringToListOfA)
-            .add("optionalMapOfStringToSetOfI32", optionalMapOfStringToSetOfI32)
-            .add("optionalEnum", optionalEnum)
-            .add("requiredEnumWithDefault", requiredEnumWithDefault)
-            .add("stringWithDefaultValue", stringWithDefaultValue)
-            .add("i32WithDefaultValue", i32WithDefaultValue)
-            .add("doubleWithDefaultValue", doubleWithDefaultValue)
-            .add("enumWithDefaultValue", enumWithDefaultValue)
-            .add("aWithDefaultValue", aWithDefaultValue)
-            .add("setOfI32WithDefaultValue", setOfI32WithDefaultValue)
-            .add("mapOfI32ToStringWithDefaultValue", mapOfI32ToStringWithDefaultValue)
-            .add("listOfStringWithDefaultValue", listOfStringWithDefaultValue)
-            .add("mapOfStringToListOfI32WithDefaultValue", mapOfStringToListOfI32WithDefaultValue)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("justAnA", justAnA);
+        helper.add("setOfI32", setOfI32);
+        helper.add("listOfI32", listOfI32);
+        helper.add("listOfString", listOfString);
+        helper.add("mapOfStringToI32", mapOfStringToI32);
+        helper.add("mapOfStringToA", mapOfStringToA);
+        helper.add("mapOfStringToListOfI32", mapOfStringToListOfI32);
+        helper.add("mapOfStringToListOfA", mapOfStringToListOfA);
+        helper.add("mapOfStringToSetOfI32", mapOfStringToSetOfI32);
+        helper.add("mapOfStringToMapOfStringToI32", mapOfStringToMapOfStringToI32);
+        helper.add("mapOfStringToMapOfStringToA", mapOfStringToMapOfStringToA);
+        helper.add("listOfSetOfI32", listOfSetOfI32);
+        helper.add("listOfMapOfStringToListOfA", listOfMapOfStringToListOfA);
+        helper.add("listOfMapOfStringToA", listOfMapOfStringToA);
+        helper.add("listOfSelf", listOfSelf);
+        helper.add("mapOfStringToSelf", mapOfStringToSelf);
+        helper.add("justAnEnum", justAnEnum);
+        helper.add("justAUnion", justAUnion);
+        helper.add("optionalJustAnA", optionalJustAnA);
+        helper.add("optionalSetOfI32", optionalSetOfI32);
+        helper.add("optionalListOfI32", optionalListOfI32);
+        helper.add("optionalListOfString", optionalListOfString);
+        helper.add("optionalMapOfStringToI32", optionalMapOfStringToI32);
+        helper.add("optionalMapOfStringToA", optionalMapOfStringToA);
+        helper.add("optionalMapOfStringToListOfI32", optionalMapOfStringToListOfI32);
+        helper.add("optionalMapOfStringToListOfA", optionalMapOfStringToListOfA);
+        helper.add("optionalMapOfStringToSetOfI32", optionalMapOfStringToSetOfI32);
+        helper.add("optionalEnum", optionalEnum);
+        helper.add("requiredEnumWithDefault", requiredEnumWithDefault);
+        helper.add("stringWithDefaultValue", stringWithDefaultValue);
+        helper.add("i32WithDefaultValue", i32WithDefaultValue);
+        helper.add("doubleWithDefaultValue", doubleWithDefaultValue);
+        helper.add("enumWithDefaultValue", enumWithDefaultValue);
+        helper.add("aWithDefaultValue", aWithDefaultValue);
+        helper.add("setOfI32WithDefaultValue", setOfI32WithDefaultValue);
+        helper.add("mapOfI32ToStringWithDefaultValue", mapOfI32ToStringWithDefaultValue);
+        helper.add("listOfStringWithDefaultValue", listOfStringWithDefaultValue);
+        helper.add("mapOfStringToListOfI32WithDefaultValue", mapOfStringToListOfI32WithDefaultValue);
+        return helper.toString();
     }
     
     @Override

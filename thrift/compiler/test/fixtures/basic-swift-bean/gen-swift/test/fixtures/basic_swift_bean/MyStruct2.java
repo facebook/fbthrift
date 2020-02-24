@@ -86,10 +86,10 @@ public final class MyStruct2 {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("myStruct1", myStruct1)
-            .add("myString", myString)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("myStruct1", myStruct1);
+        helper.add("myString", myString);
+        return helper.toString();
     }
     
     @Override

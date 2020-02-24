@@ -86,10 +86,10 @@ public final class MyDataItem {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("field1", field1)
-            .add("field2", field2)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("field1", field1);
+        helper.add("field2", field2);
+        return helper.toString();
     }
     
     @Override

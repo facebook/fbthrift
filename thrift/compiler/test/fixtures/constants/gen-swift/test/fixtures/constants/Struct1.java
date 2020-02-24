@@ -20,6 +20,7 @@ import org.apache.thrift.protocol.*;
 import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct(value="struct1", builder=Struct1.Builder.class)
@@ -85,10 +86,10 @@ public final class Struct1 {
     
     @Override
     public String toString() {
-        return toStringHelper(this)
-            .add("a", a)
-            .add("b", b)
-            .toString();
+        ToStringHelper helper = toStringHelper(this);
+        helper.add("a", a);
+        helper.add("b", b);
+        return helper.toString();
     }
     
     @Override
