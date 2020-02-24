@@ -40,8 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, retain, nullable) TBaseStructArray * myBools;
 @property (nonatomic, retain, nonnull) TBaseStructArray * myNumbers;
 
-- (id) init;
-- (id) initWithMyInteger: (int32_t) myInteger myString: (nullable NSString *) myString myBools: (nullable TBaseStructArray *) myBools myNumbers: (nonnull TBaseStructArray *) myNumbers;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithMyInteger: (int32_t) myInteger myString: (nullable NSString *) myString myBools: (nullable TBaseStructArray *) myBools myNumbers: (nonnull TBaseStructArray *) myNumbers NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;

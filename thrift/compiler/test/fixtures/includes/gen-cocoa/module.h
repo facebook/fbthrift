@@ -36,8 +36,9 @@
 @property (nonatomic, retain) Included * MyOtherIncludedField;
 @property (nonatomic) IncludedInt64 MyIncludedInt;
 
-- (id) init;
-- (id) initWithMyIncludedField: (Included *) MyIncludedField MyOtherIncludedField: (Included *) MyOtherIncludedField MyIncludedInt: (IncludedInt64) MyIncludedInt;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithMyIncludedField: (Included *) MyIncludedField MyOtherIncludedField: (Included *) MyOtherIncludedField MyIncludedInt: (IncludedInt64) MyIncludedInt NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;

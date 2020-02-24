@@ -32,8 +32,9 @@
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * xyz_description;
 
-- (id) init;
-- (id) initWithName: (NSString *) name description: (NSString *) description;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithName: (NSString *) name description: (NSString *) description NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;

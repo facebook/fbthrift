@@ -29,8 +29,9 @@
 
 @property (nonatomic) int64_t a;
 
-- (id) init;
-- (id) initWithA: (int64_t) a;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithA: (int64_t) a NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;

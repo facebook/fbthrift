@@ -36,8 +36,9 @@
 @property (nonatomic, retain) MyStruct * s;
 @property (nonatomic, retain) Included * i;
 
-- (id) init;
-- (id) initWithS: (MyStruct *) s i: (Included *) i;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithS: (MyStruct *) s i: (Included *) i NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
@@ -246,7 +247,8 @@
 @interface Query_result : TBaseStruct <TBase, NSCoding> {
 }
 
-- (id) init;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
@@ -342,8 +344,9 @@
 @property (nonatomic, retain) MyStruct * s;
 @property (nonatomic, retain) Included * i;
 
-- (id) init;
-- (id) initWithS: (MyStruct *) s i: (Included *) i;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithS: (MyStruct *) s i: (Included *) i NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
@@ -552,7 +555,8 @@
 @interface Has_arg_docs_result : TBaseStruct <TBase, NSCoding> {
 }
 
-- (id) init;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;

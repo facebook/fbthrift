@@ -698,12 +698,19 @@ void t_cocoa_generator::generate_cocoa_struct_interface(
   }
 
   // default initializer
-  out << indent() << "- (id) init;" << endl;
+  out << indent() << "- (id) init NS_DESIGNATED_INITIALIZER;" << endl;
+
+  // although we conform to NSCoding, we need to declare -initWithCoder:
+  // explicitly, because the implementation invokes super, and is thus
+  // a designated initializer
+  out << indent()
+      << "- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;"
+      << endl;
 
   // initializer for all fields
   if (!members.empty()) {
     generate_cocoa_struct_initializer_signature(out, tstruct);
-    out << ";" << endl;
+    out << " NS_DESIGNATED_INITIALIZER;" << endl;
   }
   // read and write
   out << "- (void) read: (id <TProtocol>) inProtocol;" << endl;

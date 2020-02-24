@@ -37,8 +37,9 @@ typedef Foo * TransitiveFoo;
 @property (nonatomic) int64_t MyIntField;
 @property (nonatomic, retain) Foo * MyTransitiveField;
 
-- (id) init;
-- (id) initWithMyIntField: (int64_t) MyIntField MyTransitiveField: (Foo *) MyTransitiveField;
+- (id) init NS_DESIGNATED_INITIALIZER;
+- (id) initWithCoder:(NSCoder *)decoder NS_DESIGNATED_INITIALIZER;
+- (id) initWithMyIntField: (int64_t) MyIntField MyTransitiveField: (Foo *) MyTransitiveField NS_DESIGNATED_INITIALIZER;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
