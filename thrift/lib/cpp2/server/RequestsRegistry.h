@@ -111,7 +111,6 @@ class RequestsRegistry {
           payload_(std::move(payload)),
           timestamp_(std::chrono::steady_clock::now()),
           registry_(&reqRegistry),
-          reqId_(reqRegistry.getRequestId(rootRequestContextId)),
           rootRequestContextId_(rootRequestContextId) {
       reqRegistry.registerStub(*this);
     }
@@ -141,10 +140,6 @@ class RequestsRegistry {
 
     std::chrono::steady_clock::time_point getFinished() const {
       return finished_;
-    }
-
-    const RequestId& getRequestId() const {
-      return reqId_;
     }
 
     intptr_t getRootRequestContextId() const {
@@ -192,7 +187,6 @@ class RequestsRegistry {
     std::chrono::steady_clock::time_point finished_{
         std::chrono::steady_clock::duration::zero()};
     RequestsRegistry* registry_;
-    const RequestId reqId_;
     const intptr_t rootRequestContextId_;
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
