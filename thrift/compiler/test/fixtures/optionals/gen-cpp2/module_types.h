@@ -270,13 +270,13 @@ class Vehicle final : private apache::thrift::detail::st::ComparisonOperators<Ve
  public:
    ::cpp2::Color color;
  public:
-  folly::Optional<::std::string> licensePlate;
+  apache::thrift::DeprecatedOptionalField<::std::string> licensePlate;
  public:
-  folly::Optional<::std::string> description;
+  apache::thrift::DeprecatedOptionalField<::std::string> description;
  public:
-  folly::Optional<::std::string> name;
+  apache::thrift::DeprecatedOptionalField<::std::string> name;
  public:
-  folly::Optional<bool> hasAC;
+  apache::thrift::DeprecatedOptionalField<bool> hasAC;
 
  public:
   bool operator==(const Vehicle& rhs) const;
@@ -334,21 +334,21 @@ class Person final : private apache::thrift::detail::st::ComparisonOperators<Per
  public:
   ::std::string name;
  public:
-  folly::Optional<int16_t> age;
+  apache::thrift::DeprecatedOptionalField<int16_t> age;
  public:
-  folly::Optional<::std::string> address;
+  apache::thrift::DeprecatedOptionalField<::std::string> address;
  public:
-  folly::Optional< ::cpp2::Color> favoriteColor;
+  apache::thrift::DeprecatedOptionalField< ::cpp2::Color> favoriteColor;
  public:
-  folly::Optional<::std::set< ::cpp2::PersonID>> friends;
+  apache::thrift::DeprecatedOptionalField<::std::set< ::cpp2::PersonID>> friends;
  public:
-  folly::Optional< ::cpp2::PersonID> bestFriend;
+  apache::thrift::DeprecatedOptionalField< ::cpp2::PersonID> bestFriend;
  public:
-  folly::Optional<::std::map< ::cpp2::Animal, ::std::string>> petNames;
+  apache::thrift::DeprecatedOptionalField<::std::map< ::cpp2::Animal, ::std::string>> petNames;
  public:
-  folly::Optional< ::cpp2::Animal> afraidOfAnimal;
+  apache::thrift::DeprecatedOptionalField< ::cpp2::Animal> afraidOfAnimal;
  public:
-  folly::Optional<::std::vector< ::cpp2::Vehicle>> vehicles;
+  apache::thrift::DeprecatedOptionalField<::std::vector< ::cpp2::Vehicle>> vehicles;
 
  public:
   bool operator==(const Person& rhs) const;
