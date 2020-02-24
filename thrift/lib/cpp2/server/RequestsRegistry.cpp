@@ -28,8 +28,8 @@ namespace {
 // is 10^52, so thrift servers theoretically can generate unique request id
 // for ~12 years, assuming the QPS is ~10 million.
 const size_t kLsbBits = 52;
-const uint64_t kLsbMask = (1ull << kLsbBits) - 1;
-const intptr_t kMsbMask = ~kLsbMask;
+const uintptr_t kLsbMask = (1ull << kLsbBits) - 1;
+const uintptr_t kMsbMask = ~kLsbMask;
 
 std::atomic<uint32_t> nextRegistryId{0};
 } // namespace
@@ -62,7 +62,7 @@ intptr_t RequestsRegistry::genRootId() {
   // This is to prevent any collision with rootids on folly::RequestsContext() -
   // those are addresses of folly::RequestContext objects.
   return 0x1 | ((nextLocalId_++ << 1) & kLsbMask) |
-      ((intptr_t)registryId_ << kLsbBits);
+      (static_cast<uintptr_t>(registryId_) << kLsbBits);
 }
 
 void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {

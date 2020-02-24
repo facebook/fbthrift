@@ -606,3 +606,13 @@ TEST(RegistryTests, RootId) {
       RequestsRegistry::getRequestId(rootid).getRegistryId() + 1,
       RequestsRegistry::getRequestId(rootid3).getRegistryId());
 }
+
+TEST(RegistryTests, ManyRegistries) {
+  // Verify we can create > 4096 RequestRegistries
+  for (int i = 0; i < 5000; i++) {
+    RequestsRegistry registry(0, 0, 0);
+    auto rootid = registry.genRootId();
+    auto reqid = RequestsRegistry::getRequestId(rootid);
+    EXPECT_EQ(reqid.getRegistryId(), i % 4096);
+  }
+}
