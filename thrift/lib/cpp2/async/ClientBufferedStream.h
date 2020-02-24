@@ -26,7 +26,7 @@
 
 namespace yarpl {
 namespace flowable {
-class ClientBufferedStreamShim;
+class ThriftStreamShim;
 }
 } // namespace yarpl
 namespace apache {
@@ -345,7 +345,7 @@ class ClientBufferedStream {
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
   int32_t bufferSize_{0};
 
-  friend class yarpl::flowable::ClientBufferedStreamShim;
+  friend class yarpl::flowable::ThriftStreamShim;
 }; // namespace thrift
 
 template <typename Response, typename StreamElement>

@@ -27,6 +27,12 @@
 #include <thrift/lib/cpp2/async/Stream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
+namespace yarpl {
+namespace flowable {
+class ThriftStreamShim;
+} // namespace flowable
+} // namespace yarpl
+
 namespace apache {
 namespace thrift {
 
@@ -96,6 +102,8 @@ class ServerStream {
   explicit ServerStream(detail::ServerStreamFn<T> fn) : fn_(std::move(fn)) {}
 
   detail::ServerStreamFn<T> fn_;
+
+  friend class yarpl::flowable::ThriftStreamShim;
 };
 
 template <typename Response, typename StreamElement>
