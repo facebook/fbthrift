@@ -66,7 +66,7 @@ class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, publi
   folly::SemiFuture<apache::thrift::ResponseAndServerStream<int32_t,int32_t>> semifuture_responseandstreamthrows(int32_t foo) override;
   void async_tm_responseandstreamthrows(std::unique_ptr<apache::thrift::HandlerCallback<apache::thrift::ResponseAndServerStream<int32_t,int32_t>>> callback, int32_t foo) override;
   template <typename T>
-  std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
+  std::pair<apache::thrift::ServerStream<T>, apache::thrift::StreamPublisher<T>>
   createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
     return apache::thrift::StreamPublisher<T>::create(
         folly::SerialExecutor::create(

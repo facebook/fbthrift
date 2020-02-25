@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/async/Stream.h>
+#include <thrift/lib/cpp2/async/ServerStream.h>
 
 namespace apache {
 namespace thrift {
@@ -37,7 +37,7 @@ class StreamPublisher {
   StreamPublisher(StreamPublisher&&) = default;
   StreamPublisher& operator=(StreamPublisher&&) = default;
 
-  static std::pair<Stream<T>, StreamPublisher<T>> create(
+  static std::pair<ServerStream<T>, StreamPublisher<T>> create(
       folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
       folly::Function<void()> onCompleteOrCanceled,
       size_t bufferSizeLimit = kNoLimit);

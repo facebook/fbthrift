@@ -42,7 +42,7 @@
 <%/function:returnType%><%/service:functions%>
 <%#service:any_streams?%>
   template <typename T>
-  std::pair<apache::thrift::Stream<T>, apache::thrift::StreamPublisher<T>>
+  std::pair<apache::thrift::ServerStream<T>, apache::thrift::StreamPublisher<T>>
   createStreamPublisher(folly::Function<void()> onCanceled, size_t bufferSizeLimit = apache::thrift::StreamPublisher<T>::kNoLimit) {
     return apache::thrift::StreamPublisher<T>::create(
         folly::SerialExecutor::create(

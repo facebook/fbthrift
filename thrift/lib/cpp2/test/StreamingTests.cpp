@@ -19,9 +19,7 @@
 #include <folly/Portability.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
-#include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DiffTypesStreamingService.h>
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/BlockingWait.h>
 #endif
@@ -89,19 +87,20 @@ TEST(StreamingTest, StreamPublisherCancellation) {
   };
   SlowExecutor executor;
 
-  auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
-      folly::getKeepAliveToken(executor), [] {});
+  auto streamAndPublisher =
+      apache::thrift::ServerStream<int>::createPublisher();
 
   int count = 0;
 
   auto subscription =
       std::move(streamAndPublisher.first)
-          .subscribe(
-              [&count](int value) mutable { EXPECT_EQ(count++, value); },
-              apache::thrift::Stream<int>::kNoFlowControl);
-
-  /* sleep override */ std::this_thread::sleep_for(
-      std::chrono::milliseconds{100});
+          .toClientStream()
+          .subscribeExTry(
+              folly::getKeepAliveToken(executor), [&count](auto value) mutable {
+                if (value.hasValue()) {
+                  EXPECT_EQ(count++, *value);
+                }
+              });
 
   std::atomic<bool> stop{false};
   std::thread publisherThread([&] {
@@ -146,9 +145,11 @@ TEST(StreamingTest, StreamPublisherNoSubscription) {
   };
   SlowExecutor executor;
 
-  auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
-      folly::getKeepAliveToken(executor), [] {});
-  std::exchange(streamAndPublisher.first, apache::thrift::Stream<int>());
+  auto streamAndPublisher =
+      apache::thrift::ServerStream<int>::createPublisher();
+  std::exchange(
+      streamAndPublisher.first,
+      apache::thrift::ServerStream<int>::createEmpty());
   std::move(streamAndPublisher.second).complete();
 }
 
@@ -187,7 +188,7 @@ TEST(StreamingTest, DiffTypesStreamingServicePublisherCompiles) {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
       auto [stream, ptr] =
-          apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+          apache::thrift::ServerStream<int32_t>::createPublisher();
       ptr.next(42);
       std::move(ptr).complete();
       return std::move(stream);
@@ -214,8 +215,8 @@ TEST(StreamingTest, DiffTypesStreamingServiceWrappedStreamCompiles) {
       : public streaming_tests::DiffTypesStreamingServiceSvIf {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
-      auto streamAndPublisher = apache::thrift::StreamPublisher<int>::create(
-          folly::getKeepAliveToken(executor), [] {});
+      auto streamAndPublisher =
+          apache::thrift::ServerStream<int>::createPublisher();
       streamAndPublisher.second.next(42);
       std::move(streamAndPublisher.second).complete();
       return std::move(streamAndPublisher.first);
@@ -245,7 +246,7 @@ TEST(StreamingTest, WrapperToAsyncGenerator) {
    public:
     apache::thrift::ServerStream<int32_t> downloadObject(int64_t) override {
       auto [stream, ptr] =
-          apache::thrift::ServerStream<int32_t>::createPublisher([] {});
+          apache::thrift::ServerStream<int32_t>::createPublisher();
       ptr.next(42);
       std::move(ptr).complete();
       return std::move(stream);

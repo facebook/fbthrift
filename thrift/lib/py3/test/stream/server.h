@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/async/StreamPublisher.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
 #include <thrift/lib/py3/test/stream/if/gen-cpp2/StreamTestService.tcc>

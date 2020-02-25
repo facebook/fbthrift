@@ -16,9 +16,8 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/transport/rsocket/YarplStreamImpl.h>
-
 #include <yarpl/Observable.h>
+#include <yarpl/flowable/ThriftStreamShim.h>
 
 namespace apache {
 namespace thrift {
@@ -277,7 +276,7 @@ StreamPublisher<T>::~StreamPublisher() {
 }
 
 template <typename T>
-std::pair<Stream<T>, StreamPublisher<T>> StreamPublisher<T>::create(
+std::pair<ServerStream<T>, StreamPublisher<T>> StreamPublisher<T>::create(
     folly::Executor::KeepAlive<folly::SequencedExecutor> executor,
     folly::Function<void()> onCanceled,
     size_t bufferSizeLimit) {
@@ -287,8 +286,9 @@ std::pair<Stream<T>, StreamPublisher<T>> StreamPublisher<T>::create(
       std::make_shared<yarpl::BufferBackpressureStrategy<T>>(bufferSizeLimit));
   flowable =
       std::make_shared<detail::EagerSubscribeOperator<T>>(std::move(flowable));
-  return {toStream(std::move(flowable), std::move(executor)),
-          StreamPublisher<T>(std::move(state))};
+  return {
+      yarpl::flowable::ThriftStreamShim::toServerStream(std::move(flowable)),
+      StreamPublisher<T>(std::move(state))};
 }
 
 template <typename T>
