@@ -21,6 +21,7 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 @ThriftStruct("LegacyStruct")
