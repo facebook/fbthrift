@@ -609,10 +609,29 @@ TEST(RegistryTests, RootId) {
 
 TEST(RegistryTests, ManyRegistries) {
   // Verify we can create > 4096 RequestRegistries
-  for (int i = 0; i < 5000; i++) {
-    RequestsRegistry registry(0, 0, 0);
-    auto rootid = registry.genRootId();
-    auto reqid = RequestsRegistry::getRequestId(rootid);
-    EXPECT_EQ(reqid.getRegistryId(), i % 4096);
+  for (size_t i = 0; i < 50; i++) {
+    std::vector<std::unique_ptr<RequestsRegistry>> registries;
+    for (size_t j = 0; j < 100; ++j) {
+      auto registry = std::make_unique<RequestsRegistry>(0, 0, 0);
+      auto rootid = registry->genRootId();
+      auto reqid = RequestsRegistry::getRequestId(rootid);
+      EXPECT_EQ(reqid.getRegistryId(), j);
+      registries.push_back(std::move(registry));
+    }
+    // destruction orders deal reusing request ids correctly
+    std::random_shuffle(registries.begin(), registries.end());
   }
+}
+
+TEST(RegistryTests, ManyRegistriesDeathTest) {
+  // Verify we can simultaneously maintain up to 4096 registries
+  std::list<RequestsRegistry> registries;
+  for (size_t i = 0; i < 4096; i++) {
+    registries.emplace_back(0, 0, 0).genRootId();
+  }
+  // We also limit number of concurrent registries to 4096
+  EXPECT_EXIT(
+      registries.emplace_back(0, 0, 0).genRootId(),
+      ::testing::KilledBySignal(SIGABRT),
+      "");
 }

@@ -31,14 +31,51 @@ const size_t kLsbBits = 52;
 const uintptr_t kLsbMask = (1ull << kLsbBits) - 1;
 const uintptr_t kMsbMask = ~kLsbMask;
 
-std::atomic<uint32_t> nextRegistryId{0};
+struct RegistryIdManager {
+ public:
+  uint32_t getId() {
+    if (!freeIds_.empty()) {
+      auto id = *freeIds_.begin();
+      freeIds_.erase(freeIds_.begin());
+      return id;
+    }
+
+    auto id = nextId_++;
+    CHECK(id < 4096);
+    return id;
+  }
+
+  void returnId(uint32_t id) {
+    freeIds_.insert(id);
+    while (!freeIds_.empty()) {
+      auto largestId = *(--freeIds_.end());
+      if (largestId < nextId_ - 1) {
+        return;
+      }
+      DCHECK(largestId == nextId_ - 1);
+      --nextId_;
+      freeIds_.erase(largestId);
+    }
+  }
+
+ private:
+  std::set<uint32_t> freeIds_;
+  uint32_t nextId_;
+};
+
+folly::Synchronized<RegistryIdManager>& registryIdManager() {
+  static auto* registryIdManagerPtr =
+      new folly::Synchronized<RegistryIdManager>();
+  return *registryIdManagerPtr;
+}
+
 } // namespace
 
 RequestsRegistry::RequestsRegistry(
     uint64_t requestPayloadMem,
     uint64_t totalPayloadMem,
     uint16_t finishedRequestsLimit)
-    : registryId_(nextRegistryId++),
+    : registryId_(registryIdManager()->getId()),
       payloadMemoryLimitPerRequest_(requestPayloadMem),
       payloadMemoryLimitTotal_(totalPayloadMem),
       finishedRequestsLimit_(finishedRequestsLimit) {}
@@ -51,6 +88,7 @@ RequestsRegistry::~RequestsRegistry() {
     front.decRef();
   }
   DCHECK(finishedRequestsCount_ == 0);
+  registryIdManager()->returnId(registryId_);
 }
 
 /* static */ RequestId RequestsRegistry::getRequestId(intptr_t rootid) {
