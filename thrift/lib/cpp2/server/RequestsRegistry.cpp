@@ -75,7 +75,7 @@ RequestsRegistry::RequestsRegistry(
     uint64_t requestPayloadMem,
     uint64_t totalPayloadMem,
     uint16_t finishedRequestsLimit)
-    : registryId_(registryIdManager()->getId()),
+    : registryId_(registryIdManager().wlock()->getId()),
       payloadMemoryLimitPerRequest_(requestPayloadMem),
       payloadMemoryLimitTotal_(totalPayloadMem),
       finishedRequestsLimit_(finishedRequestsLimit) {}
@@ -88,7 +88,7 @@ RequestsRegistry::~RequestsRegistry() {
     front.decRef();
   }
   DCHECK(finishedRequestsCount_ == 0);
-  registryIdManager()->returnId(registryId_);
+  registryIdManager().wlock()->returnId(registryId_);
 }
 
 /* static */ RequestId RequestsRegistry::getRequestId(intptr_t rootid) {
