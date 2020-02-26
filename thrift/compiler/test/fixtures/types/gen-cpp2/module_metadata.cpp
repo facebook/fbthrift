@@ -80,7 +80,7 @@ void StructMetadata<::apache::thrift::fixtures::types::decorated_struct>::gen(Th
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_decorated_struct.fields.push_back(std::move(field));
   }
 }
@@ -108,7 +108,7 @@ void StructMetadata<::apache::thrift::fixtures::types::ContainerStruct>::gen(Thr
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ContainerStruct.fields.push_back(std::move(field));
   }
 }
@@ -129,7 +129,7 @@ void StructMetadata<::apache::thrift::fixtures::types::CppTypeStruct>::gen(Thrif
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_CppTypeStruct.fields.push_back(std::move(field));
   }
 }
@@ -150,7 +150,7 @@ void StructMetadata<::apache::thrift::fixtures::types::VirtualStruct>::gen(Thrif
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_VirtualStruct.fields.push_back(std::move(field));
   }
 }
@@ -164,15 +164,15 @@ void StructMetadata<::apache::thrift::fixtures::types::MyStructWithForwardRefEnu
   module_MyStructWithForwardRefEnum.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStructWithForwardRefEnum_fields[] = {
-    std::make_tuple(1, "a", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum", metadata))),
-    std::make_tuple(2, "b", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum", metadata))),
+    std::make_tuple(1, "a", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum"))),
+    std::make_tuple(2, "b", false, std::make_unique<Typedef>("module.MyForwardRefEnum", std::make_unique<Enum< ::apache::thrift::fixtures::types::MyForwardRefEnum>>("module.MyForwardRefEnum"))),
   };
   for (const auto& f : module_MyStructWithForwardRefEnum_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyStructWithForwardRefEnum.fields.push_back(std::move(field));
   }
 }
@@ -194,7 +194,7 @@ void StructMetadata<::apache::thrift::fixtures::types::TrivialNumeric>::gen(Thri
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_TrivialNumeric.fields.push_back(std::move(field));
   }
 }
@@ -209,14 +209,14 @@ void StructMetadata<::apache::thrift::fixtures::types::TrivialNestedWithDefault>
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_TrivialNestedWithDefault_fields[] = {
     std::make_tuple(1, "z", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
-    std::make_tuple(2, "n", false, std::make_unique<Struct< ::apache::thrift::fixtures::types::TrivialNumeric>>("module.TrivialNumeric", metadata)),
+    std::make_tuple(2, "n", false, std::make_unique<Struct< ::apache::thrift::fixtures::types::TrivialNumeric>>("module.TrivialNumeric")),
   };
   for (const auto& f : module_TrivialNestedWithDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_TrivialNestedWithDefault.fields.push_back(std::move(field));
   }
 }
@@ -238,7 +238,7 @@ void StructMetadata<::apache::thrift::fixtures::types::ComplexString>::gen(Thrif
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexString.fields.push_back(std::move(field));
   }
 }
@@ -253,14 +253,14 @@ void StructMetadata<::apache::thrift::fixtures::types::ComplexNestedWithDefault>
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ComplexNestedWithDefault_fields[] = {
     std::make_tuple(1, "z", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(2, "n", false, std::make_unique<Struct< ::apache::thrift::fixtures::types::ComplexString>>("module.ComplexString", metadata)),
+    std::make_tuple(2, "n", false, std::make_unique<Struct< ::apache::thrift::fixtures::types::ComplexString>>("module.ComplexString")),
   };
   for (const auto& f : module_ComplexNestedWithDefault_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexNestedWithDefault.fields.push_back(std::move(field));
   }
 }
@@ -285,7 +285,7 @@ void StructMetadata<::apache::thrift::fixtures::types::MinPadding>::gen(ThriftMe
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MinPadding.fields.push_back(std::move(field));
   }
 }
@@ -311,14 +311,14 @@ void StructMetadata<::apache::thrift::fixtures::types::MyStruct>::gen(ThriftMeta
     std::make_tuple(1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
     std::make_tuple(2, "MyStringField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
     std::make_tuple(3, "majorVer", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(4, "data", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct< ::apache::thrift::fixtures::types::MyDataItem>>("module.MyDataItem", metadata))),
+    std::make_tuple(4, "data", false, std::make_unique<Typedef>("module.MyDataItem", std::make_unique<Struct< ::apache::thrift::fixtures::types::MyDataItem>>("module.MyDataItem"))),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyStruct.fields.push_back(std::move(field));
   }
 }
@@ -339,7 +339,7 @@ void StructMetadata<::apache::thrift::fixtures::types::Renaming>::gen(ThriftMeta
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Renaming.fields.push_back(std::move(field));
   }
 }
@@ -361,7 +361,7 @@ void StructMetadata<::apache::thrift::fixtures::types::AnnotatedTypes>::gen(Thri
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_AnnotatedTypes.fields.push_back(std::move(field));
   }
 }
@@ -375,14 +375,14 @@ void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageStruct>::gen(
   module_ForwardUsageStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ForwardUsageStruct_fields[] = {
-    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot", metadata)),
+    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot")),
   };
   for (const auto& f : module_ForwardUsageStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ForwardUsageStruct.fields.push_back(std::move(field));
   }
 }
@@ -396,15 +396,15 @@ void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageRoot>::gen(Th
   module_ForwardUsageRoot.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ForwardUsageRoot_fields[] = {
-    std::make_tuple(1, "ForwardUsageStruct", true, std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct", metadata))),
-    std::make_tuple(2, "ForwardUsageByRef", true, std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef", metadata))),
+    std::make_tuple(1, "ForwardUsageStruct", true, std::make_unique<Typedef>("module.ForwardUsageStruct", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageStruct>>("module.ForwardUsageStruct"))),
+    std::make_tuple(2, "ForwardUsageByRef", true, std::make_unique<Typedef>("module.ForwardUsageByRef", std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageByRef>>("module.ForwardUsageByRef"))),
   };
   for (const auto& f : module_ForwardUsageRoot_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ForwardUsageRoot.fields.push_back(std::move(field));
   }
 }
@@ -418,14 +418,14 @@ void StructMetadata<::apache::thrift::fixtures::types::ForwardUsageByRef>::gen(T
   module_ForwardUsageByRef.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ForwardUsageByRef_fields[] = {
-    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot", metadata)),
+    std::make_tuple(1, "foo", true, std::make_unique<Struct< ::apache::thrift::fixtures::types::ForwardUsageRoot>>("module.ForwardUsageRoot")),
   };
   for (const auto& f : module_ForwardUsageByRef_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ForwardUsageByRef.fields.push_back(std::move(field));
   }
 }
@@ -455,7 +455,7 @@ void StructMetadata<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct>
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NoexceptMoveSimpleStruct.fields.push_back(std::move(field));
   }
 }
@@ -477,14 +477,14 @@ void StructMetadata<::apache::thrift::fixtures::types::NoexceptMoveComplexStruct
     std::make_tuple(6, "MyBinaryField2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)),
     std::make_tuple(7, "MyBinaryField3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)),
     std::make_tuple(8, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE))),
-    std::make_tuple(9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::apache::thrift::fixtures::types::MyEnumA>>("module.MyEnumA", metadata), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))),
+    std::make_tuple(9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::apache::thrift::fixtures::types::MyEnumA>>("module.MyEnumA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))),
   };
   for (const auto& f : module_NoexceptMoveComplexStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NoexceptMoveComplexStruct.fields.push_back(std::move(field));
   }
 }
@@ -506,7 +506,7 @@ void StructMetadata<::apache::thrift::fixtures::types::NoExceptMoveUnion>::gen(T
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NoExceptMoveUnion.fields.push_back(std::move(field));
   }
 }
@@ -516,13 +516,13 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bo
   (void)metadata;
   func.name = "bounce_map";
   auto func_ret_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   ::apache::thrift::metadata::ThriftField module_SomeService_bounce_map_m_1;
   module_SomeService_bounce_map_m_1.id = 1;
   module_SomeService_bounce_map_m_1.name = "m";
   module_SomeService_bounce_map_m_1.is_optional = false;
   auto module_SomeService_bounce_map_m_1_type = std::make_unique<Typedef>("include.SomeMap", std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)));
-  module_SomeService_bounce_map_m_1_type->initialize(module_SomeService_bounce_map_m_1.type);
+  module_SomeService_bounce_map_m_1_type->writeAndGenType(module_SomeService_bounce_map_m_1.type, metadata);
   func.arguments.push_back(std::move(module_SomeService_bounce_map_m_1));
   service.functions.push_back(std::move(func));
 }
@@ -531,13 +531,13 @@ void ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf>::gen_bi
   (void)metadata;
   func.name = "binary_keyed_map";
   auto func_ret_type = std::make_unique<Map>(std::make_unique<Typedef>("module.TBinary", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   ::apache::thrift::metadata::ThriftField module_SomeService_binary_keyed_map_r_1;
   module_SomeService_binary_keyed_map_r_1.id = 1;
   module_SomeService_binary_keyed_map_r_1.name = "r";
   module_SomeService_binary_keyed_map_r_1.is_optional = false;
   auto module_SomeService_binary_keyed_map_r_1_type = std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE));
-  module_SomeService_binary_keyed_map_r_1_type->initialize(module_SomeService_binary_keyed_map_r_1.type);
+  module_SomeService_binary_keyed_map_r_1_type->writeAndGenType(module_SomeService_binary_keyed_map_r_1.type, metadata);
   func.arguments.push_back(std::move(module_SomeService_binary_keyed_map_r_1));
   service.functions.push_back(std::move(func));
 }

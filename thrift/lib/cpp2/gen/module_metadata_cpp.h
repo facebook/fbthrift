@@ -27,16 +27,22 @@ using ThriftType = ::apache::thrift::metadata::ThriftType;
 
 class MetadataTypeInterface {
  public:
-  virtual void initialize(ThriftType& ty) = 0;
+  /**
+   * writeAndGenType() performs two things:
+   * 1. Ensures the type is present in metadata.
+   * 2. Populates ThriftType datastruct so that the caller can look
+   *    up the type inside metadata.
+   */
+  virtual void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) = 0;
   virtual ~MetadataTypeInterface() {}
 };
 
 class Primitive : public MetadataTypeInterface {
  public:
   Primitive(::apache::thrift::metadata::ThriftPrimitiveType base)
-      : base_(::std::move(base)) {}
-  void initialize(ThriftType& ty) override {
-    ty.set_t_primitive(::std::move(base_));
+      : base_(base) {}
+  void writeAndGenType(ThriftType& ty, ThriftMetadata&) override {
+    ty.set_t_primitive(base_);
   }
 
  private:
@@ -47,10 +53,10 @@ class List : public MetadataTypeInterface {
  public:
   List(::std::unique_ptr<MetadataTypeInterface> elemType)
       : elemType_(::std::move(elemType)) {}
-  void initialize(ThriftType& ty) override {
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftListType tyList;
     tyList.valueType = ::std::make_unique<ThriftType>();
-    elemType_->initialize(*tyList.valueType);
+    elemType_->writeAndGenType(*tyList.valueType, metadata);
     ty.set_t_list(::std::move(tyList));
   }
 
@@ -62,10 +68,10 @@ class Set : public MetadataTypeInterface {
  public:
   Set(::std::unique_ptr<MetadataTypeInterface> elemType)
       : elemType_(::std::move(elemType)) {}
-  void initialize(ThriftType& ty) override {
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftSetType tySet;
     tySet.valueType = ::std::make_unique<ThriftType>();
-    elemType_->initialize(*tySet.valueType);
+    elemType_->writeAndGenType(*tySet.valueType, metadata);
     ty.set_t_set(::std::move(tySet));
   }
 
@@ -78,12 +84,12 @@ class Map : public MetadataTypeInterface {
   Map(::std::unique_ptr<MetadataTypeInterface> keyType,
       ::std::unique_ptr<MetadataTypeInterface> valueType)
       : keyType_(::std::move(keyType)), valueType_(::std::move(valueType)) {}
-  void initialize(ThriftType& ty) override {
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftMapType tyMap;
     tyMap.keyType = ::std::make_unique<ThriftType>();
-    keyType_->initialize(*tyMap.keyType);
+    keyType_->writeAndGenType(*tyMap.keyType, metadata);
     tyMap.valueType = ::std::make_unique<ThriftType>();
-    valueType_->initialize(*tyMap.valueType);
+    valueType_->writeAndGenType(*tyMap.valueType, metadata);
     ty.set_t_map(::std::move(tyMap));
   }
 
@@ -95,70 +101,64 @@ class Map : public MetadataTypeInterface {
 template <typename E>
 class Enum : public MetadataTypeInterface {
  public:
-  Enum(::std::string name, ThriftMetadata& metadata)
-      : name_(::std::move(name)) {
+  Enum(const char* name) : name_(name) {}
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     EnumMetadata<E>::gen(metadata);
-  }
-  void initialize(ThriftType& ty) override {
     ::apache::thrift::metadata::ThriftEnumType tyEnum;
-    tyEnum.set_name(::std::move(name_));
+    tyEnum.set_name(name_);
     ty.set_t_enum(::std::move(tyEnum));
   }
 
  private:
-  ::std::string name_;
+  const char* name_;
 };
 
 template <typename S>
 class Struct : public MetadataTypeInterface {
  public:
-  Struct(::std::string name, ThriftMetadata& metadata)
-      : name_(::std::move(name)) {
+  Struct(const char* name) : name_(name) {}
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     StructMetadata<S>::gen(metadata);
-  }
-  void initialize(ThriftType& ty) override {
     ::apache::thrift::metadata::ThriftStructType tyStruct;
-    tyStruct.set_name(::std::move(name_));
+    tyStruct.set_name(name_);
     ty.set_t_struct(::std::move(tyStruct));
   }
 
  private:
-  ::std::string name_;
+  const char* name_;
 };
 
 template <typename U>
 class Union : public MetadataTypeInterface {
  public:
-  Union(::std::string name, ThriftMetadata& metadata)
-      : name_(::std::move(name)) {
+  Union(const char* name) : name_(name) {}
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     StructMetadata<U>::gen(metadata);
-  }
-  void initialize(ThriftType& ty) override {
     ::apache::thrift::metadata::ThriftUnionType tyUnion;
-    tyUnion.set_name(::std::move(name_));
+    tyUnion.set_name(name_);
     ty.set_t_union(::std::move(tyUnion));
   }
 
  private:
-  ::std::string name_;
+  const char* name_;
 };
 
 class Typedef : public MetadataTypeInterface {
  public:
   Typedef(
-      ::std::string name,
+      const char* name,
       ::std::unique_ptr<MetadataTypeInterface> underlyingType)
-      : name_(std::move(name)), underlyingType_(::std::move(underlyingType)) {}
-  void initialize(ThriftType& ty) override {
+      : name_(name), underlyingType_(::std::move(underlyingType)) {}
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftTypedefType tyTypedef;
-    tyTypedef.set_name(::std::move(name_));
+    tyTypedef.set_name(name_);
     tyTypedef.underlyingType = ::std::make_unique<ThriftType>();
-    underlyingType_->initialize(*tyTypedef.underlyingType);
+    underlyingType_->writeAndGenType(*tyTypedef.underlyingType, metadata);
     ty.set_t_typedef(::std::move(tyTypedef));
   }
 
  private:
-  ::std::string name_;
+  const char* name_;
   ::std::unique_ptr<MetadataTypeInterface> underlyingType_;
 };
 
@@ -169,13 +169,14 @@ class Stream : public MetadataTypeInterface {
       ::std::unique_ptr<MetadataTypeInterface> initialResponseType = nullptr)
       : elemType_(::std::move(elemType)),
         initialResponseType_(::std::move(initialResponseType)) {}
-  void initialize(ThriftType& ty) override {
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftStreamType tyStream;
     tyStream.elemType = ::std::make_unique<ThriftType>();
-    elemType_->initialize(*tyStream.elemType);
+    elemType_->writeAndGenType(*tyStream.elemType, metadata);
     if (initialResponseType_) {
       tyStream.initialResponseType = ::std::make_unique<ThriftType>();
-      initialResponseType_->initialize(*tyStream.initialResponseType);
+      initialResponseType_->writeAndGenType(
+          *tyStream.initialResponseType, metadata);
     }
     ty.set_t_stream(::std::move(tyStream));
   }
@@ -194,15 +195,16 @@ class Sink : public MetadataTypeInterface {
       : elemType_(::std::move(elemType)),
         finalResponseType_(::std::move(finalResponseType)),
         initialResponseType_(::std::move(initialResponseType)) {}
-  void initialize(ThriftType& ty) override {
+  void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftSinkType tySink;
     tySink.elemType = ::std::make_unique<ThriftType>();
-    elemType_->initialize(*tySink.elemType);
+    elemType_->writeAndGenType(*tySink.elemType, metadata);
     tySink.finalResponseType = ::std::make_unique<ThriftType>();
-    finalResponseType_->initialize(*tySink.finalResponseType);
+    finalResponseType_->writeAndGenType(*tySink.finalResponseType, metadata);
     if (initialResponseType_) {
       tySink.initialResponseType = ::std::make_unique<ThriftType>();
-      initialResponseType_->initialize(*tySink.initialResponseType);
+      initialResponseType_->writeAndGenType(
+          *tySink.initialResponseType, metadata);
     }
     ty.set_t_sink(::std::move(tySink));
   }

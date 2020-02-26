@@ -41,7 +41,7 @@ void StructMetadata<::cpp2::ComplexUnion>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ComplexUnion.fields.push_back(std::move(field));
   }
 }
@@ -63,7 +63,7 @@ void StructMetadata<::cpp2::ListUnion>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ListUnion.fields.push_back(std::move(field));
   }
 }
@@ -85,7 +85,7 @@ void StructMetadata<::cpp2::DataUnion>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_DataUnion.fields.push_back(std::move(field));
   }
 }
@@ -108,7 +108,7 @@ void StructMetadata<::cpp2::Val>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Val.fields.push_back(std::move(field));
   }
 }
@@ -122,15 +122,15 @@ void StructMetadata<::cpp2::ValUnion>::gen(ThriftMetadata& metadata) {
   module_ValUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_ValUnion_fields[] = {
-    std::make_tuple(1, "v1", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val", metadata)),
-    std::make_tuple(2, "v2", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val", metadata)),
+    std::make_tuple(1, "v1", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val")),
+    std::make_tuple(2, "v2", false, std::make_unique<Struct< ::cpp2::Val>>("module.Val")),
   };
   for (const auto& f : module_ValUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_ValUnion.fields.push_back(std::move(field));
   }
 }
@@ -152,7 +152,7 @@ void StructMetadata<::cpp2::VirtualComplexUnion>::gen(ThriftMetadata& metadata) 
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_VirtualComplexUnion.fields.push_back(std::move(field));
   }
 }
@@ -173,7 +173,7 @@ void StructMetadata<::cpp2::NonCopyableStruct>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NonCopyableStruct.fields.push_back(std::move(field));
   }
 }
@@ -187,14 +187,14 @@ void StructMetadata<::cpp2::NonCopyableUnion>::gen(ThriftMetadata& metadata) {
   module_NonCopyableUnion.is_union = true;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_NonCopyableUnion_fields[] = {
-    std::make_tuple(1, "s", false, std::make_unique<Struct< ::cpp2::NonCopyableStruct>>("module.NonCopyableStruct", metadata)),
+    std::make_tuple(1, "s", false, std::make_unique<Struct< ::cpp2::NonCopyableStruct>>("module.NonCopyableStruct")),
   };
   for (const auto& f : module_NonCopyableUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_NonCopyableUnion.fields.push_back(std::move(field));
   }
 }

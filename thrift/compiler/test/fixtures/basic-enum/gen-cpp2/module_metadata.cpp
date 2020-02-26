@@ -62,15 +62,15 @@ void StructMetadata<::test::fixtures::enumstrict::MyStruct>::gen(ThriftMetadata&
   module_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStruct_fields[] = {
-    std::make_tuple(1, "myEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyEnum>>("module.MyEnum", metadata)),
-    std::make_tuple(2, "myBigEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyBigEnum>>("module.MyBigEnum", metadata)),
+    std::make_tuple(1, "myEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyEnum>>("module.MyEnum")),
+    std::make_tuple(2, "myBigEnum", false, std::make_unique<Enum< ::test::fixtures::enumstrict::MyBigEnum>>("module.MyBigEnum")),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyStruct.fields.push_back(std::move(field));
   }
 }

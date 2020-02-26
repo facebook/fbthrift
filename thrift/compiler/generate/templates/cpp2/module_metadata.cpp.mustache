@@ -64,7 +64,7 @@ void StructMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftMeta
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     <%struct:metadata_name%>.fields.push_back(std::move(field));
   }
 <%/struct:fields?%>
@@ -92,7 +92,7 @@ void ExceptionMetadata<<% > common/namespace_cpp2%><%struct:name%>>::gen(ThriftM
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     <%struct:metadata_name%>.fields.push_back(std::move(field));
   }
 <%/struct:fields?%>
@@ -107,7 +107,7 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   func.name = "<%function:name%>";
 <%#function:returnType%>
   auto func_ret_type = <% > metadata/type_gen%>;
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
 <%/function:returnType%>
 <%#function:args%>
   <% > metadata/func_field_gen%>

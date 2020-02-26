@@ -36,7 +36,7 @@ void StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_InitialResponse.fields.push_back(std::move(field));
   }
 }
@@ -57,7 +57,7 @@ void StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_FinalResponse.fields.push_back(std::move(field));
   }
 }
@@ -78,7 +78,7 @@ void StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkPayload.fields.push_back(std::move(field));
   }
 }
@@ -99,7 +99,7 @@ void StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& meta
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_CompatibleWithKeywordSink.fields.push_back(std::move(field));
   }
 }
@@ -120,7 +120,7 @@ void StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_InitialException.fields.push_back(std::move(field));
   }
 }
@@ -141,7 +141,7 @@ void StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkException1.fields.push_back(std::move(field));
   }
 }
@@ -162,7 +162,7 @@ void StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkException2.fields.push_back(std::move(field));
   }
 }
@@ -183,7 +183,7 @@ void ExceptionMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) 
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_InitialException.fields.push_back(std::move(field));
   }
 }
@@ -203,7 +203,7 @@ void ExceptionMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkException1.fields.push_back(std::move(field));
   }
 }
@@ -223,7 +223,7 @@ void ExceptionMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SinkException2.fields.push_back(std::move(field));
   }
 }
@@ -231,30 +231,30 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_method(ThriftMetadata& metada
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "method";
-  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload", metadata), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse", metadata));
-  func_ret_type->initialize(func.returnType);
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodAndReponse(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "methodAndReponse";
-  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload", metadata), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse", metadata), std::make_unique<Struct< ::cpp2::InitialResponse>>("module.InitialResponse", metadata));
-  func_ret_type->initialize(func.returnType);
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"), std::make_unique<Struct< ::cpp2::InitialResponse>>("module.InitialResponse"));
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "methodThrow";
-  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload", metadata), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse", metadata));
-  func_ret_type->initialize(func.returnType);
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   ::apache::thrift::metadata::ThriftField module_SinkService_methodThrow_ex_1;
   module_SinkService_methodThrow_ex_1.id = 1;
   module_SinkService_methodThrow_ex_1.name = "ex";
   module_SinkService_methodThrow_ex_1.is_optional = false;
-  auto module_SinkService_methodThrow_ex_1_type = std::make_unique<Struct< ::cpp2::InitialException>>("module.InitialException", metadata);
-  module_SinkService_methodThrow_ex_1_type->initialize(module_SinkService_methodThrow_ex_1.type);
+  auto module_SinkService_methodThrow_ex_1_type = std::make_unique<Struct< ::cpp2::InitialException>>("module.InitialException");
+  module_SinkService_methodThrow_ex_1_type->writeAndGenType(module_SinkService_methodThrow_ex_1.type, metadata);
   func.exceptions.push_back(std::move(module_SinkService_methodThrow_ex_1));
   ExceptionMetadata< ::cpp2::InitialException>::gen(metadata);
   service.functions.push_back(std::move(func));
@@ -263,24 +263,24 @@ void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodSinkThrow(ThriftMetadat
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "methodSinkThrow";
-  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload", metadata), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse", metadata));
-  func_ret_type->initialize(func.returnType);
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodFinalThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "methodFinalThrow";
-  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload", metadata), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse", metadata));
-  func_ret_type->initialize(func.returnType);
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::SinkServiceSvIf>::gen_methodBothThrow(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name = "methodBothThrow";
-  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload", metadata), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse", metadata));
-  func_ret_type->initialize(func.returnType);
+  auto func_ret_type = std::make_unique<Sink>(std::make_unique<Struct< ::cpp2::SinkPayload>>("module.SinkPayload"), std::make_unique<Struct< ::cpp2::FinalResponse>>("module.FinalResponse"));
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 

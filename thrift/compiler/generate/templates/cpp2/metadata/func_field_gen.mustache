@@ -20,6 +20,6 @@
 <% > metadata/func_field_name%>.is_optional = false;
 <%#field:type%>
 auto <% > metadata/func_field_name%>_type = <% > metadata/type_gen%>;
-<% > metadata/func_field_name%>_type->initialize(<% > metadata/func_field_name%>.type);
+<% > metadata/func_field_name%>_type->writeAndGenType(<% > metadata/func_field_name%>.type, metadata);
 <%/field:type%>
 

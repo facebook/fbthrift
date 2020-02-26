@@ -48,7 +48,7 @@ void StructMetadata<::cpp2::SmallStruct>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_SmallStruct.fields.push_back(std::move(field));
   }
 }
@@ -78,19 +78,19 @@ void StructMetadata<::cpp2::containerStruct>::gen(ThriftMetadata& metadata) {
     std::make_tuple(14, "fieldN", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionA", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)))),
     std::make_tuple(15, "fieldO", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionB", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)))),
     std::make_tuple(16, "fieldP", false, std::make_unique<List>(std::make_unique<Typedef>("module.IndirectionC", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)))),
-    std::make_tuple(17, "fieldQ", false, std::make_unique<Enum< ::cpp2::MyEnumA>>("module.MyEnumA", metadata)),
+    std::make_tuple(17, "fieldQ", false, std::make_unique<Enum< ::cpp2::MyEnumA>>("module.MyEnumA")),
     std::make_tuple(18, "fieldR", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE))),
-    std::make_tuple(19, "fieldS", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)),
-    std::make_tuple(20, "fieldT", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)),
-    std::make_tuple(21, "fieldU", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)),
-    std::make_tuple(23, "fieldX", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct", metadata)),
+    std::make_tuple(19, "fieldS", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
+    std::make_tuple(20, "fieldT", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
+    std::make_tuple(21, "fieldU", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
+    std::make_tuple(23, "fieldX", false, std::make_unique<Struct< ::cpp2::SmallStruct>>("module.SmallStruct")),
   };
   for (const auto& f : module_containerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_containerStruct.fields.push_back(std::move(field));
   }
 }

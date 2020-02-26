@@ -23,6 +23,7 @@
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/MyTestService.h>
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/NestedStructsTestService.h>
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/ParentService.h>
+#include <thrift/lib/cpp2/test/metadata/gen-cpp2/RepeatedTestService.h>
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/SimpleStructsTestService.h>
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/StructUnionTestService.h>
 #include <thrift/lib/cpp2/test/metadata/gen-cpp2/TypedefTestService.h>
@@ -45,6 +46,9 @@ class ServiceMetadataTest : public testing::Test {
     return response_.metadata;
   }
   ThriftServiceMetadataResponse response_;
+  void resetResponse() {
+    response_ = ThriftServiceMetadataResponse{};
+  }
 };
 
 TEST_F(ServiceMetadataTest, EnumTest) {
@@ -474,6 +478,30 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(
       f1.exceptions[0].type.get_t_struct().name,
       "service_test.CutoffException");
+}
+
+TEST_F(ServiceMetadataTest, RepeatedTest) {
+  for (size_t i = 0; i < 3; i++) {
+    resetResponse();
+    auto& metadata =
+        getMetadata<metadata::test::repeated::RepeatedTestServiceSvIf>();
+    EXPECT_EQ(response_.get_context().get_module().get_name(), "repeated");
+    const auto& s = response_.get_context().get_service_info();
+    EXPECT_EQ(s.name, "repeated.RepeatedTestService");
+    EXPECT_EQ(s.functions.size(), 1);
+    EXPECT_EQ(s.functions[0].name, "addValue");
+    auto it = metadata.enums.find("repeated.ValueEnum");
+    EXPECT_NE(it, metadata.enums.end());
+    EXPECT_EQ(
+        s.functions.at(0).arguments.at(0).type.get_t_struct().name,
+        "repeated.AddValueRequest");
+    EXPECT_EQ(
+        metadata.structs.at("repeated.AddValueRequest")
+            .fields.at(0)
+            .type.get_t_enum()
+            .name,
+        "repeated.ValueEnum");
+  }
 }
 
 TEST_F(ServiceMetadataTest, NoNamespaceTest) {

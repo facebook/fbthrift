@@ -30,14 +30,14 @@ void StructMetadata<::cpp2::Included>::gen(ThriftMetadata& metadata) {
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   includes_Included_fields[] = {
     std::make_tuple(1, "MyIntField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
-    std::make_tuple(2, "MyTransitiveField", false, std::make_unique<Struct< ::cpp2::Foo>>("transitive.Foo", metadata)),
+    std::make_tuple(2, "MyTransitiveField", false, std::make_unique<Struct< ::cpp2::Foo>>("transitive.Foo")),
   };
   for (const auto& f : includes_Included_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     includes_Included.fields.push_back(std::move(field));
   }
 }

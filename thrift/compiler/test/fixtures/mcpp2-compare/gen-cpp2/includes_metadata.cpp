@@ -47,7 +47,7 @@ void StructMetadata<::a::different::ns::AStruct>::gen(ThriftMetadata& metadata) 
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     includes_AStruct.fields.push_back(std::move(field));
   }
 }
@@ -61,14 +61,14 @@ void StructMetadata<::a::different::ns::AStructB>::gen(ThriftMetadata& metadata)
   includes_AStructB.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   includes_AStructB_fields[] = {
-    std::make_tuple(1, "FieldA", false, std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct", metadata)),
+    std::make_tuple(1, "FieldA", false, std::make_unique<Struct< ::a::different::ns::AStruct>>("includes.AStruct")),
   };
   for (const auto& f : includes_AStructB_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     includes_AStructB.fields.push_back(std::move(field));
   }
 }

@@ -35,10 +35,10 @@
 %><%#type:list?%>std::make_unique<List>(<%#type:listElemType%><% > metadata/type_gen%><%/type:listElemType%>)<%/type:list?%><%!
 %><%#type:set?%>std::make_unique<Set>(<%#type:setElemType%><% > metadata/type_gen%><%/type:setElemType%>)<%/type:set?%><%!
 %><%#type:map?%>std::make_unique<Map>(<%#type:keyType%><% > metadata/type_gen%><%/type:keyType%>, <%#type:valueType%><% > metadata/type_gen%><%/type:valueType%>)<%/type:map?%><%!
-%><%#type:enum?%>std::make_unique<Enum<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%#type:enum%><%enum:name%><%/type:enum%>", metadata)<%/type:enum?%><%!
+%><%#type:enum?%>std::make_unique<Enum<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%#type:enum%><%enum:name%><%/type:enum%>")<%/type:enum?%><%!
 %><%#type:struct?%><%!
-%><%#type:union?%>std::make_unique<Union<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%type:name%>", metadata)<%/type:union?%><%!
-%><%^type:union?%>std::make_unique<Struct<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%type:name%>", metadata)<%/type:union?%><%!
+%><%#type:union?%>std::make_unique<Union<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%type:name%>")<%/type:union?%><%!
+%><%^type:union?%>std::make_unique<Struct<<% > common/type_namespace_cpp2%><%type:name%>>>("<%type:program_name%>.<%type:name%>")<%/type:union?%><%!
 %><%/type:struct?%><%!
 %><%#type:streamresponse?%><%!
 %>std::make_unique<Stream>(<%#type:streamElemType%><% > metadata/type_gen%><%/type:streamElemType%><%#type:streamFirstResponse?%>, <%#type:streamFirstResponseType%><% > metadata/type_gen%><%/type:streamFirstResponseType%><%/type:streamFirstResponse?%>)<%!

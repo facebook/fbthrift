@@ -64,14 +64,14 @@ void StructMetadata<::cpp2::Internship>::gen(ThriftMetadata& metadata) {
   module_Internship_fields[] = {
     std::make_tuple(1, "weeks", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
     std::make_tuple(2, "title", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "employer", true, std::make_unique<Enum< ::cpp2::Company>>("module.Company", metadata)),
+    std::make_tuple(3, "employer", true, std::make_unique<Enum< ::cpp2::Company>>("module.Company")),
   };
   for (const auto& f : module_Internship_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Internship.fields.push_back(std::move(field));
   }
 }
@@ -85,14 +85,14 @@ void StructMetadata<::cpp2::UnEnumStruct>::gen(ThriftMetadata& metadata) {
   module_UnEnumStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_UnEnumStruct_fields[] = {
-    std::make_tuple(1, "city", false, std::make_unique<Enum< ::cpp2::City>>("module.City", metadata)),
+    std::make_tuple(1, "city", false, std::make_unique<Enum< ::cpp2::City>>("module.City")),
   };
   for (const auto& f : module_UnEnumStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_UnEnumStruct.fields.push_back(std::move(field));
   }
 }
@@ -114,7 +114,7 @@ void StructMetadata<::cpp2::Range>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Range.fields.push_back(std::move(field));
   }
 }
@@ -136,7 +136,7 @@ void StructMetadata<::cpp2::struct1>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_struct1.fields.push_back(std::move(field));
   }
 }
@@ -152,7 +152,7 @@ void StructMetadata<::cpp2::struct2>::gen(ThriftMetadata& metadata) {
   module_struct2_fields[] = {
     std::make_tuple(1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
     std::make_tuple(2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
-    std::make_tuple(3, "c", false, std::make_unique<Struct< ::cpp2::struct1>>("module.struct1", metadata)),
+    std::make_tuple(3, "c", false, std::make_unique<Struct< ::cpp2::struct1>>("module.struct1")),
     std::make_tuple(4, "d", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE))),
   };
   for (const auto& f : module_struct2_fields) {
@@ -160,7 +160,7 @@ void StructMetadata<::cpp2::struct2>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_struct2.fields.push_back(std::move(field));
   }
 }
@@ -176,14 +176,14 @@ void StructMetadata<::cpp2::struct3>::gen(ThriftMetadata& metadata) {
   module_struct3_fields[] = {
     std::make_tuple(1, "a", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
     std::make_tuple(2, "b", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
-    std::make_tuple(3, "c", false, std::make_unique<Struct< ::cpp2::struct2>>("module.struct2", metadata)),
+    std::make_tuple(3, "c", false, std::make_unique<Struct< ::cpp2::struct2>>("module.struct2")),
   };
   for (const auto& f : module_struct3_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_struct3.fields.push_back(std::move(field));
   }
 }
@@ -205,7 +205,7 @@ void StructMetadata<::cpp2::union1>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_union1.fields.push_back(std::move(field));
   }
 }
@@ -221,15 +221,15 @@ void StructMetadata<::cpp2::union2>::gen(ThriftMetadata& metadata) {
   module_union2_fields[] = {
     std::make_tuple(1, "i", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
     std::make_tuple(2, "d", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE)),
-    std::make_tuple(3, "s", false, std::make_unique<Struct< ::cpp2::struct1>>("module.struct1", metadata)),
-    std::make_tuple(4, "u", false, std::make_unique<Union< ::cpp2::union1>>("module.union1", metadata)),
+    std::make_tuple(3, "s", false, std::make_unique<Struct< ::cpp2::struct1>>("module.struct1")),
+    std::make_tuple(4, "u", false, std::make_unique<Union< ::cpp2::union1>>("module.union1")),
   };
   for (const auto& f : module_union2_fields) {
     ::apache::thrift::metadata::ThriftField field;
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_union2.fields.push_back(std::move(field));
   }
 }

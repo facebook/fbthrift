@@ -29,8 +29,8 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   module_MyStruct.is_union = false;
   static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
   module_MyStruct_fields[] = {
-    std::make_tuple(1, "MyIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata)),
-    std::make_tuple(2, "MyOtherIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included", metadata)),
+    std::make_tuple(1, "MyIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included")),
+    std::make_tuple(2, "MyOtherIncludedField", false, std::make_unique<Struct< ::cpp2::Included>>("includes.Included")),
     std::make_tuple(3, "MyIncludedInt", false, std::make_unique<Typedef>("includes.IncludedInt64", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE))),
   };
   for (const auto& f : module_MyStruct_fields) {
@@ -38,7 +38,7 @@ void StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_MyStruct.fields.push_back(std::move(field));
   }
 }

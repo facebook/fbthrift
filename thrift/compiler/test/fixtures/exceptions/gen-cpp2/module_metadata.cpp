@@ -45,7 +45,7 @@ void StructMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Fiery.fields.push_back(std::move(field));
   }
 }
@@ -66,7 +66,7 @@ void StructMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Serious.fields.push_back(std::move(field));
   }
 }
@@ -95,7 +95,7 @@ void ExceptionMetadata<::cpp2::Fiery>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Fiery.fields.push_back(std::move(field));
   }
 }
@@ -115,7 +115,7 @@ void ExceptionMetadata<::cpp2::Serious>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Serious.fields.push_back(std::move(field));
   }
 }
@@ -124,7 +124,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doBland(ThriftMetadata& metadata, 
   (void)metadata;
   func.name = "doBland";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, ThriftService& service) {
@@ -132,29 +132,29 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, 
   (void)metadata;
   func.name = "doRaise";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_VOID_TYPE);
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_b_1;
   module_Raiser_doRaise_b_1.id = 1;
   module_Raiser_doRaise_b_1.name = "b";
   module_Raiser_doRaise_b_1.is_optional = false;
-  auto module_Raiser_doRaise_b_1_type = std::make_unique<Struct< ::cpp2::Banal>>("module.Banal", metadata);
-  module_Raiser_doRaise_b_1_type->initialize(module_Raiser_doRaise_b_1.type);
+  auto module_Raiser_doRaise_b_1_type = std::make_unique<Struct< ::cpp2::Banal>>("module.Banal");
+  module_Raiser_doRaise_b_1_type->writeAndGenType(module_Raiser_doRaise_b_1.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_doRaise_b_1));
   ExceptionMetadata< ::cpp2::Banal>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_f_2;
   module_Raiser_doRaise_f_2.id = 2;
   module_Raiser_doRaise_f_2.name = "f";
   module_Raiser_doRaise_f_2.is_optional = false;
-  auto module_Raiser_doRaise_f_2_type = std::make_unique<Struct< ::cpp2::Fiery>>("module.Fiery", metadata);
-  module_Raiser_doRaise_f_2_type->initialize(module_Raiser_doRaise_f_2.type);
+  auto module_Raiser_doRaise_f_2_type = std::make_unique<Struct< ::cpp2::Fiery>>("module.Fiery");
+  module_Raiser_doRaise_f_2_type->writeAndGenType(module_Raiser_doRaise_f_2.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_doRaise_f_2));
   ExceptionMetadata< ::cpp2::Fiery>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_doRaise_s_3;
   module_Raiser_doRaise_s_3.id = 3;
   module_Raiser_doRaise_s_3.name = "s";
   module_Raiser_doRaise_s_3.is_optional = false;
-  auto module_Raiser_doRaise_s_3_type = std::make_unique<Struct< ::cpp2::Serious>>("module.Serious", metadata);
-  module_Raiser_doRaise_s_3_type->initialize(module_Raiser_doRaise_s_3.type);
+  auto module_Raiser_doRaise_s_3_type = std::make_unique<Struct< ::cpp2::Serious>>("module.Serious");
+  module_Raiser_doRaise_s_3_type->writeAndGenType(module_Raiser_doRaise_s_3.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_doRaise_s_3));
   ExceptionMetadata< ::cpp2::Serious>::gen(metadata);
   service.functions.push_back(std::move(func));
@@ -164,7 +164,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get200(ThriftMetadata& metadata, T
   (void)metadata;
   func.name = "get200";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   service.functions.push_back(std::move(func));
 }
 void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, ThriftService& service) {
@@ -172,29 +172,29 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, T
   (void)metadata;
   func.name = "get500";
   auto func_ret_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
-  func_ret_type->initialize(func.returnType);
+  func_ret_type->writeAndGenType(func.returnType, metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_f_1;
   module_Raiser_get500_f_1.id = 1;
   module_Raiser_get500_f_1.name = "f";
   module_Raiser_get500_f_1.is_optional = false;
-  auto module_Raiser_get500_f_1_type = std::make_unique<Struct< ::cpp2::Fiery>>("module.Fiery", metadata);
-  module_Raiser_get500_f_1_type->initialize(module_Raiser_get500_f_1.type);
+  auto module_Raiser_get500_f_1_type = std::make_unique<Struct< ::cpp2::Fiery>>("module.Fiery");
+  module_Raiser_get500_f_1_type->writeAndGenType(module_Raiser_get500_f_1.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_get500_f_1));
   ExceptionMetadata< ::cpp2::Fiery>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_b_2;
   module_Raiser_get500_b_2.id = 2;
   module_Raiser_get500_b_2.name = "b";
   module_Raiser_get500_b_2.is_optional = false;
-  auto module_Raiser_get500_b_2_type = std::make_unique<Struct< ::cpp2::Banal>>("module.Banal", metadata);
-  module_Raiser_get500_b_2_type->initialize(module_Raiser_get500_b_2.type);
+  auto module_Raiser_get500_b_2_type = std::make_unique<Struct< ::cpp2::Banal>>("module.Banal");
+  module_Raiser_get500_b_2_type->writeAndGenType(module_Raiser_get500_b_2.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_get500_b_2));
   ExceptionMetadata< ::cpp2::Banal>::gen(metadata);
   ::apache::thrift::metadata::ThriftField module_Raiser_get500_s_3;
   module_Raiser_get500_s_3.id = 3;
   module_Raiser_get500_s_3.name = "s";
   module_Raiser_get500_s_3.is_optional = false;
-  auto module_Raiser_get500_s_3_type = std::make_unique<Struct< ::cpp2::Serious>>("module.Serious", metadata);
-  module_Raiser_get500_s_3_type->initialize(module_Raiser_get500_s_3.type);
+  auto module_Raiser_get500_s_3_type = std::make_unique<Struct< ::cpp2::Serious>>("module.Serious");
+  module_Raiser_get500_s_3_type->writeAndGenType(module_Raiser_get500_s_3.type, metadata);
   func.exceptions.push_back(std::move(module_Raiser_get500_s_3));
   ExceptionMetadata< ::cpp2::Serious>::gen(metadata);
   service.functions.push_back(std::move(func));

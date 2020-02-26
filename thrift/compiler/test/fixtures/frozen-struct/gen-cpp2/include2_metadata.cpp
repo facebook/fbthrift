@@ -37,7 +37,7 @@ void StructMetadata<::some::ns::IncludedB>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     include2_IncludedB.fields.push_back(std::move(field));
   }
 }

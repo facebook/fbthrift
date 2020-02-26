@@ -38,7 +38,7 @@ void StructMetadata<::cpp2::House>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_House.fields.push_back(std::move(field));
   }
 }
@@ -60,7 +60,7 @@ void StructMetadata<::cpp2::Field>::gen(ThriftMetadata& metadata) {
     field.id = std::get<0>(f);
     field.name = std::get<1>(f);
     field.is_optional = std::get<2>(f);
-    std::get<3>(f)->initialize(field.type);
+    std::get<3>(f)->writeAndGenType(field.type, metadata);
     module_Field.fields.push_back(std::move(field));
   }
 }
