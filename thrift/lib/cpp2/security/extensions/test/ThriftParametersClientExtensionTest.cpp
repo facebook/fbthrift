@@ -50,14 +50,14 @@ class ThriftParametersClientExtensionTest : public testing::Test {
 TEST_F(ThriftParametersClientExtensionTest, ValidExtensions) {
   setUpServerHelloExtensions({CompressionAlgorithm::ZSTD});
   extensions_->onEncryptedExtensions(serverExtensions_);
-  EXPECT_TRUE(extensions_->getThriftCompressionAlgorithm().hasValue());
+  EXPECT_TRUE(extensions_->getThriftCompressionAlgorithm().has_value());
   EXPECT_EQ(
       extensions_->getThriftCompressionAlgorithm(), CompressionAlgorithm::ZSTD);
 }
 
 TEST_F(ThriftParametersClientExtensionTest, NoExtensions) {
   extensions_->onEncryptedExtensions(serverExtensions_);
-  EXPECT_FALSE(extensions_->getThriftCompressionAlgorithm().hasValue());
+  EXPECT_FALSE(extensions_->getThriftCompressionAlgorithm().has_value());
 }
 
 TEST_F(ThriftParametersClientExtensionTest, ServerMismatchCompressionAlgo) {
@@ -67,7 +67,7 @@ TEST_F(ThriftParametersClientExtensionTest, ServerMismatchCompressionAlgo) {
           1u), // definitely fake
   });
   extensions_->onEncryptedExtensions(serverExtensions_);
-  EXPECT_FALSE(extensions_->getThriftCompressionAlgorithm().hasValue());
+  EXPECT_FALSE(extensions_->getThriftCompressionAlgorithm().has_value());
 }
 
 TEST_F(ThriftParametersClientExtensionTest, ServerMultipleCompressionAlgo) {
@@ -75,7 +75,7 @@ TEST_F(ThriftParametersClientExtensionTest, ServerMultipleCompressionAlgo) {
       {CompressionAlgorithm::ZSTD, CompressionAlgorithm::ZLIB});
   extensions_->onEncryptedExtensions(serverExtensions_);
 
-  EXPECT_TRUE(extensions_->getThriftCompressionAlgorithm().hasValue());
+  EXPECT_TRUE(extensions_->getThriftCompressionAlgorithm().has_value());
   EXPECT_EQ(
       extensions_->getThriftCompressionAlgorithm(), CompressionAlgorithm::ZSTD);
 }

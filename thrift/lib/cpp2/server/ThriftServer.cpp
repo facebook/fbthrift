@@ -207,7 +207,7 @@ std::chrono::steady_clock::time_point ThriftServer::lastRequestTime() const
 }
 
 void ThriftServer::touchRequestTimestamp() noexcept {
-  if (idleServer_.hasValue()) {
+  if (idleServer_.has_value()) {
     lastRequestTime_.store(
         std::chrono::steady_clock::now().time_since_epoch().count(),
         std::memory_order_release);
@@ -584,7 +584,7 @@ void ThriftServer::updateTLSCert() {
 
 void ThriftServer::updateCertsToWatch() {
   std::set<std::string> certPaths;
-  if (sslContextObserver_.hasValue()) {
+  if (sslContextObserver_.has_value()) {
     auto sslContext = *sslContextObserver_->getSnapshot();
     if (!sslContext.certificates.empty()) {
       const auto& cert = sslContext.certificates[0];

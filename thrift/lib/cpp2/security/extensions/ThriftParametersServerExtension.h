@@ -59,7 +59,7 @@ class ThriftParametersServerExtension : public fizz::ServerExtensions {
    * compress requests.
    */
   folly::Optional<CompressionAlgorithm> getThriftCompressionAlgorithm() {
-    if (!clientExtensions_.hasValue()) {
+    if (!clientExtensions_.has_value()) {
       return folly::none;
     }
     auto compressionAlgos =

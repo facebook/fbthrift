@@ -52,7 +52,7 @@ TEST_F(ThriftParametersServerExtensionTest, ServerNegotiation) {
   EXPECT_EQ(exts.size(), 1);
 
   auto thriftParametersExtension = getThriftExtension(exts);
-  EXPECT_TRUE(thriftParametersExtension.hasValue());
+  EXPECT_TRUE(thriftParametersExtension.has_value());
   EXPECT_TRUE(thriftParametersExtension->params.compressionAlgos_ref());
   EXPECT_EQ(
       *thriftParametersExtension->params.compressionAlgos_ref(),
@@ -76,7 +76,7 @@ TEST_F(ThriftParametersServerExtensionTest, IncompatibleCompresionAlgorithms) {
   EXPECT_EQ(exts.size(), 1);
 
   auto thriftParametersExtension = getThriftExtension(exts);
-  EXPECT_TRUE(thriftParametersExtension.hasValue());
+  EXPECT_TRUE(thriftParametersExtension.has_value());
   EXPECT_TRUE(thriftParametersExtension->params.compressionAlgos_ref());
   EXPECT_EQ(
       *thriftParametersExtension->params.compressionAlgos_ref(),

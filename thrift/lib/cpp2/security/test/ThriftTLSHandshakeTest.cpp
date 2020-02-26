@@ -38,8 +38,8 @@ TEST_F(ThriftTLSHandshakeTest, TestExtensionsThriftParameters) {
   serverExtensions_ = serverThriftParams;
   resetTransports();
   doHandshake();
-  EXPECT_TRUE(clientThriftParams->getThriftCompressionAlgorithm().hasValue());
-  EXPECT_TRUE(serverThriftParams->getThriftCompressionAlgorithm().hasValue());
+  EXPECT_TRUE(clientThriftParams->getThriftCompressionAlgorithm().has_value());
+  EXPECT_TRUE(serverThriftParams->getThriftCompressionAlgorithm().has_value());
   EXPECT_EQ(
       *clientThriftParams->getThriftCompressionAlgorithm(),
       apache::thrift::CompressionAlgorithm::ZSTD);

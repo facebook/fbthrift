@@ -473,7 +473,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   wangle::ServerSocketConfig getServerSocketConfig() {
     wangle::ServerSocketConfig config;
-    if (sslContextObserver_.hasValue()) {
+    if (sslContextObserver_.has_value()) {
       config.sslContextConfigs.push_back(*sslContextObserver_->getSnapshot());
     }
     if (sslCacheOptions_) {

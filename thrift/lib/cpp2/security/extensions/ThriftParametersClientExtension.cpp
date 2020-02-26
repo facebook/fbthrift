@@ -40,7 +40,7 @@ void ThriftParametersClientExtension::onEncryptedExtensions(
   folly::Optional<ThriftParametersExt> serverParams =
       getThriftExtension(extensions);
 
-  if (!serverParams.hasValue()) {
+  if (!serverParams.has_value()) {
     VLOG(6) << "Server did not negotiate thrift parameters";
     return;
   }

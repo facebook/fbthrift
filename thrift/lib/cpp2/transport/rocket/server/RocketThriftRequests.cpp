@@ -83,7 +83,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
   std::unique_ptr<folly::IOBuf> compressed;
   // only compress response if compressionAlgo is negotiated during TLS
   // handshake and the response size is greater than minCompressTypes
-  if (compressionAlgo.hasValue() && data &&
+  if (compressionAlgo.has_value() && data &&
       data->computeChainDataLength() >= connection.getMinCompressBytes()) {
     folly::io::CodecType compressCodec;
     switch (*compressionAlgo) {

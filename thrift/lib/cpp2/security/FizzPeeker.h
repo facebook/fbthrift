@@ -108,7 +108,7 @@ class ThriftFizzAcceptorHandshakeHelper
         std::chrono::steady_clock::now() - acceptTime_);
 
     if (thriftExtension_ &&
-        thriftExtension_->getThriftCompressionAlgorithm().hasValue()) {
+        thriftExtension_->getThriftCompressionAlgorithm().has_value()) {
       setNegotiatedCompressionAlgorithm(
           *thriftExtension_->getThriftCompressionAlgorithm());
     }
@@ -148,7 +148,7 @@ class ThriftFizzAcceptorHandshakeHelper
         std::chrono::steady_clock::now() - acceptTime_);
 
     if (thriftExtension_ &&
-        thriftExtension_->getThriftCompressionAlgorithm().hasValue()) {
+        thriftExtension_->getThriftCompressionAlgorithm().has_value()) {
       setNegotiatedCompressionAlgorithm(
           *thriftExtension_->getThriftCompressionAlgorithm());
     }

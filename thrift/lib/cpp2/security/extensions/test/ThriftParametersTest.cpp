@@ -41,7 +41,7 @@ TEST_F(ExtensionsTest, TestEmptyThriftParameters) {
 
   auto ext = getThriftExtension(exts);
 
-  EXPECT_TRUE(ext.hasValue());
+  EXPECT_TRUE(ext.has_value());
   EXPECT_EQ(ext.value().params, paramsExt.params);
 }
 
@@ -57,7 +57,7 @@ TEST_F(ExtensionsTest, TestThriftParameters) {
 
   auto ext = getThriftExtension(exts);
 
-  EXPECT_TRUE(ext.hasValue());
+  EXPECT_TRUE(ext.has_value());
   EXPECT_EQ(ext.value().params, paramsExt.params);
   EXPECT_TRUE(ext->params.compressionAlgos_ref());
   EXPECT_EQ(ext->params.compressionAlgos_ref().value(), compressions);
