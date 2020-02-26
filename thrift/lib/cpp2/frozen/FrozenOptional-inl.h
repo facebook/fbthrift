@@ -39,11 +39,6 @@ class OptionalFieldView : private folly::Optional<T> {
   using folly::Optional<T>::reset;
   using folly::Optional<T>::emplace;
 
-  [[deprecated("hasValue() is deprecated; use has_value() instead")]] bool
-  hasValue() const {
-    return has_value();
-  }
-
   template <typename L, typename R>
   friend bool operator==(
       const OptionalFieldView<L>& lhs,
