@@ -74,7 +74,7 @@
 
     impl std::fmt::Debug for {{enum:rust_name}} {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "{{enum:name}}", self)
+            write!(fmt, "{{enum:name}}::{}", self)
         }
     }
 
@@ -86,7 +86,7 @@
                 }}{{#enum:values}}
                 "{{enumValue:name}}" => Ok({{enum:rust_name}}::{{enumValue:rust_name}}),{{!
                 }}{{/enum:values}}
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "{{enum:name}}"),
+                _ => anyhow::bail!("Unable to parse {} as {{enum:name}}", string),
             }
         }
     }

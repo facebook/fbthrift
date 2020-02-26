@@ -53,6 +53,8 @@ pub mod consts {
 }
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -192,7 +194,7 @@ pub mod types {
 
     impl std::fmt::Debug for TypedEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "TypedEnum", self)
+            write!(fmt, "TypedEnum::{}", self)
         }
     }
 
@@ -203,7 +205,7 @@ pub mod types {
             match string {
                 "VAL1" => Ok(TypedEnum::VAL1),
                 "VAL2" => Ok(TypedEnum::VAL2),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "TypedEnum"),
+                _ => anyhow::bail!("Unable to parse {} as TypedEnum", string),
             }
         }
     }

@@ -11,6 +11,8 @@ pub mod consts {
 }
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -62,7 +64,7 @@ pub mod types {
 
     impl std::fmt::Debug for EmptyEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "EmptyEnum", self)
+            write!(fmt, "EmptyEnum::{}", self)
         }
     }
 
@@ -71,7 +73,7 @@ pub mod types {
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as EmptyEnum", string),
             }
         }
     }
@@ -142,7 +144,7 @@ pub mod types {
 
     impl std::fmt::Debug for MyEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "MyEnum", self)
+            write!(fmt, "MyEnum::{}", self)
         }
     }
 
@@ -153,7 +155,7 @@ pub mod types {
             match string {
                 "ONE" => Ok(MyEnum::ONE),
                 "TWO" => Ok(MyEnum::TWO),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as MyEnum", string),
             }
         }
     }
@@ -260,7 +262,7 @@ pub mod types {
 
     impl std::fmt::Debug for MyBigEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "MyBigEnum", self)
+            write!(fmt, "MyBigEnum::{}", self)
         }
     }
 
@@ -289,7 +291,7 @@ pub mod types {
                 "SEVENTEEN" => Ok(MyBigEnum::SEVENTEEN),
                 "EIGHTEEN" => Ok(MyBigEnum::EIGHTEEN),
                 "NINETEEN" => Ok(MyBigEnum::NINETEEN),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyBigEnum"),
+                _ => anyhow::bail!("Unable to parse {} as MyBigEnum", string),
             }
         }
     }

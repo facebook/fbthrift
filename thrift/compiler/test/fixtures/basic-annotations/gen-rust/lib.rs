@@ -6,6 +6,8 @@ pub use self::errors::*;
 pub use self::types::*;
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -68,7 +70,7 @@ pub mod types {
 
     impl std::fmt::Debug for MyEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "MyEnum", self)
+            write!(fmt, "MyEnum::{}", self)
         }
     }
 
@@ -80,7 +82,7 @@ pub mod types {
                 "MyValue1" => Ok(MyEnum::MyValue1),
                 "MyValue2" => Ok(MyEnum::MyValue2),
                 "DOMAIN" => Ok(MyEnum::DOMAIN),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as MyEnum", string),
             }
         }
     }
@@ -351,7 +353,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "GetRandomDataExn"),
@@ -445,7 +447,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "HasDataByIdExn"),
@@ -539,7 +541,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "GetDataByIdExn"),

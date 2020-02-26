@@ -6,6 +6,8 @@ pub use self::errors::*;
 pub use self::types::*;
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -482,7 +484,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "Get200Exn"),
@@ -636,7 +638,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "Get500Exn"),

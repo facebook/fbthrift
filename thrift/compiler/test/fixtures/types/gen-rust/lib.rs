@@ -6,6 +6,8 @@ pub use self::errors::*;
 pub use self::types::*;
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -200,7 +202,7 @@ pub mod types {
 
     impl std::fmt::Debug for has_bitwise_ops {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "has_bitwise_ops", self)
+            write!(fmt, "has_bitwise_ops::{}", self)
         }
     }
 
@@ -214,7 +216,7 @@ pub mod types {
                 "one" => Ok(has_bitwise_ops::one),
                 "two" => Ok(has_bitwise_ops::two),
                 "three" => Ok(has_bitwise_ops::three),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "has_bitwise_ops"),
+                _ => anyhow::bail!("Unable to parse {} as has_bitwise_ops", string),
             }
         }
     }
@@ -285,7 +287,7 @@ pub mod types {
 
     impl std::fmt::Debug for is_unscoped {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "is_unscoped", self)
+            write!(fmt, "is_unscoped::{}", self)
         }
     }
 
@@ -296,7 +298,7 @@ pub mod types {
             match string {
                 "hello" => Ok(is_unscoped::hello),
                 "world" => Ok(is_unscoped::world),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "is_unscoped"),
+                _ => anyhow::bail!("Unable to parse {} as is_unscoped", string),
             }
         }
     }
@@ -367,7 +369,7 @@ pub mod types {
 
     impl std::fmt::Debug for MyForwardRefEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "MyForwardRefEnum", self)
+            write!(fmt, "MyForwardRefEnum::{}", self)
         }
     }
 
@@ -378,7 +380,7 @@ pub mod types {
             match string {
                 "ZERO" => Ok(MyForwardRefEnum::ZERO),
                 "NONZERO" => Ok(MyForwardRefEnum::NONZERO),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyForwardRefEnum"),
+                _ => anyhow::bail!("Unable to parse {} as MyForwardRefEnum", string),
             }
         }
     }
@@ -451,7 +453,7 @@ pub mod types {
 
     impl std::fmt::Debug for MyEnumA {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "MyEnumA", self)
+            write!(fmt, "MyEnumA::{}", self)
         }
     }
 
@@ -463,7 +465,7 @@ pub mod types {
                 "fieldA" => Ok(MyEnumA::fieldA),
                 "fieldB" => Ok(MyEnumA::fieldB),
                 "fieldC" => Ok(MyEnumA::fieldC),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "MyEnumA"),
+                _ => anyhow::bail!("Unable to parse {} as MyEnumA", string),
             }
         }
     }
@@ -1763,7 +1765,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "BounceMapExn"),
@@ -1857,7 +1859,7 @@ pub mod services {
                     p.read_field_end()?;
                 }
                 p.read_struct_end()?;
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "BinaryKeyedMapExn"),

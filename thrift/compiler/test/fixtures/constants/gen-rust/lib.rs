@@ -278,6 +278,8 @@ pub mod consts {
 }
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -386,7 +388,7 @@ pub mod types {
 
     impl std::fmt::Debug for EmptyEnum {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "EmptyEnum", self)
+            write!(fmt, "EmptyEnum::{}", self)
         }
     }
 
@@ -395,7 +397,7 @@ pub mod types {
 
         fn from_str(string: &str) -> std::result::Result<Self, Self::Err> {
             match string {
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "EmptyEnum"),
+                _ => anyhow::bail!("Unable to parse {} as EmptyEnum", string),
             }
         }
     }
@@ -470,7 +472,7 @@ pub mod types {
 
     impl std::fmt::Debug for City {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "City", self)
+            write!(fmt, "City::{}", self)
         }
     }
 
@@ -483,7 +485,7 @@ pub mod types {
                 "MPK" => Ok(City::MPK),
                 "SEA" => Ok(City::SEA),
                 "LON" => Ok(City::LON),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "City"),
+                _ => anyhow::bail!("Unable to parse {} as City", string),
             }
         }
     }
@@ -558,7 +560,7 @@ pub mod types {
 
     impl std::fmt::Debug for Company {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "Company", self)
+            write!(fmt, "Company::{}", self)
         }
     }
 
@@ -571,7 +573,7 @@ pub mod types {
                 "WHATSAPP" => Ok(Company::WHATSAPP),
                 "OCULUS" => Ok(Company::OCULUS),
                 "INSTAGRAM" => Ok(Company::INSTAGRAM),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "Company"),
+                _ => anyhow::bail!("Unable to parse {} as Company", string),
             }
         }
     }

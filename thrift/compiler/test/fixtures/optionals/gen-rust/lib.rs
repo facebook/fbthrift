@@ -6,6 +6,8 @@ pub use self::errors::*;
 pub use self::types::*;
 
 pub mod types {
+    #![allow(clippy::redundant_closure)]
+
     use fbthrift::{
         Deserialize, GetTType, ProtocolReader, ProtocolWriter, Serialize, TType,
     };
@@ -93,7 +95,7 @@ pub mod types {
 
     impl std::fmt::Debug for Animal {
         fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
-            write!(fmt, "{}::{}", "Animal", self)
+            write!(fmt, "Animal::{}", self)
         }
     }
 
@@ -105,7 +107,7 @@ pub mod types {
                 "DOG" => Ok(Animal::DOG),
                 "CAT" => Ok(Animal::CAT),
                 "TARANTULA" => Ok(Animal::TARANTULA),
-                _ => anyhow::bail!("Unable to parse {} as {}", string, "Animal"),
+                _ => anyhow::bail!("Unable to parse {} as Animal", string),
             }
         }
     }

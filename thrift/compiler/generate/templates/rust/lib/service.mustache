@@ -154,7 +154,7 @@
                 Ok(alt){{!
                 }}{{/function:void?}}{{!
                 }}{{^function:void?}}
-                alt.ok_or(
+                alt.ok_or_else(||
                     ApplicationException::new(
                         ApplicationExceptionErrorCode::MissingResult,
                         format!("Empty union {}", "{{function:upcamel}}Exn"),
