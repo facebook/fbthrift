@@ -112,18 +112,6 @@ class StreamingTest : public TestSetup {
   uint16_t port_;
 };
 
-class BlockStreamingTest : public StreamingTest {
- protected:
-  void SetUp() override {
-    handler_ = std::make_shared<StrictMock<TestServiceMock>>();
-    server_ = createServer(
-        std::make_shared<ThriftServerAsyncProcessorFactory<TestServiceMock>>(
-            handler_),
-        port_,
-        100);
-  }
-};
-
 TEST_F(StreamingTest, ClientStreamBridge) {
   connectToServer([this](std::unique_ptr<StreamServiceAsyncClient> client) {
     EXPECT_EQ(42, client->sync_echo(42));
