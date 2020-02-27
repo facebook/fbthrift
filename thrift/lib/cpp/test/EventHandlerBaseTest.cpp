@@ -43,7 +43,8 @@ class EventHandler : public TProcessorEventHandler {
       void*,
       const char*,
       const std::string& ex_type,
-      const std::string& ex_what) override {
+      const std::string& ex_what,
+      bool /* declared */) override {
     this->ex_type = ex_type;
     this->ex_what = ex_what;
   }

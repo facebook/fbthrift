@@ -139,7 +139,9 @@ class TProcessorEventHandler {
       void* /*ctx*/,
       const char* /*fn_name*/,
       const std::string& /*ex*/,
-      const std::string& /*ex_what*/) {}
+      const std::string& /*ex_what*/,
+      bool /* declared */) {}
+
   virtual void userExceptionWrapped(
       void* ctx,
       const char* fn_name,
@@ -152,7 +154,8 @@ class TProcessorEventHandler {
       CHECK(whatsp.removePrefix(type)) << "weird format: '" << what << "'";
       CHECK(whatsp.removePrefix(": ")) << "weird format: '" << what << "'";
     }
-    return userException(ctx, fn_name, type.toStdString(), whatsp.str());
+    return userException(
+        ctx, fn_name, type.toStdString(), whatsp.str(), declared);
   }
 
  protected:
