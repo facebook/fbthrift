@@ -25,8 +25,7 @@ namespace thrift {
 using namespace testutil::testservice;
 
 struct SinkServiceTest
-    : public testing::Test,
-      public TestSetup<TestSinkService, TestSinkServiceAsyncClient> {};
+    : public AsyncTestSetup<TestSinkService, TestSinkServiceAsyncClient> {};
 
 folly::coro::Task<bool> waitNoLeak(TestSinkServiceAsyncClient& client) {
   auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds{2};

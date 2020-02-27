@@ -31,62 +31,33 @@
 #include <thrift/lib/cpp2/async/tests/util/gen-cpp2/TestStreamServiceAsyncClient.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/rsocket/server/RSRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rsocket/test/util/TestUtil.h>
 
 namespace apache {
 namespace thrift {
 
-// Event handler to attach to the Thrift server so we know when it is
-// ready to serve and also so we can determine the port it is
-// listening on.
-class TestEventHandler : public server::TServerEventHandler {
- public:
-  // This is a callback that is called when the Thrift server has
-  // initialized and is ready to serve RPCs.
-  void preServe(const folly::SocketAddress* address) override {
-    port_ = address->getPort();
-    baton_.post();
-  }
-
-  int32_t waitForPortAssignment() {
-    baton_.wait();
-    return port_;
-  }
-
- private:
-  folly::Baton<> baton_;
-  int32_t port_;
-};
-
 template <class Handler, class Client>
-class TestSetup {
+class AsyncTestSetup : public TestSetup {
  protected:
-  TestSetup() {
-    server_ = std::make_unique<ThriftServer>();
-    server_->setPort(0);
-    server_->setNumIOWorkerThreads(numIOThreads_);
-    server_->setNumCPUWorkerThreads(numWorkerThreads_);
-    server_->setQueueTimeout(std::chrono::milliseconds(0));
-    server_->setIdleTimeout(std::chrono::milliseconds(0));
-    server_->setTaskExpireTime(std::chrono::milliseconds(0));
-    server_->setStreamExpireTime(std::chrono::milliseconds(0));
-
+  void SetUp() override {
     handler_ = std::make_shared<Handler>();
-    server_->setProcessorFactory(
-        std::make_shared<ThriftServerAsyncProcessorFactory<Handler>>(handler_));
-
-    server_->addRoutingHandler(
-        std::make_unique<apache::thrift::RSRoutingHandler>());
-    auto eventHandler = std::make_shared<TestEventHandler>();
-    server_->setServerEventHandler(eventHandler);
-    server_->setup();
-
-    // Get the port that the server has bound to
-    serverPort_ = eventHandler->waitForPortAssignment();
+    setNumIOThreads(numIOThreads_);
+    setNumWorkerThreads(numWorkerThreads_);
+    setQueueTimeout(std::chrono::milliseconds(0));
+    setIdleTimeout(std::chrono::milliseconds(0));
+    setTaskExpireTime(std::chrono::milliseconds(0));
+    setStreamExpireTime(std::chrono::milliseconds(0));
+    server_ = createServer(
+        std::make_shared<ThriftServerAsyncProcessorFactory<Handler>>(handler_),
+        serverPort_);
   }
 
-  ~TestSetup() {
-    server_->cleanUp();
-    server_.reset();
+  void TearDown() override {
+    if (server_) {
+      server_->cleanUp();
+      server_.reset();
+      handler_.reset();
+    }
   }
 
   void connectToServer(
@@ -109,7 +80,7 @@ class TestSetup {
  protected:
   int numIOThreads_{1};
   int numWorkerThreads_{1};
-  int32_t serverPort_{0};
+  uint16_t serverPort_{0};
   std::shared_ptr<folly::IOExecutor> ioThread_{
       std::make_shared<folly::ScopedEventBaseThread>()};
   std::unique_ptr<ThriftServer> server_;

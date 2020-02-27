@@ -24,8 +24,7 @@ using namespace apache::thrift;
 
 template <typename Service>
 class StreamServiceTest
-    : public testing::Test,
-      public TestSetup<Service, TestStreamServiceAsyncClient> {};
+    : public AsyncTestSetup<Service, TestStreamServiceAsyncClient> {};
 
 using TestTypes =
     ::testing::Types<TestStreamGeneratorService, TestStreamPublisherService>;
@@ -81,10 +80,9 @@ TYPED_TEST(StreamServiceTest, ServerTimeout) {
       });
 }
 
-class StreamServiceWrapperTest
-    : public testing::Test,
-      public TestSetup<TestStreamWrappedService, TestStreamServiceAsyncClient> {
-};
+class StreamServiceWrapperTest : public AsyncTestSetup<
+                                     TestStreamWrappedService,
+                                     TestStreamServiceAsyncClient> {};
 
 TEST_F(StreamServiceWrapperTest, Basic) {
   connectToServer(

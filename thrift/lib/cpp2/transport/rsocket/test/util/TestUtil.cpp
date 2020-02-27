@@ -29,7 +29,7 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
     uint16_t& port,
     int maxRequests) {
   // override the default
-  FLAGS_transport = "rsocket"; // client's transport
+  FLAGS_transport = "rocket"; // client's transport
   observer_ = std::make_shared<FakeServerObserver>();
 
   auto server = std::make_unique<ThriftServer>();
@@ -40,6 +40,19 @@ std::unique_ptr<ThriftServer> TestSetup::createServer(
   server->setPort(0);
   server->setNumIOWorkerThreads(numIOThreads_);
   server->setNumCPUWorkerThreads(numWorkerThreads_);
+  if (queueTimeout_.has_value()) {
+    server->setQueueTimeout(*queueTimeout_);
+  }
+  if (idleTimeout_.has_value()) {
+    server->setIdleTimeout(*idleTimeout_);
+  }
+  if (taskExpireTime_.has_value()) {
+    server->setTaskExpireTime(*taskExpireTime_);
+  }
+  if (streamExpireTime_.has_value()) {
+    server->setStreamExpireTime(*streamExpireTime_);
+  }
+
   server->setProcessorFactory(processorFactory);
 
   server->addRoutingHandler(

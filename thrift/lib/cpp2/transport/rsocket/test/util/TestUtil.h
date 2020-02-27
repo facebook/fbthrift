@@ -78,11 +78,34 @@ class TestSetup : public testing::Test {
       folly::Function<void()> onDetachable = nullptr,
       folly::Function<void(TAsyncSocketIntercepted&)> socketSetup = nullptr);
 
+  void setNumIOThreads(int num) {
+    numIOThreads_ = num;
+  }
+  void setNumWorkerThreads(int num) {
+    numWorkerThreads_ = num;
+  }
+  void setQueueTimeout(std::chrono::milliseconds timeout) {
+    queueTimeout_ = timeout;
+  }
+  void setIdleTimeout(std::chrono::milliseconds timeout) {
+    idleTimeout_ = timeout;
+  }
+  void setTaskExpireTime(std::chrono::milliseconds time) {
+    taskExpireTime_ = time;
+  }
+  void setStreamExpireTime(std::chrono::milliseconds time) {
+    streamExpireTime_ = time;
+  }
+
  protected:
   std::shared_ptr<FakeServerObserver> observer_;
 
   int numIOThreads_{10};
   int numWorkerThreads_{10};
+  std::optional<std::chrono::milliseconds> queueTimeout_;
+  std::optional<std::chrono::milliseconds> idleTimeout_;
+  std::optional<std::chrono::milliseconds> taskExpireTime_;
+  std::optional<std::chrono::milliseconds> streamExpireTime_;
 
   folly::ScopedEventBaseThread evbThread_;
   folly::ScopedEventBaseThread executor_;
