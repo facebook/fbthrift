@@ -59,13 +59,9 @@ class ServerGeneratorStream : public TwoWayBridge<
                  FirstResponsePayload&& payload,
                  StreamClientCallback* callback,
                  folly::EventBase* clientEb) mutable {
+        DCHECK(clientEb->isInEventBaseThread());
         auto stream = new ServerGeneratorStream(callback, clientEb);
         auto streamPtr = stream->copy();
-        clientEb->add([=, payload = std::move(payload)]() mutable {
-          std::ignore =
-              callback->onFirstResponse(std::move(payload), clientEb, stream);
-          stream->processPayloads();
-        });
         folly::coro::co_invoke(
             [stream = std::move(streamPtr),
              encode,
@@ -133,6 +129,9 @@ class ServerGeneratorStream : public TwoWayBridge<
                 LOG(FATAL) << t.exception().what();
               }
             });
+        std::ignore =
+            callback->onFirstResponse(std::move(payload), clientEb, stream);
+        stream->processPayloads();
       };
     };
   }

@@ -117,10 +117,13 @@ TEST(ServerStreamTest, PublishConsumeCoro) {
           co_yield std::move(i);
         }
       }));
-  factory(serverEb.getEventBase(), &encode)(
-      FirstResponsePayload{nullptr, {}},
-      &clientCallback,
-      clientEb.getEventBase());
+  clientEb.add(
+      [&, innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
+        innerFactory(
+            FirstResponsePayload{nullptr, {}},
+            &clientCallback,
+            clientEb.getEventBase());
+      });
   clientEb.add([&] {
     clientCallback.started.wait();
     std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -150,10 +153,13 @@ TEST(ServerStreamTest, ImmediateCancel) {
         }
         EXPECT_TRUE(false);
       }));
-  factory(serverEb.getEventBase(), &encode)(
-      FirstResponsePayload{nullptr, {}},
-      &clientCallback,
-      clientEb.getEventBase());
+  clientEb.add(
+      [&, innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
+        innerFactory(
+            FirstResponsePayload{nullptr, {}},
+            &clientCallback,
+            clientEb.getEventBase());
+      });
   clientCallback.completed.wait();
 }
 
@@ -178,10 +184,13 @@ TEST(ServerStreamTest, DelayedCancel) {
         }
         EXPECT_TRUE(false);
       }));
-  factory(serverEb.getEventBase(), &encode)(
-      FirstResponsePayload{nullptr, {}},
-      &clientCallback,
-      clientEb.getEventBase());
+  clientEb.add(
+      [&, innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
+        innerFactory(
+            FirstResponsePayload{nullptr, {}},
+            &clientCallback,
+            clientEb.getEventBase());
+      });
   clientEb.add([&] {
     clientCallback.started.wait();
     std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -202,10 +211,13 @@ TEST(ServerStreamTest, PropagatedCancel) {
         setup.post();
         co_await folly::coro::sleep(std::chrono::minutes(1));
       }));
-  factory(serverEb.getEventBase(), &encode)(
-      FirstResponsePayload{nullptr, {}},
-      &clientCallback,
-      clientEb.getEventBase());
+  clientEb.add(
+      [&, innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
+        innerFactory(
+            FirstResponsePayload{nullptr, {}},
+            &clientCallback,
+            clientEb.getEventBase());
+      });
   clientCallback.started.wait();
   clientEb.getEventBase()->add(
       [&] { std::ignore = clientCallback.cb->onStreamRequestN(1); });
@@ -228,10 +240,14 @@ TEST(ServerStreamTest, CancelCoro) {
             co_yield std::move(i);
           }
         }));
-    factory(serverEb.getEventBase(), &encode)(
-        FirstResponsePayload{nullptr, {}},
-        &clientCallback,
-        clientEb.getEventBase());
+    clientEb.add(
+        [&,
+         innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
+          innerFactory(
+              FirstResponsePayload{nullptr, {}},
+              &clientCallback,
+              clientEb.getEventBase());
+        });
     clientEb.add([&] {
       clientCallback.started.wait();
       std::ignore = clientCallback.cb->onStreamRequestN(11); // complete costs 1
@@ -424,10 +440,13 @@ TEST(ServerStreamTest, ClientBufferedStreamGeneratorIntegration) {
           co_yield std::move(i);
         }
       }));
-  factory(serverEb.getEventBase(), &encode)(
-      FirstResponsePayload{nullptr, {}},
-      clientStreamBridge,
-      clientEb.getEventBase());
+  clientEb.add(
+      [&, innerFactory = factory(serverEb.getEventBase(), &encode)]() mutable {
+        innerFactory(
+            FirstResponsePayload{nullptr, {}},
+            clientStreamBridge,
+            clientEb.getEventBase());
+      });
 
   size_t expected = 0;
   bool done = false;
