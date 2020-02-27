@@ -366,13 +366,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
         });
     sslCallbackHandle_.cancel();
     sslCallbackHandle_ = sslContextObserver_->addCallback([&](auto ssl) {
-      forEachWorker([&](wangle::Acceptor* acceptor) {
+      // "this" needed due to https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
+      this->forEachWorker([&](wangle::Acceptor* acceptor) {
         for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
           sslContext = *ssl;
         }
         acceptor->resetSSLContextConfigs();
       });
-      updateCertsToWatch();
+      this->updateCertsToWatch();
     });
   }
 
