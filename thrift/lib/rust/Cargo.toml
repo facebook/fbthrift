@@ -1,6 +1,6 @@
 # @generated
 # @autocargo from //thrift/lib/rust:fbthrift
-# Signature<<21277a5bef35925c341363220142baef38865bc8>>
+# Signature<<166a2cef7fd02140a84b4542662a135cd046d1f0>>
 [package]
 name = "fbthrift"
 edition = "2018"
@@ -14,7 +14,7 @@ async-trait = { version = "0.1", features = ["support_old_nightly"] }
 bufsize = "0.5"
 byteorder = "1.3"
 bytes = { version = "0.5", features = ["serde"] }
-bytes-old = { package = "bytes", version = "0.4", features = ["serde"] } # todo: remove
+bytes-old = { package = "bytes", version = "0.4", features = ["serde"] }
 ghost = "0.1"
 num-derive = "0.3"
 num-traits = "0.2"
@@ -22,4 +22,4 @@ thiserror = "1.0"
 
 [dev-dependencies]
 quickcheck = "0.9"
-# @end of Signature<<21277a5bef35925c341363220142baef38865bc8>>
+# @end of Signature<<166a2cef7fd02140a84b4542662a135cd046d1f0>>
