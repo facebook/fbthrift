@@ -38,14 +38,8 @@ class DeprecatedOptionalField : public folly::Optional<T> {
 
  public:
   using Base::Base;
-
-  // Copy/Move constructors are not inherited
-  DeprecatedOptionalField(const Base& t) noexcept(
-      std::is_nothrow_copy_constructible<Base>::value)
-      : Base(t) {}
-  DeprecatedOptionalField(Base&& t) noexcept(
-      std::is_nothrow_move_constructible<Base>::value)
-      : Base(std::move(t)) {}
+  DeprecatedOptionalField(Base&&) = delete;
+  DeprecatedOptionalField(const Base&) = delete;
 
   // Use perfect forwarding to hide Base::operator=(Base&&),
   // Otherwise `s.foo = {};` will be ambiguous between
