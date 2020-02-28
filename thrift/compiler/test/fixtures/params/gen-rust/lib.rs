@@ -514,7 +514,7 @@ pub mod client {
             &self,
             arg_foo: &std::collections::BTreeMap<i32, Vec<i32>>,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "mapList",
@@ -534,7 +534,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -566,7 +566,7 @@ pub mod client {
             &self,
             arg_foo: &std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "mapSet",
@@ -586,7 +586,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -618,7 +618,7 @@ pub mod client {
             &self,
             arg_foo: &[std::collections::BTreeMap<i32, i32>],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "listMap",
@@ -638,7 +638,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -670,7 +670,7 @@ pub mod client {
             &self,
             arg_foo: &[std::collections::BTreeSet<i32>],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "listSet",
@@ -690,7 +690,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -722,7 +722,7 @@ pub mod client {
             &self,
             arg_foo: &[Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "turtles",
@@ -742,7 +742,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -1436,7 +1436,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.mapList.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, Vec<i32>>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
+            Box::pin(futures::future::ready(closure(arg_foo.clone())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersMapListError(error),
                 ))))
@@ -1447,7 +1447,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.mapSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_foo.clone())
+            Box::pin(futures::future::ready(closure(arg_foo.clone())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersMapSetError(error),
                 ))))
@@ -1458,7 +1458,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.listMap.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeMap<i32, i32>>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_foo.to_owned())
+            Box::pin(futures::future::ready(closure(arg_foo.to_owned())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersListMapError(error),
                 ))))
@@ -1469,7 +1469,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.listSet.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<std::collections::BTreeSet<i32>>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_foo.to_owned())
+            Box::pin(futures::future::ready(closure(arg_foo.to_owned())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersListSetError(error),
                 ))))
@@ -1480,7 +1480,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.turtles.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<Vec<std::collections::BTreeMap<i32, std::collections::BTreeMap<i32, std::collections::BTreeSet<i32>>>>>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_foo.to_owned())
+            Box::pin(futures::future::ready(closure(arg_foo.to_owned())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::NestedContainersTurtlesError(error),
                 ))))

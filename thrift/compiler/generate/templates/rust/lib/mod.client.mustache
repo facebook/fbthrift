@@ -115,7 +115,7 @@
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<{{!
             }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
         }}>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "{{function:name}}",
@@ -141,7 +141,7 @@
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<{{!
                         }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!

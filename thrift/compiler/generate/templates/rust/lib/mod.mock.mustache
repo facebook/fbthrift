@@ -63,7 +63,7 @@
                 }}{{^last?}}, {{/last?}}{{!
                 }}{{/function:args}}{{!
             }}) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure({{!
+            Box::pin(futures::future::ready(closure({{!
                 }}{{#function:args}}{{!
                 }}arg_{{field:name}}{{#field:type}}{{!
                     }}{{#type:string?}}.to_owned(){{/type:string?}}{{!

@@ -334,7 +334,7 @@ pub mod client {
     {        fn do_root(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "do_root",
@@ -351,7 +351,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -480,7 +480,7 @@ pub mod client {
     {        fn do_mid(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "do_mid",
@@ -497,7 +497,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -640,7 +640,7 @@ pub mod client {
     {        fn do_leaf(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "do_leaf",
@@ -657,7 +657,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -1459,7 +1459,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.do_root.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyRootDoRootError(error),
                 ))))
@@ -1532,7 +1532,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.do_mid.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyNodeDoMidError(error),
                 ))))
@@ -1613,7 +1613,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.do_leaf.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::MyLeafDoLeafError(error),
                 ))))

@@ -699,7 +699,7 @@ pub mod client {
     {        fn doBland(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "doBland",
@@ -716,7 +716,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -747,7 +747,7 @@ pub mod client {
         fn doRaise(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "doRaise",
@@ -764,7 +764,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<()> {
                         let p = &mut p;
@@ -795,7 +795,7 @@ pub mod client {
         fn get200(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "get200",
@@ -812,7 +812,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<String> {
                         let p = &mut p;
@@ -843,7 +843,7 @@ pub mod client {
         fn get500(
             &self,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "get500",
@@ -860,7 +860,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<String> {
                         let p = &mut p;
@@ -1435,7 +1435,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.doBland.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserDoBlandError(error),
                 ))))
@@ -1445,7 +1445,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<()>> + Send + 'static>> {
             let mut closure = self.doRaise.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserDoRaiseError(error),
                 ))))
@@ -1455,7 +1455,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             let mut closure = self.get200.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserGet200Error(error),
                 ))))
@@ -1465,7 +1465,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<String>> + Send + 'static>> {
             let mut closure = self.get500.closure.lock().unwrap();
             let closure: &mut dyn FnMut() -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure()
+            Box::pin(futures::future::ready(closure()
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::RaiserGet500Error(error),
                 ))))

@@ -1917,7 +1917,7 @@ pub mod client {
             &self,
             arg_m: &include::types::SomeMap,
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "bounce_map",
@@ -1937,7 +1937,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<include::types::SomeMap> {
                         let p = &mut p;
@@ -1969,7 +1969,7 @@ pub mod client {
             &self,
             arg_r: &[i64],
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
-            use futures_preview::future::{FutureExt, TryFutureExt};
+            use futures::future::{FutureExt, TryFutureExt};
             let request = serialize!(P, |p| protocol::write_message(
                 p,
                 "binary_keyed_map",
@@ -1989,7 +1989,7 @@ pub mod client {
             ));
             self.transport()
                 .call(request)
-                .and_then(|reply| futures_preview::future::ready({
+                .and_then(|reply| futures::future::ready({
                     let de = P::deserializer(reply);
                     move |mut p: P::Deserializer| -> anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>> {
                         let p = &mut p;
@@ -2461,7 +2461,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<include::types::SomeMap>> + Send + 'static>> {
             let mut closure = self.bounce_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(include::types::SomeMap) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_m.clone())
+            Box::pin(futures::future::ready(closure(arg_m.clone())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::SomeServiceBounceMapError(error),
                 ))))
@@ -2472,7 +2472,7 @@ pub mod mock {
         ) -> std::pin::Pin<Box<dyn std::future::Future<Output = anyhow::Result<std::collections::BTreeMap<crate::types::TBinary, i64>>> + Send + 'static>> {
             let mut closure = self.binary_keyed_map.closure.lock().unwrap();
             let closure: &mut dyn FnMut(Vec<i64>) -> _ = &mut **closure;
-            Box::pin(futures_preview::future::ready(closure(arg_r.to_owned())
+            Box::pin(futures::future::ready(closure(arg_r.to_owned())
                 .map_err(|error| anyhow::Error::from(
                     crate::errors::ErrorKind::SomeServiceBinaryKeyedMapError(error),
                 ))))
