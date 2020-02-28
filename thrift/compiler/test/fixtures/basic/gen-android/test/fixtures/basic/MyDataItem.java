@@ -32,21 +32,6 @@ public class MyDataItem implements TBase, java.io.Serializable, Cloneable {
   {
   }
 
-  public static class Builder {
-
-    public Builder() {
-    }
-
-    public MyDataItem build() {
-      return new MyDataItem(
-      );
-    }
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
   /**
    * Performs a deep copy on <i>other</i>.
    */

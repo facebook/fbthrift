@@ -557,7 +557,8 @@ void t_java_generator::generate_java_struct(
   StructGenParams params;
   params.is_exception = is_exception;
   params.gen_immutable = generate_immutable_structs_;
-  params.gen_builder = true;
+  params.gen_builder = generate_builder;
+
   generate_java_struct_definition(f_struct, tstruct, params);
   f_struct.close();
 }
@@ -1329,7 +1330,13 @@ void t_java_generator::generate_java_struct_definition(
       generate_java_constructor(out, tstruct, members);
     }
   }
-  if (params.gen_builder || members.size() > MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
+
+  auto forceBuilderGeneration =
+      tstruct->annotations_.find("android.generate_builder") !=
+      tstruct->annotations_.end();
+
+  if (forceBuilderGeneration || params.gen_builder ||
+      members.size() > MAX_NUM_JAVA_CONSTRUCTOR_PARAMS) {
     generate_java_constructor_using_builder(
         out, tstruct, members, bitset_size, !params.gen_immutable);
   }

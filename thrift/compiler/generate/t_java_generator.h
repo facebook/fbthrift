@@ -334,6 +334,7 @@ class t_java_generator : public t_oop_generator {
   bool generate_field_metadata_ = true;
   bool generate_immutable_structs_ = false;
   bool generate_boxed_primitive = false;
+  bool generate_builder = true;
 
   /**
    * File streams

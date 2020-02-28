@@ -432,7 +432,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 ),
           ],
         annotations=_py_types.MappingProxyType({
-        }),
+          """android.generate_builder""": """1""",    }),
       )
     cdef __iobuf.IOBuf _serialize(MyStruct self, proto):
         cdef __iobuf.cIOBufQueue queue = __iobuf.cIOBufQueue(__iobuf.cacheChainLength())

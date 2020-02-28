@@ -55,49 +55,6 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     this.myEnum = myEnum;
   }
 
-  public static class Builder {
-    private Long MyIntField;
-    private String MyStringField;
-    private MyDataItem MyDataField;
-    private MyEnum myEnum;
-
-    public Builder() {
-    }
-
-    public Builder setMyIntField(final Long MyIntField) {
-      this.MyIntField = MyIntField;
-      return this;
-    }
-
-    public Builder setMyStringField(final String MyStringField) {
-      this.MyStringField = MyStringField;
-      return this;
-    }
-
-    public Builder setMyDataField(final MyDataItem MyDataField) {
-      this.MyDataField = MyDataField;
-      return this;
-    }
-
-    public Builder setMyEnum(final MyEnum myEnum) {
-      this.myEnum = myEnum;
-      return this;
-    }
-
-    public MyStruct build() {
-      return new MyStruct(
-        this.MyIntField,
-        this.MyStringField,
-        this.MyDataField,
-        this.myEnum
-      );
-    }
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
   /**
    * Performs a deep copy on <i>other</i>.
    */

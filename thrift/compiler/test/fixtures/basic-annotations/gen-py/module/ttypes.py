@@ -198,6 +198,7 @@ MyStruct.thrift_spec = (
 )
 
 MyStruct.thrift_struct_annotations = {
+  "android.generate_builder": """1""",
 }
 MyStruct.thrift_field_annotations = {
   1: {

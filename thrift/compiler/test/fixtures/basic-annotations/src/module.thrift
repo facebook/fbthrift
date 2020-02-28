@@ -31,7 +31,7 @@ struct MyStruct {
   # should generate valid code even with double quotes in an annotation
   3: string annotation_with_quote (go.tag = 'tag:"somevalue"'),
   4: string class_ (java.swift.name = "class_")
-}
+} (android.generate_builder)
 
 service MyService {
   void ping()

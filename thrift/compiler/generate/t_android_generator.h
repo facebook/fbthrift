@@ -49,6 +49,7 @@ class t_android_generator : public t_java_generator {
     generate_field_metadata_ = false;
     generate_immutable_structs_ = true;
     generate_boxed_primitive = true;
+    generate_builder = false;
 
     out_dir_base_ = "gen-android";
   }

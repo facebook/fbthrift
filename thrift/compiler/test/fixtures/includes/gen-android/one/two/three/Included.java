@@ -41,40 +41,6 @@ public class Included implements TBase, java.io.Serializable, Cloneable {
     this.MyTransitiveField = MyTransitiveField;
   }
 
-  public static class Builder {
-    private Long MyIntField;
-    private Foo MyTransitiveField;
-
-    public Builder() {
-        this.MyIntField = 0L;
-
-        this.MyTransitiveField = new Foo();
-    this.MyTransitiveField.setA(2L);
-
-    }
-
-    public Builder setMyIntField(final Long MyIntField) {
-      this.MyIntField = MyIntField;
-      return this;
-    }
-
-    public Builder setMyTransitiveField(final Foo MyTransitiveField) {
-      this.MyTransitiveField = MyTransitiveField;
-      return this;
-    }
-
-    public Included build() {
-      return new Included(
-        this.MyIntField,
-        this.MyTransitiveField
-      );
-    }
-  }
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
   /**
    * Performs a deep copy on <i>other</i>.
    */
